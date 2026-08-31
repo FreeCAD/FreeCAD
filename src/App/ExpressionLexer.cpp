@@ -64,15 +64,24 @@ bool isCellAddress(const std::string& text)
 class Lexer
 {
 public:
-    Lexer(const char* buffer, const FunctionLookup& lookupFunction)
+    Lexer(const char* buffer, const FunctionLookup& lookupFunction, bool tolerant = false)
         : input(buffer)
         , lookupFunction(lookupFunction)
+        , tolerant(tolerant)
     {}
 
     std::vector<Token> scan()
     {
         while (cursor < input.size()) {
-            scanOne();
+            try {
+                scanOne();
+            }
+            catch (const Base::ParserError&) {
+                if (!tolerant) {
+                    throw;
+                }
+                break;
+            }
         }
         tokens.push_back(Token {TokenKind::End, {}, {}, input.size(), std::nullopt});
         return tokens;
@@ -156,6 +165,14 @@ private:
                 escaped = true;
             }
             ++end;
+        }
+        if (tolerant) {
+            // Completion needs the historical token shape for an unfinished
+            // literal string: two '<' tokens followed by its partial content.
+            push(TokenKind::Less, "<", column);
+            push(TokenKind::Less, "<", column + 1);
+            cursor = column + 2;
+            return;
         }
         throw Base::ParserError(fmt::format("Unterminated string at column {}", column));
     }
@@ -350,6 +367,7 @@ private:
 
     std::string input;
     const FunctionLookup& lookupFunction;
+    bool tolerant;
     std::vector<Token> tokens;
     std::size_t cursor {0};
 };
@@ -358,6 +376,11 @@ private:
 std::vector<Token> scanTokens(const char* buffer, const FunctionLookup& lookupFunction)
 {
     return Lexer(buffer, lookupFunction).scan();
+}
+
+std::vector<Token> scanTokensTolerant(const char* buffer, const FunctionLookup& lookupFunction)
+{
+    return Lexer(buffer, lookupFunction, true).scan();
 }
 
 }  // namespace App::ExpressionParser::Pratt

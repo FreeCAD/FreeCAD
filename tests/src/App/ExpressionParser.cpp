@@ -309,10 +309,11 @@ TEST_F(ExpressionParserTest, expressionsWithCompoundUnitSuffixesParse)
 {
     // https://github.com/FreeCAD/FreeCAD/issues/14471
     // https://github.com/FreeCAD/FreeCAD/issues/26470
-    EXPECT_THAT(parseExpr("10 mm * kg"),
-                IsQuantity(Base::Quantity::parse("10 mm*kg")));
-    EXPECT_THAT(parseExpr("1234000.00 mm*kg/s^2"),
-                IsQuantity(Base::Quantity::parse("1234000 mm*kg/s^2")));
+    EXPECT_THAT(parseExpr("10 mm * kg"), IsQuantity(Base::Quantity::parse("10 mm*kg")));
+    EXPECT_THAT(
+        parseExpr("1234000.00 mm*kg/s^2"),
+        IsQuantity(Base::Quantity::parse("1234000 mm*kg/s^2"))
+    );
 }
 
 TEST_F(ExpressionParserTest, dimensionlessExpressionsParseAsLongOrDouble)
@@ -389,8 +390,8 @@ TEST_F(ExpressionParserTest, arithmeticPrecedenceAndAssociativity)
 
 TEST_F(ExpressionParserTest, comparisonAndConditionalProductions)
 {
-    for (const auto* expression : {
-             "1 == 1", "1 != 2", "1 < 2", "2 > 1", "1 <= 1", "1 >= 1", "1 ? 2 : 3"}) {
+    for (const auto* expression :
+         {"1 == 1", "1 != 2", "1 < 2", "2 > 1", "1 <= 1", "1 >= 1", "1 ? 2 : 3"}) {
         EXPECT_NO_THROW(parse(this_obj(), expression)) << expression;
     }
 }
@@ -409,8 +410,7 @@ TEST_F(ExpressionParserTest, unitProductions)
 {
     EXPECT_THAT(parseExpr("2 mm^2"), IsQuantity(mm2(2)));
     EXPECT_THAT(parseExpr("(2 mm)^2"), IsQuantity(mm2(4)));
-    EXPECT_THAT(parseExpr("2 mm/s * 3"),
-                IsQuantity(Base::Quantity(6, Base::Unit::Velocity)));
+    EXPECT_THAT(parseExpr("2 mm/s * 3"), IsQuantity(Base::Quantity(6, Base::Unit::Velocity)));
     const auto usBuildingUnit = parse_expression_text_as_quantity("1' 2\"");
     EXPECT_NEAR(usBuildingUnit.getValue(), 355.6, 1e-12) << "US building units";
     EXPECT_EQ(usBuildingUnit.getUnit(), Base::Unit::Length);
@@ -421,20 +421,31 @@ TEST_F(ExpressionParserTest, unitProductions)
 
 TEST_F(ExpressionParserTest, identifierPathAndIndexerProductions)
 {
-    for (const auto* expression : {
-             "Foo", ".Foo", "Sketch.Foo", "Sketch.<<(Sub object)>>.Foo",
-             "Doc#Sketch.Foo", "Doc#Sketch.<<(Sub object)>>.Foo", "Foo.Bar.Baz",
-             "Foo[0]", "Foo[1:]", "Foo[:2]", "Foo[::2]", "Foo[1:2]",
-             "Foo[1::2]", "Foo[:2:3]", "Foo[1:2:3]", "Foo[0][1].Bar"}) {
+    for (const auto* expression :
+         {"Foo",
+          ".Foo",
+          "Sketch.Foo",
+          "Sketch.<<(Sub object)>>.Foo",
+          "Doc#Sketch.Foo",
+          "Doc#Sketch.<<(Sub object)>>.Foo",
+          "Foo.Bar.Baz",
+          "Foo[0]",
+          "Foo[1:]",
+          "Foo[:2]",
+          "Foo[::2]",
+          "Foo[1:2]",
+          "Foo[1::2]",
+          "Foo[:2:3]",
+          "Foo[1:2:3]",
+          "Foo[0][1].Bar"}) {
         EXPECT_NO_THROW(parse(this_obj(), expression)) << expression;
     }
 }
 
 TEST_F(ExpressionParserTest, intentionalGrammarRestrictions)
 {
-    for (const auto* expression : {
-             "list(1, 2)[0]", "(Foo)[0]", "1[0]", "Foo[]", "Foo[:]", "sqrt()",
-             "1 mm kg", "24 V / (2 A) kg"}) {
+    for (const auto* expression :
+         {"list(1, 2)[0]", "(Foo)[0]", "1[0]", "Foo[]", "Foo[:]", "sqrt()", "1 mm kg", "24 V / (2 A) kg"}) {
         EXPECT_THROW(parse(this_obj(), expression), Base::ParserError) << expression;
     }
 }
@@ -443,23 +454,51 @@ TEST(ExpressionPrattParserTest, bindingPowersMatchCurrentGrammar)
 {
     using namespace App::ExpressionParser::Pratt;
 
-    EXPECT_EQ(infixBindingPower(TokenKind::Question),
-              (std::optional<BindingPower> {{BindingPowers::ternary,
-                                             BindingPowers::ternary - 1}}));
-    EXPECT_EQ(infixBindingPower(TokenKind::Power),
-              (std::optional<BindingPower> {{BindingPowers::power, BindingPowers::power}}));
+    EXPECT_EQ(
+        infixBindingPower(TokenKind::Question),
+        (std::optional<BindingPower> {{BindingPowers::ternary, BindingPowers::ternary - 1}})
+    );
+    EXPECT_EQ(
+        infixBindingPower(TokenKind::Power),
+        (std::optional<BindingPower> {{BindingPowers::power, BindingPowers::power}})
+    );
     EXPECT_GT(BindingPowers::prefix, BindingPowers::power);
     EXPECT_GT(BindingPowers::quantity, BindingPowers::multiplicative);
 }
 
 TEST_F(ExpressionParserTest, scalarArithmeticSurfaceParses)
 {
-    for (const auto* expression : {
-             "0", "42", ".5", "1e2", "pi", "True", "false", "None", "+5", "-5",
-             "--5", "2 + 3 * 4", "(2 + 3) * 4", "8 / 4 / 2", "10 % 3", "2^3^2",
-             "-2^2", "-(2^2)", "1 == 1", "1 != 2", "1 < 2", "2 > 1", "1 <= 1",
-             "1 >= 1", "1 ? 2 : 3", "0 ? 2 : 3", "1 ? 2 : 0 ? 3 : 4",
-             "1 + 2 > 2 ? 10 / 2 : 0", "\xE2\x88\x92" "2 + 5"}) {
+    for (const auto* expression :
+         {"0",
+          "42",
+          ".5",
+          "1e2",
+          "pi",
+          "True",
+          "false",
+          "None",
+          "+5",
+          "-5",
+          "--5",
+          "2 + 3 * 4",
+          "(2 + 3) * 4",
+          "8 / 4 / 2",
+          "10 % 3",
+          "2^3^2",
+          "-2^2",
+          "-(2^2)",
+          "1 == 1",
+          "1 != 2",
+          "1 < 2",
+          "2 > 1",
+          "1 <= 1",
+          "1 >= 1",
+          "1 ? 2 : 3",
+          "0 ? 2 : 3",
+          "1 ? 2 : 0 ? 3 : 4",
+          "1 + 2 > 2 ? 10 / 2 : 0",
+          "\xE2\x88\x92"
+          "2 + 5"}) {
         EXPECT_NO_THROW(parse(this_obj(), expression)) << expression;
     }
 }
@@ -475,11 +514,30 @@ TEST_F(ExpressionParserTest, unitSpellingsAreContextualNames)
 
 TEST_F(ExpressionParserTest, expressionLexerHandlesCoreGrammar)
 {
-    for (const auto* expression : {
-             "0", "1", "42", ".5", "1e2", "pi", "True", "false", "None",
-             "-2^2", "2 + 3 * 4", "1 <= 2 ? 3 : 4", "sqrt(9)",
-             "pow(2, 3)", "sum(1; 2; 3)", "Foo", "Sketch.Foo", "Foo[1:2]",
-             "Doc#Sketch.Foo", "mm.Foo", "in.Bar", "10 mm * kg", "2 mm/s * 3"}) {
+    for (const auto* expression :
+         {"0",
+          "1",
+          "42",
+          ".5",
+          "1e2",
+          "pi",
+          "True",
+          "false",
+          "None",
+          "-2^2",
+          "2 + 3 * 4",
+          "1 <= 2 ? 3 : 4",
+          "sqrt(9)",
+          "pow(2, 3)",
+          "sum(1; 2; 3)",
+          "Foo",
+          "Sketch.Foo",
+          "Foo[1:2]",
+          "Doc#Sketch.Foo",
+          "mm.Foo",
+          "in.Bar",
+          "10 mm * kg",
+          "2 mm/s * 3"}) {
         const auto parsed = parse(this_obj(), expression);
         EXPECT_FALSE(parsed->toString().empty()) << expression;
     }
@@ -487,26 +545,38 @@ TEST_F(ExpressionParserTest, expressionLexerHandlesCoreGrammar)
 
 TEST_F(ExpressionParserTest, expressionLexerHandlesLiteralStringsAndCells)
 {
-    for (const auto* expression : {
-             "<<(Line 1\\nLine 2)>>", "<<(tab\\tquote\\\"slash\\\\)>>",
-             ".<<(Sub object)>>.Foo", "Sketch.<<(Sub object)>>.Foo", "A1",
-             "$A1", "A$1", "$A$1", "sum(A1:B2, C3:D4)"}) {
+    for (const auto* expression :
+         {"<<(Line 1\\nLine 2)>>",
+          "<<(tab\\tquote\\\"slash\\\\)>>",
+          ".<<(Sub object)>>.Foo",
+          "Sketch.<<(Sub object)>>.Foo",
+          "A1",
+          "$A1",
+          "A$1",
+          "$A$1",
+          "sum(A1:B2, C3:D4)"}) {
         const auto parsed = parse(this_obj(), expression);
         EXPECT_FALSE(parsed->toString().empty()) << expression;
     }
 
     for (const auto* expression : {"<<unterminated", "<<line\nbreak>>", "<<bad>text>>"}) {
-        EXPECT_THROW(parse(this_obj(), expression), Base::ParserError)
-            << expression;
+        EXPECT_THROW(parse(this_obj(), expression), Base::ParserError) << expression;
     }
 }
 
 TEST_F(ExpressionParserTest, expressionLexerHandlesUsUnitsAndUtf8)
 {
-    for (const auto* expression : {
-             "1' 2\"", "12\"", "2 ft + 3 in", "\xE2\x88\x92" "2 + 5",
-             "10 \xC2\xB5m", "90 \xC2\xB0", "\xC3\x84nderung",
-             "\xC3\x84nderung.Wert", "sin(90 deg)"}) {
+    for (const auto* expression :
+         {"1' 2\"",
+          "12\"",
+          "2 ft + 3 in",
+          "\xE2\x88\x92"
+          "2 + 5",
+          "10 \xC2\xB5m",
+          "90 \xC2\xB0",
+          "\xC3\x84nderung",
+          "\xC3\x84nderung.Wert",
+          "sin(90 deg)"}) {
         SCOPED_TRACE(expression);
         const auto parsed = parse(this_obj(), expression);
         EXPECT_FALSE(parsed->toString().empty()) << expression;
@@ -515,18 +585,44 @@ TEST_F(ExpressionParserTest, expressionLexerHandlesUsUnitsAndUtf8)
 
 TEST_F(ExpressionParserTest, expressionLexerHandlesCompleteLanguageSurface)
 {
-    for (const auto* expression : {
-             "--5", "(2 + 3) * 4", "8 / 4 / 2", "10 % 3", "2^3^2",
-             "1 != 2", "1 < 2", "2 > 1", "1 >= 1", "0 ? 2 : 3",
-             "1 ? 2 : 0 ? 3 : 4", "abs(-5)", "mod(10, 3)",
-             "and(True, 1, 2 > 1)", "or(False; 0; 3)",
-             "parsequant(<<(1 + 2) m>>)", "str(1 m + 2 mm)",
-             ".Foo", ".A1", ".<<(Sub object)>>.Foo", "Foo.Bar.Baz",
-             "Foo[0][1].Bar", "Foo[1:2].Bar.Baz[0]", "Foo[::2]",
-             "Foo[:2:3]", "sum(A1:B2, C3:D4; 5)", "0 mm", "1.25 mm",
-             "1e3 mm", "1mm + 1mm", "2 cm * 1 mm", "2 mm^2",
-             "(2 mm)^2", "24 V / (2 A)", "360 deg + pi rad", "1,25 mm",
-             ",5 + 1"}) {
+    for (const auto* expression :
+         {"--5",
+          "(2 + 3) * 4",
+          "8 / 4 / 2",
+          "10 % 3",
+          "2^3^2",
+          "1 != 2",
+          "1 < 2",
+          "2 > 1",
+          "1 >= 1",
+          "0 ? 2 : 3",
+          "1 ? 2 : 0 ? 3 : 4",
+          "abs(-5)",
+          "mod(10, 3)",
+          "and(True, 1, 2 > 1)",
+          "or(False; 0; 3)",
+          "parsequant(<<(1 + 2) m>>)",
+          "str(1 m + 2 mm)",
+          ".Foo",
+          ".A1",
+          ".<<(Sub object)>>.Foo",
+          "Foo.Bar.Baz",
+          "Foo[0][1].Bar",
+          "Foo[1:2].Bar.Baz[0]",
+          "Foo[::2]",
+          "Foo[:2:3]",
+          "sum(A1:B2, C3:D4; 5)",
+          "0 mm",
+          "1.25 mm",
+          "1e3 mm",
+          "1mm + 1mm",
+          "2 cm * 1 mm",
+          "2 mm^2",
+          "(2 mm)^2",
+          "24 V / (2 A)",
+          "360 deg + pi rad",
+          "1,25 mm",
+          ",5 + 1"}) {
         const auto parsed = parse(this_obj(), expression);
         EXPECT_FALSE(parsed->toString().empty()) << expression;
     }
@@ -534,29 +630,60 @@ TEST_F(ExpressionParserTest, expressionLexerHandlesCompleteLanguageSurface)
 
 TEST_F(ExpressionParserTest, expressionLexerRejectsMalformedInputs)
 {
-    for (const auto* expression : {
-             "", "-", "+", "1 +", "(1", "1)", "1 ? 2", "1 ? : 3",
-             "1 == ", "sqrt()", "sqrt(1, 2)", "sum(1,)", "1 mm kg",
-             "Foo[]", "Foo[:]", "Foo[::]", "Foo[1:2:]", "list(1, 2)[0]",
-             "(Foo)[0]", "1[0]", "<<unterminated", "<<bad>text>>", "@"}) {
-        EXPECT_NE(exceptionCategory(
-                      [this, expression] {
-                          parse(this_obj(), expression);
-                      }),
-                  "none")
+    for (const auto* expression :
+         {"",
+          "-",
+          "+",
+          "1 +",
+          "(1",
+          "1)",
+          "1 ? 2",
+          "1 ? : 3",
+          "1 == ",
+          "sqrt()",
+          "sqrt(1, 2)",
+          "sum(1,)",
+          "1 mm kg",
+          "Foo[]",
+          "Foo[:]",
+          "Foo[::]",
+          "Foo[1:2:]",
+          "list(1, 2)[0]",
+          "(Foo)[0]",
+          "1[0]",
+          "<<unterminated",
+          "<<bad>text>>",
+          "@"}) {
+        EXPECT_NE(exceptionCategory([this, expression] { parse(this_obj(), expression); }), "none")
             << expression;
     }
 }
 
 TEST_F(ExpressionParserTest, identifierPathsRoundTrip)
 {
-    for (const auto* expression : {
-             "Foo", "A1", ".Foo", ".A1", ".<<(Sub object)>>.Foo", "Sketch.Foo",
-             "Sketch.A1", "Sketch.<<(Sub object)>>.Foo", "Doc#Sketch.Foo",
-             "<<(Document label)>>#Sketch.Foo", "Doc#Sketch.<<(Sub object)>>.Foo",
-             "Foo.Bar.Baz", "Foo[0]", "Foo[1:]", "Foo[:2]", "Foo[::2]",
-             "Foo[1:2]", "Foo[1::2]", "Foo[:2:3]", "Foo[1:2:3]",
-             "Foo[0][1].Bar", "Foo[1:2].Bar.Baz[0]"}) {
+    for (const auto* expression :
+         {"Foo",
+          "A1",
+          ".Foo",
+          ".A1",
+          ".<<(Sub object)>>.Foo",
+          "Sketch.Foo",
+          "Sketch.A1",
+          "Sketch.<<(Sub object)>>.Foo",
+          "Doc#Sketch.Foo",
+          "<<(Document label)>>#Sketch.Foo",
+          "Doc#Sketch.<<(Sub object)>>.Foo",
+          "Foo.Bar.Baz",
+          "Foo[0]",
+          "Foo[1:]",
+          "Foo[:2]",
+          "Foo[::2]",
+          "Foo[1:2]",
+          "Foo[1::2]",
+          "Foo[:2:3]",
+          "Foo[1:2:3]",
+          "Foo[0][1].Bar",
+          "Foo[1:2].Bar.Baz[0]"}) {
         EXPECT_FALSE(parsedText(expression).empty()) << expression;
     }
 }
@@ -580,23 +707,31 @@ TEST_F(ExpressionParserTest, rangesRoundTrip)
 
 TEST_F(ExpressionParserTest, pathEntryPointMatchesVariablePaths)
 {
-    for (const auto* pathText : {
-             "Foo", "A1", ".Foo", ".<<(Sub object)>>.Foo", "Sketch.Foo",
-             "Sketch.<<(Sub object)>>.Foo", "Doc#Sketch.Foo",
-             "Doc#Sketch.<<(Sub object)>>.Foo", "Foo.Bar.Baz"}) {
+    for (const auto* pathText :
+         {"Foo",
+          "A1",
+          ".Foo",
+          ".<<(Sub object)>>.Foo",
+          "Sketch.Foo",
+          "Sketch.<<(Sub object)>>.Foo",
+          "Doc#Sketch.Foo",
+          "Doc#Sketch.<<(Sub object)>>.Foo",
+          "Foo.Bar.Baz"}) {
         const auto generated = parse(this_obj(), pathText);
         const auto* variable = freecad_cast<VariableExpression*>(generated.get());
         ASSERT_NE(variable, nullptr) << pathText;
-        EXPECT_EQ(parsePath(this_obj(), pathText).toString(),
-                  variable->getPath().toString())
+        EXPECT_EQ(parsePath(this_obj(), pathText).toString(), variable->getPath().toString())
             << pathText;
     }
     const auto generated = parse(this_obj(), "Foo[0]");
     const auto* variable = freecad_cast<VariableExpression*>(generated.get());
     ASSERT_NE(variable, nullptr);
-    EXPECT_EQ(parsePath(this_obj(), "Foo[0]").toString(),
-              variable->getPath().toString());
+    EXPECT_EQ(parsePath(this_obj(), "Foo[0]").toString(), variable->getPath().toString());
+    EXPECT_EQ(parsePath(this_obj(), "Foo[0]").toString(), "Foo[0]");
+    EXPECT_EQ(parsePath(this_obj(), "Foo[2].Bar").toString(), "Foo[2].Bar");
+    EXPECT_EQ(parsePath(this_obj(), "Foo[0:2]").toString(), "Foo[0:2]");
     EXPECT_THROW(parsePath(this_obj(), "Foo[1 + 2]"), Base::ParserError);
+    EXPECT_THROW(parsePath(this_obj(), "Foo[0:1 + 2]"), Base::ParserError);
 }
 
 TEST_F(ExpressionParserTest, unitEntryPointParsesAndRejectsExpectedForms)
@@ -606,21 +741,32 @@ TEST_F(ExpressionParserTest, unitEntryPointParsesAndRejectsExpectedForms)
     }
 
     for (const auto* unitText : {"", "2 mm", "mm + kg", "2/mm"}) {
-        EXPECT_NE(exceptionCategory([this, unitText] { parseUnit(this_obj(), unitText); }),
-                  "none")
+        EXPECT_NE(exceptionCategory([this, unitText] { parseUnit(this_obj(), unitText); }), "none")
             << unitText;
     }
 }
 
 TEST_F(ExpressionParserTest, functionsEvaluateAcrossLanguageSurface)
 {
-    for (const auto* expression : {
-             "abs(-5)", "sqrt(9)", "sqrt(9) * 2", "pow(2, 3)", "mod(10, 3)",
-             "sum(1, 2, 3)", "sum(1; 2, 3)", "sum(abs(-1), pow(2, 3), sqrt(9))",
-             "not(False)", "and(True, 1, 2 > 1)", "or(False; 0; 3)",
-             "sqrt(9 mm^2)", "pow(2 mm, 3)", "atan2(1 mm, 1 mm)",
-             "<<(Line 1\\nLine 2)>>", "str(1 m + 2 mm)",
-             "parsequant(<<(1 + 2) m>>)", "parsequant(str(1 m + 2 mm))"}) {
+    for (const auto* expression :
+         {"abs(-5)",
+          "sqrt(9)",
+          "sqrt(9) * 2",
+          "pow(2, 3)",
+          "mod(10, 3)",
+          "sum(1, 2, 3)",
+          "sum(1; 2, 3)",
+          "sum(abs(-1), pow(2, 3), sqrt(9))",
+          "not(False)",
+          "and(True, 1, 2 > 1)",
+          "or(False; 0; 3)",
+          "sqrt(9 mm^2)",
+          "pow(2 mm, 3)",
+          "atan2(1 mm, 1 mm)",
+          "<<(Line 1\\nLine 2)>>",
+          "str(1 m + 2 mm)",
+          "parsequant(<<(1 + 2) m>>)",
+          "parsequant(str(1 m + 2 mm))"}) {
         EXPECT_FALSE(simplifiedValue(expression).empty()) << expression;
     }
 }
@@ -637,10 +783,22 @@ TEST_F(ExpressionParserTest, functionsPreserveSyntaxRestrictions)
 
 TEST_F(ExpressionParserTest, quantitiesEvaluateAcrossLanguageSurface)
 {
-    for (const auto* expression : {
-             "0 mm", "-5 mm", "+5 mm", "1.25 mm", "1e3 mm", "1mm + 1mm",
-             "1 mm * 3", "1 mm * 2 cm", "2 cm * 1 mm", "2 mm^2", "(2 mm)^2",
-             "2 mm/s * 3", "24 V / (2 A)", "360 deg + pi rad", "1' 2\""}) {
+    for (const auto* expression :
+         {"0 mm",
+          "-5 mm",
+          "+5 mm",
+          "1.25 mm",
+          "1e3 mm",
+          "1mm + 1mm",
+          "1 mm * 3",
+          "1 mm * 2 cm",
+          "2 cm * 1 mm",
+          "2 mm^2",
+          "(2 mm)^2",
+          "2 mm/s * 3",
+          "24 V / (2 A)",
+          "360 deg + pi rad",
+          "1' 2\""}) {
         EXPECT_FALSE(simplifiedValue(expression).empty()) << expression;
     }
 }
@@ -648,25 +806,26 @@ TEST_F(ExpressionParserTest, quantitiesEvaluateAcrossLanguageSurface)
 TEST_F(ExpressionParserTest, unitContinuationIsLocal)
 {
     EXPECT_EQ(parseQuantity("10 mm * kg"), Base::Quantity::parse("10 mm*kg"));
-    EXPECT_EQ(parseQuantity("1234000 mm*kg/s^2"),
-              Base::Quantity::parse("1234000 mm*kg/s^2"));
+    EXPECT_EQ(parseQuantity("1234000 mm*kg/s^2"), Base::Quantity::parse("1234000 mm*kg/s^2"));
     EXPECT_EQ(parseQuantity("10 mm * 3"), Base::Quantity::parse("30 mm"));
-    EXPECT_EQ(parseQuantity("24 V / (2 A)"),
-              Base::Quantity(12'000'000, Base::Unit::ElectricalResistance));
+    EXPECT_EQ(
+        parseQuantity("24 V / (2 A)"),
+        Base::Quantity(12'000'000, Base::Unit::ElectricalResistance)
+    );
 }
 
 TEST_F(ExpressionParserTest, publicParserCoversMigrationSemantics)
 {
     const auto expression = parse(this_obj(), "10 mm * kg");
-    EXPECT_EQ(App::any_cast<Base::Quantity>(expression->simplify()->getValueAsAny()),
-              Base::Quantity::parse("10 mm*kg"));
+    EXPECT_EQ(
+        App::any_cast<Base::Quantity>(expression->simplify()->getValueAsAny()),
+        Base::Quantity::parse("10 mm*kg")
+    );
     EXPECT_EQ(parse(this_obj(), "mm.Foo")->toString(), "mm.Foo");
     EXPECT_EQ(parse(this_obj(), "in.Bar")->toString(), "in.Bar");
     EXPECT_EQ(parse(this_obj(), "1' 2\"")->toString(), "1 ' + 2 \"");
-    EXPECT_EQ(parse(this_obj(), "<<(Line 1\\nLine 2)>>")->toString(),
-              "<<(Line 1\\nLine 2)>>");
-    EXPECT_EQ(parseUnit(this_obj(), "kg*m/s^2")->getQuantity(),
-              Base::Quantity::parse("1 kg*m/s^2"));
+    EXPECT_EQ(parse(this_obj(), "<<(Line 1\\nLine 2)>>")->toString(), "<<(Line 1\\nLine 2)>>");
+    EXPECT_EQ(parseUnit(this_obj(), "kg*m/s^2")->getQuantity(), Base::Quantity::parse("1 kg*m/s^2"));
 }
 
 }  // namespace App::ExpressionParser::Test

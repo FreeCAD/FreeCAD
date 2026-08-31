@@ -43,7 +43,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     // because due to UTF-8 encoding a std::string may be longer than a QString
     // See https://forum.freecad.org/viewtopic.php?f=3&t=69931
     auto tokenizeExpression = [](const QString& expr) {
-        auto result = Pratt::scanExpressionTokens(nullptr, expr.toStdString().c_str());
+        auto result = Pratt::scanExpressionTokensTolerant(expr.toStdString().c_str());
         std::vector<std::tuple<TokenKind, int, QString>> tokens;
         std::transform(
             result.cbegin(),
@@ -131,9 +131,10 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         i = static_cast<long>(tokens.size()) - 1;
         for (; i >= 0; --i) {
             TokenKind token = std::get<0>(tokens[i]);
+            const bool isOne = token == TokenKind::Number && std::get<2>(tokens[i]) == QStringLiteral("1");
             if (token != TokenKind::Dot && token != TokenKind::Hash && token != TokenKind::Name
                 && token != TokenKind::Integer && token != TokenKind::String
-                && token != TokenKind::Unit && token != TokenKind::Number) {
+                && token != TokenKind::Unit && !isOne) {
                 break;
             }
         }
