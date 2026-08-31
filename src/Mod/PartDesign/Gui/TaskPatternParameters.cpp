@@ -263,9 +263,11 @@ void TaskPatternParameters::enterReferenceSelectionMode()
     Gui::Selection().clearSelection();
 
     bool isPolar = getObject<PartDesign::PolarPattern>();
-  
+
     AllowSelectionFlags commonReferences = AllowSelection::EDGE | AllowSelection::PLANAR;
-    addReferenceSelectionGate(commonReferences | (isPolar ? AllowSelection::CIRCLE : AllowSelection::FACE));
+    addReferenceSelectionGate(
+        commonReferences | (isPolar ? AllowSelection::CIRCLE : AllowSelection::FACE)
+    );
     Gui::getMainWindow()->showMessage(
         tr("Select a direction reference (edge, face, datum line)")
     );  // User feedback
