@@ -66,6 +66,10 @@ void DlgSettingsPathColor::saveSettings()
     ui->HideFirstRapid->onSave();
     ui->PostProcessorShowEditor->onSave();
     ui->MaxHighlighterSize->onSave();
+    ui->ToolBitDimensionColorLight->onSave();
+    ui->ToolBitDimensionColorDark->onSave();
+    ui->ToolBitDimensionHighlightColor->onSave();
+    ui->ToolBitArtworkBrightness->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -84,6 +88,10 @@ void DlgSettingsPathColor::loadSettings()
     ui->HideFirstRapid->onRestore();
     ui->PostProcessorShowEditor->onRestore();
     ui->MaxHighlighterSize->onRestore();
+    ui->ToolBitDimensionColorLight->onRestore();
+    ui->ToolBitDimensionColorDark->onRestore();
+    ui->ToolBitDimensionHighlightColor->onRestore();
+    ui->ToolBitArtworkBrightness->onRestore();
 }
 
 /**
