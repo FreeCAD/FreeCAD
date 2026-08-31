@@ -1821,6 +1821,93 @@ class BRepConversionTest(unittest.TestCase):
         mapper = ControlElementMapper(obj)
         self.assertTrue(all(mapper.indices(face) for face in obj.Shape.Faces))
 
+    def _attach_lcs_to_form_faces(self, obj):
+        mapper = ControlElementMapper(obj)
+        attachments = {}
+        for index, face in enumerate(obj.Shape.Faces, 1):
+            logical_id = mapper.cage.face_index(mapper.indices(face))
+            lcs = obj.Document.addObject("PartDesign::CoordinateSystem", "LCS")
+            lcs.AttachmentSupport = [(obj, (f"Face{index}",))]
+            # Form patches are curved; FlatFace would make the attachment invalid.
+            lcs.MapMode = "InertialCS"
+            attachments[logical_id] = lcs.Name
+        obj.Document.recompute()
+        return attachments
+
+    def _assert_lcs_logical_faces(self, obj, attachments):
+        mapper = ControlElementMapper(obj)
+        for logical_id, name in attachments.items():
+            with self.subTest(logical_face=logical_id):
+                lcs = obj.Document.getObject(name)
+                self.assertNotIn("Invalid", lcs.State)
+                support, subelements = lcs.AttachmentSupport[0]
+                self.assertEqual(support, obj)
+                self.assertEqual(len(subelements), 1)
+                face = obj.Shape.getElement(subelements[0])
+                controls = set(mapper.indices(face))
+                expected = (
+                    mapper.mesh.faces[logical_id].boundary
+                    if mapper.mesh is not None
+                    else mapper.cage.faces[logical_id]
+                )
+                self.assertEqual(controls, set(expected))
+
+    def test_subdivision_preserves_lcs_face_identity(self):
+        document = App.newDocument("FormsTestSubdivisionLCS")
+        obj = create_box(document)
+        document.recompute()
+        attachments = self._attach_lcs_to_form_faces(obj)
+        self._assert_lcs_logical_faces(obj, attachments)
+
+        # Include the split faces: one child deliberately inherits the parent's
+        # ID. Unrelated faces must keep their identities even if OCC reorders them.
+        for face_id, u_count, v_count in ((0, 2, 2), (2, 4, 2), (0, 2, 1)):
+            subdivide_faces(obj, [face_id], u_count, v_count)
+            document.recompute()
+            self._assert_lcs_logical_faces(obj, attachments)
+
+    def test_subdivision_lcs_support_survives_undo_redo(self):
+        document = App.newDocument("FormsTestSubdivisionLCSUndo")
+        obj = create_box(document)
+        document.recompute()
+        attachments = self._attach_lcs_to_form_faces(obj)
+        document.openTransaction("Subdivide form")
+        subdivide_faces(obj, [0])
+        document.recompute()
+        document.commitTransaction()
+        self._assert_lcs_logical_faces(obj, attachments)
+
+        document.undo()
+        document.recompute()
+        self.assertFalse(obj.TMeshData)
+        self._assert_lcs_logical_faces(obj, attachments)
+        document.redo()
+        document.recompute()
+        self.assertTrue(obj.TMeshData)
+        self._assert_lcs_logical_faces(obj, attachments)
+
+    def test_subdivision_lcs_support_survives_save_restore(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "form.FCStd")
+            document = App.newDocument("FormsTestSubdivisionLCSSave")
+            obj = create_box(document)
+            document.recompute()
+            attachments = self._attach_lcs_to_form_faces(obj)
+            name = obj.Name
+
+            for face_id in (0, 2):
+                document.saveAs(path)
+                App.closeDocument(document.Name)
+                document = App.openDocument(path)
+                obj = document.getObject(name)
+                obj.touch()
+                document.recompute()
+                self._assert_lcs_logical_faces(obj, attachments)
+                subdivide_faces(obj, [face_id])
+                document.recompute()
+                self._assert_lcs_logical_faces(obj, attachments)
+            App.closeDocument(document.Name)
+
     def test_subdivide_supports_independent_dyadic_counts(self):
         document = App.newDocument("FormsTestRectangularSubdivide")
         obj = create_box(document)
