@@ -131,9 +131,7 @@ class GuiHarness:
             timeout_ms=timeout_ms,
             description=f"edit mode for {document.Name}.{object_name}",
         ):
-            raise RuntimeError(
-                f"Timed out entering edit mode for {document.Name}.{object_name}"
-            )
+            raise RuntimeError(f"Timed out entering edit mode for {document.Name}.{object_name}")
         self.flush_gui()
         return gui_document
 
@@ -416,7 +414,9 @@ class GuiHarness:
 
     def move(self, widget: Any, pos: Any) -> None:
         """Move the pointer to pos in widget and flush hover work."""
-        self.send_mouse(widget, QtCore.QEvent.MouseMove, pos, QtCore.Qt.NoButton, QtCore.Qt.NoButton)
+        self.send_mouse(
+            widget, QtCore.QEvent.MouseMove, pos, QtCore.Qt.NoButton, QtCore.Qt.NoButton
+        )
         self.pump(80)
 
     @staticmethod

@@ -150,11 +150,7 @@ private:
     }
 
     /// Clicking a checkbox, plus the wait for the dialog's deferred consistency pass
-    static bool toggle(
-        QTreeWidgetItem* item,
-        Qt::CheckState state,
-        const QList<QTreeWidgetItem*>& allItems
-    )
+    static bool toggle(QTreeWidgetItem* item, Qt::CheckState state, const QList<QTreeWidgetItem*>& allItems)
     {
         item->setCheckState(0, state);
         return GuiTest::waitUntil([&] {

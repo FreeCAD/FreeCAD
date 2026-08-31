@@ -226,6 +226,7 @@ class PartDesignGuiTestCases(FreeCADGuiTestCase):
         self.BodyTarget = self.Doc.addObject("PartDesign::Body", "Body")
 
         Gui.Selection.addSelection(App.ActiveDocument.Pad)
+
         def accept_move_dialog(dialog):
             combo_box = dialog.findChild(QtGui.QComboBox)
             self.assertIsNotNone(combo_box, "ComboBox widget could not be found")
@@ -249,6 +250,7 @@ class PartDesignGuiTestCases(FreeCADGuiTestCase):
         )
         self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Group), 2, "Target body feature count is wrong")
+
 
 class PartDesignTransformed(unittest.TestCase):
     def setUp(self):

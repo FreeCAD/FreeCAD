@@ -8,10 +8,7 @@ from typing import Any, Literal, TypeAlias
 
 import FreeCAD
 
-
-_ParameterType: TypeAlias = Literal[
-    "Boolean", "Integer", "Unsigned Long", "Float", "String"
-]
+_ParameterType: TypeAlias = Literal["Boolean", "Integer", "Unsigned Long", "Float", "String"]
 _ParameterValue: TypeAlias = bool | int | float | str
 _ParameterEntry: TypeAlias = tuple[_ParameterType, str, _ParameterValue]
 

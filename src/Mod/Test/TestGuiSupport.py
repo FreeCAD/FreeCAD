@@ -58,16 +58,12 @@ class TestGuiSupport(FreeCADGuiTestCase):
         group = FreeCAD.ParamGet(path)
 
         with temporary_preference(path, key, "original", value_type="String"):
-            original = tuple(
-                entry for entry in (group.GetContents() or []) if entry[1] == key
-            )
+            original = tuple(entry for entry in (group.GetContents() or []) if entry[1] == key)
 
             with temporary_preference(path, key, 42):
                 self.assertEqual(group.GetInt(key), 42)
 
-            restored = tuple(
-                entry for entry in (group.GetContents() or []) if entry[1] == key
-            )
+            restored = tuple(entry for entry in (group.GetContents() or []) if entry[1] == key)
             self.assertEqual(restored, original)
 
     def test_enter_edit_rejects_different_current_object(self):

@@ -10,7 +10,6 @@ import FreeCAD
 
 from . import Wait
 
-
 ViewportPoint: TypeAlias = tuple[float, float]
 """A point in FreeCAD's physical viewport coordinate system."""
 

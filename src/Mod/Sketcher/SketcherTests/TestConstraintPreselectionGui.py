@@ -11,7 +11,6 @@ import Sketcher
 import SketcherGui
 from SketcherTests.Support import SketcherGuiTestCase
 
-
 CoinPoint: TypeAlias = tuple[int, int]
 """A point in FreeCAD's physical viewport coordinate system."""
 
