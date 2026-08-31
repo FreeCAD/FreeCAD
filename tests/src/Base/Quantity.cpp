@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include <Base/UnitRegistry.h>
 #include "Base/UnitsApi.h"
 #include <QLocale>
 
@@ -26,6 +27,67 @@ TEST(BaseQuantity, TestParse)
     constexpr auto val {1.2340};
     EXPECT_EQ(q1, Quantity(val, Unit::Mass));
     EXPECT_THROW(auto rew [[maybe_unused]] = Quantity::parse("1,234,500.12 kg"), ParserError);
+}
+
+TEST(BaseQuantity, LookupExactUnitSymbol)
+{
+    const auto millimetre = Quantity::lookupUnit("mm");
+    ASSERT_TRUE(millimetre.has_value());
+    EXPECT_EQ(*millimetre, Quantity::MilliMetre);
+
+    const auto microfarad = Quantity::lookupUnit(
+        "\xC2\xB5"
+        "F"
+    );
+    ASSERT_TRUE(microfarad.has_value());
+    EXPECT_EQ(*microfarad, Quantity::MicroFarad);
+
+    EXPECT_FALSE(Quantity::lookupUnit("mm/s").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit("1 mm").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit(" mm").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit("mm ").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit("mm[comment]").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit("notAUnit").has_value());
+    EXPECT_FALSE(Quantity::lookupUnit("").has_value());
+}
+
+TEST(BaseQuantity, RegistryResolvesAliasesAndAllowedPrefixes)
+{
+    EXPECT_EQ(Base::UnitRegistry::lookup("cm"), Quantity::CentiMetre);
+    EXPECT_EQ(
+        Base::UnitRegistry::lookup(
+            "\xC2\xB5"
+            "A"
+        ),
+        Quantity::MicroAmpere
+    );
+    EXPECT_EQ(Base::UnitRegistry::lookup("mil"), Quantity::Thou);
+    EXPECT_EQ(Base::UnitRegistry::lookup("M"), Quantity::AngMinute);
+
+    EXPECT_FALSE(Base::UnitRegistry::lookup("ms").has_value());
+    EXPECT_FALSE(Base::UnitRegistry::lookup("kK").has_value());
+    EXPECT_FALSE(Base::UnitRegistry::lookup("Mbar").has_value());
+}
+
+TEST(BaseQuantity, HandwrittenParserPreservesGrammar)
+{
+    EXPECT_EQ(Quantity::parse("2 + 3 * 4"), Quantity(14));
+    EXPECT_EQ(Quantity::parse("2 * (3 + 4)"), Quantity(14));
+    EXPECT_EQ(Quantity::parse("8 / (2 + 2)"), Quantity(2));
+    EXPECT_EQ(Quantity::parse("-2^2"), Quantity(-4));
+    EXPECT_EQ(Quantity::parse("sqrt(9)"), Quantity(3));
+    EXPECT_EQ(Quantity::parse("log10(100)"), Quantity(2));
+    EXPECT_EQ(
+        Quantity::parse("2 kg*m/s^2"),
+        Quantity(2) * Quantity::KiloGram * Quantity::Metre / Quantity::Second.pow(2)
+    );
+    EXPECT_EQ(Quantity::parse("1' 2\" + 1/4\""), Quantity(361.95, Unit::Length));
+
+    EXPECT_THROW(Quantity::parse("kg + m"), ParserError);
+    EXPECT_THROW(Quantity::parse("m^2+3"), ParserError);
+    EXPECT_THROW(Quantity::parse("m^2*3"), ParserError);
+    EXPECT_THROW(Quantity::parse("1 mm 2 mm 3 mm 4 mm"), ParserError);
+    EXPECT_THROW(Quantity::parse("list(1)"), ParserError);
 }
 
 TEST(BaseQuantity, TestNoDim)

@@ -9,8 +9,6 @@
 
 #include <fmt/format.h>
 
-#include <Base/Exception.h>
-
 namespace App::ExpressionParser::Pratt
 {
 namespace
@@ -39,18 +37,6 @@ std::string decodeString(const std::string& input)
         }
     }
     return output;
-}
-
-std::optional<Base::Quantity> unitCandidate(const std::string& name)
-{
-    try {
-        auto quantity = Base::Quantity::parse("1 " + name);
-        return quantity.getUnit() == Base::Unit() ? std::nullopt
-                                                  : std::optional {quantity};
-    }
-    catch (const Base::Exception&) {
-        return std::nullopt;
-    }
 }
 
 bool isCellAddress(const std::string& text)
@@ -316,7 +302,7 @@ private:
             return;
         }
         Token token {TokenKind::Name, name, name, column, std::nullopt};
-        token.unitCandidate = unitCandidate(name);
+        token.unitCandidate = Base::Quantity::lookupUnit(name);
         tokens.push_back(std::move(token));
     }
 
