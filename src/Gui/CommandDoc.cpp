@@ -1979,7 +1979,6 @@ void StdCmdPlacement::activated(int iMsg)
             plm->setPropertyName(QLatin1String("Placement"));
             plm->setSelection(selection);
             plm->bindObject();
-            plm->clearSelection();
         }
     }
     Gui::Control().showDialog(plm, getDocument());

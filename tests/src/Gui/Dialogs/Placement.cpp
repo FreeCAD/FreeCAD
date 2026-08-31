@@ -6,6 +6,7 @@
 #include <src/App/InitApplication.h>
 
 #include <Base/Vector3D.h>
+#include <Gui/Application.h>
 #include <Gui/Placement.h>
 
 
@@ -17,6 +18,9 @@ public:
     TestPlacement()
     {
         tests::initApplication();
+        if (!Gui::Application::Instance) {
+            new Gui::Application(false);
+        }
     }
 
 private Q_SLOTS:
