@@ -1149,10 +1149,10 @@ int ThreadUtils::findNearestMinorThreadSize(const int threadType, const double d
         double currentDiameter = std::stod(threadDiameters[i]);
         double distance = std::abs(currentDiameter - diameter);
 
-        Base::Console().message("i=%d\n", i);
-        Base::Console().message("value=%s\n", threadDiameters[i]);
-        Base::Console().message("distance=%lf\n", distance);
-        Base::Console().message("bestDistance=%lf\n", bestDistance);
+        // Base::Console().message("i=%d\n", i);
+        // Base::Console().message("value=%s\n", threadDiameters[i]);
+        // Base::Console().message("distance=%lf\n", distance);
+        // Base::Console().message("bestDistance=%lf\n", bestDistance);
 
         if (distance < bestDistance) {
             bestDistance = distance;
@@ -1343,7 +1343,7 @@ gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
 
     if (getFaceType(threadedFace) == FaceType::Cylinder) {
         Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-        Base::Console().message("cyl->Position().Location().z(): %lf\n", cyl->Position().Location().Z());
+        // Base::Console().message("cyl->Position().Location().z(): %lf\n", cyl->Position().Location().Z());
         return cyl->Position().Location();
     }
     else if (getFaceType(threadedFace) == FaceType::Cone) {
@@ -1395,8 +1395,8 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
         App::Application::getUserAppDataDir() + "PartDesign/Thread"
     };
 
-    Base::Console().message("Dirs[0]: %s\n", dirs[0]);
-    Base::Console().message("Dirs[1]: %s\n", dirs[1]);
+    // Base::Console().message("Dirs[0]: %s\n", dirs[0]);
+    // Base::Console().message("Dirs[1]: %s\n", dirs[1]);
 
     std::clog << "Looking for thread definitions in: ";
     for (const auto& dir : dirs) {
@@ -1410,13 +1410,13 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
         std::vector<Base::FileInfo> files {Base::FileInfo(dir).getDirectoryContent()};
 
         Base::FileInfo fi(dir);
-        Base::Console().message("dir exists: %d\n", fi.exists());
-        Base::Console().message("dir is dir: %d\n", fi.isDir());
+        // Base::Console().message("dir exists: %d\n", fi.exists());
+        // Base::Console().message("dir is dir: %d\n", fi.isDir());
 
         for (const auto& file : files) {
             if (file.extension() == "FCStd") {
                 try {
-                    Base::Console().message("Filename: %s\n", file.fileName());
+                    // Base::Console().message("Filename: %s\n", file.fileName());
                     // readThreadDefinition(file);
                     auto definition = readThreadDefinition(file);
 
@@ -1447,9 +1447,9 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
 {
     auto* oldDoc = App::GetApplication().getActiveDocument();
 
-    Base::Console().message("Before: %s\n", oldDoc ? oldDoc->getName() : "<none>");
+    // Base::Console().message("Before: %s\n", oldDoc ? oldDoc->getName() : "<none>");
 
-    Base::Console().message("Reading a thread file!\n");
+    // Base::Console().message("Reading a thread file!\n");
     auto* doc = App::GetApplication().openDocument(file.filePath().c_str(), {false, true});
 
     if (!doc) {
@@ -1458,12 +1458,12 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
 
     auto* currentDoc = App::GetApplication().getActiveDocument();
 
-    Base::Console().message("After open: %s\n", currentDoc ? currentDoc->getName() : "<none>");
+    // Base::Console().message("After open: %s\n", currentDoc ? currentDoc->getName() : "<none>");
 
     try {
         auto definition = readThreadDocument(doc);
 
-        Base::Console().message("Closing a thread file!\n");
+        // Base::Console().message("Closing a thread file!\n");
         App::GetApplication().closeDocument(doc->getName());
 
         if (oldDoc) {
@@ -1479,7 +1479,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
         return definition;
     }
     catch (...) {
-        Base::Console().message("Closing a thread file 2!\n");
+        // Base::Console().message("Closing a thread file 2!\n");
         App::GetApplication().closeDocument(doc->getName());
 
         if (oldDoc) {
@@ -1494,7 +1494,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
     App::Document* doc
 )
 {
-    Base::Console().message("Handling data!\n");
+    // Base::Console().message("Handling data!\n");
     if (!doc) {
         return std::nullopt;
     }
@@ -1520,7 +1520,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
 
 std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Document* doc)
 {
-    Base::Console().message("Reading Metadata!\n");
+    // Base::Console().message("Reading Metadata!\n");
 
     ThreadUtils::ThreadDefinition definition;
 
@@ -1596,7 +1596,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Docu
 
     definition.depthType = depthProp->getValue();
 
-    Base::Console().message("Returning Metadata!\n");
+    // Base::Console().message("Returning Metadata!\n");
 
     return definition;
 }
@@ -1605,7 +1605,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Docu
 
 void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefinition& definition)
 {
-    Base::Console().message("Reading spreadsheets\n");
+    // Base::Console().message("Reading spreadsheets\n");
     std::vector<std::string> sizes;
     std::vector<std::string> minorDiameters;
     std::vector<std::string> pitches;
@@ -1672,10 +1672,10 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefi
         return;
     }
 
-    Base::Console().message("designations.size: %d\n", designations.size());
-    Base::Console().message("sizes.size: %d\n", sizes.size());
-    Base::Console().message("pitches.size: %d\n", pitches.size());
-    Base::Console().message("tapDrills.size: %d\n", tapDrills.size());
+    // Base::Console().message("designations.size: %d\n", designations.size());
+    // Base::Console().message("sizes.size: %d\n", sizes.size());
+    // Base::Console().message("pitches.size: %d\n", pitches.size());
+    // Base::Console().message("tapDrills.size: %d\n", tapDrills.size());
     definition.designations = std::move(designations);
     definition.sizes = std::move(sizes);
     definition.minorDiameters = std::move(minorDiameters);
@@ -1750,7 +1750,7 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     zDir.Normalize();
 
     gp_Pnt startPoint = getThreadStartPoint(lateralFace, gp_Dir(zDir));
-    Base::Console().message("getThreadStartPoint.Z(): %lf\n", startPoint.Z());
+    // Base::Console().message("getThreadStartPoint.Z(): %lf\n", startPoint.Z());
     // gp_Pnt startPoint = getThreadAxisOrigin(lateralFace);
 
     gp_Ax2 axis(startPoint, gp_Dir(zDir));
@@ -1821,15 +1821,15 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
 {
     App::DocumentObject* obj = prop.getValue();
     if (!obj) {
-        Base::Console().message("getSelectedSubShape: obj is null\n");
+        // Base::Console().message("getSelectedSubShape: obj is null\n");
         return TopoDS_Shape();
     }
 
-    Base::Console().message("getSelectedSubShape: obj name = %s\n", obj->getNameInDocument());
-    Base::Console().message("getSelectedSubShape: obj type = %s\n", obj->getTypeId().getName());
+    // Base::Console().message("getSelectedSubShape: obj name = %s\n", obj->getNameInDocument());
+    // Base::Console().message("getSelectedSubShape: obj type = %s\n", obj->getTypeId().getName());
 
     const std::vector<std::string>& subs = prop.getSubValues();
-    Base::Console().message("getSelectedSubShape: subs size = %zu\n", subs.size());
+    // Base::Console().message("getSelectedSubShape: subs size = %zu\n", subs.size());
 
     if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPoint"))
         || obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumLine"))
@@ -1896,18 +1896,18 @@ static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
 
     const Part::TopoShape& topoShape = feature->Shape.getShape();
     if (topoShape.isNull()) {
-        Base::Console().message("getSelectedSubShape: topoShape is null\n");
+        // Base::Console().message("getSelectedSubShape: topoShape is null\n");
         return TopoDS_Shape();
     }
 
     if (subs.empty() || subs.front().empty()) {
-        Base::Console().message("getSelectedSubShape: returning full shape\n");
+        // Base::Console().message("getSelectedSubShape: returning full shape\n");
         return topoShape.getShape();
     }
 
     TopoDS_Shape subShape;
     try {
-        Base::Console().message("getSelectedSubShape: getting subshape '%s'\n", subs.front().c_str());
+        // Base::Console().message("getSelectedSubShape: getting subshape '%s'\n", subs.front().c_str());
         subShape = topoShape.getSubShape(subs.front().c_str());
     }
     catch (const Standard_Failure& e) {
@@ -2030,33 +2030,33 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
 
     auto* obj = startPlane.getValue();  // TODO: change for getSelectedFace
     if (obj == nullptr) {
-        Base::Console().message("exit 1\n");
+        // Base::Console().message("exit 1\n");
         return axisOrigin;
     }
 
     const TopoDS_Shape& shape = getSelectedSubShape(startPlane);  // check if TopoDS_Face == TopoDS_Shape
 
     if (shape.IsNull()) {
-        Base::Console().message("exit 2\n");
+        // Base::Console().message("exit 2\n");
         return axisOrigin;
     }
 
     switch (shape.ShapeType()) {
         case TopAbs_VERTEX: {
-            Base::Console().message("It's a vertex\n");
+            // Base::Console().message("It's a vertex\n");
             gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
             if (axisLine.Distance(pt) > Precision::Confusion() * 10) {
                 throw Base::ValueError(
                     QT_TRANSLATE_NOOP("Exception", "Selected point does not lie on the thread axis.")
                 );
             }
-            Base::Console().message("mandando o novo ponto.");
+            // Base::Console().message("mandando o novo ponto.");
             return pt;
         }
 
         case TopAbs_EDGE: {
             BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
-            Base::Console().message("Sou EDGE, estou comecando\n");
+            // Base::Console().message("Sou EDGE, estou comecando\n");
 
             std::vector<gp_Pnt> intersections = findLineCurveIntersections(axisLine, curveAdaptor);
 
@@ -2069,7 +2069,7 @@ gp_Pnt ThreadUtils::getThreadStartPoint(
         }
 
         case TopAbs_FACE: {
-            Base::Console().message("It's a face!\n");
+            // Base::Console().message("It's a face!\n");
             TopoDS_Face face = TopoDS::Face(shape);
             BRepAdaptor_Surface surfAdaptor(face);
 
