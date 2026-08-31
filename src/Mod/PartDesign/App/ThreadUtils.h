@@ -50,7 +50,10 @@ public:
     gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
     gp_Pnt getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace);
     gp_Vec computePerpendicular(const gp_Vec&) const;
-    gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const App::PropertyLinkSub& startPlane);
+    gp_Pnt getThreadStartPoint(
+        const App::PropertyLinkSub& lateralFace,
+        const App::PropertyLinkSub& startPlane
+    );
 
     using ThreadDescription = struct
     {
@@ -76,7 +79,13 @@ public:
     double getMinorDiameter(const int threadType, const int size);
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir);
     gp_Dir getThreadAxisDir(const App::PropertyLinkSub& LateralFace);
-    Part::TopoShape reduceExternalThreadBase(Part::TopoShape base, const App::PropertyLinkSub& lateralFace, double majorDiameter, double minorDiameter, double length);
+    Part::TopoShape reduceExternalThreadBase(
+        Part::TopoShape base,
+        const App::PropertyLinkSub& lateralFace,
+        double majorDiameter,
+        double minorDiameter,
+        double length
+    );
     gp_Pnt getPlaneLineIntersection(const gp_Pln& plane, const gp_Lin& line);
     std::vector<gp_Pnt> findLineCurveIntersections(const gp_Lin& line, const BRepAdaptor_Curve& curve);
     std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
@@ -123,11 +132,12 @@ public:
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
 
-    void executeReadThreadDefinitions(){
+    void executeReadThreadDefinitions()
+    {
         library.readThreadDefinitions();
     }
 
-    struct ThreadDefinition 
+    struct ThreadDefinition
     {
         std::string id;
         std::string name;
@@ -137,23 +147,33 @@ public:
         int depthType;
         std::vector<std::string> sketches;
         std::vector<std::string> spreadsheets;
-        std::vector<std::string> sizes; //diameters
+        std::vector<std::string> sizes;  // diameters
         std::vector<std::string> minorDiameters;
         std::vector<std::string> pitches;
         std::vector<std::string> designations;
         std::vector<std::string> tapDrills;
 
-        ThreadDefinition() : depthType(0) {}
+        ThreadDefinition()
+            : depthType(0)
+        {}
 
         ThreadDefinition(const std::string& n, const std::string& desc)
-            : name(n), description(desc), depthType(0) {}
+            : name(n)
+            , description(desc)
+            , depthType(0)
+        {}
 
         ThreadDefinition(
-            const std::string& n, 
-            const std::string& desc, 
+            const std::string& n,
+            const std::string& desc,
             const std::string& type,
             int depth = 0
-        ) : name(n), description(desc), threadType(type), depthType(depth) {}
+        )
+            : name(n)
+            , description(desc)
+            , threadType(type)
+            , depthType(depth)
+        {}
     };
 
     static std::optional<ThreadDefinition> findMetadata(App::Document* doc);
@@ -170,29 +190,34 @@ public:
     double getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace);
     int findNearestThreadSize(const int threadType, const double size);
     int findNearestMinorThreadSize(const int threadType, const double diameter);
+
 private:
-    double getThreadClassClearance(int threadType, int threadSize, App::PropertyEnumeration& ThreadClass) const;
+    double getThreadClassClearance(
+        int threadType,
+        int threadSize,
+        App::PropertyEnumeration& ThreadClass
+    ) const;
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     static const char* ThreadDepthTypeEnums[];
 
-    //TODO: ThreadLibrary should be static member or singleton to improve performance
+    // TODO: ThreadLibrary should be static member or singleton to improve performance
     class ThreadLibrary
     {
-        public:
-            ThreadLibrary();
-            void readThreadDefinitions();
-            
-            const std::vector<ThreadDefinition>& getDefinitions() const
-            {
-                return definitions;
-            }
-            
-            
-        private:
-            std::vector<ThreadDefinition> definitions;
-            std::optional<ThreadDefinition> readThreadDefinition(const Base::FileInfo& file);
-            std::optional<ThreadDefinition> readThreadDocument(App::Document* doc);
-            void findSpreadsheets(App::Document* doc, ThreadDefinition& definition);
+    public:
+        ThreadLibrary();
+        void readThreadDefinitions();
+
+        const std::vector<ThreadDefinition>& getDefinitions() const
+        {
+            return definitions;
+        }
+
+
+    private:
+        std::vector<ThreadDefinition> definitions;
+        std::optional<ThreadDefinition> readThreadDefinition(const Base::FileInfo& file);
+        std::optional<ThreadDefinition> readThreadDocument(App::Document* doc);
+        void findSpreadsheets(App::Document* doc, ThreadDefinition& definition);
     };
 
     ThreadLibrary library;
