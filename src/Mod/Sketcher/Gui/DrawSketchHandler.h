@@ -328,11 +328,7 @@ protected:
     void drawOffsetAtCursor(const Base::Vector2d& position, const double offset);
     void drawThicknessAtCursor(const Base::Vector2d& position, const double thickness);
     void drawAngleAtCursor(const Base::Vector2d& position, const double angle);
-    void drawLabeledLengthAtCursor(
-        const Base::Vector2d& position,
-        const char* label,
-        const double value
-    );
+    void drawLabeledLengthAtCursor(const Base::Vector2d& position, const char* label, const double value);
     void drawLabeledLengthPairAtCursor(
         const Base::Vector2d& position,
         const char* firstLabel,

@@ -549,9 +549,7 @@ public:
         }
     }
 
-    void drawLengthWidthAtCursor(const Base::Vector2d& position,
-                                 const double length,
-                                 const double width)
+    void drawLengthWidthAtCursor(const Base::Vector2d& position, const double length, const double width)
     {
         if (shouldDrawDimensionsAtCursor()) {
             handler->drawLengthWidthAtCursor(position, length, width);
