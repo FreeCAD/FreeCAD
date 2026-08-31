@@ -46,6 +46,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
@@ -1174,20 +1175,13 @@ void prepareProfileBased(
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-        if (dlg && !pickDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
-                Gui::Control().closeDialog();
-            }
-            else {
-                return;
-            }
+    if (dlg && !pickDlg) {
+        if (dlg->canClose()) {
+        Gui::Control().closeDialog();
+        } else {
+        return;
         }
+    }
 
         if (dlg) {
             Gui::Control().closeDialog();
