@@ -2817,9 +2817,11 @@ void TopoShapePy::setOrientation(Py::String arg)
 // A view of the sub shapes, not a python object per element: the list
 // materialises an element when one is asked for, so len() and a single
 // index cost one cache lookup rather than the whole list. See ShapeList.
-static Py::Object getElements(const TopoShape &sh,
-                              TopAbs_ShapeEnum type,
-                              TopAbs_ShapeEnum avoid = TopAbs_SHAPE)
+static Py::Object getElements(
+    const TopoShape& sh,
+    TopAbs_ShapeEnum type,
+    TopAbs_ShapeEnum avoid = TopAbs_SHAPE
+)
 {
     return Py::asObject(new ShapeListPy(new ShapeList(sh, type, avoid)));
 }

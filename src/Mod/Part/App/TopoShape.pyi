@@ -7,6 +7,7 @@ from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
+from ShapeList import ShapeList
 from typing import Final, List, Tuple, Union, overload
 
 @export(
@@ -31,31 +32,31 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[object] = []
+    Faces: Final[ShapeList] = []
     """Faces of this shape, as a lazy Part.ShapeList."""
 
-    Vertexes: Final[object] = []
+    Vertexes: Final[ShapeList] = []
     """Vertexes of this shape, as a lazy Part.ShapeList."""
 
-    Shells: Final[object] = []
+    Shells: Final[ShapeList] = []
     """Shells of this shape, as a lazy Part.ShapeList."""
 
-    Solids: Final[object] = []
+    Solids: Final[ShapeList] = []
     """Solids of this shape, as a lazy Part.ShapeList."""
 
-    CompSolids: Final[object] = []
+    CompSolids: Final[ShapeList] = []
     """CompSolids of this shape, as a lazy Part.ShapeList."""
 
-    Edges: Final[object] = []
+    Edges: Final[ShapeList] = []
     """Edges of this shape, as a lazy Part.ShapeList."""
 
-    Wires: Final[object] = []
+    Wires: Final[ShapeList] = []
     """Wires of this shape, as a lazy Part.ShapeList."""
 
-    Compounds: Final[object] = []
+    Compounds: Final[ShapeList] = []
     """Compounds of this shape, as a lazy Part.ShapeList."""
 
-    SubShapes: Final[object] = []
+    SubShapes: Final[ShapeList] = []
     """Direct sub-shapes of this shape, as a lazy Part.ShapeList."""
 
     Length: Final[float] = 0.0
@@ -1241,7 +1242,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> object:
+    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> ShapeList:
         """
         getChildShapes(shapetype, avoidtype='') -> Part.ShapeList
 

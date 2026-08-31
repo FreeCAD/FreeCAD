@@ -284,7 +284,6 @@ SET(FreeCADBase_HPP_SRCS
     ConsoleObserver.h
     Converter.h
     Color.h
-    COWData.h
     CoordinateSystem.h
     DualNumber.h
     DualQuaternion.h

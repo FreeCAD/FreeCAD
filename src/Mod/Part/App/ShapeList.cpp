@@ -38,7 +38,7 @@ ShapeList::ShapeList(const TopoShape& parent, TopAbs_ShapeEnum type, TopAbs_Shap
 
 ShapeList::ShapeList(std::vector<TopoShape> shapes)
 {
-    _shapes.edit() = std::move(shapes);
+    _shapes = std::make_shared<std::vector<TopoShape>>(std::move(shapes));
 }
 
 const std::vector<int>& ShapeList::indices() const
@@ -46,45 +46,59 @@ const std::vector<int>& ShapeList::indices() const
     if (_filtered) {
         return _indices;
     }
-    _filtered = true;
+    std::vector<int> indices;
+    bool hasFilter = false;
     // Only an avoided type the parent actually has can drop anything, so
     // the common case walks nothing and allocates nothing.
     if (_avoid != TopAbs_SHAPE && !_parent.isNull() && _parent.hasSubShape(_avoid)) {
         int count = static_cast<int>(_parent.countSubShapes(_type));
+        indices.reserve(static_cast<std::size_t>(count));
         for (int i = 1; i <= count; ++i) {
             TopoShape shape = _parent.getSubTopoShape(_type, i, true);
             if (shape.isNull() || _parent.findAncestorShape(shape.getShape(), _avoid).IsNull()) {
-                _indices.push_back(i);
+                indices.push_back(i);
             }
         }
-        _hasFilter = true;
+        hasFilter = true;
     }
+    // Publish the cache only after traversal succeeds. If an OCCT lookup
+    // throws, the next call must retry rather than observe partial indices.
+    _indices = std::move(indices);
+    _hasFilter = hasFilter;
+    _filtered = true;
     return _indices;
 }
 
 int ShapeList::size() const
 {
     if (!_isView) {
-        return static_cast<int>(_shapes.get().size());
+        return _shapes ? static_cast<int>(_shapes->size()) : 0;
+    }
+    if (_cachedSize >= 0) {
+        return _cachedSize;
     }
     indices();
     if (_hasFilter) {
-        return static_cast<int>(_indices.size());
+        _cachedSize = static_cast<int>(_indices.size());
     }
-    return static_cast<int>(_parent.countSubShapes(_type));
+    else {
+        _cachedSize = static_cast<int>(_parent.countSubShapes(_type));
+    }
+    return _cachedSize;
 }
 
 TopoShape ShapeList::get(int index) const
 {
-    if (!_isView) {
-        const std::vector<TopoShape>& shapes = _shapes.get();
-        if (index < 0 || index >= static_cast<int>(shapes.size())) {
-            return TopoShape();
-        }
-        return shapes[index];
-    }
     if (index < 0 || index >= size()) {
         return TopoShape();
+    }
+    return getUnchecked(index);
+}
+
+TopoShape ShapeList::getUnchecked(int index) const
+{
+    if (!_isView) {
+        return (*_shapes)[static_cast<std::size_t>(index)];
     }
     indices();
     int one = _hasFilter ? _indices[index] : index + 1;
@@ -94,7 +108,7 @@ TopoShape ShapeList::get(int index) const
 std::vector<TopoShape> ShapeList::values() const
 {
     if (!_isView) {
-        return _shapes.get();
+        return _shapes ? *_shapes : std::vector<TopoShape>();
     }
     // The parent's own bulk call is cheaper than one lookup per element,
     // because it fills the cache's element vector in one pass.
@@ -106,17 +120,14 @@ std::vector<TopoShape> ShapeList::values() const
     int count = size();
     res.reserve(count);
     for (int i = 0; i < count; ++i) {
-        res.push_back(get(i));
+        res.push_back(getUnchecked(i));
     }
     return res;
 }
 
 int ShapeList::find(const TopoShape& shape) const
 {
-    if (shape.isNull()) {
-        return -1;
-    }
-    if (_isView && _type != TopAbs_SHAPE && shape.getShape().ShapeType() == _type
+    if (!shape.isNull() && _isView && _type != TopAbs_SHAPE && shape.getShape().ShapeType() == _type
         && !_parent.isNull()) {
         // The parent's cache knows where one of its sub shapes sits
         int one = _parent.findShape(shape.getShape());
@@ -137,7 +148,8 @@ int ShapeList::find(const TopoShape& shape) const
     int count = size();
     for (int i = 0; i < count; ++i) {
         TopoShape element = get(i);
-        if (!element.isNull() && element.getShape().IsSame(shape.getShape())) {
+        if ((element.isNull() && shape.isNull())
+            || (!element.isNull() && !shape.isNull() && element.getShape().IsSame(shape.getShape()))) {
             return i;
         }
     }
@@ -150,16 +162,23 @@ void ShapeList::materialise()
         return;
     }
     std::vector<TopoShape> shapes = values();
-    _shapes.edit() = std::move(shapes);
+    _shapes = std::make_shared<std::vector<TopoShape>>(std::move(shapes));
     _isView = false;
     _parent = TopoShape();
     _indices.clear();
     _filtered = false;
     _hasFilter = false;
+    _cachedSize = -1;
 }
 
 void ShapeList::edit(const std::function<void(std::vector<TopoShape>&)>& op)
 {
     materialise();
-    op(_shapes.edit());
+    if (!_shapes) {
+        _shapes = std::make_shared<std::vector<TopoShape>>();
+    }
+    else if (!_shapes.unique()) {
+        _shapes = std::make_shared<std::vector<TopoShape>>(*_shapes);
+    }
+    op(*_shapes);
 }

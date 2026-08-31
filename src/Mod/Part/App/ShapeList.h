@@ -24,11 +24,10 @@
 #define PART_SHAPELIST_H
 
 #include <functional>
+#include <memory>
 #include <vector>
 
 #include <TopAbs_ShapeEnum.hxx>
-
-#include <Base/COWData.h>
 
 #include "TopoShape.h"
 
@@ -63,9 +62,7 @@ public:
 
     /// A view of \a parent's sub shapes of \a type, skipping those that
     /// belong to a sub shape of type \a avoid
-    ShapeList(const TopoShape& parent,
-              TopAbs_ShapeEnum type,
-              TopAbs_ShapeEnum avoid = TopAbs_SHAPE);
+    ShapeList(const TopoShape& parent, TopAbs_ShapeEnum type, TopAbs_ShapeEnum avoid = TopAbs_SHAPE);
 
     /// A value: the given shapes, in the given order
     explicit ShapeList(std::vector<TopoShape> shapes);
@@ -80,6 +77,16 @@ public:
     TopAbs_ShapeEnum getType() const
     {
         return _type;
+    }
+
+    /// Mark the list as mixed when a written element has another type.
+    /// Once mixed, keep the conservative Shape type without scanning the
+    /// whole value on every subsequent append or assignment.
+    void noteType(const TopoShape& shape)
+    {
+        if (_type != TopAbs_SHAPE && (shape.isNull() || shape.getShape().ShapeType() != _type)) {
+            _type = TopAbs_SHAPE;
+        }
     }
 
     TopAbs_ShapeEnum getAvoid() const
@@ -104,6 +111,9 @@ public:
     /// answers with a null shape rather than throwing, so a caller that
     /// wants an exception raises its own.
     TopoShape get(int index) const;
+
+    /// One element after the caller has validated the zero based index.
+    TopoShape getUnchecked(int index) const;
 
     /// Every element. This is the call the whole class exists to avoid, so
     /// it is here for the caller that genuinely wants them all.
@@ -133,7 +143,8 @@ private:
     mutable bool _filtered {false};
     mutable bool _hasFilter {false};
     mutable std::vector<int> _indices;
-    Base::COWValue<std::vector<TopoShape>> _shapes;
+    mutable int _cachedSize {-1};
+    std::shared_ptr<std::vector<TopoShape>> _shapes;
 };
 
 }  // namespace Part

@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from Base.Metadata import class_declarations, export, sequence_protocol
+from Base.Metadata import class_declarations, export, sequence_protocol, typing_only
 from PyObjectBase import PyObjectBase
-from typing import Any, Final
-
+from TopoShape import TopoShape
+from typing import Any, Final, Iterable, Optional, SupportsIndex
 
 @export(
     PythonName="Part.ShapeList",
@@ -17,7 +17,6 @@ from typing import Any, Final
     Namespace="Part",
     Constructor=True,
     Delete=True,
-    NumberProtocol=True,
     RichCompare=True,
 )
 @sequence_protocol(
@@ -30,65 +29,115 @@ from typing import Any, Final
     mp_ass_subscript=True,
     sq_contains=True,
     sq_inplace_concat=True,
-    sq_inplace_repeat=False,
+    sq_inplace_repeat=True,
 )
 @class_declarations("""public:
     /// The value this object holds
     const ShapeList &list() const { return *getShapeListPtr(); }
     ShapeList &list() { return *getShapeListPtr(); }
+
+    /// Return the cached Python wrapper for one element, creating it lazily.
+    Py::Object elementObject(int index);
+    Py::Object elementObjectUnchecked(int index);
+    Py::Object elementObjectFromValue(int index, const TopoShape &value);
+
+    /// Return one value, preferring a changed Python wrapper when present.
+    TopoShape effectiveElement(int index) const;
+    TopoShape effectiveElementUnchecked(int index) const;
+
+    /// Return all values using the C++ bulk path plus Python overrides.
+    std::vector<TopoShape> effectiveValues() const;
+
+    /// Materialise the Python list used after the first structural mutation.
+    void materialisePythonList();
+    bool isMaterialised() const { return _materialised != nullptr; }
+    PyObject *materialisedList() const
+    {
+        return _materialised ? _materialised->ptr() : nullptr;
+    }
+
+    /// Return the current Python-visible number of elements.
+    int size() const;
+
+private:
+    void overlayCachedElements(std::vector<TopoShape> &values) const;
+    std::unordered_map<int, std::shared_ptr<Py::Object>> _touched;
+    std::unique_ptr<Py::List> _materialised;
 """)
 class ShapeList(PyObjectBase):
     """
     Part.ShapeList class.
 
-    A list of sub-elements of a shape. Shape.Faces and its siblings return a
-    view that materializes an element only when it is requested. Reading the
-    length or one element therefore avoids constructing the whole list.
-    Mutating the list materializes it as an independent, copy-on-write value.
+    A lazy list-like view of sub-elements of a shape. Reading the length or
+    one element avoids constructing the whole list, and repeated access to a
+    retained view returns the same Python wrapper.
+
+    Slices, copy(), concatenation, and repetition return ordinary Python
+    lists. The first structural mutation materializes an ordinary Python list
+    internally; that list is then authoritative for subsequent access and for
+    conversion back to C++. Mutating methods accept only TopoShape objects.
     """
 
     Count: Final[int] = 0
     """Number of elements in the list. Same as len()."""
 
     ElementType: Final[str] = ""
-    """Shape type of the elements, for example 'Face'."""
+    """Shape type of the elements, or 'Shape' for mixed/unknown values."""
 
     IsView: Final[bool] = False
     """Whether the list is still a view of its source shape."""
 
-    Shape: Final[object] = None
+    Shape: Final[Optional[TopoShape]] = None
     """The source shape for a view, or None after materialization."""
 
-    def copy(self, *args: Any) -> Any:
-        """Return a copy of this list sharing storage until written."""
+    def copy(self) -> list[TopoShape]:
+        """Return a normal Python list containing the current elements."""
         ...
 
-    def index(self, shape: object, /) -> int:
-        """Return the position of a shape, or raise ValueError."""
+    @typing_only
+    def __add__(self, other: list[TopoShape], /) -> list[TopoShape]: ...
+    @typing_only
+    def __radd__(self, other: list[TopoShape], /) -> list[TopoShape]: ...
+    @typing_only
+    def __mul__(self, count: SupportsIndex, /) -> list[TopoShape]: ...
+    @typing_only
+    def __rmul__(self, count: SupportsIndex, /) -> list[TopoShape]: ...
+    @typing_only
+    def __iadd__(self, other: Iterable[TopoShape], /) -> ShapeList: ...
+    @typing_only
+    def __imul__(self, count: SupportsIndex, /) -> ShapeList: ...
+    def index(
+        self,
+        value: object,
+        start: SupportsIndex = 0,
+        stop: SupportsIndex = ...,
+        /,
+    ) -> int:
+        """Return the first position of value in the requested range."""
         ...
 
-    def count(self, shape: object, /) -> int:
-        """Return how many entries are the given shape."""
+    def count(self, value: object, /) -> int:
+        """Return how many entries equal value."""
         ...
 
-    def append(self, shape: object, /) -> None:
+    def append(self, shape: TopoShape, /) -> None:
         """Append one shape, materializing the list first."""
         ...
 
-    def extend(self, iterable: object, /) -> None:
+    def extend(self, iterable: Iterable[TopoShape], /) -> None:
         """Append every shape from an iterable."""
         ...
 
-    def insert(self, index: int, shape: object, /) -> None:
+    def insert(self, index: int, shape: TopoShape, /) -> None:
         """Insert one shape before index."""
         ...
 
-    def pop(self, index: int = -1, /) -> object:
+    def pop(self, index: int = -1, /) -> TopoShape:
         """Remove and return one entry, the last by default."""
         ...
 
-    def remove(self, shape: object, /) -> None:
-        """Remove the first matching shape."""
+    def remove(self, value: object, /) -> None:
+        """Remove the first matching value, or raise ValueError."""
         ...
 
     def reverse(self, *args: Any) -> None:
