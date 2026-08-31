@@ -50,7 +50,7 @@ namespace GCS
 // Solver
 ///////////////////////////////////////
 
-enum SolveStatus
+enum class SolveStatus : uint8_t
 {
     Success = 0,                    // Found a solution zeroing the error function
     Converged = 1,                  // Found a solution minimizing the error function
@@ -145,9 +145,9 @@ private:
 
     bool emptyDiagnoseMatrix;  // false only if there is at least one driving constraint.
 
-    int solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
-    int solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
-    int solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
+    SolveStatus solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
+    SolveStatus solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
+    SolveStatus solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
 
     void makeReducedJacobian(
         Eigen::MatrixXd& J,
@@ -608,15 +608,25 @@ public:
     void declareDrivenParams(VEC_pD& params);
     void initSolution(Algorithm alg = DogLeg);
 
-    int solve(bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
-    int solve(VEC_pD& params, bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
-    int solve(
+    SolveStatus solve(bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
+    SolveStatus solve(
+        VEC_pD& params,
+        bool isFine = true,
+        Algorithm alg = DogLeg,
+        bool isRedundantsolving = false
+    );
+    SolveStatus solve(
         SubSystem* subsys,
         bool isFine = true,
         Algorithm alg = DogLeg,
         bool isRedundantsolving = false
     );
-    int solve(SubSystem* subsysA, SubSystem* subsysB, bool isFine = true, bool isRedundantsolving = false);
+    SolveStatus solve(
+        SubSystem* subsysA,
+        SubSystem* subsysB,
+        bool isFine = true,
+        bool isRedundantsolving = false
+    );
 
     void applySolution();
     void evaluateDrivenConstraints();

@@ -340,25 +340,20 @@ public:
      * the sketch object */
     int diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint*> additionalconstraints);
 
-    /** solves the sketch and updates the geometry, but not all the dependent features (does not
-       recompute) When a recompute is necessary, recompute triggers execute() which solves the
-       sketch and updates all dependent features When a solve only is necessary (e.g. DoF changed),
-       solve() solves the sketch and updates the geometry (if updateGeoAfterSolving==true), but does
-       not trigger any recompute.
-       @return 0 if no error, if error, the following codes in this order of priority:
-       -4 if overconstrained,
-       -3 if conflicting constraints,
-       -5 if malformed constraints,
-       -1 if solver error,
-       -2 if redundant constraints
-    */
-    int solve(bool updateGeoAfterSolving = true);
+    /** Solves the sketch and (optionally) updates the geometry.
+     * Does not trigger a recompute of any dependent features; when that is necessary, call
+     * execute() instead. A change in DoF does not require updating dependents, for instance.
+     * @return SketchSolveStatus::Success if no error, or else any of these in this order of
+     *         priority: Overconstrained, ConflictingConstraints, MalformedConstraints,
+     *         SolverError, RedundantConstraints.
+     */
+    SketchSolveStatus solve(bool updateGeoAfterSolving = true);
     /// set the datum of a Distance or Angle constraint and solve
-    int setDatum(int ConstrId, double Datum);
+    SketchSolveStatus setDatum(int ConstrId, double Datum);
     /// get the datum of a Distance or Angle constraint
     double getDatum(int ConstrId) const;
     /// set the text and font of a text constraint
-    int setTextAndFont(
+    SketchSolveStatus setTextAndFont(
         int ConstrId,
         std::string& newText,
         std::string& newFont,
@@ -422,13 +417,13 @@ public:
     /// set the visibility of a group of constraints at once
     int setVisibility(std::vector<int> constrIds, bool isVisible);
     /// move this point to a new location and solve
-    int moveGeometries(
+    SketchSolveStatus moveGeometries(
         const std::vector<GeoElementId>& geoEltIds,
         const Base::Vector3d& toPoint,
         bool relative = false,
         bool updateGeoBeforeMoving = false
     );
-    int moveGeometry(
+    SketchSolveStatus moveGeometry(
         int GeoId,
         PointPos PosId,
         const Base::Vector3d& toPoint,
@@ -481,9 +476,9 @@ public:
     );
 
     /// trim a curve
-    int trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes = false);
+    SketchSolveStatus trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes = false);
     /// extend a curve
-    int extend(int geoId, double increment, PointPos endPoint);
+    SketchSolveStatus extend(int geoId, double increment, PointPos endPoint);
     /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
     /// the constraint that will replace the given one (which is to be deleted). NOTE: Currently
     /// assuming all constraints on the end points of the old curve have been transferred or
@@ -746,7 +741,7 @@ public:
         return lastHasMalformedConstraints;
     }
     /// gets solver status of last solver execution
-    inline int getLastSolverStatus() const
+    inline GCS::SolveStatus getLastSolverStatus() const
     {
         return lastSolverStatus;
     }
@@ -809,12 +804,12 @@ public: /* Solver exposed interface */
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
      */
-    inline int moveGeometriesTemporary(
+    inline GCS::SolveStatus moveGeometriesTemporary(
         std::vector<GeoElementId> moved,
         Base::Vector3d toPoint,
         bool relative = false
     );
-    inline int moveGeometryTemporary(
+    inline GCS::SolveStatus moveGeometryTemporary(
         int geoId,
         PointPos pos,
         Base::Vector3d toPoint,
@@ -1194,7 +1189,7 @@ private:
     bool lastHasRedundancies;
     bool lastHasPartialRedundancies;
     bool lastHasMalformedConstraints;
-    int lastSolverStatus;
+    GCS::SolveStatus lastSolverStatus;
     float lastSolveTime;
 
     std::vector<int> lastConflicting;
@@ -1289,12 +1284,13 @@ inline int SketchObject::initTemporaryBSplinePieceMove(
     return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
 }
 
-inline int SketchObject::
+inline GCS::SolveStatus SketchObject::
     moveGeometriesTemporary(std::vector<GeoElementId> geoEltIds, Base::Vector3d toPoint, bool relative /*=false*/)
 {
     return solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 }
-inline int SketchObject::moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative /*=false*/)
+inline GCS::SolveStatus SketchObject::
+    moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative /*=false*/)
 {
     std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
     return moveGeometriesTemporary(moved, toPoint, relative);

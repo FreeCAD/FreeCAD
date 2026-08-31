@@ -52,8 +52,10 @@ public:
     void Restore(Base::XMLReader& /*reader*/) override;
 
     /// solve the actual set up sketch
-    int solve();
-    /// resets the solver
+    GCS::SolveStatus solve();
+    /** Reset the solver.
+     * @return DoF degree count.
+     */
     int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision()
@@ -192,12 +194,12 @@ public:
      * a condition for satisfying the new point location!
      * The relative flag permits moving relatively to the current position
      */
-    int moveGeometries(
+    GCS::SolveStatus moveGeometries(
         const std::vector<GeoElementId>& geoEltIds,
         Base::Vector3d toPoint,
         bool relative = false
     );
-    int moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
+    GCS::SolveStatus moveGeometry(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative = false);
 
     /**
      * Sets whether the initial solution should be recalculated while dragging after a certain
@@ -810,7 +812,7 @@ private:
 
     void buildInternalAlignmentGeometryMap(const std::vector<Constraint*>& constraintList);
 
-    int internalSolve(std::string& solvername, int level = 0);
+    GCS::SolveStatus internalSolve(std::string& solvername, int level = 0);
 
     /// checks if the index bounds and converts negative indices to positive
     int checkGeoId(int geoId) const;

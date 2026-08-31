@@ -2191,7 +2191,7 @@ bool ViewProviderSketch::doDragStep(double x, double y)
         }
     }
 
-    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == GCS::SolveStatus::Success) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
         return true;
@@ -4490,7 +4490,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
-    else if (getSketchObject()->getLastSolverStatus() != 0) {
+    else if (getSketchObject()->getLastSolverStatus() != GCS::SolveStatus::Success) {
         signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
                     QStringLiteral(""),
@@ -4982,9 +4982,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             }
         }
 
-        int ret = getSketchObject()->solve();
+        const auto status = getSketchObject()->solve();
 
-        if (ret != 0) {
+        if (status == SketchSolveStatus::Success) {
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();

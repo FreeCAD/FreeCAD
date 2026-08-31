@@ -61,8 +61,8 @@ PyObject* SketchObjectPy::solve(PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    int ret = this->getSketchObjectPtr()->solve();
-    return Py_BuildValue("i", ret);
+    const auto status = this->getSketchObjectPtr()->solve();
+    return Py_BuildValue("i", Base::to_underlying(status));
 }
 
 PyObject* SketchObjectPy::addGeometry(PyObject* args)
@@ -789,7 +789,7 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
     std::string font(fontStr);
 
     // Call the C++ implementation
-    int err = this->getSketchObjectPtr()->setTextAndFont(
+    auto status = this->getSketchObjectPtr()->setTextAndFont(
         constrIndex,
         text,
         font,
@@ -798,12 +798,12 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
     );
 
     // Handle errors returned from the C++ function
-    if (err) {
+    if (status != SketchSolveStatus::Success) {
         std::stringstream str;
-        if (err == -1) {
+        if (status == SketchSolveStatus::SolverError) {
             str << "Invalid constraint index or not a Text constraint: " << constrIndex;
         }
-        else if (err == -6) {
+        else if (status == SketchSolveStatus::InvalidGeometry) {
             str << "Cannot set text/font because of invalid geometry in the sketch";
         }
         else {  // Generic error for solver failures etc.
@@ -910,26 +910,26 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
         return nullptr;
     } while (false);
 
-    int err = this->getSketchObjectPtr()->setDatum(Index, Datum);
-    if (err) {
+    const auto status = this->getSketchObjectPtr()->setDatum(Index, Datum);
+    if (status != SketchSolveStatus::Success) {
         std::stringstream str;
-        if (err == -1) {
+        if (status == SketchSolveStatus::SolverError) {
             str << "Invalid constraint index: " << Index;
         }
-        else if (err == -3) {
+        else if (status == SketchSolveStatus::ConflictingConstraints) {
             str << "Cannot set the datum because the sketch contains conflicting constraints";
         }
-        else if (err == -2) {
+        else if (status == SketchSolveStatus::RedundantConstraints) {
             str << "Datum " << Quantity.getUserString() << " for the constraint with index "
                 << Index << " is invalid";
         }
-        else if (err == -4) {
+        else if (status == SketchSolveStatus::Overconstrained) {
             str << "Negative datum values are not valid for the constraint with index " << Index;
         }
-        else if (err == -5) {
+        else if (status == SketchSolveStatus::MalformedConstraints) {
             str << "Zero is not a valid datum for the constraint with index " << Index;
         }
-        else if (err == -6) {
+        else if (status == SketchSolveStatus::InvalidGeometry) {
             str << "Cannot set the datum because of invalid geometry";
         }
         else {
@@ -1404,7 +1404,8 @@ PyObject* SketchObjectPy::moveGeometries(PyObject* args)
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
     // Call the C++ method
-    if (this->getSketchObjectPtr()->moveGeometries(geoEltIds, v1, (relative > 0))) {
+    if (this->getSketchObjectPtr()->moveGeometries(geoEltIds, v1, (relative > 0))
+        != SketchSolveStatus::Success) {
         PyErr_SetString(PyExc_ValueError, "Failed to move geometries.");
         return nullptr;
     }
@@ -1427,7 +1428,8 @@ PyObject* SketchObjectPy::moveGeometry(PyObject* args)
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
     if (this->getSketchObjectPtr()
-            ->moveGeometry(GeoId, static_cast<Sketcher::PointPos>(PointType), v1, (relative > 0))) {
+            ->moveGeometry(GeoId, static_cast<Sketcher::PointPos>(PointType), v1, (relative > 0))
+        != SketchSolveStatus::Success) {
         std::stringstream str;
         str << "Not able to move point with the id and type: (" << GeoId << ", " << PointType << ")";
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1593,7 +1595,8 @@ PyObject* SketchObjectPy::trim(PyObject* args)
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->trim(GeoId, v1, Base::asBoolean(includeAxes))) {
+    if (this->getSketchObjectPtr()->trim(GeoId, v1, Base::asBoolean(includeAxes))
+        != SketchSolveStatus::Success) {
         std::stringstream str;
         str << "Not able to trim curve with the given index: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
@@ -1610,8 +1613,8 @@ PyObject* SketchObjectPy::extend(PyObject* args)
     int GeoId;
 
     if (PyArg_ParseTuple(args, "idi", &GeoId, &increment, &endPoint)) {
-        if (this->getSketchObjectPtr()
-                ->extend(GeoId, increment, static_cast<Sketcher::PointPos>(endPoint))) {
+        if (this->getSketchObjectPtr()->extend(GeoId, increment, static_cast<Sketcher::PointPos>(endPoint))
+            != SketchSolveStatus::Success) {
             std::stringstream str;
             str << "Not able to extend geometry with id : (" << GeoId << ") for increment ("
                 << increment << ") and point position (" << endPoint << ")";

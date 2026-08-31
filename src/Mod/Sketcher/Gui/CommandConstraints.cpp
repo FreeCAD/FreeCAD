@@ -4516,7 +4516,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // Check that the solver does not report redundant/conflicting constraints
-    if (Obj->getLastSolverStatus() != GCS::Success || Obj->getLastHasConflicts()
+    if (Obj->getLastSolverStatus() != GCS::SolveStatus::Success || Obj->getLastHasConflicts()
         || Obj->getLastHasRedundancies()) {
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong solver status"),

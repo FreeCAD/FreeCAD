@@ -1895,39 +1895,42 @@ void System::resetToReference()
     }
 }
 
-int System::solve(VEC_pD& params, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(VEC_pD& params, bool isFine, Algorithm alg, bool isRedundantsolving)
 {
     declareUnknowns(params);
     initSolution();
     return solve(isFine, alg, isRedundantsolving);
 }
 
-int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
 {
     if (!isInit) {
-        return Failed;
+        return SolveStatus::Failed;
     }
 
     bool isReset = false;
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
-    int res = Success;
+    auto status = SolveStatus::Success;
     for (int cid = 0; cid < int(subSystems.size()); cid++) {
         if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
             resetToReference();
             isReset = true;
         }
         if (subSystems[cid] && subSystemsAux[cid]) {
-            res = std::max(res, solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving));
+            status = std::max(
+                status,
+                solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving)
+            );
         }
         else if (subSystems[cid]) {
-            res = std::max(res, solve(subSystems[cid], isFine, alg, isRedundantsolving));
+            status = std::max(status, solve(subSystems[cid], isFine, alg, isRedundantsolving));
         }
         else if (subSystemsAux[cid]) {
-            res = std::max(res, solve(subSystemsAux[cid], isFine, alg, isRedundantsolving));
+            status = std::max(status, solve(subSystemsAux[cid], isFine, alg, isRedundantsolving));
         }
     }
-    if (res == Success) {
+    if (status == SolveStatus::Success) {
         for (std::set<Constraint*>::const_iterator constr = redundant.begin();
              constr != redundant.end();
              ++constr) {
@@ -1936,15 +1939,14 @@ int System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
             // chances are low I've broken anything.
             double err = (*constr)->error();
             if (err * err > (isRedundantsolving ? convergenceRedundant : convergence)) {
-                res = Converged;
-                return res;
+                return SolveStatus::Converged;
             }
         }
     }
-    return res;
+    return status;
 }
 
-int System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
 {
     if (alg == BFGS) {
         return solve_BFGS(subsys, isFine, isRedundantsolving);
@@ -1956,11 +1958,11 @@ int System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundan
         return solve_DL(subsys, isRedundantsolving);
     }
     else {
-        return Failed;
+        return SolveStatus::Failed;
     }
 }
 
-int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -1968,7 +1970,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
     int xsize = subsys->pSize();
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     subsys->redirectParams();
@@ -2079,15 +2081,15 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     subsys->revertParams();
 
     if (err <= smallF) {
-        return Success;
+        return SolveStatus::Success;
     }
     if (h.norm() <= convCriterion) {
-        return Converged;
+        return SolveStatus::Converged;
     }
-    return Failed;
+    return SolveStatus::Failed;
 }
 
-int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
+SolveStatus System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -2097,7 +2099,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     int csize = subsys->cSize();
 
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     Eigen::VectorXd e(csize),
@@ -2263,10 +2265,10 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
     subsys->revertParams();
 
-    return (stop == 1) ? Success : Failed;
+    return (stop == 1) ? SolveStatus::Success : SolveStatus::Failed;
 }
 
-int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
+SolveStatus System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -2276,7 +2278,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     int csize = subsys->cSize();
 
     if (xsize == 0) {
-        return Success;
+        return SolveStatus::Success;
     }
 
     double tolg = DL_tolg;
@@ -2479,7 +2481,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         Base::Console().log(tmp.c_str());
     }
 
-    return (stop == 1) ? Success : Failed;
+    return (stop == 1) ? SolveStatus::Success : SolveStatus::Failed;
 }
 
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
@@ -4528,7 +4530,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool isRedundantsolving)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();
@@ -4679,20 +4681,20 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         }
     }
 
-    int ret;
+    SolveStatus status;
     if (subsysA->error() <= smallF) {
-        ret = Success;
+        status = SolveStatus::Success;
     }
     else if (h.norm() <= (isRedundantsolving ? convergenceRedundant : convergence)) {
-        ret = Converged;
+        status = SolveStatus::Converged;
     }
     else {
-        ret = Failed;
+        status = SolveStatus::Failed;
     }
 
     subsysA->revertParams();
     subsysB->revertParams();
-    return ret;
+    return status;
 }
 
 void System::applySolution()
@@ -5595,7 +5597,7 @@ void System::identifyConflictingRedundantConstraints(
     });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-    int res = solve(subSysTmp, true, alg, true);
+    auto status = solve(subSysTmp, true, alg, true);
 
     if (debugMode == Minimal || debugMode == IterationLevel) {
         std::string solvername;
@@ -5614,7 +5616,7 @@ void System::identifyConflictingRedundantConstraints(
         Base::Console().log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
     }
 
-    if (res == Success) {
+    if (status == SolveStatus::Success) {
         subSysTmp->applySolution();
         std::ranges::copy_if(
             skipped,
