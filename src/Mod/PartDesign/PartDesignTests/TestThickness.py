@@ -116,6 +116,7 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(self.Thickness.Shape.ElementMapSize, 51)
 
     def testCase5829ThicknessOnRotatedFillet(self):
+        """Verify thickness succeeds on the rotated fillet from issue 5829."""
         body, fillet = self._create_case_5829()
         self.assertTrue(fillet.Shape.isValid())
         self.assertEqual(len(fillet.Shape.Solids), 1)
