@@ -49,7 +49,7 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include <Mod/Part/App/BSplineCurvePy.h>
-#include <Mod/Part/App/ShapeListPy.h>
+#include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.cpp>
@@ -58,12 +58,6 @@
 
 
 using namespace Part;
-
-namespace Part
-{
-extern Py::Object shape2pyshape(const TopoDS_Shape& shape);
-}
-
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeWirePy::representation() const
@@ -123,27 +117,16 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &pcObj)) {
-        std::vector<TopoShape> shapes;
-        if (PyObject_TypeCheck(pcObj, &(Part::ShapeListPy::Type))) {
-            shapes = static_cast<Part::ShapeListPy*>(pcObj)->list().values();
+        if (!PySequence_Check(pcObj)) {
+            PyErr_SetString(PyExc_TypeError, "object is not a sequence");
+            return -1;
         }
-        else {
-            if (!PySequence_Check(pcObj)) {
-                PyErr_SetString(PyExc_TypeError, "object is not a sequence");
-                return -1;
-            }
-
-            Py::Sequence list(pcObj);
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                PyObject* item = (*it).ptr();
-                if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                    shapes.push_back(*static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr());
-                }
-                else {
-                    PyErr_SetString(PyExc_TypeError, "item is not a shape");
-                    return -1;
-                }
-            }
+        std::vector<TopoShape> shapes;
+        try {
+            shapes = Part::getPyShapes(pcObj);
+        }
+        catch (const Py::Exception&) {
+            return -1;
         }
 
         BRepBuilderAPI_MakeWire mkWire;
