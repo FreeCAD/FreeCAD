@@ -622,10 +622,10 @@ class _ProfileTSLOT(_Profile):
             templist2.append(Vector(vec.x * -1, vec.y, vec.z))
         templist = templist + templist2
         templist.append(templist[0])
+        templist.reverse()  # Points need to be in CCW order to get a correct face normal.
         poly = Part.makePolygon(templist)
         hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
         obj.Shape = Part.makeFace([poly, hole], "Part::FaceMakerCheese").Faces[0]
-        obj.reverse()
         obj.Placement = pl
 
 
