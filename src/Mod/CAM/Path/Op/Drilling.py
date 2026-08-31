@@ -137,7 +137,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "App::PropertyBool",
                 "ChipBreakEnabled",
                 "Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "G73: small retracts to break the chip,"
+                    " instead of G83's full retract to clear it",
+                ),
             )
 
         if hasattr(obj, "feedRetractEnabled"):
@@ -168,8 +172,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The height (R) the tool retracts to between pecks and when "
-                    "the canned drilling cycle finishes",
+                    "R value: height the tool retracts to between pecks and at the end"
+                    " of each canned cycle.\nNot the same as the job's Retract Height.",
                 ),
             )
             obj.PeckRetract = obj.SafeHeight.Value
@@ -190,8 +194,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: between holes, retract only to PeckRetract (or "
-                    "SafeHeight if not pecking) instead of the full retract G98 does",
+                    "G99: Between holes, retract only to Peck Retract"
+                    "\n (or the operation Retract Height if not pecking)"
+                    "\ninstead of fully retracting like G98."
+                    "\nOnly applies when Peck Retract is at or above Retract Height;"
+                    "\notherwise, linking rules apply.",
                 ),
             )
 
@@ -248,32 +255,46 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Incremental Drill depth before retracting to clear chips",
+                "Q value: incremental drill depth per peck before retracting to clear chips",
             ),
         )
         obj.addProperty(
             "App::PropertyBool",
             "PeckEnabled",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "G73/G83: retract partially between passes to clear chips,"
+                "\ninstead of drilling the full depth in one pass",
+            ),
         )
         obj.addProperty(
             "App::PropertyBool",
             "ChipBreakEnabled",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "G73: small retracts to break the chip,"
+                " instead of G83's full retract to clear it",
+            ),
         )
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "P paramter: how long to pause at the bottom of each hole",
+            ),
         )
         obj.addProperty(
             "App::PropertyBool",
             "DwellEnabled",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "G82: pause at the bottom of each hole before retracting",
+            ),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -290,15 +311,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The height (R) the tool retracts to between pecks and when "
-                "the canned drilling cycle finishes",
+                "R value: height the tool retracts to between pecks and at the end"
+                " of each canned cycle.\nNot the same as the job's Retract Height.",
             ),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "How far the cutting depth is extended"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "How far past Final Depth to extend the cut,"
+                "to fully clear the drill/tap tip's cone at the target depth",
+            ),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -306,8 +331,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: between holes, retract only to PeckRetract (or "
-                "SafeHeight if not pecking) instead of the full retract G98 does",
+                "G99: Between holes, retract only to Peck Retract"
+                "\n(or the operation Retract Height if not pecking)"
+                "\ninstead of fully retracting like G98."
+                "\nOnly applies when Peck Retract is at or above Retract Height;"
+                "\notherwise, linking rules apply.",
             ),
         )
         obj.addProperty(

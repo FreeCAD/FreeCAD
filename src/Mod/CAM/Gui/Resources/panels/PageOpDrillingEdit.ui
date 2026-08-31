@@ -38,9 +38,6 @@
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="Strategy">
-        <property name="toolTip">
-         <string>Hole-making strategy: Drilling, Tapping, etc.</string>
-        </property>
         <item>
          <property name="text">
           <string>Drilling</string>
@@ -55,11 +52,6 @@
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="KeepToolDownEnabled">
-        <property name="toolTip">
-         <string>G99: Between holes, retract only to Peck Retract (or the operation Retract
-Height if not pecking) instead of fully retracting like G98. Only applies
-when Peck Retract is at or above Retract Height; otherwise, linking rules apply.</string>
-        </property>
         <property name="text">
          <string>Keep tool down</string>
         </property>
@@ -72,10 +64,6 @@ when Peck Retract is at or above Retract Height; otherwise, linking rules apply.
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="1" colspan="2">
       <widget class="QCheckBox" name="peckEnabled">
-       <property name="toolTip">
-        <string>G73/G83: retract partially between passes to clear chips,
-instead of drilling the full depth in one pass</string>
-       </property>
        <property name="text">
         <string>Peck</string>
        </property>
@@ -103,17 +91,10 @@ instead of drilling the full depth in one pass</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="toolTip">
-        <string>Q value: incremental drill depth per peck before retracting to clear chips</string>
-       </property>
       </widget>
      </item>
      <item row="8" column="6">
       <widget class="QComboBox" name="ExtraOffset">
-       <property name="toolTip">
-        <string>How far past Final Depth to extend the cut, to fully clear
-the drill/tap tip's cone at the target depth</string>
-       </property>
        <item>
         <property name="text">
          <string>None</string>
@@ -136,16 +117,10 @@ the drill/tap tip's cone at the target depth</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="toolTip">
-        <string>P parameter: how long to pause at the bottom of each hole</string>
-       </property>
       </widget>
      </item>
      <item row="6" column="1" rowspan="2" colspan="2">
       <widget class="QCheckBox" name="dwellEnabled">
-       <property name="toolTip">
-        <string>G82: pause at the bottom of each hole before retracting</string>
-       </property>
        <property name="text">
         <string>Dwell</string>
        </property>
@@ -157,7 +132,7 @@ the drill/tap tip's cone at the target depth</string>
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Depth</string>
+        <string>Peck Depth</string>
        </property>
       </widget>
      </item>
@@ -176,17 +151,10 @@ the drill/tap tip's cone at the target depth</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="toolTip">
-        <string>R value: height the tool retracts to between pecks and at the end
-of each canned cycle. Not the same as the job's Retract Height.</string>
-       </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QCheckBox" name="chipBreakEnabled">
-       <property name="toolTip">
-        <string>G73: small retracts to break the chip, instead of G83's full retract to clear it</string>
-       </property>
        <property name="text">
         <string>Chip break</string>
        </property>
@@ -196,9 +164,6 @@ of each canned cycle. Not the same as the job's Retract Height.</string>
         <widget class="QCheckBox" name="feedRetractEnabled">
           <property name="text">
             <string>Feed retract</string>
-          </property>
-          <property name="toolTip">
-            <string>G85: Retract from the hole at the given feedrate instead of rapid move</string>
           </property>
         </widget>
       </item>

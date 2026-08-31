@@ -28,7 +28,6 @@ import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Drilling as PathDrilling
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
-import PathGui
 
 from PySide import QtCore
 
@@ -37,6 +36,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "UI and Command for Drilling Operation."
 __contributors__ = "IMBack!"
+
+translate = FreeCAD.Qt.translate
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -49,12 +50,38 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
-        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
-        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.peckRetract, obj, "PeckRetract"
+        self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.peckDepth, obj, "PeckDepth", setToolTip=True
         )
-        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
+        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.peckRetract, obj, "PeckRetract", setToolTip=True
+        )
+        self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.dwellTime, obj, "DwellTime", setToolTip=True
+        )
         self.form.chipBreakEnabled.setEnabled(False)
+
+        self.form.Strategy.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("Strategy"))
+        )
+        self.form.KeepToolDownEnabled.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("KeepToolDown"))
+        )
+        self.form.dwellEnabled.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("DwellEnabled"))
+        )
+        self.form.peckEnabled.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("PeckEnabled"))
+        )
+        self.form.feedRetractEnabled.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("FeedRetractEnabled"))
+        )
+        self.form.chipBreakEnabled.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("ChipBreakEnabled"))
+        )
+        self.form.ExtraOffset.setToolTip(
+            translate("App::Property", self.obj.getDocumentationOfProperty("ExtraOffset"))
+        )
 
     def registerSignalHandlers(self, obj):
         # Strategy selector handler
@@ -178,9 +205,12 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
 
-        if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
-            if obj.Strategy != str(self.form.Strategy.currentData()):
-                obj.Strategy = str(self.form.Strategy.currentData())
+        if (
+            hasattr(self.form, "Strategy")
+            and hasattr(obj, "Strategy")
+            and obj.Strategy != str(self.form.Strategy.currentData())
+        ):
+            obj.Strategy = str(self.form.Strategy.currentData())
 
         if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
             obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
