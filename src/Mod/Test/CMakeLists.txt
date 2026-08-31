@@ -17,6 +17,8 @@ SET(Test_SRCS
     GuiRecompute.py
     TestApp.py
     TestGui.py
+    TestGuiSupport.py
+    Support.py
     UnicodeTests.py
     UnitTests.py
     Workbench.py
@@ -48,8 +50,29 @@ SOURCE_GROUP("" FILES ${Test_SRCS} ${TestData_SRCS})
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
-    list (APPEND Test_SRCS InitGui.py)
+    list (APPEND Test_SRCS
+        InitGui.py
+        Gui/__init__.py
+        Gui/Harness.py
+        Gui/README.md
+        Gui/TestCase.py
+        Gui/View3D.py
+        Gui/Wait.py
+    )
 endif(BUILD_GUI)
+
+set(Test_Install_SRCS ${Test_SRCS})
+if(BUILD_GUI)
+    set(TestGuiSupport_SRCS
+        Gui/__init__.py
+        Gui/Harness.py
+        Gui/README.md
+        Gui/TestCase.py
+        Gui/View3D.py
+        Gui/Wait.py
+    )
+    list(REMOVE_ITEM Test_Install_SRCS ${TestGuiSupport_SRCS})
+endif()
 
 set(Test_COPY_OUTPUTS)
 foreach(test_src ${Test_SRCS})
@@ -136,10 +159,19 @@ endif()
 
 INSTALL(
     FILES
-        ${Test_SRCS}
+        ${Test_Install_SRCS}
     DESTINATION
         Mod/Test
 )
+
+if(BUILD_GUI)
+    INSTALL(
+        FILES
+            ${TestGuiSupport_SRCS}
+        DESTINATION
+            Mod/Test/Gui
+    )
+endif()
 
 INSTALL(
     FILES

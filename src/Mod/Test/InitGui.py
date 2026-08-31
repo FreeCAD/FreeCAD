@@ -93,6 +93,7 @@ Gui.addWorkbench(TestWorkbench())
 
 # Base system tests
 FreeCAD.__unit_test__ += [
+    "TestGuiSupport",
     "Workbench",
     "Menu",
     "Menu.MenuDeleteCases",
