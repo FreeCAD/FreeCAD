@@ -93,13 +93,14 @@ bool ViewProviderShapeBinder::setEdit(int ModNum)
         // the task panel
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder* sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
-    if (dlg && !sbDlg) {
-        if (dlg->canClose()) {
-        Gui::Control().reject();
-        } else {
-        return false;
+        if (dlg && !sbDlg) {
+            if (dlg->canClose()) {
+                Gui::Control().reject();
+            }
+            else {
+                return false;
+            }
         }
-    }
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
