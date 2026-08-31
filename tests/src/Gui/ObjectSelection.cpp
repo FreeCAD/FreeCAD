@@ -2,6 +2,8 @@
 
 #include <QTest>
 #include <QTreeWidget>
+#include <functional>
+#include <memory>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -11,6 +13,7 @@
 #include "Gui/Application.h"
 #include "Gui/Dialogs/DlgObjectSelection.h"
 #include "Gui/MetaTypes.h"
+#include "TestSupport.h"
 
 class ObjectSelectionTest: public QObject
 {
@@ -19,24 +22,22 @@ class ObjectSelectionTest: public QObject
 public:
     ObjectSelectionTest()
     {
-        tests::initApplication();
-        // Gui::Application::Instance must not be nullptr when the dialog calls getViewProvider()
-        if (!Gui::Application::Instance) {
-            new Gui::Application(false);
-        }
+        // Gui::Application::Instance must not be nullptr when the dialog calls getViewProvider().
+        GuiTest::ensureGuiApplication();
     }
 
 private Q_SLOTS:
 
     void init()
     {
-        docName = App::GetApplication().getUniqueDocumentName("test");
-        doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
+        document = std::make_unique<GuiTest::DocumentGuard>("test");
+        doc = document->get();
     }
 
     void cleanup()
     {
-        App::GetApplication().closeDocument(docName.c_str());
+        document.reset();
+        doc = nullptr;
     }
 
     void testUncheckPropagatesToAllInstances()
@@ -47,7 +48,7 @@ private Q_SLOTS:
         QCOMPARE(items.size(), 2);
         assertAllHaveState(items, Qt::Checked);
 
-        toggle(items.first(), Qt::Unchecked);
+        QVERIFY(toggle(items.first(), Qt::Unchecked, items));
 
         assertAllHaveState(items, Qt::Unchecked);
     }
@@ -58,10 +59,10 @@ private Q_SLOTS:
         Gui::DlgObjectSelection dialog({dependency, dependent});
         auto items = instancesOf(dialog, dependency);
         QCOMPARE(items.size(), 2);
-        toggle(items.first(), Qt::Unchecked);
+        QVERIFY(toggle(items.first(), Qt::Unchecked, items));
         assertAllHaveState(items, Qt::Unchecked);
 
-        toggle(items.first(), Qt::Checked);
+        QVERIFY(toggle(items.first(), Qt::Checked, items));
 
         assertAllHaveState(items, Qt::Checked);
     }
@@ -74,10 +75,10 @@ private Q_SLOTS:
         auto items = instancesOf(dialog, dependency);
         QCOMPARE(items.size(), 2);
 
-        toggle(items.last(), Qt::Unchecked);
+        QVERIFY(toggle(items.last(), Qt::Unchecked, items));
         assertAllHaveState(items, Qt::Unchecked);
 
-        toggle(items.last(), Qt::Checked);
+        QVERIFY(toggle(items.last(), Qt::Checked, items));
         assertAllHaveState(items, Qt::Checked);
     }
 
@@ -90,7 +91,7 @@ private Q_SLOTS:
         doc->recompute();
 
         Gui::DlgObjectSelection dialog({first, second});
-        auto* depList = dialog.findChild<QTreeWidget*>(QStringLiteral("depList"));
+        auto* depList = GuiTest::find<QTreeWidget>(dialog, "depList");
         QVERIFY(depList);
         for (int i = 0; i < depList->topLevelItemCount(); ++i) {
             depList->topLevelItem(i)->setSelected(true);
@@ -101,7 +102,7 @@ private Q_SLOTS:
         QCOMPARE(firstItems.size(), 1);
         QCOMPARE(secondItems.size(), 1);
 
-        toggle(firstItems.first(), Qt::Unchecked);
+        QVERIFY(toggle(firstItems.first(), Qt::Unchecked, firstItems));
 
         assertAllHaveState(firstItems, Qt::Unchecked);
         assertAllHaveState(secondItems, Qt::Checked);
@@ -123,9 +124,9 @@ private:
 
     /// Every tree item that stands for @p obj. The nested items are created lazily, so the tree
     /// has to be expanded before the duplicates exist at all.
-    static QList<QTreeWidgetItem*> instancesOf(const QWidget& dialog, App::DocumentObject* obj)
+    static QList<QTreeWidgetItem*> instancesOf(QWidget& dialog, App::DocumentObject* obj)
     {
-        auto* tree = dialog.findChild<QTreeWidget*>(QStringLiteral("treeWidget"));
+        auto* tree = GuiTest::find<QTreeWidget>(dialog, "treeWidget");
         if (!tree) {
             return {};
         }
@@ -149,10 +150,18 @@ private:
     }
 
     /// Clicking a checkbox, plus the wait for the dialog's deferred consistency pass
-    static void toggle(QTreeWidgetItem* item, Qt::CheckState state)
+    static bool toggle(
+        QTreeWidgetItem* item,
+        Qt::CheckState state,
+        const QList<QTreeWidgetItem*>& allItems
+    )
     {
         item->setCheckState(0, state);
-        QTest::qWait(deferredUpdateDelay);
+        return GuiTest::waitUntil([&] {
+            return std::all_of(allItems.cbegin(), allItems.cend(), [state](auto* candidate) {
+                return candidate->checkState(0) == state;
+            });
+        });
     }
 
     static void assertAllHaveState(const QList<QTreeWidgetItem*>& items, Qt::CheckState state)
@@ -162,10 +171,7 @@ private:
         }
     }
 
-    /// The dialog reconciles the check states from a 10 ms single shot timer
-    static constexpr int deferredUpdateDelay = 50;
-
-    std::string docName;
+    std::unique_ptr<GuiTest::DocumentGuard> document;
     App::Document* doc = nullptr;
     App::DocumentObject* dependency = nullptr;
     App::DocumentObject* dependent = nullptr;
