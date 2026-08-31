@@ -171,6 +171,11 @@ class TestPostProcessorFactory(unittest.TestCase):
         self.assertIsNotNone(post)
         self.assertTrue(hasattr(post, "_buildPostList"))
 
+        post = PostProcessorFactory.get_post_processor(None, "linuxcnc_legacy")
+        self.assertTrue(
+            isinstance(post, Path.Post.Processor.WrapperPost), "Is a WrapperPost: {post}"
+        )
+
     def test040(self):
         """Test that the __name__ of the postprocessor is correct."""
         post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
