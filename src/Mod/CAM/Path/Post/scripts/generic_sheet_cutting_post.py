@@ -395,17 +395,17 @@ class GenericSheetCutting(PostProcessor):
                             if (
                                 cmd.Name in Constants.GCODE_MOVE
                                 and prev_command in Constants.GCODE_MOVE_RAPID
+                                and not self._torch_active
                             ):
-                                if not self._torch_active:
-                                    if self.values["MARK_ENTRY_ONLY"]:
-                                        new_commands.append(cmd)
-                                        new_commands.append(self.TorchIgniteCommand)
-                                        self._torch_active = True
-                                        prev_command = cmd.Name
-                                        continue
-                                    else:
-                                        new_commands.append(self.TorchIgniteCommand)
-                                        self._torch_active = True
+                                if self.values["MARK_ENTRY_ONLY"]:
+                                    new_commands.append(cmd)
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
+                                    prev_command = cmd.Name
+                                    continue
+                                else:
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
 
                             # track G1 - G0 commands to turn torch off
                             if (
