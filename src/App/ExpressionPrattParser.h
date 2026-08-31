@@ -14,12 +14,7 @@
 namespace App::ExpressionParser::Pratt
 {
 
-/** Tokens understood by the future handwritten parser.
- *
- * This deliberately does not reuse Bison's generated token numbers.  During the
- * migration the Flex adapter will translate generated tokens into this stable
- * representation; the handwritten lexer can later produce it directly.
- */
+/** Tokens produced by the expression lexer. */
 enum class TokenKind
 {
     End,
@@ -101,7 +96,7 @@ inline constexpr int power = 60;
 inline constexpr int prefix = 70;
 }  // namespace BindingPowers
 
-/** Return the binding powers that reproduce Expression.y.
+/** Return the expression operator binding powers.
  *
  * All current binary operators, including power, are left associative.  The
  * asymmetric ternary pair makes the conditional operator right associative.
@@ -133,7 +128,7 @@ constexpr std::optional<BindingPower> infixBindingPower(TokenKind kind)
     }
 }
 
-/** Cursor contract shared by the Flex adapter and the later handwritten lexer. */
+/** Cursor contract between the lexer and parser. */
 class TokenStream
 {
 public:
@@ -144,10 +139,7 @@ public:
     virtual void rewind(std::size_t position) = 0;
 };
 
-/** Side-by-side parser implementation.  ExpressionParser::parse() uses
- * Bison/Flex by default and selects Pratt/the handwritten lexer when the
- * UsePrattParser preference is set.
- */
+/** Pratt expression parser implementation. */
 class Parser
 {
 public:
@@ -180,17 +172,5 @@ private:
     const DocumentObject* owner;
     TokenStream& tokens;
 };
-
-namespace Detail
-{
-/** Migration entry point retained for differential tests. */
-AppExport ExpressionPtr parseFlexTokenStream(const DocumentObject* owner, const char* buffer);
-/** Handwritten-lexer entry point used by the opt-in production path. */
-AppExport ExpressionPtr parseHandwrittenTokenStream(const DocumentObject* owner,
-                                                    const char* buffer);
-AppExport std::unique_ptr<UnitExpression> parseFlexUnit(const DocumentObject* owner,
-                                                       const char* buffer);
-AppExport ObjectIdentifier parseFlexPath(const DocumentObject* owner, const char* buffer);
-}  // namespace Detail
 
 }  // namespace App::ExpressionParser::Pratt

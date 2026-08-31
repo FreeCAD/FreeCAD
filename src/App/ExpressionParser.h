@@ -637,7 +637,6 @@ AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const cha
 AppExport bool isTokenAnIndentifier(const std::string& str);
 AppExport bool isTokenAConstant(const std::string& str);
 AppExport bool isTokenAUnit(const std::string& str);
-AppExport std::vector<std::tuple<int, int, std::string>> tokenize(const std::string& str);
 
 /// Convenient class to mark begin of importing
 class AppExport ExpressionImporter
@@ -650,44 +649,6 @@ public:
 
 AppExport bool isModuleImported(PyObject*);
 
-/**
- * @brief The semantic_type class encapsulates the value in the parse tree during parsing.
- */
-
-class semantic_type
-{
-public:
-    struct
-    {
-        Base::Quantity scaler;
-        std::string unitStr;
-    } quantity;
-    Expression::Component* component {nullptr};
-    Expression* expr {nullptr};
-    ObjectIdentifier path;
-    std::deque<ObjectIdentifier::Component> components;
-    long long int ivalue {0};
-    double fvalue {0};
-    struct
-    {
-        const char* name = "";
-        double fvalue = 0;
-    } constant;
-    std::vector<Expression*> arguments;
-    std::vector<Expression*> list;
-    std::string string;
-    std::pair<FunctionExpression::Function, std::string> func;
-    ObjectIdentifier::String string_or_identifier;
-    semantic_type()
-        : func({FunctionExpression::NONE, std::string()})
-    {}
-};
-
-#define YYSTYPE semantic_type
-#include "Expression.tab.h"
-#undef YYTOKENTYPE
-#undef YYSTYPE
-#undef YYSTYPE_ISDECLARED
 }  // namespace ExpressionParser
 
 }  // namespace App
