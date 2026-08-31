@@ -75,17 +75,11 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->upToGeometryWidget->setHidden(!isUpToGeometry);
     ui->Depth->setValue(pcThread->Depth.getValue());
 
-    ui->standardCombo->addItem(tr("None"), QByteArray("None"));
-    ui->standardCombo->addItem(tr("ISO metric regular"), QByteArray("ISO"));
-    ui->standardCombo->addItem(tr("ISO metric fine"), QByteArray("ISO"));
-    ui->standardCombo->addItem(tr("UTS coarse"), QByteArray("UTS"));
-    ui->standardCombo->addItem(tr("UTS fine"), QByteArray("UTS"));
-    ui->standardCombo->addItem(tr("UTS extra fine"), QByteArray("UTS"));
-    ui->standardCombo->addItem(tr("ANSI pipes"), QByteArray("UTS"));
-    ui->standardCombo->addItem(tr("ISO/BSP pipes"), QByteArray("ISO"));
-    ui->standardCombo->addItem(tr("BSW whitworth"), QByteArray("Other"));
-    ui->standardCombo->addItem(tr("BSF whitworth fine"), QByteArray("Other"));
-    ui->standardCombo->addItem(tr("ISO tyre valves"), QByteArray("Other"));
+    ui->standardCombo->clear();
+    std::vector<std::string> cursorStandard = pcThread->ThreadTypeName.getEnumVector();
+    for (const auto& it : cursorStandard) {
+        ui->standardCombo->addItem(tr(it.c_str()));
+    }
     ui->standardCombo->setCurrentIndex(pcThread->ThreadType.getValue());
 
     ui->diameterCombo->clear();
@@ -561,6 +555,7 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
     else if (&Prop == &thread->ThreadSize) {
+        updateComboBox(ui->diameterCombo, thread->ThreadSize.getValue());
         // Thread size also updates related properties
         auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
             QSignalBlocker blocker(widget);

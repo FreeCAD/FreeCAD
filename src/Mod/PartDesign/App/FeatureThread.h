@@ -55,6 +55,7 @@ public:
     App::PropertyLength ThreadDiameter;
     App::PropertyLength ThreadPitch;
     App::PropertyEnumeration ThreadType;
+    App::PropertyEnumeration ThreadTypeName;
     App::PropertyEnumeration ThreadSize;
     App::PropertyEnumeration ThreadSizePitch;
     App::PropertyEnumeration ThreadClass;
@@ -67,6 +68,7 @@ public:
     App::PropertyLength CustomThreadClearance;
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
+    App::PropertyBool IsInternal;
 
     /** @name methods override feature */
     //@{

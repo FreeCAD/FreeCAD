@@ -14,6 +14,7 @@ set(PartDesign_LIBS
     ${OCC_DEBUG_LIBRARIES}
     Part
     FreeCADApp
+    Spreadsheet
 )
 
 SET(Features_SRCS
