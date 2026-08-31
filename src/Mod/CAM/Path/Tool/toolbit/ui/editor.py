@@ -30,7 +30,7 @@ import FreeCADGui
 import os
 from Path.Preferences import getAssetPath
 from ...shape.ui.shapewidget import ShapeWidget
-from ...shape.models.icon import DIMENSION_COLOR_HIGHLIGHT
+from ...shape.models.icon import highlight_color
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit
 from ..util import setToolBitSchema
@@ -76,7 +76,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         theicon = toolbit.get_icon() if toolbit else None
         abbr = theicon.abbreviations if theicon else {}
         self._property_editor = DocumentObjectEditorWidget(property_suffixes=abbr)
-        self._property_editor.highlight_color = DIMENSION_COLOR_HIGHLIGHT.decode()
+        self._property_editor.highlight_color = highlight_color().decode()
         self._property_editor.setSizePolicy(
             QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
         )

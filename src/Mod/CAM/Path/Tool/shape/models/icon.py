@@ -28,6 +28,7 @@ from functools import cached_property, lru_cache
 from ...assets import Asset, AssetUri, AssetSerializer, DummyAssetSerializer
 import Path.Tool.shape.util as util
 from Path.Base.Gui.Theme import is_dark_theme
+import Path.Preferences as PathPreferences
 from PySide import QtCore, QtGui, QtSvg
 
 _svg_ns = {"s": "http://www.w3.org/2000/svg"}
@@ -41,16 +42,28 @@ _svg_ns = {"s": "http://www.w3.org/2000/svg"}
 DIMENSION_SENTINEL_BACKGROUND = b"#ff0000"  # dimension over the empty background
 DIMENSION_SENTINEL_OVER_BODY = b"#00ff00"  # dimension over the tool body
 DIMENSION_SENTINELS = (DIMENSION_SENTINEL_BACKGROUND, DIMENSION_SENTINEL_OVER_BODY)
-DIMENSION_COLOR_DARK = b"#23818d"  # amber: the artwork is grayscale, so a hue reads clearly
-DIMENSION_COLOR_LIGHT = b"#111111"
 
-# The tool artwork is drawn as light gray steel for a white page. On a dark theme
-# it is scaled toward black so that it does not glare, and so that the dimensions
-# crossing it stay legible in the same color as the ones beside it.
-ARTWORK_DARK_FACTOR = 0.85
 
-# Color of the one dimension the user is pointing at, in either theme.
-DIMENSION_COLOR_HIGHLIGHT = b"#ff8c00"
+def dimension_color(dark: bool) -> bytes:
+    """Color of the dimensioning, from the CAM GUI preferences."""
+    return PathPreferences.toolBitDimensionColor(dark).encode()
+
+
+def highlight_color() -> bytes:
+    """Color of the one dimension the user is pointing at, in either theme."""
+    return PathPreferences.toolBitDimensionHighlightColor().encode()
+
+
+def artwork_factor() -> float:
+    """
+    How brightly to draw the tool artwork on a dark theme.
+
+    The artwork is drawn as light gray steel for a white page, so on a dark
+    theme it is scaled toward black to keep it from glaring, and to keep the
+    dimensions crossing it legible in the same color as those beside it.
+    """
+    return PathPreferences.toolBitArtworkBrightness()
+
 
 _tag_re = re.compile(rb'<(/?)([A-Za-z_][\w.:-]*)((?:[^<>"]|"[^"]*")*?)(/?)>', re.S)
 
@@ -75,52 +88,27 @@ def _element_span(data: bytes, element_id: str):
     return None
 
 
-def highlight_elements(data: bytes, element_ids, color: bytes = DIMENSION_COLOR_HIGHLIGHT):
-    """Repaint some elements of an already themed SVG, leaving the rest alone."""
+def highlight_elements(data: bytes, element_ids, color: bytes, replacing: bytes):
+    """
+    Repaint some elements of an already themed SVG, leaving the rest alone.
+
+    `replacing` is the color the dimensioning currently carries, i.e. whatever
+    theme_svg() painted it.
+    """
     spans = []
     for element_id in element_ids:
         span = _element_span(data, element_id)
         if span is not None:
             spans.append(span)
     for start, end in sorted(set(spans), reverse=True):
-        chunk = data[start:end]
-        for themed in (DIMENSION_COLOR_DARK, DIMENSION_COLOR_LIGHT):
-            chunk = chunk.replace(themed, color)
-        data = data[:start] + chunk + data[end:]
+        data = data[:start] + data[start:end].replace(replacing, color) + data[end:]
     return data
 
 
 _marker_re = re.compile(rb"marker-(?:start|mid|end)\s*:\s*url\(#([^)]+)\)")
 
-
-def _iter_dimension_roots(elem):
-    """
-    Yield the outermost elements that draw nothing but dimensioning.
-
-    Descends through containers that hold a mix of artwork and dimensioning,
-    such as the drawing's layer group.
-    """
-    for child in elem:
-        if not isinstance(child.tag, str):
-            continue
-        tag = child.tag.split("}")[-1]
-        if tag in ("defs", "metadata", "namedview"):
-            continue
-        if _is_dimension_subtree(child):
-            yield child
-        elif tag in ("g", "svg"):
-            yield from _iter_dimension_roots(child)
-
-
-def _is_dimension_subtree(elem) -> bool:
-    """True when everything painted below `elem` is dimensioning, nothing else."""
-    blob = ET.tostring(elem, encoding="unicode")
-    sentinels = [s.decode() for s in DIMENSION_SENTINELS]
-    if not any(s in blob for s in sentinels):
-        return False
-    for sentinel in sentinels:
-        blob = blob.replace(sentinel, "")
-    return not ("fill:#" in blob or "stroke:#" in blob or "url(#linearGradient" in blob)
+# Prefix marking a group that spells out one dimension, e.g. "dim-shank_diameter"
+DIMENSION_GROUP_PREFIX = "dim-"
 
 
 _hex_color_re = re.compile(rb"#[0-9a-fA-F]{6}")
@@ -140,13 +128,14 @@ def _darken_artwork(data: bytes, factor: float) -> bytes:
 
 
 @lru_cache(maxsize=32)
-def _themed_svg(data: bytes, dark: bool, dimensions: bool) -> bytes:
+def _themed_svg(data: bytes, dark: bool, dimensions: bool, color: bytes, factor: float) -> bytes:
     if dark:
-        data = _darken_artwork(data, ARTWORK_DARK_FACTOR)
+        data = _darken_artwork(data, factor)
     # "none" is a valid paint for both fill and stroke, so substituting it for the
     # sentinels hides the dimensioning - arrowhead markers included - and leaves
     # the tool artwork untouched.
-    color = (DIMENSION_COLOR_DARK if dark else DIMENSION_COLOR_LIGHT) if dimensions else b"none"
+    if not dimensions:
+        color = b"none"
     for sentinel in DIMENSION_SENTINELS:
         data = data.replace(sentinel, color).replace(sentinel.upper(), color)
     return data
@@ -161,7 +150,10 @@ def theme_svg(data: bytes, dimensions: bool = True) -> bytes:
             leaving just the tool artwork. Used for the small icons, where the
             dimensioning is illegible anyway.
     """
-    return _themed_svg(data, is_dark_theme(), dimensions)
+    dark = is_dark_theme()
+    # The colors are part of the cache key, so editing them in the preferences
+    # takes effect without restarting.
+    return _themed_svg(data, dark, dimensions, dimension_color(dark), artwork_factor())
 
 
 class ToolBitShapeIcon(Asset):
@@ -336,12 +328,12 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         dimension: the label, the dimension line with its arrowheads, and the
         extension lines running out to it.
 
-        The drawings only name their labels, so the rest has to be matched
-        geometrically. A dimension line takes the label it lies closest to, and
-        an extension line takes the dimension line it runs to rather than the
-        nearest label, which would misfile the ones that run past a neighbour.
-        Distances are edge to edge, so a long line is judged by its nearest end
-        instead of its middle.
+        A drawing says which elements make up a dimension by grouping them and
+        naming the group after the label it dimensions: id="dim-shank_diameter".
+        An element that cannot live in the group names its dimensions in a class
+        instead - class="dim-length dim-diameter" - which covers both a line two
+        dimensions share and one that has to keep its place in the paint order.
+        A label with neither is left dimensioning only itself.
         """
         groups = {prop: [element_id] for prop, element_id in self.label_elements.items()}
         if not groups or not self.data:
@@ -351,58 +343,40 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
             tree = ET.fromstring(self.data)
         except ET.ParseError:
             return groups
-        renderer = QtSvg.QSvgRenderer(QtCore.QByteArray(self.data))
-        if not renderer.isValid():
-            return groups
 
-        def bounds(element_id):
-            box = renderer.boundsOnElement(element_id)
-            if box.isEmpty() or not hasattr(renderer, "transformForElement"):
-                return box
-            return renderer.transformForElement(element_id).mapRect(box)
+        explicit = {}
+        for prop, label_id in self.label_elements.items():
+            wanted = DIMENSION_GROUP_PREFIX + label_id
+            group = next((e for e in tree.iter() if e.get("id") == wanted), None)
+            if group is None:
+                continue
+            # The group's own id is left out: its bounds span the whole
+            # dimension, which as a hit box would swallow its neighbours.
+            members = [e.get("id") for e in group.iter() if e.get("id") and e is not group]
+            members += [m.decode() for m in _marker_re.findall(ET.tostring(group))]
+            explicit[prop] = members
 
-        def gap(a, b):
-            """Edge to edge distance between two rectangles, 0 if they overlap."""
-            dx = max(a.left() - b.right(), b.left() - a.right(), 0)
-            dy = max(a.top() - b.bottom(), b.top() - a.bottom(), 0)
-            return dx * dx + dy * dy
-
-        labels, lines, extensions = {}, [], []
-        for elem in _iter_dimension_roots(tree):
+        # Elements claimed by class rather than by grouping. The claims are
+        # deliberate, so they are exempt from the double-claim check below.
+        shared_by_hand = set()
+        by_label = {label_id: prop for prop, label_id in self.label_elements.items()}
+        for elem in tree.iter():
             element_id = elem.get("id")
             if not element_id:
                 continue
-            box = bounds(element_id)
-            if box.isEmpty():
-                continue
-            tag = elem.tag.split("}")[-1]
-            if tag == "text":
-                labels[element_id] = box
-            elif tag == "g" or "marker-" in (elem.get("style") or ""):
-                lines.append((element_id, box, elem))
-            else:
-                extensions.append((element_id, box))
-        if not labels:
-            return groups
+            for token in (elem.get("class") or "").split():
+                if not token.startswith(DIMENSION_GROUP_PREFIX):
+                    continue
+                prop = by_label.get(token[len(DIMENSION_GROUP_PREFIX) :])
+                if prop is None:
+                    continue
+                explicit.setdefault(prop, [])
+                explicit[prop].append(element_id)
+                explicit[prop] += [m.decode() for m in _marker_re.findall(ET.tostring(elem))]
+                shared_by_hand.add(element_id)
 
-        by_element = {element_id: prop for prop, element_id in self.label_elements.items()}
-        owners = {}  # dimension line id -> (property name, its bounds)
-        for element_id, box, elem in lines:
-            nearest = min(labels, key=lambda lid: gap(box, labels[lid]))
-            prop = by_element.get(nearest)
-            if prop is None:
-                continue
-            groups[prop].append(element_id)
-            # arrowheads drawn by a <marker> live in <defs>, follow them too
-            for marker in _marker_re.findall(ET.tostring(elem)):
-                groups[prop].append(marker.decode())
-            owners[element_id] = (prop, box)
-
-        for element_id, box in extensions:
-            if not owners:
-                break
-            nearest = min(owners, key=lambda lid: gap(box, owners[lid][1]))
-            groups[owners[nearest][0]].append(element_id)
+        for prop, members in explicit.items():
+            groups[prop] = list(dict.fromkeys([self.label_elements[prop]] + members))
 
         # An arrowhead <marker> is a shared definition: some drawings point two
         # dimensions at the same one. Recoloring it would light up the other
@@ -410,7 +384,8 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         shared = {
             element_id
             for element_id in {i for ids in groups.values() for i in ids}
-            if sum(element_id in ids for ids in groups.values()) > 1
+            if element_id not in shared_by_hand
+            and sum(element_id in ids for ids in groups.values()) > 1
         }
         if shared:
             groups = {prop: [i for i in ids if i not in shared] for prop, ids in groups.items()}
@@ -427,7 +402,18 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         """
         data = theme_svg(self.data, dimensions)
         if highlight and dimensions:
-            data = highlight_elements(data, self.dimension_elements.get(highlight, []))
+            # the drawing may spell the property in a different case than the
+            # object does, so fall back to a case insensitive match
+            elements = self.dimension_elements
+            if highlight not in elements:
+                lowered = highlight.lower()
+                highlight = next((k for k in elements if k.lower() == lowered), highlight)
+            data = highlight_elements(
+                data,
+                elements.get(highlight, []),
+                highlight_color(),
+                dimension_color(is_dark_theme()),
+            )
         return data
 
     def get_qpixmap(
@@ -490,10 +476,28 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         return {}
 
     @staticmethod
+    def _label_elements(tree: ET.Element):
+        """
+        Yield the (id, element) of every dimension label in the drawing.
+
+        Labels are either a live <text> node (older, hand-authored assets), or
+        a <g> left behind by converting text to paths for font-independent
+        rendering, which carries the original glyph in its `aria-label`
+        attribute (Inkscape's "Text to Path" does this automatically).
+        """
+        for elem in tree.iter():
+            element_id = elem.attrib.get("id")
+            if not isinstance(element_id, str):
+                continue
+            tag = elem.tag.rsplit("}", 1)[-1]
+            if tag == "text" or (tag == "g" and "aria-label" in elem.attrib):
+                yield element_id, elem
+
+    @staticmethod
     def get_label_elements_from_svg(svg: bytes) -> Mapping[str, str]:
         """
-        Map each dimensioned property to the id of its <text> label, using the
-        same name normalization as the abbreviations.
+        Map each dimensioned property to the id of its label element, using
+        the same name normalization as the abbreviations.
         """
         try:
             tree = ET.fromstring(svg)
@@ -504,46 +508,40 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
             return match.group(1).upper()
 
         result = {}
-        for text_elem in tree.findall(".//s:text", _svg_ns):
-            element_id = text_elem.attrib.get("id")
-            if not isinstance(element_id, str):
-                continue
+        for element_id, _ in ToolBitShapeSvgIcon._label_elements(tree):
             result[re.sub(r"_(\w)", _upper, element_id.capitalize())] = element_id
         return result
 
     @staticmethod
     def get_abbreviations_from_svg(svg: bytes) -> Mapping[str, str]:
         """
-        Extract abbreviations from SVG text elements.
+        Extract abbreviations from SVG label elements.
         """
         try:
             tree = ET.fromstring(svg)
         except ET.ParseError:
             return {}
 
+        def _upper(match):
+            return match.group(1).upper()
+
         result = {}
-        for text_elem in tree.findall(".//s:text", _svg_ns):
-            id = text_elem.attrib.get("id", _svg_ns)
-            if id is None or not isinstance(id, str):
+        for element_id, elem in ToolBitShapeSvgIcon._label_elements(tree):
+            prop_name = re.sub(r"_(\w)", _upper, element_id.capitalize())
+
+            if elem.tag.rsplit("}", 1)[-1] == "g":
+                result[prop_name] = elem.attrib["aria-label"]
                 continue
 
-            # Backward compatibility: Normalize to match FreeCAD property
-            # name structure:
-            # Old: property_name New: PropertyName
-            def _upper(match):
-                return match.group(1).upper()
-
-            id = re.sub(r"_(\w)", _upper, id.capitalize())
-
-            abbr = text_elem.text
+            # Backward compatibility with hand-authored <text> labels.
+            abbr = elem.text
             if abbr is not None:
-                result[id] = abbr
+                result[prop_name] = abbr
 
-            span_elem = text_elem.find(".//s:tspan", _svg_ns)
+            span_elem = elem.find(".//s:tspan", _svg_ns)
             if span_elem is None:
                 continue
-            abbr = span_elem.text
-            result[id] = abbr
+            result[prop_name] = span_elem.text
 
         return result
 
