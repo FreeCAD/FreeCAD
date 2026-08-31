@@ -64,7 +64,7 @@ from .property_contracts import (
     render_property_aliases,
 )
 from .property_hierarchy import property_hierarchy_from
-from .render import type_stub_lines, write_stub_file
+from .render import type_stub_lines, write_stub_file, write_pyproject
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
 
 
@@ -281,6 +281,13 @@ def append_document_add_object_overloads(
         target.write_text(merged, encoding="utf-8")
 
 
+def write_pep561_markers(out_dir: Path, module_names: set[str]) -> None:
+    top_level = {name.split(".", 1)[0] for name in module_names}
+    for pkg in sorted(top_level):
+        (out_dir / pkg).mkdir(parents=True, exist_ok=True)
+        (out_dir / pkg / "py.typed").touch()
+
+
 def write_outputs(
     out_dir: Path,
     root: Path,
@@ -338,4 +345,6 @@ def write_outputs(
         module_names,
         root,
     )
+    write_pep561_markers(out_dir / "stubs", module_names)
+    write_pyproject(out_dir, root)
     return GenerationResult(overlay_count, cpp_property_report)
