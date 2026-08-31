@@ -104,9 +104,12 @@ TEST_F(Expression, splitCompletionPath)
     // matching extractCompletionPrefix() ("My Cube 1" -> "MyCube1").
     EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("My Cube 1.")),
               QStringList({QStringLiteral("MyCube1"), QString()}));
-    // "A1" lexes as a cell address, not an identifier, and must still be a component.
+    // IDENTIFIER tokens are valid completion-path segments.
     EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Spreadsheet.A1")),
               QStringList({QStringLiteral("Spreadsheet"), QStringLiteral("A1")}));
+    // CELLADDRESS tokens are valid completion-path segments.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Spreadsheet.$A$1")),
+              QStringList({QStringLiteral("Spreadsheet"), QStringLiteral("$A$1")}));
 
     // Invalid or non-path prefixes yield an empty list so the caller can fall back.
     EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("")), QStringList());
