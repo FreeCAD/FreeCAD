@@ -1343,7 +1343,8 @@ gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
 
     if (getFaceType(threadedFace) == FaceType::Cylinder) {
         Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
-        // Base::Console().message("cyl->Position().Location().z(): %lf\n", cyl->Position().Location().Z());
+        // Base::Console().message("cyl->Position().Location().z(): %lf\n",
+        // cyl->Position().Location().Z());
         return cyl->Position().Location();
     }
     else if (getFaceType(threadedFace) == FaceType::Cone) {
