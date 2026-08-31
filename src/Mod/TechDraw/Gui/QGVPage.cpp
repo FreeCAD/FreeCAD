@@ -51,6 +51,7 @@
 #include "QGSPage.h"
 #include "QGVNavStyleBlender.h"
 #include "QGVNavStyleCAD.h"
+#include "QGVNavStyleFusion.h"
 #include "QGVNavStyleGesture.h"
 #include "QGVNavStyleInventor.h"
 #include "QGVNavStyleMaya.h"
@@ -209,6 +210,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
     std::size_t foundBlender = navParm.find("Blender");
     std::size_t foundCAD = navParm.find("Gui::CAD");
     std::size_t foundTouchPad = navParm.find("Touchpad");
+    std::size_t foundFusion = navParm.find("Fusion");
     std::size_t foundInventor = navParm.find("Inventor");
     std::size_t foundTinker = navParm.find("TinkerCAD");
     std::size_t foundGesture = navParm.find("Gui::Gesture");
@@ -226,6 +228,9 @@ void QGVPage::setNavigationStyle(std::string navParm)
     }
     else if (foundTouchPad != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleTouchpad(this));
+    }
+    else if (foundFusion != std::string::npos) {
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleFusion(this));
     }
     else if (foundInventor != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleInventor(this));
