@@ -426,10 +426,21 @@
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:34.0757px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:3.1946;fill:#00ff00"
        y="133.0817"
        x="101.28577"
-       id="tspan5690">D</tspan></text><path
+       id="tspan5690">D</tspan></text><g
+       id="path5698"><path
      d="m 70.391848,220.93815 a 49.287517,49.590925 89.920721 0 1 69.329632,0.11418"
-     id="path5698"
-     style="fill:none;fill-opacity:1;stroke:#00ff00;stroke-width:1.06959;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker7593);marker-end:url(#marker4880)" /><text
+     id="path5698-line"
+     style="fill:none;fill-opacity:1;stroke:#00ff00;stroke-width:1.06959;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;" />
+       <path
+       id="path5698-arrow0"
+       transform="translate(70.391848,220.938150) rotate(-44.076982) scale(1.069590) matrix(1.1,0,0,1.1,1.1,0)"
+       d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+       style="fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:#00ff00;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1" />
+       <path
+       id="path5698-arrow1"
+       transform="translate(139.721480,221.052330) rotate(44.267787) scale(1.069590) matrix(-1.1,0,0,-1.1,-1.1,0)"
+       d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+       style="fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:#00ff00;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1" /></g><text
      transform="scale(1.0847256,0.92189217)"
      id="cutting_edge_angle"
      y="213.85809"
