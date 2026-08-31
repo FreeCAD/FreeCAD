@@ -28,7 +28,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/Range.h>
 #include <Gui/CommandT.h>
 

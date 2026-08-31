@@ -11,7 +11,7 @@
 
 #include <Base/Exception.h>
 
-namespace App::ExpressionParser::Pratt
+namespace App::ExpressionParser
 {
 namespace
 {
@@ -397,4 +397,4 @@ std::vector<Token> scanTokensTolerant(const char* buffer, const FunctionLookup& 
     return Lexer(buffer, lookupFunction, true).scan();
 }
 
-}  // namespace App::ExpressionParser::Pratt
+}  // namespace App::ExpressionParser

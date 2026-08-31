@@ -42,7 +42,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>

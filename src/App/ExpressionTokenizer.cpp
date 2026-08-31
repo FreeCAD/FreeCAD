@@ -29,7 +29,7 @@
 #include "ExpressionTokenizer.h"
 
 using namespace App;
-namespace Pratt = App::ExpressionParser::Pratt;
+namespace ParserApi = App::ExpressionParser;
 
 
 // Code below inspired by blog entry:
@@ -37,19 +37,19 @@ namespace Pratt = App::ExpressionParser::Pratt;
 
 QString ExpressionTokenizer::perform(const QString& prefix, int pos)
 {
-    using Pratt::TokenKind;
+    using ParserApi::TokenKind;
 
     // The lexer uses UTF-8 byte offsets but we need QString character offsets.
     // because due to UTF-8 encoding a std::string may be longer than a QString
     // See https://forum.freecad.org/viewtopic.php?f=3&t=69931
     auto tokenizeExpression = [](const QString& expr) {
-        auto result = Pratt::scanExpressionTokensTolerant(expr.toStdString().c_str());
+        auto result = ParserApi::scanExpressionTokensTolerant(expr.toStdString().c_str());
         std::vector<std::tuple<TokenKind, int, QString>> tokens;
         std::transform(
             result.cbegin(),
             result.cend(),
             std::back_inserter(tokens),
-            [&](const Pratt::Token& item) {
+            [&](const ParserApi::Token& item) {
                 return std::make_tuple(
                     item.kind,
                     QString::fromStdString(expr.toStdString().substr(0, item.column)).size(),

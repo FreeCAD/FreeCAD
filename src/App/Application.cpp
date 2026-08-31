@@ -126,7 +126,7 @@
 #include "DocumentObserver.h"
 #include "DocumentPy.h"
 #include "DocumentSettingsPy.h"
-#include "ExpressionParser.h"
+#include "ExpressionNodes.h"
 #include "FeatureTest.h"
 #include "FeaturePython.h"
 #include "GeoFeature.h"

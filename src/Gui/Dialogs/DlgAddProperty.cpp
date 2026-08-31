@@ -32,7 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
