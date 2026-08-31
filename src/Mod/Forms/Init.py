@@ -25,3 +25,5 @@
 import FreeCAD
 
 FreeCAD.__unit_test__ += ["FormsTests"]
+FreeCAD.addImportType("Blender subdivision cage (*.blend *.BLEND)", "importBlend")
+FreeCAD.addExportType("Blender (*.blend *.BLEND)", "importBlend")

@@ -151,3 +151,34 @@ editor opened.
 Class-A patch construction remains a related but distinct workflow. It should
 reuse Forms analysis and reference tools rather than being conflated with cage
 modeling in the initial implementation.
+
+## Blender import
+
+**File > Import** accepts `.blend` documents when Blender 4.0 or newer is
+installed. Blender is launched in background mode with automatic script
+execution disabled, and exports only the editable polygon control cage. Forms
+bakes modifiers before the first Catmull-Clark Subdivision Surface modifier,
+leaves subdivision unapplied, and transfers vertex and edge crease weights.
+
+Compatible objects require a manifold, all-quad control cage. A Mirror modifier
+is supported, including on a mesh without a Subdivision Surface modifier.
+Modifiers after subdivision, non-quad faces, loose vertices, branched boundaries,
+and non-manifold edges are rejected with an explanatory message. A standard
+Blender installation is discovered automatically; a nonstandard executable may
+be selected through the `BlenderExecutable` string parameter under
+`BaseApp/Preferences/Mod/Forms`.
+
+## Blender export
+
+**File > Export** writes selected objects to `.blend` through the same Blender
+installation. Standalone Forms primitives and editable Forms are written as
+quad control cages with a Catmull-Clark Subdivision Surface modifier and their
+vertex and edge creases. A selected Part Design Body or ordinary shape is
+written as its final tessellated mesh, so its visible result is preserved but
+its FreeCAD feature history is not. Forms using local T-mesh refinement, local
+edge insertion, or dissolved control edges are also exported as their final
+mesh because those topologies have no direct Blender subdivision-cage equivalent.
+
+General-shape tessellation uses a 0.1 mm linear deflection by default. It may be
+changed through the `BlenderLinearDeflection` float parameter under
+`BaseApp/Preferences/Mod/Forms`.

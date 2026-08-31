@@ -58,6 +58,7 @@ from .topology import (
 )
 
 PRIMITIVE_PARAMETERS = {
+    "Forms::Form": (),
     "Forms::Box": (
         ("Length", "Length", "length"),
         ("Width", "Width", "length"),
