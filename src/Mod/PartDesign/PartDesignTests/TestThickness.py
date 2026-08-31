@@ -86,8 +86,7 @@ class TestThickness(unittest.TestCase):
         candidates = [
             (index, face)
             for index, face in enumerate(shape.Faces, 1)
-            if isinstance(face.Surface, Part.Plane)
-            and abs(face.CenterOfMass.y + 10.0) < 1.0e-7
+            if isinstance(face.Surface, Part.Plane) and abs(face.CenterOfMass.y + 10.0) < 1.0e-7
         ]
         self.assertTrue(candidates)
         index, _face = max(candidates, key=lambda item: item[1].Area)
