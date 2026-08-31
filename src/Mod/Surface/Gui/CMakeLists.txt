@@ -18,6 +18,7 @@ SET(SurfaceGui_UIC_SRCS
     TaskGeomFillSurface.ui
     TaskSections.ui
     Blending/TaskBlendCurve.ui
+    Gordon/TaskGordonSurface.ui
 )
 
 SET(BlendingGui_SRCS
@@ -27,10 +28,18 @@ SET(BlendingGui_SRCS
     Blending/ViewProviderBlendCurve.h
 )
 
+SET(GordonGui_SRCS
+    Gordon/TaskGordonSurface.h
+    Gordon/TaskGordonSurface.cpp
+    Gordon/ViewProviderGordonSurface.h
+    Gordon/ViewProviderGordonSurface.cpp
+)
+
 SET(SurfaceGui_SRCS
     ${SurfaceGui_QRC_SRCS}
     ${SurfaceGui_UIC_HDRS}
     ${BlendingGui_SRCS}
+    ${GordonGui_SRCS}
     TaskFilling.cpp
     TaskFilling.h
     TaskFillingEdge.cpp

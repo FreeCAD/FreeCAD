@@ -28,9 +28,15 @@ SET(Blending_SRCS
   Blending/BlendCurve.h
 )
 
+SET(Gordon_SRCS
+  Gordon/FeatureGordonSurface.cpp
+  Gordon/FeatureGordonSurface.h
+)
+
 SET(Surface_SRCS
   ${Blending_SRCS}
   ${BlendingPy_SRCS}
+  ${Gordon_SRCS}
   AppSurface.cpp
   PreCompiled.h
   FeatureExtend.cpp
@@ -75,7 +81,11 @@ target_include_directories(
 )
 
 target_link_directories(Surface PUBLIC ${OCC_LIBRARY_DIR})
-target_link_libraries(Surface ${Surface_LIBS})
+target_link_libraries(Surface
+    PRIVATE
+    occ_gordon_single
+    ${Surface_LIBS}
+)
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Surface)
 endif()
