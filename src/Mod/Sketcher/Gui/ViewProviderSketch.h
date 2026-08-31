@@ -1007,7 +1007,6 @@ private:
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
     void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
-    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines, int activeLineIndex);
     /// draw the edit markers
     void drawEditMarkers(
