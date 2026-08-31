@@ -213,9 +213,13 @@ def convert_draft_texts(textslist=None):
         doc.removeObject(obj.Name)
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.convert_draft_texts()",
+)
 def convertDraftTexts(*args, **kwarg):
     """DEPRECATED. Use 'convert_draft_texts'."""
-    utils.use_instead("convert_draft_texts")
     return convert_draft_texts(*args, **kwarg)
 
 
