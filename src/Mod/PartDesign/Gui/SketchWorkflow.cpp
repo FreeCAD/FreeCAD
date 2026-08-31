@@ -759,13 +759,14 @@ private:
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(appdocument);
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-    if (dlg && !pickDlg) {
-        if (dlg->canClose()) {
-        Gui::Control().closeDialog();
-        } else {
-        throw RejectException();
+        if (dlg && !pickDlg) {
+            if (dlg->canClose()) {
+                Gui::Control().closeDialog();
+            }
+            else {
+                throw RejectException();
+            }
         }
-    }
 
         if (dlg) {
             Gui::Control().closeDialog();
