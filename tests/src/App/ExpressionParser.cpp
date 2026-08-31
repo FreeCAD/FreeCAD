@@ -10,6 +10,7 @@
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
 #include "App/ExpressionParser.h"
+#include "App/ExpressionPrattParser.h"
 
 #include "src/App/InitApplication.h"
 
@@ -70,7 +71,8 @@ protected:
     {
         docName = App::GetApplication().getUniqueDocumentName("test");
         thisDoc = App::GetApplication().newDocument(docName.c_str(), "testUser");
-        thisObj = thisDoc->addObject("Sketcher::SketchObject", "Sketch");
+        thisObj = thisDoc->addObject("App::FeaturePython", "Sketch");
+        thisObj->addDynamicProperty("App::PropertyPlacement", "Placement");
     }
 
     void TearDown() override
@@ -325,6 +327,82 @@ TEST_F(ExpressionParserTest, canParseProperties)
     this_obj()->addDynamicProperty("App::PropertyQuantity", "Bar");
     EXPECT_THAT(parseExpr("Sketch.Bar"), IsQuantity(Base::Quantity()))
         << "PropertyQuantity on object";
+}
+
+TEST_F(ExpressionParserTest, arithmeticPrecedenceAndAssociativity)
+{
+    EXPECT_THAT(parseExpr("2 + 3 * 4"), IsLong(14));
+    EXPECT_THAT(parseExpr("8 / 4 / 2"), IsLong(1)) << "division is left associative";
+    EXPECT_THAT(parseExpr("2^3^2"), IsLong(64)) << "power is currently left associative";
+    EXPECT_THAT(parseExpr("-2^2"), IsLong(4)) << "unary minus currently binds tighter than power";
+    EXPECT_THAT(parseExpr("-(2^2)"), IsLong(-4));
+    EXPECT_THAT(parseExpr("1 ? 2 : 0 ? 3 : 4"), IsLong(2))
+        << "conditional expressions are right associative";
+}
+
+TEST_F(ExpressionParserTest, comparisonAndConditionalProductions)
+{
+    for (const auto* expression : {
+             "1 == 1", "1 != 2", "1 < 2", "2 > 1", "1 <= 1", "1 >= 1", "1 ? 2 : 3"}) {
+        EXPECT_NO_THROW(parse(this_obj(), expression)) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, numericStringConstantAndFunctionProductions)
+{
+    EXPECT_THAT(parseExpr("42"), IsLong(42));
+    EXPECT_THAT(parseExpr(".5"), IsDouble(0.5));
+    EXPECT_THAT(parseExpr("1e2"), IsLong(100));
+    EXPECT_THAT(parseExpr("pi > 3"), IsLong(1));
+    EXPECT_THAT(parseExpr("<<(hello)>>"), IsString("(hello)"));
+    EXPECT_NO_THROW(parse(this_obj(), "sum(1, 2; 3)"));
+}
+
+TEST_F(ExpressionParserTest, unitProductions)
+{
+    EXPECT_THAT(parseExpr("2 mm^2"), IsQuantity(mm2(2)));
+    EXPECT_THAT(parseExpr("(2 mm)^2"), IsQuantity(mm2(4)));
+    EXPECT_THAT(parseExpr("2 mm/s * 3"),
+                IsQuantity(Base::Quantity(6, Base::Unit::Velocity)));
+    const auto usBuildingUnit = parse_expression_text_as_quantity("1' 2\"");
+    EXPECT_NEAR(usBuildingUnit.getValue(), 355.6, 1e-12) << "US building units";
+    EXPECT_EQ(usBuildingUnit.getUnit(), Base::Unit::Length);
+    EXPECT_NO_THROW(parseUnit(this_obj(), "kg*m/s^2"));
+    EXPECT_NO_THROW(parseUnit(this_obj(), "m^-2"));
+    EXPECT_NO_THROW(parseUnit(this_obj(), "(kg*m)/s^2"));
+}
+
+TEST_F(ExpressionParserTest, identifierPathAndIndexerProductions)
+{
+    for (const auto* expression : {
+             "Foo", ".Foo", "Sketch.Foo", "Sketch.<<(Sub object)>>.Foo",
+             "Doc#Sketch.Foo", "Doc#Sketch.<<(Sub object)>>.Foo", "Foo.Bar.Baz",
+             "Foo[0]", "Foo[1:]", "Foo[:2]", "Foo[::2]", "Foo[1:2]",
+             "Foo[1::2]", "Foo[:2:3]", "Foo[1:2:3]", "Foo[0][1].Bar"}) {
+        EXPECT_NO_THROW(parse(this_obj(), expression)) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, intentionalGrammarRestrictions)
+{
+    for (const auto* expression : {
+             "list(1, 2)[0]", "(Foo)[0]", "1[0]", "Foo[]", "Foo[:]", "sqrt()",
+             "1 mm kg", "10 mm * kg", "24 V / (2 A) kg"}) {
+        EXPECT_THROW(parse(this_obj(), expression), Base::ParserError) << expression;
+    }
+}
+
+TEST(ExpressionPrattParserTest, bindingPowersMatchCurrentGrammar)
+{
+    using namespace App::ExpressionParser::Pratt;
+
+    EXPECT_EQ(infixBindingPower(TokenKind::Question),
+              (std::optional<BindingPower> {{BindingPowers::ternary,
+                                             BindingPowers::ternary - 1}}));
+    EXPECT_EQ(infixBindingPower(TokenKind::Power),
+              (std::optional<BindingPower> {{BindingPowers::power, BindingPowers::power}}));
+    EXPECT_GT(BindingPowers::prefix, BindingPowers::power);
+    EXPECT_GT(BindingPowers::quantity, BindingPowers::multiplicative);
 }
 
 }  // namespace App::ExpressionParser::Test
