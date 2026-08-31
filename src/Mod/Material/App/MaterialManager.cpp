@@ -150,11 +150,11 @@ std::shared_ptr<App::Material> MaterialManager::defaultAppearance()
         color.a = 1.0;  // The default color sets fully transparent, not opaque
     };
     auto intRandom = [](int min, int max) -> int {
-    static std::random_device rd;
-    static std::mt19937 generator(rd());
-    std::uniform_int_distribution<int> distribution(min, max);
-    return distribution(generator);
-};
+        static std::random_device rd;
+        static std::mt19937 generator(rd());
+        std::uniform_int_distribution<int> distribution(min, max);
+        return distribution(generator);
+    };
 
     App::Material mat(App::Material::DEFAULT);
     bool randomColor = hGrp->GetBool("RandomColor", false);
