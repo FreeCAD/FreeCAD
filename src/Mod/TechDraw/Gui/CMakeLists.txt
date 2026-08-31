@@ -339,6 +339,8 @@ SET(TechDrawGuiNav_SRCS
     QGVNavStyleBlender.h
     QGVNavStyleCAD.cpp
     QGVNavStyleCAD.h
+    QGVNavStyleFusion.cpp
+    QGVNavStyleFusion.h
     QGVNavStyleGesture.cpp
     QGVNavStyleGesture.h
     QGVNavStyleInventor.cpp
