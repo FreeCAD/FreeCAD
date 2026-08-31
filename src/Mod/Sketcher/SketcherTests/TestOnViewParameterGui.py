@@ -2,7 +2,9 @@
 
 import FreeCAD
 from PySide import QtCore, QtGui
-from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
+from Gui.Wait import FreeCADGui
+from Support import temporary_preference
+from SketcherTests.Support import SketcherGuiTestCase
 
 
 class TestOnViewParameterGui(SketcherGuiTestCase):
@@ -41,48 +43,19 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
     def key_text(self, widget, text):
         for ch in text:
-            self.key_click(widget, self.KEYS[ch], ch)
+            self.gui.key_click(widget, self.KEYS[ch], ch)
 
     def active_spinbox(self):
-        widget = QtGui.QApplication.focusWidget()
-        if isinstance(widget, QtGui.QAbstractSpinBox):
-            return widget
-        if isinstance(widget, QtGui.QLineEdit):
-            parent = widget.parent()
-            if isinstance(parent, QtGui.QAbstractSpinBox):
-                return parent
-        return None
+        return self.gui.focused_widget(QtGui.QAbstractSpinBox)
 
     def visible_spinboxes(self):
-        main_window = FreeCADGui.getMainWindow()
-        return [
-            spinbox
-            for spinbox in main_window.findChildren(QtGui.QAbstractSpinBox)
-            if spinbox.isVisible()
-        ]
-
-    def active_task_dialog(self):
-        return FreeCADGui.Control.activeTaskDialog()
-
-    def assert_sketch_edit_active(self):
-        edit = FreeCADGui.ActiveDocument.getInEdit()
-        self.assertIsNotNone(edit, "Expected sketch edit mode to remain active")
-        self.assertTrue(
-            edit.isDerivedFrom("SketcherGui::ViewProviderSketch"),
-            "Expected a Sketcher view provider to remain in edit mode",
-        )
-
-    def assert_sketch_edit_inactive(self):
-        self.assertIsNone(
-            FreeCADGui.ActiveDocument.getInEdit(),
-            "Expected sketch edit mode to be inactive",
-        )
+        return self.gui.find_widgets(QtGui.QAbstractSpinBox, visible_only=True)
 
     def begin_sketch_edit_with_task_dialog(self):
-        FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
-        self.pump(200)
-        self.assert_sketch_edit_active()
-        self.assertIsNotNone(self.active_task_dialog(), "Expected the Sketcher task dialog to open")
+        self.enter_sketch_edit(self.doc, self.sketch)
+        self.assertIsNotNone(
+            self.gui.wait_for_task_panel(), "Expected the Sketcher task dialog to open"
+        )
 
     def begin_rectangle_with_visible_ovp(self):
         self.begin_sketch_edit_with_task_dialog()
@@ -90,10 +63,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         view = FreeCADGui.ActiveDocument.ActiveView
         view.viewTop()
         view.fitAll()
-        self.pump(100)
 
-        viewport = view.graphicsView().viewport()
         origin = FreeCAD.Vector(0, 0, 0)
+        viewport = self.gui.active_view().viewport
 
         def wait_for_origin_point():
             first_point = None
@@ -106,7 +78,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                     return False
 
                 view.fitAll()
-                point = self.viewport_to_qpoint(view, viewport, view.getPointOnScreen(origin))
+                point = self.gui.active_view().world_to_screen(origin)
                 interior_rect = viewport.rect().adjusted(20, 20, -20, -20)
                 if not interior_rect.contains(point):
                     return False
@@ -115,29 +87,32 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 return True
 
             self.assertTrue(
-                self.wait_until(origin_is_framed, timeout_ms=5000, step_ms=100),
+                self.gui.wait_until(origin_is_framed, timeout_ms=5000, step_ms=100),
                 "Expected the sketch origin to project to an interior viewport point",
             )
             self.assertIsNotNone(first_point)
             return first_point
 
         FreeCADGui.runCommand("Sketcher_CreateRectangle")
-        self.pump(250)
 
         first_point = wait_for_origin_point()
 
-        move_target = self.clamp_to_widget(
+        move_target = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(first_point.x() + 80, first_point.y() - 60),
         )
 
-        self.move(viewport, first_point)
-        self.click(viewport, first_point)
-        self.move(viewport, move_target)
+        self.gui.move(viewport, first_point)
+        self.gui.click(viewport, first_point)
+        self.gui.move(viewport, move_target)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
             "Expected the rectangle OVPs to become visible after the first click",
+        )
+        self.assertIsNotNone(
+            self.gui.wait_for_focus(QtGui.QAbstractSpinBox, timeout_ms=1000),
+            "Expected the first rectangle OVP to receive focus",
         )
 
         return viewport, first_point
@@ -148,7 +123,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         FreeCADGui.ActiveDocument.resetEdit()
 
         self.assertTrue(
-            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            self.gui.wait_until(lambda: self.gui.active_task_panel() is None, timeout_ms=1000),
             "Expected resetEdit() to close the Sketcher task dialog",
         )
         self.assert_sketch_edit_inactive()
@@ -156,10 +131,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def test_task_dialog_reject_exits_sketch_edit(self):
         self.begin_sketch_edit_with_task_dialog()
 
-        self.active_task_dialog().reject()
+        self.gui.active_task_panel().reject()
 
         self.assertTrue(
-            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            self.gui.wait_until(lambda: self.gui.active_task_panel() is None, timeout_ms=1000),
             "Expected reject() to close the Sketcher task dialog",
         )
         self.assert_sketch_edit_inactive()
@@ -167,10 +142,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def test_task_dialog_accept_exits_sketch_edit(self):
         self.begin_sketch_edit_with_task_dialog()
 
-        self.active_task_dialog().accept()
+        self.gui.active_task_panel().accept()
 
         self.assertTrue(
-            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            self.gui.wait_until(lambda: self.gui.active_task_panel() is None, timeout_ms=1000),
             "Expected accept() to close the Sketcher task dialog",
         )
         self.assert_sketch_edit_inactive()
@@ -188,10 +163,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         first_spinbox = self.active_spinbox()
         self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
         self.key_text(first_spinbox, "10")
-        self.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
+        self.gui.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
 
         self.assertTrue(
-            self.wait_until(
+            self.gui.wait_until(
                 lambda: self.active_spinbox() is not None
                 and self.active_spinbox() is not first_spinbox,
                 timeout_ms=1000,
@@ -202,10 +177,16 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         second_spinbox = self.active_spinbox()
         self.assertIsNotNone(second_spinbox, "Expected the second rectangle OVP to have focus")
         self.key_text(second_spinbox, "20")
-        self.key_click(second_spinbox, QtCore.Qt.Key_Return, "\r")
+        self.gui.key_click(second_spinbox, QtCore.Qt.Key_Return, "\r")
 
-        self.pump(500)
-
+        self.assertTrue(
+            self.gui.wait_until(
+                lambda: self.sketch.GeometryCount >= 4,
+                timeout_ms=1000,
+                description="rectangle geometry",
+            ),
+            "Expected the rectangle to be created after accepting both OVPs",
+        )
         self.assertGreaterEqual(
             self.sketch.GeometryCount,
             4,
@@ -217,72 +198,75 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         first_spinbox = self.active_spinbox()
         self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
-        self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
+        self.gui.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
             "Expected Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
         self.assert_sketch_edit_active()
 
-        restart_point = self.clamp_to_widget(
+        restart_point = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(first_point.x() + 120, first_point.y() + 50),
         )
-        restart_move = self.clamp_to_widget(
+        restart_move = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(restart_point.x() + 70, restart_point.y() - 40),
         )
 
-        self.move(viewport, restart_point)
-        self.click(viewport, restart_point)
-        self.move(viewport, restart_move)
+        self.gui.move(viewport, restart_point)
+        self.gui.click(viewport, restart_point)
+        self.gui.move(viewport, restart_move)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
             "Expected Esc to reset the rectangle tool back to its first stage",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
-        self.assertIsNotNone(self.active_spinbox())
+        self.assertIsNotNone(
+            self.gui.wait_for_focus(QtGui.QAbstractSpinBox, timeout_ms=1000),
+            "Expected the first rectangle OVP to receive focus after reset",
+        )
 
     def test_rectangle_ovp_escape_then_right_click_exits_tool(self):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
         first_spinbox = self.active_spinbox()
         self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
-        self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
+        self.gui.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
             "Expected Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
         self.assert_sketch_edit_active()
 
-        cancel_point = self.clamp_to_widget(
+        cancel_point = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(first_point.x() + 120, first_point.y() + 50),
         )
-        retry_move = self.clamp_to_widget(
+        retry_move = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(cancel_point.x() + 70, cancel_point.y() - 40),
         )
 
-        self.right_click(viewport, cancel_point)
+        self.gui.right_click(viewport, cancel_point)
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=400),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=400),
             "Expected right click to keep the rectangle OVPs closed after canceling",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
         self.assert_sketch_edit_active()
 
-        self.move(viewport, cancel_point)
-        self.click(viewport, cancel_point)
-        self.move(viewport, retry_move)
+        self.gui.move(viewport, cancel_point)
+        self.gui.click(viewport, cancel_point)
+        self.gui.move(viewport, retry_move)
 
         self.assertFalse(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=500),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=500),
             "Expected right click to exit the rectangle tool after OVP Esc",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
@@ -292,10 +276,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         first_spinbox = self.active_spinbox()
         self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
-        self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
+        self.gui.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
             "Expected the first Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
@@ -304,45 +288,48 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         view = FreeCADGui.ActiveDocument.ActiveView
         graphics_view = view.graphicsView()
         graphics_view.setFocus(QtCore.Qt.OtherFocusReason)
-        self.pump(100)
+        self.assertIsNotNone(
+            self.gui.wait_for_focus(parent=graphics_view, timeout_ms=500),
+            "Expected the Sketcher viewport to receive focus",
+        )
 
-        self.key_click(graphics_view, QtCore.Qt.Key_Escape)
+        self.gui.key_click(graphics_view, QtCore.Qt.Key_Escape)
         self.assert_sketch_edit_active()
 
-        cancel_point = self.clamp_to_widget(
+        cancel_point = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(first_point.x() + 120, first_point.y() + 50),
         )
-        retry_move = self.clamp_to_widget(
+        retry_move = self.gui.clamp_to_widget(
             viewport,
             QtCore.QPoint(cancel_point.x() + 70, cancel_point.y() - 40),
         )
 
-        self.move(viewport, cancel_point)
-        self.click(viewport, cancel_point)
-        self.move(viewport, retry_move)
+        self.gui.move(viewport, cancel_point)
+        self.gui.click(viewport, cancel_point)
+        self.gui.move(viewport, retry_move)
 
         self.assertFalse(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=500),
+            self.gui.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=500),
             "Expected the second Esc to exit the rectangle tool",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
 
         graphics_view.setFocus(QtCore.Qt.OtherFocusReason)
-        self.pump(100)
-        self.key_click(graphics_view, QtCore.Qt.Key_Escape)
+        self.assertIsNotNone(
+            self.gui.wait_for_focus(parent=graphics_view, timeout_ms=500),
+            "Expected the Sketcher viewport to receive focus",
+        )
+        self.gui.key_click(graphics_view, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            self.gui.wait_until(lambda: self.gui.active_task_panel() is None, timeout_ms=1000),
             "Expected the third Esc to close the Sketcher task dialog",
         )
         self.assert_sketch_edit_inactive()
 
     def test_auto_color_restores_line_color_from_preferences(self):
-        view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
         color_key = "SketchEdgeColor"
-        had_color = color_key in view_params.GetUnsigneds()
-        old_color = view_params.GetUnsigned(color_key, 0)
 
         try:
             manual_color = 0x112233FF
@@ -353,16 +340,23 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             view.LineColor = manual_color
             self.assertEqual(self.pack_color(view.LineColor), manual_color)
 
-            view_params.SetUnsigned(color_key, preference_color)
-            self.pump(100)
-            self.assertEqual(self.pack_color(view.LineColor), manual_color)
+            with temporary_preference(
+                "User parameter:BaseApp/Preferences/View",
+                color_key,
+                preference_color,
+                "Unsigned Long",
+            ):
+                self.assertEqual(self.pack_color(view.LineColor), manual_color)
 
-            view.AutoColor = True
-            self.pump(100)
-
-            self.assertEqual(self.pack_color(view.LineColor), preference_color)
+                view.AutoColor = True
+                self.assertTrue(
+                    self.gui.wait_until(
+                        lambda: self.pack_color(view.LineColor) == preference_color,
+                        timeout_ms=1000,
+                        description="automatic sketch edge color",
+                    ),
+                    "Expected AutoColor to apply the preference color",
+                )
+                self.assertEqual(self.pack_color(view.LineColor), preference_color)
         finally:
-            if had_color:
-                view_params.SetUnsigned(color_key, old_color)
-            else:
-                view_params.RemUnsigned(color_key)
+            view.AutoColor = True
