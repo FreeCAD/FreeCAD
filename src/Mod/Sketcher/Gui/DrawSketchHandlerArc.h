@@ -171,7 +171,7 @@ private:
                 CreateAndDrawShapeGeometry();
 
                 if (constructionMethod() == ConstructionMethod::Center) {
-                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                    toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -244,7 +244,7 @@ private:
 
                 if (constructionMethod() == ConstructionMethod::Center) {
                     startAngle = startAngleBackup;
-                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
+                    toolWidgetManager.drawAngleAtCursor(onSketchPos, arcAngle);
                     seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.0, 0.0));
                 }
                 else {

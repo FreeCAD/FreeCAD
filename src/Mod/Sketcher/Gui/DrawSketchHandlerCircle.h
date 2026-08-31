@@ -157,7 +157,7 @@ private:
                 CreateAndDrawShapeGeometry();
 
                 if (constructionMethod() == ConstructionMethod::Center) {
-                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
+                    toolWidgetManager.drawRadiusDiameterAtCursor(onSketchPos, radius);
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);

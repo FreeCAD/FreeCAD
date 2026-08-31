@@ -88,7 +88,7 @@ private:
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
 
                 firstCorner = onSketchPos;
 

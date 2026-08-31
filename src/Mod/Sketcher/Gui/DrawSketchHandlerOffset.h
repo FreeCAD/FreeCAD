@@ -143,7 +143,7 @@ private:
 
             if (!offsetLengthSet) {
                 findOffsetLength();
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, offsetLength);
+                toolWidgetManager.drawOffsetAtCursor(onSketchPos, offsetLength);
             }
 
             if (fabs(offsetLength) > Precision::Confusion()) {

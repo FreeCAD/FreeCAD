@@ -367,7 +367,7 @@ private:
                 try {
                     CreateAndDrawShapeGeometry();
 
-                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
+                    toolWidgetManager.drawLengthWidthAtCursor(onSketchPos, length, width);
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
@@ -379,11 +379,11 @@ private:
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
-                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
+                        toolWidgetManager.drawRadiusDiameterAtCursor(onSketchPos, radius);
                     }
                     else {  // Normal rectangle with frame.
                         calculateThickness(onSketchPos);
-                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
+                        toolWidgetManager.drawThicknessAtCursor(onSketchPos, thickness);
                     }
                 }
                 else if (constructionMethod() == ConstructionMethod::ThreePoints) {
@@ -419,7 +419,7 @@ private:
                         radius = 0.;
                     }
 
-                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
+                    toolWidgetManager.drawLengthWidthAtCursor(onSketchPos, length, width);
                 }
                 else {
                     corner2 = onSketchPos;
@@ -451,7 +451,7 @@ private:
                         radius = 0.;
                     }
 
-                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
+                    toolWidgetManager.drawLengthWidthAtCursor(onSketchPos, length, width);
                 }
 
                 try {
@@ -469,16 +469,16 @@ private:
                 if (constructionMethod() == ConstructionMethod::Diagonal
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     calculateThickness(onSketchPos);
-                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
+                    toolWidgetManager.drawThicknessAtCursor(onSketchPos, thickness);
                 }
                 else {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
-                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
+                        toolWidgetManager.drawRadiusDiameterAtCursor(onSketchPos, radius);
                     }
                     else {
                         calculateThickness(onSketchPos);
-                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
+                        toolWidgetManager.drawThicknessAtCursor(onSketchPos, thickness);
                     }
                 }
 
@@ -486,7 +486,7 @@ private:
             } break;
             case SelectMode::SeekFifth: {
                 calculateThickness(onSketchPos);
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
+                toolWidgetManager.drawThicknessAtCursor(onSketchPos, thickness);
 
                 CreateAndDrawShapeGeometry();
             } break;

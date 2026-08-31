@@ -139,7 +139,7 @@ private:
                     break;
                 }
 
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
                 seekAndRenderAutoConstraint(
                     sugConstraints[1],
                     onSketchPos,

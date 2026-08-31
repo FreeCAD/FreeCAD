@@ -321,12 +321,37 @@ protected:
 
     void drawPositionAtCursor(const Base::Vector2d& position);
     void drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin);
-    void drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
-    void drawDoubleAtCursor(
+    void drawRadiusAngleAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin);
+    void drawLengthWidthAtCursor(const Base::Vector2d& position, const double length, const double width);
+    void drawAxisRadiiAtCursor(const Base::Vector2d& position, const double major, const double minor);
+    void drawRadiusDiameterAtCursor(const Base::Vector2d& position, const double radius);
+    void drawOffsetAtCursor(const Base::Vector2d& position, const double offset);
+    void drawThicknessAtCursor(const Base::Vector2d& position, const double thickness);
+    void drawAngleAtCursor(const Base::Vector2d& position, const double angle);
+    void drawLabeledLengthAtCursor(
         const Base::Vector2d& position,
-        const double radius,
-        Base::Unit unit = Base::Unit::Length
+        const char* label,
+        const double value
     );
+    void drawLabeledLengthPairAtCursor(
+        const Base::Vector2d& position,
+        const char* firstLabel,
+        const double firstValue,
+        const char* secondLabel,
+        const double secondValue
+    );
+    void drawLabeledLengthAngleAtCursor(
+        const Base::Vector2d& position,
+        const char* lengthLabel,
+        const double length,
+        const double angle
+    );
+    void drawLabeledVectorLengthAngleAtCursor(
+        const Base::Vector2d& position,
+        const Base::Vector2d& origin,
+        const char* lengthLabel
+    );
+    void drawLabeledAngleAtCursor(const Base::Vector2d& position, const char* label, const double angle);
 
     int getPreselectPoint() const;
     int getPreselectCurve() const;

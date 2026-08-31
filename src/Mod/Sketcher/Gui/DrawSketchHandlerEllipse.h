@@ -167,7 +167,7 @@ private:
                 CreateAndDrawShapeGeometry();
 
                 if (constructionMethod() == ConstructionMethod::Center) {
-                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, firstRadius);
+                    toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -186,7 +186,7 @@ private:
                 CreateAndDrawShapeGeometry();
 
                 if (constructionMethod() == ConstructionMethod::Center) {
-                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, firstRadius, secondRadius);
+                    toolWidgetManager.drawAxisRadiiAtCursor(onSketchPos, firstRadius, secondRadius);
                 }
                 else {
                     toolWidgetManager.drawPositionAtCursor(onSketchPos);

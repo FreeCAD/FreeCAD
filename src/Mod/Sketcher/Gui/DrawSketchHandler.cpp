@@ -2072,48 +2072,125 @@ void DrawSketchHandler::drawPositionAtCursor(const Base::Vector2d& position)
 
 void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin)
 {
+    drawLabeledVectorLengthAngleAtCursor(position, origin, "L");
+}
+
+void DrawSketchHandler::drawRadiusAngleAtCursor(const Base::Vector2d& position,
+                                                const Base::Vector2d& origin)
+{
+    drawLabeledVectorLengthAngleAtCursor(position, origin, "R");
+}
+
+void DrawSketchHandler::drawLengthWidthAtCursor(const Base::Vector2d& position,
+                                                const double length,
+                                                const double width)
+{
+    drawLabeledLengthPairAtCursor(position, "L", length, "W", width);
+}
+
+void DrawSketchHandler::drawAxisRadiiAtCursor(const Base::Vector2d& position,
+                                              const double major,
+                                              const double minor)
+{
+    drawLabeledLengthPairAtCursor(position, "A", major, "B", minor);
+}
+
+void DrawSketchHandler::drawRadiusDiameterAtCursor(const Base::Vector2d& position,
+                                                   const double radius)
+{
+    drawLabeledLengthPairAtCursor(position, "R", radius, "D", radius * 2.0);
+}
+
+void DrawSketchHandler::drawOffsetAtCursor(const Base::Vector2d& position, const double offset)
+{
+    drawLabeledLengthAtCursor(position, "O", offset);
+}
+
+void DrawSketchHandler::drawThicknessAtCursor(const Base::Vector2d& position, const double thickness)
+{
+    drawLabeledLengthAtCursor(position, "T", thickness);
+}
+
+void DrawSketchHandler::drawAngleAtCursor(const Base::Vector2d& position, const double angle)
+{
+    drawLabeledAngleAtCursor(position, "A", angle);
+}
+
+void DrawSketchHandler::drawLabeledLengthAtCursor(const Base::Vector2d& position,
+                                                  const char* label,
+                                                  const double value)
+{
     if (!showCursorCoords()) {
         return;
     }
 
-    float length = (position - origin).Length();
-    float angle = (position - origin).GetAngle(Base::Vector2d(1.f, 0.f));
+    SbString text;
+    std::string valueString = lengthToDisplayFormat(value, 1);
+    text.sprintf(" (%s %s)", label, valueString.c_str());
+    setPositionText(position, text);
+}
+
+void DrawSketchHandler::drawLabeledLengthPairAtCursor(const Base::Vector2d& position,
+                                                      const char* firstLabel,
+                                                      const double firstValue,
+                                                      const char* secondLabel,
+                                                      const double secondValue)
+{
+    if (!showCursorCoords()) {
+        return;
+    }
+
+    SbString text;
+    std::string firstString = lengthToDisplayFormat(firstValue, 1);
+    std::string secondString = lengthToDisplayFormat(secondValue, 1);
+    text.sprintf(" (%s %s, %s %s)",
+                 firstLabel,
+                 firstString.c_str(),
+                 secondLabel,
+                 secondString.c_str());
+    setPositionText(position, text);
+}
+
+void DrawSketchHandler::drawLabeledLengthAngleAtCursor(const Base::Vector2d& position,
+                                                       const char* lengthLabel,
+                                                       const double length,
+                                                       const double angle)
+{
+    if (!showCursorCoords()) {
+        return;
+    }
 
     SbString text;
     std::string lengthString = lengthToDisplayFormat(length, 1);
-    std::string angleString = angleToDisplayFormat(angle * 180.0 / std::numbers::pi, 1);
-    text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+    std::string angleString = angleToDisplayFormat(Base::toDegrees(angle), 1);
+    text.sprintf(" (%s %s, A %s)", lengthLabel, lengthString.c_str(), angleString.c_str());
     setPositionText(position, text);
 }
 
-void DrawSketchHandler::drawWidthHeightAtCursor(
-    const Base::Vector2d& position,
-    const double val1,
-    const double val2
-)
+void DrawSketchHandler::drawLabeledVectorLengthAngleAtCursor(const Base::Vector2d& position,
+                                                             const Base::Vector2d& origin,
+                                                             const char* lengthLabel)
+{
+    const Base::Vector2d delta = position - origin;
+    drawLabeledLengthAngleAtCursor(
+        position,
+        lengthLabel,
+        delta.Length(),
+        delta.GetAngle(Base::Vector2d(1.0, 0.0))
+    );
+}
+
+void DrawSketchHandler::drawLabeledAngleAtCursor(const Base::Vector2d& position,
+                                                 const char* label,
+                                                 const double angle)
 {
     if (!showCursorCoords()) {
         return;
     }
 
     SbString text;
-    std::string val1String = lengthToDisplayFormat(val1, 1);
-    std::string val2String = lengthToDisplayFormat(val2, 1);
-    text.sprintf(" (%s x %s)", val1String.c_str(), val2String.c_str());
-    setPositionText(position, text);
-}
-
-void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position, const double val, Base::Unit unit)
-{
-    if (!showCursorCoords()) {
-        return;
-    }
-
-    SbString text;
-    std::string doubleString = unit == Base::Unit::Length
-        ? lengthToDisplayFormat(val, 1)
-        : angleToDisplayFormat(Base::toDegrees(val), 1);
-    text.sprintf(" (%s)", doubleString.c_str());
+    std::string angleString = angleToDisplayFormat(Base::toDegrees(angle), 1);
+    text.sprintf(" (%s %s)", label, angleString.c_str());
     setPositionText(position, text);
 }
 

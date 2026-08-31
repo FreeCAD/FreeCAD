@@ -141,7 +141,7 @@ private:
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekSecond: {
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
 
                 startPoint = onSketchPos;
                 startAngle = (startPoint - centerPoint).Angle();
@@ -173,7 +173,7 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
+                toolWidgetManager.drawAngleAtCursor(onSketchPos, arcAngle);
 
                 seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.0, 0.0));
             } break;
@@ -186,7 +186,7 @@ private:
                     r = (onSketchPos - centerPoint).Length();
                 }
 
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, r);
+                toolWidgetManager.drawRadiusDiameterAtCursor(onSketchPos, r);
 
                 CreateAndDrawShapeGeometry();
             } break;

@@ -542,21 +542,54 @@ public:
         }
     }
 
-    void drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
+    void drawRadiusAngleAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin)
     {
         if (shouldDrawDimensionsAtCursor()) {
-            handler->drawWidthHeightAtCursor(position, val1, val2);
+            handler->drawRadiusAngleAtCursor(position, origin);
         }
     }
 
-    void drawDoubleAtCursor(
-        const Base::Vector2d& position,
-        const double radius,
-        Base::Unit unit = Base::Unit::Length
-    )
+    void drawLengthWidthAtCursor(const Base::Vector2d& position,
+                                 const double length,
+                                 const double width)
     {
         if (shouldDrawDimensionsAtCursor()) {
-            handler->drawDoubleAtCursor(position, radius, unit);
+            handler->drawLengthWidthAtCursor(position, length, width);
+        }
+    }
+
+    void drawAxisRadiiAtCursor(const Base::Vector2d& position, const double major, const double minor)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawAxisRadiiAtCursor(position, major, minor);
+        }
+    }
+
+    void drawRadiusDiameterAtCursor(const Base::Vector2d& position, const double radius)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawRadiusDiameterAtCursor(position, radius);
+        }
+    }
+
+    void drawOffsetAtCursor(const Base::Vector2d& position, const double offset)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawOffsetAtCursor(position, offset);
+        }
+    }
+
+    void drawThicknessAtCursor(const Base::Vector2d& position, const double thickness)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawThicknessAtCursor(position, thickness);
+        }
+    }
+
+    void drawAngleAtCursor(const Base::Vector2d& position, const double angle)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawAngleAtCursor(position, angle);
         }
     }
 

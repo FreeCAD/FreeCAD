@@ -135,7 +135,7 @@ private:
                     break;
                 }
 
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                toolWidgetManager.drawRadiusAngleAtCursor(onSketchPos, centerPoint);
                 seekAndRenderAutoConstraint(
                     sugConstraints[1],
                     onSketchPos,
@@ -171,7 +171,7 @@ private:
                 }
 
                 startAngle = std::atan2(delta13Prime.y / secondRadius, delta13Prime.x / a);
-                toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, firstRadius(), secondRadius);
+                toolWidgetManager.drawAxisRadiiAtCursor(onSketchPos, firstRadius(), secondRadius);
                 seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             case SelectMode::SeekFourth: {
@@ -195,7 +195,7 @@ private:
                     break;
                 }
 
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
+                toolWidgetManager.drawAngleAtCursor(onSketchPos, arcAngle);
                 seekAndRenderAutoConstraint(sugConstraints[3], onSketchPos, Base::Vector2d(0.f, 0.f));
             } break;
             default:

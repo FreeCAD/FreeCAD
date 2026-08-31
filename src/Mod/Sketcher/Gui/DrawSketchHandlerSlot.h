@@ -158,7 +158,7 @@ private:
                     radius = std::min(L1, L2);
                 }
 
-                toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
+                toolWidgetManager.drawRadiusDiameterAtCursor(onSketchPos, radius);
 
                 CreateAndDrawShapeGeometry();
             } break;
