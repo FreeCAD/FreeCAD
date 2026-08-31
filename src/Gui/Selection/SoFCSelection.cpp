@@ -451,7 +451,7 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
             const SoPickedPoint* pp = this->getPickedPoint(action);
             if (pp && pp->getPath()->containsPath(action->getCurPath())) {
                 const auto& pt = pp->getPoint();
-                if (bCtrl) {
+                if (bCtrl || bShift) {
                     if (Gui::Selection().isSelected(
                             documentName.getValue().getString(),
                             objectName.getValue().getString(),

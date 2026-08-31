@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64">
+  <rect width="100" height="100" rx="16" fill="#f1f1f1" />
+
+  <text x="50" y="26" font-family="Arial, sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#222">SHIFT+</text>
+
+  <g stroke="#3c3c3c" stroke-width="2.5" fill="none">
+    <defs>
+      <clipPath id="mouse-clip">
+        <rect x="32" y="36" width="36" height="54" rx="18" />
+      </clipPath>
+    </defs>
+
+    <rect x="32" y="36" width="36" height="54" rx="18" fill="#ffffff" />
+
+    <rect x="50" y="36" width="18" height="22" fill="#7fa8d5" stroke="none" clip-path="url(#mouse-clip)" />
+
+    <rect x="32" y="36" width="36" height="54" rx="18" />
+
+    <line x1="32" y1="58" x2="68" y2="58" />
+
+    <line x1="50" y1="36" x2="50" y2="58" />
+
+    <rect x="46" y="44" width="8" height="16" rx="4" fill="#ffffff" />
+  </g>
+</svg>

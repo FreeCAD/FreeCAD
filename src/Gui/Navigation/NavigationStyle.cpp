@@ -50,6 +50,7 @@
 #include <limits>
 
 #include <Base/Interpreter.h>
+#include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 
@@ -2280,7 +2281,14 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
     // check for left click without selecting something
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE) && !processed) {
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
-            if (!ev->wasCtrlDown()) {
+            // Fetch the active navigation style directly from FreeCAD's user preferences
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/View"
+            );
+            std::string activeStyle = hGrp->GetASCII("NavigationStyle", "CADNavigationStyle");
+            bool isAltiumMode = (activeStyle == "Gui::AltiumNavigationStyle");
+
+            if (!(ev->wasCtrlDown() || (ev->wasShiftDown() && isAltiumMode))) {
                 Gui::Selection().clearSelection();
             }
         }

@@ -1,0 +1,14 @@
+
+// Version Number
+#define FCVersionMajor  ""
+#define FCVersionMinor  ""
+#define FCVersionName   ""
+#define FCVersionPoint  ""
+#define FCVersionSuffix ""
+// Displayed Copyright Year (i.e. build year)
+#define FCCopyrightYear 
+// test: $Format:Hash (%H), Date: %ci$
+#define FCRevision      "$WCREV$"      //Highest committed revision number
+#define FCRevisionDate  "$WCDATE$"     //Date of highest committed revision
+#define FCRepositoryURL "$WCURL$"      //Repository URL of the working copy
+

@@ -79,6 +79,8 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
+#include <App/Application.h>
+#include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
@@ -1026,7 +1028,15 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
             auto infos = this->getPickedList(action, !Selection().needPickedList());
             bool greedySel = Gui::Selection().getSelectionStyle()
                 == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
-            greedySel = greedySel || event->wasCtrlDown();
+
+            // Fetch the active navigation style directly from FreeCAD's user preferences
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/View"
+            );
+            std::string activeStyle = hGrp->GetASCII("NavigationStyle", "CADNavigationStyle");
+            bool isAltiumMode = (activeStyle == "Gui::AltiumNavigationStyle");
+
+            greedySel = greedySel || event->wasCtrlDown() || (event->wasShiftDown() && isAltiumMode);
             if (setSelection(infos, greedySel) || greedySel) {
                 action->setHandled();
             }
