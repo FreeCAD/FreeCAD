@@ -312,7 +312,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                             openshape.makeElementCompound(
                                 openwires,
                                 nullptr,
-                                TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                             );
                             if (wires.empty()) {
                                 shape = TopoShape();
@@ -321,7 +321,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                                 shape.makeElementCompound(
                                     wires,
                                     nullptr,
-                                    TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                                 );
                             }
                         }
