@@ -114,7 +114,7 @@ Base::Vector3d cameraViewDirection()
 /// Returns a normal vector that is aligned with axis and points in the same
 /// direction as the camera's view vector, unless current is already aligned
 /// with axis, in which case it is returned (possibly negated to match the
-/// camera's view direction). 
+/// camera's view direction).
 Base::Vector3d presetNormal(const Base::Vector3d& axis, const Base::Vector3d& current)
 {
     if (isAlignedWith(current, axis)) {
@@ -335,8 +335,9 @@ void SectionAnalysisWidget::setupGizmos()
 
     gizmoContainer = Gui::GizmoContainer::create({offsetGizmo, tiltGizmo1, tiltGizmo2}, viewProvider);
 
-    // Dont show the blue line. 
-    // The SoArrowBase negative-height bug makes it point the wrong way, and the arrowhead is already on the other end.
+    // Dont show the blue line.
+    // The SoArrowBase negative-height bug makes it point the wrong way, and the arrowhead is
+    // already on the other end.
     offsetGizmo->getDraggerContainer()->getDragger()->baseGeomVisible = false;
 
     // After create(), because initDragger() applies the theme colours and would
