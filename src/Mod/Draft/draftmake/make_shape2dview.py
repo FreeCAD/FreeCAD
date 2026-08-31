@@ -31,9 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.shape2dview import Shape2DView
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
@@ -72,6 +72,14 @@ def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     return obj
 
 
-makeShape2DView = make_shape2dview
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shape2dview()",
+)
+def makeShape2DView(*args, **kwarg):
+    """DEPRECATED. Use 'make_shape2dview'."""
+    return make_shape2dview(*args, **kwarg)
+
 
 ## @}

@@ -31,10 +31,12 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.polygon import Polygon
-from draftviewproviders.view_base import ViewProviderDraft
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
+
+if App.GuiUp:
+    from draftviewproviders.view_base import ViewProviderDraft
 
 
 def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
@@ -89,6 +91,14 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     return obj
 
 
-makePolygon = make_polygon
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_polygon()",
+)
+def makePolygon(*args, **kwarg):
+    """DEPRECATED. Use 'make_polygon'."""
+    return make_polygon(*args, **kwarg)
+
 
 ## @}

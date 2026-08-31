@@ -31,8 +31,8 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-
 from draftobjects.wpproxy import WorkingPlaneProxy
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
@@ -59,6 +59,14 @@ def make_workingplaneproxy(placement):
         return obj
 
 
-makeWorkingPlaneProxy = make_workingplaneproxy
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_workingplaneproxy()",
+)
+def makeWorkingPlaneProxy(*args, **kwarg):
+    """DEPRECATED. Use 'make_workingplaneproxy'."""
+    return make_workingplaneproxy(*args, **kwarg)
+
 
 ## @}

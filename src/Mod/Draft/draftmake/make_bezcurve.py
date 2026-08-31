@@ -31,11 +31,11 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.translate import translate
 from draftobjects.bezcurve import BezCurve
+from draftutils import gui_utils
+from draftutils import utils
+from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_bezcurve import ViewProviderBezCurve
@@ -111,6 +111,14 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
     return obj
 
 
-makeBezCurve = make_bezcurve
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_bezcurve()",
+)
+def makeBezCurve(*args, **kwarg):
+    """DEPRECATED. Use 'make_bezcurve'."""
+    return make_bezcurve(*args, **kwarg)
+
 
 ## @}

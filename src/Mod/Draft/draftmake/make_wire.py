@@ -32,8 +32,9 @@
 import FreeCAD as App
 from draftgeoutils import geometry as geo_geometry
 from draftobjects.wire import Wire
-from draftutils import utils
 from draftutils import gui_utils
+from draftutils import utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
@@ -129,6 +130,14 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     return obj
 
 
-makeWire = make_wire
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_wire()",
+)
+def makeWire(*args, **kwarg):
+    """DEPRECATED. Use 'make_wire'."""
+    return make_wire(*args, **kwarg)
+
 
 ## @}
