@@ -205,9 +205,9 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
 
 void TaskExtrudeParameters::updateStartUI()
 {
-    const int type = ui->startMode->currentIndex();
-    const bool hasOffset = type != 0;
-    const bool hasReference = type == 2;
+    const auto mode = static_cast<StartMode>(ui->startMode->currentIndex());
+    const bool hasOffset = mode != StartMode::ProfilePlane;
+    const bool hasReference = mode == StartMode::Reference;
 
     ui->labelStartOffset->setVisible(hasOffset);
     ui->startOffsetEdit->setVisible(hasOffset);
@@ -219,29 +219,11 @@ void TaskExtrudeParameters::updateStartUI()
 void TaskExtrudeParameters::updateStartReferenceName()
 {
     auto extrude = getObject<PartDesign::FeatureExtrude>();
-    App::DocumentObject* reference = extrude->StartReference.getValue();
-    const auto subValues = extrude->StartReference.getSubValues();
-    const std::string subName = subValues.empty() ? "" : subValues.front();
-
-    if (!reference) {
-        ui->lineStartReference->clear();
-        ui->lineStartReference->setProperty("FeatureName", QVariant());
-        ui->lineStartReference->setProperty("FaceName", QVariant());
-        ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
-        return;
-    }
-
-    QString text = QString::fromUtf8(reference->Label.getValue());
-    if (subName.rfind("Face", 0) == 0) {
-        text += QStringLiteral(":%1%2").arg(tr("Face"), QString::fromStdString(subName.substr(4)));
-    }
-    else if (!subName.empty()) {
-        text += QStringLiteral(":%1").arg(QString::fromStdString(subName));
-    }
-
-    ui->lineStartReference->setText(text);
-    ui->lineStartReference->setProperty("FeatureName", QByteArray(reference->getNameInDocument()));
-    ui->lineStartReference->setProperty("FaceName", QByteArray(subName.c_str()));
+    updateReferenceName(
+        ui->lineStartReference,
+        extrude->StartReference,
+        tr("No start reference selected")
+    );
 }
 
 void TaskExtrudeParameters::createSideControllers()
@@ -730,11 +712,12 @@ void TaskExtrudeParameters::onStartOffsetChanged(double len)
 void TaskExtrudeParameters::onStartModeChanged(int type)
 {
     auto extrude = getObject<PartDesign::FeatureExtrude>();
+    const auto mode = static_cast<StartMode>(type);
     extrude->StartType.setValue(type);
-    if (type == 2 && !extrude->StartReference.getValue()) {
+    if (mode == StartMode::Reference && !extrude->StartReference.getValue()) {
         ui->buttonStartReference->setChecked(true);
     }
-    else if (type != 2) {
+    else if (mode != StartMode::Reference) {
         setSelectionMode(None);
     }
     updateStartUI();
@@ -1487,7 +1470,7 @@ void TaskExtrudeParameters::translateSidesList(int index)
 
 void TaskExtrudeParameters::handleLineFaceNameClick(QLineEdit* lineEdit)
 {
-    lineEdit->setPlaceholderText(tr("Click on a face in the model"));
+    lineEdit->setPlaceholderText(tr("Face selection active"));
 }
 
 void TaskExtrudeParameters::handleLineFaceNameNo(QLineEdit* lineEdit)

@@ -122,6 +122,15 @@ class AssetPreferencesPage:
 
         self.main_layout.addWidget(self.machines_group)
 
+        # Tool update on load
+        self.tool_update_check = QtGui.QCheckBox(
+            translate(
+                "CAM_PreferencesAssets",
+                "Check for tool updates from the library when opening a document",
+            )
+        )
+        self.main_layout.addWidget(self.tool_update_check)
+
         # Wire up buttons
         self.add_machine_btn.clicked.connect(self.add_machine)
         self.edit_machine_btn.clicked.connect(self.edit_machine)
@@ -166,6 +175,7 @@ class AssetPreferencesPage:
                 return False
         Path.Preferences.setAssetPath(asset_path)
         Path.Preferences.setLastToolLibrary("")
+        Path.Preferences.set_tool_update_on_load_enabled(self.tool_update_check.isChecked())
         return True
 
     def loadSettings(self):
@@ -175,6 +185,7 @@ class AssetPreferencesPage:
         if not asset_path:
             asset_path = str(Path.Preferences.getDefaultAssetPath())
         self.asset_path_edit.setText(asset_path)
+        self.tool_update_check.setChecked(Path.Preferences.tool_update_on_load_enabled())
 
     def add_machine(self):
         # Create a new machine JSON file in the user's machine asset folder

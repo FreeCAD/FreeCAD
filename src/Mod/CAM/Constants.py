@@ -34,14 +34,20 @@ GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 # Canned drilling cycles
 GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
 
+# Additional drilling cycles
+GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
+
+# Tapping cycles (F is the thread pitch, not a feed rate)
+GCODE_MOVE_TAP = ["G74", "G84"]
+
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
 
 # All cutting moves (feed moves, arcs, and drill cycles)
-GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
+GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED
 
 # All move commands (cutting moves + rapid)
-GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
+GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED
 
 # =============================================================================
 # G-Code Modal Commands
@@ -55,13 +61,13 @@ GCODE_UNITS_INCHES = ["G20"]
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
 
+# Commands whose P word is a dwell time in seconds, not a distance
+GCODE_P_IS_DWELL = GCODE_DWELL + ["G73", "G74", "G76", "G82", "G83", "G84", "G86", "G88", "G89"]
+
 GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 
 # Canned cycle cancel
 GCODE_CYCLE_CANCEL = ["G80"]
-
-# Additional drilling cycles
-GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
 
 # Probing
 GCODE_PROBE = ["G38.2"]
@@ -195,6 +201,17 @@ GCODE_NON_CONFORMING = (
     + GCODE_CYCLE_CANCEL
 )
 
+# Axis sets
+
+# Which Parameters can be deduplicated
+AXIS_MODAL = list("XYZUVWABC")  # just motion axis
+PARAMETER_MODAL = AXIS_MODAL + list("F")  # full candidate list
+
+# But, for certain gcodes, you can't treat an axis as modal
+NOT_PARAMETER_MODAL = {
+    # canned drill doesn't allow any axis modal
+    **{g: PARAMETER_MODAL for g in (GCODE_DRILL_EXTENDED + GCODE_MOVE_DRILL)},
+}
 
 # =============================================================================
 # Annotations
@@ -207,3 +224,14 @@ GCODE_NON_CONFORMING = (
 # i.e. allow any gcode
 # absence for false; any non-false presence for true: use "True"
 ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
+
+# G0 moves which can be replaced by G1 with No-Engagement Feed
+ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
+# When de-dup'ing, do not look back at this or previous commands in the stream
+# True|absent|False
+ANNOT_MODAL_BARRIER = "modal_barrier"
+# Don't optimize this G0 into next/previous ones, the motion is salient
+ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
+
+# Pass through string in annotation as command without any changes
+ANNOT_AS_IS = "as-is"

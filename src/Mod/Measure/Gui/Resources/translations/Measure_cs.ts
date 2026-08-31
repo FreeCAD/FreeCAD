@@ -11,7 +11,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
       <source>Default Property Values</source>
-      <translation type="unfinished">Default Property Values</translation>
+      <translation>Výchozí hodnoty položek</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Velikost textu</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="66"/>
@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>Poloměr šipky</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>Výška šipky</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="61"/>
       <source>Element to measure</source>
-      <translation type="unfinished">Element to measure</translation>
+      <translation>Měřená veličina</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="68"/>
       <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
+      <translation>Umístění výsledku</translation>
     </message>
   </context>
   <context>
@@ -98,12 +98,12 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="245"/>
       <source>Total area: %1, Axis distance: %2</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2</translation>
+      <translation>Celková plocha: %1, Vzdálenost os: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="250"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2, Axis angle: %3</translation>
+      <translation>Celková plocha: %1, Vzdálenost osy: %2, Úhel osy: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="259"/>
@@ -143,38 +143,38 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="285"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
+      <translation>Minimální vzdálenost: %1, Vzdálenost osy: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="291"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
+      <translation>Minimální vzdálenost: %1, Vzdálenost od středu: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="298"/>
       <location filename="../../QuickMeasure.cpp" line="315"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2</translation>
+      <translation>Celková délka: %1, Rozteč: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="305"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2, Axis angle: %3</translation>
+      <translation>Celková délka: %1, Rozteč: %2, Úhel osy: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="320"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>Vzdálenost od středu povrchu: 1 %</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="325"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Vzdálenost od středové osy: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="328"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Vzdálenost od středové osy: %1, Úhel osy: %2</translation>
     </message>
   </context>
   <context>
@@ -204,12 +204,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="137"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Měření</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Show Delta</source>
-      <translation type="unfinished">Show Delta</translation>
+      <translation>Zobrazit rozdíl</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="159"/>
@@ -219,17 +219,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="163"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Automatické uložení posledního měření při zahájení nového měření. Pomocí klávesy Shift můžete toto chování dočasně obrátit.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="168"/>
       <source>Additive Selection</source>
-      <translation type="unfinished">Additive Selection</translation>
+      <translation>Aditivní výběr</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="174"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>Je-li toto políčko zaškrtnuto, bude k měření přidán nový výběr. Je-li políčko nezaškrtnuto, je třeba stisknout klávesu Ctrl, aby byl výběr přidán k aktuálnímu měření; v opačném případě se spustí nové měření.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="187"/>
@@ -254,32 +254,32 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="551"/>
       <source>%1 auto-save</source>
-      <translation type="unfinished">%1 auto-save</translation>
+      <translation>%1 automatické ukládání</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 start new measurement</source>
-      <translation type="unfinished">%1 start new measurement</translation>
+      <translation>%1 zahájit nové měření</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
-      <translation type="unfinished">%1 add to measurement</translation>
+      <translation>%1 přidat k měření</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 nové měření, %2 přepnout automatické ukládání</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 přidat k měření, %2 přepnout automatické ukládání</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="281"/>
       <source>Saves the measurement in the active document</source>
-      <translation type="unfinished">Saves the measurement in the active document</translation>
+      <translation>Uloží měření do aktuálního dokumentu</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="287"/>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="288"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Ukončí měřicí úlohu.</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="127"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Bez omezení vzdálenosti</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="135"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="151"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Pozice</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="159"/>
@@ -353,7 +353,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="38"/>
       <source>Objects to measure</source>
-      <translation type="unfinished">Objects to measure</translation>
+      <translation>Měřené objekty</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="58"/>
@@ -363,7 +363,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Těžiště</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -373,27 +373,27 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="124"/>
       <source>Select…</source>
-      <translation type="unfinished">Select…</translation>
+      <translation>Výběr…</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="137"/>
       <source>mm, kg, kg*mm^2</source>
-      <translation type="unfinished">mm, kg, kg*mm^2</translation>
+      <translation>mm, kg, kg*mm^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="142"/>
       <source>m, kg, kg*m^2</source>
-      <translation type="unfinished">m, kg, kg*m^2</translation>
+      <translation>m, kg, kg*m^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="147"/>
       <source>in, lb, lb*in^2</source>
-      <translation type="unfinished">in, lb, lb*in^2</translation>
+      <translation>in, lb, lb*in^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="152"/>
       <source>ft, lb, lb*ft^2</source>
-      <translation type="unfinished">ft, lb, lb*ft^2</translation>
+      <translation>ft, lb, lb*ft^2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="172"/>
@@ -408,12 +408,12 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="200"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Hustota</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Plocha povrchu</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -437,12 +437,12 @@
       <location filename="../../TaskMassProperties.ui" line="339"/>
       <location filename="../../TaskMassProperties.ui" line="472"/>
       <source>Create Datum Point</source>
-      <translation type="unfinished">Create Datum Point</translation>
+      <translation>Vytvořit referenční bod</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
       <source>Inertia Matrix</source>
-      <translation type="unfinished">Inertia Matrix</translation>
+      <translation>Matice setrvačnosti</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
@@ -477,7 +477,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Hlavní momenty setrvačnosti</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
@@ -497,12 +497,60 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Vytvořit hlavní osy LCS</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
+      <translation>Setrvačnost kolem osy</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <source>Parameters</source>
+      <translation>Parametry</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <source>Physical Properties</source>
+      <translation>Fyzikální vlastnosti</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <source>Center of Gravity</source>
+      <translation>Těžiště</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <source>Center of Volume</source>
+      <translation>Střed objemu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <source>Inertia</source>
+      <translation>Setrvačnost</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <source>Close</source>
+      <translation>Zavřít</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <source>Save</source>
+      <translation>Uložit</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <source>Reset</source>
+      <translation>Reset</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <source> (Average)</source>
+      <translation> (Průměr)</translation>
     </message>
   </context>
   <context>
@@ -510,60 +558,12 @@
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
+      <translation>Hmotnostní vlastnosti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
-    </message>
-  </context>
-  <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
-      <source>Parameters</source>
-      <translation>Parametry</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
-      <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
-      <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
-      <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
-      <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
-      <source>Close</source>
-      <translation>Zavřít</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Save</source>
-      <translation>Uložit</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
-      <source>Reset</source>
-      <translation>Reset</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
-      <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
+      <translation>Vypočítá hmotnostní vlastnosti vybraných objektů</translation>
     </message>
   </context>
 </TS>

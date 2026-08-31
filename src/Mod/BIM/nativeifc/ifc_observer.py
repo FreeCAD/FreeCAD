@@ -155,7 +155,7 @@ class ifc_observer:
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def save(self):
         """Saves all IFC documents contained in self.docname Document"""

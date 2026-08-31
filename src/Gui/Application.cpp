@@ -76,6 +76,7 @@
 #include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
+#include "Dialogs/DlgAbout.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
@@ -83,9 +84,11 @@
 #include "EditorView.h"
 #include "ExpressionBindingPy.h"
 #include "FileDialog.h"
+#include "GraphvizView.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
 #include "GuiTestScript.h"
+#include "ImageView.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -95,6 +98,7 @@
 #include "PythonConsolePy.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "MDIViewPyWrap.h"
 #include "MDIViewWithCamera.h"
 #include "Placement.h"
 #include "SoFCDB.h"
@@ -806,7 +810,10 @@ void Application::open(const char* FileName, const char* Module)
                         "User parameter:BaseApp/Preferences/View"
                     );
                     if (hGrp->GetBool("AutoFitToView", true)) {
-                        Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                        Command::doCommand(
+                            Command::Gui,
+                            "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFit\")"
+                        );
                     }
                 }
             }
@@ -2382,6 +2389,7 @@ void Application::initTypes()
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
+    Gui::MDIViewPyWrap                          ::init();
     Gui::MDIViewWithCamera						::init();
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
@@ -2389,6 +2397,9 @@ void Application::initTypes()
     Gui::TextDocumentEditorView                 ::init();
     Gui::EditorView                             ::init();
     Gui::PythonEditorView                       ::init();
+    Gui::ImageView                              ::init();
+    Gui::GraphvizView                           ::init();
+    Gui::Dialog::LicenseView                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();

@@ -449,6 +449,7 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
     Part::PreviewExtension      ::init();
+    Part::PreviewExtensionPython::init();
     Part::PrismExtension        ::init();
     Part::LinearPatternExtension::init();
     Part::PolarPatternExtension ::init();

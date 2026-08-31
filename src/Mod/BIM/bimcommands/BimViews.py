@@ -801,7 +801,7 @@ def show(item, column=None):
                         break
             FreeCADGui.runCommand("Std_OrthographicCamera")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
-            FreeCADGui.SendMsgToActiveView("ViewSelection")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(obj)

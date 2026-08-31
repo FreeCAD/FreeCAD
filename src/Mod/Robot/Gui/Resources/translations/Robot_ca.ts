@@ -292,6 +292,20 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Wrong selection</source>
+      <translation>Selecció incorrecta</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>Seleccioneu un fitxer VRML per al robot</translation>
@@ -312,20 +326,6 @@
       <translation>Fitxers CSV (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
-      <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <source>Wrong selection</source>
-      <translation>Selecció incorrecta</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>Seleccionar un Robot per establir la posició inicial</translation>
@@ -336,10 +336,10 @@
       <translation>Selecciona un Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Selecciona un Robot i un objecte de trajectòria.</translation>
     </message>

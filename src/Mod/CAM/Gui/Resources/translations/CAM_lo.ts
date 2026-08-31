@@ -709,10 +709,10 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>ວັດຖຸທັງໝົດຈະຖືກປະມວນຜົນໂດຍໃຊ້ຄຸນສົມບັດການດຳເນີນການດຽວກັນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PropertyBag.ui" line="62"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
       <source>Add</source>
       <translation>ເພີ່ມ</translation>
     </message>
@@ -722,10 +722,10 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>ລາຍການການດຳເນີນການທີ່ມີເລຂາຄະນິດພື້ນຖານໃນວຽກປັດຈຸບັນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
+      <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
       <source>Remove</source>
       <translation>ລຶບອອກ</translation>
     </message>
@@ -831,15 +831,15 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="26"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="43"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -869,32 +869,32 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <source>Start depth</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <source>Start depth of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນຂອງການດຳເນີນການ. ຈຸດທີ່ສູງທີ່ສຸດໃນແກນ Z ທີ່ການດຳເນີນການຕ້ອງເລີ່ມປະມວນຜົນ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="40"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
       <translation>ສົ່ງຄ່າ Z ຂອງຄຸນລັກສະນະທີ່ເລືອກໄປເປັນຄວາມເລິກເລີ່ມຕົ້ນສຳລັບການດຳເນີນການ</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <source>Final depth</source>
       <translation>ຄວາມເລິກສຸດທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <location filename="../panels/PageDiametersEdit.ui" line="61"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>ຄວາມເລິກຂອງການດຳເນີນການ ເຊິ່ງກົງກັບຄ່າທີ່ຕໍ່າທີ່ສຸດໃນແກນ Z ທີ່ການດຳເນີນການຕ້ອງປະມວນຜົນ.</translation>
     </message>
@@ -902,51 +902,6 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <source>Transfer the Z value of the selected feature as the final depth for the operation</source>
       <translation>ສົ່ງຄ່າ Z ຂອງຄຸນລັກສະນະທີ່ເລືອກໄປເປັນຄວາມເລິກສຸດທ້າຍສຳລັບການດຳເນີນການ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
-      <source>Step down</source>
-      <translation>ໄລຍະກິນລົງ (Step down)</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
-      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
-      <translation>ຄວາມເລິກໃນແກນ Z ທີ່ການດຳເນີນການເຄື່ອນທີ່ລົງລະຫວ່າງຊັ້ນ. ຄ່ານີ້ຂຶ້ນກັບເຄື່ອງມືທີ່ໃຊ້, ວັດສະດຸທີ່ຈະຕັດ, ການຫຼໍ່ເຢັນ ແລະ ປັດໄຈອື່ນໆ. ຄວນເບິ່ງຂໍ້ມູນຈາກຜູ້ຜະລິດເຄື່ອງມືສຳລັບຄ່າທີ່ເໝາະສົມ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
-      <source>Finish step down</source>
-      <translation>ໄລຍະກິນລົງຂັ້ນສຸດທ້າຍ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
-      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
-      <translation>ຄວາມເລິກຂອງການຕັດຂັ້ນສຸດທ້າຍຂອງການດຳເນີນການ. ໃຊ້ເພື່ອເຮັດໃຫ້ຜິວງານລະອຽດຂຶ້ນ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
-      <source>Min Diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງນ້ອຍສຸດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="301"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
-      <source>Max diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງໃຫຍ່ສຸດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
-      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
-      <translation>ສົ່ງຄ່າ Z ຂອງຄຸນລັກສະນະທີ່ເລືອກໄປເປັນຄວາມເລິກສຸດທ້າຍສຳລັບການດຳເນີນການ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
-      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation>ຄວາມສູງທີ່ປອດໄພໃນການເຄື່ອນທີ່ເຄື່ອງມືແບບໄວ. ຫາກຢູ່ຕໍ່າກວ່າຄວາມສູງນີ້, ທຸກການເຄື່ອນທີ່ທາງຂ້າງ ແລະ ທາງລົງຈະຖືກດຳເນີນການດ້ວຍຄວາມໄວປ້ອນ (Feed rate).</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="126"/>
@@ -962,6 +917,25 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageHeightsEdit.ui" line="146"/>
       <source>Transfer the Z value of the selected feature as the start height for the operation</source>
       <translation>ຖ່າຍໂອນຄ່າ Z ຂອງສ່ວນປະກອບທີ່ເລືອກ ເປັນຄວາມສູງເລີ່ມຕົ້ນສຳລັບການປະຕິບັດງານ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <source>Step down</source>
+      <translation>ໄລຍະກິນລົງ (Step down)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
+      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
+      <translation>ຄວາມເລິກໃນແກນ Z ທີ່ການດຳເນີນການເຄື່ອນທີ່ລົງລະຫວ່າງຊັ້ນ. ຄ່ານີ້ຂຶ້ນກັບເຄື່ອງມືທີ່ໃຊ້, ວັດສະດຸທີ່ຈະຕັດ, ການຫຼໍ່ເຢັນ ແລະ ປັດໄຈອື່ນໆ. ຄວນເບິ່ງຂໍ້ມູນຈາກຜູ້ຜະລິດເຄື່ອງມືສຳລັບຄ່າທີ່ເໝາະສົມ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
+      <source>Finish step down</source>
+      <translation>ໄລຍະກິນລົງຂັ້ນສຸດທ້າຍ</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="211"/>
@@ -1024,6 +998,32 @@ Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະ�
       <translation>ໄລຍະຫ່າງຕໍ່າສຸດລະຫວ່າງເຄື່ອງມື ແລະ ຂອງແຂງໃນຂະນະເຄື່ອນທີ່ເຊື່ອມຕໍ່. ໃຊ້ໄດ້ກັບທຸກໂໝດການເຊື່ອມຕໍ່.</translation>
     </message>
     <message>
+      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
+      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
+      <translation>ຄວາມເລິກຂອງການຕັດຂັ້ນສຸດທ້າຍຂອງການດຳເນີນການ. ໃຊ້ເພື່ອເຮັດໃຫ້ຜິວງານລະອຽດຂຶ້ນ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
+      <source>Min Diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງນ້ອຍສຸດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="318"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
+      <source>Max diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງໃຫຍ່ສຸດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
+      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
+      <translation>ສົ່ງຄ່າ Z ຂອງຄຸນລັກສະນະທີ່ເລືອກໄປເປັນຄວາມເລິກສຸດທ້າຍສຳລັບການດຳເນີນການ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
+      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
+      <translation>ຄວາມສູງທີ່ປອດໄພໃນການເຄື່ອນທີ່ເຄື່ອງມືແບບໄວ. ຫາກຢູ່ຕໍ່າກວ່າຄວາມສູງນີ້, ທຸກການເຄື່ອນທີ່ທາງຂ້າງ ແລະ ທາງລົງຈະຖືກດຳເນີນການດ້ວຍຄວາມໄວປ້ອນ (Feed rate).</translation>
+    </message>
+    <message>
       <location filename="../panels/PageHeightsEdit.ui" line="69"/>
       <source>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</source>
       <translation>ຄວາມສູງທີ່ການເຄື່ອນທີ່ທາງຂ້າງຂອງຫົວຕັດຈະບໍ່ຖືກກີດຂວາງໂດຍອຸປະກອນຍຶດຈັບ ຫຼື ຕົວຊີ້ນງານ/ວັດສະດຸຕັ້ງຕົ້ນ.</translation>
@@ -1044,7 +1044,7 @@ Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະ�
       <translation>ນ້ຳຫຼໍ່ເຢັນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="89"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="96"/>
       <source>Type of adaptive operation</source>
       <translation>ປະເພດການດຳເນີນການແບບປັບຕົວ (Adaptive)</translation>
     </message>
@@ -1063,17 +1063,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>ຕັດພາຍໃນ ຫຼື ພາຍນອກຂອງຮູບຊົງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="190"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="159"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>ໄລຍະຍົກເຄື່ອງມືຂຶ້ນໃນຂະນະເຄື່ອນທີ່ໄວຜ່ານບໍລິເວນທີ່ຕັດແລ້ວ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="221"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="176"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>ຄວາມຍາວສູງສຸດຂອງເສັ້ນທາງການເຊື່ອມຕໍ່ແບບບໍ່ຍົກເຄື່ອງມື.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="291"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="308"/>
       <source>Angle of the helix entry cone</source>
       <translation>ມຸມຂອງຮູບຈວຍໃນການລົງແບບກົ້ນຫອຍ</translation>
     </message>
@@ -1083,133 +1083,128 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>ຕົວຄວບຄຸມເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
-      <source>The coolant mode to be used for this operation</source>
-      <translation>ໂໝດນ້ຳຫຼໍ່ເຢັນທີ່ຈະໃຊ້ສຳລັບການດຳເນີນການນີ້</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="38"/>
       <source>Accuracy vs performance</source>
       <translation>ຄວາມຖືກຕ້ອງ ທຽບກັບ ປະສິດທິພາບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="75"/>
-      <source>Force clearing inside-out</source>
-      <translation>ບັງຄັບໃຫ້ລ້າງຜິວຈາກທາງໃນອອກຫາທາງນອກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="96"/>
-      <source>Finishing profile</source>
-      <translation>ເສັ້ນຂອບການກຶງລະອຽດ</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="103"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
-      <source>How much stock to leave on the walls for this operation</source>
-      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການນີ້</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="120"/>
-      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
-      <translation>ໄລຍະກິນຂ້າງທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ, ຄິດເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="145"/>
       <source>Step over (percent)</source>
       <translation>ໄລຍະກິນຂ້າງ (ເປີເຊັນ)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="152"/>
-      <source>The sideways distance the cutting tool moves between successive passes.</source>
-      <translation>ໄລຍະກິນຂ້າງທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ.</translation>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="110"/>
+      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
+      <translation>ໄລຍະກິນຂ້າງທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ, ຄິດເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="162"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="366"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="145"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="135"/>
       <source>Step over (distance)</source>
       <translation>ໄລຍະກິນຂ້າງ (ໄລຍະທາງ)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="243"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="142"/>
+      <source>The sideways distance the cutting tool moves between successive passes.</source>
+      <translation>ໄລຍະກິນຂ້າງທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
+      <source>Toggle keep tool down ratio between 0 and tool diameter</source>
+      <translation type="unfinished">Toggle keep tool down ratio between 0 and tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
+      <source>Force clearing inside-out</source>
+      <translation>ບັງຄັບໃຫ້ລ້າງຜິວຈາກທາງໃນອອກຫາທາງນອກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="260"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation>&lt;b&gt;ພາຣາມິເຕີການລົງແບບກົ້ນຫອຍ (Helix)&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="250"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="71"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="95"/>
       <source>Max pitch</source>
       <translation>ໄລຍະກຽວສູງສຸດ (Max pitch)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="257"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="84"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="108"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
       <translation>ໄລຍະການລົງສູງສຸດທີ່ອະນຸຍາດໃນໜຶ່ງຮອບການໝູນ. ຕັ້ງເປັນ 0 ເພື່ອປິດການຈຳກັດ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="91"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="115"/>
       <source>Max ramp angle</source>
       <translation>ມຸມລົງສູງສຸດ (Max ramp angle)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="291"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
       <translation>ມຸມສູງສຸດທີ່ອະນຸຍາດສຳລັບການລົງແບບກົ້ນຫອຍ. ຕັ້ງເປັນ 0 ເພື່ອປິດການຈຳກັດມຸມ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="301"/>
       <source>Cone angle</source>
       <translation>ມຸມຮູບຈວຍ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="308"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="325"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
       <translation>ເສັ້ນຜ່ານສູນກາງສູງສຸດຂອງການລົງແບບກົ້ນຫອຍ, ຄິດເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="330"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="347"/>
       <source>Min diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງນ້ອຍສຸດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="354"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
       <translation>ເສັ້ນຜ່ານສູນກາງຕໍ່າສຸດທີ່ຍອມຮັບໄດ້ຂອງການລົງແບບກົ້ນຫອຍ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="234"/>
       <source>Use outline</source>
       <translation>ໃຊ້ເສັ້ນຂອບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="183"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="89"/>
       <source>Operation type</source>
       <translation>ປະເພດການດຳເນີນການ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="200"/>
-      <source>Keep tool down ratio</source>
-      <translation>ອັດຕາສ່ວນການຮັກສາເຄື່ອງມືໄວ້ຂ້າງລຸ່ມ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="152"/>
       <source>Lift distance</source>
       <translation>ໄລຍະຍົກຂຶ້ນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="75"/>
       <source>Cut region</source>
       <translation>ບໍລິເວນການຕັດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="365"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
       <source>Stop</source>
       <translation>ຢຸດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
       <source>Direction</source>
       <translation>ທິດທາງ</translation>
     </message>
@@ -1385,53 +1380,65 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>G85: ຍົກເຄື່ອງມືອອກຈາກຮູດ້ວຍຄວາມໄວປ້ອນທີ່ກຳນົດ ແທນການເຄື່ອນທີ່ໄວ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="23"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="47"/>
       <source>Start from</source>
       <translation>ເລີ່ມຕົ້ນຈາກ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="30"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="54"/>
       <source>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</source>
       <translation>ກຳນົດວ່າການລົງແບບກົ້ນຫອຍຄວນເລີ່ມຈາກທາງໃນອອກຫາທາງນອກ ຫຼື ເລີ່ມຈາກທາງນອກເຂົ້າຫາສູນກາງ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="34"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="58"/>
       <source>Inside</source>
       <translation>ທາງໃນ</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="23"/>
+      <source>Side</source>
+      <translation>ຂ້າງ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="30"/>
+      <source>Side of profile on which create Path</source>
+      <translation>ດ້ານຂອງໂປຣໄຟລ໌ທີ່ຈະສ້າງເສັ້ນທາງ (Path)</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="39"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Outside</source>
       <translation>ທາງນອກ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="47"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="71"/>
       <source>Cut mode</source>
       <translation>ໂໝດການຕັດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="54"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="78"/>
       <source>The direction of the circular cuts</source>
       <translation>ທິດທາງຂອງການຕັດແບບວົງມົນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="104"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="128"/>
       <source>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</source>
       <translation>ມຸມລົງສູງສຸດທີ່ອະນຸຍາດໃນການເລີ່ມຕັດ. ຕັ້ງເປັນ 0 ເພື່ອປິດການຈຳກັດ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="142"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
       <translation>ໄລຍະກິນຂ້າງທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ (ຄິດເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="140"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="164"/>
       <source>Radial stock to leave (outer)</source>
       <translation>ເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຕາມລັດສະໝີ (ດ້ານນອກ)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="150"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="174"/>
       <source>How much stock to leave on the outer wall for this operation</source>
       <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານນອກສຳລັບການດຳເນີນການນີ້</translation>
     </message>
@@ -1513,143 +1520,26 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ກຳນົດວ່າການປາດໜ້າຄວນຖືກຈຳກັດໂດຍຮູບຊົງແທ້ຈິງຂອງໜ້າທີ່ເລືອກ ຫຼື ປາດຕາມຮູບຊົງຂອງຂອບເຂດ (Bounding box).</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="45"/>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="49"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="48"/>
       <source>Cut Mode</source>
       <translation>ໂໝດການຕັດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
-      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation>Climb: ການໝູນໄປໃນທິດທາງບວກ. Conventional: ການໝູນໄປໃນທິດທາງລົບ. ສົ່ງຜົນຕໍ່ເຄື່ອງໝາຍຂອງແກນ A ໃນຂະນະຕັດ; ເລືອກໃຫ້ກົງກັບວິທີທີ່ຫົວຕັດກິນເນື້ອວັດສະດຸໃນເຄື່ອງຈັກຂອງທ່ານ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
-      <source>Cut Pattern</source>
-      <translation>ຮູບແບບການຕັດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
-      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation>Spiral: ການກວາດແບບກົ້ນຫອຍຕໍ່ເນື່ອງ — ໄວທີ່ສຸດ ແລະ ຜິວງານຕໍ່ເນື່ອງດີທີ່ສຸດ. Parallel: ການເດີນແບບຊິກແຊັກຕາມແກນ. Rings: ການເດີນແບບວົງແຫວນຄົບຮອບ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
-      <source>Feed Mode</source>
-      <translation>ໂໝດຄວາມໄວປ້ອນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
-      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation>ວິທີຕີຄວາມໝາຍຄວາມໄວປ້ອນແນວນອນ (HorizFeed). Axial Only: ໃຊ້ຄ່າ F ຄົງທີ່ໃນທຸກການເຄື່ອນທີ່. Surface Speed: ປັບຄ່າ F ຕາມການເຄື່ອນທີ່ເພື່ອໃຫ້ຄວາມໄວທີ່ຈຸດສຳພັດໜ້າຜິວຄົງທີ່ຕາມທີ່ກຳນົດ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
-      <source>Start X</source>
-      <translation>ຈຸດເລີ່ມຕົ້ນ X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
-      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
-      <translation>ຕຳແໜ່ງເລີ່ມຕົ້ນຕາມແກນໝູນ (ມມ). ກຳນົດຂອບເຂດເລີ່ມຕົ້ນຂອງບໍລິເວນທີ່ຈະເຮັດຜິວ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
-      <source>Stop X</source>
-      <translation>ຈຸດຢຸດ X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
-      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
-      <translation>ຕຳແໜ່ງຢຸດຕາມແກນໝູນ (ມມ). ຕ້ອງມີຄ່າຫຼາຍກວ່າ Start X.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
-      <source>Start Angle</source>
-      <translation>ມຸມເລີ່ມຕົ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
-      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
-      <translation>ຕຳແໜ່ງມຸມເລີ່ມຕົ້ນ (ອົງສາ). ຈຸດທີ່ການໝູນເລີ່ມຕົ້ນ; ຊ່ວຍໃຫ້ສາມາດເຮັດຜິວພຽງບາງສ່ວນຂອງຮອບໄດ້.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
-      <source>Stop Angle</source>
-      <translation>ມຸມຢຸດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
-      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
-      <translation>ຕຳແໜ່ງມຸມຢຸດ (ອົງສາ). 360 ຄືຄົບໜຶ່ງຮອບ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
-      <source>Step Over</source>
-      <translation>ໄລຍະກິນຂ້າງ (Step Over)</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
-      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation>ໄລຍະການເດີນໄປທາງໜ້າຕໍ່ໜຶ່ງຮອບ (ມມ). Spiral: ຄືໄລຍະກຽວ (pitch). Rings: ໄລຍະຫ່າງລະຫວ່າງວົງແຫວນ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
-      <source>Angular Resolution</source>
-      <translation>ຄວາມລະອຽດຂອງມຸມ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
-      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
-      <translation>ຄວາມໜາແໜ້ນຂອງການເກັບຕົວຢ່າງມຸມຕາມທິດທາງການຕັດ (ອົງສາ). ຄ່ານ້ອຍ = ຜິວລະອຽດແຕ່ G-code ຫຼາຍ; ທົ່ວໄປແມ່ນ 5–15°.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
-      <source>Radial stock to leave</source>
-      <translation>ເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຕາມລັດສະໝີ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
-      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
-      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການນີ້. ໃຊ້ຄ່າບວກໜ້ອຍໜຶ່ງສຳລັບຄ່າເຜື່ອການຕົບແຕ່ງສຳເລັດ; 0 ແມ່ນຈະຕັດລົງຮອດໜ້າຜິວໂດຍກົງ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
-      <source>Max Feed</source>
-      <translation>ຄວາມໄວປ້ອນສູງສຸດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
-      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
-      <translation>ຂີດຈຳກັດສູງສຸດຂອງຄວາມໄວປ້ອນໃນການໝູນ (ມມ/ນາທີ). ປ້ອງກັນບໍ່ໃຫ້ເຄື່ອງໝູນໄວເກີນໄປເມື່ອການຕັດເຂົ້າໃກ້ເສັ້ນສູນກາງ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
-      <source>Restrict to Selected Faces</source>
-      <translation>ຈຳກັດສະເພາະໜ້າທີ່ເລືອກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
-      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
-      <translation>ຖ້າເລືອກ, ຈະຈຳກັດເສັ້ນທາງເຄື່ອງມືໃຫ້ຢູ່ສະເພາະບໍລິເວນໜ້າທີ່ເລືອກເທົ່ານັ້ນ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="58"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="59"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="82"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="56"/>
       <source>Climb</source>
       <translation>ການຕັດແບບ Climb</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="64"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="61"/>
       <source>Conventional</source>
       <translation>ການຕັດແບບ Conventional</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="72"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="69"/>
       <source>Pattern</source>
       <translation>ຮູບແບບ</translation>
     </message>
@@ -1659,200 +1549,124 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ເຄື່ອງມື ແລະ ການຕັ້ງຄ່າທີ່ຈະໃຊ້ສຳລັບການດຳເນີນການນີ້</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="261"/>
       <location filename="../panels/PageToolControllerEdit.ui" line="47"/>
+      <location filename="../panels/SetupGlobal.ui" line="261"/>
       <source>Coolant mode</source>
       <translation>ໂໝດນ້ຳຫຼໍ່ເຢັນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="55"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
+      <source>The coolant mode to be used for this operation</source>
+      <translation>ໂໝດນ້ຳຫຼໍ່ເຢັນທີ່ຈະໃຊ້ສຳລັບການດຳເນີນການນີ້</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="52"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
       <translation>ໂໝດການຕັດ: Climb ໝາຍເຖິງຫົວຕັດໝູນຕ້ານກັບທິດທາງການເຄື່ອນທີ່, ສ່ວນ Conventional ໝາຍເຖິງຫົວຕັດໝູນໄປໃນທິດທາງດຽວກັນກັບການເຄື່ອນທີ່.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="79"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="76"/>
       <source>Pattern the tool bit is moved in to clear the material</source>
       <translation>ຮູບແບບການເຄື່ອນທີ່ຂອງຫົວຕັດເພື່ອລ້າງເນື້ອວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="83"/>
       <source>ZigZag</source>
       <translation>ຊິກແຊັກ (ZigZag)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="96"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
       <source>Spiral</source>
       <translation>ເສັ້ນກົ້ນຫອຍ (Spiral)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="101"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="98"/>
       <source>ZigZagOffset</source>
       <translation>ຊິກແຊັກແບບມີໄລຍະຫ່າງ (ZigZagOffset)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="103"/>
       <source>Line</source>
       <translation>ເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="108"/>
       <source>Grid</source>
       <translation>ຕາຕະລາງ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="116"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
       <source>Triangle</source>
       <translation>ຮູບສາມແຈ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
-      <source>Set picked point as start point</source>
-      <translation>ຕັ້ງຈຸດທີ່ເລືອກເປັນຈຸດເລີ່ມຕົ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
-      <source>Clearing Pattern</source>
-      <translation>ຮູບແບບການລ້າງຜິວ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
-      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
-      <translation>ຮູບແບບການລ້າງຜິວໜ້າ: ຊິກແຊັກ (ZigZag), ສອງທິດທາງ, ທິດທາງດຽວ ຫຼື ເສັ້ນກົ້ນຫອຍ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="56"/>
-      <source>Climb or Conventional milling direction</source>
-      <translation>ທິດທາງການກຶງແບບ Climb ຫຼື Conventional</translation>
-    </message>
-    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="121"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="63"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>Angle</source>
       <translation>ມຸມ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
-      <source>Rotation angle for angled facing operations</source>
-      <translation>ມຸມໝູນສຳລັບການດຳເນີນການປາດໜ້າແບບມີມຸມ</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="128"/>
+      <source>Angle in which the pattern is applied</source>
+      <translation>ມຸມທີ່ໃຊ້ໃນການສ້າງຮູບແບບ</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="73"/>
       <source>°</source>
       <translation>ອົງສາ (°)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
-      <source>Reverse</source>
-      <translation>ກັບດ້ານ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
-      <source>Reverse the cutting direction for the selected pattern</source>
-      <translation>ກັບທິດທາງການຕັດສຳລັບຮູບແບບທີ່ເລືອກ</translation>
-    </message>
-    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="157"/>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="145"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
       <translation>ໄລຍະກິນຂ້າງ ທີ່ເຄື່ອງມືເຄື່ອນທີ່ລະຫວ່າງການຕັດແຕ່ລະຮອບ (ຄິດເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="123"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="320"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="349"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="121"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
-      <source>Pass Extension</source>
-      <translation>ໄລຍະການເດີນເລີຍ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
-      <translation>ໄລຍະທີ່ໃຫ້ການຕັດເດີນເລີຍຂອບເຂດເພື່ອໃຫ້ເຄື່ອງມືອອກຈາກຊີ້ນງານໄດ້ສະດວກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="154"/>
-      <source>Stock Extension</source>
-      <translation>ການຂະຫຍາຍວັດສະດຸຕັ້ງຕົ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="161"/>
-      <source>Extends the boundary in both direction</source>
-      <translation>ຂະຫຍາຍຂອບເຂດໃນທັງສອງທິດທາງ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="174"/>
-      <source>Axial stock to leave</source>
-      <translation>ເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຕາມແກນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
-      <source>How much stock to leave on the floor for this operation</source>
-      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການນີ້</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
-      <source>Angle in which the pattern is applied</source>
-      <translation>ມຸມທີ່ໃຊ້ໃນການສ້າງຮູບແບບ</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="167"/>
-      <source>Material allowance</source>
-      <translation>ເນື້ອວັດສະດຸທີ່ເຫຼືອໄວ້</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="174"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="186"/>
       <source>The amount of material that should be left by this operation in relation to the target shape</source>
       <translation>ຈຳນວນເນື້ອວັດສະດຸທີ່ຄວນເຫຼືອໄວ້ໂດຍການດຳເນີນການນີ້ ເມື່ອທຽບກັບຮູບຊົງເປົ້າໝາຍ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="187"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
       <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
       <translation>ຖ້າເລືອກ, ການດຳເນີນການຈະໃຊ້ສະເພາະເສັ້ນຂອບຂອງເລຂາຄະນິດພື້ນຖານ ແລະ ຈະບໍ່ສົນໃຈຮູທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="190"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
       <source>Ignore holes</source>
       <translation>ບໍ່ສົນໃຈຮູ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="221"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
       <source>Specify if this operation uses a starting point</source>
       <translation>ກຳນົດວ່າການດຳເນີນການນີ້ມີການໃຊ້ຈຸດເລີ່ມຕົ້ນຫຼືບໍ່</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="224"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="190"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>Use start point</source>
       <translation>ໃຊ້ຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="197"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
       <source>Clear edges</source>
       <translation>ລ້າງຂອບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="248"/>
       <source>Min travel</source>
       <translation>ໄລຍະເຄື່ອນທີ່ຕໍ່າສຸດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="211"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="255"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
       <translation>ເລືອກເພື່ອຂ້າມບໍລິເວນທີ່ໄດ້ຖືກກຶງໄປແລ້ວໂດຍການດຳເນີນການກ່ອນໜ້າ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="176"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Use rest machining</source>
       <translation>ໃຊ້ການກຶງສ່ວນທີ່ເຫຼືອ (Rest machining)</translation>
     </message>
@@ -1903,8 +1717,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ບ່ອນວາງ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="56"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="49"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="56"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
       <translation>ທິດທາງການເດີນເສັ້ນຂອບ, ຕາມເຂັມໂມງ ຫຼື ທວນເຂັມໂມງ</translation>
     </message>
@@ -1919,67 +1733,106 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ກຳນົດວ່າການເດີນເສັ້ນຂອບຄວນເຮັດຢູ່ທາງໃນ ຫຼື ທາງນອກຂອງຄຸນລັກສະນະເລຂາຄະນິດ. ສິ່ງນີ້ຈະມີຜົນກໍຕໍ່ເມື່ອເລືອກ &apos;ໃຊ້ການຊົດເຊີຍ&apos; (Use compensation).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="81"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="179"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
+      <source>Radial stock to leave</source>
+      <translation>ເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຕາມລັດສະໝີ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="68"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="204"/>
+      <source>How much stock to leave on the walls for this operation</source>
+      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການນີ້</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="75"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="193"/>
+      <source>Retract threshold</source>
+      <translation type="unfinished">Retract threshold</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="200"/>
+      <source>Distance which will attempts to avoid unnecessary retractions</source>
+      <translation type="unfinished">Distance which will attempts to avoid unnecessary retractions</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="92"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="210"/>
+      <source>Toggle retract threshold between 0 and tool diameter</source>
+      <translation type="unfinished">Toggle retract threshold between 0 and tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="107"/>
       <source>Number of passes</source>
       <translation>ຈຳນວນຮອບການຕັດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="91"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="120"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
       <translation>ຈຳນວນຮອບທີ່ຈະຕັດ. ຫາກຫຼາຍກວ່າໜຶ່ງຮອບ, ຕ້ອງກຳນົດຄ່າ &apos;ໄລຍະກິນຂ້າງຕໍ່ຮອບ&apos; ໃຫ້ຫຼາຍກວ່າສູນ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="98"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
       <source>Pass stepover</source>
       <translation>ໄລຍະກິນຂ້າງຕໍ່ຮອບ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="111"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="134"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
       <translation>ຫາກຕັດຫຼາຍຮອບ, ນີ້ຄືໄລຍະຫ່າງພິເສດຂອງແຕ່ລະຮອບທີ່ເພີ່ມຂຶ້ນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="164"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="187"/>
       <source>Check if this operation should use a starting point</source>
       <translation>ກວດສອບວ່າການດຳເນີນການນີ້ຄວນໃຊ້ຈຸດເລີ່ມຕົ້ນຫຼືບໍ່</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="124"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="275"/>
+      <source>Set picked point as start point</source>
+      <translation>ຕັ້ງຈຸດທີ່ເລືອກເປັນຈຸດເລີ່ມຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
       <translation>ກວດສອບວ່າການດຳເນີນການໂປຣຟາຍ (profile) ນີ້ຄວນປະມວນຜົນຮູໃນເລຂາຄະນິດພື້ນຖານນຳຫຼືບໍ່. ຮູທີ່ພົບຈະຖືກຊົດເຊີຍ (offset) ໂດຍອັດຕະໂນມັດໃນດ້ານການຕັດກົງກັນຂ້າມ ແລະ ດຳເນີນການໃນທິດທາງກົງກັນຂ້າມກັບເສັ້ນຮອບນອກ. ສັງເກດວ່າອັນນີ້ບໍ່ລວມເຖິງຮູຊົງກະບອກ, ເຊິ່ງສົມມຸດວ່າພວກມັນຈະຖືກເຈາະ.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
       <source>Process holes</source>
       <translation>ປະມວນຜົນຮູ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="134"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by &apos;Cut side&apos;.</source>
       <translation>ຫາກໝາຍເລືອກ, ການດຳເນີນການໂປຣຟາຍຈະຖືກຊົດເຊີຍໂດຍລັດສະໝີຂອງເຄື່ອງມື. ທິດທາງການຊົດເຊີຍແມ່ນຖືກກຳນົດໂດຍ 'ດ້ານການຕັດ' (Cut side).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="144"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</source>
       <translation>ກວດສອບວ່າເຈົ້າຕ້ອງການໃຫ້ການດຳເນີນການໂປຣຟາຍນີ້ຖືກນຳໃຊ້ກັບຮູຊົງກະບອກນຳຫຼືບໍ່, ເຊິ່ງປົກກະຕິແລ້ວຈະຖືກເຈາະ. ອັນນີ້ອາດຈະເປັນປະໂຫຍດຫາກບໍ່ມີດອກເຈາະທີ່ມີຂະໜາດເໝາະສົມ ຫຼື ຈຳນວນຮູບໍ່ຄຸ້ມຄ່າກັບການປ່ຽນເຄື່ອງມື. ສັງເກດວ່າດ້ານການຕັດ ແລະ ທິດທາງຈະຖືກກັບດ້ານຕາມຄ່າທີ່ກຳນົດໄວ້.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
       <source>Process circles</source>
       <translation>ປະມວນຜົນວົງມົນ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="154"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
       <translation>ກວດສອບວ່າການດຳເນີນການໂປຣຟາຍນີ້ຄວນປະມວນຜົນເສັ້ນຮອບນອກຂອງຮູບຊົງເລຂາຄະນິດພື້ນຖານນຳຫຼືບໍ່</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
       <source>Use Compensation</source>
       <translation>ໃຊ້ການຊົດເຊີຍ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
       <source>Process Perimeter</source>
       <translation>ປະມວນຜົນເສັ້ນຮອບນອກ</translation>
     </message>
@@ -2295,10 +2148,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>ການປັບຂອບເຂດ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="138"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="135"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="123"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
       <source>Step over</source>
       <translation>ໄລຍະຫ່າງ (Step over)</translation>
@@ -2371,8 +2224,8 @@ Default: OpToolDiameter</source>
       <translation>ໄລຍະຫ່າງ (Offset)</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="113"/>
       <location filename="../panels/PageHeightsEdit.ui" line="62"/>
+      <location filename="../panels/SetupGlobal.ui" line="113"/>
       <source>Clearance</source>
       <translation>ໄລຍະຫ່າງຄວາມປອດໄພ</translation>
     </message>
@@ -2453,8 +2306,8 @@ Default: 3 mm</source>
       <translation>ທິດທາງ</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="43"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="40"/>
+      <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
     </message>
@@ -2489,8 +2342,8 @@ Default: 3 mm</source>
       <translation>ຈຳນວນກຽວຕໍ່ນິ້ວ (TPI)</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
+      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>ການດຳເນີນການ</translation>
     </message>
@@ -2746,6 +2599,176 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <location filename="../panels/PageOpCustomEdit.ui" line="69"/>
       <source>Enter the filename containing the G-code</source>
       <translation>ປ້ອນຊື່ໄຟລ໌ທີ່ມີ G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
+      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
+      <translation>Climb: ການໝູນໄປໃນທິດທາງບວກ. Conventional: ການໝູນໄປໃນທິດທາງລົບ. ສົ່ງຜົນຕໍ່ເຄື່ອງໝາຍຂອງແກນ A ໃນຂະນະຕັດ; ເລືອກໃຫ້ກົງກັບວິທີທີ່ຫົວຕັດກິນເນື້ອວັດສະດຸໃນເຄື່ອງຈັກຂອງທ່ານ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
+      <source>Cut Pattern</source>
+      <translation>ຮູບແບບການຕັດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
+      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
+      <translation>Spiral: ການກວາດແບບກົ້ນຫອຍຕໍ່ເນື່ອງ — ໄວທີ່ສຸດ ແລະ ຜິວງານຕໍ່ເນື່ອງດີທີ່ສຸດ. Parallel: ການເດີນແບບຊິກແຊັກຕາມແກນ. Rings: ການເດີນແບບວົງແຫວນຄົບຮອບ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
+      <source>Feed Mode</source>
+      <translation>ໂໝດຄວາມໄວປ້ອນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
+      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
+      <translation>ວິທີຕີຄວາມໝາຍຄວາມໄວປ້ອນແນວນອນ (HorizFeed). Axial Only: ໃຊ້ຄ່າ F ຄົງທີ່ໃນທຸກການເຄື່ອນທີ່. Surface Speed: ປັບຄ່າ F ຕາມການເຄື່ອນທີ່ເພື່ອໃຫ້ຄວາມໄວທີ່ຈຸດສຳພັດໜ້າຜິວຄົງທີ່ຕາມທີ່ກຳນົດ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
+      <source>Start X</source>
+      <translation>ຈຸດເລີ່ມຕົ້ນ X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
+      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
+      <translation>ຕຳແໜ່ງເລີ່ມຕົ້ນຕາມແກນໝູນ (ມມ). ກຳນົດຂອບເຂດເລີ່ມຕົ້ນຂອງບໍລິເວນທີ່ຈະເຮັດຜິວ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
+      <source>Stop X</source>
+      <translation>ຈຸດຢຸດ X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
+      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
+      <translation>ຕຳແໜ່ງຢຸດຕາມແກນໝູນ (ມມ). ຕ້ອງມີຄ່າຫຼາຍກວ່າ Start X.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
+      <source>Start Angle</source>
+      <translation>ມຸມເລີ່ມຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
+      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
+      <translation>ຕຳແໜ່ງມຸມເລີ່ມຕົ້ນ (ອົງສາ). ຈຸດທີ່ການໝູນເລີ່ມຕົ້ນ; ຊ່ວຍໃຫ້ສາມາດເຮັດຜິວພຽງບາງສ່ວນຂອງຮອບໄດ້.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
+      <source>Stop Angle</source>
+      <translation>ມຸມຢຸດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
+      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
+      <translation>ຕຳແໜ່ງມຸມຢຸດ (ອົງສາ). 360 ຄືຄົບໜຶ່ງຮອບ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
+      <source>Step Over</source>
+      <translation>ໄລຍະກິນຂ້າງ (Step Over)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
+      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
+      <translation>ໄລຍະການເດີນໄປທາງໜ້າຕໍ່ໜຶ່ງຮອບ (ມມ). Spiral: ຄືໄລຍະກຽວ (pitch). Rings: ໄລຍະຫ່າງລະຫວ່າງວົງແຫວນ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
+      <source>Angular Resolution</source>
+      <translation>ຄວາມລະອຽດຂອງມຸມ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
+      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
+      <translation>ຄວາມໜາແໜ້ນຂອງການເກັບຕົວຢ່າງມຸມຕາມທິດທາງການຕັດ (ອົງສາ). ຄ່ານ້ອຍ = ຜິວລະອຽດແຕ່ G-code ຫຼາຍ; ທົ່ວໄປແມ່ນ 5–15°.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
+      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
+      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການນີ້. ໃຊ້ຄ່າບວກໜ້ອຍໜຶ່ງສຳລັບຄ່າເຜື່ອການຕົບແຕ່ງສຳເລັດ; 0 ແມ່ນຈະຕັດລົງຮອດໜ້າຜິວໂດຍກົງ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
+      <source>Max Feed</source>
+      <translation>ຄວາມໄວປ້ອນສູງສຸດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
+      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
+      <translation>ຂີດຈຳກັດສູງສຸດຂອງຄວາມໄວປ້ອນໃນການໝູນ (ມມ/ນາທີ). ປ້ອງກັນບໍ່ໃຫ້ເຄື່ອງໝູນໄວເກີນໄປເມື່ອການຕັດເຂົ້າໃກ້ເສັ້ນສູນກາງ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
+      <source>Restrict to Selected Faces</source>
+      <translation>ຈຳກັດສະເພາະໜ້າທີ່ເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
+      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
+      <translation>ຖ້າເລືອກ, ຈະຈຳກັດເສັ້ນທາງເຄື່ອງມືໃຫ້ຢູ່ສະເພາະບໍລິເວນໜ້າທີ່ເລືອກເທົ່ານັ້ນ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
+      <source>Clearing Pattern</source>
+      <translation>ຮູບແບບການລ້າງຜິວ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
+      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
+      <translation>ຮູບແບບການລ້າງຜິວໜ້າ: ຊິກແຊັກ (ZigZag), ສອງທິດທາງ, ທິດທາງດຽວ ຫຼື ເສັ້ນກົ້ນຫອຍ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="56"/>
+      <source>Climb or Conventional milling direction</source>
+      <translation>ທິດທາງການກຶງແບບ Climb ຫຼື Conventional</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
+      <source>Rotation angle for angled facing operations</source>
+      <translation>ມຸມໝູນສຳລັບການດຳເນີນການປາດໜ້າແບບມີມຸມ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
+      <source>Reverse</source>
+      <translation>ກັບດ້ານ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
+      <source>Reverse the cutting direction for the selected pattern</source>
+      <translation>ກັບທິດທາງການຕັດສຳລັບຮູບແບບທີ່ເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
+      <source>Pass Extension</source>
+      <translation>ໄລຍະການເດີນເລີຍ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
+      <translation>ໄລຍະທີ່ໃຫ້ການຕັດເດີນເລີຍຂອບເຂດເພື່ອໃຫ້ເຄື່ອງມືອອກຈາກຊີ້ນງານໄດ້ສະດວກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="154"/>
+      <source>Stock Extension</source>
+      <translation>ການຂະຫຍາຍວັດສະດຸຕັ້ງຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="161"/>
+      <source>Extends the boundary in both direction</source>
+      <translation>ຂະຫຍາຍຂອບເຂດໃນທັງສອງທິດທາງ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="174"/>
+      <source>Axial stock to leave</source>
+      <translation>ເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຕາມແກນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
+      <source>How much stock to leave on the floor for this operation</source>
+      <translation>ປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການນີ້</translation>
     </message>
   </context>
   <context>
@@ -3119,6 +3142,20 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>ສະແດງຕົວແກ້ໄຂກ່ອນບັນທຶກ G-code</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="436"/>
+      <source>Maximum lines of G-code to use highlighter</source>
+      <translation>ຈຳນວນແຖວສູງສຸດຂອງ G-code ທີ່ຈະໃຊ້ຕົວເນັ້ນສີ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="443"/>
+      <source>Limits lines of G-code which will allow to use highlighter.
+Decrease value if gets perfomance problem in Inspect or export G-code windows.
+Set to zero to disable G-code highlighter.</source>
+      <translation>ຈຳກັດຈຳນວນແຖວຂອງ G-code ທີ່ຈະອະນຸຍາດໃຫ້ໃຊ້ຕົວເນັ້ນສີ.
+ຫຼຸດຄ່າລົງ ຫາກພົບກັບບັນຫາດ້ານປະສິດທິພາບ ໃນໜ້າຕ່າງກວດສອບ ຫຼື ສົ່ງອອກ G-code.
+ຕັ້ງຄ່າເປັນສູນ ເພື່ອປິດການໃຊ້ງານຕົວເນັ້ນສີ G-code.</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
       <translation>ຄວາມໜາຂອງເສັ້ນເລີ່ມຕົ້ນສຳລັບຮູບຊົງໃໝ່</translation>
@@ -3339,8 +3376,8 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>Dogbones (ຮູບຊົງກະດູກໝາ)</translation>
     </message>
     <message>
-      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
+      <location filename="../panels/DogboneEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>Dressup (ການຕົບແຕ່ງ)</translation>
     </message>
@@ -3784,7 +3821,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="988"/>
       <location filename="../panels/PathEdit.ui" line="1438"/>
-      <location filename="../panels/PathEdit.ui" line="1657"/>
+      <location filename="../panels/PathEdit.ui" line="1687"/>
       <source>Edit</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
@@ -4312,6 +4349,7 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="887"/>
+      <location filename="../panels/PathEdit.ui" line="1603"/>
       <source>Coolant</source>
       <translation>ລະບົບຫຼໍ່ເຢັນ</translation>
     </message>
@@ -4413,17 +4451,42 @@ Default: 3 mm</source>
       <translation>ແຜນວຽກ</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1677"/>
+      <location filename="../panels/PathEdit.ui" line="1580"/>
+      <source>#</source>
+      <translation>#</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1585"/>
+      <source>Operation</source>
+      <translation>ການດຳເນີນການ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1590"/>
+      <source>Tool</source>
+      <translation>ເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1598"/>
+      <source>Tool Controller</source>
+      <translation>ຕົວຄວບຄຸມເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1608"/>
+      <source>Time</source>
+      <translation>ເວລາ</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1707"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1688"/>
+      <location filename="../panels/PathEdit.ui" line="1718"/>
       <source>Advanced</source>
       <translation>ຂັ້ນສູງ</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1698"/>
+      <location filename="../panels/PathEdit.ui" line="1728"/>
       <source>Operation Defaults</source>
       <translation>ຄ່າເລີ່ມຕົ້ນຂອງການເຮັດວຽກ</translation>
     </message>
@@ -4497,64 +4560,64 @@ Default: 3 mm</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="74"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="75"/>
       <source>Drag Slider to Simulate</source>
       <translation>ລາກແຖບເລື່ອນເພື່ອຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="85"/>
       <source>Save Project As</source>
       <translation>ບັນທຶກໂຄງການເປັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="86"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="87"/>
       <source>CAMotics Project (*.camotics)</source>
       <translation>ໂຄງການ CAMotics (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="798"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="812"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="801"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="815"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="804"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="818"/>
       <source>Tool number</source>
       <translation>ເລກເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="807"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="821"/>
       <source>Horizontal feedrate</source>
       <translation>ອັດຕາປ້ອນແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="810"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="824"/>
       <source>Vertical feedrate</source>
       <translation>ອັດຕາປ້ອນແນວຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="813"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="827"/>
       <source>Spindle RPM</source>
       <translation>ຮອບແກນໝູນ (RPM)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="703"/>
+      <location filename="../../../Path/Op/Util.py" line="704"/>
       <source>Selected tool is not a drill</source>
       <translation>ເຄື່ອງມືທີ່ເລືອກບໍ່ແມ່ນສະຫວ່ານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="710"/>
+      <location filename="../../../Path/Op/Util.py" line="711"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>ມູມຂອງຄົມຕັດ %.2f ບໍ່ຖືກຕ້ອງ, ຕ້ອງມີຄ່າ &gt;0° ແລະ &lt;=180°</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="720"/>
+      <location filename="../../../Path/Op/Util.py" line="721"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>ມູມຂອງຄົມຕັດ (%.2f) ເຮັດໃຫ້ຄວາມຍາວປາຍເຄື່ອງມືເປັນຄ່າລົບ</translation>
     </message>
@@ -4707,14 +4770,6 @@ Default: 3 mm</source>
       <translation>ກຳນົດວ່າຂອບເຂດ (Boundary) ນັ້ນແມ່ນພື້ນທີ່ຮວມເຂົ້າ ຫຼື ພື້ນທີ່ຍົກເວັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="94"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="145"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="186"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="291"/>
-      <source>Set distance which will attempts to avoid unnecessary retractions.</source>
-      <translation>ຕັ້ງຄ່າໄລຍະຫ່າງເພື່ອພະຍາຍາມຫຼີກລ່ຽງການຍົກເຄື່ອງມືທີ່ບໍ່ຈຳເປັນ.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="103"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="159"/>
       <source>Apply boundary to Rest Machining.</source>
@@ -4828,8 +4883,8 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="61"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="77"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="49"/>
       <source>The base toolpath to modify</source>
       <translation>ເສັ້ນທາງເຄື່ອງມືພື້ນຖານທີ່ຈະປັບແຕ່ງ</translation>
@@ -4850,100 +4905,108 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <translation>ຄວາມສູງທີ່ຈະຍົກຂຶ້ນໃນລະຫວ່າງການກະທຳຢູ່ຈຸດມູມ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="83"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
       <source>Modify lead in to toolpath</source>
       <translation>ປັບແຕ່ງທາງເຂົ້າ (lead in) ຫາເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="89"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="85"/>
       <source>Modify lead out from toolpath</source>
       <translation>ປັບແຕ່ງທາງອອກ (lead out) ຈາກເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="431"/>
       <location filename="../../../Path/Op/Profile.py" line="215"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="93"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="357"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>ຕັ້ງຄ່າໄລຍະຫ່າງເພື່ອພະຍາຍາມຫຼີກລ່ຽງການຍົກເຄື່ອງມືທີ່ບໍ່ຈຳເປັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="297"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="99"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="225"/>
       <source>The style of motion into the toolpath</source>
       <translation>ຮູບແບບການເຄື່ອນທີ່ເຂົ້າຫາເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="314"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="106"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="242"/>
       <source>The style of motion out of the toolpath</source>
       <translation>ຮູບແບບການເຄື່ອນທີ່ອອກຈາກເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="123"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="330"/>
-      <source>Angle of the Lead-In (1..90)</source>
-      <translation>ມູມຂອງທາງເຂົ້າ Lead-In (1..90)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="129"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="338"/>
-      <source>Angle of the Lead-Out (1..90)</source>
-      <translation>ມູມຂອງທາງອອກ Lead-Out (1..90)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="135"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="367"/>
-      <source>Determine length of the Lead-In</source>
-      <translation>ກຳນົດຄວາມຍາວຂອງທາງເຂົ້າ Lead-In</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="141"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="382"/>
-      <source>Determine length of the Lead-Out</source>
-      <translation>ກຳນົດຄວາມຍາວຂອງທາງອອກ Lead-Out</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="147"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="400"/>
-      <source>Invert Lead-In direction</source>
-      <translation>ກັບຄືນທິດທາງ Lead-In</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="153"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="407"/>
-      <source>Invert Lead-Out direction</source>
-      <translation>ກັບຄືນທິດທາງ Lead-Out</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="159"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="414"/>
-      <source>Move start point</source>
-      <translation>ຍ້າຍຈຸດເລີ່ມຕົ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="165"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="421"/>
-      <source>Move end point</source>
-      <translation>ຍ້າຍຈຸດສິ້ນສຸດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="174"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="446"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="170"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="374"/>
       <source>Extends Lead-in distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>ຂະຫຍາຍໄລຍະທາງເຂົ້າ Lead-in
 ໃຊ້ໄດ້ສະເພາະຮູບແບບ: Arc, Line, Perpendicular ແລະ Tangent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="183"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="459"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="179"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="387"/>
       <source>Extends Lead-out distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>ຂະຫຍາຍໄລຍະທາງອອກ Lead-out
 ໃຊ້ໄດ້ສະເພາະຮູບແບບ: Arc, Line, Perpendicular ແລະ Tangent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="117"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="258"/>
+      <source>Angle of the Lead-In (1..90)</source>
+      <translation>ມູມຂອງທາງເຂົ້າ Lead-In (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="266"/>
+      <source>Angle of the Lead-Out (1..90)</source>
+      <translation>ມູມຂອງທາງອອກ Lead-Out (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="131"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="293"/>
+      <source>Determine length of the Lead-In</source>
+      <translation>ກຳນົດຄວາມຍາວຂອງທາງເຂົ້າ Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="119"/>
+      <source>Angle of the Lead-In</source>
+      <translation type="unfinished">Angle of the Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="125"/>
+      <source>Angle of the Lead-Out</source>
+      <translation type="unfinished">Angle of the Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="137"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="308"/>
+      <source>Determine length of the Lead-Out</source>
+      <translation>ກຳນົດຄວາມຍາວຂອງທາງອອກ Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="143"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="326"/>
+      <source>Invert Lead-In direction</source>
+      <translation>ກັບຄືນທິດທາງ Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="149"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="333"/>
+      <source>Invert Lead-Out direction</source>
+      <translation>ກັບຄືນທິດທາງ Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="155"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="340"/>
+      <source>Move start point</source>
+      <translation>ຍ້າຍຈຸດເລີ່ມຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="161"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="347"/>
+      <source>Move end point</source>
+      <translation>ຍ້າຍຈຸດສິ້ນສຸດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="113"/>
       <source>Perform plunges with G0</source>
       <translation>ເຮັດການກັດລົງດ້ວຍ G0</translation>
     </message>
@@ -4971,6 +5034,12 @@ Ramp Method 3: Ramp down along the path until traveled half of the Z distance, c
       <source>The depth where the ramp dressup is enabled.
 Above this depth ramps are not generated, but motion commands are passed through as is.</source>
       <translation>ຄວາມເລິກບ່ອນທີ່ເປີດໃຊ້ງານການຕົບແຕ່ງທາງລາດ. ເໜືອກວ່າຄວາມເລິກນີ້ ທາງລາດຈະບໍ່ຖືກສ້າງຂຶ້ນ, ແຕ່ຄຳສັ່ງການເຄື່ອນທີ່ຈະຖືກສົ່ງຜ່ານໄປຕາມປົກກະຕິ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="97"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="182"/>
+      <source>Calculate ramp angle from vertical plane</source>
+      <translation type="unfinished">Calculate ramp angle from vertical plane</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="80"/>
@@ -5091,9 +5160,9 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>ການຮວບຮວມຕົວຄວບຄຸມເຄື່ອງມືທັງໝົດສຳລັບວຽກນີ້</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Base.py" line="297"/>
+      <location filename="../../../Path/Op/Base.py" line="570"/>
       <location filename="../../../Path/Main/Job.py" line="543"/>
-      <location filename="../../../Path/Op/Base.py" line="296"/>
-      <location filename="../../../Path/Op/Base.py" line="569"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>ການຄາດຄະເນເວລາຮອບຂອງການເຮັດວຽກ</translation>
     </message>
@@ -5138,32 +5207,32 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>ໄລຍະເຜື່ອພິເສດຈາກຂອບເຂດຊິ້ນງານໃນທິດທາງ Z-ບວກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="242"/>
+      <location filename="../../../Path/Main/Stock.py" line="264"/>
       <source>Length of this stock box</source>
       <translation>ຄວາມຍາວຂອງກ່ອງວັດສະດຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="248"/>
+      <location filename="../../../Path/Main/Stock.py" line="270"/>
       <source>Width of this stock box</source>
       <translation>ຄວາມກວ້າງຂອງກ່ອງວັດສະດຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="254"/>
+      <location filename="../../../Path/Main/Stock.py" line="276"/>
       <source>Height of this stock box</source>
       <translation>ຄວາມສູງຂອງກ່ອງວັດສະດຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="294"/>
+      <location filename="../../../Path/Main/Stock.py" line="316"/>
       <source>Radius of this stock cylinder</source>
       <translation>ລັດສະໝີຂອງກະບອກວັດສະດຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="300"/>
+      <location filename="../../../Path/Main/Stock.py" line="322"/>
       <source>Height of this stock cylinder</source>
       <translation>ຄວາມສູງຂອງກະບອກວັດສະດຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="336"/>
+      <location filename="../../../Path/Main/Stock.py" line="358"/>
       <source>Internal representation of stock type</source>
       <translation>ການສະແດງພາຍໃນຂອງປະເພດວັດສະດຸ</translation>
     </message>
@@ -5173,93 +5242,161 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>ໝາຍເລກໄລຍະຫ່າງຂອງອຸປະກອນຈັບຢຶດ (Fixture Offset)</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Base.py" line="271"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
-      <location filename="../../../Path/Op/Base.py" line="270"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>ຕັ້ງເປັນ False ເພື່ອປ້ອງກັນບໍ່ໃຫ້ການເຮັດວຽກນີ້ສ້າງລະຫັດ (code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1547"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1549"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>ດ້ານຂອງໜ້າທີ່ເລືອກ ເຊິ່ງເຄື່ອງມືຄວນຈະກັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1556"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1558"/>
       <source>Type of adaptive operation</source>
       <translation>ປະເພດຂອງການເຮັດວຽກແບບ Adaptive</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
+      <location filename="../../../Path/Op/Helix.py" line="137"/>
+      <source>The direction of the circular cuts, ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>ທິດທາງຂອງການກັດແບບວົງມົນ, ຕາມເຂັມໂມງ (CW) ຫຼື ທວນເຂັມໂມງ (CCW)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="155"/>
+      <location filename="../../../Path/Op/Helix.py" line="557"/>
+      <source>The direction of the circular cuts</source>
+      <translation>ທິດທາງຂອງການກັດແບບວົງມົນ</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1576"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1961"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>ເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມືທີ່ຈະກັດເຜື່ອ (step over) ໃນແຕ່ລະຮອບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
-      <source>Lift distance for rapid moves</source>
-      <translation>ໄລຍະຍົກສຳລັບການເຄື່ອນທີ່ໄວ (rapid)</translation>
+      <location filename="../../../Path/Op/Helix.py" line="176"/>
+      <source>Set how much stock to leave on the inner wall for the operation.
+Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
+For External profile - profile radius</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານໃນສຳລັບການດຳເນີນການ. ລັດສະໝີດ້ານໃນມາດຕະຖານສຳລັບໂປຣຟາຍພາຍໃນແມ່ນ ລັດສະໝີເຄື່ອງມື (Tool radius), ແລະ ບໍ່ສາມາດໜ້ອຍກວ່າ (-ToolRadius). ສຳລັບໂປຣຟາຍພາຍນອກ - ລັດສະໝີໂປຣຟາຍ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
-      <source>Max length of keep tool down path compared to direct distance between points</source>
-      <translation>ຄວາມຍາວສູງສຸດຂອງເສັ້ນທາງທີ່ຈະຮັກສາເຄື່ອງມືລົງຂ້າງລຸ່ມ ເມື່ອທຽບກັບໄລຍະທາງກົງລະຫວ່າງຈຸດ</translation>
+      <location filename="../../../Path/Op/Helix.py" line="185"/>
+      <location filename="../../../Path/Op/Helix.py" line="405"/>
+      <source>Set how much stock to leave on the outer wall for the operation.</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານນອກສຳລັບການດຳເນີນການ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
-      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
-      <location filename="../../../Path/Op/Profile.py" line="145"/>
-      <source>Set how much stock to leave on the walls for the operation.</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການ.</translation>
+      <location filename="../../../Path/Op/Helix.py" line="194"/>
+      <location filename="../../../Path/Op/Helix.py" line="460"/>
+      <source>Cone angle of the Helix</source>
+      <translation>ມູມຈວຍຂອງການກັດແບບກຽວ (Helix)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
-      <source>Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການ. ຄຸນສົມບັດນີ້ຈະຖືກໃຊ້ກໍຕໍ່ເມື່ອເປີດໃຊ້ ModelAwareExperiment ເທົ່ານັ້ນ.</translation>
+      <location filename="../../../Path/Op/Helix.py" line="203"/>
+      <location filename="../../../Path/Op/Helix.py" line="418"/>
+      <source>Create only one Helix</source>
+      <translation>ສ້າງກຽວພຽງອັນດຽວ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
-      <source>The maximum allowable helix ramp entry angle (degrees)
-Set to zero to disable limitation by ramp angle</source>
-      <translation>ມູມທາງເຂົ້າແບບກຽວ (helix ramp) ສູງສຸດທີ່ອະນຸຍາດ (ອົງສາ)
-ຕັ້ງເປັນສູນເພື່ອປິດການຈຳກັດດ້ວຍມູມທາງລາດ</translation>
+      <location filename="../../../Path/Op/Helix.py" line="212"/>
+      <location filename="../../../Path/Op/Helix.py" line="428"/>
+      <source>Create spiral mill</source>
+      <translation>ສ້າງການກັດແບບກົ້ນຫອຍ (spiral mill)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
+      <location filename="../../../Path/Op/Helix.py" line="221"/>
+      <location filename="../../../Path/Op/Helix.py" line="438"/>
+      <source>Create finish full circle for helix</source>
+      <translation>ສ້າງການກັດວົງມົນເຕັມຮອບເພື່ອເກັບລະອຽດສຳລັບກຽວ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="230"/>
+      <location filename="../../../Path/Op/Helix.py" line="449"/>
+      <source>Create finish full circle for spiral</source>
+      <translation>ສ້າງການກັດວົງມົນເຕັມຮອບເພື່ອເກັບລະອຽດສຳລັບກົ້ນຫອຍ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="239"/>
+      <location filename="../../../Path/Op/Helix.py" line="470"/>
+      <source>Side of profile on which create Path</source>
+      <translation>ດ້ານຂອງໂປຣໄຟລ໌ທີ່ຈະສ້າງເສັ້ນທາງ (Path)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="248"/>
+      <location filename="../../../Path/Op/Helix.py" line="481"/>
+      <source>Move from wall while retract if there is free space</source>
+      <translation>ຍ້າຍອອກຈາກຝາໃນຂະນະທີ່ຍົກເຄື່ອງມື ຖ້າມີພື້ນທີ່ຫວ່າງ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="257"/>
+      <location filename="../../../Path/Op/Helix.py" line="492"/>
+      <source>Override arcs feed rate to get constant tool cutting speed</source>
+      <translation>ຂຽນທັບອັດຕາປ້ອນຂອງສ່ວນໂຄ້ງ (arcs feed rate) ເພື່ອໃຫ້ໄດ້ຄວາມໄວການຕັດທີ່ຄົງທີ່</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="267"/>
+      <location filename="../../../Path/Op/Helix.py" line="503"/>
+      <source>Replace profiles diameter to get identical size of the holes
+This value can not be less than tool diameter</source>
+      <translation>ແທນທີ່ເສັ້ນຜ່ານສູນກາງໂປຣໄຟລ໌ເພື່ອໃຫ້ໄດ້ຂະໜາດຮູທີ່ເທົ່າກັນ
+ຄ່ານີ້ບໍ່ສາມາດນ້ອຍກວ່າເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="278"/>
+      <location filename="../../../Path/Op/Helix.py" line="515"/>
+      <source>Determine position of the start and end point
+Angle 0 means start and end points located along axis X
+Set -1 to calculate optimal angle automatically</source>
+      <translation>ກຳນົດຕຳແໜ່ງຂອງຈຸດເລີ່ມຕົ້ນ ແລະ ຈຸດສິ້ນສຸດ
+ມູມ 0 ໝາຍເຖິງຈຸດເລີ່ມຕົ້ນ ແລະ ຈຸດສິ້ນສຸດຢູ່ຕາມແກນ X
+ຕັ້ງເປັນ -1 ເພື່ອຄິດໄລ່ມູມທີ່ດີທີ່ສຸດໂດຍອັດຕະໂນມັດ</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
-      <location filename="../../../Path/Op/Helix.py" line="509"/>
+      <location filename="../../../Path/Op/Helix.py" line="529"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1688"/>
       <source>The maximum allowable descent in a single revolution of the helix
 Set to zero to disable limitation by pitch</source>
       <translation>ໄລຍະກັດລົງສູງສຸດທີ່ອະນຸຍາດໃນການໝູນກຽວໜຶ່ງຮອບ
 ຕັ້ງເປັນສູນເພື່ອປິດການຈຳກັດດ້ວຍໄລຍະຫ່າງກຽວ (pitch)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
-      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງທາງເຂົ້າແບບກຽວສູງສຸດ, ເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
+      <location filename="../../../Path/Op/Helix.py" line="298"/>
+      <location filename="../../../Path/Op/Helix.py" line="547"/>
+      <source>The maximum allowable ramp entry angle
+Set to zero to disable limitation by ramp angle</source>
+      <translation>ມູມທາງເຂົ້າແບບລາດຊັນ (ramp) ສູງສຸດທີ່ອະນຸຍາດ
+ຕັ້ງເປັນສູນເພື່ອປິດການຈຳກັດດ້ວຍມູມທາງລາດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
-      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງທາງເຂົ້າແບບກຽວຕ່ຳສຸດທີ່ຍອມຮັບໄດ້, ເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
+      <location filename="../../../Path/Op/Helix.py" line="307"/>
+      <location filename="../../../Path/Op/Helix.py" line="575"/>
+      <source>Allows to process cone helix from bottom to top</source>
+      <translation>ອະນຸຍາດໃຫ້ປະມວນຜົນກຽວຮູບຈວຍ ຈາກລຸ່ມຂຶ້ນເທິງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
-      <source>Set how much stock to leave on the floor for the operation.</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການ.</translation>
+      <location filename="../../../Path/Op/Helix.py" line="392"/>
+      <source>Set how much stock to leave on the inner wall for the operation.
+Default inner radius is Tool radius and can not be less than (-ToolRadius)
+For External profile - profile radius</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານໃນສຳລັບການດຳເນີນການ. ລັດສະໝີດ້ານໃນມາດຕະຖານແມ່ນ ລັດສະໝີເຄື່ອງມື (Tool radius), ແລະ ບໍ່ສາມາດໜ້ອຍກວ່າ (-ToolRadius). ສຳລັບໂປຣຟາຍພາຍນອກ - ລັດສະໝີໂປຣຟາຍ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
-      <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
-      <translation>ໄລຍະກັດລົງສູງສຸດທີ່ອະນຸຍາດໃນການໝູນກຽວໜຶ່ງຮອບ. ຕັ້ງເປັນ 0 ເພື່ອປິດການຈຳກັດໄລຍະຫ່າງກຽວ.</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="1585"/>
+      <source>Lift distance for rapid moves</source>
+      <translation>ໄລຍະຍົກສຳລັບການເຄື່ອນທີ່ໄວ (rapid)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1594"/>
+      <source>Max length of keep tool down path compared to direct distance between points</source>
+      <translation>ຄວາມຍາວສູງສຸດຂອງເສັ້ນທາງທີ່ຈະຮັກສາເຄື່ອງມືລົງຂ້າງລຸ່ມ ເມື່ອທຽບກັບໄລຍະທາງກົງລະຫວ່າງຈຸດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1567"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5268,55 +5405,84 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 ຄ່າທີ່ໃຫຍ່ກວ່າ (ໄປທາງຂວາ) ຈະຄິດໄລ່ໄວຂຶ້ນ; ຄ່າທີ່ນ້ອຍກວ່າ (ໄປທາງຊ້າຍ) ຈະເຮັດໃຫ້ເສັ້ນທາງເຄື່ອງມືມີຄວາມຊັດເຈນກວ່າ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1612"/>
+      <source>Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການ. ຄຸນສົມບັດນີ້ຈະຖືກໃຊ້ກໍຕໍ່ເມື່ອເປີດໃຊ້ ModelAwareExperiment ເທົ່ານັ້ນ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1621"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>ບັງຄັບໃຫ້ກັດລົງເຂົ້າໄປໃນເນື້ອວັດສະດຸດັງດ້ານໃນ ແລະ ກັດຂະຫຍາຍອອກໄປຫາຂອບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1630"/>
       <source>To take a finishing profile path at the end</source>
       <translation>ເພື່ອເຮັດການກັດເກັບລະອຽດຕາມໂປຣໄຟລ໌ໃນຕອນທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1637"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1647"/>
       <source>Stop processing</source>
       <translation>ຢຸດການປະມວນຜົນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1678"/>
+      <source>The maximum allowable helix ramp entry angle (degrees)
+Set to zero to disable limitation by ramp angle</source>
+      <translation>ມູມທາງເຂົ້າແບບກຽວ (helix ramp) ສູງສຸດທີ່ອະນຸຍາດ (ອົງສາ)
+ຕັ້ງເປັນສູນເພື່ອປິດການຈຳກັດດ້ວຍມູມທາງລາດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1706"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1900"/>
+      <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງທາງເຂົ້າແບບກຽວສູງສຸດ, ເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1715"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1909"/>
+      <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງທາງເຂົ້າແບບກຽວຕ່ຳສຸດທີ່ຍອມຮັບໄດ້, ເປັນເປີເຊັນຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1931"/>
+      <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
+      <translation>ໄລຍະກັດລົງສູງສຸດທີ່ອະນຸຍາດໃນການໝູນກຽວໜຶ່ງຮອບ. ຕັ້ງເປັນ 0 ເພື່ອປິດການຈຳກັດໄລຍະຫ່າງກຽວ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1657"/>
       <source>Internal input state</source>
       <translation>ສະຖານະການນຳເຂົ້າພາຍໃນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1666"/>
       <source>Internal output state</source>
       <translation>ສະຖານະການສົ່ງອອກພາຍໃນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1697"/>
       <source>Helix cone angle (degrees)</source>
       <translation>ມູມຈວຍຂອງກຽວ ( helix cone angle - ອົງສາ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
-      <location filename="../../../Path/Op/PocketShape.py" line="168"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1724"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="82"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>ນຳໃຊ້ເສັ້ນຂອບຂອງເລຂາຄະນິດພື້ນຖານ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1742"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>ຈັດລຳດັບການກັດຕາມພື້ນທີ່ແທນທີ່ຈະເປັນຄວາມເລິກ. ຄຸນສົມບັດນີ້ຈະໃຊ້ໄດ້ກໍຕໍ່ເມື່ອເປີດໃຊ້ ModelAwareExperiment ເທົ່ານັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1757"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1881"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>ເປີດໃຊ້ງານຄຸນສົມບັດ Model Awareness (ທົດລອງ) ເພື່ອໃຫ້ຄວາມສຳຄັນກັບເລຂາຄະນິດ 3D ແລະ ປ້ອງກັນການກັດເຂົ້າໄປກ້ອງສ່ວນທີ່ຍື່ນອອກມາ (overhangs)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1859"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>ຈັດລຳດັບການກັດຕາມພື້ນທີ່ແທນທີ່ຈະເປັນຄວາມເລິກ.</translation>
     </message>
@@ -5327,39 +5493,38 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>ແຍກສ່ວນໂຄ້ງ (Arcs) ເປັນສ່ວນຍ່ອຍໆ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="188"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
+      <location filename="../../../Path/Op/Base.py" line="189"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="68"/>
       <source>The base geometry for this operation</source>
       <translation>ເລຂາຄະນິດພື້ນຖານສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="197"/>
+      <location filename="../../../Path/Op/Base.py" line="198"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>ເກັບຄ່າທີ່ຄິດໄລ່ໄດ້ສຳລັບຄວາມເລິກເລີ່ມຕົ້ນ (StartDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="205"/>
+      <location filename="../../../Path/Op/Base.py" line="206"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>ເກັບຄ່າທີ່ຄິດໄລ່ໄດ້ສຳລັບຄວາມເລິກສຸດທ້າຍ (FinalDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="213"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
+      <location filename="../../../Path/Op/Base.py" line="214"/>
       <source>Holds the diameter of the tool</source>
       <translation>ເກັບຄ່າເສັ້ນຜ່ານສູນກາງຂອງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="221"/>
+      <location filename="../../../Path/Op/Base.py" line="222"/>
       <source>Holds the max Z value of Stock</source>
       <translation>ເກັບຄ່າ Z ສູງສຸດຂອງວັດສະດຸຊິ້ນງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="228"/>
+      <location filename="../../../Path/Op/Base.py" line="229"/>
       <source>Holds the min Z value of Stock</source>
       <translation>ເກັບຄ່າ Z ຕ່ຳສຸດຂອງວັດສະດຸຊິ້ນງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="245"/>
+      <location filename="../../../Path/Op/Base.py" line="246"/>
       <source>Method collision detection to create optimal path between areas
 
 Clearance Height: no collision detection, uses clearance height for rapid moves between areas
@@ -5376,110 +5541,111 @@ Tool Diameter: ສົມດູນ - ກວດສອບໄລຍະຫ່າງ�
 Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະຫ່າງໂດຍໃຊ້ພາກສ່ວນຕັດຂວາງຂອງຮູບຊົງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="258"/>
+      <location filename="../../../Path/Op/Base.py" line="259"/>
       <source>Distance for collision detection</source>
       <translation>ໄລຍະຫ່າງສຳລັບການກວດສອບການຕຳກັນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="278"/>
-      <location filename="../../../Path/Op/Base.py" line="578"/>
+      <location filename="../../../Path/Op/Base.py" line="279"/>
+      <location filename="../../../Path/Op/Base.py" line="579"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>ເປີດໃຊ້ງານຕົວປະມວນຜົນຫຼັງເພື່ອເພີ່ມຄຳສັ່ງລົບລະຫັດ (block delete commands)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="284"/>
+      <location filename="../../../Path/Op/Base.py" line="285"/>
       <source>An optional comment for this Operation</source>
       <translation>ຄຳອະທິບາຍເພີ່ມເຕີມສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="290"/>
+      <location filename="../../../Path/Op/Base.py" line="291"/>
       <source>User Assigned Label</source>
       <translation>ປ້າຍຊື່ທີ່ຜູ້ໃຊ້ກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="307"/>
-      <location filename="../../../Path/Op/Base.py" line="606"/>
+      <location filename="../../../Path/Op/Base.py" line="308"/>
+      <location filename="../../../Path/Op/Base.py" line="607"/>
       <source>The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</source>
       <translation>ການກຳນົດທິດທາງຂອງເຄື່ອງມືສຳລັບການເຮັດວຽກນີ້. ຄ່າເລີ່ມຕົ້ນແມ່ນ (0, 0, 1) ສຳລັບການກັດແບບ Z-ຂຶ້ນ ມາດຕະຖານ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="321"/>
+      <location filename="../../../Path/Op/Base.py" line="322"/>
       <source>Base locations for this operation</source>
       <translation>ຕຳແໜ່ງພື້ນຖານສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="332"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
+      <location filename="../../../Path/Op/Base.py" line="333"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="90"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>ຕົວຄວບຄຸມເຄື່ອງມືທີ່ຈະຖືກໃຊ້ໃນການຄິດໄລ່ເສັ້ນທາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="341"/>
+      <location filename="../../../Path/Op/Base.py" line="342"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="96"/>
       <source>Coolant mode for this operation</source>
       <translation>ໂໝດລະບົບຫຼໍ່ເຢັນສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="349"/>
+      <location filename="../../../Path/Op/Base.py" line="350"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນຂອງເຄື່ອງມື - ຄວາມເລິກຂອງການກັດຄັ້ງທຳອິດໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="355"/>
+      <location filename="../../../Path/Op/Base.py" line="356"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>ຄວາມເລິກສຸດທ້າຍຂອງເຄື່ອງມື - ຄ່າຕ່ຳສຸດໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="369"/>
+      <location filename="../../../Path/Op/Base.py" line="370"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>ຄວາມເລິກເລີ່ມຕົ້ນສຳລັບໃຊ້ພາຍໃນເທົ່ານັ້ນ ເພື່ອຫາຄ່າທີ່ກ່ຽວຂ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="380"/>
-      <location filename="../../../Path/Op/Base.py" line="586"/>
+      <location filename="../../../Path/Op/Base.py" line="381"/>
+      <location filename="../../../Path/Op/Base.py" line="587"/>
       <source>Incremental Step Down of Tool</source>
       <translation>ໄລຍະກິນເລິກສະສົມຂອງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="388"/>
+      <location filename="../../../Path/Op/Base.py" line="389"/>
       <source>Maximum material removed on final pass.</source>
       <translation>ປະລິມານວັດສະດຸສູງສຸດທີ່ຈະຖືກກັດອອກໃນຮອບສຸດທ້າຍ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="399"/>
+      <location filename="../../../Path/Op/Base.py" line="400"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>ຄວາມສູງທີ່ຈຳເປັນເພື່ອໃຫ້ພົ້ນຈາກໂຕຈັບຢຶດ ແລະ ສິ່ງກີດຂວາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="405"/>
+      <location filename="../../../Path/Op/Base.py" line="406"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>ຄວາມສູງປອດໄພສຳລັບການເຄື່ອນທີ່ໄວລະຫວ່າງຕຳແໜ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="413"/>
+      <location filename="../../../Path/Op/Base.py" line="414"/>
       <source>The start point of this path</source>
       <translation>ຈຸດເລີ່ມຕົ້ນຂອງເສັ້ນທາງນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="463"/>
       <location filename="../../../Path/Op/Slot.py" line="223"/>
+      <location filename="../../../Path/Op/Base.py" line="420"/>
+      <location filename="../../../Path/Op/Waterline.py" line="463"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
-      <location filename="../../../Path/Op/Base.py" line="419"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>ຕັ້ງເປັນ True, ຖ້າຕ້ອງການກຳນົດຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="427"/>
+      <location filename="../../../Path/Op/Base.py" line="428"/>
       <source>Lower limit of the turning diameter</source>
       <translation>ຂີດຈຳກັດຕ່ຳສຸດຂອງເສັ້ນຜ່ານສູນກາງການກຶງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="433"/>
+      <location filename="../../../Path/Op/Base.py" line="434"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>ຂີດຈຳກັດສູງສຸດຂອງເສັ້ນຜ່ານສູນກາງການກຶງ.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Base.py" line="550"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
-      <location filename="../../../Path/Op/Base.py" line="549"/>
       <source>Coolant option for this operation</source>
       <translation>ຕົວເລືອກລະບົບຫຼໍ່ເຢັນສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
@@ -5588,14 +5754,14 @@ Tool Shape: ປອດໄພທີ່ສຸດ - ກວດສອບໄລຍະ�
       <translation>ເວລາຢຸດພັກ (dwell) ລະຫວ່າງຮອບການເຈາະແບບ pecking</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="215"/>
       <location filename="../../../Path/Op/Tapping.py" line="117"/>
+      <location filename="../../../Path/Op/Drilling.py" line="215"/>
       <source>Enable dwell</source>
       <translation>ເປີດໃຊ້ງານການຢຸດພັກ (dwell)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="224"/>
       <location filename="../../../Path/Op/Tapping.py" line="126"/>
+      <location filename="../../../Path/Op/Drilling.py" line="224"/>
       <source>Calculate the tip length and subtract from final depth</source>
       <translation>ຄິດໄລ່ຄວາມຍາວຂອງປາຍ ແລະ ລົບອອກຈາກຄວາມເລິກສຸດທ້າຍ</translation>
     </message>
@@ -5679,114 +5845,9 @@ Automatic - ຈັດລຽງເສັ້ນດ້ວຍວິທີເພື�
       <translation>ເມື່ອເປີດໃຊ້ງານ, ຂອບຂອງສ່ວນຂະຫຍາຍທີ່ເຊື່ອມຕໍ່ກັນຈະຖືກຮວມເຂົ້າເປັນເສັ້ນ (wires).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="137"/>
-      <source>The direction of the circular cuts, ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>ທິດທາງຂອງການກັດແບບວົງມົນ, ຕາມເຂັມໂມງ (CW) ຫຼື ທວນເຂັມໂມງ (CCW)</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Helix.py" line="146"/>
       <source>Start cutting from the inside or outside</source>
       <translation>ເລີ່ມການກັດຈາກດ້ານໃນ ຫຼື ດ້ານນອກ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="155"/>
-      <location filename="../../../Path/Op/Helix.py" line="537"/>
-      <source>The direction of the circular cuts</source>
-      <translation>ທິດທາງຂອງການກັດແບບວົງມົນ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="176"/>
-      <source>Set how much stock to leave on the inner wall for the operation.
-Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
-For External profile - profile radius</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານໃນສຳລັບການດຳເນີນການ. ລັດສະໝີດ້ານໃນມາດຕະຖານສຳລັບໂປຣຟາຍພາຍໃນແມ່ນ ລັດສະໝີເຄື່ອງມື (Tool radius), ແລະ ບໍ່ສາມາດໜ້ອຍກວ່າ (-ToolRadius). ສຳລັບໂປຣຟາຍພາຍນອກ - ລັດສະໝີໂປຣຟາຍ.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="185"/>
-      <location filename="../../../Path/Op/Helix.py" line="385"/>
-      <source>Set how much stock to leave on the outer wall for the operation.</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານນອກສຳລັບການດຳເນີນການ.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="194"/>
-      <location filename="../../../Path/Op/Helix.py" line="440"/>
-      <source>Cone angle of the Helix</source>
-      <translation>ມູມຈວຍຂອງການກັດແບບກຽວ (Helix)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="203"/>
-      <location filename="../../../Path/Op/Helix.py" line="398"/>
-      <source>Create only one Helix</source>
-      <translation>ສ້າງກຽວພຽງອັນດຽວ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="212"/>
-      <location filename="../../../Path/Op/Helix.py" line="408"/>
-      <source>Create spiral mill</source>
-      <translation>ສ້າງການກັດແບບກົ້ນຫອຍ (spiral mill)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="221"/>
-      <location filename="../../../Path/Op/Helix.py" line="418"/>
-      <source>Create finish full circle for helix</source>
-      <translation>ສ້າງການກັດວົງມົນເຕັມຮອບເພື່ອເກັບລະອຽດສຳລັບກຽວ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="230"/>
-      <location filename="../../../Path/Op/Helix.py" line="429"/>
-      <source>Create finish full circle for spiral</source>
-      <translation>ສ້າງການກັດວົງມົນເຕັມຮອບເພື່ອເກັບລະອຽດສຳລັບກົ້ນຫອຍ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="239"/>
-      <location filename="../../../Path/Op/Helix.py" line="450"/>
-      <source>Side of profile on which create Path</source>
-      <translation>ດ້ານຂອງໂປຣໄຟລ໌ທີ່ຈະສ້າງເສັ້ນທາງ (Path)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="248"/>
-      <location filename="../../../Path/Op/Helix.py" line="461"/>
-      <source>Move from wall while retract if there is free space</source>
-      <translation>ຍ້າຍອອກຈາກຝາໃນຂະນະທີ່ຍົກເຄື່ອງມື ຖ້າມີພື້ນທີ່ຫວ່າງ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="257"/>
-      <location filename="../../../Path/Op/Helix.py" line="472"/>
-      <source>Override arcs feed rate to get constant tool cutting speed</source>
-      <translation>ຂຽນທັບອັດຕາປ້ອນຂອງສ່ວນໂຄ້ງ (arcs feed rate) ເພື່ອໃຫ້ໄດ້ຄວາມໄວການຕັດທີ່ຄົງທີ່</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="267"/>
-      <location filename="../../../Path/Op/Helix.py" line="483"/>
-      <source>Replace profiles diameter to get identical size of the holes
-This value can not be less than tool diameter</source>
-      <translation>ແທນທີ່ເສັ້ນຜ່ານສູນກາງໂປຣໄຟລ໌ເພື່ອໃຫ້ໄດ້ຂະໜາດຮູທີ່ເທົ່າກັນ
-ຄ່ານີ້ບໍ່ສາມາດນ້ອຍກວ່າເສັ້ນຜ່ານສູນກາງເຄື່ອງມື</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="278"/>
-      <location filename="../../../Path/Op/Helix.py" line="495"/>
-      <source>Determine position of the start and end point
-Angle 0 means start and end points located along axis X
-Set -1 to calculate optimal angle automatically</source>
-      <translation>ກຳນົດຕຳແໜ່ງຂອງຈຸດເລີ່ມຕົ້ນ ແລະ ຈຸດສິ້ນສຸດ
-ມູມ 0 ໝາຍເຖິງຈຸດເລີ່ມຕົ້ນ ແລະ ຈຸດສິ້ນສຸດຢູ່ຕາມແກນ X
-ຕັ້ງເປັນ -1 ເພື່ອຄິດໄລ່ມູມທີ່ດີທີ່ສຸດໂດຍອັດຕະໂນມັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="298"/>
-      <location filename="../../../Path/Op/Helix.py" line="527"/>
-      <source>The maximum allowable ramp entry angle
-Set to zero to disable limitation by ramp angle</source>
-      <translation>ມູມທາງເຂົ້າແບບລາດຊັນ (ramp) ສູງສຸດທີ່ອະນຸຍາດ
-ຕັ້ງເປັນສູນເພື່ອປິດການຈຳກັດດ້ວຍມູມທາງລາດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="372"/>
-      <source>Set how much stock to leave on the inner wall for the operation.
-Default inner radius is Tool radius and can not be less than (-ToolRadius)
-For External profile - profile radius</source>
-      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາດ້ານໃນສຳລັບການດຳເນີນການ. ລັດສະໝີດ້ານໃນມາດຕະຖານແມ່ນ ລັດສະໝີເຄື່ອງມື (Tool radius), ແລະ ບໍ່ສາມາດໜ້ອຍກວ່າ (-ToolRadius). ສຳລັບໂປຣຟາຍພາຍນອກ - ລັດສະໝີໂປຣຟາຍ.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="97"/>
@@ -5804,10 +5865,10 @@ For External profile - profile radius</source>
       <translation>ຍົກເວັ້ນການກັດໃນພື້ນທີ່ທີ່ນູນຂຶ້ນມາພາຍໃນໜ້າຜິວນັ້ນ.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
       <location filename="../../../Path/Op/Surface.py" line="240"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
-      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>ເລືອກວິທີການປະມວນຜົນເມື່ອມີຫຼາຍເລຂາຄະນິດພື້ນຖານ.</translation>
     </message>
@@ -5842,15 +5903,12 @@ For External profile - profile radius</source>
       <translation>ມູມຂອງຮູບແບບຕາຕະລາງ, ເສັ້ນ ແລະ ແຊັກແຊັກ (zigzag)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
-      <location filename="../../../Path/Op/Profile.py" line="226"/>
-      <source>Order processing of the shapes
-Automatic: uses nearest neighbour algorithm to sort shapes
-Manual: uses order of shapes selection</source>
-      <translation>ລຳດັບການປະມວນຜົນຂອງຮູບຊົງ
-ອັດຕະໂນມັດ: ໃຊ້ອັນກໍລິທຶມເພື່ອນບ້ານໃກ້ຄຽງທີ່ສຸດເພື່ອຈັດລຽງຮູບຊົງ
-ດ້ວຍຕົນເອງ: ໃຊ້ຕາມລຳດັບການເລືອກຮູບຊົງ</translation>
+      <location filename="../../../Path/Op/PocketBase.py" line="186"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="291"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="94"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="145"/>
+      <source>Set distance which will attempts to avoid unnecessary retractions.</source>
+      <translation>ຕັ້ງຄ່າໄລຍະຫ່າງເພື່ອພະຍາຍາມຫຼີກລ່ຽງການຍົກເຄື່ອງມືທີ່ບໍ່ຈຳເປັນ.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="215"/>
@@ -5869,8 +5927,8 @@ Manual: uses order of shapes selection</source>
       <translation>ໃຊ້ການຈັດລຽງເສັ້ນທາງແບບ 3D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1733"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1848"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -5908,8 +5966,8 @@ Manual: uses order of shapes selection</source>
       <translation>ຈຳກັດພື້ນທີ່ການວັດແທກຕາມຮູບຊົງ. ຈຸດຄວນຈະຢູ່ພາຍໃນຮູບຊົງທີ່ລະດັບຄວາມເລິກສຸດທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="136"/>
       <location filename="../../../Path/Op/Profile.py" line="110"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="136"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>ທິດທາງທີ່ເສັ້ນທາງເຄື່ອງມືຄວນຈະກັດອ້ອມຊິ້ນງານ ຕາມເຂັມໂມງ (CW) ຫຼື ທວນເຂັມໂມງ (CCW)</translation>
     </message>
@@ -5964,6 +6022,17 @@ Manual: uses order of shapes selection</source>
 Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStartPoint</source>
       <translation>ກຳນົດຈຸດເລີ່ມຕົ້ນທັບໃໝ່
 ຄວນໃຊ້ສະເພາະກັບ Individually HandleMultipleFeatures ແລະ ປິດ UseStartPoint ເທົ່ານັ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Profile.py" line="226"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
+      <source>Order processing of the shapes
+Automatic: uses nearest neighbour algorithm to sort shapes
+Manual: uses order of shapes selection</source>
+      <translation>ລຳດັບການປະມວນຜົນຂອງຮູບຊົງ
+ອັດຕະໂນມັດ: ໃຊ້ອັນກໍລິທຶມເພື່ອນບ້ານໃກ້ຄຽງທີ່ສຸດເພື່ອຈັດລຽງຮູບຊົງ
+ດ້ວຍຕົນເອງ: ໃຊ້ຕາມລຳດັບການເລືອກຮູບຊົງ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
@@ -6337,10 +6406,60 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>ລະເວັ້ນເສັ້ນລະດັບ (Waterline) ດ້ານນອກທີ່ຢູ່ເໜືອຄວາມສູງນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="49"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
+      <location filename="../../../Path/Dressup/Array.py" line="49"/>
       <source>Pattern method</source>
       <translation>ວິທີການສ້າງຮູບແບບ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="132"/>
+      <source>Make copies in X direction before Y in Linear 2D pattern</source>
+      <translation>ສຳເນົາໃນທິດທາງ X ກ່ອນ Y ໃນຮູບແບບ Linear 2D</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="103"/>
+      <location filename="../../../Path/Dressup/Array.py" line="66"/>
+      <source>The number of copies in X-direction in linear pattern</source>
+      <translation>ຈຳນວນສຳເນົາໃນທິດທາງ X ໃນຮູບແບບ Linear</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
+      <location filename="../../../Path/Dressup/Array.py" line="74"/>
+      <source>The number of copies in Y-direction in linear pattern</source>
+      <translation>ຈຳນວນສຳເນົາໃນທິດທາງ Y ໃນຮູບແບບ Linear</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="103"/>
+      <source>Make copies in X-direction before Y in linear 2D pattern</source>
+      <translation>ສຳເນົາໃນທິດທາງ X ກ່ອນ Y ໃນຮູບແບບ Linear 2D</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="109"/>
+      <source>Percent of copies to randomly offset</source>
+      <translation>ເປີເຊັນຂອງການສຳເນົາທີ່ຈະເຮັດໃຫ້ມີໄລຍະຫ່າງແບບສຸ່ມ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="176"/>
+      <location filename="../../../Path/Dressup/Array.py" line="115"/>
+      <source>Maximum random offset of copies</source>
+      <translation>ໄລຍະຫ່າງແບບສຸ່ມສູງສຸດຂອງການສຳເນົາ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="182"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="272"/>
+      <source>Use randomly offset</source>
+      <translation>ໃຊ້ໄລຍະຫ່າງແບບສຸ່ມ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="188"/>
+      <location filename="../../../Path/Dressup/Array.py" line="121"/>
+      <source>Seed value for jitter randomness</source>
+      <translation>ຄ່າເລີ່ມຕົ້ນ (Seed) ສຳລັບການສຸ່ມແບບສັ່ນ (Jitter)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="55"/>
+      <source>The toolpaths to array</source>
+      <translation>ເສັ້ນທາງເຄື່ອງມືທີ່ຈະເຮັດ Array</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
@@ -6355,9 +6474,16 @@ Should be identical for all base operations</source>
       <translation>ຈຳນວນສຳເນົາໃນຮູບແບບ Linear1D ແລະ Polar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="132"/>
-      <source>Make copies in X direction before Y in Linear 2D pattern</source>
-      <translation>ສຳເນົາໃນທິດທາງ X ກ່ອນ Y ໃນຮູບແບບ Linear 2D</translation>
+      <location filename="../../../Path/Op/Gui/Array.py" line="95"/>
+      <location filename="../../../Path/Dressup/Array.py" line="58"/>
+      <source>The spacing between the array copies in linear pattern</source>
+      <translation>ໄລຍະຫ່າງລະຫວ່າງການສຳເນົາ Array ໃນຮູບແບບ Linear</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
+      <location filename="../../../Path/Dressup/Array.py" line="80"/>
+      <source>Total angle in polar pattern</source>
+      <translation>ມຸມທັງໝົດໃນຮູບແບບ Polar</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
@@ -6392,67 +6518,10 @@ If selection without sub elements:
       <translation>ໂໝດການຈັດລຽງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="182"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="272"/>
-      <source>Use randomly offset</source>
-      <translation>ໃຊ້ໄລຍະຫ່າງແບບສຸ່ມ</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="194"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="265"/>
       <source>Max angle of rotation for jitter randomness</source>
       <translation>ມຸມໝູນສູງສຸດສຳລັບການສຸ່ມແບບສັ່ນ (Jitter)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="66"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="103"/>
-      <source>The number of copies in X-direction in linear pattern</source>
-      <translation>ຈຳນວນສຳເນົາໃນທິດທາງ X ໃນຮູບແບບ Linear</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="74"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
-      <source>The number of copies in Y-direction in linear pattern</source>
-      <translation>ຈຳນວນສຳເນົາໃນທິດທາງ Y ໃນຮູບແບບ Linear</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="103"/>
-      <source>Make copies in X-direction before Y in linear 2D pattern</source>
-      <translation>ສຳເນົາໃນທິດທາງ X ກ່ອນ Y ໃນຮູບແບບ Linear 2D</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="109"/>
-      <source>Percent of copies to randomly offset</source>
-      <translation>ເປີເຊັນຂອງການສຳເນົາທີ່ຈະເຮັດໃຫ້ມີໄລຍະຫ່າງແບບສຸ່ມ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="115"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="176"/>
-      <source>Maximum random offset of copies</source>
-      <translation>ໄລຍະຫ່າງແບບສຸ່ມສູງສຸດຂອງການສຳເນົາ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="121"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="188"/>
-      <source>Seed value for jitter randomness</source>
-      <translation>ຄ່າເລີ່ມຕົ້ນ (Seed) ສຳລັບການສຸ່ມແບບສັ່ນ (Jitter)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="55"/>
-      <source>The toolpaths to array</source>
-      <translation>ເສັ້ນທາງເຄື່ອງມືທີ່ຈະເຮັດ Array</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="58"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="95"/>
-      <source>The spacing between the array copies in linear pattern</source>
-      <translation>ໄລຍະຫ່າງລະຫວ່າງການສຳເນົາ Array ໃນຮູບແບບ Linear</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="80"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
-      <source>Total angle in polar pattern</source>
-      <translation>ມຸມທັງໝົດໃນຮູບແບບ Polar</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="88"/>
@@ -6460,8 +6529,8 @@ If selection without sub elements:
       <translation>ຈຳນວນສຳເນົາໃນຮູບແບບ linear 1D ແລະ Polar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="94"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="123"/>
+      <location filename="../../../Path/Dressup/Array.py" line="94"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>ຈຸດສູນກາງຂອງການໝູນໃນຮູບແບບ Polar</translation>
     </message>
@@ -6473,7 +6542,7 @@ If selection without sub elements:
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="80"/>
       <source>Operations cycle time estimation</source>
       <translation>ການປະມານເວລາຮອບການເຮັດວຽກ</translation>
     </message>
@@ -6520,62 +6589,68 @@ If selection without sub elements:
       <translation>ຄຸນສົມບັດທີ່ກຳນົດເອງຈາກຮູບຊົງ: {name}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="144"/>
+      <location filename="../../../Path/Tool/Controller.py" line="145"/>
       <source>The active tool</source>
       <translation>ເຄື່ອງມືທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="151"/>
+      <location filename="../../../Path/Tool/Controller.py" line="152"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>ຄວາມໄວຂອງແກນໝູນຫົວກັດເປັນ RPM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="157"/>
+      <location filename="../../../Path/Tool/Controller.py" line="158"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="364"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="857"/>
       <source>Direction of spindle rotation</source>
       <translation>ທິດທາງການໝູນຂອງແກນໝູນ (Spindle)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="163"/>
+      <location filename="../../../Path/Tool/Controller.py" line="164"/>
       <source>Feed rate for vertical moves in Z</source>
       <translation>ອັດຕາການປ້ອນ (Feed rate) ສຳລັບການເຄື່ອນທີ່ແນວຕັ້ງໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="169"/>
+      <location filename="../../../Path/Tool/Controller.py" line="170"/>
       <source>Feed rate for horizontal moves</source>
       <translation>ອັດຕາການປ້ອນ (Feed rate) ສຳລັບການເຄື່ອນທີ່ແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="175"/>
+      <location filename="../../../Path/Tool/Controller.py" line="176"/>
       <source>Rapid rate for vertical moves in Z</source>
       <translation>ອັດຕາຄວາມໄວສູງ (Rapid rate) ສຳລັບການເຄື່ອນທີ່ແນວຕັ້ງໃນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="181"/>
+      <location filename="../../../Path/Tool/Controller.py" line="182"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>ອັດຕາຄວາມໄວສູງ (Rapid rate) ສຳລັບການເຄື່ອນທີ່ແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="188"/>
-      <location filename="../../../Path/Tool/Controller.py" line="274"/>
+      <location filename="../../../Path/Tool/Controller.py" line="189"/>
+      <location filename="../../../Path/Tool/Controller.py" line="285"/>
       <source>Feed rate for ramp moves</source>
       <translation>ອັດຕາການປ້ອນສຳລັບການເຄື່ອນທີ່ແບບລາດຊັນ (Ramp)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="196"/>
-      <location filename="../../../Path/Tool/Controller.py" line="285"/>
+      <location filename="../../../Path/Tool/Controller.py" line="200"/>
+      <location filename="../../../Path/Tool/Controller.py" line="319"/>
+      <source>Feed rate used when the tool is not engaged in material, but is also not retracted</source>
+      <translation type="unfinished">Feed rate used when the tool is not engaged in material, but is also not retracted</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="207"/>
+      <location filename="../../../Path/Tool/Controller.py" line="296"/>
       <source>Feed rate for lead-in moves</source>
       <translation>ອັດຕາການປ້ອນສຳລັບການເຄື່ອນທີ່ຕອນເຂົ້າ (Lead-in)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="204"/>
-      <location filename="../../../Path/Tool/Controller.py" line="295"/>
+      <location filename="../../../Path/Tool/Controller.py" line="215"/>
+      <location filename="../../../Path/Tool/Controller.py" line="306"/>
       <source>Feed rate for lead-out moves</source>
       <translation>ອັດຕາການປ້ອນສຳລັບການເຄື່ອນທີ່ຕອນອອກ (Lead-out)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="437"/>
+      <location filename="../../../Path/Tool/Controller.py" line="464"/>
       <source>The tool used by this controller</source>
       <translation>ເຄື່ອງມືທີ່ໃຊ້ໂດຍຕົວຄວບຄຸມນີ້</translation>
     </message>
@@ -6605,14 +6680,235 @@ If selection without sub elements:
       <translation>ຄວາມເລິກຂອງການຕາບຖືກຂະຫຍາຍອອກໄປເທົ່າໃດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="64"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="62"/>
+      <source>Make &apos;False&apos; to prevent operation from generating code</source>
+      <translation type="unfinished">Make &apos;False&apos; to prevent operation from generating code</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="74"/>
       <source>An optional comment for this operation</source>
       <translation>ຄຳອະທິບາຍເພີ່ມເຕີມສຳລັບການເຮັດວຽກນີ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="71"/>
-      <source>User assigned label</source>
-      <translation>ປ້າຍຊື່ທີ່ຜູ້ໃຊ້ກຳນົດເອງ</translation>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="104"/>
+      <source>Normal move feed rate</source>
+      <translation type="unfinished">Normal move feed rate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="110"/>
+      <source>Vertical only (step down) move feed rate</source>
+      <translation type="unfinished">Vertical only (step down) move feed rate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="118"/>
+      <source>Feed start position</source>
+      <translation type="unfinished">Feed start position</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="124"/>
+      <source>Enable feed start position</source>
+      <translation type="unfinished">Enable feed start position</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="132"/>
+      <source>Use absolute arc center mode (G90.1)</source>
+      <translation type="unfinished">Use absolute arc center mode (G90.1)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="148"/>
+      <source>Arc drawing plane, corresponding to G17, G18 and G19.
+
+If not &apos;None&apos;, the output wires will be transformed to align with the selected plane,
+and the corresponding GCode will be inserted.
+
+&apos;Auto&apos; means the plane is determined by the first encountered arc plane.
+If the found plane does not align to any GCode plane, XY plane is used.
+
+&apos;Variable&apos; means the arc plane can be changed during operation
+to align to the arc encountered.</source>
+      <translation type="unfinished">Arc drawing plane, corresponding to G17, G18 and G19.
+
+If not &apos;None&apos;, the output wires will be transformed to align with the selected plane,
+and the corresponding GCode will be inserted.
+
+&apos;Auto&apos; means the plane is determined by the first encountered arc plane.
+If the found plane does not align to any GCode plane, XY plane is used.
+
+&apos;Variable&apos; means the arc plane can be changed during operation
+to align to the arc encountered.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="159"/>
+      <source>Break long curves into segments of this length.
+One use case is for PCB autolevel,
+so that more correction points can be inserted.</source>
+      <translation type="unfinished">Break long curves into segments of this length.
+One use case is for PCB autolevel,
+so that more correction points can be inserted.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="170"/>
+      <source>Deflection for non circular curve discretization.
+
+It also also used for discretizing circular wires,
+when you &apos;Explode&apos; the shape for wire operations</source>
+      <translation type="unfinished">Deflection for non circular curve discretization.
+
+It also also used for discretizing circular wires,
+when you &apos;Explode&apos; the shape for wire operations</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="181"/>
+      <source>Minimum distance for the generated new wires.
+Wires maybe broken if the algorithm see fits.
+
+Set zero to disable wire breaking.</source>
+      <translation type="unfinished">Minimum distance for the generated new wires.
+Wires maybe broken if the algorithm see fits.
+
+Set zero to disable wire breaking.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="195"/>
+      <source>Enforce loop orientation.
+
+&apos;Normal&apos; means CCW for outer wires when looking against
+the positive axis direction and CW for inner wires.
+
+&apos;Reversed&apos; means the other way round.</source>
+      <translation type="unfinished">Enforce loop orientation.
+
+&apos;Normal&apos; means CCW for outer wires when looking against
+the positive axis direction and CW for inner wires.
+
+&apos;Reversed&apos; means the other way round.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="201"/>
+      <source>Enforce open path direction</source>
+      <translation type="unfinished">Enforce open path direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="211"/>
+      <source>Invert direction on each step down.
+Only if &apos;HandleMultipleFeatures&apos; is &apos;Individually&apos;.</source>
+      <translation type="unfinished">Invert direction on each step down.
+Only if &apos;HandleMultipleFeatures&apos; is &apos;Individually&apos;.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="222"/>
+      <source>If two wire&apos;s end points are separated within this threshold,
+they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.</source>
+      <translation type="unfinished">If two wire&apos;s end points are separated within this threshold,
+they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="228"/>
+      <source>Add move to Clearanc Height Out in the end</source>
+      <translation type="unfinished">Add move to Clearanc Height Out in the end</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="234"/>
+      <source>Tool retraction axis</source>
+      <translation type="unfinished">Tool retraction axis</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="242"/>
+      <source>Choose how to process multiple Base Geometry features</source>
+      <translation type="unfinished">Choose how to process multiple Base Geometry features</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="248"/>
+      <source>Parameters of Path.fromShapes(**params)</source>
+      <translation type="unfinished">Parameters of Path.fromShapes(**params)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="268"/>
+      <source>Wire sorting mode to optimize travel distance.
+
+&apos;2D5&apos; explode shapes into wires, and groups the shapes by its plane.
+The &apos;start&apos; position chooses the first plane to start.
+The algorithm will then sort within the plane and then move on to the next nearest plane.
+
+&apos;3D&apos; makes no assumption of planarity. The sorting is done across 3D space.
+
+&apos;Greedy&apos; like &apos;2D5&apos; but will try to minimize travel by searching for nearest path below the current milling layer.
+The path in lower layer is only selected if the moving distance is within the value given in &apos;threshold&apos;.</source>
+      <translation type="unfinished">Wire sorting mode to optimize travel distance.
+
+&apos;2D5&apos; explode shapes into wires, and groups the shapes by its plane.
+The &apos;start&apos; position chooses the first plane to start.
+The algorithm will then sort within the plane and then move on to the next nearest plane.
+
+&apos;3D&apos; makes no assumption of planarity. The sorting is done across 3D space.
+
+&apos;Greedy&apos; like &apos;2D5&apos; but will try to minimize travel by searching for nearest path below the current milling layer.
+The path in lower layer is only selected if the moving distance is within the value given in &apos;threshold&apos;.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="278"/>
+      <source>Controls vertex sampling on wire for nearest point searching.
+The sampling is dong using OCC GCPnts_UniformAbscissa.</source>
+      <translation type="unfinished">Controls vertex sampling on wire for nearest point searching.
+The sampling is dong using OCC GCPnts_UniformAbscissa.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="286"/>
+      <source>Nearest k sampling vertices are considered during sorting</source>
+      <translation type="unfinished">Nearest k sampling vertices are considered during sorting</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="297"/>
+      <source>If true, each motion GCode will contain full coordinate and feedrate</source>
+      <translation type="unfinished">If true, each motion GCode will contain full coordinate and feedrate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="309"/>
+      <source>Emit preambles G90.1 G17 G18 G19
+
+Note that emitting preambles between moves breaks some dressups
+and prevents path optimization on some controllers</source>
+      <translation type="unfinished">Emit preambles G90.1 G17 G18 G19
+
+Note that emitting preambles between moves breaks some dressups
+and prevents path optimization on some controllers</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="317"/>
+      <source>Start depth with step depth.</source>
+      <translation type="unfinished">Start depth with step depth.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="323"/>
+      <source>Incremental Step Down of Tool.</source>
+      <translation type="unfinished">Incremental Step Down of Tool.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="332"/>
+      <source>Retraction
+
+Tool retraction absolute coordinate along retraction axis</source>
+      <translation type="unfinished">Retraction
+
+Tool retraction absolute coordinate along retraction axis</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="341"/>
+      <source>Clearance height in the end</source>
+      <translation type="unfinished">Clearance height in the end</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="352"/>
+      <source>Resume Height
+
+When return from last retraction,
+this gives the pause of the next move</source>
+      <translation type="unfinished">Resume Height
+
+When return from last retraction,
+this gives the pause of the next move</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="41"/>
@@ -6623,36 +6919,6 @@ If selection without sub elements:
       <location filename="../../../Path/Tool/toolbit/mixins/cutting.py" line="40"/>
       <source>Chipload per tooth</source>
       <translation>ຄ່າການກັດຕໍ່ແຂ້ວ (Chipload per tooth)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="42"/>
-      <source>The base path for mirroring</source>
-      <translation>ເສັ້ນທາງພື້ນຖານສຳລັບການສະທ້ອນເງົາ (Mirroring)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="48"/>
-      <source>The mirroring axis</source>
-      <translation>ແກນຂອງການສະທ້ອນເງົາ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="54"/>
-      <source>Offset for the mirroring axis </source>
-      <translation>ໄລຍະຫ່າງສຳລັບແກນສະທ້ອນເງົາ </translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="60"/>
-      <source>Mirroring at the center of base model</source>
-      <translation>ສະທ້ອນເງົາທີ່ຈຸດສູນກາງຂອງໂມເດວພື້ນຖານ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="66"/>
-      <source>Add path from base operation</source>
-      <translation>ເພີ່ມເສັ້ນທາງຈາກການເຮັດວຽກພື້ນຖານ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="72"/>
-      <source>Define the reference edge or plane for mirroring</source>
-      <translation>ກຳນົດຂອບ ຫຼື ລະນາບອ້າງອີງສຳລັບການສະທ້ອນເງົາ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="131"/>
@@ -6673,6 +6939,12 @@ If selection without sub elements:
       <location filename="../../../Path/Op/MillFacing.py" line="158"/>
       <source>Set the stepover percentage of tool diameter.</source>
       <translation>ກຳນົດເປີເຊັນ stepover ຂອງເສັ້ນຜ່ານສູນກາງເຄື່ອງມື.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1870"/>
+      <source>Set how much stock to leave on the floor for the operation.</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ພື້ນສຳລັບການດຳເນີນການ.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="176"/>
@@ -6720,6 +6992,13 @@ If selection without sub elements:
       <translation>ໄລຍະຫ່າງຂອງມຸມລະຫວ່າງຈຸດເສັ້ນທາງເຄື່ອງມືທີ່ສຸ່ມຕົວຢ່າງ (ອົງສາ).</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1603"/>
+      <location filename="../../../Path/Op/Profile.py" line="145"/>
+      <source>Set how much stock to leave on the walls for the operation.</source>
+      <translation>ກຳນົດປະລິມານເນື້ອວັດສະດຸທີ່ຈະຈົ່ງໄວ້ຢູ່ຝາສຳລັບການດຳເນີນການ.</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="180"/>
       <source>Climb or Conventional cutting direction.</source>
       <translation>ທິດທາງການກັດແບບ Climb ຫຼື Conventional.</translation>
@@ -6755,7 +7034,12 @@ If selection without sub elements:
       <translation>ການບ່ຽງເບນແນວມຸມຂອງ Tessellation. ຄ່າຍິ່ງນ້ອຍ = ຕາໜ່າງລະອຽດຂຶ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="103"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="94"/>
+      <source>Close open area formed by edges or vertical faces by straight line.</source>
+      <translation>ປິດພື້ນທີ່ເປີດທີ່ເກີດຈາກຂອບ ຫຼື ໜ້າຕັ້ງ ດ້ວຍເສັ້ນຊື່.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="104"/>
       <source>JSON-encoded list of feeds &amp; speeds presets</source>
       <translation>ລາຍຊື່ທີ່ເຂົ້າລະຫັດແບບ JSON ຂອງການຕັ້ງຄ່າອັດຕາປ້ອນ ແລະ ຄວາມໄວລ່ວງໜ້າ</translation>
     </message>
@@ -6768,6 +7052,36 @@ If selection without sub elements:
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
       <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
       <translation>ແຫຼ່ງທີ່ມາຂອງແຕ່ລະຊ່ອງຂໍ້ມູນ: ແຫຼ່ງໃດເປັນຜູ້ກຳນົດຄ່າ HorizFeed/VertFeed/SpindleSpeed</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="42"/>
+      <source>The base path for mirroring</source>
+      <translation>ເສັ້ນທາງພື້ນຖານສຳລັບການສະທ້ອນເງົາ (Mirroring)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="48"/>
+      <source>The mirroring axis</source>
+      <translation>ແກນຂອງການສະທ້ອນເງົາ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="54"/>
+      <source>Offset for the mirroring axis </source>
+      <translation>ໄລຍະຫ່າງສຳລັບແກນສະທ້ອນເງົາ </translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="60"/>
+      <source>Mirroring at the center of base model</source>
+      <translation>ສະທ້ອນເງົາທີ່ຈຸດສູນກາງຂອງໂມເດວພື້ນຖານ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="66"/>
+      <source>Add path from base operation</source>
+      <translation>ເພີ່ມເສັ້ນທາງຈາກການເຮັດວຽກພື້ນຖານ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="72"/>
+      <source>Center point of selected shape defines offset</source>
+      <translation type="unfinished">Center point of selected shape defines offset</translation>
     </message>
   </context>
   <context>
@@ -6796,12 +7110,27 @@ If selection without sub elements:
       <translation>ຄຸນສົມບັດ Stock Material ຖືກຍົກເລີກການໃຊ້ແລ້ວ. ກຳລັງຍ້າຍຄຸນສົມບັດ Material ອອກ. ກະລຸນາໃຊ້ລະບົບວັດສະດຸພື້ນຖານເພື່ອມອບໝາຍ ShapeMaterial</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="599"/>
+      <location filename="../../../Path/Main/Stock.py" line="221"/>
+      <source>Stock length can not be zero or negative. Used length %s mm</source>
+      <translation>ຄວາມຍາວວັດສະດຸ ບໍ່ສາມາດເປັນສູນ ຫຼື ເປັນຄ່າລົບໄດ້. ຄວາມຍາວທີ່ໃຊ້ %s ມມ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="231"/>
+      <source>Stock width can not be zero or negative. Used width %s mm</source>
+      <translation>ຄວາມກວ້າງວັດສະດຸ ບໍ່ສາມາດເປັນສູນ ຫຼື ເປັນຄ່າລົບໄດ້. ຄວາມກວ້າງທີ່ໃຊ້ %s ມມ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="241"/>
+      <source>Stock height can not be zero or negative. Used height %s mm</source>
+      <translation>ຄວາມສູງວັດສະດຸ ບໍ່ສາມາດເປັນສູນ ຫຼື ເປັນຄ່າລົບໄດ້. ຄວາມສູງທີ່ໃຊ້ %s ມມ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="621"/>
       <source>Unsupported stock type named {}</source>
       <translation>ບໍ່ຮອງຮັບປະເພດວັດຖຸດິບທີ່ຊື່ວ່າ {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="603"/>
+      <location filename="../../../Path/Main/Stock.py" line="625"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>ບໍ່ຮອງຮັບເວີຊັນແມ່ແບບ PathStock {}</translation>
     </message>
@@ -6907,19 +7236,6 @@ If selection without sub elements:
       <location filename="../../../Path/Op/Profile.py" line="621"/>
       <source>Unable to create path for face(s).</source>
       <translation>ບໍ່ສາມາດສ້າງເສັ້ນທາງສຳລັບໜ້າໄດ້.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathPocket</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="83"/>
-      <source>Pass Extension</source>
-      <translation>ສ່ວນຂະຫຍາຍຮອບການກັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="89"/>
-      <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation>ໄລຍະຫ່າງທີ່ການກັດປາດໜ້າຈະຂະຫຍາຍອອກໄປນອກຂອບເຂດຮູບຊົງ.</translation>
     </message>
   </context>
   <context>
@@ -7457,47 +7773,55 @@ Aborting op creation</source>
   <context>
     <name>CAM_SelectLoop</name>
     <message>
-      <location filename="../../../PathCommands.py" line="49"/>
+      <location filename="../../../PathCommands.py" line="51"/>
       <source>Finish Selecting Loop</source>
       <translation>ສິ້ນສຸດການເລືອກ Loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="62"/>
-      <source>Completes the selection of edges or faces that forms a loop
+      <location filename="../../../PathCommands.py" line="70"/>
+      <source>Completes the selection of edges or faces that forms a loop.
+Works in described sequence, but can be forced by modifier key.
 
-Select vertical faces: searching loops faces which forms the walls.
+Face selection:
+    Vertical face: searching loops faces which forms the walls
+        or vertical faces with same center height (SHIFT).
+    Horizontal face: searching inner edges of the face (CTRL),
+        outer edges of the face (CTRL + ALT)
+        or horizontal faces at the same height (SHIFT).
+    Otherwise select all edges of the face (ALT).
 
-Select horizontal face: searching inner edges of the face or coplanar faces.
+Edge selection:
+    One edge: searching loop edges in horizontal plane.
+    Two edges: searching loop edges in wires of the shape or tangent edges (CTRL).
+    Otherwise searching horizontal wires which contain selected edges (ALT).
 
-Select one edge: searching loop edges in horizontal plane
-or wire which contain selected edge.
+Without sub selection:
+    Select all edges, faces (ALT) or vertexes (CTRL) of the model.</source>
+      <translation>ສໍາເລັດການເລືອກຂອບ ຫຼື ໜ້າ ທີ່ປະກອບເປັນວົງຮອບ.
+ເຮັດວຽກຕາມລໍາດັບທີ່ອະທິບາຍໄວ້, ແຕ່ສາມາດບັງຄັບໄດ້ໂດຍປຸ່ມປ່ຽນແກ້.
 
-Select two edges: searching loop edges in wires of the shape
-or tangent edges.
+ການເລືອກໜ້າ:
+█ ໜ້າຕັ້ງ: ຄົ້ນຫາໜ້າແບບວົງຮອບທີ່ປະກອບເປັນຝາ
+█ ຫຼື ໜ້າຕັ້ງທີ່ມີຄວາມສູງຈຸດໃຈກາງດຽວກັນ (SHIFT).
+█ ໜ້າພຽງ: ຄົ້ນຫາຂອບດ້ານໃນຂອງໜ້າ (CTRL),
+█ ຂອບດ້ານນອກຂອງໜ້າ (CTRL + ALT)
+█ ຫຼື ໜ້າພຽງໃນລະດັບຄວາມສູງດຽວກັນ (SHIFT).
+█ ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ເລືອກຂອບທັງໝົດຂອງໜ້າ (ALT).
 
-Select three or more edges: searching horizontal wires.
+ການເລືອກຂອບ:
+█ ຂອບດຽວ: ຄົ້ນຫາຂອບແບບວົງຮອບໃນລະນາບພຽງ.
+█ ສອງຂອບ: ຄົ້ນຫາຂອບແບບວົງຮອບໃນເສັ້ນເຊື່ອມຂອງຮູບຊົງ ຫຼື ຂອບສຳຜັດ (CTRL).
+█ ຖ້າບໍ່ດັ່ງນັ້ນ ໃຫ້ຄົ້ນຫາເສັ້ນເຊື່ອມແນວນອນທີ່ມີຂອບທີ່ຖືກເລືອກ (ALT).
 
-Without sub selection all edges of the shape will be selected.</source>
-      <translation>ເຮັດໃຫ້ການເລືອກຂອບ ຫຼື ໜ້າ ທີ່ປະກອບເປັນ loop ສຳເລັດ
-
-ເລືອກໜ້າແນວຕັ້ງ: ຄົ້ນຫາໜ້າທີ່ປະກອບເປັນຝາ (Walls).
-
-ເລືອກໜ້າແນວນອນ: ຄົ້ນຫາຂອບພາຍໃນຂອງໜ້າ ຫຼື ໜ້າທີ່ຢູ່ໃນລະນາບດຽວກັນ.
-
-ເລືອກໜຶ່ງຂອບ: ຄົ້ນຫາຂອບ loop ໃນລະນາບແນວນອນ ຫຼື ເສັ້ນລວດ (Wire) ທີ່ມີຂອບທີ່ເລືອກ.
-
-ເລືອກສອງຂອບ: ຄົ້ນຫາຂອບ loop ໃນເສັ້ນລວດຂອງຮູບຊົງ ຫຼື ຂອບສຳຜັດ (Tangent).
-
-ເລືອກສາມຂອບຂຶ້ນໄປ: ຄົ້ນຫາເສັ້ນລວດແນວນອນ.
-
-ຖ້າບໍ່ມີການເລືອກອົງປະກອບຍ່ອຍ, ຂອບທັງໝົດຂອງຮູບຊົງຈະຖືກເລືອກ.</translation>
+ໂດຍບໍ່ມີການເລືອກຍ່ອຍ:
+█ ເລືອກຂອບທັງໝົດ, ໜ້າ (ALT) ຫຼື ຈຸດຈອມ (CTRL) ຂອງຕົວແບບ.</translation>
     </message>
   </context>
   <context>
     <name>CAM_DressupLeadInOut</name>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="37"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="113"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="123"/>
       <source>Style</source>
       <translation>ຮູບແບບ</translation>
     </message>
@@ -7508,139 +7832,145 @@ Without sub selection all edges of the shape will be selected.</source>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="70"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="146"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="156"/>
       <source>Angle</source>
       <translation>ມຸມ</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="60"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="136"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="146"/>
       <source>Radius/length</source>
       <translation>ລັດສະໝີ/ຄວາມຍາວ</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="80"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="166"/>
+      <source>Extend</source>
+      <translation>ຂະຫຍາຍ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="90"/>
       <source>Offset Entrance Location</source>
       <translation>ໄລຍະຫ່າງຕຳແໜ່ງທາງເຂົ້າ</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="90"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="166"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="100"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Invert Direction</source>
       <translation>ປີ້ນທິດທາງ</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
       <source>Lead Out</source>
       <translation>ທາງອອກ (Lead Out)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="156"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="176"/>
       <source>Offset Exit Location</source>
       <translation>ໄລຍະຫ່າງຕຳແໜ່ງທາງອອກ</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="189"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="209"/>
       <source>Rapid plunge</source>
       <translation>ການລົງແບບໄວ (Rapid plunge)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="196"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="216"/>
       <source>Retract Threshold</source>
       <translation>ເກນການຖອຍ (Retract Threshold)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="206"/>
       <source>Plunge at rapid speed</source>
       <translation>ປັກລົງດ້ວຍຄວາມໄວສູງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="50"/>
       <source>Arc</source>
       <translation>ເສັ້ນໂຄ້ງ (Arc)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1727"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="859"/>
       <source>Lead In/Out</source>
       <translation>ທາງເຂົ້າ/ອອກ (Lead In/Out)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
       <source>Line</source>
       <translation>ເສັ້ນຊື່</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
       <source>Perpendicular</source>
       <translation>ຕັ້ງສາກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
       <source>Tangent</source>
       <translation>ເສັ້ນສຳຜັດ (Tangent)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
       <source>Arc3d</source>
       <translation>Arc3d</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
       <source>ArcZ</source>
       <translation>ArcZ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
       <source>ArcZFollow</source>
       <translation>ArcZFollow</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
       <source>Helix</source>
       <translation>ເສັ້ນກຽວ (Helix)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
       <source>Line3d</source>
       <translation>Line3d</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="64"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
       <source>LineZ</source>
       <translation>LineZ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="65"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
       <source>LineZFollow</source>
       <translation>LineZFollow</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="66"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
       <source>No Retract</source>
       <translation>ບໍ່ມີການຖອຍ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
       <source>Vertical</source>
       <translation>ແນວຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="282"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="558"/>
       <source>Can not get parameters from base operation and path</source>
       <translation>ບໍ່ສາມາດດຶງພະລາມິເຕີຈາກການເຮັດວຽກພື້ນຖານ ແລະ ເສັ້ນທາງໄດ້</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1731"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="863"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>ສ້າງການເຄື່ອນໄຫວເຂົ້າ ແລະ ອອກ ສຳລັບເສັ້ນທາງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1762"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="894"/>
       <source>The selected object is not a path</source>
       <translation>ວັດຖຸທີ່ເລືອກບໍ່ແມ່ນເສັ້ນທາງ (Path)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1767"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="899"/>
       <source>Select a profile object</source>
       <translation>ເລືອກວັດຖຸ Profile</translation>
     </message>
@@ -7770,42 +8100,42 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_DressupRampEntry</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="118"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="124"/>
       <source>RampMethod1</source>
       <translation>RampMethod1</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="119"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="125"/>
       <source>RampMethod2</source>
       <translation>RampMethod2</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="120"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="126"/>
       <source>RampMethod3</source>
       <translation>RampMethod3</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="299"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="317"/>
       <source>The selected object is not a path</source>
       <translation>ວັດຖຸທີ່ເລືອກບໍ່ແມ່ນເສັ້ນທາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="304"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="322"/>
       <source>Select a profile object</source>
       <translation>ເລືອກວັດຖຸ Profile</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="117"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="123"/>
       <source>Helix</source>
       <translation>ເສັ້ນກຽວ (Helix)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="265"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="283"/>
       <source>Ramp Entry</source>
       <translation>ການລົງແບບລາດຊັນ (Ramp Entry)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="269"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="287"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>ສ້າງວັດຖຸ Ramp entry dress-up ຈາກເສັ້ນທາງເຄື່ອງມືທີ່ເລືອກ</translation>
     </message>
@@ -7813,12 +8143,16 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Probe</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="325"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="330"/>
       <source>Select Probe Point File</source>
       <translation>ເລືອກໄຟລ໌ຈຸດ Probe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="327"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="332"/>
+      <source>All Files (*)</source>
+      <translation type="unfinished">All Files (*)</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="114"/>
       <source>All Files (*.*)</source>
       <translation>ໄຟລ໌ທັງໝົດ (*.*)</translation>
@@ -7867,12 +8201,12 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>ຈຸດເສັ້ນທາງ %s ຢູ່ນອກພື້ນທີ່ Probe %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="388"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="393"/>
       <source>Z Depth Correction</source>
       <translation>ການແກ້ໄຂຄວາມເລິກແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="392"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="397"/>
       <source>Corrects Z depth using a probe map</source>
       <translation>ແກ້ໄຂຄວາມເລິກແກນ Z ໂດຍໃຊ້ແຜນຜັງ Probe</translation>
     </message>
@@ -7885,9 +8219,67 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>ອຸປະກອນຍຶດ (Fixture)</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="58"/>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="78"/>
+      <source>Presets</source>
+      <translation type="unfinished">Presets</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="60"/>
+      <source>Geometry</source>
+      <translation>ເລຂາຄະນິດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="120"/>
+      <source>Tool Updates Available</source>
+      <translation type="unfinished">Tool Updates Available</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="144"/>
+      <source>&apos;{}&apos; has tools that differ from the library (newer presets, changed dimensions - e.g. a regrind - or both). Updating replaces the whole tool with the current library version and recomputes the document - expand a row to review before applying.</source>
+      <translation type="unfinished">&apos;{}&apos; has tools that differ from the library (newer presets, changed dimensions - e.g. a regrind - or both). Updating replaces the whole tool with the current library version and recomputes the document - expand a row to review before applying.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="155"/>
+      <source>Job</source>
+      <translation>ວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="156"/>
+      <source>Tool #</source>
+      <translation type="unfinished">Tool #</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="157"/>
       <location filename="../../../Path/Main/Job.py" line="278"/>
       <source>Tool</source>
       <translation>ເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="158"/>
+      <source>Changes</source>
+      <translation type="unfinished">Changes</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="206"/>
+      <source>Select all</source>
+      <translation type="unfinished">Select all</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="225"/>
+      <source>Update</source>
+      <translation>ອັບເດດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="346"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="373"/>
+      <source>Update Tools from Library</source>
+      <translation type="unfinished">Update Tools from Library</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="347"/>
+      <source>This job has no tool updates available.</source>
+      <translation type="unfinished">This job has no tool updates available.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="279"/>
@@ -7916,87 +8308,87 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>ຫຼາຍແກນ (Multiaxis)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="363"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="369"/>
       <source>Edit</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="389"/>
       <source>Assign Stock Material</source>
       <translation>ມອບໝາຍວັດສະດຸວັດຖຸດິບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="679"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
       <source>Stock not a cylinder!</source>
       <translation>ວັດຖຸດິບບໍ່ແມ່ນຮູບຊົງກະບອກ!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="888"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="902"/>
       <source>(none assigned)</source>
       <translation>(ບໍ່ໄດ້ມອບໝາຍ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1139"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1192"/>
       <source>Select Output File</source>
       <translation>ເລືອກໄຟລ໌ຜົນອອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1141"/>
-      <source>All Files (*.*)</source>
-      <translation>ໄຟລ໌ທັງໝົດ (*.*)</translation>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1194"/>
+      <source>All Files (*)</source>
+      <translation type="unfinished">All Files (*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1471"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1539"/>
       <source>Picking: Model</source>
       <translation>ກຳລັງເລືອກ: ໂມເດວ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1473"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1541"/>
       <source>Picking: Stock</source>
       <translation>ກຳລັງເລືອກ: ວັດຖຸດິບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1553"/>
-      <source>Unsupported stock object %s</source>
-      <translation>ວັດຖຸດິບ %s ບໍ່ຮອງຮັບ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1569"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>ບໍ່ຮອງຮັບປະເພດວັດສະດຸ %s (%d)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
-      <source>Model Selection</source>
-      <translation>ການເລືອກແບບຈຳລອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1813"/>
-      <source>Warning</source>
-      <translation>ຄຳເຕືອນ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1814"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1882"/>
       <source>Add one.</source>
       <translation>ເພີ່ມອັນໜຶ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1815"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1621"/>
+      <source>Unsupported stock object %s</source>
+      <translation>ວັດຖຸດິບ %s ບໍ່ຮອງຮັບ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>ບໍ່ຮອງຮັບປະເພດວັດສະດຸ %s (%d)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1725"/>
+      <source>Model Selection</source>
+      <translation>ການເລືອກແບບຈຳລອງ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1881"/>
+      <source>Warning</source>
+      <translation>ຄຳເຕືອນ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1883"/>
       <source>Ok</source>
       <translation>ຕົກລົງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1817"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1885"/>
       <source>Add</source>
       <translation>ເພີ່ມ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1828"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1896"/>
       <source>This job has no base model.</source>
       <translation>ວຽກນີ້ບໍ່ມີແບບຈຳລອງພື້ນຖານ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1835"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1903"/>
       <source>This job has no tool.</source>
       <translation>ວຽກນີ້ບໍ່ມີເຄື່ອງມື.</translation>
     </message>
@@ -8077,23 +8469,23 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Inspect</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="136"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="72"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows path commands in FreeCAD base units (mm/s).&lt;br&gt;Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;ໝາຍເຫດ&lt;/b&gt;: ໜ້າຕ່າງນີ້ສະແດງຄຳສັ່ງເສັ້ນທາງໃນຫົວໜ່ວຍພື້ນຖານຂອງ FreeCAD (mm/s).&lt;br&gt;ຄ່າຕ່າງໆຈະຖືກປ່ຽນເປັນຫົວໜ່ວຍທີ່ຕ້ອງການໃນລະຫວ່າງການປະມວນຜົນຫຼັງ (Post-processing).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="258"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="164"/>
       <source>Inspect Toolpath</source>
       <translation>ກວດສອບເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="262"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="168"/>
       <source>Inspects the contents of a toolpath object</source>
       <translation>ກວດສອບເນື້ອໃນຂອງວັດຖຸເສັ້ນທາງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="277"/>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="282"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="183"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="188"/>
       <source>Select exactly one path object</source>
       <translation>ເລືອກວັດຖຸເສັ້ນທາງພຽງອັນດຽວເທົ່ານັ້ນ</translation>
     </message>
@@ -8517,32 +8909,32 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
       <source>Outside</source>
       <translation>ດ້ານນອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1517"/>
       <source>Inside</source>
       <translation>ດ້ານໃນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1518"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1520"/>
       <source>Clearing</source>
       <translation>ການລ້າງຜິວ (Clearing)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1521"/>
       <source>Profiling</source>
       <translation>ການຕັດຕາມຂອບ (Profiling)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="215"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="221"/>
       <source>Adaptive</source>
       <translation>ປັບຕົວຕາມສະພາບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="216"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="222"/>
       <source>Adaptive clearing and profiling</source>
       <translation>ການລ້າງຜິວ ແລະ ການຕັດຕາມຂອບແບບປັບຕົວ</translation>
     </message>
@@ -8550,17 +8942,17 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="486"/>
+      <location filename="../../../Path/Op/Base.py" line="487"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="487"/>
+      <location filename="../../../Path/Op/Base.py" line="488"/>
       <source>Flood</source>
       <translation>ແບບຖ້ວມ (Flood)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="488"/>
+      <location filename="../../../Path/Op/Base.py" line="489"/>
       <source>Mist</source>
       <translation>ແບບລະອອງ (Mist)</translation>
     </message>
@@ -8588,62 +8980,62 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="843"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No parent job found for operation.</source>
       <translation>ບໍ່ພົບວຽກຫຼັກ (Parent job) ສຳລັບການດຳເນີນງານນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="848"/>
+      <location filename="../../../Path/Op/Base.py" line="849"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>ວຽກຫຼັກ %s ບໍ່ມີວັດຖຸພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1119"/>
+      <location filename="../../../Path/Op/Base.py" line="1114"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>ບໍ່ໄດ້ເລືອກຕົວຄວບຄຸມເຄື່ອງມື. ພວກເຮົາຕ້ອງການເຄື່ອງມືເພື່ອສ້າງເສັ້ນທາງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1133"/>
+      <location filename="../../../Path/Op/Base.py" line="1128"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>ບໍ່ພົບເຄື່ອງມື ຫຼື ເສັ້ນຜ່ານສູນກາງເປັນສູນ. ພວກເຮົາຕ້ອງການເຄື່ອງມືເພື່ອສ້າງເສັ້ນທາງ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="661"/>
+      <location filename="../../../Path/Op/Util.py" line="662"/>
       <source>No Tool Controller selected.</source>
       <translation>ບໍ່ໄດ້ເລືອກຕົວຄວບຄຸມເຄື່ອງມື.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="664"/>
+      <location filename="../../../Path/Op/Util.py" line="665"/>
       <source>Tool Error</source>
       <translation>ຂໍ້ຜິດພາດເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="676"/>
+      <location filename="../../../Path/Op/Util.py" line="677"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>ຕ້ອງການອັດຕາການປ້ອນຂອງຕົວຄວບຄຸມເຄື່ອງມືເພື່ອຄຳນວນເວລາຮອບວຽນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="679"/>
+      <location filename="../../../Path/Op/Util.py" line="680"/>
       <source>Tool Feedrate Error</source>
       <translation>ຂໍ້ຜິດພາດອັດຕາການປ້ອນເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="685"/>
+      <location filename="../../../Path/Op/Util.py" line="686"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>ເພີ່ມຄວາມໄວເຄື່ອນທີ່ໄວ (Rapid Speeds) ຂອງຕົວຄວບຄຸມເຄື່ອງມືໃນ SetupSheet ເພື່ອໃຫ້ໄດ້ເວລາຮອບວຽນທີ່ຊັດເຈນຂຶ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="693"/>
+      <location filename="../../../Path/Op/Util.py" line="694"/>
       <source>Cycletime Error</source>
       <translation>ຂໍ້ຜິດພາດເວລາຮອບວຽນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1265"/>
+      <location filename="../../../Path/Op/Base.py" line="1259"/>
       <source>Base object %s.%s already in the list</source>
       <translation>ວັດຖຸພື້ນຖານ %s.%s ມີຢູ່ໃນລາຍການແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1275"/>
+      <location filename="../../../Path/Op/Base.py" line="1269"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>ວັດຖຸພື້ນຖານ %s.%s ຖືກປະຕິເສດໂດຍການດຳເນີນງານ</translation>
     </message>
@@ -8674,25 +9066,20 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>ການເລີ່ມຕົ້ນແບບປັບຕົວແບບບໍ່ແມ່ນລະນາບກໍບໍ່ສາມາດໃຊ້ໄດ້ເຊັ່ນກັນ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="75"/>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="66"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation>%s ບໍ່ແມ່ນວັດຖຸແບບຈຳລອງພື້ນຖານຂອງວຽກ %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="128"/>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="59"/>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="78"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="124"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="59"/>
       <source>No valid toolcontroller</source>
       <translation>ບໍ່ມີຕົວຄວບຄຸມເຄື່ອງມືທີ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="132"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="128"/>
       <source>This operation requires a tool controller with a v-bit tool</source>
       <translation>ການດຳເນີນງານນີ້ຕ້ອງການຕົວຄວບຄຸມເຄື່ອງມືທີ່ມີເຄື່ອງມື v-bit</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <source>Base shape %s already in the list</source>
       <translation>ຮູບຮ່າງພື້ນຖານ %s ມີຢູ່ໃນລາຍການແລ້ວ</translation>
     </message>
@@ -8989,7 +9376,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>ທ່ານແນ່ໃຈຫຼືບໍ່ວ່າຕ້ອງການລຶບເຄື່ອງມືທີ່ເລືອກ? ສິ່ງນີ້ບໍ່ສາມາດເອົາຄືນໄດ້. ເຄື່ອງມືຈະຖືກລຶບອອກຈາກດິສກ໌ ແລະ ຈາກຄັງທັງໝົດ.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="258"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="267"/>
       <source>Selected faces should be vertical</source>
       <translation>ຜິວໜ້າທີ່ເລືອກຄວນເປັນແນວຕັ້ງ</translation>
     </message>
@@ -8997,11 +9384,6 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="78"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation>{diameter} {pitch} {rotation} ດອກເຮັດກຽວ, {flutes}-ຟັນ, {cutting_edge_length} ຄົມຕັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="100"/>
-      <source>CAM Inspect</source>
-      <translation>ກວດສອບ CAM</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="317"/>
@@ -9211,105 +9593,125 @@ This will not delete the toolbits contained within it.</source>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="493"/>
-      <source>Expand drill-cycles</source>
-      <translation>ຂະຫຍາຍວົງຈອນການເຈາະ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="498"/>
-      <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
-      <translation>ຂະຫຍາຍວົງຈອນການເຈາະໃຫ້ເປັນການເຄື່ອນທີ່</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
       <translation>ອະນຸຍາດໃຫ້ປ່ຽນເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="508"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation>ຍົກເລີກການເລືອກເພື່ອລະງັບການປ່ຽນເຄື່ອງມື (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="513"/>
-      <location filename="../../../Path/Post/Processor.py" line="518"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unit-command in output</source>
       <translation>ຄຳສັ່ງຫົວໜ່ວຍໃນຜົນອອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
       <source>Axis precision in output</source>
       <translation>ຄວາມລະອຽດຂອງແກນໃນຜົນອອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="528"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Decimals of precision for axis motion</source>
       <translation>ຈຳນວນທົດສະນິຍົມສຳລັບການເຄື່ອນທີ່ຂອງແກນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
       <source>Feedrate precision in output</source>
       <translation>ຄວາມລະອຽດອັດຕາການປ້ອນໃນຜົນອອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="538"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation>ຈຳນວນທົດສະນິຍົມສຳລັບອັດຕາການປ້ອນ (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
       <source>Spindle-speed precision in output</source>
       <translation>ຄວາມລະອຽດຄວາມໄວຮອບໃນຜົນອອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="548"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation>ຈຳນວນທົດສະນິຍົມສຳລັບຄວາມໄວຮອບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="553"/>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
       <source>Output F parameter for G0 (rapid)</source>
       <translation>ສົ່ງອອກພາຣາມິເຕີ F ສຳລັບ G0 (ເຄື່ອນທີ່ໄວ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="558"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Whether to output the F parameter for G0 (rapid moves)</source>
       <translation>ກຳນົດວ່າຈະສົ່ງອອກພາຣາມິເຕີ F ສຳລັບ G0 (ການເຄື່ອນທີ່ໄວ) ຫຼື ບໍ່</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="226"/>
+      <location filename="../../../Path/Post/Utils.py" line="194"/>
       <source>CAM Export Gcode</source>
       <translation>ສົ່ງອອກ CAM Gcode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="244"/>
+      <location filename="../../../Path/Post/Utils.py" line="204"/>
       <source>Save With Changes</source>
       <translation>ບັນທຶກພ້ອມກັບການປ່ຽນແປງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="251"/>
-      <location filename="../../../Path/Post/Utils.py" line="254"/>
+      <location filename="../../../Path/Post/Utils.py" line="211"/>
+      <location filename="../../../Path/Post/Utils.py" line="214"/>
       <source>Save Without Changes</source>
       <translation>ບັນທຶກໂດຍບໍ່ມີການປ່ຽນແປງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Utils.py" line="252"/>
+      <location filename="../../../Path/Post/Utils.py" line="212"/>
       <source>Abort</source>
       <translation>ຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
-      <source>Masso G3 post processor</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ Masso G3</translation>
+      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
+      <source>Mach3_Mach4 post processor</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ Mach3_Mach4</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
-      <source>Refactored SmoothieBoard post processor</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ SmoothieBoard ທີ່ຖືກປັບປຸງໃໝ່</translation>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="167"/>
+      <source>Automatic Tool Changer</source>
+      <translation>ຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
-      <source>Grbl post processor</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ Grbl</translation>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
+      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
+      <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="178"/>
+      <source>Automatic Spindle Control</source>
+      <translation>ການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="184"/>
+      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
+      <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="190"/>
+      <source>Suppressed (tolerated) G-code Commands</source>
+      <translation>ຄຳສັ່ງ G-code ທີ່ຖືກລະງັບ (ແຕ່ຍອມຮັບໄດ້)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="196"/>
+      <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
+      <translation>ລາຍຊື່ຄຳສັ່ງ G-code ທີ່ຈະຖືກກັ່ນຕອງອອກ.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="203"/>
+      <source>OpenSBP post processor for ShopBot controllers</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ OpenSBP ສຳລັບ ShopBot</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
+      <source>Test post processor</source>
+      <translation>ທົດສອບຕົວປະມວນຜົນຫຼັງ</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
@@ -9382,6 +9784,26 @@ This will not delete the toolbits contained within it.</source>
       <translation>ຕົວປະມວນຜົນຫຼັງ Plasma ທົ່ວໄປ</translation>
     </message>
     <message>
+      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
+      <source>Marlin post processor</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ Marlin</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
+      <source>Masso G3 post processor</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ Masso G3</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
+      <source>Refactored SmoothieBoard post processor</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ SmoothieBoard ທີ່ຖືກປັບປຸງໃໝ່</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
+      <source>Grbl post processor</source>
+      <translation>ຕົວປະມວນຜົນຫຼັງ Grbl</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
       <source>Path Blending Mode</source>
       <translation>ໂໝດການປະສົມເສັ້ນທາງ</translation>
@@ -9407,67 +9829,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>ຕົວປະມວນຜົນຫຼັງ LinuxCNC</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
-      <source>Marlin post processor</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ Marlin</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
-      <source>Test post processor</source>
-      <translation>ທົດສອບຕົວປະມວນຜົນຫຼັງ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="167"/>
-      <source>Automatic Tool Changer</source>
-      <translation>ຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
-      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
-      <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີຕົວປ່ຽນເຄື່ອງມືອັດຕະໂນມັດ.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="178"/>
-      <source>Automatic Spindle Control</source>
-      <translation>ການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="184"/>
-      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
-      <translation>ເປີດໃຊ້ງານຖ້າເຄື່ອງຈັກມີການຄວບຄຸມຄວາມໄວຮອບອັດຕະໂນມັດ.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="190"/>
-      <source>Suppressed (tolerated) G-code Commands</source>
-      <translation>ຄຳສັ່ງ G-code ທີ່ຖືກລະງັບ (ແຕ່ຍອມຮັບໄດ້)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="196"/>
-      <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
-      <translation>ລາຍຊື່ຄຳສັ່ງ G-code ທີ່ຈະຖືກກັ່ນຕອງອອກ.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="203"/>
-      <source>OpenSBP post processor for ShopBot controllers</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ OpenSBP ສຳລັບ ShopBot</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
-      <source>Mach3_Mach4 post processor</source>
-      <translation>ຕົວປະມວນຜົນຫຼັງ Mach3_Mach4</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1303"/>
-      <source>Exceeded length in cutTravelEnd</source>
-      <translation>ຄວາມຍາວເກີນກຳນົດໃນ cutTravelEnd</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1324"/>
-      <source>Exceeded length in cutTravelBegin</source>
-      <translation>ຄວາມຍາວເກີນກຳນົດໃນ cutTravelBegin</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="375"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="377"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>ການດຳເນີນງານແບບປັບຕົວບໍ່ສາມາດກຳນົດຂອບເຂດໄດ້. ທ່ານໄດ້ເລືອກເລຂາຄະນິດພື້ນຖານແລ້ວຫຼືບໍ່?</translation>
     </message>
@@ -9475,6 +9837,21 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
       <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
       <translation>{diameter} ປາຍ, {taper_angle} ຄວາມລາດອຽງ, {flutes}-ຟັນ tapered ball nose, {cutting_edge_height} ຄົມຕັດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="44"/>
+      <source>CAM Inspect</source>
+      <translation>ກວດສອບ CAM</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="922"/>
+      <source>Exceeded length in cutTravelEnd</source>
+      <translation>ຄວາມຍາວເກີນກຳນົດໃນ cutTravelEnd</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="943"/>
+      <source>Exceeded length in cutTravelBegin</source>
+      <translation>ຄວາມຍາວເກີນກຳນົດໃນ cutTravelBegin</translation>
     </message>
   </context>
   <context>
@@ -9529,12 +9906,12 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_Helix</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="120"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="124"/>
       <source>Helix</source>
       <translation>ເສັ້ນກຽວ (Helix)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="121"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="125"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
       <translation>ສ້າງເສັ້ນທາງເຄື່ອງມືແບບກຽວຈາກຟີເຈີຂອງວັດຖຸພື້ນຖານ</translation>
     </message>
@@ -9677,7 +10054,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>ສ່ວນຂະຫຍາຍ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="200"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="199"/>
       <source>Set start point: %s, %s</source>
       <translation>ຕັ້ງຈຸດເລີ່ມຕົ້ນ: %s, %s</translation>
     </message>
@@ -10133,12 +10510,12 @@ Allowed selection only from one model:
       <translation>ມຸມຄົມຕັດຂອງເຄື່ອງແກະສະຫຼັກຕ້ອງນ້ອຍກວ່າ 180 ອົງສາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="224"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="220"/>
       <source>Vcarve</source>
       <translation>ວີຄາບ (Vcarve)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="225"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
       <source>Creates a medial line engraving toolpath</source>
       <translation>ສ້າງເສັ້ນທາງເຄື່ອງມືແກະສະຫຼັກຕາມເສັ້ນເຄິ່ງກາງ</translation>
     </message>
@@ -10221,12 +10598,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Engrave</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="165"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="157"/>
       <source>Engrave</source>
       <translation>ແກະສະຫຼັກ (Engrave)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="168"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="160"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
       <translation>ສ້າງເສັ້ນທາງເຄື່ອງມືແກະສະຫຼັກອ້ອມຮອບ Draft ShapeString</translation>
     </message>
@@ -10336,121 +10713,121 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ໂພສໂປຣເຊັສ ວຽກທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="345"/>
+      <location filename="../../../Path/Post/Command.py" line="352"/>
       <source>Post Process Selected</source>
       <translation>ໂພສໂປຣເຊັສ ສິ່ງທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="347"/>
+      <location filename="../../../Path/Post/Command.py" line="354"/>
       <source>Post Processes the selected operations</source>
       <translation>ໂພສໂປຣເຊັສ ການເຮັດວຽກທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="124"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1010"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1023"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1037"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1047"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1087"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1125"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="127"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1064"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1077"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1091"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1101"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1141"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1179"/>
       <source>Generate Output</source>
       <translation>ສ້າງຜົນການສະແດງ (Generate Output)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="160"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="169"/>
       <source>Post Processing - Job: {}</source>
       <translation>ການເຮັດໂພສໂປຣເຊັສ - ວຽກ: {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="167"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="176"/>
       <source>(none)</source>
       <translation>(ບໍ່ມີ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="312"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="321"/>
       <source>Postprocessor Properties</source>
       <translation>ຄຸນສົມບັດຂອງຕົວໂພສໂປຣເຊັສ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="539"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="548"/>
       <source>(no fixtures defined)</source>
       <translation>(ບໍ່ມີການກຳນົດຕົວຢຶດ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="624"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="678"/>
       <source>No issues found.</source>
       <translation>ບໍ່ພົບບັນຫາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="657"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="711"/>
       <source>{} critical issue(s) — review before machining.</source>
       <translation>ພົບ {} ບັນຫາວິກິດ — ກະລຸນາກວດສອບກ່ອນການກັດຊິ້ນວຽກ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="664"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="718"/>
       <source>{} advisory notice(s) found.</source>
       <translation>ພົບ {} ຂໍ້ຄວາມແນະນຳ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="684"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="738"/>
       <source>Operations ({}/{})</source>
       <translation>ການເຮັດວຽກ ({}/{})</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="690"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="744"/>
       <source>Warnings (!) {}</source>
       <translation>ຄຳເຕືອນ (!) {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="693"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="747"/>
       <source>Warnings {}</source>
       <translation>ຄຳເຕືອນ {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="696"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="750"/>
       <source>Warnings</source>
       <translation>ຄຳເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="751"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="805"/>
       <source>Workplan</source>
       <translation>ແຜນວຽກ (Workplan)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1013"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1026"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1067"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1080"/>
       <source>The selected machine has no post-processor configured.</source>
       <translation>ເຄື່ອງຈັກທີ່ເລືອກບໍ່ໄດ້ຕັ້ງຄ່າຕົວໂພສໂປຣເຊັສ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1038"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1092"/>
       <source>No post-processor configured for this job.</source>
       <translation>ບໍ່ມີການຕັ້ງຄ່າຕົວໂພສໂປຣເຊັສສຳລັບວຽກນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1088"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1142"/>
       <source>Post-processor returned no output.</source>
       <translation>ຕົວໂພສໂປຣເຊັສບໍ່ສົ່ງຜົນການສະແດງໃດໆອອກມາ.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1126"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1180"/>
       <source>Error during generation:
 {}</source>
       <translation>ຂໍ້ຜິດພາດລະຫວ່າງການສ້າງ:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1186"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1240"/>
       <source>Rename</source>
       <translation>ປ່ຽນຊື່</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1272"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1328"/>
       <source>Select Output Folder</source>
       <translation>ເລືອກໂຟນເດີຜົນການສະແດງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1307"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1363"/>
       <source>{} error(s) while saving:
 {}</source>
       <translation>ພົບ {} ຂໍ້ຜິດພາດລະຫວ່າງການບັນທຶກ:
@@ -10473,17 +10850,17 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolController</name>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="230"/>
+      <location filename="../../../Path/Tool/Controller.py" line="241"/>
       <source>Forward</source>
       <translation>ໄປທາງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="231"/>
+      <location filename="../../../Path/Tool/Controller.py" line="242"/>
       <source>Reverse</source>
       <translation>ກັບດ້ານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="232"/>
+      <location filename="../../../Path/Tool/Controller.py" line="243"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
@@ -10498,7 +10875,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ເພີ່ມຕົວຄວບຄຸມເຄື່ອງມືໃໝ່ໃສ່ວຽກທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="253"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="256"/>
       <source>Feeds and Speeds Wizard</source>
       <translation>ຕົວຊ່ວຍສ້າງອັດຕາປ້ອນ ແລະ ຄວາມໄວ</translation>
     </message>
@@ -10570,17 +10947,17 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Profile</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="174"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="186"/>
       <source>Set start point: %s, %s</source>
       <translation>ກຳນົດຈຸດເລີ່ມຕົ້ນ: %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="186"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="209"/>
       <source>Profile</source>
       <translation>ໂປຣໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="187"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="210"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>ເຮັດໂປຣໄຟລ໌ທັງໝົດໂມເດວ, ໜ້າພຽງທີ່ເລືອກ ຫຼື ຂອບທີ່ເລືອກ</translation>
     </message>
@@ -10588,12 +10965,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="318"/>
       <source>Simulates using CAMotics</source>
       <translation>ຈຳລອງການເຮັດວຽກໂດຍໃຊ້ CAMotics</translation>
     </message>
@@ -10686,12 +11063,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="182"/>
       <source>Toggle Operation</source>
       <translation>ສະຫຼັບການເຮັດວຽກ (Toggle Operation)</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="153"/>
+      <location filename="../../../PathCommands.py" line="186"/>
       <source>Toggles the active state of the operation</source>
       <translation>ສະຫຼັບສະຖານະການໃຊ້ງານຂອງການເຮັດວຽກ</translation>
     </message>
@@ -10699,12 +11076,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="219"/>
+      <location filename="../../../PathCommands.py" line="252"/>
       <source>Copy Operation</source>
       <translation>ກັອບປີ້ການເຮັດວຽກ</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="220"/>
+      <location filename="../../../PathCommands.py" line="253"/>
       <source>Copies the operation in the job</source>
       <translation>ກັອບປີ້ການເຮັດວຽກໃນວຽກນີ້</translation>
     </message>
@@ -10736,19 +11113,6 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="432"/>
       <source>Creates an object which can be used to store reference properties</source>
       <translation>ສ້າງວັດຖຸທີ່ສາມາດໃຊ້ເພື່ອເກັບຄຸນສົມບັດອ້າງອີງ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_PathShapeTC</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="182"/>
-      <source>Path From Shape TC</source>
-      <translation>ເສັ້ນທາງຈາກຮູບຮ່າງ TC</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="186"/>
-      <source>Creates a path from the selected shapes with the tool controller</source>
-      <translation>ສ້າງເສັ້ນທາງຈາກຮູບຮ່າງທີ່ເລືອກດ້ວຍຕົວຄວບຄຸມເຄື່ອງມື</translation>
     </message>
   </context>
   <context>
@@ -10805,27 +11169,32 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ລົບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="144"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="131"/>
+      <source>Check for tool updates from the library when opening a document</source>
+      <translation type="unfinished">Check for tool updates from the library when opening a document</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="153"/>
       <source>Select Asset Directory</source>
       <translation>ເລືອກໄດເຣັກທໍຣີຊັບສິນ (Asset Directory)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="172"/>
       <source>Warning</source>
       <translation>ຄຳເຕືອນ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="164"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="173"/>
       <source>The selected asset path is not writable.</source>
       <translation>ເສັ້ນທາງຊັບສິນທີ່ເລືອກບໍ່ສາມາດຂຽນຂໍ້ມູນລົງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="222"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="233"/>
       <source>Delete Machine</source>
       <translation>ລົບເຄື່ອງຈັກ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="225"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="236"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>ເຈົ້າມີຄວາມແນ່ນອນທີ່ຈະລົບໄຟລ໌ເຄື່ອງຈັກນີ້ຫຼືບໍ່?</translation>
     </message>
@@ -10846,79 +11215,79 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>ToolBitShape</name>
     <message>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
       <source>Cutting edge height</source>
       <translation>ຄວາມສູງຂອງຄົມຕັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
       <source>Diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
       <source>Flutes</source>
       <translation>ຈຳນວນຮ່ອງຕັດ (Flutes)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
       <source>Overall tool length</source>
       <translation>ຄວາມຍາວທັງໝົດຂອງເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
       <source>Shank diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງກ້ານ</translation>
     </message>
@@ -10951,19 +11320,14 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ບໍ່ຮູ້ຈັກຮູບຮ່າງທີ່ກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <source>Crest height</source>
       <translation>ຄວາມສູງຂອງສັນກຽວ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
-      <source>Cutting diameter</source>
-      <translation>ເສັ້ນຜ່ານສູນກາງການຕັດ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <source>Cutting angle</source>
       <translation>ມຸມການຕັດ</translation>
     </message>
@@ -10978,14 +11342,14 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ເສັ້ນຜ່ານສູນກາງໃຫຍ່</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <source>Neck diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງສ່ວນຄໍ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <source>Neck length</source>
       <translation>ຄວາມຍາວສ່ວນຄໍ</translation>
     </message>
@@ -11074,6 +11438,11 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Path/Tool/shape/models/tap.py" line="68"/>
       <source>Tap</source>
       <translation>ດອກຕາບ (Tap)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
+      <source>Cutting diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງການຕັດ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="72"/>
@@ -11193,26 +11562,31 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="198"/>
+      <source>No-Engagement feed</source>
+      <translation type="unfinished">No-Engagement feed</translation>
+    </message>
+    <message>
+      <location filename="../panels/ToolControllerEdit.ui" line="224"/>
       <source>Horizontal rapid</source>
       <translation>ຄວາມໄວເຄື່ອນທີ່ແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="224"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="250"/>
       <source>Vertical rapid</source>
       <translation>ຄວາມໄວເຄື່ອນທີ່ແນວຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="253"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="279"/>
       <source>Spindle</source>
       <translation>ສະປິນເດິນ (Spindle)</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="266"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="292"/>
       <source>Forward</source>
       <translation>ໄປທາງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="271"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>ກັບດ້ານ</translation>
     </message>
@@ -11291,6 +11665,340 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../InitGui.py" line="186"/>
       <source>Simulators</source>
       <translation>ຕົວຈຳລອງ</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgPostProcess</name>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="14"/>
+      <source>Post Processing</source>
+      <translation>ການເຮັດໂພສໂປຣເຊັສ (Post Processing)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="29"/>
+      <source>Post Processing - Job: (unknown)</source>
+      <translation>ການເຮັດໂພສໂປຣເຊັສ - ວຽກ: (ບໍ່ຮູ້ຊື່)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="40"/>
+      <source>Overview</source>
+      <translation>ພາບລວມ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="46"/>
+      <location filename="../panels/DlgPostProcess.ui" line="55"/>
+      <source>Machine</source>
+      <translation>ເຄື່ອງຈັກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="68"/>
+      <source>Machine configuration (.fcm) to use for post-processing</source>
+      <translation>ການຕັ້ງຄ່າເຄື່ອງຈັກ (.fcm) ທີ່ຈະໃຊ້ສຳລັບການເຮັດໂພສໂປຣເຊັສ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="78"/>
+      <source>Fixtures</source>
+      <translation>ຕົວຢຶດ (Fixtures)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="90"/>
+      <source>Check fixtures to include in the G-code output</source>
+      <translation>ກວດສອບຕົວຢຶດທີ່ຈະລວມໃນການສະແດງຜົນ G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="100"/>
+      <source>Job Details</source>
+      <translation>ລາຍລະອຽດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="109"/>
+      <source>Author</source>
+      <translation>ຜູ້ຂຽນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="116"/>
+      <source>Author name written into the G-code header comment</source>
+      <translation>ຊື່ຜູ້ຂຽນທີ່ຈະຖືກຂຽນລົງໃນຄຳອະທິບາຍສ່ວນຫົວ G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="119"/>
+      <location filename="../panels/DlgPostProcess.ui" line="145"/>
+      <source>(optional)</source>
+      <translation>(ເລືອກໄດ້)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="126"/>
+      <source>Comment</source>
+      <translation>ຄຳອະທິບາຍ (Comment)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="142"/>
+      <source>Arbitrary comment written into the G-code header</source>
+      <translation>ຄຳອະທິບາຍໃດໆທີ່ຈະຖືກຂຽນລົງໃນສ່ວນຫົວ G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="155"/>
+      <location filename="../panels/DlgPostProcess.ui" line="310"/>
+      <source>Options</source>
+      <translation>ທາງເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="161"/>
+      <source>Generate a full sanity/setup report alongside the G-code file</source>
+      <translation>ສ້າງລາຍງານການກວດສອບ/ການຕັ້ງຄ່າແບບເຕັມ ໄປພ້ອມກັບໄຟລ໌ G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="164"/>
+      <source>Generate HTML sanity report</source>
+      <translation>ສ້າງລາຍງານການກວດສອບແບບ HTML</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="177"/>
+      <source>Post Processor Parameters</source>
+      <translation>ພາຣາມີເຕີຂອງຕົວໂພສໂປຣເຊັສ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="186"/>
+      <source>(No additional parameters for this post processor)</source>
+      <translation>(ບໍ່ມີພາຣາມີເຕີເພີ່ມເຕີມສຳລັບຕົວໂພສໂປຣເຊັສນີ້)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="213"/>
+      <source>Operations</source>
+      <translation>ການເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="219"/>
+      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
+      <translation>ກວດສອບການເຮັດວຽກທີ່ຈະລວມເຂົ້າໃນການສະແດງຜົນ G-code. ຍົກເລີກການເລືອກເພື່ອຂ້າມ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="232"/>
+      <source>#</source>
+      <translation>#</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="237"/>
+      <source>Operation</source>
+      <translation>ການເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="242"/>
+      <source>Tool</source>
+      <translation>ເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="250"/>
+      <source>Tool Controller</source>
+      <translation>ຕົວຄວບຄຸມເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="255"/>
+      <source>Coolant</source>
+      <translation>ນ້ຳຫຼໍ່ເຢັນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="260"/>
+      <source>Time</source>
+      <translation>ເວລາ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="270"/>
+      <source>Select All</source>
+      <translation>ເລືອກທັງໝົດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="277"/>
+      <source>Select None</source>
+      <translation>ບໍ່ເລືອກຈັກອັນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="284"/>
+      <source>Show the workplan (postable items structure)</source>
+      <translation>ສະແດງແຜນວຽກ (ໂຄງສ້າງຂອງລາຍການທີ່ຈະໂພສໄດ້)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="287"/>
+      <source>Workplan</source>
+      <translation>ແຜນວຽກ (Workplan)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="337"/>
+      <source>(Select a machine on the Overview tab to see machine output options)</source>
+      <translation>(ເລືອກເຄື່ອງຈັກໃນແຖບພາບລວມເພື່ອເບິ່ງທາງເລືອກການສະແດງຜົນຂອງເຄື່ອງຈັກ)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="365"/>
+      <source>Output</source>
+      <translation>ຜົນການສະແດງ (Output)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="373"/>
+      <source>Output folder</source>
+      <translation>ໂຟນເດີຜົນການສະແດງ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="380"/>
+      <source>Folder where G-code files will be saved</source>
+      <translation>ໂຟນເດີທີ່ໄຟລ໌ G-code ຈະຖືກບັນທຶກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="383"/>
+      <source>(resolved when output is generated)</source>
+      <translation>(ຈະຖືກກຳນົດເມື່ອມີການສ້າງຜົນການສະແດງ)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="396"/>
+      <source>Browse…</source>
+      <translation>ເລືອກຫາ...</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="407"/>
+      <source>Filename template</source>
+      <translation>ແມ່ແບບຊື່ໄຟລ໌</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="414"/>
+      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
+      <translation>ແມ່ແບບຊື່ໄຟລ໌. ການແທນທີ່: %j=ຊື່ວຽກ, %d=ເອກະສານ, %T=ເຄື່ອງມື, %W=ຕົວຢຶດ, %O=ການເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="417"/>
+      <source>e.g. %j.nc</source>
+      <translation>ຕົວຢ່າງ: %j.nc</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="433"/>
+      <source>Regenerate output filenames using this template</source>
+      <translation>ສ້າງຊື່ໄຟລ໌ຜົນການສະແດງໃໝ່ໂດຍໃຊ້ແມ່ແບບນີ້</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="436"/>
+      <source>Apply</source>
+      <translation>ນຳໃຊ້</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="448"/>
+      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
+      <translation>ກົດ "ສ້າງຜົນການສະແດງ" ເພື່ອເບິ່ງຕົວຢ່າງ G-code ກ່ອນບັນທຶກ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="468"/>
+      <source>Generated output files. Select a file to view or edit its contents.</source>
+      <translation>ໄຟລ໌ຜົນການສະແດງທີ່ສ້າງຂຶ້ນ. ເລືອກໄຟລ໌ເພື່ອເບິ່ງ ຫຼື ແກ້ໄຂເນື້ອໃນ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="479"/>
+      <source>G-code content for the selected file. You may edit before saving.</source>
+      <translation>ເນື້ອໃນ G-code ສຳລັບໄຟລ໌ທີ່ເລືອກ. ເຈົ້າສາມາດແກ້ໄຂໄດ້ກ່ອນບັນທຶກ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="492"/>
+      <source>Save to Disk</source>
+      <translation>ບັນທຶກລົງດິດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="515"/>
+      <source>Warnings</source>
+      <translation>ຄຳເຕືອນ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="524"/>
+      <source>No issues found</source>
+      <translation>ບໍ່ພົບບັນຫາ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="534"/>
+      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
+      <translation>ພົບບັນຫາໃນການກວດສອບວຽກ. ລາຍການທີ່ເປັນ ຄຳເຕືອນ ແລະ ຂໍ້ຄວນລະວັງ ຄວນໄດ້ຮັບການແກ້ໄຂກ່ອນການກັດຊິ້ນວຽກ.</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="556"/>
+      <source>Severity</source>
+      <translation>ຄວາມຮຸນແຮງ</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="561"/>
+      <source>Note</source>
+      <translation>ໝາຍເຫດ</translation>
+    </message>
+  </context>
+  <context>
+    <name>FeedsSpeedsPresetEdit</name>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
+      <source>Edit preset</source>
+      <translation>ແກ້ໄຂຄ່າທີ່ຕັ້ງໄວ້ລ່ວງໜ້າ</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
+      <source>Name:</source>
+      <translation>ຊື່:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
+      <source>Material:</source>
+      <translation>ວັດສະດຸ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
+      <source>(none)</source>
+      <translation>(ບໍ່ມີ)</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
+      <source>Browse…</source>
+      <translation>ເລືອກຫາ...</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
+      <source>Generic (any material)</source>
+      <translation>ທົ່ວໄປ (ວັດສະດຸໃດກໍໄດ້)</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
+      <source>Op type:</source>
+      <translation>ປະເພດການປະຕິບັດງານ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
+      <source>Surface speed:</source>
+      <translation>ຄວາມໄວຜິວ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
+      <source>Chipload (per tooth):</source>
+      <translation>ໄລຍະປ້ອນຕໍ່ແຂ້ວ (Chipload):</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
+      <source>Vert feed ratio:</source>
+      <translation>ອັດຕາສ່ວນການປ້ອນແນວຕັ້ງ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
+      <source>Direct feed and speed</source>
+      <translation>ອັດຕາປ້ອນ ແລະ ຄວາມໄວໂດຍກົງ</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
+      <source>Horiz feed:</source>
+      <translation>ອັດຕາປ້ອນແນວນອນ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
+      <source>Spindle speed:</source>
+      <translation>ຄວາມໄວຮອບ:</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
+      <source>Notes</source>
+      <translation>ໝາຍເຫດ</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="201"/>
+      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
+      <translation>ຂາດຂໍ້ມູນເສັ້ນຜ່ານສູນກາງເຄື່ອງມື ແລະ/ຫຼື ຈຳນວນຄົມຕັດ — ຄວາມໄວຜິວ ແລະ ໄລຍະປ້ອນຕໍ່ແຂ້ວຈະບໍ່ຊິງໂຄຣໄນອັດຕະໂນມັດກັບອັດຕາປ້ອນ/ຄວາມໄວໂດຍກົງ.</translation>
     </message>
   </context>
   <context>
@@ -11938,399 +12646,6 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
-    <name>DlgPostProcess</name>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="14"/>
-      <source>Post Processing</source>
-      <translation>ການເຮັດໂພສໂປຣເຊັສ (Post Processing)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="29"/>
-      <source>Post Processing - Job: (unknown)</source>
-      <translation>ການເຮັດໂພສໂປຣເຊັສ - ວຽກ: (ບໍ່ຮູ້ຊື່)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="40"/>
-      <source>Overview</source>
-      <translation>ພາບລວມ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="46"/>
-      <location filename="../panels/DlgPostProcess.ui" line="55"/>
-      <source>Machine</source>
-      <translation>ເຄື່ອງຈັກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="68"/>
-      <source>Machine configuration (.fcm) to use for post-processing</source>
-      <translation>ການຕັ້ງຄ່າເຄື່ອງຈັກ (.fcm) ທີ່ຈະໃຊ້ສຳລັບການເຮັດໂພສໂປຣເຊັສ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="78"/>
-      <source>Fixtures</source>
-      <translation>ຕົວຢຶດ (Fixtures)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="90"/>
-      <source>Check fixtures to include in the G-code output</source>
-      <translation>ກວດສອບຕົວຢຶດທີ່ຈະລວມໃນການສະແດງຜົນ G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="100"/>
-      <source>Job Details</source>
-      <translation>ລາຍລະອຽດວຽກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="109"/>
-      <source>Author</source>
-      <translation>ຜູ້ຂຽນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="116"/>
-      <source>Author name written into the G-code header comment</source>
-      <translation>ຊື່ຜູ້ຂຽນທີ່ຈະຖືກຂຽນລົງໃນຄຳອະທິບາຍສ່ວນຫົວ G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="119"/>
-      <location filename="../panels/DlgPostProcess.ui" line="145"/>
-      <source>(optional)</source>
-      <translation>(ເລືອກໄດ້)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="126"/>
-      <source>Comment</source>
-      <translation>ຄຳອະທິບາຍ (Comment)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="142"/>
-      <source>Arbitrary comment written into the G-code header</source>
-      <translation>ຄຳອະທິບາຍໃດໆທີ່ຈະຖືກຂຽນລົງໃນສ່ວນຫົວ G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="155"/>
-      <location filename="../panels/DlgPostProcess.ui" line="282"/>
-      <source>Options</source>
-      <translation>ທາງເລືອກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="161"/>
-      <source>Generate a full sanity/setup report alongside the G-code file</source>
-      <translation>ສ້າງລາຍງານການກວດສອບ/ການຕັ້ງຄ່າແບບເຕັມ ໄປພ້ອມກັບໄຟລ໌ G-code</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="164"/>
-      <source>Generate HTML sanity report</source>
-      <translation>ສ້າງລາຍງານການກວດສອບແບບ HTML</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="177"/>
-      <source>Post Processor Parameters</source>
-      <translation>ພາຣາມີເຕີຂອງຕົວໂພສໂປຣເຊັສ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="186"/>
-      <source>(No additional parameters for this post processor)</source>
-      <translation>(ບໍ່ມີພາຣາມີເຕີເພີ່ມເຕີມສຳລັບຕົວໂພສໂປຣເຊັສນີ້)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="213"/>
-      <source>Operations</source>
-      <translation>ການເຮັດວຽກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="219"/>
-      <source>Check operations to include in the G-code output. Uncheck to skip.</source>
-      <translation>ກວດສອບການເຮັດວຽກທີ່ຈະລວມເຂົ້າໃນການສະແດງຜົນ G-code. ຍົກເລີກການເລືອກເພື່ອຂ້າມ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="232"/>
-      <source>Operation</source>
-      <translation>ການເຮັດວຽກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="242"/>
-      <source>Select All</source>
-      <translation>ເລືອກທັງໝົດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="249"/>
-      <source>Select None</source>
-      <translation>ບໍ່ເລືອກຈັກອັນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="256"/>
-      <source>Show the workplan (postable items structure)</source>
-      <translation>ສະແດງແຜນວຽກ (ໂຄງສ້າງຂອງລາຍການທີ່ຈະໂພສໄດ້)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="259"/>
-      <source>Workplan</source>
-      <translation>ແຜນວຽກ (Workplan)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="309"/>
-      <source>(Select a machine on the Overview tab to see machine output options)</source>
-      <translation>(ເລືອກເຄື່ອງຈັກໃນແຖບພາບລວມເພື່ອເບິ່ງທາງເລືອກການສະແດງຜົນຂອງເຄື່ອງຈັກ)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="337"/>
-      <source>Output</source>
-      <translation>ຜົນການສະແດງ (Output)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="345"/>
-      <source>Output folder</source>
-      <translation>ໂຟນເດີຜົນການສະແດງ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="352"/>
-      <source>Folder where G-code files will be saved</source>
-      <translation>ໂຟນເດີທີ່ໄຟລ໌ G-code ຈະຖືກບັນທຶກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="355"/>
-      <source>(resolved when output is generated)</source>
-      <translation>(ຈະຖືກກຳນົດເມື່ອມີການສ້າງຜົນການສະແດງ)</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="368"/>
-      <source>Browse…</source>
-      <translation>ເລືອກຫາ...</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="379"/>
-      <source>Filename template</source>
-      <translation>ແມ່ແບບຊື່ໄຟລ໌</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="386"/>
-      <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
-      <translation>ແມ່ແບບຊື່ໄຟລ໌. ການແທນທີ່: %j=ຊື່ວຽກ, %d=ເອກະສານ, %T=ເຄື່ອງມື, %W=ຕົວຢຶດ, %O=ການເຮັດວຽກ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="389"/>
-      <source>e.g. %j.nc</source>
-      <translation>ຕົວຢ່າງ: %j.nc</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="405"/>
-      <source>Regenerate output filenames using this template</source>
-      <translation>ສ້າງຊື່ໄຟລ໌ຜົນການສະແດງໃໝ່ໂດຍໃຊ້ແມ່ແບບນີ້</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="408"/>
-      <source>Apply</source>
-      <translation>ນຳໃຊ້</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="420"/>
-      <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
-      <translation>ກົດ "ສ້າງຜົນການສະແດງ" ເພື່ອເບິ່ງຕົວຢ່າງ G-code ກ່ອນບັນທຶກ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="440"/>
-      <source>Generated output files. Select a file to view or edit its contents.</source>
-      <translation>ໄຟລ໌ຜົນການສະແດງທີ່ສ້າງຂຶ້ນ. ເລືອກໄຟລ໌ເພື່ອເບິ່ງ ຫຼື ແກ້ໄຂເນື້ອໃນ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="451"/>
-      <source>G-code content for the selected file. You may edit before saving.</source>
-      <translation>ເນື້ອໃນ G-code ສຳລັບໄຟລ໌ທີ່ເລືອກ. ເຈົ້າສາມາດແກ້ໄຂໄດ້ກ່ອນບັນທຶກ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="464"/>
-      <source>Save to Disk</source>
-      <translation>ບັນທຶກລົງດິດ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="487"/>
-      <source>Warnings</source>
-      <translation>ຄຳເຕືອນ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="496"/>
-      <source>No issues found</source>
-      <translation>ບໍ່ພົບບັນຫາ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="506"/>
-      <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
-      <translation>ພົບບັນຫາໃນການກວດສອບວຽກ. ລາຍການທີ່ເປັນ ຄຳເຕືອນ ແລະ ຂໍ້ຄວນລະວັງ ຄວນໄດ້ຮັບການແກ້ໄຂກ່ອນການກັດຊິ້ນວຽກ.</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="528"/>
-      <source>Severity</source>
-      <translation>ຄວາມຮຸນແຮງ</translation>
-    </message>
-    <message>
-      <location filename="../panels/DlgPostProcess.ui" line="533"/>
-      <source>Note</source>
-      <translation>ໝາຍເຫດ</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeedsSpeedsPresetEdit</name>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
-      <source>Edit preset</source>
-      <translation>ແກ້ໄຂຄ່າທີ່ຕັ້ງໄວ້ລ່ວງໜ້າ</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
-      <source>Name:</source>
-      <translation>ຊື່:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
-      <source>Material:</source>
-      <translation>ວັດສະດຸ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
-      <source>(none)</source>
-      <translation>(ບໍ່ມີ)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
-      <source>Browse…</source>
-      <translation>ເລືອກຫາ...</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
-      <source>Generic (any material)</source>
-      <translation>ທົ່ວໄປ (ວັດສະດຸໃດກໍໄດ້)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
-      <source>Op type:</source>
-      <translation>ປະເພດການປະຕິບັດງານ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
-      <source>Surface speed:</source>
-      <translation>ຄວາມໄວຜິວ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
-      <source>Chipload (per tooth):</source>
-      <translation>ໄລຍະປ້ອນຕໍ່ແຂ້ວ (Chipload):</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
-      <source>Vert feed ratio:</source>
-      <translation>ອັດຕາສ່ວນການປ້ອນແນວຕັ້ງ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
-      <source>Direct feed and speed</source>
-      <translation>ອັດຕາປ້ອນ ແລະ ຄວາມໄວໂດຍກົງ</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
-      <source>Horiz feed:</source>
-      <translation>ອັດຕາປ້ອນແນວນອນ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
-      <source>Spindle speed:</source>
-      <translation>ຄວາມໄວຮອບ:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
-      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
-      <translation>ຂາດຂໍ້ມູນເສັ້ນຜ່ານສູນກາງເຄື່ອງມື ແລະ/ຫຼື ຈຳນວນຄົມຕັດ — ຄວາມໄວຜິວ ແລະ ໄລຍະປ້ອນຕໍ່ແຂ້ວຈະບໍ່ຊິງໂຄຣໄນອັດຕະໂນມັດກັບອັດຕາປ້ອນ/ຄວາມໄວໂດຍກົງ.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAMSimulator::GuiDisplay</name>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
-      <source>Play simulation</source>
-      <translation>ຫຼິ້ນການຈຳລອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
-      <source>Single step simulation</source>
-      <translation>ການຈຳລອງແບບເທື່ອລະຂັ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
-      <source>Decrease simulation speed</source>
-      <translation>ຫຼຸດຄວາມໄວການຈຳລອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
-      <source>Increase simulation speed</source>
-      <translation>ເພີ່ມຄວາມໄວການຈຳລອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
-      <source>x1</source>
-      <translation>x1</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
-      <source>Reset camera</source>
-      <translation>ຕັ້ງຄ່າກ້ອງໃໝ່</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
-      <source>Toggle view simulation/model</source>
-      <translation>ສະຫຼັບມຸມເບິ່ງການຈຳລອງ/ໂມເດວ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
-      <source>Toggle turn table animation</source>
-      <translation>ສະຫຼັບພາບເຄື່ອນໄຫວແທ່ນໝູນ</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
-      <source>Show/hide tool path</source>
-      <translation>ສະແດງ/ເຊື່ອງ ເສັ້ນທາງເຄື່ອງມື</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
-      <source>Toggle ambient occlusion</source>
-      <translation>ສະຫຼັບການໃຊ້ ambient occlusion</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
-      <source>x%1</source>
-      <translation>x%1</translation>
-    </message>
-  </context>
-  <context>
-    <name>MirrorDressup</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="105"/>
-      <source>No base operation</source>
-      <translation>ບໍ່ມີການເຮັດວຽກພື້ນຖານ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="112"/>
-      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>ວັດຖຸພື້ນຖານ '%s' ບໍ່ໄດ້ມາຈາກ Path::Feature</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="119"/>
-      <source>Base operation &apos;%s&apos; with empty path</source>
-      <translation>ການເຮັດວຽກພື້ນຖານ '%s' ທີ່ມີເສັ້ນທາງຫວ່າງເປົ່າ</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_DressupMirror</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="266"/>
-      <source>Mirror</source>
-      <translation>ແວ່ນແຍງ (Mirror)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="268"/>
-      <source>Creates mirror of a selected path</source>
-      <translation>ສ້າງແວ່ນແຍງຂອງເສັ້ນທາງທີ່ເລືອກ</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_MIllFacing</name>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="102"/>
@@ -12445,6 +12760,36 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="752"/>
+      <source>Skipped hole at position %s</source>
+      <translation>ຂ້າມຮູຢູ່ຕຳແໜ່ງ %s</translation>
+    </message>
+  </context>
+  <context>
+    <name>Pocket_Shape</name>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="163"/>
+      <source>Pocke_Shape can not process open wire.
+You can enable feature Close Open Path</source>
+      <translation>Pocke_Shape ບໍ່ສາມາດປະມວນຜົນເສັ້ນເຊື່ອມທີ່ເປີດໄດ້.
+ເຈົ້າສາມາດເປີດໃຊ້ງານຄຸນສົມບັດ ປິດເສັ້ນທາງທີ່ເປີດ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="346"/>
+      <source>Processing vertical faces was failed</source>
+      <translation>ການປະມວນຜົນໜ້າຕັ້ງລົ້ມເຫຼວ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="354"/>
+      <source>Processing vertical faces was failed.
+You can enable feature Close Open Path</source>
+      <translation>ການປະມວນຜົນໜ້າຕັ້ງລົ້ມເຫຼວ.
+ເຈົ້າສາມາດເປີດໃຊ້ງານຄຸນສົມບັດ ປິດເສັ້ນທາງທີ່ເປີດ</translation>
+    </message>
+  </context>
+  <context>
     <name>Waterline</name>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="1385"/>
@@ -12453,11 +12798,24 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
-    <name>PathHelix</name>
+    <name>PathShape</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="711"/>
-      <source>Skipped hole at position %s</source>
-      <translation>ຂ້າມຮູຢູ່ຕຳແໜ່ງ %s</translation>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
+      <source>Tool controller not selected for operation %s</source>
+      <translation type="unfinished">Tool controller not selected for operation %s</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_PathShape</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="674"/>
+      <source>Path from Shape</source>
+      <translation type="unfinished">Path from Shape</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="677"/>
+      <source>Creates path from selected shapes with tool controller</source>
+      <translation type="unfinished">Creates path from selected shapes with tool controller</translation>
     </message>
   </context>
   <context>
@@ -12489,8 +12847,8 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="360"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="239"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="511"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="248"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="613"/>
       <source>(any)</source>
       <translation>(ອັນໃດກໍໄດ້)</translation>
     </message>
@@ -12555,69 +12913,188 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>ເລືອກວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="214"/>
-      <source>Optional, e.g. &apos;Aluminum aggressive&apos;</source>
-      <translation>ທາງເລືອກ, ຕົວຢ່າງ: 'ອາລູມີນຽມ ແບບຮຸນແຮງ'</translation>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="220"/>
+      <source>e.g. &apos;Aluminum aggressive&apos;</source>
+      <translation type="unfinished">e.g. &apos;Aluminum aggressive&apos;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="428"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="443"/>
       <source>(none)</source>
       <translation>(ບໍ່ມີ)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="468"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="449"/>
+      <source>Name required</source>
+      <translation type="unfinished">Name required</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="450"/>
+      <source>Give the preset a name.</source>
+      <translation type="unfinished">Give the preset a name.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="457"/>
+      <source>Duplicate preset</source>
+      <translation type="unfinished">Duplicate preset</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="462"/>
+      <source>This tool already has a preset named &apos;%s&apos; for this material and op type.</source>
+      <translation type="unfinished">This tool already has a preset named &apos;%s&apos; for this material and op type.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="562"/>
       <source>Name</source>
       <translation>ຊື່</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="469"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="563"/>
       <source>Material</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="470"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="564"/>
       <source>Op type</source>
       <translation>ປະເພດການປະຕິບັດງານ:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="471"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="565"/>
       <source>Surface speed</source>
       <translation>ຄວາມໄວຜິວ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="472"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="566"/>
       <source>Chipload</source>
       <translation>ຄວາມໜາເສດຕັດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="473"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="567"/>
       <source>Notes</source>
       <translation>ໝາຍເຫດ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="483"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="579"/>
       <source>Add preset</source>
       <translation>ເພີ່ມການຕັ້ງຄ່າລ່ວງໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="487"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="583"/>
       <source>Edit</source>
       <translation>ແກ້ໄຂ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="491"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="587"/>
+      <source>Copy</source>
+      <translation>ກັອບປີ້</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="591"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="508"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="610"/>
       <source>(any material)</source>
       <translation>(ວັດສະດຸໃດກໍໄດ້)</translation>
     </message>
+  </context>
+  <context>
+    <name>MirrorDressup</name>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="521"/>
-      <source>raw fallback</source>
-      <translation>ຕົວສຳຮອງຂໍ້ມູນດິບ</translation>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
+      <source>No base operation</source>
+      <translation>ບໍ່ມີການເຮັດວຽກພື້ນຖານ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="125"/>
+      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
+      <translation>ວັດຖຸພື້ນຖານ '%s' ບໍ່ໄດ້ມາຈາກ Path::Feature</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="132"/>
+      <source>Base operation &apos;%s&apos; with empty path</source>
+      <translation>ການເຮັດວຽກພື້ນຖານ '%s' ທີ່ມີເສັ້ນທາງຫວ່າງເປົ່າ</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupMirror</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="275"/>
+      <source>Mirror</source>
+      <translation>ແວ່ນແຍງ (Mirror)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
+      <source>Creates mirror of a selected path</source>
+      <translation>ສ້າງແວ່ນແຍງຂອງເສັ້ນທາງທີ່ເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="306"/>
+      <source>The selected object is not a path</source>
+      <translation>ວັດຖຸທີ່ເລືອກບໍ່ແມ່ນເສັ້ນທາງ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="310"/>
+      <source>Select a profile object</source>
+      <translation>ເລືອກວັດຖຸ Profile</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAMSimulator::GuiDisplay</name>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
+      <source>Play simulation</source>
+      <translation>ຫຼິ້ນການຈຳລອງ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
+      <source>Single step simulation</source>
+      <translation>ການຈຳລອງແບບເທື່ອລະຂັ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
+      <source>Decrease simulation speed</source>
+      <translation>ຫຼຸດຄວາມໄວການຈຳລອງ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
+      <source>Increase simulation speed</source>
+      <translation>ເພີ່ມຄວາມໄວການຈຳລອງ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
+      <source>x1</source>
+      <translation>x1</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
+      <source>Reset camera</source>
+      <translation>ຕັ້ງຄ່າກ້ອງໃໝ່</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
+      <source>Toggle view simulation/model</source>
+      <translation>ສະຫຼັບມຸມເບິ່ງການຈຳລອງ/ໂມເດວ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
+      <source>Toggle turn table animation</source>
+      <translation>ສະຫຼັບພາບເຄື່ອນໄຫວແທ່ນໝູນ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
+      <source>Show/hide tool path</source>
+      <translation>ສະແດງ/ເຊື່ອງ ເສັ້ນທາງເຄື່ອງມື</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
+      <source>Toggle ambient occlusion</source>
+      <translation>ສະຫຼັບການໃຊ້ ambient occlusion</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
+      <source>x%1</source>
+      <translation>x%1</translation>
     </message>
   </context>
   <context>

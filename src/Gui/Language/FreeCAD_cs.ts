@@ -9,24 +9,24 @@
       <translation>&lt;prázdné&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Axis</source>
       <translation>Osa</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
       <source>Position</source>
       <translation>Poloha</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Výčet</translation>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="706"/>
       <source>Runs test cases to verify console messages</source>
-      <translation type="unfinished">Runs test cases to verify console messages</translation>
+      <translation>Spouští testovací případy za účelem ověření hlášení na konzoli</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="872"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
@@ -133,8 +133,8 @@
       <translation>Umístění</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
@@ -146,8 +146,8 @@
       <translation>Přepnout prvky pole</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>Upravit obrázek</translation>
     </message>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../CommandFeat.cpp" line="259"/>
       <source>Toggle suppress</source>
-      <translation type="unfinished">Toggle suppress</translation>
+      <translation>Přepnout potlačení</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="426"/>
@@ -350,7 +350,7 @@ Vlastnost tohoto objektu bude odkazovat na vlastnost Sady proměnných.</transla
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set…</source>
-      <translation>Uložit v sadě proměnných...</translation>
+      <translation>Uložit v sadě proměnných…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -396,7 +396,7 @@ Vlastnost tohoto objektu bude odkazovat na vlastnost Sady proměnných.</transla
     <message>
       <location filename="../Application.h" line="301"/>
       <source>&amp;Default</source>
-      <translation>&amp;Výchzí</translation>
+      <translation>&amp;Výchozí</translation>
     </message>
     <message>
       <location filename="../Application.h" line="302"/>
@@ -411,7 +411,7 @@ Vlastnost tohoto objektu bude odkazovat na vlastnost Sady proměnných.</transla
     <message>
       <location filename="../Application.h" line="319"/>
       <source>Cu&amp;tting</source>
-      <translation>Ořízávání</translation>
+      <translation>&amp;Ořezávání</translation>
     </message>
     <message>
       <location filename="../Application.h" line="328"/>
@@ -513,7 +513,7 @@ Vlastnost tohoto objektu bude odkazovat na vlastnost Sady proměnných.</transla
       <location filename="../Assistant.cpp" line="153"/>
       <location filename="../Assistant.cpp" line="173"/>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Nelze spustit Qt asistent (%1)</translation>
+      <translation>Nelze spustit Qt asistenta (%1)</translation>
     </message>
   </context>
   <context>
@@ -749,37 +749,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="393"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="398"/>
       <source>Camera Settings</source>
       <translation>Nastavení kamery</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="400"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
       <source>Orientation</source>
       <translation>Orientace</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="414"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="424"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="429"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="434"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="439"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="453"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="458"/>
       <source>Current View</source>
       <translation>Aktuální pohled</translation>
     </message>
@@ -1104,7 +1104,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
       <source>Pack Already Exists</source>
-      <translation type="unfinished">Pack Already Exists</translation>
+      <translation>Balíček již existuje</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="195"/>
@@ -1200,18 +1200,18 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
       <source>Empty Macro</source>
-      <translation type="unfinished">Empty Macro</translation>
+      <translation>Prázdné makro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="244"/>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="314"/>
       <source>Empty Text</source>
-      <translation type="unfinished">Empty Text</translation>
+      <translation>Prázdný text</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="309"/>
       <source>No Item Selected</source>
-      <translation type="unfinished">No Item Selected</translation>
+      <translation>Není vybrána žádná položka</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="213"/>
@@ -1327,7 +1327,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation>Posunout nahoru</translation>
+      <translation>Přesunout nahoru</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
@@ -1337,7 +1337,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation>Posunout dolů</translation>
+      <translation>Přesunout dolů</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
@@ -1430,7 +1430,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Dialogs/DlgCustomizeImp.cpp" line="67"/>
       <location filename="../Dialogs/DlgCustomizeImp.cpp" line="128"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation>Ná&amp;pověda</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeImp.cpp" line="74"/>
@@ -1825,7 +1825,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="114"/>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="144"/>
       <source>Macro Recorder</source>
-      <translation type="unfinished">Macro Recorder</translation>
+      <translation>Záznamník makra</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="105"/>
@@ -1840,7 +1840,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="130"/>
       <source>Existing Macro</source>
-      <translation type="unfinished">Existing Macro</translation>
+      <translation>Stávající makro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="131"/>
@@ -1868,7 +1868,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="179"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation>Určuje, kolik světla prochází objektem, takže jím částečně nebo zcela prochází</translation>
+      <translation>Definuje, kolik světla prochází objektem, takže jím částečně nebo zcela prochází</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="192"/>
@@ -1893,7 +1893,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="50"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definuje základní barvu povrchu při osvětlení. Vyjadřuje, jak objekt rovnoměrně rozptyluje světlo do všech směrů, bez ohledu na úhel pohledu pozorovatele. Tato vlastnost má největší vliv na barvu materiálu.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="57"/>
@@ -1903,12 +1903,12 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="60"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Určuje velikost a ostrost odlesků na povrchu. Vyšší hodnoty vytvářejí malé, ostré odlesky, zatímco nižší hodnoty vytvářejí široké, měkké odlesky. Upozorňujeme, že intenzita odlesků je dána barvou odlesku.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="80"/>
       <source>Reverts changes done in the dialogue.</source>
-      <translation type="unfinished">Reverts changes done in the dialogue.</translation>
+      <translation>Vrátí zpět změny provedené v dialogovém okně.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="87"/>
@@ -1918,7 +1918,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="90"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definuje barvu povrchu pod nepřímým, rovnoměrným osvětlením. znázorňuje, jak se zobrazuje, když je osvětleno pouze okolním světlem v scéně, bez směrového světla, stínování nebo zvýraznění</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="126"/>
@@ -1928,7 +1928,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="129"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Určuje barvu a intenzitu jasných, zrcadlových odlesků, které se objevují na lesklých nebo odrazivých površích, když na ně dopadá přímé světlo. Pro lesklé objekty nastavte jasné barvy.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="146"/>
@@ -1938,7 +1938,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="149"/>
       <source>Changes all values to default values</source>
-      <translation type="unfinished">Changes all values to default values</translation>
+      <translation>Změní všechny hodnoty na výchozí hodnoty</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="166"/>
@@ -1948,7 +1948,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="169"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definuje barvu povrchu, který působí, jako by vyzařoval světlo, jako by byl zdrojem světla, a to nezávisle na vnějším osvětlení, díky čemuž objekt vypadá, jako by svítil sám od sebe. Nastavte na černou, pokud nechcete, aby povrch nevyzařoval žádnou barvu.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="176"/>
@@ -1988,7 +1988,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="103"/>
       <source>Access Denied</source>
-      <translation type="unfinished">Access Denied</translation>
+      <translation>Přístup odepřen</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgOnlineHelpImp.cpp" line="104"/>
@@ -2010,7 +2010,7 @@ Zadejte jiný adresář.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="53"/>
       <source>Sorted</source>
-      <translation>Setřízeno</translation>
+      <translation>Seřazeno</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="63"/>
@@ -2182,7 +2182,7 @@ Zadejte jiný adresář.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="154"/>
       <source>Toggle visibility of built-in preference pack '%1'</source>
-      <translation>Přepnout viditelnost vestavěného balíčku předovleb '%1'</translation>
+      <translation>Přepnout viditelnost vestavěného balíčku předvoleb '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencePackManagementImp.cpp" line="164"/>
@@ -2225,7 +2225,7 @@ Zadejte jiný adresář.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
       <source>Search preferences…</source>
-      <translation>Hledat předvolby...</translation>
+      <translation>Hledat předvolby…</translation>
     </message>
     <message>
       <source/>
@@ -2272,7 +2272,7 @@ Zadejte jiný adresář.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="923"/>
       <source>Wrong Parameter</source>
-      <translation type="unfinished">Wrong Parameter</translation>
+      <translation>Chybný parametr</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
@@ -2450,23 +2450,23 @@ Zadejte jiný adresář.</translation>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="79"/>
       <source>Empty Source</source>
-      <translation type="unfinished">Empty Source</translation>
+      <translation>Prázdný zdroj</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="67"/>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="83"/>
       <source>Empty Destination</source>
-      <translation type="unfinished">Empty Destination</translation>
+      <translation>Prázdný cíl</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="103"/>
       <source>Failed to Extract Document</source>
-      <translation type="unfinished">Failed to Extract Document</translation>
+      <translation>Extrakci dokumentu se nepodařilo provést</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="120"/>
       <source>Failed to Create Document</source>
-      <translation type="unfinished">Failed to Create Document</translation>
+      <translation>Vytvoření dokumentu se nezdařilo</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="62"/>
@@ -2630,7 +2630,7 @@ bude zobrazena v levém dolním rohu v otevřených souborech</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="261"/>
       <source>Show counter of frames per second</source>
-      <translation>Zobrazit FPS</translation>
+      <translation>Zobrazit počet snímků za sekundu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="280"/>
@@ -2790,20 +2790,17 @@ forcibly enabled.
 
 Note: Turning this on is typically not required. If you do,
 remember to report this setting as enabled when seeking support.</source>
-      <translation type="unfinished">A VBO is an OpenGL feature that enables uploading geometry data
-to the graphics card, and is how efficient 3D rendering is done
-on modern hardware.
-This feature might not be used by default if you are running old
-hardware or drivers. By selecting this option its usage will be
-forcibly enabled.
+      <translation>VBO je funkce OpenGL, která umožňuje nahrávání geometrických dat
+na grafickou kartu a představuje způsob, jakým se na moderním hardwaru provádí efektivní 3D vykreslování.
+Tato funkce nemusí být ve výchozím nastavení použita, pokud používáte starší hardware nebo ovladače. Výběrem této možnosti bude její použití nuceně povoleno.
 
-Note: Turning this on is typically not required. If you do,
-remember to report this setting as enabled when seeking support.</translation>
+Poznámka: Zapnutí této funkce obvykle není nutné. Pokud tak učiníte,
+nezapomeňte při žádosti o podporu uvést, že je toto nastavení povoleno.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="314"/>
       <source>Force use of OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Force use of OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Vynutit použití OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="406"/>
@@ -2830,27 +2827,52 @@ ohraničujícího kvádru 3D objektů, které jsou zobrazeny.</translation>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
+      <source>Maximum frame rate</source>
+      <translation>Maximální snímková frekvence</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
+      <source>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</source>
+      <translation>Horní limit frekvence překreslování 3D pohledu.
+Nastavení 'Automaticky' se řídí obnovovací frekvencí displeje, protože překreslování rychlejší, než dokáže displej zobrazit, pouze zbytečně zatěžuje grafickou kartu.
+Nastavte hodnotu 0, aby se pohled překresloval tak rychle, jak to grafický ovladač umožňuje.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
+      <source>Automatic</source>
+      <translation>Automaticky</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
+      <source> FPS</source>
+      <translation> FPS</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
       <source>Camera Type</source>
       <translation>Typ kamery</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="631"/>
       <source>Objects will be in orthographic projection</source>
       <translation>Objekty budou v ortografickém promítání</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="615"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Objekty se objeví v perspektivní projekci</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="618"/>
       <source>Perspective renderin&amp;g</source>
       <translation>Perspektivní renderování &amp;g</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="634"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Or&amp;tografické renderování</translation>
     </message>
@@ -2862,57 +2884,57 @@ ohraničujícího kvádru 3D objektů, které jsou zobrazeny.</translation>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="192"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="193"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="246"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="248"/>
       <source>Anti-aliasing</source>
       <translation>Anti-aliasing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="247"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="249"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Otevřete nové okno nebo restartujte %1 pro aplikaci změn anti-aliasingu.</translation>
     </message>
@@ -3092,7 +3114,7 @@ budou zobrazena šedě</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="166"/>
       <source>Alt+R</source>
-      <translation>ALT + R</translation>
+      <translation>Alt + R</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="173"/>
@@ -3223,7 +3245,7 @@ podél barevné škály</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="416"/>
       <source>Run AutoRecovery at startup</source>
-      <translation>Spusti Automatickou obnovu při startu</translation>
+      <translation>Spustit automatické obnovení při spuštění systému</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="469"/>
@@ -3263,12 +3285,12 @@ podél barevné škály</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="103"/>
       <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+      <translation>Tato experimentální funkce umožňuje plynulejší odezvu grafického uživatelského rozhraní při přepočítávání prvků.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="106"/>
       <source>Enables async document recomputation</source>
-      <translation type="unfinished">Enables async document recomputation</translation>
+      <translation>Umožňuje asynchronní přepočítání dokumentu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
@@ -3280,7 +3302,7 @@ Tato funkce může mírně prodloužit dobu přepočítání.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation>Ppři ukládáníř pidat náhled do souboru projektu</translation>
+      <translation>Při ukládání přidat náhled do souboru projektu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
@@ -3335,12 +3357,12 @@ získají příponu data podle zadaného formátu</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="571"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
-      <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
+      <translation>Potlačuje varování o nesouladu verzí při ukládání souborů vytvořených ve starší verzi programu FreeCAD</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Suppress older version warning on save</source>
-      <translation type="unfinished">Suppress older version warning on save</translation>
+      <translation>Potlačit varování o starší verzi při ukládání</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
@@ -3364,11 +3386,9 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation type="unfinished">Disable partial loading of external linked documents.
-Then only referenced objects and their dependencies will be loaded
-when a linked document is auto-opened together with the main document.
-A partially loaded document cannot be edited. Double click the document
-icon in the tree view to fully reload it.</translation>
+      <translation>Zakázat částečné načítání externích propojených dokumentů.
+V takovém případě se při automatickém otevření propojeného dokumentu společně s hlavním dokumentem načtou pouze odkazované objekty a jejich závislosti.
+Částečně načtený dokument nelze upravovat. Poklepáním na ikonu dokumentu ve stromovém zobrazení ho znovu načtěte celý dokument.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="622"/>
@@ -3520,7 +3540,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
       <source>Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</source>
-      <translation type="unfinished">Warning: The format '%1' produces '%2' which contains invalid characters. They will be replaced with '-' when saving.</translation>
+      <translation>Upozornění: Formát '%1' generuje výstup '%2', který obsahuje neplatné znaky. Při ukládání budou nahrazeny znakem '-'.</translation>
     </message>
   </context>
   <context>
@@ -3589,7 +3609,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="282"/>
       <source>Alt+S</source>
-      <translation>ALT + S</translation>
+      <translation>Alt + S</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="289"/>
@@ -3599,7 +3619,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="292"/>
       <source>Alt+4</source>
-      <translation>ALT + 4</translation>
+      <translation>Alt + 4</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="299"/>
@@ -3609,7 +3629,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="302"/>
       <source>Alt+6</source>
-      <translation>ALT + 6</translation>
+      <translation>Alt + 6</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="309"/>
@@ -3619,7 +3639,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="312"/>
       <source>Alt+1</source>
-      <translation>ALT + 1</translation>
+      <translation>Alt + 1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="324"/>
@@ -3740,7 +3760,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
       <source>Gui Commands</source>
-      <translation>Příkazy grafického uživatelského rozhranní</translation>
+      <translation>Příkazy grafického uživatelského rozhraní</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="130"/>
@@ -3894,7 +3914,7 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="211"/>
       <source>Opacity when inactive</source>
-      <translation>Neprůhlednost při neaktivitě</translation>
+      <translation>Průhlednost v neaktivním stavu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="227"/>
@@ -3942,24 +3962,41 @@ Můžete také použít tuto formu: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Styl orbitu</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
-      <source>Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the Z-axis.
-         </source>
-      <translation>Styl rotace na orbitě.
-Zaoblený Arcball: pohyb myši v rozích obrazovky pouze natáčí díl.
-Trackball: vodorovný pohyb myši otáčí díl kolem osy Y.
-Klasický trackball: pohyb myši přesně otáčí dílem.
-Otočný stůl: díl se otáčí okolo osy Z (se zavazbenými osami).
-Volně otočný stůl: díl se otáčí okolo osy Z.
-         </translation>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
+      <source>Clarify Selection</source>
+      <translation>Upřesnit výběr</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
+      <source>Enable Clarify Selection on long press of left mouse button.
+When enabled, holding left mouse button shows a menu to select overlapping objects.
+Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
+      <translation>Povolit Upřesnění výběru při dlouhém stisku levého tlačítka myši.
+Je-li povoleno, podržením levého tlačítka myši se zobrazí nabídka pro výběr překrývajících se objektů.
+Některé navigační styly (OpenInventor, Gesture, OpenSCAD) vyžadují stisknutí Ctrl spolu s levým tlačítkem myši.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
+      <source>Enable long press clarify selection</source>
+      <translation>Povolit upřesnění výběru dlouhým stiskem</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
+      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
+      <translation>Čas v sekundách pro držení levého tlačítka tak, aby se zobrazilo menu upřesnění výběru</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
+      <source>Long press timeout</source>
+      <translation>Časový limit dlouhého stisku</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
+      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
+      <translation>Doba trvání v sekundách pro držení levého tlačítka myši před spuštěním upřesnění výběru</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
       <source>Turntable</source>
       <translation>Otočný stůl</translation>
     </message>
@@ -3969,17 +4006,17 @@ Volně otočný stůl: díl se otáčí okolo osy Z.
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Free Turntable</source>
       <translation>Volný otočný stůl</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
       <source>Trackball Classic</source>
       <translation>Klasický trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
       <source>Rounded Arcball</source>
       <translation>Zaoblený Arcball</translation>
     </message>
@@ -4044,40 +4081,6 @@ Hodnota je průměr koule tak, aby se vešla na obrazovku.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
       <source>Enable spinning animations</source>
       <translation>Povolit rotující animace</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
-      <source>Clarify Selection</source>
-      <translation>Upřesnit výběr</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
-      <source>Enable Clarify Selection on long press of left mouse button.
-When enabled, holding left mouse button shows a menu to select overlapping objects.
-Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
-      <translation>Povolit Upřesnění výběru při dlouhém stisku levého tlačítka myši.
-Je-li povoleno, podržením levého tlačítka myši se zobrazí nabídka pro výběr překrývajících se objektů.
-Některé navigační styly (OpenInventor, Gesture, OpenSCAD) vyžadují stisknutí Ctrl spolu s levým tlačítkem myši.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
-      <source>Enable long press clarify selection</source>
-      <translation>Povolit upřesnění výběru dlouhým stiskem</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
-      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
-      <translation>Čas v sekundách pro držení levého tlačítka tak, aby se zobrazilo menu upřesnění výběru</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
-      <source>Long press timeout</source>
-      <translation>Časový limit dlouhého stisku</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
-      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
-      <translation>Doba trvání v sekundách pro držení levého tlačítka myši před spuštěním upřesnění výběru</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
@@ -4161,6 +4164,23 @@ Vyberte sadu a poté stiskněte tlačítko pro zobrazení uvedených konfigurac�
       <translation>Konfigurace myši</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
+      <source>Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+         </source>
+      <translation>Styl rotační dráhy.
+Zaoblený Arcball: pohyb myší v rozích obrazovky způsobí pouze otáčení dílu.
+Trackball: horizontální pohyb myší způsobí otáčení dílu kolem osy Y.
+Klasický trackball: pohyb myší způsobí otáčení dílu s možností preceze.
+Volný otočný talíř: součást se bude otáčet kolem osy Z.
+Otočný talíř: součást se bude otáčet kolem osy Z (s omezenými osami).
+         </translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Přiblížení bude provedeno na poloze kurzoru myši</translation>
@@ -4174,7 +4194,7 @@ Vyberte sadu a poté stiskněte tlačítko pro zobrazení uvedených konfigurac�
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="656"/>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation>Jak moc bude příblížen.
+      <translation>O kolik se obraz přiblíží.
 Krok přiblížení "1" znamená faktor 7,5 pro každý krok přiblížení.</translation>
     </message>
     <message>
@@ -4193,62 +4213,62 @@ Krok přiblížení "1" znamená faktor 7,5 pro každý krok přiblížení.</tr
       <translation>Zakázat dotykové gesto naklánění</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Isometric</source>
       <translation>Izometrie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Dimetric</source>
       <translation>Dimetrie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Trimetric</source>
       <translation>Trimetrie</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Top</source>
       <translation>Horní</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Front</source>
       <translation>Přední</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
       <source>Left</source>
       <translation>Vlevo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
       <source>Right</source>
       <translation>Vpravo</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
       <source>Rear</source>
       <translation>Zadní</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
       <source>Bottom</source>
       <translation>Dole</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="235"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="272"/>
       <source>Custom</source>
       <translation>Vlastní</translation>
     </message>
@@ -4362,17 +4382,17 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="131"/>
       <source>The color used for highlighting preselected objects in the 3D view</source>
-      <translation type="unfinished">The color used for highlighting preselected objects in the 3D view</translation>
+      <translation>Barva použitá ke zvýraznění předem vybraných objektů v 3D pohledu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="160"/>
       <source>Enable preselection, highlighted with specified color</source>
-      <translation>Povolit zvýraznění předvýběru určenou barvu</translation>
+      <translation>Povolit předvolbu, zvýrazněnou zadanou barvou</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="163"/>
       <source>Enable preselection</source>
-      <translation>Povolit předvýběr</translation>
+      <translation>Povolit předvolbu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="179"/>
@@ -4387,7 +4407,7 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="207"/>
       <source>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</source>
-      <translation type="unfinished">Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</translation>
+      <translation>Výběrem položky ve stromovém zobrazení se automaticky aktivuje příslušný dokument a přepne se na jeho 3D zobrazení.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="220"/>
@@ -4397,7 +4417,7 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="255"/>
       <source>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</source>
-      <translation type="unfinished">Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</translation>
+      <translation>Poskytuje trvalé přepínače výběru pro každou položku. Zjednodušuje hromadné operace a složitý vícenásobný výběr bez nutnosti držet modifikační klávesy (Ctrl/Shift).</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="49"/>
@@ -4417,7 +4437,7 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="223"/>
       <source>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</source>
-      <translation type="unfinished">Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</translation>
+      <translation>Vyhledá a zobrazí vybraný objekt v hierarchii stromu. Zabraňuje manuálnímu posouvání v rozsáhlých a složitých strukturách dokumentů.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="236"/>
@@ -4427,7 +4447,7 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="239"/>
       <source>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</source>
-      <translation type="unfinished">Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</translation>
+      <translation>Zapne historii výběru. Pomocí tlačítek 'Zpět' a 'Vpřed' můžete přepínat mezi dříve vybranými objekty, aniž byste museli znovu prohledávat strom.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="252"/>
@@ -4575,17 +4595,17 @@ Větší hodnota usnadňuje výběr prvků, ale může zabránit výběru drobn�
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="150"/>
       <source>Central</source>
-      <translation type="unfinished">Central</translation>
+      <translation>Centrální</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="151"/>
       <source>Midway</source>
-      <translation type="unfinished">Midway</translation>
+      <translation>Midway</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="152"/>
       <source>End</source>
-      <translation>End</translation>
+      <translation>Konec</translation>
     </message>
   </context>
   <context>
@@ -4785,30 +4805,30 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../DocumentRecovery.cpp" line="652"/>
       <source>Delete the selected recovery documents?</source>
-      <translation type="unfinished">Delete the selected recovery documents?</translation>
+      <translation>Chcete smazat vybrané obnovené dokumenty?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="653"/>
       <location filename="../DocumentRecovery.cpp" line="686"/>
       <source>Recovery documents cannot be restored after deletion.</source>
-      <translation type="unfinished">Recovery documents cannot be restored after deletion.</translation>
+      <translation>Dokumenty určené k obnovení nelze po smazání obnovit.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="685"/>
       <source>Delete all recovery documents?</source>
-      <translation type="unfinished">Delete all recovery documents?</translation>
+      <translation>Chcete smazat všechny obnovené dokumenty?</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Recovery documents deleted.</source>
-      <translation type="unfinished">Recovery documents deleted.</translation>
+      <translation>Dokumenty k obnově byly smazány.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
       <location filename="../DocumentRecovery.cpp" line="684"/>
       <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Cleanup</source>
-      <translation>Vyčištit</translation>
+      <translation>Vyčistit</translation>
     </message>
   </context>
   <context>
@@ -4932,7 +4952,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="600"/>
       <source>Add Icon Folder</source>
-      <translation type="unfinished">Add Icon Folder</translation>
+      <translation>Přidat složku s ikonami</translation>
     </message>
   </context>
   <context>
@@ -4945,7 +4965,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="628"/>
       <source>Remove Folder</source>
-      <translation type="unfinished">Remove Folder</translation>
+      <translation>Odstranit složku</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="629"/>
@@ -5026,7 +5046,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="593"/>
       <source>Existing Sub-Group</source>
-      <translation type="unfinished">Existing Sub-Group</translation>
+      <translation>Stávající podskupina</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="610"/>
@@ -5036,12 +5056,12 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="628"/>
       <source>Import Parameter From File</source>
-      <translation type="unfinished">Import Parameter From File</translation>
+      <translation>Importovat parametry ze souboru</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="656"/>
       <source>Import Error</source>
-      <translation type="unfinished">Import Error</translation>
+      <translation>Chyba importu</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="676"/>
@@ -5169,7 +5189,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="967"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1014"/>
       <source>Existing Item</source>
-      <translation type="unfinished">Existing Item</translation>
+      <translation>Existující položka</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="830"/>
@@ -5283,7 +5303,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Placement.cpp" line="753"/>
       <source>Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation>Před stisknutím tohoto tlačítka vyberte 1, 2 nebo 3 body. Bod může být na vrcholu, ploše nebo hraně. Je-li na ploše nebo hraně, pak bude použit bod na poloze myši podél plochy nebo hrany. Je-li vybrán 1 bod, pak bude použit jako střed rotace. Jsou-li vybrány 2 body, pak bude střední bod mezi nimi středem rotace a bude vytvořena nová uživatelská osa, je-li potřeba. Jsou-li vybrány 3 body, první bod bude středem rotace a bude podél vektoru, který je normálou roviny dané třemi body. Vzdálenost a úhlová informace jsou v zobrazení reportu, což může být užitečné pro zarovnání objektů. Příslušnou vzdálenost nebo úhel je možné zkopírovat do schánky kliknutím se Shiftem.</translation>
+      <translation>Před kliknutím na toto tlačítko vyberte 1, 2 nebo 3 body. Bod může ležet na vrcholu, ploše nebo hraně.  Pokud se bod nachází na ploše nebo hraně, použije se bod v poloze kurzoru myši podél dané plochy nebo hrany.  Je-li vybrán 1 bod, bude použit jako střed otáčení.  Jsou-li vybrány 2 body, stane se středem otáčení jejich střed a v případě potřeby bude vytvořena nová vlastní osa.  Jsou-li vybrány 3 body, stane se prvním bodem střed otáčení, který leží na vektoru kolmém k rovině definované těmito 3 body.  V zobrazení sestavy jsou uvedeny některé informace o vzdálenosti a úhlu, které mohou být užitečné při zarovnávání objektů.  Pro vaše pohodlí se při použití kombinace Shift + kliknutí zkopíruje příslušná vzdálenost nebo úhel do schránky.</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="854"/>
@@ -5293,7 +5313,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Placement.cpp" line="856"/>
       <source>There are input fields with incorrect input. Ensure valid placement values!</source>
-      <translation>Vstupních pole obsahují nesprávná data. Zajistěne platné hodnoty umístění!</translation>
+      <translation>V některých vstupních polích jsou zadány nesprávné údaje. Zkontrolujte, zda jsou hodnoty umístění platné!</translation>
     </message>
   </context>
   <context>
@@ -5408,7 +5428,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
       <source>No 3D View</source>
-      <translation type="unfinished">No 3D View</translation>
+      <translation>Žádný 3D pohled</translation>
     </message>
     <message>
       <location filename="../TextureMapping.cpp" line="167"/>
@@ -5526,7 +5546,7 @@ původně vybranými před otevřením tohoto dialogu</translation>
       <location filename="../ReportView.cpp" line="637"/>
       <location filename="../ReportView.cpp" line="667"/>
       <source>Log Messages</source>
-      <translation>Protokolovací zprávy</translation>
+      <translation>Zprávy protokolu</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="650"/>
@@ -5640,72 +5660,72 @@ původně vybranými před otevřením tohoto dialogu</translation>
       <translation>Seznam vybraných objektů</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="654"/>
+      <location filename="../Selection/SelectionView.cpp" line="657"/>
       <source>Select Only</source>
       <translation>Vybrat pouze</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="662"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Zoom Fit</source>
       <translation>Přizpůsobit zvětšení</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="666"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Go to Selection</source>
       <translation>Přejít na výběr</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="672"/>
       <source>Mark to Recompute</source>
       <translation>Označit k přepočítání</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="671"/>
+      <location filename="../Selection/SelectionView.cpp" line="674"/>
       <source>Marks this object to be recomputed</source>
       <translation>Označí tento objekt k přepočítání</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="673"/>
+      <location filename="../Selection/SelectionView.cpp" line="676"/>
       <source>To Python Console</source>
       <translation>Do konzole Pythonu</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="680"/>
+      <location filename="../Selection/SelectionView.cpp" line="683"/>
       <source>Duplicate Subshape</source>
       <translation>Duplikovat dílčí tvar</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="656"/>
+      <location filename="../Selection/SelectionView.cpp" line="659"/>
       <source>Selects only this object</source>
       <translation>Vybere pouze tento objekt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Deselect</source>
       <translation>Zrušit výběr</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Deselects this object</source>
       <translation>Zruší výběr tohoto objektu</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="664"/>
+      <location filename="../Selection/SelectionView.cpp" line="667"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Vybere a přizpůsobí tento objekt ve 3D okně</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="670"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Vybere a vyhledá tento objekt ve stromovém zobrazení</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="675"/>
+      <location filename="../Selection/SelectionView.cpp" line="678"/>
       <source>Reveals this object and its subelements in the Python console.</source>
-      <translation>Odkryje tento objekt a jeho subelementy v konzoli pythonu.</translation>
+      <translation>Zobrazí tento objekt a jeho podprvky v konzoli jazyka Python.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="682"/>
+      <location filename="../Selection/SelectionView.cpp" line="685"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Vytvoří samostatnou kopii této části obrazce v dokumentu</translation>
     </message>
@@ -5838,12 +5858,12 @@ Uložit všechny změny?</translation>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="981"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation>Táhněte obrazovku dvěma prsty NEBO stiskněté pravé tlačítko myši.</translation>
+      <translation>Táhněte obrazovku dvěma prsty NEBO stiskněte pravé tlačítko myši.</translation>
     </message>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="983"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Táhněte obrazovku jedním prstem NEBO stiskněté levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
+      <translation>Táhněte obrazovku jedním prstem NEBO stiskněte levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
     </message>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="988"/>
@@ -5896,7 +5916,7 @@ Uložit všechny změny?</translation>
     <message>
       <location filename="../GraphvizView.cpp" line="609"/>
       <source>Export graph</source>
-      <translation type="unfinished">Export graph</translation>
+      <translation>Exportovat graf</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="762"/>
@@ -5944,7 +5964,7 @@ Uložit všechny změny?</translation>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1502"/>
+      <location filename="../Widgets.cpp" line="1510"/>
       <source>List</source>
       <translation>Seznam</translation>
     </message>
@@ -5952,66 +5972,66 @@ Uložit všechny změny?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Uživatelem definovaný…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Špatný směr</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Směr nesmí být nulový vektor</translation>
     </message>
@@ -6075,31 +6095,31 @@ Uložit všechny změny?</translation>
       <location filename="../MainWindow.cpp" line="477"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
-      <translation type="unfinished">Preselection</translation>
+      <translation>Předběžný výběr</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="492"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
-      <translation type="unfinished">Input Hints</translation>
+      <translation>Tipy pro zadávání</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="532"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
-      <translation type="unfinished">Quick Measure</translation>
+      <translation>Rychlé měření</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="547"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
+      <translation>Přepne spodní dokované panely</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="557"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
-      <translation type="unfinished">Bottom Panel Toggle</translation>
+      <translation>Přepínač spodního panelu</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="576"/>
@@ -6403,7 +6423,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
       <location filename="../ProgressBar.cpp" line="448"/>
       <source>Progress Indicator</source>
       <extracomment>A context menu action used to show or hide the progress indicator in the status bar</extracomment>
-      <translation type="unfinished">Progress Indicator</translation>
+      <translation>Ukazatel průběhu</translation>
     </message>
     <message>
       <location filename="../ProgressBar.cpp" line="559"/>
@@ -6437,12 +6457,12 @@ V pravém pohledu jsou %2 body vybrány.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Object not found</source>
       <translation>Objekt nenalezen</translation>
     </message>
@@ -6498,36 +6518,38 @@ V pravém pohledu jsou %2 body vybrány.</translation>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1039"/>
       <source>object %1 (%2):
 </source>
-      <translation type="unfinished">object %1 (%2):
+      <translation>objekt %1 (%2):
 </translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>property %1
 </source>
-      <translation>vlastnost %1</translation>
+      <translation>vlastnost %1
+</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1058"/>
       <source>document %1:
 </source>
-      <translation>dokument %1:</translation>
+      <translation>dokument %1:
+</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1083"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
-      <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
+      <translation>Na objekt %1 v objektu %2 (%3) v dokumentu %4 odkazují:</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1099"/>
       <source>(No references found.)</source>
-      <translation type="unfinished">(No references found.)</translation>
+      <translation>(Nebyly nalezeny žádné odkazy.)</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1117"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1205"/>
       <source>Property Uses</source>
-      <translation type="unfinished">Property Uses</translation>
+      <translation>Použité vlastnosti</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1147"/>
@@ -6548,7 +6570,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1173"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
-      <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
+      <translation>Nelze přejmenovat skupinu: názvy jedné nebo více vlastností začínají názvem skupiny</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1182"/>
@@ -6570,7 +6592,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
       <source>Move Property</source>
-      <translation type="unfinished">Move Property</translation>
+      <translation>Přesunout vlastnosti</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
@@ -6623,7 +6645,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
       <location filename="../PropertyView.cpp" line="96"/>
       <location filename="../PropertyView.cpp" line="609"/>
       <source>Data</source>
-      <translation>Údaje</translation>
+      <translation>Data</translation>
     </message>
   </context>
   <context>
@@ -6764,7 +6786,7 @@ Ukončit bez uložení veškerých dat?</translation>
       <location filename="../Action.cpp" line="878"/>
       <location filename="../Action.cpp" line="879"/>
       <source>Open a document or import files.</source>
-      <translation type="unfinished">Open a document or import files.</translation>
+      <translation>Otevřete dokument nebo importujte soubory.</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="894"/>
@@ -6776,7 +6798,7 @@ Ukončit bez uložení veškerých dat?</translation>
     <message>
       <location filename="../Action.cpp" line="904"/>
       <source>Clear the list of recent files?</source>
-      <translation type="unfinished">Clear the list of recent files?</translation>
+      <translation>Vymazat seznam naposledy otevřených souborů?</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="979"/>
@@ -6845,7 +6867,7 @@ Ukončit bez uložení veškerých dat?</translation>
     <message>
       <location filename="../EditorView.cpp" line="879"/>
       <source>No results</source>
-      <translation type="unfinished">No results</translation>
+      <translation>Žádné výsledky</translation>
     </message>
   </context>
   <context>
@@ -7044,7 +7066,7 @@ Zadat jiný adresář?</translation>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
       <source>Edit Selection</source>
-      <translation type="unfinished">Edit Selection</translation>
+      <translation>Upravit výběr</translation>
     </message>
   </context>
   <context>
@@ -7327,7 +7349,7 @@ Zadat jiný adresář?</translation>
     <message>
       <location filename="Translator.cpp" line="256"/>
       <source>Tamil</source>
-      <translation type="unfinished">Tamil</translation>
+      <translation>Tamilština</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="257"/>
@@ -7337,7 +7359,12 @@ Zadat jiný adresář?</translation>
     <message>
       <location filename="Translator.cpp" line="258"/>
       <source>Lao</source>
-      <translation type="unfinished">Lao</translation>
+      <translation>Lao</translation>
+    </message>
+    <message>
+      <location filename="Translator.cpp" line="259"/>
+      <source>Hebrew</source>
+      <translation>Hebrejština</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="221"/>
@@ -7809,14 +7836,14 @@ Zadat jiný adresář?</translation>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1424"/>
-      <location filename="../Widgets.cpp" line="1439"/>
+      <location filename="../Widgets.cpp" line="1432"/>
+      <location filename="../Widgets.cpp" line="1447"/>
       <source>Invalid input</source>
       <translation>Neplatný vstup</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1425"/>
-      <location filename="../Widgets.cpp" line="1440"/>
+      <location filename="../Widgets.cpp" line="1433"/>
+      <location filename="../Widgets.cpp" line="1448"/>
       <source>Input in line %1 is not a number</source>
       <translation>Vstup na řádku %1 není číslo</translation>
     </message>
@@ -7841,7 +7868,7 @@ Zadat jiný adresář?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="791"/>
       <source>Python Console</source>
-      <translation>Python konzole</translation>
+      <translation>Python konzola</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="818"/>
@@ -7910,35 +7937,35 @@ Zadat jiný adresář?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="828"/>
-      <location filename="../Application.cpp" line="935"/>
-      <location filename="../Application.cpp" line="1022"/>
+      <location filename="../Application.cpp" line="831"/>
+      <location filename="../Application.cpp" line="938"/>
+      <location filename="../Application.cpp" line="1025"/>
       <source>Unknown filetype</source>
       <translation>Neznámý typ souboru</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="829"/>
-      <location filename="../Application.cpp" line="936"/>
+      <location filename="../Application.cpp" line="832"/>
+      <location filename="../Application.cpp" line="939"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Nelze otevřít neznámý typ souboru: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1012"/>
+      <location filename="../Application.cpp" line="1015"/>
       <source>Export failed</source>
       <translation>Export selhal</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1023"/>
+      <location filename="../Application.cpp" line="1026"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Nelze uložit neznámý typ souboru: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1221"/>
+      <location filename="../Application.cpp" line="1224"/>
       <source>Recomputation required</source>
       <translation>Vyžadováno přepočítání</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1222"/>
+      <location filename="../Application.cpp" line="1225"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7947,24 +7974,24 @@ Recompute now?</source>
 Přepočítat nyní?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1248"/>
+      <location filename="../Application.cpp" line="1251"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Přepočítání některých dokumentů se nezdařilo.
 Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1247"/>
+      <location filename="../Application.cpp" line="1250"/>
       <source>Recompute error</source>
       <translation>Chyba přepočítání</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1997"/>
+      <location filename="../Application.cpp" line="2000"/>
       <source>Workbench failure</source>
       <translation>Selhání v pracovním prostředí</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1998"/>
+      <location filename="../Application.cpp" line="2001"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8001,22 +8028,22 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="492"/>
       <source>Migration Completed With Warnings</source>
-      <translation type="unfinished">Migration Completed With Warnings</translation>
+      <translation>Migrace byla dokončena s varováními</translation>
     </message>
     <message numerus="yes">
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="499"/>
       <source>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>%n soubor se nepodařilo zkopírovat a byl přeskočen. Úplný seznam byl uložen do souboru %1 ve vašem novém konfiguračním adresáři.</numerusform>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
-        <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
+        <numerusform>%n soubory se nepodařilo zkopírovat a byly přeskočeny. Úplný seznam byl uložen do souboru %1 ve vašem novém konfiguračním adresáři.</numerusform>
         <numerusform>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="516"/>
       <source>Migration Failed</source>
-      <translation type="unfinished">Migration Failed</translation>
+      <translation>Migrace se nezdařila</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="517"/>
@@ -8034,18 +8061,18 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
       <translation>Výjimka</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1261"/>
-      <location filename="../Application.cpp" line="1276"/>
+      <location filename="../Application.cpp" line="1264"/>
+      <location filename="../Application.cpp" line="1279"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1265"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Při načítání souboru se objevily chyby. Některé data mohla být modifikována nebo nebyla vůbec obnovena. Podívejte se do Zobrazení reportu pro konkrétnější informaci o zúčastněných objektech.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1277"/>
+      <location filename="../Application.cpp" line="1280"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Při načítání souboru došlo k vážným chybám. Některá data mohla být změněna nebo vůbec neobnovena. Uložení projektu s největší pravděpodobností povede ke ztrátě dat.</translation>
     </message>
@@ -8063,25 +8090,18 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="316"/>
       <source>Import File</source>
-      <translation type="unfinished">Import File</translation>
+      <translation>Import souboru</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="603"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Export souboru</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="671"/>
       <location filename="../CommandDoc.cpp" line="683"/>
       <source>Merge Document</source>
       <translation>Sloučit dokument</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
-      <source>%1 document</source>
-      <translation type="unfinished">%1 document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="684"/>
@@ -8107,7 +8127,7 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
       <location filename="../CommandDoc.cpp" line="1755"/>
       <location filename="../CommandDoc.cpp" line="1765"/>
       <source>Delete Failed</source>
-      <translation type="unfinished">Delete Failed</translation>
+      <translation>Odstranění se nezdařilo</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2263"/>
@@ -8127,19 +8147,19 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="2383"/>
       <source>Expression Error</source>
-      <translation type="unfinished">Expression Error</translation>
+      <translation>Chyba výrazu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2384"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
-      <translation>Přepočítání některých dokumentů se nezdařilo.
-Zkontrolujte zobrazení reportu pro více podrobností.</translation>
+      <translation>Nepodařilo se analyzovat některé výrazy.
+Další podrobnosti najdete v zobrazení sestavy.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1819"/>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>Chyba závislosti</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2266"/>
@@ -8159,7 +8179,7 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="112"/>
       <source>Cannot Load Workbench</source>
-      <translation type="unfinished">Cannot Load Workbench</translation>
+      <translation>Nelze načíst pracovní prostředí</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="113"/>
@@ -8208,13 +8228,13 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     <message>
       <location filename="../CommandView.cpp" line="461"/>
       <source>Save Frozen Views</source>
-      <translation type="unfinished">Save Frozen Views</translation>
+      <translation>Uložit zmrazené pohledy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="507"/>
       <location filename="../CommandView.cpp" line="534"/>
       <source>Restore Views</source>
-      <translation type="unfinished">Restore Views</translation>
+      <translation>Obnovit zobrazení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="463"/>
@@ -8232,7 +8252,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="523"/>
       <source>Restore Frozen Views</source>
-      <translation type="unfinished">Restore Frozen Views</translation>
+      <translation>Obnovit zamrzlé pohledy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2160"/>
@@ -8400,7 +8420,7 @@ Pokračovat?</translation>
       <translation>Příliš mnoho otevřených nerušivých oznámení. Oznámení jsou vynechána!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1453"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8409,44 +8429,44 @@ Pokračovat?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Are you sure you want to continue?</source>
       <translation>Opravdu si přejete pokračovat?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1478"/>
+      <location filename="../Document.cpp" line="1480"/>
       <source>Check report view for more…</source>
       <translation>Zkontrolujte zobrazení reportu pro více…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1484"/>
       <source>Physical path:</source>
       <translation>Fyzická cesta:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
-      <location filename="../Document.cpp" line="1490"/>
+      <location filename="../Document.cpp" line="1485"/>
+      <location filename="../Document.cpp" line="1492"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1484"/>
-      <location filename="../Document.cpp" line="1491"/>
+      <location filename="../Document.cpp" line="1486"/>
+      <location filename="../Document.cpp" line="1493"/>
       <source>Path:</source>
       <translation>Cesta:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1502"/>
+      <location filename="../Document.cpp" line="1504"/>
       <source>Identical physical path</source>
       <translation>Identická fyzická cesta</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1514"/>
+      <location filename="../Document.cpp" line="1516"/>
       <source>Could not save document</source>
       <translation>Dokument nelze uložit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1515"/>
+      <location filename="../Document.cpp" line="1517"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8459,142 +8479,149 @@ Would you like to save the file with a different name?</source>
 Chcete uložit soubor s jiným názvem?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1529"/>
-      <location filename="../Document.cpp" line="1786"/>
-      <location filename="../Document.cpp" line="1895"/>
+      <location filename="../Document.cpp" line="1531"/>
+      <location filename="../Document.cpp" line="1788"/>
+      <location filename="../Document.cpp" line="1897"/>
       <source>Saving aborted</source>
       <translation>Ukládání bylo přerušeno</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1580"/>
+      <location filename="../Document.cpp" line="1582"/>
       <source>File Created with Older FreeCAD Version</source>
-      <translation type="unfinished">File Created with Older FreeCAD Version</translation>
+      <translation>Soubor vytvořený ve starší verzi programu FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
+      <location filename="../Document.cpp" line="1585"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
 
 Use 'Save As…' to preserve the original file.
 </source>
-      <translation type="unfinished">This file was created with %1, but you are using v%2.%3.
+      <translation>Tento soubor byl vytvořen v programu %1, ale vy používáte verzi v%2.%3.
 
-Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
+Uložením dojde k aktualizaci formátu souboru. Po uložení nemusí být soubor čitelný ve starších verzích programu FreeCAD.
 
-Use 'Save As…' to preserve the original file.
+Chcete-li zachovat původní soubor, použijte příkaz 'Uložit jako…'.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1592"/>
+      <location filename="../Document.cpp" line="1594"/>
       <source>an unknown older version of FreeCAD</source>
-      <translation type="unfinished">an unknown older version of FreeCAD</translation>
+      <translation>neznámá starší verze programu FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1593"/>
+      <location filename="../Document.cpp" line="1595"/>
       <source>FreeCAD version %1</source>
-      <translation type="unfinished">FreeCAD version %1</translation>
+      <translation>FreeCAD verze %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1600"/>
       <source>Save</source>
       <translation>Uložit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1599"/>
+      <location filename="../Document.cpp" line="1601"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Uložit jako…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1603"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Do not show this warning again</source>
-      <translation type="unfinished">Do not show this warning again</translation>
+      <translation>Toto varování již nezobrazovat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1668"/>
+      <location filename="../Document.cpp" line="1670"/>
       <source>Save dependent files</source>
       <translation>Uložit závislé soubory</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1669"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Soubor obsahuje externí závislosti. Chcete také uložit závislé soubory?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1779"/>
+      <location filename="../Document.cpp" line="1717"/>
+      <location filename="../Document.cpp" line="1781"/>
       <source>Saving document failed</source>
       <translation>Uložení dokumentu se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save document under new filename…</source>
       <translation>Uložit dokument pod novým názvem…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <source>%1 document</source>
+      <translation>%1 dokument</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Uložit kopii dokumentu pod novým názvem…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1745"/>
-      <location filename="../Document.cpp" line="1875"/>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
       <source>Save %1 Document</source>
       <translation>Uložit dokument %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1801"/>
-      <location filename="../Document.cpp" line="1851"/>
+      <location filename="../Document.cpp" line="1803"/>
+      <location filename="../Document.cpp" line="1853"/>
       <source>Failed to save document</source>
       <translation>Dokumentu se nezdařilo uložit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1802"/>
+      <location filename="../Document.cpp" line="1804"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumenty obsahují cyklické závislosti. Chcete je přesto uložit?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2540"/>
+      <location filename="../Document.cpp" line="2554"/>
       <source>Document not closable</source>
       <translation>Dokument nelze uzavřít</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2541"/>
+      <location filename="../Document.cpp" line="2555"/>
       <source>The document is not closable for the moment.</source>
-      <translation>V tuto chvili nelze dokument uzavřít.</translation>
+      <translation>V tuto chvíli nelze dokument uzavřít.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2581"/>
+      <location filename="../Document.cpp" line="2595"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Nepodařilo se uložit dokument '%1'. Chcete zrušit uzavření?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2583"/>
+      <location filename="../Document.cpp" line="2597"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Uložení dokumentu se nezdařilo. Chcete zrušit uzavření?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2588"/>
+      <location filename="../Document.cpp" line="2602"/>
       <source>Unable to save document</source>
       <translation>Dokument nelze uložit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Undo</source>
       <translation>Zpět</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Redo</source>
       <translation>Znovu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2961"/>
+      <location filename="../Document.cpp" line="2975"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>V následujících dokumentech jsou seskupeny transakce s jinými předcházejícími transakcemi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2966"/>
+      <location filename="../Document.cpp" line="2980"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8683,13 +8710,13 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Nelze najít soubor %1 %2 ani v %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2659"/>
       <source>Clarify Selection</source>
       <translation>Upřesnit výběr</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1454"/>
       <location filename="../MainWindow.cpp" line="1001"/>
+      <location filename="../CommandDoc.cpp" line="1454"/>
       <source>Unsaved Document</source>
       <translation>Neuložený dokument</translation>
     </message>
@@ -8813,8 +8840,8 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Přetažení se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <source>Apply to all</source>
       <translation>Použít na všechny</translation>
     </message>
@@ -8925,8 +8952,8 @@ na aktuální kopii budou ztraceny.
       <translation>Přepnout překrytí</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <source>Toggle floating window</source>
       <translation>Přepnout plovoucí okno</translation>
     </message>
@@ -8948,7 +8975,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="399"/>
       <source>Delay mouse wheel pass through</source>
-      <translation>Zpoždění projítí skrz kolečkem myši</translation>
+      <translation>Zpoždění průchodu kolečkem myši</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="404"/>
@@ -9069,7 +9096,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../ViewProviderPart.cpp" line="105"/>
       <source>Override colors…</source>
-      <translation>Přepsat barvy...</translation>
+      <translation>Přepsat barvy…</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="107"/>
@@ -9094,7 +9121,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="243"/>
       <source>The group '%1' contains %2 object(s). Delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Delete them as well?</translation>
+      <translation>Skupina '%1' obsahuje %2 objekt(y). Chcete je také smazat?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="249"/>
@@ -9104,17 +9131,17 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="260"/>
       <source>Delete Group Contents Recursively?</source>
-      <translation type="unfinished">Delete Group Contents Recursively?</translation>
+      <translation>Smazat obsah skupiny rekurzivně?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="270"/>
       <source>Apply to all selected objects (%1) and their children</source>
-      <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
+      <translation>Použít na všechny vybrané objekty (%1) a jejich podřízené objekty</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
-      <source>Edit Image Plane</source>
-      <translation type="unfinished">Edit Image Plane</translation>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9122,9 +9149,9 @@ na aktuální kopii budou ztraceny.
       <translation>Všechny soubory</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Part</translation>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation>Upravit rovinu obrazu</translation>
     </message>
   </context>
   <context>
@@ -9285,7 +9312,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandMacro.cpp" line="64"/>
       <source>S&amp;top Macro Recording</source>
-      <translation type="unfinished">S&amp;top Macro Recording</translation>
+      <translation>Zas&amp;tavit záznam makra</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="67"/>
@@ -9334,7 +9361,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandDoc.cpp" line="516"/>
       <source>No Selection</source>
-      <translation type="unfinished">No Selection</translation>
+      <translation>Žádný výběr</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="517"/>
@@ -9493,7 +9520,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandDoc.cpp" line="234"/>
       <source>Cannot Open File</source>
-      <translation type="unfinished">Cannot Open File</translation>
+      <translation>Nelze otevřít soubor</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="235"/>
@@ -9758,7 +9785,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandView.cpp" line="1615"/>
       <source>Sets the camera to the isometric view</source>
-      <translation>Nastaví kameru na izometrcký pohled</translation>
+      <translation>Nastaví kameru na izometrický pohled</translation>
     </message>
   </context>
   <context>
@@ -9823,7 +9850,7 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandView.cpp" line="1585"/>
       <source>Sets the camera to the top view</source>
-      <translation>Nastaví kameru na pohled zhora</translation>
+      <translation>Nastaví kameru na pohled shora</translation>
     </message>
   </context>
   <context>
@@ -9935,12 +9962,12 @@ na aktuální kopii budou ztraceny.
     <message>
       <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
-      <translation type="unfinished">Preselection</translation>
+      <translation>Předběžný výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3447"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
-      <translation>Vybere objekt ve 3D zobrazení při zastavení kurzoru nad položkou stromu</translation>
+      <translation>Předvybere objekt ve 3D pohledu, když se kurzor myši nachází nad položkou ve stromu</translation>
     </message>
   </context>
   <context>
@@ -10037,7 +10064,7 @@ Pokračovat?
     <message>
       <location filename="../CommandDoc.cpp" line="1709"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>Závislosti objektů</translation>
     </message>
   </context>
   <context>
@@ -10050,7 +10077,7 @@ Pokračovat?
     <message>
       <location filename="../CommandView.cpp" line="843"/>
       <source>As Is</source>
-      <translation type="unfinished">As Is</translation>
+      <translation>Ve stávajícím stavu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="846"/>
@@ -10075,17 +10102,17 @@ Pokračovat?
     <message>
       <location filename="../CommandView.cpp" line="852"/>
       <source>Hidden Line</source>
-      <translation>Skrytá čára</translation>
+      <translation>Skrytá linie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="853"/>
       <source>Hidden line mode</source>
-      <translation>Režim skryté čáry</translation>
+      <translation>Režim skryté linie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="855"/>
       <source>No Shading</source>
-      <translation type="unfinished">No Shading</translation>
+      <translation>Bez stínování</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="856"/>
@@ -10105,12 +10132,12 @@ Pokračovat?
     <message>
       <location filename="../CommandView.cpp" line="861"/>
       <source>Flat Lines</source>
-      <translation>Rovné čáry</translation>
+      <translation>Rovné linie</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="862"/>
       <source>Flat lines mode</source>
-      <translation>Režim hran</translation>
+      <translation>Režim rovných linií</translation>
     </message>
   </context>
   <context>
@@ -10118,7 +10145,7 @@ Pokračovat?
     <message>
       <location filename="../CommandDoc.cpp" line="1476"/>
       <source>Object Dependencies</source>
-      <translation type="unfinished">Object Dependencies</translation>
+      <translation>Závislosti objektů</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1477"/>
@@ -10161,12 +10188,12 @@ Uložit dokument?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1480"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation>Skrytí posuvníku stromového zobrazení v dokovatelném překrytí.</translation>
+      <translation>Skrýt posuvník stromového zobrazení v překryvném panelu doku.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1512"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation>Skrytí zobrazení záhlaví stromového zobrazení v dokovatelném překrytí.</translation>
+      <translation>Skrýt záhlaví stromového zobrazení v překryvném panelu doku.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1544"/>
@@ -10274,7 +10301,7 @@ Uložit dokument?</translation>
     <message>
       <location filename="../Workbench.cpp" line="606"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation>Ná&amp;pověda</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="607"/>
@@ -10325,12 +10352,12 @@ Uložit dokument?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
       <source>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</source>
-      <translation type="unfinished">Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</translation>
+      <translation>Umožňuje zobrazovat nenápadná vyskakovací oznámení nad oznamovací oblastí. Vyskakovací oznámení lze zavřít manuálně kliknutím na ně nebo automaticky po uplynutí nastavené doby.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximální čas, kdy bude oznámení zobrazeno (není-li kliknuto myší). Určuje, kdy budou odebrána upozornění uživatele, pokud je zaškrtnuto &amp;quot;Automaticky odebrat upozornění uživatele&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximální čas, kdy bude oznámení zobrazeno (pokud nejsou stisknuta tlačítka myši). Určuje, kdy budou odebrána upozornění uživatele, pokud je zaškrtnuto &amp;quot;Automaticky odebrat upozornění uživatele&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
@@ -10346,7 +10373,7 @@ Uložit dokument?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="115"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
-      <translation>Maximální počet oznámení, která budou současně přítomna v bublině ozámení.</translation>
+      <translation>Maximální počet oznámení, která se mohou současně zobrazit v oznamovací bublině.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
@@ -10511,7 +10538,7 @@ Momentálně má váš systém následující pracovní prostředí:&lt;/p&gt;&l
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="118"/>
       <source>Choose the workbench selector widget type (restart required)</source>
-      <translation>Vyberte typ widgetu pracovního prostředí (vyžaduje restart)</translation>
+      <translation>Vyberte typ widgetu pro výběr pracovního prostředí (vyžaduje restart)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="130"/>
@@ -10556,17 +10583,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-plane</source>
-      <translation>rovina XY</translation>
+      <translation>Rovina XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation>rovina XZ</translation>
+      <translation>Rovina XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation>rovina YZ</translation>
+      <translation>Rovina YZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -10604,17 +10631,17 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-plane</source>
-      <translation>rovina XY</translation>
+      <translation>Rovina XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-plane</source>
-      <translation>rovina XZ</translation>
+      <translation>Rovina XZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-plane</source>
-      <translation>rovina YZ</translation>
+      <translation>Rovina YZ</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="80"/>
@@ -10674,22 +10701,22 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
       <source>Snap rotation to line</source>
-      <translation type="unfinished">Snap rotation to line</translation>
+      <translation>Přichytit rotaci k linii</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
       <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
-      <translation type="unfinished">Rotate the image to align the drawn line to the nearest 45 degree angle</translation>
+      <translation>Otočí obrázek tak, aby nakreslená čára byla vyrovnána s nejbližším úhlem 45 stupňů</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="273"/>
       <source>Center on midpoint</source>
-      <translation type="unfinished">Center on midpoint</translation>
+      <translation>Vycentrovat na střed</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="276"/>
       <source>Center the image on the midpoint of the drawn line</source>
-      <translation>Vycentrovat obrázek na střed nakreslené osy</translation>
+      <translation>Vystředí obrázek na střed nakreslené osy</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="288"/>
@@ -10704,32 +10731,32 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="215"/>
       <source>%1 snap angle</source>
-      <translation type="unfinished">%1 snap angle</translation>
+      <translation>%1 úhel přichycení</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="216"/>
       <source>%1 toggle centering</source>
-      <translation type="unfinished">%1 toggle centering</translation>
+      <translation>%1 přepnout vystředění</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="217"/>
       <source>%1 toggle rotating to line</source>
-      <translation type="unfinished">%1 toggle rotating to line</translation>
+      <translation>%1 přepnout rotaci k čáře</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="218"/>
       <source>%1 accept distance</source>
-      <translation type="unfinished">%1 accept distance</translation>
+      <translation>%1 accept distance</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="224"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 pick first point</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="226"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 pick second point</translation>
     </message>
   </context>
   <context>
@@ -10900,38 +10927,38 @@ po spuštění FreeCADu</translation>
     <message>
       <location filename="../NaviCube.cpp" line="1383"/>
       <source>Drags and places the NaviCube</source>
-      <translation type="unfinished">Drags and places the NaviCube</translation>
+      <translation>Přetáhne a umístí navigační kostku</translation>
     </message>
   </context>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>FRONT</source>
       <translation>PŘEDNÍ</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>TOP</source>
       <translation>VRŠEK</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>RIGHT</source>
       <translation>VPRAVO</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>REAR</source>
       <translation>ZADNÍ</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>BOTTOM</source>
       <translation>SPODEK</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="676"/>
       <source>LEFT</source>
       <translation>VLEVO</translation>
     </message>
@@ -10939,8 +10966,8 @@ po spuštění FreeCADu</translation>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1625"/>
-      <location filename="../Widgets.cpp" line="1692"/>
+      <location filename="../Widgets.cpp" line="1633"/>
+      <location filename="../Widgets.cpp" line="1700"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>Došlo k chybě -- viz zobrazení zprávy pro informaci</translation>
     </message>
@@ -11338,12 +11365,12 @@ FreeCAD toto okno zobrazí.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="363"/>
       <source>Activate fine-grained recomputation of documents</source>
-      <translation type="unfinished">Activate fine-grained recomputation of documents</translation>
+      <translation>Aktivovat podrobný přepočet dokumentů</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
       <source>Fine-grained recompute (experimental)</source>
-      <translation type="unfinished">Fine-grained recompute (experimental)</translation>
+      <translation>Přepočítání s vysokou přesností (experimentální)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="385"/>
@@ -11486,7 +11513,7 @@ FreeCAD toto okno zobrazí.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="57"/>
       <source>Log messages will be recorded</source>
-      <translation>Protokolovací zprávy budou zaznamenány</translation>
+      <translation>Zprávy protokolu budou zaznamenány</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="60"/>
@@ -11553,13 +11580,12 @@ při zobrazení této zprávy</translation>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="168"/>
       <source>When a log message has occurred, the Report View dialog becomes visible
 on-screen while displaying the log message</source>
-      <translation>Když se objeví protokolovací zpráva, zobrazí se dialogové okno reportu
-při zobrazení této zprávy</translation>
+      <translation>Jakmile dojde k zobrazení zprávy v protokolu, na obrazovce se při zobrazení této zprávy objeví dialogové okno Zobrazení zprávy</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="172"/>
       <source>Show report view on log message</source>
-      <translation>Zobrazit report při protokolovací zprávě</translation>
+      <translation>Zobrazit přehled hlášení v protokolu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="188"/>
@@ -11828,7 +11854,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="1008"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Zobrazit pás káret přejetím myší při automatickém skrývání</translation>
+      <translation>Zobrazit pás karet přejetím myší při automatickém skrývání</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1040"/>
@@ -12038,7 +12064,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="26"/>
       <source>Customize the current theme. The offered settings are optional for theme developers so they may or may not have an effect in the current theme.</source>
-      <translation>Přizpůsoení aktuálního motivu. Nabízená nastavení jsou volitelná pro vývojáře motivů, takže mohou nebo nemusí mít efekt na aktuální motiv.</translation>
+      <translation>Přizpůsobení aktuálního motivu. Nabízená nastavení jsou volitelná pro vývojáře motivů, takže mohou nebo nemusí mít efekt na aktuální motiv.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="94"/>
@@ -12143,7 +12169,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="420"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation>Zobrazit pás káret přejetím myší při automatickém skrývání</translation>
+      <translation>Zobrazit pás karet přejetím myší při automatickém skrývání</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="423"/>
@@ -12258,7 +12284,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="584"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation>Ná&amp;pověda</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="585"/>
@@ -12449,7 +12475,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="640"/>
       <source>Mode</source>
-      <translation>Způsob</translation>
+      <translation>Režim</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="656"/>
@@ -12569,14 +12595,14 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../TaskTransform.cpp" line="450"/>
       <location filename="../TaskTransform.cpp" line="465"/>
       <source>Select object, face, edge…</source>
-      <translation type="unfinished">Select object, face, edge…</translation>
+      <translation>Vybrat objekt, plochu, hranu…</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="451"/>
       <location filename="../TaskTransform.cpp" line="457"/>
       <location filename="../TaskTransform.cpp" line="466"/>
       <source>Cancel</source>
-      <translation>Zrušit</translation>
+      <translation>Cancel</translation>
     </message>
   </context>
   <context>
@@ -12591,13 +12617,13 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="267"/>
       <source>Enter</source>
       <extracomment>Keyboard key for numpad Enter</extracomment>
-      <translation>Vložit</translation>
+      <translation>Enter</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="269"/>
       <source>Insert</source>
       <extracomment>Keyboard key for Insert</extracomment>
-      <translation>Vložit</translation>
+      <translation>Insert</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="259"/>
@@ -12615,13 +12641,13 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="271"/>
       <source>Del</source>
       <extracomment>Keyboard key for Delete</extracomment>
-      <translation>Smazat</translation>
+      <translation>Del</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="273"/>
       <source>Pause</source>
       <extracomment>Keyboard key for Pause</extracomment>
-      <translation>Pozastavit</translation>
+      <translation>Pause</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="275"/>
@@ -12639,19 +12665,19 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
       <location filename="../InputHintWidget.cpp" line="279"/>
       <source>Clear</source>
       <extracomment>Keyboard key for Clear</extracomment>
-      <translation>Vyčistit</translation>
+      <translation>Clear</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="283"/>
       <source>Home</source>
       <extracomment>Keyboard key for Home</extracomment>
-      <translation>Domů</translation>
+      <translation>Home</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="285"/>
       <source>End</source>
       <extracomment>Keyboard key for End</extracomment>
-      <translation>Konec</translation>
+      <translation>End</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="291"/>
@@ -12936,7 +12962,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="748"/>
       <source>Export Dependency &amp;Graph…</source>
-      <translation type="unfinished">Export Dependency &amp;Graph…</translation>
+      <translation>Export &amp;grafu závislostí…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="749"/>
@@ -12962,7 +12988,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="895"/>
       <source>Save a Cop&amp;y…</source>
-      <translation type="unfinished">Save a Cop&amp;y…</translation>
+      <translation>Uložit a kopírovat…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="897"/>
@@ -13384,7 +13410,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="507"/>
       <source>Cu&amp;stomize</source>
-      <translation type="unfinished">Cu&amp;stomize</translation>
+      <translation>Přizpů&amp;sobit</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="508"/>
@@ -13480,7 +13506,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation type="unfinished">Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</translation>
+      <translation>Vytvoří díl, který slouží jako univerzální kontejner pro seskupení objektů tak, aby se ve 3D pohledu chovaly jako jeden celek. Je určen k uspořádání objektů, které mají díl TopoShape, jako jsou základní tvary dílů, tělesa z nástroje Part Design a další díly.</translation>
     </message>
   </context>
   <context>
@@ -13493,7 +13519,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="132"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation type="unfinished">Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
+      <translation>Vytvoří skupinu, což je univerzální kontejner sloužící ke seskupování objektů ve stromovém zobrazení, a to bez ohledu na jejich datový typ. Jedná se o jednoduchou složku, která slouží k uspořádání objektů v modelu.</translation>
     </message>
   </context>
   <context>
@@ -13506,7 +13532,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="205"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
-      <translation type="unfinished">Creates a variable set, which is an object that maintains a set of properties to be used as variables</translation>
+      <translation>Vytvoří sadu proměnných, což je objekt, který obsahuje sadu vlastností určených k použití jako proměnné</translation>
     </message>
   </context>
   <context>
@@ -13514,12 +13540,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="250"/>
       <source>Save Current Camera</source>
-      <translation type="unfinished">Save Current Camera</translation>
+      <translation>Uložit aktuální kameru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="251"/>
       <source>Saves the current camera settings</source>
-      <translation type="unfinished">Saves the current camera settings</translation>
+      <translation>Uloží aktuální nastavení kamery</translation>
     </message>
   </context>
   <context>
@@ -13527,12 +13553,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="276"/>
       <source>Restore Saved Camera</source>
-      <translation type="unfinished">Restore Saved Camera</translation>
+      <translation>Obnovit uloženou kameru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="277"/>
       <source>Restores the saved camera settings</source>
-      <translation type="unfinished">Restores the saved camera settings</translation>
+      <translation>Obnoví uložená nastavení kamery</translation>
     </message>
   </context>
   <context>
@@ -13540,12 +13566,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="677"/>
       <source>Clippin&amp;g View</source>
-      <translation type="unfinished">Clippin&amp;g View</translation>
+      <translation>Zobrazit &amp;ořez</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="678"/>
       <source>Toggles clipping of the active view</source>
-      <translation type="unfinished">Toggles clipping of the active view</translation>
+      <translation>Zapne/vypne ořez aktivního zobrazení</translation>
     </message>
   </context>
   <context>
@@ -13553,12 +13579,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="763"/>
       <source>&amp;Draw Style</source>
-      <translation type="unfinished">&amp;Draw Style</translation>
+      <translation>&amp;Styl kreslení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="764"/>
       <source>Changes the draw style of the objects</source>
-      <translation type="unfinished">Changes the draw style of the objects</translation>
+      <translation>Změní styl vykreslování objektů</translation>
     </message>
   </context>
   <context>
@@ -13566,12 +13592,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="970"/>
       <source>Toggle &amp;Visibility</source>
-      <translation type="unfinished">Toggle &amp;Visibility</translation>
+      <translation>Přepnout &amp;viditelnost</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="971"/>
       <source>Toggles the visibility of the selection</source>
-      <translation type="unfinished">Toggles the visibility of the selection</translation>
+      <translation>Přepíná viditelnost výběru</translation>
     </message>
   </context>
   <context>
@@ -13579,12 +13605,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1004"/>
       <source>Toggle Transparenc&amp;y</source>
-      <translation type="unfinished">Toggle Transparenc&amp;y</translation>
+      <translation>Př&amp;epnout průhlednost</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
-      <translation type="unfinished">Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</translation>
+      <translation>Přepíná průhlednost vybraných objektů. Průhlednost lze doladit v dialogovém okně vzhled</translation>
     </message>
   </context>
   <context>
@@ -13592,12 +13618,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1117"/>
       <source>Toggle Se&amp;lectability</source>
-      <translation type="unfinished">Toggle Se&amp;lectability</translation>
+      <translation>Přepnout &amp;možnosti výběru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1118"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
-      <translation type="unfinished">Toggles the property of the objects to get selected in the 3D view</translation>
+      <translation>Přepíná vlastnosti objektů, díky nimž se tyto objekty vyberou ve 3D pohledu</translation>
     </message>
   </context>
   <context>
@@ -13605,12 +13631,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1179"/>
       <source>Sho&amp;w Selection</source>
-      <translation type="unfinished">Sho&amp;w Selection</translation>
+      <translation>&amp;Zobrazit výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1180"/>
       <source>Shows all selected objects</source>
-      <translation type="unfinished">Shows all selected objects</translation>
+      <translation>Zobrazí všechny vybrané objekty</translation>
     </message>
   </context>
   <context>
@@ -13618,7 +13644,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1207"/>
       <source>&amp;Hide Selection</source>
-      <translation type="unfinished">&amp;Hide Selection</translation>
+      <translation>&amp;Skrýt výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1208"/>
@@ -13631,12 +13657,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1235"/>
       <source>&amp;Select Visible Objects</source>
-      <translation type="unfinished">&amp;Select Visible Objects</translation>
+      <translation>&amp;Vybrat viditelné objekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1236"/>
       <source>Selects all visible objects in the active document</source>
-      <translation type="unfinished">Selects all visible objects in the active document</translation>
+      <translation>Vybere všechny viditelné objekty v aktivním dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13644,12 +13670,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1279"/>
       <source>To&amp;ggle All Objects</source>
-      <translation type="unfinished">To&amp;ggle All Objects</translation>
+      <translation>Přepnout &amp;všechny objekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1280"/>
       <source>Toggles the visibility of all objects in the active document</source>
-      <translation type="unfinished">Toggles the visibility of all objects in the active document</translation>
+      <translation>Přepíná viditelnost všech objektů v aktivním dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13657,7 +13683,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1331"/>
       <source>Show &amp;All Objects</source>
-      <translation type="unfinished">Show &amp;All Objects</translation>
+      <translation>Zobr&amp;azit všechny objekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1332"/>
@@ -13670,7 +13696,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1373"/>
       <source>Hide All &amp;Objects</source>
-      <translation type="unfinished">Hide All &amp;Objects</translation>
+      <translation>Skrýt všechny &amp;objekty</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1374"/>
@@ -13696,12 +13722,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1749"/>
       <source>&amp;Fit All</source>
-      <translation type="unfinished">&amp;Fit All</translation>
+      <translation>&amp;Zobrazit vše</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1750"/>
       <source>Fits all content into the 3D view</source>
-      <translation type="unfinished">Fits all content into the 3D view</translation>
+      <translation>Zobrazí veškerý obsah ve 3D pohledu</translation>
     </message>
   </context>
   <context>
@@ -13709,12 +13735,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1778"/>
       <source>Fit &amp;Selection</source>
-      <translation type="unfinished">Fit &amp;Selection</translation>
+      <translation>Přizpů&amp;sobit výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1779"/>
       <source>Fits the selected content into the 3D view</source>
-      <translation type="unfinished">Fits the selected content into the 3D view</translation>
+      <translation>Přizpůsobí vybraný obsah 3D pohledu</translation>
     </message>
   </context>
   <context>
@@ -13727,7 +13753,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1809"/>
       <source>Changes to a standard view</source>
-      <translation type="unfinished">Changes to a standard view</translation>
+      <translation>Změní na standardní zobrazení</translation>
     </message>
   </context>
   <context>
@@ -13735,7 +13761,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1976"/>
       <source>D&amp;ocument Window</source>
-      <translation type="unfinished">D&amp;ocument Window</translation>
+      <translation>&amp;Okno dokumentu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1977"/>
@@ -13748,12 +13774,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2087"/>
       <source>FreeCAD VR</source>
-      <translation type="unfinished">FreeCAD VR</translation>
+      <translation>FreeCAD VR</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2088"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
-      <translation type="unfinished">Extends the FreeCAD 3D Window to a VR device</translation>
+      <translation>Rozšiřuje 3D okno FreeCADu na zařízení pro virtuální realitu</translation>
     </message>
   </context>
   <context>
@@ -13774,12 +13800,12 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2389"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
-      <translation type="unfinished">Toggle Navigation/&amp;Edit Mode</translation>
+      <translation>Př&amp;epnout režim navigace/úpravy</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2390"/>
       <source>Toggles between navigation and edit mode</source>
-      <translation type="unfinished">Toggles between navigation and edit mode</translation>
+      <translation>Přepíná mezi režimem navigace a režimem úprav</translation>
     </message>
   </context>
   <context>
@@ -14008,7 +14034,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
-      <translation type="unfinished">Sync View</translation>
+      <translation>Synchronizace zobrazení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3388"/>
@@ -14021,7 +14047,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
-      <translation type="unfinished">Sync Selection</translation>
+      <translation>Synchronizace výběru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3408"/>
@@ -14034,7 +14060,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3427"/>
       <source>Sync Placement</source>
-      <translation type="unfinished">Sync Placement</translation>
+      <translation>Synchronizace umístění</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3429"/>
@@ -14047,7 +14073,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
-      <translation type="unfinished">Record Selection</translation>
+      <translation>Záznam výběru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3468"/>
@@ -14104,7 +14130,7 @@ Pokračovat?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
-      <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
+      <translation>Přepne režim překrytí u všech ukotvených panelů</translation>
     </message>
   </context>
   <context>
@@ -14155,12 +14181,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3708"/>
       <source>Toggle &amp;Left</source>
-      <translation type="unfinished">Toggle &amp;Left</translation>
+      <translation>Přepnout v&amp;levo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3709"/>
       <source>Toggles the visibility of the left overlay panel</source>
-      <translation type="unfinished">Toggles the visibility of the left overlay panel</translation>
+      <translation>Přepne zviditelnění levého překryvného panelu</translation>
     </message>
   </context>
   <context>
@@ -14168,12 +14194,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3733"/>
       <source>Toggle &amp;Right</source>
-      <translation type="unfinished">Toggle &amp;Right</translation>
+      <translation>Přepnout vp&amp;ravo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3734"/>
       <source>Toggles the visibility of the right overlay panel</source>
-      <translation type="unfinished">Toggles the visibility of the right overlay panel</translation>
+      <translation>Přepne zviditelnění pravého překryvného panelu</translation>
     </message>
   </context>
   <context>
@@ -14181,12 +14207,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3758"/>
       <source>Toggle &amp;Top</source>
-      <translation type="unfinished">Toggle &amp;Top</translation>
+      <translation>Přepnout &amp;nahoru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3759"/>
       <source>Toggles the visibility of the top overlay panel</source>
-      <translation type="unfinished">Toggles the visibility of the top overlay panel</translation>
+      <translation>Přepne zviditelnění horního překryvného panelu</translation>
     </message>
   </context>
   <context>
@@ -14194,12 +14220,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3783"/>
       <source>Toggle &amp;Bottom</source>
-      <translation type="unfinished">Toggle &amp;Bottom</translation>
+      <translation>Přepnout &amp;dolů</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3784"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
-      <translation type="unfinished">Toggles the visibility of the bottom overlay panel</translation>
+      <translation>Přepne zviditelnění spodního překryvného panelu</translation>
     </message>
   </context>
   <context>
@@ -14207,12 +14233,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3808"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
-      <translation type="unfinished">Bypass &amp;Mouse Events in Overlay Panels</translation>
+      <translation>Obejít akce &amp;myši v překryvných panelech</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3809"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
-      <translation type="unfinished">Bypasses all mouse events in docked overlay panels</translation>
+      <translation>Obejde všechny akce myši v ukotvených překryvných panelech</translation>
     </message>
   </context>
   <context>
@@ -14220,12 +14246,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3854"/>
       <source>Overlay Docked Panel</source>
-      <translation type="unfinished">Overlay Docked Panel</translation>
+      <translation>Překrytí ukotveného panelu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3855"/>
       <source>Sets the docked panel in overlay mode</source>
-      <translation type="unfinished">Sets the docked panel in overlay mode</translation>
+      <translation>Nastaví ukotvený panel do režimu překrytí</translation>
     </message>
   </context>
   <context>
@@ -14233,12 +14259,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3988"/>
       <source>St&amp;ore Working View</source>
-      <translation type="unfinished">St&amp;ore Working View</translation>
+      <translation>Ul&amp;ožit pracovní pohled</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3989"/>
       <source>Stores a temporary working view for the current document</source>
-      <translation type="unfinished">Stores a temporary working view for the current document</translation>
+      <translation>Uloží dočasný pracovní náhled aktuálního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -14246,12 +14272,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4016"/>
       <source>R&amp;ecall Working View</source>
-      <translation type="unfinished">R&amp;ecall Working View</translation>
+      <translation>Obnovit pracovní zobraz&amp;ení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4017"/>
       <source>Recalls a previously stored temporary working view</source>
-      <translation type="unfinished">Recalls a previously stored temporary working view</translation>
+      <translation>Načte dříve uložený dočasný pracovní pohled</translation>
     </message>
   </context>
   <context>
@@ -14259,12 +14285,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4044"/>
       <source>&amp;Align to Selection</source>
-      <translation type="unfinished">&amp;Align to Selection</translation>
+      <translation>Z&amp;arovnat k výběru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4045"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
-      <translation type="unfinished">Aligns the camera view to the selected elements in the 3D view</translation>
+      <translation>Srovná pohled kamery s vybranými prvky ve 3D pohledu</translation>
     </message>
   </context>
   <context>
@@ -14277,7 +14303,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="234"/>
       <source>Displays the open windows</source>
-      <translation type="unfinished">Displays the open windows</translation>
+      <translation>Zobrazí otevřená okna</translation>
     </message>
   </context>
   <context>
@@ -14285,12 +14311,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="257"/>
       <source>Dock Views</source>
-      <translation type="unfinished">Dock Views</translation>
+      <translation>Dokovat pohledy</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="258"/>
       <source>Docks all top-level views</source>
-      <translation type="unfinished">Docks all top-level views</translation>
+      <translation>Dokuje všechny pohledy nejvyšší úrovně</translation>
     </message>
   </context>
   <context>
@@ -14298,12 +14324,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="350"/>
       <source>Lock Toolbars</source>
-      <translation type="unfinished">Lock Toolbars</translation>
+      <translation>Zamknout panely nástrojů</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="351"/>
       <source>Locks toolbars so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbars so they are no longer moveable</translation>
+      <translation>Zamkne panely nástrojů, takže je již nelze přesouvat</translation>
     </message>
   </context>
   <context>
@@ -14311,7 +14337,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
-      <translation type="unfinished">Exact Match</translation>
+      <translation>Přesná shoda</translation>
     </message>
   </context>
   <context>
@@ -14319,7 +14345,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
-      <translation type="unfinished">Exact Match</translation>
+      <translation>Přesná shoda</translation>
     </message>
   </context>
   <context>
@@ -14328,12 +14354,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
       <location filename="../FileDialog.cpp" line="1259"/>
       <location filename="../FileDialog.cpp" line="1269"/>
       <source>Select a File</source>
-      <translation type="unfinished">Select a File</translation>
+      <translation>Vybrat soubor</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="1279"/>
       <source>Select a Directory</source>
-      <translation type="unfinished">Select a Directory</translation>
+      <translation>Vybrat adresář</translation>
     </message>
   </context>
   <context>
@@ -14341,7 +14367,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../NetworkRetriever.cpp" line="123"/>
       <source>Download started…</source>
-      <translation type="unfinished">Download started…</translation>
+      <translation>Stahování bylo zahájeno…</translation>
     </message>
   </context>
   <context>
@@ -14349,7 +14375,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="2214"/>
       <source>Mouse pass through, Esc to stop</source>
-      <translation type="unfinished">Mouse pass through, Esc to stop</translation>
+      <translation>Pohyb myší, Esc pro zastavení</translation>
     </message>
   </context>
   <context>
@@ -14378,12 +14404,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="404"/>
       <source> (Warning: unit discarded)</source>
-      <translation type="unfinished"> (Warning: unit discarded)</translation>
+      <translation> (Upozornění: byla odstraněna jednotka)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <source>Invalid property name: %1</source>
-      <translation type="unfinished">Invalid property name: %1</translation>
+      <translation>Neplatný název vlastnosti: %1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="514"/>
@@ -14394,27 +14420,27 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="925"/>
       <source>the name cannot be empty</source>
-      <translation type="unfinished">the name cannot be empty</translation>
+      <translation>název nemůže být prázdný</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="530"/>
       <source>%1 is a unit</source>
-      <translation type="unfinished">%1 is a unit</translation>
+      <translation>%1 je jednotka</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="535"/>
       <source>%1 is a constant</source>
-      <translation type="unfinished">%1 is a constant</translation>
+      <translation>%1 je konstanta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="541"/>
       <source>%1 already exists</source>
-      <translation type="unfinished">%1 already exists</translation>
+      <translation>%1 již existuje</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="921"/>
       <source>Invalid group name: %1</source>
-      <translation type="unfinished">Invalid group name: %1</translation>
+      <translation>Neplatný název skupiny: %1</translation>
     </message>
   </context>
   <context>
@@ -14422,12 +14448,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="62"/>
       <source>Generic</source>
-      <translation type="unfinished">Generic</translation>
+      <translation>Obecný</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
       <source>Numeric</source>
-      <translation type="unfinished">Numeric</translation>
+      <translation>Numerický</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="68"/>
@@ -14437,7 +14463,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
       <source>Tuple</source>
-      <translation type="unfinished">Tuple</translation>
+      <translation>Tuple</translation>
     </message>
   </context>
   <context>
@@ -14445,12 +14471,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="358"/>
       <source>All Theme Editor Parameters</source>
-      <translation type="unfinished">All Theme Editor Parameters</translation>
+      <translation>Editor parametrů všech motivů</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="428"/>
       <source>Root</source>
-      <translation type="unfinished">Root</translation>
+      <translation>Kořen</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="503"/>
@@ -14479,7 +14505,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="886"/>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="895"/>
       <source>Toolbox Bars</source>
-      <translation type="unfinished">Toolbox Bars</translation>
+      <translation>Panely nástrojů</translation>
     </message>
   </context>
   <context>
@@ -14492,7 +14518,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="425"/>
       <source>Press middle+right click</source>
-      <translation type="unfinished">Press middle+right click</translation>
+      <translation>Stiskněte prostřední tlačítko myši a klikněte pravým tlačítkem</translation>
     </message>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="427"/>
@@ -14508,9 +14534,9 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
       <source>Changes the linked object</source>
-      <translation type="unfinished">Changes the linked object</translation>
+      <translation>Změní propojený objekt</translation>
     </message>
   </context>
   <context>
@@ -14531,17 +14557,17 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
-      <translation type="unfinished">Value out of range (%1 out of [%2, %3])</translation>
+      <translation>Hodnota mimo rozsah (%1 z [%2, %3])</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
       <source>Not a Number</source>
-      <translation type="unfinished">Not a Number</translation>
+      <translation>Nejedná se o číslo</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
       <source>Unit mismatch between result and required unit</source>
-      <translation type="unfinished">Unit mismatch between result and required unit</translation>
+      <translation>Nesoulad jednotek mezi výsledkem a požadovanou jednotkou</translation>
     </message>
   </context>
   <context>
@@ -14555,14 +14581,14 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
       <location filename="../CommandView.cpp" line="4079"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
-      <translation type="unfinished">Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
+      <translation>Zobrazí kontextové menu u kurzoru myši, které umožňuje vybrat překrývající se nebo zakrytou geometrii ve 3D pohledu.
 </translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1182"/>
+      <location filename="../Selection/SelectionView.cpp" line="1185"/>
       <source>Whole Object</source>
       <translation>Celý objekt</translation>
     </message>
@@ -14583,12 +14609,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="36"/>
       <source>Configuration data and addons from a previous program version were found. Migrate the configuration to a new directory for this version?</source>
-      <translation type="unfinished">Configuration data and addons from a previous program version were found. Migrate the configuration to a new directory for this version?</translation>
+      <translation>Byly nalezeny konfigurační údaje a doplňky z předchozí verze programu. Chcete konfiguraci přesunout do nového adresáře pro tuto verzi?</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="49"/>
       <source>Copying the configuration will ensure that any changes from the new version will not affect the previous installation. Sharing configuration between versions can cause problems and is not recommended.</source>
-      <translation type="unfinished">Copying the configuration will ensure that any changes from the new version will not affect the previous installation. Sharing configuration between versions can cause problems and is not recommended.</translation>
+      <translation>Zkopírováním konfigurace zajistíte, že případné změny v nové verzi nebudou mít vliv na předchozí instalaci. Sdílení konfigurace mezi verzemi může způsobit problémy a nedoporučuje se.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.ui" line="87"/>
@@ -14603,27 +14629,27 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
-      <translation type="unfinished">Welcome to %1 %2.%3</translation>
+      <translation>Vítejte v %1 %2.%3</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
-      <translation type="unfinished">Calculating size…</translation>
+      <translation>Výpočet velikosti…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
-      <translation type="unfinished">Share configuration between versions</translation>
+      <translation>Sdílení konfigurace mezi verzemi</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
-      <translation type="unfinished">Share configuration with previous version</translation>
+      <translation>Sdílet konfiguraci s předchozí verzí</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
-      <translation type="unfinished">Use a new default configuration</translation>
+      <translation>Použít novou výchozí konfiguraci</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="511"/>
@@ -14662,7 +14688,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../FreeCADGuiInit.py" line="463"/>
       <source>Portable Document Format</source>
-      <translation type="unfinished">Portable Document Format</translation>
+      <translation>Formát přenositelných dokumentů</translation>
     </message>
   </context>
   <context>
@@ -14685,7 +14711,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     <message>
       <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
       <source>Sync sub-object selection</source>
-      <translation>Synchronizovat výběr sub-objektu</translation>
+      <translation>Synchronizovat výběr podobjektů</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
@@ -14737,7 +14763,7 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="75"/>
       <source>Shortcuts</source>
-      <translation type="unfinished">Shortcuts</translation>
+      <translation>Klávesové zkratky</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="108"/>
@@ -14777,7 +14803,7 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="205"/>
       <source>Alt+R</source>
-      <translation>ALT + R</translation>
+      <translation>Alt + R</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="212"/>
@@ -14792,22 +14818,80 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="225"/>
       <source>Alt+S</source>
-      <translation>ALT + S</translation>
+      <translation>Alt + S</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="234"/>
       <source>Priority List</source>
-      <translation type="unfinished">Priority List</translation>
+      <translation>Seznam priorit</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="293"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Posunout nahoru</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="303"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Posunout dolů</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>Nápověda</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation>Otevře dokumentaci odpovídající výběru</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>Nástroje</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>Popisek s poznámkou</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>Vytvoří nový popisek poznámky na vybraném místě ve 3D pohledu</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>Uložit jako</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>Otevřít</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Přepnout spodní panely</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Přepne spodní dokované panely</translation>
     </message>
   </context>
   <context>
@@ -14815,12 +14899,12 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
       <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
+      <translation>Přepnout potlačení</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="242"/>
       <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+      <translation>Přepíná stav potlačení vybraných objektů. Potlačený objekt se chová, jako by byl smazán.</translation>
     </message>
   </context>
   <context>
@@ -14852,144 +14936,86 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
   <context>
     <name>Gui::PropertyMapEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Klíč</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>Hodnota</translation>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>Uložit jako</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>Otevřít</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>Nápověda</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>Nástroje</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation type="unfinished">Annotation Label</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation type="unfinished">Toggles the bottom dock panels</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Určuje základní barvu povrchu při osvětlení. Vyjadřuje, jak objekt rovnoměrně rozptyluje světlo do všech směrů, bez ohledu na úhel pohledu pozorovatele. Tato vlastnost má největší vliv na barvu materiálu.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definuje barvu povrchu pod nepřímým, rovnoměrným osvětlením. znázorňuje, jak se zobrazuje, když je osvětleno pouze okolním světlem v scéně, bez směrového světla, stínování nebo zvýraznění</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definuje barvu a intenzitu jasných, zrcadlových odlesků, které se objevují na lesklých nebo odrazivých površích, když na ně dopadá přímé světlo. Pro lesklé objekty nastavte jasné barvy.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definuje barvu povrchu, který působí, jako by vyzařoval světlo, jako by byl zdrojem světla, a to nezávisle na vnějším osvětlení, díky čemuž objekt vypadá, jako by svítil sám od sebe. Nastavte na černou, pokud nechcete, aby povrch nevyzařoval žádnou barvu.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definuje velikost a ostrost odlesků na povrchu. Vyšší hodnoty vytvářejí malé, ostré odlesky, zatímco nižší hodnoty vytvářejí široké, měkké odlesky. Upozorňujeme, že intenzita odlesků je dána barvou odlesku.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definuje, kolik světla prochází objektem, takže jím částečně nebo zcela prochází</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definuje základní barvu povrchu při osvětlení. Vyjadřuje, jak objekt rovnoměrně rozptyluje světlo do všech směrů, bez ohledu na úhel pohledu pozorovatele. Tato vlastnost má největší vliv na barvu materiálu.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definuje barvu povrchu pod nepřímým, rovnoměrným osvětlením. znázorňuje, jak se zobrazuje, když je osvětleno pouze okolním světlem v scéně, bez směrového světla, stínování nebo zvýraznění</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definuje barvu a intenzitu jasných, zrcadlových odlesků, které se objevují na lesklých nebo odrazivých površích, když na ně dopadá přímé světlo. Pro lesklé objekty nastavte jasné barvy.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definuje barvu povrchu, který působí, jako by vyzařoval světlo, jako by byl zdrojem světla, a to nezávisle na vnějším osvětlení, díky čemuž objekt vypadá, jako by svítil sám od sebe. Nastavte na černou, pokud nechcete, aby povrch nevyzařoval žádnou barvu.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definuje velikost a ostrost odlesků na povrchu. Vyšší hodnoty vytvářejí malé, ostré odlesky, zatímco nižší hodnoty vytvářejí široké, měkké odlesky. Upozorňujeme, že intenzita odlesků je dána barvou odlesku.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Určuje, kolik světla prochází objektem, takže jím částečně nebo zcela prochází</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Mapa</translation>
     </message>
@@ -14999,7 +15025,7 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
       <source>New parameter…</source>
-      <translation>Nový parametr...</translation>
+      <translation>Nový parametr…</translation>
     </message>
   </context>
 </TS>

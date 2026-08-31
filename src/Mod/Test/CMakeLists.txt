@@ -26,6 +26,7 @@ SET(Test_SRCS
     TestPerf.py
     TestTreeSelection.py
     TestGraphicsViewWrapping.py
+    TestMDIView.py
     TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
     TestView3DFramebufferCapture.py

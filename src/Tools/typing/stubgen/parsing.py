@@ -22,6 +22,7 @@ belongs in ``generator`` instead of this module.
 from __future__ import annotations
 
 import ast
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path, PurePosixPath
 import re
@@ -36,6 +37,32 @@ from .model import (
     STRING_LITERAL_RE,
     ScannerState,
 )
+
+DISCOVERY_MARKERS = (
+    "addType",
+    "PyMethodDef",
+    "add_varargs_method",
+    "add_keyword_method",
+    "add_noargs_method",
+    "Py::ExtensionModule",
+    "behaviors",
+    "sequence_length",
+    "sequence_item",
+    "PyModule_",
+    "PyImport_",
+    "initModule",
+    "Py::Object",
+    "getAttr",
+    "::Methods",
+)
+
+
+@dataclass(frozen=True)
+class SourceFile:
+    """A source path and its comment-stripped contents."""
+
+    path: Path
+    source: str
 
 
 def strip_comments(source: str) -> str:
@@ -285,6 +312,20 @@ def iter_source_files(root: Path, source_dir: Path) -> Iterable[Path]:
         if skipped_source_path(rel):
             continue
         yield path
+
+
+@lru_cache(maxsize=None)
+def load_source_files(root: Path, source_dir: Path) -> tuple[SourceFile, ...]:
+    source_files: list[SourceFile] = []
+    for path in iter_source_files(root, source_dir):
+        try:
+            source = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if not any(marker in source for marker in DISCOVERY_MARKERS):
+            continue
+        source_files.append(SourceFile(path=path, source=strip_comments(source)))
+    return tuple(source_files)
 
 
 @lru_cache(maxsize=None)

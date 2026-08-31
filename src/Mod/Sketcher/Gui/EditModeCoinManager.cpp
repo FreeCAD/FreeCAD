@@ -1037,9 +1037,6 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.setNum(EditCurve.size());
     SbVec3f* verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
-    SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
-
-    setEditDrawStyle(mode);
 
     int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
@@ -1050,20 +1047,12 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
             ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                 * drawingParameters.zEdit
         );
-        switch (mode) {
-            case GeometryCreationMode::Normal:
-                color[i] = drawingParameters.CurveColor;
-                break;
-            case GeometryCreationMode::Construction:
-                color[i] = drawingParameters.CurveDraftColor;
-                break;
-        }
     }
 
     index[0] = EditCurve.size();
     editModeScenegraphNodes.EditCurvesCoordinate->point.finishEditing();
     editModeScenegraphNodes.EditCurveSet->numVertices.finishEditing();
-    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
+    updateEditCurveAppearance(mode);
 }
 
 void EditModeCoinManager::drawEdit(
@@ -1082,9 +1071,6 @@ void EditModeCoinManager::drawEdit(
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.setNum(ncoords);
     SbVec3f* verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
-    SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
-
-    setEditDrawStyle(mode);
 
     int coordindex = 0;
     int indexindex = 0;
@@ -1096,16 +1082,6 @@ void EditModeCoinManager::drawEdit(
                 ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                     * drawingParameters.zEdit
             );
-
-            switch (mode) {
-                case GeometryCreationMode::Normal:
-                    color[coordindex] = drawingParameters.CurveColor;
-                    break;
-                case GeometryCreationMode::Construction:
-                    color[coordindex] = drawingParameters.CurveDraftColor;
-                    break;
-            }
-
             coordindex++;
         }
         index[indexindex] = v.size();
@@ -1114,7 +1090,23 @@ void EditModeCoinManager::drawEdit(
 
     editModeScenegraphNodes.EditCurvesCoordinate->point.finishEditing();
     editModeScenegraphNodes.EditCurveSet->numVertices.finishEditing();
-    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
+    updateEditCurveAppearance(mode);
+}
+
+void EditModeCoinManager::updateEditCurveAppearance(GeometryCreationMode mode)
+{
+    setEditDrawStyle(mode);
+
+    auto& colors = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor;
+    SbColor* values = colors.startEditing();
+    const SbColor& color = mode == GeometryCreationMode::Normal ? drawingParameters.CurveColor
+                                                                : drawingParameters.CurveDraftColor;
+
+    for (int i = 0; i < colors.getNum(); ++i) {
+        values[i] = color;
+    }
+
+    colors.finishEditing();
 }
 
 void EditModeCoinManager::drawLineExtensionAutoConstraintHint(

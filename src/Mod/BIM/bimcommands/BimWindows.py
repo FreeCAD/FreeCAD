@@ -170,7 +170,7 @@ class BIM_Windows_TaskPanel:
         if window:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(window)
-            FreeCADGui.SendMsgToActiveView("ViewSelection")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
 
     def setWidth(self):
         val = FreeCAD.Units.Quantity(self.form.windowWidth.text()).Value

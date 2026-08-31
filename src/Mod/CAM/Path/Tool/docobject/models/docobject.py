@@ -60,6 +60,7 @@ class DetachedDocumentObject:
             if thetype in [
                 "App::PropertyQuantity",
                 "App::PropertyLength",
+                "App::PropertyDistance",
                 "App::PropertyArea",
                 "App::PropertyVolume",
                 "App::PropertyAngle",
@@ -114,6 +115,7 @@ class DetachedDocumentObject:
         elif prop_type in [
             "App::PropertyQuantity",
             "App::PropertyLength",
+            "App::PropertyDistance",
             "App::PropertyArea",
             "App::PropertyVolume",
             "App::PropertyAngle",
@@ -149,6 +151,10 @@ class DetachedDocumentObject:
     def getTypeIdOfProperty(self, name: str) -> Optional[str]:
         """Returns the stored type string for a property in detached state."""
         return self._property_types.get(name)
+
+    def getDocumentationOfProperty(self, name: str) -> Optional[str]:
+        """Returns the stored docstring for a property in detached state."""
+        return self._property_docs.get(name)
 
     def getEnumerationsOfProperty(self, name: str) -> List[str]:
         """Returns the stored enumeration list for a property."""
