@@ -27,6 +27,7 @@
 
 
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Console.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
@@ -37,6 +38,8 @@
 
 #include <Mod/Part/App/Tools.h>
 
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
@@ -79,6 +82,7 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
         subShape = AddSubShape.getShape();
     }
 }
+
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
@@ -93,7 +97,8 @@ void FeatureAddSub::updatePreviewShape()
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         const TopoShape& tool = AddSubShape.getShape();
 
-        if (!tool.isEmpty()) {
+        // with no base there is nothing to trim against, so preview the tool below
+        if (!tool.isEmpty() && !base.isEmpty()) {
             try {
                 // Compute removed volume preview (for display)
                 TopoShape common;
@@ -119,14 +124,16 @@ void FeatureAddSub::updatePreviewShape()
                 BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
 
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // an empty or zero volume intersection would draw nothing at all
+                const bool nothingRemoved = common.isEmpty() || removed <= Precision::Confusion();
 
-                if (removed <= Precision::Confusion()) {
+                if (nothingRemoved) {
                     notifyWarning(
                         tr("Resulting shape is empty. That may indicate that no material will be "
                            "removed or a problem with the model.")
                     );
                 }
-                PreviewShape.setValue(common);
+                PreviewShape.setValue(nothingRemoved ? tool : common);
                 return;
             }
             catch (Standard_Failure& e) {

@@ -231,19 +231,34 @@ void ViewProvider::attachPreview()
 void ViewProvider::updatePreview()
 {
     ViewProviderPreviewExtension::updatePreview();
+    syncToolPreview();
+}
 
-    if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        // we only want to show the additional tool preview for subtractive features
-        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Subtractive) {
-            return;
-        }
+void ViewProvider::showPreview(bool enable)
+{
+    ViewProviderPreviewExtension::showPreview(enable);
 
-        Part::TopoShape toolShape = addSubFeature->AddSubShape.getShape();
-
-        updatePreviewShape(toolShape, pcToolPreview);
+    // a fresh preview skips updatePreview(), leaving the previous owner's tool state
+    if (isPreviewEnabled()) {
+        syncToolPreview();
     }
-    else {
-        updatePreviewShape({}, pcToolPreview);
+}
+
+void ViewProvider::syncToolPreview()
+{
+    auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+    // the raw cutting tool is only for editing; a preselection preview shows only the delta
+    const bool showTool = previewToolShape && addSubFeature
+        && addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+
+    if (showTool) {
+        updatePreviewShape(addSubFeature->AddSubShape.getShape(), pcToolPreview);
+        if (pcPreviewRoot->findChild(pcToolPreview) < 0) {
+            pcPreviewRoot->addChild(pcToolPreview);
+        }
+    }
+    else if (pcPreviewRoot->findChild(pcToolPreview) >= 0) {
+        pcPreviewRoot->removeChild(pcToolPreview);
     }
 }
 
@@ -355,6 +370,27 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
 
     makeChildrenVisible();
 
+    return true;
+}
+
+bool ViewProvider::showPreselectPreview(bool on)
+{
+    // the task dialog owns the preview while editing, so do not take it over
+    if (on && isEditing()) {
+        return false;
+    }
+    if (on) {
+        // compute it first: a feature with no preview falls back to the whole object
+        if (auto* preview = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
+            preview->updatePreview();
+        }
+        if (getPreviewShape().isEmpty()) {
+            return false;
+        }
+    }
+    // a preselection preview shows only the resulting delta, not the cutting tool
+    previewToolShape = !on;
+    showPreview(on);
     return true;
 }
 

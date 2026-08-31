@@ -766,6 +766,11 @@ bool ViewProviderDocumentObject::getDetailPath(
     return ret;
 }
 
+bool ViewProviderDocumentObject::showPreselectPreview(bool /*on*/)
+{
+    return false;
+}
+
 void ViewProviderDocumentObject::onPropertyStatusChanged(const App::Property& prop, unsigned long oldStatus)
 {
     (void)oldStatus;

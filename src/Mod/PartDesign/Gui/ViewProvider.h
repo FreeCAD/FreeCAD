@@ -84,6 +84,11 @@ public:
 
     void toggleVisibility() override;
 
+    /// Reuse the task-panel preview infrastructure for tree preselection.
+    bool showPreselectPreview(bool on) override;
+
+    void showPreview(bool enable) override;
+
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 
@@ -120,7 +125,11 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    /// Attach or detach the cutting tool preview to match previewToolShape.
+    void syncToolPreview();
+
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
+    bool previewToolShape {true};
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;

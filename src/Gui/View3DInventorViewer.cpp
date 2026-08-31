@@ -1516,8 +1516,14 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges& reason)
     if (Reason.Type == SelectionChanges::RmvPreselect
         || Reason.Type == SelectionChanges::RmvPreselectSignal
         || Reason.Type == SelectionChanges::SetPreselect) {
-        SoFCPreselectionAction preselectionAction(Reason);
-        preselectionAction.apply(pcViewProviderRoot);
+        // a self-previewing view provider paints its own color; skip the standard highlight
+        const bool selfPreview = Reason.Type == SelectionChanges::SetPreselect
+            && Reason.SubType == SelectionChanges::MsgSource::TreeView
+            && inventorSelection->isFeaturePreviewActive();
+        if (!selfPreview) {
+            SoFCPreselectionAction preselectionAction(Reason);
+            preselectionAction.apply(pcViewProviderRoot);
+        }
     }
     else {
         SoFCSelectionAction selectionAction(Reason);

@@ -70,6 +70,7 @@
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
+#include "Inventor/SoFCSwitch.h"
 #include "LinkViewPy.h"
 #include "Selection.h"
 #include "SoFCUnifiedSelection.h"
@@ -145,7 +146,7 @@ public:
     SoNodeSensor transformSensor;
 
     std::array<CoinPtr<SoSeparator>, LinkView::SnapshotMax> pcSnapshots;
-    std::array<CoinPtr<SoSwitch>, LinkView::SnapshotMax> pcSwitches;
+    std::array<CoinPtr<SoFCSwitch>, LinkView::SnapshotMax> pcSwitches;
     CoinPtr<SoSwitch> pcLinkedSwitch;
 
     // for group type view providers
@@ -326,14 +327,14 @@ public:
                 continue;
             }
             int count = pcSwitches[i]->getNumChildren();
+            const int visible = count > pcLinked->getDefaultMode() ? pcLinked->getDefaultMode() : 0;
+            // the child a tree preselection falls back to while this snapshot is off
+            pcSwitches[i]->defaultChild = count ? visible : SO_SWITCH_NONE;
             if ((index < 0 && i == LinkView::SnapshotChild) || !count) {
                 pcSwitches[i]->whichChild = SO_SWITCH_NONE;
             }
-            else if (count > pcLinked->getDefaultMode()) {
-                pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
-            }
             else {
-                pcSwitches[i]->whichChild = 0;
+                pcSwitches[i]->whichChild = visible;
             }
         }
     }
@@ -450,7 +451,7 @@ public:
             std::ostringstream ss;
             ss << pcLinked->getObject()->getNameInDocument() << "(" << type << ')';
             pcSnapshot->setName(ss.str().c_str());
-            pcModeSwitch = new SoSwitch;
+            pcModeSwitch = new SoFCSwitch;
         }
 
         pcLinkedSwitch.reset();

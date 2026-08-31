@@ -122,6 +122,9 @@ public:
     /// return the coin node detail and path to the node of the subname
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
+    /// Toggle this object's own preselection preview; returns true if it handled it.
+    virtual bool showPreselectPreview(bool on);
+
     /* Force update visual
      *
      * These method exists because some view provider skips visual update when
