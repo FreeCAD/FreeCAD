@@ -52,7 +52,7 @@ import CAMTests.PostTestMocks as PostTestMocks
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-PECK_RETRACT = -9.0  # well below SafeHeight -- exercises the climb-first fix
+PECK_RETRACT = 12.0  # clear of the stock surface, but below SafeHeight (14)
 Z_RE = re.compile(r"Z(-?\d+(?:\.\d+)?)")
 R_RE = re.compile(r"R(-?\d+(?:\.\d+)?)")
 
@@ -77,8 +77,9 @@ class TestDrillingPostIntegration(PathTestUtils.PathTestBase):
         FreeCAD.closeDocument(self.doc.Name)
 
     def _make_deep_peck_operation(self):
-        """Two holes, KeepToolDown on, PeckRetract well below SafeHeight --
-        the scenario the inter-hole 'climb to SafeHeight first' fix protects."""
+        """Two holes, KeepToolDown on, PeckRetract below SafeHeight -- the scenario
+        the inter-hole linking check protects. R sits just clear of the surface, so
+        the cycle's rapid down to R stays in open air the way a real machine needs."""
         operation = PathDrilling.Create("Drilling", parentJob=self.job)
         operation.ToolController = self.toolController
         operation.Strategy = "Drilling"
@@ -87,9 +88,9 @@ class TestDrillingPostIntegration(PathTestUtils.PathTestBase):
         # stock geometry), same as PeckRetract -- clear the expression first or a
         # plain assignment gets silently overwritten on the next recompute/execute.
         operation.setExpression("StartDepth", None)
-        operation.StartDepth = 5.0
+        operation.StartDepth = 11.0  # stock top
         operation.setExpression("FinalDepth", None)
-        operation.FinalDepth = -10.0
+        operation.FinalDepth = 0.0
         operation.PeckEnabled = True
         operation.PeckDepth = 2.0
         operation.KeepToolDown = True

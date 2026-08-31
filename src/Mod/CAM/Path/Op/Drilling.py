@@ -127,8 +127,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 obj.ExtraOffset = "Tool Tip"
             elif old_offset == "2x Drill Tip":
                 obj.ExtraOffset = "2x Tool Tip"
-            else:
-                obj.ExtraOffset = old_offset
+            # Any other stored value ("None") is still valid in the new list and is
+            # preserved by the list swap above -- nothing to reassign.
 
         if hasattr(obj, "chipBreakEnabled"):
             obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
@@ -198,27 +198,36 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.updateStrategyVisibility(obj)
 
     def opOnChanged(self, obj, prop):
-        """opOnChanged(obj, prop) ... react to Strategy changes to update property visibility."""
-        if prop == "Strategy":
+        """opOnChanged(obj, prop) ... react to Strategy/PeckEnabled changes to update
+        property visibility."""
+        super().opOnChanged(obj, prop)
+        if prop in ("Strategy", "PeckEnabled"):
             self.updateStrategyVisibility(obj)
 
     def updateStrategyVisibility(self, obj):
-        """Hide the peck-only properties in the Property Editor while Strategy != Drilling.
-        Tapping never pecks in this codebase, so PeckEnabled/PeckDepth/ChipBreakEnabled/
-        FeedRetractEnabled/PeckRetract are stored but inert -- matches how the task panel
-        already hides the same fields (Gui/Drilling.py's updateStrategyVisibility), and
-        how CircularHoleBase does the same for SortingMode's StartPoint/EndPoint/UseEndPoint.
+        """Hide inert properties in the Property Editor, mirroring what the task panel
+        already does with the same fields (Gui/Drilling.py's updateStrategyVisibility and
+        the PeckEnabled toggle handlers), the way CircularHoleBase does for SortingMode's
+        StartPoint/EndPoint/UseEndPoint.
+
+        Two levels: Tapping never pecks in this codebase, so the whole peck group is
+        hidden while Strategy != Drilling; and PeckDepth/ChipBreakEnabled/PeckRetract
+        only mean anything once PeckEnabled is set, so they stay hidden until it is.
         """
         if not hasattr(obj, "Strategy"):
             return
-        mode = 0 if obj.Strategy == "Drilling" else 2  # 0=visible, 2=hidden
-        for prop in (
-            "PeckEnabled",
-            "PeckDepth",
-            "ChipBreakEnabled",
-            "FeedRetractEnabled",
-            "PeckRetract",
-        ):
+
+        drillingMode = 0 if obj.Strategy == "Drilling" else 2  # 0=visible, 2=hidden
+        peckMode = 0 if drillingMode == 0 and getattr(obj, "PeckEnabled", False) else 2
+
+        modes = {
+            "PeckEnabled": drillingMode,
+            "FeedRetractEnabled": drillingMode,
+            "PeckDepth": peckMode,
+            "ChipBreakEnabled": peckMode,
+            "PeckRetract": peckMode,
+        }
+        for prop, mode in modes.items():
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, mode)
 
@@ -325,7 +334,35 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             Path.Log.error(f"Unknown strategy: {strategy}")
 
     def _executeDrilling(self, obj, holes):
-        """_executeDrilling(obj, holes) ... generate drilling operation for each hole in holes."""
+        """_executeDrilling(obj, holes) ... generate drilling operation for each hole in holes.
+
+        Heights involved, and how they interact:
+
+        ClearanceHeight  the plane the op enters and leaves at; the framework appends the
+                         final rapid back up to it.
+        SafeHeight       the general rapid-clearance plane used for travel between holes.
+                         Clamped down to ClearanceHeight if the user sets it higher.
+        PeckRetract      the canned-cycle "R" word: where the tool retracts to between
+                         pecks. Only meaningful when PeckEnabled; a non-peck cycle uses
+                         SafeHeight for R regardless of what PeckRetract holds.
+        KeepToolDown     selects G99 (retract to R between holes) over G98 (retract to the
+                         pre-cycle Z between holes).
+
+        Between holes the operation checks whether a straight traverse to the next hole is
+        clear, at the height the tool is actually at -- which under G99 with a PeckRetract
+        below SafeHeight is R, not SafeHeight. Checking at SafeHeight instead would answer
+        a question about a move the machine never makes, since a "clear" verdict emits no
+        commands and leaves the modal cycle to traverse at R.
+
+        That check needs geometry, and only the Line of Sight / Tool Diameter / Tool Shape
+        strategies supply any. Under Clearance Height and Retract Height there is nothing
+        to test against and every traverse reads as clear, so a tool below SafeHeight is
+        climbed to SafeHeight first and travels there instead.
+
+        Inserting those G0 moves also breaks the modal cycle group correctly on its own:
+        the post-processor's cannedCycleTerminator treats any non-drill command as a reason
+        to close the group with G80 and open a fresh one afterwards.
+        """
         Path.Log.track()
         machinestate = PathMachineState.MachineState()
         # We should be at clearance height.
@@ -416,36 +453,41 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 firstMove = False
 
             else:  # Check if we need linking moves
-                # For G99 mode, tool is at PeckRetract (R-plane) after previous hole,
-                # which may be below SafeHeight (e.g. a low peck retract inside a deep
-                # hole). The collision check below assumes travel happens at SafeHeight,
-                # so if the tool isn't there yet, climb to it first -- otherwise a "no
-                # collision" result here would be silently wrong: with no commands
-                # emitted, the modal G99 cycle would actually traverse to the next hole
-                # at the low R height instead, potentially dragging the tool through
-                # stock between holes.
                 current_pos = machinestate.getPosition()
-                if current_pos.z < safe_height and not Path.Geom.isRoughly(
-                    current_pos.z, safe_height
+
+                # Without solids nothing can collide, so every traverse reads as clear
+                # and a low R can't be validated -- climb to SafeHeight instead.
+                geometry_checked = bool(linkingArgs["solids"])
+                if (
+                    not geometry_checked
+                    and current_pos.z < safe_height
+                    and not Path.Geom.isRoughly(current_pos.z, safe_height)
                 ):
                     command = Path.Command("G0", {"Z": safe_height})
                     self.commandlist.append(command)
                     machinestate.addCommand(command)
                     current_pos = machinestate.getPosition()
 
-                # Check if direct move at retract plane would collide with model
-                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                linkingArgs["start_position"] = current_pos
-                linkingArgs["target_position"] = target_at_safe_height
-                linking_moves = linking.get_linking_moves(**linkingArgs)
+                # Check the traverse at the height the tool is actually at -- under G99
+                # that's R, which is where the modal cycle will carry it.
+                target_position = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
 
-                # linking_moves should be skipped, if first move not vertical
-                if not Path.Geom.isRoughly(linking_moves[0].z, startPoint.z):
-                    # Cannot traverse at retract plane - need to break cycle group
-                    # Retract to safe height, traverse, then plunge to safe height for new cycle
+                if linking.check_collision(
+                    current_pos,
+                    target_position,
+                    solids=linkingArgs["solids"],
+                    tool_shape=linkingArgs["tool_shape"],
+                    tool_diameter=linkingArgs["tool_diameter"],
+                    collision_clearance=linkingArgs["collision_clearance"],
+                ):
+                    # Not clear: retract, traverse, come back down. The explicit moves
+                    # also break the modal group, which the post closes with G80.
+                    linkingArgs["start_position"] = current_pos
+                    linkingArgs["target_position"] = target_position
+                    linking_moves = linking.get_linking_moves(**linkingArgs)
                     self.commandlist.extend(linking_moves)
                     machinestate.addCommands(linking_moves)
-                # else: no collision - G99 cycle continues, tool stays at retract plane
+                # else: clear -- the modal cycle continues, tool stays put
 
             # Perform drilling
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
@@ -636,8 +678,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # to avoid repeated full retracts with a long, thin drill. Bound as an
         # expression (like the other Op* defaults below) so it tracks SafeHeight
         # until the user overrides it with an explicit value.
-        if not self.applyExpression(obj, "PeckRetract", "SafeHeight"):
-            obj.PeckRetract = obj.SafeHeight.Value
+        self.applyExpression(obj, "PeckRetract", "SafeHeight")
 
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
