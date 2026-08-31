@@ -38,6 +38,7 @@ add_executable(Base_tests_run
         UnlimitedUnsigned.cpp
         UniqueNameManager.cpp
         Unit.cpp
+        UnitRegistry.cpp
         UnitsApi.cpp
         Uuid.cpp
         UnitsSchemaFormat.cpp
