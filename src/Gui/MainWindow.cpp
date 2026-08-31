@@ -59,7 +59,7 @@
 
 
 #if defined(Q_OS_WIN)
-#include <qpa/qplatformwindow_p.h>
+# include <qpa/qplatformwindow_p.h>
 #endif
 
 #include <algorithm>
