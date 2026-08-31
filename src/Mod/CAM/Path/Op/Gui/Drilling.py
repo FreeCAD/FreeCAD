@@ -64,7 +64,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.peckDepthLabel.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.peckRetract.setEnabled)
-        self.form.peckEnabled.toggled.connect(self.form.retractLabel.setEnabled)
+        self.form.peckEnabled.toggled.connect(self.form.peckRetractLabel.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.setChipBreakControl)
@@ -72,7 +72,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.feedRetractEnabled.toggled.connect(self.form.peckDepth.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.peckDepthLabel.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.peckRetract.setDisabled)
-        self.form.feedRetractEnabled.toggled.connect(self.form.retractLabel.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckRetractLabel.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.chipBreakEnabled.setDisabled)
@@ -91,7 +91,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckDepth.setEnabled(True)
             self.form.peckDepthLabel.setEnabled(True)
             self.form.peckRetract.setEnabled(True)
-            self.form.retractLabel.setEnabled(True)
+            self.form.peckRetractLabel.setEnabled(True)
             self.form.chipBreakEnabled.setEnabled(True)
         elif self.form.dwellEnabled.isChecked():
             self.form.feedRetractEnabled.setEnabled(False)
@@ -137,7 +137,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.chipBreakEnabled,
             self.form.feedRetractEnabled,
             self.form.peckRetract,
-            self.form.retractLabel,
+            self.form.peckRetractLabel,
         ]
 
         # Show/hide based on strategy

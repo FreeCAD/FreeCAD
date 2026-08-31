@@ -70,7 +70,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         #       self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
 
         #       self.form.peckRetractHeight.setEnabled(True)
-        #       self.form.retractLabel.setEnabled(True)
+        #       self.form.peckRetractLabel.setEnabled(True)
 
         #        if self.form.peckEnabled.isChecked():
         #            self.form.dwellEnabled.setEnabled(False)
