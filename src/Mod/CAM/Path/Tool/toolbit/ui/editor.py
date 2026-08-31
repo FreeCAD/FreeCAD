@@ -252,6 +252,10 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
         # Get properties and suffixes
         props_to_show = self._toolbit._get_props(("Shape", "Attributes"))
+        # Derived parameters follow from the others, so there is nothing to type
+        # in and showing a field invites people to fight the geometry.
+        derived = self._toolbit._tool_bit_shape.derived_parameters()
+        props_to_show = [p for p in props_to_show if p not in derived]
         icon = self._toolbit._tool_bit_shape.get_icon()
         suffixes = icon.abbreviations if icon else {}
         self._property_editor.setObject(self._toolbit.obj)

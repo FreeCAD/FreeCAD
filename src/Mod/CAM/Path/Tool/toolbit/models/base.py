@@ -663,6 +663,7 @@ class ToolBit(Asset, ABC):
                 f"Queuing visual representation update."
             )
             self._tool_bit_shape.set_parameter(prop, new_value)
+            self._apply_derived_parameters()
             self._queue_visual_update()
         finally:
             self._in_update = False
@@ -763,6 +764,20 @@ class ToolBit(Asset, ABC):
                         Path.Log.error(f"Failed removing property '{group}.{name}': {e}")
             else:
                 Path.Log.warning(f"'{group}.{name}' failed to remove property, not found")
+
+    def _apply_derived_parameters(self):
+        """
+        Recompute the shape's derived parameters and push them onto the object.
+
+        They are not editable, so nothing else keeps them in step: without this
+        a derived value keeps whatever it was last saved with and quietly
+        disagrees with the shape the operations are cutting.
+        """
+        if not self._tool_bit_shape:
+            return
+        for name, value in self._tool_bit_shape.apply_derived_parameters().items():
+            if hasattr(self.obj, name):
+                PathUtil.setProperty(self.obj, name, value)
 
     def _update_tool_properties(self):
         """
@@ -881,6 +896,13 @@ class ToolBit(Asset, ABC):
         material_value = self._tool_bit_shape.get_parameters().get("Material")
         if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
             PathUtil.setProperty(self.obj, "Material", material_value)
+
+        # Derived parameters are computed, never typed in: keep them current and
+        # read-only in FreeCAD's property view.
+        for name in self._tool_bit_shape.derived_parameters():
+            if hasattr(self.obj, name):
+                self.obj.setEditorMode(name, 1)
+        self._apply_derived_parameters()
 
     def _queue_visual_update(self):
         """Queue a visual update to be processed after document recompute is complete."""
