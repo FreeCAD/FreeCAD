@@ -55,6 +55,7 @@ namespace Matchers
 ::testing::Matcher<Value> IsNumeric(double value);
 ::testing::Matcher<Value> IsNumeric(double value, std::string_view unit);
 ::testing::Matcher<Value> IsColor(const Base::Color& expected);
+::testing::Matcher<Value> IsString(const std::string& expected);
 ::testing::Matcher<Value> IsColorNear(const Base::Color& expected, double tolerance);
 ::testing::Matcher<Tuple> HasField(std::string name, ::testing::Matcher<Value> matcher);
 ::testing::Matcher<Tuple> HasElement(size_t index, ::testing::Matcher<Value> matcher);
