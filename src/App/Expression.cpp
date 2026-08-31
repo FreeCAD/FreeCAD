@@ -58,9 +58,9 @@
 #include <Base/VectorPy.h>
 #include <Base/Precision.h>
 
-#include "ExpressionParser.h"
+#include "ExpressionNodes.h"
 #include "ExpressionLexer.h"
-#include "ExpressionPrattParser.h"
+#include "ExpressionParser.h"
 
 
 using namespace Base;
@@ -3559,10 +3559,7 @@ static void initParser()
 
 namespace
 {
-using Pratt::Token;
-using Pratt::TokenKind;
-
-class VectorTokenStream final: public Pratt::TokenStream
+class VectorTokenStream final: public TokenStream
 {
 public:
     explicit VectorTokenStream(std::vector<Token> tokens)
@@ -3601,20 +3598,20 @@ private:
 
 }  // namespace
 
-std::vector<Token> Pratt::scanExpressionTokens(const App::DocumentObject* owner, const char* buffer)
+std::vector<Token> scanExpressionTokens(const App::DocumentObject* owner, const char* buffer)
 {
     (void)owner;
     initParser();
-    return Pratt::scanTokens(buffer, [](const std::string& name) {
+    return scanTokens(buffer, [](const std::string& name) {
         const auto found = registered_functions.find(name);
         return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
     });
 }
 
-std::vector<Token> Pratt::scanExpressionTokensTolerant(const char* buffer)
+std::vector<Token> scanExpressionTokensTolerant(const char* buffer)
 {
     initParser();
-    return Pratt::scanTokensTolerant(buffer, [](const std::string& name) {
+    return scanTokensTolerant(buffer, [](const std::string& name) {
         const auto found = registered_functions.find(name);
         return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
     });
@@ -3637,32 +3634,32 @@ std::vector<Token> Pratt::scanExpressionTokensTolerant(const char* buffer)
 
 ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
-    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parse();
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parse();
 }
 
 std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
     const App::DocumentObject* owner,
     const char* buffer)
 {
-    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parseUnit();
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parseUnit();
 }
 
 ObjectIdentifier ExpressionParser::parsePath(const App::DocumentObject* owner, const char* buffer)
 {
-    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parsePath();
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parsePath();
 }
 
 namespace {
-using ExpressionToken = App::ExpressionParser::Pratt::Token;
-using ExpressionTokenKind = App::ExpressionParser::Pratt::TokenKind;
+using ExpressionToken = App::ExpressionParser::Token;
+using ExpressionTokenKind = App::ExpressionParser::TokenKind;
 
 std::optional<ExpressionToken> getSingleExpressionToken(const std::string& str)
 {
     try {
-        auto tokens = App::ExpressionParser::Pratt::scanExpressionTokens(nullptr, str.c_str());
+        auto tokens = App::ExpressionParser::scanExpressionTokens(nullptr, str.c_str());
         if (tokens.size() == 2 && tokens.back().kind == ExpressionTokenKind::End) {
             return tokens.front();
         }

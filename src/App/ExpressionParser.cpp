@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "ExpressionPrattParser.h"
+#include "ExpressionParser.h"
 
 #include "DocumentObject.h"
 
@@ -8,7 +8,7 @@
 
 #include <Base/Exception.h>
 
-namespace App::ExpressionParser::Pratt
+namespace App::ExpressionParser
 {
 
 namespace
@@ -621,4 +621,4 @@ bool Parser::nextTokenStartsUnitAtom(std::size_t offset)
         || (token.kind == TokenKind::Name && token.unitCandidate.has_value());
 }
 
-}  // namespace App::ExpressionParser::Pratt
+}  // namespace App::ExpressionParser

@@ -29,7 +29,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/PropertyUnits.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>

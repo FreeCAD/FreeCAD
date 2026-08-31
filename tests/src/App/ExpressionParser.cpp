@@ -9,8 +9,8 @@
 #include "App/Document.h"
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
+#include "App/ExpressionNodes.h"
 #include "App/ExpressionParser.h"
-#include "App/ExpressionPrattParser.h"
 
 #include "src/App/InitApplication.h"
 
@@ -450,9 +450,9 @@ TEST_F(ExpressionParserTest, intentionalGrammarRestrictions)
     }
 }
 
-TEST(ExpressionPrattParserTest, bindingPowersMatchCurrentGrammar)
+TEST(ExpressionParserBindingPowerTest, bindingPowersMatchCurrentGrammar)
 {
-    using namespace App::ExpressionParser::Pratt;
+    using namespace App::ExpressionParser;
 
     EXPECT_EQ(
         infixBindingPower(TokenKind::Question),

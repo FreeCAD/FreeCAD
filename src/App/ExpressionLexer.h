@@ -6,9 +6,9 @@
 #include <string>
 #include <vector>
 
-#include "ExpressionPrattParser.h"
+#include "ExpressionParser.h"
 
-namespace App::ExpressionParser::Pratt
+namespace App::ExpressionParser
 {
 
 using FunctionLookup = std::function<FunctionExpression::Function(const std::string&)>;
@@ -25,4 +25,4 @@ std::vector<Token> scanExpressionTokens(const DocumentObject* owner, const char*
 /** Tokenize incomplete editor input using FreeCAD's registered expression functions. */
 std::vector<Token> scanExpressionTokensTolerant(const char* buffer);
 
-}  // namespace App::ExpressionParser::Pratt
+}  // namespace App::ExpressionParser

@@ -28,7 +28,7 @@
 #include "App/Document.h"
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
-#include "App/ExpressionParser.h"
+#include "App/ExpressionNodes.h"
 #include "App/ExpressionTokenizer.h"
 
 // +------------------------------------------------+
