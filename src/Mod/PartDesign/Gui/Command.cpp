@@ -1175,13 +1175,14 @@ void prepareProfileBased(
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick* pickDlg
             = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-    if (dlg && !pickDlg) {
-        if (dlg->canClose()) {
-        Gui::Control().closeDialog();
-        } else {
-        return;
+        if (dlg && !pickDlg) {
+            if (dlg->canClose()) {
+                Gui::Control().closeDialog();
+            }
+            else {
+                return;
+            }
         }
-    }
 
         if (dlg) {
             Gui::Control().closeDialog();

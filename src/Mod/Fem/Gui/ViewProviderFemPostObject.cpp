@@ -893,13 +893,14 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
         if (postDlg && postDlg->getView() != this) {
             postDlg = nullptr;  // another pad left open its task panel
         }
-    if (dlg && !postDlg) {
-        if (dlg->canClose()) {
-        Gui::Control().reject();
-        } else {
-        return false;
+        if (dlg && !postDlg) {
+            if (dlg->canClose()) {
+                Gui::Control().reject();
+            }
+            else {
+                return false;
+            }
         }
-    }
 
         // start the edit dialog
         if (postDlg) {
