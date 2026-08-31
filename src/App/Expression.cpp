@@ -37,13 +37,9 @@
 #include <boost/math/special_functions/trunc.hpp>
 
 #include <algorithm>
-#include <cerrno>
-#include <cstdlib>
-#include <cctype>
-#include <numbers>
 #include <limits>
+#include <numbers>
 #include <sstream>
-#include <stack>
 #include <string>
 #include <fmt/format.h>
 
@@ -63,6 +59,7 @@
 #include <Base/Precision.h>
 
 #include "ExpressionParser.h"
+#include "ExpressionLexer.h"
 #include "ExpressionPrattParser.h"
 
 
@@ -72,7 +69,6 @@ using namespace App;
 FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #if defined(_MSC_VER)
-#define strtoll _strtoi64
 #pragma warning(disable : 4003)
 #pragma warning(disable : 4065)
 #endif
@@ -185,53 +181,6 @@ inline bool asBool(double value) {
     return std::fabs(value) >= Base::Precision::Confusion();
 }
 
-}
-
-std::string unquote(const std::string & input)
-{
-    assert(input.size() >= 4);
-
-    std::string output;
-    std::string::const_iterator cur = input.begin() + 2;
-    std::string::const_iterator end = input.end() - 2;
-
-    output.reserve(input.size());
-
-    bool escaped = false;
-    while (cur != end) {
-        if (escaped) {
-            switch (*cur) {
-            case 't':
-                output += '\t';
-                break;
-            case 'n':
-                output += '\n';
-                break;
-            case 'r':
-                output += '\r';
-                break;
-            case '\\':
-                output += '\\';
-                break;
-            case '\'':
-                output += '\'';
-                break;
-            case '"':
-                output += '"';
-                break;
-            }
-            escaped = false;
-        }
-        else {
-            if (*cur == '\\')
-                escaped = true;
-            else
-                output += *cur;
-        }
-        ++cur;
-    }
-
-    return output;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -3521,132 +3470,11 @@ bool isModuleImported(PyObject *module) {
     return false;
 }
 
-/**
- * @brief Error function for parser.
- *
- * @throws Base::Exception A generic parser error.
- */
-void ExpressionParser_yyerror(const char *errorinfo)
-{
-    (void)errorinfo;
-}
-
-/* helper function for tuning number strings with groups in a locale agnostic way... */
-double num_change(char* yytext,char dez_delim,char grp_delim)
-{
-    double ret_val;
-    char temp[40];
-    int i = 0;
-    for(char* c=yytext;*c!='\0';c++){
-        // skip group delimiter
-        if(*c==grp_delim) continue;
-        // check for a dez delimiter other then dot
-        if(*c==dez_delim && dez_delim !='.')
-             temp[i++] = '.';
-        else
-            temp[i++] = *c;
-        // check buffer overflow
-        if (i>39)
-            return 0.0;
-    }
-    temp[i] = '\0';
-
-    errno = 0;
-    ret_val = strtod( temp, nullptr );
-    if (ret_val == 0 && errno == ERANGE)
-        throw Base::UnderflowError("Number underflow.");
-    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
-        throw Base::OverflowError("Number overflow.");
-
-    return ret_val;
-}
-
-/// The resulting expression after a successful parsing.
-static ExpressionPtr ScanResult = ExpressionPtr {};
-
-/// The DocumentObject that will own the expression.
-static const App::DocumentObject* DocumentObject = nullptr;
-
-/// Whether the parsed string is a unit only.
-static bool unitExpression = false;
-
-/// Whether the parsed string is a full expression.
-static bool valueExpression = false;
-
-/// Label string primitive.
-static std::stack<std::string> labels;
-
-/// Registered functions during parsing.
 static std::map<std::string, FunctionExpression::Function> registered_functions;
 
-static int last_column;
-static int column;
-
-// show the parser the lexer method
-#define yylex ExpressionParserlex
-int ExpressionParserlex();
-
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
-#endif
-
-// Parser, defined in Expression.y
-# define YYTOKENTYPE
-#include "Expression.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in Expression.l
-#include "Expression.lex.c"
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
-class StringBufferCleaner
-{
-public:
-    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
-        : my_string_buffer {buffer}
-    {}
-    ~StringBufferCleaner()
-    {
-        // free the scan buffer
-        yy_delete_buffer(my_string_buffer);
-    }
-
-    StringBufferCleaner(const StringBufferCleaner&) = delete;
-    StringBufferCleaner(StringBufferCleaner&&) = delete;
-    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
-    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
-
-private:
-    YY_BUFFER_STATE my_string_buffer;
-};
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-
-#ifdef _MSC_VER
-# define strdup _strdup
-#endif
-
-static void initParser(const App::DocumentObject *owner)
+static void initParser()
 {
     static bool has_registered_functions = false;
-
-    using namespace App::ExpressionParser;
-
-    ScanResult.reset();
-    App::ExpressionParser::DocumentObject = owner;
-    labels = std::stack<std::string>();
-    column = 0;
-    unitExpression = valueExpression = false;
 
     if (!has_registered_functions) {
         registered_functions["abs"] = FunctionExpression::ABS;
@@ -3771,484 +3599,16 @@ private:
     std::size_t cursor {0};
 };
 
-TokenKind translateTokenKind(int token)
-{
-    switch (token) {
-        case 0:
-            return TokenKind::End;
-        case FUNC:
-            return TokenKind::Function;
-        case ONE:
-        case NUM:
-            return TokenKind::Number;
-        case INTEGER:
-            return TokenKind::Integer;
-        case CONSTANT:
-            return TokenKind::Constant;
-        case IDENTIFIER:
-            return TokenKind::Name;
-        case CELLADDRESS:
-            return TokenKind::CellAddress;
-        case UNIT:
-            // Unit spellings are names until the parser sees them in unit
-            // context.  Keeping that decision out of the lexer allows paths
-            // such as mm.Foo and in.Bar.
-            return TokenKind::Name;
-        case USUNIT:
-            return TokenKind::UsBuildingUnit;
-        case STRING:
-            return TokenKind::String;
-        case MINUSSIGN:
-            return TokenKind::Minus;
-        case EQ:
-            return TokenKind::Equal;
-        case NEQ:
-            return TokenKind::NotEqual;
-        case LT:
-            return TokenKind::Less;
-        case GT:
-            return TokenKind::Greater;
-        case LTE:
-            return TokenKind::LessEqual;
-        case GTE:
-            return TokenKind::GreaterEqual;
-        case '+':
-            return TokenKind::Plus;
-        case '*':
-            return TokenKind::Multiply;
-        case '/':
-            return TokenKind::Divide;
-        case '%':
-            return TokenKind::Modulo;
-        case '^':
-            return TokenKind::Power;
-        case '?':
-            return TokenKind::Question;
-        case ':':
-            return TokenKind::Colon;
-        case ',':
-            return TokenKind::Comma;
-        case ';':
-            return TokenKind::Semicolon;
-        case '.':
-            return TokenKind::Dot;
-        case '#':
-            return TokenKind::Hash;
-        case '(':
-            return TokenKind::LeftParen;
-        case ')':
-            return TokenKind::RightParen;
-        case '[':
-            return TokenKind::LeftBracket;
-        case ']':
-            return TokenKind::RightBracket;
-        default:
-            throw Base::ParserError(fmt::format("Unsupported lexer token {}", token));
-    }
-}
-
-Token translateToken(int token)
-{
-    Token result;
-    result.kind = translateTokenKind(token);
-    result.lexeme = token == 0 ? std::string() : std::string(yytext);
-    result.column = static_cast<std::size_t>(last_column);
-
-    switch (token) {
-        case FUNC:
-            result.value = Pratt::FunctionToken {
-                yylval.func.first,
-                yylval.func.first == FunctionExpression::NONE ? yylval.func.second : std::string()};
-            break;
-        case ONE:
-        case NUM:
-            result.value = yylval.fvalue;
-            break;
-        case INTEGER:
-            result.value = yylval.ivalue;
-            break;
-        case CONSTANT:
-            result.value = yylval.constant.fvalue;
-            result.lexeme = yylval.constant.name;
-            break;
-        case IDENTIFIER:
-        case CELLADDRESS:
-        case STRING:
-            result.value = yylval.string;
-            break;
-        case USUNIT:
-            result.value = yylval.quantity.scaler;
-            break;
-        case UNIT:
-            result.value = result.lexeme;
-            result.unitCandidate = yylval.quantity.scaler;
-            break;
-        default:
-            break;
-    }
-    return result;
-}
-
-std::vector<Token> scanPrattTokens(const App::DocumentObject* owner, const char* buffer)
-{
-    YY_BUFFER_STATE flexBuffer = ExpressionParser_scan_string(buffer);
-    StringBufferCleaner cleaner(flexBuffer);
-    initParser(owner);
-
-    std::vector<Token> tokens;
-    int token = 0;
-    do {
-        token = ExpressionParserlex();
-        tokens.push_back(translateToken(token));
-    } while (token != 0);
-    return tokens;
-}
-
-std::optional<Base::Quantity> unitCandidate(const std::string& name)
-{
-    try {
-        return Base::Quantity::parse("1 " + name);
-    }
-    catch (const Base::Exception&) {
-        return std::nullopt;
-    }
-}
-
-bool isCellAddress(const std::string& text)
-{
-    std::size_t cursor = !text.empty() && text.front() == '$' ? 1 : 0;
-    const auto letterBegin = cursor;
-    while (cursor < text.size()
-           && std::isalpha(static_cast<unsigned char>(text[cursor]))) {
-        ++cursor;
-    }
-    const auto letterCount = cursor - letterBegin;
-    if (letterCount == 0 || letterCount > 2) {
-        return false;
-    }
-    if (cursor < text.size() && text[cursor] == '$') {
-        ++cursor;
-    }
-    const auto digitBegin = cursor;
-    while (cursor < text.size()
-           && std::isdigit(static_cast<unsigned char>(text[cursor]))) {
-        ++cursor;
-    }
-    return cursor == text.size() && cursor > digitBegin;
-}
-
-std::vector<Token> scanHandwrittenTokens(const App::DocumentObject* owner, const char* buffer)
-{
-    initParser(owner);
-    const std::string input(buffer);
-    std::vector<Token> tokens;
-    std::size_t cursor = 0;
-
-    const auto pushSimple = [&tokens](TokenKind kind, std::string lexeme, std::size_t column) {
-        tokens.push_back(Token {kind, {}, std::move(lexeme), column, std::nullopt});
-    };
-
-    while (cursor < input.size()) {
-        const auto column = cursor;
-        const auto current = static_cast<unsigned char>(input[cursor]);
-        if (std::isspace(current)) {
-            ++cursor;
-            continue;
-        }
-
-        const auto twoCharacters = input.substr(cursor, 2);
-        if (twoCharacters == "<<") {
-            std::size_t end = cursor + 2;
-            bool escaped = false;
-            while (end < input.size()) {
-                if (!escaped && end + 1 < input.size() && input[end] == '>'
-                    && input[end + 1] == '>') {
-                    end += 2;
-                    const auto lexeme = input.substr(cursor, end - cursor);
-                    tokens.push_back(Token {TokenKind::String,
-                                            unquote(lexeme),
-                                            lexeme,
-                                            column,
-                                            std::nullopt});
-                    cursor = end;
-                    break;
-                }
-                if (!escaped && input[end] == '\n') {
-                    throw Base::ParserError(
-                        fmt::format("Unescaped newline in string at column {}", column));
-                }
-                if (escaped) {
-                    escaped = false;
-                }
-                else if (input[end] == '\\') {
-                    escaped = true;
-                }
-                else if (input[end] == '>') {
-                    throw Base::ParserError(
-                        fmt::format("Unescaped '>' in string at column {}", column));
-                }
-                ++end;
-            }
-            if (cursor != column) {
-                continue;
-            }
-            throw Base::ParserError(fmt::format("Unterminated string at column {}", column));
-        }
-
-        if (input.compare(cursor, 3, "\xE2\x88\x92") == 0) {
-            pushSimple(TokenKind::Minus, input.substr(cursor, 3), column);
-            cursor += 3;
-            continue;
-        }
-
-        if (current == '\'' || current == '"') {
-            const auto quantity = current == '\'' ? Base::Quantity::Foot : Base::Quantity::Inch;
-            tokens.push_back(Token {TokenKind::UsBuildingUnit,
-                                    quantity,
-                                    input.substr(cursor, 1),
-                                    column,
-                                    std::nullopt});
-            ++cursor;
-            continue;
-        }
-
-        const auto comparison = [&]() -> std::optional<TokenKind> {
-            if (twoCharacters == "==") return TokenKind::Equal;
-            if (twoCharacters == "!=") return TokenKind::NotEqual;
-            if (twoCharacters == "<=") return TokenKind::LessEqual;
-            if (twoCharacters == ">=") return TokenKind::GreaterEqual;
-            return std::nullopt;
-        }();
-        if (comparison) {
-            pushSimple(*comparison, twoCharacters, column);
-            cursor += 2;
-            continue;
-        }
-
-        const auto punctuation = [&]() -> std::optional<TokenKind> {
-            switch (current) {
-                case '+': return TokenKind::Plus;
-                case '-': return TokenKind::Minus;
-                case '*': return TokenKind::Multiply;
-                case '/': return TokenKind::Divide;
-                case '%': return TokenKind::Modulo;
-                case '^': return TokenKind::Power;
-                case '<': return TokenKind::Less;
-                case '>': return TokenKind::Greater;
-                case '?': return TokenKind::Question;
-                case ':': return TokenKind::Colon;
-                case ',': return TokenKind::Comma;
-                case ';': return TokenKind::Semicolon;
-                case '.': return TokenKind::Dot;
-                case '#': return TokenKind::Hash;
-                case '(': return TokenKind::LeftParen;
-                case ')': return TokenKind::RightParen;
-                case '[': return TokenKind::LeftBracket;
-                case ']': return TokenKind::RightBracket;
-                default: return std::nullopt;
-            }
-        }();
-
-        const auto commaDecimalEnd = [&]() -> std::optional<std::size_t> {
-            std::size_t position = cursor;
-            while (position < input.size()
-                   && std::isdigit(static_cast<unsigned char>(input[position]))) {
-                ++position;
-            }
-            if (position >= input.size() || input[position] != ','
-                || position + 1 >= input.size()
-                || !std::isdigit(static_cast<unsigned char>(input[position + 1]))) {
-                return std::nullopt;
-            }
-            ++position;
-            while (position < input.size()
-                   && std::isdigit(static_cast<unsigned char>(input[position]))) {
-                ++position;
-            }
-            if (position < input.size() && (input[position] == 'e' || input[position] == 'E')) {
-                const auto exponent = position++;
-                if (position < input.size()
-                    && (input[position] == '+' || input[position] == '-')) {
-                    ++position;
-                }
-                const auto exponentDigits = position;
-                while (position < input.size()
-                       && std::isdigit(static_cast<unsigned char>(input[position]))) {
-                    ++position;
-                }
-                if (position == exponentDigits) {
-                    position = exponent;
-                }
-            }
-            return position;
-        }();
-        if (commaDecimalEnd) {
-            auto lexeme = input.substr(cursor, *commaDecimalEnd - cursor);
-            auto normalized = lexeme;
-            normalized[normalized.find(',')] = '.';
-            char* end = nullptr;
-            errno = 0;
-            const double value = std::strtod(normalized.c_str(), &end);
-            if (errno == ERANGE || end != normalized.c_str() + normalized.size()) {
-                throw Base::ParserError(fmt::format("Invalid number at column {}", column));
-            }
-            tokens.push_back(
-                Token {TokenKind::Number, value, lexeme, column, std::nullopt});
-            cursor = *commaDecimalEnd;
-            continue;
-        }
-
-        if (std::isdigit(current)
-            || (current == '.' && cursor + 1 < input.size()
-                && std::isdigit(static_cast<unsigned char>(input[cursor + 1])))) {
-            const char* begin = input.c_str() + cursor;
-            char* end = nullptr;
-            errno = 0;
-            const double value = std::strtod(begin, &end);
-            if (end == begin || errno == ERANGE) {
-                throw Base::ParserError(fmt::format("Invalid number at column {}", column));
-            }
-            cursor += static_cast<std::size_t>(end - begin);
-            const auto lexeme = input.substr(column, cursor - column);
-            const bool floatingPoint = lexeme.find_first_of(".eE") != std::string::npos;
-            if (!floatingPoint && value != 1.0) {
-                errno = 0;
-                char* integerEnd = nullptr;
-                const auto integer = std::strtoll(lexeme.c_str(), &integerEnd, 10);
-                if (errno == ERANGE || integerEnd != lexeme.c_str() + lexeme.size()) {
-                    throw Base::ParserError(fmt::format("Invalid integer at column {}", column));
-                }
-                tokens.push_back(
-                    Token {TokenKind::Integer, integer, lexeme, column, std::nullopt});
-            }
-            else {
-                tokens.push_back(
-                    Token {TokenKind::Number, value, lexeme, column, std::nullopt});
-            }
-            continue;
-        }
-
-        if (punctuation) {
-            pushSimple(*punctuation, input.substr(cursor, 1), column);
-            ++cursor;
-            continue;
-        }
-
-        if (std::isalpha(current) || current == '_' || current == '$' || current >= 0x80) {
-            ++cursor;
-            while (cursor < input.size()) {
-                const auto character = static_cast<unsigned char>(input[cursor]);
-                if (!std::isalnum(character) && character != '_' && character != '@'
-                    && character != '$' && character < 0x80) {
-                    break;
-                }
-                ++cursor;
-            }
-            auto name = input.substr(column, cursor - column);
-
-            if (isCellAddress(name)) {
-                tokens.push_back(
-                    Token {TokenKind::CellAddress, name, name, column, std::nullopt});
-                continue;
-            }
-
-            std::size_t afterWhitespace = cursor;
-            while (afterWhitespace < input.size()
-                   && (input[afterWhitespace] == ' ' || input[afterWhitespace] == '\t')) {
-                ++afterWhitespace;
-            }
-            if (afterWhitespace < input.size() && input[afterWhitespace] == '(') {
-                const auto found = registered_functions.find(name);
-                const auto function = found == registered_functions.end()
-                    ? FunctionExpression::NONE
-                    : found->second;
-                tokens.push_back(Token {TokenKind::Function,
-                                        Pratt::FunctionToken {function,
-                                                              function == FunctionExpression::NONE
-                                                                  ? name
-                                                                  : std::string()},
-                                        name,
-                                        column,
-                                        std::nullopt});
-                cursor = afterWhitespace + 1;
-                continue;
-            }
-
-            const auto constant = [&]() -> std::optional<std::pair<const char*, double>> {
-                if (name == "pi") return std::pair {"pi", std::numbers::pi};
-                if (name == "e") return std::pair {"e", std::numbers::e};
-                if (name == "None") return std::pair {"None", 0.0};
-                if (name == "True" || name == "true") return std::pair {"True", 1.0};
-                if (name == "False" || name == "false") return std::pair {"False", 0.0};
-                return std::nullopt;
-            }();
-            if (constant) {
-                tokens.push_back(
-                    Token {TokenKind::Constant,
-                           constant->second,
-                           constant->first,
-                           column,
-                           std::nullopt});
-                continue;
-            }
-
-            Token token {TokenKind::Name, name, name, column, std::nullopt};
-            token.unitCandidate = unitCandidate(name);
-            tokens.push_back(std::move(token));
-            continue;
-        }
-
-        throw Base::ParserError(fmt::format("Unsupported character at column {}", column));
-    }
-
-    tokens.push_back(Token {TokenKind::End, {}, {}, input.size(), std::nullopt});
-    return tokens;
-}
 }  // namespace
 
-ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* owner, const char* buffer)
+std::vector<Token> Pratt::scanExpressionTokens(const App::DocumentObject* owner, const char* buffer)
 {
-    VectorTokenStream stream(scanPrattTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parse();
-}
-
-ExpressionPtr Pratt::Detail::parseHandwrittenTokenStream(const App::DocumentObject* owner,
-                                                         const char* buffer)
-{
-    VectorTokenStream stream(scanHandwrittenTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parse();
-}
-
-std::unique_ptr<UnitExpression> Pratt::Detail::parseFlexUnit(const App::DocumentObject* owner,
-                                                            const char* buffer)
-{
-    VectorTokenStream stream(scanPrattTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parseUnit();
-}
-
-ObjectIdentifier Pratt::Detail::parseFlexPath(const App::DocumentObject* owner, const char* buffer)
-{
-    VectorTokenStream stream(scanPrattTokens(owner, buffer));
-    return Pratt::Parser(owner, stream).parsePath();
-}
-
-std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
-{
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    ExpressionParser::StringBufferCleaner cleaner(buf);
-    std::vector<std::tuple<int, int, std::string> > result;
-    int token;
-
-    column = 0;
-    try {
-        while ( (token  = ExpressionParserlex()) != 0)
-            result.emplace_back(token, ExpressionParser::last_column, yytext);
-    }
-    catch (...) {
-        // Ignore all exceptions
-    }
-
-    return result;
+    (void)owner;
+    initParser();
+    return Pratt::scanTokens(buffer, [](const std::string& name) {
+        const auto found = registered_functions.find(name);
+        return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
+    });
 }
 
 }
@@ -4268,114 +3628,60 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 
 ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
-    const auto parserPreferences = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Expression");
-    if (parserPreferences->GetBool("UsePrattParser", false)) {
-        return Pratt::Detail::parseHandwrittenTokenStream(owner, buffer);
-    }
-
-    // parse from buffer
-    ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
-    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
-
-    initParser(owner);
-
-    // run the parser
-    int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    if (result != 0) {
-        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
-    }
-
-    if (!ScanResult) {
-        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
-    }
-
-    if (!valueExpression) {
-        ScanResult.reset();
-        throw Expression::Exception("Expression can not evaluate to a value.");
-    }
-    return std::exchange(ScanResult, nullptr);
+    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parse();
 }
 
 std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
     const App::DocumentObject* owner,
-    const char* buffer
-)
+    const char* buffer)
 {
-    // parse from buffer
-    ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
-    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
+    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parseUnit();
+}
 
-    initParser(owner);
-
-    // run the parser
-    int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    if (result != 0)
-        throw ParserError("Failed to parse expression.");
-
-    if (!ScanResult)
-        throw ParserError("Unknown error in expression");
-
-    // Simplify expression
-    ExpressionPtr simplified = ScanResult->simplify();
-
-    if (!unitExpression) {
-        auto* fraction = freecad_cast<OperatorExpression*>(ScanResult.get());
-
-        if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_cast<NumberExpression*>(fraction->getLeft());
-            UnitExpression * denom = freecad_cast<UnitExpression*>(fraction->getRight());
-
-            // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
-            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
-                unitExpression = true;
-        }
-    }
-    ScanResult.reset();
-
-    if (!unitExpression) {
-        throw Expression::Exception("Expression is not a unit.");
-    }
-
-    if (auto num = freecad_cast<NumberExpression*>(simplified.get()); num) {
-        return std::make_unique<UnitExpression>(num->getOwner(), num->getQuantity());
-    }
-    return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified.release()));
+ObjectIdentifier ExpressionParser::parsePath(const App::DocumentObject* owner, const char* buffer)
+{
+    VectorTokenStream stream(Pratt::scanExpressionTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parsePath();
 }
 
 namespace {
-std::tuple<int, int> getTokenAndStatus(const std::string & str)
-{
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
-    ExpressionParser::StringBufferCleaner cleaner(buf);
-    int token = ExpressionParser::ExpressionParserlex();
-    int status = ExpressionParser::ExpressionParserlex();
+using ExpressionToken = App::ExpressionParser::Pratt::Token;
+using ExpressionTokenKind = App::ExpressionParser::Pratt::TokenKind;
 
-    return std::make_tuple(token, status);
+std::optional<ExpressionToken> getSingleExpressionToken(const std::string& str)
+{
+    try {
+        auto tokens = App::ExpressionParser::Pratt::scanExpressionTokens(nullptr, str.c_str());
+        if (tokens.size() == 2 && tokens.back().kind == ExpressionTokenKind::End) {
+            return tokens.front();
+        }
+    }
+    catch (const Base::Exception&) {
+    }
+    return std::nullopt;
 }
 }
 
 bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS));
+    const auto token = getSingleExpressionToken(str);
+    return token && (token->kind == ExpressionTokenKind::CellAddress
+                     || (token->kind == ExpressionTokenKind::Name && !token->unitCandidate));
 }
 
 bool ExpressionParser::isTokenAConstant(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && token == CONSTANT);
+    const auto token = getSingleExpressionToken(str);
+    return token && token->kind == ExpressionTokenKind::Constant;
 }
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && token == UNIT);
+    const auto token = getSingleExpressionToken(str);
+    return token && token->kind == ExpressionTokenKind::Name
+        && token->unitCandidate.has_value();
 }
 
 #if defined(__clang__)

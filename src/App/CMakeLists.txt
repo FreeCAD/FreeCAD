@@ -181,6 +181,7 @@ SET(Document_CPP_SRCS
     DocumentSettings.cpp
     DocumentSettingsPyImp.cpp
     Expression.cpp
+    ExpressionLexer.cpp
     ExpressionPrattParser.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
@@ -231,6 +232,7 @@ SET(Document_HPP_SRCS
     DocumentObserverPython.h
     DocumentSettings.h
     Expression.h
+    ExpressionLexer.h
     ExpressionParser.h
     ExpressionPrattParser.h
     ExpressionTokenizer.h

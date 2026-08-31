@@ -116,6 +116,10 @@ std::string tokenString(const Token& token)
 
 ExpressionPtr Parser::parse()
 {
+    if (tokens.peek().kind == TokenKind::Name && tokens.peek().unitCandidate
+        && tokens.peek(1).kind == TokenKind::End) {
+        throw Expression::Exception("Expression can not evaluate to a value.");
+    }
     auto expression = parseExpression();
     if (tokens.peek().kind != TokenKind::End) {
         throw Base::ParserError(fmt::format("Unexpected token '{}' at column {}",
@@ -220,6 +224,13 @@ ExpressionPtr Parser::parsePrimary()
 {
     if (tokens.peek().kind == TokenKind::Function) {
         return parseFunction();
+    }
+    if (tokens.peek().kind == TokenKind::Name && tokens.peek().unitCandidate
+        && tokens.peek(1).kind != TokenKind::Dot && tokens.peek(1).kind != TokenKind::Hash
+        && tokens.peek(1).kind != TokenKind::LeftBracket) {
+        throw Base::ParserError(fmt::format("Unexpected unit '{}' at column {}",
+                                            tokens.peek().lexeme,
+                                            tokens.peek().column));
     }
     if (tokens.peek().kind == TokenKind::Name
         || tokens.peek().kind == TokenKind::CellAddress || tokens.peek().kind == TokenKind::Dot
