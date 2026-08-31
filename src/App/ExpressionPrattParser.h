@@ -56,7 +56,18 @@ enum class TokenKind
     RightBracket,
 };
 
-using TokenValue = std::variant<std::monostate, long long, double, std::string, Base::Quantity>;
+struct FunctionToken
+{
+    FunctionExpression::Function function {FunctionExpression::NONE};
+    std::string name;
+};
+
+using TokenValue = std::variant<std::monostate,
+                                long long,
+                                double,
+                                std::string,
+                                Base::Quantity,
+                                FunctionToken>;
 
 struct Token
 {
@@ -165,5 +176,13 @@ private:
     const DocumentObject* owner;
     TokenStream& tokens;
 };
+
+namespace Detail
+{
+/** Dormant migration entry point used for differential tests.
+ * ExpressionParser::parse() remains the production parser.
+ */
+AppExport ExpressionPtr parseFlexTokenStream(const DocumentObject* owner, const char* buffer);
+}  // namespace Detail
 
 }  // namespace App::ExpressionParser::Pratt
