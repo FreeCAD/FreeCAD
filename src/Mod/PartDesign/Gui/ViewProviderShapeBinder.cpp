@@ -25,7 +25,6 @@
 
 #include <QApplication>
 #include <QMenu>
-#include <QMessageBox>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
@@ -38,6 +37,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/ViewParams.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -93,20 +93,13 @@ bool ViewProviderShapeBinder::setEdit(int ModNum)
         // the task panel
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder* sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
-        if (dlg && !sbDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
-                Gui::Control().reject();
-            }
-            else {
-                return false;
-            }
+    if (dlg && !sbDlg) {
+        if (dlg->canClose()) {
+        Gui::Control().reject();
+        } else {
+        return false;
         }
+    }
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
