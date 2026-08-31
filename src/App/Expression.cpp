@@ -3787,7 +3787,10 @@ TokenKind translateTokenKind(int token)
         case CELLADDRESS:
             return TokenKind::CellAddress;
         case UNIT:
-            return TokenKind::Unit;
+            // Unit spellings are names until the parser sees them in unit
+            // context.  Keeping that decision out of the lexer allows paths
+            // such as mm.Foo and in.Bar.
+            return TokenKind::Name;
         case USUNIT:
             return TokenKind::UsBuildingUnit;
         case STRING:
@@ -3870,18 +3873,20 @@ Token translateToken(int token)
         case STRING:
             result.value = yylval.string;
             break;
-        case UNIT:
         case USUNIT:
             result.value = yylval.quantity.scaler;
+            break;
+        case UNIT:
+            result.value = result.lexeme;
+            result.unitCandidate = yylval.quantity.scaler;
             break;
         default:
             break;
     }
     return result;
 }
-}  // namespace
 
-ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* owner, const char* buffer)
+std::vector<Token> scanPrattTokens(const App::DocumentObject* owner, const char* buffer)
 {
     YY_BUFFER_STATE flexBuffer = ExpressionParser_scan_string(buffer);
     StringBufferCleaner cleaner(flexBuffer);
@@ -3893,9 +3898,27 @@ ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* own
         token = ExpressionParserlex();
         tokens.push_back(translateToken(token));
     } while (token != 0);
+    return tokens;
+}
+}  // namespace
 
-    FlexTokenStream stream(std::move(tokens));
+ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* owner, const char* buffer)
+{
+    FlexTokenStream stream(scanPrattTokens(owner, buffer));
     return Pratt::Parser(owner, stream).parse();
+}
+
+std::unique_ptr<UnitExpression> Pratt::Detail::parseFlexUnit(const App::DocumentObject* owner,
+                                                            const char* buffer)
+{
+    FlexTokenStream stream(scanPrattTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parseUnit();
+}
+
+ObjectIdentifier Pratt::Detail::parseFlexPath(const App::DocumentObject* owner, const char* buffer)
+{
+    FlexTokenStream stream(scanPrattTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parsePath();
 }
 
 std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
@@ -3934,6 +3957,12 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 
 ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
+    const auto parserPreferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Expression");
+    if (parserPreferences->GetBool("UsePrattParser", false)) {
+        return Pratt::Detail::parseFlexTokenStream(owner, buffer);
+    }
+
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
     ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);

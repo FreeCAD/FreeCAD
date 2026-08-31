@@ -75,6 +75,7 @@ struct Token
     TokenValue value;
     std::string lexeme;
     std::size_t column {0};
+    std::optional<Base::Quantity> unitCandidate;
 };
 
 struct BindingPower
@@ -143,8 +144,8 @@ public:
     virtual void rewind(std::size_t position) = 0;
 };
 
-/** Side-by-side parser skeleton.  ExpressionParser::parse() continues to use
- * Bison until these feature groups are implemented and differential-tested.
+/** Side-by-side parser implementation.  ExpressionParser::parse() uses Bison
+ * by default and selects this parser when the UsePrattParser preference is set.
  */
 class Parser
 {
@@ -155,6 +156,8 @@ public:
     {}
 
     ExpressionPtr parse();
+    std::unique_ptr<UnitExpression> parseUnit();
+    ObjectIdentifier parsePath();
 
 private:
     ExpressionPtr parseExpression(int minimumBindingPower = 0);
@@ -179,10 +182,13 @@ private:
 
 namespace Detail
 {
-/** Dormant migration entry point used for differential tests.
- * ExpressionParser::parse() remains the production parser.
+/** Migration entry point used by differential tests and the opt-in production
+ * path in ExpressionParser::parse().
  */
 AppExport ExpressionPtr parseFlexTokenStream(const DocumentObject* owner, const char* buffer);
+AppExport std::unique_ptr<UnitExpression> parseFlexUnit(const DocumentObject* owner,
+                                                       const char* buffer);
+AppExport ObjectIdentifier parseFlexPath(const DocumentObject* owner, const char* buffer);
 }  // namespace Detail
 
 }  // namespace App::ExpressionParser::Pratt
