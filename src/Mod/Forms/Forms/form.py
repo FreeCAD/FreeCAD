@@ -20,10 +20,49 @@
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
 # **************************************************************************/
-"""Application initialization for the Forms workbench."""
 
-import FreeCAD
+"""Generic editable Forms feature backed directly by a control cage."""
 
-FreeCAD.__unit_test__ += ["FormsTests"]
-FreeCAD.addImportType("Blender subdivision cage (*.blend *.BLEND)", "importBlend")
-FreeCAD.addExportType("Blender (*.blend *.BLEND)", "importBlend")
+import FreeCAD as App
+
+from .box import FormFeatureProxy, ViewProviderFormBox
+
+
+class FormProxy(FormFeatureProxy):
+    """A generic Form whose editable control cage defines its geometry."""
+
+    Type = "Forms::Form"
+    ParameterNames = ()
+
+    def __init__(self, obj):
+        self._add_common_properties(obj)
+        self._finish_initialization(obj)
+        obj.CageMode = "Editable"
+
+    def _topology(self, _obj):
+        raise RuntimeError("An editable Form does not have parametric primitive topology")
+
+    def onDocumentRestored(self, obj):
+        # Development builds briefly used this name. Normalize saved objects.
+        if getattr(obj, "FormType", "") == "Forms::Imported":
+            obj.FormType = self.Type
+        super().onDocumentRestored(obj)
+
+
+class ViewProviderForm(ViewProviderFormBox):
+    """Use the normal Forms presentation for a generic editable cage."""
+
+    IconName = "Forms_Workbench.svg"
+
+
+def create_form(document=None, name="Form"):
+    """Create an empty generic editable Form in *document*."""
+    document = document or App.ActiveDocument
+    if document is None:
+        raise RuntimeError("A document is required to create a Form")
+    obj = document.addObject("Part::FeaturePython", name)
+    obj.Label = App.Qt.translate("Forms", "Form")
+    FormProxy(obj)
+    if App.GuiUp:
+        ViewProviderForm(obj.ViewObject)
+    return obj

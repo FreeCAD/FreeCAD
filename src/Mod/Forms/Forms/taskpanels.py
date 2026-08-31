@@ -114,7 +114,7 @@ def _dynamic_primitive_page(panel, form_type):
     layout = QtWidgets.QFormLayout(page)
     widgets = {}
     labels = {}
-    definitions = (
+    definitions = () if form_type == "Forms::Form" else (
         (
             ("Radius", "Radius", "length"),
             ("LongitudeSegments", "Longitude segments", "integer"),
@@ -184,7 +184,7 @@ def bind_edit_panel(session):
     """Load the main editor and expose its typed controls on *session*."""
     panel = load_panel("TaskFormEdit.ui")
     form_type = str(session.obj.FormType)
-    if form_type in ("Forms::Sphere", "Forms::Pipe"):
+    if form_type in ("Forms::Form", "Forms::Sphere", "Forms::Pipe"):
         page, widgets, labels, table = _dynamic_primitive_page(panel, form_type)
         page_name = None
         widget_names = label_names = {}

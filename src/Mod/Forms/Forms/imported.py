@@ -20,10 +20,11 @@
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
 # **************************************************************************/
-"""Application initialization for the Forms workbench."""
 
-import FreeCAD
+"""Compatibility aliases for the former imported-Form implementation."""
 
-FreeCAD.__unit_test__ += ["FormsTests"]
-FreeCAD.addImportType("Blender subdivision cage (*.blend *.BLEND)", "importBlend")
-FreeCAD.addExportType("Blender (*.blend *.BLEND)", "importBlend")
+from .form import FormProxy, ViewProviderForm, create_form
+
+FormImportedProxy = FormProxy
+ViewProviderFormImported = ViewProviderForm
+create_imported = create_form
