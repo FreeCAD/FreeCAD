@@ -144,8 +144,9 @@ public:
     virtual void rewind(std::size_t position) = 0;
 };
 
-/** Side-by-side parser implementation.  ExpressionParser::parse() uses Bison
- * by default and selects this parser when the UsePrattParser preference is set.
+/** Side-by-side parser implementation.  ExpressionParser::parse() uses
+ * Bison/Flex by default and selects Pratt/the handwritten lexer when the
+ * UsePrattParser preference is set.
  */
 class Parser
 {
@@ -182,10 +183,11 @@ private:
 
 namespace Detail
 {
-/** Migration entry point used by differential tests and the opt-in production
- * path in ExpressionParser::parse().
- */
+/** Migration entry point retained for differential tests. */
 AppExport ExpressionPtr parseFlexTokenStream(const DocumentObject* owner, const char* buffer);
+/** Handwritten-lexer entry point used by the opt-in production path. */
+AppExport ExpressionPtr parseHandwrittenTokenStream(const DocumentObject* owner,
+                                                    const char* buffer);
 AppExport std::unique_ptr<UnitExpression> parseFlexUnit(const DocumentObject* owner,
                                                        const char* buffer);
 AppExport ObjectIdentifier parseFlexPath(const DocumentObject* owner, const char* buffer);

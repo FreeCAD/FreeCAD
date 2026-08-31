@@ -37,6 +37,9 @@
 #include <boost/math/special_functions/trunc.hpp>
 
 #include <algorithm>
+#include <cerrno>
+#include <cstdlib>
+#include <cctype>
 #include <numbers>
 #include <limits>
 #include <sstream>
@@ -3731,10 +3734,10 @@ namespace
 using Pratt::Token;
 using Pratt::TokenKind;
 
-class FlexTokenStream final: public Pratt::TokenStream
+class VectorTokenStream final: public Pratt::TokenStream
 {
 public:
-    explicit FlexTokenStream(std::vector<Token> tokens)
+    explicit VectorTokenStream(std::vector<Token> tokens)
         : tokenList(std::move(tokens))
     {}
 
@@ -3900,24 +3903,332 @@ std::vector<Token> scanPrattTokens(const App::DocumentObject* owner, const char*
     } while (token != 0);
     return tokens;
 }
+
+std::optional<Base::Quantity> unitCandidate(const std::string& name)
+{
+    try {
+        return Base::Quantity::parse("1 " + name);
+    }
+    catch (const Base::Exception&) {
+        return std::nullopt;
+    }
+}
+
+bool isCellAddress(const std::string& text)
+{
+    std::size_t cursor = !text.empty() && text.front() == '$' ? 1 : 0;
+    const auto letterBegin = cursor;
+    while (cursor < text.size()
+           && std::isalpha(static_cast<unsigned char>(text[cursor]))) {
+        ++cursor;
+    }
+    const auto letterCount = cursor - letterBegin;
+    if (letterCount == 0 || letterCount > 2) {
+        return false;
+    }
+    if (cursor < text.size() && text[cursor] == '$') {
+        ++cursor;
+    }
+    const auto digitBegin = cursor;
+    while (cursor < text.size()
+           && std::isdigit(static_cast<unsigned char>(text[cursor]))) {
+        ++cursor;
+    }
+    return cursor == text.size() && cursor > digitBegin;
+}
+
+std::vector<Token> scanHandwrittenTokens(const App::DocumentObject* owner, const char* buffer)
+{
+    initParser(owner);
+    const std::string input(buffer);
+    std::vector<Token> tokens;
+    std::size_t cursor = 0;
+
+    const auto pushSimple = [&tokens](TokenKind kind, std::string lexeme, std::size_t column) {
+        tokens.push_back(Token {kind, {}, std::move(lexeme), column, std::nullopt});
+    };
+
+    while (cursor < input.size()) {
+        const auto column = cursor;
+        const auto current = static_cast<unsigned char>(input[cursor]);
+        if (std::isspace(current)) {
+            ++cursor;
+            continue;
+        }
+
+        const auto twoCharacters = input.substr(cursor, 2);
+        if (twoCharacters == "<<") {
+            std::size_t end = cursor + 2;
+            bool escaped = false;
+            while (end < input.size()) {
+                if (!escaped && end + 1 < input.size() && input[end] == '>'
+                    && input[end + 1] == '>') {
+                    end += 2;
+                    const auto lexeme = input.substr(cursor, end - cursor);
+                    tokens.push_back(Token {TokenKind::String,
+                                            unquote(lexeme),
+                                            lexeme,
+                                            column,
+                                            std::nullopt});
+                    cursor = end;
+                    break;
+                }
+                if (!escaped && input[end] == '\n') {
+                    throw Base::ParserError(
+                        fmt::format("Unescaped newline in string at column {}", column));
+                }
+                if (escaped) {
+                    escaped = false;
+                }
+                else if (input[end] == '\\') {
+                    escaped = true;
+                }
+                else if (input[end] == '>') {
+                    throw Base::ParserError(
+                        fmt::format("Unescaped '>' in string at column {}", column));
+                }
+                ++end;
+            }
+            if (cursor != column) {
+                continue;
+            }
+            throw Base::ParserError(fmt::format("Unterminated string at column {}", column));
+        }
+
+        if (input.compare(cursor, 3, "\xE2\x88\x92") == 0) {
+            pushSimple(TokenKind::Minus, input.substr(cursor, 3), column);
+            cursor += 3;
+            continue;
+        }
+
+        if (current == '\'' || current == '"') {
+            const auto quantity = current == '\'' ? Base::Quantity::Foot : Base::Quantity::Inch;
+            tokens.push_back(Token {TokenKind::UsBuildingUnit,
+                                    quantity,
+                                    input.substr(cursor, 1),
+                                    column,
+                                    std::nullopt});
+            ++cursor;
+            continue;
+        }
+
+        const auto comparison = [&]() -> std::optional<TokenKind> {
+            if (twoCharacters == "==") return TokenKind::Equal;
+            if (twoCharacters == "!=") return TokenKind::NotEqual;
+            if (twoCharacters == "<=") return TokenKind::LessEqual;
+            if (twoCharacters == ">=") return TokenKind::GreaterEqual;
+            return std::nullopt;
+        }();
+        if (comparison) {
+            pushSimple(*comparison, twoCharacters, column);
+            cursor += 2;
+            continue;
+        }
+
+        const auto punctuation = [&]() -> std::optional<TokenKind> {
+            switch (current) {
+                case '+': return TokenKind::Plus;
+                case '-': return TokenKind::Minus;
+                case '*': return TokenKind::Multiply;
+                case '/': return TokenKind::Divide;
+                case '%': return TokenKind::Modulo;
+                case '^': return TokenKind::Power;
+                case '<': return TokenKind::Less;
+                case '>': return TokenKind::Greater;
+                case '?': return TokenKind::Question;
+                case ':': return TokenKind::Colon;
+                case ',': return TokenKind::Comma;
+                case ';': return TokenKind::Semicolon;
+                case '.': return TokenKind::Dot;
+                case '#': return TokenKind::Hash;
+                case '(': return TokenKind::LeftParen;
+                case ')': return TokenKind::RightParen;
+                case '[': return TokenKind::LeftBracket;
+                case ']': return TokenKind::RightBracket;
+                default: return std::nullopt;
+            }
+        }();
+
+        const auto commaDecimalEnd = [&]() -> std::optional<std::size_t> {
+            std::size_t position = cursor;
+            while (position < input.size()
+                   && std::isdigit(static_cast<unsigned char>(input[position]))) {
+                ++position;
+            }
+            if (position >= input.size() || input[position] != ','
+                || position + 1 >= input.size()
+                || !std::isdigit(static_cast<unsigned char>(input[position + 1]))) {
+                return std::nullopt;
+            }
+            ++position;
+            while (position < input.size()
+                   && std::isdigit(static_cast<unsigned char>(input[position]))) {
+                ++position;
+            }
+            if (position < input.size() && (input[position] == 'e' || input[position] == 'E')) {
+                const auto exponent = position++;
+                if (position < input.size()
+                    && (input[position] == '+' || input[position] == '-')) {
+                    ++position;
+                }
+                const auto exponentDigits = position;
+                while (position < input.size()
+                       && std::isdigit(static_cast<unsigned char>(input[position]))) {
+                    ++position;
+                }
+                if (position == exponentDigits) {
+                    position = exponent;
+                }
+            }
+            return position;
+        }();
+        if (commaDecimalEnd) {
+            auto lexeme = input.substr(cursor, *commaDecimalEnd - cursor);
+            auto normalized = lexeme;
+            normalized[normalized.find(',')] = '.';
+            char* end = nullptr;
+            errno = 0;
+            const double value = std::strtod(normalized.c_str(), &end);
+            if (errno == ERANGE || end != normalized.c_str() + normalized.size()) {
+                throw Base::ParserError(fmt::format("Invalid number at column {}", column));
+            }
+            tokens.push_back(
+                Token {TokenKind::Number, value, lexeme, column, std::nullopt});
+            cursor = *commaDecimalEnd;
+            continue;
+        }
+
+        if (std::isdigit(current)
+            || (current == '.' && cursor + 1 < input.size()
+                && std::isdigit(static_cast<unsigned char>(input[cursor + 1])))) {
+            const char* begin = input.c_str() + cursor;
+            char* end = nullptr;
+            errno = 0;
+            const double value = std::strtod(begin, &end);
+            if (end == begin || errno == ERANGE) {
+                throw Base::ParserError(fmt::format("Invalid number at column {}", column));
+            }
+            cursor += static_cast<std::size_t>(end - begin);
+            const auto lexeme = input.substr(column, cursor - column);
+            const bool floatingPoint = lexeme.find_first_of(".eE") != std::string::npos;
+            if (!floatingPoint && value != 1.0) {
+                errno = 0;
+                char* integerEnd = nullptr;
+                const auto integer = std::strtoll(lexeme.c_str(), &integerEnd, 10);
+                if (errno == ERANGE || integerEnd != lexeme.c_str() + lexeme.size()) {
+                    throw Base::ParserError(fmt::format("Invalid integer at column {}", column));
+                }
+                tokens.push_back(
+                    Token {TokenKind::Integer, integer, lexeme, column, std::nullopt});
+            }
+            else {
+                tokens.push_back(
+                    Token {TokenKind::Number, value, lexeme, column, std::nullopt});
+            }
+            continue;
+        }
+
+        if (punctuation) {
+            pushSimple(*punctuation, input.substr(cursor, 1), column);
+            ++cursor;
+            continue;
+        }
+
+        if (std::isalpha(current) || current == '_' || current == '$' || current >= 0x80) {
+            ++cursor;
+            while (cursor < input.size()) {
+                const auto character = static_cast<unsigned char>(input[cursor]);
+                if (!std::isalnum(character) && character != '_' && character != '@'
+                    && character != '$' && character < 0x80) {
+                    break;
+                }
+                ++cursor;
+            }
+            auto name = input.substr(column, cursor - column);
+
+            if (isCellAddress(name)) {
+                tokens.push_back(
+                    Token {TokenKind::CellAddress, name, name, column, std::nullopt});
+                continue;
+            }
+
+            std::size_t afterWhitespace = cursor;
+            while (afterWhitespace < input.size()
+                   && (input[afterWhitespace] == ' ' || input[afterWhitespace] == '\t')) {
+                ++afterWhitespace;
+            }
+            if (afterWhitespace < input.size() && input[afterWhitespace] == '(') {
+                const auto found = registered_functions.find(name);
+                const auto function = found == registered_functions.end()
+                    ? FunctionExpression::NONE
+                    : found->second;
+                tokens.push_back(Token {TokenKind::Function,
+                                        Pratt::FunctionToken {function,
+                                                              function == FunctionExpression::NONE
+                                                                  ? name
+                                                                  : std::string()},
+                                        name,
+                                        column,
+                                        std::nullopt});
+                cursor = afterWhitespace + 1;
+                continue;
+            }
+
+            const auto constant = [&]() -> std::optional<std::pair<const char*, double>> {
+                if (name == "pi") return std::pair {"pi", std::numbers::pi};
+                if (name == "e") return std::pair {"e", std::numbers::e};
+                if (name == "None") return std::pair {"None", 0.0};
+                if (name == "True" || name == "true") return std::pair {"True", 1.0};
+                if (name == "False" || name == "false") return std::pair {"False", 0.0};
+                return std::nullopt;
+            }();
+            if (constant) {
+                tokens.push_back(
+                    Token {TokenKind::Constant,
+                           constant->second,
+                           constant->first,
+                           column,
+                           std::nullopt});
+                continue;
+            }
+
+            Token token {TokenKind::Name, name, name, column, std::nullopt};
+            token.unitCandidate = unitCandidate(name);
+            tokens.push_back(std::move(token));
+            continue;
+        }
+
+        throw Base::ParserError(fmt::format("Unsupported character at column {}", column));
+    }
+
+    tokens.push_back(Token {TokenKind::End, {}, {}, input.size(), std::nullopt});
+    return tokens;
+}
 }  // namespace
 
 ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* owner, const char* buffer)
 {
-    FlexTokenStream stream(scanPrattTokens(owner, buffer));
+    VectorTokenStream stream(scanPrattTokens(owner, buffer));
+    return Pratt::Parser(owner, stream).parse();
+}
+
+ExpressionPtr Pratt::Detail::parseHandwrittenTokenStream(const App::DocumentObject* owner,
+                                                         const char* buffer)
+{
+    VectorTokenStream stream(scanHandwrittenTokens(owner, buffer));
     return Pratt::Parser(owner, stream).parse();
 }
 
 std::unique_ptr<UnitExpression> Pratt::Detail::parseFlexUnit(const App::DocumentObject* owner,
                                                             const char* buffer)
 {
-    FlexTokenStream stream(scanPrattTokens(owner, buffer));
+    VectorTokenStream stream(scanPrattTokens(owner, buffer));
     return Pratt::Parser(owner, stream).parseUnit();
 }
 
 ObjectIdentifier Pratt::Detail::parseFlexPath(const App::DocumentObject* owner, const char* buffer)
 {
-    FlexTokenStream stream(scanPrattTokens(owner, buffer));
+    VectorTokenStream stream(scanPrattTokens(owner, buffer));
     return Pratt::Parser(owner, stream).parsePath();
 }
 
@@ -3960,7 +4271,7 @@ ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, con
     const auto parserPreferences = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Expression");
     if (parserPreferences->GetBool("UsePrattParser", false)) {
-        return Pratt::Detail::parseFlexTokenStream(owner, buffer);
+        return Pratt::Detail::parseHandwrittenTokenStream(owner, buffer);
     }
 
     // parse from buffer
