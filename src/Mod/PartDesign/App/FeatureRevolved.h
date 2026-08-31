@@ -53,6 +53,9 @@ public:
     App::PropertyVector Axis;
     App::PropertyAngle Angle;
     App::PropertyAngle Angle2;
+    App::PropertyEnumeration StartType;
+    App::PropertyAngle StartOffset;
+    App::PropertyLinkSub StartReference;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -67,6 +70,9 @@ public:
 
     /// suggests a value for Reversed flag so that material is always added to the support
     bool suggestReversed();
+
+    /// Returns the effective angular offset from the profile plane in degrees.
+    double getStartOffset() const;
 
     enum class RevolMethod
     {
@@ -122,6 +128,15 @@ private:
         Part::RevolMode revolMode
     );
     void setResult(const TopoShape& base, const TopoShape& revolved);
+
+    double getStartReferenceAngle(
+        const TopoShape& profileShape,
+        const App::PropertyLinkSub& reference,
+        const gp_Ax1& axis,
+        double offset,
+        const TopLoc_Location& invObjLoc
+    ) const;
+    static TopoShape rotateProfileToStart(const TopoShape& profileShape, const gp_Ax1& axis, double angle);
 
     /// updates Axis from ReferenceAxis
     void updateAxis();

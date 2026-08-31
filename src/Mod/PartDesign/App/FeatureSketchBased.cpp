@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <optional>
 #include <ranges>
 #include <Bnd_Box.hxx>
@@ -46,6 +47,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <Standard_Version.hxx>
 #include <TopExp.hxx>
@@ -62,6 +64,7 @@
 #include <App/Datums.h>
 #include <Base/Converter.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Tools.h>
 
@@ -74,6 +77,13 @@
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 using namespace PartDesign;
+
+double PartDesign::normalizeAngleRadians(double angle)
+{
+    constexpr double fullRotation = 2.0 * std::numbers::pi;
+    angle = Base::fmod(angle, fullRotation);
+    return fullRotation - angle < Precision::Angular() ? 0.0 : angle;
+}
 
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
 

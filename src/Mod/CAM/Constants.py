@@ -61,6 +61,9 @@ GCODE_UNITS_INCHES = ["G20"]
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
 
+# Commands whose P word is a dwell time in seconds, not a distance
+GCODE_P_IS_DWELL = GCODE_DWELL + ["G73", "G74", "G76", "G82", "G83", "G84", "G86", "G88", "G89"]
+
 GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 
 # Canned cycle cancel
