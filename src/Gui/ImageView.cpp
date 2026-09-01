@@ -46,6 +46,8 @@
 
 using namespace Gui;
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::ImageView, Gui::MDIView)  // NOLINT
+
 ImageView::ImageView(QWidget* parent)
     : MDIView(nullptr, parent)
     , imageLabel(new QLabel)

@@ -61,6 +61,8 @@ using namespace Gui;
 using namespace Gui::Dialog;
 namespace fs = std::filesystem;
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::Dialog::LicenseView, Gui::MDIView)  // NOLINT
+
 // ------------------------------------------------------------------------------
 
 AboutDialogFactory* AboutDialogFactory::factory = nullptr;

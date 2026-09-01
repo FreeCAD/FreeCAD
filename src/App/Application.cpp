@@ -2669,7 +2669,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         std::vector<std::string> testCases;
         bool runAll = false;
         bool printAll = false;
-        for (const std::string& key : {"run-open", "run-test"}) {
+        for (const char* key : {"run-open", "run-test"}) {
             if (vm.contains(key)) {
                 auto v = vm[key].as<std::vector<std::string>>();
                 for (const auto& s : v) {

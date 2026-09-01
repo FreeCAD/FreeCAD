@@ -84,6 +84,29 @@ class TestActiveObject(unittest.TestCase):
 
         return boolean, tools
 
+    @staticmethod
+    def _countActiveSceneGraphPaths(viewObject):
+        from pivy import coin
+
+        search = coin.SoSearchAction()
+        search.setNode(viewObject.RootNode)
+        search.setInterest(coin.SoSearchAction.ALL)
+        search.setSearchingAll(False)
+        search.apply(FreeCADGui.activeView().getSceneGraph())
+        return search.getPaths().getLength()
+
+    def _nestInParts(self, documentObject, count):
+        outerPart = self.doc.addObject("App::Part", "ToolPart0")
+        parent = outerPart
+        for index in range(1, count):
+            child = self.doc.addObject("App::Part", f"ToolPart{index}")
+            parent.addObject(child)
+            parent = child
+        parent.addObject(documentObject)
+        self.doc.recompute()
+        FreeCADGui.updateGui()
+        return outerPart
+
     def testBooleanActiveBodyVisibilitySwitch(self):
         boolean, tools = self._createBooleanWithTwoTools()
         view = FreeCADGui.activeView()
@@ -161,6 +184,40 @@ class TestActiveObject(unittest.TestCase):
         self.assertFalse(innerBody.ViewObject.isVisible())
         self.assertTrue(innerLaterFeature.ViewObject.isVisible())
         self.assertTrue(outerLaterFeature.ViewObject.isVisible())
+
+    def testBooleanActiveBodyUsesSinglePlacementPath(self):
+        _, tools = self._createBooleanWithTwoTools()
+        self._nestInParts(tools[0], 3)
+
+        FreeCADGui.activeView().setActiveObject("pdbody", tools[0])
+
+        self.assertEqual(self._countActiveSceneGraphPaths(tools[0].ViewObject), 1)
+
+    def testBooleanActiveBodyExposureRestoresAfterResync(self):
+        boolean, tools = self._createBooleanWithTwoTools()
+        view = FreeCADGui.activeView()
+        view.setActiveObject("pdbody", tools[0])
+
+        boolean.ViewObject.Visibility = False
+        boolean.ViewObject.Visibility = True
+        view.setActiveObject("pdbody", None)
+        FreeCADGui.updateGui()
+
+        self.assertEqual(self._countActiveSceneGraphPaths(tools[0].ViewObject), 0)
+
+    def testBooleanActiveBodyExposureIsRemovedOnDelete(self):
+        boolean, tools = self._createBooleanWithTwoTools()
+        outerPart = self._nestInParts(tools[0], 3)
+        view = FreeCADGui.activeView()
+        view.setActiveObject("pdbody", tools[0])
+
+        boolean.ViewObject.Visibility = False
+        boolean.ViewObject.Visibility = True
+        self.doc.removeObject(boolean.Name)
+        outerPart.ViewObject.hide()
+        FreeCADGui.updateGui()
+
+        self.assertEqual(self._countActiveSceneGraphPaths(tools[0].ViewObject), 0)
 
     def testBooleanActiveBodyVisibilityWhenBooleanIsNotTip(self):
         boolean, tools = self._createBooleanWithTwoTools()

@@ -58,7 +58,7 @@
       <translation>Düzenle</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="872"/>
       <source>Import</source>
       <translation>İçe aktar</translation>
     </message>
@@ -750,37 +750,37 @@ sol ya da sağ tıklarken fareyi yukarı veya aşağı hareket ettirin</translat
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="393"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="398"/>
       <source>Camera Settings</source>
       <translation>Kamera Ayarları</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="400"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
       <source>Orientation</source>
       <translation>Yönlendirme</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="414"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="424"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="429"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="434"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="439"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="453"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="458"/>
       <source>Current View</source>
       <translation>Geçerli Görünüm</translation>
     </message>
@@ -3972,24 +3972,41 @@ Ayrıca formu da kullanabilirsiniz: John Doe &lt;john@doe.com&gt;</translation>
       <translation>Yörünge stili</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
-      <source>Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the Z-axis.
-         </source>
-      <translation>Döndürme yörüngesi stili.
-Yuvarlatılmış Arcball: fareyi ekranın köşelerinde hareket ettirmek yalnızca parçayı yuvarlar.
-Trackball: fareyi yatay hareket ettirmek parçayı Y ekseni etrafında döndürür.
-Klasik Trackball: fareyi hareket ettirmek, presesyona izin vererek parçayı döndürür.
-Döner Tabla: parça Z ekseni etrafında (eksenler kısıtlıyken) döndürülür.
-Serbest Döner Tabla: parça Z ekseni etrafında döndürülür.
-         </translation>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
+      <source>Clarify Selection</source>
+      <translation>Seçimi Netleştir</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
+      <source>Enable Clarify Selection on long press of left mouse button.
+When enabled, holding left mouse button shows a menu to select overlapping objects.
+Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
+      <translation>Sol fare düğmesine uzun basıldığında Seçimi Netleştir seçeneğini etkinleştir.
+Etkinleştirildiğinde, sol fare düğmesini basılı tutmak, üst üste binen nesneleri seçmek için bir menü gösterir.
+Bazı gezinme stilleri (OpenInventor, Gesture, OpenSCAD) yalnızca LMB yerine Ctrl+LMB gerektirir.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
+      <source>Enable long press clarify selection</source>
+      <translation>Uzun basışla seçimi netleştirmeyi etkinleştir</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
+      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
+      <translation>Seçimi netleştirme menüsü gösterilmeden önce sol fare düğmesini basılı tutma süresi (saniye)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
+      <source>Long press timeout</source>
+      <translation>Uzun basış zaman aşımı</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
+      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
+      <translation>Seçimi netleştirmenin tetiklenmesi için sol fare düğmesini basılı tutma süresi (saniye)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
       <source>Turntable</source>
       <translation>Döner tabla</translation>
     </message>
@@ -3999,17 +4016,17 @@ Serbest Döner Tabla: parça Z ekseni etrafında döndürülür.
       <translation>Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Free Turntable</source>
       <translation>Serbest Döner Tabla</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
       <source>Trackball Classic</source>
       <translation>Klasik Trackball</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
       <source>Rounded Arcball</source>
       <translation>Yuvarlatılmış Arcball</translation>
     </message>
@@ -4074,40 +4091,6 @@ Değeri, ekrana sığdırılacak kürenin çapıdır.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
       <source>Enable spinning animations</source>
       <translation>Dönme animasyonlarını etkinleştir</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
-      <source>Clarify Selection</source>
-      <translation>Seçimi Netleştir</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
-      <source>Enable Clarify Selection on long press of left mouse button.
-When enabled, holding left mouse button shows a menu to select overlapping objects.
-Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
-      <translation>Sol fare düğmesine uzun basıldığında Seçimi Netleştir seçeneğini etkinleştir.
-Etkinleştirildiğinde, sol fare düğmesini basılı tutmak, üst üste binen nesneleri seçmek için bir menü gösterir.
-Bazı gezinme stilleri (OpenInventor, Gesture, OpenSCAD) yalnızca LMB yerine Ctrl+LMB gerektirir.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
-      <source>Enable long press clarify selection</source>
-      <translation>Uzun basışla seçimi netleştirmeyi etkinleştir</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
-      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
-      <translation>Seçimi netleştirme menüsü gösterilmeden önce sol fare düğmesini basılı tutma süresi (saniye)</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
-      <source>Long press timeout</source>
-      <translation>Uzun basış zaman aşımı</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
-      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
-      <translation>Seçimi netleştirmenin tetiklenmesi için sol fare düğmesini basılı tutma süresi (saniye)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
@@ -4191,6 +4174,23 @@ Bir küme seçin ve ardından bu yapılandırmaları görmek için düğmeye bas
       <translation>Fare Yapılandırması</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
+      <source>Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+         </source>
+      <translation type="unfinished">Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+         </translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>Yakınlaştırma işlemleri, fare işaretçisi konumunda yapılacak</translation>
@@ -4223,62 +4223,62 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>DokunmatikEkran eğim hareketini devre dışı bırak</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Isometric</source>
       <translation>İzometrik</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Dimetric</source>
       <translation>Dimetrik</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Trimetric</source>
       <translation>Trimetrik</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Top</source>
       <translation>Üst</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Front</source>
       <translation>Ön</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
       <source>Left</source>
       <translation>Sol</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
       <source>Right</source>
       <translation>Sağ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
       <source>Rear</source>
       <translation>Arka</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
       <source>Bottom</source>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="235"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="272"/>
       <source>Custom</source>
       <translation>Özel</translation>
     </message>
@@ -5670,72 +5670,72 @@ seçilmiş olan nesnelerle devam edin</translation>
       <translation>Özel seçilen nesne listesi</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="654"/>
+      <location filename="../Selection/SelectionView.cpp" line="657"/>
       <source>Select Only</source>
       <translation>Yalnızca Seç</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="662"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Zoom Fit</source>
       <translation>Sığdır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="666"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Go to Selection</source>
       <translation>Seçime Git</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="672"/>
       <source>Mark to Recompute</source>
       <translation>Yeniden Hesaplanacak Olarak İşaretle</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="671"/>
+      <location filename="../Selection/SelectionView.cpp" line="674"/>
       <source>Marks this object to be recomputed</source>
       <translation>Bu nesneyi yeniden hesaplanacak olarak işaretler</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="673"/>
+      <location filename="../Selection/SelectionView.cpp" line="676"/>
       <source>To Python Console</source>
       <translation>Python Konsoluna</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="680"/>
+      <location filename="../Selection/SelectionView.cpp" line="683"/>
       <source>Duplicate Subshape</source>
       <translation>Alt Şekli Çoğalt</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="656"/>
+      <location filename="../Selection/SelectionView.cpp" line="659"/>
       <source>Selects only this object</source>
       <translation>Sadece bu nesneyi seçer</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Deselect</source>
       <translation>Seçimi kaldır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Deselects this object</source>
       <translation>Bu nesneyi sil</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="664"/>
+      <location filename="../Selection/SelectionView.cpp" line="667"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>Bu nesneyi seçer ve 3B Penceresine sığdırır</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="670"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>Bu nesneyi unsur ağacında bulur ve seçer</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="675"/>
+      <location filename="../Selection/SelectionView.cpp" line="678"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>Bu nesneyi ve alt öğelerini Python konsolunda gösterir.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="682"/>
+      <location filename="../Selection/SelectionView.cpp" line="685"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>Belgede bu alt şablonun bağımsız bir kopyasını oluşturur</translation>
     </message>
@@ -5974,7 +5974,7 @@ Tüm değişiklikler kaydedilsin mi?</translation>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1502"/>
+      <location filename="../Widgets.cpp" line="1510"/>
       <source>List</source>
       <translation>Liste</translation>
     </message>
@@ -7370,6 +7370,11 @@ Başka bir dizin belirlemek ister misiniz?</translation>
       <translation type="unfinished">Lao</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="259"/>
+      <source>Hebrew</source>
+      <translation type="unfinished">Hebrew</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>Danca</translation>
@@ -7839,14 +7844,14 @@ Başka bir dizin belirlemek ister misiniz?</translation>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1424"/>
-      <location filename="../Widgets.cpp" line="1439"/>
+      <location filename="../Widgets.cpp" line="1432"/>
+      <location filename="../Widgets.cpp" line="1447"/>
       <source>Invalid input</source>
       <translation>Geçersiz giriş</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1425"/>
-      <location filename="../Widgets.cpp" line="1440"/>
+      <location filename="../Widgets.cpp" line="1433"/>
+      <location filename="../Widgets.cpp" line="1448"/>
       <source>Input in line %1 is not a number</source>
       <translation>Giriş hattı %1 içinde bir sayı değil</translation>
     </message>
@@ -7940,59 +7945,59 @@ Başka bir dizin belirlemek ister misiniz?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="828"/>
-      <location filename="../Application.cpp" line="935"/>
-      <location filename="../Application.cpp" line="1022"/>
+      <location filename="../Application.cpp" line="831"/>
+      <location filename="../Application.cpp" line="938"/>
+      <location filename="../Application.cpp" line="1025"/>
       <source>Unknown filetype</source>
       <translation>Bilinmeyen dosya türü</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="829"/>
-      <location filename="../Application.cpp" line="936"/>
+      <location filename="../Application.cpp" line="832"/>
+      <location filename="../Application.cpp" line="939"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Bilinmeyen dosya türünü açamıyor: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1012"/>
+      <location filename="../Application.cpp" line="1015"/>
       <source>Export failed</source>
       <translation>Dışa aktarım başarısız oldu</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1023"/>
+      <location filename="../Application.cpp" line="1026"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Bilinmeyen dosya türü kaydedilemiyor: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1221"/>
+      <location filename="../Application.cpp" line="1224"/>
       <source>Recomputation required</source>
       <translation>Yeniden hesaplama gerekli</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1222"/>
+      <location filename="../Application.cpp" line="1225"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
       <translation>Bazı belgeler, taşıma amacıyla yeniden hesaplama gerektirir. Uyumluluk sorunlarını önlemek için herhangi bir değişiklik yapmadan önce yeniden hesaplama yapılması şiddetle tavsiye edilir.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1248"/>
+      <location filename="../Application.cpp" line="1251"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Bazı belgeler yeniden hesaplanamadı.
 Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1247"/>
+      <location filename="../Application.cpp" line="1250"/>
       <source>Recompute error</source>
       <translation>Yeniden hesaplama hatası</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1997"/>
+      <location filename="../Application.cpp" line="2000"/>
       <source>Workbench failure</source>
       <translation>Çalışma tezgâhı hatası</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1998"/>
+      <location filename="../Application.cpp" line="2001"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8060,18 +8065,18 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
       <translation>İstisna</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1261"/>
-      <location filename="../Application.cpp" line="1276"/>
+      <location filename="../Application.cpp" line="1264"/>
+      <location filename="../Application.cpp" line="1279"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1265"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Dosya yüklenirken hatalar oluştu. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. İlgili nesneler hakkında daha ayrıntılı bilgi için rapor görünümüne bakın.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1277"/>
+      <location filename="../Application.cpp" line="1280"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Dosyayı yüklerken ciddi hatalar oluştu. Bazı veriler değiştirilmiş veya hiç kurtarılmamış olabilir. Projenin kaydedilmesi büyük olasılıkla veri kaybına neden olacaktır.</translation>
     </message>
@@ -8419,7 +8424,7 @@ Devam edilsin mi?</translation>
       <translation>Çok fazla rahatsız etmeyen bildirim açıldı. Bildirimler atlanıyor!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1453"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8428,44 +8433,44 @@ Devam edilsin mi?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Are you sure you want to continue?</source>
       <translation>Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1478"/>
+      <location filename="../Document.cpp" line="1480"/>
       <source>Check report view for more…</source>
       <translation>Daha fazlası için Rapor Görünümünü kontrol edin…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1484"/>
       <source>Physical path:</source>
       <translation>Fiziksel yol:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
-      <location filename="../Document.cpp" line="1490"/>
+      <location filename="../Document.cpp" line="1485"/>
+      <location filename="../Document.cpp" line="1492"/>
       <source>Document:</source>
       <translation>Belge:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1484"/>
-      <location filename="../Document.cpp" line="1491"/>
+      <location filename="../Document.cpp" line="1486"/>
+      <location filename="../Document.cpp" line="1493"/>
       <source>Path:</source>
       <translation>Yol:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1502"/>
+      <location filename="../Document.cpp" line="1504"/>
       <source>Identical physical path</source>
       <translation>Özdeş fiziksel yol</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1514"/>
+      <location filename="../Document.cpp" line="1516"/>
       <source>Could not save document</source>
       <translation>Belge kaydedilemedi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1515"/>
+      <location filename="../Document.cpp" line="1517"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8478,19 +8483,19 @@ Would you like to save the file with a different name?</source>
 Dosyayı farklı bir adla kaydetmek ister misiniz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1529"/>
-      <location filename="../Document.cpp" line="1786"/>
-      <location filename="../Document.cpp" line="1895"/>
+      <location filename="../Document.cpp" line="1531"/>
+      <location filename="../Document.cpp" line="1788"/>
+      <location filename="../Document.cpp" line="1897"/>
       <source>Saving aborted</source>
       <translation>Kaydetme iptal edildi</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1580"/>
+      <location filename="../Document.cpp" line="1582"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation>Eski FreeCAD Sürümüyle Oluşturulmuş Dosya</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
+      <location filename="../Document.cpp" line="1585"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8505,122 +8510,122 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1592"/>
+      <location filename="../Document.cpp" line="1594"/>
       <source>an unknown older version of FreeCAD</source>
       <translation type="unfinished">an unknown older version of FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1593"/>
+      <location filename="../Document.cpp" line="1595"/>
       <source>FreeCAD version %1</source>
       <translation>FreeCAD sürümü %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1600"/>
       <source>Save</source>
       <translation>Kaydet</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1599"/>
+      <location filename="../Document.cpp" line="1601"/>
       <source>Save As…</source>
       <translation>Farklı Kaydet…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1603"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Do not show this warning again</source>
       <translation>Bu uyarıyı bir daha gösterme</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1668"/>
+      <location filename="../Document.cpp" line="1670"/>
       <source>Save dependent files</source>
       <translation>Bağımlı dosyaları kaydet</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1669"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Dosya dış bağımlılıklar içeriyor. Bağımlı dosyaları da kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1779"/>
+      <location filename="../Document.cpp" line="1717"/>
+      <location filename="../Document.cpp" line="1781"/>
       <source>Saving document failed</source>
       <translation>Belge kaydetme başarısız oldu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save document under new filename…</source>
       <translation>Belgeyi yeni bir dosya adıyla kaydet…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
       <location filename="../CommandDoc.cpp" line="673"/>
       <source>%1 document</source>
       <translation>%1 belge</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Belgenin bir kopyasını yeni bir dosya adıyla kaydet…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1745"/>
-      <location filename="../Document.cpp" line="1875"/>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
       <source>Save %1 Document</source>
       <translation>%1 Belgeyi Kaydet</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1801"/>
-      <location filename="../Document.cpp" line="1851"/>
+      <location filename="../Document.cpp" line="1803"/>
+      <location filename="../Document.cpp" line="1853"/>
       <source>Failed to save document</source>
       <translation>Belgeyi kaydetme başarısız</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1802"/>
+      <location filename="../Document.cpp" line="1804"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Belgeler döngüsel bağımlılıklar içeriyor. Yine de bunları kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2540"/>
+      <location filename="../Document.cpp" line="2554"/>
       <source>Document not closable</source>
       <translation>Belge kapatılamıyor</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2541"/>
+      <location filename="../Document.cpp" line="2555"/>
       <source>The document is not closable for the moment.</source>
       <translation>Belge şu an için kapatılamıyor.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2581"/>
+      <location filename="../Document.cpp" line="2595"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>'%1' belgesi kaydedilemedi. Kapatmayı iptal etmek ister misiniz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2583"/>
+      <location filename="../Document.cpp" line="2597"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Belge kaydetme başarısız oldu. Kapatmayı iptal etmek ister misiniz?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2588"/>
+      <location filename="../Document.cpp" line="2602"/>
       <source>Unable to save document</source>
       <translation>Belge kaydedilemiyor</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Undo</source>
       <translation>Geri al</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Redo</source>
       <translation>Yinele</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2961"/>
+      <location filename="../Document.cpp" line="2975"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Aşağıdaki belgelerde, diğer önceki işlemlerle gruplanmış işlemler var</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2966"/>
+      <location filename="../Document.cpp" line="2980"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8709,7 +8714,7 @@ Yalnızca etkin belgedeki işlemleri geri almak için 'Hayır'ı seçin.
       <translation>%1 Dosyası %2 veya %3 içinde bulunamıyor</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2659"/>
       <source>Clarify Selection</source>
       <translation>Seçimi Netleştir</translation>
     </message>
@@ -10964,8 +10969,8 @@ değiştirir</translation>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1625"/>
-      <location filename="../Widgets.cpp" line="1692"/>
+      <location filename="../Widgets.cpp" line="1633"/>
+      <location filename="../Widgets.cpp" line="1700"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>Bir hata oluştu -- ayrıntılar için Rapor Görünümüne bakın</translation>
     </message>
@@ -14583,7 +14588,7 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1182"/>
+      <location filename="../Selection/SelectionView.cpp" line="1185"/>
       <source>Whole Object</source>
       <translation>Tüm Nesne</translation>
     </message>
@@ -14931,12 +14936,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyMapEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Key</source>
       <translation>Anahtar</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>Değer</translation>
     </message>

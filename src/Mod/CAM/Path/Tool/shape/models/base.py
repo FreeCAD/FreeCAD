@@ -637,6 +637,35 @@ class ToolBitShape(Asset):
             return bool(value)
         return str(value)
 
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """
+        Parameters that are a consequence of the shape rather than an input to
+        it, as a mapping of name to a function of the other parameters.
+
+        They stay real properties, because the operations and the tool library
+        format read them, but they are computed rather than typed in and are
+        kept out of the editor.
+        """
+        return {}
+
+    def apply_derived_parameters(self) -> Dict[str, Any]:
+        """
+        Recompute this shape's derived parameters from its current values and
+        store them. Returns what changed, as {name: value}.
+        """
+        changed = {}
+        for name, compute in self.derived_parameters().items():
+            try:
+                value = compute(self.get_parameters())
+            except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+                Path.Log.warning(f"Could not derive '{name}' for shape '{self.name}': {exc}\n")
+                continue
+            if self._params.get(name) != value:
+                self.set_parameter(name, value)
+                changed[name] = self.get_parameter(name)
+        return changed
+
     def get_parameters(self) -> Dict[str, Any]:
         """
         Get the dictionary of current parameters and their values.

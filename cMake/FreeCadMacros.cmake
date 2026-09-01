@@ -401,9 +401,17 @@ macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
     endif()
 endmacro()
 
-function(target_compile_warn_error ProjectName)
-    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-        target_compile_options(${ProjectName} PRIVATE -Werror)
+function(target_compile_warn_error TargetName)
+    if(FREECAD_WARN_ERROR AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|MSVC"))
+        target_compile_options(${TargetName} PRIVATE
+            $<$<CXX_COMPILER_ID:MSVC>:/WX>
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-Werror>
+        )
     endif()
 endfunction()
 
+function(disable_occt8_deprecation_warnings)
+    if (OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+        add_compile_definitions(-DOCCT_NO_DEPRECATED)
+    endif()
+endfunction()
