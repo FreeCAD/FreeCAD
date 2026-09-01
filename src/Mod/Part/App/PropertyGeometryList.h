@@ -76,6 +76,11 @@ public:
         return _lValueList[idx];
     }
 
+    void swapValues(int idx1, int idx2)
+    {
+        std::swap(_lValueList[idx1], _lValueList[idx2]);
+    }
+
     const std::vector<Geometry*>& getValues() const
     {
         return _lValueList;

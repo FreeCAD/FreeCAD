@@ -69,6 +69,8 @@ SET(FeaturesDressUp_SRCS
     FeatureDraft.h
     FeatureThickness.cpp
     FeatureThickness.h
+    FeatureDefeaturing.cpp
+    FeatureDefeaturing.h
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
