@@ -30,6 +30,28 @@ class SketcherGuiTestCases(unittest.TestCase):
                 time.sleep(delay)
 
     @staticmethod
+    def build_issue_25840_sketch(sketch):
+        # Mirrors the uploaded repro geometry from issue #25840.
+        first_line = sketch.addGeometry(
+            Part.LineSegment(
+                FreeCAD.Vector(-17.60407066, 31.05172348, 0.0),
+                FreeCAD.Vector(44.00962448, -33.86270142, 0.0),
+            ),
+            False,
+        )
+        second_line = sketch.addGeometry(
+            Part.LineSegment(
+                FreeCAD.Vector(50.4888, 6.2351, 0.0),
+                FreeCAD.Vector(30.973626440922192, -20.12834717, 0.0),
+            ),
+            False,
+        )
+        constraint_id = sketch.addConstraint(
+            Sketcher.Constraint("PointOnObject", second_line, 2, first_line)
+        )
+        return constraint_id, FreeCAD.Vector(30.973626440922192, -20.12834717, 0.0)
+
+    @staticmethod
     def build_issue_20811_sketch(sketch):
         # Mirrors ConstraintSelect.FCStd from issue #20811 without requiring a binary fixture.
         first_line = sketch.addGeometry(
@@ -142,6 +164,30 @@ class SketcherGuiTestCases(unittest.TestCase):
             int(round(sum(point[0] for point in target_points) / len(target_points))),
             int(round(sum(point[1] for point in target_points) / len(target_points))),
         )
+
+    @classmethod
+    def scan_preselection_at_viewport(cls, center_coin, expected_constraint_name, span=16, step=2):
+        counts = {
+            "target_constraint": 0,
+            "other_constraint": 0,
+            "edge": 0,
+            "vertex": 0,
+            "other": 0,
+            "none": 0,
+        }
+
+        for dy in range(-span, span + 1, step):
+            for dx in range(-span, span + 1, step):
+                coin_point = (center_coin[0] + dx, center_coin[1] + dy)
+                info = SketcherGui.getActiveSketchPreselection(coin_point)
+                counts[cls.classify_preselection(info, expected_constraint_name)] += 1
+
+        return counts
+
+    @staticmethod
+    def constraint_share(counts):
+        hits = sum(counts[kind] for kind in counts if kind != "none")
+        return counts["target_constraint"] / hits if hits else 0.0
 
     @staticmethod
     def project_coin_path_point_to_viewport(view_volume, viewport_region, point):
@@ -450,6 +496,46 @@ class SketcherGuiTestCases(unittest.TestCase):
             self.doc = None
             FreeCAD.closeDocument(document_name)
             self.pump_gui_events()
+
+    def testPointOnObjectPreselectionMatchesTiltedHitArea(self):
+        constraint_id, probe_point = self.build_issue_25840_sketch(self.sketch)
+        expected_name = f"Constraint{constraint_id + 1}"
+        self.doc.recompute()
+        self.pump_gui_events()
+
+        counts_by_state = {}
+        for name, tilt in {
+            "exact_top": None,
+            "tilt_y_2deg": FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 2.0),
+        }.items():
+            self.configure_view_state(self.view, tilt)
+            probe_viewport = self.find_constraint_probe_viewport_point(
+                self.view,
+                probe_point,
+                expected_name,
+            )
+            self.assertIsNotNone(probe_viewport)
+            counts_by_state[name] = self.scan_preselection_at_viewport(
+                probe_viewport,
+                expected_name,
+                span=12,
+            )
+
+        exact_top = counts_by_state["exact_top"]
+        tilted = counts_by_state["tilt_y_2deg"]
+        detail = (
+            f"exact_top={exact_top}, tilt_y_2deg={tilted}, "
+            f"constraint_share={self.constraint_share(exact_top):.3f}"
+        )
+
+        self.assertGreater(tilted["target_constraint"], 0, detail)
+        self.assertGreater(exact_top["target_constraint"], 0, detail)
+        self.assertGreaterEqual(
+            exact_top["target_constraint"],
+            int(tilted["target_constraint"] * 0.8),
+            detail,
+        )
+        self.assertGreaterEqual(self.constraint_share(exact_top), 0.20, detail)
 
     def testConstraintIconMousePreselectionMatchesRenderedPosition(self):
         self.use_attached_issue_sketch()
@@ -878,9 +964,12 @@ class SketcherGuiTestCases(unittest.TestCase):
 
         midpoint_coin = self.get_stable_viewport_point(self.view, midpoint)
 
+        # Limit probes to the pick region around the line's geometric midpoint. The dimension
+        # line passes through this point, while its datum text is positioned farther along it.
+        probe_radius = max(1, int(math.ceil(self.viewer.getPickRadius())))
         edge_offsets = []
-        for dy in range(-10, 11, 2):
-            for dx in range(-14, 15, 2):
+        for dy in range(-probe_radius, probe_radius + 1):
+            for dx in range(-probe_radius, probe_radius + 1):
                 probe_coin = (midpoint_coin[0] + dx, midpoint_coin[1] + dy)
                 probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
                 probe_kind = self.classify_preselection(probe_info, "Constraint0")
