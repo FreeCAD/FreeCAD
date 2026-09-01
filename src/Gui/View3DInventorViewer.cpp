@@ -797,6 +797,14 @@ private:
     QPoint pressPosition;
     View3DInventorViewer* currentViewer = nullptr;
 
+    static bool isUnwantedHorizontalScroll(const QWheelEvent* event)
+    {
+        if (!event->pixelDelta().isNull() && NavigationStyle::touchpadScrollPans()) {
+            return false;
+        }
+        return qAbs(event->angleDelta().x()) > qAbs(event->angleDelta().y());
+    }
+
 public:
     bool eventFilter(QObject* obj, QEvent* event) override
     {
@@ -805,7 +813,7 @@ public:
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             auto we = static_cast<QWheelEvent*>(event);  // NOLINT
-            if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y())) {
+            if (isUnwantedHorizontalScroll(we)) {
                 return true;
             }
         }
@@ -1291,8 +1299,10 @@ void View3DInventorViewer::init()
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
     try {
+#ifndef Q_OS_MACOS
         this->grabGesture(Qt::PanGesture);
         this->grabGesture(Qt::PinchGesture);
+#endif
     }
     catch (Base::Exception& e) {
         Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());

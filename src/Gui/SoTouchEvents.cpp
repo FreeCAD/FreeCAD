@@ -25,6 +25,7 @@
 
 #include <QApplication>
 #include <QGestureEvent>
+#include <QNativeGestureEvent>
 #include <QWidget>
 
 #include <Base/Exception.h>
@@ -32,6 +33,47 @@
 
 #include "SoTouchEvents.h"
 
+
+bool NativeGesturePinch::update(Qt::NativeGestureType type, double value, const SbVec2s& glPos)
+{
+    if (type != Qt::BeginNativeGesture && !active) {
+        return false;
+    }
+
+    pinch.deltaZoom = 0.0;
+    pinch.deltaAngle = 0.0;
+    pinch.deltaCenter = SbVec2f(0.0F, 0.0F);
+    pinch.fromNativeGesture = true;
+    const SbVec2f center(static_cast<float>(glPos[0]), static_cast<float>(glPos[1]));
+    pinch.curCenter = center;
+    pinch.setPosition(glPos);
+    pinch.setTime(SbTime::getTimeOfDay());
+
+    switch (type) {
+        case Qt::BeginNativeGesture:
+            pinch.state = SoGestureEvent::SbGSStart;
+            beginCenter = center;
+            active = true;
+            break;
+        case Qt::EndNativeGesture:
+            pinch.state = SoGestureEvent::SbGSEnd;
+            active = false;
+            break;
+        case Qt::ZoomNativeGesture:
+            pinch.state = SoGestureEvent::SbGSUpdate;
+            pinch.deltaZoom = (1.0 + value > 0.0) ? 1.0 + value : 1.0;
+            break;
+        case Qt::RotateNativeGesture:
+            pinch.state = SoGestureEvent::SbGSUpdate;
+            pinch.deltaAngle = -Base::toRadians(value);
+            break;
+        default:
+            return false;
+    }
+
+    pinch.startCenter = beginCenter;
+    return true;
+}
 
 SO_EVENT_SOURCE(SoGestureEvent);
 
@@ -187,6 +229,22 @@ GesturesDevice::GesturesDevice(QWidget* widget)
 
 const SoEvent* GesturesDevice::translateEvent(QEvent* event)
 {
+    if (event->type() == QEvent::NativeGesture) {
+        auto native = static_cast<QNativeGestureEvent*>(event);
+        const SbVec2s pos = InputDevice::toDevicePixelPosition(
+            this->widget->mapFromGlobal(native->globalPosition()),
+            SbVec2s(
+                static_cast<short>(this->widget->width()),
+                static_cast<short>(this->widget->height())
+            ),
+            this->widget->devicePixelRatio()
+        );
+        if (!this->nativePinch.update(native->gestureType(), native->value(), pos)) {
+            return nullptr;
+        }
+        return &this->nativePinch.event();
+    }
+
     if (event->type() == QEvent::Gesture || event->type() == QEvent::GestureOverride) {
         auto gevent = static_cast<QGestureEvent*>(event);
 
