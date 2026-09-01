@@ -940,6 +940,11 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
                     << " for the constraint with index " << Index;
                 break;
         }
+        if (err == -2 || err == -3) {
+            PySys_WriteStdout("Warning: %s\n", str.str().c_str());
+            Py_Return; 
+        }
+
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }
