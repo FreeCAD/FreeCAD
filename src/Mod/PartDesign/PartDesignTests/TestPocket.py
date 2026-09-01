@@ -84,6 +84,7 @@ class TestPocket(unittest.TestCase):
         self.Pocket.Profile = self.PocketSketch
         self.Pocket.Length = 5
         self.Pocket.TaperAngle = 20
+        self.assertFalse(self.Pocket.UseLegacyTaperDirection)
         self.Doc.recompute()
 
         oneSidedVolume = self.Pocket.Shape.Volume
@@ -108,6 +109,18 @@ class TestPocket(unittest.TestCase):
         self.Doc.recompute()
 
         self.assertAlmostEqual(self.Pocket.AddSubShape.BoundBox.XMax, expectedRadius)
+
+        self.Pocket.UseLegacyTaperDirection = True
+        self.Pocket.SideType = "One side"
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Pocket.AddSubShape.BoundBox.XMax, radius)
+
+        self.Pocket.StartType = "Profile plane"
+        self.Pocket.SideType = "Two sides"
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Pocket.AddSubShape.BoundBox.XMax, radius)
 
     def testStartOffset(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")

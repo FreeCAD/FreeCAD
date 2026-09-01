@@ -873,16 +873,15 @@ double ProfileBased::getStartReferenceOffset(
 TopoShape ProfileBased::moveProfileToStart(
     const TopoShape& profileShape,
     const gp_Dir& direction,
-    double offset
+    double offset,
+    bool copyProfile
 )
 {
     if (std::fabs(offset) < Precision::Confusion()) {
         return profileShape;
     }
 
-    // Translating the profile only requires a new location. Rebuilding its topology can change
-    // OCCT's signed wire offset and invert a subsequent taper for transformed sketches.
-    TopoShape result = profileShape;
+    TopoShape result = copyProfile ? profileShape.makeElementCopy() : profileShape;
     gp_Trsf transform;
     transform.SetTranslation(gp_Vec(direction) * offset);
     result.move(transform);
