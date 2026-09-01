@@ -6,6 +6,7 @@ SET(Test_SRCS
     __init__.py
     Init.py
     BaseTests.py
+    FreeCADInitTests.py
     AutoSaverStress.py
     RunAutoSaverStress.py
     Document.py

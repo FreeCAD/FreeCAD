@@ -19,13 +19,14 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
-import re
 from typing import TypeVar
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
     collect_type_registrations,
+    cpp_namespace_for_source,
     contextual_cpp_type_name,
+    normalize_cpp_qualified_name,
     public_type_context_index,
 )
 from .model import (
@@ -137,6 +138,27 @@ def public_names_for_class(
     return names
 
 
+def cpp_type_names_for_class(
+    rel_path: str,
+    class_name: str,
+    export_kwargs: dict[str, object],
+) -> tuple[str, ...]:
+    """Return the C++ TypeId represented by a binding input class."""
+
+    twin = export_kwargs.get("Twin")
+    raw_name = twin if isinstance(twin, str) and twin else class_name
+    raw_name = normalize_cpp_qualified_name(raw_name)
+    if "::" in raw_name:
+        return (raw_name,)
+
+    namespace = export_kwargs.get("Namespace")
+    if not isinstance(namespace, str) or not namespace:
+        namespace = cpp_namespace_for_source(rel_path)
+    if not namespace:
+        return (raw_name,)
+    return (f"{namespace}::{raw_name}",)
+
+
 def parse_binding_class_file(
     root: Path,
     path: Path,
@@ -179,6 +201,7 @@ def parse_binding_class_file(
                 ),
                 base_class=base_class,
                 explicit_export=explicit_export,
+                cpp_type_names=cpp_type_names_for_class(rel, node.name, export_kwargs),
             )
         )
 
@@ -215,10 +238,7 @@ def extracted_function_signature_parts(
         if start == -1:
             raise ValueError(f"{path}: {owner_name}.{node.name} has no parameter list")
         parameters, end = extract_balanced(definition, start, "(", ")")
-        return_match = re.match(r"\s*->\s*(?P<returns>.+?)\s*:", definition[end:], re.DOTALL)
-        if not return_match:
-            raise ValueError(f"{path}: {owner_name}.{node.name} is missing a return annotation")
-        returns = " ".join(return_match.group("returns").split())
+        returns = ast.unparse(node.returns)
     else:
         parameters = ast.unparse(node.args)
         returns = ast.unparse(node.returns)
@@ -267,6 +287,47 @@ def module_stub_signature_from_function_node(
         doc=doc,
         deprecated_message=deprecated_message_from_function_node(node),
     )
+
+
+def is_overload_declaration(node: ast.FunctionDef) -> bool:
+    return any(
+        decorator_name(decorator).rsplit(".", 1)[-1] == "overload"
+        for decorator in node.decorator_list
+    )
+
+
+def validate_stub_function_group(
+    path: Path,
+    owner_name: str,
+    function_name: str,
+    declarations: list[tuple[ast.FunctionDef, StubSignature]],
+) -> None:
+    overloads = [is_overload_declaration(node) for node, _ in declarations]
+    if len(declarations) == 1:
+        if overloads[0]:
+            raise ValueError(
+                f"{path}: {owner_name}.{function_name} has a single @overload "
+                "declaration; overloaded .pyi declarations require at least two"
+            )
+        return
+
+    lines = ", ".join(str(node.lineno) for node, _ in declarations)
+    if not all(overloads):
+        raise ValueError(
+            f"{path}: {owner_name}.{function_name} has multiple declarations "
+            f"at lines {lines}; overloaded .pyi declarations must all use @overload"
+        )
+
+    seen: dict[tuple[str, str], int] = {}
+    for node, signature in declarations:
+        key = (signature.parameters, signature.returns)
+        earlier_line = seen.get(key)
+        if earlier_line is not None:
+            raise ValueError(
+                f"{path}: {owner_name}.{function_name} has duplicate overload "
+                f"signatures at lines {earlier_line} and {node.lineno}"
+            )
+        seen[key] = node.lineno
 
 
 def append_module_signature_group(
@@ -336,10 +397,20 @@ def parse_module_stub_signature_overrides(
         except SyntaxError as exc:
             raise ValueError(f"{path}: invalid stub override syntax: {exc}") from exc
 
+        parsed_functions: list[tuple[ast.FunctionDef, StubSignature]] = []
+        function_groups: dict[str, list[tuple[ast.FunctionDef, StubSignature]]] = {}
         for node in tree.body:
             if not isinstance(node, ast.FunctionDef):
                 continue
             signature = module_stub_signature_from_function_node(path, source, module_name, node)
+            declaration = (node, signature)
+            parsed_functions.append(declaration)
+            function_groups.setdefault(node.name, []).append(declaration)
+
+        for function_name, declarations in function_groups.items():
+            validate_stub_function_group(path, module_name, function_name, declarations)
+
+        for node, signature in parsed_functions:
             append_module_signature_group(signatures, module_name, node.name, signature, path)
 
     return signatures
@@ -436,17 +507,22 @@ def parse_source_type_stub_signature_overrides(
         if len(class_nodes) > 1:
             raise ValueError(f"{path}: duplicate class {class_symbol!r} in type stub file")
 
+        parsed_functions: list[tuple[ast.FunctionDef, StubSignature]] = []
+        function_groups: dict[str, list[tuple[ast.FunctionDef, StubSignature]]] = {}
         for item in class_nodes[0].body:
             if not isinstance(item, ast.FunctionDef):
                 continue
             signature = stub_signature_from_function_node(path, source, class_symbol, item)
+            declaration = (item, signature)
+            parsed_functions.append(declaration)
+            function_groups.setdefault(item.name, []).append(declaration)
+
+        for function_name, declarations in function_groups.items():
+            validate_stub_function_group(path, class_symbol, function_name, declarations)
+
+        for item, signature in parsed_functions:
             append_type_signature_group(
-                signatures,
-                module_name,
-                class_symbol,
-                item.name,
-                signature,
-                path,
+                signatures, module_name, class_symbol, item.name, signature, path
             )
 
     return signatures
