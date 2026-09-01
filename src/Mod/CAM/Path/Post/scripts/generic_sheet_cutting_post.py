@@ -302,7 +302,6 @@ class GenericSheetCutting(PostProcessor):
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
 
-
     def _clear_cutter_state(self):
         """Reset state tracking without emitting commands."""
         self._torch_active = False
@@ -506,9 +505,7 @@ class GenericSheetCutting(PostProcessor):
                             in_cut = True
 
                         # Skip remaining movement commands [while at cut height] until Z+ (retraction)
-                        elif (
-                            cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
-                        ):
+                        elif cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC:
                             if "Z" not in cmd.Parameters:
                                 # Lateral cut move: drop it once the entry is marked
                                 if not marked or not in_cut:
