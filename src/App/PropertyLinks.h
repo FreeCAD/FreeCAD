@@ -417,13 +417,15 @@ public:
      * update. If false, then the other way around.
      *
      * @param[in] notify: if true, call aboutToSetValue() before change
+     * @param[in] warnMissing: if true, warn when the resolved reference is missing
      */
     bool _updateElementReference(App::DocumentObject* feature,
                                  App::DocumentObject* obj,
                                  std::string& sub,
                                  ShadowSub& shadow,
                                  bool reverse,
-                                 bool notify = false);
+                                 bool notify = false,
+                                 bool warnMissing = true);
 
     /** Helper function to register geometry element reference
      *
@@ -653,6 +655,119 @@ protected:
 private:
     std::set<std::string> _LabelRefs;
     std::set<App::DocumentObject*> _ElementRefs;
+};
+
+/**
+ * @brief Row-based storage for document-object subelement references.
+ *
+ * The store keeps the linked object, stored subelement name, and topology shadow
+ * data together for each entry. It is intentionally limited to reference data:
+ * owning properties remain responsible for validation, backlinks, persistence
+ * envelopes, and property change notifications.
+ */
+class AppExport PropertyLinkSubReferenceStore
+{
+public:
+    /**
+     * @brief Stored reference for one subelement entry.
+     */
+    struct Reference
+    {
+        App::DocumentObject* object {nullptr}; /**< Linked document object. */
+        std::string subName;                   /**< Stored subelement reference. */
+        PropertyLinkBase::ShadowSub shadow;    /**< Old/new style topology reference pair. */
+    };
+
+    using iterator = std::vector<Reference>::iterator;
+    using const_iterator = std::vector<Reference>::const_iterator;
+
+    /**
+     * @brief Return the number of stored references.
+     */
+    std::size_t size() const;
+
+    /**
+     * @brief Return true when no references are stored.
+     */
+    bool empty() const;
+
+    iterator begin();
+    iterator end();
+    const_iterator begin() const;
+    const_iterator end() const;
+
+    Reference& operator[](std::size_t index);
+    const Reference& operator[](std::size_t index) const;
+
+    /**
+     * @brief Return all references in stored order.
+     */
+    const std::vector<Reference>& references() const;
+
+    /**
+     * @brief Replace the stored references.
+     */
+    void set(std::vector<Reference>&& references);
+
+    /**
+     * @brief Replace the stored references from parallel legacy vectors.
+     *
+     * @throws Base::ValueError if the object and subelement counts differ.
+     */
+    void set(std::vector<App::DocumentObject*> objects,
+             std::vector<std::string> subNames,
+             std::vector<PropertyLinkBase::ShadowSub> shadows = {});
+
+    /**
+     * @brief Return linked objects in reference order.
+     */
+    std::vector<App::DocumentObject*> objects() const;
+
+    /**
+     * @brief Return stored subelement names in reference order.
+     */
+    std::vector<std::string> subNames() const;
+
+    /**
+     * @brief Return subelement names using old or new style topology names.
+     */
+    std::vector<std::string> subNames(bool newStyle) const;
+
+    /**
+     * @brief Return topology shadows in reference order.
+     */
+    std::vector<PropertyLinkBase::ShadowSub> shadows() const;
+
+    /**
+     * @brief Return references using old or new style topology names.
+     */
+    std::vector<Reference> references(bool newStyle) const;
+
+    /**
+     * @brief Clear topology shadows without removing references.
+     */
+    void clearShadows();
+
+    /**
+     * @brief Return indices whose linked object is still attached to a document.
+     */
+    std::vector<std::size_t> attachedEntryIndices() const;
+
+    /**
+     * @brief Return the stored-size estimate for linked objects and subnames.
+     */
+    unsigned int getMemSize() const;
+
+    /**
+     * @brief Return \p subName in old or new topology-reference style.
+     */
+    static const std::string& getSubNameWithStyle(const std::string& subName,
+                                                  const PropertyLinkBase::ShadowSub& shadow,
+                                                  bool newStyle,
+                                                  std::string& tmp);
+
+private:
+    std::vector<Reference> _references;
 };
 
 /** The general Link Property

@@ -276,7 +276,10 @@ SET(Properties_CPP_SRCS
     PropertyFile.cpp
     PropertyGeo.cpp
     PropertyLinks.cpp
+    PropertyLinkSubReferenceStore.cpp
+    PropertyLinkSubValueMap.cpp
     PropertyPythonObject.cpp
+    PropertySerialization.cpp
     PropertyStandard.cpp
     PropertyUnits.cpp
     PropertyExpressionEngine.cpp
@@ -289,7 +292,9 @@ SET(Properties_HPP_SRCS
     PropertyFile.h
     PropertyGeo.h
     PropertyLinks.h
+    PropertyLinkSubValueMap.h
     PropertyPythonObject.h
+    PropertySerialization.h
     PropertyStandard.h
     PropertyUnits.h
     PropertyExpressionEngine.h
