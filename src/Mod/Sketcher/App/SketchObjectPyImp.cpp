@@ -938,7 +938,7 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
         }
         if (err == -2 || err == -3) {
             PySys_WriteStdout("Warning: %s\n", str.str().c_str());
-            Py_Return; 
+            Py_Return;
         }
 
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
