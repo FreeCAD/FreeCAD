@@ -248,7 +248,7 @@ def curves_equal(c1, c2, tol=1e-6, ctol=0):
     return True
 
 
-def areas_equal(a1, a2, tol=1e-6, ctol=0):
+def areas_equal(a1, a2, tol=1e-6, ctol=1e-2):
     """Compare if two areas are equal within tolerance, including curve order.
 
     Note: You may want to canonicalize areas before using this function.

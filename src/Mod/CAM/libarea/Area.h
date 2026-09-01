@@ -250,6 +250,15 @@ private:
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
 
+    // Correct arc centers.
+    //
+    // Clipper approximates arcs as segments. As a consequence, if new points are generated
+    // "on an arc" during a clipper operation, those points may not actually be on the arc.
+    // This results in an invalid arc when converting back to arcs. This function makes the
+    // output arc valid by coercing the arc center to be equidistant between the arc start
+    // and end points.
+    void CorrectArcCenters();
+
     // Internal implementation of Clip with optional open path reversal
     void _Clip(
         Clipper2Lib::ClipType op,

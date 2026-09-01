@@ -6,6 +6,7 @@
 
 #include "Area.h"
 #include "clipper2/clipper.h"
+#include <Precision.hxx>
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -848,6 +849,47 @@ void CArea::SetFromResult(
         else {
             // Save it as a new curve
             saveCurve();
+        }
+    }
+
+    CorrectArcCenters();
+}
+
+void CArea::CorrectArcCenters()
+{
+    for (CCurve& curve : m_curves) {
+        auto it = curve.m_vertices.begin();
+        if (it == curve.m_vertices.end()) {
+            continue;
+        }
+
+        // Initialize prevPt for our loop over edges
+        Point prevPt = it->m_p;
+        ++it;
+
+        // Loop over edges
+        for (; it != curve.m_vertices.end(); ++it) {
+            CVertex& v = *it;
+            if (v.m_type != 0) {
+                // Arc: start=prevPt, end=v.m_p, center=v.m_c
+                // Compute chord distance
+                const double d = std::hypot(v.m_p.x - prevPt.x, v.m_p.y - prevPt.y);
+
+                // Compute perpendicular bisector direction
+                const double nx = (prevPt.y - v.m_p.y) / d;
+                const double ny = (v.m_p.x - prevPt.x) / d;
+
+                // Compute chord midpoint
+                const double mx = (prevPt.x + v.m_p.x) * 0.5;
+                const double my = (prevPt.y + v.m_p.y) * 0.5;
+
+                // Project center onto the perpendicular bisector
+                const double dot = (v.m_c.x - mx) * nx + (v.m_c.y - my) * ny;
+                v.m_c.x = mx + dot * nx;
+                v.m_c.y = my + dot * ny;
+            }
+
+            prevPt = v.m_p;
         }
     }
 }
