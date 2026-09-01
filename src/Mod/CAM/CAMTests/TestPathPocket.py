@@ -23,6 +23,8 @@ import FreeCAD
 import Part
 import Path.Op.Pocket as PathPocket
 import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
+import Constants as CAMConstants
 from CAMTests.PathTestUtils import PathTestBase
 
 import math
@@ -152,7 +154,9 @@ class TestPathPocket(PathTestBase):
         """
         FreeCAD.closeDocument(self.doc.Name)
 
-    def createPocketOperation(self, part_obj, pocket_bottom_z, label, tool_diameter, **kwargs):
+    def createPocketOperation(
+        self, part_obj, pocket_bottom_z, label, tool_diameter, job=None, **kwargs
+    ):
         """Create a pocket operation with the given parameters.
 
         Args:
@@ -160,23 +164,26 @@ class TestPathPocket(PathTestBase):
             pocket_bottom_z: Z height of the pocket bottom
             label: Label for the pocket operation (job name will be "Job_<label>")
             tool_diameter: Diameter of the cutting tool
+            job: Optional existing job to add the operation to. If None, a new job is created.
             **kwargs: Properties to set on the pocket operation
                      (e.g., StepOver=10, ClearingPattern="Offset", StartAt="Edge")
 
         Returns:
             The created pocket operation object
         """
-        # Create job for this operation
-        job_name = "Job_{}".format(label)
-        job = PathJob.Create(job_name, [part_obj])
-        if FreeCAD.GuiUp:
-            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+        if job is None:
+            job = PathJob.Create("Job_{}".format(label), [part_obj])
+            if FreeCAD.GuiUp:
+                job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
         # Instantiate a Pocket operation
         pocket = PathPocket.Create(label, parentJob=job)
 
-        # Set tool diameter
-        pocket.ToolController.Tool.Diameter = tool_diameter
+        # Create a dedicated tool controller for this operation and set its diameter
+        tc = PathToolController.Create(name="TC: {}mm Endmill".format(tool_diameter))
+        job.Proxy.addToolController(tc)
+        tc.Tool.Diameter = tool_diameter
+        pocket.ToolController = tc
 
         # Find all faces within tolerance of pocket bottom Z
         tolerance = 0.1
@@ -198,6 +205,7 @@ class TestPathPocket(PathTestBase):
         # Set any properties from kwargs
         for key, value in kwargs.items():
             if hasattr(pocket, key):
+                pocket.setExpression(key, None)
                 setattr(pocket, key, value)
             else:
                 FreeCAD.Console.PrintWarning(
@@ -594,7 +602,7 @@ class TestPathPocket(PathTestBase):
             "pocket_square_zigzag",
             tool_diameter,
             StepOver=stepover_percent,
-            ClearingPattern="ZigZag",
+            ClearingPattern="ZigZagOffset",
             StartAt="Edge",
             Angle=0,
         )
@@ -644,6 +652,91 @@ class TestPathPocket(PathTestBase):
         self.assertLessEqual(actual_num_horizontal_lines, expected_num_horizontal_lines + 1)
         self.assertGreaterEqual(actual_num_vertical_lines, expected_num_vertical_lines - 1)
         self.assertLessEqual(actual_num_vertical_lines, expected_num_vertical_lines + 1)
+
+    def test_pocket_rest_machining(self):
+        """test_pocket_rest_machining() Verify pocket rest machining clears remaining material after large tool pass."""
+
+        pocket_width = 50.0
+        pocket_height = 33.0
+        box_margin = 10.0
+        outer_box_width = pocket_width + box_margin
+        outer_box_height_xy = pocket_height + box_margin
+        outer_box_height_z = 20.0
+        pocket_depth_amount = 1.0
+        pocket_bottom_z = outer_box_height_z - pocket_depth_amount
+        large_tool_diameter = 5.0
+        small_tool_diameter = 1.0
+
+        outer = Part.makeBox(outer_box_width, outer_box_height_xy, outer_box_height_z)
+        pocket_offset_x = (outer_box_width - pocket_width) / 2.0
+        pocket_offset_y = (outer_box_height_xy - pocket_height) / 2.0
+        inner = Part.makeBox(
+            pocket_width,
+            pocket_height,
+            pocket_depth_amount,
+            FreeCAD.Vector(pocket_offset_x, pocket_offset_y, pocket_bottom_z),
+        )
+        pocket_solid = outer.cut(inner)
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "RestMachiningPocketPart")
+        part_obj.Shape = pocket_solid
+
+        job = PathJob.Create("Job_pocket_rest", [part_obj])
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        pocket_large = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_rest_large",
+            tool_diameter=large_tool_diameter,
+            job=job,
+            StepOver=50,
+            ClearingPattern="ZigZagOffset",
+            StartAt="Edge",
+            Angle=0,
+        )
+
+        pocket_small = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_rest_small",
+            tool_diameter=small_tool_diameter,
+            job=job,
+            StepOver=50,
+            StepDown=5,
+            ClearingPattern="ZigZagOffset",
+            StartAt="Edge",
+            Angle=0,
+            UseRestMachining=True,
+        )
+
+        margin = large_tool_diameter + small_tool_diameter
+
+        pocket_left = pocket_offset_x
+        pocket_right = pocket_offset_x + pocket_width
+        pocket_front = pocket_offset_y
+        pocket_back = pocket_offset_y + pocket_height
+
+        pos = {"X": 0.0, "Y": 0.0}
+        for cmd in pocket_small.Path.Commands:
+            params = cmd.Parameters
+            pos["X"] = params.get("X", pos["X"])
+            pos["Y"] = params.get("Y", pos["Y"])
+
+            if cmd.Name not in CAMConstants.GCODE_MOVE_MILL:
+                continue
+            if "Z" not in params or abs(params["Z"] - pocket_bottom_z) > 0.01:
+                continue
+
+            near_edge = (
+                pos["X"] - pocket_left < margin
+                or pocket_right - pos["X"] < margin
+                or pos["Y"] - pocket_front < margin
+                or pocket_back - pos["Y"] < margin
+            )
+
+            self.assertTrue(near_edge)
 
 
 def _addViewProvider(pocketOp):
