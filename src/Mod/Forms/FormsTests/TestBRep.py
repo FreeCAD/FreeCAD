@@ -1423,6 +1423,15 @@ class BRepConversionTest(unittest.TestCase):
         edited_names = {str(name) for name in obj.Shape.ElementMap}
         self.assertEqual(edited_names, original_names)
 
+    def test_logical_face_names_use_forms_opcode(self):
+        document = App.newDocument("FormsTestElementNameOpcode")
+        obj = create_box(document)
+        document.recompute()
+
+        names = [str(name) for name in obj.Shape.ElementMap if str(name).startswith("FormsFace")]
+        self.assertEqual(len(names), len(obj.Shape.Faces))
+        self.assertTrue(all(name.split(";", 2)[1] == "FRM" for name in names))
+
     def test_delete_face_is_undoable_as_one_document_transaction(self):
         document = App.newDocument("FormsTestDeleteUndo")
         obj = create_box(document)

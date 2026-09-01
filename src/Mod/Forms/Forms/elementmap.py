@@ -27,12 +27,16 @@
 def name_patch_face(face, face_id):
     """Seed a freshly generated patch with its logical cage/leaf identity.
 
+    Base patches use their control-cage face index. Locally refined patches use
+    the persistent ``TMeshFace.id`` stored in ``TMeshData``; this is independent
+    of the generated BRep's face order.
+
     Do this before sewing, while the patch has exactly one face. Assigning a
     fresh map avoids mutating shared element maps; subsequent OCCT operations
     propagate this name through their history. T-mesh subdivision keeps the
     parent's ID on one child, so an attachment to the split face follows it.
     """
-    face.ElementMap = {f"FormsFace{face_id}": "Face1"}
+    face.ElementMap = {f"FormsFace{face_id};FRM": "Face1"}
     return face
 
 
