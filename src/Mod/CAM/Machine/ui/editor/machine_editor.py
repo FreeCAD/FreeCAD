@@ -38,7 +38,12 @@ from Machine.models.machine import (
     WrapStrategy,
 )
 from Path.Main.Gui.Editor import CodeEditor
-from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Processor import (
+    PostProcessorFactory,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    properties_in_scope,
+)
 from Machine.ui.editor.postprocessor_properties import PostProcessorPropertyManager
 from Machine.ui.editor.output_options_layout import build_output_options
 import re
@@ -2111,12 +2116,12 @@ class MachineEditorDialog(QtGui.QDialog):
                 self.post_properties_group.setVisible(False)
                 return
 
-            # Create widgets for each property in the schema
-            # Skip runtime-only properties — they are shown in the post-processing
-            # dialog, not persisted in the machine configuration.
-            for prop in schema:
-                if prop.get("runtime", False):
-                    continue
+            # Create widgets for each property in the schema.  The machine
+            # editor owns the "machine" and "job" scopes: "machine" properties
+            # are only editable here, "job" properties get their default here
+            # and can be overridden per run in the post-processing dialog.
+            # "run" and "internal" properties never appear in this editor.
+            for prop in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB):
                 prop_name = prop.get("name")
                 prop_label = prop.get("label", prop_name)
                 prop_default = prop.get("default")
