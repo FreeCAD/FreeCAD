@@ -1307,6 +1307,7 @@ SET(Selection_SRCS
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
     Selection/SelectionObserver.h
+    Selection/SelectionObserver.cpp
     Selection/Selection.h
     Selection/Selection.cpp
     Selection/SelectionPy.h

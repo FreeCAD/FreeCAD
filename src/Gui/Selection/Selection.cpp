@@ -48,7 +48,6 @@
 #include "SelectionFilter.h"
 #include "Tree.h"
 #include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
 
 
 FC_LOG_LEVEL_INIT("Selection", false, true, true)
@@ -83,106 +82,6 @@ bool SelectionGateFilterExternal::allow(App::Document* doc, App::DocumentObject*
     }
     return false;
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
-    : resolve(resolve)
-    , blockedSelection(false)
-{
-    if (attach) {
-        attachSelection();
-    }
-}
-
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
-    : resolve(resolve)
-    , blockedSelection(false)
-{
-    if (vp && vp->getObject() && vp->getObject()->getDocument()) {
-        filterDocName = vp->getObject()->getDocument()->getName();
-        filterObjName = vp->getObject()->getNameInDocument();
-    }
-    if (attach) {
-        attachSelection();
-    }
-}
-
-
-SelectionObserver::~SelectionObserver()
-{
-    detachSelection();
-}
-
-bool SelectionObserver::blockSelection(bool block)
-{
-    bool ok = blockedSelection;
-    blockedSelection = block;
-    return ok;
-}
-
-bool SelectionObserver::isSelectionBlocked() const
-{
-    return blockedSelection;
-}
-
-bool SelectionObserver::isSelectionAttached() const
-{
-    return connectSelection.connected();
-}
-
-void SelectionObserver::attachSelection()
-{
-    if (!connectSelection.connected()) {
-        bool newStyle = (resolve >= ResolveMode::NewStyleElement);
-        bool oldStyle = (resolve == ResolveMode::OldStyleElement);
-        auto& signal = newStyle ? Selection().signalSelectionChanged3
-            : oldStyle          ? Selection().signalSelectionChanged2
-                                : Selection().signalSelectionChanged;
-        // NOLINTBEGIN
-        connectSelection = signal.connect(
-            std::bind(&SelectionObserver::_onSelectionChanged, this, sp::_1)
-        );
-        // NOLINTEND
-        if (!filterDocName.empty()) {
-            Selection().addSelectionGate(
-                new SelectionGateFilterExternal(filterDocName.c_str(), filterObjName.c_str())
-            );
-        }
-    }
-}
-
-void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
-{
-    try {
-        if (blockedSelection) {
-            return;
-        }
-        onSelectionChanged(msg);
-    }
-    catch (Base::Exception& e) {
-        e.reportException();
-        FC_ERR("Unhandled Base::Exception caught in selection observer: ");
-    }
-    catch (std::exception& e) {
-        FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
-    }
-    catch (...) {
-        FC_ERR("Unhandled unknown exception caught in selection observer");
-    }
-}
-
-void SelectionObserver::detachSelection()
-{
-    if (connectSelection.connected()) {
-        connectSelection.disconnect();
-        if (!filterDocName.empty()) {
-            Selection().rmvSelectionGate();
-        }
-    }
-}
-
-// -------------------------------------------
 
 bool SelectionSingleton::hasSelection() const
 {
