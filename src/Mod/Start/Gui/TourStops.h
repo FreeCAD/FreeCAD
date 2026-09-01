@@ -27,60 +27,87 @@
 #include <QMainWindow>
 #include <QString>
 #include <QStringList>
+#include <QVariant>
 #include <QWidget>
-
-#include <Base/Bitmask.h>
 
 namespace StartGui
 {
 
-extern const QString kWelcomeId;
-extern const QString kSketcherWorkbenchId;
+// IDs for stops Tour.cpp needs to reference directly (see its uses). Add one here only when
+// code outside buildStops() actually looks it up.
 extern const QString kNewSketchId;
-extern const QString kSelectPlaneId;
-extern const QString kExternalProjectionId;
-extern const QString kSubShapeBinderId;
 extern const QString kReadMoreId;
 
-enum class TourStopExitAction : int
+// An environment a stop needs active while shown (a workbench, a sketch being edited). `param`
+// is whatever that stage needs to enter itself; see each enumerator.
+//
+// To add a new stage kind, edit 3 places in total:
+//   1. The enum here, with a comment describing the `param` it expects.
+//   2. TourOverlay::enterStage() / exitStage() in Tour.cpp to react to that stage.
+//   3. The relevant stop list(s) in buildStops() in TourStops.cpp.
+//
+// Keep names normalized: stage kinds are nouns of the environment being activated, while stop
+// ids and chapter labels stay descriptive of the narrative step the user is shown.
+enum class TourStage
 {
-    None = 0,
-    CreateSketchOnXYPlane = 1 << 0,
-    LeaveSketchEditMode = 1 << 1
+    Workbench,   // param: QString, workbench's internal name (e.g. "PartDesignWorkbench").
+    SketchEdit,  // param: QString, sketch to open; empty reuses the sketch already being
+                 // edited, else the first sketch in the document, else creates one. See
+                 // openSketchForEdit().
+};
+
+// One entry in a stop's `stages` list. List outermost-to-innermost (Workbench before
+// SketchEdit) -- transitions tear down and rebuild in that order, see transitionStages().
+struct StageRequirement
+{
+    TourStage stage;
+    QVariant param;
+
+    bool operator==(const StageRequirement& other) const
+    {
+        return stage == other.stage && param == other.param;
+    }
+    bool operator!=(const StageRequirement& other) const
+    {
+        return !(*this == other);
+    }
 };
 
 struct TourStop
 {
-    QWidget* widget = nullptr;
+    // A stop targets either a single widget (dock, panel, workbench selector, toolbar) or a set of
+    // command actions that should be unioned into a single highlight rectangle. If both are empty,
+    // the stop is informational only and no callout is drawn.
+    QWidget* widgetToHighlight = nullptr;
+    QStringList commandsToHighlight;
+
     QString id;
     QString chapterLabel;
     QString headline;
     QString description;
-    QStringList commandNames;
-    bool highlight = true;
-    bool isSubchapter = false;
-    QString workbenchName;
-    Base::Flags<TourStopExitAction> onExit = TourStopExitAction::None;
 
+    bool isSubchapter = false;
+
+    // Outermost-to-innermost stages this stop needs active. Empty means no requirement. Diffed
+    // against the previous stop's stages regardless of how the user got here (Next, Back, jump).
+    QList<StageRequirement> stages;
+
+    // The highlight target is expressed in the most natural form for the UI element involved:
+    //   - widgetToHighlight: a single QWidget/dock/tab/workbench selector
+    //   - commandsToHighlight: a toolbar command strip identified by action names
+    // The caller decides which style fits a given step in buildStops().
     TourStop(
-        QWidget* widget = nullptr,
+        QWidget* widgetToHighlight = nullptr,
+        QStringList commandsToHighlight = {},
         QString id = {},
         QString chapterLabel = {},
         QString headline = {},
         QString description = {},
-        QStringList commandNames = {},
-        bool highlight = true,
         bool isSubchapter = false,
-        QString workbenchName = {},
-        Base::Flags<TourStopExitAction> onExit = TourStopExitAction::None
+        QList<StageRequirement> stages = {}
     );
 };
 
 QList<TourStop> buildStops(const QMainWindow* mainWindow);
 
 }  // namespace StartGui
-
-template<>
-struct enum_traits<StartGui::TourStopExitAction>: enum_traits<>::allow_bitops
-{
-};

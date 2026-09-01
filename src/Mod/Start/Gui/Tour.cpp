@@ -29,6 +29,7 @@
 #include <array>
 #include <cmath>
 
+#include <QAction>
 #include <QDockWidget>
 #include <QDesktopServices>
 #include <QEvent>
@@ -56,9 +57,14 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/WorkbenchSelector.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
 #include <Base/Interpreter.h>
+#include <Base/Type.h>
+#include <Gui/Selection/Selection.h>
 
 namespace StartGui
 {
@@ -75,9 +81,8 @@ constexpr double kChapterMinTopEm = 5.5;         // minimum top offset for the c
 constexpr double kMinBubbleWidthEm = 16.0;       // minimum bubble width before it starts shrinking
 constexpr double kMaxBubbleWidthEm = 26.0;       // maximum bubble width
 
-// Some themes leave stale values for foreground roles, leaving unreadable text contrast
-// Using known background to select contrasting text color instead of relying on theme.
-// If there is a better way to do this, please implement
+// Some themes leave stale foreground-role values, so pick black/white from the known
+// background instead of trusting the palette's text color.
 QColor textColorForBackground(const QColor& background)
 {
     // Rec. 601 perceptual luminance weighting, sRGB channels ~linear enough for this threshold.
@@ -218,17 +223,18 @@ private:
     ) const;
     QWidget* commandWidget(const QString& commandName) const;
     QRect commandStripRect(const QStringList& commandNames) const;
-    QToolBar* firstToolBar() const;
-    QToolBar* partDesignToolBar() const;
-    QWidget* workbenchSelector() const;
-    QDockWidget* findDock(const QStringList& objectNames) const;
+    void ensureToolBarVisible(QToolBar* toolbar) const;
+    void ensureDockVisible(QDockWidget* dock) const;
 
     // Tour flow and teardown.
     void showStop(int index);
     void advance();
     void closeTour();
-    void createSketchOnXYPlane() const;
+    void openSketchForEdit(const QString& sketchName) const;
     bool isEditingSketch() const;
+    void enterStage(const StageRequirement& stage) const;
+    void exitStage(const StageRequirement& stage) const;
+    void transitionStages(const QList<StageRequirement>& from, const QList<StageRequirement>& to) const;
 
     QMainWindow* _mainWindow;
     QFrame* _bubble = nullptr;
@@ -239,9 +245,14 @@ private:
     QListWidget* _chapters = nullptr;
     QList<TourStop> _stops;
     QRect _targetRect;
+    QList<StageRequirement> _activeStages;
     int _index = 0;
     QList<DockFloatState> _dockFloatStates;
     bool _wasOverlayTransparent = false;
+    // Toolbars/docks force-shown to highlight a target; restored to hidden in closeTour(). Mutable:
+    // populated from const lookup methods.
+    mutable QList<QPointer<QToolBar>> _revealedToolBars;
+    mutable QList<QPointer<QDockWidget>> _revealedDocks;
 };
 
 TourOverlay::TourOverlay(QMainWindow* mainWindow)
@@ -370,8 +381,8 @@ void TourOverlay::buildUi()
     applyThemeColors();
 }
 
-// Builds the bubble/chapter-list stylesheets from _mainWindow's palette (this widget is
-// translucent, so its own palette isn't reliable). Re-invoked on palette/style changes.
+// Builds the bubble/chapter-list stylesheets from _mainWindow's palette, since this widget is
+// translucent and its own palette isn't reliable.
 void TourOverlay::applyThemeColors()
 {
     const QPalette pal = _mainWindow->palette();
@@ -477,24 +488,55 @@ void TourOverlay::paintEvent(QPaintEvent*)
 }
 
 // Layout, target lookup and geometry helpers.
+
+// Ensure toolbar visibility. Hide it again in closeTour().
+void TourOverlay::ensureToolBarVisible(QToolBar* toolbar) const
+{
+    if (toolbar == nullptr || toolbar->isVisible()) {
+        return;
+    }
+    auto* toggleAction = toolbar->toggleViewAction();
+    if (toggleAction == nullptr || toggleAction->isChecked()) {
+        return;
+    }
+    if (!_revealedToolBars.contains(toolbar)) {
+        _revealedToolBars.append(toolbar);
+    }
+    toggleAction->setChecked(true);
+}
+
+// Same as ensureToolBarVisible(), for docks (e.g. Report view, hidden by default).
+void TourOverlay::ensureDockVisible(QDockWidget* dock) const
+{
+    if (dock == nullptr || dock->isVisible()) {
+        return;
+    }
+    auto* toggleAction = dock->toggleViewAction();
+    if (toggleAction == nullptr || toggleAction->isChecked()) {
+        return;
+    }
+    if (!_revealedDocks.contains(dock)) {
+        _revealedDocks.append(dock);
+    }
+    toggleAction->setChecked(true);
+}
+
 QWidget* TourOverlay::commandWidget(const QString& commandName) const
 {
-    QWidget* fallback = nullptr;
+    // Only ever return a widget that is actually visible right now.
     for (auto toolbar : _mainWindow->findChildren<QToolBar*>()) {
         for (auto action : toolbar->actions()) {
             if (action->objectName() != commandName) {
                 continue;
             }
+            ensureToolBarVisible(toolbar);
             auto widget = toolbar->widgetForAction(action);
             if (widget != nullptr && widget->isVisible()) {
                 return widget;
             }
-            if (fallback == nullptr) {
-                fallback = widget;
-            }
         }
     }
-    return fallback;
+    return nullptr;
 }
 
 QRect TourOverlay::commandStripRect(const QStringList& commandNames) const
@@ -512,59 +554,106 @@ QRect TourOverlay::commandStripRect(const QStringList& commandNames) const
     return strip;
 }
 
-QDockWidget* TourOverlay::findDock(const QStringList& objectNames) const
+namespace
 {
-    for (auto dock : _mainWindow->findChildren<QDockWidget*>()) {
-        if (objectNames.contains(dock->objectName())) {
-            return dock;
-        }
+// Runtime type checks by name, not by linking Sketcher::SketchObject / PartDesign::Body headers
+bool isSketch(const App::DocumentObject* obj)
+{
+    static const Base::Type sketchType = Base::Type::fromName("Sketcher::SketchObject");
+    return obj != nullptr && !sketchType.isBad() && obj->getTypeId().isDerivedFrom(sketchType);
+}
+
+bool isBody(const App::DocumentObject* obj)
+{
+    static const Base::Type bodyType = Base::Type::fromName("PartDesign::Body");
+    return obj != nullptr && !bodyType.isBad() && obj->getTypeId().isDerivedFrom(bodyType);
+}
+
+// obj->OriginFeatures[3] is the XY_Plane, by PartDesign::Origin's fixed feature order. Reached
+// via property name lookups rather than App::Origin/PartDesign::Body headers, same reasoning
+// as isSketch()/isBody() above.
+App::DocumentObject* xyPlaneOfBody(const App::DocumentObject* body)
+{
+    auto* originProp = dynamic_cast<App::PropertyLink*>(body->getPropertyByName("Origin"));
+    auto* origin = originProp ? dynamic_cast<App::DocumentObject*>(originProp->getValue()) : nullptr;
+    if (origin == nullptr) {
+        return nullptr;
     }
-    return nullptr;
+    auto* featuresProp = dynamic_cast<App::PropertyLinkList*>(
+        origin->getPropertyByName("OriginFeatures")
+    );
+    const auto features = featuresProp ? featuresProp->getValues()
+                                       : std::vector<App::DocumentObject*> {};
+    return features.size() > 3 ? features[3] : nullptr;
 }
+}  // namespace
 
-QToolBar* TourOverlay::firstToolBar() const
+// Opens sketchName for editing, closing whatever else is being edited first. Empty name reuses
+// the sketch already open, else the first sketch in the document, else creates one on the XY
+// plane.
+void TourOverlay::openSketchForEdit(const QString& sketchName) const
 {
-    const auto toolBars = _mainWindow->findChildren<QToolBar*>();
-    return toolBars.empty() ? nullptr : toolBars.front();
-}
+    auto* gdoc = Gui::Application::Instance->activeDocument();
+    if (gdoc == nullptr) {
+        return;
+    }
 
-QToolBar* TourOverlay::partDesignToolBar() const
-{
-    for (auto toolbar : _mainWindow->findChildren<QToolBar*>()) {
-        for (auto action : toolbar->actions()) {
-            if (action->objectName() == QStringLiteral("PartDesign_Pad")
-                || action->objectName() == QStringLiteral("PartDesign_Pocket")) {
-                return toolbar;
+    const std::string target = sketchName.toUtf8().constData();
+
+    if (auto* edited = gdoc->getInEdit()) {
+        if (auto* editedVp = dynamic_cast<Gui::ViewProviderDocumentObject*>(edited)) {
+            auto* editedObj = editedVp->getObject();
+            const bool alreadyOpen = isSketch(editedObj)
+                && (target.empty() || editedObj->getNameInDocument() == target);
+            if (alreadyOpen) {
+                return;
+            }
+        }
+        gdoc->resetEdit();
+    }
+
+    auto* doc = gdoc->getDocument();
+    if (doc == nullptr) {
+        return;
+    }
+
+    App::DocumentObject* candidate = nullptr;
+    if (!target.empty()) {
+        candidate = doc->getObject(target.c_str());
+    }
+    else {
+        for (auto* obj : doc->getObjects()) {
+            if (isSketch(obj)) {
+                candidate = obj;
+                break;
             }
         }
     }
-    return firstToolBar();
-}
 
-QWidget* TourOverlay::workbenchSelector() const
-{
-    const auto selectors = _mainWindow->findChildren<Gui::WorkbenchComboBox*>();
-    if (!selectors.empty()) {
-        return selectors.front();
+    if (candidate != nullptr) {
+        Gui::Selection().clearSelection();
+        if (auto* viewProvider = gdoc->getViewProvider(candidate)) {
+            gdoc->setEdit(viewProvider);
+        }
+        return;
     }
-    return _mainWindow->findChild<QWidget*>(QStringLiteral("WbTabBar"));
-}
 
-void TourOverlay::createSketchOnXYPlane() const
-{
-    try {
-        Base::Interpreter().runStringObject(
-            "exec(\"import FreeCAD as App, FreeCADGui as Gui\\n"
-            "_body = next((obj for obj in App.ActiveDocument.Objects if obj.TypeId == "
-            "'PartDesign::Body'), None) if App.ActiveDocument else None\\n"
-            "if _body is not None and _body.Origin is not None:\\n"
-            "    Gui.Selection.clearSelection()\\n"
-            "    Gui.Selection.addSelection(_body.Origin.OriginFeatures[3])\\n"
-            "    Gui.runCommand('PartDesign_NewSketch')\")"
-        );
-    }
-    catch (Base::PyException& error) {
-        error.reportException();
+    // No sketch to reuse -- find a Body and hand off to PartDesign's own "New sketch" command
+    for (auto* obj : doc->getObjects()) {
+        if (!isBody(obj)) {
+            continue;
+        }
+        if (auto* xyPlane = xyPlaneOfBody(obj)) {
+            Gui::Selection().clearSelection();
+            Gui::Selection().addSelection(doc->getName(), xyPlane->getNameInDocument());
+            try {
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('PartDesign_NewSketch')");
+            }
+            catch (Base::PyException& error) {
+                error.reportException();
+            }
+        }
+        break;
     }
 }
 
@@ -574,15 +663,76 @@ bool TourOverlay::isEditingSketch() const
     return doc != nullptr && doc->getInEdit() != nullptr;
 }
 
+void TourOverlay::enterStage(const StageRequirement& stage) const
+{
+    switch (stage.stage) {
+        case TourStage::Workbench:
+            Gui::Application::Instance->activateWorkbench(stage.param.toString().toUtf8().constData());
+            break;
+        case TourStage::SketchEdit:
+            openSketchForEdit(stage.param.toString());
+            break;
+    }
+}
+
+void TourOverlay::exitStage(const StageRequirement& stage) const
+{
+    switch (stage.stage) {
+        case TourStage::Workbench:
+            break;
+        case TourStage::SketchEdit:
+            if (isEditingSketch()) {
+                if (auto doc = Gui::Application::Instance->activeDocument()) {
+                    doc->resetEdit();
+                }
+            }
+            break;
+    }
+}
+
+// Diffs from/to past their common prefix, exits the old suffix innermost-first, then enters the
+// new suffix outermost-first. Same logic for Next, Back, or jumping straight to a chapter.
+void TourOverlay::transitionStages(
+    const QList<StageRequirement>& from,
+    const QList<StageRequirement>& to
+) const
+{
+    int common = 0;
+    while (common < from.size() && common < to.size() && from.at(common) == to.at(common)) {
+        ++common;
+    }
+    for (int i = from.size() - 1; i >= common; --i) {
+        exitStage(from.at(i));
+    }
+    for (int i = common; i < to.size(); ++i) {
+        enterStage(to.at(i));
+    }
+}
+
 QRect TourOverlay::resolveTargetRect(const TourStop& stop) const
 {
-    if (!stop.highlight) {
+    if (stop.widgetToHighlight == nullptr && stop.commandsToHighlight.isEmpty()) {
         return QRect();
     }
-    QRect targetRect = stop.commandNames.isEmpty() ? QRect() : commandStripRect(stop.commandNames);
-    if (targetRect.isNull() && stop.widget != nullptr && stop.widget->isVisible()) {
-        const auto topLeft = stop.widget->mapTo(_mainWindow, QPoint(0, 0));
-        targetRect = QRect(topLeft, stop.widget->size());
+
+    // Tour stops target either a toolbar command strip (via `commandsToHighlight`) or a single
+    // widget (via `widgetToHighlight`), and the highlight rectangle is resolved from whichever is
+    // available.
+    QRect targetRect = stop.commandsToHighlight.isEmpty()
+        ? QRect()
+        : commandStripRect(stop.commandsToHighlight);
+    if (targetRect.isNull() && stop.widgetToHighlight != nullptr) {
+        // A single-widget target can itself be a dock the user (or the default layout) has
+        // closed -- e.g. Report View, which is hidden by default -- with the exact same
+        // persisted-preference behavior toolbars have. Reveal it the same way before testing
+        // visibility, so this stop doesn't silently never resolve a target.
+        if (auto* dock = qobject_cast<QDockWidget*>(stop.widgetToHighlight)) {
+            ensureDockVisible(dock);
+        }
+        if (stop.widgetToHighlight->isVisible()) {
+            const auto topLeft = stop.widgetToHighlight->mapTo(_mainWindow, QPoint(0, 0));
+            targetRect = QRect(topLeft, stop.widgetToHighlight->size());
+        }
     }
     if (stop.id == kNewSketchId) {
         auto* newSketchWidget = commandWidget(QStringLiteral("Sketcher_NewSketch"));
@@ -727,11 +877,11 @@ void TourOverlay::showStop(int index)
     _index = index;
     const auto& stop = _stops.at(index);
 
-    bool workbenchChanged = false;
-    if (!stop.workbenchName.isEmpty()) {
-        Gui::Application::Instance->activateWorkbench(stop.workbenchName.toUtf8().constData());
-        workbenchChanged = true;
-    }
+    const bool hasTarget = stop.widgetToHighlight != nullptr || !stop.commandsToHighlight.isEmpty();
+    _targetRect = QRect();
+
+    transitionStages(_activeStages, stop.stages);
+    _activeStages = stop.stages;
 
     _targetRect = resolveTargetRect(stop);
     _headline->setText(stop.headline);
@@ -747,41 +897,44 @@ void TourOverlay::showStop(int index)
     raise();
     update();
 
-    if (workbenchChanged) {
-        QTimer::singleShot(0, this, [this, index]() {
+    // Re-check after layout settles, and once more if still unresolved -- a stage entered on the
+    // previous (informational) stop may need a tick before its widgets are visible/laid out.
+    if (hasTarget) {
+        const auto refreshTarget = [this, index]() {
             if (_index != index) {
                 return;
             }
             const auto& currentStop = _stops.at(index);
             _targetRect = resolveTargetRect(currentStop);
+            if (_targetRect.isNull()
+                && (currentStop.widgetToHighlight != nullptr
+                    || !currentStop.commandsToHighlight.isEmpty())) {
+                QTimer::singleShot(0, this, [this, index]() {
+                    if (_index != index) {
+                        return;
+                    }
+                    const auto& retryStop = _stops.at(index);
+                    _targetRect = resolveTargetRect(retryStop);
+                    applyLayout();
+                    raise();
+                    update();
+                });
+                return;
+            }
             applyLayout();
             raise();
             update();
-        });
+        };
+        QTimer::singleShot(0, this, refreshTarget);
     }
 }
 
 void TourOverlay::advance()
 {
-    const auto& stop = _stops.at(_index);
-    if (stop.onExit.testFlag(TourStopExitAction::CreateSketchOnXYPlane)) {
-        createSketchOnXYPlane();
-    }
-    if (stop.onExit.testFlag(TourStopExitAction::LeaveSketchEditMode)) {
-        if (auto doc = Gui::Application::Instance->activeDocument()) {
-            doc->resetEdit();
-        }
-    }
-
-    const auto nextIndex = _index + 1;
-    if (nextIndex < _stops.size()) {
-        const auto& nextStop = _stops.at(nextIndex);
-        if (!nextStop.workbenchName.isEmpty()) {
-            Gui::Application::Instance->activateWorkbench(nextStop.workbenchName.toUtf8().constData());
-        }
-    }
-
-    showStop(nextIndex);
+    // showStop() already diffs _activeStages against the target stop's stages and runs whatever
+    // exit/enter is needed (see transitionStages()), so advancing is just moving the index --
+    // clicking Next is not a special case, it's the same transition a chapter-list jump takes.
+    showStop(_index + 1);
 }
 
 void TourOverlay::closeTour()
@@ -790,6 +943,20 @@ void TourOverlay::closeTour()
         if (state.dock) {
             state.dock->setFeatures(state.features);
             state.dock->setFloating(state.wasFloating);
+        }
+    }
+    for (const auto& toolbar : _revealedToolBars) {
+        if (toolbar) {
+            if (auto* toggleAction = toolbar->toggleViewAction()) {
+                toggleAction->setChecked(false);
+            }
+        }
+    }
+    for (const auto& dock : _revealedDocks) {
+        if (dock) {
+            if (auto* toggleAction = dock->toggleViewAction()) {
+                toggleAction->setChecked(false);
+            }
         }
     }
     if (_wasOverlayTransparent) {

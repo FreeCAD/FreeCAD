@@ -35,32 +35,28 @@
 
 namespace StartGui
 {
-// These specific stops are references by Tour.cpp for additional functions. This keeps them in sync.
+// See TourStops.h -- looked up by value from Tour.cpp.
 const QString kNewSketchId = QStringLiteral("New Sketch");
 const QString kReadMoreId = QStringLiteral("Read More");
 
 TourStop::TourStop(
-    QWidget* widget,
+    QWidget* widgetToHighlight,
+    QStringList commandsToHighlight,
     QString id,
     QString chapterLabel,
     QString headline,
     QString description,
-    QStringList commandNames,
-    bool highlight,
     bool isSubchapter,
-    QString workbenchName,
-    Base::Flags<TourStopExitAction> onExit
+    QList<StageRequirement> stages
 )
-    : widget(widget)
+    : widgetToHighlight(widgetToHighlight)
+    , commandsToHighlight(std::move(commandsToHighlight))
     , id(std::move(id))
     , chapterLabel(std::move(chapterLabel))
     , headline(std::move(headline))
     , description(std::move(description))
-    , commandNames(std::move(commandNames))
-    , highlight(highlight)
     , isSubchapter(isSubchapter)
-    , workbenchName(std::move(workbenchName))
-    , onExit(onExit)
+    , stages(std::move(stages))
 {}
 
 namespace
@@ -126,15 +122,22 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
         QStringLiteral("PartDesign_SubtractiveHelix")
     };
 
+    const QList<StageRequirement> sketcherWorkbenchStages {
+        {TourStage::Workbench, QStringLiteral("SketcherWorkbench")}
+    };
+    const QList<StageRequirement> sketchEditStages {
+        {TourStage::Workbench, QStringLiteral("SketcherWorkbench")},
+        {TourStage::SketchEdit, {}}
+    };
+    const QList<StageRequirement> partDesignWorkbenchStages {
+        {TourStage::Workbench, QStringLiteral("PartDesignWorkbench")}
+    };
+    const QList<StageRequirement> partWorkbenchStages {
+        {TourStage::Workbench, QStringLiteral("PartWorkbench")}
+    };
+
     QList<TourStop> candidates {
-        {nullptr,
-         QStringLiteral("Welcome"),
-         tr("Welcome"),
-         tr("Welcome to the project"),
-         QString(),
-         {},
-         false,
-         false},
+        {nullptr, {}, QStringLiteral("Welcome"), tr("Welcome"), tr("Welcome to the project"), {}, false},
 
         {findDock(
              mainWindow,
@@ -143,6 +146,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
               QStringLiteral("Std_TreeView"),
               QStringLiteral("Std_ComboView")}
          ),
+         {},
          QStringLiteral("Tree"),
          tr("Tree"),
          tr("Read the tree"),
@@ -159,7 +163,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "src=\":/icons/Std_ToggleVisibility.svg\" width=\"16\" height=\"16\"> eye icon shows "
             "whether an object is visible right now -- that's independent of where it sits in the "
             "tree."),
-         {}},
+         false},
 
         {findDock(
              mainWindow,
@@ -168,6 +172,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
               QStringLiteral("Std_TreeView"),
               QStringLiteral("Std_ComboView")}
          ),
+         {},
          QStringLiteral("Origin Folder"),
          tr("Origin Folder"),
          tr("Hidden by default"),
@@ -179,8 +184,6 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "hidden from the tree by default because most day-to-day work doesn't need them. "
             "Right-click in the tree and enable \"Show hidden items\" (or select the Origin and "
             "press the spacebar) to reveal it, then toggle any single plane or axis the same way."),
-         {},
-         true,
          true},
 
         {findDock(
@@ -190,6 +193,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
               QStringLiteral("Std_TreeView"),
               QStringLiteral("Std_ComboView")}
          ),
+         {},
          QStringLiteral("Rollback"),
          tr("Rollback"),
          tr("Editing an earlier feature"),
@@ -199,11 +203,10 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "the edit and everything reappears, recomputed. If a later feature ever seems stuck "
             "hidden, right-click the Body and choose \"Move tip to end\" to bring the tree back "
             "to showing the full, final result."),
-         {},
-         true,
          true},
 
         {workbenchSelector(mainWindow),
+         {},
          QStringLiteral("Sketcher Workbench"),
          tr("Sketcher Workbench"),
          tr("Sketcher Workbench"),
@@ -218,12 +221,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "width=\"16\" height=\"16\"> Part can use one as a profile for equivalent tools such "
             "as <img src=\":/icons/tools/Part_Extrude.svg\" width=\"16\" height=\"16\"> Extrude "
             "or <img src=\":/icons/tools/Part_Revolve.svg\" width=\"16\" height=\"16\"> Revolve."),
-         {},
-         true,
          false,
-         QStringLiteral("SketcherWorkbench")},
+         sketcherWorkbenchStages},
 
         {nullptr,
+         {},
          QStringLiteral("Constraint Colors"),
          tr("Constraint Colors"),
          tr("Read the colors"),
@@ -233,37 +235,33 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "orange means a constraint conflicts with another or is redundant; the Report view "
             "will tell you which ones so you can remove one. Aim for a fully constrained, green "
             "sketch before using it in a feature."),
-         {},
-         false,
          true,
-         QStringLiteral("SketcherWorkbench")},
+         sketcherWorkbenchStages},
 
         {nullptr,
+         {QStringLiteral("Sketcher_NewSketch")},
          kNewSketchId,
          tr("New Sketch"),
          tr("Start a sketch"),
          tr("<img src=\":/icons/general/Sketcher_NewSketch.svg\" width=\"16\" height=\"16\"> "
             "Every Part Design feature starts from a sketch. The New Sketch button is "
             "highlighted. Click Next and this tour will create a sketch on the XY plane for you."),
-         {QStringLiteral("Sketcher_NewSketch")},
          true,
-         true,
-         QStringLiteral("SketcherWorkbench"),
-         TourStopExitAction::CreateSketchOnXYPlane},
+         sketcherWorkbenchStages},
 
         {nullptr,
+         {},
          QStringLiteral("Select Plane"),
          tr("Select a Plane"),
          tr("Pick a plane"),
          tr("A sketch needs a flat plane to sit on. The tour attaches this one to the <img "
             "src=\":/icons/Std_Plane.svg\" width=\"16\" height=\"16\"> XY plane, whose normal "
             "points along Z, and starts editing it."),
-         {},
-         false,
          true,
-         QStringLiteral("SketcherWorkbench")},
+         sketchEditStages},
 
         {nullptr,
+         {QStringLiteral("Sketcher_CompExternal")},
          QStringLiteral("External Projection"),
          tr("External Projection"),
          tr("External geometry"),
@@ -272,13 +270,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "src=\":/icons/geometry/Sketcher_Projection.svg\" width=\"16\" height=\"16\"> icon, "
             "highlighted here in the Sketcher toolbar. It helps line up a sketch with existing "
             "geometry, but it is not a solid and does not create a second document."),
-         {QStringLiteral("Sketcher_CompExternal")},
          true,
-         true,
-         QStringLiteral("SketcherWorkbench"),
-         TourStopExitAction::LeaveSketchEditMode},
+         sketchEditStages},
 
         {workbenchSelector(mainWindow),
+         {},
          QStringLiteral("Part Design Workbench"),
          tr("Part Design Workbench"),
          tr("Part Design Workbench"),
@@ -288,12 +284,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "a <img src=\":/icons/PartDesign_Chamfer.svg\" width=\"16\" height=\"16\"> Chamfer; "
             "is processed as a single solid built up step by step, which can be edited or rolled "
             "back at any point."),
-         {},
-         true,
          false,
-         QStringLiteral("PartDesignWorkbench")},
+         partDesignWorkbenchStages},
 
         {partDesignToolBar(mainWindow),
+         additiveSubtractiveCommands,
          QStringLiteral("Additive / Subtractive"),
          tr("Additive / Subtractive"),
          tr("Additive and subtractive"),
@@ -305,12 +300,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "src=\":/icons/PartDesign_Revolution.svg\" width=\"16\" height=\"16\"> Revolution. "
             "Don't rely on color alone: read the command name or its tooltip. Pick a sketch, "
             "choose the operation, then set its length or depth in the Tasks panel."),
-         additiveSubtractiveCommands,
          true,
-         true,
-         QStringLiteral("PartDesignWorkbench")},
+         partDesignWorkbenchStages},
 
         {nullptr,
+         {QStringLiteral("PartDesign_SubShapeBinder")},
          QStringLiteral("SubShape Binder"),
          tr("SubShape Binder"),
          tr("Referencing without duplicating"),
@@ -321,12 +315,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "without duplicating it -- a reference, not a copy, and not a separate document. The "
             "old, blue <img src=\":/icons/PartDesign_ShapeBinder.svg\" width=\"16\" "
             "height=\"16\"> Shape Binder references an object's whole shape."),
-         {QStringLiteral("PartDesign_SubShapeBinder")},
          true,
-         true,
-         QStringLiteral("PartDesignWorkbench")},
+         partDesignWorkbenchStages},
 
         {workbenchSelector(mainWindow),
+         {},
          QStringLiteral("Part Workbench"),
          tr("Part Workbench"),
          tr("Part Workbench"),
@@ -340,18 +333,11 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "src=\":/icons/tools/Part_Extrude.svg\" width=\"16\" height=\"16\"> Extrude and <img "
             "src=\":/icons/tools/Part_Revolve.svg\" width=\"16\" height=\"16\"> Revolve turn "
             "profiles into solids."),
-         {},
-         true,
          false,
-         QStringLiteral("PartWorkbench")},
+         partWorkbenchStages},
 
-        {findDock(
-             mainWindow,
-             {QStringLiteral("Model"),
-              QStringLiteral("Tree view"),
-              QStringLiteral("Std_TreeView"),
-              QStringLiteral("Std_ComboView")}
-         ),
+        {nullptr,
+         {},
          QStringLiteral("Layout"),
          tr("Layout"),
          tr("Make it yours"),
@@ -360,10 +346,10 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "a small float button that pops it into its own window, and a close button that hides "
             "it -- bring a hidden panel back later from the View menu. Keep the Model and Tasks "
             "panels wherever your eyes naturally rest."),
-         {},
          false},
 
         {firstToolBar(mainWindow),
+         {QStringLiteral("Std_Refresh")},
          QStringLiteral("Recompute"),
          tr("Recompute"),
          tr("Stay up to date"),
@@ -371,41 +357,28 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
             "recomputing before its geometry catches up -- look for the recompute icon (a small "
             "refresh arrow) lighting up in the toolbar. Click it, or press the shortcut, to bring "
             "everything current before you keep building."),
-         {QStringLiteral("Std_Refresh")},
-         true,
          false},
 
         {findDock(mainWindow, {QStringLiteral("Report view"), QStringLiteral("Std_ReportView")}),
+         {},
          QStringLiteral("Report View"),
          tr("Report View"),
          tr("Check the Report view"),
          tr("Warnings and errors often show up only in the Report view, a panel that's hidden by "
             "default. Open it from the View menu, under Panels, then Report view. It's the first "
             "place to look when a recompute fails or a command doesn't do what you expected."),
-         {},
-         true,
          false},
 
         {nullptr,
+         {},
          kReadMoreId,
          tr("Read More"),
          tr("Keep learning"),
          tr("Continue with FreeCAD's Getting Started guide for hands-on examples and deeper "
             "explanations. Use the Read more button below to open it in your browser."),
-         {},
          false}
     };
 
-    candidates.erase(
-        std::remove_if(
-            candidates.begin(),
-            candidates.end(),
-            [](const TourStop& stop) {
-                return stop.highlight && stop.widget == nullptr && stop.commandNames.isEmpty();
-            }
-        ),
-        candidates.end()
-    );
     return candidates;
 }
 
