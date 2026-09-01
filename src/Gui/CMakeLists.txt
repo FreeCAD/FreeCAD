@@ -1313,6 +1313,7 @@ SET(Selection_SRCS
     Selection/SelectionPy.h
     Selection/SelectionPyImp.cpp
     Selection/SelectionStack.cpp
+    Selection/SelectionVisibility.cpp
     Selection/SelectionTypes.h
     Selection/SelectionFilter.h
     Selection/SelectionFilter.cpp

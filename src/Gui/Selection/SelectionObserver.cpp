@@ -30,11 +30,7 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     }
 }
 
-SelectionObserver::SelectionObserver(
-    const ViewProviderDocumentObject* vp,
-    bool attach,
-    ResolveMode resolve
-)
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
 {
