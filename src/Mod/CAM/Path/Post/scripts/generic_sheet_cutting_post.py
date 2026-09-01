@@ -302,6 +302,12 @@ class GenericSheetCutting(PostProcessor):
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
 
+
+    def _clear_cutter_state(self):
+        """Reset state tracking without emitting commands."""
+        self._torch_active = False
+        self._last_z = None
+
     def _inject_cooling_delay(self, postables):
         """Inject cooling delay after torch extinguish command."""
         cooling_delay_ms = int(self.values["COOLING_DELAY"])
@@ -315,7 +321,7 @@ class GenericSheetCutting(PostProcessor):
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
                     # Reset state for each operation
-                    new_commands = self._reset_cutter_state(item)
+                    new_commands = self._clear_cutter_state(item)
 
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
