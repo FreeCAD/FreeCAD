@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 import re
 from typing import Iterable
@@ -56,12 +57,11 @@ from .parsing import (
     extract_balanced,
     first_string_literal,
     generated_source,
-    iter_source_files,
     line_number,
     normalize_doc,
     normalize_expr,
     split_top_level,
-    strip_comments,
+    SourceFile,
 )
 from .type_context_rules import type_context_internal_reason, type_context_public_targets
 
@@ -127,17 +127,19 @@ def normalize_table_reference(table: str | None, aliases: dict[str, str]) -> str
     return normalized
 
 
-def module_state_for_source(
+def _apply_module_state_patterns(
     source: str,
-    initial_variables: dict[str, str] | None = None,
-) -> ModuleState:
-    module_vars = dict(initial_variables or {})
-    for match in PYMODULE_IMPORT_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in INIT_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("namespace")
+    module_vars: dict[str, str],
+    include_direct_bindings: bool = True,
+) -> None:
+    if include_direct_bindings:
+        for match in PYMODULE_IMPORT_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+        for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+        for match in INIT_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("namespace")
+
     wrappers: dict[str, str] = {}
     for match in PY_OBJECT_WRAPPER_RE.finditer(source):
         source_module = module_vars.get(match.group("source"))
@@ -152,24 +154,48 @@ def module_state_for_source(
         child_module = module_vars.get(match.group("child"))
         if parent_module and child_module:
             module_vars[match.group("child")] = f"{parent_module}.{match.group('name')}"
+
+
+@lru_cache(maxsize=None)
+def _base_module_variables(source: str) -> tuple[tuple[str, str], ...]:
+    module_vars: dict[str, str] = {}
+    _apply_module_state_patterns(source, module_vars)
+    return tuple(module_vars.items())
+
+
+def module_state_for_source(
+    source: str,
+    initial_variables: dict[str, str] | None = None,
+) -> ModuleState:
+    if initial_variables is None:
+        return ModuleState(variables=dict(_base_module_variables(source)))
+
+    module_vars = dict(initial_variables)
+    _apply_module_state_patterns(source, module_vars)
+    return ModuleState(variables=module_vars)
+
+
+def _extend_module_state_for_source(
+    source: str,
+    initial_variables: dict[str, str],
+) -> ModuleState:
+    module_vars = dict(initial_variables)
+    _apply_module_state_patterns(source, module_vars, include_direct_bindings=False)
     return ModuleState(variables=module_vars)
 
 
 def collect_module_definitions(
-    root: Path, files: Iterable[Path]
+    root: Path, files: Iterable[SourceFile]
 ) -> tuple[dict[tuple[str, str], ModuleDef], dict[str, str], dict[tuple[str, str], str]]:
     module_defs: dict[tuple[str, str], ModuleDef] = {}
     aliases: dict[str, str] = {}
     table_modules: dict[tuple[str, str], str] = {}
 
-    file_data: dict[Path, str] = {}
-    for path in files:
-        try:
-            file_data[path] = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+    source_files = tuple(files)
 
-    for path, source in file_data.items():
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         rel = path.relative_to(root).as_posix()
         for match in PYMETHOD_ALIAS_RE.finditer(source):
             table = normalize_expr(match.group("table"))
@@ -195,7 +221,9 @@ def collect_module_definitions(
             if table:
                 table_modules[(rel, table)] = name
 
-    for path, source in file_data.items():
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         rel = path.relative_to(root).as_posix()
         variable_modules = module_state_for_source(source).variables
         variable_tables: dict[str, str] = {}
@@ -209,7 +237,7 @@ def collect_module_definitions(
             if module_def.table:
                 variable_tables[variable] = module_def.table
 
-        variable_modules = module_state_for_source(source, variable_modules).variables
+        variable_modules = _extend_module_state_for_source(source, variable_modules).variables
 
         for match in PYMODULE_ADD_OBJECT_RE.finditer(source):
             public_name = variable_modules.get(match.group("child"))
@@ -266,15 +294,13 @@ def cpp_type_name(expression: str) -> str | None:
     return None
 
 
-def collect_type_registrations(root: Path, files: Iterable[Path]) -> dict[str, list[str]]:
+def collect_type_registrations(root: Path, files: Iterable[SourceFile]) -> dict[str, list[str]]:
     registrations: dict[str, list[str]] = defaultdict(list)
 
-    for path in files:
+    for source_file in files:
+        path = source_file.path
         rel = path.relative_to(root).as_posix()
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+        source = source_file.source
 
         module_vars = module_state_for_source(source).variables
 
@@ -545,16 +571,14 @@ def flags_to_method_kind(flags: str) -> MethodKind:
             return "varargs"
 
 
-def collect_methods(root: Path, source_dir: Path) -> list[BindingMethod]:
-    files = list(iter_source_files(root, source_dir))
-    _, _, table_modules = collect_module_definitions(root, files)
+def collect_methods(root: Path, files: Iterable[SourceFile]) -> list[BindingMethod]:
+    source_files = tuple(files)
+    _, _, table_modules = collect_module_definitions(root, source_files)
 
     methods: list[BindingMethod] = []
-    for path in files:
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         methods.extend(extract_pycxx_methods(root, path, source))
         methods.extend(extract_pycxx_sequence_slots(root, path, source))
         methods.extend(extract_pymethoddef_methods(root, path, source, table_modules))

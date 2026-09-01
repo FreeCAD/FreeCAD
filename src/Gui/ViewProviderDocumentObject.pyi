@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 from ViewProvider import ViewProvider
-from typing import Any, Final
+from typing import TYPE_CHECKING, Final
+
+if TYPE_CHECKING:
+    from FreeCAD import DocumentObject as _DocumentObject
 
 class ViewProviderDocumentObject(ViewProvider):
     """
@@ -18,11 +21,11 @@ class ViewProviderDocumentObject(ViewProvider):
         Update the view representation of the object
         """
         ...
-    Object: Any = ...
+    Object: _DocumentObject = ...
     """Set/Get the associated data object"""
 
     ForceUpdate: bool = False
     """Reference count to force update visual"""
 
-    Document: Final[Any] = ...
+    Document: Final["Document"] = ...
     """Return the document the view provider is part of"""

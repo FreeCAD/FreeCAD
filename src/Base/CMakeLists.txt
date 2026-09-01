@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_library(FreeCADBase SHARED)
+add_dependencies(FreeCADBase fc_version)
 
 if(WIN32)
     add_definitions(-DFCBase)
@@ -388,9 +389,7 @@ if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADBase)
-endif()
+target_compile_warn_error(FreeCADBase)
 
 SET_BIN_DIR(FreeCADBase FreeCADBase)
 

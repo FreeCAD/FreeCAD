@@ -1,0 +1,62 @@
+---
+name: Score open PRs in triage project
+
+on:  # yamllint disable-line rule:truthy
+  schedule:
+    - cron: '0 3 * * *'  # Run at 03:00 UTC every day
+  workflow_dispatch:
+    inputs:
+      skip_labels:
+        description: >
+          Extra labels to skip (comma-separated). "Status: Stale" is always skipped.
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  score-prs:
+    name: Score open PRs and update project
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD'
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Score open PRs and update project
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          args=(--project 40)
+          if [ -n "${{ github.event.inputs.skip_labels }}" ]; then
+            IFS=',' read -ra labels <<< "${{ github.event.inputs.skip_labels }}"
+            for label in "${labels[@]}"; do
+              label="${label#"${label%%[![:space:]]*}"}"  # ltrim
+              label="${label%"${label##*[![:space:]]}"}"  # rtrim
+              args+=(--skip-label "$label")
+            done
+          fi
+          python .github/scripts/score_prs.py "${args[@]}"

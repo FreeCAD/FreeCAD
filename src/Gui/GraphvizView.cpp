@@ -228,6 +228,8 @@ void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
 
 /* TRANSLATOR Gui::GraphvizView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::GraphvizView, Gui::MDIView)  // NOLINT
+
 GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
     : MDIView(nullptr, parent)
     , doc(_doc)
