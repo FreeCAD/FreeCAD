@@ -75,11 +75,6 @@ void CArea::Xor(const CArea& a2)
     Clip(ClipType::Xor, a2);
 }
 
-void CArea::OffsetInward(double inwards_value)
-{
-    Offset(-inwards_value);
-}
-
 void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& metadata) const
 {
     Paths64 closed_paths;

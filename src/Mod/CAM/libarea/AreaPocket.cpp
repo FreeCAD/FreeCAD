@@ -31,7 +31,7 @@ public:
         offset.m_curves.push_back(*island);
         offset.m_curves.back().Reverse();
 
-        offset.OffsetInward(-pocket_params->stepover);
+        offset.Offset(pocket_params->stepover);
 
 
         if (offset.m_curves.size() > 1) {
@@ -241,7 +241,7 @@ void CurveTree::MakeOffsets2()
     }
     CArea smaller;
     smaller.m_curves.push_back(curve);
-    smaller.OffsetInward(pocket_params->stepover);
+    smaller.Offset(-pocket_params->stepover);
 
     if (CArea::m_please_abort) {
         return;
@@ -467,7 +467,7 @@ void recur(std::list<CArea>& arealist, const CArea& a1, const CAreaPocketParams&
     }
 
     CArea a_offset = a1;
-    a_offset.OffsetInward(params.stepover);
+    a_offset.Offset(-params.stepover);
 
     // split curves into new areas
     if (CArea::HolesLinked()) {

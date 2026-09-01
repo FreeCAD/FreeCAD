@@ -174,110 +174,54 @@ class TestAreaOperations(unittest.TestCase):
     # ========================================================================
 
     def test_offset_inward(self):
-        """Test offsetting a square inward with both methods."""
-        a1 = self.create_square(0, 0, 10)
-        a2 = self.create_square(0, 0, 10)
-
-        # OffsetInward(positive) = inward, Offset(negative) = inward
-        a1.OffsetInward(1)
-        a2.Offset(-1)
-
-        # Both should have single CCW curve
-        curves1 = a1.getCurves()
-        curves2 = a2.getCurves()
-        self.assertEqual(len(curves1), 1, "OffsetInward should produce single curve")
-        self.assertEqual(len(curves2), 1, "Offset should produce single curve")
-        self.assertFalse(curves1[0].IsClockwise(), "OffsetInward curve should be counter-clockwise")
-        self.assertFalse(curves2[0].IsClockwise(), "Offset curve should be counter-clockwise")
-
-        # Check both produce same area
-        self.assertAreaNear(a1, 8 * 8, msg="OffsetInward(1.0)")
-        self.assertAreaNear(a2, 8 * 8, msg="Offset(-1.0)")
+        """Test offsetting a square inward."""
+        a = self.create_square(0, 0, 10)
+        a.Offset(-1)
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+        self.assertAreaNear(a, 8 * 8, msg="Offset(-1.0)")
 
     def test_offset_outward(self):
-        """Test offsetting a square outward with both methods."""
-        a1 = self.create_square(0, 0, 10)
-        a2 = self.create_square(0, 0, 10)
-
-        # OffsetInward(negative) = outward, Offset(positive) = outward
-        a1.OffsetInward(-1)
-        a2.Offset(1)
-
-        # Both should have single CCW curve
-        curves1 = a1.getCurves()
-        curves2 = a2.getCurves()
-        self.assertEqual(len(curves1), 1, "OffsetInward should produce single curve")
-        self.assertEqual(len(curves2), 1, "Offset should produce single curve")
-        self.assertFalse(curves1[0].IsClockwise(), "OffsetInward curve should be counter-clockwise")
-        self.assertFalse(curves2[0].IsClockwise(), "Offset curve should be counter-clockwise")
-
-        # Check both produce same area
-        self.assertAreaNear(a1, 12 * 12, msg="OffsetInward(-1.0)")
-        self.assertAreaNear(a2, 12 * 12, msg="Offset(1.0)")
+        """Test offsetting a square outward."""
+        a = self.create_square(0, 0, 10)
+        a.Offset(1)
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+        self.assertAreaNear(a, 12 * 12, msg="Offset(1.0)")
 
     def test_offset_inward_reversed(self):
-        """Test offsetting a clockwise square inward with both methods."""
-        a1 = self.create_square_reversed(0, 0, 10)
-        a2 = self.create_square_reversed(0, 0, 10)
-
-        # OffsetInward(positive) = inward, Offset(negative) = inward
-        a1.OffsetInward(1)
-        a2.Offset(-1)
-
-        # Both should have single CCW curve
-        curves1 = a1.getCurves()
-        curves2 = a2.getCurves()
-        self.assertEqual(len(curves1), 1, "OffsetInward should produce single curve")
-        self.assertEqual(len(curves2), 1, "Offset should produce single curve")
-        self.assertFalse(curves1[0].IsClockwise(), "OffsetInward curve should be counter-clockwise")
-        self.assertFalse(curves2[0].IsClockwise(), "Offset curve should be counter-clockwise")
-
-        # Check both produce same area
-        self.assertAreaNear(a1, 8 * 8, msg="OffsetInward(1.0) on CW input")
-        self.assertAreaNear(a2, 8 * 8, msg="Offset(-1.0) on CW input")
+        """Test offsetting a clockwise square inward."""
+        a = self.create_square_reversed(0, 0, 10)
+        a.Offset(-1)
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+        self.assertAreaNear(a, 8 * 8, msg="Offset(-1.0) on CW input")
 
     def test_offset_outward_reversed(self):
-        """Test offsetting a clockwise square outward with both methods."""
-        a1 = self.create_square_reversed(0, 0, 10)
-        a2 = self.create_square_reversed(0, 0, 10)
-
-        # OffsetInward(negative) = outward, Offset(positive) = outward
-        a1.OffsetInward(-1)
-        a2.Offset(1)
-
-        # Both should have single CCW curve
-        curves1 = a1.getCurves()
-        curves2 = a2.getCurves()
-        self.assertEqual(len(curves1), 1, "OffsetInward should produce single curve")
-        self.assertEqual(len(curves2), 1, "Offset should produce single curve")
-        self.assertFalse(curves1[0].IsClockwise(), "OffsetInward curve should be counter-clockwise")
-        self.assertFalse(curves2[0].IsClockwise(), "Offset curve should be counter-clockwise")
-
-        # Check both produce same area
-        self.assertAreaNear(a1, 12 * 12, msg="OffsetInward(-1.0) on CW input")
-        self.assertAreaNear(a2, 12 * 12, msg="Offset(1.0) on CW input")
+        """Test offsetting a clockwise square outward."""
+        a = self.create_square_reversed(0, 0, 10)
+        a.Offset(1)
+        curves = a.getCurves()
+        self.assertEqual(len(curves), 1, "Offset should produce single curve")
+        self.assertFalse(curves[0].IsClockwise(), "Offset curve should be counter-clockwise")
+        self.assertAreaNear(a, 12 * 12, msg="Offset(1.0) on CW input")
 
     def test_offset_circle(self):
         """Test offsetting a circle."""
-        # Create circle with radius 10
-        a1 = self.create_circle(0, 0, 10)
-        a2 = self.create_circle(0, 0, 10)
-        self.assertAreaNear(a1, math.pi * 10**2, msg="Original circle")
+        a = self.create_circle(0, 0, 10)
+        self.assertAreaNear(a, math.pi * 10**2, msg="Original circle")
 
         # Offset inward by 2 (radius becomes 8)
-        a1.OffsetInward(2)
-        a2.Offset(-2)
+        a.Offset(-2)
 
         # Should have 1 curve with at most 3 CVertex (start, most of circle,
         # rest; CVertex doesn't support full-circle arcs)
-        self.assertEqual(a1.num_curves(), 1, "Offset circle should 1 curve")
-        self.assertEqual(a2.num_curves(), 1, "Offset circle should 1 curve")
-        self.assertLess(a1.getCurves()[0].getNumVertices(), 4)
-        self.assertLess(a2.getCurves()[0].getNumVertices(), 4)
-
-        # Check area
-        self.assertAreaNear(a1, math.pi * 8**2, msg="Offset circle")
-        self.assertAreaNear(a2, math.pi * 8**2, msg="Offset circle")
+        self.assertEqual(a.num_curves(), 1, "Offset circle should 1 curve")
+        self.assertLess(a.getCurves()[0].getNumVertices(), 4)
+        self.assertAreaNear(a, math.pi * 8**2, msg="Offset circle")
 
     # ========================================================================
     # Open Offset Tests

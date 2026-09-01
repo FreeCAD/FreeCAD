@@ -168,7 +168,6 @@ public:
     void Intersect(const CArea& a2);
     void Union(const CArea& a2);
     void Xor(const CArea& a2);
-    void OffsetInward(double inwards_value);  // Deprecated: use Offset
 
     // Offsets wires; input wires must be closed shapes
     void Offset(double offset);
