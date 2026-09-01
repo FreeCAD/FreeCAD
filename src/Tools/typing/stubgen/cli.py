@@ -27,7 +27,7 @@ from .generator import (
     write_outputs,
 )
 from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
-from .parsing import iter_source_files
+from .parsing import load_source_files
 from .source_inputs import (
     collect_binding_classes,
     load_stub_signature_overrides,
@@ -178,8 +178,9 @@ def run_generate(args: argparse.Namespace) -> int:
         print_stderr(f"source directory does not exist: {source_dir}\n")
         return 2
 
-    type_registrations = collect_type_registrations(root, list(iter_source_files(root, source_dir)))
-    methods = collect_methods(root, source_dir)
+    source_files = load_source_files(root, source_dir)
+    type_registrations = collect_type_registrations(root, source_files)
+    methods = collect_methods(root, source_files)
     methods = supplement_module_methods_from_stub_signatures(root, source_dir, methods)
     classes = collect_binding_classes(root, source_dir, type_registrations)
     stub_signature_overrides = load_stub_signature_overrides(

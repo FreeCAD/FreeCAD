@@ -1744,14 +1744,14 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1495"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
       <source>No face selected</source>
       <translation>Страница није изабрана</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
@@ -1771,7 +1771,7 @@ If zero, it is equal to Radius2</source>
       <translation>Изабери странице</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="796"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
       <source>Select reference…</source>
       <translation>Изабери референцу…</translation>
     </message>
@@ -1783,7 +1783,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
       <source>No start reference selected</source>
       <translation type="unfinished">No start reference selected</translation>
     </message>
@@ -1793,60 +1793,60 @@ If zero, it is equal to Radius2</source>
       <translation type="unfinished">Offset from the profile or selected start reference</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
       <source>Sketch normal</source>
       <translation>Нормала на скицу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="792"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
       <source>Face normal</source>
       <translation>Нормала на страницу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="800"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="803"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
       <source>Custom direction</source>
       <translation>Сопствени смер</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1190"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Cancel</source>
       <translation>Откажи</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
       <source>Select face, plane...</source>
       <translation type="unfinished">Select face, plane...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>Pick Reference</source>
       <translation>Изабери референцу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1206"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a shape in the model</source>
       <translation>Кликни на неки обик на моделу</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1482"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
       <source>One sided</source>
       <translation>На једну страну</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
       <source>Two sided</source>
       <translation>На две стране</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
       <source>Symmetric</source>
       <translation>Симетрично</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1490"/>
-      <source>Click on a face in the model</source>
-      <translation>Кликни на страницу модела</translation>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <source>Face selection active</source>
+      <translation type="unfinished">Face selection active</translation>
     </message>
   </context>
   <context>
@@ -2135,133 +2135,164 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="57"/>
+      <location filename="../../TaskHoleParameters.cpp" line="59"/>
       <source>Counterbore</source>
       <translation>Цилиндрично упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
       <source>Countersink</source>
       <translation>Конусно упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="59"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Counterdrill</source>
       <translation>Цилиндрично и конусно упуштен отвор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="63"/>
+      <location filename="../../TaskHoleParameters.cpp" line="65"/>
       <source>Hole Parameters</source>
       <translation>Параметри рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>ISO metric regular</source>
       <translation>ISO метрички навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ISO metric fine</source>
       <translation>ISO фини метрички навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>UTS coarse</source>
       <translation>UTS груби навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>UTS fine</source>
       <translation>UTS фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>UTS extra fine</source>
       <translation>UTS екстра фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="78"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ANSI pipes</source>
       <translation>ANSI цевни навоји</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="79"/>
+      <location filename="../../TaskHoleParameters.cpp" line="81"/>
       <source>ISO/BSP pipes</source>
       <translation>ISO/BSP цевни навоји</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="80"/>
+      <location filename="../../TaskHoleParameters.cpp" line="82"/>
       <source>BSW whitworth</source>
       <translation>BSF Витвортов навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="81"/>
+      <location filename="../../TaskHoleParameters.cpp" line="83"/>
       <source>BSF whitworth fine</source>
       <translation>BSF Витвортов фини навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="82"/>
+      <location filename="../../TaskHoleParameters.cpp" line="84"/>
       <source>ISO tyre valves</source>
       <translation>ISO вентили гума</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="712"/>
+      <location filename="../../TaskHoleParameters.cpp" line="202"/>
+      <source>Offset from the profile or selected start reference</source>
+      <translation type="unfinished">Offset from the profile or selected start reference</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="701"/>
+      <source>Cancel</source>
+      <translation>Откажи</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="702"/>
+      <source>Select face, plane...</source>
+      <translation type="unfinished">Select face, plane...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
+      <source>Pick Reference</source>
+      <translation>Изабери референцу</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <source>No start reference selected</source>
+      <translation type="unfinished">No start reference selected</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="771"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Средњи</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="716"/>
+      <location filename="../../TaskHoleParameters.cpp" line="775"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Фини</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="720"/>
+      <location filename="../../TaskHoleParameters.cpp" line="779"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Груби</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="726"/>
+      <location filename="../../TaskHoleParameters.cpp" line="785"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="730"/>
+      <location filename="../../TaskHoleParameters.cpp" line="789"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Затвори</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="734"/>
+      <location filename="../../TaskHoleParameters.cpp" line="793"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Лабав</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="738"/>
+      <location filename="../../TaskHoleParameters.cpp" line="797"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Обичне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="739"/>
+      <location filename="../../TaskHoleParameters.cpp" line="798"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Затвори</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="740"/>
+      <location filename="../../TaskHoleParameters.cpp" line="799"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Широк</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
+      <source>Face</source>
+      <translation>Страница</translation>
     </message>
   </context>
   <context>
@@ -2916,109 +2947,142 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
       <source>Type</source>
       <translation>Врста</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
       <source>Base X-axis</source>
       <translation>Основна X оса</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <source>Mode</source>
+      <translation>Режим</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
       <source>Base Y-axis</source>
       <translation>Основна Y оса</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
       <source>Base Z-axis</source>
       <translation>Основна Z оса</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <source>Horizontal sketch axis</source>
       <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="70"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикална оcа cкице</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="154"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Side 1</source>
+      <translation>Страна 1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <source>Select Face</source>
+      <translation>Изабери страницу</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <source>Side 2</source>
+      <translation>Страна 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
       <source>Symmetric to plane</source>
       <translation>Симетрично у односу на раван</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="161"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
       <source>Reversed</source>
       <translation>Обрнути смер</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="120"/>
-      <source>2nd angle</source>
-      <translation>Други угао</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="42"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
       <source>Axis</source>
       <translation>Оса</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
       <source>Select reference…</source>
       <translation>Изабери референцу…</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Angle</source>
       <translation>Угао</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="149"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="459"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="192"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
       <source>Recompute on change</source>
       <translation>Прерачунај приликом промене</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
       <source>To last</source>
       <translation>До задње</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Through all</source>
       <translation>Кроз све</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
       <source>To first</source>
       <translation>До прве</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
       <source>Up to face</source>
       <translation>До странице</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="184"/>
-      <source>Two angles</source>
-      <translation>Два угла</translation>
+      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <source>One sided</source>
+      <translation>На једну страну</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <source>Two sided</source>
+      <translation>На две стране</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <source>Symmetric</source>
+      <translation>Симетрично</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <source>Face selection active</source>
+      <translation type="unfinished">Face selection active</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
       <source>No face selected</source>
       <translation>Страница није изабрана</translation>
     </message>
@@ -3618,18 +3682,18 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикална оcа cкице</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
       <source>Horizontal sketch axis</source>
       <translation>Хоризонтална оса скице</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="211"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>Construction line %1</source>
       <translation>Помоћна права %1</translation>
     </message>
@@ -4066,147 +4130,147 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
   <context>
     <name>TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="824"/>
+      <location filename="../../TaskHoleParameters.ui" line="919"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
       <translation>Ажурирање промена на навоју у реалном времену
 Имај на уму да прорачун може потрајати</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1019"/>
+      <location filename="../../TaskHoleParameters.ui" line="1114"/>
       <source>Thread Depth</source>
       <translation>Дубина навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1072"/>
+      <location filename="../../TaskHoleParameters.ui" line="1167"/>
       <source>Customize thread clearance</source>
       <translation>Прилагоди зазор навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="699"/>
+      <location filename="../../TaskHoleParameters.ui" line="794"/>
       <source>Clearance</source>
       <translation>Зазор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="65"/>
+      <location filename="../../TaskHoleParameters.ui" line="219"/>
       <source>Head type</source>
       <translation>Врста упуштања</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <location filename="../../TaskHoleParameters.ui" line="248"/>
       <source>Depth type</source>
       <translation>Начин задавања дубине</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="245"/>
+      <location filename="../../TaskHoleParameters.ui" line="340"/>
       <source>Head diameter</source>
       <translation>Пречник упуштања</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="293"/>
+      <location filename="../../TaskHoleParameters.ui" line="388"/>
       <source>Head depth</source>
       <translation>Дубина упуштања</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="668"/>
+      <location filename="../../TaskHoleParameters.ui" line="763"/>
       <source>Clearance / Passthrough</source>
       <translation>Пречник навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="686"/>
+      <location filename="../../TaskHoleParameters.ui" line="781"/>
       <source>Hole type</source>
       <translation>Врста рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="828"/>
+      <location filename="../../TaskHoleParameters.ui" line="923"/>
       <source>Update thread view</source>
       <translation>Ажурирај приказ навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1078"/>
+      <location filename="../../TaskHoleParameters.ui" line="1173"/>
       <source>Custom Clearance</source>
       <translation>Зазор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1091"/>
+      <location filename="../../TaskHoleParameters.ui" line="1186"/>
       <source>Custom Thread clearance value</source>
       <translation>Сопствена вредност зазора навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="881"/>
+      <location filename="../../TaskHoleParameters.ui" line="976"/>
       <source>Direction</source>
       <translation>Правац</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="49"/>
+      <location filename="../../TaskHoleParameters.ui" line="193"/>
       <source>Size</source>
       <translation>Величина</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="712"/>
+      <location filename="../../TaskHoleParameters.ui" line="807"/>
       <source>Hole clearance
 Only available for holes without thread</source>
       <translation>Зазор рупе
 Доступно само за рупе без навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="88"/>
-      <location filename="../../TaskHoleParameters.ui" line="717"/>
+      <location filename="../../TaskHoleParameters.ui" line="170"/>
+      <location filename="../../TaskHoleParameters.ui" line="812"/>
       <source>Standard</source>
       <translation>Стандард</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="673"/>
+      <location filename="../../TaskHoleParameters.ui" line="768"/>
       <source>Tap drill</source>
       <translation>Пречник бушења</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="678"/>
+      <location filename="../../TaskHoleParameters.ui" line="773"/>
       <source>Threaded</source>
       <translation>Са навојем</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="722"/>
+      <location filename="../../TaskHoleParameters.ui" line="817"/>
       <source>Close</source>
       <translation>Затвори</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="727"/>
+      <location filename="../../TaskHoleParameters.ui" line="822"/>
       <source>Wide</source>
       <translation>Широк</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="805"/>
+      <location filename="../../TaskHoleParameters.ui" line="900"/>
       <source>Whether the hole gets a modelled thread</source>
       <translation>Да ли ће навој бити видљив на 3Д моделу</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="808"/>
+      <location filename="../../TaskHoleParameters.ui" line="903"/>
       <source>Model Thread</source>
       <translation>Моделирани навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="861"/>
+      <location filename="../../TaskHoleParameters.ui" line="956"/>
       <source>Class</source>
       <translation>Класа</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="848"/>
+      <location filename="../../TaskHoleParameters.ui" line="943"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>Класа толеранције за рупе са навојем спрам профила рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="552"/>
+      <location filename="../../TaskHoleParameters.ui" line="647"/>
       <source>Diameter</source>
       <translation>Пречник</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="574"/>
+      <location filename="../../TaskHoleParameters.ui" line="669"/>
       <source>Hole diameter</source>
       <translation>Пречник рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <location filename="../../TaskHoleParameters.ui" line="602"/>
       <source>Depth</source>
       <translation>Дубина</translation>
     </message>
@@ -4216,124 +4280,161 @@ Only available for holes without thread</source>
       <translation>Параметри рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="95"/>
+      <location filename="../../TaskHoleParameters.ui" line="38"/>
+      <source>Profile and Placement</source>
+      <translation type="unfinished">Profile and Placement</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="52"/>
       <source>Base profile types</source>
       <translation>Положај у односу на</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="126"/>
+      <location filename="../../TaskHoleParameters.ui" line="60"/>
       <source>Circles and arcs</source>
       <translation>Кружнице и кружне лукове</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Points, circles and arcs</source>
       <translation>Тачке, кружнице и кружне лукове</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="136"/>
+      <location filename="../../TaskHoleParameters.ui" line="70"/>
       <source>Points</source>
       <translation>Тачке</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="170"/>
-      <location filename="../../TaskHoleParameters.ui" line="989"/>
+      <location filename="../../TaskHoleParameters.ui" line="78"/>
+      <source>Start</source>
+      <translation>Почетак</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="86"/>
+      <source>Profile plane</source>
+      <translation type="unfinished">Profile plane</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="91"/>
+      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <source>Offset</source>
+      <translation>Одмак</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="96"/>
+      <location filename="../../TaskHoleParameters.ui" line="104"/>
+      <source>Reference</source>
+      <translation>Референца</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="121"/>
+      <source>Pick Reference</source>
+      <translation>Изабери референцу</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <source>Hole</source>
+      <translation>Рупа</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="265"/>
+      <location filename="../../TaskHoleParameters.ui" line="1084"/>
       <source>Dimension</source>
       <translation>Вредност</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="175"/>
+      <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Through all</source>
       <translation>Кроз све</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="197"/>
+      <location filename="../../TaskHoleParameters.ui" line="292"/>
       <source>Custom head values</source>
       <translation>Сопствене мере упуштања</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="367"/>
+      <location filename="../../TaskHoleParameters.ui" line="462"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>Угао врха бургије</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="403"/>
+      <location filename="../../TaskHoleParameters.ui" line="498"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>Урачунај у дубину</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="610"/>
+      <location filename="../../TaskHoleParameters.ui" line="705"/>
       <source>Switch direction</source>
       <translation>Обрни смер</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="773"/>
+      <location filename="../../TaskHoleParameters.ui" line="868"/>
       <source>Thread</source>
       <translation>Навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="905"/>
+      <location filename="../../TaskHoleParameters.ui" line="1000"/>
       <source>&amp;Right hand</source>
       <translation>&amp;Десни навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="921"/>
+      <location filename="../../TaskHoleParameters.ui" line="1016"/>
       <source>&amp;Left hand</source>
       <translation>&amp;Леви навој</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="970"/>
+      <location filename="../../TaskHoleParameters.ui" line="1065"/>
       <source>Thread Depth Type</source>
       <translation>Врста дубине навоја</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="984"/>
+      <location filename="../../TaskHoleParameters.ui" line="1079"/>
       <source>Hole depth</source>
       <translation>Дубина рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="994"/>
+      <location filename="../../TaskHoleParameters.ui" line="1089"/>
       <source>Tapped (DIN76)</source>
       <translation>Урезивање (DIN76)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="118"/>
+      <location filename="../../TaskHoleParameters.ui" line="232"/>
       <source>Cut type for screw heads</source>
       <translation>Врста упуштања за главе вијака</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="191"/>
+      <location filename="../../TaskHoleParameters.ui" line="286"/>
       <source>Check to override the values predefined by the 'Type'</source>
       <translation>Означи да би сопственим вредностима заменио вредности унапред дефинисане са 'Тип'</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="306"/>
+      <location filename="../../TaskHoleParameters.ui" line="401"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
       <translation>За конусно упуштен отвор ово је 
 дубина косине упуштања</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="462"/>
+      <location filename="../../TaskHoleParameters.ui" line="557"/>
       <source>Countersink angle</source>
       <translation>Угао конусног упуштења</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="399"/>
+      <location filename="../../TaskHoleParameters.ui" line="494"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
       <translation>Величина дна рупе ће бити урачуната
 у укупну дубину рупе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="626"/>
+      <location filename="../../TaskHoleParameters.ui" line="721"/>
       <source>Tapered</source>
       <translation>Конусна рупа</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="639"/>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Taper angle for the hole
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
@@ -4344,7 +4445,7 @@ over 90: larger hole radius at the bottom</source>
 изнад 90: већи полупречник рупе на дну</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="607"/>
+      <location filename="../../TaskHoleParameters.ui" line="702"/>
       <source>Reverses the hole direction</source>
       <translation>Обрће смер рупе</translation>
     </message>
@@ -4629,8 +4730,8 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4724,7 +4825,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>Прављење заобљења није успело. Међу изабраним ивицама постоје оне које се не могу заоблити. Покушајте да заоблите ивице појединачно или са мањим полупречником.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1739"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1783"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4746,22 +4847,27 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Creating a face from sketch failed</source>
       <translation>Прављење страница помоћу скице није успело</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="152"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Оса обртања пресеца скицу</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <source>No revolution geometry was generated</source>
+      <translation type="unfinished">No revolution geometry was generated</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
       <source>Could not revolve the sketch!</source>
       <translation>Није могуће обрнути скицу!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="69"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Није могуће направити странице помоћу скице.
@@ -4813,7 +4919,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
       <source>Error: Result is not a solid</source>
       <translation>Грешка: Резултат није пуно тело</translation>
     </message>
@@ -4843,83 +4949,83 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Грешка: Није могуће направити страницу помоћу скице</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1233"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1268"/>
       <source>Thread type is invalid</source>
       <translation>Погрешна врста навоја</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1752"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
       <source>Hole error: Diameter too small</source>
       <translation>Рупа грешка: Сувише мали пречник</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1847"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Рупа грешка: Неподржана спецификација дужине</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1795"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1853"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Рупа грешка: Неисправна дубина рупе</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1821"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1879"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Рупа грешка: Неисправан угао конуса</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1845"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1903"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Рупа грешка: Сувише мали пречник додатне обраде рупе</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1850"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Рупа грешка: Дубина додатне обраде рупе мора бити мања од дубине рупе</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1857"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Рупа грешка: Дубина додатне обраде рупе мора бити већа или једнака нули</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1887"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1945"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Рупа грешка: Неисправно конусно упуштање</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1923"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1981"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Рупа грешка: Неисправан угао места бушења</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1940"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1998"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Рупа грешка: Неисправно место бушења</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1977"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2035"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Рупа грешка: Није могуће обртање скице</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1984"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2042"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Рупа грешка: Добијени облик је празан</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2007"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>Грешка Рупе: Проналажење осе није успело</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Булова операција није успела на профилној ивици</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Булова операција није успела да направи пуно тело</translation>
     </message>
@@ -4929,24 +5035,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Булова операција није успела</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Није могуће направити странице помоћу скице.
 Укрштање елемената скице или више страница у скици није дозвољено за прављење удубљења до странице.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
       <source>Thread type out of range</source>
       <translation>Тип навоја је ван опсега</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
       <source>Thread size out of range</source>
       <translation>Величина навоја је ван опсега</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
       <source>Error: Thread could not be built</source>
       <translation>Грешка: Није могуће направити навој</translation>
     </message>
@@ -5184,22 +5290,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>делта x2 клина је негативно</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="96"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
       <source>Angle of revolution too large</source>
       <translation>Угао обртања је сувише велики</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="103"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
       <source>Angle of revolution too small</source>
       <translation>Угао обртања је сувише мали</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="110"/>
-      <source>Angles of revolution nullify each other</source>
-      <translation>Углови обртања поништавају један другог</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="126"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
       <source>Reference axis is invalid</source>
       <translation>Референтна оса је неисправна</translation>
     </message>
@@ -5442,7 +5544,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
       <source>Revolution Parameters</source>
       <translation>Параметри обртања</translation>
     </message>
@@ -5450,7 +5552,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
       <source>Groove Parameters</source>
       <translation>Параметри кружног удубљења</translation>
     </message>

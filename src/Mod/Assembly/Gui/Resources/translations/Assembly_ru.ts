@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1420"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>Обновить сохраненные положения</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1859"/>
@@ -569,7 +569,7 @@ H2 — высота в точке T2 в конце ската.
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>Радиальное перемещение</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -584,17 +584,17 @@ H2 — высота в точке T2 в конце ската.
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>Угол этого перемещения во взрыв-сцене</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>Расстояние этого перемещения во взрыв-сцене</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>Редактировать размещение</translation>
     </message>
   </context>
   <context>
@@ -719,7 +719,7 @@ H2 — высота в точке T2 в конце ската.
     <message>
       <location filename="../../../JointObject.py" line="1284"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Список ссылок на компоненты для группировки</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1443"/>
@@ -1649,17 +1649,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
       <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+      <translation>Выберите как минимум 2 компонента для создания жесткой группы</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="536"/>
       <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
+      <translation>Создать жесткую группу</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Создать жесткую группу.&lt;/p&gt;&lt;p&gt;Создает жесткую группу, которая постоянно блокирует выбранные компоненты вместе.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

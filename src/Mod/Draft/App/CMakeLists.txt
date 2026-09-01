@@ -38,9 +38,7 @@ if (MSVC)
     target_compile_options(DraftUtils PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(DraftUtils)
-endif()
+target_compile_warn_error(DraftUtils)
 
 
 SET_BIN_DIR(DraftUtils DraftUtils /Mod/Draft)

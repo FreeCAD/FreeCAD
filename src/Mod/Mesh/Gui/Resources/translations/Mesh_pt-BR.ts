@@ -1595,7 +1595,7 @@ Com sombreamento plano, as normais da superfície não são definidas por vérti
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>Não é possível adicionar o triângulo para evitar geometrias não-manifold.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>
