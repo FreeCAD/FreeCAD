@@ -40,7 +40,7 @@ import Path
 
 Path.Log.debug(f"### RELOADED {__file__}")
 import Constants
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessor, SCOPE_MACHINE
 
 translate = FreeCAD.Qt.translate
 
@@ -161,6 +161,7 @@ class OpenSBPPost(PostProcessor):
         return [
             {
                 "name": "automatic_tool_changer",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Automatic Tool Changer"),
                 "default": False,
@@ -172,6 +173,7 @@ class OpenSBPPost(PostProcessor):
             },
             {
                 "name": "automatic_spindle",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Automatic Spindle Control"),
                 "default": False,
@@ -184,6 +186,7 @@ class OpenSBPPost(PostProcessor):
             # FIXME: should be a general option
             {
                 "name": "suppressed_commands",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Suppressed (tolerated) G-code Commands"),
                 "default": "\n".join(cls.GCodeSuppressed),

@@ -347,7 +347,7 @@ def cmake_registered_binding_pyi_files(root: Path, source_dir: Path) -> tuple[Pa
 def iter_binding_pyi_files(root: Path, source_dir: Path) -> Iterable[Path]:
     for path in cmake_registered_binding_pyi_files(root, source_dir):
         rel = path.relative_to(root).as_posix()
-        if rel in HELPER_PYI_FILES:
+        if rel in HELPER_PYI_FILES or path.name == "PropertyPythonContracts.pyi":
             continue
         if skipped_source_path(rel):
             continue
@@ -374,7 +374,7 @@ def iter_type_stub_pyi_files(root: Path, source_dir: Path) -> Iterable[Path]:
         if path.name.endswith(MODULE_STUB_PYI_SUFFIX):
             continue
         rel = path.relative_to(root).as_posix()
-        if rel in HELPER_PYI_FILES:
+        if rel in HELPER_PYI_FILES or path.name == "PropertyPythonContracts.pyi":
             continue
         if skipped_source_path(rel):
             continue

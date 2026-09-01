@@ -172,9 +172,9 @@ TEST_F(SketchObjectTest, testSplitLineSegment)
     EXPECT_EQ(result, 0);
     // One additional curve should be added
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
-    // Expect the resultant curves are line segments and shape is conserved
-    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
-    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    // Expect the resultant curves to be line segments and tangential (continuous)
+    int numberOfTangentConstraints = countConstraintsOfType(getObject(), Sketcher::Tangent);
+    EXPECT_EQ(numberOfTangentConstraints, 1);
 }
 
 TEST_F(SketchObjectTest, testSplitCircle)
@@ -252,9 +252,9 @@ TEST_F(SketchObjectTest, testSplitArcOfConic)
     EXPECT_EQ(result, 0);
     // The arcOfConic should be split into two arcs of the same conic now
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
-    // Expect the end points of the resultant curve are coincident.
+    // Expect the end points and center points of the resultant curve are coincident.
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
-    EXPECT_EQ(numberOfCoincidentConstraints, 1);
+    EXPECT_EQ(numberOfCoincidentConstraints, 2);
 }
 
 TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
@@ -276,7 +276,7 @@ TEST_F(SketchObjectTest, testSplitNonPeriodicBSpline)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
     // TODO: confirm sampled point(s) is/are at the same place
-    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
+    int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Tangent);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
 }
 

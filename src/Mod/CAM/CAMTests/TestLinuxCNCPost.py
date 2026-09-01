@@ -26,7 +26,12 @@
 import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
-from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Processor import (
+    PostProcessorFactory,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    properties_in_scope,
+)
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -115,6 +120,26 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         idx = lines.index("G21")  # throws IndexError if unexpectedly missing
         preamble = "\n".join(lines[:idx])
         return gcode, preamble
+
+    def test_blend_properties_are_job_scoped(self):
+        """Blend settings must be configurable in the machine editor.
+
+        They were previously "runtime": True, which made them Overview-tab
+        only and left no way to give a machine a default blending mode.
+        "job" scope keeps the per-run override while restoring the
+        machine-level default.
+        """
+        schema = self.post.__class__.get_full_property_schema()
+        by_name = {prop["name"]: prop for prop in schema}
+
+        for name in ("blend_mode", "blend_tolerance"):
+            with self.subTest(prop=name):
+                self.assertEqual(by_name[name].get("scope"), SCOPE_JOB)
+
+        # Scope "job" is what the machine editor renders alongside "machine".
+        editable = {p["name"] for p in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB)}
+        self.assertIn("blend_mode", editable)
+        self.assertIn("blend_tolerance", editable)
 
     def test_blend_mode_exact_path(self):
         """Test EXACT_PATH blend mode outputs G61."""

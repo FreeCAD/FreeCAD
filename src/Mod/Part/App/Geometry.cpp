@@ -6533,7 +6533,8 @@ GeomArcOfCircle* createFilletGeometry(
     double radius,
     int& pos1,
     int& pos2,
-    bool& reverse
+    bool& reverse,
+    Base::Vector3d& cornerPoint
 )
 {
     if (geo1->is<GeomLineSegment>() && geo2->is<GeomLineSegment>()) {
@@ -6550,6 +6551,7 @@ GeomArcOfCircle* createFilletGeometry(
         // use int.
         Base::Vector3d intersection, dist1, dist2;
         find2DLinesIntersection(line1, line2, intersection);
+        cornerPoint = intersection;
 
         Base::Vector3d p1 = arc->getStartPoint(true);
 
@@ -6565,7 +6567,6 @@ GeomArcOfCircle* createFilletGeometry(
         return arc;
     }
     else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
-
         auto distanceToRefPoints =
             [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
                 return (ip1 - ref1).Length() + (ip2 - ref2).Length();
@@ -6701,6 +6702,8 @@ GeomArcOfCircle* createFilletGeometry(
                 pos2 = 2;
             }
         }
+
+        cornerPoint = interpoints.first;
 
         if (dist == INFINITY) {
             // no coincident was found, try basis curve intersection if GeomTrimmedCurve

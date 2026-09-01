@@ -197,7 +197,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     if args.out_dir:
         out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
-        overlay_count = write_outputs(
+        generation_result = write_outputs(
             out_dir,
             root,
             source_dir,
@@ -209,7 +209,8 @@ def run_generate(args: argparse.Namespace) -> int:
         )
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
-            f"({overlay_count} overlay stub files applied)"
+            f"({generation_result.overlay_count} overlay stub files applied)\n"
+            f"{generation_result.cpp_property_report.summary()}"
         )
         print(summary)
         if getattr(args, "log_dir", None):
