@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
-import json
 import re
 
 from .model import BindingMethod, PublicTypeGroup, StubSignatureOverrides
@@ -261,64 +260,3 @@ def type_stub_lines(
         lines.append("")
 
     return lines
-
-
-PYPROJECT_TEMPLATE = """\
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project]
-name = "freecad-typings"
-version = "{version}"
-description = "Type stubs for FreeCAD Python API"
-readme = "README.md"
-license = "LGPL-2.1-or-later"
-requires-python = ">=3.11"
-authors = [{{ name = "FreeCAD Project" }}]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Typing :: Typed",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-]
-
-[tool.hatch.build.targets.sdist]
-ignore-vcs = true
-include = ["stubs/**", "pyproject.toml", "README.md"]
-
-[tool.hatch.build.targets.wheel]
-force-include = {{ "stubs" = "." }}
-"""
-
-
-def _freecad_version(root: Path) -> str:
-    version_file = root / "version.json"
-    with open(version_file, encoding="utf-8") as f:
-        data = json.load(f)
-    suffix = data.get("version_suffix", "")
-    if suffix:
-        suffix = f".{suffix}"
-    major, minor, patch = (
-        data["version_major"],
-        data["version_minor"],
-        data["version_patch"],
-    )
-    return f"{major}.{minor}.{patch}{suffix}"
-
-
-def write_pyproject(out_dir: Path, root: Path) -> None:
-    (out_dir / "pyproject.toml").write_text(
-        PYPROJECT_TEMPLATE.format(version=_freecad_version(root)),
-        encoding="utf-8",
-    )
-
-
-def write_readme(out_dir: Path, root: Path, template_path: Path) -> None:
-    """Write the package README from a template, filling in the version."""
-    template = template_path.read_text(encoding="utf-8")
-    rendered = template.replace("{version}", _freecad_version(root))
-    (out_dir / "README.md").write_text(rendered, encoding="utf-8")
