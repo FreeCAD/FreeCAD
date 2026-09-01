@@ -249,6 +249,9 @@ private:
     int _index = 0;
     QList<DockFloatState> _dockFloatStates;
     bool _wasOverlayTransparent = false;
+    // Keeps re-raising above dock panels still settling from Tour::start()'s workbench/body
+    // setup; stopped once advance() proves that settling is done. See constructor and advance().
+    QTimer* _startupKeepOnTop = nullptr;
     // Toolbars/docks force-shown to highlight a target; restored to hidden in closeTour(). Mutable:
     // populated from const lookup methods.
     mutable QList<QPointer<QToolBar>> _revealedToolBars;
@@ -281,15 +284,14 @@ TourOverlay::TourOverlay(QMainWindow* mainWindow)
 
     showStop(0);
 
-    // Ensure the overlay is drawn above all other widgets
-    QTimer::singleShot(0, this, [this]() {
+    // Re-raise overlay until advance() runs. Before that, the workbench switch and body setup can
+    // cause docks to settle and cover the overlay. Notably brute-forced, a better solution is welcome.
+    _startupKeepOnTop = new QTimer(this);
+    connect(_startupKeepOnTop, &QTimer::timeout, this, [this]() {
         raise();
         update();
-        QTimer::singleShot(0, this, [this]() {
-            raise();
-            update();
-        });
     });
+    _startupKeepOnTop->start(50);
 }
 
 // UI construction and event handling.
@@ -872,6 +874,12 @@ void TourOverlay::showStop(int index)
     if (_stops.isEmpty() || index >= _stops.size()) {
         closeTour();
         return;
+    }
+
+    if (index != 0 && _startupKeepOnTop) {
+        _startupKeepOnTop->stop();
+        _startupKeepOnTop->deleteLater();
+        _startupKeepOnTop = nullptr;
     }
 
     _index = index;
