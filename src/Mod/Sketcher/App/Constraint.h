@@ -221,7 +221,7 @@ private:
              "BSplineControlPoint",
              "BSplineKnotPoint",
              "ParabolaFocalAxis"}
-        };
+    };
 
 public:
     ConstraintType Type {None};

@@ -165,9 +165,7 @@ if (MSVC)
     target_compile_options(Sketcher PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Sketcher)
-endif()
+target_compile_warn_error(Sketcher)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Sketcher PRIVATE

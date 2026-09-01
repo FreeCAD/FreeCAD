@@ -59,6 +59,7 @@ SET(PathPythonBaseGui_SRCS
     Path/Base/Gui/PropertyEditor.py
     Path/Base/Gui/SetupSheet.py
     Path/Base/Gui/SetupSheetOpPrototype.py
+    Path/Base/Gui/Theme.py
     Path/Base/Gui/Util.py
 )
 
