@@ -96,21 +96,21 @@ PyMOD_INIT_FUNC(Measure)
     Base::Interpreter().addType(&Measure::MeasurementPy::Type, mod, "Measurement");
     Base::Interpreter().addType(&Measure::MeasureBasePy::Type, mod, "MeasureBase");
 
-    Measure::Measurement ::init();
+    Measure::Measurement::init();
 
     // umf classes
-    Measure::MeasureDistanceType ::init();
-    Measure::MeasureBase ::init();
-    Measure::MeasurePython ::init();
-    Measure::MeasureAngle ::init();
-    Measure::MeasureDistance ::init();
+    Measure::MeasureDistanceType::init();
+    Measure::MeasureBase::init();
+    Measure::MeasurePython::init();
+    Measure::MeasureAngle::init();
+    Measure::MeasureDistance::init();
     Measure::MeasureDistanceDetached::init();
-    Measure::MeasurePosition ::init();
-    Measure::MeasureLength ::init();
-    Measure::MeasureArea ::init();
-    Measure::MeasureDiameter ::init();
-    Measure::MeasureRadius ::init();
-    Measure::Result ::init();
+    Measure::MeasurePosition::init();
+    Measure::MeasureLength::init();
+    Measure::MeasureArea::init();
+    Measure::MeasureDiameter::init();
+    Measure::MeasureRadius::init();
+    Measure::Result::init();
 
     // Add fundamental umf Measure Types
 

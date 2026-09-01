@@ -49,7 +49,7 @@ PyMOD_INIT_FUNC(Import)
     }
 
     // add mesh elements
-    Base::Interpreter().addType(&Import::StepShapePy ::Type, importModule, "StepShape");
+    Base::Interpreter().addType(&Import::StepShapePy::Type, importModule, "StepShape");
 
 
     Base::Console().log("Loading Import module... done\n");
