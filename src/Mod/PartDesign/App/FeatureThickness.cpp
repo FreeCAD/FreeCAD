@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cmath>
 #include <map>
 #include <string>
 #include <vector>
@@ -33,11 +34,79 @@
 
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
-#include "RectoVersoThickness.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
+
+namespace
+{
+void ensureValidWall(const Part::TopoShape& wall, const char* message)
+{
+    if (wall.isNull() || !wall.isValid() || wall.countSubShapes(TopAbs_SOLID) != 1) {
+        throw Base::CADKernelError(message);
+    }
+}
+
+/** Build a wall centered on the retained shell of a solid.
+ *
+ * The closing faces are removed by the ordinary skin-thickness operation.
+ * Two exact one-sided walls are built at +offset and -offset and regular-fused
+ * across their shared source shell. Consequently, offset is the distance on
+ * each side and the total wall thickness is twice its absolute value.
+ */
+Part::TopoShape makeRectoVersoThickness(
+    const Part::TopoShape& solid,
+    const std::vector<Part::TopoShape>& closingFaces,
+    double offset,
+    double tolerance,
+    bool intersection,
+    Part::JoinType join
+)
+{
+    const double distance = std::abs(offset);
+    if (distance <= tolerance) {
+        throw Base::CADKernelError("Recto-verso thickness must exceed the modeling tolerance");
+    }
+
+    // Signed offsets are only meaningful for consistently oriented solids.
+    // Imported and programmatically constructed solids are not guaranteed to
+    // have that orientation, so normalize it without resetting element names.
+    Part::TopoShape orientedSolid = solid;
+    orientedSolid.fixSolidOrientation();
+
+    constexpr auto skinMode = static_cast<short>(BRepOffset_Skin);
+    Part::TopoShape recto = orientedSolid.makeElementThickSolid(
+        closingFaces,
+        distance,
+        tolerance,
+        intersection,
+        false,
+        skinMode,
+        join,
+        "RectoVersoRecto"
+    );
+    Part::TopoShape verso = orientedSolid.makeElementThickSolid(
+        closingFaces,
+        -distance,
+        tolerance,
+        intersection,
+        false,
+        skinMode,
+        join,
+        "RectoVersoVerso"
+    );
+    ensureValidWall(recto, "Recto-verso positive-side wall is invalid");
+    ensureValidWall(verso, "Recto-verso negative-side wall is invalid");
+
+    Part::TopoShape result(0);
+    result.makeElementFuse({recto, verso}, "RectoVerso", tolerance);
+    if (result.isNull() || !result.isValid() || result.countSubShapes(TopAbs_SOLID) != 1) {
+        throw Base::CADKernelError("Recto-verso thickness produced an invalid solid");
+    }
+    return result;
+}
+}  // namespace
 
 const char* PartDesign::Thickness::ModeEnums[] = {"Skin", "Pipe", "RectoVerso", nullptr};
 const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection", nullptr};
@@ -87,7 +156,9 @@ App::DocumentObjectExecReturn* Thickness::execute()
     // Set transform to identity so occ will perform this operation
     // in local coordinates
     TopShape.setTransform(Base::Matrix4D());
-    this->positionByBaseFeature();
+    if (auto* base = getBaseObject(/* silent = */ true)) {
+        Placement.setValue(base->Placement.getValue());
+    }
 
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
 

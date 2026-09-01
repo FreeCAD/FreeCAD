@@ -155,20 +155,29 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(len(thickness.Shape.Solids), 1)
         self.assertEqual(thickness.Placement, fillet.Placement)
 
+    def testTransformedStandaloneThicknessUsesBasePlacement(self):
+        """Keep standalone Thickness aligned with its transformed Base fallback."""
+        base = self.Doc.addObject("PartDesign::Feature", "StandaloneBase")
+        base.Shape = Part.makeBox(40, 30, 10)
+        base.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(12, 23, 34),
+            FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 25),
+        )
+        self.Doc.recompute()
+
+        thickness = self.Doc.addObject("PartDesign::Thickness", "StandaloneThickness")
+        thickness.Base = (base, ["Face6"])
+        thickness.Value = 1.0
+        self.Doc.recompute()
+
+        self.assertIsNone(thickness.BaseFeature)
+        self.assertTrue(thickness.isValid())
+        self.assertTrue(thickness.Shape.isValid())
+        self.assertEqual(len(thickness.Shape.Solids), 1)
+        self.assertEqual(thickness.Placement, base.Placement)
+
     def tearDown(self):
-        # closing doc
         FreeCAD.closeDocument("PartDesignTestThickness")
-        # print ("omit closing document for debugging")
-
-
-class TestRectoVersoThickness(unittest.TestCase):
-    """Regression tests for centered, two-sided Part Design thickness."""
-
-    def setUp(self):
-        self.Doc = FreeCAD.newDocument("PartDesignTestRectoVersoThickness")
-
-    def tearDown(self):
-        FreeCAD.closeDocument("PartDesignTestRectoVersoThickness")
 
     def makeThickness(
         self,
