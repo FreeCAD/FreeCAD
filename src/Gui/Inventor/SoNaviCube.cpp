@@ -1808,11 +1808,13 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             bottom = std::max(bottom, vertex[1]);
         }
 
-        hitRect = {true,
-                   std::max(0.0F, left - padding),
-                   std::max(0.0F, top - padding),
-                   std::min(1.0F, right + padding),
-                   std::min(1.0F, bottom + padding)};
+        hitRect = {
+            true,
+            std::max(0.0F, left - padding),
+            std::max(0.0F, top - padding),
+            std::min(1.0F, right + padding),
+            std::min(1.0F, bottom + padding)
+        };
     };
 
     switch (pickId) {
