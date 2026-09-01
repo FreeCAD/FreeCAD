@@ -8,6 +8,7 @@ import FreeCADGui
 from ArchTypeHints import (
     ArchBuildingPartObject,
     ArchComponentObject,
+    ArchEquipmentObject,
     DocumentObjectList,
     DocumentObjectListInput,
     DocumentObjectSubLinkList,
@@ -106,6 +107,12 @@ assert_type(building_part.Group, DocumentObjectList)
 building_part.Group = [document_object]
 assert_type(building_part.Height, Quantity)
 building_part.Height = "3 m"
+
+equipment = cast(ArchEquipmentObject, object())
+assert_type(equipment.SnapPoints, list[Vector])
+equipment.SnapPoints = [(0, 0, 1)]
+assert_type(equipment.EquipmentPower, float)
+equipment.EquipmentPower = 1500.0
 
 # Keep the public aliases exercised as both getter and setter vocabulary.
 objects: DocumentObjectList = [document_object]

@@ -1429,9 +1429,9 @@ class _Wall(ArchComponent.Component):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
                             else:
                                 dvec = DraftGeomUtils.vec(e)
-                            if dvec is None:
-                                continue
-                            dvec = dvec.cross(normal)
+                                if dvec is None:
+                                    continue
+                                dvec = dvec.cross(normal)
 
                             if not DraftVecUtils.isNull(dvec):
                                 dvec.normalize()

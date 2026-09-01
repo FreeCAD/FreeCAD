@@ -29,6 +29,7 @@ import ArchWindow  # For ArchWindow._Window proxy class
 import Part
 import Draft
 import Sketcher
+from unittest.mock import patch
 
 
 class TestArchWindow(TestArchBase.TestArchBase):
@@ -372,6 +373,15 @@ class TestArchWindow(TestArchBase.TestArchBase):
             delta=1e-5,
             msg="Cloned window volume should match original.",
         )
+
+    def test_draft_clone_preserves_bim_prefix(self):
+        """Draft BIM clones keep the configured prefix exactly as stored."""
+        original_window = Arch.makeWindow(name="OriginalWindow")
+
+        with patch("draftmake.make_clone.params.get_param", return_value="Copy-"):
+            cloned_window = Draft.make_clone(original_window)
+
+        self.assertEqual(cloned_window.Label, "Copy-" + original_window.Label)
 
     def test_create_window_on_xz_plane(self):
         """Test creating a window oriented on the XZ (vertical) plane."""
