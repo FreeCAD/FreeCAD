@@ -25,6 +25,8 @@ import Path.Op.Pocket as PathPocket
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
 
+import math
+
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Pocket as PathPocketGui
@@ -556,6 +558,92 @@ class TestPathPocket(PathTestBase):
             expected_num_y_lines + 1,
             f"Grid pocket should have at most {expected_num_y_lines + 1} Y-direction lines, got {actual_num_y_lines}",
         )
+
+    def test_pocket_square_zigzag(self):
+        """test_pocket_square_zigzag() Verify pocket operation with ZigZag clearing pattern."""
+
+        pocket_width = 50.0
+        pocket_height = 33.0
+        box_margin = 10.0
+        outer_box_width = pocket_width + box_margin
+        outer_box_height_xy = pocket_height + box_margin
+        outer_box_height_z = 20.0
+        pocket_depth_amount = 1.0
+        pocket_bottom_z = outer_box_height_z - pocket_depth_amount
+
+        tool_diameter = 5.0
+        stepover_percent = 50
+
+        outer = Part.makeBox(outer_box_width, outer_box_height_xy, outer_box_height_z)
+        pocket_offset_x = (outer_box_width - pocket_width) / 2.0
+        pocket_offset_y = (outer_box_height_xy - pocket_height) / 2.0
+        inner = Part.makeBox(
+            pocket_width,
+            pocket_height,
+            pocket_depth_amount,
+            FreeCAD.Vector(pocket_offset_x, pocket_offset_y, pocket_bottom_z),
+        )
+        pocket_solid = outer.cut(inner)
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "ZigZagPocketPart")
+        part_obj.Shape = pocket_solid
+
+        pocket = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_square_zigzag",
+            tool_diameter,
+            StepOver=stepover_percent,
+            ClearingPattern="ZigZag",
+            StartAt="Edge",
+            Angle=0,
+        )
+
+        stepover_distance = tool_diameter * (stepover_percent / 100.0)
+        effective_height = pocket_height - tool_diameter
+        expected_num_horizontal_lines = int(math.ceil(effective_height / stepover_distance)) + 1
+        expected_num_vertical_lines = expected_num_horizontal_lines - 1
+
+        # Collect G1 moves at cutting depth
+        cutting_moves = []
+        for cmd in pocket.Path.Commands:
+            params = cmd.Parameters
+            if cmd.Name == "G1" and "Z" in params and abs(params["Z"] - pocket_bottom_z) < 0.01:
+                cutting_moves.append(params)
+
+        actual_num_horizontal_lines = 0
+        actual_num_vertical_lines = 0
+        actual_num_diagonal = 0
+        last_direction = None
+        pos = {"X": 0.0, "Y": 0.0}
+        for curr in cutting_moves:
+            x = curr.get("X", pos["X"])
+            y = curr.get("Y", pos["Y"])
+            dx = abs(x - pos["X"])
+            dy = abs(y - pos["Y"])
+            pos["X"] = x
+            pos["Y"] = y
+            if dy < 0.01 and dx > 0.01:
+                direction = "horizontal"
+            elif dx < 0.01 and dy > 0.01:
+                direction = "vertical"
+            else:
+                direction = "diagonal"
+
+            if last_direction is not None and direction != last_direction:
+                if direction == "horizontal":
+                    actual_num_horizontal_lines += 1
+                if direction == "vertical":
+                    actual_num_vertical_lines += 1
+                if direction == "diagonal":
+                    actual_num_diagonal += 1
+            last_direction = direction
+
+        self.assertEqual(actual_num_diagonal, 0)
+        self.assertGreaterEqual(actual_num_horizontal_lines, expected_num_horizontal_lines - 1)
+        self.assertLessEqual(actual_num_horizontal_lines, expected_num_horizontal_lines + 1)
+        self.assertGreaterEqual(actual_num_vertical_lines, expected_num_vertical_lines - 1)
+        self.assertLessEqual(actual_num_vertical_lines, expected_num_vertical_lines + 1)
 
 
 def _addViewProvider(pocketOp):
