@@ -303,9 +303,9 @@ class Linuxcnc(PostProcessor):
         return super()._convert_modal_command(command)
 
     def get_sanity_checks(self, job):
-        """LinuxCNC specific sanity checks."""
+        """LinuxCNC specific sanity checks, plus the machine-level checks."""
         Path.Log.track("LinuxCNC.get_sanity_checks() called")
-        squawks = []
+        squawks = super().get_sanity_checks(job)
 
         # Check blend tolerance vs operation precision
         Path.Log.track("Checking blend tolerance")
@@ -387,50 +387,6 @@ class Linuxcnc(PostProcessor):
                                         f"Potentially unsupported command '{gcode}' in operation '{op.Label}' - verify LinuxCNC compatibility",
                                     )
                                 )
-
-        # Check feed rates vs machine capabilities (if available)
-        Path.Log.track("Checking feed rates vs machine capabilities")
-        max_rapid_feed = self.values.get("MAX_RAPID_FEED", None)
-        Path.Log.track(f"max_rapid_feed: {max_rapid_feed}")
-        if max_rapid_feed:
-            for i, op in enumerate(operations):
-                Path.Log.track(
-                    f"Checking feed rate for operation {i}: {getattr(op, 'Label', 'unnamed')}"
-                )
-                if hasattr(op, "HoriFeed"):
-                    Path.Log.track(f"Operation HoriFeed: {op.HoriFeed}")
-                    if op.HoriFeed > max_rapid_feed:
-                        Path.Log.track("Adding CAUTION for high feed rate")
-                        squawks.append(
-                            self._create_squawk(
-                                "CAUTION",
-                                f"Operation '{op.Label}' feed rate ({op.HoriFeed}) exceeds configured maximum ({max_rapid_feed})",
-                            )
-                        )
-                else:
-                    Path.Log.track("Operation has no HoriFeed attribute")
-
-        # Check spindle speed ranges
-        Path.Log.track("Checking spindle speed ranges")
-        max_spindle_speed = self.values.get("MAX_SPINDLE_SPEED", None)
-        Path.Log.track(f"max_spindle_speed: {max_spindle_speed}")
-        if max_spindle_speed:
-            for i, op in enumerate(operations):
-                Path.Log.track(
-                    f"Checking spindle speed for operation {i}: {getattr(op, 'Label', 'unnamed')}"
-                )
-                if hasattr(op, "SpindleSpeed"):
-                    Path.Log.track(f"Operation SpindleSpeed: {op.SpindleSpeed}")
-                    if op.SpindleSpeed > max_spindle_speed:
-                        Path.Log.track("Adding WARNING for high spindle speed")
-                        squawks.append(
-                            self._create_squawk(
-                                "WARNING",
-                                f"Operation '{op.Label}' spindle speed ({op.SpindleSpeed}) exceeds machine maximum ({max_spindle_speed})",
-                            )
-                        )
-                else:
-                    Path.Log.track("Operation has no SpindleSpeed attribute")
 
         # Check for G41/G42 usage with tool radius compensation
         Path.Log.track("Checking tool radius compensation usage")
