@@ -414,9 +414,7 @@ void TaskPatternParameters::enterReferenceSelectionMode()
         addReferenceSelectionGate(
             commonReferences | (isPolar ? AllowSelection::CIRCLE : AllowSelection::FACE)
         );
-        Gui::getMainWindow()->showMessage(
-            tr("Select a direction reference (edge, face, datum line)")
-        );
+        Gui::getMainWindow()->showMessage(tr("Select a direction reference (edge, face, datum line)"));
     }
 }
 

@@ -2481,7 +2481,9 @@ CmdPartDesignPointPattern::CmdPartDesignPointPattern()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Point Pattern");
-    sToolTipText = QT_TR_NOOP("Duplicates the selected features or the active body at points from a shape");
+    sToolTipText = QT_TR_NOOP(
+        "Duplicates the selected features or the active body at points from a shape"
+    );
     sWhatsThis = "PartDesign_PointPattern";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_PointPattern";

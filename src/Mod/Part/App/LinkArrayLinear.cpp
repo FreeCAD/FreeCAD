@@ -67,8 +67,10 @@ void LinkArrayLinear::connectElementSuppression()
         if (!elements[i]) {
             continue;
         }
-        suppressionConnections.emplace_back(elements[i]->signalChanged.connect(
-            [this, i](const App::DocumentObject& obj, const App::Property& prop) {
+        suppressionConnections.emplace_back(
+            elements[i]->signalChanged.connect([this,
+                                                i](const App::DocumentObject& obj,
+                                                   const App::Property& prop) {
                 if (syncingSuppression || isRestoring()
                     || (getDocument() && getDocument()->isPerformingTransaction())) {
                     return;
@@ -77,14 +79,13 @@ void LinkArrayLinear::connectElementSuppression()
                 if (!suppressible || &prop != &suppressible->Suppressed) {
                     return;
                 }
-                const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue())
-                );
+                const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue()));
                 setPositionSuppressed(
                     Base::Vector3d(i / stride, i % stride, 0),
                     suppressible->Suppressed.getValue()
                 );
-            }
-        ));
+            })
+        );
     }
 }
 
@@ -136,8 +137,10 @@ void LinkArrayLinear::onChanged(const App::Property* prop)
     if (prop == &ElementList) {
         connectElementSuppression();
     }
-    else if (prop == &SuppressedPositions && !syncingSuppression
-             && !(getDocument() && getDocument()->isPerformingTransaction())) {
+    else if (
+        prop == &SuppressedPositions && !syncingSuppression
+        && !(getDocument() && getDocument()->isPerformingTransaction())
+    ) {
         applyElementSuppression();
     }
 }

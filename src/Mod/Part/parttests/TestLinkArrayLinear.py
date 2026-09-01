@@ -147,4 +147,3 @@ class TestLinkArrayLinear(unittest.TestCase):
         self.doc.redo()
         self.doc.recompute()
         self.assertSuppressed([5])
-
