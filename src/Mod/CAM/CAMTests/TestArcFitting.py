@@ -378,6 +378,31 @@ class TestArcFittingRoundTrip(PathTestBase):
         c = make_curve([(0, 0), (10, 0, -1, 5, 0), (0, 0)])
         self.assert_area_unchanged_by_roundtrip(make_area(c))
 
+    def test_no_fit_arcs_lines_unchanged(self):
+        """Test that round-trip with m_fit_arcs=False leaves line-only curves unchanged."""
+        c = make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)])
+        prev = area.get_fit_arcs()
+        try:
+            area.set_fit_arcs(False)
+            self.assert_area_unchanged_by_roundtrip(make_area(c))
+        finally:
+            area.set_fit_arcs(prev)
+
+    def test_no_fit_arcs_arcs_become_lines(self):
+        """Test that round-trip with m_fit_arcs=False converts arcs to line segments."""
+        c = make_curve([(10, 0), (0, 10, 1, 0, 0)])
+        a = make_area(c)
+        prev = area.get_fit_arcs()
+        try:
+            area.set_fit_arcs(False)
+            a.ClipperNoop()
+        finally:
+            area.set_fit_arcs(prev)
+
+        for curve in a.getCurves():
+            for v in list(curve.getVertices())[1:]:
+                self.assertEqual(v.type, 0, f"Expected line (type=0) but got type={v.type}")
+
     def test_subdivided_polygons_roundtrip(self):
         """Exploratory test: sweep parameters on regular polygon side count and side subdivision count."""
         failures = []

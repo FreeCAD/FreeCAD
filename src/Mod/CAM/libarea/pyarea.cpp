@@ -91,6 +91,16 @@ static void set_accuracy(double accuracy)
     CArea::set_accuracy(accuracy);
 }
 
+static bool get_fit_arcs()
+{
+    return CArea::get_fit_arcs();
+}
+
+static void set_fit_arcs(bool fit_arcs)
+{
+    CArea::set_fit_arcs(fit_arcs);
+}
+
 static double get_clipper_scale()
 {
     return CArea::get_clipper_scale();
@@ -311,6 +321,8 @@ void init_pyarea(py::module& m)
 
     m.def("get_accuracy", get_accuracy);
     m.def("set_accuracy", set_accuracy);
+    m.def("get_fit_arcs", get_fit_arcs);
+    m.def("set_fit_arcs", set_fit_arcs);
     m.def("get_clipper_scale", get_clipper_scale);
     m.def("set_clipper_scale", set_clipper_scale);
     m.def("copy_area", copy_area);

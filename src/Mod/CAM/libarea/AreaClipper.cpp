@@ -754,6 +754,10 @@ void CArea::SetFromResult(
             // Construct the edge to be added based on the end point and the parent's type
             const PointD end = ToPointD(v1);
             CVertex edge(parentData.orig.m_type, {end.x, end.y}, parentData.orig.m_c);
+            if (!CArea::m_fit_arcs) {
+                edge.m_type = 0;
+                edge.m_c = {0, 0};
+            }
             CVertex& prev = c.m_vertices.back();
 
             // Determine if the edge is reversed from the parent (arc), and update type accordingly
