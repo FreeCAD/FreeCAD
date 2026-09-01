@@ -45,6 +45,7 @@
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QStyledItemDelegate>
+#include <QTabBar>
 #include <QTextLayout>
 #include <QTimer>
 #include <QToolBar>
@@ -223,6 +224,7 @@ private:
     ) const;
     QWidget* commandWidget(const QString& commandName) const;
     QRect commandStripRect(const QStringList& commandNames) const;
+    QRect workbenchTabRect(const QWidget* selector, const QString& workbenchName) const;
     void ensureToolBarVisible(QToolBar* toolbar) const;
     void ensureDockVisible(QDockWidget* dock) const;
 
@@ -556,6 +558,28 @@ QRect TourOverlay::commandStripRect(const QStringList& commandNames) const
     return strip;
 }
 
+// Returns a null QRect in ComboBox mode, and in TabBar mode returns the tab's _mainWindow coordinates.
+QRect TourOverlay::workbenchTabRect(const QWidget* selector, const QString& workbenchName) const
+{
+    auto* tabBar = selector->findChild<QTabBar*>();
+    if (tabBar == nullptr) {
+        return QRect();
+    }
+    // Tabs get their tooltip from Gui::Application::workbenchToolTip() (see
+    // WorkbenchTabWidget::addWorkbenchTab() in Gui/WorkbenchSelector.cpp), which is always set
+    // regardless of the user's chosen item style -- unlike tab text, which is blank when the
+    // user has picked the icon-only style.
+    const QString tip = Gui::Application::Instance->workbenchToolTip(workbenchName);
+    for (int i = 0; i < tabBar->count(); ++i) {
+        if (tabBar->tabToolTip(i) == tip) {
+            const QRect local = tabBar->tabRect(i);
+            const auto topLeft = tabBar->mapTo(_mainWindow, local.topLeft());
+            return QRect(topLeft, local.size());
+        }
+    }
+    return QRect();
+}
+
 namespace
 {
 // Runtime type checks by name, not by linking Sketcher::SketchObject / PartDesign::Body headers
@@ -732,8 +756,21 @@ QRect TourOverlay::resolveTargetRect(const TourStop& stop) const
             ensureDockVisible(dock);
         }
         if (stop.widgetToHighlight->isVisible()) {
-            const auto topLeft = stop.widgetToHighlight->mapTo(_mainWindow, QPoint(0, 0));
-            targetRect = QRect(topLeft, stop.widgetToHighlight->size());
+            QRect workbenchRect;
+            for (const auto& requirement : stop.stages) {
+                if (requirement.stage == TourStage::Workbench) {
+                    workbenchRect
+                        = workbenchTabRect(stop.widgetToHighlight, requirement.param.toString());
+                    break;
+                }
+            }
+            if (!workbenchRect.isNull()) {
+                targetRect = workbenchRect;
+            }
+            else {
+                const auto topLeft = stop.widgetToHighlight->mapTo(_mainWindow, QPoint(0, 0));
+                targetRect = QRect(topLeft, stop.widgetToHighlight->size());
+            }
         }
     }
     if (stop.id == kNewSketchId) {
