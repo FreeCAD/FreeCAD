@@ -113,6 +113,8 @@ SET(MatGui_SRCS
     MaterialSave.cpp
     MaterialSave.h
     MaterialSave.ui
+    MaterialSelector.cpp
+    MaterialSelector.h
     MaterialsEditor.cpp
     MaterialsEditor.h
     MaterialsEditor.ui

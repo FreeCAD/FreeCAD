@@ -174,7 +174,7 @@
 	   </widget>
 	  </item>
 	  <item row="0" column="1">
-	   <widget class="QPushButton" name="materialButton">
+	   <widget class="MatGui::MaterialSelector" name="materialButton">
 		<property name="enabled">
 		 <bool>false</bool>
 		</property>
@@ -826,6 +826,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MatGui::MaterialSelector</class>
+   <extends>QPushButton</extends>
+   <header>Mod/Material/Gui/MaterialSelector.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

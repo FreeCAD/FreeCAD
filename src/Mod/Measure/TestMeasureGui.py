@@ -44,6 +44,12 @@ class TestMassPropertiesMaterial(unittest.TestCase):
                 return button
         self.fail("Material button not found")
 
+    def test_material_selector_is_registered_widget(self):
+        selector = Gui.UiLoader().createWidget("MatGui::MaterialSelector")
+        self.assertIsNotNone(selector)
+        self.assertEqual(selector.metaObject().className(), "MatGui::MaterialSelector")
+        selector.deleteLater()
+
     def choose(self, uuid):
         errors = []
 
