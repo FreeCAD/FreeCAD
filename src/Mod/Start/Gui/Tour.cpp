@@ -60,6 +60,7 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -672,12 +673,21 @@ void TourOverlay::openSketchForEdit(const QString& sketchName) const
         if (auto* xyPlane = xyPlaneOfBody(obj)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(doc->getName(), xyPlane->getNameInDocument());
+            // Force the PartDesign preference to not show the attachment dialog, then restore user
+            // preference
+            auto hPartDesign = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/PartDesign"
+            );
+            const bool hadAttachmentDialog
+                = hPartDesign->GetBool("NewSketchUseAttachmentDialog", false);
+            hPartDesign->SetBool("NewSketchUseAttachmentDialog", false);
             try {
                 Gui::Command::doCommand(Gui::Command::Gui, "Gui.runCommand('PartDesign_NewSketch')");
             }
             catch (Base::PyException& error) {
                 error.reportException();
             }
+            hPartDesign->SetBool("NewSketchUseAttachmentDialog", hadAttachmentDialog);
         }
         break;
     }
