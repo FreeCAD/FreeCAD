@@ -350,6 +350,7 @@ public:
         Base::Type typeId = App::DocumentObject::getClassTypeId(),
         bool single = false
     ) const;
+    std::string getSelectedElement(App::DocumentObject* obj, const char* pSubName) const;
 
     /**
      * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
@@ -549,7 +550,14 @@ protected:
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 
-    int checkSelection(
+    enum class SelectionCheckResult
+    {
+        Invalid,
+        Available,
+        Selected
+    };
+
+    SelectionCheckResult checkSelection(
         const char* pDocName,
         const char* pObjectName,
         const char* pSubName,
@@ -557,6 +565,52 @@ protected:
         _SelObj& sel,
         const std::list<_SelObj>* selList = nullptr
     ) const;
+    SelectionCheckResult resolveSelectionDescription(
+        const char* pDocName,
+        const char* pObjectName,
+        const char*& pSubName,
+        ResolveMode resolve,
+        _SelObj& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    ) const;
+    SelectionCheckResult resolveSelectionDocument(
+        const char* pDocName,
+        _SelObj& sel,
+        bool reportErrors
+    ) const;
+    static SelectionCheckResult resolveSelectionObject(
+        const char* pObjectName,
+        _SelObj& sel,
+        bool reportErrors
+    );
+    static SelectionCheckResult resolveSelectionSubElement(
+        const char*& pSubName,
+        ResolveMode resolve,
+        _SelObj& sel,
+        std::string& subNamePrefix,
+        bool reportErrors
+    );
+    const std::list<_SelObj>* selectionListForCheck(const std::list<_SelObj>* selList) const;
+    static SelectionCheckResult findSelectionMatch(
+        const std::string& subNamePrefix,
+        ResolveMode resolve,
+        const _SelObj& sel,
+        const std::list<_SelObj>& selList
+    );
+    static bool matchesSelectionIdentity(const _SelObj& selected, const _SelObj& sel);
+    static bool matchesExactSelection(const _SelObj& selected, const char* pSubName);
+    static bool matchesNewStyleSelection(
+        const _SelObj& selected,
+        const std::string& subNamePrefix,
+        ResolveMode resolve
+    );
+    static bool matchesOldStyleSelection(
+        const _SelObj& selected,
+        const char* pSubName,
+        const _SelObj& sel
+    );
+    static bool selectedElementContainsSubName(const _SelObj& selected, const char* pSubName);
 
     std::vector<Gui::SelectionObject> getObjectList(
         const char* pDocName,
@@ -565,6 +619,42 @@ protected:
         ResolveMode resolve,
         bool single = false
     ) const;
+    static bool appendSelectionSubElement(
+        SelectionObject& selection,
+        const char* subelement,
+        const _SelObj& sel,
+        ResolveMode resolve
+    );
+    static bool appendObjectListEntry(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        App::DocumentObject* obj,
+        const char* subelement,
+        const _SelObj& sel,
+        ResolveMode resolve,
+        bool single
+    );
+    struct SelectionInResult
+    {
+        App::DocumentObject* root {nullptr};
+        std::string subName;
+    };
+    bool selectionInResult(
+        SelectionObject& sel,
+        const std::string& subName,
+        App::DocumentObject* container,
+        Base::Type typeId,
+        App::Document*& doc,
+        bool& containerPassed,
+        SelectionInResult& result
+    ) const;
+    static bool appendSelectionInResult(
+        std::vector<SelectionObject>& selections,
+        std::map<App::DocumentObject*, size_t>& objectIndices,
+        const SelectionInResult& result,
+        const Base::Vector3d& pickedPoint,
+        bool single
+    );
 
     static App::DocumentObject* getObjectOfType(
         const _SelObj& sel,

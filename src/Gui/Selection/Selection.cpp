@@ -267,89 +267,110 @@ std::vector<Gui::SelectionObject> SelectionSingleton::getSelectionIn(
         = getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve, single);
 
     std::vector<SelectionObject> ret;
-    std::map<App::DocumentObject*, size_t> SortMap;
+    std::map<App::DocumentObject*, size_t> objectIndices;
 
     for (auto& sel : sels) {
         auto* rootObj = sel.getObject();
         App::Document* doc = rootObj->getDocument();
         std::vector<std::string> subs = sel.getSubNames();
-        bool objPassed = false;
+        bool containerPassed = false;
 
         for (size_t i = 0; i < subs.size(); ++i) {
-            auto& sub = subs[i];
-            App::DocumentObject* newRootObj = nullptr;
-            std::string newSub = "";
-
-            std::vector<std::string> names = Base::Tools::splitSubName(sub);
-
-            if (container == rootObj) {
-                objPassed = true;
+            SelectionInResult result;
+            if (!selectionInResult(sel, subs[i], container, typeId, doc, containerPassed, result)) {
+                continue;
             }
-
-            if (rootObj->isLink()) {
-                // Update doc in case its an external link.
-                doc = rootObj->getLinkedObject()->getDocument();
-            }
-
-            for (auto& name : names) {
-                App::DocumentObject* obj = doc->getObject(name.c_str());
-                if (!obj) {  // We reached the element name (for example 'edge1')
-                    newSub += name;
-                    break;
-                }
-
-                if (objPassed) {
-                    if (!newRootObj) {
-                        // We are the first object after the container is passed.
-                        newRootObj = obj;
-                    }
-                    else {
-                        newSub += name + ".";
-                    }
-                }
-
-                if (obj == container) {
-                    objPassed = true;
-                }
-                if (obj->isLink()) {
-                    // Update doc in case its an external link.
-                    doc = obj->getLinkedObject()->getDocument();
-                }
-            }
-
-            if (newRootObj) {
-                // Make sure selected object is of correct type
-                auto* lastObj = newRootObj->resolve(newSub.c_str());
-                if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
-                    continue;
-                }
-
-                auto it = SortMap.find(newRootObj);
-                if (it != SortMap.end()) {
-                    // only add sub-element
-                    if (newSub != "") {
-                        ret[it->second].SubNames.emplace_back(newSub);
-                        ret[it->second].SelPoses.emplace_back(sel.SelPoses[i]);
-                    }
-                }
-                else {
-                    if (single && !ret.empty()) {
-                        ret.clear();
-                        break;
-                    }
-                    // create a new entry
-                    ret.emplace_back(newRootObj);
-                    if (newSub != "") {
-                        ret.back().SubNames.emplace_back(newSub);
-                        ret.back().SelPoses.emplace_back(sel.SelPoses[i]);
-                    }
-                    SortMap.insert(std::make_pair(newRootObj, ret.size() - 1));
-                }
+            if (!appendSelectionInResult(ret, objectIndices, result, sel.SelPoses[i], single)) {
+                break;
             }
         }
     }
 
     return ret;
+}
+
+bool SelectionSingleton::selectionInResult(
+    SelectionObject& sel,
+    const std::string& subName,
+    App::DocumentObject* container,
+    Base::Type typeId,
+    App::Document*& doc,
+    bool& containerPassed,
+    SelectionInResult& result
+) const
+{
+    result = SelectionInResult {};
+    auto* rootObj = sel.getObject();
+    App::DocumentObject* newRootObj = nullptr;
+    std::string newSub;
+    std::vector<std::string> names = Base::Tools::splitSubName(subName);
+
+    if (container == rootObj) {
+        containerPassed = true;
+    }
+    if (rootObj->isLink()) {
+        doc = rootObj->getLinkedObject()->getDocument();
+    }
+    for (auto& name : names) {
+        App::DocumentObject* obj = doc->getObject(name.c_str());
+        if (!obj) {
+            newSub += name;
+            break;
+        }
+        if (containerPassed) {
+            if (!newRootObj) {
+                newRootObj = obj;
+            }
+            else {
+                newSub += name + ".";
+            }
+        }
+        if (obj == container) {
+            containerPassed = true;
+        }
+        if (obj->isLink()) {
+            doc = obj->getLinkedObject()->getDocument();
+        }
+    }
+    if (!newRootObj) {
+        return false;
+    }
+    auto* lastObj = newRootObj->resolve(newSub.c_str());
+    if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
+        return false;
+    }
+    result.root = newRootObj;
+    result.subName = std::move(newSub);
+    return true;
+}
+
+bool SelectionSingleton::appendSelectionInResult(
+    std::vector<SelectionObject>& selections,
+    std::map<App::DocumentObject*, size_t>& objectIndices,
+    const SelectionInResult& result,
+    const Base::Vector3d& pickedPoint,
+    bool single
+)
+{
+    auto it = objectIndices.find(result.root);
+    if (it != objectIndices.end()) {
+        if (!result.subName.empty()) {
+            selections[it->second].SubNames.emplace_back(result.subName);
+            selections[it->second].SelPoses.emplace_back(pickedPoint);
+        }
+        return true;
+    }
+    if (single && !selections.empty()) {
+        selections.clear();
+        return false;
+    }
+    selections.emplace_back(result.root);
+    if (!result.subName.empty()) {
+        selections.back().SubNames.emplace_back(result.subName);
+        selections.back().SelPoses.emplace_back(pickedPoint);
+    }
+    objectIndices.insert(std::make_pair(result.root, selections.size() - 1));
+    return true;
 }
 
 std::vector<SelectionObject> SelectionSingleton::getSelectionEx(
@@ -382,7 +403,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(
     if (single) {
         temp.reserve(1);
     }
-    std::map<App::DocumentObject*, size_t> SortMap;
+    std::map<App::DocumentObject*, size_t> objectIndices;
 
     // check the type
     if (typeId.isBad()) {
@@ -406,37 +427,55 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(
         if (!obj || (pcDoc && sel.pObject->getDocument() != pcDoc)) {
             continue;
         }
-        auto it = SortMap.find(obj);
-        if (it != SortMap.end()) {
-            // only add sub-element
-            if (subelement && *subelement) {
-                if (resolve != ResolveMode::NoResolve
-                    && !temp[it->second]._SubNameSet.insert(subelement).second) {
-                    continue;
-                }
-                temp[it->second].SubNames.emplace_back(subelement);
-                temp[it->second].SelPoses.emplace_back(sel.x, sel.y, sel.z);
-            }
-        }
-        else {
-            if (single && !temp.empty()) {
-                temp.clear();
-                break;
-            }
-            // create a new entry
-            temp.emplace_back(obj);
-            if (subelement && *subelement) {
-                temp.back().SubNames.emplace_back(subelement);
-                temp.back().SelPoses.emplace_back(sel.x, sel.y, sel.z);
-                if (resolve != ResolveMode::NoResolve) {
-                    temp.back()._SubNameSet.insert(subelement);
-                }
-            }
-            SortMap.insert(std::make_pair(obj, temp.size() - 1));
+        if (!appendObjectListEntry(temp, objectIndices, obj, subelement, sel, resolve, single)) {
+            break;
         }
     }
 
     return temp;
+}
+
+bool SelectionSingleton::appendSelectionSubElement(
+    SelectionObject& selection,
+    const char* subelement,
+    const _SelObj& sel,
+    ResolveMode resolve
+)
+{
+    if (!subelement || !*subelement) {
+        return false;
+    }
+    if (resolve != ResolveMode::NoResolve && !selection._SubNameSet.insert(subelement).second) {
+        return false;
+    }
+    selection.SubNames.emplace_back(subelement);
+    selection.SelPoses.emplace_back(sel.x, sel.y, sel.z);
+    return true;
+}
+
+bool SelectionSingleton::appendObjectListEntry(
+    std::vector<SelectionObject>& selections,
+    std::map<App::DocumentObject*, size_t>& objectIndices,
+    App::DocumentObject* obj,
+    const char* subelement,
+    const _SelObj& sel,
+    ResolveMode resolve,
+    bool single
+)
+{
+    auto it = objectIndices.find(obj);
+    if (it != objectIndices.end()) {
+        appendSelectionSubElement(selections[it->second], subelement, sel, resolve);
+        return true;
+    }
+    if (single && !selections.empty()) {
+        selections.clear();
+        return false;
+    }
+    selections.emplace_back(obj);
+    appendSelectionSubElement(selections.back(), subelement, sel, resolve);
+    objectIndices.insert(std::make_pair(obj, selections.size() - 1));
+    return true;
 }
 
 bool SelectionSingleton::needPickedList() const
@@ -767,9 +806,9 @@ bool SelectionSingleton::testSelection(
     }
 
     _SelObj temp;
-    int ret
+    auto ret
         = checkSelection(pDoc->getName(), objectName, pSubName, ResolveMode::NoResolve, temp, &_SelList);
-    if (ret < 0) {
+    if (ret == SelectionCheckResult::Invalid) {
         return false;
     }
 
@@ -1199,8 +1238,8 @@ bool SelectionSingleton::addSelection(
     }
 
     _SelObj temp;
-    int ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
-    if (ret != 0) {
+    auto ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
+    if (ret != SelectionCheckResult::Available) {
         return false;
     }
 
@@ -1291,8 +1330,9 @@ bool SelectionSingleton::addSelections(
     bool update = false;
     for (const auto& pSubName : pSubNames) {
         _SelObj temp;
-        int ret = checkSelection(pDocName, pObjectName, pSubName.c_str(), ResolveMode::NoResolve, temp);
-        if (ret != 0) {
+        auto ret
+            = checkSelection(pDocName, pObjectName, pSubName.c_str(), ResolveMode::NoResolve, temp);
+        if (ret != SelectionCheckResult::Available) {
             continue;
         }
 
@@ -1458,8 +1498,8 @@ void SelectionSingleton::rmvSelection(
     }
 
     _SelObj temp;
-    int ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
-    if (ret < 0) {
+    auto ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
+    if (ret == SelectionCheckResult::Invalid) {
         return;
     }
 
@@ -1522,9 +1562,9 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
             continue;
         }
         _SelObj temp;
-        int ret
+        auto ret
             = checkSelection(pDocName, obj->getNameInDocument(), nullptr, ResolveMode::NoResolve, temp);
-        if (ret != 0) {
+        if (ret != SelectionCheckResult::Available) {
             continue;
         }
         touched = true;
@@ -1642,7 +1682,8 @@ bool SelectionSingleton::isSelected(
 ) const
 {
     _SelObj sel;
-    return checkSelection(pDocName, pObjectName, pSubName, resolve, sel, &_SelList) > 0;
+    return checkSelection(pDocName, pObjectName, pSubName, resolve, sel, &_SelList)
+        == SelectionCheckResult::Selected;
 }
 
 bool SelectionSingleton::isSelected(
@@ -1664,10 +1705,10 @@ bool SelectionSingleton::isSelected(
                sel,
                &_SelList
            )
-        > 0;
+        == SelectionCheckResult::Selected;
 }
 
-int SelectionSingleton::checkSelection(
+SelectionSingleton::SelectionCheckResult SelectionSingleton::checkSelection(
     const char* pDocName,
     const char* pObjectName,
     const char* pSubName,
@@ -1676,45 +1717,108 @@ int SelectionSingleton::checkSelection(
     const std::list<_SelObj>* selList
 ) const
 {
+    const bool reportErrors = !selList;
+    std::string subNamePrefix;
+    const auto result = resolveSelectionDescription(
+        pDocName,
+        pObjectName,
+        pSubName,
+        resolve,
+        sel,
+        subNamePrefix,
+        reportErrors
+    );
+    if (result != SelectionCheckResult::Available) {
+        return result;
+    }
+
+    const auto* availableSelections = selectionListForCheck(selList);
+    return findSelectionMatch(subNamePrefix, resolve, sel, *availableSelections);
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDescription(
+    const char* pDocName,
+    const char* pObjectName,
+    const char*& pSubName,
+    ResolveMode resolve,
+    _SelObj& sel,
+    std::string& subNamePrefix,
+    bool reportErrors
+) const
+{
+    const auto documentResult = resolveSelectionDocument(pDocName, sel, reportErrors);
+    if (documentResult != SelectionCheckResult::Available) {
+        return documentResult;
+    }
+
+    const auto objectResult = resolveSelectionObject(pObjectName, sel, reportErrors);
+    if (objectResult != SelectionCheckResult::Available) {
+        return objectResult;
+    }
+
+    return resolveSelectionSubElement(pSubName, resolve, sel, subNamePrefix, reportErrors);
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionDocument(
+    const char* pDocName,
+    _SelObj& sel,
+    bool reportErrors
+) const
+{
     sel.pDoc = getDocument(pDocName);
     if (!sel.pDoc) {
-        if (!selList) {
+        if (reportErrors) {
             FC_ERR("Cannot find document");
         }
-        return -1;
+        return SelectionCheckResult::Invalid;
     }
 
-    pDocName = sel.pDoc->getName();
-    sel.DocName = pDocName;
+    const char* resolvedDocName = sel.pDoc->getName();
+    sel.DocName = resolvedDocName ? resolvedDocName : "";
+    return SelectionCheckResult::Available;
+}
 
-    if (pObjectName) {
-        sel.pObject = sel.pDoc->getObject(pObjectName);
-    }
-    else {
-        sel.pObject = nullptr;
-    }
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionObject(
+    const char* pObjectName,
+    _SelObj& sel,
+    bool reportErrors
+)
+{
+    sel.pObject = pObjectName ? sel.pDoc->getObject(pObjectName) : nullptr;
     if (!sel.pObject) {
-        if (!selList) {
+        if (reportErrors) {
             FC_ERR("Object not found");
         }
-        return -1;
+        return SelectionCheckResult::Invalid;
     }
     if (sel.pObject->testStatus(App::ObjectStatus::Remove)) {
-        return -1;
+        return SelectionCheckResult::Invalid;
     }
+
+    return SelectionCheckResult::Available;
+}
+
+SelectionSingleton::SelectionCheckResult SelectionSingleton::resolveSelectionSubElement(
+    const char*& pSubName,
+    ResolveMode resolve,
+    _SelObj& sel,
+    std::string& subNamePrefix,
+    bool reportErrors
+)
+{
     if (pSubName) {
         sel.SubName = pSubName;
     }
     if (resolve == ResolveMode::NoResolve) {
         TreeWidget::checkTopParent(sel.pObject, sel.SubName);
     }
-    pSubName = !sel.SubName.empty() ? sel.SubName.c_str() : nullptr;
     sel.FeatName = sel.pObject->getNameInDocument();
     sel.TypeName = sel.pObject->getTypeId().getName();
+    const char* resolvedSubName = sel.SubName.empty() ? nullptr : sel.SubName.c_str();
     const char* element = nullptr;
     sel.pResolvedObject = App::GeoFeature::resolveElement(
         sel.pObject,
-        pSubName,
+        resolvedSubName,
         sel.elementName,
         false,
         App::GeoFeature::Normal,
@@ -1722,64 +1826,119 @@ int SelectionSingleton::checkSelection(
         &element
     );
     if (!sel.pResolvedObject) {
-        if (!selList) {
+        if (reportErrors) {
             FC_ERR(
                 "Sub-object " << sel.DocName << '#' << sel.FeatName << '.' << sel.SubName << " not found"
             );
         }
-        return -1;
+        return SelectionCheckResult::Invalid;
     }
     if (sel.pResolvedObject->testStatus(App::ObjectStatus::Remove)) {
-        return -1;
+        return SelectionCheckResult::Invalid;
     }
-    std::string subname;
-    std::string prefix;
-    if (pSubName && element) {
-        prefix = std::string(pSubName, element - pSubName);
+    if (resolvedSubName && element) {
+        subNamePrefix = std::string(resolvedSubName, element - resolvedSubName);
         if (!sel.elementName.newName.empty()) {
             // make sure the selected sub name is a new style if available
-            subname = prefix + sel.elementName.newName;
-            pSubName = subname.c_str();
-            sel.SubName = subname;
+            sel.SubName = subNamePrefix + sel.elementName.newName;
+            resolvedSubName = sel.SubName.c_str();
         }
     }
-    if (!selList) {
-        selList = &_SelList;
-    }
+    pSubName = resolvedSubName;
+    return SelectionCheckResult::Available;
+}
 
-    if (!pSubName) {
-        pSubName = "";
-    }
+const std::list<SelectionSingleton::_SelObj>* SelectionSingleton::selectionListForCheck(
+    const std::list<_SelObj>* selList
+) const
+{
+    return selList ? selList : &_SelList;
+}
 
-    for (auto& s : *selList) {
-        if (s.DocName == pDocName && s.FeatName == sel.FeatName) {
-            if (s.SubName == pSubName) {
-                return 1;
-            }
-            if (resolve > ResolveMode::OldStyleElement && boost::starts_with(s.SubName, prefix)) {
-                return 1;
-            }
+SelectionSingleton::SelectionCheckResult SelectionSingleton::findSelectionMatch(
+    const std::string& subNamePrefix,
+    ResolveMode resolve,
+    const _SelObj& sel,
+    const std::list<_SelObj>& selList
+)
+{
+    const char* pSubName = sel.SubName.c_str();
+    const bool oldStyleResolution = resolve == ResolveMode::OldStyleElement;
+
+    for (const auto& selected : selList) {
+        if (matchesSelectionIdentity(selected, sel)
+            && (matchesExactSelection(selected, pSubName)
+                || matchesNewStyleSelection(selected, subNamePrefix, resolve))) {
+            return SelectionCheckResult::Selected;
+        }
+        if (oldStyleResolution && matchesOldStyleSelection(selected, pSubName, sel)) {
+            return SelectionCheckResult::Selected;
         }
     }
-    if (resolve == ResolveMode::OldStyleElement) {
-        for (auto& s : *selList) {
-            if (s.pResolvedObject != sel.pResolvedObject) {
-                continue;
-            }
-            if (!pSubName[0]) {
-                return 1;
-            }
-            if (!s.elementName.newName.empty()) {
-                if (s.elementName.newName == sel.elementName.newName) {
-                    return 1;
-                }
-            }
-            else if (s.SubName == sel.elementName.oldName) {
-                return 1;
-            }
+    return SelectionCheckResult::Available;
+}
+
+bool SelectionSingleton::matchesSelectionIdentity(const _SelObj& selected, const _SelObj& sel)
+{
+    return selected.DocName == sel.DocName && selected.FeatName == sel.FeatName;
+}
+
+bool SelectionSingleton::matchesExactSelection(const _SelObj& selected, const char* pSubName)
+{
+    return selected.SubName == pSubName;
+}
+
+bool SelectionSingleton::matchesNewStyleSelection(
+    const _SelObj& selected,
+    const std::string& subNamePrefix,
+    ResolveMode resolve
+)
+{
+    return resolve > ResolveMode::OldStyleElement
+        && boost::starts_with(selected.SubName, subNamePrefix);
+}
+
+bool SelectionSingleton::matchesOldStyleSelection(
+    const _SelObj& selected,
+    const char* pSubName,
+    const _SelObj& sel
+)
+{
+    if (selected.pResolvedObject != sel.pResolvedObject) {
+        return false;
+    }
+    if (!pSubName[0]) {
+        return true;
+    }
+    if (!selected.elementName.newName.empty()) {
+        return selected.elementName.newName == sel.elementName.newName;
+    }
+    return selected.SubName == sel.elementName.oldName;
+}
+
+std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
+{
+    if (!obj) {
+        return {};
+    }
+    for (const auto& selected : _SelList) {
+        if (selected.pObject == obj && selectedElementContainsSubName(selected, pSubName)) {
+            return selected.SubName;
         }
     }
-    return 0;
+    return {};
+}
+
+bool SelectionSingleton::selectedElementContainsSubName(const _SelObj& selected, const char* pSubName)
+{
+    const auto len = selected.SubName.length();
+    if (!len || !pSubName) {
+        return false;
+    }
+    if (strncmp(pSubName, selected.SubName.c_str(), len) != 0) {
+        return false;
+    }
+    return pSubName[len] == 0 || pSubName[len - 1] == '.';
 }
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)

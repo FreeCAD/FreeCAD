@@ -162,7 +162,7 @@ std::vector<SelectionObject> SelectionSingleton::selStackGet(
                 sel,
                 &selList
             )
-            == 0) {
+            == SelectionCheckResult::Available) {
             selList.push_back(sel);
         }
     }
