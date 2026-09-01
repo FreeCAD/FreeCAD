@@ -111,7 +111,7 @@
       Precision::Confusion(), \
       "Point coincidence tolerance", \
       App::PropertyPrecision)) \
-        AREA_PARAMS_FIT_ARCS((double, clipper_clean_distance, CleanDistance, 0.0, "Clean polygon smaller than this distance. See http://www.angusj.com/clipper2/Docs/Units/Clipper/Functions/SimplifyPaths.htm", App::PropertyLength))((double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))( \
+        AREA_PARAMS_FIT_ARCS((double, accuracy, Accuracy, 0.01, "Arc fitting accuracy", App::PropertyPrecision))( \
             (double, \
              clipper_scale, \
              ClipperScale, \

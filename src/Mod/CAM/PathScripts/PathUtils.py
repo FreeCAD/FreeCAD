@@ -427,7 +427,6 @@ def getOffsetArea(
     areaParams["Deflection"] = tolerance
     areaParams["Accuracy"] = tolerance
     areaParams["Tolerance"] = 1e-5  # Equal point tolerance
-    areaParams["CleanDistance"] = tolerance / 5
 
     area = Path.Area()  # Create instance of Area() class object
     # Set working plane normal to Z=1

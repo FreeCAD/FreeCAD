@@ -151,7 +151,6 @@ public:
     std::list<CCurve> m_curves;
 
     static double m_accuracy;
-    static double m_clipper_clean_distance;
     static bool m_fit_arcs;
     static double m_processing_done;  // 0.0 to 100.0, set inside MakeOnePocketCurve
     static double m_single_area_processing_length;
@@ -218,7 +217,6 @@ public:
 
     CAREA_PARAM_DECLARE(double, tolerance)
     CAREA_PARAM_DECLARE(bool, fit_arcs)
-    CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
