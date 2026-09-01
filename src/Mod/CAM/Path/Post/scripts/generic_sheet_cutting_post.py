@@ -417,6 +417,7 @@ class GenericSheetCutting(PostProcessor):
                             if (
                                 cmd.Name in Constants.GCODE_MOVE_RAPID
                                 and prev_command in Constants.GCODE_MOVE
+                                and self._torch_active
                             ):
                                 new_commands.append(self.TorchExtinguishCommand)
                                 self._torch_active = False
