@@ -1184,7 +1184,7 @@ class ObjectOp(object):
                 self.stock = transform_shape(self.stock)
 
         try:
-            result = self.opExecute(obj)
+            self.opExecute(obj)
         finally:
             # Always restore originals, even if opExecute raises
             self.model = saved_model

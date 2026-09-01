@@ -21,5 +21,4 @@
 
 # flake8: noqa import
 
-
 from CAMTests import *
