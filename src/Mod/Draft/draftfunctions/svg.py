@@ -485,7 +485,15 @@ def get_svg(
             group = obj.Group
 
         svg = ""
-        for child in group:
+        children = list(group)
+        # Annotation sources are references, not drawing children.  Keep them
+        # out of Group so model ownership is unaffected while still allowing
+        # their existing SVG exporters (Space, Text, dimensions, ...) to run.
+        if "AnnotationSources" in obj.PropertiesList:
+            for source in obj.AnnotationSources:
+                if source and source not in children:
+                    children.append(source)
+        for child in children:
             svg += get_svg(
                 child,
                 scale,

@@ -22,11 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import unittest
+import FreeCAD as App
+
 import Arch
 import ArchSectionPlane
 import Draft
-import os
-import FreeCAD as App
 from bimtests import TestArchBase
 
 
@@ -39,6 +41,20 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         box.Height = height
         self.document.recompute()
         return box
+
+    def _makeTechDrawView(self, drawing):
+        template_path = os.path.join(
+            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+        )
+        page = self.document.addObject("TechDraw::DrawPage", "Page")
+        template = self.document.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = template_path
+        page.Template = template
+        view = self.document.addObject("TechDraw::DrawViewDraft", "DraftView")
+        view.Source = drawing
+        page.addView(view)
+        self.document.recompute()
+        return view
 
     def test_makeSectionPlane(self):
         """Test the makeSectionPlane function."""
@@ -142,6 +158,11 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
 
+        self.assertIn(view, drawing.Group)
+        self.assertIn(cut, drawing.Group)
+        self.assertEqual(Draft.getType(view), "Shape2DView")
+        self.assertEqual(Draft.getType(cut), "Shape2DView")
+
         # Create a TD page
         tpath = os.path.join(
             App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
@@ -158,6 +179,108 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_drawing_annotation_source_is_rendered_in_svg(self):
+        """A drawing reference uses the existing Space SVG exporter."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        level = Arch.makeFloor([space], name="Level")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        svg = Draft.get_svg(
+            drawing,
+            direction=App.Vector(0, 0, 1),
+            techdraw=True,
+        )
+        self.assertIn("Office", svg)
+        self.assertIn(space, level.Group)
+        self.assertNotIn(space, drawing.Group)
+
+        template_path = os.path.join(
+            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+        )
+        page = self.document.addObject("TechDraw::DrawPage", "Page")
+        template = self.document.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = template_path
+        page.Template = template
+        techdraw_view = self.document.addObject("TechDraw::DrawViewDraft", "DraftView")
+        techdraw_view.Source = drawing
+        page.addView(techdraw_view)
+        self.document.recompute()
+        self.assertIn("Office", techdraw_view.Symbol)
+
+        space.Label = "Renamed Office"
+        self.document.recompute()
+        self.assertIn("Renamed Office", techdraw_view.Symbol)
+
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_drawing_draft_text_source_refreshes(self):
+        """A non-Space linked source refreshes when its content changes."""
+        text = Draft.make_text(["Draft Text"], height=100)
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [text]
+        techdraw_view = self._makeTechDrawView(drawing)
+
+        self.assertIn("Draft Text", techdraw_view.Symbol)
+        text.Text = ["Updated Text"]
+        self.document.recompute()
+        self.assertIn("Updated Text", techdraw_view.Symbol)
+
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_drawing_source_view_property_refreshes(self):
+        """A linked source ViewObject change refreshes its TechDraw output."""
+        text = Draft.make_text(["Draft Text"], height=100)
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [text]
+        techdraw_view = self._makeTechDrawView(drawing)
+        initial_symbol = techdraw_view.Symbol
+
+        text.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+        self.document.recompute()
+        updated_symbol = techdraw_view.Symbol
+
+        self.assertNotEqual(initial_symbol, updated_symbol)
+        self.assertIn("#ff0000", updated_symbol.lower())
+
+    def test_drawing_annotation_sources_feed_section_data(self):
+        """Referenced annotations are inputs without becoming Group children."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        level = Arch.makeFloor([space], name="Level")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        objects, _cutplane, _only_solids, _clip, _direction = ArchSectionPlane.getSectionData(
+            drawing
+        )
+        self.assertIn(space, objects)
+        self.assertIn(space, level.Group)
+        self.assertNotIn(space, drawing.Group)
+
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_duplicate_drawing_annotation_source_is_rendered_once(self):
+        """A source in both Group and AnnotationSources is rendered only once."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.addObject(space)
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        svg = Draft.get_svg(
+            drawing,
+            direction=App.Vector(0, 0, 1),
+            techdraw=True,
+        )
+        self.assertEqual(svg.count("Office"), 1)
+        objects, _cutplane, _only_solids, _clip, _direction = ArchSectionPlane.getSectionData(
+            drawing
+        )
+        self.assertEqual(objects.count(space), 1)
 
     def testShape2DViewGeneration(self):
         """Tests Draft_Shape2DView face with hole creation"""

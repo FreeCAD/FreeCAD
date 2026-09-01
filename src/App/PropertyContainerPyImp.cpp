@@ -232,6 +232,7 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
         statusMap["UserEdit"] = Property::UserEdit;
+        statusMap["PresentationDependency"] = Property::PresentationDependency;
     }
     return statusMap;
 }

@@ -224,6 +224,22 @@ void DocumentObject::touch(bool noRecompute)
     }
 }
 
+void DocumentObject::touchPresentationDependents()
+{
+    std::set<DocumentObject*> touched;
+    for (const auto& edge : getInListProp()) {
+        if (!edge.fromObj || edge.fromObj == this || edge.fromProp.empty()) {
+            continue;
+        }
+
+        auto* property = edge.fromObj->getPropertyByName(edge.fromProp.c_str());
+        if (property && property->testStatus(Property::PresentationDependency)
+            && touched.insert(edge.fromObj).second) {
+            edge.fromObj->enforceRecompute(edge.fromProp);
+        }
+    }
+}
+
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
@@ -1223,6 +1239,8 @@ void DocumentObject::onChanged(const Property* prop)
     if (_pDoc) {
         _pDoc->onChangedProperty(this, prop);
     }
+
+    touchPresentationDependents();
 
     signalChanged(*this, *prop);
 }

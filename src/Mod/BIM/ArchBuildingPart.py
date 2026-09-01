@@ -63,6 +63,24 @@ else:
 unicode = str
 
 
+def _ensure_drawing_annotation_sources(obj):
+    """Add non-owning Space annotation links to Drawing BuildingParts."""
+    if "ObjectType" not in obj.PropertiesList or str(obj.ObjectType).upper() != "DRAWING":
+        return
+
+    if "AnnotationSources" not in obj.PropertiesList:
+        obj.addProperty(
+            "App::PropertyLinkListGlobal",
+            "AnnotationSources",
+            "Drawing",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Space objects whose annotations are rendered in this drawing",
+            ),
+        )
+    obj.setPropertyStatus("AnnotationSources", "PresentationDependency")
+
+
 # fmt: off
 BuildingTypes = ['Undefined',
 'Agricultural - Barn',
@@ -222,6 +240,9 @@ class BuildingPart(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
+        # Restore the property on drawings saved by older versions, but do not
+        # expose drawing-only properties on regular BuildingParts.
+        _ensure_drawing_annotation_sources(obj)
         if not "Height" in pl:
             obj.addProperty(
                 "App::PropertyLength",
@@ -358,10 +379,15 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         import math
 
+        # Native IFC import can set ObjectType after the proxy is initialized.
+        # Ensure those Drawing containers get the same property as new ones.
+        if prop == "ObjectType":
+            _ensure_drawing_annotation_sources(obj)
+
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         # clean svg cache if needed
-        if prop in ["Placement", "Group"]:
+        if prop in ["Placement", "Group", "AnnotationSources"]:
             self.svgcache = None
             self.shapecache = None
 
@@ -391,6 +417,10 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def execute(self, obj):
         "gather all the child shapes into a compound"
+
+        if "AnnotationSources" in obj.PropertiesList:
+            self.svgcache = None
+            self.shapecache = None
 
         pl = obj.Placement
         shapes, materialstable = self.getShapes(obj)
