@@ -642,7 +642,7 @@ public:
 
     // retrieves an array of maps, each map containing the points that are coincidence by virtue of
     // any number of direct or indirect coincidence constraints
-    const std::vector<std::map<int, Sketcher::PointPos>> getCoincidenceGroups();
+    const std::vector<std::map<int, Sketcher::PointPos>> getCoincidenceGroups() const;
     // returns if the given geoId is fixed (coincident) with external geometry on any of the
     // possible relevant points
     void isCoincidentWithExternalGeometry(
@@ -668,13 +668,22 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
-    bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2) const;
+
+    /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or PointOnObject
+    /// constraint
+    int getDirectlyCoincidentPoints(
+        const int GeoId1,
+        const int GeoId2,
+        std::vector<int>& GeoId3,
+        std::vector<PointPos>& PosId3
+    ) const;
 
     // Returns true if the sketch has 1 or more block constraint
     bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
-    void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
+    void getConstraintIndices(int GeoId, std::vector<int>& constraintList) const;
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int>& conflicting, std::string& msg);
