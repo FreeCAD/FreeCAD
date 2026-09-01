@@ -790,16 +790,11 @@ public: /* Solver exposed interface */
     /// Forwards a request for a temporary initMove to the solver using the current sketch state as
     /// a reference (enables dragging)
 
-    inline int initTemporaryMove(std::vector<GeoElementId> moved, bool fine = true);
-    inline int initTemporaryMove(int geoId, PointPos pos, bool fine = true);
+    inline int initTemporaryMove(std::vector<GeoElementId> moved);
+    inline int initTemporaryMove(int geoId, PointPos pos);
     /// Forwards a request for a temporary initBSplinePieceMove to the solver using the current
     /// sketch state as a reference (enables dragging)
-    inline int initTemporaryBSplinePieceMove(
-        int geoId,
-        PointPos pos,
-        const Base::Vector3d& firstPoint,
-        bool fine = true
-    );
+    inline int initTemporaryBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
     /** Forwards a request for point or curve temporary movement to the solver using the current
      * state as a reference (enables dragging). NOTE: A temporary move operation must always be
      * preceded by a initTemporaryMove() operation.
@@ -1252,26 +1247,25 @@ private:
     mutable std::map<std::string, std::string> internalElementMap;
 };
 
-inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(std::vector<GeoElementId> moved)
 {
     if (solverNeedsUpdate) {
         solve();
     }
 
-    return solvedSketch.initMove(moved, fine);
+    return solvedSketch.initMove(moved);
 }
 
-inline int SketchObject::initTemporaryMove(int geoId, PointPos pos, bool fine /*=true*/)
+inline int SketchObject::initTemporaryMove(int geoId, PointPos pos)
 {
     std::vector<GeoElementId> moved = {GeoElementId(geoId, pos)};
-    return initTemporaryMove(moved, fine);
+    return initTemporaryMove(moved);
 }
 
 inline int SketchObject::initTemporaryBSplinePieceMove(
     int geoId,
     PointPos pos,
-    const Base::Vector3d& firstPoint,
-    bool fine
+    const Base::Vector3d& firstPoint
 )
 {
     // if a previous operation did not update the geometry (including geometry extensions)
@@ -1281,7 +1275,7 @@ inline int SketchObject::initTemporaryBSplinePieceMove(
         solve();
     }
 
-    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint, fine);
+    return solvedSketch.initBSplinePieceMove(geoId, pos, firstPoint);
 }
 
 inline GCS::SolveStatus SketchObject::

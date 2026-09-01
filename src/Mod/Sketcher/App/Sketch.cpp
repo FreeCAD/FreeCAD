@@ -138,7 +138,6 @@ Sketch::Sketch()
     , GCSsys()
     , ConstraintsCounter(0)
     , isInitMove(false)
-    , isFine(true)
     , moveStep(0)
     , defaultSolver(GCS::DogLeg)
     , defaultSolverRedundant(GCS::DogLeg)
@@ -4988,7 +4987,6 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
 {
     if (!isInitMove) {  // make sure we are in single subsystem mode
         clearTemporaryConstraints();
-        isFine = true;
     }
 
     GCS::SolveStatus status;
@@ -4997,23 +4995,23 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
 
     if (isInitMove) {
         solvername = "DogLeg";  // DogLeg is used for dragging (same as before)
-        status = GCSsys.solve(isFine, GCS::DogLeg);
+        status = GCSsys.solve(GCS::DogLeg);
     }
     else {
         switch (defaultSolver) {
             case 0:
                 solvername = "BFGS";
-                status = GCSsys.solve(isFine, GCS::BFGS);
+                status = GCSsys.solve(GCS::BFGS);
                 defaultsoltype = 2;
                 break;
             case 1:  // solving with the LevenbergMarquardt solver
                 solvername = "LevenbergMarquardt";
-                status = GCSsys.solve(isFine, GCS::LevenbergMarquardt);
+                status = GCSsys.solve(GCS::LevenbergMarquardt);
                 defaultsoltype = 1;
                 break;
             case 2:  // solving with the BFGS solver
                 solvername = "DogLeg";
-                status = GCSsys.solve(isFine, GCS::DogLeg);
+                status = GCSsys.solve(GCS::DogLeg);
                 defaultsoltype = 0;
                 break;
         }
@@ -5050,15 +5048,15 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
             switch (soltype) {
                 case 0:
                     solvername = "DogLeg";
-                    status = GCSsys.solve(isFine, GCS::DogLeg);
+                    status = GCSsys.solve(GCS::DogLeg);
                     break;
                 case 1:  // solving with the LevenbergMarquardt solver
                     solvername = "LevenbergMarquardt";
-                    status = GCSsys.solve(isFine, GCS::LevenbergMarquardt);
+                    status = GCSsys.solve(GCS::LevenbergMarquardt);
                     break;
                 case 2:  // solving with the BFGS solver
                     solvername = "BFGS";
-                    status = GCSsys.solve(isFine, GCS::BFGS);
+                    status = GCSsys.solve(GCS::BFGS);
                     break;
                 // last resort: augment the system with a second subsystem and use the SQP solver
                 case 3:
@@ -5074,7 +5072,7 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
                         );
                     }
                     GCSsys.initSolution();
-                    status = GCSsys.solve(isFine);
+                    status = GCSsys.solve();
                     break;
             }
 
@@ -5143,14 +5141,13 @@ GCS::SolveStatus Sketch::internalSolve(std::string& solvername, int level)
     return status;
 }
 
-int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
+int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds)
 {
     if (hasConflicts()) {
         // don't try to move sketches that contain conflicting constraints
         isInitMove = false;
         return -1;
     }
-    isFine = fine;
 
     clearTemporaryConstraints();
 
@@ -5385,10 +5382,10 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
     return 0;
 }
 
-int Sketch::initMove(int geoId, PointPos pos, bool fine)
+int Sketch::initMove(int geoId, PointPos pos)
 {
     std::vector<GeoElementId> geoEltIds = {GeoElementId(geoId, pos)};
-    return initMove(geoEltIds, fine);
+    return initMove(geoEltIds);
 }
 
 void Sketch::resetInitMove()
@@ -5396,10 +5393,8 @@ void Sketch::resetInitMove()
     isInitMove = false;
 }
 
-int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine)
+int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint)
 {
-    isFine = fine;
-
     geoId = checkGeoId(geoId);
 
     clearTemporaryConstraints();
@@ -5419,7 +5414,7 @@ int Sketch::initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& 
 
     // If spline has too few poles, just move all
     if (bsp.poles.size() <= std::size_t(bsp.degree + 1)) {
-        return initMove(geoId, pos, fine);
+        return initMove(geoId, pos);
     }
 
     // Find the closest knot

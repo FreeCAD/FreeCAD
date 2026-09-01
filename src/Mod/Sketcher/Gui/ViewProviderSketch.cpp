@@ -2135,8 +2135,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             getSketchObject()->initTemporaryBSplinePieceMove(
                 geoId,
                 Sketcher::PointPos::none,
-                Base::Vector3d(drag.xInit, drag.yInit, 0.0),
-                false);
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0));
             return;
         }
     }
@@ -2146,7 +2145,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    getSketchObject()->initTemporaryMove(drag.Dragged, false);
+    getSketchObject()->initTemporaryMove(drag.Dragged);
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)

@@ -375,7 +375,7 @@ SketchSolveStatus SketchObject::extend(int GeoId, double increment, PointPos end
 
     const std::vector<Part::Geometry*>& geomList = getInternalGeometry();
     Part::Geometry* geom = geomList[GeoId];
-    SketchSolveStatus status;
+    auto status = SketchSolveStatus::Success;
     if (geom->is<Part::GeomLineSegment>()) {
         auto* seg = static_cast<Part::GeomLineSegment*>(geom);
         Base::Vector3d startVec = seg->getStartPoint();

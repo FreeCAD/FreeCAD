@@ -173,13 +173,13 @@ public:
     /** initializes a point (or curve) drag by setting the current
      * sketch status as a reference
      */
-    int initMove(const std::vector<GeoElementId>& geoEltIds, bool fine = true);
-    int initMove(int geoId, PointPos pos, bool fine = true);
+    int initMove(const std::vector<GeoElementId>& geoEltIds);
+    int initMove(int geoId, PointPos pos);
 
     /** Initializes a B-spline piece drag by setting the current
      * sketch status as a reference. Only moves piece around `firstPoint`.
      */
-    int initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint, bool fine = true);
+    int initBSplinePieceMove(int geoId, PointPos pos, const Base::Vector3d& firstPoint);
 
     /** Resets the initialization of a point or curve drag
      */
@@ -647,7 +647,6 @@ private:
     std::vector<GCS::BSpline> BSplines;
 
     bool isInitMove;
-    bool isFine;
     Base::Vector3d initToPoint;
     double moveStep;
 

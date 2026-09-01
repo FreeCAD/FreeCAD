@@ -800,15 +800,17 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
     // Handle errors returned from the C++ function
     if (status != SketchSolveStatus::Success) {
         std::stringstream str;
-        if (status == SketchSolveStatus::SolverError) {
-            str << "Invalid constraint index or not a Text constraint: " << constrIndex;
-        }
-        else if (status == SketchSolveStatus::InvalidGeometry) {
-            str << "Cannot set text/font because of invalid geometry in the sketch";
-        }
-        else {  // Generic error for solver failures etc.
-            str << "Failed to set text/font for constraint with index " << constrIndex
-                << ". The operation would result in an invalid sketch.";
+        switch (status) {
+            case SketchSolveStatus::SolverError:
+                str << "Invalid constraint index or not a Text constraint: " << constrIndex;
+                break;
+            case SketchSolveStatus::InvalidGeometry:
+                str << "Cannot set text/font because of invalid geometry in the sketch";
+                break;
+            default:  // Generic error for solver failures etc.
+                str << "Failed to set text/font for constraint with index " << constrIndex
+                    << ". The operation would result in an invalid sketch.";
+                break;
         }
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
@@ -913,28 +915,30 @@ PyObject* SketchObjectPy::setDatum(PyObject* args)
     const auto status = this->getSketchObjectPtr()->setDatum(Index, Datum);
     if (status != SketchSolveStatus::Success) {
         std::stringstream str;
-        if (status == SketchSolveStatus::SolverError) {
-            str << "Invalid constraint index: " << Index;
-        }
-        else if (status == SketchSolveStatus::ConflictingConstraints) {
-            str << "Cannot set the datum because the sketch contains conflicting constraints";
-        }
-        else if (status == SketchSolveStatus::RedundantConstraints) {
-            str << "Datum " << Quantity.getUserString() << " for the constraint with index "
-                << Index << " is invalid";
-        }
-        else if (status == SketchSolveStatus::Overconstrained) {
-            str << "Negative datum values are not valid for the constraint with index " << Index;
-        }
-        else if (status == SketchSolveStatus::MalformedConstraints) {
-            str << "Zero is not a valid datum for the constraint with index " << Index;
-        }
-        else if (status == SketchSolveStatus::InvalidGeometry) {
-            str << "Cannot set the datum because of invalid geometry";
-        }
-        else {
-            str << "Unexpected problem at setting datum " << Quantity.getUserString()
-                << " for the constraint with index " << Index;
+        switch (status) {
+            case SketchSolveStatus::SolverError:
+                str << "Invalid constraint index: " << Index;
+                break;
+            case SketchSolveStatus::ConflictingConstraints:
+                str << "Cannot set the datum because the sketch contains conflicting constraints";
+                break;
+            case SketchSolveStatus::RedundantConstraints:
+                str << "Datum " << Quantity.getUserString() << " for the constraint with index "
+                    << Index << " is invalid";
+                break;
+            case SketchSolveStatus::Overconstrained:
+                str << "Negative datum values are not valid for the constraint with index " << Index;
+                break;
+            case SketchSolveStatus::MalformedConstraints:
+                str << "Zero is not a valid datum for the constraint with index " << Index;
+                break;
+            case SketchSolveStatus::InvalidGeometry:
+                str << "Cannot set the datum because of invalid geometry";
+                break;
+            default:
+                str << "Unexpected problem at setting datum " << Quantity.getUserString()
+                    << " for the constraint with index " << Index;
+                break;
         }
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;

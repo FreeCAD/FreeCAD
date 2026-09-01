@@ -54,6 +54,8 @@
 #include <limits>
 #include <numbers>
 
+#include <Base/Tools.h>
+
 #include "GCS.h"
 #include "qp_eq.h"
 
@@ -1753,7 +1755,7 @@ void System::initSolution(Algorithm alg)
     }
 
     // storing reference configuration
-    setReference();
+    saveReference();
 
     // diagnose conflicting or redundant constraints
     if (!hasDiagnosis) {
@@ -1875,7 +1877,7 @@ void System::initSolution(Algorithm alg)
     isInit = true;
 }
 
-void System::setReference()
+void System::saveReference()
 {
     reference.clear();
     reference.reserve(plist.size());
@@ -1884,7 +1886,7 @@ void System::setReference()
     }
 }
 
-void System::resetToReference()
+void System::restoreReference()
 {
     if (reference.size() == plist.size()) {
         VEC_D::const_iterator ref = reference.begin();
@@ -1895,39 +1897,36 @@ void System::resetToReference()
     }
 }
 
-SolveStatus System::solve(VEC_pD& params, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(VEC_pD& params, Algorithm alg, bool isRedundantsolving)
 {
     declareUnknowns(params);
     initSolution();
-    return solve(isFine, alg, isRedundantsolving);
+    return solve(alg, isRedundantsolving);
 }
 
-SolveStatus System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(Algorithm alg, bool isRedundantsolving)
 {
     if (!isInit) {
         return SolveStatus::Failed;
     }
 
-    bool isReset = false;
+    bool referenceRestored = false;
     // return success by default in order to permit coincidence constraints to be applied
     // even if no other system has to be solved
     auto status = SolveStatus::Success;
-    for (int cid = 0; cid < int(subSystems.size()); cid++) {
-        if ((subSystems[cid] || subSystemsAux[cid]) && !isReset) {
-            resetToReference();
-            isReset = true;
+    for (size_t cid = 0; cid < subSystems.size(); cid++) {
+        if ((subSystems[cid] || subSystemsAux[cid]) && !referenceRestored) {
+            restoreReference();
+            referenceRestored = true;
         }
         if (subSystems[cid] && subSystemsAux[cid]) {
-            status = std::max(
-                status,
-                solve(subSystems[cid], subSystemsAux[cid], isFine, isRedundantsolving)
-            );
+            status = solve(subSystems[cid], subSystemsAux[cid], isRedundantsolving);
         }
         else if (subSystems[cid]) {
-            status = std::max(status, solve(subSystems[cid], isFine, alg, isRedundantsolving));
+            status = solve(subSystems[cid], alg, isRedundantsolving);
         }
         else if (subSystemsAux[cid]) {
-            status = std::max(status, solve(subSystemsAux[cid], isFine, alg, isRedundantsolving));
+            status = solve(subSystemsAux[cid], alg, isRedundantsolving);
         }
     }
     if (status == SolveStatus::Success) {
@@ -1946,23 +1945,21 @@ SolveStatus System::solve(bool isFine, Algorithm alg, bool isRedundantsolving)
     return status;
 }
 
-SolveStatus System::solve(SubSystem* subsys, bool isFine, Algorithm alg, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsys, Algorithm alg, bool isRedundantsolving)
 {
-    if (alg == BFGS) {
-        return solve_BFGS(subsys, isFine, isRedundantsolving);
-    }
-    else if (alg == LevenbergMarquardt) {
-        return solve_LM(subsys, isRedundantsolving);
-    }
-    else if (alg == DogLeg) {
-        return solve_DL(subsys, isRedundantsolving);
-    }
-    else {
-        return SolveStatus::Failed;
+    switch (alg) {
+        case Algorithm::BFGS:
+            return solve_BFGS(subsys, isRedundantsolving);
+        case Algorithm::LevenbergMarquardt:
+            return solve_LM(subsys, isRedundantsolving);
+        case Algorithm::DogLeg:
+            return solve_DL(subsys, isRedundantsolving);
+        default:
+            Base::unreachable();
     }
 }
 
-SolveStatus System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve_BFGS(SubSystem* subsys, bool isRedundantsolving)
 {
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     extractSubsystem(subsys, isRedundantsolving);
@@ -1996,7 +1993,6 @@ SolveStatus System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedund
     subsys->getParams(x);
     h = x - h;  // = x - xold
 
-    // double convergence = isFine ? convergence : XconvergenceRough;
     int maxIterNumber = (sketchSizeMultiplier ? maxIter * xsize : maxIter);
     double convCriterion = convergence;
     if (isRedundantsolving) {
@@ -4530,7 +4526,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
 // The following solver variant solves a system compound of two subsystems
 // treating the first of them as of higher priority than the second
-SolveStatus System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool isRedundantsolving)
+SolveStatus System::solve(SubSystem* subsysA, SubSystem* subsysB, bool isRedundantsolving)
 {
     int xsizeA = subsysA->pSize();
     int xsizeB = subsysB->pSize();
@@ -4723,7 +4719,7 @@ void System::evaluateDrivenConstraints()
 
 void System::undoSolution()
 {
-    resetToReference();
+    restoreReference();
 }
 
 void System::makeReducedJacobian(
@@ -5597,7 +5593,7 @@ void System::identifyConflictingRedundantConstraints(
     });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
-    auto status = solve(subSysTmp, true, alg, true);
+    auto status = solve(subSysTmp, alg, true);
 
     if (debugMode == Minimal || debugMode == IterationLevel) {
         std::string solvername;
@@ -5626,7 +5622,7 @@ void System::identifyConflictingRedundantConstraints(
                 return (err * err < this->convergenceRedundant);
             }
         );
-        resetToReference();
+        restoreReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
             Base::Console().log("Sketcher Redundant solving: %d redundants\n", redundant.size());
