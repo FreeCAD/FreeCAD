@@ -64,7 +64,7 @@ PyMOD_INIT_FUNC(Mesh)
         "User parameter:BaseApp/Preferences/Mod/Mesh"
     );
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");
-    MeshCore::MeshOutput::SetAsymptoteSize(asy->GetASCII("Width", "500"), asy->GetASCII("Height"));
+    MeshCore::MeshOutput::SetAsymptoteSize(asy->getString("Width", "500"), asy->getString("Height"));
 
     // clang-format off
     // add mesh elements

@@ -82,10 +82,10 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
     return str;
 }
 
-std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
+std::basic_string<XMLCh> XMLTools::toXMLString(std::string_view fromTranscode)
 {
     std::basic_string<XMLCh> str;
-    if (!fromTranscode) {
+    if (fromTranscode.empty()) {
         return str;
     }
 
@@ -93,11 +93,11 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 
     static XMLCh outBuff[128];
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
+    const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode.data());
     XMLSize_t outputLength = 0;
     XMLSize_t eaten = 0;
     XMLSize_t offset = 0;
-    XMLSize_t inputLength = std::string(fromTranscode).size();
+    XMLSize_t inputLength = fromTranscode.size();
 
     unsigned char* charSizes = new unsigned char[inputLength];
     while (inputLength) {

@@ -148,9 +148,9 @@ public:
 private:
     QString detectOverlayStyleSheetFileName() const
     {
-        QString mainStyleSheet = QString::fromUtf8(handle->GetASCII("StyleSheet").c_str());
-        QString overlayStyleSheet = QString::fromUtf8(
-            handle->GetASCII("OverlayActiveStyleSheet").c_str()
+        QString mainStyleSheet = QString::fromStdString(handle->getString("StyleSheet"));
+        QString overlayStyleSheet = QString::fromStdString(
+            handle->getString("OverlayActiveStyleSheet")
         );
 
         if (overlayStyleSheet.isEmpty()) {

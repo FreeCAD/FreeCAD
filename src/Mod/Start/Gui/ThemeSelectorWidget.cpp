@@ -124,7 +124,7 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
-    auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
+    auto styleSheetName = QString::fromStdString(hGrp->getString("StyleSheet"));
     for (const auto& theme : themeMap) {
         auto button = gsl::owner<QToolButton*>(new QToolButton());
 
@@ -198,12 +198,12 @@ void ThemeSelectorWidget::preselectThemeFromSystemSettings()
         return;
     }
 
-    auto nullStyle("<N/A>");
+    constexpr std::string_view nullStyle {"<N/A>"};
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
-    auto styleSheetName = QString::fromStdString(hGrp->GetASCII("StyleSheet", nullStyle));
-    if (styleSheetName == QString::fromStdString(nullStyle)) {
+    const auto styleSheetName = hGrp->getString("StyleSheet", nullStyle);
+    if (styleSheetName == nullStyle) {
         auto theme = isSystemInDarkMode() ? Theme::Dark : Theme::Light;
         themeChanged(theme);
     }

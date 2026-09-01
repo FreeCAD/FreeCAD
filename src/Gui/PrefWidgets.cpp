@@ -268,7 +268,9 @@ void PrefLineEdit::restorePreferences()
     }
 
     QString text = this->text();
-    text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
+    text = QString::fromStdString(
+        getWindowParameter()->getString(entryName().toStdString(), text.toStdString())
+    );
     setText(text);
 }
 
@@ -279,7 +281,7 @@ void PrefLineEdit::savePreferences()
         return;
     }
 
-    getWindowParameter()->SetASCII(entryName(), text().toUtf8());
+    getWindowParameter()->setString(entryName().toStdString(), text().toStdString());
 }
 
 // --------------------------------------------------------------------
@@ -299,7 +301,9 @@ void PrefTextEdit::restorePreferences()
     }
 
     QString text = this->toPlainText();
-    text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
+    text = QString::fromStdString(
+        getWindowParameter()->getString(entryName().toStdString(), text.toStdString())
+    );
     setText(text);
 }
 
@@ -311,7 +315,7 @@ void PrefTextEdit::savePreferences()
     }
 
     QString text = this->toPlainText();
-    getWindowParameter()->SetASCII(entryName(), text.toUtf8());
+    getWindowParameter()->setString(entryName().toStdString(), text.toStdString());
 }
 
 // --------------------------------------------------------------------
@@ -330,8 +334,8 @@ void PrefFileChooser::restorePreferences()
         return;
     }
 
-    QString txt = QString::fromUtf8(
-        getWindowParameter()->GetASCII(entryName(), fileName().toUtf8()).c_str()
+    QString txt = QString::fromStdString(
+        getWindowParameter()->getString(entryName().toStdString(), fileName().toStdString())
     );
     setFileName(txt);
 }
@@ -343,7 +347,7 @@ void PrefFileChooser::savePreferences()
         return;
     }
 
-    getWindowParameter()->SetASCII(entryName(), fileName().toUtf8());
+    getWindowParameter()->setString(entryName().toStdString(), fileName().toStdString());
 }
 
 // --------------------------------------------------------------------
@@ -405,15 +409,18 @@ void PrefComboBox::restorePreferences()
             break;
         case QMetaType::QString:
             index = findText(
-                QString::fromUtf8(
-                    getWindowParameter()->GetASCII(entryName(), m_DefaultText.toUtf8().constData()).c_str()
+                QString::fromStdString(
+                    getWindowParameter()->getString(entryName().toStdString(), m_DefaultText.toStdString())
                 )
             );
             break;
         case QMetaType::QByteArray:
-            index = findData(QByteArray(
-                getWindowParameter()->GetASCII(entryName(), m_Default.toByteArray().constData()).c_str()
-            ));
+            index = findData(
+                QByteArray::fromStdString(
+                    getWindowParameter()
+                        ->getString(entryName().toStdString(), m_Default.toByteArray().toStdString())
+                )
+            );
             break;
         default:
             index = getWindowParameter()->GetInt(entryName(), m_DefaultIndex);
@@ -447,10 +454,13 @@ void PrefComboBox::savePreferences()
             getWindowParameter()->SetFloat(entryName(), currentData().toDouble());
             break;
         case QMetaType::QString:
-            getWindowParameter()->SetASCII(entryName(), currentText().toUtf8().constData());
+            getWindowParameter()->setString(entryName().toStdString(), currentText().toStdString());
             break;
         case QMetaType::QByteArray:
-            getWindowParameter()->SetASCII(entryName(), currentData().toByteArray().constData());
+            getWindowParameter()->setString(
+                entryName().toStdString(),
+                currentData().toByteArray().toStdString()
+            );
             break;
         default:
             getWindowParameter()->SetInt(entryName(), currentIndex());
@@ -695,16 +705,16 @@ public:
 
     void restoreHistory(ParameterGrp::handle hGrp)
     {
-        std::vector<std::string> hist = hGrp->GetASCIIs("Hist");
+        std::vector<std::string> hist = hGrp->getAllStrings("Hist");
         for (const auto& it : hist) {
             history.append(QString::fromStdString(it));
         }
     }
     void clearHistory(ParameterGrp::handle hGrp)
     {
-        std::vector<std::string> hist = hGrp->GetASCIIs("Hist");
+        std::vector<std::string> hist = hGrp->getAllStrings("Hist");
         for (const auto& it : hist) {
-            hGrp->RemoveASCII(it.c_str());
+            hGrp->removeString(it);
         }
     }
     void saveHistory(ParameterGrp::handle hGrp)
@@ -715,7 +725,7 @@ public:
         for (int i = 0; i < list.size(); i++) {
             QByteArray key("Hist");
             key.append(QByteArray::number(i));
-            hGrp->SetASCII(key, list[i].toUtf8());
+            hGrp->setString(key.toStdString(), list[i].toStdString());
         }
     }
 };
@@ -797,7 +807,9 @@ void PrefQuantitySpinBox::restorePreferences()
     }
 
     QString text = this->text();
-    text = QString::fromUtf8(getWindowParameter()->GetASCII(entryName(), text.toUtf8()).c_str());
+    text = QString::fromStdString(
+        getWindowParameter()->getString(entryName().toStdString(), text.toStdString())
+    );
     lineEdit()->setText(text);
 
     // Restore history
@@ -813,7 +825,7 @@ void PrefQuantitySpinBox::savePreferences()
         return;
     }
 
-    getWindowParameter()->SetASCII(entryName(), text().toUtf8());
+    getWindowParameter()->setString(entryName().toStdString(), text().toStdString());
 
     // Save history
     auto hGrp = getWindowParameter()->GetGroup(d->getHistoryGroupName(entryName()));
@@ -874,8 +886,10 @@ void PrefFontBox::restorePreferences()
     QFont currFont = currentFont();  // QFont from selector widget
     QString currName = currFont.family();
 
-    std::string prefName
-        = getWindowParameter()->GetASCII(entryName(), currName.toUtf8());  // font name from cfg file
+    std::string prefName = getWindowParameter()->getString(
+        entryName().toStdString(),
+        currName.toStdString()
+    );  // font name from cfg file
 
     currFont.setFamily(QString::fromStdString(prefName));
     setCurrentFont(currFont);  // set selector widget to name from cfg file
@@ -890,7 +904,7 @@ void PrefFontBox::savePreferences()
 
     QFont currFont = currentFont();
     QString currName = currFont.family();
-    getWindowParameter()->SetASCII(entryName(), currName.toUtf8());
+    getWindowParameter()->setString(entryName().toStdString(), currName.toStdString());
 }
 
 // --------------------------------------------------------------------

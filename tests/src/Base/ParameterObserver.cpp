@@ -191,7 +191,7 @@ TEST_F(ParameterObserverTest, TestString)
     obs.setStringParameter("World");
     EXPECT_EQ(obs.getStringParameter(), "World");
 
-    EXPECT_EQ(grp->GetASCII("StringParameter"), "World");
+    EXPECT_EQ(grp->getString("StringParameter"), "World");
 }
 
 TEST_F(ParameterObserverTest, TestHashKey)

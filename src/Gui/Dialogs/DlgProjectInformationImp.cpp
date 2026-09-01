@@ -103,9 +103,9 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
 
     // load comboBox with license names
     for (const auto& item : App::licenseItems) {
-        const char* name {item.at(App::posnOfFullName)};
-        QString translated = QApplication::translate("Gui::Dialog::DlgSettingsDocument", name);
-        ui->comboLicense->addItem(translated, QByteArray(name));
+        const auto& name {item.at(App::posnOfFullName)};
+        QString translated = QApplication::translate("Gui::Dialog::DlgSettingsDocument", name.data());
+        ui->comboLicense->addItem(translated, QByteArray {name.data(), int(name.size())});
     }
 
     // set default position to match document
@@ -178,8 +178,9 @@ void DlgProjectInformationImp::accept()
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
     const char* url {
-        index >= 0 && index < App::countOfLicenses ? App::licenseItems.at(index).at(App::posnOfUrl)
-                                                   : _doc->LicenseURL.getValue()
+        index >= 0 && index < App::countOfLicenses
+            ? App::licenseItems.at(index).at(App::posnOfUrl).data()
+            : _doc->LicenseURL.getValue()
     };
 
     ui->lineEditLicenseURL->setText(QString::fromLatin1(url));

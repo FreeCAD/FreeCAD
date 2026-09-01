@@ -116,9 +116,9 @@ void BitmapFactoryInst::restoreCustomPaths()
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Bitmaps"
     );
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    std::vector<std::string> paths = group->getAllStrings("CustomPath");
     for (auto& path : paths) {
-        addPath(QString::fromUtf8(path.c_str()));
+        addPath(QString::fromStdString(path));
     }
 }
 
@@ -139,7 +139,7 @@ void Gui::BitmapFactoryInst::configureExternalTheme()
 
     d->externalThemeEnabled = group->GetBool("Enabled", false);
     d->preferExternal = group->GetBool("PreferExternal", true);
-    QString path = QString::fromUtf8(group->GetASCII("Path", "").c_str());
+    QString path = QString::fromStdString(group->getString("Path", ""));
 
     const auto isEnabledValue = [](const QString& value) {
         const QString normalized = value.trimmed().toLower();

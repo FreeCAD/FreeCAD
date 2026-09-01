@@ -140,7 +140,7 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         auto intMap = hGrp->GetIntMap();
         auto uintMap = hGrp->GetUnsignedMap();
         auto floatMap = hGrp->GetFloatMap();
-        auto asciiMap = hGrp->GetASCIIMap();
+        auto stringMap = hGrp->getAllStringsMap();
 
         // check the name of an entry in the group
         if (opt.name) {
@@ -169,8 +169,8 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
                         return true;
                     }
                 }
-                for (const auto& it : asciiMap) {
-                    QString text = QString::fromUtf8(it.first.c_str());
+                for (const auto& it : stringMap) {
+                    QString text = QString::fromStdString(it.first);
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
                     }
@@ -201,8 +201,8 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
                         return true;
                     }
                 }
-                for (const auto& it : asciiMap) {
-                    QString text = QString::fromUtf8(it.first.c_str());
+                for (const auto& it : stringMap) {
+                    QString text = QString::fromStdString(it.first);
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
                     }
@@ -213,16 +213,16 @@ bool DlgParameterFind::matches(QTreeWidgetItem* item, const Options& opt) const
         // check the value of an entry in the group
         if (opt.value) {
             if (opt.match) {
-                for (const auto& it : asciiMap) {
-                    QString text = QString::fromUtf8(it.second.c_str());
+                for (const auto& it : stringMap) {
+                    QString text = QString::fromStdString(it.second);
                     if (text.compare(opt.text, Qt::CaseInsensitive) == 0) {
                         return true;
                     }
                 }
             }
             else {
-                for (const auto& it : asciiMap) {
-                    QString text = QString::fromUtf8(it.second.c_str());
+                for (const auto& it : stringMap) {
+                    QString text = QString::fromStdString(it.second);
                     if (text.indexOf(opt.text, 0, Qt::CaseInsensitive) >= 0) {
                         return true;
                     }

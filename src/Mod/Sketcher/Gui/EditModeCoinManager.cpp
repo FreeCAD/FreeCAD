@@ -775,7 +775,7 @@ void EditModeCoinManager::ParameterObserver::updateConstraintPresentationParamet
     Client.constraintParameters.bHideUnits = hGrpskg->GetBool("HideUnits", false);
     Client.constraintParameters.bShowDimensionalName = hGrpskg->GetBool("ShowDimensionalName", true);
     Client.constraintParameters.sDimensionalStringFormat = QString::fromStdString(
-        hGrpskg->GetASCII("DimensionalStringFormat", "%N = %V")
+        hGrpskg->getString("DimensionalStringFormat", "%N = %V")
     );
 }
 
@@ -2092,9 +2092,7 @@ void EditModeCoinManager::updateElementSizeParameters()
 
     int markerSize = hGrp->GetInt("MarkerSize", 7);
 
-    drawingParameters.labelFontName = QString::fromStdString(
-        hGrp->GetASCII("EditSketcherFontName", "")
-    );
+    drawingParameters.labelFontName = QString::fromStdString(hGrp->getString("EditSketcherFontName"));
 
     int defaultFontSizePixels = defaultApplicationFontSizePixels();  // returns height in pixels,
                                                                      // not points

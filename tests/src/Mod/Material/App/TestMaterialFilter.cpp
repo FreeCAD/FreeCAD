@@ -54,14 +54,14 @@ protected:
         ParameterGrp::handle hGrp =
             App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
 
-        _customDir = hGrp->GetASCII("CustomMaterialsDir", "");
+        _customDir = hGrp->getString("CustomMaterialsDir", "");
         _useBuiltInDir = hGrp->GetBool("UseBuiltInMaterials", true);
         _useWorkbenchDir = hGrp->GetBool("UseMaterialsFromWorkbenches", true);
         _useUserDir = hGrp->GetBool("UseMaterialsFromConfigDir", true);
         _useCustomDir = hGrp->GetBool("UseMaterialsFromCustomDir", false);
 
         std::string testPath = App::Application::getHomePath() + "/tests/Materials/";
-        hGrp->SetASCII("CustomMaterialsDir", testPath);
+        hGrp->setString("CustomMaterialsDir", testPath);
         hGrp->SetBool("UseBuiltInMaterials", false);
         hGrp->SetBool("UseMaterialsFromWorkbenches", false);
         hGrp->SetBool("UseMaterialsFromConfigDir", false);
@@ -85,7 +85,7 @@ protected:
             App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Material/Resources");
 
         // Restore preferences
-        hGrp->SetASCII("CustomMaterialsDir", _customDir);
+        hGrp->setString("CustomMaterialsDir", _customDir);
         hGrp->SetBool("UseBuiltInMaterials", _useBuiltInDir);
         hGrp->SetBool("UseMaterialsFromWorkbenches", _useWorkbenchDir);
         hGrp->SetBool("UseMaterialsFromConfigDir", _useUserDir);
