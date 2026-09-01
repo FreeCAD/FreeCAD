@@ -46,7 +46,7 @@ from Path.Post.Processor import (
 import Path.Post.Command as PathCommand
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.PostList import Postable
-from Machine.models.machine import Machine, OutputUnits
+from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
 
 from CAMTests.PostTestMocks import MockJob, MockStock
 
@@ -507,18 +507,39 @@ class TestPostProcessorClassification(unittest.TestCase):
             self.assertEqual(squawk["squawkType"], squawk_type)
 
     def test082_postprocessor_default_sanity_checks(self):
-        """Test PostProcessor default get_sanity_checks() returns empty list."""
+        """Test PostProcessor default get_sanity_checks() with no known limits."""
 
         class TestPostProcessor(PostProcessor):
             def __init__(self):
-                pass
+                self.values = {}
 
         processor = TestPostProcessor()
         mock_job = Mock()
 
-        # Default implementation should return empty list
+        # With no spindle speed limits merged there is nothing to check
         squawks = processor.get_sanity_checks(mock_job)
         self.assertEqual(squawks, [])
+
+    def test083_postprocessor_sanity_check_failure_is_contained(self):
+        """A check that raises is logged and skipped, the rest still run."""
+
+        class TestPostProcessor(PostProcessor):
+            def __init__(self):
+                self.values = {}
+
+            def _broken_check(self, job):
+                raise RuntimeError("boom")
+
+            def _working_check(self, job):
+                return [self._create_squawk("NOTE", "still here")]
+
+            def sanity_check_methods(self):
+                return [self._broken_check, self._working_check]
+
+        squawks = TestPostProcessor().get_sanity_checks(Mock())
+
+        self.assertEqual(len(squawks), 1)
+        self.assertEqual(squawks[0]["Note"], "still here")
 
 
 class TestPropertyScope(unittest.TestCase):
@@ -1083,3 +1104,217 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
 
         # gcode1 has %n when converted
         self.assertIn("%100", gcode, "Expected 'N100' to use % instead of N")
+
+
+class TestSpindleSpeedSanityCheck(unittest.TestCase):
+    """Tests for the machine-level spindle speed range check.
+
+    Covers _merge_toolhead_limits() (machine model -> values) and
+    _sanity_spindle_speed() (values + job commands -> squawks).
+    """
+
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
+
+    def _make_postprocessor(self, toolheads=None):
+        """Create a minimal PostProcessor carrying the given toolheads."""
+
+        class SpindleTestPP(PostProcessor):
+            def __init__(self):
+                # Skip super().__init__() — only the limit and check methods
+                # are exercised here
+                self.values = {}
+                self._machine = None
+                self._job = None
+
+        pp = SpindleTestPP()
+        pp._machine = Machine.create_3axis_config()
+        pp._machine.toolheads = list(toolheads) if toolheads is not None else []
+        return pp
+
+    def _rotary_toolhead(self, min_rpm=0, max_rpm=0):
+        return Toolhead(
+            name="Spindle",
+            toolhead_type=ToolheadType.ROTARY,
+            min_rpm=min_rpm,
+            max_rpm=max_rpm,
+        )
+
+    def _job_with_speeds(self, speeds, label="TC: 5mm Endmill"):
+        """A stand-in job whose tool controllers command the given speeds."""
+        tools = Mock()
+        tools.Group = []
+        for speed in speeds:
+            controller = Mock()
+            controller.Label = label
+            controller.Path = Path.Path([Path.Command("M3", {"S": speed})])
+            tools.Group.append(controller)
+
+        job = Mock()
+        job.Tools = tools
+        job.Operations = Mock()
+        job.Operations.Group = []
+        return job
+
+    # ------------------------------------------------------------------
+    # _merge_toolhead_limits
+    # ------------------------------------------------------------------
+
+    def test200_merge_single_rotary_toolhead(self):
+        """A single rotary toolhead's rpm limits reach the values dict."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=6000, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        self.assertEqual(pp.values["MIN_SPINDLE_SPEED"], 6000.0)
+        self.assertEqual(pp.values["MAX_SPINDLE_SPEED"], 24000.0)
+
+    def test201_merge_treats_zero_as_unspecified(self):
+        """A limit of 0 in the model means "not specified", not a real limit."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=0, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        self.assertIsNone(pp.values["MIN_SPINDLE_SPEED"])
+        self.assertEqual(pp.values["MAX_SPINDLE_SPEED"], 24000.0)
+
+    def test202_merge_no_toolheads(self):
+        """A machine with no toolheads leaves both limits unset."""
+        pp = self._make_postprocessor([])
+        pp._merge_toolhead_limits()
+
+        self.assertIsNone(pp.values["MIN_SPINDLE_SPEED"])
+        self.assertIsNone(pp.values["MAX_SPINDLE_SPEED"])
+
+    def test203_merge_skips_multiple_toolheads(self):
+        """With several toolheads there is no active one, so nothing is merged."""
+        pp = self._make_postprocessor(
+            [
+                self._rotary_toolhead(min_rpm=6000, max_rpm=24000),
+                self._rotary_toolhead(min_rpm=100, max_rpm=3000),
+            ]
+        )
+        pp._merge_toolhead_limits()
+
+        self.assertIsNone(pp.values["MIN_SPINDLE_SPEED"])
+        self.assertIsNone(pp.values["MAX_SPINDLE_SPEED"])
+
+    def test204_merge_skips_non_rotary_toolhead(self):
+        """On a laser head S is power, not rpm, so no limits are merged."""
+        pp = self._make_postprocessor(
+            [Toolhead(name="Laser", toolhead_type=ToolheadType.LASER, max_rpm=255)]
+        )
+        pp._merge_toolhead_limits()
+
+        self.assertIsNone(pp.values["MIN_SPINDLE_SPEED"])
+        self.assertIsNone(pp.values["MAX_SPINDLE_SPEED"])
+
+    # ------------------------------------------------------------------
+    # _sanity_spindle_speed
+    # ------------------------------------------------------------------
+
+    def test210_no_squawk_without_limits(self):
+        """A machine that specifies no limits is never squawked at."""
+        pp = self._make_postprocessor([])
+        pp._merge_toolhead_limits()
+
+        self.assertEqual(pp._sanity_spindle_speed(self._job_with_speeds([1000000])), [])
+
+    def test211_no_squawk_within_range(self):
+        """Speeds inside the range produce nothing."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=6000, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        self.assertEqual(pp._sanity_spindle_speed(self._job_with_speeds([6000, 12000, 24000])), [])
+
+    def test212_squawk_above_maximum(self):
+        """A speed above the maximum produces one WARNING naming the source."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=6000, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        squawks = pp._sanity_spindle_speed(self._job_with_speeds([30000], label="TC: Big Bit"))
+
+        self.assertEqual(len(squawks), 1)
+        self.assertEqual(squawks[0]["squawkType"], "WARNING")
+        self.assertIn("TC: Big Bit", squawks[0]["Note"])
+        self.assertIn("30000", squawks[0]["Note"])
+        self.assertIn("24000", squawks[0]["Note"])
+
+    def test213_squawk_below_minimum(self):
+        """A speed below the minimum produces one WARNING."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=6000, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        squawks = pp._sanity_spindle_speed(self._job_with_speeds([1200]))
+
+        self.assertEqual(len(squawks), 1)
+        self.assertEqual(squawks[0]["squawkType"], "WARNING")
+        self.assertIn("1200", squawks[0]["Note"])
+        self.assertIn("6000", squawks[0]["Note"])
+
+    def test214_zero_speed_is_not_squawked(self):
+        """Zero means the spindle is not running; CAMSanity covers that already."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=6000, max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        self.assertEqual(pp._sanity_spindle_speed(self._job_with_speeds([0])), [])
+
+    def test215_only_maximum_known(self):
+        """With only a maximum, low speeds pass and high speeds squawk."""
+        pp = self._make_postprocessor([self._rotary_toolhead(max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        self.assertEqual(pp._sanity_spindle_speed(self._job_with_speeds([10])), [])
+        self.assertEqual(len(pp._sanity_spindle_speed(self._job_with_speeds([24001]))), 1)
+
+    def test216_repeated_speed_squawks_once(self):
+        """The same source and speed is reported once, not per command."""
+        pp = self._make_postprocessor([self._rotary_toolhead(max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        job = self._job_with_speeds([30000, 30000])
+
+        self.assertEqual(len(pp._sanity_spindle_speed(job)), 1)
+
+    def test217_speed_read_from_operation_commands(self):
+        """Spindle commands emitted by an operation are checked too."""
+        pp = self._make_postprocessor([self._rotary_toolhead(max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        operation = Mock()
+        operation.Label = "Profile"
+        operation.Path = Path.Path([Path.Command("M4", {"S": 40000})])
+
+        job = self._job_with_speeds([])
+        job.Operations.Group = [operation]
+
+        squawks = pp._sanity_spindle_speed(job)
+
+        self.assertEqual(len(squawks), 1)
+        self.assertIn("Profile", squawks[0]["Note"])
+
+    def test218_check_runs_from_get_sanity_checks(self):
+        """The check is wired into the base get_sanity_checks() composition."""
+        pp = self._make_postprocessor([self._rotary_toolhead(max_rpm=24000)])
+        pp._merge_toolhead_limits()
+
+        squawks = pp.get_sanity_checks(self._job_with_speeds([30000]))
+
+        self.assertEqual(len(squawks), 1)
+        self.assertEqual(squawks[0]["squawkType"], "WARNING")
+
+
+class TestAddSpindleHelper(unittest.TestCase):
+    """Machine.add_spindle() must not shift its arguments onto the wrong fields."""
+
+    def test220_add_spindle_sets_named_fields(self):
+        machine = Machine.create_3axis_config()
+        machine.toolheads = []
+        machine.add_spindle("Spindle", id="th1", max_power_kw=3.0, max_rpm=24000, min_rpm=6000)
+
+        toolhead = machine.toolheads[0]
+        self.assertEqual(toolhead.name, "Spindle")
+        self.assertEqual(toolhead.id, "th1")
+        self.assertEqual(toolhead.toolhead_type, ToolheadType.ROTARY)
+        self.assertEqual(toolhead.max_power_kw, 3.0)
+        self.assertEqual(toolhead.max_rpm, 24000)
+        self.assertEqual(toolhead.min_rpm, 6000)
