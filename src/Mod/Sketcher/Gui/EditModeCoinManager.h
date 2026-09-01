@@ -34,6 +34,7 @@
 #include <Mod/Sketcher/App/GeoList.h>
 #include "GeometryCreationMode.h"
 
+#include "DimensionOption.h"
 #include "EditModeCoinManagerParameters.h"
 
 
@@ -300,6 +301,10 @@ public:
 
     // This specific overload is to use a specific geometry list, which may be a temporal one
     void drawConstraintIcons(const GeoListFacade& geolistfacade);
+    void setDimensionOptions(const std::vector<DimensionOption>& options);
+    bool setActiveDimensionOption(int index);
+    int pickDimensionOption(const SoPickedPoint* point) const;
+    [[nodiscard]] std::optional<DimensionOption> resolveDimensionOption(int index) const;
 
     void updateGeometryLayersConfiguration();
     //@}

@@ -523,10 +523,23 @@ private:
             return {};
         }
 
+        int sourceWidth = 1;
+        int sourceHeight = 1;
+        label->getDimension(scale, sourceWidth, sourceHeight);
+
         // use the shared geometry calculation for consistency
         SoDatumLabel::DiameterGeometry geom = label->calculateDiameterGeometry(points);
 
         std::vector<SbVec3f> corners;
+
+        // Include the complete text, including a unit suffix extending beyond the datum line.
+        const float margin = label->imgHeight / 4.0F;
+        const float halfWidth = label->imgWidth / 2.0F + margin;
+        const float halfHeight = label->imgHeight / 2.0F + margin;
+        corners.push_back(geom.textOffset + geom.dir * halfWidth + geom.normal * halfHeight);
+        corners.push_back(geom.textOffset + geom.dir * halfWidth - geom.normal * halfHeight);
+        corners.push_back(geom.textOffset - geom.dir * halfWidth + geom.normal * halfHeight);
+        corners.push_back(geom.textOffset - geom.dir * halfWidth - geom.normal * halfHeight);
 
         // include main points and line segment points around text
         corners.push_back(geom.p1);

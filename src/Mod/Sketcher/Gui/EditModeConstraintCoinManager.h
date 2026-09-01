@@ -25,6 +25,8 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
+#include <optional>
 #include <set>
 #include <vector>
 
@@ -33,6 +35,8 @@
 #include <QRect>
 
 #include <Base/Vector3D.h>
+#include <Gui/SoDatumLabel.h>
+#include <Gui/ViewProvider.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoInfo.h>
 
@@ -40,14 +44,14 @@
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "EditModeCoinManagerParameters.h"
-
+#include "DimensionOption.h"
 
 class SbVec3f;
 class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
-
+class SoSeparator;
 namespace Base
 {
 template<typename T>
@@ -84,6 +88,19 @@ using GeoListFacade = Sketcher::GeoListFacade;
 class SketcherGuiExport EditModeConstraintCoinManager
 {
 private:
+    enum class DatumLabelKind
+    {
+        Constraint,
+        DeactivatedConstraint,
+        Preview,
+    };
+
+    struct PreparedPreviewDatum
+    {
+        std::unique_ptr<Sketcher::Constraint> constraint;
+        Gui::CoinPtr<Gui::SoDatumLabel> datum;
+    };
+
     /// Coin Node indices for constraints
     enum class ConstraintNodePosition
     {
@@ -167,6 +184,11 @@ public:
 
     SoSeparator* getConstraintIdSeparator(int i) const;
 
+    void setDimensionOptions(const std::vector<DimensionOption>& options);
+    bool setActiveDimensionOption(int index);
+    int pickDimensionOption(const SoPickedPoint* point) const;
+    [[nodiscard]] std::optional<DimensionOption> resolveDimensionOption(int index) const;
+
     void createEditModeInventorNodes();
 
 private:
@@ -183,7 +205,7 @@ private:
 
     /// Return display string for constraint including hiding units if
     // requested.
-    QString getPresentationString(const Sketcher::Constraint* constraint, std::string prefix = "");
+    QString getPresentationString(const Sketcher::Constraint* constraint, std::string prefix = "") const;
 
     /// Returns the size that Coin should display the indicated image at
     SbVec3s getDisplayedSize(const SoImage*) const;
@@ -307,8 +329,46 @@ private:
         double angle,
         double startAngle,
         double endAngle
-    );
+    ) const;
     //@}
+
+    void ensureDimensionOptionRoot();
+    void rebuildDimensionOptionNodes();
+    Gui::CoinPtr<Gui::SoDatumLabel> createDimensionDatumLabel(
+        const Sketcher::Constraint& constraint,
+        DatumLabelKind kind
+    ) const;
+    [[nodiscard]] std::optional<PreparedPreviewDatum> preparePreviewDatum(
+        const DimensionOption& option
+    ) const;
+    bool configureDimensionDatumLabel(
+        const GeoListFacade& geolistfacade,
+        const Sketcher::Constraint& constraint,
+        Gui::SoDatumLabel& datum,
+        double zConstrH
+    ) const;
+    bool configureLinearDatumLabel(
+        const GeoListFacade& geolistfacade,
+        const Sketcher::Constraint& constraint,
+        Gui::SoDatumLabel& datum,
+        double zConstrH
+    ) const;
+    bool configureAngularDatumLabel(
+        const GeoListFacade& geolistfacade,
+        const Sketcher::Constraint& constraint,
+        Gui::SoDatumLabel& datum,
+        double zConstrH
+    ) const;
+    bool configureRadialDatumLabel(
+        const GeoListFacade& geolistfacade,
+        const Sketcher::Constraint& constraint,
+        Gui::SoDatumLabel& datum,
+        double zConstrH
+    ) const;
+    bool configurePreviewDatumLabel(
+        const Sketcher::Constraint& constraint,
+        Gui::SoDatumLabel& datum
+    ) const;
 
 private:
     ViewProviderSketch& viewProvider;
@@ -320,6 +380,9 @@ private:
     EditModeScenegraphNodes& editModeScenegraphNodes;
 
     CoinMapping& coinMapping;
+    std::vector<DimensionOption> dimensionOptionList;
+    SoSeparator* dimensionOptionRoot {nullptr};
+    int dimensionOptionActive {-1};
 };
 
 

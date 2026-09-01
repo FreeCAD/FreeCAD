@@ -31,6 +31,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
+#include <QPoint>
 #include <fastsignals/signal.h>
 #include <memory>
 
@@ -48,6 +49,7 @@
 #include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
 #include "AutoConstraint.h"
+#include "DimensionOption.h"
 
 #include "ShortcutListener.h"
 #include "Utils.h"
@@ -914,14 +916,24 @@ private:
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
     void moveConstraint(
-        Sketcher::Constraint*,
-        int constNum,
-        const Base::Vector2d& toPos,
+        Sketcher::Constraint* constraint,
+        int constraintIndex,
+        const Base::Vector2d& labelPosition,
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
     //@}
 
+    std::vector<DimensionReference> getSelectedDimensionOptionRefs() const;
+    void setDimensionOptions(const std::vector<DimensionOption>& options);
+    void clearDimensionOptions();
+    bool isDimensionOptionPreviewEnabled() const;
+    bool refreshDimensionOptionPreview();
+    bool beginDimensionOptionInteraction(const QPoint& screenPos, const SoPickedPoint* point);
+    bool updateDimensionOptionInteraction(const QPoint& screenPos, const Base::Vector2d& onSketchPos);
+    bool finalizeDimensionOptionInteraction();
+    void cancelDimensionOptionInteraction();
+    void setDimensionOptionMouseGrab(bool grab);
     void setupActiveAndInEdit();
     void unsetupActiveAndInEdit();
 
@@ -1043,6 +1055,15 @@ private:
     //@}
 
 private:
+    struct DimensionOptionInteraction
+    {
+        bool active {false};
+        bool dragged {false};
+        bool finalizing {false};
+        int optionIndex {-1};
+        QPoint pressScreenPos;
+    };
+
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
@@ -1079,6 +1100,8 @@ private:
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
     std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
+    std::vector<DimensionOption> dimensionOptions;
+    DimensionOptionInteraction dimensionOptionInteraction;
 
     ViewProviderParameters viewProviderParameters;
 

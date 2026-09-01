@@ -505,7 +505,7 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
-      <item row="16" column="0" colspan="2">
+      <item row="17" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDirectionalAutoConstraintHints">
         <property name="toolTip">
          <string>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</string>
@@ -521,6 +521,25 @@ Defaults to: %N = %V
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxDimensionOptionPreview">
+        <property name="toolTip">
+         <string>Shows suggested dimensional constraints next to the current selection while editing a sketch</string>
+        </property>
+        <property name="text">
+         <string>Show dimension option previews</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableDimensionOptionPreview</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
         </property>
        </widget>
       </item>
@@ -771,6 +790,7 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
   <tabstop>checkBoxUseSystemDecimals</tabstop>
   <tabstop>checkBoxShowDimensionalName</tabstop>
   <tabstop>prefDimensionalStringFormat</tabstop>
+  <tabstop>checkBoxDimensionOptionPreview</tabstop>
   <tabstop>checkBoxShowDirectionalAutoConstraintHints</tabstop>
   <tabstop>checkBoxTVHideDependent</tabstop>
   <tabstop>checkBoxTVShowLinks</tabstop>

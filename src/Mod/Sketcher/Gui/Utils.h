@@ -174,6 +174,15 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 // Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
 double GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d& p2);
 
+/// Return DistanceX or DistanceY when the points are horizontally or vertically aligned.
+[[nodiscard]] Sketcher::ConstraintType getAlignedDistanceConstraintType(
+    const Base::Vector3d& first,
+    const Base::Vector3d& second
+);
+
+/// Return the signed distance used by circle-to-circle distance constraints.
+[[nodiscard]] double getCirclesSignedDistance(const Part::Geometry* geom1, const Part::Geometry* geom2);
+
 // Set the two points on circles at minimal distance
 void GetCirclesMinimalDistance(
     const Part::Geometry* geom1,
