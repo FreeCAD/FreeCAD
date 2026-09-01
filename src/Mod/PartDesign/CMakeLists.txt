@@ -193,6 +193,36 @@ INSTALL(
         ${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/Hole
 )
 
+set(PartDesignThreadDefines
+    Resources/Thread/ISOMetric.FCStd
+    Resources/Thread/ISOMetricFine.FCStd
+    Resources/Thread/UNC.FCStd
+    Resources/Thread/UNF.FCStd
+    Resources/Thread/UNEF.FCStd
+    Resources/Thread/NPT.FCStd
+    Resources/Thread/BSP.FCStd
+    Resources/Thread/BSW.FCStd
+    Resources/Thread/BSF.FCStd
+    Resources/Thread/ISOTyre.FCStd
+)
+
+add_custom_target(PartDesignThread ALL SOURCES
+    ${PartDesignThreadDefines}
+)
+
+fc_target_copy_resource(PartDesignThread
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign
+    ${PartDesignThreadDefines}
+)
+
+INSTALL(
+    FILES
+        ${PartDesignThreadDefines}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/Thread
+)
+
 if(BUILD_FEM)
     SET(WizardShaft_SRCS
         ${PartDesign_WizardShaft}

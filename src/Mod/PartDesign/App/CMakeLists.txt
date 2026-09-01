@@ -14,6 +14,7 @@ set(PartDesign_LIBS
     ${OCC_DEBUG_LIBRARIES}
     Part
     FreeCADApp
+    Spreadsheet
 )
 
 SET(Features_SRCS
@@ -103,6 +104,10 @@ SET(FeaturesSketchBased_SRCS
     FeatureLoft.cpp
     FeatureHelix.h
     FeatureHelix.cpp
+    FeatureThread.h
+    FeatureThread.cpp
+    ThreadUtils.cpp
+    ThreadUtils.h
 )
 
 SOURCE_GROUP("SketchBasedFeatures" FILES ${FeaturesSketchBased_SRCS})

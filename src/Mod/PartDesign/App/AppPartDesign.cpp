@@ -57,6 +57,7 @@
 #include "FeatureSolid.h"
 #include "FeatureThickness.h"
 #include "FeatureTransformed.h"
+#include "FeatureThread.h"
 #include "ShapeBinder.h"
 
 
@@ -159,6 +160,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+    PartDesign::Thread                      ::init();
 
     PartDesign::Measure ::initialize();
     // clang-format on

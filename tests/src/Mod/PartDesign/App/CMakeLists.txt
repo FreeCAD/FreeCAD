@@ -8,6 +8,7 @@ add_executable(PartDesign_tests_run
         Pipe.cpp
         Revolution.cpp
         GeoFeatureGroupExtension.cpp
+        Thread.cpp
 )
 
 set(PartDesignTestData_Files
