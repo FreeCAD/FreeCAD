@@ -1213,7 +1213,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints, true);
     }
 
-    Constraint* joint;
+    Constraint* joint = nullptr;
     // newIds.size() > 1 because a splitted circle gives an arc of circle, so we don't have a second
     // geometry piece
     if (!isOriginalCurveClosed && newIds.size() > 1) {
