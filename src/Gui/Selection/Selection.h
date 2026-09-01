@@ -520,6 +520,11 @@ protected:
     {
         notify(SelectionChanges(Chng));
     }
+    bool selectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool preselectionChangeIsCurrent(const SelectionChanges& msg) const;
+    bool notificationShouldDispatch(const SelectionChanges& msg) const;
+    void dispatchSelectionNotification(const SelectionChanges& msg);
+    void drainNotificationQueue();
 
     struct _SelObj
     {
@@ -545,6 +550,33 @@ protected:
 
     std::list<_SelObj> _PickedList;
     bool _needPickedList {false};
+
+    void replacePickedList(const std::vector<SelObj>& pickedList);
+    bool prepareSelectionAdd(
+        const char* pDocName,
+        const char* pObjectName,
+        const char* pSubName,
+        float x,
+        float y,
+        float z,
+        _SelObj& sel
+    ) const;
+    void logSelectionAdd(_SelObj& sel, bool clearPreselect) const;
+    void commitSelectionAdd(const _SelObj& sel);
+    void notifySingleSelectionAdded(const _SelObj& sel, SelectionChanges::PickedPoint pickedPoint);
+    std::vector<SelectionChanges> removeSelectionMatches(const _SelObj& removal);
+    void notifySelectionRemovals(std::vector<SelectionChanges>& changes);
+    static bool matchesSelectionRemoval(const _SelObj& selected, const _SelObj& removal);
+    static bool matchesSelectionRemovalObject(const _SelObj& selected, const _SelObj& removal);
+    static bool matchesSelectionRemovalSubElement(const _SelObj& selected, const _SelObj& removal);
+    static bool removalCoversSelectedSubElement(
+        const std::string& selectedSubName,
+        const std::string& removalSubName
+    );
+    static bool isCompleteSelectionClearRequest(const char* pDocName);
+    void clearDocumentPreselectionIfRequested(const std::string& docName, bool clearPreSelect);
+    void clearCompletePreselectionIfRequested(bool clearPreSelect);
+    void notifySelectionCleared(const char* docName);
 
     using SelStackItem = std::set<App::SubObjectT>;
     std::deque<SelStackItem> _SelStackBack;
