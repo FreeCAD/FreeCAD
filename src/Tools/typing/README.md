@@ -50,6 +50,74 @@ nodes such as imports, helper aliases, helper protocols, and non-method class
 members to the merged public stub output. Do not edit generated output directly;
 edit the curated source inputs and regenerate.
 
+### Core Property Contracts
+
+The source-adjacent `src/App/PropertyPythonContracts.pyi` contains the Python
+getter/setter behavior at `App::Property*` conversion roots and override
+points. `stubgen` parses that file and renders its aliases into the generated
+`FreeCAD` module stub, so `src/App/FreeCAD.module.pyi` does not duplicate the
+property vocabulary. Draft and BIM protocols may still narrow these generic
+contracts when their workbench invariants are stronger.
+
+`stubgen/type_hierarchy.py` discovers FreeCAD's C++ TypeId graph.
+`stubgen/property_hierarchy.py` projects that graph onto `App::Property*`
+classes and discovers Python conversion override declarations.
+`property_contracts.py` combines those structural facts with
+`PropertyPythonContracts.pyi`, resolving getter and setter contracts
+independently so descendants such as `PropertyLength`, `PropertyDistance`,
+`PropertyDirection`, and `PropertyLinkHidden` do not need separate metadata
+entries. The generator checks that conversion overrides in covered families
+have adjacent contracts; it does not infer Python types from C++ method bodies.
+
+The metadata file is a stubgen input only and is excluded from the public stub
+merge. C++ remains authoritative for inheritance and override boundaries; the
+adjacent input is authoritative for the Python conversion shape at those
+boundaries. Focused tests should accompany each new conversion family.
+
+### C++-Registered Properties
+
+Properties registered through C++ `ADD_PROPERTY(...)` calls are exposed by
+the Python wrapper's dynamic property lookup rather than by direct PyCXX
+binding members. `stubgen/cpp_properties.py` discovers those registrations,
+matches them with the C++ property members, resolves their Python conversion
+contracts, and adds the resulting getter/setter pairs to the generated public
+class stubs. The source-adjacent binding stubs therefore stay focused on
+directly bound members; a manually declared dynamic property should be removed
+once this pipeline covers it.
+
+Property conversion metadata remains source-adjacent to the owning module in
+`PropertyPythonContracts.pyi` files. The App catalog supplies shared
+conversion aliases, while module catalogs describe workbench-specific wrapper
+types such as Part shapes, Mesh objects, and Sketcher constraints. Properties
+whose owner has no public binding, or whose conversion depends on optional
+external support such as VTK's Python wrappers, are intentionally left out
+instead of being guessed. Generation reports discovered and emitted property
+counts together with categorized diagnostics and a few source examples for
+skipped cases. Existing declarations are treated as conflicts rather than
+silently masking generated properties.
+
+### Python Bootstrap Exports
+
+The Python-defined bootstrap API is kept beside the compatibility-sensitive
+startup code in `src/App/FreeCADInit.py`. Its `QUANTITY_CONSTANTS` and
+`UNIT_CONSTANTS` tables are both the runtime declarations and the input for
+`stubgen/init_exports.py`. The generator also recognizes class assignments
+such as `App.Logger = FCADLogger`, `App.ScaleType = ScaleType`, and
+`units.Scheme = Scheme`, so public bootstrap exports are sourced from their
+actual installation sites rather than duplicated in the generator. It resolves
+all of them to an intermediate `ModuleExport` model and merges typed members
+into the public `FreeCAD` and `FreeCAD.Units` stubs. The adjacent
+`src/App/FreeCADInit.pyi` contains only dynamically assigned logger methods.
+Do not edit the generated member list directly; change the structured runtime
+declaration or its typing supplement instead.
+
+The init-export parser intentionally understands only literal declaration
+tables, typed records, and direct class assignments to known bootstrap
+receivers. It does not execute `FreeCADInit.py` or inspect a running FreeCAD
+process. Missing table documentation receives a stable generated description;
+explicit `doc` fields remain the preferred form for user-facing details.
+Irregular exports remain curated until they have a stable structured source
+representation.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or
@@ -69,6 +137,10 @@ The helper also runs the smoke checks from this directory:
 ```sh
 python3 src/Tools/typing/generate_stubs.py check --root . --out-dir src/Tools/typing/generated
 ```
+
+`check-stubs.sh` also runs the focused `stubgen` unit tests, including the
+structured property-contract catalog checks, before generating the disposable
+stubs and invoking Pyright and Pyrefly.
 
 Use the documentation linter to audit the curated source-adjacent stub files:
 

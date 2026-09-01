@@ -37,6 +37,9 @@ GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
 # Additional drilling cycles
 GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
 
+# Tapping cycles (F is the thread pitch, not a feed rate)
+GCODE_MOVE_TAP = ["G74", "G84"]
+
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
 
@@ -57,6 +60,9 @@ GCODE_UNITS_INCHES = ["G20"]
 
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
+
+# Commands whose P word is a dwell time in seconds, not a distance
+GCODE_P_IS_DWELL = GCODE_DWELL + ["G73", "G74", "G76", "G82", "G83", "G84", "G86", "G88", "G89"]
 
 GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 
@@ -226,3 +232,6 @@ ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
 ANNOT_MODAL_BARRIER = "modal_barrier"
 # Don't optimize this G0 into next/previous ones, the motion is salient
 ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
+
+# Pass through string in annotation as command without any changes
+ANNOT_AS_IS = "as-is"

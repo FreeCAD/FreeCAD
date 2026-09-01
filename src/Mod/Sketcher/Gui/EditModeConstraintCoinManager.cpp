@@ -2207,10 +2207,13 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     }
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
-    if (dynamic_cast<SoDatumLabel*>(tail)) {
+    if (auto* datumLabel = dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.Kind = datumLabel->classifySelectionPoint(Point->getObjectPoint())
+                        == SoDatumLabel::SelectionPart::Annotation
+                    ? ConstraintPreselectionResult::HitKind::DatumAnnotation
+                    : ConstraintPreselectionResult::HitKind::DatumPresentation;
                 result.ConstrIndices.insert(i);
                 result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;

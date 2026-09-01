@@ -22,11 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <array>
 #include <limits>
 #include <cmath>
+#include <cstring>
 #include <initializer_list>
 #include <numbers>
 #include <optional>
+#include <string_view>
 #include <utility>
 
 #include <Precision.hxx>
@@ -60,6 +63,7 @@
 
 #include "CommandConstraints.h"
 #include "DrawSketchHandler.h"
+#include "DrawSketchHandlerExternal.h"
 #include "EditDatumDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -567,7 +571,7 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
     const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-    if (!(geom1->is<Part::GeomLineSegment>()) ||
+    if (!geom1 || !geom2 || !(geom1->is<Part::GeomLineSegment>()) ||
         !(geom2->is<Part::GeomLineSegment>())) {
         return false;
     }
@@ -1184,20 +1188,31 @@ enum SelType
  * has to be a curve for the constraint to make sense. Thus filters are
  * changeable so that same filter can be kept on while in one mode.
  */
-class GenericConstraintSelection: public Gui::SelectionFilterGate
+class GenericConstraintSelection: public ExternalSelection
 {
-    App::DocumentObject* object;
+    App::DocumentObject* sketch;
 
 public:
     explicit GenericConstraintSelection(App::DocumentObject* obj)
-        : Gui::SelectionFilterGate(nullPointer())
-        , object(obj)
+        : ExternalSelection(obj)
+        , sketch(obj)
         , allowedSelTypes(0)
     {}
 
-    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
+    bool allow(App::Document* document, App::DocumentObject* pObj, const char* sSubName) override
     {
-        if (pObj != this->object) {
+        if (pObj != sketch) {
+            if (Base::Tools::isNullOrEmpty(sSubName)) {
+                return false;
+            }
+
+            const std::string element(sSubName);
+            if ((element.starts_with("Edge") && element.size() > 4
+                 && allowedSelTypes & (SelExternalEdge | SelExternalArc))
+                || (element.starts_with("Vertex") && element.size() > 6
+                    && allowedSelTypes & SelVertex)) {
+                return ExternalSelection::allow(document, pObj, sSubName);
+            }
             return false;
         }
         if (Base::Tools::isNullOrEmpty(sSubName)) {
@@ -1227,6 +1242,72 @@ public:
 protected:
     int allowedSelTypes;
 };
+
+class DimensionExternalSelection: public ExternalSelection
+{
+public:
+    explicit DimensionExternalSelection(App::DocumentObject* sketch)
+        : ExternalSelection(sketch)
+        , sketch(sketch)
+    {}
+
+    bool allow(App::Document* document, App::DocumentObject* object, const char* subName) override
+    {
+        if (object == sketch) {
+            if (Base::Tools::isNullOrEmpty(subName)) {
+                return false;
+            }
+
+            constexpr auto prefixes = std::to_array<std::string_view>(
+                {"RootPoint", "H_Axis", "V_Axis", "Vertex", "Edge", "ExternalEdge"}
+            );
+            return std::ranges::any_of(prefixes, [subName](std::string_view prefix) {
+                return std::string_view(subName).starts_with(prefix);
+            });
+        }
+        if (Base::Tools::isNullOrEmpty(subName)) {
+            return false;
+        }
+
+        const std::string element(subName);
+        if ((!element.starts_with("Edge") || element.size() <= 4)
+            && (!element.starts_with("Vertex") || element.size() <= 6)) {
+            return false;
+        }
+
+        return ExternalSelection::allow(document, object, subName);
+    }
+
+private:
+    App::DocumentObject* sketch;
+};
+
+int findExternalReference(Sketcher::SketchObject* sketch,
+                          App::DocumentObject* source,
+                          const std::string& subName)
+{
+    const auto sourceReferences = sketch->ExternalGeometry.getValues();
+    const auto subReferences = sketch->ExternalGeometry.getSubValues();
+    for (size_t index = 0; index < sourceReferences.size(); ++index) {
+        if (sourceReferences[index] == source && subReferences[index] == subName) {
+            return GeoEnum::RefExt - static_cast<int>(index);
+        }
+    }
+
+    return GeoEnum::GeoUndef;
+}
+
+int addProjectedExternalReference(Sketcher::SketchObject* sketch,
+                                  App::DocumentObject* source,
+                                  const std::string& subName)
+{
+    Gui::cmdAppObjectArgs(sketch,
+                          "addExternal(\"%s\",\"%s\", False, False)",
+                          source->getNameInDocument(),
+                          subName.c_str());
+    tryAutoRecomputeIfNotSolve(sketch);
+    return findExternalReference(sketch, source, subName);
+}
 }// namespace SketcherGui
 
 /**
@@ -1305,6 +1386,7 @@ public:
 
     explicit DrawSketchHandlerGenConstraint(CmdSketcherConstraint* _cmd)
         : cmd(_cmd)
+        , lastOnSketchPos(0.f, 0.f)
         , seqIndex(0)
     {}
     ~DrawSketchHandlerGenConstraint() override
@@ -1312,17 +1394,85 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
+    void deactivated() override
     {
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
+            viewer->getViewer()->setSelectionEnabled(false);
+        }
     }
 
-    bool pressButton(Base::Vector2d /*onSketchPos*/) override
+    void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
     {
+        skipReleaseAfterExternalSelection = false;
+
+        if (Gui::Selection().getPreselection().pObjectName) {
+            applyCursor();
+        }
+    }
+
+    bool pressButton(Base::Vector2d onSketchPos) override
+    {
+        lastOnSketchPos = onSketchPos;
         return true;
+    }
+
+    bool onSelectionChanged(const Gui::SelectionChanges& msg) override
+    {
+        if (msg.Type != Gui::SelectionChanges::AddSelection || !msg.pObjectName || !msg.pSubName
+            || std::strcmp(msg.pObjectName, sketchgui->getSketchObject()->getNameInDocument()) == 0) {
+            return false;
+        }
+
+        const std::string subName(msg.pSubName);
+        const bool isEdge = subName.starts_with("Edge") && subName.size() > 4;
+        const bool isVertex = subName.starts_with("Vertex") && subName.size() > 6;
+        if (!isEdge && !isVertex) {
+            return false;
+        }
+
+        App::DocumentObject* source =
+            sketchgui->getSketchObject()->getDocument()->getObject(msg.pObjectName);
+        if (!source) {
+            return false;
+        }
+
+        const int externalGeoId = materializeExternalReference(source, subName);
+        if (externalGeoId == GeoEnum::GeoUndef) {
+            Gui::Selection().clearSelection();
+            return true;
+        }
+
+        SelIdPair selIdPair;
+        selIdPair.GeoId = externalGeoId;
+        selIdPair.PosId = isVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
+
+        const Part::Geometry* geometry = sketchgui->getSketchObject()->getGeometry(externalGeoId);
+        if (!geometry) {
+            Gui::Selection().clearSelection();
+            return true;
+        }
+
+        SelType selectionType = isVertex ? SelVertex : SelExternalEdge;
+        if (isEdge && allowedSelTypes & SelExternalArc && isArcOfCircle(*geometry)) {
+            selectionType = SelExternalArc;
+        }
+
+        Gui::Selection().clearSelection();
+        skipReleaseAfterExternalSelection = true;
+        return selectGeometry(selIdPair,
+                              selectionType,
+                              "ExternalEdge" + std::to_string(GeoEnum::RefExt + 1 - externalGeoId),
+                              lastOnSketchPos);
     }
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
+        if (skipReleaseAfterExternalSelection) {
+            skipReleaseAfterExternalSelection = false;
+            return true;
+        }
+
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
         selIdPair.PosId = Sketcher::PointPos::none;
@@ -1390,48 +1540,10 @@ public:
             selSeq.clear();
             resetOngoingSequences();
             Gui::Selection().clearSelection();
+            updateHint();
+            return true;
         }
-        else {
-            // If mouse is released on something allowed, select it and move forward
-            selSeq.push_back(selIdPair);
-            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                          sketchgui->getSketchObject()->getNameInDocument(),
-                                          ss.str().c_str(),
-                                          onSketchPos.x,
-                                          onSketchPos.y,
-                                          0.f);
-            _tempOnSequences.clear();
-            allowedSelTypes = 0;
-            for (std::set<int>::iterator token = ongoingSequences.begin();
-                 token != ongoingSequences.end();
-                 ++token) {
-                if ((cmd->allowedSelSequences).at(*token).at(seqIndex) & newSelType) {
-                    if (seqIndex == (cmd->allowedSelSequences).at(*token).size() - 1) {
-                        // One of the sequences is completed. Pass to cmd->applyConstraint
-                        cmd->applyConstraint(selSeq, *token);// replace arg 2 by ongoingToken
-
-                        selSeq.clear();
-                        resetOngoingSequences();
-
-                        // Re-arm hint for next operation
-                        updateHint();
-
-                        return true;
-                    }
-                    _tempOnSequences.insert(*token);
-                    allowedSelTypes =
-                        allowedSelTypes | (cmd->allowedSelSequences).at(*token).at(seqIndex + 1);
-                }
-            }
-
-            // Progress to next seqIndex
-            std::swap(_tempOnSequences, ongoingSequences);
-            seqIndex++;
-            selFilterGate->setAllowedSelTypes(allowedSelTypes);
-        }
-        updateHint();
-
-        return true;
+        return selectGeometry(selIdPair, newSelType, ss.str(), onSketchPos);
     }
 
     std::list<Gui::InputHint> getToolHints() const override {
@@ -1776,6 +1888,11 @@ private:
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
 
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
+            viewer->getViewer()->setSelectionEnabled(true);
+        }
+
         // Constrain icon size in px
         qreal pixelRatio = devicePixelRatio();
         const unsigned long defaultCrosshairColor = 0xFFFFFF;
@@ -1812,6 +1929,8 @@ protected:
 
     std::vector<SelIdPair> selSeq;
     unsigned int allowedSelTypes = 0;
+    Base::Vector2d lastOnSketchPos;
+    bool skipReleaseAfterExternalSelection = false;
 
     /// indices of currently ongoing sequences in cmd->allowedSequences
     std::set<int> ongoingSequences, _tempOnSequences;
@@ -1837,6 +1956,75 @@ protected:
         selFilterGate->setAllowedSelTypes(allowedSelTypes);
 
         Gui::Selection().clearSelection();
+    }
+
+    bool selectGeometry(const SelIdPair& selIdPair,
+                        SelType selectionType,
+                        const std::string& selectionName,
+                        Base::Vector2d onSketchPos)
+    {
+        selSeq.push_back(selIdPair);
+        Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                      sketchgui->getSketchObject()->getNameInDocument(),
+                                      selectionName.c_str(),
+                                      onSketchPos.x,
+                                      onSketchPos.y,
+                                      0.f);
+        _tempOnSequences.clear();
+        allowedSelTypes = 0;
+        for (int token : ongoingSequences) {
+            if ((cmd->allowedSelSequences).at(token).at(seqIndex) & selectionType) {
+                if (seqIndex == (cmd->allowedSelSequences).at(token).size() - 1) {
+                    cmd->applyConstraint(selSeq, token);
+
+                    selSeq.clear();
+                    resetOngoingSequences();
+                    updateHint();
+                    return true;
+                }
+                _tempOnSequences.insert(token);
+                allowedSelTypes =
+                    allowedSelTypes | (cmd->allowedSelSequences).at(token).at(seqIndex + 1);
+            }
+        }
+
+        std::swap(_tempOnSequences, ongoingSequences);
+        seqIndex++;
+        selFilterGate->setAllowedSelTypes(allowedSelTypes);
+        updateHint();
+
+        return true;
+    }
+
+    int materializeExternalReference(App::DocumentObject* source, const std::string& subName)
+    {
+        const int existingGeoId =
+            findExternalReference(sketchgui->getSketchObject(), source, subName);
+        if (existingGeoId != GeoEnum::GeoUndef) {
+            return existingGeoId;
+        }
+
+        try {
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+            const int externalGeoId =
+                addProjectedExternalReference(sketchgui->getSketchObject(), source, subName);
+            commitCommand();
+            if (externalGeoId != GeoEnum::GeoUndef) {
+                return externalGeoId;
+            }
+        }
+        catch (const Base::Exception&) {
+            Gui::NotifyError(sketchgui,
+                             QT_TRANSLATE_NOOP("Notifications", "Error"),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
+            abortCommand();
+            return GeoEnum::GeoUndef;
+        }
+
+        Gui::NotifyError(sketchgui,
+                         QT_TRANSLATE_NOOP("Notifications", "Error"),
+                         QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
+        return GeoEnum::GeoUndef;
     }
 };
 
@@ -2032,7 +2220,8 @@ class DrawSketchHandlerDimension : public DrawSketchHandler
 public:
     // Helper constants for hint texts
     static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point/edge";
-    static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH = "%1 pick next point/edge, or empty space to finish";
+    static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH =
+        "%1 pick next point/edge, or empty space to finish";
     explicit DrawSketchHandlerDimension(std::vector<std::string> SubNames)
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
@@ -2066,6 +2255,12 @@ public:
         None
     };
 
+    struct ExternalReference {
+        App::DocumentObject* source;
+        std::string subName;
+        int geoId;
+    };
+
     void activated() override
     {
         openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
@@ -2096,12 +2291,29 @@ public:
         }
         setCursor(cursorPixmap, hotX, hotY, false);
 
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
+            viewer->getViewer()->setSelectionEnabled(true);
+        }
+
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new DimensionExternalSelection(sketchgui->getObject()));
+
         handleInitialSelection();
     }
 
     void deactivated() override
     {
         abortCommand();
+        externalReferences.clear();
+        skipReleaseAfterExternalSelection = false;
+        Gui::Selection().rmvSelectionGate();
+
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        if (auto* viewer = dynamic_cast<Gui::View3DInventor*>(mdi)) {
+            viewer->getViewer()->setSelectionEnabled(false);
+        }
+
         if (availableConstraint != AvailableConstraint::FIRST) {
             Obj->solve();
         }
@@ -2122,6 +2334,8 @@ public:
 
     void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
+        skipReleaseAfterExternalSelection = false;
+
         if (hasBeenAborted()) {
             resetTool();
             return;
@@ -2158,6 +2372,12 @@ public:
             if (oneMoved)
                 sketchgui->draw(false, false); // Redraw
         }
+
+        // External selections use the normal viewer preselection mechanism, which otherwise
+        // replaces the Dimension cursor with the viewer cursor.
+        if (Gui::Selection().getPreselection().pObjectName) {
+            applyCursor();
+        }
     }
 
     bool pressButton(Base::Vector2d onSketchPos) override
@@ -2166,9 +2386,59 @@ public:
         return true;
     }
 
+    bool onSelectionChanged(const Gui::SelectionChanges& msg) override
+    {
+        if (msg.Type != Gui::SelectionChanges::AddSelection || !msg.pObjectName || !msg.pSubName
+            || std::strcmp(msg.pObjectName, Obj->getNameInDocument()) == 0) {
+            return false;
+        }
+
+        const std::string subName(msg.pSubName);
+        const bool isEdge = subName.starts_with("Edge") && subName.size() > 4;
+        const bool isVertex = subName.starts_with("Vertex") && subName.size() > 6;
+        if (!isEdge && !isVertex) {
+            return false;
+        }
+
+        App::DocumentObject* source = Obj->getDocument()->getObject(msg.pObjectName);
+        if (!source) {
+            return false;
+        }
+
+        const int extGeoId = materializeExternalReference(source, subName);
+        if (extGeoId == GeoEnum::GeoUndef) {
+            Gui::Selection().clearSelection();
+            return true;
+        }
+
+        const Part::Geometry* geometry = Obj->getGeometry(extGeoId);
+        if (!geometry) {
+            Gui::Selection().clearSelection();
+            return true;
+        }
+
+        SelIdPair selection;
+        selection.GeoId = extGeoId;
+        selection.PosId = isVertex ? Sketcher::PointPos::start : Sketcher::PointPos::none;
+
+        Gui::Selection().clearSelection();
+        // The mapped external name is not available until this selection notification returns.
+        selectGeometry(selection,
+                       geometry->getTypeId(),
+                       "ExternalEdge" + std::to_string(GeoEnum::RefExt + 1 - extGeoId),
+                       previousOnSketchPos,
+                       false);
+        skipReleaseAfterExternalSelection = true;
+        return true;
+    }
+
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        Q_UNUSED(onSketchPos);
+        if (skipReleaseAfterExternalSelection) {
+            skipReleaseAfterExternalSelection = false;
+            return true;
+        }
+
         availableConstraint = AvailableConstraint::FIRST;
         SelIdPair selIdPair;
         selIdPair.GeoId = GeoEnum::GeoUndef;
@@ -2222,7 +2492,16 @@ public:
             return true;
         }
 
-        std::vector<SelIdPair>& selVector = getSelectionVector(newselGeoType);
+        return selectGeometry(selIdPair, newselGeoType, ss.str(), onSketchPos);
+    }
+
+    bool selectGeometry(const SelIdPair& selIdPair,
+                        Base::Type geometryType,
+                        const std::string& selectionName,
+                        Base::Vector2d onSketchPos,
+                        bool selectInView = true)
+    {
+        std::vector<SelIdPair>& selVector = getSelectionVector(geometryType);
 
         if (notSelectedYet(selIdPair)) {
             //add the geometry to its type vector. Temporarily if not selAllowed
@@ -2232,7 +2511,10 @@ public:
 
             if (selAllowed) {
                 // If mouse is released on something allowed, select it
-                sketchgui->addSelection2(ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                if (selectInView) {
+                    sketchgui->addSelection2(
+                        selectionName.c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                }
                 sketchgui->draw(false, false); // Redraw
             }
             else {
@@ -2249,7 +2531,9 @@ public:
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
             }
 
-            sketchgui->rmvSelection(ss.str().c_str());
+            if (selectInView) {
+                sketchgui->rmvSelection(selectionName.c_str());
+            }
             sketchgui->draw(false, false); // Redraw
         }
 
@@ -2297,9 +2581,11 @@ protected:
     std::vector<SelIdPair> selSplineAndCo;
 
     std::vector<std::string> initialSelection;
+    std::vector<ExternalReference> externalReferences;
 
     std::vector<int> cstrIndexes;
     bool singleCircleReverseOrder;
+    bool skipReleaseAfterExternalSelection = false;
 
     Sketcher::SketchObject* Obj;
 
@@ -3600,12 +3886,14 @@ protected:
     bool isRadiusDoF(int geoId)
     {
         const Part::Geometry* geo = Obj->getGeometry(geoId);
-        if (!isArcOfCircle(*geo)) {
+        if (!geo || !isArcOfCircle(*geo)) {
             return false;
         }
 
         //make sure we are not taking into account the constraint created in previous mode.
-        abortCommand();
+        if (externalReferences.empty()) {
+            abortCommand();
+        }
         Obj->solve();
 
         auto solvext = Obj->getSolvedSketch().getSolverExtension(geoId);
@@ -3650,12 +3938,79 @@ protected:
         return false;
     }
 
+    int materializeExternalReference(App::DocumentObject* source, const std::string& subName)
+    {
+        const int existingGeoId = findExternalReference(Obj, source, subName);
+        if (existingGeoId != GeoEnum::GeoUndef) {
+            return existingGeoId;
+        }
+
+        const int externalGeoId = addProjectedExternalReference(Obj, source, subName);
+        if (externalGeoId == GeoEnum::GeoUndef) {
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry"));
+            return GeoEnum::GeoUndef;
+        }
+
+        externalReferences.push_back({source, subName, externalGeoId});
+        return externalGeoId;
+    }
+
+    void restoreExternalReferences()
+    {
+        bool restored = false;
+        for (auto& reference : externalReferences) {
+            const int geoId = findExternalReference(Obj, reference.source, reference.subName);
+            if (geoId != GeoEnum::GeoUndef) {
+                reference.geoId = geoId;
+                continue;
+            }
+
+            if (addProjectedExternalReference(Obj, reference.source, reference.subName)
+                != GeoEnum::GeoUndef) {
+                restored = true;
+            }
+        }
+
+        if (!restored) {
+            return;
+        }
+
+        for (auto& reference : externalReferences) {
+            const int restoredGeoId = findExternalReference(Obj, reference.source, reference.subName);
+            if (restoredGeoId != GeoEnum::GeoUndef) {
+                updateExternalReferenceGeoId(reference.geoId, restoredGeoId);
+                reference.geoId = restoredGeoId;
+            }
+        }
+    }
+
+    void updateExternalReferenceGeoId(int oldGeoId, int newGeoId)
+    {
+        auto updateGeoId = [oldGeoId, newGeoId](std::vector<SelIdPair>& selections) {
+            for (auto& selection : selections) {
+                if (selection.GeoId == oldGeoId) {
+                    selection.GeoId = newGeoId;
+                }
+            }
+        };
+
+        updateGeoId(selPoints);
+        updateGeoId(selLine);
+        updateGeoId(selCircleArc);
+        updateGeoId(selEllipseAndCo);
+        updateGeoId(selSplineAndCo);
+    }
+
     void restartCommand(const char* cstrName) {
         specialConstraint = SpecialConstraint::None;
         abortCommand();
         Obj->solve();
         sketchgui->draw(false, false); // Redraw
         openCommand(cstrName);
+        restoreExternalReferences();
 
         cstrIndexes.clear();
     }
@@ -3663,6 +4018,8 @@ protected:
     void resetTool()
     {
         abortCommand();
+        externalReferences.clear();
+        skipReleaseAfterExternalSelection = false;
         Gui::Selection().clearSelection();
         openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
         cstrIndexes.clear();
