@@ -1301,12 +1301,17 @@ SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 SET(Selection_SRCS
     Selection/BoxSelection.cpp
     Selection/BoxSelection.h
-    ${Selection_MODULE_GENERATED_SRCS}
+    Selection/SelectionChanges.h
+    Selection/SelectionGate.h
     Selection/SelectionObjectPyImp.cpp
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
+    Selection/SelectionObserver.h
     Selection/Selection.h
     Selection/Selection.cpp
+    Selection/SelectionPy.h
+    Selection/SelectionPyImp.cpp
+    Selection/SelectionTypes.h
     Selection/SelectionFilter.h
     Selection/SelectionFilter.cpp
     Selection/SelectionFilterPy.h
