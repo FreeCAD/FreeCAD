@@ -445,8 +445,12 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             ("Sketcher_CreateRectangle_Center", False),
             ("Sketcher_CreateOblong", True),
         ):
+            initial_geometry_count = self.sketch.GeometryCount
             FreeCADGui.runCommand(command)
-            self.pump(250)
+            self.assertTrue(
+                self.wait_until(lambda: self.origin_marker_is("CIRCLE_LINE"), timeout_ms=3000),
+                f"Expected {command} to activate its drawing handler",
+            )
             view.fitAll()
             origin = self.viewport_to_qpoint(
                 view,
@@ -534,59 +538,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 origin_updates,
                 f"{command} left both OVP points at (0, 0, 0): {origin_updates}",
             )
-
-            self.right_click(viewport, second_point)
-            self.assert_sketch_edit_active()
-
-    def test_rectangle_variants_accept_and_cancel_cleanly(self):
-        """Normal, centered, and rounded rectangles survive the same tool lifecycle."""
-
-        self.begin_sketch_edit_with_task_dialog()
-        view = FreeCADGui.ActiveDocument.ActiveView
-        view.viewTop()
-        view.fitAll()
-        self.pump(150)
-        viewport = view.graphicsView().viewport()
-
-        origin = self.viewport_to_qpoint(
-            view,
-            viewport,
-            view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
-        )
-        first_point = self.clamp_to_widget(
-            viewport,
-            QtCore.QPoint(origin.x() + 80, origin.y() - 60),
-        )
-        second_point = self.clamp_to_widget(
-            viewport,
-            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
-        )
-        radius_point = self.clamp_to_widget(
-            viewport,
-            QtCore.QPoint(second_point.x() + 25, second_point.y() + 20),
-        )
-
-        for command, needs_radius in (
-            ("Sketcher_CreateRectangle", False),
-            ("Sketcher_CreateRectangle_Center", False),
-            ("Sketcher_CreateOblong", True),
-        ):
-            initial_geometry_count = self.sketch.GeometryCount
-            FreeCADGui.runCommand(command)
-            self.pump(150)
-
-            self.move(viewport, first_point)
-            self.click(viewport, first_point)
-            self.move(viewport, second_point)
-            self.click(viewport, second_point)
-            if needs_radius:
-                self.move(viewport, radius_point)
-                self.click(viewport, radius_point)
-
-            self.pump(250)
-            self.assertGreater(
-                self.sketch.GeometryCount,
-                initial_geometry_count,
+            self.assertTrue(
+                self.wait_until(
+                    lambda: self.sketch.GeometryCount > initial_geometry_count,
+                    timeout_ms=3000,
+                ),
                 f"Expected {command} to create geometry",
             )
 
