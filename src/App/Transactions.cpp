@@ -352,6 +352,12 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
 
             if (!data.property) {
                 // here means we are undoing/redoing and property add operation
+                Property* propToRemove = pcObj->getDynamicPropertyByName(v.second.name.c_str());
+                if (propToRemove) {
+                    // Temporarily remove the lock so the transaction can undo the creation
+                    propToRemove->setStatus(App::Property::LockDynamic, false);
+                }
+                
                 pcObj->removeDynamicProperty(v.second.name.c_str());
                 continue;
             }
