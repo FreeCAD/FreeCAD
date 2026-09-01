@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include "Adaptive.hpp"
+#include <cstddef>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -2186,7 +2187,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
             // index + 1
             Clipper2Lib::Path64 indexedPath;
-            for (int i = 0; i < path.size(); i++) {
+            for (size_t i = 0; i < path.size(); i++) {
                 indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
             }
             // Explicitly close the path, before doing a boolean operation on it as an open (well,
@@ -2196,7 +2197,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             indexedPath.push_back(indexedPath[0]);
 
             // Prepare structures to store information about newly generated/edge-splitting points
-            const int firstNewZ = path.size() + 2;
+            const int firstNewZ = static_cast<int>(path.size()) + 2;
             int nextNewZ = firstNewZ;
             std::map<int, double> newZPosition;
             std::map<int, cInt> newZNeedsFinishing;
@@ -2210,6 +2211,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                                    const Clipper2Lib::Point64& e2top,
                                    Clipper2Lib::Point64& pt
                                ) {
+                (void)e2bot;
+                (void)e2top;
                 // If the split-edge point is actuall at an edge then we have no need for a new
                 // z-value. Otherwise, generate a new z value
                 if (pt.x == e1bot.x && pt.y == e1bot.y) {
@@ -2241,10 +2244,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 // z=1, and that interpolation result does not correctly specify the position of the
                 // new point. Instead, we detect that case and interpolate between path.size() and
                 // path.size() + 1.
-                double e1bot_effective = (e1bot.z == 1 && e1top.z == path.size()) ? (path.size() + 1)
-                                                                                  : e1bot.z;
-                double e1top_effective = (e1top.z == 1 && e1bot.z == path.size()) ? (path.size() + 1)
-                                                                                  : e1top.z;
+                double e1bot_effective = (static_cast<std::size_t>(e1bot.z) == 1
+                                          && static_cast<std::size_t>(e1top.z) == path.size())
+                    ? static_cast<double>((path.size() + 1))
+                    : static_cast<double>(e1bot.z);
+                double e1top_effective = (e1top.z == 1
+                                          && static_cast<std::size_t>(e1bot.z) == path.size())
+                    ? (path.size() + 1)
+                    : static_cast<double>(e1top.z);
                 double interp = dist_pt / dist_total;
                 double interpZ = e1bot_effective + interp * (e1top_effective - e1bot_effective);
 
@@ -2253,12 +2260,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
                 // I'm pretty sure e1bot and e1top are always original vertices, but just in case
                 // we can handle the alternative possibility
-                cInt e1bot_finishing = (e1bot.z >= 1 && e1bot.z <= path.size())
+                cInt e1bot_finishing = (e1bot.z >= 1
+                                        && static_cast<std::size_t>(e1bot.z) <= path.size())
                     ? path[e1bot.z - 1].Z
-                    : newZNeedsFinishing[e1bot.z];
-                cInt e1top_finishing = (e1top.z >= 1 && e1top.z <= path.size())
+                    : newZNeedsFinishing[static_cast<int>(e1bot.z)];
+                cInt e1top_finishing = (e1top.z >= 1
+                                        && static_cast<std::size_t>(e1top.z) <= path.size())
                     ? path[e1top.z - 1].Z
-                    : newZNeedsFinishing[e1top.z];
+                    : newZNeedsFinishing[static_cast<int>(e1top.z)];
                 newZNeedsFinishing[pt.z] = e1bot_finishing && e1top_finishing;
             });
 
@@ -4450,7 +4459,6 @@ void Adaptive2d::ProcessPolyNode(
 
 
         Path finShiftedPath;
-        int finishingPassCount = 0;
 
         // Create offset version of stock boundary to check if finishing passes are within tool radius
         Paths stockExpandedPaths;
@@ -4466,7 +4474,6 @@ void Adaptive2d::ProcessPolyNode(
                 finShiftedPath,
                 stepOverScaled
             );
-            finishingPassCount++;
 
             if (finShiftedPath.empty()) {
                 continue;
