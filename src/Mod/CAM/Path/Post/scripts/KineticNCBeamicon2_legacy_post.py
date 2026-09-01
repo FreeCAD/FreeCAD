@@ -87,10 +87,20 @@ parser.add_argument(
     help="don't pop up editor before writing output",
 )
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+# The "%" in the default preamble is escaped because argparse applies
+# %-formatting when it expands a help string.
 parser.add_argument(
-    "--preamble", help="set commands to be issued before the first command", default=""
+    "--preamble",
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n").replace("%", "%%")
+    + '"',
 )
-parser.add_argument("--postamble", default="")
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n").replace("%", "%%")
+    + '"',
+)
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
 )
