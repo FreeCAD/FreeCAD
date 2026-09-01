@@ -75,6 +75,11 @@ public:
         ARCLENGTH
     };
 
+    /** Identifies which visual layer of a datum label produced a selection hit.
+     *
+     * Presentation contains the dimension and extension lines. Annotation contains the
+     * label text and arrowheads, which receive higher preselection priority.
+     */
     enum class SelectionPart
     {
         Presentation,
@@ -88,6 +93,12 @@ public:
     To draw on other planes, you need to attach a SoTransform to the SoDatumLabel (or parent).*/
     void setPoints(SbVec3f p1, SbVec3f p2);
 
+    /** Classifies a picked point as presentation geometry or annotation geometry.
+     *
+     * @param objectPoint Pick intersection in this node's object coordinate system.
+     * @return Annotation for the text/arrow Z layer; Presentation for the
+     *         dimension/extension-line Z layer.
+     */
     [[nodiscard]] SelectionPart classifySelectionPoint(const SbVec3f& objectPoint) const;
 
     /* returns the center point of the text of the label */
