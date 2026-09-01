@@ -320,8 +320,8 @@ class GenericSheetCutting(PostProcessor):
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
                     # Reset state for each operation
-                    new_commands = self._clear_cutter_state(item)
-
+                    self._clear_cutter_state()
+                    new_commands = []
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch off command, inject G4 pause
