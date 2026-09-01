@@ -379,6 +379,10 @@ constexpr float BACKSIDE_HIT_LEFT = 0.79F;
 constexpr float BACKSIDE_HIT_TOP = 0.0F;
 constexpr float BACKSIDE_HIT_RIGHT = 1.0F;
 constexpr float BACKSIDE_HIT_BOTTOM = 0.16F;
+constexpr float VIEWMENU_HIT_LEFT = 0.82F;
+constexpr float VIEWMENU_HIT_TOP = 0.84F;
+constexpr float VIEWMENU_HIT_RIGHT = 0.98F;
+constexpr float VIEWMENU_HIT_BOTTOM = 0.97F;
 
 }  // namespace
 
@@ -1814,6 +1818,9 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         case PickId::ViewMenu: {
             offx = 0.90F;
             offy = 0.95F;
+            // The icon has a bar and triangle with a gap; keep the full area clickable.
+            hitRect = {true, VIEWMENU_HIT_LEFT, VIEWMENU_HIT_TOP,
+                       VIEWMENU_HIT_RIGHT, VIEWMENU_HIT_BOTTOM};
             const auto bar = appendLoop({-13.0F, -20.0F, 13.0F, -20.0F, 13.0F, -16.0F, -13.0F, -16.0F});
             appendTriangles(bar, {0, 1, 2, 0, 2, 3});
             const auto triangle = appendLoop({-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F});
