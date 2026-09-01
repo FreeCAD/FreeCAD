@@ -64,7 +64,7 @@ from .property_contracts import (
     render_property_aliases,
 )
 from .property_hierarchy import property_hierarchy_from
-from .render import type_stub_lines, write_stub_file, write_pyproject
+from .render import type_stub_lines, write_pyproject, write_readme, write_stub_file
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
 
 
@@ -347,4 +347,9 @@ def write_outputs(
     )
     write_pep561_markers(out_dir / "stubs", module_names)
     write_pyproject(out_dir, root)
+    write_readme(
+        out_dir,
+        root,
+        Path(__file__).with_name("README_TEMPLATE.md"),
+    )
     return GenerationResult(overlay_count, cpp_property_report)
