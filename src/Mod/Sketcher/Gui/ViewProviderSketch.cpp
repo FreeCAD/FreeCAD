@@ -70,6 +70,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 // #include <Gui/Inventor/SoFCSwitch.h>
 #include <Gui/Utilities.h>
@@ -4164,13 +4165,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         sketchDlg = nullptr;// another sketch left open its task panel
     }
     if (dlg && !sketchDlg) {
-        QMessageBox msgBox(Gui::getMainWindow());
-        msgBox.setText(tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(tr("Close this dialog?"));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes) {
+        if (dlg->canClose()) {
             Gui::Control().closeDialog();
         }
         else {

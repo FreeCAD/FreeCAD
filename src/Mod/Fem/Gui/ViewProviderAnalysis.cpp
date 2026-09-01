@@ -180,13 +180,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
         // if (padDlg && anaDlg->getPadView() != this)
         //     padDlg = 0; // another pad left open its task panel
         // if (dlg && !padDlg) {
-        //     QMessageBox msgBox;
-        //     msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-        //     msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-        //     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        //     msgBox.setDefaultButton(QMessageBox::Yes);
-        //     int ret = msgBox.exec();
-        //     if (ret == QMessageBox::Yes)
+        //     if (dlg->canClose())
         //         Gui::Control().closeDialog();
         //     else
         //         return false;

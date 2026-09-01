@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QMessageBox>
 #include <QAction>
 #include <QMenu>
 #include <Inventor/nodes/SoSeparator.h>
@@ -40,6 +39,7 @@
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
@@ -133,13 +133,7 @@ bool ViewProvider::setEdit(int ModNum)
             featureDlg = nullptr;  // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-
-            if (msgBox.exec() == QMessageBox::Yes) {
+            if (dlg->canClose()) {
                 Gui::Control().reject();
             }
             else {
