@@ -68,6 +68,7 @@ public:
     void onCogDatumButtonPressed();
     void onCovDatumButtonPressed();
     void onLcsButtonPressed();
+    void onMaterialButtonPressed();
     void onCoordinateSystemChanged(MassPropertiesMode coordSystemMode);
     void onSelectCustomCoordinateSystem();
     void updateInertiaVisibility();
@@ -79,6 +80,7 @@ private:
     void escape();
     void removeTemporaryObjects();
     void clearUiFields();
+    void updateMaterialButton();
     void saveResult();
 
     TaskMassPropertiesWidget* panel = nullptr;

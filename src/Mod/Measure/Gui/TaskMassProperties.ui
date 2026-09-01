@@ -167,55 +167,72 @@
 	   <number>6</number>
 	  </property>
 	  <item row="0" column="0">
+	   <widget class="QLabel" name="materialLabel">
+		<property name="text">
+		 <string>Material</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="0" column="1">
+	   <widget class="QPushButton" name="materialButton">
+		<property name="enabled">
+		 <bool>false</bool>
+		</property>
+		<property name="text">
+		 <string>No material</string>
+		</property>
+	   </widget>
+	  </item>
+	  <item row="1" column="0">
 	   <widget class="QLabel" name="volumeLabel">
 		<property name="text">
 		 <string>Volume</string>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="0" column="1">
+	  <item row="1" column="1">
 	   <widget class="QLineEdit" name="volumeEdit">
 		<property name="readOnly">
 		 <bool>true</bool>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="1" column="0">
+	  <item row="2" column="0">
 	   <widget class="QLabel" name="massLabel">
 		<property name="text">
 		 <string>Mass</string>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="1" column="1">
+	  <item row="2" column="1">
 	   <widget class="QLineEdit" name="massEdit">
 		<property name="readOnly">
 		 <bool>true</bool>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="2" column="0">
+	  <item row="3" column="0">
 	   <widget class="QLabel" name="densityLabel">
 		<property name="text">
 		 <string>Density</string>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="2" column="1">
+	  <item row="3" column="1">
 	   <widget class="QLineEdit" name="densityEdit">
 		<property name="readOnly">
 		 <bool>true</bool>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="3" column="0">
+	  <item row="4" column="0">
 	   <widget class="QLabel" name="surfaceAreaLabel">
 		<property name="text">
 		 <string>Surface area</string>
 		</property>
 	   </widget>
 	  </item>
-	  <item row="3" column="1">
+	  <item row="4" column="1">
 	   <widget class="QLineEdit" name="surfaceAreaEdit">
 		<property name="readOnly">
 		 <bool>true</bool>

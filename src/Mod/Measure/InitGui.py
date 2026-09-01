@@ -44,3 +44,5 @@ FreeCAD.MeasureManager.addMeasureType(
     QT_TRANSLATE_NOOP("TaskMeasure", "Center of mass"),
     MeasureCOM,
 )
+
+FreeCAD.__unit_test__ += ["TestMeasureGui"]

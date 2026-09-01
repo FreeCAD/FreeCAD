@@ -10,6 +10,7 @@ set(Measure_Scripts
     MassPropertiesGui.py
     UtilsMeasure.py
     MeasureCOM.py
+    TestMeasureGui.py
 )
 
 if(BUILD_GUI)

@@ -74,6 +74,10 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Material/App/MaterialFilter.h>
+#include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/PropertyMaterial.h>
+#include <Mod/Material/Gui/MaterialTreeWidget.h>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Builder.hxx>
@@ -318,6 +322,12 @@ TaskMassProperties::TaskMassProperties()
         this,
         &TaskMassProperties::onLcsButtonPressed
     );
+    connect(
+        panel->ui.materialButton,
+        &QPushButton::clicked,
+        this,
+        &TaskMassProperties::onMaterialButtonPressed
+    );
 
     const int preferredSchemaIndex = getPreferredUnitsSchemaIndex();
 
@@ -500,6 +510,8 @@ void TaskMassProperties::removeTemporaryObjects()
 
 void TaskMassProperties::clearUiFields()
 {
+    panel->ui.materialButton->setEnabled(false);
+    panel->ui.materialButton->setText(tr("No material"));
     panel->ui.volumeEdit->clear();
     panel->ui.massEdit->clear();
     panel->ui.densityEdit->clear();
@@ -525,6 +537,168 @@ void TaskMassProperties::clearUiFields()
     panel->ui.inertiaJzText->clear();
 
     panel->ui.axisInertiaText->clear();
+}
+
+void TaskMassProperties::updateMaterialButton()
+{
+    std::unordered_set<App::DocumentObject*> seenObjects;
+    QStringList materialNames;
+    bool hasAssignableMaterial = false;
+
+    for (const auto& input : objectsToMeasure) {
+        if (!input.object || !seenObjects.insert(input.object).second) {
+            continue;
+        }
+
+        auto* materialProperty = freecad_cast<Materials::PropertyMaterial*>(
+            input.object->getPropertyByName("ShapeMaterial")
+        );
+        if (!materialProperty) {
+            continue;
+        }
+        hasAssignableMaterial = hasAssignableMaterial || !materialProperty->isReadOnly();
+
+        QString name = materialProperty->getValue().getName();
+        if (name.isEmpty()) {
+            name = tr("No material");
+        }
+        if (!materialNames.contains(name)) {
+            materialNames.append(name);
+        }
+    }
+
+    panel->ui.materialButton->setEnabled(hasAssignableMaterial);
+    if (materialNames.isEmpty()) {
+        panel->ui.materialButton->setText(tr("No material"));
+    }
+    else if (materialNames.size() <= 2) {
+        panel->ui.materialButton->setText(materialNames.join(QStringLiteral(", ")));
+    }
+    else {
+        panel->ui.materialButton->setText(
+            materialNames.first() + QStringLiteral(", ") + materialNames.at(1)
+            + QStringLiteral(", \u2026")
+        );
+    }
+}
+
+void TaskMassProperties::onMaterialButtonPressed()
+{
+    std::vector<App::DocumentObject*> targets;
+    std::unordered_set<App::DocumentObject*> seenObjects;
+    QString commonUuid;
+    bool hasCommonMaterial = true;
+
+    for (const auto& input : objectsToMeasure) {
+        if (!input.object || !seenObjects.insert(input.object).second) {
+            continue;
+        }
+
+        auto* materialProperty = freecad_cast<Materials::PropertyMaterial*>(
+            input.object->getPropertyByName("ShapeMaterial")
+        );
+        if (!materialProperty || materialProperty->isReadOnly()) {
+            continue;
+        }
+
+        targets.push_back(input.object);
+        const QString uuid = materialProperty->getValue().getUUID();
+        if (targets.size() == 1) {
+            commonUuid = uuid;
+        }
+        else if (uuid != commonUuid) {
+            hasCommonMaterial = false;
+        }
+    }
+
+    if (targets.empty()) {
+        return;
+    }
+
+    QDialog dialog(panel);
+    dialog.setWindowTitle(tr("Assign Material"));
+    auto* layout = new QVBoxLayout(&dialog);
+
+    Materials::MaterialFilter filter;
+    filter.requirePhysical(true);
+    auto* picker = new MatGui::MaterialTreeWidget(filter, &dialog);
+    picker->setObjectName(QStringLiteral("materialTreeWidget"));
+    picker->setExpanded(true);
+    if (hasCommonMaterial && !commonUuid.isEmpty()) {
+        picker->setMaterial(commonUuid);
+    }
+    layout->addWidget(picker);
+
+    auto* buttons = new QDialogButtonBox(
+        QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+        &dialog
+    );
+    auto* okButton = buttons->button(QDialogButtonBox::Ok);
+    okButton->setEnabled(!picker->getMaterialUUID().isEmpty());
+    connect(
+        picker,
+        &MatGui::MaterialTreeWidget::materialSelected,
+        okButton,
+        [okButton](const std::shared_ptr<Materials::Material>& material) {
+            okButton->setEnabled(static_cast<bool>(material));
+        }
+    );
+    connect(buttons, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+    layout->addWidget(buttons);
+
+    if (dialog.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    try {
+        const auto material = Materials::MaterialManager::getManager().getMaterial(
+            picker->getMaterialUUID()
+        );
+        if (!material) {
+            return;
+        }
+
+        std::unordered_set<App::Document*> documents;
+        for (auto* target : targets) {
+            if (auto* doc = target->getDocument()) {
+                documents.insert(doc);
+            }
+        }
+        for (auto* doc : documents) {
+            doc->openTransaction("Assign Material");
+        }
+
+        try {
+            for (auto* target : targets) {
+                auto* materialProperty = freecad_cast<Materials::PropertyMaterial*>(
+                    target->getPropertyByName("ShapeMaterial")
+                );
+                if (materialProperty && !materialProperty->isReadOnly()) {
+                    materialProperty->setValue(*material);
+                }
+            }
+            for (auto* doc : documents) {
+                doc->commitTransaction();
+            }
+        }
+        catch (...) {
+            for (auto* doc : documents) {
+                if (doc->hasPendingTransaction()) {
+                    doc->abortTransaction();
+                }
+            }
+            throw;
+        }
+
+        tryUpdate();
+    }
+    catch (const Base::Exception& e) {
+        QMessageBox::warning(panel, tr("Assign Material"), QString::fromUtf8(e.what()));
+    }
+    catch (const std::exception& e) {
+        QMessageBox::warning(panel, tr("Assign Material"), QString::fromUtf8(e.what()));
+    }
 }
 
 void TaskMassProperties::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1143,6 +1317,8 @@ void TaskMassProperties::tryUpdate()
         this->removeTemporaryObjects();
         return;
     }
+
+    updateMaterialButton();
 
     updateInertiaVisibility();
 
