@@ -465,7 +465,7 @@ def offsetWire(wire, base, offset, tolerance=0.01):
         area.set_accuracy(original_accuracy)
 
 
-def offsetWireCompat(wire, base, offset, tolerance=0.01):
+def offsetWireCompat(wire, base, offset, Side=None, tolerance=0.01):
     """offsetWire performs an open path offset using Clipper library.
 
     tolerance: Deflection tolerance for discretization. Must be positive
@@ -544,6 +544,9 @@ def offsetWireCompat(wire, base, offset, tolerance=0.01):
                 )
                 for w in result_wires
             ]
+
+        if Side is not None:
+            Side[0] = "Inside" if is_inside else "Outside"
 
         # Return the chosen wires
         return result_wires

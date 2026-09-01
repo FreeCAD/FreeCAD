@@ -131,7 +131,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
     def _offsetWire(self, wire, base, offset, pos_compat, compat_flipped, tolerance=None):
         tolerance = tolerance if tolerance is not None else self.tolerance
-        compat_wires = PathOpUtil.offsetWireCompat(wire, base, offset, tolerance)
+        compat_wires = PathOpUtil.offsetWireCompat(wire, base, offset, None, tolerance)
         pos_wires, neg_wires = PathOpUtil.offsetWire(wire, base, offset, tolerance)
 
         if compat_flipped:
