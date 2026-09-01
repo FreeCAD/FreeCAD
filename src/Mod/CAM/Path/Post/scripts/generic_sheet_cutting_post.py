@@ -508,8 +508,12 @@ class GenericSheetCutting(PostProcessor):
                         # Skip remaining movement commands [while at cut height] until Z+ (retraction)
                         elif (
                             cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
-                            and "Z" in cmd.Parameters
                         ):
+                            if "Z" not in cmd.Parameters:
+                                # Lateral cut move: drop it once the entry is marked
+                                if not marked or not in_cut:
+                                    new_commands.append(cmd)
+                                continue
                             # Only keep movements that are ascending (retraction)
                             if self._last_z is not None and CompValue(
                                 cmd.Parameters["Z"]
