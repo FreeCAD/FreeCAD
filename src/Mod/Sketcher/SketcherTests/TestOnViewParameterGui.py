@@ -320,6 +320,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         )
 
         active_marker = self.origin_marker_index()
+        self.move(viewport, first_point)
         self.right_click(viewport, first_point)
         self.assertTrue(
             self.wait_until(
@@ -369,6 +370,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 f"Expected {command} to activate the hollow origin marker",
             )
             active_marker = self.origin_marker_index()
+            self.move(viewport, first_point)
             self.right_click(viewport, first_point)
             self.assertTrue(
                 self.wait_until(

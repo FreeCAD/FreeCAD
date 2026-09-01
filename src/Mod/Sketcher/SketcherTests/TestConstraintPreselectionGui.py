@@ -95,7 +95,7 @@ class SketcherGuiTestCases(unittest.TestCase):
         self.sketch = sketch
         self.doc.recompute()
         FreeCADGui.ActiveDocument.setEdit(sketch.Name)
-        self.pump_gui_events(6)
+        self.pump_gui_events()
         self.view = FreeCADGui.ActiveDocument.ActiveView
 
     @staticmethod
@@ -115,6 +115,33 @@ class SketcherGuiTestCases(unittest.TestCase):
         if any(name.endswith("_Axis") for name in names):
             return "axis"
         return "other"
+
+    @classmethod
+    def find_constraint_probe_viewport_point(
+        cls,
+        view,
+        seed_world_point,
+        expected_constraint_name,
+        span=64,
+        step=8,
+    ):
+        center_coin = tuple(int(value) for value in view.getPointOnViewport(seed_world_point))
+        target_points = []
+
+        for dy in range(-span, span + 1, step):
+            for dx in range(-span, span + 1, step):
+                coin_point = (center_coin[0] + dx, center_coin[1] + dy)
+                info = SketcherGui.getActiveSketchPreselection(coin_point)
+                if cls.classify_preselection(info, expected_constraint_name) == "target_constraint":
+                    target_points.append(coin_point)
+
+        if not target_points:
+            return None
+
+        return (
+            int(round(sum(point[0] for point in target_points) / len(target_points))),
+            int(round(sum(point[1] for point in target_points) / len(target_points))),
+        )
 
     @staticmethod
     def project_coin_path_point_to_viewport(view_volume, viewport_region, point):
@@ -480,7 +507,7 @@ class SketcherGuiTestCases(unittest.TestCase):
         _, tangent_id = self.build_issue_20811_sketch(self.sketch)
         expected_name = f"Constraint{tangent_id + 1}"
         self.doc.recompute()
-        self.pump_gui_events(12)
+        self.pump_gui_events()
 
         self.configure_view_state(self.view)
         viewer = self.view.getViewer()
@@ -554,7 +581,6 @@ class SketcherGuiTestCases(unittest.TestCase):
         self.view.graphicsView().resize(600, 600)
         self.pump_gui_events(8)
         self.configure_view_state(self.view)
-        self.pump_gui_events(12)
 
         viewer = self.view.getViewer()
         viewer.setPickRadius(5.0)
@@ -618,7 +644,7 @@ class SketcherGuiTestCases(unittest.TestCase):
         constraint_id = self.sketch.addConstraint(Sketcher.Constraint("Vertical", line_id))
         expected_name = f"Constraint{constraint_id + 1}"
         self.doc.recompute()
-        self.pump_gui_events(12)
+        self.pump_gui_events()
 
         self.configure_view_state(self.view)
         viewer = self.view.getViewer()
@@ -854,7 +880,7 @@ class SketcherGuiTestCases(unittest.TestCase):
 
         edge_offsets = []
         for dy in range(-10, 11, 2):
-            for dx in range(-16, 17, 2):
+            for dx in range(-14, 15, 2):
                 probe_coin = (midpoint_coin[0] + dx, midpoint_coin[1] + dy)
                 probe_info = SketcherGui.getActiveSketchPreselection(probe_coin)
                 probe_kind = self.classify_preselection(probe_info, "Constraint0")
