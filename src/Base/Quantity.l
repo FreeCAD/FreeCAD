@@ -53,6 +53,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "\["            { BEGIN(C_COMMENT); }
 <C_COMMENT>"\]" { BEGIN(INITIAL); }
 <C_COMMENT>.    { ;}
+<C_COMMENT><<EOF>> { Quantity_yyerror("Unterminated quantity comment"); }
 
 
 [ \t]   ;
