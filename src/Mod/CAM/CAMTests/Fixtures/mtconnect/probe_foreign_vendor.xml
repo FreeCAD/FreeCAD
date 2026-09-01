@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hand-written fixture modeled on a generic third-party (non-LinuxCNC)
+     MTConnect agent: older schema version, no vendor extension block,
+     suffixed axis names, INCH units, spindle identified only by its
+     ROTARY_VELOCITY data, and a per-axis VELOCITY specification. -->
+<MTConnectDevices xmlns="urn:mtconnect.org:MTConnectDevices:1.3">
+  <Header creationTime="2026-08-19T00:00:00Z" sender="vendor-agent" instanceId="1" version="1.3" assetCount="0" bufferSize="131072"/>
+  <Devices>
+    <Device id="d1" name="VMC-24" uuid="vendor-vmc24-001">
+      <Description manufacturer="Example Machine Works">24in vertical machining center</Description>
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="avail"/>
+      </DataItems>
+      <Components>
+        <Axes id="ax" name="base">
+          <Components>
+            <Linear id="x1" name="X1">
+              <Configuration>
+                <Specifications>
+                  <Specification id="x1_travel" type="POSITION" units="INCH" name="X travel">
+                    <Maximum>24</Maximum>
+                    <Minimum>0</Minimum>
+                  </Specification>
+                  <Specification id="x1_vel" type="VELOCITY" units="INCH/SECOND" name="X velocity">
+                    <Maximum>10</Maximum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="xp" subType="ACTUAL" units="MILLIMETER"/>
+              </DataItems>
+            </Linear>
+            <Linear id="y1" name="Y1">
+              <Configuration>
+                <Specifications>
+                  <Specification id="y1_travel" type="POSITION" units="INCH" name="Y travel">
+                    <Maximum>16</Maximum>
+                    <Minimum>0</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="yp" subType="ACTUAL" units="MILLIMETER"/>
+              </DataItems>
+            </Linear>
+            <Linear id="z1" name="Z1">
+              <Configuration>
+                <Specifications>
+                  <Specification id="z1_travel" type="POSITION" units="INCH" name="Z travel">
+                    <Maximum>20</Maximum>
+                    <Minimum>0</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="zp" subType="ACTUAL" units="MILLIMETER"/>
+              </DataItems>
+            </Linear>
+            <Rotary id="sp" name="SPDL">
+              <Configuration>
+                <Specifications>
+                  <Specification id="sp_speed" type="ROTARY_VELOCITY" units="REVOLUTION/MINUTE" name="spindle speed">
+                    <Maximum>8100</Maximum>
+                    <Minimum>100</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="ROTARY_VELOCITY" id="ss" subType="ACTUAL" units="REVOLUTION/MINUTE"/>
+              </DataItems>
+            </Rotary>
+          </Components>
+        </Axes>
+      </Components>
+    </Device>
+  </Devices>
+</MTConnectDevices>
