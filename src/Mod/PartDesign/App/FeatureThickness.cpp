@@ -26,12 +26,14 @@
 #include <string>
 #include <vector>
 
+#include <BRepOffset_Mode.hxx>
 #include <Precision.hxx>
 #include <TopoDS.hxx>
 
 
 #include <Base/Exception.h>
 #include "FeatureThickness.h"
+#include "RectoVersoThickness.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -148,15 +150,21 @@ App::DocumentObjectExecReturn* Thickness::execute()
             }
             TopoShape res(0);
             try {
-                res = solid.makeElementThickSolid(
-                    *faces,
-                    thickness,
-                    tol,
-                    intersection,
-                    false,
-                    mode,
-                    static_cast<Part::JoinType>(join)
-                );
+                const auto joinType = static_cast<Part::JoinType>(join);
+                if (mode == BRepOffset_RectoVerso) {
+                    res = makeRectoVersoThickness(solid, *faces, thickness, tol, intersection, joinType);
+                }
+                else {
+                    res = solid.makeElementThickSolid(
+                        *faces,
+                        thickness,
+                        tol,
+                        intersection,
+                        false,
+                        mode,
+                        joinType
+                    );
+                }
                 shapes.push_back(res);
             }
             catch (Standard_Failure& e) {

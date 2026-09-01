@@ -27,6 +27,8 @@
 #include <QListWidget>
 #include <QMessageBox>
 
+#include <BRepOffset_Mode.hxx>
+
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>
@@ -91,6 +93,7 @@ void TaskThicknessParameters::initControls()
 
     int mode = static_cast<int>(thickness->Mode.getValue());
     ui->modeComboBox->setCurrentIndex(mode);
+    updateModeControls(mode);
 
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
@@ -195,6 +198,21 @@ void TaskThicknessParameters::onModeChanged(int mode)
         thickness->Mode.setValue(mode);
         onAfterChange(thickness);
     }
+    updateModeControls(mode);
+    setGizmoPositions();
+}
+
+void TaskThicknessParameters::updateModeControls(int mode)
+{
+    const bool isRectoVerso = mode == BRepOffset_RectoVerso;
+    ui->checkReverse->setEnabled(!isRectoVerso);
+    ui->checkReverse->setToolTip(
+        isRectoVerso ? tr("Recto verso applies the thickness equally to both sides") : QString()
+    );
+    ui->Value->setToolTip(
+        isRectoVerso ? tr("Distance applied to each side; total wall thickness is twice this value")
+                     : QString()
+    );
 }
 
 double TaskThicknessParameters::getValue() const
@@ -259,6 +277,7 @@ void TaskThicknessParameters::changeEvent(QEvent* e)
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
+        updateModeControls(ui->modeComboBox->currentIndex());
     }
 }
 
@@ -292,6 +311,10 @@ void TaskThicknessParameters::setGizmoPositions()
 
     auto thickness = getObject<PartDesign::Thickness>();
     if (!thickness) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    if (thickness->Mode.getValue() == BRepOffset_RectoVerso) {
         gizmoContainer->visible = false;
         return;
     }

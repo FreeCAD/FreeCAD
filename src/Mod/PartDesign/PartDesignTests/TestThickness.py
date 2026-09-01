@@ -135,7 +135,187 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(len(thickness.Shape.Solids), 1)
         self.assertEqual(thickness.Placement, fillet.Placement)
 
+    def testCase5829RectoVersoThicknessOnRotatedFillet(self):
+        """Verify recto-verso thickness processes the issue 5829 geometry locally."""
+        body, fillet = self._create_case_5829()
+        self.assertTrue(fillet.Shape.isValid())
+        self.assertEqual(len(fillet.Shape.Solids), 1)
+        self.assertNotEqual(fillet.Placement, FreeCAD.Placement())
+        opening = self._find_case_5829_opening_face_name(fillet.Shape)
+
+        thickness = self.Doc.addObject("PartDesign::Thickness", "RectoVersoThickness")
+        thickness.Base = (fillet, [opening])
+        thickness.Value = 1.0
+        thickness.Mode = "RectoVerso"
+        body.addObject(thickness)
+        self.Doc.recompute()
+
+        self.assertTrue(thickness.isValid())
+        self.assertTrue(thickness.Shape.isValid())
+        self.assertEqual(len(thickness.Shape.Solids), 1)
+        self.assertEqual(thickness.Placement, fillet.Placement)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestThickness")
         # print ("omit closing document for debugging")
+
+
+class TestRectoVersoThickness(unittest.TestCase):
+    """Regression tests for centered, two-sided Part Design thickness."""
+
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignTestRectoVersoThickness")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("PartDesignTestRectoVersoThickness")
+
+    def makeThickness(
+        self,
+        shape,
+        closingFaces,
+        value=2.0,
+        reversed=False,
+        join="Intersection",
+    ):
+        suffix = str(len(self.Doc.Objects))
+        body = self.Doc.addObject("PartDesign::Body", "Body" + suffix)
+        base = self.Doc.addObject("PartDesign::Feature", "Base" + suffix)
+        body.addObject(base)
+        base.Shape = shape
+        self.Doc.recompute()
+
+        thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness" + suffix)
+        body.addObject(thickness)
+        thickness.Base = (base, closingFaces)
+        thickness.Value = value
+        thickness.Reversed = reversed
+        thickness.Mode = "RectoVerso"
+        thickness.Join = join
+        self.Doc.recompute()
+        return thickness.Shape.copy()
+
+    def assertValidSolid(self, shape):
+        self.assertFalse(shape.isNull())
+        self.assertTrue(shape.isValid())
+        self.assertEqual(len(shape.Solids), 1)
+        self.assertGreater(shape.ElementMapSize, 0)
+
+    def assertShapesEquivalent(self, first, second, tolerance=1e-7):
+        self.assertAlmostEqual(first.Volume, second.Volume, delta=tolerance)
+        self.assertLess(first.cut(second).Volume, tolerance)
+        self.assertLess(second.cut(first).Volume, tolerance)
+
+    def testPlanarOpenShellIsCenteredOnRetainedFaces(self):
+        # A 40 x 30 x 10 box opened at the top.  Value=2 means two
+        # millimetres on each side of the retained shell, not two total.
+        result = self.makeThickness(Part.makeBox(40, 30, 10), ["Face6"])
+        self.assertValidSolid(result)
+        self.assertAlmostEqual(result.Volume, 10464.0, delta=1e-7)
+        bounds = result.BoundBox
+        self.assertAlmostEqual(bounds.XMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 42.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 32.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
+
+    def testReversedDoesNotChangeRectoVersoResult(self):
+        box = Part.makeBox(40, 30, 10)
+        forward = self.makeThickness(box, ["Face6"], reversed=False)
+        reversedResult = self.makeThickness(box, ["Face6"], reversed=True)
+        self.assertValidSolid(forward)
+        self.assertValidSolid(reversedResult)
+        self.assertShapesEquivalent(forward, reversedResult)
+
+    def testSourceSolidOrientationDoesNotChangeResult(self):
+        box = Part.makeBox(40, 30, 10)
+        normal = self.makeThickness(box, ["Face6"])
+        reversedBox = box.copy()
+        reversedBox.reverse()
+        reversedSource = self.makeThickness(reversedBox, ["Face6"])
+        self.assertValidSolid(normal)
+        self.assertValidSolid(reversedSource)
+        self.assertShapesEquivalent(normal, reversedSource)
+
+    def testCurvedOpenShellIsCenteredRadiallyAndAxially(self):
+        cylinder = Part.makeCylinder(20, 10)
+        topFace = max(
+            range(len(cylinder.Faces)),
+            key=lambda index: cylinder.Faces[index].CenterOfMass.z,
+        )
+        result = self.makeThickness(cylinder, ["Face" + str(topFace + 1)])
+        self.assertValidSolid(result)
+        self.assertAlmostEqual(result.Volume, 3216.0 * 3.141592653589793, delta=1e-6)
+        bounds = result.BoundBox
+        self.assertAlmostEqual(bounds.XMin, -22.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 22.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
+
+    def testArcJoinProducesValidCenteredCurvedWall(self):
+        cylinder = Part.makeCylinder(20, 10)
+        topFace = max(
+            range(len(cylinder.Faces)),
+            key=lambda index: cylinder.Faces[index].CenterOfMass.z,
+        )
+        result = self.makeThickness(
+            cylinder,
+            ["Face" + str(topFace + 1)],
+            join="Arc",
+        )
+        reversedResult = self.makeThickness(
+            cylinder,
+            ["Face" + str(topFace + 1)],
+            reversed=True,
+            join="Arc",
+        )
+        self.assertValidSolid(result)
+        self.assertValidSolid(reversedResult)
+        self.assertShapesEquivalent(result, reversedResult)
+
+    def testTwoOpeningsCreateCenteredThroughWall(self):
+        # Removing the two opposite caps leaves only the four side faces.
+        result = self.makeThickness(Part.makeBox(40, 30, 10), ["Face5", "Face6"])
+        self.assertValidSolid(result)
+        self.assertAlmostEqual(result.Volume, 5600.0, delta=1e-7)
+        bounds = result.BoundBox
+        self.assertAlmostEqual(bounds.XMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 42.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 32.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, 0.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
+
+    def testMixedPlanarAndCylindricalFacesRemainCentered(self):
+        box = Part.makeBox(36, 28, 14)
+        verticalEdges = [
+            edge
+            for edge in box.Edges
+            if abs(edge.Vertexes[-1].Point.z - edge.Vertexes[0].Point.z) > 13.9
+        ]
+        filletedBox = box.makeFillet(3.0, verticalEdges)
+        surfaceTypes = {face.Surface.TypeId for face in filletedBox.Faces}
+        self.assertIn("Part::GeomPlane", surfaceTypes)
+        self.assertIn("Part::GeomCylinder", surfaceTypes)
+
+        topFace = max(
+            range(len(filletedBox.Faces)),
+            key=lambda index: (
+                filletedBox.Faces[index].CenterOfMass.z,
+                filletedBox.Faces[index].Area,
+            ),
+        )
+        result = self.makeThickness(
+            filletedBox,
+            ["Face" + str(topFace + 1)],
+            value=1.25,
+        )
+        self.assertValidSolid(result)
+        bounds = result.BoundBox
+        self.assertAlmostEqual(bounds.XMin, -1.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 37.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -1.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 29.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -1.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMax, 14.0, delta=1e-7)
