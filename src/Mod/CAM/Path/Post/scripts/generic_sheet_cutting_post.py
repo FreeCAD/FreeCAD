@@ -603,7 +603,7 @@ class GenericSheetCutting(PostProcessor):
         squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
 
         # Check pierce delay vs material thickness
-        pierce_delay = self.values.get("pierce_delay", 1000)
+        pierce_delay = self.values.get("PIERCE_DELAY", 1000)
         if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
             thickness_mm = job.Stock.Thickness
             # Recommended pierce delay: ~70ms per mm of thickness, minimum 500ms
@@ -626,7 +626,7 @@ class GenericSheetCutting(PostProcessor):
                     )
 
         # Check cooling delay for thick materials
-        cooling_delay = self.values.get("cooling_delay", 500)
+        cooling_delay = self.values.get("COOLING_DELAY", 500)
         if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
             thickness_mm = job.Stock.Thickness
             if thickness_mm > 10.0 and cooling_delay < 1000:  # Thick materials need more cooling
@@ -638,7 +638,7 @@ class GenericSheetCutting(PostProcessor):
                 )
 
         # Check for rapid moves with torch enabled
-        if self.values.get("cutter_control", "Z_Control") == "Z_Control":
+        if self.values.get("CUTTER_CONTROL", "Z_CONTROL") == "Z_Control":
             for op in getattr(job.Operations, "Group", []):
                 if hasattr(op, "HoriFeed") and op.HoriFeed > 3000:  # High feed rates
                     squawks.append(
@@ -649,7 +649,7 @@ class GenericSheetCutting(PostProcessor):
                     )
 
         # Check marking delay vs pierce delay
-        marking_delay = self.values.get("marking_delay", 100)
+        marking_delay = self.values.get("MARKING_DELAY", 100)
         if marking_delay >= pierce_delay:
             squawks.append(
                 self._create_squawk(
