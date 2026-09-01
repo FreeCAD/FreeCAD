@@ -1819,8 +1819,8 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             offx = 0.90F;
             offy = 0.95F;
             // The icon has a bar and triangle with a gap; keep the full area clickable.
-            hitRect = {true, VIEWMENU_HIT_LEFT, VIEWMENU_HIT_TOP,
-                       VIEWMENU_HIT_RIGHT, VIEWMENU_HIT_BOTTOM};
+            hitRect
+                = {true, VIEWMENU_HIT_LEFT, VIEWMENU_HIT_TOP, VIEWMENU_HIT_RIGHT, VIEWMENU_HIT_BOTTOM};
             const auto bar = appendLoop({-13.0F, -20.0F, 13.0F, -20.0F, 13.0F, -16.0F, -13.0F, -16.0F});
             appendTriangles(bar, {0, 1, 2, 0, 2, 3});
             const auto triangle = appendLoop({-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F});
