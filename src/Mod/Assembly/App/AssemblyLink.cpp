@@ -37,6 +37,7 @@
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 
+#include <Mod/Part/App/LinkArray.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -52,6 +53,28 @@
 namespace PartApp = Part;
 
 using namespace Assembly;
+
+namespace
+{
+bool isSuppressedLinkElement(const App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto* ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+    return ext && ext->Suppressed.getValue();
+}
+
+void syncSuppressedState(App::DocumentObject* source, App::DocumentObject* target)
+{
+    auto* sourceExt = source ? source->getExtensionByType<App::SuppressibleExtension>(true) : nullptr;
+    auto* targetExt = target ? target->getExtensionByType<App::SuppressibleExtension>(true) : nullptr;
+    if (sourceExt && targetExt
+        && sourceExt->Suppressed.getValue() != targetExt->Suppressed.getValue()) {
+        targetExt->Suppressed.setValue(sourceExt->Suppressed.getValue());
+    }
+}
+}  // namespace
 
 // ================================ Assembly Object ============================
 
@@ -336,6 +359,7 @@ void AssemblyLink::synchronizeComponents()
     }
 
     objLinkMap.clear();
+    objSubPrefixMap.clear();
 
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
@@ -375,6 +399,9 @@ void AssemblyLink::synchronizeComponents()
 
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : topLevelComponents) {
+        if (isSuppressedLinkElement(obj)) {
+            continue;
+        }
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
             && !obj->isDerivedFrom<App::Link>()) {
             continue;
@@ -412,6 +439,13 @@ void AssemblyLink::synchronizeComponents()
                         const std::vector<App::DocumentObject*> newElements
                             = link2->ElementList.getValues();
                         for (size_t i = 0; i < srcElements.size(); ++i) {
+                            if (i >= newElements.size() || !srcElements[i] || !newElements[i]) {
+                                continue;
+                            }
+                            syncSuppressedState(srcElements[i], newElements[i]);
+                            if (isSuppressedLinkElement(srcElements[i])) {
+                                continue;
+                            }
                             objLinkMap[srcElements[i]] = newElements[i];
                         }
                         break;
@@ -462,10 +496,21 @@ void AssemblyLink::synchronizeComponents()
                 const std::vector<App::DocumentObject*> srcElements = srcLink->ElementList.getValues();
                 const std::vector<App::DocumentObject*> newElements = newLink->ElementList.getValues();
                 for (size_t i = 0; i < srcElements.size(); ++i) {
+                    if (i >= newElements.size()) {
+                        continue;
+                    }
                     auto* newObj = newElements[i];
                     auto* srcObj = srcElements[i];
-                    if (newObj && srcObj) {
-                        syncPlacements(srcObj, newObj);
+
+                    if (!newObj || !srcObj) {
+                        continue;
+                    }
+
+                    syncSuppressedState(srcObj, newObj);
+                    syncPlacements(srcObj, newObj);
+
+                    if (isSuppressedLinkElement(srcObj)) {
+                        continue;
                     }
                     objLinkMap[srcObj] = newObj;
                 }
@@ -483,6 +528,18 @@ void AssemblyLink::synchronizeComponents()
         }
 
         objLinkMap[obj] = link;
+
+        if (auto* srcLinkArray = freecad_cast<PartApp::LinkArray*>(obj)) {
+            if (srcLinkArray->ShowElement.getValue()) {
+                const auto srcElements = srcLinkArray->ElementList.getValues();
+                for (size_t i = 0; i < srcElements.size(); ++i) {
+                    if (!srcElements[i] || isSuppressedLinkElement(srcElements[i])) {
+                        continue;
+                    }
+                    objSubPrefixMap[srcElements[i]] = std::to_string(i);
+                }
+            }
+        }
     }
 
     // If the assemblyLink is rigid, then we keep all placements synchronized.
@@ -642,9 +699,20 @@ void AssemblyLink::handleJointReference(
     if (!externalComponent) {
         return;
     }
+    if (isSuppressedLinkElement(externalComponent)) {
+        return;
+    }
 
     // 2. Map to local link
     auto it = objLinkMap.find(externalComponent);
+    auto prefixIt = objSubPrefixMap.find(externalComponent);
+    if (it == objLinkMap.end() && prefixIt != objSubPrefixMap.end()) {
+        auto* linkElement = freecad_cast<App::LinkElement*>(externalComponent);
+        auto* linkGroup = linkElement ? linkElement->getLinkGroup() : nullptr;
+        if (linkGroup) {
+            it = objLinkMap.find(linkGroup);
+        }
+    }
     if (it == objLinkMap.end()) {
         Base::Console().warning(
             "AssemblyLink: Could not map external component %s to a local link for joint %s\n",
@@ -654,6 +722,10 @@ void AssemblyLink::handleJointReference(
         return;
     }
     App::DocumentObject* localLink = it->second;
+    std::string subPrefix;
+    if (prefixIt != objSubPrefixMap.end()) {
+        subPrefix = prefixIt->second;
+    }
 
     // 3. Set the new reference
     // The local joint now points to the local link [LocalLink, "Sub"]
@@ -665,6 +737,16 @@ void AssemblyLink::handleJointReference(
     // The sub-elements (e.g. "Body.Face1") are relative to the component.
     // Since the LocalLink points to the ExternalPart, the relative path is identical.
     std::vector<std::string> subs1 = prop1->getSubValues();
+    if (!subPrefix.empty()) {
+        if (subs1.empty()) {
+            subs1.push_back(subPrefix);
+        }
+        else {
+            for (auto& sub : subs1) {
+                sub = sub.empty() ? subPrefix : subPrefix + "." + sub;
+            }
+        }
+    }
     std::vector<std::string> subs2 = prop2->getSubValues();
 
     bool changed = false;

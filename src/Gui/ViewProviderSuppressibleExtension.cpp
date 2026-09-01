@@ -22,6 +22,7 @@
 
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <App/SuppressibleExtension.h>
 
 #include "Control.h"
@@ -54,13 +55,27 @@ void ViewProviderSuppressibleExtension::extensionUpdateData(const App::Property*
         return;
     }
 
-    auto ext = owner->getExtensionByType<App::SuppressibleExtension>();
+    auto ext = owner->getExtensionByType<App::SuppressibleExtension>(true);
 
     if (ext && prop == &ext->Suppressed) {
         // update the tree item
         bool suppressed = ext->Suppressed.getValue();
         setSuppressedIcon(suppressed);
         getExtendedViewProvider()->signalChangeHighlight(suppressed, Gui::HighlightMode::StrikeOut);
+
+        if (owner->isDerivedFrom<App::LinkElement>()) {
+            for (auto* parent : owner->getInList()) {
+                auto* linkExt = parent ? parent->getExtensionByType<App::LinkBaseExtension>(true)
+                                       : nullptr;
+                auto* elementList = linkExt ? linkExt->_getElementListProperty() : nullptr;
+                if (!elementList) {
+                    continue;
+                }
+                if (auto* parentVp = Application::Instance->getViewProvider(parent)) {
+                    parentVp->updateData(elementList);
+                }
+            }
+        }
     }
 }
 

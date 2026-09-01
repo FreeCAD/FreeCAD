@@ -93,6 +93,7 @@ public:
     App::PropertyBool Rigid;
 
     std::unordered_map<App::DocumentObject*, App::DocumentObject*> objLinkMap;
+    std::unordered_map<App::DocumentObject*, std::string> objSubPrefixMap;
 
 protected:
     /// get called by the container whenever a property has been changed

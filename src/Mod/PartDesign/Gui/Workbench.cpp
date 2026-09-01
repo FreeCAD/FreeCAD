@@ -352,6 +352,9 @@ void Workbench::activated()
         "PartDesign_Mirrored",
         "PartDesign_LinearPattern",
         "PartDesign_PolarPattern",
+        "PartDesign_CircularPattern",
+        "PartDesign_PathPattern",
+        "PartDesign_PointPattern",
         "PartDesign_MultiTransform",
         nullptr
     };
@@ -432,6 +435,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *transformations << "PartDesign_Mirrored"
                      << "PartDesign_LinearPattern"
                      << "PartDesign_PolarPattern"
+                     << "PartDesign_CircularPattern"
+                     << "PartDesign_PathPattern"
+                     << "PartDesign_PointPattern"
                      << "PartDesign_MultiTransform";
 
     // dressups
@@ -532,6 +538,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Mirrored"
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
+          << "PartDesign_CircularPattern"
+          << "PartDesign_PathPattern"
+          << "PartDesign_PointPattern"
           << "PartDesign_MultiTransform";
 
     return root;
