@@ -500,14 +500,13 @@ void TourOverlay::ensureToolBarVisible(QToolBar* toolbar) const
     if (toolbar == nullptr || toolbar->isVisible()) {
         return;
     }
-    auto* toggleAction = toolbar->toggleViewAction();
-    if (toggleAction == nullptr || toggleAction->isChecked()) {
-        return;
-    }
     if (!_revealedToolBars.contains(toolbar)) {
         _revealedToolBars.append(toolbar);
     }
-    toggleAction->setChecked(true);
+    toolbar->setVisible(true);
+    if (auto* toggleAction = toolbar->toggleViewAction()) {
+        toggleAction->setChecked(true);
+    }
 }
 
 // Same as ensureToolBarVisible(), for docks (e.g. Report view, hidden by default).
@@ -516,14 +515,13 @@ void TourOverlay::ensureDockVisible(QDockWidget* dock) const
     if (dock == nullptr || dock->isVisible()) {
         return;
     }
-    auto* toggleAction = dock->toggleViewAction();
-    if (toggleAction == nullptr || toggleAction->isChecked()) {
-        return;
-    }
     if (!_revealedDocks.contains(dock)) {
         _revealedDocks.append(dock);
     }
-    toggleAction->setChecked(true);
+    dock->setVisible(true);
+    if (auto* toggleAction = dock->toggleViewAction()) {
+        toggleAction->setChecked(true);
+    }
 }
 
 QWidget* TourOverlay::commandWidget(const QString& commandName) const
