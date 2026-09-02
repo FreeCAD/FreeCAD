@@ -32,6 +32,192 @@ from . import ifc_tools
 ifcopenshell = backend.get_backend()
 
 
+def _name(material):
+    """Return the stable user-facing name of a FreeCAD material object."""
+
+    return str(getattr(material, "Label", None) or getattr(material, "Name", None) or "Material")
+
+
+def _ifc_material(material, ifcfile):
+    """Return a reusable IfcMaterial for a linked FreeCAD material."""
+
+    name = _name(material)
+    for candidate in ifcfile.by_type("IfcMaterial"):
+        if candidate.Name == name:
+            return candidate
+    return ifc_tools.api_run(
+        "material.add_material",
+        ifcfile,
+        name=name,
+        description=getattr(material, "Description", None) or None,
+    )
+
+
+def _swept_profile(product):
+    representation = getattr(product, "Representation", None)
+    for shape_representation in getattr(representation, "Representations", ()) or ():
+        for item in getattr(shape_representation, "Items", ()) or ():
+            profile = getattr(item, "SweptArea", None)
+            if profile:
+                return profile
+    return None
+
+
+def _layer_set(material, ifcfile):
+    materials = list(getattr(material, "Materials", ()) or ())
+    thicknesses = list(getattr(material, "Thicknesses", ()) or ())
+    layers = [
+        (mat, thicknesses[index]) for index, mat in enumerate(materials) if index < len(thicknesses)
+    ]
+    if not layers:
+        return None
+
+    name = _name(material)
+    scale = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+    expected = [(_name(mat), float(thickness) * scale) for mat, thickness in layers]
+    for candidate in ifcfile.by_type("IfcMaterialLayerSet"):
+        actual = [
+            (layer.Material.Name, layer.LayerThickness)
+            for layer in candidate.MaterialLayers
+            if layer.Material
+        ]
+        if candidate.LayerSetName == name and actual == expected:
+            return candidate
+
+    result = ifc_tools.api_run(
+        "material.add_material_set", ifcfile, name=name, set_type="IfcMaterialLayerSet"
+    )
+    for index, (freecad_material, thickness) in enumerate(layers):
+        names = getattr(material, "Names", ()) or ()
+        layer = ifc_tools.api_run(
+            "material.add_layer",
+            ifcfile,
+            layer_set=result,
+            material=_ifc_material(freecad_material, ifcfile),
+            name=str(names[index]) if index < len(names) and names[index] else None,
+        )
+        ifc_tools.api_run(
+            "material.edit_layer",
+            ifcfile,
+            layer=layer,
+            attributes={"LayerThickness": float(thickness) * scale},
+        )
+    return result
+
+
+def assign_export_material(obj, product, ifcfile):
+    """Export and assign the material semantics linked to a FreeCAD object."""
+
+    material = getattr(obj, "Material", None)
+    if not material:
+        return None
+
+    if product.is_a() in ("IfcWall", "IfcWallStandardCase", "IfcSlab") and hasattr(
+        material, "Materials"
+    ):
+        material_set = _layer_set(material, ifcfile)
+        if material_set:
+            return ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[product],
+                type="IfcMaterialLayerSetUsage",
+                material=material_set,
+            )
+
+    if product.is_a() in ("IfcBeam", "IfcColumn", "IfcMember"):
+        profile = _swept_profile(product)
+        if profile:
+            ifc_material = _ifc_material(material, ifcfile)
+            profile_set = ifc_tools.api_run(
+                "material.add_material_set",
+                ifcfile,
+                name=f"{_name(material)} - {profile.ProfileName or product.Name}",
+                set_type="IfcMaterialProfileSet",
+            )
+            ifc_tools.api_run(
+                "material.add_profile",
+                ifcfile,
+                profile_set=profile_set,
+                material=ifc_material,
+                profile=profile,
+            )
+            return ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[product],
+                type="IfcMaterialProfileSetUsage",
+                material=profile_set,
+            )
+
+    return ifc_tools.api_run(
+        "material.assign_material",
+        ifcfile,
+        products=[product],
+        type="IfcMaterial",
+        material=_ifc_material(material, ifcfile),
+    )
+
+
+def assign_export_type_material(obj, type_product, occurrence, ifcfile):
+    """Assign a reusable material definition to an exported IFC type."""
+
+    material = getattr(obj, "Material", None)
+    if not material:
+        return None
+    if type_product.is_a() in ("IfcWallType", "IfcSlabType") and hasattr(material, "Materials"):
+        material_set = _layer_set(material, ifcfile)
+        if material_set:
+            return ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[type_product],
+                type="IfcMaterialLayerSet",
+                material=material_set,
+            )
+    if type_product.is_a() in ("IfcBeamType", "IfcColumnType", "IfcMemberType"):
+        profile = _swept_profile(occurrence)
+        if profile:
+            ifc_material = _ifc_material(material, ifcfile)
+            name = f"{_name(material)} - {profile.ProfileName or type_product.Name}"
+            profile_set = next(
+                (
+                    candidate
+                    for candidate in ifcfile.by_type("IfcMaterialProfileSet")
+                    if candidate.Name == name
+                ),
+                None,
+            )
+            if profile_set is None:
+                profile_set = ifc_tools.api_run(
+                    "material.add_material_set",
+                    ifcfile,
+                    name=name,
+                    set_type="IfcMaterialProfileSet",
+                )
+                ifc_tools.api_run(
+                    "material.add_profile",
+                    ifcfile,
+                    profile_set=profile_set,
+                    material=ifc_material,
+                    profile=profile,
+                )
+            return ifc_tools.api_run(
+                "material.assign_material",
+                ifcfile,
+                products=[type_product],
+                type="IfcMaterialProfileSet",
+                material=profile_set,
+            )
+    return ifc_tools.api_run(
+        "material.assign_material",
+        ifcfile,
+        products=[type_product],
+        type="IfcMaterial",
+        material=_ifc_material(material, ifcfile),
+    )
+
+
 def create_material(element, parent, recursive=False):
     """Creates a material object in the given project or parent material"""
 

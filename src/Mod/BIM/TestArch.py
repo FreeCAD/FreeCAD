@@ -24,6 +24,7 @@
 
 # Unit test for the Arch module
 from bimtests.TestIfcGeometryExport import TestIfcGeometryExport
+from bimtests.TestIfcGeometryParity import TestIfcGeometryParity
 from bimtests.TestIfcOpenShellBackend import TestIfcOpenShellBackend
 from bimtests.TestIfcRoundtrip import TestIfcRoundtrip
 from bimtests.TestArchRoof import TestArchRoof

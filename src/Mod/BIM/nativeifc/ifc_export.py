@@ -27,7 +27,6 @@ import tempfile
 import FreeCAD
 import Draft
 
-from importers import exportIFC
 from importers import importIFCHelper
 
 from . import backend
@@ -54,17 +53,30 @@ def add_freecad_storey_pset(obj, product, ifcfile):
         return
     pset = ifc_tools.api_run("pset.add_pset", ifcfile, product=product, name="FreeCADPropertySet")
     ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties=properties)
+    if "FreeCAD_Height" in properties:
+        qto = ifc_tools.api_run(
+            "pset.add_qto",
+            ifcfile,
+            product=product,
+            name="Qto_BuildingStoreyBaseQuantities",
+        )
+        ifc_tools.api_run(
+            "pset.edit_qto",
+            ifcfile,
+            qto=qto,
+            properties={"Height": properties["FreeCAD_Height"]},
+        )
 
 
 def get_export_preferences(ifcfile, preferred_context=None, create=None):
-    """returns a preferences dict for exportIFC.
+    """Return geometry-export preferences and the best representation context.
     Preferred context can either indicate a ContextType like 'Model' or 'Plan',
     or a [ContextIdentifier,ContextType,TargetView] list or tuple, for ex.
     ('Annotation','Plan') or ('Body','Model','MODEL_VIEW'). This function
     will do its best to find the most appropriate context. If create is True,
     if the exact context is not found, a new one is created"""
 
-    prefs = exportIFC.getPreferences()
+    prefs = {}
     prefs["SCHEMA"] = ifcfile.wrapped_data.schema_name()
     s = ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
     # the above lines yields meter -> file unit scale factor. We need mm
@@ -173,8 +185,13 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     description = getattr(obj, "Description", None)
     if not ifcclass:
         ifcclass = ifc_tools.get_ifctype(obj)
-    representation, placement = create_representation(obj, ifcfile)
+    if ifcclass == "IfcGroup":
+        representation, placement = None, None
+    else:
+        representation, placement = create_representation(obj, ifcfile, ifcclass)
     product = ifc_tools.api_run("root.create_entity", ifcfile, ifc_class=ifcclass, name=name)
+    if product.is_a("IfcGroup"):
+        ifc_tools.set_attribute(ifcfile, product, "ObjectType", obj.Name)
     ifc_tools.set_attribute(ifcfile, product, "Description", description)
     ifc_tools.set_attribute(ifcfile, product, "ObjectPlacement", placement)
     if ifcclass == "IfcBuildingStorey":
@@ -189,11 +206,142 @@ def create_product(obj, parent, ifcfile, ifcclass=None):
     # IfcProductDefinitionShape already and not an IfcShapeRepresentation
     # ifc_tools.api_run("geometry.assign_representation", ifcfile, product=product, representation=representation)
     ifc_tools.set_attribute(ifcfile, product, "Representation", representation)
-    # TODO treat subtractions/additions
+    from . import ifc_materials
+
+    ifc_materials.assign_export_material(obj, product, ifcfile)
+    ifc_psets.export_psets(obj, product, ifcfile)
+    from . import ifc_types
+
+    ifc_types.assign_export_type(obj, product, ifcfile)
+    from . import ifc_classification
+
+    ifc_classification.assign_export_classification(obj, product, ifcfile)
+    ifc_classification.assign_export_groups(obj, product, ifcfile)
+    if not product.is_a("IfcOpeningElement"):
+        create_openings(obj, product, ifcfile)
     return product
 
 
-def create_representation(obj, ifcfile):
+def _assign_export_parent(product, parent, ifcfile):
+    """Create the semantic IFC relationship between two exported objects."""
+
+    if product.is_a("IfcGroup") and parent.is_a("IfcSpatialStructureElement"):
+        return None
+    if parent.is_a("IfcGroup"):
+        return ifc_tools.api_run("group.assign_group", ifcfile, products=[product], group=parent)
+    if parent.is_a("IfcSpatialStructureElement") and product.is_a("IfcElement"):
+        return ifc_tools.api_run(
+            "spatial.assign_container",
+            ifcfile,
+            products=[product],
+            relating_structure=parent,
+        )
+    return ifc_tools.api_run(
+        "aggregate.assign_object",
+        ifcfile,
+        products=[product],
+        relating_object=parent,
+    )
+
+
+def export_objects(objects, ifcfile):
+    """Recursively export FreeCAD object hierarchies through NativeIFC."""
+
+    exported = {}
+    project = next(iter(ifcfile.by_type("IfcProject")), None)
+
+    def export_object(obj, parent=None, spatial_container=None):
+        if obj in exported:
+            product = exported[obj]
+            if parent is not None and product is not parent:
+                _assign_export_parent(product, parent, ifcfile)
+            if (
+                spatial_container is not None
+                and product.is_a("IfcElement")
+                and not getattr(product, "ContainedInStructure", None)
+            ):
+                ifc_tools.api_run(
+                    "spatial.assign_container",
+                    ifcfile,
+                    products=[product],
+                    relating_structure=spatial_container,
+                )
+            return product
+        ifcclass = ifc_tools.get_ifctype(obj)
+        if ifcclass == "IfcProject" and project:
+            product = project
+            ifc_tools.set_attribute(ifcfile, product, "Name", obj.Label)
+            ifc_tools.set_attribute(
+                ifcfile, product, "Description", getattr(obj, "Description", None)
+            )
+        elif is_annotation(obj):
+            product = create_annotation(obj, ifcfile)
+        else:
+            product = create_product(obj, parent, ifcfile, ifcclass)
+        exported[obj] = product
+
+        relationship_parent = parent
+        if relationship_parent is None and product is not project:
+            if product.is_a("IfcSpatialStructureElement"):
+                relationship_parent = project
+        if relationship_parent is not None and product is not relationship_parent:
+            _assign_export_parent(product, relationship_parent, ifcfile)
+
+        if product.is_a("IfcSpatialStructureElement"):
+            spatial_container = product
+        elif (
+            spatial_container is not None
+            and product.is_a("IfcElement")
+            and not getattr(product, "ContainedInStructure", None)
+        ):
+            ifc_tools.api_run(
+                "spatial.assign_container",
+                ifcfile,
+                products=[product],
+                relating_structure=spatial_container,
+            )
+
+        for child in getattr(obj, "Group", ()):
+            export_object(child, product, spatial_container)
+        return product
+
+    for obj in objects:
+        export_object(obj)
+    return exported
+
+
+def export_file(objects, filepath):
+    """Export FreeCAD object hierarchies to a new IFC file."""
+
+    ifcfile = ifc_tools.create_ifcfile()
+    exported = export_objects(objects, ifcfile)
+    ifcfile.write(str(filepath))
+    return exported
+
+
+def create_openings(obj, product, ifcfile):
+    """Create semantic IFC openings for explicit FreeCAD subtractions."""
+
+    openings = []
+    for subtraction in getattr(obj, "Subtractions", []):
+        opening = create_product(
+            subtraction,
+            product,
+            ifcfile,
+            ifcclass="IfcOpeningElement",
+        )
+        ifc_tools.set_attribute(ifcfile, opening, "Name", subtraction.Label or "Opening")
+        ifc_tools.api_run(
+            "feature.add_feature",
+            ifcfile,
+            feature=opening,
+            element=product,
+        )
+        openings.append(opening)
+    return openings
+
+
+def create_representation(obj, ifcfile, ifcclass=None):
     """Creates a geometry representation for the given object"""
 
     # TEMPORARY use the Arch exporter
@@ -206,7 +354,7 @@ def create_representation(obj, ifcfile):
 
     prefs, context = get_export_preferences(ifcfile)
     exporter = ifc_geometry_export.GeometryExporter(ifcfile)
-    return exporter.create_representation(context, obj, prefs)
+    return exporter.create_representation(context, obj, prefs, ifcclass=ifcclass)
 
 
 def get_object_type(ifcentity, objecttype=None):
@@ -383,7 +531,7 @@ def get_placement(ifcelement, ifcfile=None, scale=None):
     if not scale:
         if not ifcfile:
             ifcfile = ifcelement.file
-        scale = 0.001 / ifcopenshell.util.unit.calculate_unit_scale(ifcfile)
+        scale = ifcopenshell.util.unit.calculate_unit_scale(ifcfile) / 0.001
     return importIFCHelper.getPlacement(ifcelement, scaling=scale)
 
 
@@ -413,16 +561,18 @@ def export_and_convert(objs, doc):
     and re-imports it into the given document. This is slower than direct_conversion()
     but gives an intermediate file which can be useful for debugging"""
 
-    tf = tempfile.mkstemp(suffix=".ifc")[1]
-    exportIFC.export(objs, tf)
-    ifc_import.insert(tf, doc.Name, singledoc=True)
+    with tempfile.NamedTemporaryFile(suffix=".ifc", delete=False) as temp_file:
+        filepath = temp_file.name
+    export_file(objs, filepath)
+    ifc_import.insert(filepath, doc.Name, singledoc=True)
 
 
 def direct_conversion(objs, doc):
     """Exports the given objects to the given ifcfile and recreates the contents"""
 
     prj_obj = ifc_tools.convert_document(doc, silent=True)
-    exportIFC.export(objs, doc.Proxy.ifcfile)
+    export_objects(objs, doc.Proxy.ifcfile)
+    ifc_tools.create_children(prj_obj, doc.Proxy.ifcfile, recursive=True)
     if PARAMS.GetBool("LoadOrphans", True):
         ifc_tools.load_orphans(prj_obj)
     if PARAMS.GetBool("LoadMaterials", False):
