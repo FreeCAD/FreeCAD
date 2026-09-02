@@ -179,21 +179,21 @@ class Shape2DView(DraftObject):
         import Part
 
         MAXDIST = 0.0001
-        if (not hasattr(obj, "ExclusionPoints")) or (not obj.ExclusionPoints):
+        if not getattr(obj, "ExclusionPoints", []):
             return edges
-        # verts = [Part.Vertex(obj.Placement.multVec(p)) for p in obj.ExclusionPoints]
-        verts = [Part.Vertex(p) for p in obj.ExclusionPoints]
+        # verts = [Part.Vertex(obj.Placement.multVec(pt)) for pt in obj.ExclusionPoints]
+        verts = [Part.Vertex(pt) for pt in obj.ExclusionPoints]
         nedges = []
-        for e in edges:
-            for v in verts:
+        for edge in edges:
+            for vert in verts:
                 try:
-                    d = e.distToShape(v)
-                    if d and (d[0] <= MAXDIST):
+                    dists = edge.distToShape(vert)
+                    if dists and (dists[0] <= MAXDIST):
                         break
                 except RuntimeError:
-                    print("FIXME: shape2dview: distance unavailable for edge", e, "in", obj.Label)
+                    print("FIXME: shape2dview: distance unavailable for edge", edge, "in", obj.Label)
             else:
-                nedges.append(e)
+                nedges.append(edge)
         return nedges
 
     def _get_shapes(self, shape, onlysolids=False):
