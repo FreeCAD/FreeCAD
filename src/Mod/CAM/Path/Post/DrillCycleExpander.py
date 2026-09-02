@@ -30,6 +30,7 @@ from typing import List, Optional
 
 import Path
 from Path.Base.MachineState import MachineState
+import Constants
 
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
@@ -134,6 +135,10 @@ class DrillCycleExpander:
                 raise ValueError(
                     f"To expand a drill-cycle{why_clause}, we need a previous command that established parameters {missing}, but they are None at command {command.toGCode()}"
                 )
+
+        # PostUtils.cannedCycleTerminator expands out a G98, if it was called
+        if r := command.Annotations.get("RetractMode", None):
+            self.machine_state.addCommand(Path.Command(r))
 
         # always need machine_state params:
         require_previous("", "X", "Y", "Z", "ReturnMode")
@@ -314,7 +319,7 @@ class DrillCycleExpander:
                 }
                 if self.machine_state.G0F is not None:
                     params["F"] = self.machine_state.G0F
-                cmd = Path.Command("G0", params)
+                cmd = Path.Command("G0", params, {Constants.ANNOT_NO_COLLAPSE_G0: True})
                 expanded.append(cmd)
                 self.machine_state.addCommand(cmd)
 
@@ -325,7 +330,7 @@ class DrillCycleExpander:
                 "Z": next_depth,
                 "F": self.machine_state.F,
             }
-            if feedrate:
+            if feedrate is not None:
                 move_params["F"] = feedrate
             cmd = Path.Command("G1", move_params)
             expanded.append(cmd)
@@ -355,7 +360,7 @@ class DrillCycleExpander:
                     }
                     if self.machine_state.G0F is not None:
                         params["F"] = self.machine_state.G0F
-                    cmd = Path.Command("G0", params)
+                    cmd = Path.Command("G0", params, {Constants.ANNOT_NO_COLLAPSE_G0: True})
                     expanded.append(cmd)
                     self.machine_state.addCommand(cmd)
             elif cmd_name == "G83":

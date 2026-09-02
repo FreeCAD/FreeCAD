@@ -8065,28 +8065,28 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="218"/>
       <source>Polygon Parameters</source>
       <translation>ພາລາມິເຕີຮູບຫຼາຍແຈ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="289"/>
       <source>%1 pick polygon center</source>
       <translation>%1 ເລືອກຈຸດໃຈກາງຮູບຫຼາຍແຈ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="290"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="297"/>
       <source>%1/%2 increase/decrease number of sides</source>
       <translation>%1/%2 ເພີ່ມ/ຫຼຸດ ຈຳນວນດ້ານ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="295"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 ເລືອກການໝຸນ ແລະ ຂະໜາດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="296"/>
       <source>%1 confirm</source>
       <translation>%1 ຢືນຢັນ</translation>
     </message>
@@ -8414,7 +8414,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>ລະດັບຂັ້ນ (Degree)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
       <source>Sides</source>
       <translation>ດ້ານ</translation>
     </message>

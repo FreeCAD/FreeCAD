@@ -8117,28 +8117,28 @@ ujemne do wewnątrz</translation>
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="218"/>
       <source>Polygon Parameters</source>
       <translation>Parametry wielokąta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="289"/>
       <source>%1 pick polygon center</source>
       <translation>%1 wybierz środek wielokąta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="290"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="297"/>
       <source>%1/%2 increase/decrease number of sides</source>
       <translation>%1/%2 zwiększ/zmniejsz liczbę boków</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="295"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 wybierz obrót i rozmiar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="296"/>
       <source>%1 confirm</source>
       <translation>%1 potwierdź</translation>
     </message>
@@ -8466,7 +8466,7 @@ ujemne do wewnątrz</translation>
       <translation>Stopień</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
       <source>Sides</source>
       <translation>Boki</translation>
     </message>

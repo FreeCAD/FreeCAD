@@ -11,12 +11,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation> </translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Adiciona uma linha de centro entre 2 linhas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Adiciona uma linha de centro entre 2 pontos selecionados</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
+      <translation>Adiciona uma linha de construção que passa por 2 pontos selecionados</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Adds the selected view to a clip group</source>
-      <translation type="unfinished">Adds the selected view to a clip group</translation>
+      <translation>Adiciona a vista selecionada a um grupo de recorte</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="388"/>
       <source>Adds a cosmetic vertex</source>
-      <translation type="unfinished">Adds a cosmetic vertex</translation>
+      <translation>Adiciona um vértice de construção</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
-      <translation type="unfinished">Inserts a new detail view based on the selected view in the current page</translation>
+      <translation>Insere uma nova vista de detalhe baseada na vista selecionada na página atual</translation>
     </message>
   </context>
   <context>
@@ -605,12 +605,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="262"/>
       <source>Adds centerlines to the selected circles and arcs</source>
-      <translation type="unfinished">Adds centerlines to the selected circles and arcs</translation>
+      <translation>Adiciona linhas de centro aos círculos e arcos selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="359"/>
       <source>Adds centerlines to selected circles and arcs:</source>
-      <translation type="unfinished">Adds centerlines to selected circles and arcs:</translation>
+      <translation>Adiciona linhas de centro aos círculos e arcos selecionados:</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="293"/>
       <source>Adds centerlines to selected circles and arcs</source>
-      <translation type="unfinished">Adds centerlines to selected circles and arcs</translation>
+      <translation>Adiciona linhas de centro aos círculos e arcos selecionados</translation>
     </message>
   </context>
   <context>
@@ -664,7 +664,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1881"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Adiciona dimensões horizontais igualmente espaçadas entre 3 ou mais vértices alinhados a uma linha de base compartilhada</translation>
     </message>
   </context>
   <context>
@@ -728,7 +728,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1656"/>
       <location filename="../../CommandExtensionDims.cpp" line="1953"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Adiciona dimensões horizontais igualmente espaçadas entre 3 ou mais vértices alinhados a uma linha de base compartilhada</translation>
     </message>
   </context>
   <context>
@@ -786,7 +786,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1850"/>
       <location filename="../../CommandExtensionDims.cpp" line="1963"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Adiciona dimensões oblíquas igualmente espaçadas entre 3 ou mais vértices alinhados a uma linha de base compartilhada</translation>
     </message>
   </context>
   <context>
@@ -850,7 +850,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionDims.cpp" line="1725"/>
       <location filename="../../CommandExtensionDims.cpp" line="1958"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
-      <translation type="unfinished">Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</translation>
+      <translation>Adiciona dimensões verticais igualmente espaçadas entre 3 ou mais vértices alinhados a uma linha de base compartilhada</translation>
     </message>
   </context>
   <context>
@@ -906,7 +906,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1215"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>Adiciona um círculo de construção baseado em dois vértices, onde a primeira seleção é o ponto central e a segunda é o raio</translation>
     </message>
   </context>
   <context>
@@ -925,12 +925,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1061"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point</translation>
+      <translation>Adiciona um arco de construção no sentido anti-horário baseado em três vértices, onde a primeira seleção é o ponto central e a segunda é o raio e o ponto inicial</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1317"/>
       <source>Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</source>
-      <translation type="unfinished">Adds a cosmetic counter clockwise arc based on three vertices, where the first selection is the center point and the second is the radius and start point.</translation>
+      <translation>Adiciona um arco de construção no sentido anti-horário baseado em três vértices, onde a primeira seleção é o ponto central e a segunda é o raio e o ponto inicial.</translation>
     </message>
   </context>
   <context>
@@ -949,12 +949,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1121"/>
       <source>Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two selected vertices, where the first is the center point and the second is the radius</translation>
+      <translation>Adiciona um círculo de construção baseado em dois vértices selecionados, onde o primeiro é o ponto central e o segundo é o raio</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1303"/>
       <source>Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</source>
-      <translation type="unfinished">Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius</translation>
+      <translation>Adiciona um círculo de construção baseado em dois vértices, onde a primeira seleção é o ponto central e a segunda é o raio</translation>
     </message>
   </context>
   <context>
@@ -968,7 +968,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1183"/>
       <location filename="../../CommandExtensionPack.cpp" line="1311"/>
       <source>Adds a cosmetic circle that passes through 3 selected perimeter points</source>
-      <translation type="unfinished">Adds a cosmetic circle that passes through 3 selected perimeter points</translation>
+      <translation>Adiciona um círculo de construção que passa por 3 pontos perimétricos selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1182"/>
@@ -1013,12 +1013,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="177"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of three or more selected circles</translation>
+      <translation>Adiciona linhas de centro a um padrão circular de três ou mais círculos selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="365"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of selected circles</translation>
+      <translation>Adiciona linhas de centro a um padrão circular de círculos selecionados</translation>
     </message>
   </context>
   <context>
@@ -1132,7 +1132,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1460"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>Adiciona uma linha de construção paralela à linha selecionada através do vértice selecionado</translation>
     </message>
   </context>
   <context>
@@ -1151,12 +1151,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1397"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
-      <translation type="unfinished">Adds a cosmetic circle to 3 selected vertices</translation>
+      <translation>Adiciona um círculo de construção a 3 vértices selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1528"/>
       <source>Adds a cosmetic line parallel to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line parallel to the selected line through the selected vertex</translation>
+      <translation>Adiciona uma linha de construção paralela à linha selecionada através do vértice selecionado</translation>
     </message>
   </context>
   <context>
@@ -1176,7 +1176,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="1429"/>
       <location filename="../../CommandExtensionPack.cpp" line="1534"/>
       <source>Adds a cosmetic line perpendicular to the selected line through the selected vertex</source>
-      <translation type="unfinished">Adds a cosmetic line perpendicular to the selected line through the selected vertex</translation>
+      <translation>Adiciona uma linha de construção perpendicular à linha selecionada através do vértice selecionado</translation>
     </message>
   </context>
   <context>
@@ -1189,7 +1189,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1558"/>
       <source>Toggle View Lock</source>
-      <translation type="unfinished">Toggle View Lock</translation>
+      <translation>Alternar bloqueio da vista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1559"/>
@@ -1360,7 +1360,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="564"/>
       <location filename="../../CommandExtensionPack.cpp" line="698"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</translation>
+      <translation>Adiciona uma rosca de construção à vista superior ou inferior dos parafusos/hastes selecionados</translation>
     </message>
   </context>
   <context>
@@ -1380,7 +1380,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../CommandExtensionPack.cpp" line="460"/>
       <location filename="../../CommandExtensionPack.cpp" line="691"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</translation>
+      <translation>Adiciona uma rosca de construção à vista lateral de um parafuso/haste entre duas linhas paralelas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1399,12 +1399,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="512"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of selected holes or circles</translation>
+      <translation>Adiciona uma rosca de construção à vista superior ou inferior dos furos ou círculos selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="684"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
-      <translation type="unfinished">Adds a cosmetic thread to the top or bottom view of holes or circles</translation>
+      <translation>Adiciona uma rosca de construção à vista superior ou inferior de furos ou círculos</translation>
     </message>
   </context>
   <context>
@@ -1423,12 +1423,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="409"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a hole or circle</translation>
+      <translation>Adiciona uma rosca de construção à vista lateral de um furo ou círculo</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="676"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
+      <translation>Adiciona uma rosca de construção à vista lateral de um furo selecionado entre duas linhas paralelas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1446,7 +1446,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="595"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation type="unfinished">Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</translation>
+      <translation>Adiciona uma rosca de construção à vista lateral de um furo selecionado entre duas linhas paralelas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1459,12 +1459,13 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="812"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation type="unfinished">Cosmetic Intersection Vertices</translation>
+      <translation>Vértices de interseção de construção</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="814"/>
       <source>Adds cosmetic vertices at the intersections of selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the intersections of selected edges</translation>
+      <translation>Adiciona vértices de construção nas interseções das arestas selecionadas
+</translation>
     </message>
   </context>
   <context>
@@ -1510,7 +1511,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>Adiciona uma linha de centro às faces selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1623,7 +1624,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="88"/>
       <source>Adds a leader line</source>
-      <translation type="unfinished">Adds a leader line</translation>
+      <translation>Adiciona uma linha de chamada</translation>
     </message>
   </context>
   <context>
@@ -1659,7 +1660,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="449"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the midpoint of the selected edges</translation>
+      <translation>Adiciona vértices de construção no ponto médio das arestas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -1672,12 +1673,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Nova página</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
       <source>Creates a new page with the default template</source>
-      <translation type="unfinished">Creates a new page with the default template</translation>
+      <translation>Cria uma nova página com o modelo padrão</translation>
     </message>
   </context>
   <context>
@@ -1690,12 +1691,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="169"/>
       <source>New Page From Template</source>
-      <translation type="unfinished">New Page From Template</translation>
+      <translation>Nova página a partir de modelo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="170"/>
       <source>Creates a new page from a custom template</source>
-      <translation type="unfinished">Creates a new page from a custom template</translation>
+      <translation>Cria uma nova página a partir de um modelo personalizado</translation>
     </message>
   </context>
   <context>
@@ -1731,7 +1732,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1930"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
-      <translation type="unfinished">Creates a projected geometry of the selected object in the 3D view from the current camera angle</translation>
+      <translation>Cria uma geometria projetada do objeto selecionado na visualização 3D a partir do ângulo atual da câmera</translation>
     </message>
   </context>
   <context>
@@ -1749,7 +1750,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1060"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
-      <translation type="unfinished">Inserts multiple new linked views of the selected objects in the current page</translation>
+      <translation>Insere múltiplas novas vistas vinculadas dos objetos selecionados na página atual</translation>
     </message>
   </context>
   <context>
@@ -1767,7 +1768,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="488"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation type="unfinished">Adds cosmetic vertices at the quadrant points of the selected circles</translation>
+      <translation>Adiciona vértices de construção nos pontos quadrantes dos círculos selecionados</translation>
     </message>
   </context>
   <context>
@@ -1867,7 +1868,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
-      <translation type="unfinished">Inserts a new section view based on the selected view in the current page</translation>
+      <translation>Insere uma nova vista de corte baseada na vista selecionada na página atual</translation>
     </message>
   </context>
   <context>
@@ -1880,12 +1881,12 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1329"/>
       <source>Toggle Edge Visibility</source>
-      <translation type="unfinished">Toggle Edge Visibility</translation>
+      <translation>Alternar visibilidade das arestas</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggles the visibility of the selected edges</source>
-      <translation type="unfinished">Toggles the visibility of the selected edges</translation>
+      <translation>Ativa/desativa a visibilidade das arestas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -2031,7 +2032,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>Adds a surface finish symbol in the selected view</source>
-      <translation type="unfinished">Adds a surface finish symbol in the selected view</translation>
+      <translation>Adiciona um símbolo de acabamento de superfície na vista selecionada</translation>
     </message>
   </context>
   <context>
@@ -2104,8 +2105,8 @@ Left clicking on empty space will validate the current dimension. Right clicking
       <location filename="../../Command.cpp" line="300"/>
       <source>Inserts a new view into the current page based on the selected object in the tree view or 3D view.
 If no object is selected, a file browser opens to select an SVG or image file.</source>
-      <translation type="unfinished">Inserts a new view into the current page based on the selected object in the tree view or 3D view.
-If no object is selected, a file browser opens to select an SVG or image file.</translation>
+      <translation>Insere uma nova vista na página atual baseada no objeto selecionado na visualização em árvore ou visualização 3D.
+Se nenhum objeto estiver selecionado, um navegador de arquivos é aberto para selecionar um arquivo SVG ou de imagem.</translation>
     </message>
   </context>
   <context>
@@ -2123,7 +2124,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>Adds welding information to the selected leader line</source>
-      <translation type="unfinished">Adds welding information to the selected leader line</translation>
+      <translation>Adiciona informações de solda à linha de chamada selecionada</translation>
     </message>
   </context>
   <context>
@@ -2209,12 +2210,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Add Quadrant vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
       <source>Edit Annotation</source>
       <translation type="unfinished">Edit Annotation</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Criar anotação</translation>
@@ -2438,7 +2439,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Criar imagem</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="511"/>
+      <location filename="../../QGIViewBalloon.cpp" line="525"/>
       <source>Drag Balloon</source>
       <translation>Arrastar Balão</translation>
     </message>
@@ -3797,27 +3798,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">This function needs a page.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Export Page as PDF</source>
       <translation type="unfinished">Export Page as PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="760"/>
       <source>Export page as SVG</source>
       <translation>Exportar página para SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="561"/>
+      <location filename="../../MDIViewPage.cpp" line="783"/>
       <source>Export page as DXF</source>
       <translation type="unfinished">Export page as DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="602"/>
+      <location filename="../../MDIViewPage.cpp" line="824"/>
       <source>Unable to Write File</source>
       <translation type="unfinished">Unable to Write File</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="603"/>
+      <location filename="../../MDIViewPage.cpp" line="825"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
@@ -3849,7 +3850,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Editar linha de anotação</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="376"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>Editor de texto</translation>
     </message>
@@ -4270,17 +4271,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Edit Centerline</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="117"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation type="unfinished">Rich Text Editor</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="156"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation type="unfinished">Rich Text Creator</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="374"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation type="unfinished">Rich text creator</translation>
     </message>
@@ -4570,8 +4571,7 @@ Angle, surface finish, root</source>
       <location filename="../../TaskWeldingSymbol.ui" line="241"/>
       <source>Adds the &apos;Field weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;Field weld&apos; symbol (flag)
-at the kink in the leader line</translation>
+      <translation>Adiciona o símbolo de &apos;Solda no campo&apos; (bandeira) na dobra da linha de chamada</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="245"/>
@@ -4582,8 +4582,7 @@ at the kink in the leader line</translation>
       <location filename="../../TaskWeldingSymbol.ui" line="252"/>
       <source>Adds the &apos;All around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;All around&apos; symbol (circle)
-at the kink in the leader line</translation>
+      <translation>Adiciona o símbolo de &apos;Solda em todo o contorno&apos; (círculo) na dobra da linha de chamada</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="256"/>
@@ -4728,7 +4727,7 @@ pode demorar muito em modelos complexos.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="233"/>
       <source>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</source>
-      <translation type="unfinished">The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</translation>
+      <translation>O número de vezes que o FreeCAD deve tentar remover arestas sobrepostas retornadas pelo algoritmo de remoção de linhas ocultas. Um valor de 0 indica nenhuma limpeza, 1 indica uma única passagem e 2 indica que uma segunda passagem deve ser executada. Valores acima de 2 geralmente não são produtivos. Cada passagem aumenta o tempo necessário para produzir o desenho.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="263"/>
@@ -5919,7 +5918,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>Set &apos;Show grid&apos; property to true on new pages</source>
-      <translation type="unfinished">Set &apos;Show grid&apos; property to true on new pages</translation>
+      <translation>Definir a propriedade &apos;Exibir grade&apos; como verdadeira em novas páginas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
@@ -6303,65 +6302,65 @@ Rápido, mas produz uma coleção de linhas retas simples.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
-      <source>Toggle &amp;Keep Updated</source>
-      <translation>Alternar manter atualizado &amp;k</translation>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <source>&amp;Keep Updated</source>
+      <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
-      <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <source>Show &amp;Frames</source>
+      <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
-      <source>Toggle &amp;Grid</source>
-      <translation type="unfinished">Toggle &amp;Grid</translation>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <source>Show &amp;Grid</source>
+      <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportar para SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="113"/>
       <source>Export DXF</source>
       <translation>Exportar para DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="117"/>
       <source>Export PDF</source>
       <translation>Exportar PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="121"/>
       <source>Print All Pages</source>
       <translation>Imprimir todas as páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="428"/>
+      <location filename="../../MDIViewPage.cpp" line="445"/>
       <source>Different orientation</source>
       <translation>Orientação diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="446"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>A impressora utiliza uma orientação diferente do que o desenho. 
 Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="438"/>
+      <location filename="../../MDIViewPage.cpp" line="455"/>
       <source>Different paper size</source>
       <translation>Tamanho de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="439"/>
+      <location filename="../../MDIViewPage.cpp" line="456"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A impressora usa um tamanho de papel diferente do que o desenho. Deseja continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1161"/>
+      <location filename="../../MDIViewPage.cpp" line="1404"/>
       <source>Selected:</source>
       <translation>Selecionado:</translation>
     </message>
@@ -8446,7 +8445,7 @@ using the given X/Y spacings</translation>
       <translation>Traço Ponto Ponto</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="661"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>Anotação</translation>
     </message>
@@ -8934,7 +8933,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Moves a view to a new page</source>
-      <translation type="unfinished">Moves a view to a new page</translation>
+      <translation>Move uma vista para uma nova página</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="48"/>
@@ -9110,7 +9109,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="55"/>
       <source>Adds a hole or shaft fit to a selected length or diameter dimension</source>
-      <translation type="unfinished">Adds a hole or shaft fit to a selected length or diameter dimension</translation>
+      <translation>Adiciona um ajuste de furo ou eixo a uma dimensão de comprimento ou diâmetro selecionada</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="70"/>
@@ -9448,7 +9447,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="188"/>
       <source>Creates an arc from start angle to end angle in a clockwise direction</source>
-      <translation type="unfinished">Creates an arc from start angle to end angle in a clockwise direction</translation>
+      <translation>Cria um arco do ângulo inicial ao ângulo final no sentido horário</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="198"/>
@@ -9503,7 +9502,7 @@ there is an open task dialog.</translation>
       <location filename="../../CommandExtensionPack.cpp" line="873"/>
       <location filename="../../CommandExtensionPack.cpp" line="1296"/>
       <source>Adds a cosmetic circle based on a selected centerpoint</source>
-      <translation type="unfinished">Adds a cosmetic circle based on a selected centerpoint</translation>
+      <translation>Adiciona um círculo de construção baseado em um ponto central selecionado</translation>
     </message>
   </context>
   <context>
@@ -9578,7 +9577,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="84"/>
       <source>Creates an offset from one selected vertex</source>
-      <translation type="unfinished">Creates an offset from one selected vertex</translation>
+      <translation>Cria um deslocamento a partir de um vértice selecionado</translation>
     </message>
   </context>
   <context>
@@ -10119,7 +10118,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAlign.cpp" line="156"/>
       <source>Aligns the selected vertices or edges horizontally to the view rotation</source>
-      <translation type="unfinished">Aligns the selected vertices or edges horizontally to the view rotation</translation>
+      <translation>Alinha os vértices ou arestas selecionados horizontalmente em relação à rotação da vista</translation>
     </message>
   </context>
   <context>
@@ -10127,7 +10126,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="476"/>
       <source> updates pending</source>
-      <translation type="unfinished"> updates pending</translation>
+      <translation> atualizações pendentes</translation>
     </message>
   </context>
   <context>
@@ -10135,12 +10134,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
-      <translation type="unfinished">Axonometric Length Dimension</translation>
+      <translation>Dimensão de comprimento axonométrico</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
-      <translation type="unfinished">Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</translation>
+      <translation>Cria uma dimensão de comprimento em visualização axonométrica, usando arestas ou pares de vértices selecionados para definir a direção e a medição</translation>
     </message>
   </context>
   <context>
@@ -10148,12 +10147,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="60"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation type="unfinished">Cosmetic Intersection Vertices</translation>
+      <translation>Vértices de interseção de construção</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="63"/>
       <source>Adds cosmetic vertices at the intersectionss of selected edges</source>
-      <translation type="unfinished">Adds cosmetic vertices at the intersectionss of selected edges</translation>
+      <translation>Adiciona vértices de construção nas interseções das arestas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -10201,7 +10200,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Adds a centerline to selected faces</source>
-      <translation type="unfinished">Adds a centerline to selected faces</translation>
+      <translation>Adiciona uma linha de centro às faces selecionadas</translation>
     </message>
   </context>
   <context>
@@ -10209,7 +10208,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a centerline between 2 selected lines</source>
-      <translation type="unfinished">Adds a centerline between 2 selected lines</translation>
+      <translation>Adiciona uma linha de centro entre 2 linhas selecionadas</translation>
     </message>
   </context>
   <context>
@@ -10217,7 +10216,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a centerline between 2 selected points</source>
-      <translation type="unfinished">Adds a centerline between 2 selected points</translation>
+      <translation>Adiciona uma linha de centro entre 2 pontos selecionados</translation>
     </message>
   </context>
   <context>
@@ -10325,12 +10324,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="76"/>
       <source>Toggle View Frames</source>
-      <translation type="unfinished">Toggle View Frames</translation>
+      <translation>Alternar molduras das vistas</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Toggles visibility of view frames and vertices</source>
-      <translation type="unfinished">Toggles visibility of view frames and vertices</translation>
+      <translation>Ativa/desativa a visibilidade das molduras das vistas e dos vértices</translation>
     </message>
   </context>
   <context>
@@ -10343,12 +10342,12 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandDecorate.cpp" line="139"/>
       <source>Toggle Grid</source>
-      <translation>Ativar/desativar grade</translation>
+      <translation>Alternar grade</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
-      <translation type="unfinished">Toggles the grid on the active page</translation>
+      <translation>Alterna a grade na página ativa</translation>
     </message>
   </context>
   <context>
@@ -10356,7 +10355,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Centerline Between 2 Lines</source>
-      <translation type="unfinished">Centerline Between 2 Lines</translation>
+      <translation> </translation>
     </message>
   </context>
   <context>

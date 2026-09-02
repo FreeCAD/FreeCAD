@@ -24,11 +24,73 @@
 import unittest
 
 import FreeCAD
+import Part
 
 
 class TestThickness(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestThickness")
+
+    def _create_case_5829(self):
+        """Create the rotated wedge/box/fillet model from issue case 5829."""
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+
+        wedge = self.Doc.addObject("PartDesign::AdditiveWedge", "Wedge")
+        wedge.Xmin = 0.0
+        wedge.X2min = 10.0
+        wedge.Xmax = 96.0
+        wedge.X2max = 86.0
+        wedge.Zmin = 0.0
+        wedge.Z2min = 10.0
+        wedge.Zmax = 126.0
+        wedge.Z2max = 116.0
+        wedge.Ymin = 0.0
+        wedge.Ymax = 25.0
+        body.addObject(wedge)
+
+        box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        box.Length = 96.0
+        box.Width = 126.0
+        box.Height = 10.0
+        box.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(),
+            FreeCAD.Rotation(0.0, 0.0, 90.0),
+        )
+        body.addObject(box)
+        self.Doc.recompute()
+
+        fillet = self.Doc.addObject("PartDesign::Fillet", "Fillet")
+        fillet.Base = (
+            box,
+            [
+                "Edge15",
+                "Edge13",
+                "Edge12",
+                "Edge11",
+                "Edge4",
+                "Edge5",
+                "Edge3",
+                "Edge2",
+                "Face4",
+                "Edge19",
+                "Edge9",
+                "Edge7",
+            ],
+        )
+        fillet.Radius = 8.0
+        body.addObject(fillet)
+        self.Doc.recompute()
+        return body, fillet
+
+    def _find_case_5829_opening_face_name(self, shape):
+        candidates = [
+            (index, face)
+            for index, face in enumerate(shape.Faces, 1)
+            if isinstance(face.Surface, Part.Plane) and abs(face.CenterOfMass.y + 10.0) < 1.0e-7
+        ]
+        self.assertTrue(candidates)
+        index, _face = max(candidates, key=lambda item: item[1].Area)
+        return "Face" + str(index)
 
     def testReversedThickness(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -52,6 +114,26 @@ class TestThickness(unittest.TestCase):
         # 6 faces of outer box + 4 faces of inner box + 16 edges outer, 8 inner,
         # + 8 vertexes outer, 8 inner + 1 solid = 51
         self.assertEqual(self.Thickness.Shape.ElementMapSize, 51)
+
+    def testCase5829ThicknessOnRotatedFillet(self):
+        """Verify thickness succeeds on the rotated fillet from issue 5829."""
+        body, fillet = self._create_case_5829()
+        self.assertTrue(fillet.Shape.isValid())
+        self.assertEqual(len(fillet.Shape.Solids), 1)
+        self.assertNotEqual(fillet.Placement, FreeCAD.Placement())
+        opening = self._find_case_5829_opening_face_name(fillet.Shape)
+
+        thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
+        thickness.Base = (fillet, [opening])
+        thickness.Value = 1.0
+        thickness.Reversed = True
+        body.addObject(thickness)
+        self.Doc.recompute()
+
+        self.assertTrue(thickness.isValid())
+        self.assertTrue(thickness.Shape.isValid())
+        self.assertEqual(len(thickness.Shape.Solids), 1)
+        self.assertEqual(thickness.Placement, fillet.Placement)
 
     def tearDown(self):
         # closing doc

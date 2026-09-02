@@ -2209,12 +2209,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Додај квадрант тачке</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
       <source>Edit Annotation</source>
       <translation>Уреди напомену</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Направи Напомену</translation>
@@ -2438,7 +2438,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Направи слику</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="511"/>
+      <location filename="../../QGIViewBalloon.cpp" line="525"/>
       <source>Drag Balloon</source>
       <translation>Превуци позициону ознаку</translation>
     </message>
@@ -3797,27 +3797,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>За ову функцију је потребан цртеж.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Export Page as PDF</source>
       <translation>Извези цртеж у PDF формату</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="760"/>
       <source>Export page as SVG</source>
       <translation>Извези цртеж у SVG формату</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="561"/>
+      <location filename="../../MDIViewPage.cpp" line="783"/>
       <source>Export page as DXF</source>
       <translation>Извези цртеж у DXF формату</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="602"/>
+      <location filename="../../MDIViewPage.cpp" line="824"/>
       <source>Unable to Write File</source>
       <translation>Није могуће сачувати датотеку</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="603"/>
+      <location filename="../../MDIViewPage.cpp" line="825"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD не може да отвори и уписује у датотеку %1. Датотека је можда отворена у другом програму.</translation>
     </message>
@@ -3849,7 +3849,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Уреди показну линију</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="376"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>Уредник форматираног текста</translation>
     </message>
@@ -4270,17 +4270,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Уреди осну линију</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="117"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>Уредник форматираног текста</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="156"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>Творац форматираног текста</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="374"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation>Творац форматираног текста</translation>
     </message>
@@ -6298,66 +6298,66 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
-      <source>Toggle &amp;Keep Updated</source>
-      <translation>Укљ/Искљ одржавај ажурним</translation>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <source>&amp;Keep Updated</source>
+      <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
-      <source>Toggle &amp;Frames</source>
-      <translation>Прикажи/Сакриј оквире око погледа</translation>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <source>Show &amp;Frames</source>
+      <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
-      <source>Toggle &amp;Grid</source>
-      <translation>Сакриј/Прикажи координатну мрежу</translation>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <source>Show &amp;Grid</source>
+      <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Извези SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="113"/>
       <source>Export DXF</source>
       <translation>Извези DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="117"/>
       <source>Export PDF</source>
       <translation>Извези PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="121"/>
       <source>Print All Pages</source>
       <translation>Штампај све странице</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="428"/>
+      <location filename="../../MDIViewPage.cpp" line="445"/>
       <source>Different orientation</source>
       <translation>Другачија оријентација</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="446"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Штампач је подешен на другачији положај папира него што је цртеж.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="438"/>
+      <location filename="../../MDIViewPage.cpp" line="455"/>
       <source>Different paper size</source>
       <translation>Другачија величина папира</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="439"/>
+      <location filename="../../MDIViewPage.cpp" line="456"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Штампач користи другачију величину папира од цртежа.
 Да ли желиш да наставиш?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1161"/>
+      <location filename="../../MDIViewPage.cpp" line="1404"/>
       <source>Selected:</source>
       <translation>Изабрано:</translation>
     </message>
@@ -8442,7 +8442,7 @@ using the given X/Y spacings</source>
       <translation>Црта, тачка, тачка</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="661"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>Форматирана напомена</translation>
     </message>

@@ -621,6 +621,9 @@ void Sketch::calculateDependentParametersElements()
                         solvext->setMidy(SolverGeometryExtension::Dependent);
                     }
                     break;
+                case PointPos::NumPointPos:
+                    // ignore
+                    break;
             }
         }
     }
@@ -5599,6 +5602,7 @@ int Sketch::getPointId(int geoId, PointPos pos) const
         case PointPos::mid:
             return Geoms[geoId].midPointId;
         case PointPos::none:
+        case PointPos::NumPointPos:
             break;
     }
     return -1;

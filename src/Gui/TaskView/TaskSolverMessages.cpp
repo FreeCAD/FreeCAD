@@ -44,6 +44,14 @@ TaskSolverMessages::TaskSolverMessages(const QPixmap& icon, const QString& title
     // we need a separate container widget to add all controls to
     auto* proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    // External theme override for solver task-panel icons
+    ui->manualUpdate->setIcon(
+        Gui::BitmapFactory().iconFromTheme("view-refresh", ui->manualUpdate->icon())
+    );
+    ui->settingsButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("preferences-general", ui->settingsButton->icon())
+    );
     setupConnections();
 
     this->groupLayout()->addWidget(proxy);
@@ -147,3 +155,4 @@ void TaskSolverMessages::createSettingsButtonActions()
 }
 
 #include "moc_TaskSolverMessages.cpp"
+#include <QIcon>

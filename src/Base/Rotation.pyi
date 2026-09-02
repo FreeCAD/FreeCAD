@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from Metadata import export, constmethod, class_declarations
+from Metadata import export, constmethod, class_declarations, typing_only
 from PyObjectBase import PyObjectBase
 from Vector import Vector
 from Matrix import Matrix
-from typing import overload, Tuple, List, Final
+from typing import Final, List, Sequence, Tuple, overload
 
 @export(
     Constructor=True,
@@ -94,10 +94,15 @@ class Rotation(PyObjectBase):
     Q: Tuple[float, ...] = ()
     """The rotation elements (as quaternion)."""
 
-    Axis: object = None
-    """The rotation axis of the quaternion."""
+    @property
+    def Axis(self) -> Vector:
+        """The rotation axis of the quaternion."""
+        ...
 
-    RawAxis: Final[object] = None
+    @Axis.setter
+    def Axis(self, value: Vector | Sequence[float]) -> None: ...
+
+    RawAxis: Final[Vector] = ...
     """The rotation axis without normalization."""
 
     Angle: float = 0.0
@@ -162,12 +167,16 @@ class Rotation(PyObjectBase):
         """
         ...
     # fmt: off
+    @typing_only
     @overload
     def __mul__(self, vector: Vector, /) -> Vector: ...
+    @typing_only
     @overload
     def __mul__(self, matrix: Matrix, /) -> Matrix: ...
+    @typing_only
     @overload
     def __mul__(self, placement: Placement, /) -> Placement: ...
+    @typing_only
     @overload
     def __mul__(self, rotation: Rotation, /) -> Rotation: ...
     # fmt: on

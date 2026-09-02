@@ -31,11 +31,24 @@ import FreeCAD
 import Path
 import Path.Preferences
 import Path.Main.Job as PathJob
-from Path.Post.Processor import PostProcessor, PostProcessorFactory, _HeaderBuilder
+from Path.Post.Processor import (
+    PostProcessor,
+    PostProcessorFactory,
+    SCOPE_INTERNAL,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    SCOPE_RUN,
+    VALID_SCOPES,
+    _HeaderBuilder,
+    properties_in_scope,
+    property_scope,
+)
 import Path.Post.Command as PathCommand
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.PostList import Postable
-from Machine.models.machine import Machine
+from Machine.models.machine import Machine, OutputUnits
+
+from CAMTests.PostTestMocks import MockJob, MockStock
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
@@ -508,6 +521,91 @@ class TestPostProcessorClassification(unittest.TestCase):
         self.assertEqual(squawks, [])
 
 
+class TestPropertyScope(unittest.TestCase):
+    """Tests for property_scope() and properties_in_scope().
+
+    Scope decides which UI surface may edit a postprocessor property:
+    the machine editor ("machine", "job"), the post-processing dialog
+    ("job" on Options, "run" on Overview), or neither ("internal").
+    """
+
+    def test00_explicit_scope_is_returned(self):
+        """An entry declaring a valid scope gets that scope back."""
+        for scope in VALID_SCOPES:
+            with self.subTest(scope=scope):
+                self.assertEqual(property_scope({"name": "p", "scope": scope}), scope)
+
+    def test01_missing_scope_defaults_to_job(self):
+        """An entry declaring no scope is editable in both surfaces.
+
+        This preserves the historical behaviour of postprocessor-specific
+        properties written before the scope key existed.
+        """
+        self.assertEqual(property_scope({"name": "p"}), SCOPE_JOB)
+
+    def test02_runtime_true_is_an_alias_for_run(self):
+        """The deprecated "runtime": True spelling still means "run" scope.
+
+        Out-of-tree postprocessors written against the older API must keep
+        working without modification.
+        """
+        self.assertEqual(property_scope({"name": "p", "runtime": True}), SCOPE_RUN)
+
+    def test03_runtime_false_defaults_to_job(self):
+        """An explicit "runtime": False is not a scope declaration."""
+        self.assertEqual(property_scope({"name": "p", "runtime": False}), SCOPE_JOB)
+
+    def test04_explicit_scope_beats_runtime_alias(self):
+        """When both keys are present, "scope" wins over the deprecated alias."""
+        prop = {"name": "p", "scope": SCOPE_MACHINE, "runtime": True}
+        self.assertEqual(property_scope(prop), SCOPE_MACHINE)
+
+    def test05_unknown_scope_degrades_to_job(self):
+        """A typo must leave the property visible rather than silently hidden."""
+        self.assertEqual(property_scope({"name": "p", "scope": "mahcine"}), SCOPE_JOB)
+
+    def test06_properties_in_scope_filters_and_preserves_order(self):
+        """Filtering keeps schema order and accepts several scopes at once."""
+        schema = [
+            {"name": "a", "scope": SCOPE_MACHINE},
+            {"name": "b", "scope": SCOPE_RUN},
+            {"name": "c", "scope": SCOPE_JOB},
+            {"name": "d", "scope": SCOPE_INTERNAL},
+            {"name": "e"},  # defaults to job
+        ]
+
+        editor = [p["name"] for p in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB)]
+        self.assertEqual(editor, ["a", "c", "e"])
+
+        overview = [p["name"] for p in properties_in_scope(schema, SCOPE_RUN)]
+        self.assertEqual(overview, ["b"])
+
+        self.assertEqual(properties_in_scope(schema, SCOPE_INTERNAL)[0]["name"], "d")
+
+    def test07_properties_in_scope_handles_empty_schema(self):
+        """None and [] are both acceptable schemas."""
+        self.assertEqual(properties_in_scope(None, SCOPE_JOB), [])
+        self.assertEqual(properties_in_scope([], SCOPE_JOB), [])
+
+    def test08_every_common_property_declares_a_scope(self):
+        """The common schema must not rely on the default scope.
+
+        Common properties are machine configuration by default; leaving the
+        key off would silently promote them to "job" and expose them on the
+        post-processing dialog.
+        """
+        for prop in PostProcessor.get_common_property_schema():
+            with self.subTest(prop=prop["name"]):
+                self.assertIn("scope", prop)
+                self.assertIn(prop["scope"], VALID_SCOPES)
+
+    def test09_scopes_partition_the_full_schema(self):
+        """The four scopes are exhaustive and mutually exclusive."""
+        schema = PostProcessor.get_full_property_schema()
+        buckets = [properties_in_scope(schema, scope) for scope in VALID_SCOPES]
+        self.assertEqual(sum(len(b) for b in buckets), len(schema))
+
+
 class TestConfigurationBundle(unittest.TestCase):
     """Tests for build_configuration_bundle() and apply_configuration_bundle().
 
@@ -736,9 +834,7 @@ class TestConfigurationBundle(unittest.TestCase):
         """Invalid JSON raises"""
         pp = self._make_postprocessor()
         pp._job.PostProcessorPropertyOverrides = "not valid json {"
-        with self.assertRaisesRegex(
-            CAMValueError, "Invalid PostProcessorPropertyOverrides JSON"
-        ) as e:
+        with self.assertRaisesRegex(CAMValueError, "Invalid PostProcessorPropertyOverrides JSON"):
             pp._read_job_overrides()
 
     def test335_read_job_overrides_invalid_json(self):
@@ -757,11 +853,23 @@ class TestConfigurationBundle(unittest.TestCase):
 
 
 class TestPostProcessorMBPPMethods(unittest.TestCase):
+
+    @classmethod
+    def _make_job(cls, xmin=0.0, ymin=0.0, zmin=0.0, xmax=10.0, ymax=10.0, zmax=4.0):
+        """A shared MockJob whose stock spans the requested bounding box."""
+        job = MockJob()
+        job.Stock = MockStock(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, zmin=zmin, zmax=zmax)
+        return job
+
+    @classmethod
+    def setUpClass(cls):
+
+        cls.job = cls._make_job()
+        # we shouldn't need any of the arguments
+        cls.pp = PostProcessor(cls.job, "tooltip", "args", units="G21")
+
     def test_edit_postable_list(self):
         """test the several cases of appending/not-appending"""
-
-        # we shouldn't need any of the arguments
-        pp = PostProcessor(None, None, None, None)
 
         def initial_sections():
             # new each time
@@ -793,7 +901,7 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
 
         unmodified = initial_sections()
 
-        sections = pp._edit_postable_list(initial_sections(), lambda sn, i, ss: (None, None))
+        sections = self.pp._edit_postable_list(initial_sections(), lambda sn, i, ss: (None, None))
 
         # unchanged
         self.assertEqual(len(sections), len(unmodified))
@@ -817,8 +925,8 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
                     1,
                     [
                         Postable(
-                            label=f"append_p1",
-                            item_type=f"itemp1_a",
+                            label="append_p1",
+                            item_type="itemp1_a",
                             data={},
                             path=None,
                             source=None,
@@ -828,7 +936,7 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
             else:
                 return (None, None)
 
-        sections = pp._edit_postable_list(initial_sections(), append_s1_p1)
+        sections = self.pp._edit_postable_list(initial_sections(), append_s1_p1)
         self.assertEqual(len(sections), len(unmodified))
         self.assertEqual(
             sections[0][1][1].Name,
@@ -840,3 +948,138 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
             "append_p1",
             f"in section[1].Postable[1]---\n{to_str(sections)}\n---",
         )
+
+    def enable_line_numbering(self, prefix=None):
+        """Setup for line-numbering"""
+        self.pp.values.update(
+            {
+                "OUTPUT_LINE_NUMBERS": True,
+                "LINE_NUMBER_START": 100,
+                "LINE_INCREMENT": 10,
+            }
+        )
+        if prefix is not None:
+            self.pp.values["LINE_NUMBER_PREFIX"] = prefix
+
+    def test_line_number_ignores_blocks(self):
+        """Numbers Path.Commands but not "blocks" (item_type=="str")"""
+        self.enable_line_numbering()
+
+        # G1 X1
+        gcode1 = Postable(
+            label="gcode1",
+            item_type="operation",  # anything but 'str'
+            data={},
+            path=Path.Path([Path.Command("G1 X1")]),
+            source=None,
+        )
+
+        # 2 lines in block
+        block1 = Postable(
+            label="block1",
+            item_type="str",
+            data={"str": "line1\nline2\nG99"},  # G99 is NOT treated as parsed gcode
+            path=None,
+            source=None,
+        )
+
+        # G1 Y2
+        gcode2 = Postable(
+            label="gcode2",
+            item_type="operation",  # anything but 'str'
+            data={},
+            path=Path.Path([Path.Command("G1 Y2")]),
+            source=None,
+        )
+
+        postables = [gcode1, block1, gcode2]
+        self.pp._add_line_numbers([("section1", postables)])
+
+        # gcode1 is numbered
+        self.assertEqual(
+            len(gcode1.Path.Commands),
+            1,
+            f"Only expected the 1 command, but saw {gcode1.Path.Commands}",
+        )
+        # nb: parameters have floating point type
+        self.assertEqual(
+            gcode1.Path.Commands[0].Parameters.get("N", None),
+            100.0,
+            f"Expected N:100, but saw {gcode1.Path.Commands[0]}",
+        )
+
+        # block is not
+        block1.data["str"].split("\n")
+        self.assertEqual(
+            block1.data["str"], "line1\nline2\nG99", "Expected a block to be un-numbered"
+        )
+
+        # gcode2 is numbered
+        self.assertEqual(
+            len(gcode2.Path.Commands),
+            1,
+            f"Only expected the 1 command, but saw {gcode2.Path.Commands}",
+        )
+        # NB: counts the lines in block1, so next is 140:
+        self.assertEqual(
+            gcode2.Path.Commands[0].Parameters.get("N", None),
+            140.0,
+            f"Expected N:140, but saw {gcode2.Path.Commands[0]}",
+        )
+
+    def test_doesnt_renumber(self):
+        """Don't renumber gcode that already has an N"""
+        self.enable_line_numbering()
+
+        # G1 X1 N9: leave the N9
+        gcode1 = Postable(
+            label="gcode1",
+            item_type="operation",  # anything but 'str'
+            data={},
+            path=Path.Path([Path.Command("G1 X1 N9")]),
+            source=None,
+        )
+
+        postables = [gcode1]
+        self.pp._add_line_numbers([("section1", postables)])
+
+        # gcode1 is numbered
+        self.assertEqual(
+            len(gcode1.Path.Commands),
+            1,
+            f"Only expected the 1 command, but saw {gcode1.Path.Commands}",
+        )
+        # nb: parameters have floating point type
+        self.assertEqual(
+            gcode1.Path.Commands[0].Parameters.get("N", None),
+            9.0,
+            f"Expected undisturbed N:9, but saw {gcode1.Path.Commands[0]}",
+        )
+
+    def test_line_number_prefix(self):
+        """Uses the formatting.line_number_prefix"""
+        self.enable_line_numbering(prefix="%")
+        self.pp.values["OUTPUT_UNITS"] = OutputUnits.IMPERIAL
+
+        # G1 X1
+        gcode1 = Postable(
+            label="gcode1",
+            item_type="operation",  # anything but 'str'
+            data={},
+            path=Path.Path([Path.Command("G1 X1")]),
+            source=None,
+        )
+
+        postables = [gcode1]
+        self.pp._add_line_numbers([("section1", postables)])
+
+        self.assertEqual(
+            len(gcode1.Path.Commands),
+            1,
+            f"Only expected the 1 command, but saw {gcode1.Path.Commands}",
+        )
+
+        gcode = self.pp._convert_move(gcode1.Path.Commands[0])
+
+        # gcode1 has %n when converted
+        self.assertIn("%100", gcode, "Expected 'N100' to use % instead of N")

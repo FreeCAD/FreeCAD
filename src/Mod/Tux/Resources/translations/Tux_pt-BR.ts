@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="675"/>
       <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation Styles</translation>
+      <translation>Estilos de navegação</translation>
     </message>
   </context>
 </TS>
