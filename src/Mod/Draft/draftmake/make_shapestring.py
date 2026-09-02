@@ -31,9 +31,9 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.shapestring import ShapeString
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_shapestring import ViewProviderShapeString
@@ -72,6 +72,14 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
     return obj
 
 
-makeShapeString = make_shapestring
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shapestring()",
+)
+def makeShapeString(*args, **kwarg):
+    """DEPRECATED. Use 'make_shapestring'."""
+    return make_shapestring(*args, **kwarg)
+
 
 ## @}

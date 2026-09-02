@@ -40,13 +40,13 @@ curve.
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.messages import _err
-from draftutils.translate import translate
 from draftobjects.patharray import PathArray
 from draftobjects.pathtwistedarray import PathTwistedArray
+from draftutils import gui_utils
+from draftutils import utils
+from draftutils.messages import _err
+from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
@@ -310,13 +310,14 @@ def make_path_array(
     return new_obj
 
 
-def makePathArray(
-    baseobject, pathobject, count, xlate=None, align=False, pathobjsubs=[], use_link=False
-):
-    """Create PathArray. DEPRECATED. Use 'make_path_array'."""
-    utils.use_instead("make_path_array")
-
-    return make_path_array(baseobject, pathobject, count, xlate, pathobjsubs, align, use_link)
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_path_array()",
+)
+def makePathArray(*args, **kwarg):
+    """DEPRECATED. Use 'make_path_array'."""
+    return make_path_array(*args, **kwarg)
 
 
 def make_path_twisted_array(base_object, path_object, count=15, rot_factor=0.25, use_link=True):

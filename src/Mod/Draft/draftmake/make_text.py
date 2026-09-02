@@ -33,12 +33,12 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
+from draftobjects.text import Text
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
-from draftobjects.text import Text
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_text import ViewProviderText
@@ -147,11 +147,14 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
     return new_obj
 
 
-def makeText(stringlist, point=App.Vector(0, 0, 0), screen=False):
-    """Create Text. DEPRECATED. Use 'make_text'."""
-    utils.use_instead("make_text")
-
-    return make_text(stringlist, point, screen)
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_text()",
+)
+def makeText(*args, **kwarg):
+    """DEPRECATED. Use 'make_text'."""
+    return make_text(*args, **kwarg)
 
 
 def convert_draft_texts(textslist=None):
@@ -210,10 +213,10 @@ def convert_draft_texts(textslist=None):
         doc.removeObject(obj.Name)
 
 
-def convertDraftTexts(textslist=[]):
-    """Convert Text. DEPRECATED. Use 'convert_draft_texts'."""
+def convertDraftTexts(*args, **kwarg):
+    """DEPRECATED. Use 'convert_draft_texts'."""
     utils.use_instead("convert_draft_texts")
-    return convert_draft_texts(textslist)
+    return convert_draft_texts(*args, **kwarg)
 
 
 ## @}

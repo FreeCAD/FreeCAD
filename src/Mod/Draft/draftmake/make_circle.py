@@ -39,6 +39,7 @@ from draftgeoutils import general as geo_general
 from draftobjects.circle import Circle
 from draftutils import utils
 from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
@@ -157,6 +158,14 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     return obj
 
 
-makeCircle = make_circle
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_circle()",
+)
+def makeCircle(*args, **kwarg):
+    """DEPRECATED. Use 'make_circle'."""
+    return make_circle(*args, **kwarg)
+
 
 ## @}

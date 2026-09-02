@@ -32,10 +32,11 @@
 # @{
 import FreeCAD as App
 import draftmake.make_wire as make_wire
+from freecad.deprecation import deprecated
 
 
 def make_line(first_param, last_param=None):
-    """makeLine(first_param, p2)
+    """make_line(first_param, p2)
 
     Creates a line from 2 points or from a given object.
 
@@ -70,6 +71,14 @@ def make_line(first_param, last_param=None):
     return obj
 
 
-makeLine = make_line
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_line()",
+)
+def makeLine(*args, **kwarg):
+    """DEPRECATED. Use 'make_line'."""
+    return make_line(*args, **kwarg)
+
 
 ## @}
