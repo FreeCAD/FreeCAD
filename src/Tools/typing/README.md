@@ -34,6 +34,26 @@ That command writes under `src/Tools/typing/generated/`:
   is the output used by the smoke checks. It is disposable local output; the
   repository only keeps `generated/.gitignore`, so regenerate it instead of
   editing it directly.
+- `stubs/<Module>/py.typed`: a PEP 561 marker emitted into each top-level
+  module directory so type checkers (Pyright, MyPy, Pyrefly) discover the
+  stubs when the package is installed.
+- `pyproject.toml`: a packaging manifest for distributing the stubs on PyPI
+  as `freecad-typings`. It uses the `hatchling` build backend and the FreeCAD
+  version from `version.json`, and copies the `stubs/` tree to the wheel root
+  so the top-level modules import directly (e.g. `import FreeCAD`).
+
+Build and publish the stub package with `uv` from the generated directory:
+
+```sh
+cd src/Tools/typing/generated
+uv build                 # creates dist/freecad_typings-<version>.tar.gz and .whl
+uv publish               # uploads to PyPI (set UV_PUBLISH_TOKEN or log in first)
+```
+
+To push a release candidate or development snapshot instead, use the alias
+`uv publish --publish-url https://test.pypi.org/legacy/` (test PyPI) or pass
+an explicit index URL. Regenerate before publishing whenever the bindings
+change so the wheel reflects the current API.
 
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
