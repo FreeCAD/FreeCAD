@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>297</width>
-    <height>248</height>
+    <height>249</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,36 +33,22 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QRadioButton" name="radioTransformBody">
-        <property name="text">
-         <string>Transform body</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">buttonGroupMode</string>
-        </attribute>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioTransformToolShapes">
-        <property name="text">
-         <string>Transform tool shapes</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">buttonGroupMode</string>
-        </attribute>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioTransformToolShapesAsBody">
-        <property name="text">
-         <string>Transform tool shapes as body</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">buttonGroupMode</string>
-        </attribute>
+       <widget class="QComboBox" name="transformationMode">
+        <item>
+         <property name="text">
+          <string comment="Transform the different features individually">Tool shapes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string comment="Pattern the body's whole solid">Whole Body</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string comment="Transform the combined result of the features">Feature result</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -136,8 +122,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>radioTransformBody</tabstop>
-  <tabstop>radioTransformToolShapes</tabstop>
   <tabstop>buttonAddFeature</tabstop>
   <tabstop>buttonRemoveFeature</tabstop>
   <tabstop>listWidgetFeatures</tabstop>
@@ -145,7 +129,4 @@
  </tabstops>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroupMode"/>
- </buttongroups>
 </ui>
