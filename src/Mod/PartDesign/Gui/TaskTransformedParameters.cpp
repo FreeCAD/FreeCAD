@@ -319,7 +319,7 @@ void TaskTransformedParameters::onModeChanged(int index)
     auto pcTransformed = getObject<PartDesign::Transformed>();
     pcTransformed->TransformMode.setValue(static_cast<int>(mode));
 
-    ui->groupFeatureList->setEnabled(mode == Mode::Features);
+    ui->groupFeatureList->setEnabled(mode != Mode::WholeShape);
 
     if (mode == Mode::WholeShape) {
         ui->listWidgetFeatures->clear();
