@@ -699,10 +699,10 @@ class SH3DImporter:
             NO = App.Vector(bb.XMin - dx, bb.YMax + dy, 0)
             NE = App.Vector(bb.XMax + dx, bb.YMax + dy, 0)
             SE = App.Vector(bb.XMax + dx, bb.YMin - dy, 0)
-            edge0 = Part.makeLine(SO, NO)
-            edge1 = Part.makeLine(NO, NE)
-            edge2 = Part.makeLine(NE, SE)
-            edge3 = Part.makeLine(SE, SO)
+            edge0 = Part.make_line(SO, NO)
+            edge1 = Part.make_line(NO, NE)
+            edge2 = Part.make_line(NE, SE)
+            edge3 = Part.make_line(SE, SO)
             ground_face = Part.makeFace([Part.Wire([edge0, edge1, edge2, edge3])])
 
             ground = App.ActiveDocument.addObject("Mesh::Feature", "Ground")
@@ -2009,7 +2009,7 @@ class WallHandler(BaseHandler):
         section_start = self._get_section(wall_details, True, prev_wall_details, a1, a2)
         section_end = self._get_section(wall_details, False, next_wall_details, a1, a2)
 
-        spine = Draft.makeLine(start, end)
+        spine = Draft.make_line(start, end)
 
         return section_start, section_end, spine
 
@@ -2036,15 +2036,15 @@ class WallHandler(BaseHandler):
             self._debug_vector(end - center, "end-center", BLUE, center)
 
         placement = App.Placement(center, App.Rotation())
-        # BEWARE: makeCircle always draws counter-clockwise (i.e. in positive
+        # BEWARE: make_circle always draws counter-clockwise (i.e. in positive
         # direction in xYz coordinate system). We therefore need to invert
         # the start and end angle (as in SweetHome the wall is drawn in
         # clockwise fashion).
         length = abs(radius * math.radians(a2 - a1))
         if invert_angle:
-            spine = Draft.makeCircle(radius, placement, False, a1, a2)
+            spine = Draft.make_circle(radius, placement, False, a1, a2)
         else:
-            spine = Draft.makeCircle(radius, placement, False, a2, a1)
+            spine = Draft.make_circle(radius, placement, False, a2, a1)
 
         # The Length property is used in the Wall to calculate volume, etc...
         # Since make Circle does not calculate this Length I calculate it here...
@@ -2108,7 +2108,7 @@ class WallHandler(BaseHandler):
                 _log(f"    wall: {self._pe(lside)},{self._pe(rside)}")
                 _log(f" sibling: {self._pe(s_lside)},{self._pe(s_rside)}")
                 _log(f"intersec: {self._pv(i_start)},{self._pv(i_end)}")
-            section = Draft.makeRectangle([i_start, i_end, i_end_z, i_start_z], face=True)
+            section = Draft.make_rectangle([i_start, i_end, i_end_z, i_start_z], face=True)
             if debug_geometry:
                 _log(f"section: {section}")
         else:
@@ -2116,7 +2116,7 @@ class WallHandler(BaseHandler):
             height = height_start if at_start else height_end
             center = start if at_start else end
             z_rotation = a1 if at_start else a2
-            section = Draft.makeRectangle(thickness, height, face=True)
+            section = Draft.make_rectangle(thickness, height, face=True)
             Draft.move([section], App.Vector(-thickness / 2, 0, 0))
             Draft.rotate([section], 90, ORIGIN, X_NORM)
             Draft.rotate([section], z_rotation, ORIGIN, Z_NORM)
@@ -2394,9 +2394,9 @@ class WallHandler(BaseHandler):
             )
 
         edge0 = bottom_edge.copy()
-        edge1 = Part.makeLine(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
+        edge1 = Part.make_line(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
         edge2 = offset_bottom_edge
-        edge3 = Part.makeLine(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
+        edge3 = Part.make_line(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
 
         # make sure all edges are coplanar...
         ref_z = bottom_edge.CenterOfGravity.z
