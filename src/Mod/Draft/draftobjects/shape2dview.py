@@ -164,12 +164,8 @@ class Shape2DView(DraftObject):
             edge_compounds = edge_compounds[0:5]
         for compound in edge_compounds:
             edges.extend(compound.Edges)
-        # remove overlapping edges:
         if edges:
-            tmp = []
-            for wire in TechDraw.edgeWalker(edges):
-                tmp.extend(wire.Edges)
-            edges = tmp
+            edges = TechDraw.scrubEdges(edges)  # Remove overlapping edges.
         edges = self.cleanExcluded(obj, edges)
         if getattr(obj, "Tessellation", False):
             return geo_wires.cleanProjection(
