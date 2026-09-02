@@ -1621,6 +1621,34 @@ void Sheet::setComputedUnit(CellAddress address, const Base::Unit& unit)
     cells.setComputedUnit(address, unit);
 }
 
+namespace
+{
+enum class ReservedAliasToken
+{
+    None,
+    Unit,
+    Constant,
+    UnitAndConstant
+};
+
+ReservedAliasToken classifyReservedAliasName(const std::string& candidate)
+{
+    const bool isUnitToken = ExpressionParser::isTokenAUnit(candidate);
+    const bool isConstantToken = ExpressionParser::isTokenAConstant(candidate);
+
+    if (isUnitToken && isConstantToken) {
+        return ReservedAliasToken::UnitAndConstant;
+    }
+    if (isUnitToken) {
+        return ReservedAliasToken::Unit;
+    }
+    if (isConstantToken) {
+        return ReservedAliasToken::Constant;
+    }
+    return ReservedAliasToken::None;
+}
+}  // namespace
+
 /**
  * @brief Set computed unit for cells part of \a range to \a unit.
  * @param address Address of cell
@@ -1658,6 +1686,18 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
         cells.setAlias(address, alias);
     }
     else {
+        switch (classifyReservedAliasName(alias)) {
+            case ReservedAliasToken::Unit:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved unit token");
+            case ReservedAliasToken::Constant:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved constant token");
+            case ReservedAliasToken::UnitAndConstant:
+                throw Base::ValueError(
+                    "Invalid alias: name conflicts with reserved unit and constant tokens"
+                );
+            case ReservedAliasToken::None:
+                break;
+        }
         throw Base::ValueError("Invalid alias");
     }
 }
@@ -1677,6 +1717,11 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
         return cell->getAddress().toString();
     }
     return {};
+}
+
+bool Sheet::isReservedAliasName(const std::string& candidate) const
+{
+    return classifyReservedAliasName(candidate) != ReservedAliasToken::None;
 }
 
 /**
