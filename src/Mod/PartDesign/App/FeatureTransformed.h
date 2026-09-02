@@ -49,7 +49,7 @@ public:
     {
         Features,
         WholeShape,
-        FeaturesAsShape
+        FeatureResult
     };
 
     Transformed();
