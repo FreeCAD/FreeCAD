@@ -552,18 +552,20 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         }
 
         auto prevFeature = getPreviousOriginal(original);
-        if (!prevFeature) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Shape has no previous shape.")
-            );
-        }
-        auto prevShape = prevFeature->Shape.getShape();
+        // if (!prevFeature) {
+        //     return new App::DocumentObjectExecReturn(
+        //         QT_TRANSLATE_NOOP("Exception", "Shape has no previous shape.")
+        //     );
+        // }
+        auto prevShape = prevFeature != nullptr ? prevFeature->Shape.getShape() : NULL;
 
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
             // TODO: transform the TopoShape directly instead of allocating a new one
             addShape = addShape.makeElementTransform(trsf);
-            addShape = addShape.makeElementCut(prevShape);
+            if (prevShape != NULL) {
+                addShape = addShape.makeElementCut(prevShape);
+            }
 
             if (!addShape.isNull()) {
                 shapes.push_back({addShape, Operation::Add});
@@ -571,6 +573,12 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         }
 
         if (!subShape.isNull()) {
+            if (!prevFeature) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive shape.")
+                );
+            }
+
             subShape = subShape.makeElementTransform(trsf);
             subShape = subShape.makeElementCommon(prevShape);
 
