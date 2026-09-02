@@ -375,7 +375,7 @@ constexpr float OVERLAY_ORTHO_EXTENT = 2.1F;
 constexpr float OVERLAY_FOV_SCALE = 1.1F;
 constexpr float OVERLAY_CUBE_Z = -5.1F;
 constexpr float OVERLAY_BUTTON_Z = -4.0F;  // in front of the cube (cube is centered at z≈-5.1)
-constexpr float BUTTON_HIT_SLOPE = 0.015F;
+constexpr float BUTTON_HIT_SLOP = 0.015F;
 
 }  // namespace
 
@@ -1841,7 +1841,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             appendTriangles(bar, {0, 1, 2, 0, 2, 3});
             const auto triangle = appendLoop({-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F});
             appendTriangles(triangle, {0, 1, 2});
-            setHitRectFromVerts(BUTTON_HIT_SLOPE);
+            setHitRectFromVerts(BUTTON_HIT_SLOP);
             break;
         }
         case PickId::Home: {
@@ -1900,7 +1900,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
                                     3,  18, 4, 18, 17, 4,  4,  17, 5,  17, 16, 5, 5,  16, 6,
                                     16, 15, 6, 6,  15, 7,  15, 14, 7,  7,  14, 8, 14, 13, 8,
                                     8,  13, 9, 9,  13, 10, 10, 13, 11, 11, 13, 12});
-            setHitRectFromVerts(BUTTON_HIT_SLOPE);
+            setHitRectFromVerts(BUTTON_HIT_SLOP);
             break;
         }
     }
