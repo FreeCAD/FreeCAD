@@ -782,6 +782,11 @@ public:
     {
         return lastMalformedConstraints;
     }
+    /// gets the `NoRecompute` flag
+    inline bool getNoRecomputes() const
+    {
+        return noRecomputes;
+    }
 
 public: /* Solver exposed interface */
     /// gets the solved sketch as a reference

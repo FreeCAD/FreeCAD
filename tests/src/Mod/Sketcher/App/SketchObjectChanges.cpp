@@ -301,6 +301,32 @@ TEST_F(SketchObjectTest, testSplitPeriodicBSpline)
     // TODO: confirm sampled point(s) is/are at the same place
 }
 
+TEST_F(SketchObjectTest, testSplitSolvesIfNoRecompute)
+{
+    // Arrange
+    Base::Vector3d splitPoint(2.0, 3.1, 0.0);
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() {
+        solverUpdated = true;
+    });
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Act
+    int result = getObject()->split(geoId, splitPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_TRUE(getObject()->getNoRecomputes());
+    EXPECT_TRUE(solverUpdated);
+}
+
 TEST_F(SketchObjectTest, testTrimWithoutIntersection)
 {
     // Arrange
@@ -889,6 +915,38 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
 
 // TODO: Ensure endpoint constraints go to the appropriate new geometry
 // This will need a reliable way to get the resultant curves after the trim
+
+TEST_F(SketchObjectTest, testTrimSolvesIfNoRecompute)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    // create curves intersecting at the right spots
+    Base::Vector3d trimPoint(getPointAtNormalizedParameter(lineSeg, 0.2));
+    Base::Vector3d p1(getPointAtNormalizedParameter(lineSeg, 0.5));
+    Base::Vector3d p2(p1.x + 0.1, p1.y + 0.1, p1.z);
+    Part::GeomLineSegment lineSegCut1;
+    lineSegCut1.setPoints(p1, p2);
+    getObject()->addGeometry(&lineSegCut1);
+    int geoId = getObject()->addGeometry(&lineSeg);
+
+    // Register callback
+    bool solverUpdated = false;
+    auto connection = getObject()->signalSolverUpdate.connect([&]() {
+        solverUpdated = true;
+    });
+
+    // Force recomputes
+    getObject()->noRecomputes = true;
+
+    // Act
+    int result = getObject()->trim(geoId, trimPoint);
+
+    // Assert
+    EXPECT_EQ(result, 0);
+    EXPECT_TRUE(getObject()->getNoRecomputes());
+    EXPECT_TRUE(solverUpdated);
+}
 
 TEST_F(SketchObjectTest, testModifyKnotMultInNonPeriodicBSplineToZero)
 {
