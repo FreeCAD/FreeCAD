@@ -61,7 +61,8 @@ Part::TopoShape makeRectoVersoThickness(
     double offset,
     double tolerance,
     bool intersection,
-    Part::JoinType join
+    Part::JoinType join,
+    long tag
 )
 {
     const double distance = std::abs(offset);
@@ -99,7 +100,7 @@ Part::TopoShape makeRectoVersoThickness(
     ensureValidWall(recto, "Recto-verso positive-side wall is invalid");
     ensureValidWall(verso, "Recto-verso negative-side wall is invalid");
 
-    Part::TopoShape result(0);
+    Part::TopoShape result(tag);
     result.makeElementFuse({recto, verso}, "RectoVerso", tolerance);
     if (result.isNull() || !result.isValid() || result.countSubShapes(TopAbs_SOLID) != 1) {
         throw Base::CADKernelError("Recto-verso thickness produced an invalid solid");
@@ -223,7 +224,15 @@ App::DocumentObjectExecReturn* Thickness::execute()
             try {
                 const auto joinType = static_cast<Part::JoinType>(join);
                 if (mode == BRepOffset_RectoVerso) {
-                    res = makeRectoVersoThickness(solid, *faces, thickness, tol, intersection, joinType);
+                    res = makeRectoVersoThickness(
+                        solid,
+                        *faces,
+                        thickness,
+                        tol,
+                        intersection,
+                        joinType,
+                        getID()
+                    );
                 }
                 else {
                     res = solid.makeElementThickSolid(
