@@ -231,15 +231,16 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
+    bimtests/TestIfcGeometryExport.py
+    bimtests/TestIfcGeometryParity.py
     bimtests/TestIfcImportBackend.py
     bimtests/TestIfcOpenShellBackend.py
+    bimtests/TestIfcRoundtrip.py
     bimtests/TestBimSetup.py
     bimtests/TestBimIfcExplorer.py
     bimtests/TestBimClassification.py
     bimtests/TestIfcStructuralExport.py
     bimtests/TestIfcLegacyExport.py
-    bimtests/TestIfcGeometryExport.py
-    bimtests/TestIfcRoundtrip.py
     bimtests/TestArchAxis.py
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py

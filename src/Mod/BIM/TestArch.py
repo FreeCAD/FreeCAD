@@ -27,6 +27,7 @@ from bimtests.TestIfcImportBackend import TestIfcImportBackend
 from bimtests.TestIfcLegacyExport import TestIfcLegacyExport
 from bimtests.TestIfcStructuralExport import TestIfcStructuralExport
 from bimtests.TestIfcGeometryExport import TestIfcGeometryExport
+from bimtests.TestIfcGeometryParity import TestIfcGeometryParity
 from bimtests.TestIfcOpenShellBackend import TestIfcOpenShellBackend
 from bimtests.TestIfcRoundtrip import TestIfcRoundtrip
 from bimtests.TestArchRoof import TestArchRoof
