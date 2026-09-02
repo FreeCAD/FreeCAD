@@ -28,11 +28,11 @@ import FreeCAD
 import Draft
 
 from importers import exportIFC
-from importers import exportIFCHelper
 from importers import importIFCHelper
 
 from . import backend
 from . import ifc_import
+from . import ifc_geometry_export
 from . import ifc_layers
 from . import ifc_materials
 from . import ifc_psets
@@ -204,18 +204,9 @@ def create_representation(obj, ifcfile):
     # that should contain all typical use cases one could have to convert FreeCAD geometry
     # to IFC.
 
-    # setup exporter - TODO do that in the module init
-    exportIFC.clones = {}
-    exportIFC.profiledefs = {}
-    exportIFC.surfstyles = {}
-    exportIFC.shapedefs = {}
-    exportIFC.ifcopenshell = ifcopenshell
-    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
     prefs, context = get_export_preferences(ifcfile)
-    representation, placement, shapetype = exportIFC.getRepresentation(
-        ifcfile, context, obj, preferences=prefs
-    )
-    return representation, placement
+    exporter = ifc_geometry_export.GeometryExporter(ifcfile)
+    return exporter.create_representation(context, obj, prefs)
 
 
 def get_object_type(ifcentity, objecttype=None):
@@ -360,13 +351,7 @@ def get_axis(obj):
 def create_annotation(obj, ifcfile):
     """Adds an IfcAnnotation from the given object to the given IFC file"""
 
-    exportIFC.clones = {}
-    exportIFC.profiledefs = {}
-    exportIFC.surfstyles = {}
-    exportIFC.shapedefs = {}
-    exportIFC.curvestyles = {}
-    exportIFC.ifcopenshell = ifcopenshell
-    exportIFC.ifcbin = exportIFCHelper.recycler(ifcfile, template=False)
+    exporter = ifc_geometry_export.GeometryExporter(ifcfile)
     if is_annotation(obj) and Draft.getType(obj) != "SectionPlane":
         context_type = "Plan"
     else:
@@ -376,7 +361,7 @@ def create_annotation(obj, ifcfile):
     history = get_history(ifcfile)
     # TODO The following prints each edge as a separate IfcGeometricCurveSet
     # It should be refined to create polylines instead
-    anno = exportIFC.create_annotation(obj, ifcfile, context, history, prefs)
+    anno = exporter.create_annotation(context, obj, history, prefs)
     return anno
 
 

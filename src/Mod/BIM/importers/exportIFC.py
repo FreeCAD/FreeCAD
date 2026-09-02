@@ -42,6 +42,7 @@ import math
 import os
 import time
 import tempfile
+from dataclasses import dataclass, field
 from builtins import open as pyopen
 
 import FreeCAD
@@ -62,6 +63,46 @@ from importers.importIFCHelper import dd2dms
 from nativeifc import backend
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+
+
+@dataclass
+class ExportState:
+    """Mutable state for one IFC geometry export operation."""
+
+    ifcbin: object
+    ifcopenshell: object
+    clones: dict = field(default_factory=dict)
+    sharedobjects: dict = field(default_factory=dict)
+    profiledefs: dict = field(default_factory=dict)
+    surfstyles: dict = field(default_factory=dict)
+    shapedefs: dict = field(default_factory=dict)
+    curvestyles: dict = field(default_factory=dict)
+
+
+def create_export_state(ifcfile, ifcopenshell_module):
+    """Create isolated state for callers of the geometry conversion API."""
+
+    return ExportState(
+        ifcbin=exportIFCHelper.recycler(ifcfile, template=False),
+        ifcopenshell=ifcopenshell_module,
+    )
+
+
+def _legacy_export_state():
+    """Adapt the full legacy exporter globals to the explicit state API."""
+
+    namespace = globals()
+    return ExportState(
+        ifcbin=namespace["ifcbin"],
+        ifcopenshell=namespace.get("ifcopenshell"),
+        clones=namespace.get("clones", {}),
+        sharedobjects=namespace.get("sharedobjects", {}),
+        profiledefs=namespace.get("profiledefs", {}),
+        surfstyles=namespace.get("surfstyles", {}),
+        shapedefs=namespace.get("shapedefs", {}),
+        curvestyles=namespace.get("curvestyles", {}),
+    )
+
 
 # Templates and other definitions ****
 # Specific FreeCAD <-> IFC slang translations
@@ -1840,15 +1881,15 @@ def buildAddress(obj, ifcfile):
     return addr
 
 
-def createCurve(ifcfile, wire, scaling=1.0):
+def createCurve(ifcfile, wire, scaling=1.0, export_state=None):
     """creates an IfcIndexdPolyCurve from a wire
     if possible, or defects to createCurveWithArcs"""
 
     if wire.ShapeType != "Wire":
-        return createCurveWithArcs(ifcfile, wire, scaling)
+        return createCurveWithArcs(ifcfile, wire, scaling, export_state)
     for e in wire.Edges:
         if isinstance(e.Curve, Part.Circle):
-            return createCurveWithArcs(ifcfile, wire, scaling)
+            return createCurveWithArcs(ifcfile, wire, scaling, export_state)
     verts = [v.Point for v in wire.Vertexes]
     if scaling != 1:
         verts = [v.multiply(scaling) for v in verts]
@@ -1858,8 +1899,11 @@ def createCurve(ifcfile, wire, scaling=1.0):
     return idc
 
 
-def createCurveWithArcs(ifcfile, wire, scaling=1.0):
+def createCurveWithArcs(ifcfile, wire, scaling=1.0, export_state=None):
     "creates an IfcCompositeCurve from a shape"
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
 
     segments = []
     pol = None
@@ -1961,11 +2005,14 @@ def checkRectangle(edges):
     return False
 
 
-def getProfile(ifcfile, p):
+def getProfile(ifcfile, p, export_state=None):
     """returns an IFC profile definition from a shape"""
 
     import Part
     import DraftGeomUtils
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
 
     profile = None
     if len(p.Edges) == 1:
@@ -2008,7 +2055,7 @@ def getProfile(ifcfile, p):
         # face with holes
         f = p.Faces[0]
         if DraftGeomUtils.hasCurves(f.OuterWire):
-            outerwire = createCurve(ifcfile, f.OuterWire)
+            outerwire = createCurve(ifcfile, f.OuterWire, export_state=state)
         else:
             w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
             pts = [
@@ -2020,7 +2067,7 @@ def getProfile(ifcfile, p):
         for w in f.Wires:
             if w.hashCode() != f.OuterWire.hashCode():
                 if DraftGeomUtils.hasCurves(w):
-                    innerwires.append(createCurve(ifcfile, w))
+                    innerwires.append(createCurve(ifcfile, w, export_state=state))
                 else:
                     w = Part.Wire(Part.__sortEdges__(w.Edges))
                     pts = [
@@ -2032,7 +2079,7 @@ def getProfile(ifcfile, p):
     else:
         if DraftGeomUtils.hasCurves(p):
             # extruded composite curve
-            pol = createCurve(ifcfile, p)
+            pol = createCurve(ifcfile, p, export_state=state)
         else:
             # extruded polyline
             w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
@@ -2056,6 +2103,7 @@ def getRepresentation(
     preferences=None,
     forceclone=False,
     skipshape=False,
+    export_state=None,
 ):
     """returns an IfcShapeRepresentation object or None. forceclone can be False (does nothing),
     "store" or True (stores the object as clone base) or a Vector (creates a clone)"""
@@ -2063,6 +2111,15 @@ def getRepresentation(
     import Part
     import DraftGeomUtils
     import DraftVecUtils
+
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
+    ifcopenshell = state.ifcopenshell
+    clones = state.clones
+    sharedobjects = state.sharedobjects
+    profiledefs = state.profiledefs
+    surfstyles = state.surfstyles
+    shapedefs = state.shapedefs
 
     shapes = []
     placement = None
@@ -2137,7 +2194,7 @@ def getRepresentation(
                     for w in rdata[0]:
                         w.Placement = w.Placement.multiply(obj.getGlobalPlacement())
                         w.scale(preferences["SCALE_FACTOR"])
-                        cur = createCurve(ifcfile, w)
+                        cur = createCurve(ifcfile, w, export_state=state)
                         shape = ifcfile.createIfcSweptDiskSolid(cur, r)
                         shapes.append(shape)
                         solidType = "SweptSolid"
@@ -2183,14 +2240,14 @@ def getRepresentation(
                                 # Fix bug in Forum Discussion
                                 # https://forum.freecad.org/viewtopic.php?p=771954#p771954
                                 if not isinstance(pi, Part.Compound):
-                                    profile = getProfile(ifcfile, pi)
+                                    profile = getProfile(ifcfile, pi, export_state=state)
                                     if profile:
                                         profiledefs[pstr] = profile
                                         profiles = [profile]
                                 else:  # i.e. Part.Compound
                                     profiles = []
                                     for pif in pi.Faces:
-                                        profile = getProfile(ifcfile, pif)
+                                        profile = getProfile(ifcfile, pif, export_state=state)
                                         if profile:
                                             profiledefs[pstr] = profile
                                             profiles.append(profile)
@@ -2227,7 +2284,7 @@ def getRepresentation(
             profile, pl = ArchComponent.Component.rebase(obj, obj.Base.Shape)
             profile.scale(preferences["SCALE_FACTOR"])
             pl.Base = pl.Base.multiply(preferences["SCALE_FACTOR"])
-            profile = getProfile(ifcfile, profile)
+            profile = getProfile(ifcfile, profile, export_state=state)
             if profile:
                 profiledefs[pstr] = profile
             ev = FreeCAD.Vector(obj.Dir)
@@ -2536,7 +2593,7 @@ def getRepresentation(
         representation = [ifcfile.createIfcShapeRepresentation(context, "Body", solidType, shapes)]
         # additional representations?
         if Draft.getType(obj) in ["Wall", "Structure"]:
-            addrepr = createAxis(ifcfile, obj, preferences, forceclone)
+            addrepr = createAxis(ifcfile, obj, preferences, forceclone, export_state=state)
             if addrepr:
                 representation = representation + [addrepr]
         productdef = ifcfile.createIfcProductDefinitionShape(None, None, representation)
@@ -2650,7 +2707,7 @@ def getAxisContext(ifcfile):
     return nctx
 
 
-def createAxis(ifcfile, obj, preferences, delta=None):
+def createAxis(ifcfile, obj, preferences, delta=None, export_state=None):
     """Creates an axis for a given wall, if applicable"""
 
     shape = None
@@ -2663,7 +2720,12 @@ def createAxis(ifcfile, obj, preferences, delta=None):
         shape = obj.Base.Shape
     if shape:
         if shape.ShapeType in ["Wire", "Edge"]:
-            curve = createCurve(ifcfile, shape, preferences["SCALE_FACTOR"])
+            curve = createCurve(
+                ifcfile,
+                shape,
+                preferences["SCALE_FACTOR"],
+                export_state=export_state,
+            )
             if curve:
                 ctx = getAxisContext(ifcfile)
                 axis = ifcfile.createIfcShapeRepresentation(ctx, "Axis", "Curve2D", [curve])
@@ -2693,10 +2755,12 @@ def writeJson(filename, ifcfile):
     f.close()
 
 
-def create_annotation(anno, ifcfile, context, history, preferences):
+def create_annotation(anno, ifcfile, context, history, preferences, export_state=None):
     """Creates an annotation object"""
 
-    global curvestyles, ifcbin
+    state = export_state or _legacy_export_state()
+    ifcbin = state.ifcbin
+    curvestyles = state.curvestyles
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
@@ -2746,7 +2810,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
         ehc = []
         curves = []
         for w in sh.Wires:
-            curves.append(createCurve(ifcfile, w))
+            curves.append(createCurve(ifcfile, w, export_state=state))
             for e in w.Edges:
                 ehc.append(e.hashCode())
         if curves:
@@ -2754,7 +2818,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
         curves = []
         for e in sh.Edges:
             if e.hashCode not in ehc:
-                curves.append(createCurve(ifcfile, e))
+                curves.append(createCurve(ifcfile, e, export_state=state))
         if curves:
             reps.append(ifcfile.createIfcGeometricCurveSet(curves))
     elif anno.isDerivedFrom("App::Annotation"):
@@ -2794,7 +2858,7 @@ def create_annotation(anno, ifcfile, context, history, preferences):
             else:
                 sh = Part.makePolygon([vp.p1, vp.p2, vp.p3, vp.p4])
             sh.scale(preferences["SCALE_FACTOR"])  # to meters
-            curve = createCurve(ifcfile, sh)
+            curve = createCurve(ifcfile, sh, export_state=state)
             reps = [ifcfile.createIfcGeometricCurveSet([curve])]
             # Append text
             l = FreeCAD.Vector(vp.tbase).multiply(preferences["SCALE_FACTOR"])
