@@ -187,8 +187,8 @@ class Shape2DView(DraftObject):
         for edge in edges:
             for vert in verts:
                 try:
-                    dists = edge.distToShape(vert)
-                    if dists and (dists[0] <= MAXDIST):
+                    dist = edge.distToShape(vert)
+                    if dist and (dist[0] <= MAXDIST):
                         break
                 except RuntimeError:
                     print(
