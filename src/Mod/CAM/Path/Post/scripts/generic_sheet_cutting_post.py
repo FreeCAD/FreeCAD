@@ -290,8 +290,8 @@ class GenericSheetCutting(PostProcessor):
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
                     # Reset state for each operation
-                    new_commands = self._reset_cutter_state(item)
-
+                    self._clear_cutter_state()
+                    new_commands = []
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch on commands, inject G4 pause
@@ -335,7 +335,7 @@ class GenericSheetCutting(PostProcessor):
     def _inject_torch_control(self, postables):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
         props = self._machine.postprocessor_properties
-        if props.get("cutter_control") == "Z_Control":
+        if props.get("CUTTER_CONTROL") == "Z_Control":
             for section_name, sublist in postables:
                 for item in sublist:
                     if hasattr(item, "Path") and item.Path:
@@ -388,7 +388,7 @@ class GenericSheetCutting(PostProcessor):
                                 new_commands.append(cmd)
                         # Replace Path with modified command list
                         item.Path = Path.Path(new_commands)
-        elif props.get("cutter_control") == "G0_Control":
+        elif props.get("CUTTER_CONTROL") == "G0_Control":
             for section_name, sublist in postables:
                 for item in sublist:
                     if hasattr(item, "Path") and item.Path:
