@@ -99,7 +99,6 @@ find_package(ICU REQUIRED COMPONENTS uc i18n)
 find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
-    SetupPCL()
     SetupPybind11()
     SetupXercesC()
     find_package(ZLIB REQUIRED)
@@ -123,6 +122,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     # This file is included directly due to some cMake macros that are defined within.
     # If these macro definitions are embedded within another macro, it causes problems.
     include(cMake/FreeCAD_Helpers/SetupQt.cmake)
+    SetupPCL()
     SetupFreetype()
 
     if(BUILD_GUI)
