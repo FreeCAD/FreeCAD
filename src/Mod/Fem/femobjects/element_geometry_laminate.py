@@ -73,5 +73,10 @@ class ElementGeometryLaminate(base_femelement.BaseFemElement):
             "Dictionary of elements and layups resulting from filament winding analysis",
         )
 
-        obj.Windall = {"elements": [], "orientationlists": [], "thicknesslists": []}
+        obj.Windall = {
+            "elements": [],
+            "orientationlists": [],
+            "thicknesslists": [],
+            "materialslists": [],
+        }
         obj.Orientation = Vector(1, 0, 0)

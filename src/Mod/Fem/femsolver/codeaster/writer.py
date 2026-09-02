@@ -139,10 +139,11 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         commfile.write(commtxt)
         commfile.close()
         # Write updated .geo file into Gmsh folder and write .med file into SolverCodeAster folder
-        self.tools.write_part_file()
-        self.tools.write_geo()
-        self.tools.get_gmsh_command()
-        self.tools.run_gmsh_with_geo()
+        if self.solver_obj.Remesh:
+            self.tools.write_part_file()
+            self.tools.write_geo()
+            self.tools.get_gmsh_command()
+            self.tools.run_gmsh_with_geo()
         exfile = open(self.export_file, "w")
         exfile.write("# Code Aster export file written from FreeCAD\n")
         exfile.write("P actions make_etude\n")

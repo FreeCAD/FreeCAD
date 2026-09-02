@@ -37,8 +37,17 @@ class Layup:
     orientations: list of the ply orientations
     """
 
-    def __init__(self, name, groups=[], parentgroup=None, ninit=0,
-                 nfin=0, matnames=[], thicknesses=[], orientations=[]):
+    def __init__(
+        self,
+        name,
+        groups=[],
+        parentgroup=None,
+        ninit=0,
+        nfin=0,
+        matnames=[],
+        thicknesses=[],
+        orientations=[],
+    ):
         self.name = name
         self.groups = groups
         self.parentgroup = parentgroup

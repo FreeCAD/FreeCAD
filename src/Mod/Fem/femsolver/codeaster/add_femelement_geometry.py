@@ -195,15 +195,13 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     layups = [baselayup]
     ori_vec = shelllam_obj.Orientation
     commtxt += add_layup(baselayup)
-    for e, t, o in zip(
+    for e, t, o, mn in zip(
         shelllam_obj.Windall["elements"],
         shelllam_obj.Windall["thicknesslists"],
         shelllam_obj.Windall["orientationlists"],
+        shelllam_obj.Windall["materialslists"],
     ):
         o = angle_correcter(o)
-        mn = [matnames[0]]
-        for i in range(1, len(t)):
-            mn.append(matnames[1])
         fi = None
         for i in range(len(faces)):
             if e in faces[i]:

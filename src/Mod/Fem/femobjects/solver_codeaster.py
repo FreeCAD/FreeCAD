@@ -68,6 +68,16 @@ class SolverCodeAster(base_fempythonobject.BaseFemPythonObject):
             )
         )
 
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Remesh",
+                group="Solver",
+                doc="Creates a new .med file if True, if False uses existing one",
+                value=True,
+            )
+        )
+
         return prop
 
     def onDocumentRestored(self, obj):
