@@ -167,24 +167,6 @@ private:
     TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
 };
 
-class FaceEqualitySplitter
-{
-public:
-    FaceEqualitySplitter() = default;
-    void split(const FaceVectorType& faces, FaceTypedBase* object);
-    std::size_t getGroupCount() const
-    {
-        return equalityVector.size();
-    }
-    const FaceVectorType& getGroup(const std::size_t& index) const
-    {
-        return equalityVector[index];
-    }
-
-private:
-    std::vector<FaceVectorType> equalityVector;
-};
-
 class FaceUniter
 {
 private:
