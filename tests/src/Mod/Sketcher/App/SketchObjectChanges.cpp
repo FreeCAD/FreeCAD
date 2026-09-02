@@ -311,9 +311,7 @@ TEST_F(SketchObjectTest, testSplitSolvesIfNoRecompute)
 
     // Register callback
     bool solverUpdated = false;
-    auto connection = getObject()->signalSolverUpdate.connect([&]() {
-        solverUpdated = true;
-    });
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Force recomputes
     getObject()->noRecomputes = true;
@@ -932,9 +930,7 @@ TEST_F(SketchObjectTest, testTrimSolvesIfNoRecompute)
 
     // Register callback
     bool solverUpdated = false;
-    auto connection = getObject()->signalSolverUpdate.connect([&]() {
-        solverUpdated = true;
-    });
+    auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Force recomputes
     getObject()->noRecomputes = true;
