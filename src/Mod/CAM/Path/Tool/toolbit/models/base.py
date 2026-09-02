@@ -1016,7 +1016,7 @@ class ToolBit(Asset, ABC):
                     f"(type {type(value).__name__ if value is not None else 'None'}, value {value})"
                 )
             try:
-                serialized_value = to_json(value)
+                serialized_value = to_json(value, units=getattr(self.obj, "Units", None))
                 attrs["parameter"][name] = serialized_value
             except (TypeError, ValueError) as e:
                 Path.Log.warning(
@@ -1069,7 +1069,7 @@ class ToolBit(Asset, ABC):
             "id": self._tool_bit_shape.get_id(),
             "name": self._tool_bit_shape.name,
             "parameters": {
-                name: to_json(getattr(self.obj, name, None))
+                name: to_json(getattr(self.obj, name, None), units=getattr(self.obj, "Units", None))
                 for name in self._tool_bit_shape.get_parameters()
                 if not isinstance(getattr(self.obj, name, None), FreeCAD.DocumentObject)
             },
