@@ -120,6 +120,27 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
+    App::DocumentObjectExecReturn* executeFeatures(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+    App::DocumentObjectExecReturn* executeWholeBody(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+    App::DocumentObjectExecReturn* executeFeatureResult(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+
+    std::vector<TopoShape> getTransformedCompShape(
+        const std::vector<gp_Trsf>& transformations,
+        const Part::TopoShape& supportShape,
+        const Part::TopoShape& origShape
+    );
 };
 
 }  // namespace PartDesign
