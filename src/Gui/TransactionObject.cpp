@@ -36,7 +36,7 @@ TransactionViewProvider::TransactionViewProvider() = default;
 
 TransactionViewProvider::~TransactionViewProvider() = default;
 
-void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObject* pcObj)
+void TransactionViewProvider::applyNew(App::Document& Doc, App::PropertyContainer* pcObj)
 {
     if (status == New) {
         Gui::Document* doc = Application::Instance->getDocument(&Doc);
@@ -46,7 +46,7 @@ void TransactionViewProvider::applyNew(App::Document& Doc, App::TransactionalObj
     }
 }
 
-void TransactionViewProvider::applyDel(App::Document& Doc, App::TransactionalObject* pcObj)
+void TransactionViewProvider::applyDel(App::Document& Doc, App::PropertyContainer* pcObj)
 {
     // nothing to do here
     Q_UNUSED(Doc);

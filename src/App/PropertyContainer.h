@@ -532,9 +532,7 @@ public:
    * @return `true` if the property was renamed; `false` otherwise.
    * @throw Base::NameError If the new name is invalid or already exists.
    */
-  virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop, name);
-  }
+  virtual bool renameDynamicProperty(Property *prop, const char *name);
 
   /**
    * @brief Remove a dynamic property.
@@ -542,9 +540,7 @@ public:
    * @param[in] name The name of the property to remove.
    * @return `true` if the property was removed; `false` otherwise.
    */
-  virtual bool removeDynamicProperty(const char* name) {
-      return dynamicProps.removeDynamicProperty(name);
-  }
+  virtual bool removeDynamicProperty(const char* name);
 
   /**
    * @brief Get the names of all dynamic properties.
@@ -727,6 +723,10 @@ public:
   PropertyContainer& operator = (const PropertyContainer&) = delete;
 
 protected:
+  virtual void onDynamicPropertyAdded([[maybe_unused]] const Property* prop) {}
+  virtual void onDynamicPropertyRemoving([[maybe_unused]] const Property* prop) {}
+  virtual void onDynamicPropertyRenamed([[maybe_unused]] const Property* prop,
+                                        [[maybe_unused]] const char* oldName) {}
 
   /// The container for dynamic properties.
   DynamicProperty dynamicProps;
