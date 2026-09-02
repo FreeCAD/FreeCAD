@@ -3,6 +3,8 @@
 #include <TColgp_Array2OfPnt.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
+#include <App/Application.h>
+#include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include "Mod/Part/App/TopoShapeMapper.h"
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -10,8 +12,10 @@
 #include "PartTestHelpers.h"
 
 #include <boost/core/ignore_unused.hpp>
+#include <Standard_Version.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
@@ -20,6 +24,9 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -30,6 +37,8 @@
 #include <ShapeBuild_ReShape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Wire.hxx>
 #include <TColgp_Array1OfPnt.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
@@ -1584,6 +1593,67 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
         }
     ));
 }
+
+// Regression test for issue #30856. A shape that BRepCheck_Analyzer rejects is not necessarily a
+// shape the boolean algorithms cannot handle: this solid comes from a document that recomputed
+// correctly for years, and BRepCheck reports (and has always reported) BRepCheck_UnorientableShape
+// for it. Refusing to run the operation on that basis broke existing documents, so the operation
+// has to stay available for input that merely fails the analyzer.
+TEST_F(TopoShapeExpansionTest, makeElementBooleanAcceptsShapeRejectedByAnalyzer)  // NOLINT
+{
+    // Arrange
+    TopoDS_Shape unorientableShape;
+    BRep_Builder builder;
+    std::string path = App::Application::getHomePath() + "/tests/brepfiles/unorientableSolid.brep";
+    ASSERT_TRUE(BRepTools::Read(unorientableShape, path.c_str(), builder));
+    TopoShape unorientable {unorientableShape, 1L};
+    ASSERT_FALSE(unorientable.isValid());
+
+    // The copy is moved clear of the original so the fused volume is the sum of the two.
+    auto translation {gp_Trsf()};
+    translation.SetTranslation(gp_Vec(gp_XYZ(1000.0, 0.0, 0.0)));
+    TopoShape moved {unorientableShape.Moved(TopLoc_Location(translation)), 2L};
+
+    // Act
+    TopoShape result;
+    ASSERT_NO_THROW(result.makeElementBoolean(Part::OpCodes::Fuse, {unorientable, moved}));  // NOLINT
+
+    // Assert
+    EXPECT_FALSE(result.isNull());
+    EXPECT_NEAR(getVolume(result.getShape()), 2 * 87432.002, 0.1);
+}
+
+#if OCC_VERSION_HEX < 0x070903
+// A degenerate edge has no 3D curve, so the parametric curve is the *only* geometry it has.
+// Before OCCT 7.9.3 the boolean algorithms loaded that curve without testing the handle, which
+// crashed. An input like this must be rejected.
+TEST_F(TopoShapeExpansionTest, makeElementBooleanRejectsDegenerateEdgeWithoutParametricCurve)  // NOLINT
+{
+    // Arrange
+    BRep_Builder builder;
+    TopoDS_Edge degenerateEdge;
+    builder.MakeEdge(degenerateEdge);
+    builder.Degenerated(degenerateEdge, Standard_True);
+    TopoDS_Wire wire;
+    builder.MakeWire(wire);
+    builder.Add(wire, degenerateEdge);
+    gp_Pln plane {gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)};
+    TopoDS_Face face = BRepBuilderAPI_MakeFace(plane, 0.0, 1.0, 0.0, 1.0).Face();
+    builder.Add(face, wire);
+    ASSERT_TRUE(BRep_Tool::Degenerated(degenerateEdge));
+    Standard_Real first {};
+    Standard_Real last {};
+    ASSERT_TRUE(BRep_Tool::CurveOnSurface(degenerateEdge, face, first, last).IsNull());
+
+    TopoShape malformed {face, 1L};
+    TopoShape cube {BRepPrimAPI_MakeBox(1.0, 1.0, 1.0).Shape(), 2L};
+    std::vector<TopoShape> inputs {cube, malformed};
+
+    // Act and Assert
+    TopoShape result;
+    EXPECT_THROW(result.makeElementBoolean(Part::OpCodes::Fuse, inputs), Base::CADKernelError);
+}
+#endif
 
 TEST_F(TopoShapeExpansionTest, makeElementDraft)
 {  // Draft as in Draft Angle or sloped sides for removing shapes from a mold.
