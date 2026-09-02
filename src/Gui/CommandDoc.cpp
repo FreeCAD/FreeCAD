@@ -1959,7 +1959,7 @@ void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::DocumentObject::getClassTypeId()
     );
     auto plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
@@ -1988,9 +1988,7 @@ void StdCmdPlacement::activated(int iMsg)
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
+        App::DocumentObject::getClassTypeId()
     );
     return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
                  auto* prop = obj->getPlacementProperty();
@@ -2021,9 +2019,7 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->resetEdit();
     }
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
+        App::DocumentObject::getClassTypeId()
     );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
@@ -2036,9 +2032,7 @@ void StdCmdTransformManip::activated(int iMsg)
 bool StdCmdTransformManip::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
+        App::DocumentObject::getClassTypeId()
     );
     return (
         sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
@@ -2067,7 +2061,7 @@ void StdCmdAlignment::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::DocumentObject::getClassTypeId()
     );
     ManualAlignment* align = ManualAlignment::instance();
     QObject::connect(align, &ManualAlignment::emitCanceled, align, &QObject::deleteLater);
