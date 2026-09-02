@@ -46,11 +46,9 @@
 #include "FeatureAddSub.h"
 #include "FeatureLinearPattern.h"
 #include "FeatureMirrored.h"
-#include "FeatureMultiTransform.h"
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
-#include "Mod/Part/App/TopoShapeOpCode.h"
 
 using namespace PartDesign;
 
@@ -299,7 +297,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     };
 
     switch (mode) {
-        case Mode::FeaturesAsShape:
+        case Mode::FeatureResult:
             // NOTE: this shows the same as Mode::Feature because to show a more accurate
             // representation, we'd need to actually compute the boolean operations. Maybe a better
             // idea would be to make each instance of the features a different color to show that
@@ -342,7 +340,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     std::vector<DocumentObject*> originals = getOriginals();
 
-    if ((mode == Mode::Features || mode == Mode::FeaturesAsShape) && originals.empty()) {
+    if ((mode == Mode::Features || mode == Mode::FeatureResult) && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
 
@@ -473,7 +471,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         }
 
-        case Mode::FeaturesAsShape: {
+        case Mode::FeatureResult: {
             // create a separate shape, apply all the features onto it, then transform it and fuse
             // it to the supportShape
             Part::TopoShape bodyShape;
