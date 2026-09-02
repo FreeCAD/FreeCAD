@@ -1791,15 +1791,15 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         return index;
     };
 
-    const auto setHitRectFromVerts = [&](float padding) {
+    const auto setHitRectFromVerts = [&verts, &hitRect](float padding) {
         if (verts.empty()) {
             return;
         }
 
-        float left = verts.front()[0];
-        float top = verts.front()[1];
-        float right = left;
-        float bottom = top;
+        float left = std::numeric_limits<float>::max();
+        float top = std::numeric_limits<float>::max();
+        float right = std::numeric_limits<float>::lowest();
+        float bottom = std::numeric_limits<float>::lowest();
 
         for (const auto& vertex : verts) {
             left = std::min(left, vertex[0]);
@@ -1808,13 +1808,11 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             bottom = std::max(bottom, vertex[1]);
         }
 
-        hitRect = {
-            true,
-            std::max(0.0F, left - padding),
-            std::max(0.0F, top - padding),
-            std::min(1.0F, right + padding),
-            std::min(1.0F, bottom + padding)
-        };
+        hitRect = {.active = true,
+                   .left = std::max(0.0F, left - padding),
+                   .top = std::max(0.0F, top - padding),
+                   .right = std::min(1.0F, right + padding),
+                   .bottom = std::min(1.0F, bottom + padding)};
     };
 
     switch (pickId) {
