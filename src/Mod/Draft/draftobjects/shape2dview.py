@@ -191,7 +191,9 @@ class Shape2DView(DraftObject):
                     if dists and (dists[0] <= MAXDIST):
                         break
                 except RuntimeError:
-                    print("FIXME: shape2dview: distance unavailable for edge", edge, "in", obj.Label)
+                    print(
+                        "FIXME: shape2dview: distance unavailable for edge", edge, "in", obj.Label
+                    )
             else:
                 nedges.append(edge)
         return nedges
