@@ -66,7 +66,7 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include "ViewProvider.h"
+#include "ViewProviderDragger.h"
 #include "WaitCursor.h"
 
 FC_LOG_LEVEL_INIT("Command", false)
@@ -2020,12 +2020,8 @@ void StdCmdTransformManip::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit()) {
         getActiveGuiDocument()->resetEdit();
     }
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
-    Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
+    auto sel = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+    auto vp = Application::Instance->getViewProvider<ViewProviderDragger>(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
     // #0000477: Proper interface for edit modes of view provider
     if (vp) {
@@ -2035,15 +2031,17 @@ void StdCmdTransformManip::activated(int iMsg)
 
 bool StdCmdTransformManip::isActive()
 {
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId(),
-        nullptr,
-        ResolveMode::FollowLink
-    );
-    return (
-        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
-        && !sel.front()->getPlacementProperty()->isReadOnly()
-    );
+    auto sel = Gui::Selection().getObjectsOfType<App::DocumentObject>();
+    if (sel.size() != 1 || sel.front()->isFreezed()) {
+        return false;
+    }
+
+    auto placement = sel.front()->getPlacementProperty();
+    if (!placement || placement->isReadOnly()) {
+        return false;
+    }
+
+    return Application::Instance->getViewProvider<ViewProviderDragger>(sel.front());
 }
 
 //===========================================================================
