@@ -1,31 +1,30 @@
 """Shared NativeIFC availability helpers."""
 
-import importlib.util
-
 import FreeCAD
+
+from . import backend
 
 translate = FreeCAD.Qt.translate
 
-_ifcopenshell_state = {"available": None, "reported_missing": False}
+_ifcopenshell_state = {"reported_missing": False}
 
 
 def invalidate_ifcopenshell_cache():
     """Clears the cached ifcopenshell availability state."""
 
-    _ifcopenshell_state["available"] = None
+    backend.invalidate()
     _ifcopenshell_state["reported_missing"] = False
 
 
 def has_ifcopenshell(report=False):
     """Returns True when ifcopenshell is importable in this runtime."""
 
-    if _ifcopenshell_state["available"] is None:
-        _ifcopenshell_state["available"] = importlib.util.find_spec("ifcopenshell") is not None
+    available = backend.get_status().available
 
-    if report and not _ifcopenshell_state["available"]:
+    if report and not available:
         report_missing_ifcopenshell()
 
-    return _ifcopenshell_state["available"]
+    return available
 
 
 def report_missing_ifcopenshell():

@@ -205,6 +205,7 @@ SET(BIM_templates
 )
 
 SET(nativeifc_SRCS
+    nativeifc/backend.py
     nativeifc/ifc_commands.py
     nativeifc/ifc_diff.py
     nativeifc/ifc_generator.py
@@ -229,6 +230,7 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
+    bimtests/TestIfcOpenShellBackend.py
     bimtests/TestArchAxis.py
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
