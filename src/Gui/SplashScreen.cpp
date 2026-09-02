@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
+#include <QFontDatabase>
+#include <QFontMetricsF>
 #include <QMutex>
 #include <QPainter>
 #include <QRegularExpression>
@@ -191,6 +192,7 @@ static void renderDevBuildWarning(
     // Construct the lines of text and figure out how much space they need
     const auto devWarningLine1 = QObject::tr("WARNING: This is a development version.");
     const auto devWarningLine2 = QObject::tr("Do not use it in a production environment.");
+    const QString devWarning = QStringLiteral("%1\n%2").arg(devWarningLine1, devWarningLine2);
     QFontMetrics fontMetrics(painter.font());  // Try to use the existing font
     int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M"));  // Arbitrary
     int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
@@ -202,10 +204,15 @@ static void renderDevBuildWarning(
         // will exceed the width of the Splashscreen graphic. Resize down so that it fits, no matter
         // how long the text strings are.
         float reductionFactor = static_cast<float>(maxSize.width()) / static_cast<float>(boxWidth);
-        int newFontSize = static_cast<int>(painter.font().pointSize() * reductionFactor);
-        padding *= reductionFactor;
         QFont newFont = painter.font();
-        newFont.setPointSize(newFontSize);
+        if (newFont.pixelSize() > 0) {
+            const int newFontSize = static_cast<int>(newFont.pixelSize() * reductionFactor);
+            newFont.setPixelSize(std::max(1, newFontSize));
+        }
+        else {
+            newFont.setPointSizeF(newFont.pointSizeF() * reductionFactor);
+        }
+        padding = static_cast<int>(padding * reductionFactor);
         painter.setFont(newFont);
         lineHeight = painter.fontMetrics().lineSpacing();
         boxWidth = maxSize.width();
@@ -213,11 +220,40 @@ static void renderDevBuildWarning(
     constexpr float lineExpansionFactor(2.3F);
     int boxHeight = static_cast<int>(lineHeight * lineExpansionFactor);
 
-    // Draw the background rectangle and the text
+    // Draw the background rectangle and center the text within it
     painter.setPen(color);
-    painter.drawRect(startPosition.x(), startPosition.y(), boxWidth, boxHeight);
-    painter.drawText(startPosition.x() + padding, startPosition.y() + lineHeight, devWarningLine1);
-    painter.drawText(startPosition.x() + padding, startPosition.y() + 2 * lineHeight, devWarningLine2);
+    const QRect box(startPosition, QSize(boxWidth, boxHeight));
+    painter.drawRect(box);
+    painter.drawText(box, Qt::AlignCenter, devWarning);
+}
+
+static QPixmap defaultSplashImage()
+{
+    constexpr QSizeF splashSize(480.0, 220.0);
+    return BitmapFactory().pixmapFromSvg(":/icons/freecadsplash.svg", splashSize);
+}
+
+static QFont defaultSplashFont(const QFont& fallback)
+{
+    static const QString fontFamily = []() {
+        const int fontId = QFontDatabase::addApplicationFont(
+            QStringLiteral(":/fonts/URWGothic-Demi.ttf")
+        );
+        if (fontId < 0) {
+            Base::Console().warning("Failed to load the splash screen font\n");
+            return QString();
+        }
+
+        const QStringList families = QFontDatabase::applicationFontFamilies(fontId);
+        return families.isEmpty() ? QString() : families.front();
+    }();
+
+    QFont font(fallback);
+    if (!fontFamily.isEmpty()) {
+        font.setFamily(fontFamily);
+        font.setStyleName(QStringLiteral("Demi"));
+    }
+    return font;
 }
 
 }  // namespace Gui
@@ -303,6 +339,7 @@ QPixmap SplashScreen::splashImage()
 {
     // search in the UserAppData dir as very first
     QPixmap splash_image;
+    bool usingDefaultSplash = false;
     QFileInfo fi(QStringLiteral("images:splash_image.png"));
     if (fi.isFile() && fi.exists()) {
         splash_image.load(fi.filePath(), "PNG");
@@ -321,28 +358,10 @@ QPixmap SplashScreen::splashImage()
     }
 
     // now try the icon paths
-    float pixelRatio(1.0);
     if (splash_image.isNull()) {
-        // determine the count of splashes
-        QStringList pixmaps = Gui::BitmapFactory().findIconFiles().filter(
-            QString::fromStdString(splash_path)
-        );
-        // divide by 2 since there's two sets (normal and 2x)
-        // minus 1 to ignore the default splash that isn't numbered
-        int splash_count = pixmaps.count() / 2 - 1;
-
-        // set a random splash path
-        if (splash_count > 0) {
-            int random = rand() % splash_count;
-            splash_path += std::to_string(random);
-        }
-
-        if (qApp->devicePixelRatio() > 1.0) {
-            // For HiDPI screens, we have a double-resolution version of the splash image
-            splash_path += "_2x";
-            splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
-            splash_image.setDevicePixelRatio(2.0);
-            pixelRatio = 2.0;
+        if (splash_path == "freecadsplash") {
+            splash_image = defaultSplashImage();
+            usingDefaultSplash = !splash_image.isNull();
         }
         else {
             splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
@@ -392,11 +411,66 @@ QPixmap SplashScreen::splashImage()
 
         QPainter painter;
         painter.begin(&splash_image);
+        bool customFontApplied = false;
         if (!fontFamily.isEmpty()) {
             QFont font = painter.font();
             if (font.fromString(fontFamily)) {
                 painter.setFont(font);
+                customFontApplied = true;
             }
+        }
+
+        QColor color(QString::fromStdString(tc->second));
+        QColor warningColor(QString::fromStdString(wc->second));
+        if (usingDefaultSplash && title == QStringLiteral("FreeCAD") && color.isValid()) {
+            QFont numberFont = painter.font();
+            if (!customFontApplied) {
+                numberFont = defaultSplashFont(numberFont);
+            }
+            numberFont.setPixelSize(20);
+            QFont labelFont(numberFont);
+            labelFont.setPixelSize(16);
+            painter.setPen(color);
+
+            const QString versionLabel = QStringLiteral("version");
+            const QFontMetricsF numberMetrics(numberFont);
+            const QFontMetricsF labelMetrics(labelFont);
+            const QRectF numberBounds = numberMetrics.boundingRect(version);
+            const QRectF labelBounds = labelMetrics.boundingRect(versionLabel);
+            // Match the version line to the wordmark geometry in freecadsplash.svg.
+            constexpr qreal versionRight = 418;
+            constexpr qreal versionBaseline = 158;
+            constexpr qreal versionSpacing = 8.0;
+            const qreal numberPosition = versionRight - numberBounds.right();
+            painter.setFont(numberFont);
+            painter.drawText(QPointF(numberPosition, versionBaseline), version);
+            painter.setFont(labelFont);
+            painter.drawText(
+                QPointF(
+                    numberPosition + numberBounds.left() - versionSpacing - labelBounds.right(),
+                    versionBaseline
+                ),
+                versionLabel
+            );
+
+            if (suffix == QStringLiteral("dev") && warningColor.isValid()) {
+                numberFont.setPixelSize(10);
+                numberFont.setHintingPreference(QFont::PreferVerticalHinting);
+                painter.setFont(numberFont);
+                const QFontMetrics warningMetrics(numberFont);
+                const int lineHeight = warningMetrics.lineSpacing();
+                constexpr int padding = 12;
+                const qreal pixelRatio = splash_image.devicePixelRatio();
+                const int width = qRound(splash_image.width() / pixelRatio);
+                const int height = qRound(splash_image.height() / pixelRatio);
+                const int boxHeight = static_cast<int>(lineHeight * 2.3F);
+                const QPoint startPosition(padding, height - boxHeight - padding);
+                const QSize maxSize(width - 2 * padding, boxHeight);
+                renderDevBuildWarning(painter, startPosition, maxSize, warningColor);
+            }
+
+            painter.end();
+            return splash_image;
         }
 
         QFont fontExe = painter.font();
@@ -426,7 +500,6 @@ QPixmap SplashScreen::splashImage()
             y = h - 20;
         }
 
-        QColor color(QString::fromStdString(tc->second));
         if (color.isValid()) {
             painter.setPen(color);
             painter.setFont(fontExe);
@@ -436,14 +509,15 @@ QPixmap SplashScreen::splashImage()
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 235), y - 7, version);
-            QColor warningColor(QString::fromStdString(wc->second));
-            if (suffix == QLatin1String("dev") && warningColor.isValid()) {
+            if (suffix == QStringLiteral("dev") && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
+                fontVer.setHintingPreference(QFont::PreferVerticalHinting);
                 painter.setFont(fontVer);
-                const int lineHeight = metricVer.lineSpacing();
+                const QFontMetrics warningMetrics(fontVer);
+                const int lineHeight = warningMetrics.lineSpacing();
                 const int padding {45};  // Distance from the edge of the graphic's bounding box
                 QPoint startPosition(padding, y + lineHeight * 2);
-                QSize maxSize(w / pixelRatio - 2 * padding, lineHeight * 3);
+                QSize maxSize(w / splash_image.devicePixelRatio() - 2 * padding, lineHeight * 3);
                 renderDevBuildWarning(painter, startPosition, maxSize, warningColor);
             }
             painter.end();
