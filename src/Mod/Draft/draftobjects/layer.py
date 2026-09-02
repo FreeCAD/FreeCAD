@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Layer object."""
+
 ## @package layer
 # \ingroup draftobjects
 # \brief Provides the object code for the Layer object.

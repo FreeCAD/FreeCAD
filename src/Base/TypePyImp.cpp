@@ -219,7 +219,7 @@ PyObject* TypePy::createInstance(PyObject* args)
         return nullptr;
     }
 
-    Py::String name(getBaseTypePtr()->getName());
+    Py::String name = toPyString(getBaseTypePtr()->getName());
     Py::TupleN tuple(name);
 
     return createInstanceByName(tuple.ptr());

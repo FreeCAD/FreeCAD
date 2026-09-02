@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 GUI framework and application for use with Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
@@ -34,7 +33,6 @@ from tkinter import messagebox as tkMessageBox
 import traceback
 
 import string
-
 
 ##############################################################################
 # GUI framework classes
@@ -114,6 +112,10 @@ class BaseGUITestRunner:
         "Override to indicate that a test has just errored"
         pass
 
+    def notifySubTest(self, test, subtest, err):
+        "Override to indicate that a subtest has just finished (it may have failed or errored)"
+        pass
+
     def notifyTestStarted(self, test):
         "Override to indicate that a test is about to run"
         pass
@@ -140,6 +142,10 @@ class GUITestResult(unittest.TestResult):
     def addFailure(self, test, err):
         unittest.TestResult.addFailure(self, test, err)
         self.callback.notifyTestFailed(test, err)
+
+    def addSubTest(self, test, subtest, err):
+        unittest.TestResult.addSubTest(self, test, subtest, err)
+        self.callback.notifySubTest(test, subtest, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
@@ -317,6 +323,17 @@ class TkTestRunner(BaseGUITestRunner):
         self.errorCountVar.set(1 + self.errorCountVar.get())
         self.errorListbox.insert(tk.END, "Error: %s" % test)
         self.errorInfo.append((test, err))
+
+    def notifySubTest(self, test, subtest, err):
+        """Called when a subtest has finished. If it failed or errored, add it to the list of errors."""
+        if err is not None:
+            self.errorInfo.append((subtest, err))
+            if isinstance(err[1], AssertionError):
+                self.failCountVar.set(1 + self.failCountVar.get())
+                self.errorListbox.insert(tk.END, "Failure: %s" % subtest)
+            else:
+                self.errorCountVar.set(1 + self.errorCountVar.get())
+                self.errorListbox.insert(tk.END, "Error: %s" % subtest)
 
     def notifyTestFinished(self, test):
         self.remainingCountVar.set(self.remainingCountVar.get() - 1)

@@ -1,32 +1,29 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.PocketBase as PathPocketBase
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -37,6 +34,7 @@ math = LazyLoader("math", globals(), "math")
 PathUtils = LazyLoader("PathScripts.PathUtils", globals(), "PathScripts.PathUtils")
 FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 
+translate = FreeCAD.Qt.translate
 
 __title__ = "CAM Pocket Shape Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -55,103 +53,20 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     """Proxy object for Pocket operation."""
 
     def areaOpFeatures(self, obj):
-        return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
-
-    def removeHoles(self, solid, face):
-        """removeHoles(solid, face) ... Remove hole wires from a face, keeping outer wire and boss wires.
-
-        Uses a cross-section algorithm: sections the solid slightly above the face level.
-        Wires that appear in the section are bosses (material above).
-        Wires that don't appear are holes (voids).
-
-        Args:
-            solid: The parent solid object
-            face: The face to process
-
-        Returns:
-            New face with outer wire and boss wires only
-        """
-        outer_wire = face.OuterWire
-        candidate_wires = [w for w in face.Wires if not w.isSame(outer_wire)]
-
-        # Adaptive tolerance based on face size
-        adaptive_tolerance = max(1e-6, min(1e-2, face.BoundBox.DiagonalLength * 1e-5))
-        Path.Log.debug(
-            f"removeHoles: Using adaptive tolerance {adaptive_tolerance} (face diagonal: {face.BoundBox.DiagonalLength})"
+        return (
+            super(self.__class__, self).areaOpFeatures(obj)
+            | PathOp.FeatureLocations
+            | PathOp.FeatureBaseEdges
         )
 
-        for i, w in enumerate(candidate_wires):
-            Path.Log.debug(f"  Candidate {i}: Length={w.Length}")
-
-        if not candidate_wires:
-            return face
-
-        boss_wires = []
-
-        try:
-            # Create cutting plane from outer wire, offset above face by adaptive_tolerance
-            cutting_plane = Part.Face(outer_wire)
-            cutting_plane.translate(FreeCAD.Vector(0, 0, adaptive_tolerance))
-
-            # Section the solid
-            section = solid.Shape.section(cutting_plane)
-
-            if hasattr(section, "Edges") and section.Edges:
-                # Translate section edges back to face level
-                translated_edges = []
-                for edge in section.Edges:
-                    translated_edge = edge.copy()
-                    translated_edge.translate(FreeCAD.Vector(0, 0, -adaptive_tolerance))
-                    translated_edges.append(translated_edge)
-
-                # Build closed wires from edges
-                edge_groups = Part.sortEdges(translated_edges)
-                all_section_wires = []
-
-                for edge_list in edge_groups:
-                    try:
-                        wire = Part.Wire(edge_list)
-                        if wire.isClosed():
-                            all_section_wires.append(wire)
-                    except Exception:
-                        # ignore any wires that can't be built
-                        pass
-
-                Path.Log.debug(f"removeHoles: Section found {len(all_section_wires)} wires")
-                for i, w in enumerate(all_section_wires):
-                    Path.Log.debug(f"  Section wire {i}: Length={w.Length}")
-
-                # Filter out outer wire, keep remaining as boss wires
-                for wire in all_section_wires:
-                    if not wire.isSame(outer_wire):
-                        length_diff = abs(wire.Length - outer_wire.Length)
-                        if length_diff > adaptive_tolerance:
-                            boss_wires.append(wire)
-                            Path.Log.debug(
-                                f"  Preserving boss wire: Length={wire.Length}, diff={length_diff}"
-                            )
-                        else:
-                            Path.Log.debug(
-                                f"  Discarding wire (too similar to outer): Length={wire.Length}, diff={length_diff}"
-                            )
-
-        except Exception as e:
-            Path.Log.error("removeHoles: Section algorithm failed: {}".format(e))
-            boss_wires = candidate_wires
-            Path.Log.debug("removeHoles: Section failed, preserving all candidate wires as bosses")
-
-        Path.Log.debug(f"removeHoles: Preserving {len(boss_wires)} boss wires")
-        for i, w in enumerate(boss_wires):
-            Path.Log.debug(f"  Preserved boss {i}: Length={w.Length}")
-
-        removed_wires = [w for w in candidate_wires if not any(w.isSame(bw) for bw in boss_wires)]
-        Path.Log.debug(f"removeHoles: Removing {len(removed_wires)} hole wires")
-        for i, w in enumerate(removed_wires):
-            Path.Log.debug(f"  Removed hole {i}: Length={w.Length}")
-
-        # Construct new face with outer wire and boss wires
-        wire_compound = Part.makeCompound([outer_wire] + boss_wires)
-        new_face = Part.makeFace(wire_compound, "Part::FaceMakerBullseye")
+    def removeHoles(self, solids, face):
+        """Create face from outer wire and remove collisions with solids"""
+        outer_wire = face.OuterWire
+        outer_face = Part.Face(outer_wire)
+        translate_dist = face.BoundBox.ZLength + self.tol
+        outer_face.translate(FreeCAD.Vector(0, 0, translate_dist))
+        new_face = outer_face.cut(solids)
+        new_face.translate(FreeCAD.Vector(0, 0, -translate_dist))
 
         return new_face
 
@@ -166,6 +81,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             )
 
         FeatureExtensions.initialize_properties(obj)
+        if not hasattr(obj, "CloseOpenPaths"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "CloseOpenPaths",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Close open area formed by edges or vertical faces by straight line.",
+                ),
+            )
 
     def areaOpOnDocumentRestored(self, obj):
         """opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist."""
@@ -178,18 +103,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.ClearingPattern = "Offset"
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
+        obj.setEditorMode("Angle", 2)  # hide for default Offset pattern
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
         Path.Log.track()
-        self.removalshapes = []
-
         # self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
         self.removalshapes = []
         avoidFeatures = list()
+        self.tol = self.job.GeometryTolerance.Value or 0.01
+        solids = [base.Shape for base in self.model if base.Shape.Faces]
 
         # Get extensions and identify faces to avoid
         extensions = FeatureExtensions.getExtensions(obj)
@@ -201,39 +127,47 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("base items exist.  Processing...")
             self.horiz = []
             self.vert = []
-            for base, subList in obj.Base:
+            self.edges = []
+            for base, subList in self.baseShapes(obj):
                 for sub in subList:
-                    if "Face" in sub:
-                        if sub not in avoidFeatures and not self.classifySub(base, sub):
-                            Path.Log.error(
-                                "Pocket does not support shape {}.{}".format(base.Label, sub)
+                    if sub in avoidFeatures:
+                        # skip this sub shape
+                        continue
+                    if "Edge" in sub and self.classifySubEdge(base, sub):
+                        # edge added to list
+                        continue
+                    if "Face" in sub and self.classifySubFace(base, sub):
+                        # face added to list
+                        continue
+                    Path.Log.error("Pocket does not support shape {}.{}".format(base.Label, sub))
+
+            if self.vert:
+                self.processVerticalFaces(obj, self.vert)
+
+            # Create horizonatal faces from closed wires
+            for sortEdges in Part.sortEdges(self.edges):
+                wire = Part.Wire(sortEdges)
+                if not wire.isClosed():
+                    if obj.CloseOpenPaths:  # add straight line to close wire
+                        vertexes = wire.OrderedVertexes[0].Point, wire.OrderedVertexes[-1].Point
+                        e = Part.makeLine(*vertexes)
+                        wire = Part.Wire(sortEdges + [e])
+                    else:
+                        Path.Log.error(
+                            translate(
+                                "Pocket_Shape",
+                                "Pocket_Shape can not process open wire."
+                                "\nYou can enable feature Close Open Path",
                             )
+                        )
+                        continue
+                self.horiz.append(Part.Face(wire))
 
             # Convert horizontal faces to use outline only if requested
             Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
             Path.Log.debug("self.horiz: {}".format(self.horiz))
             if obj.UseOutline and self.horiz:
-                horiz = [self.removeHoles(base, face) for (face, base) in self.horiz]
-                self.horiz = horiz
-            else:
-                # Extract just the faces from the tuples for further processing
-                self.horiz = [face for (face, base) in self.horiz]
-
-            # Check if selected vertical faces form a loop
-            if len(self.vert) > 0:
-                self.vertical = Path.Geom.combineConnectedShapes(self.vert)
-                self.vWires = [
-                    TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
-                    for shape in self.vertical
-                ]
-                for wire in self.vWires:
-                    w = Path.Geom.removeDuplicateEdges(wire)
-                    face = Part.Face(w)
-                    # face.tessellate(0.1)
-                    if Path.Geom.isRoughly(face.Area, 0):
-                        Path.Log.error("Vertical faces do not form a loop - ignoring")
-                    else:
-                        self.horiz.append(face)
+                self.horiz = [self.removeHoles(solids, face) for face in self.horiz]
 
             # Add faces for extensions
             # Note: Extension faces don't have a parent base object, so we append them directly
@@ -248,21 +182,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.exts.append(f)
 
             # check all faces and see if they are touching/overlapping and combine and simplify
-            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz)
+            keepOrder = getattr(obj, "SortingMode", None) == "Manual"
+            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz, keepOrder=keepOrder)
 
-            # Move all faces to final depth less buffer before extrusion
-            # Small negative buffer is applied to compensate for internal significant digits/rounding issue
-            if self.job.GeometryTolerance.Value == 0.0:
-                buffer = 0.000001
-            else:
-                buffer = self.job.GeometryTolerance.Value / 10.0
+            # Move all faces to final depth before extrusion
             for h in self.horizontal:
-                h.translate(
-                    FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin - buffer)
-                )
+                h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin))
 
-            # extrude all faces up to StartDepth plus buffer and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value + buffer)
+            # extrude all faces up to StartDepth and those are the removal shapes
+            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
             self.removalshapes = [
                 (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]
@@ -291,19 +219,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         return self.removalshapes
 
-    # Support methods
-    def isVerticalExtrusionFace(self, face):
-        fBB = face.BoundBox
-        if Path.Geom.isRoughly(fBB.ZLength, 0.0):
-            return False
-        extr = face.extrude(FreeCAD.Vector(0.0, 0.0, fBB.ZLength))
-        if hasattr(extr, "Volume"):
-            if Path.Geom.isRoughly(extr.Volume, 0.0):
-                return True
+    def classifySubEdge(self, bs, sub):
+        """classifySubFace(bs, sub)...
+        Given a base and a sub-feature name, returns True
+        if the sub-feature is a horizontal edge.
+        """
+        edge = bs.Shape.getElement(sub)
+        if Path.Geom.isHorizontal(edge):
+            self.edges.append(edge)
+            return True
         return False
 
-    def classifySub(self, bs, sub):
-        """classifySub(bs, sub)...
+    def classifySubFace(self, bs, sub):
+        """classifySubFace(bs, sub)...
         Given a base and a sub-feature name, returns True
         if the sub-feature is a horizontally or vertically oriented flat face.
         """
@@ -314,7 +242,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if Path.Geom.isVertical(face.Surface.Axis):
                 Path.Log.debug("  -isVertical()")
                 # it's a flat horizontal face
-                self.horiz.append((face, bs))
+                self.horiz.append(face)
                 return True
 
             elif Path.Geom.isHorizontal(face.Surface.Axis):
@@ -328,7 +256,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("face Part.BSplineSurface")
             if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
                 Path.Log.debug("  flat horizontal or almost flat horizontal")
-                self.horiz.append((face, bs))
+                self.horiz.append(face)
                 return True
 
         elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
@@ -340,7 +268,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
                 disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
-                self.horiz.append((disk, bs))
+                self.horiz.append(disk)
                 return True
 
             else:
@@ -352,8 +280,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
-            # Save face to self.horiz for processing or display error
-            if self.isVerticalExtrusionFace(face):
+            if Path.Geom.isRoughly(abs(face.Surface.Direction.z), 1.0):
+                # it's a vertical face
                 self.vert.append(face)
                 return True
             else:
@@ -363,6 +291,73 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
             return False
+
+    def processVerticalFaces(self, obj, faces):
+        """processVerticalFaces(self, faces) ... create horizonatal face from wall"""
+        z = obj.FinalDepth.Value
+        depthparams = PathUtils.depth_params(0, z, z, 0, 0, z)
+        for vertCon in Path.Geom.combineConnectedShapes(faces):
+            try:
+                if shapeEnv := PathUtils.getEnvelope(vertCon, depthparams=depthparams):
+                    self.horiz.append(shapeEnv)
+            except Exception:
+                # getEnvelope failed, probably this is open wall
+
+                # try to add edge which will close area
+                if obj.CloseOpenPaths:
+                    # Find faces which placed on ends of the wall
+                    endFaces = []
+                    candidates = vertCon.Faces[:]
+                    for face in candidates:
+                        c = 0
+                        for candidate in candidates:
+                            if face == candidate:
+                                continue
+                            if face.BoundBox.intersect(candidate.BoundBox) and Path.Geom.isRoughly(
+                                face.distToShape(candidate)[0], 0
+                            ):
+                                c += 1
+                            if c > 1:  # face should touch only one another face
+                                break
+                        else:
+                            endFaces.append(face)
+
+                    # Add helper edge and try getEnvelope again
+                    points = None
+                    if len(endFaces) == 1:
+                        face = endFaces[0]
+                        if slc := face.slice(FreeCAD.Vector(0, 0, 1), face.BoundBox.Center.z):
+                            wire = slc[0]
+                            points = wire.OrderedVertexes[0].Point, wire.OrderedVertexes[-1].Point
+                    elif len(endFaces) == 2:
+                        points = []  # farest points which should be connected
+                        for face in endFaces:
+                            candidates.remove(face)
+                            comp = Part.Compound(candidates)
+                            tPoint = face.distToShape(comp)[1][0][0]  # face touched compound here
+                            ps = [(v.Point.distanceToPoint(tPoint), v.Point) for v in face.Vertexes]
+                            p = max(ps, key=lambda tup: tup[0])[1]  # farest point
+                            points.append(p)
+                            candidates.append(face)
+                    if points:
+                        edge = Part.makeLine(*points)
+                        newComp = Part.Compound([vertCon, edge])
+                        try:
+                            if shapeEnv := PathUtils.getEnvelope(newComp, depthparams=depthparams):
+                                self.horiz.append(shapeEnv)
+                                continue
+                        except Exception:
+                            Path.Log.error(
+                                translate("Pocket_Shape", "Processing vertical faces was failed")
+                            )
+                            continue
+
+                Path.Log.error(
+                    translate(
+                        "Pocket_Shape",
+                        "Processing vertical faces was failed.\nYou can enable feature Close Open Path",
+                    )
+                )
 
 
 # Eclass
@@ -374,6 +369,7 @@ def SetupProperties():
 
     # Add properties initialized here in PocketShape
     setup.append("UseOutline")
+    setup.append("CloseOpenPaths")
     return setup
 
 

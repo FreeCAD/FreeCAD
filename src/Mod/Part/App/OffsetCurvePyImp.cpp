@@ -55,15 +55,9 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* pGeom;
     PyObject* pDir;
     double offset;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!dO!",
-            &(GeometryPy::Type),
-            &pGeom,
-            &offset,
-            &(Base::VectorPy::Type),
-            &pDir
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!dO!", &(GeometryPy::Type), &pGeom, &offset, &(Base::VectorPy::Type), &pDir)
+    ) {
         return -1;
     }
 
@@ -76,8 +70,8 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     try {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pDir)->value();
-        Handle(Geom_OffsetCurve) curve2
-            = new Geom_OffsetCurve(curve, offset, gp_Dir(dir.x, dir.y, dir.z));
+        Handle(Geom_OffsetCurve)
+            curve2 = new Geom_OffsetCurve(curve, offset, gp_Dir(dir.x, dir.y, dir.z));
         getGeomOffsetCurvePtr()->setHandle(curve2);
         return 0;
     }
@@ -112,12 +106,14 @@ void OffsetCurvePy::setOffsetDirection(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_OffsetCurve)
+            curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d dir = Base::getVectorFromTuple<double>(p);
-        Handle(Geom_OffsetCurve) curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_OffsetCurve)
+            curve = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else {
@@ -146,9 +142,8 @@ void OffsetCurvePy::setBasisCurve(Py::Object arg)
         }
 
         try {
-            Handle(Geom_OffsetCurve) curve2 = Handle(Geom_OffsetCurve)::DownCast(
-                getGeometryPtr()->handle()
-            );
+            Handle(Geom_OffsetCurve)
+                curve2 = Handle(Geom_OffsetCurve)::DownCast(getGeometryPtr()->handle());
             curve2->SetBasisCurve(curve);
         }
         catch (Standard_Failure& e) {

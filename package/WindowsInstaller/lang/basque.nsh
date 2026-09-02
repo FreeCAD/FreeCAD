@@ -39,9 +39,6 @@ ${LangFileString} SecDesktopDescription "FreeCAD ikonoa mahaigainean."
 #${LangFileString} RunConfigureFailed "Ezin izan da konfigurazioaren script-a exekutatu"
 ${LangFileString} InstallRunning "Instalatzailea jadanik exekutatzen ari da."
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} jadanik instalatuta dago!$\r$\n\
-				Installing over existing installations is not recommended if the installed version$\r$\n\
-				is a test release or if you have problems with your existing FreeCAD installation.$\r$\n\
-				In these cases better reinstall FreeCAD.$\r$\n\
 				Dou you nevertheles want to install FreeCAD over the existing version?"
 ${LangFileString} NewerInstalled "Instalatuta dagoen FreeCAD baino bertsio zaharragoa instalatzen saiatzen ari zara.$\r$\n\
 				  Hori egitea nahi baduzu, lehenbizi existitzen den FreeCAD $OldVersionNumber desinstalatu beharko duzu."
@@ -68,3 +65,8 @@ ${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user con
 						This will also delete all installed FreeCAD addons.$\r$\n\
 						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Desinstalatu FreeCAD eta bere osagai guztiak."
+
+${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
+                        The installer will remove all its content before installing. Continue?"
+${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
+                        Make sure you have sufficient permissions and that no files are in use."

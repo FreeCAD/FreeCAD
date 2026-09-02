@@ -22,8 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QSignalBlocker>
 #include <QAction>
+#include <QAbstractButton>
+#include <QSignalBlocker>
 
 
 #include <App/Document.h>
@@ -63,6 +64,8 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     ui->setupUi(proxy);
     handleLineFaceNameNo(ui->lineFaceName);
     handleLineFaceNameNo(ui->lineFaceName2);
+    ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
+    ui->startOffsetEdit->setToolTip(tr("Offset from the profile or selected start reference"));
 
     Gui::ButtonGroup* group = new Gui::ButtonGroup(this);
     group->addButton(ui->checkBoxReversed);
@@ -105,6 +108,12 @@ void TaskExtrudeParameters::setupDialog()
 
     ui->checkBoxReversed->setChecked(extrude->Reversed.getValue());
 
+    ui->startMode->setCurrentIndex(extrude->StartType.getValue());
+    ui->startOffsetEdit->setValue(extrude->StartOffset.getQuantityValue());
+    ui->startOffsetEdit->bind(extrude->StartOffset);
+
+    updateStartReferenceName();
+
     // --- Per-Side Setup using the Helper ---
     setupSideDialog(m_side1);
     setupSideDialog(m_side2);
@@ -115,6 +124,7 @@ void TaskExtrudeParameters::setupDialog()
     connectSlots();
 
     this->propReferenceAxis = &(extrude->ReferenceAxis);
+    updateStartUI();
     updateUI(Side::First);
 
     setupGizmos();
@@ -191,6 +201,29 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     side.listWidgetReferences->addAction(side.unselectShapeFaceAction);
     side.listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     side.checkBoxAllFaces->setChecked(side.listWidgetReferences->count() == 0);
+}
+
+void TaskExtrudeParameters::updateStartUI()
+{
+    const auto mode = static_cast<StartMode>(ui->startMode->currentIndex());
+    const bool hasOffset = mode != StartMode::ProfilePlane;
+    const bool hasReference = mode == StartMode::Reference;
+
+    ui->labelStartOffset->setVisible(hasOffset);
+    ui->startOffsetEdit->setVisible(hasOffset);
+    ui->labelStartReference->setVisible(hasReference);
+    ui->lineStartReference->setVisible(hasReference);
+    ui->buttonStartReference->setVisible(hasReference);
+}
+
+void TaskExtrudeParameters::updateStartReferenceName()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    updateReferenceName(
+        ui->lineStartReference,
+        extrude->StartReference,
+        tr("No start reference selected")
+    );
 }
 
 void TaskExtrudeParameters::createSideControllers()
@@ -314,6 +347,19 @@ void TaskExtrudeParameters::connectSlots()
     connectSideSlots(m_side1, Side::First, &TaskExtrudeParameters::onModeChanged_Side1);
     connectSideSlots(m_side2, Side::Second, &TaskExtrudeParameters::onModeChanged_Side2);
 
+    connect(ui->startMode, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int type) {
+        onStartModeChanged(type);
+    });
+    connect(
+        ui->startOffsetEdit,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this](double value) { onStartOffsetChanged(value); }
+    );
+    connect(ui->buttonStartReference, &QAbstractButton::toggled, this, [this](bool checked) {
+        onSelectStartReferenceToggle(checked);
+    });
+
     // clang-format off
     connect(ui->directionCB, qOverload<int>(&QComboBox::activated),
             this, &TaskExtrudeParameters::onDirectionCBChanged);
@@ -400,6 +446,7 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
     };
     updateCheckedForSide(Side::First, ui->buttonFace, ui->buttonShape, ui->buttonShapeFace);
     updateCheckedForSide(Side::Second, ui->buttonFace2, ui->buttonShape2, ui->buttonShapeFace2);
+    ui->buttonStartReference->setChecked(mode == SelectStartReference);
 
     selectionMode = mode;
     activeSelectionSide = side;
@@ -410,6 +457,7 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
             Gui::Selection().addSelectionGate(new SelectionFilterGate("SELECT Part::Feature COUNT 1"));
             break;
         case SelectFace:
+        case SelectStartReference:
             onSelectReference(AllowSelection::FACE);
             break;
         case SelectShapeFaces: {
@@ -455,6 +503,10 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
             case SelectFace:
                 selectedFace(msg, sideCtrl);
+                break;
+
+            case SelectStartReference:
+                selectedStartReference(msg);
                 break;
 
             case SelectReferenceAxis:
@@ -555,6 +607,16 @@ void PartDesignGui::TaskExtrudeParameters::selectedFace(
     setSelectionMode(None);
 }
 
+void PartDesignGui::TaskExtrudeParameters::selectedStartReference(const Gui::SelectionChanges& msg)
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    onAddSelection(msg, extrude->StartReference);
+    updateStartReferenceName();
+
+    setSelectionMode(None);
+    setGizmoPositions();
+}
+
 void PartDesignGui::TaskExtrudeParameters::selectedShape(
     const Gui::SelectionChanges& msg,
     SideController& side
@@ -638,6 +700,29 @@ void TaskExtrudeParameters::onLengthChanged(double len, Side side)
 {
     getSideController(side).Length->setValue(len);
     tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::onStartOffsetChanged(double len)
+{
+    getObject<PartDesign::FeatureExtrude>()->StartOffset.setValue(len);
+    tryRecomputeFeature();
+    setGizmoPositions();
+}
+
+void TaskExtrudeParameters::onStartModeChanged(int type)
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    const auto mode = static_cast<StartMode>(type);
+    extrude->StartType.setValue(type);
+    if (mode == StartMode::Reference && !extrude->StartReference.getValue()) {
+        ui->buttonStartReference->setChecked(true);
+    }
+    else if (mode != StartMode::Reference) {
+        setSelectionMode(None);
+    }
+    updateStartUI();
+    tryRecomputeFeature();
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onOffsetChanged(double len, Side side)
@@ -770,6 +855,7 @@ void TaskExtrudeParameters::updateWholeUI(Type type, Side side)
     // --- Global UI visibility based on SidesMode ---
     const bool isSide2GroupVisible = (sidesMode == SidesMode::TwoSides);
     ui->side1Label->setVisible(isSide2GroupVisible);
+    ui->line1->setVisible(isSide2GroupVisible);
     ui->side2Label->setVisible(isSide2GroupVisible);
     ui->line2->setVisible(isSide2GroupVisible);
     ui->typeLabel2->setVisible(isSide2GroupVisible);
@@ -1081,6 +1167,19 @@ void TaskExtrudeParameters::onSelectFaceToggle(const bool checked, Side side)
     }
 }
 
+void TaskExtrudeParameters::onSelectStartReferenceToggle(const bool checked)
+{
+    if (checked) {
+        ui->buttonStartReference->setText(tr("Cancel"));
+        ui->lineStartReference->setPlaceholderText(tr("Select face, plane..."));
+        setSelectionMode(SelectStartReference);
+    }
+    else {
+        ui->buttonStartReference->setText(tr("Pick Reference"));
+        ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
+    }
+}
+
 void TaskExtrudeParameters::onSelectShapeToggle(bool checked, Side side)
 {
     auto& sideCtrl = getSideController(side);
@@ -1266,6 +1365,7 @@ void TaskExtrudeParameters::changeEvent(QEvent* e)
 
         translateFaceName(ui->lineFaceName);
         translateFaceName(ui->lineFaceName2);
+        updateStartReferenceName();
     }
 }
 
@@ -1305,6 +1405,7 @@ void TaskExtrudeParameters::applyParameters()
 
     ui->lengthEdit->apply();
     ui->lengthEdit2->apply();
+    ui->startOffsetEdit->apply();
     ui->taperEdit->apply();
     ui->taperEdit2->apply();
     FCMD_OBJ_CMD(obj, "UseCustomVector = " << (getCustom() ? 1 : 0));
@@ -1322,6 +1423,9 @@ void TaskExtrudeParameters::applyParameters()
     FCMD_OBJ_CMD(obj, "Reversed = " << (getReversed() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Offset = " << getOffset());
     FCMD_OBJ_CMD(obj, "Offset2 = " << getOffset2());
+    FCMD_OBJ_CMD(obj, "StartOffset = " << ui->startOffsetEdit->value().getValue());
+    FCMD_OBJ_CMD(obj, "StartType = " << ui->startMode->currentIndex());
+    FCMD_OBJ_CMD(obj, "StartReference = " << getFaceName(ui->lineStartReference).toUtf8().data());
 }
 
 void TaskExtrudeParameters::onSidesModeChanged(int index)
@@ -1366,7 +1470,7 @@ void TaskExtrudeParameters::translateSidesList(int index)
 
 void TaskExtrudeParameters::handleLineFaceNameClick(QLineEdit* lineEdit)
 {
-    lineEdit->setPlaceholderText(tr("Click on a face in the model"));
+    lineEdit->setPlaceholderText(tr("Face selection active"));
 }
 
 void TaskExtrudeParameters::handleLineFaceNameNo(QLineEdit* lineEdit)
@@ -1380,8 +1484,18 @@ void TaskExtrudeParameters::setupGizmos()
         return;
     }
 
+    const auto toggleReversed = [this] {
+        if (ui->checkBoxReversed->isEnabled()) {
+            ui->checkBoxReversed->setChecked(!ui->checkBoxReversed->isChecked());
+        }
+    };
+
     lengthGizmo1 = new Gui::LinearGizmo(ui->lengthEdit);
+    lengthGizmo1->setClickCallback(toggleReversed);
     lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
+    lengthGizmo2->setClickCallback(toggleReversed);
+    startOffsetGizmo = new Gui::LinearGizmo(ui->startOffsetEdit);
+    startOffsetGizmo->setDraggerStyle(Gui::LinearDraggerStyle::Sphere);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
 
@@ -1390,11 +1504,12 @@ void TaskExtrudeParameters::setupGizmos()
     });
 
     gizmoContainer = GizmoContainer::create(
-        {lengthGizmo1, lengthGizmo2, taperAngleGizmo1, taperAngleGizmo2},
+        {lengthGizmo1, lengthGizmo2, startOffsetGizmo, taperAngleGizmo1, taperAngleGizmo2},
         vp
     );
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskExtrudeParameters::setGizmoPositions()
@@ -1417,11 +1532,32 @@ void TaskExtrudeParameters::setGizmoPositions()
     std::string extrudeType2 = std::string(extrude->Type2.getValueAsString());
     double dir = extrude->Reversed.getValue() ? -1 : 1;
 
-    lengthGizmo1->Gizmo::setDraggerPlacement(center, extrude->Direction.getValue() * dir);
+    Base::Vector3d direction = extrude->Direction.getValue() * dir;
+    Base::Vector3d center1 = center;
+    Base::Vector3d center2 = center;
+    const bool hasStartOffset = std::strcmp(extrude->StartType.getValueAsString(), "Profile plane")
+        != 0;
+    try {
+        const Base::Vector3d startDirection = direction.Normalized();
+        const double effectiveStartOffset = extrude->getStartOffset();
+        const Base::Vector3d start = startDirection * effectiveStartOffset;
+        center1 += start;
+        center2 += start;
+        startOffsetGizmo->Gizmo::setDraggerPlacement(
+            center + startDirection * (effectiveStartOffset - extrude->StartOffset.getValue()),
+            direction
+        );
+    }
+    catch (const Base::Exception&) {
+    }
+
+    startOffsetGizmo->setVisibility(hasStartOffset);
+
+    lengthGizmo1->Gizmo::setDraggerPlacement(center1, direction);
     lengthGizmo1->setVisibility(extrudeType == "Length");
     taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
     taperAngleGizmo1->setVisibility(extrudeType == "Length");
-    lengthGizmo2->Gizmo::setDraggerPlacement(center, -extrude->Direction.getValue() * dir);
+    lengthGizmo2->Gizmo::setDraggerPlacement(center2, -direction);
     lengthGizmo2->setVisibility(sideType == "Two sides" && extrudeType2 == "Length");
     taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
     taperAngleGizmo2->setVisibility(sideType == "Two sides" && extrudeType2 == "Length");

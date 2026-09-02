@@ -281,6 +281,7 @@ void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
     gizmoContainer = GizmoContainer::create({linearGizmo}, vp);
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskThicknessParameters::setGizmoPositions()

@@ -42,6 +42,10 @@ App::DocumentObject* ActiveObjectList::getObject(
     std::string* subname
 ) const
 {
+    if (!_Doc) {
+        return nullptr;
+    }
+
     if (parent) {
         *parent = info.obj;
     }
@@ -92,7 +96,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(
 {
     ObjectInfo info;
     info.obj = nullptr;
-    if (!obj || !obj->isAttachedToDocument()) {
+    if (!_Doc || !obj || !obj->isAttachedToDocument()) {
         return info;
     }
 
@@ -165,6 +169,12 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(
 
 bool Gui::ActiveObjectList::hasObject(App::DocumentObject* obj, const char* name, const char* subname) const
 {
+    if (!_Doc) {
+        // if _Doc is null it means the MDIView is not associated to a document (start page).
+        // So it has no objects.
+        return false;
+    }
+
     auto it = _ObjectMap.find(name);
     if (it == _ObjectMap.end()) {
         return false;
@@ -180,6 +190,10 @@ void Gui::ActiveObjectList::setObject(
     const Gui::HighlightMode& mode
 )
 {
+    if (!_Doc) {
+        return;
+    }
+
     auto it = _ObjectMap.find(name);
     if (it != _ObjectMap.end()) {
         setHighlight(it->second, mode, false);
@@ -187,9 +201,7 @@ void Gui::ActiveObjectList::setObject(
     }
 
     if (!obj) {
-        if (_Doc) {
-            _Doc->signalActivatedViewProvider(nullptr, name);
-        }
+        _Doc->signalActivatedViewProvider(nullptr, name);
         return;
     }
 

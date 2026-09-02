@@ -1,8 +1,15 @@
+#include "Base/Color.h"
 #include <gtest/gtest.h>
-#include <boost/core/ignore_unused.hpp>
-#include <QLockFile>
 #include <Base/FileInfo.h>
+#include <Base/FileLock.h>
 #include <Base/Parameter.h>
+
+#include <filesystem>
+
+#if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
+# include <sys/wait.h>
+# include <unistd.h>
+#endif
 
 class FakeObserver: public ParameterGrp::ObserverType
 {
@@ -25,8 +32,8 @@ public:
     }
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override
     {
-        boost::ignore_unused(rCaller);
-        boost::ignore_unused(Reason);
+        (void)rCaller;  // Unused
+        (void)Reason;   // Unused
         notify++;
     }
 
@@ -54,6 +61,7 @@ protected:
 
     void TearDown() override
     {
+        ASSERT_TRUE(config->CheckDocument());
         if (fi.exists()) {
             fi.deleteFile();
         }
@@ -92,6 +100,8 @@ TEST_F(ParameterTest, TestValid)
     auto cfg = getConfig();
     EXPECT_EQ(cfg.isValid(), true);
     EXPECT_EQ(cfg.isNull(), false);
+    EXPECT_EQ(cfg->CheckDocument(), false);
+    getCreateConfig();  // Make sure we have a valid config by the end of the test
 }
 
 TEST_F(ParameterTest, TestCreate)
@@ -99,6 +109,7 @@ TEST_F(ParameterTest, TestCreate)
     auto cfg = getCreateConfig();
     cfg->CheckDocument();
     EXPECT_TRUE(cfg->IsEmpty());
+    EXPECT_EQ(cfg->GetGroups().size(), 0);
 }
 
 TEST_F(ParameterTest, TestGroup)
@@ -112,7 +123,7 @@ TEST_F(ParameterTest, TestGroup)
     EXPECT_TRUE(grp->IsEmpty());
 
     EXPECT_TRUE(cfg->HasGroup("TopLevelGroup"));
-    EXPECT_FALSE(cfg->HasGroup("Group"));
+    EXPECT_FALSE(cfg->HasGroup("NonExistentGroup"));
 
     EXPECT_EQ(cfg->GetGroups().size(), 1);
 }
@@ -122,6 +133,9 @@ TEST_F(ParameterTest, TestGroupName)
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
     EXPECT_STREQ(grp->GetGroupName(), "TopLevelGroup");
+
+    auto subGrp = grp->GetGroup("SubGroup");
+    EXPECT_STREQ(subGrp->GetGroupName(), "SubGroup");
 }
 
 TEST_F(ParameterTest, TestEmptyGroupName)
@@ -135,7 +149,7 @@ TEST_F(ParameterTest, TestEmptyGroupName)
 TEST_F(ParameterTest, TestGroupNames)
 {
     auto cfg = getCreateConfig();
-    auto grp1 = cfg->GetGroup("////Sub1/////Sub2/////");
+    auto grp1 = cfg->GetGroup(" //  // Sub1// /// Sub2/ ////");
     auto grp2 = cfg->GetGroup("Sub1/Sub2");
     EXPECT_STREQ(grp1->GetGroupName(), "Sub2");
     EXPECT_STREQ(grp2->GetGroupName(), "Sub2");
@@ -147,6 +161,8 @@ TEST_F(ParameterTest, TestPath)
     auto grp1 = cfg->GetGroup("TopLevelGroup");
     auto sub1 = grp1->GetGroup("Sub1");
     auto sub2 = sub1->GetGroup("Sub2");
+    EXPECT_EQ(grp1->GetPath(), "TopLevelGroup");
+    EXPECT_EQ(sub1->GetPath(), "TopLevelGroup/Sub1");
     EXPECT_EQ(sub2->GetPath(), "TopLevelGroup/Sub1/Sub2");
 }
 
@@ -250,6 +266,29 @@ TEST_F(ParameterTest, TestString)
     EXPECT_EQ(grp->GetASCIIs().size(), 1);
 }
 
+TEST_F(ParameterTest, TestColor)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup");
+    auto color1 = Base::Color(1.0, 0.5, 0.3);
+    auto color2 = Base::Color(0.0, 0.1, 1.0);
+    auto colorNull = Base::Color(1.0, 1.0, 1.0);
+    grp->SetColor("Color1", color1);
+    grp->SetColor("Color2", color2);
+    EXPECT_EQ(grp->GetColor("Color1"), color1);
+    EXPECT_EQ(grp->GetColor("Color2"), color2);
+    EXPECT_EQ(grp->GetColor("Color3"), colorNull);
+
+    EXPECT_TRUE(grp->GetColors("Test").empty());
+    EXPECT_EQ(grp->GetColors().size(), 2);
+    EXPECT_EQ(grp->GetColors().at(0), color1);
+    EXPECT_EQ(grp->GetColors().at(1), color2);
+    EXPECT_EQ(grp->GetColorMap().size(), 2);
+
+    grp->RemoveColor("Color1");
+    EXPECT_EQ(grp->GetColors().size(), 1);
+}
+
 TEST_F(ParameterTest, TestCopy)
 {
     auto cfg = getCreateConfig();
@@ -260,9 +299,11 @@ TEST_F(ParameterTest, TestCopy)
     auto sub3 = grp->GetGroup("Sub3");
     sub3->SetFloat("AnotherParameter", 2.5);
     sub2->copyTo(sub3);
+
     EXPECT_TRUE(sub3->GetFloats("Test").empty());
     EXPECT_EQ(sub3->GetFloats().size(), 1);
     EXPECT_EQ(sub3->GetFloats().at(0), 1.5);
+    EXPECT_EQ(sub3->GetFloat("Parameter"), 1.5);
 
     // Test that old parameter has been removed
     EXPECT_TRUE(sub3->GetFloats("AnotherParameter").empty());
@@ -273,14 +314,28 @@ TEST_F(ParameterTest, TestInsert)
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
     auto sub2 = grp->GetGroup("Sub1/Sub2");
-    sub2->SetFloat("Parameter", 1.5);
+    sub2->SetFloat("Parameter1", 1.5);
+    sub2->SetFloat("Parameter2", 0.5);
+    sub2->SetFloat("AnotherParameter1", 3.5);
 
     auto sub3 = grp->GetGroup("Sub3");
-    sub3->SetFloat("AnotherParameter", 2.5);
+    sub3->SetFloat("AnotherParameter1", 2.5);
+    sub3->SetFloat("AnotherParameter2", 3.5);
     sub2->insertTo(sub3);
 
-    EXPECT_EQ(sub3->GetFloats().size(), 2);
-    EXPECT_EQ(sub3->GetFloats("AnotherParameter").size(), 1);
+    EXPECT_EQ(sub3->GetFloats().size(), 4);
+    EXPECT_EQ(sub3->GetFloats("AnotherParameter1").size(), 1);
+    EXPECT_EQ(sub3->GetFloats("AnotherParameter2").size(), 1);
+
+    // Existing parameter has been replaced
+    EXPECT_EQ(sub3->GetFloat("AnotherParameter1"), 3.5);
+
+    // Existing parameter has not changed
+    EXPECT_EQ(sub3->GetFloat("AnotherParameter2"), 3.5);
+
+    // Copied values are added
+    EXPECT_EQ(sub3->GetFloat("Parameter1"), 1.5);
+    EXPECT_EQ(sub3->GetFloat("Parameter2"), 0.5);
 }
 
 TEST_F(ParameterTest, TestRevert)
@@ -289,6 +344,7 @@ TEST_F(ParameterTest, TestRevert)
     auto grp = cfg->GetGroup("TopLevelGroup");
     auto sub1 = grp->GetGroup("Sub1/Sub/Sub");
     sub1->SetFloat("Float", 1.5);
+    sub1->SetInt("Int", 1);
 
     auto sub2 = grp->GetGroup("Sub2/Sub/Sub");
     sub2->SetFloat("Float", 1.5);
@@ -298,6 +354,8 @@ TEST_F(ParameterTest, TestRevert)
     EXPECT_EQ(sub1->GetFloat("Float", 0.0), 0.0);
     EXPECT_EQ(sub1->GetFloat("Float", 2.0), 2.0);
     EXPECT_EQ(sub2->GetFloat("Float", 2.0), 1.5);
+    EXPECT_EQ(sub1->GetInt("Int", 0), 1);
+    EXPECT_EQ(sub2->GetInt("Int", 0), 0);
 }
 
 TEST_F(ParameterTest, TestRemoveGroup)
@@ -311,7 +369,7 @@ TEST_F(ParameterTest, TestRemoveGroup)
     sub2->SetInt("Int", 2);
     EXPECT_EQ(sub2->GetInt("Int", 0), 2);
     EXPECT_EQ(sub2->GetInt("Int", 1), 2);
-    cfg->CheckDocument();
+    EXPECT_EQ(sub2->GetFloat("Float", 1.0), 1.0);
 }
 
 TEST_F(ParameterTest, TestRenameGroup)
@@ -322,10 +380,12 @@ TEST_F(ParameterTest, TestRenameGroup)
     auto sub2 = sub1->GetGroup("Sub2/Sub/Sub");
     sub2->SetFloat("Float", 1.5);
     sub1->RenameGrp("Sub2", "Sub3");
+    EXPECT_TRUE(sub1->HasGroup("Sub3"));
+    EXPECT_FALSE(sub1->HasGroup("Sub2"));
     sub2->SetInt("Int", 2);
     EXPECT_EQ(sub2->GetInt("Int", 0), 2);
     EXPECT_EQ(sub2->GetInt("Int", 1), 2);
-    cfg->CheckDocument();
+    EXPECT_EQ(sub2->GetFloat("Float", 1.0), 1.5);
 }
 
 TEST_F(ParameterTest, TestSaveRestoreRef)
@@ -333,6 +393,10 @@ TEST_F(ParameterTest, TestSaveRestoreRef)
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
     grp->SetFloat("Float", 1.0);
+    grp->SetInt("Int", -42);
+    grp->SetColor("Color", Base::Color(1.0, 0.5, 0.3));
+    grp->SetUnsigned("Unsigned", 42);
+    grp->SetASCII("String", "param");
     cfg->CheckDocument();
 
     std::string fn = getFileName();
@@ -341,6 +405,11 @@ TEST_F(ParameterTest, TestSaveRestoreRef)
     cfg->importFrom(fn.c_str());
     auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
     EXPECT_EQ(grp, grp2);
+    EXPECT_EQ(grp->GetFloat("Float"), 1.0);
+    EXPECT_EQ(grp->GetInt("Int"), -42);
+    EXPECT_EQ(grp->GetColor("Color"), Base::Color(1.0, 0.5, 0.3));
+    EXPECT_EQ(grp->GetUnsigned("Unsigned"), 42);
+    EXPECT_EQ(grp->GetASCII("String"), "param");
 
     grp2->SetFloat("Float", 2.0);
     cfg->exportTo(fn.c_str());
@@ -360,9 +429,91 @@ TEST_F(ParameterTest, TestSaveRestoreNoRef)
     cfg->importFrom(fn.c_str());
     auto grp2 = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
     EXPECT_NE(grp, grp2);
+    EXPECT_EQ(grp2->GetFloat("Float"), 1.0);
 
     grp2->SetFloat("Float", 2.0);
     cfg->exportTo(fn.c_str());
+}
+
+TEST_F(ParameterTest, TestClear)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetASCII("String", "str");
+    auto subGrp = grp->GetGroup("Sub");
+    subGrp->SetUnsigned("Value", 41);
+    grp->Clear();
+
+    // Group is still referenced, not deleted
+    EXPECT_TRUE(grp->HasGroup("Sub"));
+    EXPECT_EQ(grp->GetASCII("String", "default"), "default");
+    EXPECT_EQ(subGrp->GetUnsigned("Value", 1), 1);
+
+    // Remove reference
+    subGrp = nullptr;
+
+    // No reference, group is deleted
+    grp->Clear();
+    EXPECT_FALSE(grp->HasGroup("Sub"));
+}
+
+TEST_F(ParameterTest, TestGetSetAttribute)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    auto grp2 = grp->GetGroup("SubGrp");
+
+    // SetAttribute on a group renames it
+    grp->SetAttribute(ParameterGrp::ParamType::FCGroup, "SubGrp", "SubGrp2");
+    EXPECT_TRUE(grp->HasGroup("SubGrp2"));
+    std::string value;
+    grp->GetAttribute(ParameterGrp::ParamType::FCGroup, "SubGrp2", value, "default");
+    EXPECT_EQ(value, "");
+    EXPECT_FALSE(grp->HasGroup("SubGrp"));
+
+    auto mapGrp = grp->GetAttributeMap(ParameterGrp::ParamType::FCGroup);
+    EXPECT_EQ(mapGrp.size(), 1);
+    EXPECT_EQ(mapGrp[0].first, "SubGrp2");
+    EXPECT_EQ(mapGrp[0].second, "");
+
+    grp->SetAttribute(ParameterGrp::ParamType::FCText, "String1", "myString");
+    EXPECT_EQ(grp->GetASCII("String1"), "myString");
+    grp->GetAttribute(ParameterGrp::ParamType::FCText, "String1", value, "default");
+    EXPECT_EQ(value, "myString");
+
+    auto mapStr = grp->GetAttributeMap(ParameterGrp::ParamType::FCText);
+    EXPECT_EQ(mapStr.size(), 1);
+    EXPECT_EQ(mapStr[0].first, "String1");
+    EXPECT_EQ(mapStr[0].second, "myString");
+
+    grp->RemoveAttribute(ParameterGrp::ParamType::FCText, "String1");
+    grp->GetAttribute(ParameterGrp::ParamType::FCText, "String1", value, "default");
+    EXPECT_EQ(value, "default");
+
+    grp->SetAttribute(ParameterGrp::ParamType::FCFloat, "Float", "1.0");
+    EXPECT_EQ(grp->GetFloat("Float"), 1.0);
+    grp->GetAttribute(ParameterGrp::ParamType::FCFloat, "Float", value, "default");
+    EXPECT_EQ(value, "1.0");
+
+    auto mapFloat = grp->GetAttributeMap(ParameterGrp::ParamType::FCFloat);
+    EXPECT_EQ(mapFloat.size(), 1);
+    EXPECT_EQ(mapFloat[0].first, "Float");
+    EXPECT_EQ(mapFloat[0].second, "1.0");
+}
+
+TEST_F(ParameterTest, TestGetParameterNames)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+
+    grp->SetASCII("String", "test");
+    grp->SetFloat("Float", 1.0);
+    auto names = grp->GetParameterNames();
+    EXPECT_EQ(names.size(), 2);
+    EXPECT_EQ(names[0].first, ParameterGrp::ParamType::FCText);
+    EXPECT_EQ(names[0].second, "String");
+    EXPECT_EQ(names[1].first, ParameterGrp::ParamType::FCFloat);
+    EXPECT_EQ(names[1].second, "Float");
 }
 
 TEST_F(ParameterTest, TestGroupRef)
@@ -375,9 +526,13 @@ TEST_F(ParameterTest, TestGroupRef)
 
     // keep reference to prevent the deletion of the group node
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetInt("Int", 3);
     cfg->importFrom(fn.c_str());
     auto top = cfg->GetGroup("TopLevelGroup");
     EXPECT_TRUE(top->HasGroup("Sub1"));
+
+    // Content of the group was reset
+    EXPECT_EQ(grp->GetInt("Int", 0), 0);
 }
 
 TEST_F(ParameterTest, TestGroupNoRef)
@@ -390,11 +545,13 @@ TEST_F(ParameterTest, TestGroupNoRef)
 
     // nullify reference to delete the group node
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetInt("Int", 42);
     grp = nullptr;
 
     cfg->importFrom(fn.c_str());
     auto top = cfg->GetGroup("TopLevelGroup");
     EXPECT_FALSE(top->HasGroup("Sub1"));
+    EXPECT_EQ(top->GetInt("Int", 0), 0);
 }
 
 TEST_F(ParameterTest, TestObserverRef)
@@ -419,6 +576,27 @@ TEST_F(ParameterTest, TestObserverRef)
 
     grp->SetFloat("Float", 2.0);
     EXPECT_EQ(obs.getCountNotifications(), 3);
+    obs.clearNotifications();
+
+    grp->ClearObserver();
+    grp->SetFloat("Float", 2.0);
+    EXPECT_EQ(obs.getCountNotifications(), 0);
+
+    obs.detachSelf(grp);
+}
+
+TEST_F(ParameterTest, TestNotifyAll)
+{
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
+    grp->SetASCII("String", "str");
+    grp->SetFloat("Float", 2.0);
+
+    auto& obs = getObserver();
+    obs.attachSelf(grp);
+    grp->NotifyAll();
+    EXPECT_EQ(obs.getCountNotifications(), 2);
+
     obs.detachSelf(grp);
 }
 
@@ -445,21 +623,65 @@ TEST_F(ParameterTest, TestObserverNoRef)
 
 TEST_F(ParameterTest, TestLockFile)
 {
+    getCreateConfig();
+
+#if defined(__EMSCRIPTEN__)
+    GTEST_SKIP() << "File locking is a no-op in Emscripten/WASM (single-process).";
+#endif
+
     std::string fn = getFileName();
     fn.append(".lock");
 
-    QLockFile lockFile1(QString::fromStdString(fn));
-    EXPECT_TRUE(lockFile1.tryLock(100));
+    // tryLock(0) should still attempt the lock once (no polling) and succeed when available.
+    Base::FileLock lockFile1(fn);
+    ASSERT_TRUE(lockFile1.tryLock(0));
     EXPECT_TRUE(lockFile1.isLocked());
 
-    QLockFile lockFile2(QString::fromStdString(fn));
-    EXPECT_FALSE(lockFile2.tryLock(100));
+#if defined(_WIN32)
+    // Windows file locks are per-handle, so another handle in the same process conflicts.
+    Base::FileLock lockFile2(fn);
+    EXPECT_FALSE(lockFile2.tryLock(0));
     EXPECT_FALSE(lockFile2.isLocked());
 
     lockFile1.unlock();
-    EXPECT_TRUE(lockFile2.lock());
-    EXPECT_FALSE(lockFile1.tryLock(500));
+    ASSERT_TRUE(lockFile2.tryLock(0));
     lockFile2.unlock();
+#else
+    // POSIX fcntl locks are per-process, so we normally test contention via a separate process.
+    //
+    // macOS differs here (locks can be inherited across fork), which makes it hard to test
+    // contention without launching an unrelated helper process. We still validate tryLock(0)
+    // and that unlock() releases the lock.
+# if defined(__APPLE__)
+    lockFile1.unlock();
+
+    Base::FileLock lockFile2(fn);
+    ASSERT_TRUE(lockFile2.tryLock(0));
+    lockFile2.unlock();
+# else
+    const pid_t pid = fork();
+    ASSERT_NE(pid, -1);
+    if (pid == 0) {
+        Base::FileLock lockFile2(fn);
+        const bool locked = lockFile2.tryLock(0);
+        _exit(locked ? 1 : 0);
+    }
+
+    int status = 0;
+    ASSERT_NE(waitpid(pid, &status, 0), -1);
+    ASSERT_TRUE(WIFEXITED(status));
+    EXPECT_EQ(0, WEXITSTATUS(status));
+
+    lockFile1.unlock();
+    Base::FileLock lockFile3(fn);
+    ASSERT_TRUE(lockFile3.tryLock(0));
+    lockFile3.unlock();
+# endif
+#endif
+
+    // Best-effort cleanup to avoid leaving lock files behind.
+    std::error_code ec;
+    (void)std::filesystem::remove(std::filesystem::path(fn), ec);
 }
 
 // NOLINTEND(cppcoreguidelines-*,readability-*)

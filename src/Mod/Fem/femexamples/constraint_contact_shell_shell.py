@@ -150,7 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )
     if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
-        solver_obj.BeamShellResultOutput3D = True
+        solver_obj.Output3d = True
         solver_obj.GeometricalNonlinearity = False  # really?
         # TODO iterations parameter !!!
         solver_obj.ThermoMechSteadyState = False
@@ -173,7 +173,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint displacement
-    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement")
+    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "Displacement")
     con_displacement.References = [
         (lower_tube, "Edge2"),
         (upper_tube, "Edge3"),
@@ -184,7 +184,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_displacement)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     # TODO use point of tube boolean fragment
     con_force.References = [(force_point, "Vertex1")]
     con_force.Force = "5000.0 N"
@@ -193,7 +193,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint contact
-    con_contact = ObjectsFem.makeConstraintContact(doc, "ConstraintContact")
+    con_contact = ObjectsFem.makeConstraintContact(doc, "Contact")
     con_contact.References = [
         (lower_tube, "Face1"),
         (upper_tube, "Face1"),

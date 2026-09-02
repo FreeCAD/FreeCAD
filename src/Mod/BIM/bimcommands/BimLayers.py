@@ -24,6 +24,8 @@
 
 """Layers manager for FreeCAD"""
 
+import ast
+
 import FreeCAD
 import FreeCADGui
 
@@ -579,16 +581,16 @@ if FreeCAD.GuiUp:
                     ["Solid", "Dashed", "Dotted", "Dashdot"][editor.currentIndex()],
                 )
             elif index.column() == 4:  # Line color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
             elif index.column() == 5:  # Shape color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
             elif index.column() == 6:  # Transparency
                 model.setData(index, editor.value())
             elif index.column() == 7:  # Line prin color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
 
 
 FreeCADGui.addCommand("BIM_Layers", BIM_Layers())

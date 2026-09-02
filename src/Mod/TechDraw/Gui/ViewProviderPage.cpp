@@ -23,6 +23,8 @@
 
 # include <QAction>
 # include <QList>
+# include <QMdiArea>
+# include <QMdiSubWindow>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPointer>
@@ -284,7 +286,6 @@ void ViewProviderPage::show()
 void ViewProviderPage::hide()
 {
     if (getMDIView()) {
-        getMDIView()->hide();  // this doesn't remove the mdiViewPage from the mainWindow
         removeMDIView();
     }
     ViewProviderDocumentObject::hide();
@@ -346,22 +347,22 @@ void ViewProviderPage::switchToMdiViewPage()
     m_graphicsView->setFocus();
 }
 
-//NOTE: removing MDIViewPage (parent) destroys QGVPage (eventually)
+// Called by MDIViewPage::closeEvent() so we don't call removeWindow() re-entrantly
+// from inside QMdiSubWindow's own close-event chain (which would make the subwindow
+// briefly top-level and visible as a maximized window).  Qt handles QMdiSubWindow
+// cleanup; we only need to null our references and update visibility state.
+void ViewProviderPage::onMDIViewClosed()
+{
+    m_mdiView = nullptr;
+    m_graphicsView = nullptr;
+    ViewProviderDocumentObject::hide();
+}
+
 void ViewProviderPage::removeMDIView()
 {
-    if (!m_mdiView.isNull()) {//m_mdiView is a QPointer
-        QList<QWidget*> wList = Gui::getMainWindow()->windows();
-        if (wList.contains(m_mdiView)) {
-            Gui::getMainWindow()->removeWindow(m_mdiView);
-            m_mdiView = nullptr;     //m_mdiView will eventually be deleted and
-            m_graphicsView = nullptr;//will take m_graphicsView with it
-            Gui::MDIView* aw =
-                Gui::getMainWindow()
-                    ->activeWindow();//WF: this bit should be in the remove window logic, not here.
-            if (aw) {
-                aw->showMaximized();
-            }
-        }
+    if (!m_mdiView.isNull()) {
+        // Use the same close sequence as closing the tab
+        m_mdiView->closeWithoutSavePrompt();
     }
 }
 

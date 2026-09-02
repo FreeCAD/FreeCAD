@@ -54,6 +54,7 @@ public:
     void open();
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
@@ -69,6 +70,7 @@ protected:
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
     void updatePanel();
+    void syncMaterialWidget();
     int getFirstIndex() const;
 
 private:

@@ -54,6 +54,9 @@ public:
     App::PropertyBool UseCustomVector;
     App::PropertyVector Direction;
     App::PropertyBool AlongSketchNormal;
+    App::PropertyEnumeration StartType;
+    App::PropertyLength StartOffset;
+    App::PropertyLinkSub StartReference;
     App::PropertyLength Offset;
     App::PropertyLength Offset2;
     App::PropertyLinkSub ReferenceAxis;
@@ -61,6 +64,8 @@ public:
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
     static App::PropertyAngle::Constraints floatAngle;
+
+    double getStartOffset() const;
 
     /** @name methods override feature */
     //@{

@@ -137,6 +137,7 @@ public:
     static const Unit Force;
     static const Unit Frequency;
     static const Unit HeatFlux;
+    static const Unit Inertia;
     static const Unit InverseArea;
     static const Unit InverseLength;
     static const Unit InverseVolume;

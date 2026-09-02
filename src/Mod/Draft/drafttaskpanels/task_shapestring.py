@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft ShapeString tool."""
+
 ## @package task_shapestring
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft ShapeString tool.
@@ -133,8 +134,9 @@ class ShapeStringTaskPanel:
         self.form.sbZ.setProperty("rawValue", point.z)
         self.display_point_active = False
 
-    def escape_string(self, string):
-        return string.replace("\\", "\\\\").replace('"', '\\"')
+    @staticmethod
+    def quote_string(string):
+        return repr(string)
 
     def platform_win_dialog(self, flag):
         """Handle the type of dialog depending on the platform."""
@@ -190,6 +192,8 @@ class ShapeStringTaskPanel:
             self.point = point
         else:
             self.point = self.wp.get_global_coords(point)
+        self.pointPicked = True
+        self.update_hints()
 
     def set_point_x(self, val):
         self.set_point_coord("x", val)
@@ -208,9 +212,10 @@ class ShapeStringTaskPanel:
         if self.pointPicked:
             Gui.HintManager.hide()
         else:
-            Gui.HintManager.show(
+            hints = [
                 Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
-            )
+            ] + gui_tool_utils._get_hint_mod_snap()
+            Gui.HintManager.show(*hints)
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
@@ -231,8 +236,8 @@ class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
         cmd = "Draft.make_shapestring("
-        cmd += 'String="' + self.escape_string(self.text) + '", '
-        cmd += 'FontFile="' + self.escape_string(self.font_file) + '", '
+        cmd += "String=" + self.quote_string(self.text) + ", "
+        cmd += "FontFile=" + self.quote_string(self.font_file) + ", "
         cmd += "Size=" + str(self.height) + ", "
         cmd += "Tracking=0.0"
         cmd += ")"
@@ -270,9 +275,9 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
 
     def accept(self):
 
-        Gui.doCommand('ss = FreeCAD.ActiveDocument.getObject("' + self.obj.Name + '")')
-        Gui.doCommand('ss.String="' + self.escape_string(self.text) + '"')
-        Gui.doCommand('ss.FontFile="' + self.escape_string(self.font_file) + '"')
+        Gui.doCommand("ss = FreeCAD.ActiveDocument.getObject(" + repr(self.obj.Name) + ")")
+        Gui.doCommand("ss.String=" + self.quote_string(self.text))
+        Gui.doCommand("ss.FontFile=" + self.quote_string(self.font_file))
         Gui.doCommand("ss.Size=" + str(self.height))
         Gui.doCommand("ss.Placement.Base=" + toString(self.point))
         Gui.doCommand("FreeCAD.ActiveDocument.recompute()")

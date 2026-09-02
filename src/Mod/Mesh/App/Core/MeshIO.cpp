@@ -217,7 +217,7 @@ MeshIO::Format MeshInput::getFormat(const char* FileName)
         return MeshIO::Format::SMF;
     }
 
-    throw Base::FileException("File extension not supported", FileName);
+    throw Base::FileFormatException(FileName);
 }
 
 bool MeshInput::LoadAny(const char* FileName)
@@ -225,10 +225,10 @@ bool MeshInput::LoadAny(const char* FileName)
     // ask for read permission
     Base::FileInfo fi(FileName);
     if (!fi.exists() || !fi.isFile()) {
-        throw Base::FileException("File does not exist", FileName);
+        throw Base::FileNotFoundException(FileName);
     }
     if (!fi.isReadable()) {
-        throw Base::FileException("No permission on the file", FileName);
+        throw Base::FileReadPermissionException(FileName);
     }
 
     Base::ifstream str(fi, std::ios::in | std::ios::binary);
@@ -274,7 +274,7 @@ bool MeshInput::LoadAny(const char* FileName)
         ok = LoadPLY(str);
     }
     else {
-        throw Base::FileException("File extension not supported", FileName);
+        throw Base::FileFormatException(FileName);
     }
 
     return ok;
@@ -308,7 +308,7 @@ bool MeshInput::LoadFormat(std::istream& input, MeshIO::Format fmt)
         case MeshIO::NAS:
             return LoadNastran(input);
         default:
-            throw Base::FileException("Unsupported file format");
+            throw Base::FileFormatException();
     }
 }
 
@@ -914,8 +914,13 @@ bool MeshInput::Load3MF(std::istream& input)
     reader.Load();
     std::vector<int> ids = reader.GetMeshIds();
     if (!ids.empty()) {
-        MeshKernel compound = reader.GetMesh(ids[0]);
-        compound.Transform(reader.GetTransform(ids[0]));
+        const int topLevel = ids[0];
+        MeshKernel compound = reader.GetMesh(topLevel);
+        compound.Transform(reader.GetTransform(topLevel));
+        const std::string name = reader.GetName(topLevel);
+        if (!name.empty()) {
+            _objectName = name;
+        }
 
         for (std::size_t index = 1; index < ids.size(); index++) {
             MeshKernel mesh = reader.GetMesh(ids[index]);
@@ -1103,8 +1108,8 @@ bool MeshInput::LoadNastran(std::istream& input)
                 // GRID    1               1.2345671.2345671.234567
                 // GRID    112             6.0000000.5000000.00E+00
 
-                // Element type(8), id(8), cp(8), x(8), y(8), z(at least 1)
-                if (line.length() < 41) {
+                // Element type(8), id(8), cp(8), x(8), y(8), z(8)
+                if (line.length() < 48) {
                     badElementCounter++;
                     continue;
                 }
@@ -1389,10 +1394,10 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     Base::FileInfo file(FileName);
     Base::FileInfo directory(file.dirPath());
     if (!directory.exists()) {
-        throw Base::FileException("Directory does not exist", FileName);
+        throw Base::DirectoryNotFoundException(directory);
     }
     if ((file.exists() && !file.isWritable()) || !directory.isWritable()) {
-        throw Base::FileException("No write permission for file", FileName);
+        throw Base::FileWritePermissionException(FileName);
     }
 
     MeshIO::Format fileformat = format;
@@ -1413,7 +1418,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         bool ok = false;
         ok = aWriter.SaveBinarySTL(str);
         if (!ok) {
-            throw Base::FileException("Export of STL mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::ASTL) {
@@ -1425,37 +1430,37 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         bool ok = false;
         ok = aWriter.SaveAsciiSTL(str);
         if (!ok) {
-            throw Base::FileException("Export of STL mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::OBJ) {
         // write file
         if (!SaveOBJ(str, FileName)) {
-            throw Base::FileException("Export of OBJ mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::SMF) {
         // write file
         if (!SaveSMF(str)) {
-            throw Base::FileException("Export of SMF mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::OFF) {
         // write file
         if (!SaveOFF(str)) {
-            throw Base::FileException("Export of OFF mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::PLY) {
         // write file
         if (!SaveBinaryPLY(str)) {
-            throw Base::FileException("Export of PLY mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::APLY) {
         // write file
         if (!SaveAsciiPLY(str)) {
-            throw Base::FileException("Export of PLY mesh failed", FileName);
+            throw Base::FileWriteException(FileName);
         }
     }
     else if (fileformat == MeshIO::IDTF) {
@@ -1540,7 +1545,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         }
     }
     else {
-        throw Base::FileException("File format not supported", FileName);
+        throw Base::FileFormatException(FileName);
     }
 
     return true;
@@ -1590,7 +1595,7 @@ bool MeshOutput::SaveFormat(std::ostream& str, MeshIO::Format fmt) const
         case MeshIO::ASY:
             return SaveAsymptote(str);
         default:
-            throw Base::FileException("Unsupported file format");
+            throw Base::FileFormatException();
     }
 }
 
@@ -1748,13 +1753,12 @@ bool MeshOutput::SaveSMF(std::ostream& out) const
 
     // vertices
     Base::Vector3f pt;
-    std::size_t index = 0;
-    for (auto it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
+    for (const auto& rPoint : rPoints) {
         if (this->apply_transform) {
-            pt = this->_transform * *it;
+            pt = this->_transform * rPoint;
         }
         else {
-            pt.Set(it->x, it->y, it->z);
+            pt.Set(rPoint.x, rPoint.y, rPoint.z);
         }
 
         out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
@@ -2560,10 +2564,10 @@ bool MeshOutput::SaveX3DOM(std::ostream& out) const
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
     out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
         << "  <head>\n"
-        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> "
+        << "    <script type='text/javascript' src='https://www.x3dom.org/download/x3dom.js'> "
            "</script>\n"
         << "    <link rel='stylesheet' type='text/css' "
-           "href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+           "href='https://www.x3dom.org/download/x3dom.css'></link>\n"
         << "  </head>\n";
 
     auto onclick = [&out](const char* text) {

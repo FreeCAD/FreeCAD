@@ -24,7 +24,11 @@ set (TechDraw_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/TechDraw_translation.
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${TechDraw_TR_QRC} ${QM_SRCS})
-qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc ${TechDraw_TR_QRC})
+qt_add_resources(TechDrawGui_SRCS
+    Resources/TechDraw.qrc
+    ${TechDraw_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 set(TechDrawGui_UIC_SRCS
     DlgPageChooser.ui
@@ -487,9 +491,7 @@ if (MSVC)
     target_compile_definitions(TechDrawGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDrawGui)
-endif()
+target_compile_warn_error(TechDrawGui)
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")

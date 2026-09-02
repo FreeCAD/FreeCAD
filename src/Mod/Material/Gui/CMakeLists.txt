@@ -23,7 +23,11 @@ set(Material_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Material_translation.q
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
-qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
+qt_add_resources(MatGui_QRC_SRCS
+    Resources/Material.qrc
+    ${Material_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 generate_from_py(MaterialTreeWidget)
 
@@ -190,9 +194,7 @@ if (MSVC)
     target_compile_options(MatGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MatGui)
-endif()
+target_compile_warn_error(MatGui)
 
 SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)

@@ -33,32 +33,9 @@
 #include <Gui/Command.h>
 
 #include "PythonEditor.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Macro.h"
-#include "PythonDebugger.h"
 
 
 using namespace Gui;
-
-namespace Gui
-{
-struct PythonEditorP
-{
-    int debugLine {-1};
-    QRect debugRect;
-    QPixmap breakpoint;
-    QPixmap debugMarker;
-    QString filename;
-    PythonDebugger* debugger;
-    PythonEditorP()
-        : breakpoint(BitmapFactory().iconFromTheme("breakpoint").pixmap(16, 16))
-        , debugMarker(BitmapFactory().iconFromTheme("debug-marker").pixmap(16, 16))
-    {
-        debugger = Application::Instance->macroManager()->debugger();
-    }
-};
-}  // namespace Gui
 
 /* TRANSLATOR Gui::PythonEditor */
 
@@ -69,7 +46,6 @@ struct PythonEditorP
 PythonEditor::PythonEditor(QWidget* parent)
     : PythonTextEditor(parent)
 {
-    d = new PythonEditorP();
     this->setSyntaxHighlighter(new PythonSyntaxHighlighter(this));
 
     // set accelerators
@@ -85,12 +61,6 @@ PythonEditor::PythonEditor(QWidget* parent)
     connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
     connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
     connect(execInConsole, &QShortcut::activated, this, &PythonEditor::onExecuteInConsole);
-}
-
-/** Destroys the object and frees any allocated resources */
-PythonEditor::~PythonEditor()
-{
-    delete d;
 }
 
 void PythonEditor::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
@@ -109,65 +79,6 @@ void PythonEditor::OnChange(Base::Subject<const char*>& rCaller, const char* sRe
     }
 
     TextEditor::OnChange(rCaller, sReason);
-}
-
-void PythonEditor::setFileName(const QString& fn)
-{
-    d->filename = fn;
-}
-
-void PythonEditor::startDebug()
-{
-    if (d->debugger->start()) {
-        d->debugger->runFile(d->filename);
-        d->debugger->stop();
-    }
-}
-
-void PythonEditor::toggleBreakpoint()
-{
-    QTextCursor cursor = textCursor();
-    int line = cursor.blockNumber() + 1;
-    d->debugger->toggleBreakpoint(line, d->filename);
-    getMarker()->update();
-}
-
-void PythonEditor::showDebugMarker(int line)
-{
-    d->debugLine = line;
-    getMarker()->update();
-    QTextCursor cursor = textCursor();
-    cursor.movePosition(QTextCursor::StartOfBlock);
-    int cur = cursor.blockNumber() + 1;
-    if (cur > line) {
-        for (int i = line; i < cur; i++) {
-            cursor.movePosition(QTextCursor::Up);
-        }
-    }
-    else if (cur < line) {
-        for (int i = cur; i < line; i++) {
-            cursor.movePosition(QTextCursor::Down);
-        }
-    }
-    setTextCursor(cursor);
-}
-
-void PythonEditor::hideDebugMarker()
-{
-    d->debugLine = -1;
-    getMarker()->update();
-}
-
-void PythonEditor::drawMarker(int line, int x, int y, QPainter* p)
-{
-    Breakpoint bp = d->debugger->getBreakpoint(d->filename);
-    if (bp.checkLine(line)) {
-        p->drawPixmap(x, y, d->breakpoint);
-    }
-    if (d->debugLine == line) {
-        p->drawPixmap(x, y + 2, d->debugMarker);
-        d->debugRect = QRect(x, y + 2, d->debugMarker.width(), d->debugMarker.height());
-    }
 }
 
 void PythonEditor::contextMenuEvent(QContextMenuEvent* e)

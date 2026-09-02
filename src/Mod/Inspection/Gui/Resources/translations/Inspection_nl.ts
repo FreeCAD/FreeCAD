@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Inspection</source>
       <translation>Inspectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>Inspectie…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>Inspects distance information</source>
       <translation>Inspecteer afstand informatie</translation>
     </message>
@@ -22,19 +22,19 @@
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="49"/>
       <source>Inspection</source>
       <translation>Inspectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
-      <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <location filename="../../Command.cpp" line="50"/>
+      <source>Visual Inspection</source>
+      <translation>Visuele inspectie</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="50"/>
+      <location filename="../../Command.cpp" line="51"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>Inspecteert de objecten visueel</translation>
     </message>
   </context>
   <context>
@@ -48,18 +48,18 @@
   <context>
     <name>InspectionGui::VisualInspection</name>
     <message>
-      <location filename="../../VisualInspection.ui" line="14"/>
+      <location filename="../../VisualInspection.cpp" line="85"/>
       <source>Visual Inspection</source>
       <translation>Visuele inspectie</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="23"/>
+      <location filename="../../VisualInspection.ui" line="17"/>
       <source>Actual</source>
       <translation>Actueel</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
-      <location filename="../../VisualInspection.ui" line="66"/>
+      <location filename="../../VisualInspection.ui" line="72"/>
       <source>Objects</source>
       <translation>Objecten</translation>
     </message>
@@ -69,23 +69,23 @@
       <translation>Nominaal</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="77"/>
+      <location filename="../../VisualInspection.ui" line="83"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="97"/>
+      <location filename="../../VisualInspection.ui" line="103"/>
       <source>Search distance</source>
       <translation>Zoekafstand</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="129"/>
-      <location filename="../../VisualInspection.ui" line="174"/>
+      <location filename="../../VisualInspection.ui" line="135"/>
+      <location filename="../../VisualInspection.ui" line="180"/>
       <source> mm</source>
       <translation> mm</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="145"/>
+      <location filename="../../VisualInspection.ui" line="151"/>
       <source>Thickness</source>
       <translation>Dikte</translation>
     </message>
@@ -110,21 +110,21 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Verlaat info-modus</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="708"/>
+      <location filename="../../ViewProviderInspection.cpp" line="709"/>
       <source>Distance: &gt; %1</source>
       <translation>Afstand: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="711"/>
+      <location filename="../../ViewProviderInspection.cpp" line="712"/>
       <source>Distance: &lt; %1</source>
       <translation>Afstand: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="730"/>
-      <location filename="../../ViewProviderInspection.cpp" line="748"/>
+      <location filename="../../ViewProviderInspection.cpp" line="731"/>
+      <location filename="../../ViewProviderInspection.cpp" line="749"/>
       <source>Distance: %1</source>
       <translation>Afstand: %1</translation>
     </message>

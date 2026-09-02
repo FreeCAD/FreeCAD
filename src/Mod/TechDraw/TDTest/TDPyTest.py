@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # basic test script for TechDraw Py functions migrated from Drawing
 
 

@@ -27,8 +27,7 @@ from string import Template
 This module contains the HTML template for the CAM Sanity report.
 """
 
-html_template = Template(
-    """
+html_template = Template("""
 <!DOCTYPE html>
 <html>
 <head>
@@ -685,11 +684,9 @@ ${tool_data}
 </div>
 </body>
 </html>
-"""
-)
+""")
 
-base_template = Template(
-    """
+base_template = Template("""
 <tr>
     <td>
         ${key}
@@ -698,11 +695,9 @@ base_template = Template(
         ${val}
     </td>
 </tr>
-        """
-)
+        """)
 
-squawk_template = Template(
-    """
+squawk_template = Template("""
 <tr>
     <td>
         ${squawkIcon}
@@ -717,11 +712,9 @@ squawk_template = Template(
         ${Note}
     </td>
 </tr>
-        """
-)
+        """)
 
-tool_template = Template(
-    """
+tool_template = Template("""
 <div class="heading-container">
     <h3 id="_tool_data_T${toolNumber}">Tool Number: T${toolNumber}</h3><a href="#header" class="top-link">Top</a>
 </div>
@@ -792,11 +785,9 @@ tool_template = Template(
     </tr>
 </table>
 ${ops}
-        """
-)
+        """)
 
-op_tool_template = Template(
-    """
+op_tool_template = Template("""
 <table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff;">
     <colgroup>
         <col width="262"/>
@@ -833,11 +824,9 @@ op_tool_template = Template(
         </td>
     </tr>
 </table>
-        """
-)
+        """)
 
-op_run_template = Template(
-    """
+op_run_template = Template("""
 <tr>
     <td>
         ${opName}
@@ -855,11 +844,8 @@ op_run_template = Template(
         ${cycleTime}
     </td>
 </tr>
-        """
-)
+        """)
 
-tool_item_template = Template(
-    """
+tool_item_template = Template("""
 <li><a href="#_tool_data_T${toolNumber}">Tool Number: T${toolNumber}</a></li>
-    """
-)
+    """)

@@ -109,9 +109,8 @@ def get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True
         "Triangle": 2,
     }
 
-    eval_dict = locals()  # to access local variables from eval
     elements_list_with_zero = [
-        (eval("fem_mesh_obj.FemMesh." + s + "Count", eval_dict), s, d)
+        (getattr(fem_mesh_obj.FemMesh, s + "Count"), s, d)
         for (s, d) in FreeCAD_element_names_dims.items()
     ]
     # ugly but necessary

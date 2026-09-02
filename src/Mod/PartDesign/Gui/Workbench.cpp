@@ -159,20 +159,6 @@ void Workbench::activated()
         "PartDesign_Body"
     ));
 
-    const char* Vertex1[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
-        Vertex1,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
-    ));
-
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
@@ -189,26 +175,13 @@ void Workbench::activated()
         "PartDesign_Body"
     ));
 
-    const char* Edge1[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
-        Edge1,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
-    ));
-
     const char* Face[] = {
         "PartDesign_NewSketch",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Defeaturing",
         "Part_DatumPoint",
         "Part_DatumLine",
         "Part_DatumPlane",
@@ -220,20 +193,6 @@ void Workbench::activated()
         Face,
         "Face Tools",
         "PartDesign_Body"
-    ));
-
-    const char* Face1[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT Part::Feature SUBELEMENT Face COUNT 1",
-        Face1,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
     ));
 
     const char* Body[] = {"PartDesign_NewSketch", nullptr};
@@ -282,48 +241,12 @@ void Workbench::activated()
         "PartDesign_Body"
     ));
 
-    const char* Plane3[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT App::Plane COUNT 1",
-        Plane3,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
-    ));
-
-    const char* Plane4[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT PartDesign::Plane COUNT 1",
-        Plane4,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
-    ));
-
     const char* Line[] = {"Part_DatumPoint", "Part_DatumLine", "Part_DatumPlane", nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
         Line,
         "Helper Tools",
         "PartDesign_Body"
-    ));
-
-    const char* Line1[] = {"PartDesign_Point", "PartDesign_Line", "PartDesign_Plane", nullptr};
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT PartDesign::Line COUNT 1",
-        Line1,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
     ));
 
     const char* Point[]
@@ -333,20 +256,6 @@ void Workbench::activated()
         Point,
         "Helper Tools",
         "PartDesign_Body"
-    ));
-
-    const char* Point1[] = {
-        "PartDesign_Point",
-        "PartDesign_Line",
-        "PartDesign_Plane",
-        "PartDesign_CoordinateSystem",
-        nullptr
-    };
-    Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
-        "SELECT PartDesign::Point COUNT 1",
-        Point1,
-        "Datum objects",
-        "PartDesign_CoordinateSystem"
     ));
 
     const char* NoSel[] = {"PartDesign_Body", nullptr};
@@ -359,6 +268,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Defeaturing",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -533,7 +443,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dressups << "PartDesign_Fillet"
               << "PartDesign_Chamfer"
               << "PartDesign_Draft"
-              << "PartDesign_Thickness";
+              << "PartDesign_Thickness"
+              << "PartDesign_Defeaturing";
 
     *part << "PartDesign_Body"
           << "Separator"
@@ -616,7 +527,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
-          << "PartDesign_Thickness";
+          << "PartDesign_Thickness"
+          << "PartDesign_Defeaturing";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Transformation Features");

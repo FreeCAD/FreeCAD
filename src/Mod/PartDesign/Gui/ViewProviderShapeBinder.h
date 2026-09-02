@@ -71,6 +71,18 @@ public:
     {
         return false;
     }
+    Qt::DropAction getDropActionForTarget(Qt::DropAction action) const override
+    {
+        // SubShapeBinder's drop convention is the reverse of the Qt default:
+        // no modifier = add geometry ([+]), Ctrl = replace geometry ([>]).
+        if (action == Qt::CopyAction) {
+            return Qt::MoveAction;
+        }
+        if (action == Qt::MoveAction) {
+            return Qt::CopyAction;
+        }
+        return action;
+    }
     bool canDropObjectEx(
         App::DocumentObject* obj,
         App::DocumentObject* owner,

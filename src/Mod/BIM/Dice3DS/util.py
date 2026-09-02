@@ -6,7 +6,6 @@ Defines some routines for calculating normals and transforming points.
 
 import numpy
 
-
 # Can push numpy.float64 (or even numpy.float80) into this if you
 # would like to use higher precision when calculating; results will be
 # converted back to numpy.float32

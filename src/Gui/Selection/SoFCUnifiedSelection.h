@@ -23,9 +23,11 @@
 
 #pragma once
 
+#include <cstddef>
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -40,10 +42,30 @@
 class SoFullPath;
 class SoPickedPoint;
 class SoDetail;
+class SbBox3f;
+class SbMatrix;
 
 
 namespace Gui
 {
+
+namespace SelectionPickPolicy
+{
+
+struct Candidate
+{
+    const void* owner {nullptr};
+    int priority {0};
+    bool closeToFirst {false};
+    bool isAnnotation {false};
+    bool hasGate {false};
+    bool passesGate {false};
+};
+
+GuiExport bool canFinalizeSinglePick(const std::vector<Candidate>& picked);
+GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
+
+}  // namespace SelectionPickPolicy
 
 class Document;
 class ViewProviderDocumentObject;
@@ -91,6 +113,8 @@ public:
 
     static bool hasHighlight();
 
+    static bool getShowSelectionBoundingBox();
+
     friend class View3DInventorViewer;
 
 protected:
@@ -105,6 +129,19 @@ private:
         ViewProviderDocumentObject* vpd {nullptr};
         std::string element;
     };
+
+    static bool passesSelectionGate(const PickedInfo&);
+    static bool hasSelectionGate(const PickedInfo&);
+    static SelectionPickPolicy::Candidate getPickCandidate(
+        const PickedInfo&,
+        const Document*,
+        const PickedInfo* firstPicked = nullptr
+    );
+    static std::vector<SelectionPickPolicy::Candidate> getPickCandidates(
+        const std::vector<PickedInfo>&,
+        const Document*
+    );
+    static bool canFinalizeSinglePick(const std::vector<PickedInfo>&);
 
     bool setPreselect(const PickedInfo&);
     bool setPreselect(
@@ -127,9 +164,54 @@ private:
 
     SbBool setPreSelection;
 
+    bool selectAll;
+
     // -1 = not handled, 0 = not selected, 1 = selected
     int32_t preSelection;
     SoColorPacker colorpacker;
+};
+
+/** Helper class for change and restore OpenGL depth func
+ *
+ * Although Coin3D has SoDepthBuffer and SoDepthBufferElement for this purpose,
+ * we cannot rely on it, because Coin3D implementation does not account for
+ * user code direct change of OpenGL state. And there are user code change
+ * glDepthFunc directly.
+ */
+struct GuiExport FCDepthFunc
+{
+    /** Constructor
+     * @param f: the depth function to change to
+     */
+    FCDepthFunc(int32_t f);
+
+    /** Constructure that does nothing
+     *
+     * This allows you to delay depth function setting by calling set()
+     */
+    FCDepthFunc();
+
+    /** Destructor
+     * Restore the depth function if changed
+     */
+    ~FCDepthFunc();
+
+    /** Change depth function
+     * @param f: the depth function to change to
+     */
+    void set(int32_t f);
+
+    /// restore depth function
+    void restore();
+
+    /// Stores the depth function before changing
+    int32_t func;
+
+    /// Indicate whether the depth function is changed and will be restored
+    bool changed;
+
+    /// Whether to restore depth test
+    bool dtest;
 };
 
 class GuiExport SoFCPathAnnotation: public SoSeparator
@@ -141,7 +223,11 @@ class GuiExport SoFCPathAnnotation: public SoSeparator
 public:
     static void initClass();
     static void finish();
-    SoFCPathAnnotation();
+    SoFCPathAnnotation(
+        ViewProvider* vp = nullptr,
+        const char* subname = nullptr,
+        View3DInventorViewer* viewer = nullptr
+    );
 
     void setPath(SoPath*);
     SoPath* getPath()
@@ -164,6 +250,9 @@ protected:
     ~SoFCPathAnnotation() override;
 
 protected:
+    ViewProvider* viewProvider;
+    std::string subname;
+    View3DInventorViewer* viewer;
     SoPath* path;
     SoTempPath* tmpPath;
     SoDetail* det;
@@ -205,7 +294,13 @@ class GuiExport SoFCSelectionRoot: public SoFCSeparator
 public:
     static void initClass();
     static void finish();
-    explicit SoFCSelectionRoot(bool trackCacheMode = false);
+    explicit SoFCSelectionRoot(bool trackCacheMode = false, ViewProvider* vp = nullptr);
+
+    ViewProvider* getViewProvider() const
+    {
+        return viewProvider;
+    }
+    void setViewProvider(ViewProvider* vp);
 
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRenderInPath(SoGLRenderAction* action) override;
@@ -361,7 +456,27 @@ public:
     };
     SoSFEnum selectionStyle;
 
-    static bool renderBBox(SoGLRenderAction* action, SoNode* node, SbColor color);
+    static bool renderBBox(
+        SoGLRenderAction* action,
+        SoNode* node,
+        const SbColor& color,
+        const SbMatrix* mat = 0
+    );
+
+    static bool renderBBox(
+        SoGLRenderAction* action,
+        SoNode* node,
+        const SbBox3f& bbox,
+        SbColor color,
+        const SbMatrix* mat = 0
+    );
+
+    static void setupSelectionLineRendering(
+        SoState* state,
+        SoNode* node,
+        const uint32_t* color,
+        bool changeWidth = true
+    );
 
 protected:
     ~SoFCSelectionRoot() override;
@@ -375,6 +490,8 @@ protected:
         std::unordered_set<SoNode*> nodeSet;
         size_t offset = 0;
     };
+
+    bool doActionPrivate(Stack& stack, SoAction*);
 
     static SoFCSelectionContextBasePtr getNodeContext(
         Stack& stack,
@@ -424,7 +541,7 @@ protected:
     float transOverride = 0.0f;
     SoColorPacker shapeColorPacker;
 
-    bool doActionPrivate(Stack& stack, SoAction*);
+    ViewProvider* viewProvider;
 };
 
 /**

@@ -77,6 +77,128 @@
 using namespace Part;
 using namespace Attacher;
 
+namespace
+{
+struct PlanarFaceInfo
+{
+    gp_Pln plane;
+    gp_Dir normal;
+    gp_Pnt center;
+};
+
+PlanarFaceInfo getPlanarFaceInfo(const TopoShape& shape, double precision)
+{
+    TopoDS_Face face;
+    gp_Pln plane;
+    bool reverse = false;
+
+    try {
+        face = TopoDS::Face(shape.getShape());
+    }
+    catch (...) {
+    }
+
+    if (face.IsNull()) {
+        if (!shape.findPlane(plane)) {
+            throw Base::ValueError("No planar face in AttachEngine3D::calculateAttachedPlacement()!");
+        }
+    }
+    else {
+        BRepAdaptor_Surface adapt(face);
+        if (adapt.GetType() == GeomAbs_Plane) {
+            plane = adapt.Plane();
+        }
+        else {
+            TopLoc_Location loc;
+            Handle(Geom_Surface) surface = BRep_Tool::Surface(face, loc);
+            GeomLib_IsPlanarSurface check(surface, precision);
+            if (!check.IsPlanar()) {
+                throw Base::ValueError(
+                    "No planar face in AttachEngine3D::calculateAttachedPlacement()!"
+                );
+            }
+            plane = check.Plan();
+        }
+
+        reverse = face.Orientation() == TopAbs_REVERSED;
+    }
+
+    if (!plane.Direct()) {
+        // Use a right-handed coordinate system before calculating the face normal.
+        plane.UReverse();
+        reverse = !reverse;
+    }
+
+    gp_Ax1 normal = plane.Axis();
+    if (reverse) {
+        normal.Reverse();
+    }
+
+    PlanarFaceInfo result {plane, normal.Direction(), plane.Location()};
+    if (!face.IsNull() && !face.Infinite()) {
+        GProp_GProps properties;
+        BRepGProp::SurfaceProperties(face, properties);
+        result.center = properties.CentreOfMass();
+    }
+    return result;
+}
+
+// Plane as normal . X = offset, with a normal that is not normalized.
+struct BisectorPlane
+{
+    gp_Vec normal;
+    double offset;
+
+    bool isDegenerate() const
+    {
+        return normal.SquareMagnitude() < Precision::SquareConfusion();
+    }
+
+    gp_Pnt project(const gp_Pnt& point) const
+    {
+        const gp_Vec vector(point.XYZ());
+        return gp_Pnt(
+            (vector + normal * ((offset - normal.Dot(vector)) / normal.SquareMagnitude())).XYZ()
+        );
+    }
+};
+
+// The dihedral bisectors of the two faces, from n1.(X-c1) = +/- n2.(X-c2). Both contain the
+// faces' intersection line.
+BisectorPlane getMidPlane(const PlanarFaceInfo& firstFace, const PlanarFaceInfo& secondFace)
+{
+    const gp_Vec firstNormal(firstFace.normal);
+    const gp_Vec secondNormal(secondFace.normal);
+    const double firstOffset = firstNormal.Dot(gp_Vec(firstFace.center.XYZ()));
+    const double secondOffset = secondNormal.Dot(gp_Vec(secondFace.center.XYZ()));
+
+    const BisectorPlane sum {firstNormal + secondNormal, firstOffset + secondOffset};
+    const BisectorPlane difference {firstNormal - secondNormal, firstOffset - secondOffset};
+
+    // Parallel faces degenerate one of the two, and never both.
+    if (sum.isDegenerate()) {
+        return difference;
+    }
+    if (difference.isDegenerate()) {
+        return sum;
+    }
+
+    // The centers sit at -n2.d and n1.d from the sum bisector and at n2.d and n1.d from the
+    // difference one, so this sign picks the bisector that has them on opposite sides.
+    const gp_Vec centerDirection(firstFace.center, secondFace.center);
+    const double separation = centerDirection.Dot(firstNormal) * centerDirection.Dot(secondNormal);
+    if (separation > 0.0) {
+        return sum;
+    }
+    if (separation < 0.0) {
+        return difference;
+    }
+
+    // A center lies on the other face's plane, so neither separates them.
+    return sum.normal.SquareMagnitude() >= difference.normal.SquareMagnitude() ? sum : difference;
+}
+}  // namespace
+
 // These strings are for mode list enum property.
 const char* AttachEngine::eMapModeStrings[] = {
     "Deactivated",
@@ -141,6 +263,7 @@ const char* AttachEngine::eMapModeStrings[] = {
 
     "ParallelPlane",
     "MidPoint",
+    "MidPlane",
 
     nullptr
 };
@@ -544,6 +667,11 @@ void AttachEngine::suggestMapModes(SuggestResult& result) const
                 }
             }
         }
+    }
+
+    // A mode already in allApplicableModes should not also appear in reachableModes
+    for (eMapMode mode : mlist) {
+        mlist_reachable.erase(mode);
     }
 }
 
@@ -983,7 +1111,8 @@ void AttachEngine::readLinks(
         // considered later, when the need arises.
         types[i] = getShapeType(shapes[i]->getShape());
 
-        if (subs[i].length() == 0) {
+        std::string elementName = Data::findElementName(subs[i].c_str());
+        if (elementName.length() == 0) {
             types[i] = eRefType(types[i] | rtFlagHasPlacement);
         }
     }
@@ -1229,6 +1358,7 @@ AttachEngine3D::AttachEngine3D()
     modeRefTypes[mmInertialCS].push_back(cat(rtAnything, rtAnything, rtAnything, rtAnything));
 
     modeRefTypes[mmFlatFace].push_back(cat(rtFlatFace));
+    modeRefTypes[mmMidPlane].push_back(cat(rtFlatFace, rtFlatFace));
 
     modeRefTypes[mmTangentPlane].push_back(cat(rtFace, rtVertex));
     modeRefTypes[mmTangentPlane].push_back(cat(rtVertex, rtFace));
@@ -1525,61 +1655,31 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 );
             }
 
-            TopoDS_Face face;
-            gp_Pln plane;
-            bool Reverse = false;
-            try {
-                face = TopoDS::Face(shapes[0]->getShape());
-            }
-            catch (...) {
-            }
-            if (face.IsNull()) {
-                if (!TopoShape(*shapes[0]).findPlane(plane)) {
-                    throw Base::ValueError(
-                        "No planar face in AttachEngine3D::calculateAttachedPlacement()!"
-                    );
-                }
-            }
-            else {
-                BRepAdaptor_Surface adapt(face);
-                if (adapt.GetType() == GeomAbs_Plane) {
-                    plane = adapt.Plane();
-                }
-                else {
-                    TopLoc_Location loc;
-                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                    GeomLib_IsPlanarSurface check(surf, precision);
-                    if (check.IsPlanar()) {
-                        plane = check.Plan();
-                    }
-                    else {
-                        throw Base::ValueError(
-                            "No planar face in AttachEngine3D::calculateAttachedPlacement()!"
-                        );
-                    }
-                }
+            const PlanarFaceInfo faceInfo = getPlanarFaceInfo(*shapes[0], precision);
+            SketchNormal = faceInfo.normal;
 
-                if (face.Orientation() == TopAbs_REVERSED) {
-                    Reverse = true;
-                }
-            }
-
-            Standard_Boolean ok = plane.Direct();
-            if (!ok) {
-                // toggle if plane has a left-handed coordinate system
-                plane.UReverse();
-                Reverse = !Reverse;
-            }
-            gp_Ax1 Normal = plane.Axis();
-            if (Reverse) {
-                Normal.Reverse();
-            }
-            SketchNormal = Normal.Direction();
-
-            Handle(Geom_Plane) gPlane = new Geom_Plane(plane);
+            Handle(Geom_Plane) gPlane = new Geom_Plane(faceInfo.plane);
             GeomAPI_ProjectPointOnSurf projector(refOrg, gPlane);
             SketchBasePoint = projector.NearestPoint();
 
+        } break;
+        case mmMidPlane: {
+            if (shapes.size() != 2) {
+                throw Base::ValueError(
+                    "AttachEngine3D::calculateAttachedPlacement: need exactly two planar faces."
+                );
+            }
+
+            const PlanarFaceInfo firstFace = getPlanarFaceInfo(*shapes[0], precision);
+            const PlanarFaceInfo secondFace = getPlanarFaceInfo(*shapes[1], precision);
+
+            const BisectorPlane midPlane = getMidPlane(firstFace, secondFace);
+            const gp_Pnt centersMidPoint(
+                gp_Vec(firstFace.center.XYZ()).Added(secondFace.center.XYZ()).Multiplied(0.5).XYZ()
+            );
+
+            SketchNormal = gp_Dir(midPlane.normal);
+            SketchBasePoint = midPlane.project(centersMidPoint);
         } break;
         case mmTangentPlane: {
             if (shapes.size() < 2) {
@@ -1726,6 +1826,12 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 Handle(Geom_Curve) hCurve = BRep_Tool::Curve(path, u1, u2);
 
                 GeomAPI_ProjectPointOnCurve projector(p_in, hCurve);
+                if (projector.NbPoints() < 1) {
+                    throw Base::ValueError(
+                        "AttachEngine3D::calculateAttachedPlacement: projecting "
+                        "point onto curve failed."
+                    );
+                }
                 u = projector.LowerDistanceParameter();
             }
             else {

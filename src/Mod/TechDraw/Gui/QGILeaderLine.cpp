@@ -104,6 +104,30 @@ QGILeaderLine::QGILeaderLine()
                      &QGILeaderLine::onLineEditFinished);
 }
 
+QPainterPath QGILeaderLine::shape() const
+{
+    QPainterPath path;
+
+    if (m_line) {
+        QPainterPathStroker stroker;
+        stroker.setWidth(PreferencesGui::edgeFuzz() * 2.0);
+        stroker.setCapStyle(Qt::RoundCap);
+        stroker.setJoinStyle(Qt::RoundJoin);
+        QPainterPath stroked = stroker.createStroke(m_line->path());
+        path.addPath(mapFromItem(m_line, stroked));
+    }
+    if (m_arrow1 && m_arrow1->isVisible()) {
+        QPainterPath ap = mapFromItem(m_arrow1, m_arrow1->path());
+        path.addPath(ap);
+    }
+    if (m_arrow2 && m_arrow2->isVisible()) {
+        QPainterPath ap = mapFromItem(m_arrow2, m_arrow2->path());
+        path.addPath(ap);
+    }
+
+    return path;
+}
+
 void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
 {
     //    Base::Console().message("QGILL::setLeaderFeature()\n");
@@ -619,11 +643,6 @@ TechDraw::DrawLeaderLine* QGILeaderLine::getLeaderFeature()
     return static_cast<TechDraw::DrawLeaderLine*>(getViewObject());
 }
 
-double QGILeaderLine::getEdgeFuzz() const
-{
-    return PreferencesGui::edgeFuzz();
-}
-
 QColor QGILeaderLine::prefNormalColor()
 {
     //    Base::Console().message("QGILL::getNormalColor()\n");
@@ -639,7 +658,7 @@ QColor QGILeaderLine::prefNormalColor()
 
 QRectF QGILeaderLine::boundingRect() const
 {
-    return childrenBoundingRect();
+    return shape().controlPointRect();
 }
 
 void QGILeaderLine::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,

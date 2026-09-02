@@ -33,6 +33,7 @@
 #include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/ProgramVersion.h>
 
 #include "FeaturePartBoolean.h"
 #include "TopoShapeOpCode.h"
@@ -181,5 +182,16 @@ App::DocumentObjectExecReturn* Boolean::execute()
         return new App::DocumentObjectExecReturn(
             "A fatal error occurred when running boolean operation"
         );
+    }
+}
+
+void Boolean::Restore(Base::XMLReader& reader)
+{
+    ExtensionContainer::Restore(reader);
+
+    // The Refine property was added in FreeCAD 0.17, so any file before that will not have it set.
+    // For these files, the appropriate default value is false.
+    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v0_17) {
+        Refine.setValue(false);
     }
 }

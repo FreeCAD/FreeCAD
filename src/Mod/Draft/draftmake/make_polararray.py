@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create polar Array objects."""
+
 ## @package make_polararray
 # \ingroup draftmake
 # \brief Provides functions to create polar Array objects.

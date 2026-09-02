@@ -9,6 +9,9 @@
 #include "Area.h"
 #include "kurve/geometry.h"
 
+namespace heeks
+{
+
 const Point operator*(const double& d, const Point& p)
 {
     return p * d;
@@ -1275,7 +1278,7 @@ double Span::IncludedAngle() const
         vs.normalize();
         ve.normalize();
 
-        return ::IncludedAngle(vs, ve, m_v.m_type);
+        return heeks::IncludedAngle(vs, ve, m_v.m_type);
     }
 
     return 0.0;
@@ -1317,7 +1320,7 @@ double Span::Parameter(const Point& p) const
             vs = -vs;
             v = -v;
         }
-        double ang = ::IncludedAngle(vs, v, m_v.m_type);
+        double ang = heeks::IncludedAngle(vs, v, m_v.m_type);
         double angle = IncludedAngle();
         t = ang / angle;
     }
@@ -1388,3 +1391,5 @@ void tangential_arc(const Point& p0, const Point& p1, const Point& v0, Point& c,
     geoff_geometry::tangential_arc(gp0, gp1, gv0, gc, dir);
     c = Point(gc.x, gc.y);
 }
+
+}  // namespace heeks

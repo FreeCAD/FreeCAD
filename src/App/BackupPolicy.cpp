@@ -232,7 +232,30 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
-                    str << bn << buffer.data();
+                    std::string timestamp = buffer.data();
+
+                    auto isInvalidChar = [](char ch) {
+#if defined(_WIN32)
+                        return std::string_view("<>:\"/\\|?*").find(ch) != std::string_view::npos;
+#else
+                        return ch == '/';
+#endif
+                    };
+
+                    if (std::ranges::any_of(timestamp, isInvalidChar)) {
+                        std::ranges::replace_if(timestamp, isInvalidChar, '-');
+
+                        static bool warned = false;
+                        if (!warned) {
+                            Base::Console().warning(
+                                "Backup filename contained invalid characters. "
+                                "Automatically replaced with '-'. "
+                                "Consider changing the date format in Preferences/Document.\n");
+                            warned = true;
+                        }
+                    }
+
+                    str << bn << timestamp;
 
                     fn = str.str();
                     bool done = false;

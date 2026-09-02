@@ -57,6 +57,7 @@ public:
 
     void apply();
     void reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
@@ -93,6 +94,12 @@ private:
         bool is_selectable = false;
         long transparency = 0;
         double extrudeValue = 0.0;
+    };
+    enum class SelectionMode
+    {
+        None,
+        Face,
+        Edge
     };
 
     // from Gui::SelectionObserver
@@ -151,8 +158,7 @@ private:
     App::Document* m_partDocument = nullptr;
     double m_lastDepthVal;
 
-    Gui::SelectionFilterGate* filterEdge;
-    Gui::SelectionFilterGate* filterFace;
+    SelectionMode selectionMode;
 };
 
 class TaskProjectionOnSurface: public Gui::TaskView::TaskDialog
@@ -189,6 +195,7 @@ public:
 
     void accept();
     void reject();
+    void setSelectionGate();
 
     // from Gui::SelectionObserver
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -226,8 +233,6 @@ private:
 
 private:
     std::unique_ptr<Ui::DlgProjectionOnSurface> ui;
-    Gui::SelectionFilterGate* filterEdge;
-    Gui::SelectionFilterGate* filterFace;
     App::WeakPtrT<Part::ProjectOnSurface> feature;
     SelectionMode selectionMode = SelectionMode::None;
 };

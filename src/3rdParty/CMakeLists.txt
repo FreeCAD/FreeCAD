@@ -5,6 +5,10 @@ if (BUILD_SMESH)
     add_subdirectory(salomesmesh)
 endif()
 
+if(BUILD_MESH)
+    add_subdirectory(WildMagic4)
+endif()
+
 add_subdirectory(lazy_loader)
 
 if(NOT FREECAD_USE_EXTERNAL_E57FORMAT)

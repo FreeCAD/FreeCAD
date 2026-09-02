@@ -63,10 +63,7 @@ void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geom
 {
     if (geoid >= 0) {
         // Get the SketchObject from the ViewProvider.
-        auto* obj = viewProvider.getSketchObject();
-        const bool isGroupMember = obj->isInGroup(geoid, false);
-
-        if (obj) {
+        if (auto* obj = viewProvider.getSketchObject()) {
             if (obj->isInGroup(geoid, false)) {
                 return;
             }

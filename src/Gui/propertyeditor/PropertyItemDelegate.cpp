@@ -391,16 +391,23 @@ void PropertyItemDelegate::setModelData(
     const QModelIndex& index
 ) const
 {
-    if (!index.isValid() || !changed || userEditor) {
+    if (!index.isValid() || userEditor) {
         return;
     }
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
+    const bool commitOnClose = childItem->commitOnEditorClose();
+    if (!changed && !commitOnClose) {
+        return;
+    }
     QVariant data;
     if (expressionEditor == editor) {
         data = childItem->expressionEditorData(editor);
     }
     else {
         data = childItem->editorData(editor);
+    }
+    if (commitOnClose && !changed && data == index.data(Qt::EditRole)) {
+        return;
     }
     model->setData(index, data, Qt::EditRole);
 }

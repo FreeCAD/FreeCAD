@@ -50,6 +50,7 @@
 
 
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/SoLabelNodes.h>
 
 #include <App/Document.h>
 #include <Base/BaseClass.h>
@@ -482,7 +483,7 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     fieldDistance = (vec2 - vec1).Length();
 
     auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
-    setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
+    setLabelValue(propDistance->getQuantityValue().getUserString());
 
     // Set delta distance
     auto propDistanceX = static_cast<App::PropertyDistance*>(

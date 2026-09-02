@@ -1,0 +1,2 @@
+project-includes = ["smoke.py"]
+search-path = ["../generated/stubs"]

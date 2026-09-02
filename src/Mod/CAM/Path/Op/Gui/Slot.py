@@ -78,9 +78,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.updateQuantitySpinBoxes()
 
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
-
         enums = [t[1] for t in self.propEnums["Reference1"]]
         if "Reference1" in self.ENUMS:
             enums = self.ENUMS["Reference1"]
@@ -99,7 +96,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             idx = enums.index(obj.Reference2)
         self.form.geo2Reference.setCurrentIndex(idx)
 
-        self.selectInComboBox(obj.LayerMode, self.form.layerMode)
+        self.selectInComboBox(obj.CutPattern, self.form.cutPattern)
         self.selectInComboBox(obj.PathOrientation, self.form.pathOrientation)
 
         if obj.ReverseDirection:
@@ -114,8 +111,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         debugMsg("getFields()")
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
         val = obj.getEnumerationsOfProperty("Reference1")[self.form.geo1Reference.currentIndex()]
         obj.Reference1 = val
@@ -125,8 +120,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.Reference2 = val
         self.geo2Extension.updateProperty()
 
-        val = self.propEnums["LayerMode"][self.form.layerMode.currentIndex()][1]
-        obj.LayerMode = val
+        val = self.propEnums["CutPattern"][self.form.cutPattern.currentIndex()][1]
+        obj.CutPattern = val
 
         val = self.propEnums["PathOrientation"][self.form.pathOrientation.currentIndex()][1]
         obj.PathOrientation = val
@@ -137,13 +132,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         debugMsg("getSignalsForUpdate()")
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.geo1Extension.editingFinished)
         signals.append(self.form.geo1Reference.currentIndexChanged)
         signals.append(self.form.geo2Extension.editingFinished)
         signals.append(self.form.geo2Reference.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
+        signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.pathOrientation.currentIndexChanged)
         if hasattr(self.form.reverseDirection, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.reverseDirection.checkStateChanged)

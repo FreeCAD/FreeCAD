@@ -1154,19 +1154,57 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
             focus2constraints++;
     }
 
+    // If a center-coincident sibling arc exists (created by a case-2 trim), transfer
+    // InternalAlignment to it instead of deleting the internal geometry.
+    if (delgeoid) {
+        int siblingGeoId = -1;
+        for (const auto& constr : vals) {
+            if (constr->Type != Sketcher::Coincident)
+                continue;
+            int candidate = (constr->First == GeoId && constr->FirstPos == PointPos::mid
+                                && constr->SecondPos == PointPos::mid)
+                ? constr->Second
+                : (constr->Second == GeoId && constr->SecondPos == PointPos::mid
+                      && constr->FirstPos == PointPos::mid)
+                    ? constr->First
+                    : -1;
+            const auto* cg = candidate >= 0 ? getGeometry(candidate) : nullptr;
+            if (cg && hasInternalGeometry(cg) && !cg->is<Part::GeomBSplineCurve>()) {
+                siblingGeoId = candidate;
+                break;
+            }
+        }
+        if (siblingGeoId >= 0) {
+            std::vector<Constraint*> transferred;
+            for (const auto& constr : vals)
+                if (constr->Type == Sketcher::InternalAlignment && constr->Second == GeoId) {
+                    auto* c = constr->copy();
+                    c->Second = siblingGeoId;
+                    transferred.push_back(c);
+                }
+            addConstraints(transferred);
+            for (auto* c : transferred)
+                delete c;
+            delGeometry(GeoId, DeleteOption::UpdateGeometry);
+            return 1;
+        }
+    }
+
     std::vector<int> delgeometries;
 
-    // those with less than 2 constraints must be removed
-    if (focus2constraints < 2)
+    // those with less than 2 constraints must be removed;
+    // when deleting the parent geometry (delgeoid=true), force-remove all internal elements
+    // regardless of constraint count (e.g. Coincident constraints from exposeInternalGeometry)
+    if (focus2constraints < 2 || (delgeoid && focus2elementindex >= 0))
         delgeometries.push_back(focus2elementindex);
 
-    if (focus1constraints < 2)
+    if (focus1constraints < 2 || (delgeoid && focus1elementindex >= 0))
         delgeometries.push_back(focus1elementindex);
 
-    if (minorconstraints < 2)
+    if (minorconstraints < 2 || (delgeoid && minorelementindex >= 0))
         delgeometries.push_back(minorelementindex);
 
-    if (majorconstraints < 2)
+    if (majorconstraints < 2 || (delgeoid && majorelementindex >= 0))
         delgeometries.push_back(majorelementindex);
 
     if (delgeoid)

@@ -45,6 +45,7 @@
 #include "MeasureArea.h"
 #include "MeasureDiameter.h"
 #include "MeasureRadius.h"
+#include "MassPropertiesObject.h"
 
 namespace Measure
 {
@@ -95,20 +96,21 @@ PyMOD_INIT_FUNC(Measure)
     Base::Interpreter().addType(&Measure::MeasurementPy::Type, mod, "Measurement");
     Base::Interpreter().addType(&Measure::MeasureBasePy::Type, mod, "MeasureBase");
 
-    Measure::Measurement ::init();
+    Measure::Measurement::init();
 
     // umf classes
-    Measure::MeasureDistanceType ::init();
-    Measure::MeasureBase ::init();
-    Measure::MeasurePython ::init();
-    Measure::MeasureAngle ::init();
-    Measure::MeasureDistance ::init();
+    Measure::MeasureDistanceType::init();
+    Measure::MeasureBase::init();
+    Measure::MeasurePython::init();
+    Measure::MeasureAngle::init();
+    Measure::MeasureDistance::init();
     Measure::MeasureDistanceDetached::init();
-    Measure::MeasurePosition ::init();
-    Measure::MeasureLength ::init();
-    Measure::MeasureArea ::init();
-    Measure::MeasureDiameter ::init();
-    Measure::MeasureRadius ::init();
+    Measure::MeasurePosition::init();
+    Measure::MeasureLength::init();
+    Measure::MeasureArea::init();
+    Measure::MeasureDiameter::init();
+    Measure::MeasureRadius::init();
+    Measure::Result::init();
 
     // Add fundamental umf Measure Types
 
@@ -162,7 +164,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "DIAMETER",
-        "Diameter",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Diameter"),
         "Measure::MeasureDiameter",
         MeasureDiameter::isValidSelection,
         MeasureDiameter::isPrioritizedSelection

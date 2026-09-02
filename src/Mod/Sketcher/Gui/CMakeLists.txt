@@ -10,7 +10,11 @@ set (Sketcher_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Sketcher_translation.
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
-qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
+qt_add_resources(SketcherGui_SRCS
+    Resources/Sketcher.qrc
+    ${Sketcher_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 generate_from_py(ViewProviderSketchGeometryExtension)
 
@@ -57,6 +61,8 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerText.h
     DrawSketchHandlerBSpline.h
     DrawSketchHandlerPoint.h
+    DrawSketchHandlerDragAutoConstraint.h
+    DrawSketchHandlerDragAutoConstraint.cpp
     DrawSketchHandlerFillet.h
     DrawSketchHandlerTranslate.h
     DrawSketchHandlerTrimming.h
@@ -202,9 +208,7 @@ target_include_directories(
 )
 
 target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(SketcherGui)
-endif()
+target_compile_warn_error(SketcherGui)
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(SketcherGui)

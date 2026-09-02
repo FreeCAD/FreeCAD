@@ -95,6 +95,7 @@ So, together with what is explained in point 3, we probably need to use
 a more generic base class, while at the same time improve the way
 the link properties are used.
 """
+
 ## @package dimension
 # \ingroup draftobjects
 # \brief Provides the object code for the dimension objects.
@@ -106,8 +107,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-import DraftGeomUtils
 import WorkingPlane
+from draftgeoutils import general as geo_general
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
 from draftutils import utils
@@ -343,18 +344,18 @@ class LinearDimension(DimensionBase):
                     # If it has one subelement, we assume an edge
                     # that can be a straight line, or a circular edge
                     subelement = sub_list[0]
-                    (obj.Start, obj.End) = measure_one_obj_edge(
+                    obj.Start, obj.End = measure_one_obj_edge(
                         linked_obj, subelement, obj.Dimline, obj.Diameter
                     )
                 elif len(sub_list) == 2:
                     # If it has two subelements, we assume a straight edge
                     # that is measured by two vertices
-                    (obj.Start, obj.End) = measure_one_obj_vertices(linked_obj, sub_list)
+                    obj.Start, obj.End = measure_one_obj_vertices(linked_obj, sub_list)
 
             elif len(obj.LinkedGeometry) == 2:
                 # If the list has two objects, it measures the distance
                 # between the two vertices in those two objects
-                (obj.Start, obj.End) = measure_two_objects(
+                obj.Start, obj.End = measure_two_objects(
                     obj.LinkedGeometry[0], obj.LinkedGeometry[1]
                 )
 
@@ -394,10 +395,10 @@ def measure_one_obj_edge(obj, subelement, dim_point, diameter=False):
         n = int(subelement[4:]) - 1
         edge = obj.Shape.Edges[n]
 
-        if DraftGeomUtils.geomType(edge) == "Line":
+        if geo_general.geomType(edge) == "Line":
             start = edge.Vertexes[0].Point
             end = edge.Vertexes[-1].Point
-        elif DraftGeomUtils.geomType(edge) == "Circle":
+        elif geo_general.geomType(edge) == "Circle":
             center = edge.Curve.Center
             radius = edge.Curve.Radius
             axis = edge.Curve.Axis

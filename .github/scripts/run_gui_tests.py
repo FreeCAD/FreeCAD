@@ -16,6 +16,7 @@ If FREECAD_EXEC is an executable path, it is used directly.
 This script returns 0 if all GUI modules run successfully. Otherwise it returns the last non-zero
 exit code.
 """
+
 from __future__ import annotations
 import sys
 import subprocess

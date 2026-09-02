@@ -38,7 +38,7 @@ def get_information():
         "name": "Flux - Elmer",
         "meshtype": "solid",
         "meshelement": "Tet10",
-        "constraints": ["electrostatic potential", "temperature"],
+        "constraints": ["electromagnetic", "temperature"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["electrostatic", "flux", "heat"],
@@ -125,14 +125,14 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # constraint potential 1V
-    Potential_1V = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Potential_1V")
+    Potential_1V = ObjectsFem.makeConstraintElectromagnetic(doc, "Potential_1V")
     Potential_1V.Potential = "1 V"
     Potential_1V.NormalDirection = Vector(0, -1, 0)
     Potential_1V.References = [(cube, "Face3")]
     analysis.addObject(Potential_1V)
 
     # constraint potential 0V
-    Potential_0V = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Potential_0V")
+    Potential_0V = ObjectsFem.makeConstraintElectromagnetic(doc, "Potential_0V")
     Potential_0V.Potential = "0 V"
     Potential_0V.NormalDirection = Vector(0, 0, 0)
     Potential_0V.References = [(cube, "Face4")]

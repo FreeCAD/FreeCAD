@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create non-parametric arrayed copies."""
+
 ## @package array
 # \ingroup draftfunctions
 # \brief Provides functions to create non-parametric arrayed copies.

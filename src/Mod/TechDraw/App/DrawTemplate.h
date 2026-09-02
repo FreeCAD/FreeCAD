@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <QString>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>
@@ -57,7 +59,7 @@ public:
     virtual DrawPage* getParentPage() const;
     virtual std::pair<int, int> getPageNumbers() const;
 
-    virtual QString getAutofillValue(const QString &id) const;
+    virtual std::string getAutofillValue(const std::string& id) const;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName(void) const override{

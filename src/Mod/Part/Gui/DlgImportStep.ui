@@ -26,7 +26,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>Merges compounds during file reading (slower but higher details)</string>
+         <string>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</string>
         </property>
         <property name="text">
          <string>Enable STEP compound merge</string>

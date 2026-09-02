@@ -27,12 +27,14 @@ set(Start_LIBS
 
 set(Start_SRCS
         AppStart.cpp
+        CustomFolderModel.cpp
+        CustomFolderModel.h
         DisplayedFilesModel.cpp
         DisplayedFilesModel.h
         ExamplesModel.cpp
         ExamplesModel.h
-        CustomFolderModel.cpp
-        CustomFolderModel.h
+        FcstdInfoSource.cpp
+        FcstdInfoSource.h
         FileUtilities.cpp
         FileUtilities.h
         PreCompiled.h
@@ -50,9 +52,7 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 target_link_libraries(Start ${Start_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Start)
-endif()
+target_compile_warn_error(Start)
 
 set_bin_dir(Start Start /Mod/Start)
 set_python_prefix_suffix(Start)

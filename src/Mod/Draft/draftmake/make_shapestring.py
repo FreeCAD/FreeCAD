@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create ShapeString objects."""
+
 ## @package make_shapestring
 # \ingroup draftmake
 # \brief Provides functions to create ShapeString objects.

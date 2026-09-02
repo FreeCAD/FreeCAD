@@ -83,7 +83,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             // Create line out of two points
             double distance = Base::Distance(v1, v2);
             if (distance < gp::Resolution()) {
-                Standard_Failure::Raise("Both points are equal");
+                throw Standard_Failure("Both points are equal");
             }
             GC_MakeLine ms(gp_Pnt(v1.x, v1.y, v1.z), gp_Pnt(v2.x, v2.y, v2.z));
             if (!ms.IsDone()) {
@@ -92,7 +92,8 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // get Geom_Line of line
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast(this->getGeomLinePtr()->handle());
+            Handle(Geom_Line)
+                this_curv = Handle(Geom_Line)::DownCast(this->getGeomLinePtr()->handle());
             Handle(Geom_Line) that_curv = ms.Value();
             this_curv->SetLin(that_curv->Lin());
             return 0;

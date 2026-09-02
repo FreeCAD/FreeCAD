@@ -23,12 +23,15 @@ generate_from_py(ViewProviderFemConstraint)
 generate_from_py(ViewProviderFemMesh)
 generate_from_py(ViewProviderFemPostPipeline)
 generate_from_py(ViewProviderFemPostFilter)
+generate_from_py(ViewProviderShapeExtension)
 
 SET(Python_SRCS
     ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
+    ViewProviderShapeExtension.pyi
+    ViewProviderShapeExtensionPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
@@ -180,7 +183,11 @@ set(Fem_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Fem_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Fem_TR_QRC} ${QM_SRCS})
-qt_add_resources(FemResource_SRCS Resources/Fem.qrc ${Fem_TR_QRC})
+qt_add_resources(FemResource_SRCS
+    Resources/Fem.qrc
+    ${Fem_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 SOURCE_GROUP("Resources" FILES ${FemResource_SRCS})
 
 SET(FemGui_SRCS_ViewProvider
@@ -244,6 +251,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintTransform.h
     ViewProviderResult.cpp
     ViewProviderResult.h
+    ViewProviderShapeExtension.h
+    ViewProviderShapeExtension.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${FemGui_SRCS_ViewProvider})
 
@@ -362,7 +371,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintElectricChargeDensity.iv
-    Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintElectromagnetic.iv
     Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
@@ -408,9 +417,7 @@ if (MSVC)
     target_compile_definitions(FemGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FemGui)
-endif()
+target_compile_warn_error(FemGui)
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiSymbol_IV})
@@ -428,7 +435,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/CurrentDensity.ui
     Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectricChargeDensity.ui
-    Resources/ui/ElectrostaticPotential.ui
+    Resources/ui/Electromagnetic.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui
@@ -445,11 +452,21 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGroupXDMFExport.ui
     Resources/ui/MeshNetgen.ui
     Resources/ui/MeshRegion.ui
+    Resources/ui/MeshPreview.ui
+    Resources/ui/MeshPreviewSettings.ui
+    Resources/ui/MeshDistance.ui
+    Resources/ui/MeshManipulate.ui
+    Resources/ui/MeshAdvanced.ui
+    Resources/ui/MeshShape.ui
+    Resources/ui/MeshTransfiniteVolume.ui
+    Resources/ui/MeshTransfiniteSurface.ui
+    Resources/ui/MeshTransfiniteCurve.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
     Resources/ui/SolverCalculiX.ui
     Resources/ui/SolverCcxTools.ui
     Resources/ui/SolverElmer.ui
+    Resources/ui/SolverZ88.ui
     Resources/ui/TaskPostGlyph.ui
     Resources/ui/TaskPostExtraction.ui
     Resources/ui/TaskPostHistogram.ui

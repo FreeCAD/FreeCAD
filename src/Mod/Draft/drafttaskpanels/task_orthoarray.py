@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft OrthoArray tool."""
+
 ## @package task_orthoarray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft OrthoArray tool.
@@ -46,10 +47,7 @@ bool(Draft_rc.__name__)
 
 
 def _quantity(st):
-    # workaround for improper handling of plus sign
-    # in Building US unit system
-    # https://github.com/FreeCAD/FreeCAD/issues/11345
-    return U.Quantity(st.replace("+", "--")).Value
+    return U.Quantity(st).Value
 
 
 class TaskPanelOrthoArray:
@@ -180,9 +178,9 @@ class TaskPanelOrthoArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.v_x, self.v_y, self.v_z) = self.get_intervals()
+        self.v_x, self.v_y, self.v_z = self.get_intervals()
 
-        (self.n_x, self.n_y, self.n_z) = self.get_numbers()
+        self.n_x, self.n_y, self.n_z = self.get_numbers()
 
         self.valid_input = self.validate_input(
             self.selection, self.v_x, self.v_y, self.v_z, self.n_x, self.n_y, self.n_z

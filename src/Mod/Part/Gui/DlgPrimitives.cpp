@@ -134,7 +134,10 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         doc->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+        Gui::Command::runCommand(
+            Gui::Command::Gui,
+            "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")"
+        );
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(widget, descr, QCoreApplication::translate("Exception", e.what()));
@@ -2311,7 +2314,7 @@ void DlgPrimitives::tryCreatePrimitive(const QString& placement)
     Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
     Gui::Application::Instance->activeDocument()->commitCommand();
     Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 void DlgPrimitives::createPrimitive(const QString& placement)
@@ -2648,7 +2651,7 @@ QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
 void TaskPrimitives::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&Create"));
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "C&reate"));
 }
 
 bool TaskPrimitives::accept()

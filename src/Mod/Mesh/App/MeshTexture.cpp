@@ -39,8 +39,9 @@ MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material&
         binding = MeshCore::MeshIO::PER_VERTEX;
         kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
     }
-    else if (material.binding == MeshCore::MeshIO::PER_FACE
-             && material.diffuseColor.size() == countFacets) {
+    else if (
+        material.binding == MeshCore::MeshIO::PER_FACE && material.diffuseColor.size() == countFacets
+    ) {
         binding = MeshCore::MeshIO::PER_FACE;
         kdTree = std::make_unique<MeshCore::MeshKDTree>(mesh.getKernel().GetPoints());
         refPnt2Fac = std::make_unique<MeshCore::MeshRefPointToFacets>(mesh.getKernel());

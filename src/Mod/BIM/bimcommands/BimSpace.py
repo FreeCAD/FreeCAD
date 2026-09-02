@@ -60,6 +60,7 @@ class Arch_Space:
         FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
+            FreeCADGui.HintManager.hide()
             FreeCADGui.Control.closeDialog()
             FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
             FreeCADGui.addModule("Draft")
@@ -67,7 +68,13 @@ class Arch_Space:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintMessage(translate("Arch", "Please select a base object") + "\n")
+            FreeCAD.Console.PrintMessage(translate("Arch", "Select a base object") + "\n")
+            FreeCADGui.HintManager.show(
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 select a base object"),
+                    FreeCADGui.UserInput.MouseLeft,
+                )
+            )
             FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
             FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Space")
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)

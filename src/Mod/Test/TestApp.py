@@ -25,7 +25,6 @@ import FreeCAD
 import sys
 import unittest
 
-
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD base code
 # ---------------------------------------------------------------------------
@@ -91,6 +90,18 @@ def TestText(s):
     # and proper traceback in some cases.
     sys.stdout.flush()
     return retval
+
+
+def RunConfiguredTextTest():
+    test_cases = FreeCAD.ConfigGet("TestCase").split(",")
+    if len(test_cases) == 1:
+        return TestText(test_cases[0])
+    suite = unittest.TestSuite()
+    for tc in test_cases:
+        suite.addTest(tryLoadingTest(tc))
+    r = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
+    sys.stdout.flush()
+    return r.run(suite)
 
 
 def Test(s):

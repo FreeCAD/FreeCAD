@@ -32,6 +32,7 @@
 The copies will be placed along a path like a polyline, spline, or bezier
 curve.
 """
+
 ## @package make_patharray
 # \ingroup draftmake
 # \brief Provides functions to create PathArray objects.

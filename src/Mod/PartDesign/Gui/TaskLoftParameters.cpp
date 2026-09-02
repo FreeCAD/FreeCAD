@@ -46,8 +46,28 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
+namespace
+{
+bool isSubtractiveLoft(ViewProviderLoft* view)
+{
+    auto* loft = view->getObject<PartDesign::Loft>();
+    return loft->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+std::string loftTaskIconName(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view) ? "PartDesign_SubtractiveLoft" : "PartDesign_AdditiveLoft";
+}
+
+QString loftTaskTitle(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view) ? TaskLoftParameters::tr("Subtractive Loft Parameters")
+                                   : TaskLoftParameters::tr("Additive Loft Parameters");
+}
+}  // namespace
+
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, loftTaskIconName(LoftView), loftTaskTitle(LoftView))
     , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to

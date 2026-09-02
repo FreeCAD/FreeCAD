@@ -62,7 +62,7 @@
    <item row="3" column="1">
     <widget class="QLineEdit" name="propertyEnum">
      <property name="placeholderText">
-      <string>val1,val2,val3,...</string>
+      <string>val1,val2,val3,…</string>
      </property>
     </widget>
    </item>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
+    <width>554</width>
     <height>218</height>
    </rect>
   </property>
@@ -23,13 +23,13 @@
       </sizepolicy>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="title">
       <string>Z88 Binary</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -104,13 +104,13 @@
       </sizepolicy>
      </property>
      <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
+      <enum>Qt::LayoutDirection::LeftToRight</enum>
      </property>
      <property name="title">
       <string>Solver Settings</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -139,36 +139,21 @@
           <property name="editable">
            <bool>false</bool>
           </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>Solver</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Z88</cstring>
           </property>
-          <item>
-           <property name="text">
-            <string>Iteration solver with SOR preconditioning (-sorcg)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Iteration solver with SIC preconditioning (-siccg)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Simple Cholesky solver (-choly)</string>
-           </property>
-          </item>
+          <property name="prefType" stdset="0">
+           <cstring></cstring>
+          </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="l_max_stiffness">
           <property name="text">
-           <string>Max places in stiffness matrix</string>
+           <string>Stiffness matrix entries</string>
           </property>
          </widget>
         </item>
@@ -187,7 +172,7 @@ Cholesky solver and getting the error message
 that &quot;MAXGS&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="minimum">
            <number>6000000</number>
@@ -212,7 +197,7 @@ that &quot;MAXGS&quot; needs to be increased.</string>
         <item row="3" column="0">
          <widget class="QLabel" name="l_max_coincidence">
           <property name="text">
-           <string>Maximum places in coincidence vector</string>
+           <string>Coincidence vector entries</string>
           </property>
          </widget>
         </item>
@@ -228,13 +213,12 @@ that &quot;MAXGS&quot; needs to be increased.</string>
            <string>Maximal places in coincidence vector.
 (number of knots per element times
  number of finite elements)
-
 You might need to increase this when using an
 iterative solver and you get the error message
 that &quot;MAXKOI&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="minimum">
            <number>50000</number>
@@ -264,7 +248,7 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -294,11 +278,6 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -307,4 +286,5 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
  <resources>
   <include location="Resources/Fem.qrc"/>
  </resources>
+ <connections/>
 </ui>

@@ -31,12 +31,18 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintTemperature, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"CFlux", "Temperature", nullptr};
+static const char* ConstraintTypes[] = {"Flux", "Temperature", nullptr};
 
 ConstraintTemperature::ConstraintTemperature()
 {
-    ADD_PROPERTY(Temperature, (300.0));
-    ADD_PROPERTY(CFlux, (0.0));
+    ADD_PROPERTY_TYPE(Temperature, (300.0), "ConstraintTemperature", App::Prop_None, "Temperature");
+    ADD_PROPERTY_TYPE(
+        ConcentratedHeatFlux,
+        (0.0),
+        "ConstraintTemperature",
+        App::Prop_None,
+        "Concentrated heat flux"
+    );
     ADD_PROPERTY_TYPE(
         ConstraintType,
         (1),
@@ -84,14 +90,26 @@ void ConstraintTemperature::handleChangedPropertyType(
         TemperatureProperty.Restore(reader);
         Temperature.setValue(TemperatureProperty.getValue());
     }
-    // property CFlux had App::PropertyFloat and was changed to App::PropertyPower
-    else if (prop == &CFlux && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat CFluxProperty;
-        CFluxProperty.Restore(reader);
-        CFlux.setValue(CFluxProperty.getValue());
-    }
     else {
         Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void ConstraintTemperature::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "CFlux") == 0
+        && (strcmp(typeName, "App::PropertyPower") == 0
+            || strcmp(typeName, "App::PropertyFloat") == 0)) {
+        App::PropertyPower cflux;
+        cflux.Restore(reader);
+        ConcentratedHeatFlux.setValue(cflux.getValue());
+    }
+    else {
+        Constraint::handleChangedPropertyName(reader, typeName, propName);
     }
 }
 

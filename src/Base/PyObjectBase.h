@@ -102,6 +102,16 @@ inline bool asBoolean(PyObject *obj) {
     return PyObject_IsTrue(obj) != 0;
 }
 
+/**
+ * @brief Make a Py::String out of a std::string_view.
+ */
+// If upstream PyCXX ever gets an std::string_view constructor for Py::String,
+// this can be trivially swapped out for that constructor.
+inline Py::String toPyString(std::string_view utf8)
+{
+    return { utf8.data(), Py_ssize_t(utf8.size()) };
+}
+
 }
 
 /*------------------------------
@@ -280,7 +290,7 @@ public:
         StatusBits.set(Immutable);
     }
 
-    bool isConst() {
+    bool isConst() const {
         return StatusBits.test(Immutable);
     }
 

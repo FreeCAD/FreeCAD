@@ -172,8 +172,8 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     }
 
     // Lines
-    ui->rbOverride->setChecked(parent->getDimFeat()->AngleOverride.getValue());
-    connect(ui->rbOverride, &QRadioButton::toggled, this, &TaskDimension::onOverrideToggled);
+    ui->gbLines->setChecked(parent->getDimFeat()->AngleOverride.getValue());
+    connect(ui->gbLines, &QGroupBox::toggled, this, &TaskDimension::onOverrideToggled);
     ui->dsbDimAngle->setValue(parent->getDimFeat()->LineAngle.getValue());
     connect(ui->dsbDimAngle, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskDimension::onDimAngleChanged);
     ui->dsbExtAngle->setValue(parent->getDimFeat()->ExtensionAngle.getValue());
@@ -457,7 +457,7 @@ void TaskDimension::onDrawingStyleChanged()
 
 void TaskDimension::onOverrideToggled()
 {
-    m_parent->getDimFeat()->AngleOverride.setValue(ui->rbOverride->isChecked());
+    m_parent->getDimFeat()->AngleOverride.setValue(ui->gbLines->isChecked());
     recomputeFeature();
 
 }

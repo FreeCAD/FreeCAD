@@ -25,7 +25,6 @@
 
 #include <memory>
 
-#include <QDir>
 #include <QSet>
 #include <QString>
 #include <QStringList>

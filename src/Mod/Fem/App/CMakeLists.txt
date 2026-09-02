@@ -128,6 +128,10 @@ SET(FemBase_SRCS
     FemConstraint.h
     FemMeshProperty.cpp
     FemMeshProperty.h
+    WorkerExtension.cpp
+    WorkerExtension.h
+    FemShapeExtension.h
+    FemShapeExtension.cpp
     )
 SOURCE_GROUP("Base types" FILES ${FemBase_SRCS})
 
@@ -230,9 +234,7 @@ if (MSVC)
     target_compile_options(Fem PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Fem)
-endif()
+target_compile_warn_error(Fem)
 
 find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)

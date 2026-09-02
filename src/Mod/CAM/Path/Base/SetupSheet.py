@@ -56,6 +56,7 @@ class Template:
     Fixtures = "Fixtures"
     OrderOutputBy = "OrderOutputBy"
     SplitOutput = "SplitOutput"
+    CollisionAvoidanceStrategy = "CollisionAvoidanceStrategy"
 
     All = [
         HorizRapid,
@@ -68,6 +69,7 @@ class Template:
         StartDepthExpression,
         FinalDepthExpression,
         StepDownExpression,
+        CollisionAvoidanceStrategy,
     ]
 
 
@@ -104,7 +106,16 @@ class SetupSheet:
     DefaultFinalDepthExpression = "OpFinalDepth"
     DefaultStepDownExpression = "OpToolDiameter"
 
+    DefaultCollisionAvoidanceStrategy = "Retract Height"
+
     DefaultCoolantModes = ["None", "Flood", "Mist"]
+    DefaultCollisionAvoidanceStrategies = [
+        "Clearance Height",
+        "Retract Height",
+        "Line of Sight",
+        "Tool Diameter",
+        "Tool Shape",
+    ]
 
     def __init__(self, obj):
         self.obj = obj
@@ -202,6 +213,18 @@ class SetupSheet:
         obj.CoolantModes = self.DefaultCoolantModes
         obj.CoolantMode = self.DefaultCoolantModes
 
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CollisionAvoidanceStrategy",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Default collision avoidance strategy for new operations.",
+            ),
+        )
+        obj.CollisionAvoidanceStrategy = self.DefaultCollisionAvoidanceStrategies
+        obj.CollisionAvoidanceStrategy = self.DefaultCollisionAvoidanceStrategy
+
         obj.Proxy = self
 
     def dumps(self):
@@ -298,6 +321,7 @@ class SetupSheet:
             attrs[Template.SafeHeightExpression] = self.obj.SafeHeightExpression
             attrs[Template.ClearanceHeightOffset] = self.obj.ClearanceHeightOffset.UserString
             attrs[Template.ClearanceHeightExpression] = self.obj.ClearanceHeightExpression
+            attrs[Template.CollisionAvoidanceStrategy] = self.obj.CollisionAvoidanceStrategy
 
         if includeDepths:
             attrs[Template.StartDepthExpression] = self.obj.StartDepthExpression
@@ -371,6 +395,7 @@ class SetupSheet:
             for prop in op.properties():
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
+                    obj.setExpression(prop, None)  # clear any bound expression first
                     setattr(obj, prop, getattr(self.obj, propName))
         except Exception:
             Path.Log.info("SetupSheet has no support for {}".format(opName))
@@ -394,6 +419,19 @@ class SetupSheet:
                 QT_TRANSLATE_NOOP("App::Property", "Default coolant mode."),
             )
             obj.CoolantMode = self.DefaultCoolantModes
+
+        if not hasattr(obj, "CollisionAvoidanceStrategy"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "CollisionAvoidanceStrategy",
+                "Linking",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Default collision avoidance strategy for new operations.",
+                ),
+            )
+            obj.CollisionAvoidanceStrategy = self.DefaultCollisionAvoidanceStrategies
+            obj.CollisionAvoidanceStrategy = self.DefaultCollisionAvoidanceStrategy
 
 
 def Create(name="SetupSheet"):

@@ -459,7 +459,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
 
                 ext->initExtension(this);
             }
-            if (ext && strcmp(ext->getExtensionTypeId().getName(), Type) == 0) {
+            if (ext && ext->getExtensionTypeId().getName() == Type) {
                 ext->extensionRestore(reader);
             }
         }

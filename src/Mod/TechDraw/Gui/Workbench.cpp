@@ -205,6 +205,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *pages << "Separator";
     *pages << "TechDraw_ExportPageSVG";
     *pages << "TechDraw_ExportPageDXF";
+    *pages << "TechDraw_ExportPagePDF";
 
     // views
     Gui::MenuItem* views = new Gui::MenuItem;
@@ -255,7 +256,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *aligning << "TechDraw_AlignVertexesHorizontally";
 
     // main menu
-    draw->setCommand("TechDraw");
+    draw->setCommand("Tech&Draw");
     *draw << pages;
     *draw << "Separator";
     *draw << views;

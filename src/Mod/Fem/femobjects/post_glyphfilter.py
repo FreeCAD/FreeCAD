@@ -142,10 +142,10 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
 
     def __setupGlyphFilter(self, obj, glyph):
 
+        glyph.ScalingOn()
         # scaling
         if obj.ScaleData != "None":
 
-            glyph.ScalingOn()
             if obj.ScaleData in obj.getInputVectorFields():
 
                 # make sure the vector mode is set correctly
@@ -168,7 +168,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 glyph.SetInputArrayToProcess(2, 0, 0, 0, obj.ScaleData)
                 glyph.SetScaleModeToScaleByScalar()
         else:
-            glyph.ScalingOff()
+            glyph.SetScaleModeToDataScalingOff()
 
         glyph.SetScaleFactor(obj.ScaleFactor)
 

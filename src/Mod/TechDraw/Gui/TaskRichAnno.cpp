@@ -105,11 +105,11 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
 
-    QGVPage* graphicsView = nullptr;
-    graphicsView = m_vpp->getQGVPage();
-    m_toolbar = new MRichTextEdit(graphicsView->viewport());
+    // Create the toolbar as a top-level floating window parented to main window
+    m_toolbar = new MRichTextEdit(Gui::getMainWindow());
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
+    m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
+
 
     ui->setupUi(this);
 
@@ -149,7 +149,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
+    m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
 
     ui->setupUi(this);
     m_title = QObject::tr("Rich Text Creator");
@@ -201,7 +201,8 @@ void TaskRichAnno::finishSetup()
         return;
     }
 
-    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    m_toolbar->setWindowFlag(Qt::WindowStaysOnTopHint, false);
     m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
     m_toolbar->setProperty("floating", true);
 
@@ -293,6 +294,9 @@ void TaskRichAnno::finishSetup()
         m_viewport->installEventFilter(this);
     }
 
+    // Install event filter on main window to reposition toolbar when window moves
+    Gui::getMainWindow()->installEventFilter(this);
+
     QTimer::singleShot(0, m_qgiAnno, &QGIRichAnno::updateLayout);
 
     m_inProgressLock = false;
@@ -341,20 +345,20 @@ void TaskRichAnno::onViewPositionChanged()
         // Calculate the top-center point of the item in Scene coordinates
         QPointF topCenterScenePos(itemRect.center().x(), itemRect.top());
 
-        // Map from scene using the correct QGVPage object
+        // Map from scene to view coordinates
         QPoint viewPos = graphicsView->mapFromScene(topCenterScenePos);
 
-        // Map the QGraphicsView point to global screen coordinates
+        // Map view coordinates to global screen coordinates
         QPoint globalPos = graphicsView->mapToGlobal(viewPos);
 
-        // Position the toolbar above this point, centered horizontally
+        // Position the toolbar at global screen coordinates
         int yOffset = 10;
         QPoint toolbarPos(globalPos.x() - m_toolbar->width() / 2,
                           globalPos.y() - m_toolbar->height() - yOffset);
 
         m_toolbar->move(toolbarPos);
 
-        // Ensure the toolbar is raised to the top
+        // Ensure the toolbar stays on top
         m_toolbar->raise();
     }
 }
@@ -514,7 +518,7 @@ void TaskRichAnno::refocusAnnotation()
     // Use a zero-delay timer to schedule the focus change.
     // This allows the current widget interaction (e.g., the checkbox toggling)
     // to complete fully before we shift focus.
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         if (m_qgiAnno) {
             m_qgiAnno->refocusAnnotation();
         }
@@ -540,6 +544,15 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
     QGVPage* graphicsView = m_view->getViewProviderPage()->getQGVPage();
     if (!graphicsView) {
         return QWidget::eventFilter(watched, event);
+    }
+    
+    // Handle main window move events to reposition toolbar
+    if (watched == Gui::getMainWindow()) {
+        if (event->type() == QEvent::Move || event->type() == QEvent::Resize) {
+            if (m_qgiAnno) {
+                onViewPositionChanged();
+            }
+        }
     }
     
     if (watched == m_viewport) {
@@ -596,6 +609,8 @@ void TaskRichAnno::removeViewFilter()
         m_viewport->removeEventFilter(this);
         m_viewport = nullptr;
     }
+    // Remove event filter from main window
+    Gui::getMainWindow()->removeEventFilter(this);
 }
 
 //******************************************************************************
@@ -628,8 +643,7 @@ void TaskRichAnno::createAndSetupAnnotation(const QPointF* scenePos)
     }
 
     // Now that the feature exists, create the toolbar and finish setup
-    QGVPage* graphicsView = m_vpp->getQGVPage();
-    m_toolbar = new MRichTextEdit(graphicsView->viewport());
+    m_toolbar = new MRichTextEdit(Gui::getMainWindow());
 
     createAnnoFeature(scenePos);  // Create the feature at the specified position
 
@@ -675,7 +689,7 @@ void TaskRichAnno::createAnnoFeature(const QPointF* scenePos)
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (!obj) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(m_tid);
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
     if (obj->isDerivedFrom<TechDraw::DrawRichAnno>()) {
@@ -833,7 +847,7 @@ bool TaskRichAnno::accept()
         m_qgiAnno->setEditMode(false);
     }
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(m_tid);
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     m_annoFeat->getDocument()->recompute();
@@ -853,7 +867,7 @@ bool TaskRichAnno::reject()
     
     removeViewFilter();
 
-    Gui::Command::abortCommand();
+    Gui::Command::abortCommand(m_tid);
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     if (!m_createMode) {  // Feature gone and m_annoFeat dangling if we are creating!

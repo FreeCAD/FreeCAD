@@ -15,39 +15,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="frame_2">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Tool controller</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="toolController"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Coolant</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="coolantController"/>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="editToolController">
-        <property name="text">
-         <string>Edit Tool Controller</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -56,7 +23,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="9" column="0" colspan="2">
+      <item row="9" column="0" colspan="3">
        <widget class="QFrame" name="frame_3">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -102,10 +69,10 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </layout>
        </widget>
       </item>
-      <item row="23" column="0">
-       <widget class="QCheckBox" name="ForceInsideOut">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Force clearing inside-out</string>
+         <string>Cut region</string>
         </property>
        </widget>
       </item>
@@ -116,6 +83,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Operation type</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="OperationType">
         <property name="toolTip">
@@ -123,70 +97,59 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
-      <item row="24" column="0">
-       <widget class="QCheckBox" name="FinishingProfile">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Finishing profile</string>
+         <string>Step over (percent)</string>
         </property>
        </widget>
       </item>
-      <item row="20" column="1">
-       <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>How much material to leave in the XY-plane (i.e. for finishing operation)</string>
+         <string>The sideways distance the cutting tool moves between successive passes, as percentage of the tool's diameter.</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.1</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>5.0</double>
+        </property>
+        <property name="value">
+         <double>20.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_stepOverDistance">
+        <property name="text">
+         <string>Step over (distance)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepOverDistance" native="true">
+        <property name="toolTip">
+         <string>The sideways distance the cutting tool moves between successive passes.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
         </property>
        </widget>
       </item>
-      <item row="20" column="0">
-       <widget class="QLabel" name="label_12">
+      <item row="16" column="0">
+       <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>XY stock to leave</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
-        <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>100</number>
-        </property>
-        <property name="suffix">
-         <string>%</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Step over</string>
-        </property>
-       </widget>
-      </item>
-      <item row="25" column="0">
-       <widget class="QCheckBox" name="useOutline">
-        <property name="text">
-         <string>Use outline</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Operation type</string>
+         <string>Lift distance</string>
         </property>
        </widget>
       </item>
@@ -203,21 +166,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="18" column="0">
        <widget class="QLabel" name="label_11">
         <property name="text">
-         <string>Keep tool down ratio</string>
-        </property>
-       </widget>
-      </item>
-      <item row="16" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Lift distance</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Cut region</string>
+         <string>Retract threshold</string>
         </property>
        </widget>
       </item>
@@ -228,6 +177,68 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
+        </property>
+        <property name="minimum">
+         <double>0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="2">
+       <widget class="QToolButton" name="KeepToolDownToggle">
+        <property name="toolTip">
+         <string>Toggle keep tool down ratio between 0 and tool diameter</string>
+        </property>
+        <property name="text">
+         <string notr="true">…</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/button_sort.svg</normaloff>:/icons/button_sort.svg
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="1">
+       <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
+        <property name="toolTip">
+         <string>How much stock to leave on the walls for this operation</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Radial stock to leave</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="optionsWidget">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="ForceInsideOut">
+        <property name="text">
+         <string>Force clearing inside-out</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="useOutline">
+        <property name="text">
+         <string>Use outline</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="useRestMachining">
+        <property name="text">
+         <string>Use rest machining</string>
         </property>
        </widget>
       </item>
@@ -253,14 +264,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="9" column="0">
        <widget class="QLabel" name="label_max_stepdown">
         <property name="text">
-         <string>Max stepdown</string>
+         <string>Max pitch</string>
         </property>
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="Gui::InputField" name="HelixMaxStepdown">
+       <widget class="Gui::QuantitySpinBox" name="HelixMaxPitch">
         <property name="toolTip">
-         <string>The maximum allowable descent in a single revolution of the helix.</string>
+         <string>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -270,14 +281,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Ramp angle</string>
+         <string>Max ramp angle</string>
         </property>
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="Gui::InputField" name="HelixAngle">
+       <widget class="Gui::InputField" name="HelixMaxRampAngle">
         <property name="toolTip">
-         <string>Angle of the helix ramp entry</string>
+         <string>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -364,6 +375,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
    </item>
    <item>
     <widget class="QPushButton" name="StopButton">
+     <property name="maximumWidth">
+      <number>120</number>
+     </property>
      <property name="text">
       <string>Stop</string>
      </property>
@@ -389,11 +403,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

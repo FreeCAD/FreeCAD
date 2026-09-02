@@ -1,0 +1,34 @@
+General:
+  UUID: "686e7021-2997-4b8e-92c3-d13f1a4ecf1e"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Name: "Wood (Generic)"
+  Description: >-
+    Generic prototype for hard woods around 0.75 g/cm^3 (beech, oak class),
+    suitable as a starter material for CAM exploration. Wood is highly
+    anisotropic and values are for the toughest crosscut direction (Kivimaa
+    direction A). Specific wood species, softwoods, balsa, and engineered wood
+    products (MDF, particleboard, plywood) are available in the Supplemental
+    Materials addon.
+    Surface speeds are conservative; capable machines with larger tools can
+    run up to 4x faster.
+    Cutting-force values use B.Ettelt's model adapted to FreeCAD's
+    Machinability schema. Derived from Jonas Bähr's hard-wood data
+    (Zerspanung von Holz und Holzwerkstoffen ISBN 978-3-446-47769-8)
+    released under CC-BY-3.0 in earlier FreeCAD releases.
+Inherits:
+  Wood:
+    UUID: "1850ac4a-0df2-43cd-9934-e59e95b9526f"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Wood"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Wood"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    SurfaceSpeedHSS: '600 m/min'
+    SurfaceSpeedCarbide: '600 m/min'
+    UnitCuttingForce: '52.5 N/mm^2'
+    ChipThicknessExponent: 0.50

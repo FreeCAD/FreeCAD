@@ -260,7 +260,7 @@ TaskMaterial::TaskMaterial()
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set Material"));
+    tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Set Material"));
 }
 
 TaskMaterial::~TaskMaterial() = default;
@@ -272,13 +272,13 @@ QDialogButtonBox::StandardButtons TaskMaterial::getStandardButtons() const
 
 bool TaskMaterial::accept()
 {
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return true;
 }
 
 bool TaskMaterial::reject()
 {
-    Gui::Command::abortCommand();
+    Gui::Command::abortCommand(tid);
     widget->reject();
     return (widget->result() == QDialog::Rejected);
 }

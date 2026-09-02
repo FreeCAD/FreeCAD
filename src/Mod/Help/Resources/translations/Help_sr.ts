@@ -17,8 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Ово ће омогућити преузимање страница документације које су приказане на GitHub-у. Ово тренутно није доступно.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -32,7 +31,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
-      <translation>Сопствена локација</translation>
+      <translation>Друга локација</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
@@ -42,14 +41,13 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub (на интернету)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation type="unfinished">A translation suffix to use, for example &quot;fr&quot;
-to get French translation of the documentation.</translation>
+      <translation>Ознака језика који треба користити, на пример &quot;fr&quot; да добијете француски превод документације.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="86"/>
@@ -58,23 +56,18 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Подесите ово ка сопственом URL-у или ка фасцикли у којој се налазе датотеке помоћи. Ако желите употребљавати документацију без приступа интернету можете је лако преузети помоћу Менаџера додатака инсталирањем &quot;offline-documentation&quot; додатка. Ако се ово поље остави празно, FreeCAD ће аутоматски тражити датотеке помоћи на подразумеваној локацији ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Ознака језика</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation type="unfinished">The documentation pages will be fetched from the official
-FreeCADwiki at https://wiki.freecad.org</translation>
+      <translation>Странице са документацијом ће бити преузете са званичног FreeCADwiki сајта на https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -90,7 +83,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
       <source>Markdown version (online)</source>
-      <translation>Осиромашена верзија (на интернету)</translation>
+      <translation>Markdown верзија (на интернету)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
@@ -105,12 +98,12 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Документација ће се отворити у вашем подразумеваном веб-прегледачу</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>У вашем подразумеваном веб-прегледачу</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
@@ -155,27 +148,27 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="75"/>
+      <location filename="../../Help.py" line="74"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Садржај ове странице није могуће преузети. Проверите подешавања у менију Уреди - Подешавања - Опште - Помоћ</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="79"/>
+      <location filename="../../Help.py" line="78"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Није могуће пронаћи локацију датотеке помоћи. Проверите подешавања у менију Уреди - Подешавања - Опште - Помоћ</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="83"/>
+      <location filename="../../Help.py" line="82"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>PiSide QtWebEngineWidgets модул није доступан. Приказивање помоћи се врши помоћу системског pregledača</translation>
+      <translation>PiSide2 QtWebEngineWidgets модул није доступан. Приказивање помоћи се врши помоћу веб модула</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="87"/>
+      <location filename="../../Help.py" line="86"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>На твом систему није инсталиран markdown приказивач, тако да је ова страница помоћи приказана у изворном облику. Инсталирај markdown или pandoc python модуле да побољшаш приказивање ове странице.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="119"/>
+      <location filename="../../Help.py" line="118"/>
       <source>Help</source>
       <translation>Помоћ</translation>
     </message>
@@ -183,7 +176,7 @@ This only applies if Markdown is selected above.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="435"/>
+      <location filename="../../Help.py" line="434"/>
       <source>General</source>
       <translation>Опште</translation>
     </message>

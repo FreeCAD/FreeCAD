@@ -31,6 +31,7 @@ A point is just a simple vertex with a position in 3D space.
 Its visual properties can be changed, like display size on screen
 and color.
 """
+
 ## @package gui_points
 # \ingroup draftguitools
 # \brief Provides GUI tools to create simple Point objects.

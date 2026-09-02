@@ -27,6 +27,7 @@
 #include <deque>
 #include <list>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <App/DocumentObject.h>
@@ -97,30 +98,36 @@ public:
         TreeView = 2
     };
 
+    enum class PickedPoint
+    {
+        Invalid = 0,
+        Valid = 1,
+    };
+
     SelectionChanges(
         MsgType type = ClrSelection,
         const char* docName = nullptr,
         const char* objName = nullptr,
         const char* subName = nullptr,
-        const char* typeName = nullptr,
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
-        MsgSource subtype = MsgSource::Any
+        MsgSource subtype = MsgSource::Any,
+        PickedPoint pickedPoint = PickedPoint::Invalid
     )
         : Type(type)
         , SubType(subtype)
         , x(x)
         , y(y)
         , z(z)
+        , hasPickedPoint(pickedPoint == PickedPoint::Valid)
         , Object(docName, objName, subName)
+        , TypeName(typeName)
     {
         pDocName = Object.getDocumentName().c_str();
         pObjectName = Object.getObjectName().c_str();
         pSubName = Object.getSubName().c_str();
-        if (typeName) {
-            TypeName = typeName;
-        }
         pTypeName = TypeName.c_str();
     }  // explicit bombs
 
@@ -129,17 +136,19 @@ public:
         const std::string& docName,
         const std::string& objName,
         const std::string& subName,
-        const std::string& typeName = std::string(),
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
-        MsgSource subtype = MsgSource::Any
+        MsgSource subtype = MsgSource::Any,
+        PickedPoint pickedPoint = PickedPoint::Invalid
     )
         : Type(type)
         , SubType(subtype)
         , x(x)
         , y(y)
         , z(z)
+        , hasPickedPoint(pickedPoint == PickedPoint::Valid)
         , Object(docName.c_str(), objName.c_str(), subName.c_str())
         , TypeName(typeName)
     {
@@ -161,6 +170,7 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
+        hasPickedPoint = other.hasPickedPoint;
         Object = other.Object;
         TypeName = other.TypeName;
         pDocName = Object.getDocumentName().c_str();
@@ -183,6 +193,7 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
+        hasPickedPoint = other.hasPickedPoint;
         Object = std::move(other.Object);
         TypeName = std::move(other.TypeName);
         pDocName = Object.getDocumentName().c_str();
@@ -203,6 +214,10 @@ public:
     float x;
     float y;
     float z;
+    /// True when x/y/z came from a real 3D viewport pick.
+    /// False for tree clicks, programmatic selections, and calls that rely on
+    /// the default (0,0,0) coordinates.
+    bool hasPickedPoint = false;
 
     App::SubObjectT Object;
     std::string TypeName;
@@ -225,7 +240,7 @@ class GuiExport SelectionObserver
 public:
     /** Constructor
      *
-     * @param attach: whether to attach this observer on construction
+     * @param attach: whether to   attach this observer on construction
      * @param resolve: sub-object resolving mode.
      */
     explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
@@ -276,6 +291,17 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate() = default;
     virtual bool allow(App::Document*, App::DocumentObject*, const char*) = 0;
+    /** @brief filter all available types
+     *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
+     *  @returns a set of filtered types (ex. {"Vertex"})
+     */
+    virtual std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const
+    {
+        (void)allTypesForGeometry;
+        return {};
+    }
 
     /**
      * @brief notAllowedReason is a string that sets the message to be
@@ -323,7 +349,7 @@ public:
         const char* DocName;
         const char* FeatName;
         const char* SubName;
-        const char* TypeName;
+        std::string_view TypeName;
         App::Document* pDoc;
         App::DocumentObject* pObject;
         App::DocumentObject* pResolvedObject;
@@ -339,7 +365,8 @@ public:
         float y = 0,
         float z = 0,
         const std::vector<SelObj>* pickedList = nullptr,
-        bool clearPreSelect = true
+        bool clearPreSelect = true,
+        SelectionChanges::PickedPoint pickedPoint = SelectionChanges::PickedPoint::Invalid
     );
     bool addSelection2(
         const char* pDocName,
@@ -397,7 +424,13 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement
     ) const;
 
-    const char* getSelectedElement(App::DocumentObject*, const char* pSubName) const;
+    /// Check if an object or sub-element passes the active selection gate without changing selection.
+    bool testSelection(
+        App::Document* pDoc,
+        App::DocumentObject* pObject,
+        const char* pSubName = nullptr
+    ) const;
+    bool hasSelectionGate(App::Document* pDoc) const;
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(
@@ -407,7 +440,8 @@ public:
         float x = 0,
         float y = 0,
         float z = 0,
-        SelectionChanges::MsgSource signal = SelectionChanges::MsgSource::Any
+        SelectionChanges::MsgSource signal = SelectionChanges::MsgSource::Any,
+        SelectionChanges::PickedPoint pickedPoint = SelectionChanges::PickedPoint::Invalid
     );
     /// remove the present preselection
     void rmvPreselect(bool signal = false);
@@ -415,10 +449,16 @@ public:
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
     const SelectionChanges& getPreselection() const;
+
     /// add a SelectionGate to control what is selectable
     void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
     /// remove the active SelectionGate
     void rmvSelectionGate();
+
+    /** @brief get the pointer to the selection gate
+     * It will be nullptr when no selection filter active
+     */
+    const Gui::SelectionGate* getSelectionGate(const App::Document* document) const;
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -526,6 +566,20 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement,
         bool single = false
     ) const;
+    /** Returns a vector of selection objects that are safer to access
+     *
+     * Unlike getSelection() whose returned vector is invalidated when the
+     * selection is changed. The returned objects is not affected by current
+     * selection state, and are even safe to access when the objects are
+     * deleted.
+     *
+     * @sa getSelection()
+     */
+    std::vector<App::SubObjectT> getSelectionT(
+        const char* pDocName = nullptr,
+        ResolveMode resolve = ResolveMode::OldStyleElement,
+        bool single = false
+    ) const;
     /** Returns a vector of selection objects
      *
      * @param pDocName: document name. If no document name is given the objects
@@ -627,7 +681,6 @@ public:
     {
         return _SelStackBack.size();
     }
-
     /// Return the current forward selection stack size
     std::size_t selStackForwardSize() const
     {
@@ -659,6 +712,7 @@ public:
     /** Go forward selection history
      *
      * @param count: optional number of steps to go back
+     * @param pDocName: the name of the document to index the context, defaults to active document
      *
      * This function pops the selection stack, and populate the current
      * selection with the content of the last pop'd entry
@@ -716,10 +770,9 @@ public:
     static SelectionSingleton& instance();
     static void destruct();
     friend class SelectionFilter;
+    friend class SelectionModulePy;
 
     // Python interface
-    static PyMethodDef Methods[];
-
 protected:
     static PyObject* sAddSelection(PyObject* self, PyObject* args);
     static PyObject* sUpdateSelection(PyObject* self, PyObject* args);
@@ -730,13 +783,13 @@ protected:
     static PyObject* sGetSelection(PyObject* self, PyObject* args);
     static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetPreselection(PyObject* self, PyObject* args);
-    static PyObject* sRemPreselection(PyObject* self, PyObject* args);
+    static PyObject* sClearPreselection(PyObject* self, PyObject* args);
     static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);
     static PyObject* sSetSelectionStyle(PyObject* self, PyObject* args);
-    static PyObject* sAddSelObserver(PyObject* self, PyObject* args);
-    static PyObject* sRemSelObserver(PyObject* self, PyObject* args);
+    static PyObject* sAddObserver(PyObject* self, PyObject* args);
+    static PyObject* sRemoveObserver(PyObject* self, PyObject* args);
     static PyObject* sAddSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sRemoveSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sGetPickedList(PyObject* self, PyObject* args);
@@ -761,11 +814,6 @@ protected:
     App::Document* getDocument(const char* pDocName = nullptr) const;
 
     void slotSelectionChanged(const SelectionChanges& msg);
-
-    SelectionChanges CurrentPreselection;
-
-    std::deque<SelectionChanges> NotificationQueue;
-    bool Notifying = false;
 
     void notify(SelectionChanges&& Chng);
     void notify(const SelectionChanges& Chng)
@@ -792,9 +840,10 @@ protected:
         void log(bool remove = false, bool clearPreselect = true);
         std::string getSubString() const;
     };
-    mutable std::list<_SelObj> _SelList;
 
-    mutable std::list<_SelObj> _PickedList;
+    std::list<_SelObj> _SelList;
+
+    std::list<_SelObj> _PickedList;
     bool _needPickedList {false};
 
     using SelStackItem = std::set<App::SubObjectT>;
@@ -813,13 +862,13 @@ protected:
     std::vector<Gui::SelectionObject> getObjectList(
         const char* pDocName,
         Base::Type typeId,
-        std::list<_SelObj>& objs,
+        const std::list<_SelObj>& objs,
         ResolveMode resolve,
         bool single = false
     ) const;
 
     static App::DocumentObject* getObjectOfType(
-        _SelObj& sel,
+        const _SelObj& sel,
         Base::Type type,
         ResolveMode resolve,
         const char** subelement = nullptr
@@ -833,19 +882,36 @@ protected:
 
     static SelectionSingleton* _pcSingleton;
 
+    struct SelectionAllowance
+    {
+        bool allowed {false};
+        std::string reason;
+    };
+
+    /** @brief Checks if a selection is allowed through the selection filter.
+     * Uses SelectionGate (which has a SelectionFilter).
+     * @param context The selection context.
+     * @param sel The object to be selected.
+     * @returns SelectionAllowance
+     */
+    SelectionAllowance isSelectionAllowed(const _SelObj& sel);
+    // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;
     std::string FeatName;
     std::string SubName;
-    float hx, hy, hz;
+    float hx {0.0f}, hy {0.0f}, hz {0.0f};
+    SelectionChanges CurrentPreselection;
 
-    Gui::SelectionGate* ActiveGate;
+    Gui::SelectionGate* ActiveGate {nullptr};
     ResolveMode gateResolve;
 
-    int logDisabled = 0;
-    bool logHasSelection = false;
-    bool clarifySelectionActive = false;
+    int logDisabled {0};
+    bool logHasSelection {false};
+    bool clarifySelectionActive {false};
 
     SelectionStyle selectionStyle;
+    std::deque<SelectionChanges> NotificationQueue;
+    bool Notifying {false};
 };
 
 /**

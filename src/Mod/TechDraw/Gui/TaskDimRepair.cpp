@@ -76,7 +76,7 @@ void TaskDimRepair::setUiPrimary()
     fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     QStringList headers;
-    headers << tr("Object name") << tr("Object label") << tr("Sub-element");
+    headers << tr("Object") << tr("Label") << tr("Sub-Element");
     ui->twReferences3d->setHorizontalHeaderLabels(headers);
 
     ReferenceVector references3d = m_dim->getReferences3d();
@@ -134,7 +134,7 @@ void TaskDimRepair::slotUseSelection()
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make dimension from selection"));
         return;
     }
@@ -145,7 +145,7 @@ void TaskDimRepair::slotUseSelection()
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
         if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect selection"),
+                                 QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make dimension from selection"));
             return;
         }
@@ -242,9 +242,9 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(tr("Repair dimension").toStdString().c_str());
+    int tid = Gui::Command::openActiveDocumentCommand(tr("Repair dimension").toStdString().c_str());
     replaceReferences();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     m_dim->recomputeFeature();
     Gui::Selection().clearSelection();

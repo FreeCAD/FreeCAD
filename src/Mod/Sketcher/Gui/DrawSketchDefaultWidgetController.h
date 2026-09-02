@@ -233,7 +233,8 @@ public:
     {
         if constexpr (PFirstComboboxIsConstructionMethod == true) {
 
-            if (comboboxindex == WCombobox::FirstCombo && handler->ConstructionMethodsCount() > 1) {
+            if (handler && comboboxindex == WCombobox::FirstCombo
+                && handler->ConstructionMethodsCount() > 1) {
                 handler->setConstructionMethod(static_cast<ConstructionMethodT>(value));
             }
         }
@@ -248,6 +249,10 @@ public:
 
     /// function to create constraints based on widget information.
     void addConstraints() override
+    {}
+
+    /// function to create constraints based on control information for infinite DSH (polyline).
+    void addStepConstraints() override
     {}
 
     /// function to configure the default widget.

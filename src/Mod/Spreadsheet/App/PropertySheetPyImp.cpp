@@ -51,6 +51,21 @@ int PropertySheetPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+PyObject* PropertySheetPy::keys(PyObject* args) const
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto cells = getPropertySheetPtr()->getUsedCells();
+    Py::List list;
+    for (const auto& it : cells) {
+        list.append(Py::String(it.toString()));
+    }
+
+    return Py::new_reference_to(list);
+}
+
 PyObject* PropertySheetPy::mapping_subscript(PyObject* o, PyObject* key)
 {
     return static_cast<PropertySheetPy*>(o)->getPropertySheetPtr()->getPyValue(key);

@@ -24,14 +24,13 @@
 # ***************************************************************************
 
 """ToolBit Library Dock Widget."""
+
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
-from PySide import QtGui, QtCore, QtWidgets
-from functools import partial
-from typing import List, Tuple
+from PySide import QtGui, QtWidgets
 from ...camassets import cam_assets, ensure_assets_initialized
 from ...toolbit import ToolBit
 from .editor import LibraryEditor
@@ -50,11 +49,14 @@ translate = FreeCAD.Qt.translate
 class ToolBitLibraryDock(object):
     """Controller for displaying a library and creating ToolControllers"""
 
-    def __init__(self, defaultJob=None, autoClose=False):
+    def __init__(
+        self, defaultJob=None, autoClose=False, askToolNumber=False, singleSelection=False
+    ):
         ensure_assets_initialized(cam_assets)
         # Create the main form widget directly
         self.defaultJob = defaultJob
         self.autoClose = autoClose
+        self.askToolNumber = askToolNumber
         self.form = QtWidgets.QDialog()
         self.form.setObjectName("ToolSelector")
         self.form.setWindowTitle(translate("CAM_ToolBit", "Toolbit Selector"))
@@ -66,7 +68,9 @@ class ToolBitLibraryDock(object):
         self.form_layout.setSpacing(4)
 
         # Create the browser widget
-        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
+        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets, show_all_tools=True)
+        if singleSelection:
+            self.browser_widget.setSingleSelection()
 
         self._setup_ui()
 
@@ -139,27 +143,74 @@ class ToolBitLibraryDock(object):
         # Assuming _populate_libraries is the correct method to call
         self.browser_widget.refresh()
 
-    def _add_tool_to_doc(self) -> List[Tuple[int, ToolBit]]:
-        """
-        Get the selected toolbit assets from the browser widget.
-        """
-        Path.Log.track()
-        tools = []
-        selected_toolbits = self.browser_widget.get_selected_bits()
+    def _conflicting_tool_controller(self, job, toolNr, toolbit: ToolBit):
+        """Returns a controller of the job using a tool number for another tool."""
+        return PathToolControllerGui.findConflictingToolController(
+            job.Tools.Group, toolNr, toolbit.get_id()
+        )
 
-        for toolbit in selected_toolbits:
-            # Need to get the tool number for this toolbit from the currently
-            # selected library in the browser widget.
+    def _needs_prompt(self, job, toolbits) -> bool:
+        """
+        True if adding these toolbits will ask the user for a tool number.
+
+        The job is examined as it stands, before anything is added, so a
+        conflict that only a preceding toolbit of the same batch would cause is
+        not seen. That is sound as long as every caller closing the dialog up
+        front (autoClose) adds one toolbit at a time.
+        """
+        for toolbit in toolbits:
             toolNr = self.browser_widget.get_tool_no_from_current_library(toolbit)
-            if toolNr is not None:
-                toolbit.attach_to_doc(FreeCAD.ActiveDocument)
-                tools.append((toolNr, toolbit))
-            else:
-                Path.Log.warning(
-                    f"Could not get tool number for toolbit {toolbit.get_uri()} in selected library."
-                )
+            if toolNr is None:
+                if self.askToolNumber:
+                    return True
+            elif self._conflicting_tool_controller(job, toolNr, toolbit) is not None:
+                return True
+        return False
 
-        return tools
+    def _ask_tool_number(self, toolbit: ToolBit, job, taken=None) -> int:
+        """
+        Asks the user for a tool number, defaulting to the next one free in the
+        job. `taken` is the controller holding the number the toolbit wanted,
+        when that is the reason for asking. Keeps asking as long as the number
+        belongs to another tool. Returns None if the user cancelled.
+        """
+        toolNr = job.Proxy.nextToolNumber()
+        while True:
+            if taken is None:
+                label = translate("CAM_ToolBit", "Tool number for {}:").format(toolbit.label)
+            else:
+                label = translate(
+                    "CAM_ToolBit", "Tool number {} is already used by {}.\nTool number for {}:"
+                ).format(taken.ToolNumber, taken.Label, toolbit.label)
+
+            toolNr, ok = QtGui.QInputDialog.getInt(
+                self.form,
+                translate("CAM_ToolBit", "Tool Number"),
+                label,
+                toolNr,
+                1,
+            )
+            if not ok:
+                return None
+
+            taken = self._conflicting_tool_controller(job, toolNr, toolbit)
+            if taken is None:
+                return toolNr
+
+    def _add_tool_controller(self, job, toolbit: ToolBit, toolNr: int):
+        """
+        Attaches a toolbit to the document and gives the job a tool controller
+        for it. Attaching and adding happen together, so the toolbit is never
+        left sitting unparented in the tree.
+        """
+        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+        # Toolbits are visible when attached; hide them right away, or they
+        # show up in the 3D view until their tool controller is created.
+        if toolbit.obj.ViewObject:
+            toolbit.obj.ViewObject.Visibility = False
+
+        tc = PathToolControllerGui.Create(f"TC: {toolbit.label}", toolbit.obj, toolNr)
+        job.Proxy.addToolController(tc)
 
     def _add_tool_controller_to_doc(self):
         """
@@ -172,7 +223,7 @@ class ToolBitLibraryDock(object):
             QtGui.QMessageBox.information(
                 self.form,
                 translate("CAM_ToolBit", "No Job Found"),
-                translate("CAM_ToolBit", "Please create a Job first."),
+                translate("CAM_ToolBit", "Create a Job first."),
             )
             return
         elif self.defaultJob or len(jobs) == 1:
@@ -185,15 +236,53 @@ class ToolBitLibraryDock(object):
         if job is None:  # user may have canceled
             return
 
-        # Get the selected toolbit assets
-        selected_tools = self._add_tool_to_doc()
+        toolbits = self.browser_widget.get_selected_bits()
+        if not toolbits:
+            return
 
-        for toolNr, toolbit in selected_tools:
-            tc = PathToolControllerGui.Create(f"TC: {toolbit.label}", toolbit.obj, toolNr)
-            job.Proxy.addToolController(tc)
+        added = False
+
+        # Attaching a toolbit loads its shape, which takes long enough to be
+        # noticeable, so get the dialog off the screen before that rather than
+        # leaving it up while the tool loads. If a tool number is going to be
+        # asked for, it has to stay: the prompts are parented to it.
+        closeFirst = self.autoClose and not self._needs_prompt(job, toolbits)
+        if closeFirst:
+            self.form.accept()
+            FreeCADGui.updateGui()
+
+        for toolbit in toolbits:
+            toolNr = self.browser_widget.get_tool_no_from_current_library(toolbit)
+
+            # A library's tool number is only a suggestion. Another tool in the
+            # job may already hold it, typically one from a different library,
+            # so let the user pick a free number instead of silently colliding.
+            taken = None
+            if toolNr is not None:
+                taken = self._conflicting_tool_controller(job, toolNr, toolbit)
+                if taken is not None:
+                    toolNr = None
+
+            if toolNr is None and (self.askToolNumber or taken is not None):
+                toolNr = self._ask_tool_number(toolbit, job, taken)
+                if toolNr is None:  # user cancelled
+                    continue
+            if toolNr is None:
+                toolNr = job.Proxy.nextToolNumber()
+
+            self._add_tool_controller(job, toolbit, toolNr)
+            added = True
+
+            if self.askToolNumber:
+                FreeCAD.ActiveDocument.recompute()
+                FreeCADGui.updateGui()
+
+        if added and not self.askToolNumber:
             FreeCAD.ActiveDocument.recompute()
 
-        if self.autoClose:
+        # Nothing was added only if every tool number prompt was cancelled, so
+        # keep the dialog up for another pick rather than closing on a cancel.
+        if added and self.autoClose and not closeFirst:
             self.form.accept()
 
     def open(self, path=None):

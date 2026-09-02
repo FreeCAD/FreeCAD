@@ -49,6 +49,50 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskBooleanParameters */
 
+namespace
+{
+
+PartDesign::Body* getBodyOfSelection(App::DocumentObject* object)
+{
+    if (!object) {
+        return nullptr;
+    }
+
+    if (object->isDerivedFrom<PartDesign::Body>()) {
+        return static_cast<PartDesign::Body*>(object);
+    }
+
+    return PartDesign::Body::findBodyOf(object);
+}
+
+class BooleanToolSelection: public Gui::SelectionGate
+{
+public:
+    explicit BooleanToolSelection(PartDesign::Boolean* boolean)
+        : boolean(boolean)
+    {}
+
+    bool allow(App::Document* document, App::DocumentObject* object, const char*) override
+    {
+        if (!boolean) {
+            return false;
+        }
+
+        auto* body = getBodyOfSelection(object);
+        if (document == boolean->getDocument() && body == boolean->getFeatureBody()) {
+            notAllowedReason = QT_TR_NOOP("The result Body cannot be used as a Boolean tool.");
+            return false;
+        }
+
+        return true;
+    }
+
+private:
+    PartDesign::Boolean* boolean;
+};
+
+}  // namespace
+
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"), tr("Boolean Parameters"), true, parent)
     , ui(new Ui_TaskBooleanParameters)
@@ -118,13 +162,11 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         // if the selected object is not a body then get the body it is part of
-        if (!pcBody->isDerivedFrom<PartDesign::Body>()) {
-            pcBody = PartDesign::Body::findBodyOf(pcBody);
-            if (!pcBody) {
-                return;
-            }
-            body = pcBody->getNameInDocument();
+        pcBody = getBodyOfSelection(pcBody);
+        if (!pcBody || pcBody == pcBoolean->getFeatureBody()) {
+            return;
         }
+        body = pcBody->getNameInDocument();
 
         std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
 
@@ -223,6 +265,7 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         }
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
+        Gui::Selection().addSelectionGate(new BooleanToolSelection(pcBoolean));
     }
     else {
         exitSelectionMode();
@@ -323,7 +366,12 @@ void TaskBooleanParameters::onBodyDeleted()
     }
 }
 
-TaskBooleanParameters::~TaskBooleanParameters() = default;
+TaskBooleanParameters::~TaskBooleanParameters()
+{
+    if (selectionMode == bodyAdd) {
+        Gui::Selection().rmvSelectionGate();
+    }
+}
 
 void TaskBooleanParameters::changeEvent(QEvent* e)
 {
@@ -338,6 +386,9 @@ void TaskBooleanParameters::changeEvent(QEvent* e)
 
 void TaskBooleanParameters::exitSelectionMode()
 {
+    if (selectionMode == bodyAdd) {
+        Gui::Selection().rmvSelectionGate();
+    }
     selectionMode = none;
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
@@ -383,7 +434,7 @@ bool TaskDlgBooleanParameters::accept()
     try {
         std::vector<std::string> bodies = parameter->getBodies();
         if (bodies.empty()) {
-            QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
+            QMessageBox::warning(parameter, tr("Empty Body List"), tr("The body list cannot be empty"));
             return false;
         }
         std::stringstream str;
@@ -394,8 +445,14 @@ bool TaskDlgBooleanParameters::accept()
         }
         str << "])";
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
+        FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
+
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        obj->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
+        obj->getDocument()->abortTransaction();
         QMessageBox::warning(
             parameter,
             tr("Boolean: Accept: Input error"),
@@ -403,12 +460,6 @@ bool TaskDlgBooleanParameters::accept()
         );
         return false;
     }
-
-    FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
-
     return true;
 }
 
@@ -425,15 +476,12 @@ bool TaskDlgBooleanParameters::reject()
                 doc->setShow(body->getNameInDocument());
             }
         }
+        // roll back the done things
+        doc->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-
 
     return true;
 }
-
 
 #include "moc_TaskBooleanParameters.cpp"

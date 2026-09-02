@@ -257,7 +257,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     floors = ifcfile.by_type("IfcBuildingStorey")
     openings = ifcfile.by_type("IfcOpeningElement")
     materials = ifcfile.by_type("IfcMaterial")
-    (products, annotations) = importIFCHelper.buildRelProductsAnnotations(
+    products, annotations = importIFCHelper.buildRelProductsAnnotations(
         ifcfile, preferences["ROOT_ELEMENT"]
     )
 
@@ -501,7 +501,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         if not overallboundbox:
                             overallboundbox = bb
                         if not overallboundbox.isInside(bb):
-                            Gui.SendMsgToActiveView("ViewFit")
+                            Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                         overallboundbox.add(bb)
 
                 if (preferences["MERGE_MODE_ARCH"] > 0 and archobj) or structobj:
@@ -1018,7 +1018,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                     # Only if x==0 then we can not determine TrueNorth.
                     # But that would actually be an invalid IFC file, because the magnitude
                     # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
-                    (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
+                    x, y = modelRC.TrueNorth.DirectionRatios[:2]
                     obj.Declination = ((math.degrees(math.atan2(y, x)) - 90 + 180) % 360) - 180
                     if FreeCAD.GuiUp:
                         obj.ViewObject.CompassRotation.Value = obj.Declination
@@ -1453,7 +1453,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     doc.recompute()
 
     if FreeCAD.GuiUp and ZOOMOUT:
-        Gui.SendMsgToActiveView("ViewFit")
+        Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     endtime = time.time() - starttime
 

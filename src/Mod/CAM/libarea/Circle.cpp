@@ -31,6 +31,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "Circle.h"
 
+namespace heeks
+{
+
 Circle::Circle(const Point& p0, const Point& p1, const Point& p2)
 {
     // from TangentCircles in http://code.google.com/p/heekscad/source/browse/trunk/src/Geom.cpp
@@ -109,3 +112,5 @@ bool Circle::LineIsOn(const Point& p0, const Point& p1, double accuracy)
 
     return true;
 }
+
+}  // namespace heeks

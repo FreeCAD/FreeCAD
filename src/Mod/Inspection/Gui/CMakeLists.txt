@@ -9,7 +9,10 @@ set(Dialogs_UIC_SRCS
     VisualInspection.ui
 )
 
-qt_add_resources(Inspection_QRC_SRCS Resources/Inspection.qrc)
+qt_add_resources(Inspection_QRC_SRCS
+    Resources/Inspection.qrc
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
@@ -63,9 +66,7 @@ if (MSVC)
     target_compile_options(InspectionGui PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(InspectionGui)
-endif()
+target_compile_warn_error(InspectionGui)
 
 
 fc_target_copy_resource_flat(InspectionGui

@@ -77,6 +77,7 @@ static TechDraw::ArrowType dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();
+static double      markFuzz();
 
 static QString     weldingDirectory();
 

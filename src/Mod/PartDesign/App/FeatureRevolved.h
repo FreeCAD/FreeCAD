@@ -1,0 +1,185 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#pragma once
+
+#include <App/PropertyUnits.h>
+#include "FeatureSketchBased.h"
+
+namespace Part
+{
+enum class RevolMode;
+}
+
+class TopLoc_Location;
+
+namespace PartDesign
+{
+
+class PartDesignExport Revolved: public ProfileBased
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Revolved);
+
+public:
+    Revolved();
+
+    static const char* SideTypesEnums[];
+
+    App::PropertyEnumeration SideType;
+    App::PropertyEnumeration Type;
+    App::PropertyEnumeration Type2;
+    App::PropertyVector Base;
+    App::PropertyVector Axis;
+    App::PropertyAngle Angle;
+    App::PropertyAngle Angle2;
+    App::PropertyEnumeration StartType;
+    App::PropertyAngle StartOffset;
+    App::PropertyLinkSub StartReference;
+
+    /** if this property is set to a valid link, both Axis and Base properties
+     *  are calculated according to the linked line
+     */
+    App::PropertyLinkSub ReferenceAxis;
+
+    /** @name methods override feature */
+    //@{
+    short mustExecute() const override;
+    void onChanged(const App::Property* prop) override;
+    //@}
+
+    /// suggests a value for Reversed flag so that material is always added to the support
+    bool suggestReversed();
+
+    /// Returns the effective angular offset from the profile plane in degrees.
+    double getStartOffset() const;
+
+    enum class RevolMethod
+    {
+        Angle,
+        ThroughAll,
+        ToLast = ThroughAll,
+        ToFirst,
+        ToFace,
+        TwoAngles
+    };
+
+protected:
+    /** Recalculate the feature
+     * Revolves the Sketch around the given Axis (with basepoint Base)
+     * The angle of the revolution is given by Angle.
+     * If Midplane is true, then the revolution will extend for half of Angle on both sides of the
+     * sketch plane. If Reversed is true then the direction of revolution will be reversed. The
+     * created material will be fused with the sketch support (if there is one)
+     */
+    App::DocumentObjectExecReturn* executeRevolved(Part::RevolMode revolMode);
+    void onDocumentRestored() override;
+
+private:
+    App::DocumentObjectExecReturn* tryExecuteRevolved(Part::RevolMode revolMode);
+    TopoShape tryGetBaseShape() const;
+    TopoShape tryGetSupportShape() const;
+    TopoShape getRevolutionUpToFace(
+        RevolMethod method,
+        const App::PropertyLinkSub& upToFaceProp,
+        const TopoShape& base,
+        const TopoShape& sketchshape,
+        const TopLoc_Location& invObjLoc,
+        const gp_Ax1& axis
+    ) const;
+    TopoShape tryToRevolveToFace(
+        const TopoShape& upToFace,
+        const gp_Ax1& axis,
+        const TopoShape& base,
+        TopoShape supportface,
+        const TopoShape& sketchshape,
+        Part::RevolMode revolMode
+    ) const;
+    TopoShape generateSingleRevolutionSide(
+        RevolMethod method,
+        double angle,
+        App::PropertyLinkSub& upToFaceProp,
+        const TopoShape& sketchshape,
+        const TopoShape& base,
+        TopoShape supportface,
+        const gp_Pnt& pnt,
+        const gp_Dir& dir,
+        const TopLoc_Location& invObjLoc,
+        Part::RevolMode revolMode
+    );
+    void setResult(const TopoShape& base, const TopoShape& revolved);
+
+    double getStartReferenceAngle(
+        const TopoShape& profileShape,
+        const App::PropertyLinkSub& reference,
+        const gp_Ax1& axis,
+        double offset,
+        const TopLoc_Location& invObjLoc
+    ) const;
+    static TopoShape rotateProfileToStart(const TopoShape& profileShape, const gp_Ax1& axis, double angle);
+
+    /// updates Axis from ReferenceAxis
+    void updateAxis();
+
+    virtual TopoShape makeShape(const TopoShape& base, const TopoShape& revolve) const = 0;
+    virtual bool suggestReversedAngle(double angle) const = 0;
+
+    /**
+     * Generates a revolution of the input sketchshape and stores it in the given \a revol.
+     */
+    void generateRevolution(
+        TopoShape& revol,
+        const TopoShape& sketchshape,
+        const gp_Ax1& ax1,
+        double angle,
+        double angle2,
+        bool midplane,
+        bool reversed,
+        RevolMethod method
+    );
+
+    /**
+     * Generates a revolution of the input \a profileshape.
+     * It will be a stand-alone solid created with BRepFeat_MakeRevol.
+     */
+    void generateRevolution(
+        TopoShape& revol,
+        const TopoShape& baseshape,
+        const TopoDS_Shape& profileshape,
+        const TopoDS_Face& supportface,
+        const TopoDS_Face& uptoface,
+        const gp_Ax1& ax1,
+        RevolMethod method,
+        Part::RevolMode Mode,
+        Standard_Boolean Modify
+    );
+
+    /**
+     * Disables settings that are not valid for the current method
+     */
+    void updateProperties();
+
+    static const App::PropertyAngle::Constraints floatAngle;
+};
+
+}  // namespace PartDesign

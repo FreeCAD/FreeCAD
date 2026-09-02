@@ -35,7 +35,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "displacement"],
-        "solvers": ["ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -60,11 +60,6 @@ See forum topic post:
 
 def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
-    if solvertype == "z88":
-        # constraint displacement is not supported for Z88
-        # pass a not valid solver name for z88, thus no solver is created
-        solvertype = "z88_not_valid"
-
     # init FreeCAD document
     if doc is None:
         doc = init_doc()
@@ -80,7 +75,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     geom_obj = doc.Box
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacementPrescribed")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="Displacement")
     con_disp.References = [(geom_obj, "Face2")]
     con_disp.zFree = False
     con_disp.zDisplacement = -250.0

@@ -264,8 +264,10 @@ int yyi;
 #  ifndef YYSTACK_ALLOC_MAXIMUM
 #   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
 #  endif
-#  if (defined __cplusplus && !defined _STDLIB_H \
-       && !((defined YYMALLOC || defined malloc) && (defined YYFREE || defined free)))
+#  if ( \
+      defined __cplusplus && !defined _STDLIB_H \
+      && !((defined YYMALLOC || defined malloc) && (defined YYFREE || defined free)) \
+  )
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #   ifndef _STDLIB_H
 #    define _STDLIB_H 1
@@ -289,8 +291,10 @@ void free(void*); /* INFRINGES ON USER NAME SPACE */
 #endif /* ! defined yyoverflow || YYERROR_VERBOSE */
 
 
-#if (!defined yyoverflow \
-     && (!defined __cplusplus || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+#if ( \
+    !defined yyoverflow \
+    && (!defined __cplusplus || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)) \
+)
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc

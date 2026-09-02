@@ -24,10 +24,13 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
+#include <optional>
 #include <vector>
 
 #include <App/Application.h>
+#include <Base/Vector3D.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include "GeometryCreationMode.h"
 
@@ -35,8 +38,10 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
+class SoPickedPointList;
 class SbVec3s;
 
 namespace Base
@@ -143,10 +148,13 @@ class SketcherGuiExport EditModeCoinManager
         void initParameters();
         void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
         void updateLineRenderingOrderParameters(const std::string& parametername);
+        void updateAxisTransparencyParameter(const std::string& parametername);
+        void updateOccludedAxisTransparencyParameter(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
         void updateWidth(int& width, const std::string& parametername, int def);
         void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
         void updateColor(SbColor& sbcolor, const std::string& parametername);
+        void updateSketcherGridColor(SbColor& sbcolor, const std::string& parametername);
         void updateUnit(const std::string& parametername);
 
         template<OverlayVisibilityParameter visibilityparameter>
@@ -174,6 +182,23 @@ public:
      */
     struct PreselectionResult
     {
+        enum class HitKind : std::int8_t
+        {
+            None = -1,
+            Point = 0,
+            Edge = 1,
+            Axis = 2,
+            Constraint = 3
+        };
+
+        enum class ConstraintHitKind : std::uint8_t
+        {
+            None,
+            Icon,
+            DatumPresentation,
+            DatumAnnotation
+        };
+
         enum SpecialValues
         {
             InvalidPoint = -1,
@@ -189,19 +214,48 @@ public:
             VerticalAxis = 2
         };
 
+        HitKind Kind = HitKind::None;
         int PointIndex = InvalidPoint;
         int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        ConstraintHitKind ConstraintKind = ConstraintHitKind::None;
+        std::optional<Base::Vector3d> PickedPoint;
+
+        [[nodiscard]] inline bool hasWinner() const
+        {
+            return Kind != HitKind::None;
+        }
+
+        [[nodiscard]] inline bool hasPickedPoint() const
+        {
+            return PickedPoint.has_value();
+        }
+
+        [[nodiscard]] inline const Base::Vector3d& pickedPoint() const
+        {
+            return PickedPoint.value();
+        }
+
+        void setPickedPoint(const Base::Vector3d& point);
+        void setPickedPoint(const SoPickedPoint* point);
 
         inline void clear()
         {
+            Kind = HitKind::None;
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
+            ConstraintKind = ConstraintHitKind::None;
+            PickedPoint.reset();
         }
+    };
+
+    struct PreselectionCandidates
+    {
+        std::vector<PreselectionResult> Items;
     };
 
 public:
@@ -213,6 +267,9 @@ public:
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers, unsigned int augmentationlevel);
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
+    void updateEditCurveAppearance(GeometryCreationMode mode);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines, int activeLineIndex);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -221,7 +278,11 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint* Point);
+    PreselectionResult detectPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex = PreselectionResult::InvalidPoint
+    );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -259,12 +320,39 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
+    /// Use an outline origin marker while a drawing tool is active.
+    void setOriginPointMarker(bool hollow);
+
     // Updates the Axes extension to span the specified area.
     void updateAxesLength(const Base::BoundBox2d& bb);
 
     void updateElementSizeParameters();
 
 private:
+    PreselectionResult detectConstraintPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos
+    );
+    bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    bool detectGeometryPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex,
+        PreselectionResult& result
+    );
+    bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    PreselectionCandidates collectPreselectionCandidates(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex
+    );
+    PreselectionResult resolvePreselectionCandidates(const PreselectionCandidates& candidates) const;
+
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
 
@@ -322,6 +410,8 @@ private:
     // Coin Helpers
     std::unique_ptr<EditModeConstraintCoinManager> pEditModeConstraintCoinManager;
     std::unique_ptr<EditModeGeometryCoinManager> pEditModeGeometryCoinManager;
+
+    bool originPointMarkerHollow = false;
 };
 
 

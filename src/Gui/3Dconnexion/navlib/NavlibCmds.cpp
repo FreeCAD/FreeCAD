@@ -157,7 +157,7 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             if (!std::string(command->getName()).compare(parsedData.commandName)) {
                 if (parsedData.actionIndex == -1) {
                     Gui::Action* pAction = command->getAction();
-                    if (pAction != nullptr) {
+                    if (pAction) {
                         pAction->action()->trigger();
                     }
                 }
@@ -167,8 +167,12 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             }
         }
     }
-    else
-        commandManager.runCommandByName(parsedData.commandName.c_str());
+    else {
+        Gui::Command* cmd = commandManager.getCommandByName(parsedData.commandName.c_str());
+        if (cmd) {
+            cmd->invoke(1);
+        }
+    }
 
     return 0;
 }
@@ -177,7 +181,7 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
                                      TDxCategory& category,
                                      std::vector<TDx::CImage>& images)
 {
-    if (command.getAction() == nullptr)
+    if (!command.getAction())
         return;
 
     QList<QAction*> pQActions;
@@ -185,7 +189,7 @@ void NavlibInterface::unpackCommands(Gui::Command& command,
     int32_t index = -1;
     auto actionGroup = qobject_cast<Gui::ActionGroup*>(command.getAction());
 
-    if (actionGroup != nullptr) {
+    if (actionGroup) {
         pQActions = actionGroup->actions();
         std::string subCategoryName = actionGroup->text().toStdString();
         subCategory = TDxCategory(subCategoryName, subCategoryName);

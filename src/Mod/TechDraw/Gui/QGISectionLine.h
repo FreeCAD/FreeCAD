@@ -56,17 +56,19 @@ public:
 
     void setEnds(Base::Vector3d l1, Base::Vector3d l2);
     void setBounds(double x1, double y1, double x2, double y2);
-    void setPath(QPainterPath& path);
-    void setSymbol(char* sym);
+    void setPath(const QPainterPath& path);
+    void setSymbol(const char* sym);
     void setDirection(double xDir, double yDir);
     void setDirection(Base::Vector3d dir);
     void setArrowDirections(Base::Vector3d dir1, Base::Vector3d dir2);
-    void setFont(QFont f, double fsize);
+    void setArrowSize(double arrowSize);
+    void setFont(const QFont& f);
+    void setFont(const QFont& f, double fsize);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
     void setShowLine(bool state) { m_showLine = state; }
-    bool pathMode() { return m_pathMode; }
-    void setChangePoints(TechDraw::ChangePointVector changePoints);
+    bool pathMode() const { return m_pathMode; }
+    void setChangePoints(const TechDraw::ChangePointVector &changePoints);
     void clearChangePoints();
     void draw() override;
 

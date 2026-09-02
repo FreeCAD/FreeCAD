@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -98,6 +98,9 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
+        solver_obj.SolverType = "sorcg"
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -126,7 +129,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [
         (doc.SquareTube, "Edge4"),
         (doc.SquareTube, "Edge7"),
@@ -136,7 +139,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_fixed)
 
     # con_force1
-    con_force1 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce1")
+    con_force1 = ObjectsFem.makeConstraintForce(doc, name="Force1")
     con_force1.References = [(geom_obj, "Edge9")]
     con_force1.Force = "100000.00 N"
     con_force1.Direction = (geom_obj, ["Edge9"])
@@ -144,7 +147,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force1)
 
     # con_force2
-    con_force2 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce2")
+    con_force2 = ObjectsFem.makeConstraintForce(doc, name="Force2")
     con_force2.References = [(geom_obj, "Edge3")]
     con_force2.Force = "100000.00 N"
     con_force2.Direction = (geom_obj, ["Edge3"])
@@ -152,7 +155,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force2)
 
     # con_force3
-    con_force3 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce3")
+    con_force3 = ObjectsFem.makeConstraintForce(doc, name="Force3")
     con_force3.References = [(geom_obj, "Edge11")]
     con_force3.Force = "100000.00 N"
     con_force3.Direction = (geom_obj, ["Edge11"])
@@ -160,7 +163,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force3)
 
     # con_force4
-    con_force4 = ObjectsFem.makeConstraintForce(doc, name="ConstraintForce4")
+    con_force4 = ObjectsFem.makeConstraintForce(doc, name="Force4")
     con_force4.References = [(geom_obj, "Edge6")]
     con_force4.Force = "100000.00 N"
     con_force4.Direction = (geom_obj, ["Edge6"])

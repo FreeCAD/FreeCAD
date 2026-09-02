@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
@@ -10,6 +10,7 @@ from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
 
 @export(
+    PythonName="Part.Shape",
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
@@ -30,31 +31,31 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[List] = []
+    Faces: Final[List["Face"]] = []
     """List of faces in this shape."""
 
-    Vertexes: Final[List] = []
+    Vertexes: Final[List["Vertex"]] = []
     """List of vertexes in this shape."""
 
-    Shells: Final[List] = []
+    Shells: Final[List["Shell"]] = []
     """List of subsequent shapes in this shape."""
 
-    Solids: Final[List] = []
+    Solids: Final[List["Solid"]] = []
     """List of subsequent shapes in this shape."""
 
-    CompSolids: Final[List] = []
-    """List of subsequent shapes in this shape."""
+    CompSolids: Final[List["CompSolid"]] = []
+    """List of compound solids in this shape."""
 
-    Edges: Final[List] = []
+    Edges: Final[List["Edge"]] = []
     """List of Edges in this shape."""
 
-    Wires: Final[List] = []
+    Wires: Final[List["Wire"]] = []
     """List of wires in this shape."""
 
-    Compounds: Final[List] = []
+    Compounds: Final[List["Compound"]] = []
     """List of compounds in this shape."""
 
-    SubShapes: Final[List] = []
+    SubShapes: Final[List["TopoShape"]] = []
     """List of sub-shapes in this shape."""
 
     Length: Final[float] = 0.0
@@ -243,12 +244,18 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def fuse(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0, /) -> TopoShape:
+    def fuse(
+        self,
+        tools: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Union of this and a given (list of) topo shape.
         fuse(tool) -> Shape
           or
-        fuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        fuse((tool1,tool2,...),[tolerance=0.0], noElementMap=False) -> Shape
         --
         Union of this and a given list of topo shapes.
 
@@ -258,14 +265,23 @@ class TopoShape(ComplexGeoData):
         - Parallelization of Boolean Operations algorithm
 
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
+        Set noElementMap=True for transient analysis geometry where stable
+        element naming is not needed.
         """
         ...
 
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="fuse")
     @constmethod
-    def multiFuse(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0, /) -> TopoShape:
+    def multiFuse(
+        self,
+        tools: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Union of this and a given list of topo shapes.
-        multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+        multiFuse((tool1,tool2,...),[tolerance=0.0], noElementMap=False) -> Shape
         --
         Supports (OCCT 6.9.0 and above):
         - Fuzzy Boolean operations (global tolerance for a Boolean operation)
@@ -273,6 +289,8 @@ class TopoShape(ComplexGeoData):
         - Parallelization of Boolean Operations algorithm
 
         Beginning from OCCT 6.8.1 a tolerance value can be specified.
+        Set noElementMap=True for transient analysis geometry where stable
+        element naming is not needed.
         Deprecated: use fuse() instead.
         """
         ...
@@ -454,13 +472,16 @@ class TopoShape(ComplexGeoData):
 
     def transformShape(
         self, matrix: Matrix, copy: bool = False, checkScale: bool = False, /
-    ) -> None:
+    ) -> TopoShape:
         """
-        Apply transformation on a shape without changing the underlying geometry.
-        transformShape(Matrix, [boolean copy=False, checkScale=False]) -> None
+        Apply a transformation on this shape in place and return self.
         --
-        If checkScale is True, it will use transformGeometry if non-uniform
-        scaling is detected.
+        If copy is True the underlying geometry is duplicated and the transformation is baked into
+        it. If copy is False the transformation is applied as a location change without modifying
+        the underlying geometry (no bake-in). Note that scaling, mirroring, and non-uniform
+        transformations may force a copy regardless of this flag. If checkScale is True,
+        transformGeometry is used when non-uniform scaling is detected. To obtain a transformed copy
+        while leaving this shape untouched, use transformed() instead.
         """
         ...
 
@@ -469,8 +490,10 @@ class TopoShape(ComplexGeoData):
         self, matrix: Matrix, *, copy: bool = False, checkScale: bool = False, op: str = None
     ) -> TopoShape:
         """
-        Create a new transformed shape
-        transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
+        Return a new shape with the transformation applied; leave self unchanged.
+        --
+        The copy and checkScale arguments have the same meaning as in transformShape(). op is
+        unused.
         """
         ...
 
@@ -891,15 +914,23 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def copy(self, copyGeom: bool = True, copyMesh: bool = False, /) -> TopoShape:
+    def copy(
+        self,
+        copyGeom: bool = True,
+        copyMesh: bool = False,
+        *,
+        noElementMap: bool = False,
+    ) -> TopoShape:
         """
         Create a copy of this shape
-        copy(copyGeom=True, copyMesh=False) -> Shape
+        copy(copyGeom=True, copyMesh=False, noElementMap=False) -> Shape
         --
         If copyMesh is True, triangulation contained in original shape will be
         copied along with geometry.
         If copyGeom is False, only topological objects will be copied, while
         geometry and triangulation will be shared with original shape.
+        Set noElementMap=True for transient geometry where stable element
+        naming is not needed.
         """
         ...
 

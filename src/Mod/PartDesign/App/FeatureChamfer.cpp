@@ -223,7 +223,7 @@ void Chamfer::Restore(Base::XMLReader& reader)
 void Chamfer::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
 {
     if (prop && strcmp(TypeName, "App::PropertyFloatConstraint") == 0
-        && strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+        && prop->getTypeId().getName() == "App::PropertyQuantityConstraint") {
         App::PropertyFloatConstraint p;
         p.Restore(reader);
         static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());

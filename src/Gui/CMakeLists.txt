@@ -48,10 +48,6 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     list(APPEND 3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
-if (BUILD_VR)
-    add_definitions(-DBUILD_VR )
-endif(BUILD_VR)
-
 if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
@@ -337,9 +333,23 @@ generate_from_py(LinkView)
 generate_from_py(ViewProviderLink)
 generate_from_py(AxisOrigin)
 generate_from_py(Command)
+generate_from_py(EditableDatumLabel)
 generate_from_py(Navigation/NavigationStyle)
+generate_module_from_py(
+    FreeCADGui
+    FreeCADGui_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCADGui.Selection
+    Selection_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCADGui.PySideUic
+    PySideUic_MODULE_GENERATED_SRCS
+)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
 
 # The Pyi files
 SET(FreeCADGui_Pyi_SRCS
@@ -349,12 +359,15 @@ SET(FreeCADGui_Pyi_SRCS
     ViewProviderExtension.pyi
     PythonWorkbench.pyi
     Workbench.pyi
+    FreeCADGui.module.pyi
+    FreeCADGui.Selection.module.pyi
     Selection/SelectionObject.pyi
     Document.pyi
     LinkView.pyi
     ViewProviderLink.pyi
     AxisOrigin.pyi
     Command.pyi
+    EditableDatumLabel.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADGui_Pyi_SRCS})
 
@@ -431,81 +444,6 @@ add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
 set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
 
-SET(Gui_UIC_SRCS
-    Dialogs/AboutApplication.ui
-    Clipping.ui
-    DemoMode.ui
-    Dialogs/DlgActions.ui
-    Dialogs/DlgActivateWindow.ui
-    Dialogs/DlgUnitsCalculator.ui
-    Dialogs/DlgAuthorization.ui
-    Dialogs/DlgChooseIcon.ui
-    Dialogs/DlgCreateNewPreferencePack.ui
-    Dialogs/DlgInputDialog.ui
-    Dialogs/DlgKeyboard.ui
-    Dialogs/DlgMacroExecute.ui
-    Dialogs/DlgRunExternal.ui
-    Dialogs/DlgMacroRecord.ui
-    Dialogs/DlgMaterialProperties.ui
-    Dialogs/DlgOnlineHelp.ui
-    Dialogs/DlgParameter.ui
-    Dialogs/DlgParameterFind.ui
-    Dialogs/DlgPreferencePackManagement.ui
-    Dialogs/DlgPreferences.ui
-    Dialogs/DlgProjectInformation.ui
-    Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
-    Dialogs/DlgRevertToBackupConfig.ui
-    Dialogs/DlgThemeEditor.ui
-    Dialogs/DlgVersionMigrator.ui
-    PreferencePages/DlgSettings3DView.ui
-    PreferencePages/DlgSettingsCacheDirectory.ui
-    Dialogs/DlgSettingsColorGradient.ui
-    PreferencePages/DlgSettingsDocument.ui
-    PreferencePages/DlgSettingsEditor.ui
-    PreferencePages/DlgSettingsGeneral.ui
-    Dialogs/DlgSettingsImage.ui
-    PreferencePages/DlgSettingsLightSources.ui
-    PreferencePages/DlgSettingsMacro.ui
-    PreferencePages/DlgSettingsNavigation.ui
-    PreferencePages/DlgSettingsNotificationArea.ui
-    PreferencePages/DlgSettingsPythonConsole.ui
-    PreferencePages/DlgSettingsReportView.ui
-    PreferencePages/DlgSettingsSelection.ui
-    PreferencePages/DlgSettingsUI.ui
-    PreferencePages/DlgSettingsViewColor.ui
-    PreferencePages/DlgSettingsWorkbenches.ui
-    PreferencePages/DlgSettingsPDF.ui
-    Dialogs/DlgCheckableMessageBox.ui
-    Dialogs/DlgToolbars.ui
-    Dialogs/DlgTreeWidget.ui
-    Dialogs/DlgLocationAngle.ui
-    Dialogs/DlgLocationPos.ui
-    DocumentRecovery.ui
-    DownloadManager.ui
-    DownloadItem.ui
-    Dialogs/DlgExpressionInput.ui
-    MouseButtons.ui
-    SceneInspector.ui
-    InputVector.ui
-    Placement.ui
-    TaskTransform.ui
-    TextureMapping.ui
-    TaskView/TaskAppearance.ui
-    TaskView/TaskOrientation.ui
-    TaskView/TaskImage.ui
-    TaskView/TaskSolverMessages.ui
-    TaskView/TaskSelectLinkProperty.ui
-    TaskElementColors.ui
-    Dialogs/DlgObjectSelection.ui
-    Dialogs/DlgAddProperty.ui
-    VectorListEditor.ui
-)
-
-if(FREECAD_USE_3DCONNEXION_LEGACY)
-    list(APPEND Gui_UIC_SRCS Dialogs/DlgCustomizeSpNavSettings.ui)
-endif(FREECAD_USE_3DCONNEXION_LEGACY)
-
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Language)
@@ -516,7 +454,10 @@ set(Gui_RES_SRCS
     ${FreeCAD_TR_QRC}
 )
 
-qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
+qt_add_resources(Gui_QRC_SRCS
+    ${Gui_RES_SRCS}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
@@ -558,6 +499,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgDocumentObject.cpp
     Dialogs/DlgUnitsCalculatorImp.cpp
     Dialogs/DlgInputDialogImp.cpp
     Dialogs/DlgMacroExecuteImp.cpp
@@ -578,6 +520,7 @@ SET(Dialog_CPP_SRCS
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
+    TaskCommandLink.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -600,6 +543,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgDocumentObject.h
     Dialogs/DlgUnitsCalculatorImp.h
     Dialogs/DlgInputDialogImp.h
     Dialogs/DlgMacroExecuteImp.h
@@ -620,6 +564,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgVersionMigrator.h
     TaskDlgRelocation.h
     TaskTransform.h
+    TaskCommandLink.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
@@ -647,6 +592,7 @@ SET(Dialog_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgAddProperty.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgLocationAngle.ui
     Dialogs/DlgLocationPos.ui
     Dialogs/DlgMacroExecute.ui
@@ -658,7 +604,6 @@ SET(Dialog_SRCS
     Dialogs/DlgPreferencePackManagement.ui
     Dialogs/DlgProjectInformation.ui
     Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgTreeWidget.ui
@@ -705,7 +650,6 @@ SET(Dialog_Customize_SRCS
     ${Dialog_Customize_HPP_SRCS}
     Dialogs/DlgActions.ui
     Dialogs/DlgChooseIcon.ui
-    Dialogs/DlgKeyboard.ui
     Dialogs/DlgToolbars.ui
 )
 
@@ -766,6 +710,7 @@ SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
     ${Dialog_Settings_HPP_SRCS}
     Dialogs/DlgOnlineHelp.ui
+    Dialogs/DlgKeyboard.ui
     Dialogs/DlgPreferences.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
@@ -830,7 +775,6 @@ SET(Editor_CPP_SRCS
     TextDocumentEditorView.cpp
     PythonConsole.cpp
     PythonConsolePy.cpp
-    PythonDebugger.cpp
     PythonTracing.cpp
     PythonEditor.cpp
     SyntaxHighlighter.cpp
@@ -842,7 +786,6 @@ SET(Editor_HPP_SRCS
     TextDocumentEditorView.h
     PythonConsole.h
     PythonConsolePy.h
-    PythonDebugger.h
     PythonTracing.h
     PythonEditor.h
     SyntaxHighlighter.h
@@ -923,8 +866,6 @@ SET(Task_View_SRCS
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
 
 SET(qsintActionPanel_SRCS
-    QSint/actionpanel/actionbox.cpp
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.cpp
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.cpp
@@ -940,7 +881,6 @@ SET(qsintActionPanel_SRCS
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.h
     QSint/actionpanel/actionpanel.h
@@ -956,6 +896,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    RubberbandOverlay.cpp
     Multisample.cpp
     MouseSelection.cpp
     SplitView3DInventor.cpp
@@ -963,9 +904,7 @@ SET(View3D_CPP_SRCS
     View3DInventor.cpp
     View3DInventorSelection.cpp
     View3DInventorViewer.cpp
-    View3DInventorRiftViewer.cpp
     View3DSettings.cpp
-    CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
@@ -975,6 +914,7 @@ SET(View3D_SRCS
     Camera.h
     Flag.h
     GLBuffer.h
+    RubberbandOverlay.h
     GLPainter.h
     Multisample.h
     MouseSelection.h
@@ -984,9 +924,7 @@ SET(View3D_SRCS
     View3DInventorSelection.h
     View3DInventorViewer.h
     View3DPy.h
-    View3DInventorRiftViewer.h
     View3DSettings.h
-    CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
 )
@@ -1136,8 +1074,10 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAxisCrossKit.cpp
     Inventor/SoFCPlacementIndicatorKit.cpp
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCScreenSpaceGroup.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
+    Inventor/SoNaviCube.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
     Inventor/SoToggleSwitch.cpp
@@ -1148,10 +1088,9 @@ SET(Inventor_CPP_SRCS
     Inventor/Draggers/SoRotationDragger.cpp
     Inventor/Draggers/SoRotationDraggerGeometry.cpp
     Inventor/Draggers/Gizmo.cpp
+    ColorScaleOverlay.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
-    SoFCColorGradient.cpp
-    SoFCColorLegend.cpp
     SoFCDB.cpp
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
@@ -1163,7 +1102,8 @@ SET(Inventor_CPP_SRCS
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
-    SoTextLabel.cpp
+    SoLabelNodes.cpp
+    TranslateManip.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
     ArcEngine.cpp
@@ -1176,8 +1116,10 @@ SET(Inventor_SRCS
     Inventor/SoAxisCrossKit.h
     Inventor/SoFCPlacementIndicatorKit.h
     Inventor/SoDrawingGrid.h
+    Inventor/SoFCScreenSpaceGroup.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
+    Inventor/SoNaviCube.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
     Inventor/SoToggleSwitch.h
@@ -1189,10 +1131,9 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
     Inventor/Draggers/GizmoStyleParameters.h
+    ColorScaleOverlay.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
-    SoFCColorGradient.h
-    SoFCColorLegend.h
     SoFCDB.h
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
@@ -1204,7 +1145,8 @@ SET(Inventor_SRCS
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
-    SoTextLabel.h
+    SoLabelNodes.h
+    TranslateManip.h
     SoDatumLabel.h
     SoTouchEvents.h
     ArcEngine.h
@@ -1237,9 +1179,16 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
     SplitButton.cpp
 )
+if(WIN32)
+    SET(Widget_CPP_SRCS
+        ${Widget_CPP_SRCS}
+        FileDialogWin32.cpp
+    )
+endif(WIN32)
 SET(Widget_HPP_SRCS
     ComboLinks.h
     FileDialog.h
+    FileDialogInternal.h
     MainWindow.h
     MainWindowPy.h
     NotificationBox.h
@@ -1274,6 +1223,7 @@ SET(Params_CPP_SRCS
     OverlayParams.cpp
     ParamHandler.cpp
     ViewParams.cpp
+    SpaceMouseParameter.cpp
 )
 
 SET(Params_HPP_SRCS
@@ -1281,6 +1231,7 @@ SET(Params_HPP_SRCS
     OverlayParams.h
     ParamHandler.cpp
     ViewParams.h
+    SpaceMouseParameter.h
 )
 
 SET(Params_SRCS
@@ -1293,6 +1244,7 @@ SET(View_CPP_SRCS
     MDIView.cpp
     MDIViewPy.cpp
     MDIViewPyWrap.cpp
+    MDIViewWithCamera.cpp
     GraphvizView.cpp
     ImageView.cpp
     ActiveObjectList.cpp
@@ -1301,6 +1253,7 @@ SET(View_HPP_SRCS
     MDIView.h
     MDIViewPy.h
     MDIViewPyWrap.h
+    MDIViewWithCamera.h
     GraphvizView.h
     ImageView.h
     ActiveObjectList.h
@@ -1346,6 +1299,9 @@ SET(Workbench_SRCS
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 
 SET(Selection_SRCS
+    Selection/BoxSelection.cpp
+    Selection/BoxSelection.h
+    ${Selection_MODULE_GENERATED_SRCS}
     Selection/SelectionObjectPyImp.cpp
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
@@ -1364,6 +1320,8 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
 # The FreeCADGui sources
 SET(FreeCADGui_CPP_SRCS
+    ${FreeCADGui_MODULE_GENERATED_SRCS}
+    ${PySideUic_MODULE_GENERATED_SRCS}
     Application.cpp
     ApplicationPy.cpp
     AutoSaver.cpp
@@ -1374,6 +1332,7 @@ SET(FreeCADGui_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     EditableDatumLabel.cpp
+    EditableDatumLabelPyImp.cpp
     ExpressionBinding.cpp
     ExpressionBindingPy.cpp
     GraphicsViewZoom.cpp
@@ -1395,6 +1354,7 @@ SET(FreeCADGui_CPP_SRCS
     SpaceballEvent.cpp
     StatusBarLabel.cpp
     PreferencePackManager.cpp
+    ProgramInformation.cpp
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
@@ -1419,6 +1379,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADGuiTest.py
     FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
@@ -1439,6 +1400,7 @@ SET(FreeCADGui_SRCS
     Control.h
     SpaceballEvent.h
     PreferencePackManager.h
+    ProgramInformation.h
     Thumbnail.h
     Tools.h
     Utilities.h
@@ -1559,9 +1521,7 @@ if (MSVC)
     target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADGui)
-endif()
+target_compile_warn_error(FreeCADGui)
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

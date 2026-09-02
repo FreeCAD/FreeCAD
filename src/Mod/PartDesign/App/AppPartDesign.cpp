@@ -36,6 +36,7 @@
 #include "FeatureBase.h"
 #include "FeatureBoolean.h"
 #include "FeatureChamfer.h"
+#include "FeatureDefeaturing.h"
 #include "FeatureDraft.h"
 #include "FeatureDressUp.h"
 #include "FeatureFillet.h"
@@ -110,11 +111,13 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Pad                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
+    PartDesign::Revolved                    ::init();
     PartDesign::Revolution                  ::init();
     PartDesign::Groove                      ::init();
     PartDesign::Chamfer                     ::init();
     PartDesign::Draft                       ::init();
     PartDesign::Thickness                   ::init();
+    PartDesign::Defeaturing                 ::init();
     PartDesign::Pipe                        ::init();
     PartDesign::AdditivePipe                ::init();
     PartDesign::SubtractivePipe             ::init();

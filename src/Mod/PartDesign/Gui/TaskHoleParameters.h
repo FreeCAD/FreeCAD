@@ -83,6 +83,7 @@ public:
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
     bool getModelThread() const;
+    bool getCosmeticThreaded() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
@@ -109,12 +110,16 @@ private Q_SLOTS:
     void taperedChanged();
     void taperedAngleChanged(double value);
     void reversedChanged();
+    void modelThreadChanged();
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
+    void startTypeChanged(int index);
+    void startOffsetChanged(double value);
+    void selectStartReference(bool checked);
     void setCutDiagram();
 
 private:
@@ -132,7 +137,13 @@ private:
     {
         Clearance = 0,
         TapDrill = 1,
-        ModeledThread = 2
+        Threaded = 2
+    };
+    enum StartTypeIndex : int
+    {
+        ProfilePlane = 0,
+        Offset = 1,
+        Reference = 2
     };
 
 protected:
@@ -143,6 +154,10 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateHoleCutLimits(PartDesign::Hole* hole);
     void updateHoleTypeCombo();
+    void updateStartUI();
+    void updateStartReferenceName();
+    void selectedStartReference(const Gui::SelectionChanges& msg);
+    QString getStartReference() const;
 
 private:
     using Connection = fastsignals::scoped_connection;
@@ -154,6 +169,8 @@ private:
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* holeDepthGizmo = nullptr;
+    Gui::LinearGizmo* startOffsetGizmo = nullptr;
+    bool selectingStartReference = false;
     void setupGizmos(ViewProviderHole* vp);
     void setGizmoPositions();
 };

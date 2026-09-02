@@ -27,6 +27,8 @@
 #include <Base/Rotation.h>
 #include <FCGlobal.h>
 
+#include <string>
+
 namespace Gui
 {
 
@@ -57,6 +59,15 @@ public:
     static SbRotation trimetric();
 
     static SbRotation rotation(Orientation view);
+    /// Return a named orientation, or the fallback orientation when the name is unknown.
+    static SbRotation rotation(const std::string& view, Orientation fallback = Top);
+    /// Return the configured new-document orientation, or fallbackView when no preference is set.
+    static SbRotation defaultOrientation(const char* fallbackView = "Trimetric");
+    static bool rotationsMatch(
+        const SbRotation& lhs,
+        const SbRotation& rhs,
+        float squaredTolerance = 1e-6F
+    );
     static Base::Rotation convert(Orientation view);
     static Base::Rotation convert(const SbRotation&);
     static SbRotation convert(const Base::Rotation&);

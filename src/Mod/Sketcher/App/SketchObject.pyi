@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, no_args
+from Base.Metadata import deprecated, export, constmethod, no_args
 from Base.Quantity import Quantity
 from Base.Vector import Vector
 from Base.Axis import Axis
 from Part.App.Part2DObject import Part2DObject
 from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
-from typing import List, Tuple, Union, Final, overload
+from typing import Final, List, Tuple, Union, overload
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
@@ -505,12 +505,17 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setVirtualSpace(self) -> None:
+    @overload
+    def setVirtualSpace(self, constraintIndex: int, state: bool, /) -> None:
         """
-        Set the VirtualSpace status of a constraint
+        Set the VirtualSpace status of one or more constraints.
         """
         ...
 
+    @overload
+    def setVirtualSpace(
+        self, constraintIndices: List[int] | Tuple[int, ...], state: bool, /
+    ) -> None: ...
     def setVisibility(self) -> None:
         """
         Set the visibility of a constraint
@@ -745,12 +750,22 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="exposeInternalGeometry",
+    )
     def ExposeInternalGeometry(self) -> None:
         """
         Deprecated -- use exposeInternalGeometry
         """
         ...
 
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="deleteUnusedInternalGeometry",
+    )
     def DeleteUnusedInternalGeometry(self) -> None:
         """
         Deprecated -- use deleteUnusedInternalGeometry
@@ -928,19 +943,19 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setGeometryId():
+    def setGeometryId(self, GeoId: int, id: int, /) -> None:
         """
         Sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         """
         ...
 
-    def setGeometryIds(GeoIdsToIds: List[Tuple[int, int]], /):
+    def setGeometryIds(self, GeoIdsToIds: List[Tuple[int, int]], /) -> None:
         """
         Sets the GeometryId of the SketchGeometryExtension of the geometries with the provided GeoIds
         Expects a list of pairs (GeoId, id)
         """
 
-    def getGeometryId():
+    def getGeometryId(self, GeoId: int, /) -> int:
         """
         Gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         """

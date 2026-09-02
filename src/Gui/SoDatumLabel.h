@@ -1,24 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2011-2012 Luke Parry <l.parry@warwick.ac.uk>            *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011-2012 Luke Parry <l.parry@warwick.ac.uk>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -27,6 +28,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFName.h>
@@ -37,6 +39,17 @@
 
 #include <FCGlobal.h>
 
+class SoBaseColor;
+class SoDepthBuffer;
+class SoDrawStyle;
+class SoFaceSet;
+class SoLineSet;
+class SoSeparator;
+class SoLightModel;
+class SoSwitch;
+class SoTexture2;
+class SoTransform;
+class SoVertexProperty;
 
 namespace Gui
 {
@@ -62,12 +75,31 @@ public:
         ARCLENGTH
     };
 
+    /** Identifies which visual layer of a datum label produced a selection hit.
+     *
+     * Presentation contains the dimension and extension lines. Annotation contains the
+     * label text and arrowheads, which receive higher preselection priority.
+     */
+    enum class SelectionPart
+    {
+        Presentation,
+        Annotation
+    };
+
     static void initClass();
     SoDatumLabel();
 
     /*The points have to be on XY plane, ie they need to be 2D points.
     To draw on other planes, you need to attach a SoTransform to the SoDatumLabel (or parent).*/
     void setPoints(SbVec3f p1, SbVec3f p2);
+
+    /** Classifies a picked point as presentation geometry or annotation geometry.
+     *
+     * @param objectPoint Pick intersection in this node's object coordinate system.
+     * @return Annotation for the text/arrow Z layer; Presentation for the
+     *         dimension/extension-line Z layer.
+     */
+    [[nodiscard]] SelectionPart classifySelectionPoint(const SbVec3f& objectPoint) const;
 
     /* returns the center point of the text of the label */
     SbVec3f getLabelTextCenter();
@@ -91,10 +123,11 @@ public:
     SoSFImage image;
     SoSFFloat lineWidth;
     SoSFFloat sampling;
+    SoSFUShort linePattern;
     bool useAntialiasing;
 
 protected:
-    ~SoDatumLabel() override = default;
+    ~SoDatumLabel() override;
     void GLRender(SoGLRenderAction* action) override;
     void computeBBox(SoAction*, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
@@ -222,19 +255,35 @@ private:
         float width,
         float length
     );
-    void drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawDistance(const SbVec3f* points);
-    void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawSymmetric(const SbVec3f* points);
-    void drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset);
 
 private:
     void drawImage();
+    bool prepareRenderScene(SoState* state);
+    void ensureCoinGeometry(const SbVec3f* points, int numPoints);
+    void ensureCoinText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset);
+    void setVertexZ(SbVec3f& point, float z) const;
     float imgWidth;
     float imgHeight;
     bool glimagevalid;
+
+    SoSeparator* m_Root {nullptr};
+    SoDepthBuffer* m_GeometryDepth {nullptr};
+    SoLightModel* m_LightModel {nullptr};
+    SoBaseColor* m_GeometryColor {nullptr};
+    SoDrawStyle* m_DrawStyle {nullptr};
+    SoVertexProperty* m_LineVertexProperty {nullptr};
+    SoLineSet* m_LineSet {nullptr};
+    SoVertexProperty* m_TriangleVertexProperty {nullptr};
+    SoFaceSet* m_TriangleFaceSet {nullptr};
+
+    SoSwitch* m_TextSwitch {nullptr};
+    SoSeparator* m_TextSeparator {nullptr};
+    SoDepthBuffer* m_TextDepth {nullptr};
+    SoBaseColor* m_TextBaseColor {nullptr};
+    SoTexture2* m_TextTexture {nullptr};
+    SoTransform* m_TextTransform {nullptr};
+    SoVertexProperty* m_TextVertexProperty {nullptr};
+    SoFaceSet* m_TextFaceSet {nullptr};
 };
 
 }  // namespace Gui

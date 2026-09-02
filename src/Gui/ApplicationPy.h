@@ -1,25 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Jürgen Riegel <juergen.riegel@web.de>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -40,21 +40,21 @@ public:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
     // static python wrapper of the exported functions
-    static PyObject* sActivateWorkbenchHandler (PyObject *self,PyObject *args); // activates a workbench object
-    static PyObject* sAddWorkbenchHandler      (PyObject *self,PyObject *args); // adds a new workbench handler to a list
-    static PyObject* sRemoveWorkbenchHandler   (PyObject *self,PyObject *args); // removes a workbench handler from the list
-    static PyObject* sGetWorkbenchHandler      (PyObject *self,PyObject *args); // retrieves the workbench handler
-    static PyObject* sListWorkbenchHandlers    (PyObject *self,PyObject *args); // retrieves a list of all workbench handlers
-    static PyObject* sActiveWorkbenchHandler   (PyObject *self,PyObject *args); // retrieves the active workbench object
-    static PyObject* sAddResPath               (PyObject *self,PyObject *args); // adds a path where to find resources
-    static PyObject* sAddLangPath              (PyObject *self,PyObject *args); // adds a path to a qm file
+    static PyObject* sActivateWorkbench        (PyObject *self,PyObject *args); // activates a workbench object
+    static PyObject* sAddWorkbench             (PyObject *self,PyObject *args); // adds a new workbench handler to a list
+    static PyObject* sRemoveWorkbench          (PyObject *self,PyObject *args); // removes a workbench handler from the list
+    static PyObject* sGetWorkbench             (PyObject *self,PyObject *args); // retrieves the workbench handler
+    static PyObject* sListWorkbenches          (PyObject *self,PyObject *args); // retrieves a list of all workbench handlers
+    static PyObject* sActiveWorkbench          (PyObject *self,PyObject *args); // retrieves the active workbench object
+    static PyObject* sAddResourcePath          (PyObject *self,PyObject *args); // adds a path where to find resources
+    static PyObject* sAddLanguagePath          (PyObject *self,PyObject *args); // adds a path to a qm file
     static PyObject* sAddIconPath              (PyObject *self,PyObject *args); // adds a path to an icon file
     static PyObject* sAddIcon                  (PyObject *self,PyObject *args); // adds an icon to the cache
     static PyObject* sGetIcon                  (PyObject *self,PyObject *args); // get an icon from the cache
     static PyObject* sIsIconCached             (PyObject *self,PyObject *args); // check if an icon is cached
 
-    static PyObject* sSendActiveView           (PyObject *self,PyObject *args);
-    static PyObject* sSendFocusView            (PyObject *self,PyObject *args);
+    static PyObject* sSendMsgToActiveView      (PyObject *self,PyObject *args);
+    static PyObject* sSendMsgToFocusView       (PyObject *self,PyObject *args);
 
     static PyObject* sGetMainWindow            (PyObject *self,PyObject *args);
     static PyObject* sUpdateGui                (PyObject *self,PyObject *args);
@@ -80,6 +80,8 @@ public:
     static PyObject* sLoadFile                 (PyObject *self,PyObject *args); // open all types of files
 
     static PyObject* sCoinRemoveAllChildren    (PyObject *self,PyObject *args);
+    static PyObject* sApplyElementColorOverride(PyObject *self,PyObject *args);
+    static PyObject* sClearElementColorOverride(PyObject *self,PyObject *args);
 
     static PyObject* sActiveDocument           (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument        (PyObject *self,PyObject *args);
@@ -101,11 +103,11 @@ public:
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
 
-    static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
-    static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
+    static PyObject* sAddDocumentObserver      (PyObject *self,PyObject *args);
+    static PyObject* sRemoveDocumentObserver   (PyObject *self,PyObject *args);
 
-    static PyObject* sAddWbManipulator         (PyObject *self,PyObject *args);
-    static PyObject* sRemoveWbManipulator      (PyObject *self,PyObject *args);
+    static PyObject* sAddWorkbenchManipulator  (PyObject *self,PyObject *args);
+    static PyObject* sRemoveWorkbenchManipulator(PyObject *self,PyObject *args);
 
     static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
     static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
@@ -113,8 +115,13 @@ public:
 
     static PyObject* sSuspendWaitCursor        (PyObject *self, PyObject *args);
     static PyObject* sResumeWaitCursor         (PyObject *self, PyObject *args);
-
-    static PyMethodDef    Methods[];
+    static PyObject* sSubgraphFromObject       (PyObject *self, PyObject *args);
+    static PyObject* sExportSubgraph           (PyObject *self, PyObject *args);
+    static PyObject* sGetSoDBVersion           (PyObject *self, PyObject *args);
+    static PyObject* sShowMainWindow           (PyObject *self, PyObject *args);
+    static PyObject* sExec_loop                (PyObject *self, PyObject *args);
+    static PyObject* sSetupWithoutGUI          (PyObject *self, PyObject *args);
+    static PyObject* sEmbedToWindow            (PyObject *self, PyObject *args);
     // clang-format on
 };
 

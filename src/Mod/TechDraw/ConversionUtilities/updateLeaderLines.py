@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # ***************************************************************************
 # *   Copyright (c) 2024 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *

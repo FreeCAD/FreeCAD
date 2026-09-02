@@ -63,6 +63,8 @@ public:
 
     App::PropertyLink *getOwnerProperty() override { return &Leader; }
 
+    bool snapsToPosition() const override { return false; }
+
 protected:
     void onChanged(const App::Property* prop) override;
 

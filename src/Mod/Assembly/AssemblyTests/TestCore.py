@@ -34,7 +34,7 @@ def _msg(text, end="\n"):
     App.Console.PrintMessage(text + end)
 
 
-class TestCore(unittest.TestCase):
+class AssemblyTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """setUpClass()...
@@ -85,6 +85,8 @@ class TestCore(unittest.TestCase):
         """
         App.closeDocument(self.doc.Name)
 
+
+class TestCore(AssemblyTestBase):
     def test_create_assembly(self):
         """Create an assembly."""
         operation = "Create Assembly Object"
@@ -130,6 +132,42 @@ class TestCore(unittest.TestCase):
             groundedjoint.ObjectToGround == box,
             "'{}' failed: ObjectToGround not set correctly.".format(operation),
         )
+
+    def test_toggle_grounded_joint(self):
+        """test grounding and ungrounding a part, added because of github.com/freecad/freecad/issues/28440"""
+        operation = "Toggle Grounded Joint"
+        _msg("  Test '{}'".format(operation))
+
+        box = self.assembly.newObject("Part::Box", "Box")
+
+        # ground the part
+        groundedjoint = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
+        JointObject.GroundedJoint(groundedjoint, box)
+        self.doc.recompute()
+
+        # verify grounded
+        self.assertTrue(
+            hasattr(groundedjoint, "ObjectToGround"),
+            "'{}' failed: No attribute 'ObjectToGround'".format(operation),
+        )
+        self.assertEqual(
+            groundedjoint.ObjectToGround,
+            box,
+            "'{}' failed: ObjectToGround not set correctly".format(operation),
+        )
+
+        # unground the part
+        self.doc.removeObject(groundedjoint.Name)
+        self.doc.recompute()
+
+        # verify no grounded joints remain in this part
+        for joint in self.jointgroup.Group:
+            if hasattr(joint, "ObjectToGround"):
+                self.assertNotEqual(
+                    joint.ObjectToGround,
+                    box,
+                    "'{}' failed: part still grounded after toggle".format(operation),
+                )
 
     def test_find_placement(self):
         """Test find placement of joint."""

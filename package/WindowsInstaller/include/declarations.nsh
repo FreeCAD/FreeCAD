@@ -1,4 +1,4 @@
-﻿/*
+/*
 declaration.nsh
 
 Configuration and variables of FreeCAD installer
@@ -12,10 +12,9 @@ Configuration and variables of FreeCAD installer
 #--------------------------------
 # Names and version
 
-!define APP_NAME "FreeCAD"
 !define APP_VERSION_NUMBER "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}.${APP_VERSION_BUILD}"
-# For the proposed install folder we use the scheme "FreeCAD 0.18" 
-# however for the Registry, we need the scheme "FreeCAD 0.18.x" in order
+# For the proposed install folder we use the scheme "FreeCAD x.x"
+# however for the Registry, we need the scheme "FreeCAD x.x.x" in order
 # to check if it is exactly this version (to support side-by-side installations)
 !define APP_SERIES_NAME "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}"
 !define APP_SERIES_KEY "${APP_VERSION_MAJOR}${APP_VERSION_MINOR}${APP_VERSION_PATCH}${APP_VERSION_EMERGENCY}"
@@ -35,6 +34,7 @@ Configuration and variables of FreeCAD installer
 
 !define APP_RUN "bin\${APP_NAME}.exe"
 !define BIN_FREECAD "${APP_NAME}.exe"
+!define BIN_FREECADCMD "${APP_NAME}cmd.exe"
 
 !define APP_REGKEY "SOFTWARE\${APP_NAME}${APP_SERIES_KEY}" # like "FreeCAD0180"
 !define APP_REGKEY_SETUP "${APP_REGKEY}\Setup"
@@ -74,7 +74,9 @@ Var AppSuff
 Var CreateDesktopIcon
 Var CreateFileAssociations
 Var OldVersionNumber
+Var OriginalCmdInstDir
 Var Pointer
+Var RemoveInstDir
 Var Search
 Var StartmenuFolder
 Var String

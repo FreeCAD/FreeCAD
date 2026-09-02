@@ -24,6 +24,7 @@
  ***************************************************************************/
 
 
+#include <QLineEdit>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QTextStream>
@@ -103,11 +104,48 @@ const QString TaskSketchBasedParameters::onAddSelection(
     return refStr;
 }
 
+void TaskSketchBasedParameters::updateReferenceName(
+    QLineEdit* lineEdit,
+    const App::PropertyLinkSub& reference,
+    const QString& emptyPlaceholder
+)
+{
+    App::DocumentObject* referencedObject = reference.getValue();
+    const auto subValues = reference.getSubValues();
+    const std::string subName = subValues.empty() ? "" : subValues.front();
+
+    if (!referencedObject) {
+        lineEdit->clear();
+        lineEdit->setProperty("FeatureName", QVariant());
+        lineEdit->setProperty("FaceName", QVariant());
+        lineEdit->setPlaceholderText(emptyPlaceholder);
+        return;
+    }
+
+    QString text = QString::fromUtf8(referencedObject->Label.getValue());
+    if (subName.rfind("Face", 0) == 0) {
+        text += QStringLiteral(":%1%2").arg(tr("Face"), QString::fromStdString(subName.substr(4)));
+    }
+    else if (!subName.empty()) {
+        text += QStringLiteral(":%1").arg(QString::fromStdString(subName));
+    }
+
+    lineEdit->setText(text);
+    lineEdit->setProperty("FeatureName", QByteArray(referencedObject->getNameInDocument()));
+    lineEdit->setProperty("FaceName", QByteArray(subName.c_str()));
+}
+
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject*, App::DocumentObject* base)
 {
-    const auto* bodyViewProvider = getViewObject<ViewProvider>()->getBodyViewProvider();
+    auto* viewObj = getViewObject<ViewProvider>();
+    if (!viewObj) {
+        return;
+    }
 
-    previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+    const auto* bodyViewProvider = viewObj->getBodyViewProvider();
+    if (bodyViewProvider) {
+        previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+    }
 
     if (!base) {
         return;

@@ -42,9 +42,8 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfCirclePy::representation() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfCirclePtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfCirclePtr()->handle());
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = circle->Axis();
@@ -151,9 +150,8 @@ void ArcOfCirclePy::setRadius(Py::Float arg)
 
 Py::Object ArcOfCirclePy::getCircle() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfCirclePtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfCirclePtr()->handle());
     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
     return Py::Object(new CirclePy(new GeomCircle(circle)), true);
 }

@@ -27,7 +27,7 @@
 
 #include "FeatureRefine.h"
 
-#include <QtCore>
+#include <QCoreApplication>
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign

@@ -31,7 +31,6 @@ import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.Util as PathUtil
 import Path.Tool.Controller as PathToolController
-from Path.Tool.toolbit.ui.selector import ToolBitSelector
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -137,6 +136,23 @@ def Create(name="Default Tool", tool=None, toolNumber=1):
     return obj
 
 
+def findConflictingToolController(controllers, toolNumber, toolBitId, ignore=None):
+    """
+    Returns the tool controller that uses a tool number for a different tool.
+
+    Tools are told apart by their ToolBitID, so that the same toolbit stays the
+    same tool no matter how many times it was attached to the document. Sharing
+    a number with the same tool is deliberate: it is how one tool gets more
+    than one set of feeds and speeds.
+    """
+    for tc in controllers:
+        if tc is ignore or tc.ToolNumber != toolNumber:
+            continue
+        if getattr(tc.Tool, "ToolBitID", None) != toolBitId:
+            return tc
+    return None
+
+
 class CommandPathToolController(object):
     def GetResources(self):
         return {
@@ -166,27 +182,14 @@ class CommandPathToolController(object):
         if not job:
             return
 
-        # Let the user select a toolbit
-        selector = ToolBitSelector()
-        if not selector.exec_():
-            return
-        tool = selector.get_selected_tool()
-        if not tool:
-            return
+        # This command is not reachable from any menu or toolbar; the toolbit
+        # dock replaced it. It stays registered and redirects there so that
+        # existing macros bound to CAM_ToolController keep working. Imported
+        # here rather than at the top, because dock.py imports this module.
+        from Path.Tool.library.ui.dock import ToolBitLibraryDock
 
-        # Find a tool number
-        toolNr = None
-        for tc in job.Tools.Group:
-            if tc.Tool == tool:
-                toolNr = tc.ToolNumber
-                break
-        if not toolNr:
-            toolNr = max([tc.ToolNumber for tc in job.Tools.Group]) + 1
-
-        # Create the new tool controller with the tool.
-        tc = Create("TC: {}".format(tool.Label), tool, toolNr)
-        job.Proxy.addToolController(tc)
-        FreeCAD.ActiveDocument.recompute()
+        dock = ToolBitLibraryDock(job, askToolNumber=True)
+        dock.open()
 
 
 class BlockScrollWheel(QtCore.QObject):
@@ -208,6 +211,7 @@ class ToolControllerEditor(object):
         self.form.tc_layout.addWidget(self.controller)
         if not asDialog:
             self.form.buttonBox.hide()
+        self.controller.tcOperationCountLabel.setTextFormat(QtCore.Qt.RichText)
         if not showCountLabel:
             self.controller.tcOperationCountLabel.hide()
         self.obj = obj
@@ -223,6 +227,9 @@ class ToolControllerEditor(object):
             self.controller.leadOutFeed, obj, "LeadOutFeed"
         )
         self.rampFeed = PathGuiUtil.QuantitySpinBox(self.controller.rampFeed, obj, "RampFeed")
+        self.noEngagementFeed = PathGuiUtil.QuantitySpinBox(
+            self.controller.noEngagementFeed, obj, "NoEngagementFeed"
+        )
         self.vertRapid = PathGuiUtil.QuantitySpinBox(self.controller.vertRapid, obj, "VertRapid")
         self.horizRapid = PathGuiUtil.QuantitySpinBox(self.controller.horizRapid, obj, "HorizRapid")
 
@@ -231,7 +238,37 @@ class ToolControllerEditor(object):
         self.controller.spindleDirection.installEventFilter(self.blockScrollWheel)
         self.controller.tcNumber.setReadOnly(disableToolNumber)
 
+        self._injectFeedsSpeedsButton()
+
         self.editor = None
+
+    def _injectFeedsSpeedsButton(self):
+        from PySide import QtCore, QtGui, QtWidgets
+
+        self.feedsSpeedsButton = None
+        layout = self.controller.layout()
+        if layout is None:
+            return
+        row = QtWidgets.QHBoxLayout()
+        row.addStretch()
+        self.feedsSpeedsButton = QtWidgets.QPushButton()
+        self.feedsSpeedsButton.setIcon(QtGui.QIcon(":/icons/CAM_FeedsSpeeds.svg"))
+        self.feedsSpeedsButton.setIconSize(QtCore.QSize(24, 24))
+        self.feedsSpeedsButton.setToolTip(
+            translate("CAM_ToolController", "Feeds and Speeds Wizard")
+        )
+        self.feedsSpeedsButton.clicked.connect(self._onFeedsSpeedsClicked)
+        row.addWidget(self.feedsSpeedsButton)
+        layout.addLayout(row)
+
+    def _onFeedsSpeedsClicked(self):
+        from Path.Tool.Gui.FeedsSpeedsDialog import open_for
+
+        open_for(self.obj, parent=self.form)
+        # The F&S dialog may have written HorizFeed/VertFeed/SpindleSpeed
+        # directly to the TC. Re-sync the editor's spinboxes from the
+        # underlying property values so the user sees the new numbers.
+        self.updateUi()
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -268,6 +305,7 @@ class ToolControllerEditor(object):
             self.leadInFeed.widget,
             self.leadOutFeed.widget,
             self.rampFeed.widget,
+            self.noEngagementFeed.widget,
             self.vertFeed.widget,
             self.vertRapid.widget,
             self.controller.spindleSpeed,
@@ -278,12 +316,15 @@ class ToolControllerEditor(object):
                 obj.blockSignals(True)
 
             self.controller.tcName.setText(tc.Label)
+            if not self.controller.tcName.hasFocus():
+                self.controller.tcName.setCursorPosition(0)
             self.controller.tcNumber.setValue(tc.ToolNumber)
             self.horizFeed.updateWidget()
             self.horizRapid.updateWidget()
             self.leadInFeed.updateWidget()
             self.leadOutFeed.updateWidget()
             self.rampFeed.updateWidget()
+            self.noEngagementFeed.updateWidget()
             self.vertFeed.updateWidget()
             self.vertRapid.updateWidget()
             self.controller.spindleSpeed.setValue(tc.SpindleSpeed)
@@ -296,24 +337,62 @@ class ToolControllerEditor(object):
             for obj in blockObjects:
                 obj.blockSignals(False)
 
+    def updateToolNumber(self, tc, toolNumber):
+        """
+        Assigns a tool number, unless another controller in the job uses it
+        for a different tool; both would then emit the same tool change.
+        """
+        group = tc.getParentGroup()  # the job's Tools group
+        owner = findConflictingToolController(
+            group.Group if group else [],
+            toolNumber,
+            getattr(tc.Tool, "ToolBitID", None),
+            tc,
+        )
+        if owner is None:
+            tc.ToolNumber = toolNumber
+            return
+
+        # Signals stay blocked while the warning is up: it takes focus away
+        # from the spin box, which would otherwise emit editingFinished again
+        # and land straight back here.
+        self.controller.tcNumber.blockSignals(True)
+        try:
+            self.controller.tcNumber.setValue(tc.ToolNumber)
+            QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_ToolController", "Tool Number In Use"),
+                translate("CAM_ToolController", "Tool number {} is already used by {}.").format(
+                    toolNumber, owner.Label
+                ),
+            )
+        finally:
+            self.controller.tcNumber.blockSignals(False)
+
     def updateToolController(self):
         tc = self.obj
         try:
-            tc.Label = self.controller.tcName.text()
-            tc.ToolNumber = self.controller.tcNumber.value()
+            if tc.Label != self.controller.tcName.text():
+                tc.Label = self.controller.tcName.text()
+            if tc.ToolNumber != self.controller.tcNumber.value():
+                self.updateToolNumber(tc, self.controller.tcNumber.value())
             self.horizFeed.updateProperty()
             self.vertFeed.updateProperty()
             self.leadInFeed.updateProperty()
             self.leadOutFeed.updateProperty()
             self.rampFeed.updateProperty()
+            self.noEngagementFeed.updateProperty()
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
-            tc.SpindleSpeed = self.controller.spindleSpeed.value()
-            tc.SpindleDir = self.controller.spindleDirection.currentData()
+            if tc.SpindleSpeed != self.controller.spindleSpeed.value():
+                tc.SpindleSpeed = self.controller.spindleSpeed.value()
+            if tc.SpindleDir != self.controller.spindleDirection.currentData():
+                tc.SpindleDir = self.controller.spindleDirection.currentData()
 
             if self.editor:
                 self.editor.updateTool()
-                tc.Tool = self.editor.tool
+                if tc.Tool != self.editor.tool:
+                    tc.Tool = self.editor.tool
 
         except Exception as e:
             Path.Log.error("Error updating TC: {}".format(e))
@@ -334,12 +413,16 @@ class ToolControllerEditor(object):
             self.editor.setupUI()
 
         self.controller.tcName.textChanged.connect(self.changed)
+        self.controller.tcName.editingFinished.connect(
+            lambda: self.controller.tcName.setCursorPosition(0)
+        )
         self.controller.tcNumber.editingFinished.connect(self.changed)
         self.vertFeed.widget.textChanged.connect(self.changed)
         self.horizFeed.widget.textChanged.connect(self.changed)
         self.leadInFeed.widget.textChanged.connect(self.changed)
         self.leadOutFeed.widget.textChanged.connect(self.changed)
         self.rampFeed.widget.textChanged.connect(self.changed)
+        self.noEngagementFeed.widget.textChanged.connect(self.changed)
         self.vertRapid.widget.textChanged.connect(self.changed)
         self.horizRapid.widget.textChanged.connect(self.changed)
         self.controller.spindleSpeed.editingFinished.connect(self.changed)

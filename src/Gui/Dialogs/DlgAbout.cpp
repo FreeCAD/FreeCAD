@@ -30,8 +30,6 @@
 #include <QFileInfo>
 #include <QLocale>
 #include <QProcessEnvironment>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 #include <QScreen>
 #include <QSettings>
 #include <QSysInfo>
@@ -41,6 +39,8 @@
 #include <Inventor/C/basic.h>
 
 #include <App/Application.h>
+#include <App/ProgramInformation.h>
+#include <Gui/ProgramInformation.h>
 #include <App/Metadata.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -60,6 +60,8 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 namespace fs = std::filesystem;
+
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::Dialog::LicenseView, Gui::MDIView)  // NOLINT
 
 // ------------------------------------------------------------------------------
 
@@ -246,7 +248,10 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QStringLiteral("Unknown"), App::Application::prettyProductInfoWrapper());
+    os.replace(
+        QStringLiteral("Unknown"),
+        QString::fromStdString(App::ProgramInformation::prettyProductInfoWrapper())
+    );
     ui->labelBuildOS->setText(os);
 
     QString architecture = ui->labelBuildRunArchitecture->text();
@@ -477,12 +482,7 @@ void AboutDialog::linkActivated(const QUrl& link)
 
 void AboutDialog::copyToClipboard()
 {
-    QString data;
-    QTextStream str(&data);
-    std::map<std::string, std::string>& config = App::Application::Config();
-    App::Application::getVerboseCommonInfo(str, config);
-    Gui::Application::getVerboseDPIStyleInfo(str);
-    App::Application::getVerboseAddOnsInfo(str, config);
+    QString data = QString::fromStdString(Gui::ProgramInformation::collect());
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

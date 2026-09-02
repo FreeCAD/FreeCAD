@@ -28,6 +28,7 @@
 #include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/sax2/Attributes.hpp>
+#include <xercesc/util/XMLUni.hpp>
 
 #include <locale>
 
@@ -67,6 +68,8 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
     parser->setContentHandler(this);
     parser->setLexicalHandler(this);
     parser->setErrorHandler(this);
+    parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
+    parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
 
     try {
         StdInputSource file(str, _File.filePath().c_str());
@@ -477,11 +480,16 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
                 // less data than the file size would allow.
                 // All what we need to do is to notify the user about the
                 // failure.
-                Base::Console().error(
-                    "Reading failed from embedded file: %s\n",
-                    entry->toString().c_str()
-                );
-                FailedFiles.push_back(jt->FileName);
+                if (entry->getSize() == 0) {
+                    Base::Console().log("Skipped empty embedded file: %s\n", entry->toString().c_str());
+                }
+                else {
+                    Base::Console().error(
+                        "Reading failed from embedded file: %s\n",
+                        entry->toString().c_str()
+                    );
+                    FailedFiles.push_back(jt->FileName);
+                }
             }
             // Go to the next registered file name
             it = jt + 1;

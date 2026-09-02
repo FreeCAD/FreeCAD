@@ -102,12 +102,6 @@
           <height>120</height>
          </size>
         </property>
-        <property name="toolTip">
-         <string>List can be reordered by dragging</string>
-        </property>
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::InternalMove</enum>
-        </property>
        </widget>
       </item>
      </layout>

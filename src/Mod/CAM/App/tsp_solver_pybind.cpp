@@ -97,6 +97,100 @@ std::vector<int> tspSolvePy(
     return TSPSolver::solve(pts, pStartPoint, pEndPoint);
 }
 
+// Python wrapper for solvePairs function
+std::vector<py::dict> tspSolvePairsPy(
+    const std::vector<py::dict>& pairs,
+    const py::object& routeStartPoint = py::none(),
+    const py::object& routeEndPoint = py::none()
+)
+{
+    std::vector<TSPPair> cppPairs;
+
+    // Convert Python dictionaries to C++ TSPPair objects
+    for (size_t i = 0; i < pairs.size(); ++i) {
+        const auto& pair = pairs[i];
+        double x = py::cast<double>(pair["x"]);
+        double y = py::cast<double>(pair["y"]);
+        // xAlt/yAlt default to x/y if not provided (closed wires have same start/end)
+        double xAlt = pair.contains("xAlt") ? py::cast<double>(pair["xAlt"]) : x;
+        double yAlt = pair.contains("yAlt") ? py::cast<double>(pair["yAlt"]) : y;
+
+        TSPPair cppPair(x, y, xAlt, yAlt);
+        cppPair.index = static_cast<int>(i);
+        cppPairs.emplace_back(cppPair);
+    }
+
+    // Handle optional start point
+    TSPPoint* pStartPoint = nullptr;
+    TSPPoint startPointObj(0, 0);
+    if (!routeStartPoint.is_none()) {
+        try {
+            auto sp = routeStartPoint.cast<std::vector<double>>();
+            if (sp.size() >= 2) {
+                startPointObj.x = sp[0];
+                startPointObj.y = sp[1];
+                pStartPoint = &startPointObj;
+            }
+        }
+        catch (py::cast_error&) {
+            try {
+                if (py::len(routeStartPoint) >= 2) {
+                    startPointObj.x = py::cast<double>(routeStartPoint.attr("__getitem__")(0));
+                    startPointObj.y = py::cast<double>(routeStartPoint.attr("__getitem__")(1));
+                    pStartPoint = &startPointObj;
+                }
+            }
+            catch (py::error_already_set&) {
+            }
+        }
+    }
+
+    // Handle optional end point
+    TSPPoint* pEndPoint = nullptr;
+    TSPPoint endPointObj(0, 0);
+    if (!routeEndPoint.is_none()) {
+        try {
+            auto ep = routeEndPoint.cast<std::vector<double>>();
+            if (ep.size() >= 2) {
+                endPointObj.x = ep[0];
+                endPointObj.y = ep[1];
+                pEndPoint = &endPointObj;
+            }
+        }
+        catch (py::cast_error&) {
+            try {
+                if (py::len(routeEndPoint) >= 2) {
+                    endPointObj.x = py::cast<double>(routeEndPoint.attr("__getitem__")(0));
+                    endPointObj.y = py::cast<double>(routeEndPoint.attr("__getitem__")(1));
+                    pEndPoint = &endPointObj;
+                }
+            }
+            catch (py::error_already_set&) {
+            }
+        }
+    }
+
+    // Solve the pair TSP
+    auto result = TSPSolver::solvePairs(cppPairs, pStartPoint, pEndPoint);
+
+    // Convert result back to Python dictionaries, preserving extra keys from input
+    std::vector<py::dict> pyResult;
+    for (const auto& pair : result) {
+        // Start with a copy of the original input dict to preserve extra keys
+        py::dict pairDict = py::dict(pairs[pair.index]);
+        // Update with solver results (may have changed due to flipping)
+        pairDict["x"] = pair.x;
+        pairDict["y"] = pair.y;
+        pairDict["xAlt"] = pair.xAlt;
+        pairDict["yAlt"] = pair.yAlt;
+        pairDict["flipped"] = pair.flipped;
+        pairDict["index"] = pair.index;
+        pyResult.push_back(pairDict);
+    }
+
+    return pyResult;
+}
+
 // Python wrapper for solveTunnels function
 std::vector<py::dict> tspSolveTunnelsPy(
     const std::vector<py::dict>& tunnels,
@@ -227,5 +321,20 @@ PYBIND11_MODULE(tsp_solver, m)
         "- routeStartPoint: Optional [x, y] point where route should start\n"
         "- routeEndPoint: Optional [x, y] point where route should end\n"
         "Returns: List of tunnel dictionaries in optimized order with flipped status"
+    );
+
+    m.def(
+        "solvePairs",
+        &tspSolvePairsPy,
+        py::arg("pairs"),
+        py::arg("routeStartPoint") = py::none(),
+        py::arg("routeEndPoint") = py::none(),
+        "Solve TSP for pairs (each element has a primary and alternative entry point).\n"
+        "Arguments:\n"
+        "- pairs: List of dictionaries with keys: x, y, xAlt, yAlt\n"
+        "- routeStartPoint: Optional [x, y] point where route should start\n"
+        "- routeEndPoint: Optional [x, y] point where route should end\n"
+        "Returns: List of pair dictionaries in optimized order; x/y reflect chosen entry point,\n"
+        "         flipped=True when xAlt/yAlt was selected as the entry point"
     );
 }

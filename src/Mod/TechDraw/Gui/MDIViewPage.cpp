@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QMdiSubWindow>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPageLayout>
@@ -35,6 +36,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
+#include <QMetaObject>
 #include <fastsignals/signal.h>
 #include <cmath>
 
@@ -45,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
@@ -57,6 +60,13 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
@@ -82,16 +92,18 @@ namespace sp = std::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* parent)
-    : Gui::MDIView(doc, parent), m_vpPage(pageVp),
-      m_previewState(false)
+    : Gui::MDIView(doc, parent), m_vpPage(pageVp)
 {
     setMouseTracking(true);
 
-    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
+    m_toggleKeepUpdatedAction = new QAction(tr("&Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    m_toggleFrameAction = new QAction(tr("Show &Frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
+
+    m_toggleGridAction = new QAction(tr("Show &Grid"), this);
+    connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
@@ -108,6 +120,15 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_printAllAction = new QAction(tr("Print All Pages"), this);
 
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
+
+    m_exportSVGAction->setIcon(
+        Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ExportPageSVG"));
+    m_exportDXFAction->setIcon(
+        Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ExportPageDXF"));
+    m_exportPDFAction->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Std_PrintPdf"));
+    m_printAllAction->setIcon(
+        Gui::BitmapFactory().iconFromTheme("actions/TechDraw_PrintAll"));
 
     isSelectionBlocked = false;
     isContextualMenuEnabled = true;
@@ -160,17 +181,42 @@ void MDIViewPage::closeEvent(QCloseEvent* event)
         App::Document* doc = _pcDocument->getDocument();
         if (doc) {
             App::DocumentObject* obj = doc->getObject(m_objectName.c_str());
-            Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
-            if (vp) {
-                vp->hide();
+            if (auto* vpPage = freecad_cast<ViewProviderPage*>(
+                    _pcDocument->getViewProvider(obj))) {
+                // Don't call vpPage->hide() here: that path calls removeMDIView()
+                // -> removeWindow() -> setParent(nullptr) re-entrantly from
+                // inside QMdiSubWindow::closeEvent, making it briefly top-level.
+                vpPage->onMDIViewClosed();
             }
         }
     }
     blockSceneSelection(false);
 }
 
+void MDIViewPage::closeWithoutSavePrompt()
+{
+    // Close through the normal Qt sequence
+    bool savedPassive = bIsPassive;
+    bIsPassive = true;
+    QWidget* parent = parentWidget();
+    if (qobject_cast<QMdiSubWindow*>(parent)) {
+        parent->close();
+    }
+    else {
+        close();
+    }
+    bIsPassive = savedPassive;
+}
+
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
+    // Close this MDI tab when its backing DrawPage is deleted (e.g. undo page creation).
+    const char* objName = obj.getNameInDocument();
+    if (obj.isDerivedFrom<TechDraw::DrawPage>() && objName && m_objectName == objName) {
+        QMetaObject::invokeMethod(this, &Gui::MDIView::deleteSelf, Qt::QueuedConnection);
+        return;
+    }
+
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
     if (obj.isDerivedFrom<TechDraw::DrawView>()) {
@@ -293,6 +339,15 @@ void MDIViewPage::setTabText(std::string tabText)
     }
 }
 
+// The tab title for a TechDraw Page always shows the DrawPage's Label, not the document Label.
+void MDIViewPage::onRelabel(Gui::Document* /*pDoc*/)
+{
+    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    if (page) {
+        setTabText(page->Label.getValue());
+    }
+}
+
 // advise the page to check QGraphicsScene parent/child relationships after undo
 void MDIViewPage::fixSceneDependencies()
 {
@@ -355,9 +410,7 @@ void MDIViewPage::printPreview()
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
-    m_previewState = true;
     dlg.exec();
-    m_previewState = false;
 }
 
 
@@ -406,7 +459,7 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    PagePrinter::print(getViewProviderPage(), printer, m_previewState);
+    PagePrinter::print(getViewProviderPage(), printer);
 }
 
 // static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
@@ -427,24 +480,235 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    if (isContextualMenuEnabled) {
-        QMenu menu;
-        menu.addAction(m_toggleFrameAction);
-        menu.addAction(m_toggleKeepUpdatedAction);
-        menu.addAction(m_exportSVGAction);
-        menu.addAction(m_exportDXFAction);
-        menu.addAction(m_exportPDFAction);
-        menu.addAction(m_printAllAction);
-        if (PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
-            m_toggleFrameAction->setEnabled(true);
-        } else {
-            m_toggleFrameAction->setEnabled(false);
-        }
-        menu.exec(event->globalPos());
+    if (!isContextualMenuEnabled) {
+        return;
     }
+
+    QMenu menu;
+
+    if (!addSelectionGroups(menu)) {
+        addPageGroup(menu);
+    }
+    menu.exec(event->globalPos());
+}
+
+template<typename T>
+static bool hasWholeSelectionOf()
+{
+    for (auto& sel : Gui::Selection().getSelectionEx()) {
+        auto* obj = sel.getObject();
+        if (obj
+            && obj->isDerivedFrom<T>()
+            && sel.getSubNames().empty()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
+static bool hasSelectionOfType()
+{
+    return !Gui::Selection().getObjectsOfType(T::getClassTypeId()).empty();
+}
+
+bool MDIViewPage::addSelectionGroups(QMenu& menu)
+{
+    bool added = false;
+    auto ctx = getSelectionContext();
+
+    if (hasSelectionOfType<TechDraw::DrawViewDimension>()) {
+        addCommandsByName(menu, {
+            "TechDraw_ExtensionIncreaseDecimal",
+            "TechDraw_ExtensionDecreaseDecimal",
+        });
+        menu.addSeparator();
+        addCommandsByName(menu, {
+            "TechDraw_ExtensionCustomizeFormat",
+            "TechDraw_ExtensionInsertDiameter",
+            "TechDraw_ExtensionInsertSquare",
+            "TechDraw_ExtensionInsertRepetition",
+            "TechDraw_ExtensionRemovePrefixChar",
+        });
+        menu.addSeparator();
+        addCommandsByName(menu, {
+            "TechDraw_DimensionRepair",
+        });
+        menu.addSeparator();
+        added = true;
+    }
+
+    if (hasSelectionOfType<TechDraw::DrawViewBalloon>()) {
+        if (addCommandsByName(menu, {
+                "TechDraw_ExtensionCustomizeFormat",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    if (hasSelectionOfType<TechDraw::DrawLeaderLine>()) {
+        if (addCommandsByName(menu, {
+                "TechDraw_WeldSymbol",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    if (ctx.hasFace) {
+        if (addCommandsByName(menu, {
+                "TechDraw_AreaDimension",
+                "TechDraw_Hatch",
+                "TechDraw_GeometricHatch",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    if (ctx.hasCircleEdge) {
+        if (addCommandsByName(menu, {
+                "TechDraw_ExtensionCircleCenterLines",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    if (ctx.hasGeomEdge || ctx.hasCosmeticEdge) {
+        addCommandsByName(menu, { "TechDraw_DecorateLine" });
+        menu.addSeparator();
+        added = true;
+    }
+
+    if (ctx.hasCosmeticEdge) {
+        addCommandsByName(menu, {
+            "TechDraw_ExtensionExtendLine",
+            "TechDraw_ExtensionShortenLine",
+        });
+        menu.addSeparator();
+        added = true;
+    }
+
+    if (hasWholeSelectionOf<TechDraw::DrawViewPart>()) {
+        if (hasSelectionOfType<TechDraw::DrawViewSection>()) {
+            if (addCommandsByName(menu, {
+                    "TechDraw_ExtensionPositionSectionView",
+                }) > 0) {
+                menu.addSeparator();
+                added = true;
+            }
+        }
+        if (addCommandsByName(menu, {
+                "TechDraw_ShowAll",
+                "TechDraw_ExtensionLockUnlockView",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    if (hasWholeSelectionOf<TechDraw::DrawView>()) {
+        if (addCommandsByName(menu, {
+                "TechDraw_StackTop",
+                "TechDraw_StackBottom",
+                "TechDraw_StackUp",
+                "TechDraw_StackDown",
+            }) > 0) {
+            menu.addSeparator();
+            added = true;
+        }
+    }
+
+    return added;
+}
+
+void MDIViewPage::addPageGroup(QMenu& menu)
+{
+    menu.addAction(m_toggleGridAction);
+    menu.addAction(m_toggleFrameAction);
+    menu.addAction(m_toggleKeepUpdatedAction);
+    menu.addSeparator();
+    menu.addAction(m_exportSVGAction);
+    menu.addAction(m_exportDXFAction);
+    menu.addAction(m_exportPDFAction);
+    menu.addSeparator();
+    menu.addAction(m_printAllAction);
+
+    m_toggleGridAction->setCheckable(true);
+    m_toggleGridAction->setChecked(m_vpPage->ShowGrid.getValue());
+
+    m_toggleFrameAction->setCheckable(true);
+    m_toggleFrameAction->setChecked(m_vpPage->getFrameState());
+    m_toggleFrameAction->setEnabled(
+        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual);
+
+    m_toggleKeepUpdatedAction->setCheckable(true);
+    m_toggleKeepUpdatedAction->setChecked(
+        m_vpPage->getDrawPage()->KeepUpdated.getValue());
+}
+
+int MDIViewPage::addCommandsByName(QMenu& menu,
+                                   std::initializer_list<const char*> names)
+{
+    int count = 0;
+    auto& mgr = Gui::Application::Instance->commandManager();
+    for (const char* name : names) {
+        if (Gui::Command* c = mgr.getCommandByName(name)) {
+            c->addTo(&menu);
+            ++count;
+        }
+    }
+    return count;
+}
+
+MDIViewPage::SelectionContext MDIViewPage::getSelectionContext()
+{
+    SelectionContext ctx;
+
+    auto fillContextForEdge = [&ctx](TechDraw::DrawViewPart* dvp, const std::string& sub) {
+        if (dvp && dvp->isCosmeticEdge(sub)) {
+            ctx.hasCosmeticEdge = true;
+            return;
+        }
+
+        ctx.hasGeomEdge = true;
+        if (!dvp) {
+            return;
+        }
+
+        int idx = TechDraw::DrawUtil::getIndexFromName(sub);
+        TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(idx);
+        if (geom
+            && (geom->getGeomType() == TechDraw::GeomType::CIRCLE
+                || geom->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+            ctx.hasCircleEdge = true;
+        }
+    };
+
+    for (auto& sel : Gui::Selection().getSelectionEx()) {
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(sel.getObject());
+        for (auto& sub : sel.getSubNames()) {
+            std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(sub);
+            if (geomType == "Face") {
+                ctx.hasFace = true;
+            }
+            else if (geomType == "Edge") {
+                fillContextForEdge(dvp, sub);
+            }
+        }
+    }
+
+    return ctx;
 }
 
 void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
+
+void MDIViewPage::toggleGrid()
+{
+    m_vpPage->ShowGrid.setValue(!m_vpPage->ShowGrid.getValue());
+}
 
 void MDIViewPage::toggleKeepUpdated()
 {
@@ -485,13 +749,14 @@ void MDIViewPage::saveSVG(std::string filename)
 
 void MDIViewPage::saveSVG()
 {
-    QStringList filter;
-    filter << QStringLiteral("SVG (*.svg)");
-    filter << QObject::tr("All files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("SVG"), {"*.svg"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -507,13 +772,14 @@ void MDIViewPage::saveDXF(std::string filename)
 
 void MDIViewPage::saveDXF()
 {
-    QStringList filter;
-    filter << QStringLiteral("DXF (*.dxf)");
-    filter << QObject::tr("All files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {QStringLiteral("DXF"), {"*.dxf"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
 
-                                         defaultFileName(), filter.join(QLatin1String(";;")));
+                                         defaultFileName(), filter);
     if (fn.isEmpty()) {
         return;
     }
@@ -563,13 +829,14 @@ void MDIViewPage::exportAsPdf() const
 
 QString MDIViewPage::getPdfFileName() const
 {
-    QStringList filter;
-    filter << QObject::tr("PDF (*.pdf)");
-    filter << QObject::tr("All Files (*.*)");
+    const Gui::FileDialog::FilterList filter {
+        {"PDF", {"*.pdf"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                          QObject::tr("Export Page as PDF"),
-                                         QString(), filter.join(QLatin1String(";;")));
+                                         QString(), filter);
     if (fn.isEmpty()) {
         return {};
     }
@@ -771,6 +1038,27 @@ void MDIViewPage::sceneSelectionManager()
         }
     }
     m_orderedSceneSelection = m_new;
+}
+
+// for context menus. Right click can add to selection, but not remove from selection.
+// this is the same as Sketcher WB
+void MDIViewPage::selectOnRightPress(QGraphicsItem* item)
+{
+    while (item
+           && !dynamic_cast<QGIView*>(item)
+           && !dynamic_cast<QGIEdge*>(item)
+           && !dynamic_cast<QGIVertex*>(item)
+           && !dynamic_cast<QGIFace*>(item)
+           && !dynamic_cast<QGIDatumLabel*>(item)
+           && !dynamic_cast<QGMText*>(item)) {
+        item = item->parentItem();
+    }
+    if (!item) {
+        return;
+    }
+    blockSceneSelection(true);
+    addSceneItemToTreeSel(item, Gui::Selection().getSelectionEx());
+    blockSceneSelection(false);
 }
 
 //! update Tree Selection from QGraphicsScene selection. on exit, the tree

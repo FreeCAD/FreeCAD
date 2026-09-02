@@ -58,7 +58,7 @@ namespace Data
 // struct MappedChildElements;
 
 /// Option for App::GeoFeature::searchElementCache()
-enum class SearchOption
+enum class SearchOption: int
 {
     CheckGeometry = 1, ///< Whether to compare shape geometry
     SingleResult = 2, ///< Stop at first found result
@@ -181,6 +181,19 @@ public:
     virtual void getLinesFromSubElement(const Segment* segment,
                                         std::vector<Base::Vector3d>& Points,
                                         std::vector<Line>& lines) const;
+
+    /**
+     * @brief Get the first vertex from a segment.
+     *
+     * @param[in] segment The segment to get the vertex from.
+     *
+     * @param[in,out] Point The point used in the segment.
+     * @return true if point was found
+     */
+    virtual bool getFirstVertexFromSubElement(
+        const Data::Segment* segment,
+        Base::Vector3d& Point
+    ) const;
 
     /**
      * @brief Get the faces from a segment.

@@ -2493,8 +2493,8 @@ Efaces
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 3,
 4,
 29,
@@ -2571,19 +2571,19 @@ Efaces
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
-ConstraintFixed,4
-ConstraintFixed,5
-ConstraintFixed,6
+Fixed,1
+Fixed,2
+Fixed,3
+Fixed,4
+Fixed,5
+Fixed,6
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce1
+** Force1
 *CLOAD
 ** node load on shape: Forces:Vertex1
 1,1,-2777.78
@@ -2592,7 +2592,7 @@ ConstraintFixed,6
 236,1,-2777.78
 
 
-** ConstraintForce2
+** Force2
 *CLOAD
 ** node load on shape: Forces:Vertex2
 2,1,2777.78
@@ -2601,7 +2601,7 @@ ConstraintFixed,6
 129,1,2777.78
 
 
-** ConstraintForce3
+** Force3
 *CLOAD
 ** node load on shape: Forces:Vertex20
 343,1,-5555.556
@@ -2619,7 +2619,7 @@ ConstraintFixed,6
 347,1,-5555.556
 
 
-** ConstraintForce4
+** Force4
 *CLOAD
 ** node load on shape: Forces:Vertex9
 131,1,5555.556
@@ -2637,7 +2637,7 @@ ConstraintFixed,6
 135,1,5555.556
 
 
-** ConstraintForce5
+** Force5
 *CLOAD
 ** node load on shape: Forces:Vertex43
 1376,1,-11111.11166667
@@ -2658,7 +2658,7 @@ ConstraintFixed,6
 1390,1,-11111.11166667
 
 
-** ConstraintForce6
+** Force6
 *CLOAD
 ** node load on shape: Forces:Vertex31
 758,1,11111.11166667
@@ -2679,7 +2679,7 @@ ConstraintFixed,6
 772,1,11111.11166667
 
 
-** ConstraintForce7
+** Force7
 *CLOAD
 ** node load on shape: Forces:Vertex1
 1,2,-2777.78
@@ -2688,7 +2688,7 @@ ConstraintFixed,6
 2,2,-2777.78
 
 
-** ConstraintForce8
+** Force8
 *CLOAD
 ** node load on shape: Forces:Vertex8
 129,2,2777.78
@@ -2697,7 +2697,7 @@ ConstraintFixed,6
 236,2,2777.78
 
 
-** ConstraintForce9
+** Force9
 *CLOAD
 ** node load on shape: Forces:Vertex3
 5,2,-5555.556
@@ -2715,7 +2715,7 @@ ConstraintFixed,6
 9,2,-5555.556
 
 
-** ConstraintForce10
+** Force10
 *CLOAD
 ** node load on shape: Forces:Vertex15
 238,2,5555.556
@@ -2733,7 +2733,7 @@ ConstraintFixed,6
 242,2,5555.556
 
 
-** ConstraintForce11
+** Force11
 *CLOAD
 ** node load on shape: Forces:Vertex25
 429,2,-11111.11166667
@@ -2754,7 +2754,7 @@ ConstraintFixed,6
 446,2,-11111.11166667
 
 
-** ConstraintForce12
+** Force12
 *CLOAD
 ** node load on shape: Forces:Vertex37
 1067,2,11111.11166667
@@ -2784,7 +2784,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

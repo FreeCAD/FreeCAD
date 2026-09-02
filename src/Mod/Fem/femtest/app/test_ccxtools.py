@@ -249,7 +249,7 @@ class TestCcxTools(unittest.TestCase):
     def test_constraint_sectionprint(self):
         from femexamples.constraint_section_print import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

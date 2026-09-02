@@ -27,7 +27,6 @@
 #include <QStandardPaths>
 #include <QThread>
 
-
 #include <App/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
@@ -77,8 +76,6 @@ void DlgSettingsFemCcxImp::saveSettings()
     ui->dsb_eigenmode_high_limit->onSave();
     ui->dsb_eigenmode_low_limit->onSave();
 
-    ui->cb_int_editor->onSave();
-    ui->fc_ext_editor->onSave();
     ui->fc_ccx_binary_path->onSave();
     ui->cb_split_inp_writer->onSave();
 }
@@ -104,8 +101,6 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->dsb_eigenmode_high_limit->onRestore();
     ui->dsb_eigenmode_low_limit->onRestore();
 
-    ui->cb_int_editor->onRestore();
-    ui->fc_ext_editor->onRestore();
     ui->fc_ccx_binary_path->onRestore();
     ui->cb_split_inp_writer->onRestore();
 

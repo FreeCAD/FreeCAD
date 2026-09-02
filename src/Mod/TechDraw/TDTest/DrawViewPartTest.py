@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # basic test script for TechDraw module
 # creates a page and 1 view
 

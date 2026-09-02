@@ -1,44 +1,41 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 LTS <SammelLothar@gmx.de>
+# SPDX-FileCopyrightText: 2020 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 LTS <SammelLothar@gmx.de> under LGPL               *
-# *   Copyright (c) 2020-2021 Schildkroet                                   *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
-
+import Constants
 import FreeCAD as App
 import FreeCADGui
+import Part
 import Path
-import Path.Base.Language as PathLanguage
-import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
-import Path.Base.Gui.Util as PathGuiUtil
+from Path.Base.Generator import leadinout
+from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
-import copy
-import math
+from Path.Dressup import Utils as PathDressup
+from PathPythonGui.simple_edit_panel import SimpleEditPanel
+from PathScripts import PathUtils
+from Path.Base.MachineState import MachineState
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
-from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
 translate = App.Qt.translate
 
@@ -61,14 +58,14 @@ lead_styles = (
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZFollow"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 )
 
 
 class ObjectDressup:
-    def __init__(self, obj):
-        self.obj = obj
+    def __init__(self, obj, base):
         obj.addProperty(
             "App::PropertyLink",
             "Base",
@@ -119,13 +116,13 @@ class ObjectDressup:
             "App::PropertyAngle",
             "AngleIn",
             "Path Lead-in",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "AngleOut",
             "Path Lead-out",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -163,8 +160,27 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
-
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtendIn",
+            "Path Lead-in",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extends Lead-in distance\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtendOut",
+            "Path Lead-out",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extends Lead-out distance\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+            ),
+        )
+        self.obj = obj
         obj.Proxy = self
+        obj.Base = base
 
     def dumps(self):
         return None
@@ -179,8 +195,8 @@ class ObjectDressup:
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.AngleIn = 90
-        obj.AngleOut = 90
+        obj.AngleIn = 45
+        obj.AngleOut = 45
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -188,80 +204,13 @@ class ObjectDressup:
         obj.StyleOut = "Arc"
 
         baseOp = PathDressup.baseOp(obj.Base)
-        if baseOp and baseOp.ToolController:
+        if baseOp and getattr(baseOp, "ToolController", None):
             expr = f"{baseOp.Name}.ToolController.Tool.Diameter.Value/2*1.5"
             obj.setExpression("RadiusIn", expr)
             obj.setExpression("RadiusOut", expr)
         else:
             obj.RadiusIn = 10
             obj.RadiusOut = 10
-
-    def execute(self, obj):
-        if not obj.Base:
-            obj.Path = Path.Path()
-            return
-        if not obj.Base.isDerivedFrom("Path::Feature"):
-            obj.Path = Path.Path()
-            return
-        if not obj.Base.Path:
-            obj.Path = Path.Path()
-            return
-
-        if obj.RadiusIn <= 0:
-            obj.RadiusIn = 1
-        if obj.RadiusOut <= 0:
-            obj.RadiusOut = 1
-
-        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix", "LineZ")
-        limit_angle_in = 1 if obj.StyleIn in nonZeroAngleStyles else 0
-        limit_angle_out = 1 if obj.StyleOut in nonZeroAngleStyles else 0
-        if obj.AngleIn > 180:
-            obj.AngleIn = 180
-        if obj.AngleIn < limit_angle_in:
-            obj.AngleIn = limit_angle_in
-        if obj.StyleIn in ("ArcZ", "ArcZFollow") and obj.AngleIn > 179:
-            obj.AngleIn = 179
-
-        if obj.AngleOut > 180:
-            obj.AngleOut = 180
-        if obj.AngleOut < limit_angle_out:
-            obj.AngleOut = limit_angle_out
-        if obj.StyleOut in ("ArcZ", "ArcZFollow") and obj.AngleOut > 179:
-            obj.AngleOut = 179
-
-        # Use shared hideModes from TaskDressupLeadInOut
-        for k, v in TaskDressupLeadInOut.hideModes.items():
-            obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
-            obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
-
-        self.baseOp = PathDressup.baseOp(obj.Base)
-        self.toolController = toolControllerForOp(obj.Base)
-        if not self.toolController:
-            obj.Path = Path.Path()
-            Path.Log.warning(
-                translate(
-                    "CAM_DressupLeadInOut", "Tool controller not selected for base operation: %s"
-                )
-                % obj.Base.Label
-            )
-            return
-
-        self.invertAlt = False
-        self.job = PathUtils.findParentJob(obj)
-        self.horizFeed = self.toolController.HorizFeed.Value
-        self.vertFeed = self.toolController.VertFeed.Value
-        self.clearanceHeight = self.baseOp.ClearanceHeight.Value
-        self.safeHeight = self.baseOp.SafeHeight.Value
-        self.startDepth = self.baseOp.StartDepth.Value
-        self.side = self.baseOp.Side if hasattr(self.baseOp, "Side") else "Inside"
-        if hasattr(self.baseOp, "Direction") and self.baseOp.Direction in ("CW", "CCW"):
-            self.direction = self.baseOp.Direction
-        else:
-            self.direction = "CCW"
-        self.entranceFeed = self.toolController.LeadInFeed.Value
-        self.exitFeed = self.toolController.LeadOutFeed.Value
-
-        obj.Path = self.generateLeadInOutCurve(obj)
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
@@ -318,15 +267,13 @@ class ObjectDressup:
             )
             obj.AngleOut = 90
 
-        if styleOn:
-            if styleOn == "Arc":
-                obj.StyleIn = "Arc"
-                obj.AngleIn = 90
+        if styleOn and styleOn == "Arc":
+            obj.StyleIn = "Arc"
+            obj.AngleIn = 90
 
-        if styleOff:
-            if styleOff == "Arc":
-                obj.StyleOut = "Arc"
-                obj.AngleOut = 90
+        if styleOff and styleOff == "Arc":
+            obj.StyleOut = "Arc"
+            obj.AngleOut = 90
 
         for prop in ("Length", "LengthIn"):
             if hasattr(obj, prop):
@@ -345,7 +292,7 @@ class ObjectDressup:
                     "Path Lead-in",
                     QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-In"),
                 )
-                if baseOp and baseOp.ToolController:
+                if baseOp and getattr(baseOp, "ToolController", None):
                     valIn = obj.PercentageRadiusIn / 100
                     exprIn = f"{baseOp.Name}.ToolController.Tool.Diameter.Value/2*{valIn}"
                     obj.setExpression("RadiusIn", exprIn)
@@ -360,7 +307,7 @@ class ObjectDressup:
                     "Path Lead-out",
                     QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-Out"),
                 )
-                if baseOp and baseOp.ToolController:
+                if baseOp and getattr(baseOp, "ToolController", None):
                     valOut = obj.PercentageRadiusOut / 100
                     exprOut = f"{baseOp.Name}.ToolController.Tool.Diameter.Value/2*{valOut}"
                     obj.setExpression("RadiusOut", exprOut)
@@ -368,13 +315,6 @@ class ObjectDressup:
                     obj.RadiusOut = 10
                 obj.removeProperty("PercentageRadiusOut")
 
-        # The new features do not have a good analog for ExtendLeadIn/Out, so these old values will be ignored
-        if hasattr(obj, "ExtendLeadIn"):
-            # Remove ExtendLeadIn property
-            obj.removeProperty("ExtendLeadIn")
-        if hasattr(obj, "ExtendLeadOut"):
-            # Remove ExtendLeadOut property
-            obj.removeProperty("ExtendLeadOut")
         if hasattr(obj, "IncludeLayers"):
             obj.removeProperty("IncludeLayers")
 
@@ -420,882 +360,237 @@ class ObjectDressup:
             if obj.KeepToolDown:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
+        if hasattr(obj, "ExtendLeadIn"):
+            obj.renameProperty("ExtendLeadIn", "ExtendIn")
+        if not hasattr(obj, "ExtendIn"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "ExtendIn",
+                "Path Lead-in",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extends Lead-in distance"
+                    "\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+                ),
+            )
+        if hasattr(obj, "ExtendLeadOut"):
+            obj.renameProperty("ExtendLeadOut", "ExtendOut")
+        if not hasattr(obj, "ExtendOut"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "ExtendOut",
+                "Path Lead-out",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extends Lead-out distance"
+                    "\nOnly for styles: Arc, Line, Perpendicular and Tangent",
+                ),
+            )
 
         # Ensure correct initial visibility of fields after defaults are set
         for k, v in TaskDressupLeadInOut.hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
-    # Get direction for lead-in/lead-out in XY plane
-    def getLeadDir(self, obj, invert=False):
-        output = math.pi / 2
-        side = self.side
-        direction = self.direction
-        if (side == "Inside" and direction == "CW") or (side == "Outside" and direction == "CCW"):
-            output = -output
-        if invert:
-            output = -output
-        if self.invertAlt:
-            output = -output
+    def getPathParams(self, obj):
+        self.horizFeed = 0
+        self.vertFeed = 0
+        self.entranceFeed = 0
+        self.exitFeed = 0
+        self.clearanceHeight = None
+        self.safeHeight = None
+        self.startDepth = None
 
-        return output
+        baseOp = PathDressup.baseOp(obj.Base)
 
-    # Get direction of original path
-    def getArcPathDir(self, obj, cmdName):
-        # only CW/CCW and G2/G3 matters
-        direction = self.direction
-        output = math.pi / 2
-        if direction == "CW":
-            output = -output
-
-        if cmdName in Path.Geom.CmdMoveCW and direction == "CCW":
-            output = -output
-        elif cmdName in Path.Geom.CmdMoveCCW and direction == "CW":
-            output = -output
-
-        return output
-
-    # Create safety movements to start point
-    def getTravelStart(self, obj, pos, first, outInstrPrev):
-        commands = []
-        posPrev = outInstrPrev.positionEnd() if outInstrPrev else App.Vector()
-        posPrevXY = App.Vector(posPrev.x, posPrev.y, 0)
-        posXY = App.Vector(pos.x, pos.y, 0)
-        distance = posPrevXY.distanceToPoint(posXY)
-
-        if first or (distance > obj.RetractThreshold):
-            # move to clearance height
-            commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": self.clearanceHeight}))
-
-            # move to mill position at clearance height
-            commands.append(PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y}))
-
-            # move vertical down to mill position
-            if obj.RapidPlunge:
-                # move to mill position rapidly
-                commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": pos.z}))
-            else:
-                # move to mill position in two steps
-                commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": self.safeHeight}))
-                commands.append(
-                    PathLanguage.MoveStraight(None, "G1", {"Z": pos.z, "F": self.vertFeed})
-                )
-
+        if getattr(baseOp, "Side", None) in ("Inside", "Outside"):
+            self.side = baseOp.Side
         else:
-            # move to next mill position by short path
-            if obj.RapidPlunge:
-                commands.append(
-                    PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y, "Z": pos.z})
-                )
-            else:
-                commands.append(
-                    PathLanguage.MoveStraight(
-                        None, "G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": self.vertFeed}
-                    )
-                )
+            self.side = "Inside"
 
-        return commands
-
-    # Create commands with movements to clearance height
-    def getTravelEnd(self, obj):
-        commands = []
-        z = self.clearanceHeight
-        commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": z}))
-
-        return commands
-
-    # Create vector object from angle
-    def angleToVector(self, angle):
-        return App.Vector(math.cos(angle), math.sin(angle), 0)
-
-    # Create arc in XY plane with automatic detection G2|G3
-    def createArcMove(self, obj, begin, end, offset, invert, feedRate):
-        param = {
-            "X": end.x,
-            "Y": end.y,
-            "Z": end.z,
-            "I": offset.x,
-            "J": offset.y,
-            "F": feedRate,
-        }
-        if self.getLeadDir(obj, invert) > 0:
-            command = PathLanguage.MoveArcCCW(begin, "G3", param)
+        if getattr(baseOp, "Direction", None) in ("CW", "CCW"):
+            self.direction = baseOp.Direction
         else:
-            command = PathLanguage.MoveArcCW(begin, "G2", param)
-
-        return command
-
-    # Create arc in XY plane with manually set G2|G3
-    def createArcMoveN(self, obj, begin, end, offset, cmdName, feedRate):
-        param = {"X": end.x, "Y": end.y, "I": offset.x, "J": offset.y, "F": feedRate}
-        if cmdName in Path.Geom.CmdMoveCW:
-            command = PathLanguage.MoveArcCW(begin, cmdName, param)
-        else:
-            command = PathLanguage.MoveArcCCW(begin, cmdName, param)
-
-        return command
-
-    # Create line movement G1
-    def createStraightMove(self, obj, begin, end, feedRate):
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        command = PathLanguage.MoveStraight(begin, "G1", param)
-
-        return command
-
-    # Get optimal step angle for iteration ArcZ
-    def getStepAngleArcZ(self, angle, radius, div=None):
-        if div:
-            stepAngle = angle / div
-        else:
-            stepLength = self.job.GeometryTolerance.Value * 10  # 2
-            stepAngle = stepLength / radius
-        stepAngle = angle / math.ceil(angle / stepAngle)
-
-        return stepAngle
-
-    # Create vertical arc with move Down by line segments
-    def createArcZMoveDown(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
-        stepAngle = self.getStepAngleArcZ(angle, radius, div=20)
-        angle -= stepAngle
-        iterBegin = copy.copy(begin)  # start point of short segment
-        v = end - begin
-        n = math.hypot(v.x, v.y)
-        u = v / n
-        while angle > 0 and not Path.Geom.isRoughly(angle, 0):
-            distance = n - radius * math.sin(angle)
-            iterEnd = begin + u * distance
-            iterEnd.z = end.z + radius * (1 - math.cos(angle))
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle -= stepAngle
-
-        # last move to end point
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-
-        return commands
-
-    # Create vertical arc with move Down and follow profile
-    def createArcZ2MoveDown(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
-        stepAngle = self.getStepAngleArcZ(angle, radius)
-        iterBegin = None
-        while angle > 0 and not Path.Geom.isRoughly(angle, 0):
-            distance = radius * math.sin(angle) + obj.OffsetIn.Value
-            if distance >= 0:
-                # get next point with positive distance
-                cmds = self.extendTravelIn(obj, distance)
-                iterEnd = cmds[0].positionBegin()
-            elif self.closedProfile:
-                # get next point with negative distance
-                cmds = self.extendTravelOut(obj, abs(distance))
-                iterEnd = cmds[-1].positionEnd()
-            else:
-                cmds = self.cutTravelBegin(
-                    obj, self.source[self.firstMillIndex : self.lastMillIndex + 1], abs(distance)
-                )
-                iterEnd = cmds[0].positionBegin()
-
-            iterEnd.z = end.z + radius * (1 - math.cos(angle))
-            if iterBegin:
-                param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-                commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle -= stepAngle
-
-        # last move to end point
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-
-        return commands
-
-    # Create vertical arc with move Up by line segments
-    def createArcZMoveUp(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = self.getStepAngleArcZ(angleMax, radius, div=20)
-        iterBegin = copy.copy(begin)  # start point of short segment
-        v = end - begin
-        n = math.hypot(v.x, v.y)
-        u = v / n
-        angle = stepAngle  # start angle
-        while angle < angleMax and not Path.Geom.isRoughly(angle, angleMax):
-            distance = radius * math.sin(angle)
-            iterEnd = begin + u * distance
-            iterEnd.z = begin.z + radius * (1 - math.cos(angle))
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle += stepAngle
-
-        # last move to end point
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-
-        return commands
-
-    # Create vertical arc with move Up and follow profile
-    def createArcZ2MoveUp(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = self.getStepAngleArcZ(angleMax, radius)
-        iterBegin = copy.copy(begin)  # start point of short segment
-        angle = stepAngle  # start angle
-        while angle <= angleMax or Path.Geom.isRoughly(angle, angleMax):
-            distance = radius * math.sin(angle) + obj.OffsetOut.Value
-            if distance >= 0:
-                # get next point with positive distance
-                cmds = self.extendTravelOut(obj, distance)
-                iterEnd = cmds[-1].positionEnd()
-            elif self.closedProfile:
-                # get next point with negative distance
-                cmds = self.extendTravelIn(obj, abs(distance))
-                iterEnd = cmds[0].positionBegin()
-            else:
-                cmds = self.cutTravelEnd(
-                    obj, self.source[self.firstMillIndex : self.lastMillIndex + 1], abs(distance)
-                )
-                iterEnd = cmds[-1].positionEnd()
-
-            iterEnd.z = begin.z + radius * (1 - math.cos(angle))
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle += stepAngle
-
-        return commands
-
-    def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
-        #    tangent  begin      move
-        #    <----_-----x-------------------x
-        #       /       |
-        #     /         | normal
-        #    |          |
-        #    x          v
-
-        lead = []
-        begin = move.positionBegin()
-        beginZ = move.positionBegin().z  # do not change this variable below
-
-        if not obj.LeadIn and obj.LeadOut:
-            # can not skip leadin if leadout
-            # override style to get correct move to next step down
-            styleIn = "Vertical"
-        else:
-            styleIn = obj.StyleIn
-
-        if styleIn not in ("No Retract", "Vertical"):
-            if styleIn == "Perpendicular":
-                angleIn = math.pi / 2
-            elif styleIn == "Tangent":
-                angleIn = 0
-            else:
-                angleIn = math.radians(obj.AngleIn.Value)
-
-            length = obj.RadiusIn.Value
-            angleTangent = move.anglesOfTangents()[0]
-            normalMax = (
-                self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertIn)) * length
-            )
-
-            # Here you can find description of the calculations
-            # https://forum.freecad.org/viewtopic.php?t=97641
-
-            # prepend "Arc" style lead-in - arc in XY
-            # Arc3d the same as Arc, but increased Z start point
-            if styleIn in ("Arc", "Arc3d", "Helix"):
-                # tangent and normal vectors in XY plane
-                arcRadius = length
-                tangentLength = math.sin(angleIn) * arcRadius
-                normalLength = arcRadius * (1 - math.cos(angleIn))
-                tangent = -self.angleToVector(angleTangent) * tangentLength
-                normal = (
-                    self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertIn))
-                    * normalLength
-                )
-                arcBegin = begin + tangent + normal
-                arcCenter = begin + normalMax
-                arcOffset = arcCenter - arcBegin
-                lead.append(
-                    self.createArcMove(
-                        obj, arcBegin, begin, arcOffset, obj.InvertIn, self.entranceFeed
-                    )
-                )
-
-            # prepend "Line" style lead-in - line in XY
-            # Line3d the same as Line, but increased Z start point
-            elif styleIn in ("Line", "Line3d", "Perpendicular", "Tangent"):
-                # tangent and normal vectors in XY plane
-                tangentLength = math.cos(angleIn) * length
-                normalLength = math.sin(angleIn) * length
-                tangent = -self.angleToVector(angleTangent) * tangentLength
-                normal = (
-                    self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertIn))
-                    * normalLength
-                )
-                lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, self.entranceFeed))
-
-            # prepend "LineZ" style lead-in - vertical inclined line
-            # Should be applied only on straight Path segment
-            elif styleIn == "LineZ":
-                # tangent vector in XY plane
-                # normal vector is vertical
-                normalLengthMax = self.safeHeight - begin.z
-                normalLength = math.sin(angleIn) * length
-                # do not exceed Normal vector max length
-                normalLength = min(normalLength, normalLengthMax)
-                tangentLength = normalLength / math.tan(angleIn)
-                tangent = -self.angleToVector(angleTangent) * tangentLength
-                normal = App.Vector(0, 0, normalLength)
-                lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, self.entranceFeed))
-
-            # prepend "ArcZ" style lead-in - vertical Arc
-            # Should be applied only on straight Path segment or open profile
-            elif styleIn in ("ArcZ", "ArcZFollow"):
-                # tangent vector in XY plane
-                # normal vector is vertical
-                arcRadius = length
-                normalLengthMax = self.safeHeight - begin.z
-                normalLength = arcRadius * (1 - math.cos(angleIn))
-                if normalLength > normalLengthMax:
-                    # do not exceed Normal vector max length
-                    normalLength = normalLengthMax
-                    # recalculate angle for limited normal length
-                    angleIn = math.acos((arcRadius - normalLength) / arcRadius)
-                tangentLength = arcRadius * math.sin(angleIn)
-                tangent = -self.angleToVector(angleTangent) * tangentLength
-                normal = App.Vector(0, 0, normalLength)
-                arcBegin = begin + tangent + normal
-                if styleIn == "ArcZ":
-                    lead.extend(
-                        self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, self.entranceFeed)
-                    )
-                else:
-                    lead.extend(
-                        self.createArcZ2MoveDown(obj, arcBegin, begin, arcRadius, self.entranceFeed)
-                    )
-
-            # replace 'begin' position with first lead-in command
-            begin = lead[0].positionBegin()
-
-            if styleIn in ("Arc3d", "Line3d"):
-                # up Z start point for Arc3d and Line3d
-                if inInstrPrev and inInstrPrev.z() > begin.z:
-                    begin.z = inInstrPrev.z()
-                else:
-                    begin.z = self.startDepth
-                lead[0].setPositionBegin(begin)
-
-            elif styleIn == "Helix":
-                # change Z for current helix lead-in
-                posPrevZ = None
-                if outInstrPrev:
-                    posPrevZ = outInstrPrev.positionEnd().z
-                if posPrevZ is not None and posPrevZ > beginZ:
-                    halfStepZ = (posPrevZ - beginZ) / 2
-                    begin.z += halfStepZ
-                else:
-                    begin.z = self.startDepth
-
-        if obj.StyleOut == "Helix" and outInstrPrev:
-            """change Z for previous helix lead-out
-            Unable to do it in getLeadEnd(), due to lack of
-            existing information about next moves while creating Lead-out"""
-            posPrevZ = outInstrPrev.positionEnd().z
-            if posPrevZ > beginZ:
-                """previous profile upper than this
-                mean processing one stepdown profile"""
-                halfStepZ = (posPrevZ - beginZ) / 2
-                outInstrPrev.param["Z"] = posPrevZ - halfStepZ
-
-        # get complete start travel moves
-        if styleIn != "No Retract":
-            travelToStart = self.getTravelStart(obj, begin, first, outInstrPrev)
-        else:
-            # exclude any lead-in commands
-            param = {"X": begin.x, "Y": begin.y, "Z": begin.z, "F": self.entranceFeed}
-            travelToStart = [PathLanguage.MoveStraight(None, "G1", param)]
-
-        lead = travelToStart + lead
-
-        return lead
-
-    def getLeadEnd(self, obj, move, last, outInstrPrev):
-        #            move       end   tangent
-        #    x-------------------x-----_---->
-        #                        |       \
-        #                 normal |         \
-        #                        |          |
-        #                        v          x
-
-        lead = []
-        end = move.positionEnd()
-
-        if obj.StyleOut not in ("No Retract", "Vertical"):
-            if obj.StyleOut == "Perpendicular":
-                angleOut = math.pi / 2
-            elif obj.StyleOut == "Tangent":
-                angleOut = 0
-            else:
-                angleOut = math.radians(obj.AngleOut.Value)
-
-            length = obj.RadiusOut.Value
-            angleTangent = move.anglesOfTangents()[1]
-            normalMax = (
-                self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertOut)) * length
-            )
-
-            # Here you can find description of the calculations
-            # https://forum.freecad.org/viewtopic.php?t=97641
-
-            # append "Arc" style lead-out - arc in XY
-            # Arc3d the same as Arc, but increased Z start point
-            if obj.StyleOut in ("Arc", "Arc3d", "Helix"):
-                # tangent and normal vectors in XY plane
-                arcRadius = length
-                tangentLength = math.sin(angleOut) * arcRadius
-                normalLength = arcRadius * (1 - math.cos(angleOut))
-                tangent = self.angleToVector(angleTangent) * tangentLength
-                normal = (
-                    self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertOut))
-                    * normalLength
-                )
-                arcEnd = end + tangent + normal
-                lead.append(
-                    self.createArcMove(obj, end, arcEnd, normalMax, obj.InvertOut, self.exitFeed)
-                )
-
-            # append "Line" style lead-out
-            # Line3d the same as Line, but increased Z start point
-            elif obj.StyleOut in ("Line", "Line3d", "Perpendicular", "Tangent"):
-                # tangent and normal vectors in XY plane
-                tangentLength = math.cos(angleOut) * length
-                normalLength = math.sin(angleOut) * length
-                tangent = self.angleToVector(angleTangent) * tangentLength
-                normal = (
-                    self.angleToVector(angleTangent + self.getLeadDir(obj, obj.InvertOut))
-                    * normalLength
-                )
-                lineEnd = end + tangent + normal
-                lead.append(self.createStraightMove(obj, end, lineEnd, self.exitFeed))
-
-            # append "LineZ" style lead-out - vertical inclined line
-            # Should be apply only on straight Path segment
-            elif obj.StyleOut == "LineZ":
-                # tangent vector in XY plane
-                # normal vector is vertical
-                normalLengthMax = self.startDepth - end.z
-                normalLength = math.sin(angleOut) * length
-                # do not exceed Normal vector max length
-                normalLength = min(normalLength, normalLengthMax)
-                tangentLength = normalLength / math.tan(angleOut)
-                tangent = self.angleToVector(angleTangent) * tangentLength
-                normal = App.Vector(0, 0, normalLength)
-                lineEnd = end + tangent + normal
-                lead.append(self.createStraightMove(obj, end, lineEnd, self.exitFeed))
-
-            # prepend "ArcZ" style lead-out - vertical Arc
-            # Should be apply only on straight Path segment
-            elif obj.StyleOut in ("ArcZ", "ArcZFollow"):
-                # tangent vector in XY plane
-                # normal vector is vertical
-                arcRadius = length
-                normalLengthMax = self.safeHeight - end.z
-                normalLength = arcRadius * (1 - math.cos(angleOut))
-                if normalLength > normalLengthMax:
-                    # do not exceed Normal vector max length
-                    normalLength = normalLengthMax
-                    # recalculate angle for limited normal length
-                    angleOut = math.acos((arcRadius - normalLength) / arcRadius)
-                tangentLength = arcRadius * math.sin(angleOut)
-                tangent = self.angleToVector(angleTangent) * tangentLength
-                normal = App.Vector(0, 0, normalLength)
-                arcEnd = end + tangent + normal
-                if obj.StyleOut == "ArcZ":
-                    lead.extend(self.createArcZMoveUp(obj, end, arcEnd, arcRadius, self.exitFeed))
-                else:
-                    lead.extend(self.createArcZ2MoveUp(obj, end, arcEnd, arcRadius, self.exitFeed))
-
-        if obj.StyleOut in ("Arc3d", "Line3d"):
-            # Up Z end point for Arc3d and Line3d
-            if outInstrPrev and outInstrPrev.positionBegin().z > end.z:
-                lead[-1].param["Z"] = outInstrPrev.positionBegin().z
-            else:
-                lead[-1].param["Z"] = self.startDepth
-
-        # append travel moves to clearance height after finishing all profiles
-        if last and obj.StyleOut != "No Retract":
-            lead += self.getTravelEnd(obj)
-
-        return lead
-
-    # Check command
-    def isCuttingMove(self, instr):
-        result = instr.isMove() and not instr.isRapid() and not instr.isPlunge()
-        return result
-
-    # Get direction of non cut movements
-    def getMoveDir(self, instr):
-        if instr.positionBegin().z > instr.positionEnd().z:
-            return "Down"
-        elif instr.positionBegin().z < instr.positionEnd().z:
-            return "Up"
-        elif instr.pathLength() != 0:
-            return "Hor"
-        else:
-            # move command without change position
-            return None
-
-    # Get last index of mill command in whole Path
-    def findLastCuttingMoveIndex(self):
-        for i in range(len(self.source) - 1, -1, -1):
-            if self.isCuttingMove(self.source[i]):
-                return i
-
-        return None
-
-    # Get finish index of mill command for one profile
-    def findLastCutMultiProfileIndex(self):
-        startIndex = self.firstMillIndex
-        if startIndex >= len(self.source):
-            return len(self.source) - 1
-        for i in range(startIndex, len(self.source), +1):
-            if not self.isCuttingMove(self.source[i]):
-                return i - 1
-
-        return i
-
-    def isProfileClosed(self):
-        start = self.firstMillIndex
-        end = self.lastMillIndex
-        startPoint = self.source[start].positionBegin()
-        endPoint = self.source[end].positionEnd()
-
-        if Path.Geom.pointsCoincide(startPoint, endPoint):
-            return True
-        else:
-            return False
-
-    # Increase travel length from 'begin', take commands from profile 'end'
-    def extendTravelIn(self, obj, length):
-        start = self.firstMillIndex
-        end = self.lastMillIndex
-
-        if self.closedProfile:
-            # closed profile
-            # get extra commands from end of the closed profile
-            measuredLength = 0
-            for i, instr in enumerate(reversed(self.source[start : end + 1])):
-                instrLength = instr.pathLength()
-
-                if Path.Geom.isRoughly(measuredLength + instrLength, length):
-                    # get needed length without needing to cut last command
-                    commands = self.source[end - i : end + 1]
-                    return commands
-
-                elif measuredLength + instrLength > length:
-                    # measured length exceeds needed length and needs cut command
-                    commands = self.source[end - i + 1 : end + 1]
-                    newLength = length - measuredLength
-                    newInstr = self.cutInstrBegin(obj, instr, newLength)
-                    commands.insert(0, newInstr)
-                    return commands
-
-                measuredLength += instrLength
-
-        else:
-            # open profile
-            # extend first move
-            instr = self.source[start]
-            newLength = length + instr.pathLength()
-            newInstr = self.cutInstrBegin(obj, instr, newLength)
-            newInstr.setPositionEnd(instr.positionBegin())
-            return [newInstr]
-
-        return None
-
-    # Increase travel length from 'end', take commands from profile 'start'
-    def extendTravelOut(self, obj, length):
-        start = self.firstMillIndex
-        end = self.lastMillIndex
-        if self.closedProfile:
-            # closed profile
-            # get extra commands from begin of the closed profile
-            measuredLength = 0
-            for i, instr in enumerate(self.source[start : end + 1]):
-                instrLength = instr.pathLength()
-
-                if Path.Geom.isRoughly(measuredLength + instrLength, length):
-                    # get needed length without needing to cut last command
-                    commands = self.source[start : start + i + 1]
-                    return commands
-
-                elif measuredLength + instrLength > length:
-                    # measured length exceeds needed length and needs cut command
-                    commands = self.source[start : start + i]
-                    newLength = length - measuredLength
-                    newInstr = self.cutInstrEnd(obj, instr, newLength)
-                    commands.append(newInstr)
-                    return commands
-
-                measuredLength += instrLength
-
-        else:
-            # open profile
-            # extend last move
-            instr = self.source[end]
-            newLength = length + instr.pathLength()
-            newInstr = self.cutInstrEnd(obj, instr, newLength)
-            newInstr = self.cutInstrBegin(obj, newInstr, length)
-            return [newInstr]
-
-        return None
-
-    # Cut travel end by distance (negative overtravel out)
-    def cutTravelEnd(self, obj, commands, cutLength):
-        measuredLength = 0
-        for i, instr in enumerate(reversed(commands)):
-            if instr.positionBegin() is None:
-                # workaround if cut whole profile by negative offset
-                cmds = commands[:-i]
-                newInstr = self.cutInstrEnd(obj, commands[-i], 0.1)
-                cmds.append(newInstr)
-                return cmds
-
-            instrLength = instr.pathLength()
-            measuredLength += instrLength
-            if Path.Geom.isRoughly(measuredLength, cutLength):
-                # get needed length and not need to cut any command
-                return commands[: -i - 1]
-
-            elif measuredLength > cutLength:
-                # measured length exceed needed cut length and need cut command
-                cmds = commands[: -i - 1]
-                newLength = measuredLength - cutLength
-                newInstr = self.cutInstrEnd(obj, instr, newLength)
-                cmds.append(newInstr)
-                return cmds
-
-        return None
-
-    # Cut travel from begin by distance
-    def cutTravelBegin(self, obj, commands, cutLength):
-        measuredLength = 0
-        for i, instr in enumerate(commands):
-            instrLength = instr.pathLength()
-            measuredLength += instrLength
-            if Path.Geom.isRoughly(measuredLength, cutLength):
-                # get needed length and not need to cut any command
-                return commands[i + 1 :]
-
-            elif measuredLength > cutLength:
-                # measured length exceed needed cut length and need cut command
-                cmds = commands[i + 2 :]
-                newLength = measuredLength - cutLength
-                newInstr = self.cutInstrBegin(obj, instr, newLength)
-                cmds.insert(0, newInstr)
-                return cmds
-
-        return None
-
-    # Change end point of instruction
-    def cutInstrEnd(self, obj, instr, newLength):
-        command = None
-        # Cut straight move from begin
-        if instr.isStraight():
-            begin = instr.positionBegin()
-            end = instr.positionEnd()
-            v = end - begin
-            n = math.hypot(v.x, v.y)
-            u = v / n
-            cutEnd = begin + u * newLength
-            command = self.createStraightMove(obj, begin, cutEnd, self.horizFeed)
-
-        # Cut arc move from begin
-        elif instr.isArc():
-            cmdName = instr.cmd
-            angleTangent = instr.anglesOfTangents()[0]
-            arcBegin = instr.positionBegin()
-            arcOffset = App.Vector(instr.i(), instr.j(), instr.k())
-            arcRadius = instr.arcRadius()
-            arcAngle = newLength / arcRadius
-            tangentLength = math.sin(arcAngle) * arcRadius
-            normalLength = arcRadius * (1 - math.cos(arcAngle))
-            tangent = self.angleToVector(angleTangent) * tangentLength
-            normal = (
-                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
-            )
-            arcEnd = arcBegin + tangent + normal
-            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName, self.horizFeed)
-
-        return command
-
-    # Change start point of instruction
-    def cutInstrBegin(self, obj, instr, newLength):
-        # Cut straignt move from begin
-        if instr.isStraight():
-            begin = instr.positionBegin()
-            end = instr.positionEnd()
-            v = end - begin
-            n = math.hypot(v.x, v.y)
-            u = v / n
-            newBegin = end - u * newLength
-            command = self.createStraightMove(obj, newBegin, end, self.horizFeed)
-            return command
-
-        # Cut arc move from begin
-        elif instr.isArc():
-            cmdName = instr.cmd
-            angleTangent = instr.anglesOfTangents()[1]
-            arcEnd = instr.positionEnd()
-            arcCenter = instr.xyCenter()
-            arcRadius = instr.arcRadius()
-            arcAngle = newLength / arcRadius
-            tangentLength = math.sin(arcAngle) * arcRadius
-            normalLength = arcRadius * (1 - math.cos(arcAngle))
-            tangent = -self.angleToVector(angleTangent) * tangentLength
-            normal = (
-                self.angleToVector(angleTangent + self.getArcPathDir(obj, cmdName)) * normalLength
-            )
-            arcBegin = arcEnd + tangent + normal
-            arcOffset = arcCenter - arcBegin
-            command = self.createArcMoveN(obj, arcBegin, arcEnd, arcOffset, cmdName, self.horizFeed)
-            return command
-
-        return None
-
-    def generateLeadInOutCurve(self, obj):
-        source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
-        self.source = source
-        maneuver = PathLanguage.Maneuver()
-
-        # Knowing whether a given instruction is the first cutting move is easy,
-        # we just use a flag and set it to false afterwards. To find the last
-        # cutting move we need to search the list in reverse order.
-
-        commands = []
-        first = True  # prepare first move at clearance height
-        self.firstMillIndex = None  # Index start mill instruction for one profile
-        self.lastMillIndex = None  # Index end mill instruction for one profile
-        self.lastCuttingMoveIndex = self.findLastCuttingMoveIndex()
-        self.closedProfile = None
-        inInstrPrev = None  # for RetractThreshold
-        outInstrPrev = None  # for RetractThreshold
-        measuredLength = 0  # for negative OffsetIn
-        skipCounter = 0  # for negative OffsetIn
-        moveDir = None
-
-        # Process all instructions
-        for i, instr in enumerate(source):
-            # Process without mill instruction
-            if not self.isCuttingMove(instr):
-                if not instr.isMove():
-                    # non-move instruction gets added verbatim
-                    commands.append(instr)
-                else:
-                    moveDir = self.getMoveDir(instr)
-                    if (not obj.LeadIn and not obj.LeadOut) and (
-                        moveDir in ("Down", "Hor") or first
+            self.direction = "CCW"
+
+        toolController = toolControllerForOp(obj)
+        if toolController:
+            self.horizFeed = toolController.HorizFeed.Value
+            self.vertFeed = toolController.VertFeed.Value
+            if hasattr(toolController, "LeadInFeed"):
+                self.entranceFeed = toolController.LeadInFeed.Value
+            if hasattr(toolController, "LeadOutFeed"):
+                self.exitFeed = toolController.LeadOutFeed.Value
+
+        if hasattr(baseOp, "ClearanceHeight"):
+            self.clearanceHeight = baseOp.ClearanceHeight.Value
+
+        if hasattr(baseOp, "SafeHeight"):
+            self.safeHeight = baseOp.SafeHeight.Value
+
+        if (
+            self.clearanceHeight is None
+            or self.safeHeight is None
+            or not self.horizFeed
+            or not self.vertFeed
+        ):
+
+            def _isVertical(currentposition, cmd):
+                x = cmd.Parameters.get("X", currentposition.x)
+                y = cmd.Parameters.get("Y", currentposition.y)
+                z = cmd.Parameters.get("Z", currentposition.z)
+                endpoint = App.Vector(x, y, z)
+                if Path.Geom.pointsCoincide(currentposition, endpoint):
+                    return True
+                return Path.Geom.isVertical(Part.makeLine(currentposition, endpoint))
+
+            machine = MachineState()
+            rapidZ = []
+            for cmd in baseOp.Path.Commands:
+                if cmd.Name not in Constants.GCODE_MOVE_ALL:
+                    continue
+                if _isVertical(machine.getPosition(), cmd):
+                    if cmd.Name in Constants.GCODE_MOVE_RAPID and len(rapidZ) < 2:
+                        machine.addCommand(cmd)
+                        rapidZ.append(machine.getPosition().z)
+                        continue
+                    if (
+                        cmd.Name in Constants.GCODE_MOVE_MILL
+                        and not self.vertFeed
+                        and "F" in cmd.Parameters
                     ):
-                        # keep original Lead-in movements
-                        commands.append(instr)
-                    if not obj.LeadOut and moveDir == "Up" and not first:
-                        # keep original Lead-out movements
-                        commands.append(instr)
-                # skip travel and plunge moves if LeadInOut will be process
-                # travel moves will be added in getLeadStart and getLeadEnd
-                continue
+                        machine.addCommand(cmd)
+                        self.vertFeed = machine.getState()["F"]
+                        continue
+                elif (
+                    cmd.Name in Constants.GCODE_MOVE_MILL
+                    and not self.horizFeed
+                    and "F" in cmd.Parameters
+                ):
+                    machine.addCommand(cmd)
+                    self.horizFeed = machine.getState()["F"]
+                    continue
+                if len(rapidZ) >= 2 and self.horizFeed and self.vertFeed:
+                    break
+                machine.addCommand(cmd)
 
-            # measuring length for one profile
-            if self.isCuttingMove(instr):
-                measuredLength += instr.pathLength()
+            if len(rapidZ) >= 2:
+                if self.clearanceHeight is None:
+                    self.clearanceHeight = rapidZ[0]
+                if self.safeHeight is None:
+                    self.safeHeight = rapidZ[1]
 
-            # Process Lead-In
-            if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
-                if obj.LeadIn or obj.LeadOut:
-                    # can not skip leadin if leadout
+        if hasattr(baseOp, "StartDepth"):
+            self.startDepth = baseOp.StartDepth.Value
+        else:
+            self.startDepth = self.safeHeight
 
-                    self.firstMillIndex = i if self.firstMillIndex is None else self.firstMillIndex
-                    self.lastMillIndex = (
-                        self.findLastCutMultiProfileIndex()
-                        if self.lastMillIndex is None
-                        else self.lastMillIndex
-                    )
+        if not self.entranceFeed:
+            self.entranceFeed = self.vertFeed
+        if not self.exitFeed:
+            self.exitFeed = self.horizFeed
 
-                    self.closedProfile = self.isProfileClosed()
+        self.clearanceHeightOut = self.clearanceHeight
+        if hasattr(baseOp, "ClearanceHeightOut"):
+            self.clearanceHeightOut = baseOp.ClearanceHeightOut.Value
 
-                    overtravelIn = None
-                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
-                        # Process negative Offset Lead-In (cut travel from begin)
-                        if measuredLength <= abs(obj.OffsetIn.Value):
-                            # skip mill instruction
-                            skipCounter += 1  # count skipped instructions
-                            continue
-                        else:
-                            skipCounter = 0
-                            # cut mill instruction
-                            newLength = measuredLength - abs(obj.OffsetIn.Value)
-                            instr = self.cutInstrBegin(obj, instr, newLength)
+        return self.clearanceHeight is not None and self.safeHeight is not None
 
-                    elif obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
-                        # Process positive offset Lead-In (overtravel)
-                        overtravelIn = self.extendTravelIn(obj, obj.OffsetIn.Value)
-                    if overtravelIn:
-                        commands.extend(
-                            self.getLeadStart(
-                                obj, overtravelIn[0], first, inInstrPrev, outInstrPrev
-                            )
-                        )
-                        commands.extend(overtravelIn)
-                    else:
-                        commands.extend(
-                            self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev)
-                        )
-                    inInstrPrev = commands[-1]
-                first = False
+    def execute(self, obj):
+        if not obj.Base:
+            obj.Path = Path.Path()
+            return
+        if not obj.Base.isDerivedFrom("Path::Feature"):
+            obj.Path = Path.Path()
+            return
+        if not obj.Base.Path:
+            obj.Path = Path.Path()
+            return
+        if not PathDressup.baseOp(obj.Base).Active:
+            path = Path.Path("(inactive operation)")
+            obj.Path = path
+            return
+        if not obj.LeadIn and not obj.LeadOut:
+            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
-            # Add mill instruction
-            commands.append(instr)
+        if obj.RadiusIn <= 0:
+            obj.RadiusIn = 1
+        if obj.RadiusOut <= 0:
+            obj.RadiusOut = 1
 
-            # Process Lead-Out
-            last = bool(i == self.lastCuttingMoveIndex)
-            if last or not self.isCuttingMove(source[i + 1]):
-                if obj.LeadOut:
+        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix", "LineZ", "LineZFollow")
+        limit_angle_in = 0.1 if obj.StyleIn in nonZeroAngleStyles else 0
+        limit_angle_out = 0.1 if obj.StyleOut in nonZeroAngleStyles else 0
 
-                    # Process negative Offset Lead-Out (cut travel from end)
-                    if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
-                        commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
+        if obj.AngleIn > 180:
+            obj.AngleIn = 180
+        if obj.AngleIn < limit_angle_in:
+            obj.AngleIn = limit_angle_in
 
-                    # Process positive Offset Lead-Out (overtravel)
-                    elif obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
-                        overtravelOut = self.extendTravelOut(obj, obj.OffsetOut.Value)
-                        if overtravelOut:
-                            commands.extend(overtravelOut)
+        if obj.StyleIn in ("ArcZ", "ArcZFollow") and obj.AngleIn > 179:
+            obj.AngleIn = 179
+        elif obj.StyleIn == "LineZFollow" and obj.AngleIn > 89:
+            obj.AngleIn = 89
 
-                    # add lead end and travel moves
-                    leadEndInstr = self.getLeadEnd(obj, commands[-1], last, outInstrPrev)
-                    commands.extend(leadEndInstr)
+        if obj.AngleOut > 180:
+            obj.AngleOut = 180
+        if obj.AngleOut < limit_angle_out:
+            obj.AngleOut = limit_angle_out
 
-                    # Last mill position to check RetractThreshold
-                    if leadEndInstr:
-                        outInstrPrev = leadEndInstr[-1]
-                    else:
-                        outInstrPrev = instr
+        if obj.StyleOut in ("ArcZ", "ArcZFollow") and obj.AngleOut > 179:
+            obj.AngleOut = 179
+        elif obj.StyleOut == "LineZFollow" and obj.AngleOut > 89:
+            obj.AngleOut = 89
 
-                # preparing for the next profile
-                measuredLength = 0
-                self.firstMillIndex = None
-                self.lastMillIndex = None
-                self.invertAlt = not self.invertAlt if getattr(obj, "InvertAlt", None) else False
+        # Use shared hideModes from TaskDressupLeadInOut
+        for k, v in TaskDressupLeadInOut.hideModes.items():
+            obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
+            obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
-        maneuver.addInstructions(commands)
-        return maneuver.toPath()
+        job = PathUtils.findParentJob(obj)
+
+        if not self.getPathParams(obj):
+            obj.Path = Path.Path()
+            Path.Log.warning(
+                translate(
+                    "CAM_DressupLeadInOut", "Can not get parameters from base operation and path"
+                )
+            )
+            return
+
+        args = {
+            "path": PathUtils.getPathWithPlacement(obj.Base),
+            "side": self.side,
+            "direction": self.direction,
+            "leadIn": obj.LeadIn,
+            "leadOut": obj.LeadOut,
+            "styleIn": obj.StyleIn,
+            "styleOut": obj.StyleOut,
+            "angleIn": obj.AngleIn.Value,
+            "angleOut": obj.AngleOut.Value,
+            "radiusIn": obj.RadiusIn.Value,
+            "radiusOut": obj.RadiusOut.Value,
+            "offsetIn": obj.OffsetIn.Value,
+            "offsetOut": obj.OffsetOut.Value,
+            "extendIn": obj.ExtendIn.Value,
+            "extendOut": obj.ExtendOut.Value,
+            "invertIn": obj.InvertIn,
+            "invertOut": obj.InvertOut,
+            "invertAlt": getattr(obj, "InvertAlt", False),
+            "rapidPlunge": obj.RapidPlunge,
+            "retractThreshold": obj.RetractThreshold.Value,
+            "horizFeed": self.horizFeed,
+            "vertFeed": self.vertFeed,
+            "entranceFeed": self.entranceFeed,
+            "exitFeed": self.exitFeed,
+            "clearanceHeight": self.clearanceHeight,
+            "clearanceHeightOut": self.clearanceHeightOut,
+            "safeHeight": self.safeHeight,
+            "startDepth": self.startDepth,
+            "tolerance": job.GeometryTolerance.Value if job else 0.01,
+        }
+
+        obj.Path = leadinout.LeadInOut(**args).generate()
 
 
 class TaskDressupLeadInOut(SimpleEditPanel):
@@ -1314,24 +609,43 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.radiusIn = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
-        self.radiusOut = PathGuiUtil.QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
-        self.angleIn = PathGuiUtil.QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
-        self.angleOut = PathGuiUtil.QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
-        self.offsetIn = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
-        self.offsetOut = PathGuiUtil.QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.retractThreshold = PathGuiUtil.QuantitySpinBox(
-            self.form.dspRetractThreshold, self.obj, "RetractThreshold"
+
+        self.radiusIn = QuantitySpinBox(
+            self.form.dspRadiusIn, self.obj, "RadiusIn", setToolTip=True
+        )
+        self.radiusOut = QuantitySpinBox(
+            self.form.dspRadiusOut, self.obj, "RadiusOut", setToolTip=True
+        )
+        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn", setToolTip=True)
+        self.angleOut = QuantitySpinBox(
+            self.form.dspAngleOut, self.obj, "AngleOut", setToolTip=True
+        )
+        self.extendIn = QuantitySpinBox(
+            self.form.dspExtendIn, self.obj, "ExtendIn", setToolTip=True
+        )
+        self.extendOut = QuantitySpinBox(
+            self.form.dspExtendOut, self.obj, "ExtendOut", setToolTip=True
+        )
+        self.offsetIn = QuantitySpinBox(
+            self.form.dspOffsetIn, self.obj, "OffsetIn", setToolTip=True
+        )
+        self.offsetOut = QuantitySpinBox(
+            self.form.dspOffsetOut, self.obj, "OffsetOut", setToolTip=True
+        )
+        self.threshold = QuantitySpinBox(
+            self.form.dspThreshold, self.obj, "RetractThreshold", setToolTip=True
         )
 
         self.radiusIn.updateWidget()
         self.radiusOut.updateWidget()
         self.angleIn.updateWidget()
         self.angleOut.updateWidget()
+        self.extendIn.updateWidget()
+        self.extendOut.updateWidget()
         self.offsetIn.updateWidget()
         self.offsetOut.updateWidget()
-        self.retractThreshold.updateWidget()
+        self.threshold.updateWidget()
 
     def setupGroupBoxes(self):
         self.form.groupBoxIn.setChecked(self.obj.LeadIn)
@@ -1355,19 +669,23 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         signals.append(self.form.dspRadiusOut.editingFinished)
         signals.append(self.form.dspAngleIn.editingFinished)
         signals.append(self.form.dspAngleOut.editingFinished)
+        signals.append(self.form.dspExtendIn.editingFinished)
+        signals.append(self.form.dspExtendOut.editingFinished)
         signals.append(self.form.dspOffsetIn.editingFinished)
         signals.append(self.form.dspOffsetOut.editingFinished)
-        signals.append(self.form.dspRetractThreshold.editingFinished)
+        signals.append(self.form.dspThreshold.editingFinished)
         return signals
 
     def pageGetFields(self):
-        PathGuiUtil.updateInputField(self.obj, "RadiusIn", self.form.dspRadiusIn)
-        PathGuiUtil.updateInputField(self.obj, "RadiusOut", self.form.dspRadiusOut)
-        PathGuiUtil.updateInputField(self.obj, "AngleIn", self.form.dspAngleIn)
-        PathGuiUtil.updateInputField(self.obj, "AngleOut", self.form.dspAngleOut)
-        PathGuiUtil.updateInputField(self.obj, "OffsetIn", self.form.dspOffsetIn)
-        PathGuiUtil.updateInputField(self.obj, "OffsetOut", self.form.dspOffsetOut)
-        PathGuiUtil.updateInputField(self.obj, "RetractThreshold", self.form.dspRetractThreshold)
+        self.radiusIn.updateProperty()
+        self.radiusOut.updateProperty()
+        self.angleIn.updateProperty()
+        self.angleOut.updateProperty()
+        self.extendIn.updateProperty()
+        self.extendOut.updateProperty()
+        self.offsetIn.updateProperty()
+        self.offsetOut.updateProperty()
+        self.threshold.updateProperty()
 
     def pageRegisterSignalHandlers(self):
         for signal in self.getSignalsForUpdate():
@@ -1381,83 +699,130 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             "ArcZ",
             "ArcZFollow",
             "LineZ",
+            "LineZFollow",
             "Vertical",
-            "Perpendicular",
             "Tangent",
         ),
         "Offset": ("No Retract"),
+        "Extend": (
+            "No Retract",
+            "Vertical",
+            "Arc3d",
+            "ArcZ",
+            "ArcZFollow",
+            "Line3d",
+            "LineZ",
+            "LineZFollow",
+            "Helix",
+        ),
         "Radius": ("No Retract", "Vertical"),
     }
 
-    def updateLeadVisibility(self, style, angleWidget, invertWidget, angleLabel, radiusLabel=None):
-        # Dynamic label for Radius/Length
-        arc_styles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix")
-        if radiusLabel and hasattr(self.form, radiusLabel):
-            if style in arc_styles:
-                getattr(self.form, radiusLabel).setText("Radius")
-                # Will do translation later
-                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Radius"))
-            else:
-                getattr(self.form, radiusLabel).setText("Length")
-                # Will do translation later
-                # getattr(self.form, radiusLabel).setText(translate("CAM_DressupLeadInOut", "Length"))
+    def updateLeadVisibility(self, style, inout):
+        if inout == "in":
+            angleField = self.form.dspAngleIn
+            angleLabel = self.form.labelAngleIn
+            extendField = self.form.dspExtendIn
+            extendLabel = self.form.labelExtendIn
+            invertWidget = self.form.chkInvertDirectionIn
+            offsetField = self.form.dspOffsetIn
+            offsetLabel = self.form.labelOffsetIn
+            radiusField = self.form.dspRadiusIn
+            radiusLabel = self.form.labelRadiusIn
+        else:
+            angleField = self.form.dspAngleOut
+            angleLabel = self.form.labelAngleOut
+            extendField = self.form.dspExtendOut
+            extendLabel = self.form.labelExtendOut
+            invertWidget = self.form.chkInvertDirectionOut
+            offsetField = self.form.dspOffsetOut
+            offsetLabel = self.form.labelOffsetOut
+            radiusField = self.form.dspRadiusOut
+            radiusLabel = self.form.labelRadiusOut
 
         # Angle
         if style in self.hideModes["Angle"]:
-            angleWidget.hide()
-            if hasattr(self.form, angleLabel):
-                getattr(self.form, angleLabel).hide()
+            angleField.hide()
+            angleLabel.hide()
         else:
-            angleWidget.show()
-            if hasattr(self.form, angleLabel):
-                getattr(self.form, angleLabel).show()
+            angleField.show()
+            angleLabel.show()
+
+        # Extend
+        if style in self.hideModes["Extend"]:
+            extendField.hide()
+            extendLabel.hide()
+        else:
+            extendField.show()
+            extendLabel.show()
+
         # Invert Direction
         if style in self.hideModes["Invert"]:
             invertWidget.hide()
         else:
             invertWidget.show()
 
+        # Offset
+        if style in self.hideModes["Offset"]:
+            offsetField.hide()
+            offsetLabel.hide()
+        else:
+            offsetField.show()
+            offsetLabel.show()
+
+        # Radius
+        if style in self.hideModes["Radius"]:
+            radiusField.hide()
+            radiusLabel.hide()
+        else:
+            radiusField.show()
+            radiusLabel.show()
+
+        # Dynamic label for Radius/Length
+        if style in ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix"):
+            radiusLabel.setText("Radius")
+        else:
+            radiusLabel.setText("Length")
+
     def updateLeadInVisibility(self):
         style = self.form.cboStyleIn.currentText()
-        self.updateLeadVisibility(
-            style, self.form.dspAngleIn, self.form.chkInvertDirectionIn, "label_1", "label_5"
-        )
+        self.updateLeadVisibility(style, "in")
 
     def updateLeadOutVisibility(self):
         style = self.form.cboStyleOut.currentText()
-        self.updateLeadVisibility(
-            style, self.form.dspAngleOut, self.form.chkInvertDirectionOut, "label_11", "label_15"
-        )
+        self.updateLeadVisibility(style, "out")
 
 
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
-        self.setEdit(vobj)
+        vobj.Proxy = self
 
     def attach(self, vobj):
         self.obj = vobj.Object
         self.panel = None
 
-    def claimChildren(self):
-        if hasattr(self.obj.Base, "InList"):
+        if self.obj and self.obj.Base:
             for i in self.obj.Base.InList:
-                if hasattr(i, "Group"):
-                    group = i.Group
-                    for g in group:
-                        if g.Name == self.obj.Base.Name:
-                            group.remove(g)
-                    i.Group = group
+                if hasattr(i, "Group") and self.obj.Base.Name in [o.Name for o in i.Group]:
+                    i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
+            if self.obj.Base.ViewObject:
+                self.obj.Base.ViewObject.Visibility = False
+
+    def claimChildren(self):
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskDressupLeadInOut(vobj.Object, self)
-        FreeCADGui.Control.showDialog(panel)
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskDressupLeadInOut(vobj.Object, self)
+            FreeCADGui.Control.showDialog(panel)
         return True
 
     def unsetEdit(self, vobj, mode=0):
-        if self.panel:
+        if mode == 0 and self.panel:
             self.panel.abort()
 
     def onDelete(self, arg1=None, arg2=None):
@@ -1487,7 +852,7 @@ class ViewProviderDressup:
             return ":/icons/CAM_OpActive.svg"
 
 
-class CommandPathDressupLeadInOut:
+class CommandPathDressup:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
@@ -1499,60 +864,56 @@ class CommandPathDressupLeadInOut:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            return False
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            return False
-        baseOp = PathDressup.baseOp(selection[0])
-        if not hasattr(baseOp, "ClearanceHeight"):
-            return False
-        if not hasattr(baseOp, "SafeHeight"):
-            return False
-        if not hasattr(baseOp, "StartDepth"):
-            return False
-
-        return True
+        return bool(PathDressup.selection())
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupLeadInOut", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Select a Profile object"))
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
         App.ActiveDocument.openTransaction("Create LeadInOut Dressup")
         FreeCADGui.addModule("Path.Dressup.Gui.LeadInOut")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand(
-            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "LeadInOutDressup")'
-        )
-        FreeCADGui.doCommand("dbo = Path.Dressup.Gui.LeadInOut.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
-        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
-        FreeCADGui.doCommand("obj.Base = base")
-        FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
-        FreeCADGui.doCommand("dbo.setup(obj)")
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Dressup.Gui.LeadInOut.ViewProviderDressup(obj.ViewObject)"
-        )
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
-        App.ActiveDocument.commitTransaction()
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.LeadInOut.Create(base)")
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         App.ActiveDocument.recompute()
+
+
+def Create(baseObject, name="DressupLeadInOut", mode=0):
+    """
+    Create(baseObject, name='DressupLeadInOut', mode=0) … create LeadInOut dressup object for the given base path.
+
+    import Path.Dressup.Gui.LeadInOut as lead
+    lead.Create(basePath)  # to show Task panel
+    lead.Create(basePath, 2)  # to skip Task panel
+    """
+    if not baseObject.isDerivedFrom("Path::Feature"):
+        Path.Log.error(
+            translate("CAM_DressupLeadInOut", "The selected object is not a path") + "\n"
+        )
+        return None
+
+    if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
+        Path.Log.error(translate("CAM_DressupLeadInOut", "Select a profile object"))
+        return None
+
+    App.ActiveDocument.openTransaction("Create a DressupLeadInOut")
+    obj = App.ActiveDocument.addObject("Path::FeaturePython", name)
+    dbo = ObjectDressup(obj, baseObject)
+    job = PathUtils.findParentJob(baseObject)
+    job.Proxy.addOperation(obj, baseObject)
+    dbo.setup(obj)
+    ViewProviderDressup(obj.ViewObject)
+    App.ActiveDocument.commitTransaction()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, mode)
+
+    return obj
 
 
 if App.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressupLeadInOut())
+    FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressup())
 
 Path.Log.notice("Loading CAM_DressupLeadInOut… done\n")

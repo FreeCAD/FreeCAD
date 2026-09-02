@@ -38,6 +38,7 @@
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_GraphNode.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 
 #include <boost/algorithm/string.hpp>
@@ -583,6 +584,8 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret = feature;
         ret->recomputeFeature(true);
     }
+
+    seq.stop();
     sequencer = nullptr;
     return ret;
 }

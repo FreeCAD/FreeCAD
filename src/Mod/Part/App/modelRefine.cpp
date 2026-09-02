@@ -32,6 +32,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepGProp.hxx>
+#include <BRepLib.hxx>
 #include <BRepLib_FuseEdges.hxx>
 #include <BRepLib_MakeWire.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -62,10 +63,11 @@
 #include <TopoDS_Shape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_DataMapOfShapeShape.hxx>
+#include <TopTools_DataMapOfIntegerListOfShape.hxx>
+#include <TopTools_DataMapOfIntegerShape.hxx>
 
 #include <Base/Console.h>
 
@@ -352,9 +354,8 @@ static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face& faceIn)
     if (!surface.IsNull()) {
         planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
         if (planeSurfaceOut.IsNull()) {
-            Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(
-                Geom_RectangularTrimmedSurface
-            )::DownCast(surface);
+            Handle(Geom_RectangularTrimmedSurface)
+                trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
             if (!trimmedSurface.IsNull()) {
                 planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
             }
@@ -454,9 +455,8 @@ static Handle(Geom_CylindricalSurface) getGeomCylinder(const TopoDS_Face& faceIn
     if (!surface.IsNull()) {
         cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(surface);
         if (cylinderSurfaceOut.IsNull()) {
-            Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(
-                Geom_RectangularTrimmedSurface
-            )::DownCast(surface);
+            Handle(Geom_RectangularTrimmedSurface)
+                trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
             if (!trimmedSurface.IsNull()) {
                 cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(
                     trimmedSurface->BasisSurface()
@@ -510,11 +510,13 @@ const TopoDS_Face fixFace(const TopoDS_Face& f)
         return dummy;
     }
     faceFixer.FixMissingSeam();
+    faceFixer.SetContext(new ShapeBuild_ReShape());
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL)) {
         return dummy;
     }
     faceFixer.FixOrientation();
+    faceFixer.SetContext(new ShapeBuild_ReShape());
     faceFixer.Perform();
     if (faceFixer.Status(ShapeExtend_FAIL)) {
         return dummy;
@@ -569,7 +571,15 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
         else {
             // Linearize the edge. Idea taken from ShapeAnalysis.cxx ShapeAnalysis::TotCross2D()
             TColgp_SequenceOfPnt SeqPnt;
-            ShapeAnalysis_Curve::GetSamplePoints(adapt.Curve().Curve(), fp, lp, SeqPnt);
+            // If the edge has no 3d curve try to create it
+            if (adapt.IsCurveOnSurface()) {
+                if (BRepLib::BuildCurves3d(segment)) {
+                    adapt.Initialize(segment);
+                }
+            }
+            if (adapt.Is3DCurve()) {
+                ShapeAnalysis_Curve::GetSamplePoints(adapt.Curve().Curve(), fp, lp, SeqPnt);
+            }
 
             // Calculate the oriented length of the edge
             gp_Pnt begin;
@@ -862,12 +872,10 @@ FaceTypedBSpline::FaceTypedBSpline()
 bool FaceTypedBSpline::isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const
 {
     try {
-        Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(
-            BRep_Tool::Surface(faceOne)
-        );
-        Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(
-            BRep_Tool::Surface(faceTwo)
-        );
+        Handle(Geom_BSplineSurface)
+            surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
+        Handle(Geom_BSplineSurface)
+            surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
 
         if (surfaceOne.IsNull() || surfaceTwo.IsNull()) {
             return false;
@@ -1055,9 +1063,8 @@ TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType& faces) const
     std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
 
     // make face from surface and outer wire.
-    Handle(Geom_BSplineSurface) surface = Handle(Geom_BSplineSurface)::DownCast(
-        BRep_Tool::Surface(faces.at(0))
-    );
+    Handle(Geom_BSplineSurface)
+        surface = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
     if (!surface) {
         return {};
     }
@@ -1198,18 +1205,45 @@ bool FaceUniter::process()
                 sew.Add(*sewIt);
             }
             sew.Perform();
+
+            // update the list of modifications
+            for (auto& it : modifiedShapes) {
+                if (sew.IsModified(it.second)) {
+                    it.second = sew.Modified(it.second);
+
+                    // TODO: uncomment in the V2 algorithm PR
+                    // if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    break;
+                    // }
+                }
+            }
+
+            TopExp_Explorer workShellExplorer;
+            std::vector<TopAbs_ShapeEnum> types = {TopAbs_FACE, TopAbs_EDGE, TopAbs_VERTEX};
+
+            // track any modifications created by the reShape operation in the sewer
+            for (TopAbs_ShapeEnum& type : types) {
+                workShellExplorer.Init(workShell, type);
+
+                for (; workShellExplorer.More(); workShellExplorer.Next()) {
+                    const TopoDS_Shape& workShellSubShape = workShellExplorer.Value();
+
+                    if (sew.IsModifiedSubShape(workShellSubShape)) {
+                        // we add a modified shape entry even if `workShellSubShape` is already
+                        // present as a key for extra info to give the topological naming method.
+                        modifiedShapes.emplace_back(
+                            workShellSubShape,
+                            sew.ModifiedSubShape(workShellSubShape)
+                        );
+                    }
+                }
+            }
+
             try {
                 workShell = TopoDS::Shell(sew.SewedShape());
             }
             catch (Standard_Failure&) {
                 return false;
-            }
-            // update the list of modifications
-            for (auto& it : modifiedShapes) {
-                if (sew.IsModified(it.second)) {
-                    it.second = sew.Modified(it.second);
-                    break;
-                }
             }
         }
         else {
@@ -1255,15 +1289,15 @@ bool FaceUniter::process()
         TopTools_DataMapOfShapeShape faceMap;
         edgeFuse.Faces(faceMap);
         for (mapIt.Initialize(faceMap); mapIt.More(); mapIt.Next()) {
-            bool isModifiedFace = false;
+            bool isModifiedShape = false;
             for (auto& it : modifiedShapes) {
                 if (mapIt.Key().IsSame(it.second)) {
                     // Note: IsEqual() for some reason does not work
                     it.second = mapIt.Value();
-                    isModifiedFace = true;
+                    isModifiedShape = true;
                 }
             }
-            if (!isModifiedFace) {
+            if (!isModifiedShape) {
                 // Catch faces that were not united but whose boundary was changed (probably because
                 // several adjacent faces were united)
                 // See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
@@ -1316,7 +1350,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
 #endif
 {
     if (myShape.IsNull()) {
-        Standard_Failure::Raise("Cannot remove splitter from empty shape");
+        throw Standard_Failure("Cannot remove splitter from empty shape");
     }
 
     if (myShape.ShapeType() == TopAbs_SOLID) {
@@ -1337,7 +1371,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
                 }
             }
             else {
-                Standard_Failure::Raise("Removing splitter failed");
+                throw Standard_Failure("Removing splitter failed");
             }
         }
         myShape = mkSolid.Solid();
@@ -1351,7 +1385,7 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             LogModifications(uniter);
         }
         else {
-            Standard_Failure::Raise("Removing splitter failed");
+            throw Standard_Failure("Removing splitter failed");
         }
     }
     else if (myShape.ShapeType() == TopAbs_COMPOUND) {

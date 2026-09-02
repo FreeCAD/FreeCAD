@@ -31,12 +31,14 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 #include <memory>
+#include <string>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
@@ -171,10 +173,7 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             std::vector<Part::Geometry*> geomlist = solvedSketch.extractGeometry();
             Part::PropertyGeometryList tmp;
             tmp.setValues(std::move(geomlist));
-            // Only set values if there is actual changes
-            if (Constraints.isTouched() || !Geometry.isSame(tmp)) {
-                Geometry.moveValues(std::move(tmp));
-            }
+            Geometry.moveValues(std::move(tmp));
         }
     }
 
@@ -244,6 +243,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     std::vector<Constraint*> newVals(vals);
     newVals[ConstrId] = newVals[ConstrId]->clone();
     newVals[ConstrId]->isDriving = isdriving;
+    setOrientation(newVals[ConstrId], newVals[ConstrId]->isDriving);
 
     this->Constraints.setValues(std::move(newVals));
 
@@ -306,6 +306,8 @@ int SketchObject::setActive(int ConstrId, bool isactive)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = isactive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -363,6 +365,8 @@ int SketchObject::toggleActive(int ConstrId)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = !constNew->isActive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -516,19 +520,69 @@ int SketchObject::moveDatumsToEnd()
 
 void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
 {
-    std::swap(constr->First, constr->Second);
-    std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-
     // Edit the expression if any, else modify constraint value directly
-    if (constraintHasExpression(constNum)) {
-        std::string expression = getConstraintExpression(constNum);
-        setConstraintExpression(constNum, std::move(reverseAngleConstraintExpression(expression)));
+    auto path = Constraints.createPath(constNum);
+    auto expr = getExpression(path).expression;
+    if (expr) {
+        std::shared_ptr<App::Expression> newExpr;
+
+        // if expression matches the pattern "180 - x" without or with a unit, extract "x"
+        auto op = freecad_cast<App::OperatorExpression*>(expr.get());
+        if (op && op->getOperator() == App::OperatorExpression::SUB) {
+            auto leftNum = freecad_cast<App::NumberExpression*>(op->getLeft());
+            if (leftNum && leftNum->getQuantity() == Quantity(180)) {
+                newExpr = op->getRight()->copy();
+            }
+            auto leftOp = freecad_cast<App::OperatorExpression*>(op->getLeft());
+            auto leftOpNum = leftOp ? freecad_cast<App::NumberExpression*>(leftOp->getLeft()) : nullptr;
+            auto leftOpUnit = leftOp ? freecad_cast<App::UnitExpression*>(leftOp->getRight()) : nullptr;
+            auto q = leftOpNum && leftOpUnit ? (leftOpNum->getQuantity() * leftOpUnit->getQuantity()).getValueAs(Base::Quantity::Degree) : 0;
+            if (!newExpr && leftOp && leftOp->getOperator() == App::OperatorExpression::UNIT && fabs(q - 180) < .00001) {
+                newExpr = op->getRight()->copy();
+            }
+        }
+
+        if (!newExpr) {
+            // evaluate expression to check if value is dimensionless or has unit
+            auto result = std::unique_ptr(expr->eval());
+            auto* number = freecad_cast<App::NumberExpression*>(result.get());
+            auto value = number ? number->getQuantity() : Base::Quantity(NAN);
+            if (!value.isValid() || !(value.isDimensionless() || value.getUnit() == Base::Unit::Angle)) {
+                return;
+            }
+
+            // prepend "180 - ..." to expression, with or without unit as required
+            App::Expression* valueExpr = new App::NumberExpression(expr->getOwner(), Base::Quantity(180));
+            if (!value.isDimensionless()) {
+                valueExpr = new App::OperatorExpression(expr->getOwner(),
+                    valueExpr, App::OperatorExpression::UNIT, new App::UnitExpression(expr->getOwner(), Base::Quantity::Degree, "°"));
+            }
+            newExpr = std::make_shared<App::OperatorExpression>(expr->getOwner(),
+                valueExpr, App::OperatorExpression::SUB, expr->copy().release());
+        }
+        try {
+            setExpression(path, newExpr);
+        }
+        catch (const Base::Exception&) {
+            Base::Console().error("Failed to set constraint expression.");
+        }
+
+        // Update value, so constraint arc will have updated size while dragging
+        auto newResult = std::unique_ptr(newExpr->eval());
+        auto* newNumber = freecad_cast<App::NumberExpression*>(newResult.get());
+        auto newValue = newNumber ? newNumber->getQuantity() : Base::Quantity(NAN);
+        if (newValue.isValid()) {
+            constr->setValue(newValue.getValueAs(Base::Quantity::Radian));
+        }
     }
     else {
         double actAngle = constr->getValue();
         constr->setValue(std::numbers::pi - actAngle);
     }
+
+    std::swap(constr->First, constr->Second);
+    std::swap(constr->FirstPos, constr->SecondPos);
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 void SketchObject::inverseAngleConstraint(Constraint* constr)
@@ -539,63 +593,13 @@ void SketchObject::inverseAngleConstraint(Constraint* constr)
 
 bool SketchObject::constraintHasExpression(int constNum) const
 {
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        return true;
-    }
-    return false;
+    return (bool)getExpression(Constraints.createPath(constNum)).expression;
 }
 
 std::string SketchObject::getConstraintExpression(int constNum) const
 {
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        std::string expression = info.expression->toString();
-        return expression;
-    }
-
-    return {};
-}
-
-void SketchObject::setConstraintExpression(int constNum, const std::string& newExpression)
-{
-    App::ObjectIdentifier path = Constraints.createPath(constNum);
-    auto info = getExpression(path);
-    if (info.expression) {
-        try {
-            std::shared_ptr<App::Expression> expr(App::Expression::parse(this, newExpression));
-            setExpression(path, std::move(expr));
-        }
-        catch (const Base::Exception&) {
-            Base::Console().error("Failed to set constraint expression.");
-        }
-    }
-}
-
-std::string SketchObject::reverseAngleConstraintExpression(std::string expression)
-{
-    // Check if expression contains units (°, deg, rad)
-    if (expression.find("°") != std::string::npos
-        || expression.find("deg") != std::string::npos
-        || expression.find("rad") != std::string::npos) {
-        if (expression.substr(0, 9) == "180 ° - ") {
-            expression = expression.substr(9, expression.size() - 9);
-        }
-        else {
-            expression = "180 ° - (" + expression + ")";
-        }
-    }
-    else {
-        if (expression.substr(0, 6) == "180 - ") {
-            expression = expression.substr(6, expression.size() - 6);
-        }
-        else {
-            expression = "180 - (" + expression + ")";
-        }
-    }
-    return expression;
+    auto expr = getExpression(Constraints.createPath(constNum)).expression;
+    return expr ? expr->toString() : "";
 }
 
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
@@ -868,6 +872,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew, false);
+
         addGeometryState(cnew);
 
         signalConstraintAdded(cnew);
@@ -939,8 +945,10 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
     Constraint* constNew = constraint.release();
 
-    if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+    if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
+    }
+    setOrientation(constNew, false);
 
     addGeometryState(constNew);
 
@@ -1149,161 +1157,7 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
 
     return -1;  // no such constraint
 }
-// clang-format off
 
-void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int geoId2,
-                                             PointPos posId2)
-{
-    // If the lines don't intersect, there's no original corner to work with so
-    // don't try to transfer the constraints. But we should delete line length and equal
-    // constraints and constraints on the affected endpoints because they're about
-    // to move unpredictably.
-    if (!arePointsCoincident(geoId1, posId1, geoId2, posId2)) {
-        // Delete constraints on the endpoints
-        delConstraintOnPoint(geoId1, posId1, false);
-        delConstraintOnPoint(geoId2, posId2, false);
-
-        // Delete line length and equal constraints
-        const std::vector<Constraint*>& constraints = this->Constraints.getValues();
-        std::vector<int> deleteme;
-        for (int i = 0; i < int(constraints.size()); i++) {
-            const Constraint* c = constraints[i];
-            if (c->Type != Sketcher::Distance && c->Type != Sketcher::Equal) {
-                continue;
-            }
-            bool line1 = c->First == geoId1 && c->FirstPos == PointPos::none;
-            bool line2 = c->First == geoId2 && c->FirstPos == PointPos::none;
-            if (line1 || line2) {
-                deleteme.push_back(i);
-            }
-        }
-        delConstraints(std::move(deleteme), DeleteOption::NoFlag);
-        return;
-    }
-
-    // If the lines aren't straight, don't try to transfer the constraints.
-    // TODO: Add support for curved lines.
-    const Part::Geometry* geo1 = getGeometry(geoId1);
-    const Part::Geometry* geo2 = getGeometry(geoId2);
-    if (!geo1->is<Part::GeomLineSegment>() || !geo2->is<Part::GeomLineSegment>()) {
-        delConstraintOnPoint(geoId1, posId1, false);
-        delConstraintOnPoint(geoId2, posId2, false);
-        return;
-    }
-
-    // Add a vertex to preserve the original intersection of the filleted lines
-    auto* originalCorner = new Part::GeomPoint(getPoint(geoId1, posId1));
-    int originalCornerId = addGeometry(originalCorner, true);
-    delete originalCorner;
-
-    // Constrain the vertex to the two lines
-    auto* cornerToLine1 = new Sketcher::Constraint();
-    cornerToLine1->Type = Sketcher::PointOnObject;
-    cornerToLine1->First = originalCornerId;
-    cornerToLine1->FirstPos = PointPos::start;
-    cornerToLine1->Second = geoId1;
-    cornerToLine1->SecondPos = PointPos::none;
-    addConstraint(cornerToLine1);
-    delete cornerToLine1;
-    auto* cornerToLine2 = new Sketcher::Constraint();
-    cornerToLine2->Type = Sketcher::PointOnObject;
-    cornerToLine2->First = originalCornerId;
-    cornerToLine2->FirstPos = PointPos::start;
-    cornerToLine2->Second = geoId2;
-    cornerToLine2->SecondPos = PointPos::none;
-    addConstraint(cornerToLine2);
-    delete cornerToLine2;
-
-    Base::StateLocker lock(managedoperation, true);
-
-    // Loop through all the constraints and try to do reasonable things with the affected ones
-    std::vector<Constraint*> newConstraints;
-    for (auto c : this->Constraints.getValues()) {
-        // Keep track of whether the affected lines and endpoints appear in this constraint
-        bool point1First = c->First == geoId1 && c->FirstPos == posId1;
-        bool point2First = c->First == geoId2 && c->FirstPos == posId2;
-        bool point1Second = c->Second == geoId1 && c->SecondPos == posId1;
-        bool point2Second = c->Second == geoId2 && c->SecondPos == posId2;
-        bool point1Third = c->Third == geoId1 && c->ThirdPos == posId1;
-        bool point2Third = c->Third == geoId2 && c->ThirdPos == posId2;
-        bool line1First = c->First == geoId1 && c->FirstPos == PointPos::none;
-        bool line2First = c->First == geoId2 && c->FirstPos == PointPos::none;
-        bool line1Second = c->Second == geoId1 && c->SecondPos == PointPos::none;
-        bool line2Second = c->Second == geoId2 && c->SecondPos == PointPos::none;
-
-        if (c->Type == Sketcher::Coincident) {
-            if ((point1First && point2Second) || (point2First && point1Second)) {
-                // This is the constraint holding the two edges together that are about to be
-                // filleted.  This constraint goes away because the edges will touch the fillet
-                // instead.
-                continue;
-            }
-        }
-        else if (c->Type == Sketcher::Horizontal || c->Type == Sketcher::Vertical) {
-            // Point-to-point horizontal or vertical constraint, move to new corner point (done towards end of present loop)
-        }
-        else if (c->Type == Sketcher::Distance || c->Type == Sketcher::DistanceX
-                 || c->Type == Sketcher::DistanceY) {
-            // Point-to-point distance constraint. Move it to the new corner point (done towards end of present loop)
-
-            // Distance constraint on the line itself. Change it to point-point between the far end
-            // of the line and the new corner
-            if (line1First) {
-                c->FirstPos = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
-            if (line2First) {
-                c->FirstPos = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
-            }
-        }
-        else if (c->Type == Sketcher::PointOnObject) {
-            // The corner to be filleted was touching some other object.
-        }
-        else if (c->Type == Sketcher::Equal) {
-            // Equal length constraints are dicey because the lines are getting shorter.  Safer to
-            // delete them and let the user notice the underconstraint.
-            if (line1First || line2First || line1Second || line2Second) {
-                continue;
-            }
-        }
-        else if (c->Type == Sketcher::Symmetric) {
-            // Symmetries should probably be preserved relative to the original corner
-        }
-        else if (c->Type == Sketcher::SnellsLaw) {
-            // Can't imagine any cases where you'd fillet a vertex going through a lens, so let's
-            // delete to be safe.
-            continue;
-        }
-        else if (point1First || point2First || point1Second || point2Second || point1Third
-                 || point2Third) {
-            // Delete any other point-based constraints on the relevant points
-            continue;
-        }
-
-        // For any constraint not passing previous conditions, transfer to the new point if relevant
-        if (point1First || point2First) {
-            c->First = originalCornerId;
-            c->FirstPos = PointPos::start;
-        }
-        else if (point1Second || point2Second) {
-            c->Second = originalCornerId;
-            c->SecondPos = PointPos::start;
-        }
-        else if (point1Third || point2Third) {
-            c->Third = originalCornerId;
-            c->ThirdPos = PointPos::start;
-        }
-
-        // Default: keep all other constraints
-        newConstraints.push_back(c->clone());
-    }
-    this->Constraints.setValues(std::move(newConstraints));
-}
-
-// clang-format on
 int SketchObject::transferConstraints(
     int fromGeoId,
     PointPos fromPosId,
@@ -1324,8 +1178,10 @@ int SketchObject::transferConstraints(
             // For example a B-spline pole being a point instead of a circle.
             continue;
         }
-        else if (vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
-                 && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
+        else if (
+            vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
+            && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)
+        ) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
             if (vals[i]->First < 0 && vals[i]->Second < 0) {
@@ -1333,7 +1189,6 @@ int SketchObject::transferConstraints(
                 // If it is, we need to be sure at most ONE of these is external
                 continue;
             }
-
             switch (vals[i]->Type) {
                 case Sketcher::Tangent:
                 case Sketcher::Perpendicular: {
@@ -1401,6 +1256,166 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
     this->addConstraint(std::move(newConstr));
 }
 
+ConstraintOrientations ccw2d(const Base::Vector3d& A, const Base::Vector3d& B, const Base::Vector3d& C)
+{
+    double signedArea = B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x;
+    return signedArea > 0.0 ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise;
+}
+std::optional<gp_Circ> getCircle(const Part::Geometry* geo)
+{
+    if (auto* asCirc = freecad_cast<const Part::GeomCircle*>(geo)) {
+        auto loc = asCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asCirc->getRadius(), 0.0));
+    }
+
+    if (auto* asArcOfCirc = freecad_cast<const Part::GeomArcOfCircle*>(geo)) {
+        auto loc = asArcOfCirc->getLocation();
+        return gp_Circ(gp_Ax2(gp_Pnt(loc.x, loc.y, loc.z), gp_Dir(1, 0, 0), gp_Dir(0, 1, 0)), std::max(asArcOfCirc->getRadius(), 0.0));
+    }
+    return std::nullopt;
+}
+const Part::Geometry* SketchObject::getGeometryOrWarn(int geoId) const
+{
+    if (geoId == GeoEnum::GeoUndef) {
+        return nullptr;
+    }
+
+    const Part::Geometry* geo = getGeometry(geoId);
+    if (!geo) {
+        // Without the referenced geometry, the side a signed constraint has to be solved on can't
+        // be determined, and the constraint keeps ConstraintOrientations::None. Don't let this be
+        // invisible (which will look like everything worked, when it didn't). This is useful when
+        // debugging old files that didn't reload correctly.
+        FC_WARN("Cannot determine constraint orientation, geometry "
+                << geoId << " is unavailable in " << getFullName());
+    }
+    return geo;
+}
+
+void SketchObject::setOrientationDistance(Constraint* constr)
+{
+    // Try to find the orientation of point-line distance
+    if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        auto* geo1AsLine =
+            freecad_cast<const Part::GeomLineSegment*>(getGeometryOrWarn(constr->Second));
+        if (geo1AsLine) {
+            constr->Orientation = ccw2d(geo1AsLine->getStartPoint(), geo1AsLine->getEndPoint(), getPoint(constr->First, constr->FirstPos));
+        }
+        return;
+    }
+
+    // Try to find the orientation of circle-circle distance or circle-line
+    if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* firGeo = getGeometryOrWarn(constr->First);
+        const Part::Geometry* secGeo = getGeometryOrWarn(constr->Second);
+        auto geo1AsCirc = getCircle(firGeo);
+        auto geo2AsCirc = getCircle(secGeo);
+
+        if (geo1AsCirc && geo2AsCirc) { // circle-circle distance
+
+            // If one of the circles is completely within the other, we will say that
+            // it is internal, if they are not within each other orcompletly intersect we won't
+            // make a call
+
+            double centerDistance = geo1AsCirc->Location().Distance(geo2AsCirc->Location());
+
+            auto circ1Radius = geo1AsCirc->Radius();
+            auto circ2Radius = geo2AsCirc->Radius();
+            if (centerDistance + circ1Radius < circ2Radius) {
+                constr->Orientation = ConstraintOrientations::Internal; // Circ1 is within circ2
+            } else if (centerDistance + circ2Radius < circ1Radius) {
+                constr->Orientation = ConstraintOrientations::External; // Circ2 is within circ1
+            }
+            return;
+        }
+
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+        if (geo1AsCirc && geo2AsLine) { // circle-line distance
+            Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+            bool internal = circCenter.DistanceToLine(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint()-geo2AsLine->getStartPoint()) < geo1AsCirc->Radius();
+            auto ccw = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
+
+            constr->Orientation = ccw | (internal ? ConstraintOrientations::Internal : ConstraintOrientations::External);
+        }
+    }
+}
+void SketchObject::setOrientationTangent(Constraint* constr)
+{
+    const Part::Geometry* firGeo = getGeometryOrWarn(constr->First);
+    const Part::Geometry* secGeo = getGeometryOrWarn(constr->Second);
+
+    auto impl = [&](const Part::Geometry* firGeo, const Part::Geometry* secGeo) -> bool {
+        auto geo1AsCirc = getCircle(firGeo);
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+
+        if (!geo1AsCirc || !geo2AsLine) {
+            return false;
+        }
+
+        Base::Vector3d circCenter(geo1AsCirc->Location().X(), geo1AsCirc->Location().Y(), geo1AsCirc->Location().Z());
+        constr->Orientation = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), circCenter);
+        return true;
+    };
+
+    // Tangent can be defined as line + [circle] or [circle] + line
+    // so we test both
+    if (impl(firGeo, secGeo)) {
+        return;
+    }
+    if (impl(secGeo, firGeo)) {
+        return;
+    }
+}
+void SketchObject::reorientConstraintsOnReversedGeometry(const std::set<int>& reversedGeoIds)
+{
+    if (reversedGeoIds.empty()) {
+        return;
+    }
+
+    auto constraints = Constraints.getValues();
+    bool changed = false;
+
+    for (auto& constr : constraints) {
+        if (constr->Type != Distance && constr->Type != Tangent) {
+            continue;
+        }
+
+        bool referencesReversed = false;
+        for (int index = 0; constr->hasElement(index); ++index) {
+            if (reversedGeoIds.count(constr->getElement(index).GeoId) > 0) {
+                referencesReversed = true;
+                break;
+            }
+        }
+
+        if (!referencesReversed) {
+            continue;
+        }
+
+        // The line turned around underneath the constraint, so the side it recorded no longer
+        // describes where the geometry actually is. Read the side back out of the geometry rather
+        // than inverting the flag, so that the sketch stays where the user left it.
+        setOrientation(constr, true);
+        changed = true;
+    }
+
+    if (changed) {
+        Constraints.setValues(std::move(constraints));
+    }
+}
+
+void SketchObject::setOrientation(Constraint* constr, bool reset)
+{
+    if (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None)) {
+        return;
+    }
+
+    if (constr->Type == Distance) {
+        setOrientationDistance(constr);
+    } else if (constr->Type == Tangent) {
+        setOrientationTangent(constr);
+    }
+}
 std::unique_ptr<Constraint>
 SketchObject::getConstraintAfterDeletingGeo(const Constraint* constr,
                                             const int deletedGeoId) const
@@ -1492,7 +1507,8 @@ bool SketchObject::deriveConstraintsForPieces(
     const int oldId,
     const std::vector<int>& newIds,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     std::vector<const Part::Geometry*> newGeos;
@@ -1500,7 +1516,7 @@ bool SketchObject::deriveConstraintsForPieces(
         newGeos.push_back(getGeometry(newId));
     }
 
-    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints);
+    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints, assumeTangency);
 }
 
 bool SketchObject::deriveConstraintsForPieces(
@@ -1508,15 +1524,18 @@ bool SketchObject::deriveConstraintsForPieces(
     const std::vector<int>& newIds,
     const std::vector<const Part::Geometry*>& newGeos,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     const Part::Geometry* geo = getGeometry(oldId);
-    int conId = con->First;
-    PointPos conPos = con->FirstPos;
+    const GeoElementId conGeoElementId = con->getElement(0);
+    int conId = conGeoElementId.GeoId;
+    PointPos conPos = conGeoElementId.Pos;
     if (conId == oldId) {
-        conId = con->Second;
-        conPos = con->SecondPos;
+        const GeoElementId second = con->getElement(1);
+        conId = second.GeoId;
+        conPos = second.Pos;
     }
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
@@ -1530,11 +1549,13 @@ bool SketchObject::deriveConstraintsForPieces(
         } break;
         case Tangent:
         case Perpendicular: {
-            if (geo->is<Part::GeomLineSegment>()) {
+            if (!assumeTangency && geo->is<Part::GeomLineSegment>()) {
                 transferToAll = true;
                 break;
             }
 
+            // we assume the parts are forced to be tangential, so we only need to apply it to the
+            // ones intersecting
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
                 return false;
@@ -1547,14 +1568,31 @@ bool SketchObject::deriveConstraintsForPieces(
 
             // For now: just transfer to the first intersection
             // TODO: Actually check that there was perpendicularity earlier
-            // TODO: Choose piece based on parameters ("values" of the constraint)
             for (size_t i = 0; i < newIds.size(); ++i) {
-                std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
-                bool intersects
-                    = static_cast<const Part::GeomCurve*>(newGeos[i])
-                          ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
+                // by coincident or point on object constraint
+                const auto& constraints = this->Constraints.getValues();
 
-                if (intersects) {
+                const bool coincidentConstrFound = std::find_if(
+                                                       constraints.begin(),
+                                                       constraints.end(),
+                                                       [&](const auto* constraint) {
+                                                           return constraint->Type == Coincident
+                                                               && constraint->involvesGeoId(newIds[i])
+                                                               && constraint->involvesGeoId(conId);
+                                                       }
+                                                   )
+                    != constraints.end();
+
+                // by curve intersection
+                bool intersects = false;
+                if (!coincidentConstrFound) {
+                    std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
+                    intersects
+                        = static_cast<const Part::GeomCurve*>(newGeos[i])
+                              ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
+                }
+
+                if (coincidentConstrFound || intersects) {
                     Constraint* trans = con->copy();
                     trans->substituteIndex(oldId, newIds[i]);
                     newConstraints.push_back(trans);
@@ -1621,6 +1659,7 @@ bool SketchObject::deriveConstraintsForPieces(
         case Distance:
         case DistanceX:
         case DistanceY:
+        case Coincident:
         case PointOnObject: {
             if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none
                 && newIds.size() > 1) {
@@ -1689,10 +1728,19 @@ bool SketchObject::deriveConstraintsForPieces(
         return false;
     }
 
-    for (auto& newId : newIds) {
+    if (assumeTangency) {
+        // because the geometries are tangential, we can apply the constraint only to the first one
+        // and the rest will follow
         Constraint* trans = con->copy();
-        trans->substituteIndex(oldId, newId);
+        trans->substituteIndex(oldId, newIds[0]);
         newConstraints.push_back(trans);
+    }
+    else {
+        for (auto& newId : newIds) {
+            Constraint* trans = con->copy();
+            trans->substituteIndex(oldId, newId);
+            newConstraints.push_back(trans);
+        }
     }
 
     return true;
@@ -1834,8 +1882,8 @@ int SketchObject::getSingleScaleDefiningConstraint() const
 
 const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
 {
-    // this function is different from that in getCoincidentPoints in that:
-    // - getCoincidentPoints only considers direct coincidence (the points that are linked via a
+    // this function is different from getDirectlyCoincidentPoints in that:
+    // - getDirectlyCoincidentPoints only considers direct coincidence (the points that are linked via a
     // single coincidence)
     // - this function provides an array of maps of points, each map containing the points that are
     // coincident by virtue
@@ -2002,6 +2050,36 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
+void SketchObject::getDirectlyCoincidentPoints(
+    const int GeoId1,
+    const int GeoId2,
+    std::vector<int>& GeoIds3,
+    std::vector<PointPos>& PosIds3
+) const
+{
+    std::vector<int> constraints;
+    getConstraintIndices(GeoId1, constraints);
+
+    for (auto idx : constraints) {
+        const auto* con = Constraints.getValues()[idx];
+
+        if (!con->involvesGeoId(GeoId2)) {
+            continue;
+        }
+
+        if (con->Type == Sketcher::ConstraintType::Coincident) {
+            if (con->getElement(0).GeoId == GeoId1) {
+                GeoIds3.push_back(con->getElement(0).GeoId);
+                PosIds3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoIds3.push_back(con->getElement(1).GeoId);
+                PosIds3.push_back(con->getElement(1).Pos);
+            }
+        }
+    }
+}
+
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
 {
     if (GeoId1 == GeoId2 && PosId1 == PosId2)
@@ -2033,7 +2111,7 @@ bool SketchObject::hasBlockConstraint() const
     });
 }
 
-void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
+void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     int i = 0;
@@ -2498,7 +2576,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 
     for (std::size_t ic = 0; ic < newVals.size(); ic++) {// ic = index of constraint
         bool affected = false;
-        Constraint* constNew = nullptr;
+        std::unique_ptr<Constraint> constNew;
         for (int ig = 1; ig <= 3; ig++) {
             // cycle through constraint.first, second, third
             int geoId = 0;
@@ -2528,7 +2606,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                         // Gotcha! a link to an endpoint of external arc that is reversed.
                         // create a constraint copy, affect it, replace the pointer
                         if (!affected)
-                            constNew = newVals[ic]->clone();
+                            constNew.reset(newVals[ic]->clone());
                         affected = true;
                         // Do the fix on temp vars
                         if (posId == Sketcher::PointPos::start)
@@ -2558,7 +2636,9 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         }
         if (affected) {
             cntToBeAffected++;
-            newVals[ic] = constNew;
+            if (!justAnalyze) {
+                newVals[ic] = constNew.release();
+            }
             Base::Console().log("Constraint%i will be affected\n", ic + 1);
         };
     }

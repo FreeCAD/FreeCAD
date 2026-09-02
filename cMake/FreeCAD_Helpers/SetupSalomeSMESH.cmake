@@ -71,7 +71,7 @@ macro(SetupSalomeSMESH)
             set(BUILD_FEM_VTK_PYTHON 1)
             message(STATUS "VTK python wrapper: available")
         else()
-            message(STATUS "VTK python wrapper: NOT available")
+            message(WARNING "VTK python wrapper: NOT available")
         endif()
 
         if(${VTK_MAJOR_VERSION} LESS 6)

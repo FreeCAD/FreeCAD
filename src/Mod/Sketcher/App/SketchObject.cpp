@@ -45,6 +45,9 @@
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
+#include <Base/Reader.h>
+#include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartPyCXX.h>
@@ -56,6 +59,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "ExternalGeometryFacade.h"
 
@@ -117,6 +121,11 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
+    ADD_PROPERTY_TYPE(_InternalFaceVersion,
+                      (0),
+                      "Base",
+                      (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
+                      "");
 
     Geometry.setOrderRelevant(true);
 
@@ -166,7 +175,9 @@ void SketchObject::setupObject()
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
-    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
+    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
+    // New sketches build internal faces with FaceMakerBuildFace.
+    _InternalFaceVersion.setValue(2);
     inherited::setupObject();
 }
 
@@ -397,21 +408,43 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         return Part::TopoShape();
 
     try {
+        // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
+        // faces differently, breaking references from downstream features.
+        const bool legacy = _InternalFaceVersion.getValue() < 2;
+
+        Part::TopoShape result(getID(), getDocument()->getStringHasher());
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
-        if (!joiner.Shape().IsNull()) {
-            joiner.getResultWires(result, "SKF");
-            result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
-                    /*op*/"",
-                    /*maker*/"Part::FaceMakerRing",
-                    /*pln*/nullptr
-            );
+
+        if (legacy) {
+            if (!joiner.Shape().IsNull()) {
+                joiner.getResultWires(result, "SKF");
+                result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
+                        /*op*/"",
+                        /*maker*/"Part::FaceMakerRing",
+                        /*pln*/nullptr
+                );
+            }
         }
+        else {
+            try {
+                result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
+                        /*op*/"",
+                        /*maker*/"Part::FaceMakerBuildFace",
+                        /*pln*/nullptr
+                );
+            }
+            catch (const Part::NullShapeException&) {
+                // An open-only sketch has no bounded regions, so a null face result is expected.
+            }
+        }
+
+        // Append open wires (edges not part of any closed face)
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
+
         if (openWires.isNull()) {
             return result;  // No open wires, return either face or empty toposhape
         }
@@ -549,7 +582,7 @@ void SketchObject::updateGeoHistory() {
         geoHistory = std::make_unique<GeoHistory>();
     }
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("updateGeoHistory");
     const auto &geos = getInternalGeometry();
     geoHistory->clear();
     for (auto geo : geos) {
@@ -561,7 +594,6 @@ void SketchObject::updateGeoHistory() {
             geoHistory->update(pend,-id);
     }
     geoHistory->finishUpdate(geoMap);
-    FC_TIME_LOG(t,"update geometry history (" << geoHistory->size() << ", " << geoMap.size()<<')');
 }
 
 // clang-format on
@@ -846,6 +878,22 @@ int SketchObject::getGroupHandleIfInGroup(int geoId)
         }
     }
     return geoId;
+}
+
+std::set<int> SketchObject::getGroupGeometries(int handleGeoId) const
+{
+    std::set<int> geoIds;
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+    for (const auto& constr : vals) {
+        if (constr->Type == Group || constr->Type == Text) {
+            if (constr->getGeoId(0) == handleGeoId) {
+                for (int i = 1; constr->hasElement(i); ++i) {
+                    geoIds.insert(constr->getElement(i).GeoId);
+                }
+            }
+        }
+    }
+    return geoIds;
 }
 
 PyObject* SketchObject::getPyObject()
@@ -1163,7 +1211,9 @@ void SketchObject::onExternalGeoChanged()
     }
 
     auto objs = ExternalGeometry.getValues();
-    assert(externalGeoRef.size() == objs.size());
+    if (externalGeoRef.size() != objs.size()) {
+        throw Base::RuntimeError("Inconsistency with external geometries");
+    }
     auto itObj = objs.begin();
     auto subs = ExternalGeometry.getSubValues();
     auto itSub = subs.begin();
@@ -1346,6 +1396,11 @@ void SketchObject::onSketchRestore()
         }else
             acceptGeometry();
 
+        // Must run after the external geometry above: the orientations are derived from the
+        // geometry the constraints reference, and projected external geometry does not exist
+        // before it is rebuilt or accepted.
+        migrateConstraintOrientations();
+
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
@@ -1383,8 +1438,28 @@ void SketchObject::onSketchRestore()
 }
 
 // clang-format on
+void SketchObject::migrateConstraintOrientations()
+{
+    // Migrate point-line and circle-line distance and tangency from unsigned to signed. Documents
+    // written before signed constraints existed carry no orientation at all, so the side each
+    // constraint was solved on has to be read back out of the geometry stored in the file.
+    auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+}
+
 void SketchObject::migrateSketch()
 {
+    // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
+    // file's original at restore) so pre-1.2 sketches keep the legacy face maker.
+    if (_InternalFaceVersion.getValue() == 0) {
+        const bool legacy = getDocument()
+            && Base::getVersion(getDocument()->getProgramVersion()) <= Base::Version::v1_1;
+        _InternalFaceVersion.setValue(legacy ? 1 : 2);
+    }
 
     const auto& allGeoms = getInternalGeometry();
     bool noextensions = std::ranges::any_of(allGeoms, [](const auto& geo) {

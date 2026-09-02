@@ -29,7 +29,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4Delaunay2.h>
+#include <Wm4Delaunay2.h>
 
 #include "Approximation.h"
 #include "MeshKernel.h"

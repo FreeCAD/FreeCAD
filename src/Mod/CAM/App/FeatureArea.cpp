@@ -30,6 +30,7 @@
 #include <Base/Placement.h>
 
 #include "FeatureArea.h"
+#include "Base/TimeInfo.h"
 #include "FeatureAreaPy.h"
 
 
@@ -75,6 +76,8 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
 {
     myInited = true;
 
+    Base::TimeTracker tracker("FeatureArea::execute");
+
     std::vector<App::DocumentObject*> links = Sources.getValues();
     if (links.empty()) {
         return new App::DocumentObjectExecReturn("No shapes linked");
@@ -92,11 +95,10 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
         }
     }
 
-    FC_TIME_INIT(t);
-
     AreaParams params;
 
-#define AREA_PROP_GET(_param) params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
+#define AREA_PROP_GET(_param) \
+    params.PARAM_FNAME(_param) = static_cast<PARAM_TYPE(_param)>(PARAM_FNAME(_param).getValue());
     PARAM_FOREACH(AREA_PROP_GET, AREA_PARAMS_CONF)
 
     myArea.clean(true);
@@ -142,8 +144,6 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
         }
         Shape.setValue(compound);
     }
-
-    FC_TIME_LOG(t, "feature execute");
 
     if (!hasShape) {
         return new App::DocumentObjectExecReturn("no output shape");

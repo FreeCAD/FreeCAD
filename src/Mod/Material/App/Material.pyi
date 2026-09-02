@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, no_args, sequence_protocol
+from Base.Metadata import export, no_args, sequence_protocol, deprecated_attributes
 from Base.BaseClass import BaseClass
 from typing import Final
 
@@ -14,6 +14,37 @@ from typing import Final
     Delete=True,
 )
 @sequence_protocol(sq_length=True, sq_item=True, sq_contains=True, mp_subscript=True)
+@deprecated_attributes(
+    AuthorAndLicense={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Author and License",
+    },
+    Properties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    PhysicalProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    AppearanceProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+    LegacyProperties={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "PropertyObjects",
+        "details": "Legacy compatibility API.",
+    },
+)
 class Material(BaseClass):
     """
     Material descriptions.

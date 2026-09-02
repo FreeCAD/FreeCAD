@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to activate the different snapping methods."""
+
 ## @package gui_snaps
 # \ingroup draftguitools
 # \brief Provides GUI tools to activate the different snapping methods.

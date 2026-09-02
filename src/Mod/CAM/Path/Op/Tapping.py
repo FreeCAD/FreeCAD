@@ -32,7 +32,7 @@ import Path.Base.Generator.tapping as tapping
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathUtils as PathUtils
+from Path.Op.Util import drillTipLength
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Tapping Operation"
@@ -97,13 +97,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
-        # DEPRECATED: This operation is deprecated. Use Drilling operation with Strategy=Tapping instead.
-        Path.Log.warning(
-            "DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. "
-            "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
-            "Existing Tapping operations will continue to work but you cannot create new ones."
-        )
-
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
@@ -176,9 +169,9 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
         self.commandlist.append(
@@ -299,6 +292,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         else:
             obj.DwellTime = 1
 
+    def opOnDocumentRestored(self, obj):
+        Path.Log.warning(
+            "The Tapping operation is deprecated and will be removed in a future release."
+            "\nPlease use the Drilling operation with Strategy set to 'Tapping' instead."
+            "\nExisting Tapping operations will continue to work but you cannot create new ones."
+        )
+
 
 def SetupProperties():
     setup = []
@@ -315,9 +315,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Tapping operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectTapping(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

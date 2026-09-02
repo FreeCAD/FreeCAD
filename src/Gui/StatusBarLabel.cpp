@@ -24,76 +24,88 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QApplication>
-#include <QStatusBar>
-#include <QAction>
 #include <QContextMenuEvent>
-#include <QHideEvent>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QPointer>
+#include <QTimer>
 
 #include "StatusBarLabel.h"
-#include <App/Application.h>
+#include "MainWindow.h"
 
 namespace Gui
 {
 
-StatusBarLabel::StatusBarLabel(QWidget* parent, const std::string& parameterName)
+StatusBarLabel::StatusBarLabel(QWidget* parent)
     : QLabel(parent)
+{}
+
+void StatusBarLabel::setElideMode(Qt::TextElideMode mode)
 {
-    if (!parameterName.empty()) {
-        hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow"
-        );
-
-        // set visibility before storing parameterName to avoid saving it immediately
-        setVisible(hGrp->GetBool(parameterName.c_str(), true));
-
-        // now we can store parameterName
-        this->parameterName = parameterName;
+    if (m_elideMode == mode) {
+        return;
     }
+    m_elideMode = mode;
+    updateGeometry();
+    update();
+}
+
+QSize StatusBarLabel::minimumSizeHint() const
+{
+    if (m_elideMode == Qt::ElideNone) {
+        return QLabel::minimumSizeHint();
+    }
+    // Elidable labels must be allowed to shrink horizontally so the layout can
+    // give priority to neighbours with a real minimum (Input Hints, Quick Measure).
+    return QSize(0, QLabel::minimumSizeHint().height());
+}
+
+void StatusBarLabel::paintEvent(QPaintEvent* event)
+{
+    if (m_elideMode == Qt::ElideNone) {
+        QLabel::paintEvent(event);
+        return;
+    }
+    QPainter painter(this);
+    const QString elided = fontMetrics().elidedText(text(), m_elideMode, contentsRect().width());
+    painter.drawText(contentsRect(), static_cast<int>(alignment()), elided);
 }
 
 void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu menu(this);
+    event->accept();
 
-    // Reproduce standard status bar widget menu
-    if (auto* statusBar = qobject_cast<QStatusBar*>(parentWidget())) {
-        for (QObject* child : statusBar->children()) {
-            QWidget* widget = qobject_cast<QWidget*>(child);
-            if (!widget) {
-                continue;
-            }
-            auto title = widget->windowTitle();
-            if (title.isEmpty()) {
-                continue;
-            }
-
-            QAction* action = menu.addAction(title);
-            action->setCheckable(true);
-            action->setChecked(widget->isVisible());
-            QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
+    const QPoint globalPos = event->globalPos();
+    QPointer<StatusBarLabel> self(this);
+    QTimer::singleShot(0, this, [self, globalPos]() {
+        if (!self) {
+            return;
         }
-    }
-
-    if (textInteractionFlags() & Qt::TextSelectableByMouse) {
-        menu.addSeparator();  // ----------
-
-        // Copy + Select All
-        menu.addAction(tr("Copy"), [this]() {
-            QApplication::clipboard()->setText(this->selectedText());
-        });
-        menu.addAction(tr("Select All"), [this]() { this->setSelection(0, this->text().length()); });
-    }
-
-    menu.exec(event->globalPos());
+        QMenu menu(self);
+        if (auto* mw = getMainWindow()) {
+            mw->buildStatusBarContextMenu(menu);
+        }
+        if (self->textInteractionFlags() & Qt::TextSelectableByMouse) {
+            menu.addSeparator();
+            menu.addAction(tr("Copy"), [self]() {
+                if (self) {
+                    QApplication::clipboard()->setText(self->selectedText());
+                }
+            });
+            menu.addAction(tr("Select All"), [self]() {
+                if (self) {
+                    self->setSelection(0, self->text().length());
+                }
+            });
+        }
+        menu.exec(globalPos);
+    });
 }
 
 void StatusBarLabel::setVisible(bool visible)
 {
-    if (!parameterName.empty() && hGrp) {
-        hGrp->SetBool(parameterName.c_str(), visible);
-    }
     if (!visible) {
-        clear();  // Clear text
+        clear();  // Drop stale text while hidden
     }
     QLabel::setVisible(visible);
 }

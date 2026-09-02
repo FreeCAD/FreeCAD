@@ -35,10 +35,10 @@ def write_step_output(f, ccxwriter):
         or ccxwriter.member.geos_shellthickness
         or ccxwriter.member.geos_fluidsection
     ):
-        if ccxwriter.solver_obj.BeamShellResultOutput3D is False:
-            f.write("*NODE FILE, OUTPUT=2d\n")
-        else:
+        if ccxwriter.solver_obj.Output3d:
             f.write("*NODE FILE, OUTPUT=3d\n")
+        else:
+            f.write("*NODE FILE, OUTPUT=2d\n")
     else:
         f.write("*NODE FILE\n")
     # MPH write out nodal temperatures if thermomechanical

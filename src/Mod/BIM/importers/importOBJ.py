@@ -31,7 +31,6 @@
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-import codecs
 import ntpath
 import os
 from builtins import open as pyopen
@@ -172,7 +171,7 @@ def export(exportList, filename, colors=None):
     optionally colors can be a dict containing ["objectName:colorTuple"]
     pairs for use in non-GUI mode."""
 
-    outfile = codecs.open(filename, "wb", encoding="utf8")
+    outfile = pyopen(filename, "w", encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# https://www.freecad.org\n")

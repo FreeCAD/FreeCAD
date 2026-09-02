@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <fcntl.h>
-#include <sstream>
 #include <Quantity_Color.hxx>
 #include <BRep_Builder.hxx>
 #include <STEPControl_Reader.hxx>
@@ -70,18 +69,14 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     TopoDS_Shape aShape;
     Base::FileInfo fi(Name);
 
-    FC_WARN("Importing STEP via 'Part' is deprecated. Use 'ImportGui' instead.");
-
     if (!fi.exists()) {
-        std::stringstream str;
-        str << "File '" << Name << "' does not exist!";
-        throw Base::FileException(str.str().c_str());
+        throw Base::FileNotFoundException(Name);
     }
     std::string encodednamestr = encodeFilename(std::string(Name));
     const char* encodedname = encodednamestr.c_str();
 
     if (aReader.ReadFile((Standard_CString)encodedname) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot open STEP file");
+        throw Base::FileReadException(Name);
     }
 
     // Root transfers
@@ -94,7 +89,7 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();
     if (nbs == 0) {
-        throw Base::FileException("No shapes found in file ");
+        throw Base::FileException("No shapes found in file", Name);
     }
     else {
 

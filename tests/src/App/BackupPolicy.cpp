@@ -25,13 +25,13 @@
 #include <gmock/gmock.h>
 
 #include "InitApplication.h"
+#include <src/TempDirectory.h>
 
 #include <App/BackupPolicy.h>
 
 #include <filesystem>
 #include <array>
 #include <fstream>
-#include <random>
 #include <regex>
 #include <string>
 
@@ -54,17 +54,6 @@ protected:
         tests::initApplication();
     }
 
-    void SetUp() override
-    {
-        _tempDir = std::filesystem::temp_directory_path() / ("fc_backup_policy-" + randomString(16));
-        std::filesystem::create_directory(_tempDir);
-    }
-
-    void TearDown() override
-    {
-        std::filesystem::remove_all(_tempDir);
-    }
-
     void apply(const std::string& sourcename, const std::string& targetname)
     {
         _policy.apply(sourcename, targetname);
@@ -82,7 +71,7 @@ protected:
     // method at the end of the test.
     std::filesystem::path createTempFile(const std::string& filename)
     {
-        std::filesystem::path p = _tempDir / filename;
+        std::filesystem::path p = _tempDir.path() / filename;
         std::ofstream fileStream(p.string());
         fileStream << "Test data";
         fileStream.close();
@@ -91,24 +80,6 @@ protected:
 
 
 protected:
-    std::string randomString(size_t length)
-    {
-        static constexpr std::string_view chars = "0123456789"
-                                                  "abcdefghijklmnopqrstuvwxyz"
-                                                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dis(0, static_cast<int>(chars.size()) - 1);
-
-        std::string result;
-        result.reserve(length);
-
-        std::ranges::generate_n(std::back_inserter(result), length, [&]() { return chars[dis(gen)]; });
-
-        return result;
-    }
-
     std::string filenameFromDateFormatString(const std::string& fmt)
     {
 #if CAN_USE_CHRONO_AND_FORMAT
@@ -140,12 +111,12 @@ protected:
 
     std::filesystem::path getTempPath()
     {
-        return _tempDir;
+        return _tempDir.path();
     }
 
 private:
     App::BackupPolicy _policy;
-    std::filesystem::path _tempDir;
+    tests::TempDirectory _tempDir {"fc_backup_policy"};
 };
 
 TEST_F(BackupPolicyTest, StandardSourceDoesNotExist)

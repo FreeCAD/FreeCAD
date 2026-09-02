@@ -48,6 +48,21 @@ else:
 translate = FreeCAD.Qt.translate
 
 
+class TaskPanelToolControllerPage(PathOpGui.TaskPanelToolControllerPage):
+    """Tool Controller page that reports Probe's probe tool requirement."""
+
+    def getFields(self, obj):
+        try:
+            super(TaskPanelToolControllerPage, self).getFields(obj)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a probe tool",
+            )
+            self.show_error_message(title, message)
+
+
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Probing operation."""
 
@@ -63,20 +78,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.PointCountY = self.form.PointCountY.value()
         obj.OutputFileName = str(self.form.OutputFileName.text())
 
-        try:
-            self.updateToolController(obj, self.form.toolController)
-        except PathUtils.PathNoTCExistsException:
-            title = translate("CAM", "No valid toolcontroller")
-            message = translate(
-                "CAM",
-                "This operation requires a tool controller with a probe tool",
-            )
-
-            self.show_error_message(title, message)
-
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.setupToolController(obj, self.form.toolController)
         self.form.Xoffset.setText(
             FreeCAD.Units.Quantity(obj.Xoffset.Value, FreeCAD.Units.Length).UserString
         )
@@ -90,7 +93,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.PointCountX.valueChanged)
         signals.append(self.form.PointCountY.valueChanged)
         signals.append(self.form.OutputFileName.editingFinished)
@@ -98,6 +100,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.Yoffset.valueChanged)
         self.form.SetOutputFileName.clicked.connect(self.SetOutputFileName)
         return signals
+
+    def taskPanelToolControllerPage(self, obj, features):
+        """taskPanelToolControllerPage(obj, features) ... report Probe's probe
+        tool requirement if an incompatible tool controller is selected."""
+        return TaskPanelToolControllerPage(obj, features)
 
     def SetOutputFileName(self):
         filename = QtGui.QFileDialog.getSaveFileName(

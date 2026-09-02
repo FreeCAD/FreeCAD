@@ -27,6 +27,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodekits/SoSubKit.h>
@@ -36,7 +37,7 @@
 #include <Base/Quantity.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
 #include <Gui/MainWindow.h>
-#include <Gui/SoTextLabel.h>
+#include <Gui/SoLabelNodes.h>
 #include <Gui/Utilities.h>
 
 #include "SoLinearDraggerGeometry.h"

@@ -378,30 +378,47 @@ bool Fem::Tools::getCylinderParams(
     double& radius
 )
 {
-    TopoDS_Face face = TopoDS::Face(sh);
-    BRepAdaptor_Surface surface(face);
-    if (!(surface.GetType() == GeomAbs_Cylinder)) {
-        return false;
+    if (sh.ShapeType() == TopAbs_FACE) {
+        TopoDS_Face face = TopoDS::Face(sh);
+        BRepAdaptor_Surface surface(face);
+        if (!(surface.GetType() == GeomAbs_Cylinder)) {
+            return false;
+        }
+
+        gp_Cylinder cyl = surface.Cylinder();
+        gp_Pnt start = surface.Value(surface.FirstUParameter(), surface.FirstVParameter());
+        gp_Pnt end = surface.Value(surface.FirstUParameter(), surface.LastVParameter());
+
+        Handle(Geom_Curve) handle = new Geom_Line(cyl.Axis());
+        GeomAPI_ProjectPointOnCurve proj(start, handle);
+        gp_XYZ startProj = proj.NearestPoint().XYZ();
+        proj.Perform(end);
+        gp_XYZ endProj = proj.NearestPoint().XYZ();
+
+        gp_XYZ ax(endProj - startProj);
+        gp_XYZ center = (startProj + endProj) / 2.0;
+        gp_Dir dir(ax);
+
+        height = ax.Modulus();
+        radius = cyl.Radius();
+        base = Base::Vector3d(center.X(), center.Y(), center.Z());
+        axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
     }
+    else if (sh.ShapeType() == TopAbs_EDGE) {
+        TopoDS_Edge edge = TopoDS::Edge(sh);
+        BRepAdaptor_Curve curve(edge);
+        if (!(curve.GetType() == GeomAbs_Circle)) {
+            return false;
+        }
+        gp_Circ circ = curve.Circle();
+        gp_Ax1 ax = circ.Axis();
+        gp_Dir dir = ax.Direction();
+        gp_Pnt center = ax.Location();
 
-    gp_Cylinder cyl = surface.Cylinder();
-    gp_Pnt start = surface.Value(surface.FirstUParameter(), surface.FirstVParameter());
-    gp_Pnt end = surface.Value(surface.FirstUParameter(), surface.LastVParameter());
-
-    Handle(Geom_Curve) handle = new Geom_Line(cyl.Axis());
-    GeomAPI_ProjectPointOnCurve proj(start, handle);
-    gp_XYZ startProj = proj.NearestPoint().XYZ();
-    proj.Perform(end);
-    gp_XYZ endProj = proj.NearestPoint().XYZ();
-
-    gp_XYZ ax(endProj - startProj);
-    gp_XYZ center = (startProj + endProj) / 2.0;
-    gp_Dir dir(ax);
-
-    height = ax.Modulus();
-    radius = cyl.Radius();
-    base = Base::Vector3d(center.X(), center.Y(), center.Z());
-    axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
-
+        height = 0.0;
+        radius = circ.Radius();
+        base = Base::Vector3d(center.X(), center.Y(), center.Z());
+        axis = Base::Vector3d(dir.X(), dir.Y(), dir.Z());
+    }
     return true;
 }

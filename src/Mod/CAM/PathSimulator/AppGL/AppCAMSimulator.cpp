@@ -28,10 +28,12 @@
 
 #include "CAMSim.h"
 #include "CAMSimPy.h"
+#include "ViewCAMSimulator.h"
 
 
 namespace CAMSimulator
 {
+
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -54,7 +56,6 @@ PyObject* initModule()
 
 
 }  // namespace CAMSimulator
-
 
 /* Python entry */
 PyMOD_INIT_FUNC(CAMSimulator)
@@ -81,6 +82,7 @@ PyMOD_INIT_FUNC(CAMSimulator)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
     CAMSimulator::CAMSim::init();
+    CAMSimulator::ViewCAMSimulator::init();
 
     PyMOD_Return(mod);
 }

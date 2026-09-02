@@ -10,6 +10,7 @@ from typing import Any, overload
 @export(
     Constructor=True,
     Delete=True,
+    RichCompare=True,
 )
 @class_declarations("""public:
     static Base::Color toColor(PyObject* value);

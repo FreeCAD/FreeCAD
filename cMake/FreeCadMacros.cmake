@@ -3,34 +3,37 @@ include (CheckCXXSourceRuns)
 # ================================================================================
 # == Macros, mostly for special targets ==========================================
 
-MACRO (fc_copy_sources target_name outpath)
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	if(INSTALL_PREFER_SYMLINKS)
-		set(copy_command create_symlink)
-	else()
-		set(copy_command copy)
-	endif()
+function(fc_copy_sources target_name outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    if(INSTALL_PREFER_SYMLINKS)
+        set(copy_command create_symlink)
+    else()
+        set(copy_command copy)
+    endif()
 
-	foreach(it ${ARGN})
-		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		# Ensure parent directory exists when copying or creating symlinks
-		get_filename_component(outfile_dir "${outfile}" PATH)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			# Make sure destination directory exists before copy/symlink
-			COMMAND   "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
-			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_copy_sources)
+    foreach(it ${ARGN})
+        get_filename_component(infile ${it} ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        # Ensure parent directory exists when copying or creating symlinks
+        get_filename_component(outfile_dir "${outfile}" PATH)
+        if(IS_DIRECTORY ${infile} AND NOT INSTALL_PREFER_SYMLINKS)
+            set(copy_command copy_directory)
+        endif()
+        add_custom_command(
+            # Make sure destination directory exists before copy/symlink
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
+            COMMAND "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
     if (EXISTS ${inputfile})
@@ -54,8 +57,7 @@ MACRO (fc_copy_file_if_different inputfile outputfile)
     endif()
 ENDMACRO(fc_copy_file_if_different)
 
-MACRO (fc_target_copy_resource target_name inpath outpath)
-# Macro to copy a list of files into a nested directory structure
+# Function to copy a list of files into a nested directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -66,26 +68,26 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 #   part will be kept so that the destination file name will be
 #   ${outpath}/foo/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource)
+function(fc_target_copy_resource target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource)
 
-MACRO (fc_target_copy_resource_flat target_name inpath outpath)
-# Macro to copy a list of files into a flat directory structure
+# Function to copy a list of files into a flat directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -96,24 +98,25 @@ MACRO (fc_target_copy_resource_flat target_name inpath outpath)
 #   part will be removed so that the destination file name will be
 #   ${outpath}/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${it}" NAME)
-		get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT    "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource_flat)
+function(fc_target_copy_resource_flat target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${it}" NAME)
+        get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
@@ -187,6 +190,67 @@ endmacro(generate_from_py)
 macro(generate_from_py_ BASE_NAME)
     generate_from_py_impl(${BASE_NAME} "_")
 endmacro(generate_from_py_)
+
+# Generate <OutputName>ModulePy.h/.cpp from a source-owned .module.pyi file.
+# The generated implementation source is returned through OUT_VAR; the header
+# remains a custom-command output for the implementation to include. Both
+# outputs are excluded from Qt autogen processing. Source-owned
+# <OutputName>ModulePyImp.cpp files, when needed, must be listed on
+# the target explicitly; this function never copies or generates implementation
+# skeletons.
+function(generate_module_from_py BASE_NAME OUT_VAR)
+    string(REGEX REPLACE "^.*\\." "" OUTPUT_NAME "${BASE_NAME}")
+
+    set(INPUT_PATH
+        "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
+    )
+    set(OUTPUT_CPP
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.cpp"
+    )
+    set(OUTPUT_H
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.h"
+    )
+    set(GENERATOR
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py"
+    )
+    set(TEMPLATE
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
+    )
+
+    add_custom_command(
+        OUTPUT
+            "${OUTPUT_CPP}"
+            "${OUTPUT_H}"
+        COMMAND
+            "${Python3_EXECUTABLE}"
+            "${GENERATOR}"
+            --outputPath "${CMAKE_CURRENT_BINARY_DIR}"
+            "${INPUT_PATH}"
+        MAIN_DEPENDENCY
+            "${INPUT_PATH}"
+        DEPENDS
+            "${GENERATOR}"
+            "${TEMPLATE}"
+        COMMENT
+            "Generating ${OUTPUT_NAME}ModulePy.h/.cpp"
+        VERBATIM
+    )
+
+    # Module wrappers do not contain Qt meta-object code. Skipping Qt autogen
+    # prevents it from scanning the generated source before this command runs.
+    set_source_files_properties(
+        "${OUTPUT_CPP}"
+        "${OUTPUT_H}"
+        PROPERTIES
+            GENERATED TRUE
+            SKIP_AUTOGEN ON
+    )
+
+    set(${OUT_VAR}
+        "${OUTPUT_CPP}"
+        PARENT_SCOPE
+    )
+endfunction(generate_module_from_py)
 
 macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
@@ -322,9 +386,32 @@ macro(find_pip_package PACKAGE)
 	endif()
 endmacro()
 
-function(target_compile_warn_error ProjectName)
-    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-        target_compile_options(${ProjectName} PRIVATE -Werror)
+macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
+    find_pip_package(${PIP_NAME})
+    if(${PIP_NAME}_FOUND)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import ${IMPORT_NAME};print(${IMPORT_NAME}.__version__, end='')"
+            RESULT_VARIABLE FAILURE OUTPUT_VARIABLE ${VERSION_VAR})
+        if(FAILURE)
+            message(WARNING "Could not import ${IMPORT_NAME} Python package.")
+            set(${PIP_NAME}_FOUND OFF)
+        endif()
+    else()
+        message(WARNING "Could not find ${PIP_NAME} Python package runtime dependency. ${MISSING_MESSAGE}")
+    endif()
+endmacro()
+
+function(target_compile_warn_error TargetName)
+    if(FREECAD_WARN_ERROR AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|MSVC"))
+        target_compile_options(${TargetName} PRIVATE
+            $<$<CXX_COMPILER_ID:MSVC>:/WX>
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-Werror>
+        )
     endif()
 endfunction()
 
+function(disable_occt8_deprecation_warnings)
+    if (OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+        add_compile_definitions(-DOCCT_NO_DEPRECATED)
+    endif()
+endfunction()

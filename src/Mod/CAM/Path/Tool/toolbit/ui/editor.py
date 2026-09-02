@@ -30,6 +30,7 @@ import FreeCADGui
 import os
 from Path.Preferences import getAssetPath
 from ...shape.ui.shapewidget import ShapeWidget
+from ...shape.models.icon import highlight_color
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit
 from ..util import setToolBitSchema
@@ -75,6 +76,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         theicon = toolbit.get_icon() if toolbit else None
         abbr = theicon.abbreviations if theicon else {}
         self._property_editor = DocumentObjectEditorWidget(property_suffixes=abbr)
+        self._property_editor.highlight_color = highlight_color().decode()
         self._property_editor.setSizePolicy(
             QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
         )
@@ -250,6 +252,10 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
         # Get properties and suffixes
         props_to_show = self._toolbit._get_props(("Shape", "Attributes"))
+        # Derived parameters follow from the others, so there is nothing to type
+        # in and showing a field invites people to fight the geometry.
+        derived = self._toolbit._tool_bit_shape.derived_parameters()
+        props_to_show = [p for p in props_to_show if p not in derived]
         icon = self._toolbit._tool_bit_shape.get_icon()
         suffixes = icon.abbreviations if icon else {}
         self._property_editor.setObject(self._toolbit.obj)
@@ -262,10 +268,29 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
             self._shape_widget = None
 
         if self._show_shape and self._toolbit._tool_bit_shape:
-            self._shape_widget = ShapeWidget(shape=self._toolbit._tool_bit_shape, parent=self)
+            self._shape_widget = ShapeWidget(
+                shape=self._toolbit._tool_bit_shape, parent=self, interactive=True
+            )
             self._shape_widget.setMinimumSize(200, 150)
             # Insert into the middle slot of the HBox layout
             self._shape_display_layout.insertWidget(1, self._shape_widget)
+            self.link_shape_widget(self._shape_widget)
+
+    def link_shape_widget(self, shape_widget):
+        """
+        Cross-link a shape drawing with this widget's property form, so that
+        pointing at a dimension picks out its field and pointing at a field
+        picks out its dimension.
+
+        ToolBitEditor builds its own drawing rather than using the one this
+        widget can create, so it calls this with that drawing instead.
+        """
+        if shape_widget is None:
+            return
+        shape_widget.set_highlight("")  # a rebuilt form has nothing hovered yet
+        shape_widget.dimensionHovered.connect(self._property_editor.highlight_property)
+        shape_widget.dimensionClicked.connect(self._property_editor.focus_property)
+        self._property_editor.propertyHovered.connect(shape_widget.set_highlight)
 
     def save_toolbit(self):
         """
@@ -361,6 +386,7 @@ class ToolBitEditor(QtGui.QWidget):
         tab_content_layout = QtGui.QHBoxLayout()
 
         # Add tool properties editor to the left with stretch
+        self._shape_widget = None
         self._props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
         self._last_units_value = self._get_units_value(self._props)
         self._props.toolBitChanged.connect(self._on_toolbit_changed)
@@ -379,8 +405,9 @@ class ToolBitEditor(QtGui.QWidget):
         tab_content_layout.addWidget(scroll_area, 1)
 
         # Add shape widget to the right without stretch
-        widget = ShapeWidget(toolbit._tool_bit_shape)
-        tab_content_layout.addWidget(widget, 0)
+        self._shape_widget = ShapeWidget(toolbit._tool_bit_shape, interactive=True)
+        self._props.link_shape_widget(self._shape_widget)
+        tab_content_layout.addWidget(self._shape_widget, 0)
 
         # Add the horizontal layout to the tab layout
         tool_tab_layout.addLayout(tab_content_layout)
@@ -391,29 +418,13 @@ class ToolBitEditor(QtGui.QWidget):
         # Hide second tab (tool notes) for now.
         self.form.tabWidget.setTabVisible(1, False)
 
-        # Feeds & Speeds
-        self.feeds_tab_idx = None
-        """
-        TODO: disabled for now.
-        if tool.supports_feeds_and_speeds():
-            label = translate('CAM', 'Feeds && Speeds')
-            self.feeds = FeedsAndSpeedsWidget(db, serializer, tool, parent=self)
-            self.feeds_tab_idx = self.form.tabWidget.insertTab(1, self.feeds, label)
-        else:
-            self.feeds = None
-            self.feeds_tab_idx = None
+        # Feeds & Speeds presets tab.
+        from .presets_tab import PresetsTab
 
-        self.form.lineEditCoating.setText(toolbit.get_coating())
-        self.form.lineEditCoating.textChanged.connect(toolbit.set_coating)
-        self.form.lineEditHardness.setText(toolbit.get_hardness())
-        self.form.lineEditHardness.textChanged.connect(toolbit.set_hardness)
-        self.form.lineEditMaterials.setText(toolbit.get_materials())
-        self.form.lineEditMaterials.textChanged.connect(toolbit.set_materials)
-        self.form.lineEditSupplier.setText(toolbit.get_supplier())
-        self.form.lineEditSupplier.textChanged.connect(toolbit.set_supplier)
-        self.form.plainTextEditNotes.setPlainText(tool.get_notes())
-        self.form.plainTextEditNotes.textChanged.connect(self._on_notes_changed)
-        """
+        self.presets_tab = PresetsTab(toolbit.obj, parent=self)
+        self.feeds_tab_idx = self.form.tabWidget.addTab(
+            self.presets_tab, translate("CAM", "Feeds && Speeds")
+        )
 
         self._update()
 
@@ -464,6 +475,7 @@ class ToolBitEditor(QtGui.QWidget):
         self._props.toolBitChanged.connect(self._on_toolbit_changed)
         self._props.toolBitChanged.connect(self._update)
         self._props.toolNoChanged.connect(self._on_tool_no_changed)
+        self._props.link_shape_widget(self._shape_widget)
 
         # Set the new widget in the scroll area
         scroll_area.setWidget(self._props)
@@ -483,8 +495,13 @@ class ToolBitEditor(QtGui.QWidget):
         self.form.setWindowTitle(title)
 
     def _on_tab_switched(self, index):
-        if index == self.feeds_tab_idx:
-            self.feeds.update()
+        feeds_tab_idx = getattr(self, "feeds_tab_idx", None)
+        if (
+            feeds_tab_idx is not None
+            and index == feeds_tab_idx
+            and getattr(self, "presets_tab", None) is not None
+        ):
+            self.presets_tab.refresh()
 
     def _on_notes_changed(self):
         self.toolbit.set_notes(self.form.plainTextEditNotes.toPlainText())

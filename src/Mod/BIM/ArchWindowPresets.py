@@ -27,7 +27,6 @@ import FreeCAD
 from FreeCAD import Vector
 from draftutils.translate import translate
 
-
 WindowPresets = [
     "Fixed",
     "Open 1-pane",

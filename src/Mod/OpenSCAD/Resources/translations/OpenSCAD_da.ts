@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation type="unfinished">General OpenSCAD Settings</translation>
+      <translation>Generelle OpenSCAD Indstillinger</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Udskriv debug information i Konsollen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
@@ -82,12 +82,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>Maksimal fragment størrelse</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="292"/>
       <source>angle (fa)</source>
-      <translation type="unfinished">angle (fa)</translation>
+      <translation>vinkel (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="388"/>
@@ -98,7 +98,7 @@
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
       <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Mindste vinkel for et fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
@@ -108,7 +108,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD Import</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -118,23 +118,23 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>Send til OpenSCAD via</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD Eksport</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
       <location filename="../ui/openscadprefs-base.ui" line="356"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Mindste størrelse af et fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="334"/>
       <source>size (fs)</source>
-      <translation type="unfinished">size (fs)</translation>
+      <translation>størrelse (fs)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="362"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Det ser ud som om du bruger en sandkasse version af FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>Kan ikke eksplodere %s</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -216,13 +216,13 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>som Mesh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="353"/>
       <location filename="../../OpenSCADCommands.py" line="372"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>Tilføj OpenSCAD Element</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
@@ -232,22 +232,22 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Vælg 3 objekter først</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Ryd Kode</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Åbn…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Gem…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
@@ -257,24 +257,24 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="429"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>Åben fil</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="431"/>
       <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCAD Filer</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
       <source>Save file</source>
-      <translation type="unfinished">Save file</translation>
+      <translation>Gem fil</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="457"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Udfør</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="483"/>
@@ -295,13 +295,13 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="661"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Fejl: Enten skal alle former være 2D eller alle former skal være 3D</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
       <location filename="../../importCSG.py" line="1390"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>Ikke Understøttet Funktion</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Eksplodere Gruppe</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>Farve Former</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Farver former efter gyldighed og type</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation type="unfinished">Refine Shape Feature</translation>
+      <translation>Præciser Form Funktion</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Opretter en raffineret form</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Opretter en funktion for at øge tolerancen</translation>
     </message>
   </context>
   <context>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>Udvid Placeringer</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
@@ -380,7 +380,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="306"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Erstat Objekt</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="309"/>
@@ -419,7 +419,7 @@
     <message>
       <location filename="../../InitGui.py" line="154"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD Værktøjer</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="531"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>Tilføj OpenSCAD Element</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="535"/>

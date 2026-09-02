@@ -134,17 +134,13 @@ class PathGeometryGenerator:
         # get X, Y, Z spans; Compute center of rotation
         self.deltaX = self.shape.BoundBox.XLength
         self.deltaY = self.shape.BoundBox.YLength
-        self.deltaC = (
-            self.shape.BoundBox.DiagonalLength
-        )  # math.sqrt(self.deltaX**2 + self.deltaY**2)
-        lineLen = self.deltaC + (
-            2.0 * self.toolDiam
-        )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-        self.halfDiag = math.ceil(lineLen / 2.0)
-        cutPasses = (
-            math.ceil(lineLen / self.cutOut) + 1
-        )  # Number of lines(passes) required to cover boundbox diagonal
-        self.halfPasses = math.ceil(cutPasses / 2.0)
+        self.deltaC = self.shape.BoundBox.DiagonalLength
+        # Line length to span boundbox diag with 2x cutter diameter extra on each end
+        lineLen = self.deltaC + 2.0 * self.toolDiam
+        self.halfDiag = Path.Geom.ceil(lineLen / 2.0)
+        # Number of lines(passes) required to cover boundbox diagonal
+        cutPasses = Path.Geom.ceil(lineLen / self.cutOut) + 1
+        self.halfPasses = Path.Geom.ceil(cutPasses / 2.0)
 
     # Public methods
     def setDebugObjectsGroup(self, tmpGrpObject):
@@ -266,7 +262,7 @@ class PathGeometryGenerator:
         loopCnt = 0
         segCnt = 0
         twoPi = 2.0 * math.pi
-        maxDist = math.ceil(self.cutOut * self._getRadialPasses())  # self.halfDiag
+        maxDist = Path.Geom.ceil(self.cutOut * self._getRadialPasses())  # self.halfDiag
         move = self.centerOfPattern  # Use to translate the center of the spiral
         lastPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
 
@@ -378,12 +374,10 @@ class PathGeometryGenerator:
                 dist = CORNERS[c].sub(self.centerOfPattern).Length
                 if dist > dMax:
                     dMax = dist
-            diag = dMax + (
-                2.0 * self.toolDiam
-            )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-            radialPasses = (
-                math.ceil(diag / self.cutOut) + 1
-            )  # Number of lines(passes) required to cover boundbox diagonal
+            # Line length to span boundbox diag with 2x cutter diameter extra on each end
+            diag = dMax + 2.0 * self.toolDiam
+            # Number of lines(passes) required to cover boundbox diagonal
+            radialPasses = Path.Geom.ceil(diag / self.cutOut) + 1
 
         return radialPasses
 
@@ -550,15 +544,13 @@ class ProcessSelectedFaces:
         if self.checkBase:
             Path.Log.debug(" -obj.Base exists. Pre-processing for selected faces.")
 
-            (hasFace, hasVoid) = self._identifyFacesAndVoids(
-                FACES, VOIDS
-            )  # modifies FACES and VOIDS
+            hasFace, hasVoid = self._identifyFacesAndVoids(FACES, VOIDS)  # modifies FACES and VOIDS
             hasGeometry = True if hasFace or hasVoid else False
 
             # Cycle through each base model, processing faces for each
             for m in range(0, lenGRP):
                 base = GRP[m]
-                (mFS, mVS, mPS) = self._preProcessFacesAndVoids(base, FACES[m], VOIDS[m])
+                mFS, mVS, mPS = self._preProcessFacesAndVoids(base, FACES[m], VOIDS[m])
                 fShapes[m] = mFS
                 vShapes[m] = mVS
                 self.profileShapes[m] = mPS
@@ -591,7 +583,7 @@ class ProcessSelectedFaces:
                     )
                     FreeCAD.Console.PrintError(msg)
                 else:
-                    (fcShp, prflShp) = pPEB
+                    fcShp, prflShp = pPEB
                     if fcShp:
                         if fcShp is True:
                             Path.Log.debug(" -fcShp is True.")
@@ -665,7 +657,7 @@ class ProcessSelectedFaces:
         faceCnt = len(TUPS)
         add = faceCnt - self.obj.AvoidLastX_Faces
         for bst in range(0, faceCnt):
-            (m, base, sub) = TUPS[bst]
+            m, base, sub = TUPS[bst]
             shape = getattr(base.Shape, sub)
             if isinstance(shape, Part.Face):
                 faceIdx = int(sub[4:]) - 1
@@ -1391,7 +1383,7 @@ def pathGeomToLinesPointSet(self, obj, compGeoShp):
                 if iL == "BRK":
                     rev.append(iL)
                 else:
-                    (p1, p2) = iL
+                    p1, p2 = iL
                     rev.append((p2, p1))
             rev.reverse()
             LINES.insert(0, rev)
@@ -1504,7 +1496,7 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
             if iL == "BRK":
                 rev.append(iL)
             else:
-                (p1, p2) = iL
+                p1, p2 = iL
                 rev.append((p2, p1))
 
         if not obj.CutPatternReversed:
@@ -1515,7 +1507,7 @@ def pathGeomToZigzagPointSet(self, obj, compGeoShp):
                 if iL == "BRK":
                     rev2.append(iL)
                 else:
-                    (p1, p2) = iL
+                    p1, p2 = iL
                     rev2.append((p2, p1))
             rev2.reverse()
             rev = rev2
@@ -1613,9 +1605,9 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
             lenEOA = len(endOnAxis)
             if lenSOA > 0 and lenEOA > 0:
                 for soa in range(0, lenSOA):
-                    (iS, eiS, vS) = startOnAxis[soa]
+                    iS, eiS, vS = startOnAxis[soa]
                     for eoa in range(0, len(endOnAxis)):
-                        (iE, eiE, vE) = endOnAxis[eoa]
+                        iE, eiE, vE = endOnAxis[eoa]
                         dist = vE.X - vS.X
                         if abs(dist) < 0.00001:  # They connect on axis at same radius
                             SO[2] = (eiE, eiS)
@@ -1677,7 +1669,7 @@ def pathGeomToCircularPointSet(self, obj, compGeoShp):
             lst = None
 
             if CONN:  # Connected edges(arcs)
-                (iE, iS) = CONN
+                iE, iS = CONN
                 v1 = compGeoShp.Edges[iE].Vertexes[0]
                 v2 = compGeoShp.Edges[iS].Vertexes[1]
                 sp = (v1.X, v1.Y, 0.0)
@@ -1960,7 +1952,7 @@ class FindUnifiedRegions:
                 self.topFaces.append((topFace, fcIdx))
 
     def _fuseTopFaces(self):
-        (one, baseFcIdx) = self.topFaces.pop(0)
+        one, baseFcIdx = self.topFaces.pop(0)
         base = one
         for face, fcIdx in self.topFaces:
             base = base.fuse(face)
@@ -2372,7 +2364,7 @@ class FindUnifiedRegions:
                 face = Part.Face(wCS)
                 return [face]
             else:
-                (faceShp, fcIdx) = self.FACES[0]
+                faceShp, fcIdx = self.FACES[0]
                 msg = translate(
                     "PathSurfaceSupport",
                     "Failed to identify a horizontal cross-section for Face",

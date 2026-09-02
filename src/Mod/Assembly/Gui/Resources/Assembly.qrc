@@ -22,13 +22,16 @@
         <file>icons/Assembly_CreateJointPulleys.svg</file>
         <file>icons/Assembly_CreateJointRackPinion.svg</file>
         <file>icons/Assembly_CreateJointScrew.svg</file>
+        <file>icons/Assembly_CreateJointRigidGroup.svg</file>
         <file>icons/Assembly_ExportASMT.svg</file>
+        <file>icons/Assembly_SelectJointsOfComponent.svg</file>
         <file>icons/Assembly_SolveAssembly.svg</file>
         <file>icons/Assembly_JointGroup.svg</file>
         <file>icons/Assembly_ExplodedView.svg</file>
         <file>icons/Assembly_ExplodedViewGroup.svg</file>
         <file>icons/Assembly_CreateSimulation.svg</file>
         <file>icons/Assembly_SimulationGroup.svg</file>
+        <file>icons/Assembly_SnapshotGroup.svg</file>
         <file>panels/TaskAssemblyCreateBom.ui</file>
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>

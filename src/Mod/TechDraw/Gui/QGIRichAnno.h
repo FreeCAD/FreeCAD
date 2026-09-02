@@ -150,6 +150,8 @@ protected:
     double m_textScaleFactor;
     double m_lastGoodWidthScene;
 
+    int m_tid { 0 };
+
 private Q_SLOTS:
     void onContentsChanged();
 };

@@ -11,6 +11,10 @@ inputs:
   testLogFile:
     description: "Path for the command-line output of the tests"
     required: true
+  shellCmd:
+    description: "Shell command to use for action steps (e.g. 'pixi run bash -l {0}')"
+    default: "bash -l {0}"
+    required: false
 outputs:
   reportText:
     description: "Report text"
@@ -20,7 +24,7 @@ runs:
   using: "composite"
   steps:
     - name: Run Qt tests via CTest
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       env:
         BUILD_DIR: ${{ inputs.builddir }}
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
@@ -30,7 +34,7 @@ runs:
     - name: Parse test results
       if: always()
       id: report
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       env:
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
       run: |

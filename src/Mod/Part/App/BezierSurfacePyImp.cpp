@@ -64,7 +64,8 @@ PyObject* BezierSurfacePy::bounds(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Py::Tuple bound(4);
     Standard_Real u1, u2, v1, v2;
     surf->Bounds(u1, u2, v1, v2);
@@ -81,7 +82,8 @@ PyObject* BezierSurfacePy::isURational(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -92,7 +94,8 @@ PyObject* BezierSurfacePy::isVRational(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -103,7 +106,8 @@ PyObject* BezierSurfacePy::isUPeriodic(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -114,7 +118,8 @@ PyObject* BezierSurfacePy::isVPeriodic(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -125,7 +130,8 @@ PyObject* BezierSurfacePy::isUClosed(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -136,7 +142,8 @@ PyObject* BezierSurfacePy::isVClosed(PyObject* args) const
         return nullptr;
     }
 
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
     return PyBool_FromLong(val ? 1 : 0);
 }
@@ -148,9 +155,8 @@ PyObject* BezierSurfacePy::increase(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->Increase(udegree, vdegree);
         Py_Return;
     }
@@ -179,9 +185,8 @@ PyObject* BezierSurfacePy::insertPoleColAfter(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->InsertPoleColAfter(vindex, poles);
         }
@@ -221,9 +226,8 @@ PyObject* BezierSurfacePy::insertPoleRowAfter(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->InsertPoleRowAfter(uindex, poles);
         }
@@ -263,9 +267,8 @@ PyObject* BezierSurfacePy::insertPoleColBefore(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->InsertPoleColBefore(vindex, poles);
         }
@@ -305,9 +308,8 @@ PyObject* BezierSurfacePy::insertPoleRowBefore(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->InsertPoleRowBefore(uindex, poles);
         }
@@ -336,9 +338,8 @@ PyObject* BezierSurfacePy::removePoleCol(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->RemovePoleCol(vindex);
         Py_Return;
     }
@@ -355,9 +356,8 @@ PyObject* BezierSurfacePy::removePoleRow(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->RemovePoleRow(uindex);
         Py_Return;
     }
@@ -374,9 +374,8 @@ PyObject* BezierSurfacePy::segment(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->Segment(u1, u2, v1, v2);
         Py_Return;
     }
@@ -396,9 +395,8 @@ PyObject* BezierSurfacePy::setPole(PyObject* args)
     }
     try {
         Base::Vector3d pole = static_cast<Base::VectorPy*>(obj)->value();
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (weight <= gp::Resolution()) {
             surf->SetPole(uindex, vindex, gp_Pnt(pole.x, pole.y, pole.z));
         }
@@ -431,9 +429,8 @@ PyObject* BezierSurfacePy::setPoleCol(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->SetPoleCol(vindex, poles);
         }
@@ -473,9 +470,8 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject* args)
             poles(index++) = gp_Pnt(v.x, v.y, v.z);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         if (!obj2) {
             surf->SetPoleRow(uindex, poles);
         }
@@ -504,9 +500,8 @@ PyObject* BezierSurfacePy::getPole(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if(
             uindex < 1 || uindex > surf->NbUPoles() || vindex < 1 || vindex > surf->NbVPoles(),
             "Pole index out of range"
@@ -526,9 +521,8 @@ PyObject* BezierSurfacePy::getPoles(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         TColgp_Array2OfPnt p(1, surf->NbUPoles(), 1, surf->NbVPoles());
         surf->Poles(p);
         Py::List poles;
@@ -558,9 +552,8 @@ PyObject* BezierSurfacePy::setWeight(PyObject* args)
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->SetWeight(uindex, vindex, weight);
         Py_Return;
     }
@@ -585,9 +578,8 @@ PyObject* BezierSurfacePy::setWeightCol(PyObject* args)
             weights(index++) = (double)Py::Float(*it);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->SetWeightCol(vindex, weights);
         Py_Return;
     }
@@ -612,9 +604,8 @@ PyObject* BezierSurfacePy::setWeightRow(PyObject* args)
             weights(index++) = (double)Py::Float(*it);
         }
 
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         surf->SetWeightRow(uindex, weights);
         Py_Return;
     }
@@ -631,9 +622,8 @@ PyObject* BezierSurfacePy::getWeight(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         Standard_OutOfRange_Raise_if(
             uindex < 1 || uindex > surf->NbUPoles() || vindex < 1 || vindex > surf->NbVPoles(),
             "Weight index out of range"
@@ -653,9 +643,8 @@ PyObject* BezierSurfacePy::getWeights(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         TColStd_Array2OfReal w(1, surf->NbUPoles(), 1, surf->NbVPoles());
         surf->Weights(w);
         Py::List weights;
@@ -681,9 +670,8 @@ PyObject* BezierSurfacePy::getResolution(PyObject* args) const
         return nullptr;
     }
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         double utol, vtol;
         surf->Resolution(tol, utol, vtol);
         return Py_BuildValue("(dd)", utol, vtol);
@@ -701,9 +689,8 @@ PyObject* BezierSurfacePy::exchangeUV(PyObject* args)
     }
 
     try {
-        Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_BezierSurface)
+            surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
         // FIXME: Crashes
         surf->ExchangeUV();
         Py_Return;
@@ -716,31 +703,36 @@ PyObject* BezierSurfacePy::exchangeUV(PyObject* args)
 
 Py::Long BezierSurfacePy::getUDegree() const
 {
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Long(surf->UDegree());
 }
 
 Py::Long BezierSurfacePy::getVDegree() const
 {
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Long(surf->VDegree());
 }
 
 Py::Long BezierSurfacePy::getMaxDegree() const
 {
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Long(surf->MaxDegree());
 }
 
 Py::Long BezierSurfacePy::getNbUPoles() const
 {
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Long(surf->NbUPoles());
 }
 
 Py::Long BezierSurfacePy::getNbVPoles() const
 {
-    Handle(Geom_BezierSurface) surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
+    Handle(Geom_BezierSurface)
+        surf = Handle(Geom_BezierSurface)::DownCast(getGeometryPtr()->handle());
     return Py::Long(surf->NbVPoles());
 }
 

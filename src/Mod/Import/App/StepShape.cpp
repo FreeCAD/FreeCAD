@@ -34,6 +34,7 @@
 #include <STEPControl_Reader.hxx>
 #include <Standard_Version.hxx>
 #include <StepData_StepModel.hxx>
+#include <TColStd_HSequenceOfTransient.hxx>
 
 #include "StepShape.h"
 

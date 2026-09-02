@@ -26,6 +26,7 @@
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
+#include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <QMetaType>
 #include <QList>
@@ -41,4 +42,5 @@ Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 Q_DECLARE_METATYPE(App::SubObjectT)
 Q_DECLARE_METATYPE(QList<App::SubObjectT>)
+Q_DECLARE_METATYPE(App::DocumentObject*)
 // NOLINTEND

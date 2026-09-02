@@ -29,9 +29,7 @@
       <item row="2" column="0">
        <widget class="QGroupBox" name="NonIntrusiveNotificationsEnabled">
         <property name="toolTip">
-         <string>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
-
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</string>
+         <string>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</string>
         </property>
         <property name="title">
          <string>Enable Pop-Up Notifications</string>

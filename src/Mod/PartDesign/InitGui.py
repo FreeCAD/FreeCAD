@@ -42,17 +42,19 @@ class PartDesignWorkbench(Workbench):
 
     def Initialize(self):
         # load the module
-        try:
-            import traceback
-            from PartDesign.WizardShaft import WizardShaft
-        except RuntimeError:
-            print("{}".format(traceback.format_exc()))
-        except ImportError:
-            print("Wizard shaft module cannot be loaded")
+        import importlib.util
+        import traceback
+
+        wizard_shaft_spec = importlib.util.find_spec("PartDesign.WizardShaft")
+        if wizard_shaft_spec is not None:
             try:
-                from FeatureHole import HoleGui
-            except Exception:
-                pass
+                from PartDesign.WizardShaft import WizardShaft
+            except RuntimeError:
+                print("{}".format(traceback.format_exc()))
+            except ImportError as err:
+                FreeCAD.Console.PrintWarning(
+                    "PartDesign WizardShaft could not be imported: {err}\n".format(err=str(err))
+                )
 
         import PartDesignGui
         import PartDesign

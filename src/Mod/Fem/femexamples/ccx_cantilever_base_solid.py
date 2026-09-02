@@ -87,7 +87,7 @@ def setup_cantilever_base_solid(doc=None, solvertype="ccxtools", test_mode=False
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face1")]
     analysis.addObject(con_fixed)
 
@@ -95,6 +95,8 @@ def setup_cantilever_base_solid(doc=None, solvertype="ccxtools", test_mode=False
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
+    femmesh_obj.ElementOrder = "2nd"
+    femmesh_obj.CharacteristicLengthMax = "500 mm"
 
     # generate the mesh
     success = False

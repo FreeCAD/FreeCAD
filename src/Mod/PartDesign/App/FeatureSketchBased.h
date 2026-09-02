@@ -33,9 +33,13 @@ class gp_Lin;
 class TopoDS_Face;
 class TopoDS_Shape;
 class TopoDS_Wire;
+class TopLoc_Location;
 
 namespace PartDesign
 {
+
+/// Normalize an angle in radians to [0, 2 pi), snapping a near-full turn to zero.
+PartDesignExport double normalizeAngleRadians(double angle);
 
 class PartDesignExport ProfileBased: public PartDesign::FeatureAddSub
 {
@@ -157,7 +161,13 @@ public:
     // calculate the through all length
     double getThroughAllLength() const;
 
+    static const char* StartTypesEnums[];
+
 protected:
+    /// Set while onDocumentRestored() rewrites deprecated properties, so that the deprecation
+    /// notices in onChanged() stay quiet for the migration's own writes.
+    bool migratingDeprecatedProperties = false;
+
     TopoDS_Face getSupportFace(const Part::Part2DObject*) const;
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
@@ -167,8 +177,21 @@ protected:
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 
+    double getStartReferenceOffset(
+        const TopoShape& profileShape,
+        const App::PropertyLinkSub& reference,
+        const gp_Dir& direction,
+        double offset,
+        const TopLoc_Location& invObjLoc
+    ) const;
+    static TopoShape moveProfileToStart(
+        const TopoShape& profileShape,
+        const gp_Dir& direction,
+        double offset
+    );
+
     /// Create a shape with shapes and faces from a given LinkSubList
-    /// return 0 if almost one full shape is selected else the face count
+    /// return the face count or 2 if a unique full shape is selected
     static int getUpToShapeFromLinkSubList(
         TopoShape& upToShape,
         const App::PropertyLinkSubList& refShape
@@ -181,6 +204,15 @@ protected:
         const TopoShape& sketchshape,
         const std::string& method,
         gp_Dir& dir
+    );
+
+    /// Find a valid face to revolve up to
+    static void getUpToFace(
+        TopoShape& upToFace,
+        const TopoShape& support,
+        const TopoShape& sketchshape,
+        const std::string& method,
+        const gp_Ax1& axis
     );
 
     /// Add an offset to the face
@@ -206,6 +238,7 @@ protected:
     ) const;
 
     void onChanged(const App::Property* prop) override;
+    void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase) override;
 
 private:
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;

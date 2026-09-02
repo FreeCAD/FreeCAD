@@ -64,6 +64,71 @@ using namespace Sketcher;
 using namespace Base;
 using namespace Part;
 
+namespace
+{
+
+/**
+ * @brief Distance from a point to a line, signed by the side the point is on.
+ *
+ * @param[in] line The line, read in its current solver state. Its direction runs from @c p1
+ *                 to @c p2.
+ * @param[in] pointX The x coordinate of the point.
+ * @param[in] pointY The y coordinate of the point.
+ * @return A positive value when the point lies counter-clockwise from the line direction, a
+ *         negative value when it lies clockwise, and zero for a degenerate line.
+ */
+double signedDistanceToLine(const GCS::Line& line, double pointX, double pointY)
+{
+    const double startX = *line.p1.x;
+    const double startY = *line.p1.y;
+    const double deltaX = *line.p2.x - startX;
+    const double deltaY = *line.p2.y - startY;
+    const double length = std::hypot(deltaX, deltaY);
+
+    if (length < Precision::Confusion()) {
+        return 0.0;
+    }
+
+    return (deltaX * (pointY - startY) - deltaY * (pointX - startX)) / length;
+}
+
+/**
+ * @brief Whether a constraint records which side of a line its subject sits on.
+ *
+ * Constraints restored from documents written before signed constraints existed carry
+ * ConstraintOrientations::None, and so do constraints whose migration could not resolve the
+ * geometry they reference. Reading that as Clockwise would silently mirror the sketch, so
+ * callers must derive the side from the geometry itself instead.
+ *
+ * @param[in] orientation The orientation flags of the constraint.
+ * @return @c true if the flags name a side, @c false if the side is unknown.
+ */
+bool hasKnownSide(ConstraintOrientation orientation)
+{
+    return orientation.testFlag(ConstraintOrientations::CounterClockwise)
+        || orientation.testFlag(ConstraintOrientations::Clockwise);
+}
+
+/**
+ * @brief The side of a line a tangent circle has to stay on.
+ *
+ * @param[in] orientation The orientation flags of the tangency constraint.
+ * @param[in] line The line, read in its current solver state.
+ * @param[in] circle The circle or arc, read in its current solver state.
+ * @return @c true to keep the circle counter-clockwise from the line direction, taken from
+ *         @p orientation when it names a side and from the current geometry otherwise.
+ */
+bool tangentSide(ConstraintOrientation orientation, const GCS::Line& line, const GCS::Circle& circle)
+{
+    if (hasKnownSide(orientation)) {
+        return orientation.testFlag(ConstraintOrientations::CounterClockwise);
+    }
+
+    return signedDistanceToLine(line, *circle.center.x, *circle.center.y) > 0.0;
+}
+
+}  // namespace
+
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
@@ -555,6 +620,9 @@ void Sketch::calculateDependentParametersElements()
                     else {
                         solvext->setMidy(SolverGeometryExtension::Dependent);
                     }
+                    break;
+                case PointPos::NumPointPos:
+                    // ignore
                     break;
             }
         }
@@ -2130,8 +2198,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Third
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (
+                constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                && constraint->Third == GeoEnum::GeoUndef
+            ) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
             }
@@ -2165,12 +2235,11 @@ int Sketch::addConstraint(const Constraint* constraint)
             if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
                 && constraint->Third == GeoEnum::GeoUndef) {
                 // simple tangency
-                rtn = addTangentConstraint(constraint->First, constraint->Second);
+                rtn = addTangentConstraint(constraint->First, constraint->Second, constraint->Orientation);
 
                 isSpecialCase = true;
             }
-            else if (constraint->FirstPos == PointPos::start
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->FirstPos == PointPos::start && constraint->Third == GeoEnum::GeoUndef) {
                 // check for B-Spline Knot to curve tangency
                 auto knotgeoId = checkGeoId(constraint->First);
                 if (Geoms[knotgeoId].type == Point) {
@@ -2193,8 +2262,10 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                                 isSpecialCase = true;
                             }
-                            else if (constraint->SecondPos == PointPos::start
-                                     || constraint->SecondPos == PointPos::end) {
+                            else if (
+                                constraint->SecondPos == PointPos::start
+                                || constraint->SecondPos == PointPos::end
+                            ) {
                                 rtn = addTangentLineEndpointAtBSplineKnotConstraint(
                                     linegeoid,
                                     constraint->SecondPos,
@@ -2253,10 +2324,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Second != GeoEnum::GeoUndef
-                     && constraint->Third == GeoEnum::GeoUndef) {  // circle to circle, circle to
-                                                                   // arc, etc.
+            else if (
+                constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                && constraint->Second != GeoEnum::GeoUndef && constraint->Third == GeoEnum::GeoUndef
+            ) {  // circle to circle, circle to
+                 // arc, etc.
 
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2266,7 +2338,13 @@ int Sketch::addConstraint(const Constraint* constraint)
                     Parameters.push_back(c.value);
                     DrivenParameters.push_back(c.value);
                 }
-                rtn = addDistanceConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addDistanceConstraint(
+                    constraint->First,
+                    constraint->Second,
+                    c.value,
+                    constraint->Orientation,
+                    c.driving
+                );
             }
             else if (constraint->Second != GeoEnum::GeoUndef) {
                 if (constraint->FirstPos != PointPos::none) {  // point to line distance
@@ -2283,6 +2361,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                         constraint->FirstPos,
                         constraint->Second,
                         c.value,
+                        constraint->Orientation,
                         c.driving
                     );
                 }
@@ -3017,7 +3096,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, Po
 }
 
 // simple tangency constraint
-int Sketch::addTangentConstraint(int geoId1, int geoId2)
+int Sketch::addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation orientation)
 {
     // accepts the following combinations:
     // 1) Line1, Line2/Circle2/Arc2
@@ -3048,13 +3127,13 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         if (Geoms[geoId2].type == Arc) {
             GCS::Arc& a = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, a, tag);
+            GCSsys.addConstraintTangent(l, a, tangentSide(orientation, l, a), tag);
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Circle) {
             GCS::Circle& c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(l, c, tag);
+            GCSsys.addConstraintTangent(l, c, tangentSide(orientation, l, c), tag);
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
@@ -3541,13 +3620,20 @@ int Sketch::addDistanceConstraint(int geoId, double* value, bool driving)
 }
 
 // point to line or circular distance constraint
-int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving)
+int Sketch::addDistanceConstraint(
+    int geoId1,
+    PointPos pos1,
+    int geoId2,
+    double* value,
+    ConstraintOrientation orientation,
+    bool driving
+)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
     int pointId1 = getPointId(geoId1, pos1);
-    if (pointId1 < 0 && pointId1 >= int(Points.size())) {
+    if (pointId1 < 0 || pointId1 >= int(Points.size())) {
         return -1;
     }
     GCS::Point& p1 = Points[pointId1];
@@ -3555,8 +3641,12 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double*
     if (Geoms[geoId2].type == Line) {
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
+        const bool counterClockwise = hasKnownSide(orientation)
+            ? orientation.testFlag(ConstraintOrientations::CounterClockwise)
+            : signedDistanceToLine(l2, *p1.x, *p1.y) > 0.0;
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(p1, l2, value, tag, driving);
+        GCSsys.addConstraintP2LDistance(p1, l2, value, counterClockwise, tag, driving);
         return ConstraintsCounter;
     }
     else {
@@ -3605,7 +3695,13 @@ int Sketch::addDistanceConstraint(
 }
 
 // circular-(circular or line) distance constraint
-int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving)
+int Sketch::addDistanceConstraint(
+    int geoId1,
+    int geoId2,
+    double* value,
+    ConstraintOrientation orientation,
+    bool driving
+)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -3623,8 +3719,17 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
         }
 
         GCS::Line* l = &Lines[Geoms[geoId2].index];
+
+        bool counterClockwise = orientation.testFlag(ConstraintOrientations::CounterClockwise);
+        bool internal = orientation.testFlag(ConstraintOrientations::Internal);
+        if (!hasKnownSide(orientation)) {
+            const double signedDistance = signedDistanceToLine(*l, *c1->center.x, *c1->center.y);
+            counterClockwise = signedDistance > 0.0;
+            internal = std::abs(signedDistance) < *c1->rad;
+        }
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
+        GCSsys.addConstraintC2LDistance(*c1, *l, value, counterClockwise, internal, tag, driving);
         return ConstraintsCounter;
     }
     else {
@@ -3646,7 +3751,16 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
         }
 
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2CDistance(*c1, *c2, value, tag, driving);
+
+        std::optional<bool> c1Bigger = std::nullopt;
+        if (orientation.testFlag(ConstraintOrientations::Internal)) {
+            c1Bigger = false;
+        }
+        else if (orientation.testFlag(ConstraintOrientations::External)) {
+            c1Bigger = true;
+        }
+
+        GCSsys.addConstraintC2CDistance(*c1, *c2, value, c1Bigger, tag, driving);
         return ConstraintsCounter;
     }
 }
@@ -4605,6 +4719,11 @@ bool Sketch::updateGeometry()
             Base::Console().error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
             return false;
         }
+        catch (const Standard_Failure& e) {
+            Base::Console()
+                .error("Updating geometry: Error build geometry(%d): %s\n", i, e.GetMessageString());
+            return false;
+        }
     }
     return true;
 }
@@ -5417,8 +5536,10 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds, Base::Vec
                     i += 2;
                 }
             }
-            else if (Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
-                     || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola) {
+            else if (
+                Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
+                || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola
+            ) {
                 MoveParameters[i] = toPoint.x;
                 MoveParameters[i + 1] = toPoint.y;
                 i += 2;
@@ -5481,6 +5602,7 @@ int Sketch::getPointId(int geoId, PointPos pos) const
         case PointPos::mid:
             return Geoms[geoId].midPointId;
         case PointPos::none:
+        case PointPos::NumPointPos:
             break;
     }
     return -1;

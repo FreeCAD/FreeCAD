@@ -176,7 +176,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
         for (const auto& info : infos) {
             ret.setItem(i++,
                         Py::TupleN(Py::String(info.name),
-                                   Py::String(info.type.getName()),
+                                   Base::toPyString(info.type.getName()),
                                    Py::String(info.doc)));
         }
         return Py::new_reference_to(ret);
@@ -189,7 +189,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
             return nullptr;
         }
         Py::TupleN ret(Py::String(infos[index].name),
-                       Py::String(infos[index].type.getName()),
+                       Base::toPyString(infos[index].type.getName()),
                        Py::String(infos[index].doc));
         return Py::new_reference_to(ret);
     }
@@ -198,7 +198,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject* args)
     if (PyArg_ParseTuple(args, "s", &name)) {
         for (const auto& info : infos) {
             if (strcmp(info.name, name) == 0) {
-                Py::TupleN ret(Py::String(info.type.getName()), Py::String(info.doc));
+                Py::TupleN ret(Base::toPyString(info.type.getName()), Py::String(info.doc));
                 return Py::new_reference_to(ret);
             }
         }

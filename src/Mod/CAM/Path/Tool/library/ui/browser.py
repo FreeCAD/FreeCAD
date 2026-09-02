@@ -39,7 +39,6 @@ from ...toolbit.ui.typefilter import ToolBitTypeFilterMixin
 from ...toolbit.serializers import YamlToolBitSerializer
 from ..models.library import Library
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
@@ -87,6 +86,15 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
         """Enable or disable drag-and-drop support for the tool list."""
         self._tool_list_widget.setDragEnabled(enabled)
 
+    def setSingleSelection(self, single: bool = True):
+        """Restricts the tool list to one selected toolbit at a time."""
+        mode = (
+            QtGui.QAbstractItemView.SingleSelection
+            if single
+            else QtGui.QAbstractItemView.ExtendedSelection
+        )
+        self._tool_list_widget.setSelectionMode(mode)
+
     def load_last_library(self):
         """Loads the last selected library from preferences."""
         library_uri = Path.Preferences.getLastToolLibrary()
@@ -105,7 +113,10 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
 
     def set_sort_order(self, key: str):
         super().set_sort_order(key)
-        Path.Preferences.setLastToolLibrarySortKey(self._sort_key)
+        # The "All Tools" view forces sorting by label; that is not a choice
+        # the user made, so it must not overwrite their preferred order.
+        if self.current_library:
+            Path.Preferences.setLastToolLibrarySortKey(self._sort_key)
 
     def _get_state(self):
         """Gets the current library URI, selected toolbit URI, and scroll
@@ -180,6 +191,28 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
         tool_no = self.current_library.get_bit_no_from_bit(toolbit)
         return tool_no
 
+    def _update_sort_combo(self):
+        """
+        Toolbit numbers are assigned by a library, so the "All Tools" view has
+        none. Sorting by label is the only option left there, so hide the combo
+        box entirely and restore the user's preferred order when a library is
+        selected again.
+        """
+        has_tool_nos = self.current_library is not None
+        self._sort_combo.setVisible(has_tool_nos)
+
+        key = Path.Preferences.getLastToolLibrarySortKey() if has_tool_nos else "label"
+        index = self._sort_combo.findData(key)
+        if index < 0:  # no preference stored yet, or the key is unavailable
+            index = 0
+
+        self._sort_combo.blockSignals(True)
+        try:
+            self._sort_combo.setCurrentIndex(index)
+            self._sort_key = self._sort_combo.itemData(index)
+        finally:
+            self._sort_combo.blockSignals(False)
+
     def set_current_library(self, library):
         """Sets the current library and updates the tool list."""
         self.current_library = library
@@ -200,6 +233,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget, ToolBitTypeFilterMixin):
 
     def _reload_assets_from_library(self):
         """Reloads assets from the current library and refreshes the UI."""
+        self._update_sort_combo()
         if self.current_library:
             self._all_assets = [t for t in self.current_library]
         else:
@@ -609,10 +643,25 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
             if self._show_all_tools:
                 self._library_combo.setCurrentIndex(0)
 
+    def _index_of_current_library(self):
+        """
+        Returns the combo box index of the current library, or of the "All
+        Tools" entry when no library is selected. -1 if neither is available.
+        """
+        if not self.current_library:
+            return 0 if self._show_all_tools else -1
+
+        for i in range(self._library_combo.count()):
+            lib = self._library_combo.itemData(i)
+            if lib and lib.get_uri() == self.current_library.get_uri():
+                return i
+        return -1
+
     def refresh(self):
         """Reads available libraries and refreshes the combo box and toolbits."""
         Path.Log.debug("refresh(): Fetching and populating libraries and toolbits.")
         libraries = self._asset_manager.fetch("toolbitlibrary", store=self._store_name, depth=0)
+
         self._in_refresh = True
         try:
             self._library_combo.clear()
@@ -623,26 +672,13 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
 
             for library in sorted(libraries, key=lambda x: natural_sort_key(x.label)):
                 self._library_combo.addItem(library.label, userData=library)
+
+            super().refresh()
+
+            index = self._index_of_current_library()
+            self._library_combo.setCurrentIndex(max(index, 0))
         finally:
             self._in_refresh = False
 
-        super().refresh()
-
-        if not libraries:
-            return
-        if not self.current_library:
-            first_library = self._library_combo.itemData(0)
-            if first_library:
-                uri = first_library.get_uri()
-                library = self._asset_manager.get(uri, store=self._store_name, depth=1)
-                self.set_current_library(library)
-            self._library_combo.setCurrentIndex(0)
-            return
-
-        for i in range(self._library_combo.count()):
-            lib = self._library_combo.itemData(i)
-            if lib and self.current_library and lib.get_uri() == self.current_library.get_uri():
-                self._library_combo.setCurrentIndex(i)
-                break
-        else:
-            self._library_combo.setCurrentIndex(0)
+        if index < 0 and self._library_combo.count():
+            self._on_library_combo_changed(self._library_combo.currentIndex())

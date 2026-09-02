@@ -27,6 +27,9 @@
 # include <JtAttribute_GeometricTransform.hxx>
 # include <JtAttribute_Material.hxx>
 # include <JtData_Model.hxx>
+# include <JtElement_ShapeLOD_PolygonSet.hxx>
+# include <Standard_Failure.hxx>
+# include <JtElement_ShapeLOD_PolylineSet.hxx>
 # include <JtElement_ShapeLOD_TriStripSet.hxx>
 # include <JtNode_Instance.hxx>
 # include <JtNode_Partition.hxx>
@@ -35,7 +38,9 @@
 # include <JtNode_Shape_Vertex.hxx>
 # include <TCollection_AsciiString.hxx>
 # include <TCollection_ExtendedString.hxx>
+# include <list>
 # include <Base/Builder3D.h>
+# include <Base/Matrix.h>
 
 namespace JtReaderNS
 {
@@ -47,6 +52,8 @@ public:
     void open(const std::string& filename);
     void clear();
     std::string getOutput() const;
+    int shapeCount() const;
+    std::string fileName() const;
 
 private:
     void traverseGraph(const Handle(JtNode_Base) & aNode);
@@ -59,6 +66,8 @@ private:
     void readInstance(const Handle(JtNode_Instance) & anInstance);
     void readAttributes(const JtData_Object::VectorOfObjects& attr);
     void getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet) & aLOD);
+    void getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD);
+    void getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD);
 
 private:
     TCollection_ExtendedString jtDir;
@@ -66,6 +75,8 @@ private:
     std::stringstream result;
     Base::InventorBuilder builder;
     std::list<Base::Matrix4D> transformations;
+    std::string myFileName;
+    int myShapeCount {0};
 };
 
 };  // namespace JtReaderNS

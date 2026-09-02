@@ -5,18 +5,28 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+# Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
+permissions:
+  contents: read
+
 jobs:
   update-crowdin:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
 
       - name: Install Qt ≥ 6.8
-        uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
         with:
           aqtversion: "==3.1.*"
           version: "6.8.3"
@@ -25,7 +35,7 @@ jobs:
           arch: "linux_gcc_64"
 
       - name: Setup Python & dependencies
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.13"
       - name: Install Python packages
@@ -57,7 +67,7 @@ jobs:
           git push origin update-crowdin-translations --force
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           branch: update-crowdin-translations
           title: "Update translations from Crowdin"

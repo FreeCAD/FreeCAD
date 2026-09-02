@@ -23,15 +23,8 @@
  ***************************************************************************/
 
 #include <istream>
-
-#include <qglobal.h>
-#if QT_VERSION < 0x060000
-# include <QTextCodec>
-#else
-# include <QByteArray>
-# include <QStringDecoder>
-# include <QStringEncoder>
-#endif
+#include <cstddef>
+#include <cstdint>
 
 #include "InputSource.h"
 #include "XMLTools.h"
@@ -44,69 +37,147 @@ using namespace std;
 //  StdInputStream: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-#if QT_VERSION < 0x060000
+namespace
+{
+
+// Replaces embedded NUL bytes and invalid UTF-8 byte sequences with '?' to avoid Xerces treating
+// NUL as a string terminator and to keep input reasonably UTF-8-like.
+void sanitizeUtf8Bytes(XMLByte* const toFill, const std::size_t len)
+{
+    auto* data = reinterpret_cast<std::uint8_t*>(
+        toFill
+    );  // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+
+    auto markInvalidByte = [&](std::size_t pos) {
+        data[pos] = static_cast<std::uint8_t>('?');
+    };
+
+    auto isCont = [&](std::uint8_t b) {
+        return (b & 0xC0) == 0x80;
+    };
+
+    std::size_t i = 0;
+    while (i < len) {
+        const std::uint8_t b0 = data[i];
+
+        if (b0 == 0) {
+            markInvalidByte(i);
+            ++i;
+            continue;
+        }
+
+        if (b0 < 0x80) {
+            ++i;
+            continue;
+        }
+
+        // Reject stray continuation bytes
+        if (isCont(b0)) {
+            markInvalidByte(i);
+            ++i;
+            continue;
+        }
+
+        // 2-byte sequence: C2..DF 80..BF
+        if (b0 >= 0xC2 && b0 <= 0xDF) {
+            if (i + 1 >= len || !isCont(data[i + 1])) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+            i += 2;
+            continue;
+        }
+
+        // 3-byte sequences
+        if (b0 >= 0xE0 && b0 <= 0xEF) {
+            if (i + 2 >= len) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            const std::uint8_t b1 = data[i + 1];
+            const std::uint8_t b2 = data[i + 2];
+            if (!isCont(b1) || !isCont(b2)) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            // Overlong / surrogate checks
+            if (b0 == 0xE0 && b1 < 0xA0) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+            if (b0 == 0xED && b1 >= 0xA0) {
+                // UTF-16 surrogate range U+D800..U+DFFF
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            i += 3;
+            continue;
+        }
+
+        // 4-byte sequences
+        if (b0 >= 0xF0 && b0 <= 0xF4) {
+            if (i + 3 >= len) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            const std::uint8_t b1 = data[i + 1];
+            const std::uint8_t b2 = data[i + 2];
+            const std::uint8_t b3 = data[i + 3];
+            if (!isCont(b1) || !isCont(b2) || !isCont(b3)) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            // Overlong / > U+10FFFF checks
+            if (b0 == 0xF0 && b1 < 0x90) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+            if (b0 == 0xF4 && b1 > 0x8F) {
+                markInvalidByte(i);
+                ++i;
+                continue;
+            }
+
+            i += 4;
+            continue;
+        }
+
+        // Invalid lead byte (C0/C1/F5..FF)
+        markInvalidByte(i);
+        ++i;
+    }
+}
+
+}  // namespace
+
 struct StdInputStream::TextCodec
 {
-    QTextCodec::ConverterState state;
-    TextCodec()
-    {
-        state.flags |= QTextCodec::IgnoreHeader;
-        state.flags |= QTextCodec::ConvertInvalidToNull;
-    }
-
     void validateBytes(XMLByte* const toFill, std::streamsize len)
     {
-        QTextCodec* textCodec = QTextCodec::codecForName("UTF-8");
-        if (textCodec) {
-            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            const QString text
-                = textCodec->toUnicode(reinterpret_cast<char*>(toFill), static_cast<int>(len), &state);
-            if (state.invalidChars > 0) {
-                // In case invalid characters were found decode back to 'utf-8' and replace
-                // them with '?'
-                // First, Qt replaces invalid characters with '\0' (see ConvertInvalidToNull)
-                // but Xerces doesn't like this because it handles this as termination. Thus,
-                // we have to go through the array and replace '\0' with '?'.
-                std::streamsize pos = 0;
-                QByteArray ba = textCodec->fromUnicode(text);
-                for (int i = 0; i < ba.length(); i++, pos++) {
-                    if (pos < len && ba[i] == '\0') {
-                        toFill[i] = '?';
-                    }
-                }
-            }
+        if (len <= 0) {
+            return;
         }
+        sanitizeUtf8Bytes(toFill, static_cast<std::size_t>(len));
     }
 };
-#else
-struct StdInputStream::TextCodec
-{
-    void validateBytes(XMLByte* const toFill, std::streamsize len)
-    {
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-        QByteArray encodedString(reinterpret_cast<char*>(toFill), static_cast<int>(len));
-        auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
-        QString text = toUtf16(encodedString);
-        if (toUtf16.hasError()) {
-            // In case invalid characters were found decode back to 'utf-8' and replace
-            // them with '?'
-            // First, Qt replaces invalid characters with '\0'
-            // but Xerces doesn't like this because it handles this as termination. Thus,
-            // we have to go through the array and replace '\0' with '?'.
-            std::streamsize pos = 0;
-            auto fromUtf16 = QStringEncoder(QStringEncoder::Utf8);
-            QByteArray ba = fromUtf16(text);
-            for (int i = 0; i < ba.length(); i++, pos++) {
-                if (pos < len && ba[i] == '\0') {
-                    toFill[i] = '?';
-                }
-            }
-        }
-    }
-};
-#endif
 
-StdInputStream::StdInputStream(std::istream& Stream, XERCES_CPP_NAMESPACE::MemoryManager* const manager)
+StdInputStream::StdInputStream(
+    std::istream& Stream,
+    XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager
+)
     : stream(Stream)
     , codec(new TextCodec)
 {

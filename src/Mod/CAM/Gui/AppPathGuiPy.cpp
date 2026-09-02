@@ -32,6 +32,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <Gui/Command.h>
 #include <Gui/WaitCursor.h>
 
@@ -77,6 +78,9 @@ private:
         if (!fi.exists()) {
             throw Py::RuntimeError("File not found");
         }
+        // EncodedName is interpolated into Python commands below; escape it to prevent
+        // code injection.
+        EncodedName = Base::Tools::escapeEncodeFilename(EncodedName);
 
         Gui::WaitCursor wc;
         wc.restoreCursor();
@@ -150,6 +154,9 @@ private:
         if (!fi.exists()) {
             throw Py::RuntimeError("File not found");
         }
+        // EncodedName is interpolated into Python commands below; escape it to prevent
+        // code injection.
+        EncodedName = Base::Tools::escapeEncodeFilename(EncodedName);
 
         Gui::WaitCursor wc;
         wc.restoreCursor();
@@ -231,6 +238,9 @@ private:
 
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
+        // EncodedName is interpolated into Python commands below; escape it to prevent
+        // code injection.
+        EncodedName = Base::Tools::escapeEncodeFilename(EncodedName);
         Gui::WaitCursor wc;
         wc.restoreCursor();
 
@@ -260,7 +270,9 @@ private:
                 return Py::None();
             }
             std::string processor = Dlg.getProcessor();
-            std::string arguments = Dlg.getArguments();
+            // Post-processor arguments are free-form user text interpolated into a Python
+            // command; escape them to prevent code injection.
+            std::string arguments = Base::Tools::escapeEncodeString(Dlg.getArguments());
 
             std::ostringstream pre;
             std::ostringstream cmd;

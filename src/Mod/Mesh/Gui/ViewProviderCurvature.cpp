@@ -55,6 +55,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SoFCSelection.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderAnnotation.h>
 #include <Gui/Widgets.h>
 
 #include <Mod/Mesh/App/FeatureMeshCurvature.h>
@@ -454,67 +455,6 @@ void ViewProviderMeshCurvature::OnChange(Base::Subject<int>& /*rCaller*/, int /*
     setActiveMode();
 }
 
-namespace MeshGui
-{
-
-class Annotation
-{
-public:
-    Annotation(Gui::ViewProviderDocumentObject* vp, const QString& s, const SbVec3f& p, const SbVec3f& n)
-        : vp(vp)
-        , s(s)
-        , p(p)
-        , n(n)
-    {}
-
-    static void run(void* data, SoSensor* sensor)
-    {
-        auto self = static_cast<Annotation*>(data);
-        self->show();
-        delete self;
-        delete sensor;
-    }
-
-    void show()
-    {
-        App::Document* doc = vp->getObject()->getDocument();
-
-        auto groups = doc->getObjectsOfType<App::DocumentObjectGroup>();
-        App::DocumentObjectGroup* group = nullptr;
-        std::string internalname = "CurvatureGroup";
-        for (const auto& it : groups) {
-            if (internalname == it->getNameInDocument()) {
-                group = it;
-                break;
-            }
-        }
-        if (!group) {
-            group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
-        }
-
-        auto anno = group->addObject<App::AnnotationLabel>(internalname.c_str());
-        QStringList lines = s.split(QLatin1String("\n"));
-        std::vector<std::string> text;
-        for (const auto& line : lines) {
-            text.emplace_back((const char*)line.toLatin1());
-        }
-        anno->LabelText.setValues(text);
-        std::stringstream str;
-        str << "Curvature info (" << group->Group.getSize() << ")";
-        anno->Label.setValue(str.str());
-        anno->BasePosition.setValue(p[0], p[1], p[2]);
-        anno->TextPosition.setValue(n[0], n[1], n[2]);
-    }
-
-private:
-    Gui::ViewProviderDocumentObject* vp;
-    QString s;
-    SbVec3f p;
-    SbVec3f n;
-};
-
-}  // namespace MeshGui
-
 void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback* n)
 {
     auto view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
@@ -545,8 +485,9 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
                 view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback, ud);
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP
+        ) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
                 Base::Console().message("No facet picked.\n");
@@ -566,17 +507,13 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
                     int index1 = facedetail->getPoint(0)->getCoordinateIndex();
                     int index2 = facedetail->getPoint(1)->getCoordinateIndex();
                     int index3 = facedetail->getPoint(2)->getCoordinateIndex();
-                    std::string info = self->curvatureInfo(true, index1, index2, index3);
-                    QString text = QString::fromLatin1(info.c_str());
+                    std::string curv = self->curvatureInfo(true, index1, index2, index3);
                     if (addflag) {
-                        SbVec3f pt = point->getPoint();
-                        SbVec3f nl = point->getNormal();
-                        auto anno = new Annotation(self, text, pt, nl);
-                        auto sensor = new SoIdleSensor(Annotation::run, anno);
-                        sensor->schedule();
+                        Gui::AnnotationBuilder::Info info {curv, "Curvatures", "Curvature info"};
+                        Gui::AnnotationBuilder::schedule(self, point, info);
                     }
                     else {
-                        Gui::ToolTip::showText(QCursor::pos(), text);
+                        Gui::ToolTip::showText(QCursor::pos(), QString::fromStdString(curv));
                     }
                 }
             }

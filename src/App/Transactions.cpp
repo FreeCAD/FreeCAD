@@ -165,6 +165,14 @@ void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcPro
     });
 }
 
+void Transaction::arrangeMoveProperty(TransactionalObject* Obj, const Property* pcProp,
+                                      TransactionalObject* target, Property* newProp)
+{
+    changeProperty(Obj, [pcProp, target, newProp](TransactionObject* to) {
+        to->arrangeMoveProperty(pcProp, target, newProp);
+    });
+}
+
 void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
 {
     changeProperty(Obj, [pcProp, add](TransactionObject* to) {
@@ -310,6 +318,29 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
             auto& data = v.second;
             auto prop = const_cast<Property*>(data.propertyOrig);
 
+            if (data.propertyTarget && data.target) {
+                // This means we are undoing/redoing a move operation
+
+                if (!data.target->isAttachedToDocument()) {
+                    continue;
+                }
+
+                auto* obj = freecad_cast<DocumentObject*>(data.target);
+                if (obj == nullptr) {
+                    continue;
+                }
+                auto* newTarget = freecad_cast<DocumentObject*>(data.source);
+
+                if (data.propertyTarget->getFullName() == "?") {
+                    // This is an entry we should ignore because it was
+                    // created to register a change in another document.
+                    // The move is handled by the other document.
+                    continue;
+                }
+
+                obj->moveDynamicProperty(data.propertyTarget, newTarget);
+                continue;
+            }
             if (!data.nameOrig.empty()) {
                 // This means we are undoing/redoing a rename operation
                 Property* currentProp = pcObj->getDynamicPropertyByName(data.name.c_str());
@@ -415,6 +446,31 @@ void TransactionObject::renameProperty(const Property* pcProp, const char* oldNa
     data.nameOrig = oldName;
 }
 
+void TransactionObject::arrangeMoveProperty(const Property* pcProp,
+                                            TransactionalObject* target,
+                                            Property* newProp)
+{
+    if (!pcProp || !pcProp->getContainer() || !target) {
+        return;
+    }
+
+    auto& data = _PropChangeMap[pcProp->getID()];
+    if (data.name.empty()) {
+        static_cast<DynamicProperty::PropData&>(data) =
+            pcProp->getContainer()->getDynamicPropertyData(pcProp);
+    }
+
+    // the source information
+    data.property = pcProp->Copy();
+    data.propertyType = pcProp->getTypeId();
+    data.property->setStatusValue(pcProp->getStatus());
+    data.source = pcProp->getContainer();
+
+    // the target information
+    data.target = target;
+    data.propertyTarget = newProp;
+}
+
 void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
 {
     (void)add;
@@ -493,9 +549,18 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
         // Make sure the backlinks of all linked objects are updated. As the links of the removed
         // object are never set to [] they also do not remove the backlink. But as they are
         // not in the document anymore we need to remove them anyway to ensure a correct graph
-        auto list = obj->getOutList();
-        for (auto link : list) {
-            link->_removeBackLink(obj);
+        {
+            auto list = obj->getOutList();
+            for (auto link : list) {
+                link->_removeBackLink(obj);
+            }
+        }
+
+        {
+            auto list = obj->getOutListProp();
+            for (const auto& [fromObj, fromProp, toObj, toProp] : list) {
+                toObj->_removeBackLinkProp(fromProp.c_str(), fromObj, toProp.c_str());
+            }
         }
 
         // simply filling in the saved object
@@ -510,9 +575,18 @@ void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcO
         Doc._addObject(obj, _NameInDocument.c_str());
 
         // make sure the backlinks of all linked objects are updated
-        auto list = obj->getOutList();
-        for (auto link : list) {
-            link->_addBackLink(obj);
+        {
+            auto list = obj->getOutList();
+            for (auto link : list) {
+                link->_addBackLink(obj);
+            }
+        }
+
+        {
+            auto list = obj->getOutListProp();
+            for (const auto& [fromObj, fromProp, toObj, toProp] : list) {
+                toObj->_addBackLinkProp(fromProp.c_str(), fromObj, toProp.c_str());
+            }
         }
     }
 }

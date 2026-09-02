@@ -11,6 +11,9 @@
 #include <map>
 #include <set>
 
+namespace heeks
+{
+
 static const CAreaPocketParams* pocket_params = NULL;
 
 class IslandAndOffset
@@ -640,3 +643,5 @@ void CArea::MakeOnePocketCurve(std::list<CCurve>& curve_list, const CAreaPocketP
     CArea::m_processing_done += CArea::m_single_area_processing_length * 0.1;
 #endif
 }
+
+}  // namespace heeks

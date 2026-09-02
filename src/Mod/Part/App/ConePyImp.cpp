@@ -58,9 +58,8 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
 {
     static const std::array<const char*, 1> keywords_n {nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle(Geom_ConicalSurface) s = Handle(Geom_ConicalSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_ConicalSurface)
+            s = Handle(Geom_ConicalSurface)::DownCast(getGeometryPtr()->handle());
         s->SetRadius(1.0);
         return 0;
     }
@@ -90,9 +89,8 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_ConicalSurface)
+            cone = Handle(Geom_ConicalSurface)::DownCast(getGeometryPtr()->handle());
         cone->SetCone(mc.Value()->Cone());
         return 0;
     }
@@ -129,9 +127,8 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_ConicalSurface)
+            cone = Handle(Geom_ConicalSurface)::DownCast(getGeometryPtr()->handle());
         cone->SetCone(mc.Value()->Cone());
         return 0;
     }
@@ -141,18 +138,16 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(ConePy::Type), &pCone)) {
         ConePy* pcCone = static_cast<ConePy*>(pCone);
-        Handle(Geom_ConicalSurface) pcone = Handle(Geom_ConicalSurface)::DownCast(
-            pcCone->getGeometryPtr()->handle()
-        );
+        Handle(Geom_ConicalSurface)
+            pcone = Handle(Geom_ConicalSurface)::DownCast(pcCone->getGeometryPtr()->handle());
         GC_MakeConicalSurface mc(pcone->Cone());
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
-        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(
-            getGeometryPtr()->handle()
-        );
+        Handle(Geom_ConicalSurface)
+            cone = Handle(Geom_ConicalSurface)::DownCast(getGeometryPtr()->handle());
         cone->SetCone(mc.Value()->Cone());
         return 0;
     }
@@ -201,9 +196,8 @@ void ConePy::setSemiAngle(Py::Float arg)
 
 Py::Object ConePy::getCenter() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-        getGeomConePtr()->handle()
-    );
+    Handle(Geom_ElementarySurface)
+        s = Handle(Geom_ElementarySurface)::DownCast(getGeomConePtr()->handle());
     gp_Pnt loc = s->Location();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
@@ -213,16 +207,14 @@ void ConePy::setCenter(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-            getGeomConePtr()->handle()
-        );
+        Handle(Geom_ElementarySurface)
+            s = Handle(Geom_ElementarySurface)::DownCast(getGeomConePtr()->handle());
         s->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-            getGeomConePtr()->handle()
-        );
+        Handle(Geom_ElementarySurface)
+            s = Handle(Geom_ElementarySurface)::DownCast(getGeomConePtr()->handle());
         s->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
     }
     else {
@@ -234,9 +226,8 @@ void ConePy::setCenter(Py::Object arg)
 
 Py::Object ConePy::getAxis() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_ElementarySurface)
+        s = Handle(Geom_ElementarySurface)::DownCast(getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
@@ -264,9 +255,8 @@ void ConePy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast(
-            this->getGeometryPtr()->handle()
-        );
+        Handle(Geom_ElementarySurface)
+            this_surf = Handle(Geom_ElementarySurface)::DownCast(this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));

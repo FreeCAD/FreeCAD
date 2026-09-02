@@ -37,7 +37,7 @@ class ToolBitShapeThreadMill(ToolBitShape):
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Major diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting diameter"),
                 "App::PropertyLength",
             ),
             "Flutes": (

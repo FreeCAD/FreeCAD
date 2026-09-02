@@ -99,7 +99,7 @@ QColor PreferencesGui::sectionLineQColor()
 Base::Color PreferencesGui::breaklineColor()
 {
     Base::Color fcColor;
-    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0x000000FF));
     return fcColor;
 }
 
@@ -107,7 +107,7 @@ QColor PreferencesGui::breaklineQColor()
 {
 //if the Base::Color version has already lightened the color, we don't want to do it again
     Base::Color fcColor;
-    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreaklineColor", 0x000000FF));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0x000000FF));
     return fcColor.asValue<QColor>();
 }
 
@@ -170,6 +170,11 @@ double PreferencesGui::dimArrowSize()
 double PreferencesGui::edgeFuzz()
 {
     return Preferences::getPreferenceGroup("General")->GetFloat("EdgeFuzz", 10.0);
+}
+
+double PreferencesGui::markFuzz()
+{
+    return Preferences::getPreferenceGroup("General")->GetFloat("MarkFuzz", 5.0);
 }
 
 QString PreferencesGui::weldingDirectory()

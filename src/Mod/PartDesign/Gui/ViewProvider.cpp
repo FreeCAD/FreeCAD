@@ -92,11 +92,11 @@ bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
         Gui::cmdSetEdit(pcObject, Gui::Application::Instance->getUserEditMode());
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+        getDocument()->abortCommand();
     }
     return true;
 }
@@ -208,25 +208,6 @@ void ViewProvider::unsetEdit(int ModNum)
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
     }
-}
-
-void ViewProvider::updateData(const App::Property* prop)
-{
-    if (strcmp(prop->getName(), "PreviewShape") == 0) {
-        updatePreview();
-    }
-    else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
-            // Properties can be updated in batches, where some properties trigger other updates.
-            // We don't need to compute the preview for intermediate steps. Instead of updating
-            // the preview immediately (and potentially doing it multiple times in a row), we
-            // schedule the update to happen at a more convenient time.
-            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
-                scheduler->schedulePreviewRecompute(getObject());
-            }
-        }
-    }
-    inherited::updateData(prop);
 }
 
 void ViewProvider::attachPreview()
@@ -377,17 +358,6 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     return true;
 }
 
-Part::TopoShape ViewProvider::getPreviewShape() const
-{
-    if (auto feature = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        // Feature is responsible for generating proper shape and this ViewProvider
-        // is using it instead of more normal `Shape` property.
-        return feature->PreviewShape.getShape();
-    }
-
-    return {};
-}
-
 void ViewProvider::showPreviousFeature(bool enable)
 {
     PartDesign::Feature* feature {getObject<PartDesign::Feature>()};
@@ -483,6 +453,21 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
     }
 
     return nullptr;
+}
+
+void ViewProvider::toggleVisibility()
+{
+    if (!PartDesign::Body::isSolidFeature(getObject())) {
+        Gui::ViewProvider::toggleVisibility();
+        return;
+    }
+    if (auto* bodyVp = getBodyViewProvider()) {
+        // When toggling via the global Std_ToggleVisibility shortcut (i.e. from
+        // the 3D view), always toggle the whole body
+        bodyVp->toggleVisibility();
+        return;
+    }
+    Gui::ViewProvider::toggleVisibility();
 }
 
 namespace Gui

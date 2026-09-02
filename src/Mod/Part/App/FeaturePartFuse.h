@@ -65,6 +65,9 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
+
+    void Restore(Base::XMLReader& reader) override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {

@@ -1,33 +1,31 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 Shai Seger <shaise at gmail>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
+import Constants
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import Path.Main.Job as PathJob
-import PathGui
 import PathSimulator
 import math
 import os
@@ -114,7 +112,6 @@ class PathSimulation:
         # Make Job selection combobox
         setJobIdx = 0
         jobName = ""
-        jIdx = 0
         # Get list of Job objects in active document
         jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
         jCnt = len(jobList)
@@ -131,12 +128,11 @@ class PathSimulation:
         form.comboJobs.blockSignals(True)
         form.comboJobs.clear()
         form.comboJobs.blockSignals(False)
-        for j in jobList:
+        for index, j in enumerate(jobList):
             form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
             self.jobs.append(j)
             if j.Name == jobName or jCnt == 1:
-                setJobIdx = jIdx
-            jIdx += 1
+                setJobIdx = index
 
         # Preselect GUI-selected job in the combobox
         if jobName or jCnt == 1:
@@ -157,15 +153,10 @@ class PathSimulation:
 
         self.stock = self.job.Stock.Shape
         if self.isVoxel:
-            maxlen = self.stock.BoundBox.XLength
-            if maxlen < self.stock.BoundBox.YLength:
-                maxlen = self.stock.BoundBox.YLength
+            maxlen = max(self.stock.BoundBox.XLength, self.stock.BoundBox.YLength)
             self.resolution = 0.01 * self.accuracy * maxlen
             self.voxSim.BeginSimulation(self.stock, self.resolution)
-            (
-                self.cutMaterial.Mesh,
-                self.cutMaterialIn.Mesh,
-            ) = self.voxSim.GetResultMesh()
+            self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
         self.busy = False
@@ -253,19 +244,19 @@ class PathSimulation:
         cmd = self.opCommands[self.icmd]
         pathSolid = None
 
-        if cmd.Name in ("G0", "G00"):
+        if cmd.Name in Constants.GCODE_MOVE_RAPID:
             self.firstDrill = True
             self.curpos = self.RapidMove(cmd, self.curpos)
-        if cmd.Name in ("G1", "G01", "G2", "G02", "G3", "G03"):
+        if cmd.Name in Constants.GCODE_MOVE_MILL:
             self.firstDrill = True
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
-                (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
+                pathSolid, self.curpos = self.GetPathSolid(self.tool, cmd, self.curpos)
 
-        if cmd.Name == "G80":
+        if cmd.Name == Constants.GCODE_CYCLE_CANCEL:
             self.firstDrill = True
-        if cmd.Name in ("G73", "G81", "G82", "G83"):
+        if cmd.Name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
             if self.firstDrill:
                 extendcommand = Path.Command("G0", {"Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
@@ -314,9 +305,9 @@ class PathSimulation:
 
         cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
-        if cmd.Name in ("G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"):
+        if cmd.Name in Constants.GCODE_MOVE_RAPID + Constants.GCODE_MOVE_MILL:
             index = self.icmd
-            if cmd.Name in ("G2", "G02", "G3", "G03"):
+            if cmd.Name in Constants.GCODE_MOVE_ARC:
                 while cmd.z is None:
                     index -= 1
                     if index < 0:
@@ -325,18 +316,18 @@ class PathSimulation:
                     cmd.z = self.opCommands[index].z
 
             self.firstDrill = True
-            if cmd.Name in ("G2", "G02", "G3", "G03") and (cmd.k or 0) == 0:
+            if cmd.Name in Constants.GCODE_MOVE_ARC and (cmd.k or 0) == 0:
                 cx = self.curpos.Base.x + (cmd.i or 0)
                 cy = self.curpos.Base.y + (cmd.j or 0)
                 a0 = math.atan2(self.curpos.Base.y - cy, self.curpos.Base.x - cx)
                 a1 = math.atan2(cmd.y - cy, cmd.x - cx)
                 da = a1 - a0
-                if cmd.Name in ("G3", "G03"):
+                if cmd.Name in Constants.GCODE_MOVE_CCW:
                     da = da % (2 * math.pi)
                 else:
                     da = -((-da) % (2 * math.pi))
                 r = math.sqrt((cmd.i or 0) ** 2 + (cmd.j or 0) ** 2)
-                n = math.ceil(math.sqrt(r / self.resolution * da * da))
+                n = Path.Geom.ceil(math.sqrt(r / self.resolution * da * da))
                 da = da / n
                 dz = (cmd.z - self.curpos.Base.z) / n
                 cmd.Name = "G1"
@@ -350,13 +341,10 @@ class PathSimulation:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos
-                (
-                    self.cutMaterial.Mesh,
-                    self.cutMaterialIn.Mesh,
-                ) = self.voxSim.GetResultMesh()
-        if cmd.Name == "G80":
+                self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
+        if cmd.Name == Constants.GCODE_CYCLE_CANCEL:
             self.firstDrill = True
-        if cmd.Name in ("G73", "G81", "G82", "G83"):
+        if cmd.Name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
             extendcommands = []
             if self.firstDrill:
                 extendcommands.append(Path.Command("G0", {"Z": cmd.r}))
@@ -368,10 +356,7 @@ class PathSimulation:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, ecmd)
                 if not self.disableAnim:
                     self.cutTool.Placement = self.curpos
-                    (
-                        self.cutMaterial.Mesh,
-                        self.cutMaterialIn.Mesh,
-                    ) = self.voxSim.GetResultMesh()
+                    self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
@@ -462,13 +447,9 @@ class PathSimulation:
         res = None
         if type == "ChamferMill":
             ang = 90 - tool.CuttingEdgeAngle / 2.0
-            if ang > 80:
-                ang = 80
-            if ang < 0:
-                ang = 0
-            h1 = math.tan(ang * math.pi / 180) * rad
-            if h1 > (h - 0.1):
-                h1 = h - 0.1
+            ang = min(ang, 80)
+            ang = max(ang, 0)
+            h1 = min(math.tan(ang * math.pi / 180) * rad, h - 0.1)
             vBR = Vector(xp + yf, yp - xf, zp + h1)
             lR = Part.makeLine(vBR, vTR)
             lB = Part.makeLine(vBC, vBR)
@@ -570,10 +551,7 @@ class PathSimulation:
 
     def ViewShape(self):
         if self.isVoxel:
-            (
-                self.cutMaterial.Mesh,
-                self.cutMaterialIn.Mesh,
-            ) = self.voxSim.GetResultMesh()
+            self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
 

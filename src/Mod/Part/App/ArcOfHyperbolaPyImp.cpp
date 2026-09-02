@@ -40,9 +40,8 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfHyperbolaPy::representation() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfHyperbolaPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfHyperbolaPtr()->handle());
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = hyperbola->Axis();
@@ -86,7 +85,9 @@ int ArcOfHyperbolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* o;
     double u1, u2;
     PyObject* sense = Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
                 static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle()
@@ -140,9 +141,8 @@ void ArcOfHyperbolaPy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfHyperbolaPy::getHyperbola() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfHyperbolaPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfHyperbolaPtr()->handle());
     Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(trim->BasisCurve());
     return Py::Object(new HyperbolaPy(new GeomHyperbola(hyperbola)), true);
 }

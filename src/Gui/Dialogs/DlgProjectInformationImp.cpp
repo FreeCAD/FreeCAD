@@ -77,6 +77,7 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
             return str;
         }
 
+        dt = dt.toLocalTime();
         QLocale loc = QLocale::system();
         return loc.toString(dt);
     };

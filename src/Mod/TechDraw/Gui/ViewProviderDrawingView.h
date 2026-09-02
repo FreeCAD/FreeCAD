@@ -69,9 +69,11 @@ public:
     void dropObject(App::DocumentObject* docObj) override;
 
     void onChanged(const App::Property *prop) override;
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
 
     QGIView* getQView();
+    static QGIView* getOwnerQView(const QGIView* qgiv);
+
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
     ViewProviderPage* getViewProviderPage() const;

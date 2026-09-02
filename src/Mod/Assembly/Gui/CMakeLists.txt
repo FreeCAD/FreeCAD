@@ -10,13 +10,15 @@ set(AssemblyGui_LIBS
     FreeCADGui
 )
 
-PYSIDE_WRAP_RC(Assembly_QRC_SRCS Resources/Assembly.qrc)
-
 set (Assembly_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Assembly_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Assembly_TR_QRC} ${QM_SRCS})
-qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC})
+qt_add_resources(AssemblyResource_SRCS
+    Resources/Assembly.qrc
+    ${Assembly_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
@@ -51,14 +53,8 @@ SET(AssemblyGui_SRCS_Module
     ViewProviderAssemblyLink.h
     ViewProviderBom.cpp
     ViewProviderBom.h
-    ViewProviderBomGroup.cpp
-    ViewProviderBomGroup.h
-    ViewProviderJointGroup.cpp
-    ViewProviderJointGroup.h
-    ViewProviderViewGroup.cpp
-    ViewProviderViewGroup.h
-    ViewProviderSimulationGroup.cpp
-    ViewProviderSimulationGroup.h
+    ViewProviderGroups.cpp
+    ViewProviderGroups.h
     ${Assembly_QRC_SRCS}
 )
 
@@ -96,9 +92,7 @@ if(WIN32)
 endif(WIN32)
 
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(AssemblyGui)
-endif()
+target_compile_warn_error(AssemblyGui)
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)
@@ -107,7 +101,7 @@ fc_copy_sources(AssemblyGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/As
 fc_target_copy_resource(AssemblyGui
         ${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_BINARY_DIR}/Mod/Assembly
-        Assembly_rc.py)
+        ${Assembly_QRC_SRCS})
 
 INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${AssemblyGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Assembly/Resources/icons")

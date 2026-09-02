@@ -293,8 +293,34 @@ public:
     ) const
     {
         if (!this->namedPropsCache.contains(obj)) {
-            this->namedPropsCache[obj];
-            obj->getPropertyNamedList(this->namedPropsCache[obj]);
+            auto& list = this->namedPropsCache[obj];
+            obj->getPropertyNamedList(list);
+
+            // If this object is a link-like object (App::Link, LinkGroup, a linked
+            // VarSet, etc.), also pull in the linked object's properties so that
+            // expressions like <<Link>>.SomeLinkedProp complete correctly.
+            App::DocumentObject* linked = obj->getLinkedObject(true);
+            if (linked && linked != obj) {
+                std::vector<std::pair<const char*, App::Property*>> linkedProps;
+                linked->getPropertyNamedList(linkedProps);
+
+                std::set<std::string> existingNames;
+                for (auto& p : list) {
+                    existingNames.insert(p.first);
+                }
+                for (auto& p : linkedProps) {
+                    // don't clobber a same-named property that already exists
+                    // directly on obj
+                    if (existingNames.insert(p.first).second) {
+                        list.push_back(p);
+                    }
+                }
+            }
+
+            FC_TRACE(
+                "Cached properties for " << obj->getNameInDocument() << " ("
+                                         << this->namedPropsCache[obj].size() << " props)"
+            );
         }
         return this->namedPropsCache[obj];
     }
@@ -403,7 +429,7 @@ public:
                 QString res;
                 // we resolved the property
                 if (propName) {
-                    res = QString::fromLatin1(propName);
+                    res = QString::fromUtf8(propName);
                     // resolve the property
                     if (sep && !noProperty && !retrieveSubPaths(prop).empty()) {
                         res += QLatin1Char('.');
@@ -496,7 +522,7 @@ public:
                     *count = propSize;
                 }
                 if (v) {
-                    QString res = QString::fromLatin1(propName);
+                    QString res = QString::fromUtf8(propName);
 
                     // check to see if we have accessible paths from this prop name?
                     if (sep && !retrieveSubPaths(prop).empty()) {
@@ -527,10 +553,10 @@ public:
                 auto str = paths[idx].getSubPathStr();
                 if (str.size() && (str[0] == '.' || str[0] == '#')) {
                     // skip the "."
-                    *v = QString::fromLatin1(str.c_str() + 1);
+                    *v = QString::fromStdString(str.substr(1));
                 }
                 else {
-                    *v = QString::fromLatin1(str.c_str());
+                    *v = QString::fromStdString(str);
                 }
             }
         }

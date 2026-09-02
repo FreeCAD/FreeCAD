@@ -78,16 +78,13 @@ def declare_begin(module, header=True):
     signal = getattr(module, "Signal", False)
 
     if header:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 #include <Base/Parameter.h>
 {"#include <fastsignals/signal.h>" if signal else ""}
-"""
-        )
+""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 namespace {namespace} {{
 /**
@@ -124,65 +121,48 @@ namespace {namespace} {{
 class {namespace}Export {class_name} {{
 public:
     static ParameterGrp::handle getHandle();
-"""
-    )
+""")
     if signal:
-        cog.out(
-            f"""
+        cog.out(f"""
     static fastsignals::signal<void (const char*)> &signalParamChanged();
     static void signalAll();
-"""
-        )
+""")
 
     for param in params:
-        cog.out(
-            f"""
+        cog.out(f"""
     {trace_comment()}
     /// @name {param.name} accessors
-    /// @brief Accessors for parameter {param.name}"""
-        )
+    /// @brief Accessors for parameter {param.name}""")
         if param._doc:
-            cog.out(
-                f"""
-    ///"""
-            )
+            cog.out(f"""
+    ///""")
             for line in param._doc.split("\n"):
-                cog.out(
-                    f"""
-    /// {line}"""
-                )
-        cog.out(
-            f"""
+                cog.out(f"""
+    /// {line}""")
+        cog.out(f"""
     /// @{{
     static const {param.C_Type} & get{param.name}();
     static const {param.C_Type} & default{param.name}();
     static void remove{param.name}();
     static void set{param.name}(const {param.C_Type} &v);
-    static const char *doc{param.name}();"""
-        )
+    static const char *doc{param.name}();""")
         if param.on_change:
-            cog.out(
-                f"""
-    static void on{param.name}Changed();"""
-            )
-        cog.out(
-            f"""
+            cog.out(f"""
+    static void on{param.name}Changed();""")
+        cog.out(f"""
     /// @}}
-"""
-        )
+""")
 
 
 def declare_end(module):
     class_name = module.ClassName
     namespace = module.NameSpace
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 }}; // class {class_name}
 }} // namespace {namespace}
-"""
-    )
+""")
 
 
 def define(module, header=True):
@@ -194,82 +174,63 @@ def define(module, header=True):
     signal = getattr(module, "Signal", False)
 
     if header:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 #include <unordered_map>
 #include <App/Application.h>
 #include <App/DynamicProperty.h>
 #include "{class_name}.h"
 using namespace {namespace};
-"""
-        )
+""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 namespace {{
 class {class_name}P: public ParameterGrp::ObserverType {{
 public:
     ParameterGrp::handle handle;
     std::unordered_map<const char *,void(*)({class_name}P*),App::CStringHasher,App::CStringHasher> funcs;
-"""
-    )
+""")
 
     if signal:
-        cog.out(
-            f"""
+        cog.out(f"""
     {trace_comment()}
     fastsignals::signal<void (const char*)> signalParamChanged;
     void signalAll()
-    {{"""
-        )
+    {{""")
         for param in params:
-            cog.out(
-                f"""
-        signalParamChanged("{param.name}");"""
-            )
-        cog.out(
-            f"""
+            cog.out(f"""
+        signalParamChanged("{param.name}");""")
+        cog.out(f"""
 
     {trace_comment()}
-    }}"""
-        )
+    }}""")
 
     for param in params:
-        cog.out(
-            f"""
-    {param.C_Type} {param.name};"""
-        )
+        cog.out(f"""
+    {param.C_Type} {param.name};""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 
     {trace_comment()}
     {class_name}P() {{
         handle = App::GetApplication().GetParameterGroupByPath("{param_path}");
         handle->Attach(this);
-"""
-    )
+""")
 
     for param in params:
-        cog.out(
-            f"""
+        cog.out(f"""
         {param.name} = {param.getter('handle')};
-        funcs["{param.name}"] = &{class_name}P::update{param.name};"""
-        )
+        funcs["{param.name}"] = &{class_name}P::update{param.name};""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
     }}
 
     {trace_comment()}
     ~{class_name}P() {{
     }}
-"""
-    )
-    cog.out(
-        f"""
+""")
+    cog.out(f"""
     {trace_comment()}
     void OnChange(Base::Subject<const char*> &, const char* sReason) {{
         if(!sReason)
@@ -281,21 +242,17 @@ public:
         {"signalParamChanged(sReason);" if signal else ""}
     }}
 
-"""
-    )
+""")
 
     for param in params:
         if not param.on_change:
-            cog.out(
-                f"""
+            cog.out(f"""
     {trace_comment()}
     static void update{param.name}({class_name}P *self) {{
         self->{param.name} = {param.getter('self->handle')};
-    }}"""
-            )
+    }}""")
         else:
-            cog.out(
-                f"""
+            cog.out(f"""
     {trace_comment()}
     static void update{param.name}({class_name}P *self) {{
         auto v = {param.getter('self->handle')};
@@ -303,11 +260,9 @@ public:
             self->{param.name} = v;
             {class_name}::on{param.name}Changed();
         }}
-    }}"""
-            )
+    }}""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 }};
 
 {trace_comment()}
@@ -317,79 +272,62 @@ public:
 }}
 
 }} // Anonymous namespace
-"""
-    )
-    cog.out(
-        f"""
+""")
+    cog.out(f"""
 {trace_comment()}
 ParameterGrp::handle {class_name}::getHandle() {{
     return instance()->handle;
 }}
-"""
-    )
+""")
 
     if signal:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 fastsignals::signal<void (const char*)> &
 {class_name}::signalParamChanged() {{
     return instance()->signalParamChanged;
 }}
-"""
-        )
-        cog.out(
-            f"""
+""")
+        cog.out(f"""
 {trace_comment()}
 void signalAll() {{
     instance()->signalAll();
 }}
-"""
-        )
+""")
 
     for param in params:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 const char *{class_name}::doc{param.name}() {{
     return {param.doc(class_name)};
 }}
-"""
-        )
-        cog.out(
-            f"""
+""")
+        cog.out(f"""
 {trace_comment()}
 const {param.C_Type} & {class_name}::get{param.name}() {{
     return instance()->{param.name};
 }}
-"""
-        )
-        cog.out(
-            f"""
+""")
+        cog.out(f"""
 {trace_comment()}
 const {param.C_Type} & {class_name}::default{param.name}() {{
     const static {param.C_Type} def = {param.default};
     return def;
 }}
-"""
-        )
-        cog.out(
-            f"""
+""")
+        cog.out(f"""
 {trace_comment()}
 void {class_name}::set{param.name}(const {param.C_Type} &v) {{
     {param.setter()};
     instance()->{param.name} = v;
 }}
-"""
-        )
-        cog.out(
-            f"""
+""")
+        cog.out(f"""
 {trace_comment()}
 void {class_name}::remove{param.name}() {{
     instance()->handle->Remove{param.Type}("{param.name}");
 }}
-"""
-        )
+""")
 
 
 def widgets_declare(param_set):
@@ -397,12 +335,10 @@ def widgets_declare(param_set):
 
     for title, params in param_group:
         name = _regex.sub("", title)
-        cog.out(
-            f"""
+        cog.out(f"""
 
     {trace_comment()}
-    QGroupBox * group{name} = nullptr;"""
-        )
+    QGroupBox * group{name} = nullptr;""")
         for param in params:
             param.declare_widget()
 
@@ -410,14 +346,11 @@ def widgets_declare(param_set):
 def widgets_init(param_set):
     param_group = param_set.ParamGroup
 
-    cog.out(
-        f"""
-    auto layout = new QVBoxLayout(this);"""
-    )
+    cog.out(f"""
+    auto layout = new QVBoxLayout(this);""")
     for title, params in param_group:
         name = _regex.sub("", title)
-        cog.out(
-            f"""
+        cog.out(f"""
 
 
     {trace_comment()}
@@ -426,31 +359,24 @@ def widgets_init(param_set):
     auto layoutHoriz{name} = new QHBoxLayout(group{name});
     auto layout{name} = new QGridLayout();
     layoutHoriz{name}->addLayout(layout{name});
-    layoutHoriz{name}->addStretch();"""
-        )
+    layoutHoriz{name}->addStretch();""")
 
         for row, param in enumerate(params):
-            cog.out(
-                f"""
+            cog.out(f"""
 
-    {trace_comment()}"""
-            )
+    {trace_comment()}""")
             param.init_widget(row, name)
 
-    cog.out(
-        """
+    cog.out("""
     layout->addItem(new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Expanding));
-    retranslateUi();"""
-    )
+    retranslateUi();""")
 
 
 def widgets_restore(param_set):
     param_group = param_set.ParamGroup
 
-    cog.out(
-        f"""
-    {trace_comment()}"""
-    )
+    cog.out(f"""
+    {trace_comment()}""")
     for _, params in param_group:
         for param in params:
             param.widget_restore()
@@ -459,10 +385,8 @@ def widgets_restore(param_set):
 def widgets_save(param_set):
     param_group = param_set.ParamGroup
 
-    cog.out(
-        f"""
-    {trace_comment()}"""
-    )
+    cog.out(f"""
+    {trace_comment()}""")
     for _, params in param_group:
         for param in params:
             param.widget_save()
@@ -480,15 +404,12 @@ def preference_dialog_declare_begin(param_set, header=True):
     class_doc = param_set.ClassDoc
 
     if header:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 #include <Gui/PropertyPage.h>
-#include <Gui/PrefWidgets.h>"""
-        )
+#include <Gui/PrefWidgets.h>""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 class QLabel;
 class QGroupBox;
@@ -524,8 +445,7 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-private:"""
-    )
+private:""")
     widgets_declare(param_set)
 
 
@@ -534,14 +454,12 @@ def preference_dialog_declare_end(param_set):
     namespace = param_set.NameSpace
     dialog_namespace = getattr(param_set, "DialogNameSpace", "Dialog")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 }};
 }} // namespace {dialog_namespace}
 }} // namespace {namespace}
-"""
-    )
+""")
 
 
 def preference_dialog_declare(param_set, header=True):
@@ -565,8 +483,7 @@ def preference_dialog_define(param_set, header=True):
     headers = set()
 
     if header:
-        cog.out(
-            f"""
+        cog.out(f"""
 {trace_comment()}
 #   include <QApplication>
 #   include <QLabel>
@@ -574,86 +491,66 @@ def preference_dialog_define(param_set, header=True):
 #   include <QGridLayout>
 #   include <QVBoxLayout>
 #   include <QHBoxLayout>
-"""
-        )
+""")
         for _, params in param_group:
             for param in params:
                 for header in param.header_file:
                     if header not in headers:
                         headers.add(header)
-                        cog.out(
-                            f"""
-#include <{header}>"""
-                        )
+                        cog.out(f"""
+#include <{header}>""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 #include "{header_file}"
 using namespace {namespace};
 /* TRANSLATOR {namespace}::{class_name} */
-"""
-    )
+""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 {class_name}::{class_name}(QWidget* parent)
     : PreferencePage( parent )
 {{
-"""
-    )
+""")
     widgets_init(param_set)
-    cog.out(
-        f"""
+    cog.out(f"""
     {trace_comment()}
     {user_init}
 }}
-"""
-    )
-    cog.out(
-        f"""
+""")
+    cog.out(f"""
 {trace_comment()}
 {class_name}::~{class_name}()
 {{
 }}
-"""
-    )
-    cog.out(
-        f"""
+""")
+    cog.out(f"""
 {trace_comment()}
 void {class_name}::saveSettings()
-{{"""
-    )
+{{""")
     widgets_save(param_set)
-    cog.out(
-        f"""
+    cog.out(f"""
 }}
 
 {trace_comment()}
 void {class_name}::loadSettings()
-{{"""
-    )
+{{""")
     widgets_restore(param_set)
-    cog.out(
-        f"""
+    cog.out(f"""
 }}
 
 {trace_comment()}
 void {class_name}::retranslateUi()
 {{
-    setWindowTitle(QObject::tr("{param_set.Title}"));"""
-    )
+    setWindowTitle(QObject::tr("{param_set.Title}"));""")
     for title, params in param_group:
         name = _regex.sub("", title)
-        cog.out(
-            f"""
-    group{name}->setTitle(QObject::tr("{title}"));"""
-        )
+        cog.out(f"""
+    group{name}->setTitle(QObject::tr("{title}"));""")
         for row, param in enumerate(params):
             param.retranslate()
-    cog.out(
-        f"""
+    cog.out(f"""
 }}
 
 {trace_comment()}
@@ -664,15 +561,12 @@ void {class_name}::changeEvent(QEvent *e)
     }}
     QWidget::changeEvent(e);
 }}
-"""
-    )
+""")
 
-    cog.out(
-        f"""
+    cog.out(f"""
 {trace_comment()}
 #include "moc_{class_name}.cpp"
-"""
-    )
+""")
 
 
 _ParamPrefix = "User parameter:BaseApp/Preferences/"
@@ -690,10 +584,8 @@ class Param:
         self.proxy = proxy
 
     def _declare_label(self):
-        cog.out(
-            f"""
-    QLabel *label{self.name} = nullptr;"""
-        )
+        cog.out(f"""
+    QLabel *label{self.name} = nullptr;""")
 
     def declare_label(self):
         if self.proxy:
@@ -702,11 +594,9 @@ class Param:
             self._declare_label()
 
     def _init_label(self, row, group_name):
-        cog.out(
-            f"""
+        cog.out(f"""
     label{self.name} = new QLabel(this);
-    layout{group_name}->addWidget(label{self.name}, {row}, 0);"""
-        )
+    layout{group_name}->addWidget(label{self.name}, {row}, 0);""")
 
     def init_label(self, row, group_name):
         if self.proxy:
@@ -716,10 +606,8 @@ class Param:
 
     def _declare_widget(self):
         self.declare_label()
-        cog.out(
-            f"""
-    {self.widget_type} *{self.widget_name} = nullptr;"""
-        )
+        cog.out(f"""
+    {self.widget_type} *{self.widget_name} = nullptr;""")
 
     def declare_widget(self):
         if self.proxy:
@@ -729,11 +617,9 @@ class Param:
 
     def _init_widget(self, row, group_name):
         self.init_label(row, group_name)
-        cog.out(
-            f"""
+        cog.out(f"""
     {self.widget_name} = new {self.widget_type}(this);
-    layout{group_name}->addWidget({self.widget_name}, {row}, {self.widget_column});"""
-        )
+    layout{group_name}->addWidget({self.widget_name}, {row}, {self.widget_column});""")
         if self.widget_setter:
             cog.out(
                 f"""
@@ -742,20 +628,14 @@ class Param:
         self._init_pref_widget()
 
     def _init_pref_widget(self):
-        cog.out(
-            f"""
-    {self.widget_name}->setEntryName("{self.name}");"""
-        )
+        cog.out(f"""
+    {self.widget_name}->setEntryName("{self.name}");""")
         if self.path.startswith(_ParamPrefix):
-            cog.out(
-                f"""
-    {self.widget_name}->setParamGrpPath("{self.path[len(_ParamPrefix):]}");"""
-            )
+            cog.out(f"""
+    {self.widget_name}->setParamGrpPath("{self.path[len(_ParamPrefix):]}");""")
         else:
-            cog.out(
-                f"""
-    {self.widget_name}->setParamGrpPath("{self.path}");"""
-            )
+            cog.out(f"""
+    {self.widget_name}->setParamGrpPath("{self.path}");""")
 
     def init_widget(self, row, group_name):
         if self.proxy:
@@ -764,10 +644,8 @@ class Param:
             self._init_widget(row, group_name)
 
     def _widget_save(self):
-        cog.out(
-            f"""
-    {self.widget_name}->onSave();"""
-        )
+        cog.out(f"""
+    {self.widget_name}->onSave();""")
 
     def widget_save(self):
         if self.proxy:
@@ -776,10 +654,8 @@ class Param:
             self._widget_save()
 
     def _widget_restore(self):
-        cog.out(
-            f"""
-    {self.widget_name}->onRestore();"""
-        )
+        cog.out(f"""
+    {self.widget_name}->onRestore();""")
 
     def widget_restore(self):
         if self.proxy:
@@ -788,11 +664,9 @@ class Param:
             self._widget_restore()
 
     def _retranslate_label(self):
-        cog.out(
-            f"""
+        cog.out(f"""
     label{self.name}->setText(QObject::tr("{self.title}"));
-    label{self.name}->setToolTip({self.widget_name}->toolTip());"""
-        )
+    label{self.name}->setToolTip({self.widget_name}->toolTip());""")
 
     def retranslate_label(self):
         if self.proxy:
@@ -879,10 +753,8 @@ class ParamBool(Param):
         return 0
 
     def _retranslate_label(self):
-        cog.out(
-            f"""
-    {self.widget_name}->setText(QObject::tr("{self.title}"));"""
-        )
+        cog.out(f"""
+    {self.widget_name}->setText(QObject::tr("{self.title}"));""")
 
 
 class ParamFloat(Param):
@@ -1039,23 +911,17 @@ class ParamComboBox(ParamProxy):
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
         if self.translate:
-            cog.out(
-                f"""
+            cog.out(f"""
     for (int i=0; i<{len(self.items)}; ++i) {trace_comment()}
-        {param.widget_name}->addItem(QString());"""
-            )
+        {param.widget_name}->addItem(QString());""")
 
         for i, item in enumerate(self.items):
             if not self.translate:
-                cog.out(
-                    f"""
-    {param.widget_name}->addItem(QStringLiteral("{item.text}"));"""
-                )
+                cog.out(f"""
+    {param.widget_name}->addItem(QStringLiteral("{item.text}"));""")
             if item._data is not None:
-                cog.out(
-                    f"""
-    {param.widget_name}->setItemData({param.widget_name}->count()-1, {item.data});"""
-                )
+                cog.out(f"""
+    {param.widget_name}->setItemData({param.widget_name}->count()-1, {item.data});""")
 
         cog.out(
             f"""
@@ -1064,21 +930,15 @@ class ParamComboBox(ParamProxy):
 
     def retranslate(self, param):
         super().retranslate(param)
-        cog.out(
-            f"""
-    {trace_comment()}"""
-        )
+        cog.out(f"""
+    {trace_comment()}""")
         for i, item in enumerate(self.items):
             if self.translate:
-                cog.out(
-                    f"""
-    {param.widget_name}->setItemText({i}, QObject::tr("{item.text}"));"""
-                )
+                cog.out(f"""
+    {param.widget_name}->setItemText({i}, QObject::tr("{item.text}"));""")
             if item.tooltips:
-                cog.out(
-                    f"""
-    {param.widget_name}->setItemData({i}, QObject::tr("{item.tooltips}"), Qt::ToolTipRole);"""
-                )
+                cog.out(f"""
+    {param.widget_name}->setItemData({i}, QObject::tr("{item.tooltips}"), Qt::ToolTipRole);""")
 
 
 class ParamLinePattern(ParamProxy):
@@ -1089,14 +949,12 @@ class ParamLinePattern(ParamProxy):
 
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
-        cog.out(
-            f"""
+        cog.out(f"""
     {trace_comment()}
     for (int i=1; i<{param.widget_name}->count(); ++i) {{
         if ({param.widget_name}->itemData(i).toInt() == {param.default})
             {param.widget_name}->setCurrentIndex(i);
-    }}"""
-        )
+    }}""")
 
 
 class ParamColor(ParamProxy):
@@ -1110,10 +968,8 @@ class ParamColor(ParamProxy):
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
         if self.transparency:
-            cog.out(
-                f"""
-    {param.widget_name}->setAllowTransparency(true);"""
-            )
+            cog.out(f"""
+    {param.widget_name}->setAllowTransparency(true);""")
 
 
 class ParamFile(ParamProxy):
@@ -1132,24 +988,18 @@ class ParamSpinBox(ParamProxy):
 
     def init_widget(self, param, row, group_name):
         super().init_widget(param, row, group_name)
-        cog.out(
-            f"""
+        cog.out(f"""
     {trace_comment()}
     {param.widget_name}->setMinimum({self.value_min});
     {param.widget_name}->setMaximum({self.value_max});
     {param.widget_name}->setSingleStep({self.value_step});
-    {param.widget_name}->setAlignment(Qt::AlignRight);"""
-        )
+    {param.widget_name}->setAlignment(Qt::AlignRight);""")
         if self.decimals:
-            cog.out(
-                f"""
-    {param.widget_name}->setDecimals({self.decimals});"""
-            )
+            cog.out(f"""
+    {param.widget_name}->setDecimals({self.decimals});""")
         if self.suffix:
-            cog.out(
-                f"""
-    {param.widget_name}->setSuffix(QLatin1String("{self.suffix}"));"""
-            )
+            cog.out(f"""
+    {param.widget_name}->setSuffix(QLatin1String("{self.suffix}"));""")
 
 
 class ParamShortcutEdit(ParamProxy):
@@ -1168,37 +1018,28 @@ class Property:
 
     def declare(self):
         if self.static:
-            cog.out(
-                f"""
+            cog.out(f"""
     static {self.type_name} *get{self.name}Property(App::DocumentObject *obj, bool force=false);
     inline {self.type_name} *get{self.name}Property(bool force=false) {{
         return get{self.name}Property(this, force);
-    }}"""
-            )
+    }}""")
         else:
-            cog.out(
-                f"""
-    {self.type_name} *get{self.name}Property(bool force=false);"""
-            )
+            cog.out(f"""
+    {self.type_name} *get{self.name}Property(bool force=false);""")
 
     def define(self, class_name):
         if self.static:
-            cog.out(
-                f"""
+            cog.out(f"""
 {trace_comment()}
 {self.type_name} *{class_name}::get{self.name}Property(App::DocumentObject *obj, bool force)
-{{"""
-            )
+{{""")
         else:
-            cog.out(
-                f"""
+            cog.out(f"""
 {trace_comment()}
 {self.type_name} *{class_name}::get{self.name}Property(bool force)
 {{
-    auto obj = this;"""
-            )
-        cog.out(
-            f"""
+    auto obj = this;""")
+        cog.out(f"""
     if (auto prop = Base::freecad_dynamic_cast<{self.type_name}>(
             obj->getPropertyByName("{self.name}")))
     {{
@@ -1212,15 +1053,12 @@ class Property:
     {quote(self.doc)},
     {self.prop_flags}));
 }}
-"""
-        )
+""")
 
 
 def declare_properties(properties):
-    cog.out(
-        f"""
-    {trace_comment()}"""
-    )
+    cog.out(f"""
+    {trace_comment()}""")
     for prop in properties:
         prop.declare()
 

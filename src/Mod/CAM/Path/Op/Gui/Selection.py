@@ -30,7 +30,6 @@ import Path
 import Path.Base.Drillable as Drillable
 import math
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -172,28 +171,30 @@ class FACEGate(PathBaseGate):
         return isFace
 
 
-class PROFILEGate(PathBaseGate):
+class FLUTEGate(PathBaseGate):
     def allow(self, doc, obj, sub):
         if sub and sub[0:4] == "Edge":
             return True
+        if sub and sub[0:4] == "Face":
+            return True
+        return False
 
+
+class PROFILEGate(PathBaseGate):
+    def allow(self, doc, obj, sub):
         try:
             obj = obj.Shape
         except Exception:
             return False
 
-        if obj.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
-                return True
-
-        elif obj.ShapeType == "Face":
+        if not sub:
             return True
-
-        elif obj.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
-                return True
-
-        elif obj.ShapeType == "Wire":
+        if sub.startswith("Edge"):
+            return True
+        if sub.startswith("Face"):
+            return True
+        if sub.startswith("Vertex"):
+            # required for setStartPoint
             return True
 
         return False
@@ -201,28 +202,22 @@ class PROFILEGate(PathBaseGate):
 
 class POCKETGate(PathBaseGate):
     def allow(self, doc, obj, sub):
-
-        pocketable = False
         try:
             obj = obj.Shape
         except Exception:
             return False
 
-        if obj.ShapeType == "Edge":
-            pocketable = False
+        if not sub:
+            return False
+        if sub.startswith("Edge"):
+            return True
+        if sub.startswith("Face"):
+            return True
+        if sub.startswith("Vertex"):
+            # required for setStartPoint
+            return True
 
-        elif obj.ShapeType == "Face":
-            pocketable = True
-
-        elif obj.ShapeType == "Solid":
-            if sub and sub[0:4] == "Face":
-                pocketable = True
-
-        elif obj.ShapeType == "Compound":
-            if sub and sub[0:4] == "Face":
-                pocketable = True
-
-        return pocketable
+        return False
 
 
 class ADAPTIVEGate(PathBaseGate):
@@ -329,6 +324,12 @@ def adaptiveselect():
         FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
 
 
+def fluteselect():
+    FreeCADGui.Selection.addSelectionGate(FLUTEGate())
+    if not Path.Preferences.suppressSelectionModeWarning():
+        FreeCAD.Console.PrintWarning("Flute Select Mode\n")
+
+
 def slotselect():
     FreeCADGui.Selection.addSelectionGate(ALLGate())
     if not Path.Preferences.suppressSelectionModeWarning():
@@ -384,7 +385,9 @@ def select(op):
     opsel["Profile Edges"] = eselect  # deprecated
     opsel["Profile Faces"] = fselect  # deprecated
     opsel["Profile"] = profileselect
+    opsel["Flute"] = fluteselect
     opsel["Slot"] = slotselect
+    opsel["RotarySurface"] = surfaceselect
     opsel["Surface"] = surfaceselect
     opsel["Waterline"] = surfaceselect
     opsel["Adaptive"] = adaptiveselect

@@ -1,39 +1,36 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileCopyrightText: 2020 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
-import Path.Base.Generator.drill as drill
-import Path.Base.Generator.tapping as tapping
-import Path.Base.Generator.linking as linking
+from Path.Base.Generator import drill
+from Path.Base.Generator import tapping
+from Path.Base.Generator import linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
-import PathScripts.PathUtils as PathUtils
+from Path.Op.Util import drillTipLength
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Drilling Operation"
@@ -81,7 +78,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -96,7 +93,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         # Add Strategy property if missing (old drilling operations)
         if not hasattr(obj, "Strategy"):
             obj.addProperty(
@@ -281,9 +278,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the drilling targets
         edgelist = []
@@ -292,11 +289,30 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection.
-        # Include base objects from job
-        solids = []
-        for base in self.job.Model.Group:
-            solids.append(base.Shape)
+        # Prepare linking parameters
+        # Use self.model which is transformed when 3+2 workplane is active
+        solids = [base.Shape for base in self.model]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "heights_clearance": (safe_height, obj.ClearanceHeight.Value),
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -337,27 +353,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # For G99 mode, tool is at StartDepth (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
-                target_at_retract_plane = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
+                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target_at_safe_height
+                linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                # Check collision at the retract plane (current Z height)
-                collision_detected = linking.check_collision(
-                    start_position=current_pos,
-                    target_position=target_at_retract_plane,
-                    solids=solids,
-                )
-
-                if collision_detected:
+                # linking_moves should be skipped, if first move not vertical
+                if not Path.Geom.isRoughly(linking_moves[0].z, startPoint.z):
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
-                    target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                    linking_moves = linking.get_linking_moves(
-                        start_position=current_pos,
-                        target_position=target_at_safe_height,
-                        local_clearance=safe_height,
-                        global_clearance=obj.ClearanceHeight.Value,
-                        tool_shape=self.tool.Shape,
-                        solids=solids,
-                    )
                     self.commandlist.extend(linking_moves)
                     machinestate.addCommands(linking_moves)
                 # else: no collision - G99 cycle continues, tool stays at retract plane
@@ -388,10 +392,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in drillcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "drilling"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "drilling"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -437,9 +438,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Calculate offsets to add to target edge
         endoffset = 0.0
         if obj.ExtraOffset == "Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool)
+            endoffset = drillTipLength(self.tool)
         elif obj.ExtraOffset == "2x Drill Tip":
-            endoffset = PathUtils.drillTipLength(self.tool) * 2
+            endoffset = drillTipLength(self.tool) * 2
 
         # compute the tapping targets
         edgelist = []
@@ -523,10 +524,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in tappingcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "tapping"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "tapping"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -559,7 +557,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")
@@ -575,9 +573,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Drilling operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectDrilling(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

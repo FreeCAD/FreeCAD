@@ -22,14 +22,12 @@ class ScaleType(IntEnum):
     NumberProtocol=True,
     RichCompare=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
       MatrixPy(const Matrix4D & mat, PyTypeObject *T = &Type)
       :PyObjectBase(new Matrix4D(mat),T){}
       Matrix4D value() const
       { return *(getMatrixPtr()); }
-    """
-)
+    """)
 class Matrix(PyObjectBase):
     """
     Base.Matrix class.
@@ -103,9 +101,13 @@ class Matrix(PyObjectBase):
     A44: float = 0.0
     """The (4,4) matrix element."""
 
-    A: Sequence[float] = []
-    """The matrix elements."""
+    @property
+    def A(self) -> tuple[float, ...]:
+        """The matrix elements."""
+        ...
 
+    @A.setter
+    def A(self, value: Sequence[float]) -> None: ...
     @overload
     def move(self, vector: Vector, /) -> None: ...
     @overload

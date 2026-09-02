@@ -30,6 +30,7 @@
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
+#include "TransactionDefs.h"
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -61,6 +62,7 @@ class AppExport Transaction: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+
 public:
     /**
      * @brief Construct a transaction.
@@ -71,7 +73,7 @@ public:
      * transactions from different document, so that they can be undone/redone
      * together.
      */
-    explicit Transaction(int id = 0);
+    explicit Transaction(int id = NullTransaction);
 
     ~Transaction() override;
 
@@ -118,6 +120,21 @@ public:
      * @param[in] oldName The old name of the property.
      */
     void renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName);
+
+    /**
+     * @brief Arrange moving a property.
+     *
+     * @param[in] Obj The object from which the property is moved.
+     * @param[in] pcProp The property that is moved.
+     * @param[in] target The object to which the property is moved.
+     * @param[in] newProp The new property that represents the moved property.
+     */
+    void arrangeMoveProperty(
+        TransactionalObject* Obj,
+        const Property* pcProp,
+        TransactionalObject* target,
+        Property* newProp
+    );
 
     /**
      * @brief Record adding or removing a property from an object.
@@ -223,6 +240,15 @@ public:
     void renameProperty(const Property* pcProp, const char* oldName);
 
     /**
+     * @brief Arrange moving a property.
+     *
+     * @param[in] pcProp The property that is moved.
+     * @param[in] target The object to which the property is moved.
+     * @param[in] newProp The property that represents the moved property.
+     */
+    void arrangeMoveProperty(const Property* pcProp, TransactionalObject* target, Property* newProp);
+
+    /**
      * @brief Add or remove a property from the object.
      *
      * @param[in] prop The property to add or remove.
@@ -252,6 +278,10 @@ protected:
         const Property* propertyOrig = nullptr;
         // for property renaming
         std::string nameOrig;
+        // for property moving
+        Property* propertyTarget = nullptr;
+        TransactionalObject* target = nullptr;
+        PropertyContainer* source = nullptr;
     };
 
     /// A map to maintain the properties of the object.

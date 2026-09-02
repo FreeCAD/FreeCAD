@@ -52,7 +52,6 @@ from ..models import Library
 from .browser import LibraryBrowserWidget
 from .properties import LibraryPropertyDialog
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -575,7 +574,7 @@ class LibraryEditor(QWidget):
             QMessageBox.warning(
                 self,
                 FreeCAD.Qt.translate("CAM", "Warning"),
-                FreeCAD.Qt.translate("CAM", "Please select a library first."),
+                FreeCAD.Qt.translate("CAM", "Select a library first."),
             )
             return
 
@@ -650,7 +649,7 @@ class LibraryEditor(QWidget):
             QMessageBox.warning(
                 self,
                 FreeCAD.Qt.translate("CAM", "Warning"),
-                FreeCAD.Qt.translate("CAM", "Please select a toolbit to export."),
+                FreeCAD.Qt.translate("CAM", "Select a toolbit to export."),
             )
             return
 
@@ -659,7 +658,7 @@ class LibraryEditor(QWidget):
             QMessageBox.warning(
                 self,
                 FreeCAD.Qt.translate("CAM", "Warning"),
-                FreeCAD.Qt.translate("CAM", "Please select only one toolbit to export."),
+                FreeCAD.Qt.translate("CAM", "Select only one toolbit to export."),
             )
             return
 

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "../actionpanel/actionlabel.h"
-#include "../actionpanel/actionbox.h"
 #include "../actionpanel/actiongroup.h"
 #include "../actionpanel/actionpanel.h"
 #include "../actionpanel/actionpanelscheme.h"

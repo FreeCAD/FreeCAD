@@ -70,7 +70,9 @@ TextEdit::TextEdit(QWidget* parent)
     auto shortcutFind = new QShortcut(this);
     shortcutFind->setKey(QKeySequence::Find);
     shortcutFind->setContext(Qt::WidgetShortcut);
-    connect(shortcutFind, &QShortcut::activated, this, &TextEdit::showSearchBar);
+    connect(shortcutFind, &QShortcut::activated, this, [this]() {
+        Q_EMIT showSearchBar(selectionForSearch());
+    });
 
     auto shortcutNext = new QShortcut(this);
     shortcutNext->setKey(QKeySequence::FindNext);
@@ -143,6 +145,25 @@ QString TextEdit::getInputString()
     return textCursor().block().text();
 }
 
+/**
+ * Return selected text or word under cursor if none. Normalize line breaks.
+ */
+QString TextEdit::selectionForSearch() const
+{
+    QTextCursor cursor = textCursor();
+    QString text = cursor.selectedText();
+
+    if (text.isEmpty()) {
+        cursor.select(QTextCursor::WordUnderCursor);
+        text = cursor.selectedText();
+    }
+
+    // Qt replaces line breaks with U+2029 in selectedText
+    text.replace(QChar::ParagraphSeparator, QLatin1Char('\n'));
+
+    return text;
+}
+
 void TextEdit::wheelEvent(QWheelEvent* e)
 {
     // Reimplement from QPlainText::wheelEvent as zoom is only allowed natively if !isReadOnly
@@ -152,6 +173,43 @@ void TextEdit::wheelEvent(QWheelEvent* e)
         return;
     }
     QPlainTextEdit::wheelEvent(e);
+}
+
+/**
+ * Check if auto-complete may return anything. Currently dumb logic for Input Hints.
+ */
+bool TextEdit::hasCompletion() const
+{
+    const QTextCursor cursor = textCursor();
+    const QTextBlock block = cursor.block();
+
+    if (!block.isValid()) {
+        return false;
+    }
+
+    const QString& text = block.text();
+    int pos = cursor.position() - block.position();
+
+    if (pos <= 0) {
+        return false;
+    }
+
+    // Support underscore for Python syntax
+    auto isWord = [](QChar c) {
+        return c.isLetterOrNumber() || c == '_';
+    };
+
+    bool isAlphaNum = false;
+    int start = pos;
+
+    while (start > 0 && isWord(text.at(start - 1))) {
+        --start;
+        if (text.at(start).isLetterOrNumber()) {
+            isAlphaNum = true;
+        }
+    }
+
+    return isAlphaNum;
 }
 
 /**
@@ -406,14 +464,6 @@ void TextEditor::highlightCurrentLine()
     setExtraSelections(extraSelections);
 }
 
-void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
-{
-    Q_UNUSED(line);
-    Q_UNUSED(x);
-    Q_UNUSED(y);
-    Q_UNUSED(p);
-}
-
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
 {
     if (!isVisibleLineNumbers()) {
@@ -434,7 +484,6 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent* event)
             QColor color = pal.windowText().color();
             painter.setPen(color);
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, number);
-            drawMarker(blockNumber + 1, 1, top, &painter);
         }
 
         block = block.next();

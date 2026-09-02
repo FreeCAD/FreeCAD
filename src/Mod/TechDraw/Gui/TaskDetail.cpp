@@ -430,7 +430,7 @@ void TaskDetail::enableTaskButtons(bool button)
 //***** Feature create & edit stuff *******************************************
 void TaskDetail::createDetail()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail view"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Detail view"));
 
     const std::string objectName{"Detail"};
     m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
@@ -462,7 +462,7 @@ void TaskDetail::createDetail()
                             m_pageName.c_str(), m_detailName.c_str());
 
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     getBaseFeat()->requestPaint();
     m_created = true;
@@ -472,7 +472,7 @@ void TaskDetail::updateDetail()
 {
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     try {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
@@ -488,7 +488,7 @@ void TaskDetail::updateDetail()
         detailFeat->Reference.setValue(ref);
 
         Gui::Command::updateActive();
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open

@@ -35,6 +35,7 @@ using the delayed mechanism defined by the `todo.ToDo` class.
 Therefore, at some point this class should be refactored
 to be more similar to OrthoArray and the new tools.
 """
+
 ## @package task_selectplane
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft SelectPlane tool.

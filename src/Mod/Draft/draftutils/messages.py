@@ -29,6 +29,7 @@ that are suitable for use in every workbench. These shorthands also include
 a newline character at the end of the string, so it doesn't have to be
 added manually.
 """
+
 ## @package messages
 # \ingroup draftutils
 # \brief Provides utility functions that wrap around the Console methods.
@@ -36,7 +37,6 @@ added manually.
 ## \addtogroup draftutils
 # @{
 import FreeCAD as App
-from draftutils import params
 
 
 def _msg(text, end="\n"):
@@ -62,6 +62,8 @@ def _log(text, end="\n"):
 def _toolmsg(text, end="\n"):
     """Write messages to the console including the line ending,
     only if ToolMessages pref setting is True"""
+    from draftutils import params
+
     if params.get_param("ToolMessages"):
         App.Console.PrintMessage(text + end)
 

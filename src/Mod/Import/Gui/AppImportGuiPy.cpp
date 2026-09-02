@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Base/TimeInfo.h"
 #if defined(__MINGW32__)
 # define WNT  // avoid conflict with GUID
 #endif
@@ -75,6 +76,7 @@
 #include <Mod/Part/Gui/DlgExportStep.h>
 #include <Mod/Part/Gui/DlgImportStep.h>
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/App/ProgressIndicator.h>
 
 
 FC_LOG_LEVEL_INIT("Import", true, true)
@@ -238,8 +240,17 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ImportOCAFGui ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.setImportOptions(ImportOCAFGui::customImportOptions());
-            FC_TIME_INIT(t);
-            FC_DURATION_DECL_INIT2(d1, d2);
+
+            Base::TimeTracker tracker("Import Step");
+
+            if (pyoptions) {
+                Py::Dict options(pyoptions);
+                if (options.hasKey("showProgress")) {
+                    ocaf.setShowProgress(
+                        static_cast<bool>(Py::Boolean(options.getItem("showProgress")))
+                    );
+                }
+            }
 
             if (file.hasExtension({"stp", "step"})) {
 
@@ -276,11 +287,6 @@ private:
                             static_cast<bool>(Py::Boolean(options.getItem("reduceObjects")))
                         );
                     }
-                    if (options.hasKey("showProgress")) {
-                        ocaf.setShowProgress(
-                            static_cast<bool>(Py::Boolean(options.getItem("showProgress")))
-                        );
-                    }
                     if (options.hasKey("expandCompound")) {
                         ocaf.setExpandCompound(
                             static_cast<bool>(Py::Boolean(options.getItem("expandCompound")))
@@ -307,11 +313,15 @@ private:
                 }
 
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderStep reader(file);
 #if OCC_VERSION_HEX >= 0x070800
                     reader.setCodePage(cp);
 #endif
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -323,8 +333,12 @@ private:
             }
             else if (file.hasExtension({"igs", "iges"})) {
                 try {
+                    Handle(Message_ProgressIndicator) pi;
+                    if (ocaf.showProgress()) {
+                        pi = new Part::ProgressIndicator();
+                    }
                     Import::ReaderIges reader(file);
-                    reader.read(hDoc);
+                    reader.read(hDoc, Message_ProgressIndicator::Start(pi));
                 }
                 catch (OSD_Exception& e) {
                     Base::Console().error("%s\n", e.GetMessageString());
@@ -335,14 +349,18 @@ private:
                 }
             }
             else if (file.hasExtension({"glb", "gltf"})) {
+                Handle(Message_ProgressIndicator) pi;
+                if (ocaf.showProgress()) {
+                    pi = new Part::ProgressIndicator();
+                }
                 Import::ReaderGltf reader(file);
-                reader.read(hDoc);
+                reader.read(hDoc, Message_ProgressIndicator::Start(pi));
             }
             else {
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            FC_DURATION_PLUS(d1, t);
+            tracker.checkpoint("File read");
             if (merge != Py_None) {
                 ocaf.setMerge(Base::asBoolean(merge));
             }
@@ -357,15 +375,10 @@ private:
             }
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
-            FC_DURATION_PLUS(d2, t);
-            FC_DURATION_LOG(d1, "file read");
-            FC_DURATION_LOG(d2, "import");
-            FC_DURATION_LOG((d1 + d2), "total");
 
             if (ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
-                auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
-                if (gdoc) {
+                if (auto gdoc = Gui::Application::Instance->getDocument(pcDoc)) {
                     gdoc->setActiveView();
                     Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitAll");
                 }
@@ -406,7 +419,9 @@ private:
         const char* optionSource = nullptr;
         std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors = true;
-        if (!PyArg_ParseTuple(args.ptr(), "et|sbs", "utf-8", &Name, &DocName, &IgnoreErrors, &optionSource)) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "et|sbs", "utf-8", &Name, &DocName, &IgnoreErrors, &optionSource)
+        ) {
             throw Py::Exception();
         }
 

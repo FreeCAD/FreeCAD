@@ -18,52 +18,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="toolOptions">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <property name="bottomMargin">
-       <number>3</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="toolController_label">
-        <property name="text">
-         <string>Tool controller</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="toolController">
-        <property name="toolTip">
-         <string> The tool and its settings to be used for this operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="coolantController"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="coolantController_label">
-        <property name="text">
-         <string>Coolant mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="editToolController">
-        <property name="text">
-         <string>Edit Tool Controller</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QFrame" name="featureReferences">
      <layout class="QGridLayout" name="gridLayout_3">
       <property name="topMargin">
@@ -286,7 +240,7 @@
         </property>
        </widget>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="Gui::InputField" name="geo1Extension">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -328,7 +282,7 @@
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
@@ -347,30 +301,25 @@
        <number>3</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="layerMode_label">
+       <widget class="QLabel" name="cutPatter_label">
         <property name="text">
          <string>Layer mode</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="layerMode">
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
+       <widget class="QComboBox" name="cutPattern">
         <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
+         <string>Set the cut pattern for the operation</string>
         </property>
         <item>
          <property name="text">
-          <string>Single-pass</string>
+          <string>Directional</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Multi-pass</string>
+          <string>Bidirectional</string>
          </property>
         </item>
        </widget>
@@ -435,13 +384,11 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>toolController</tabstop>
-  <tabstop>coolantController</tabstop>
   <tabstop>geo1Reference</tabstop>
   <tabstop>geo2Reference</tabstop>
   <tabstop>geo1Extension</tabstop>
   <tabstop>geo2Extension</tabstop>
-  <tabstop>layerMode</tabstop>
+  <tabstop>cutPattern</tabstop>
   <tabstop>pathOrientation</tabstop>
   <tabstop>reverseDirection</tabstop>
  </tabstops>

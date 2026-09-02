@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Settings for FreeCAD installer
 
@@ -34,7 +34,7 @@ These typically need to be modified for each FreeCAD release
 
 #--------------------------------
 # get version info from freecadcmd
-!system "${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode $\"${__FILEDIR__}\write_version_nsh.py$\"" = 0
+!system '${FILES_FREECAD}\bin\freecadcmd.exe --safe-mode "${__FILEDIR__}\write_version_nsh.py"' = 0
 !include "${__FILEDIR__}\version.nsh"
 !delfile "${__FILEDIR__}\version.nsh"
 

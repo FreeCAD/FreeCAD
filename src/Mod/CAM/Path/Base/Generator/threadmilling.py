@@ -130,7 +130,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
         path.append(
             Path.Command(
                 thread.g4LeadInOut(),
-                {"Y": yMax, "J": (yMax - (center.y + elevator)) / 2},
+                {"Y": yMax, "I": 0, "J": (yMax - (center.y + elevator)) / 2},
             )
         )
         _comment(path, "lead-in")
@@ -154,7 +154,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
             y = yMin
         else:
             y = yMax
-        path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "J": r}))
+        path.append(Path.Command(thread.cmd, {"Y": y, "Z": z + thread.hPitch, "I": 0, "J": r}))
         r = -r
         i = i + 1
         z = z + thread.hPitch
@@ -170,7 +170,7 @@ def generate(center, cmd, zStart, zFinal, pitch, radius, leadInOut, elevator, st
         y = thread.adjustY(center.y, r * dy)
         x = thread.adjustX(center.x, r * dx)
         _comment(path, "finish-thread")
-        path.append(Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "J": r}))
+        path.append(Path.Command(thread.cmd, {"X": x, "Y": y, "Z": thread.zFinal, "I": 0, "J": r}))
         _comment(path, "finish-thread")
 
     a = math.atan2(y - center.y, x - center.x)

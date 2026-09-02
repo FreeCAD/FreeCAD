@@ -490,7 +490,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Section View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Section View"));
     if (!m_section) {
         const std::string objectName("SectionView");
         m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -501,15 +501,16 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         // we pluck the generated suffix from the object name and append it to "Section" to generate
         // unique Labels
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
@@ -555,7 +556,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return m_section;
 }
 
@@ -569,7 +570,7 @@ void TaskSectionView::updateSectionView()
     const std::string objectName("SectionView");
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());
@@ -579,15 +580,16 @@ void TaskSectionView::updateSectionView()
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
 
         QString qTemp = ui->leSymbol->text();
-        std::string temp = qTemp.toStdString();
+        std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
-                           makeSectionLabel(qTemp).c_str());
+                           sectionLabel.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
-              m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
+              m_sectionName.c_str(), sectionLabel.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
@@ -618,7 +620,7 @@ void TaskSectionView::updateSectionView()
             directionChanged(false);
         }
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 std::string TaskSectionView::makeSectionLabel(QString symbol)

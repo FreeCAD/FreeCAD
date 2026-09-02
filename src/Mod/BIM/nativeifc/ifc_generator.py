@@ -362,7 +362,6 @@ def filter_types(elements, obj_ids=[]):
     elements = [e for e in elements if not e.is_a("IfcFeatureElement")]
     elements = [e for e in elements if not e.is_a("IfcOpeningElement")]
     elements = [e for e in elements if not e.is_a("IfcSpace")]
-    elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
     elements = [e for e in elements if not e.id() in obj_ids]
     return elements
 
@@ -419,7 +418,7 @@ def get_geom_iterator(ifcfile, elements, brep_mode):
         else:
             # We print a debug message but we continue
             print("DEBUG: ifc_tools.get_geom_iterator: Iterator could not be set up correctly")
-    cores = multiprocessing.cpu_count()
+    cores = max(1, multiprocessing.cpu_count() - 1)
     iterator = ifcopenshell.geom.iterator(settings, ifcfile, cores, include=elements)
     if not iterator.initialize():
         print("DEBUG: ifc_tools.get_geom_iterator: Invalid iterator")

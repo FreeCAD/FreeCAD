@@ -35,7 +35,7 @@ class BIM_Diff:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Diff",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Diff", "IFC Diff"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Diff", "IFC Shape Diff"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Diff", "Shows the difference between two IFC-based documents"
             ),

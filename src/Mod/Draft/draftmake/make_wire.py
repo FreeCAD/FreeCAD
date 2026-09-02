@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create multipoint Wire objects."""
+
 ## @package make_wire
 # \ingroup draftmake
 # \brief Provides functions to create multipoint Wire objects.
@@ -29,11 +30,10 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import DraftGeomUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
+from draftgeoutils import geometry as geo_geometry
 from draftobjects.wire import Wire
+from draftutils import utils
+from draftutils import gui_utils
 
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
@@ -84,7 +84,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
     elif isinstance(pointslist, Part.Wire):
         for edge in pointslist.Edges:
-            if not DraftGeomUtils.is_straight_line(edge):
+            if not geo_geometry.is_straight_line(edge):
                 App.Console.PrintError("All edges must be straight lines\n")
                 return None
         closed = pointslist.isClosed()

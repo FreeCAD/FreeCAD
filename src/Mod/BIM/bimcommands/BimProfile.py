@@ -66,6 +66,22 @@ class Arch_Profile:
             callback=self.getPoint,
             extradlg=[self.taskbox()],
             title=translate("Arch", "Create Profile"),
+            hints=self.get_hints(),
+        )
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 pick point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
         )
 
     def taskbox(self):

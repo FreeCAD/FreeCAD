@@ -66,6 +66,9 @@ public:
         , pendingEmit(false)
         , normalize(true)
         , checkRangeInExpression(false)
+        , adjustableWidth(false)
+        , maxExpectedDigits(4)
+        , addIconSpace(false)
         , unitValue(0)
         , maximum(std::numeric_limits<double>::max())
         , minimum(-std::numeric_limits<double>::max())
@@ -306,6 +309,9 @@ public:
     bool pendingEmit;
     bool normalize;
     bool checkRangeInExpression;
+    bool adjustableWidth;
+    int maxExpectedDigits;
+    bool addIconSpace;
     QString validStr;
     Base::Quantity quantity;
     Base::Quantity cached;
@@ -341,6 +347,9 @@ void QuantitySpinBox::bind(const App::ObjectIdentifier& _path)
 
 void QuantitySpinBox::showIcon()
 {
+    addIconSpace(true);
+
+    adjustSize();
     iconLabel->show();
 }
 
@@ -490,21 +499,26 @@ void QuantitySpinBox::updateText(const Quantity& quant)
 void QuantitySpinBox::updateEdit(const QString& text)
 {
     Q_D(QuantitySpinBox);
-
     QLineEdit* edit = lineEdit();
 
-    bool empty = edit->text().isEmpty();
     int cursor = edit->cursorPosition();
-    int selsize = edit->selectedText().size();
+    int selStart = edit->selectionStart();
+    int selLen = edit->selectionLength();
 
+    // setText resets cursor/selection so save it and restore it
     edit->setText(text);
 
-    cursor = qBound(0, cursor, qMax(0, edit->displayText().size() - d->unitStr.size()));
-    if (selsize > 0) {
-        edit->setSelection(0, cursor);
+    int maxPos = qMax(0, edit->displayText().size() - d->unitStr.size());
+
+    int newCursor = qBound(0, cursor, maxPos);
+
+    if (selLen > 0) {
+        int newStart = qBound(0, selStart, maxPos);
+        int newLen = qBound(0, selLen, maxPos - newStart);
+        edit->setSelection(newStart, newLen);
     }
     else {
-        edit->setCursorPosition(empty ? 0 : cursor);
+        edit->setCursorPosition(newCursor);
     }
 }
 
@@ -546,19 +560,80 @@ void QuantitySpinBox::normalize()
 
 bool QuantitySpinBox::isNormalized()
 {
-    static const QRegularExpression operators(
-        QStringLiteral("[+\\-/*]"),
-        QRegularExpression::CaseInsensitiveOption
-    );
-
     Q_D(const QuantitySpinBox);
 
-    // this check is two level
-    // 1. We consider every string that does not contain operators as normalized
-    // 2. If it does contain operators we check if it differs from normalized input - as some
-    //    operators like - can be allowed even in normalized case.
-    return !d->validStr.contains(operators)
-        || d->validStr.toStdString() == d->quantity.getUserString();
+    // check if the input is exactly the same as the normalized string
+    if (d->validStr.toStdString() == d->quantity.getUserString()) {
+        return true;
+    }
+
+    // check if the input is simplified to a solution or if further calculation
+    // has to be done
+
+    try {
+        auto expr = ExpressionParser::parse(
+            getPath().getDocumentObject(),
+            d->validStr.toUtf8().constData()
+        );
+
+        // plain numbers
+        if (freecad_cast<NumberExpression*>(expr.get())) {
+            return true;
+        }
+
+        auto operatorExpr = freecad_cast<OperatorExpression*>(expr.get());
+        if (!operatorExpr) {
+            return false;
+        }
+
+        if (operatorExpr->getOperator() == OperatorExpression::UNIT
+            && freecad_cast<UnitExpression*>(operatorExpr->getRight())
+            && freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
+            // numbers without sign but with unit
+            return true;
+        }
+
+        if ((operatorExpr->getOperator() != OperatorExpression::NEG
+             && operatorExpr->getOperator() != OperatorExpression::POS)) {
+            return false;
+        }
+
+        // numbers with positive or negative sign without unit
+        if (freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
+            return true;
+        }
+
+        auto innerOperatorExpr = freecad_cast<OperatorExpression*>(operatorExpr->getLeft());
+        if (!innerOperatorExpr) {
+            return false;
+        }
+
+        if (innerOperatorExpr->getOperator() != OperatorExpression::UNIT) {
+            return false;
+        }
+        if (!freecad_cast<UnitExpression*>(innerOperatorExpr->getRight())) {
+            return false;
+        }
+
+        // numbers with positive or negative sign and unit
+        auto left = innerOperatorExpr->getLeft();
+        if (freecad_cast<NumberExpression*>(left)) {
+            return true;
+        }
+        auto leftOp = freecad_cast<OperatorExpression*>(left);
+        if (leftOp
+            && (leftOp->getOperator() == OperatorExpression::NEG
+                || leftOp->getOperator() == OperatorExpression::POS)
+            && freecad_cast<NumberExpression*>(leftOp->getLeft())) {
+            return true;
+        }
+    }
+    catch (const Base::Exception&) {
+        // The exception is intentionally ignored here and should be handled,
+        // when the value is assigned
+        return false;
+    }
+    return false;
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
@@ -601,6 +676,42 @@ void QuantitySpinBox::setAutoNormalize(bool normalize)
     d->normalize = normalize;
 }
 
+bool QuantitySpinBox::autoAdjustWidth() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->adjustableWidth;
+}
+
+void QuantitySpinBox::setAutoAdjustWidth(bool adjust)
+{
+    Q_D(QuantitySpinBox);
+    d->adjustableWidth = adjust;
+}
+
+bool QuantitySpinBox::isIconSpaceAdded() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->addIconSpace;
+}
+
+void QuantitySpinBox::addIconSpace(bool addIconSpace)
+{
+    Q_D(QuantitySpinBox);
+    d->addIconSpace = addIconSpace;
+}
+
+int QuantitySpinBox::getMaxExpectedDigits()
+{
+    Q_D(const QuantitySpinBox);
+    return d->maxExpectedDigits;
+}
+
+void QuantitySpinBox::setMaxExpectedDigits(int digits)
+{
+    Q_D(QuantitySpinBox);
+    d->maxExpectedDigits = digits;
+}
+
 bool QuantitySpinBox::hasValidInput() const
 {
     Q_D(const QuantitySpinBox);
@@ -611,7 +722,6 @@ bool QuantitySpinBox::hasValidInput() const
 void QuantitySpinBox::userInput(const QString& text)
 {
     Q_D(QuantitySpinBox);
-
     d->pendingEmit = true;
 
     QString tmp = text;
@@ -911,42 +1021,55 @@ QSize QuantitySpinBox::sizeForText(const QString& txt) const
 
 QSize QuantitySpinBox::sizeHint() const
 {
-    return sizeHintCalculator(lineEdit()->sizeHint().height());
+    Q_D(const QuantitySpinBox);
+    auto le = lineEdit();
+    if (le && d->adjustableWidth) {
+        // limit number of typed characters to keep unit visible
+        le->setMaxLength(getMaxStrLength(d->maxExpectedDigits));
+    }
+    return sizeHintForDigits(d->maxExpectedDigits);
 }
 
-QSize QuantitySpinBox::minimumSizeHint() const
-{
-    return sizeHintCalculator(lineEdit()->minimumSizeHint().height());
-}
-
-QSize QuantitySpinBox::sizeHintCalculator(int h) const
+QSize QuantitySpinBox::sizeHintForDigits(int digits) const
 {
     Q_D(const QuantitySpinBox);
     ensurePolished();
 
+    const int maxLen = getMaxStrLength(digits);
+    int length = maxLen;
+
+    if (d->adjustableWidth) {
+        int currenLen = qMax(lineEdit()->text().length(), 4);
+        length = currenLen < maxLen ? currenLen : maxLen;
+    }
+
+    QString longestString = QStringLiteral("8").repeated(length);
+
     const QFontMetrics fm(fontMetrics());
-    int w = 0;
-    constexpr int maxStrLen = 9;
-
-    QString s;
-    QString fixedContent = QLatin1String(" ");
-
-    Base::Quantity q(d->quantity);
-    q.setValue(d->maximum);
-    s = textFromValue(q);
-    s.truncate(maxStrLen);
-    s += fixedContent;
-    w = qMax(w, QtTools::horizontalAdvance(fm, s));
-
-    w += 2;  // cursor blinking space
-    w += iconHeight;
-
+    int w = qMax(0, QtTools::horizontalAdvance(fm, longestString));
+    w += 4;  // cursor blinking space
+    if (d->addIconSpace) {
+        w += iconHeight;
+    }
     QStyleOptionSpinBox opt;
     initStyleOption(&opt);
-    QSize hint(w, h);
+    QSize hint(w, lineEdit()->sizeHint().height());
 
     QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this);
     return size;
+}
+
+int QuantitySpinBox::getMaxStrLength(int digits) const
+{
+    // Calculates the length of the longest string allowed
+    Q_D(const QuantitySpinBox);
+    ensurePolished();
+    QString unit = QString::fromStdString(d->unit.getString());
+    int decimals = App::GetApplication()
+                       .GetUserParameter()
+                       .GetGroup("BaseApp/Preferences/Units")
+                       ->GetInt("Decimals", 2);
+    return digits + 1 /*separator*/ + decimals + 1 /*space*/ + unit.length();
 }
 
 void QuantitySpinBox::showEvent(QShowEvent* event)

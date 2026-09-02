@@ -145,9 +145,7 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
 
         if not hasattr(self, "displaymodes_cleaned"):
             if vobj.RootNode.getNumChildren():
-                main_switch = gui_utils.find_coin_node(
-                    vobj.RootNode, coin.SoSwitch
-                )  # The display mode switch.
+                main_switch = vobj.SwitchNode  # The display mode switch.
                 if (
                     main_switch is not None and main_switch.getNumChildren() == 4
                 ):  # Check if all display modes are available.

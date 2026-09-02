@@ -24,6 +24,8 @@
 
 import unittest
 import FreeCAD
+import Materials
+
 
 class DocumentTestCases(unittest.TestCase):
     """
@@ -38,7 +40,7 @@ class DocumentTestCases(unittest.TestCase):
 
     def testApplyDiffuseColorCheckShapeAppearance(self):
         """ Test that applying a DiffuseColor with transparency results in a correct ShapeAppearance """
-        if "BUILD_PART" in FreeCAD.__cmake__:
+        if "BUILD_PART" in FreeCAD.__cmake__ and FreeCAD.GuiUp:
             dif_col_1 = (1.0, 1.0, 0.0, 1.0)  # yellow 0% transparent
             dif_col_2 = (1.0, 0.0, 0.0, 0.5)  # red 50% transparent
             dif_col = [dif_col_1] + [dif_col_2] + 4 * [dif_col_1]
@@ -54,7 +56,7 @@ class DocumentTestCases(unittest.TestCase):
 
     def testApplyShapeAppearanceCheckDiffuseColor(self):
         """ Test that applying a ShapeAppearance with transparency results in a correct DiffuseColor """
-        if "BUILD_PART" in FreeCAD.__cmake__:
+        if "BUILD_PART" in FreeCAD.__cmake__ and FreeCAD.GuiUp:
             sapp_1 = FreeCAD.Material()
             sapp_1.DiffuseColor = (0.0, 1.0, 1.0, 0.0)  # cyan
             sapp_1.Transparency = 0.0                   # 0% transparent
@@ -71,3 +73,40 @@ class DocumentTestCases(unittest.TestCase):
                 [m.DiffuseColor[:3] + (1.0 - m.Transparency, ) for m in vobj.ShapeAppearance],
                 vobj.DiffuseColor
             )
+
+    def testApplyNoAppearanceThenAppearanceMaterial(self):
+        """Applying a material with no appearance then one with appearance must update ShapeAppearance.
+
+        Regression test for https://github.com/FreeCAD/FreeCAD/issues/25793 — applying Air
+        (no appearance properties) followed by Wood-Generic must still apply Wood's colors.
+        """
+        if "BUILD_PART" not in FreeCAD.__cmake__ or not FreeCAD.GuiUp:
+            return
+
+        manager = Materials.MaterialManager()
+
+        # Air: physical-only material, no appearance properties
+        air_uuid = "94370b96-c97e-4a3f-83b2-11d7461f7da7"
+        # Wood-Generic inherits Wood appearance: DiffuseColor ~ (0.898, 0.730, 0.391)
+        wood_uuid = "b588224e-e8d6-47ad-ba1f-a058333fd1c6"
+
+        obj = self.doc.addObject("Part::Box")
+        self.doc.recompute()
+        vobj = obj.ViewObject
+
+        default_color = vobj.ShapeAppearance[0].DiffuseColor
+
+        obj.ShapeMaterial = manager.getMaterial(air_uuid)
+        self.assertEqual(
+            vobj.ShapeAppearance[0].DiffuseColor,
+            default_color,
+            "Applying Air (no appearance) must not change ShapeAppearance",
+        )
+
+        obj.ShapeMaterial = manager.getMaterial(wood_uuid)
+        wood_color = vobj.ShapeAppearance[0].DiffuseColor
+        self.assertNotEqual(
+            wood_color,
+            default_color,
+            "Applying Wood after Air must update ShapeAppearance to Wood's color",
+        )

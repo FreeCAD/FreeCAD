@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 from Path.Base.Util import coolantModeForOp
 from Path.Base.Util import toolControllerForOp
+import Path.Dressup.Utils as PathDressup
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """CAM SimpleCopy command"""
@@ -74,17 +75,16 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if not selection:
             return False
-        if any([not hasattr(sel, "Path") for sel in selection]):
-            return False
-        if any([not op.Path.Commands for op in selection]):
+
+        if any(not PathDressup.isOp(sel) for sel in selection):
             return False
 
         coolant = coolantModeForOp(selection[0])
-        if not all([coolant == coolantModeForOp(op) for op in selection]):
+        if any(coolant != coolantModeForOp(op) for op in selection):
             return False
 
         toolController = toolControllerForOp(selection[0])
-        if not all([toolController == toolControllerForOp(op) for op in selection]):
+        if any(toolController != toolControllerForOp(op) for op in selection):
             return False
 
         return True

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QComboBox>
 # include <QLineEdit>
+# include <QMessageBox>
 #endif
 
 #include <Gui/CommandT.h>
@@ -59,9 +60,21 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
 
     // Initialize Font
     populateFontList();
-    QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->getFont()));
+    QString currentFontName = QString::fromStdString(constraint->getFont());
     if (!currentFontName.isEmpty()) {
-        ui->comboBox_font->setCurrentText(currentFontName);
+        int idx = ui->comboBox_font->findText(currentFontName, Qt::MatchFixedString);
+        if (idx != -1) {
+            ui->comboBox_font->setCurrentIndex(idx);
+        }
+        else {
+            QMessageBox::warning(
+                this,
+                tr("Font not found"),
+                tr("The original font '%1' is not found on your system. A default font has been "
+                   "selected.")
+                    .arg(currentFontName)
+            );
+        }
     }
 }
 
@@ -78,11 +91,6 @@ void EditTextDialog::populateFontList()
     ui->comboBox_font->addItems(fontNames);
 }
 
-QString EditTextDialog::findFontNameFromPath(const QString& path) const
-{
-    return fontPathMap.key(path, QString());
-}
-
 void EditTextDialog::on_buttonBox_accepted()
 {
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
@@ -96,13 +104,15 @@ void EditTextDialog::on_buttonBox_accepted()
     const Sketcher::Constraint* constraint = sketch->Constraints[constrIndex];
 
     // Check if anything changed
-    if (newText == constraint->getText() && newFontPath == constraint->getFont()
+    if (newText == constraint->getText() && selectedFontName.toStdString() == constraint->getFont()
         && newIsHeight == constraint->getIsTextHeight()) {
         return;  // Nothing to do
     }
 
     // Open a command to make the change undo-able
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch text constraint"));
+    sketchView->getDocument()->openCommand(
+        QT_TRANSLATE_NOOP("Command", "Modify sketch text constraint")
+    );
 
     try {
         // Find if it was construction geometry to preserve that state
@@ -127,10 +137,10 @@ void EditTextDialog::on_buttonBox_accepted()
             isConstruction ? "True" : "False"
         );
 
-        Gui::Command::commitCommand();
+        sketchView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        sketchView->getDocument()->abortCommand();
         Base::Console().error("Failed to modify text constraint: %s\n", e.what());
     }
 }

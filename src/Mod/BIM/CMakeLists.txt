@@ -10,7 +10,11 @@ find_package(PythonInterp REQUIRED)
 # resource file will NOT be regenerated automatically. To work around this,
 # use `touch` on the .qrc file to force regeneration.
 IF (BUILD_GUI)
-    PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
+    PYSIDE_WRAP_RC(
+        RELATIVE Arch_QRC_SRCS_REL
+        ABSOLUTE Arch_QRC_SRCS
+        RESOURCES Resources/Arch.qrc
+    )
 ENDIF (BUILD_GUI)
 
 SET(Arch_SRCS
@@ -26,6 +30,8 @@ SET(Arch_SRCS
     ArchSite.py
     ArchStructure.py
     ArchCommands.py
+    ArchCovering.py
+    ArchCoveringGui.py
     ArchSectionPlane.py
     ArchWindow.py
     ArchWindowPresets.py
@@ -37,6 +43,7 @@ SET(Arch_SRCS
     ArchStairs.py
     ArchSpace.py
     ArchRebar.py
+    ArchTessellation.py
     ArchFrame.py
     ArchPanel.py
     ArchEquipment.py
@@ -122,6 +129,7 @@ SET(bimcommands_SRCS
     bimcommands/BimCompound.py
     bimcommands/BimConvert.py
     bimcommands/BimCopy.py
+    bimcommands/BimCovering.py
     bimcommands/BimCurtainwall.py
     bimcommands/BimCutPlane.py
     bimcommands/BimCut.py
@@ -177,7 +185,6 @@ SET(bimcommands_SRCS
     bimcommands/BimTDPage.py
     bimcommands/BimTDView.py
     bimcommands/BimText.py
-    bimcommands/BimTogglePanels.py
     bimcommands/BimTrash.py
     bimcommands/BimTruss.py
     bimcommands/BimTutorial.py
@@ -223,17 +230,22 @@ SET(nativeifc_SRCS
 
 SET(bimtests_SRCS
     bimtests/TestArchAxis.py
+    bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
     bimtests/TestArchBaseGui.py
     bimtests/TestArchComponent.py
+    bimtests/TestArchCovering.py
+    bimtests/TestArchCoveringGui.py
     bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
+    bimtests/test_roof_subtraction.brep
     bimtests/TestArchSpace.py
     bimtests/TestArchWall.py
     bimtests/TestArchWallGui.py
     bimtests/TestArchMaterial.py
     bimtests/TestArchPanel.py
     bimtests/TestArchWindow.py
+    bimtests/TestArchWindowGui.py
     bimtests/TestArchStairs.py
     bimtests/TestArchStructure.py
     bimtests/TestArchPipe.py
@@ -254,6 +266,7 @@ SET(bimtests_SRCS
     bimtests/TestWebGLExportGui.py
     bimtests/TestArchImportersGui.py
     bimtests/TestArchBuildingPartGui.py
+    bimtests/TestArchStairsGui.py
     bimtests/TestArchReport.py
     bimtests/TestArchReportGui.py
 )
@@ -322,8 +335,8 @@ add_custom_command(
 #   BIM target. Thus building the BIM target triggers populating the build tree
 #   with the workbench sources and resources, if needed.
 ADD_CUSTOM_TARGET(BIM ALL
+    DEPENDS ${Arch_QRC_SRCS}
     SOURCES ${Arch_SRCS}
-            ${Arch_QRC_SRCS}
             ${Dice3DS_SRCS}
             ${Arch_presets}
             ${ArchGuiIcon_SVG}
@@ -353,16 +366,16 @@ fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${nativeifc_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIMGuiIcon_SVG})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${Arch_presets})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIM_templates})
-fc_copy_sources(BIM "${CMAKE_SOURCE_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${ArchSql_resources})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${ArchSql_resources})
 
 # For generated resources, we cannot rely on `fc_copy_sources` in case
 # INSTALL_PREFER_SYMLINKS=ON has been specified, since we're generating a new
 # file not present in the source tree and thus cannot create a symlink to it.
 IF (BUILD_GUI)
     fc_target_copy_resource(BIM
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/BIM
-        Arch_rc.py)
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        "${CMAKE_BINARY_DIR}/Mod/BIM"
+        ${Arch_QRC_SRCS_REL})
 ENDIF (BUILD_GUI)
 
 # ==============================================================================

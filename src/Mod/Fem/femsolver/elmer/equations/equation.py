@@ -112,6 +112,12 @@ class _TaskPanel:
         self._recomputeAndRestore()
         return True
 
+    def activate(self):
+        self._selectionWidget.attachSelection()
+
+    def deactivate(self):
+        self._selectionWidget.detachSelection()
+
     def _restoreVisibility(self):
         if self._mesh is not None and self._part is not None:
             if self._meshVisible:

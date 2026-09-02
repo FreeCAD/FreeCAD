@@ -1,5 +1,20 @@
-blank_issues_enabled: false
+
+blank_issues_enabled : false
+
 contact_links:
-  - name: 💬 START HERE -- FreeCAD Forum
-    url: https://forum.freecad.org/
-    about: You are encouraged to discuss the problem you are seeing on the FreeCAD Forums before opening an issue on GitHub
+
+-   about : Join the community on our Discord.
+    name : 💬 𝗗𝗶𝘀𝗰𝗼𝗿𝗱
+    url : https://discord.gg/w2cTKGzccC
+
+-   about : Join the community on our Forum.
+    name : 💬 𝗙𝗼𝗿𝘂𝗺
+    url : https://forum.freecad.org
+
+-   about : Read on how FreeCAD is developed.
+    name : 📕 𝗛𝗮𝗻𝗱𝗯𝗼𝗼𝗸
+    url : https://freecad.github.io/DevelopersHandbook
+
+-   about : Look up information about FreeCAD.
+    name : 🌐 𝗪𝗶𝗸𝗶
+    url : https://wiki.freecad.org

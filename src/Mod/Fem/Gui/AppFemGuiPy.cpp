@@ -28,6 +28,7 @@
 #include <Gui/Document.h>
 #include <Gui/EditorView.h>
 #include <Gui/MainWindow.h>
+#include <Gui/PythonEditor.h>
 #include <Gui/TextEdit.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 
@@ -147,23 +148,22 @@ private:
             }
         }
 
-        if ((ext == QLatin1String("inp")) || (ext == QLatin1String("sif"))
-            || (ext == QLatin1String("txt"))) {
-            Gui::TextEditor* editor = new Gui::TextEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-solver-inp-editor.svg"));
-            Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
-            if (ext == QLatin1String("inp")) {
-                editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
-            }
-            edit->setDisplayName(Gui::EditorView::FileName);
-            edit->open(fileName);
-            edit->resize(400, 300);
-            Gui::getMainWindow()->addWindow(edit);
-
-            QFont font = editor->font();
-            font.setFamily(QStringLiteral("Arial"));
-            editor->setFont(font);
+        Gui::TextEditor* editor = new Gui::TextEditor();
+        editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/fem-solver-inp-editor.svg"));
+        Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
+        if (ext == QLatin1String("inp")) {
+            editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
         }
+        else if (ext == QLatin1String("py")) {
+            editor->setSyntaxHighlighter(new Gui::PythonSyntaxHighlighter(editor));
+        }
+        edit->setDisplayName(Gui::EditorView::FileName);
+        edit->open(fileName);
+        edit->resize(400, 300);
+        Gui::getMainWindow()->addWindow(edit);
+
+        QFont font = editor->font();
+        font.setFamily(QStringLiteral("Arial"));
 
         return Py::None();
     }

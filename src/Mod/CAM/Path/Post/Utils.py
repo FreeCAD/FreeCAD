@@ -1,39 +1,34 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre yorik@uncreated.net
+# SPDX-FileCopyrightText: 2022 Larry Woestman LarryWoestman2@gmail.com
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 These are common functions and classes for creating custom post processors.
 """
 
-
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 import FreeCAD
 import Path
@@ -191,34 +186,6 @@ class FilenameGenerator:
             yield os.path.normpath(full_path)
 
 
-class GCodeHighlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        super(GCodeHighlighter, self).__init__(parent)
-
-        keywordFormat = QtGui.QTextCharFormat()
-        keywordFormat.setForeground(QtCore.Qt.cyan)
-        keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
-
-        self.highlightingRules = [
-            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
-        ]
-
-        speedFormat = QtGui.QTextCharFormat()
-        speedFormat.setFontWeight(QtGui.QFont.Bold)
-        speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
-
-    def highlightBlock(self, text):
-        for pattern, hlFormat in self.highlightingRules:
-            expression = QtCore.QRegularExpression(pattern)
-            index = expression.match(text)
-            while index.hasMatch():
-                length = index.capturedLength()
-                self.setFormat(index.capturedStart(), length, hlFormat)
-                index = expression.match(text, index.capturedStart() + length)
-
-
 class GCodeEditorDialog(QtGui.QDialog):
     def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
@@ -227,15 +194,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.setWindowTitle(translate("CAM", "CAM Export Gcode"))
         layout = QtGui.QVBoxLayout(self)
 
-        # self.editor = QtGui.QTextEdit()  # without lines enumeration
-        self.editor = CodeEditor()  # with lines enumeration
-
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        font = QtGui.QFont()
-        font.setFamily(p.GetString("Font", "Courier"))
-        font.setFixedPitch(True)
-        font.setPointSize(p.GetInt("FontSize", 10))
-        self.editor.setFont(font)
+        self.editor = CodeEditor()
         self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
@@ -333,30 +292,10 @@ def fmt(num, dec, units):
 
 def editor(gcode):
     """Pops up a handy little editor to look at the code output."""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
-
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
     dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
-    gcodeSize = len(dia.editor.toPlainText())
-    if gcodeSize <= mhs:
-        # because of poor performance, syntax highlighting is
-        # limited to mhs octets (default 512 KB).
-        # It seems than the response time curve has an inflexion near 500 KB
-        # beyond 500 KB, the response time increases exponentially.
-        dia.highlighter = GCodeHighlighter(dia.editor.document())
-    else:
-        FreeCAD.Console.PrintMessage(
-            translate(
-                "Path",
-                "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize),
-            )
-        )
-    result = dia.exec_()
-    if result:  # If user selected 'OK' get modified G Code
+    if dia.exec_():  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()
     else:
         final = gcode
@@ -388,7 +327,7 @@ def splitArcs(path, deflection=None):
 
     if not deflection:
         prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
+        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01) or 0.01
 
     results = []
     machine = MachineState()

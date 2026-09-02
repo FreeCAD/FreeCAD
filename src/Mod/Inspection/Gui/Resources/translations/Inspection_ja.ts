@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Inspection</source>
       <translation>検査</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Inspection…</source>
       <translation>検査…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>Inspects distance information</source>
       <translation>距離情報を検査</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="49"/>
       <source>Inspection</source>
       <translation>検査</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
-      <source>Visual Inspection…</source>
-      <translation>外観検査…</translation>
+      <location filename="../../Command.cpp" line="50"/>
+      <source>Visual Inspection</source>
+      <translation>外観検査</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="50"/>
+      <location filename="../../Command.cpp" line="51"/>
       <source>Inspects the objects visually</source>
       <translation>オブジェクトを視覚的に検査</translation>
     </message>
@@ -48,18 +48,18 @@
   <context>
     <name>InspectionGui::VisualInspection</name>
     <message>
-      <location filename="../../VisualInspection.ui" line="14"/>
+      <location filename="../../VisualInspection.cpp" line="85"/>
       <source>Visual Inspection</source>
       <translation>外観検査</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="23"/>
+      <location filename="../../VisualInspection.ui" line="17"/>
       <source>Actual</source>
       <translation>比較元</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
-      <location filename="../../VisualInspection.ui" line="66"/>
+      <location filename="../../VisualInspection.ui" line="72"/>
       <source>Objects</source>
       <translation>オブジェクト</translation>
     </message>
@@ -69,23 +69,23 @@
       <translation>比較先</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="77"/>
+      <location filename="../../VisualInspection.ui" line="83"/>
       <source>Parameter</source>
       <translation>パラメーター</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="97"/>
+      <location filename="../../VisualInspection.ui" line="103"/>
       <source>Search distance</source>
       <translation>検出するずれの大きさの下限値</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="129"/>
-      <location filename="../../VisualInspection.ui" line="174"/>
+      <location filename="../../VisualInspection.ui" line="135"/>
+      <location filename="../../VisualInspection.ui" line="180"/>
       <source> mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="145"/>
+      <location filename="../../VisualInspection.ui" line="151"/>
       <source>Thickness</source>
       <translation>厚さ</translation>
     </message>
@@ -113,18 +113,18 @@
       <translation>情報モードを終了</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="708"/>
+      <location filename="../../ViewProviderInspection.cpp" line="709"/>
       <source>Distance: &gt; %1</source>
       <translation>ずれ： &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="711"/>
+      <location filename="../../ViewProviderInspection.cpp" line="712"/>
       <source>Distance: &lt; %1</source>
       <translation>ずれ： &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="730"/>
-      <location filename="../../ViewProviderInspection.cpp" line="748"/>
+      <location filename="../../ViewProviderInspection.cpp" line="731"/>
+      <location filename="../../ViewProviderInspection.cpp" line="749"/>
       <source>Distance: %1</source>
       <translation>ずれ： %1</translation>
     </message>

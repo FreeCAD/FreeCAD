@@ -35,7 +35,10 @@ class BIM_Clone(DraftTools.Draft_Clone):
 
     def __init__(self):
         DraftTools.Draft_Clone.__init__(self)
+
+    def Activated(self):
         self.moveAfterCloning = True
+        super().Activated()
 
     def GetResources(self):
         return {

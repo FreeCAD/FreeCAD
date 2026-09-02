@@ -87,7 +87,7 @@ class BIM_Classification:
 
         # add modified search box from bimmaterial
         searchBox = BimMaterial.MatLineEdit(self.form)
-        searchBox.setPlaceholderText(translate("BIM", "Search..."))
+        searchBox.setPlaceholderText(translate("BIM", "Search…"))
         searchBox.setToolTip(translate("BIM", "Searches classes"))
         self.form.search = searchBox
         self.form.horizontalLayout_2.addWidget(searchBox)
@@ -516,11 +516,10 @@ class BIM_Classification:
         preset = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Classification", system + ".xml")
         if not os.path.exists(preset):
             return None
-        import codecs
         import re
 
         d = Item()
-        with codecs.open(preset, "r", "utf-8") as f:
+        with open(preset, "r", encoding="utf-8") as f:
             currentItem = d
             for l in f:
                 if "<Item>" in l:

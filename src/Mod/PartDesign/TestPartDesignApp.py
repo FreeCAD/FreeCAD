@@ -48,6 +48,7 @@ from PartDesignTests.TestLinearPattern import TestLinearPattern
 from PartDesignTests.TestPolarPattern import TestPolarPattern
 from PartDesignTests.TestMultiTransform import TestMultiTransform
 from PartDesignTests.TestBoolean import TestBoolean
+from PartDesignTests.TestBaseFeature import TestBaseFeature
 
 # dressup features
 from PartDesignTests.TestFillet import TestFillet
@@ -58,6 +59,7 @@ from PartDesignTests.TestThickness import TestThickness
 # extras
 from PartDesignTests.TestInvoluteGear import TestInvoluteGear
 from PartDesignTests.TestSketch import TestSketch
+from PartDesignTests.TestSuppressed import TestSuppressed
 
 # Topological naming problem
 from PartDesignTests.TestTopologicalNamingProblem import TestTopologicalNamingProblem

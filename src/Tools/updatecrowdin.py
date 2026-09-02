@@ -93,6 +93,14 @@ TsFile = namedtuple("TsFile", ["filename", "src_path"])
 
 LEGACY_NAMING_MAP = {"Draft.ts": "draft.ts"}
 
+# Map Crowdin language codes to standard ISO 639-1 codes for filenames.
+# Crowdin uses "sv-SE" for Swedish but per ISO 639-1, "sv" is the correct
+# generic code (covers sv-SE, sv-FI, sv-AX).
+# See: https://github.com/FreeCAD/FreeCAD-translations/issues/359
+LANGUAGE_CODE_MAP = {
+    "sv-SE": "sv",
+}
+
 # Locations that require QM file generation (predominantly Python workbenches)
 GENERATE_QM = {
     "AddonManager",
@@ -349,6 +357,9 @@ def load_token():
 def updateqrc(qrcpath, lncode):
     "updates a qrc file with the given translation entry"
 
+    # Apply language code mapping for filenames
+    filecode = LANGUAGE_CODE_MAP.get(lncode, lncode)
+
     # print("opening " + qrcpath + "...")
 
     # getting qrc file contents
@@ -362,7 +373,7 @@ def updateqrc(qrcpath, lncode):
     f.close()
 
     # checking for existing entry
-    name = "_" + lncode + ".qm"
+    name = "_" + filecode + ".qm"
     for r in resources:
         if name in r:
             # print("language already exists in qrc file")
@@ -385,10 +396,10 @@ def updateqrc(qrcpath, lncode):
     # inserting new entry just after the last one
     line = resources[pos]
     if ".qm" in line:
-        line = re.sub(r"_.*\.qm", "_" + lncode + ".qm", line)
+        line = re.sub(r"_.*\.qm", "_" + filecode + ".qm", line)
     else:
         modname = os.path.splitext(os.path.basename(qrcpath))[0]
-        line = "        <file>translations/" + modname + "_" + lncode + ".qm</file>\n"
+        line = "        <file>translations/" + modname + "_" + filecode + ".qm</file>\n"
         # print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
         # sys.exit()
     # print("inserting line: ",line)
@@ -421,7 +432,8 @@ def updateTranslatorCpp(lncode):
     for i, l in enumerate(cppcode):
         if l.startswith("    d->mapLanguageTopLevelDomain[QT_TR_NOOP("):
             lastentry = i
-            if '"' + lncode + '"' in l:
+            _filecode = LANGUAGE_CODE_MAP.get(lncode, lncode)
+            if '"' + lncode + '"' in l or '"' + _filecode + '"' in l:
                 # print(lnname+" ("+lncode+") already exists in Translator.cpp")
                 return
 
@@ -432,9 +444,11 @@ def updateTranslatorCpp(lncode):
         sys.exit()
 
     # inserting new entry just before the above line
-    line = '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("' + lnname + '")] = "' + lncode + '";\n'
+    # Use mapped language code for the domain (e.g. sv-SE -> sv)
+    filecode = LANGUAGE_CODE_MAP.get(lncode, lncode)
+    line = '    d->mapLanguageTopLevelDomain[QT_TR_NOOP("' + lnname + '")] = "' + filecode + '";\n'
     cppcode.insert(pos, line)
-    print(lnname + " (" + lncode + ") added Translator.cpp")
+    print(lnname + " (" + filecode + ") added Translator.cpp")
 
     # writing the file
     f = open(cppfile, "w")
@@ -452,7 +466,9 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         basename = list(LEGACY_NAMING_MAP)[
             list(LEGACY_NAMING_MAP.values()).index(basename + ".ts")
         ][:-3]
-    newname = basename + "_" + lncode + ".ts"
+    # Apply language code mapping (e.g. sv-SE -> sv)
+    filecode = LANGUAGE_CODE_MAP.get(lncode, lncode)
+    newname = basename + "_" + filecode + ".ts"
     newpath = targetpath + os.sep + newname
     if not os.path.exists(tsfilepath):
         # If this language code does not exist for the given TS file, bail out
@@ -470,7 +486,7 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
             )
         except Exception as e:
             print(e)
-        newqm = targetpath + os.sep + basename + "_" + lncode + ".qm"
+        newqm = targetpath + os.sep + basename + "_" + filecode + ".qm"
         if not os.path.exists(newqm):
             print("ERROR: failed to create " + newqm + ", aborting")
             sys.exit()

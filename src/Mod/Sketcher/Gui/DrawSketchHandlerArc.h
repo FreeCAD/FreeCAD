@@ -37,7 +37,6 @@
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
@@ -50,8 +49,6 @@ using namespace std;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerArc;
 
@@ -268,7 +265,6 @@ private:
 
     void executeCommands() override
     {
-
         if (constructionMethod() == ConstructionMethod::Center) {
             if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
@@ -282,18 +278,18 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             /*Gui::NotifyError(sketchgui,
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));*/
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -578,7 +574,7 @@ void DSHArcController::configureToolWidget()
         };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_library(FreeCADBase SHARED)
+add_dependencies(FreeCADBase fc_version)
 
 if(WIN32)
     add_definitions(-DFCBase)
@@ -31,9 +32,8 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${Boost_INCLUDE_DIRS}
-    ${PYCXX_INCLUDE_DIR}
+    ${PYCXX_INCLUDE_DIRS}
     ${Python3_INCLUDE_DIRS}
-    ${QtCore_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
@@ -52,6 +52,7 @@ if(MSVC)
         optimized MSVCPRT.LIB
         Rpcrt4.lib
         version.lib
+        dbghelp.lib
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
@@ -86,9 +87,16 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
-
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+
+if(cpptrace_FOUND)
+    list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
+    # The CrashReporter Reader uses this to reduce the absolute source paths recorded in the
+    # debug info to paths relative to the source root, so a crash report cannot leak the
+    # build machine's directory layout.
+    target_compile_definitions(FreeCADBase PRIVATE FC_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+endif()
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
@@ -112,6 +120,18 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_module_from_py(
+    FreeCAD.Qt
+    Qt_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Units
+    Units_MODULE_GENERATED_SRCS
+)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -129,13 +149,6 @@ endif(SWIG_FOUND)
 
 SOURCE_GROUP("pycxx" FILES ${PYCXX_SOURCES})
 
-# auto-generate resource file with all available translations
-set (FreeCADBase_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Base_translation.qrc)
-qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
-    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
-qt_create_resource_file(${FreeCADBase_TR_QRC} ${QM_SRCS})
-qt_add_resources(FreeCADBase_QRC_SRCS ${FreeCADBase_TR_QRC})
-
 SET(FreeCADBase_Pyi_SRCS
     Axis.pyi
     BaseClass.pyi
@@ -150,6 +163,9 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Qt.module.pyi
+    FreeCAD.Console.module.pyi
+    FreeCAD.Units.module.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADBase_Pyi_SRCS})
 
@@ -157,6 +173,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    ${Units_MODULE_GENERATED_SRCS}
     UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
@@ -189,17 +206,17 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
-    Debugger.cpp
     DualQuaternion.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
     FileInfo.cpp
-    FutureWatcherProgress.cpp
+    FileLock.cpp
     GeometryPyCXX.cpp
     Handle.cpp
     InputSource.cpp
@@ -209,14 +226,15 @@ SET(FreeCADBase_CPP_SRCS
     Observer.cpp
     Parameter.xsd
     Parameter.cpp
+    ParameterObserver.cpp
     ParameterPy.cpp
     Persistence.cpp
     PersistencePyImp.cpp
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
-    ProgressIndicator.cpp
     ProgressIndicatorPy.cpp
+    PyException.cpp
     PyExport.cpp
     PyObjectBase.cpp
     PythonTypeExt.cpp
@@ -227,12 +245,15 @@ SET(FreeCADBase_CPP_SRCS
     ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
+    StringUtils.cpp
     Swap.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
+    Translation.cpp
+    ${Qt_MODULE_GENERATED_SRCS}
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -264,14 +285,13 @@ SET(FreeCADBase_HPP_SRCS
     Converter.h
     Color.h
     CoordinateSystem.h
-    Debugger.h
     DualNumber.h
     DualQuaternion.h
     Exception.h
     ExceptionFactory.h
     Factory.h
     FileInfo.h
-    FutureWatcherProgress.h
+    FileLock.h
     GeometryPyCXX.h
     Handle.h
     InputSource.h
@@ -279,11 +299,12 @@ SET(FreeCADBase_HPP_SRCS
     Matrix.h
     Observer.h
     Parameter.h
+    ParameterObserver.h
     Persistence.h
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
-    ProgressIndicator.h
+    PyException.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h
@@ -294,6 +315,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     SmartPtrPy.h
     Stream.h
+    StringUtils.h
     Swap.h
     ${SWIG_HEADERS}
     SystemHandler.h
@@ -301,6 +323,7 @@ SET(FreeCADBase_HPP_SRCS
     Tools.h
     Tools2D.h
     Tools3D.h
+    Translation.h
     Translate.h
     Type.h
     UnlimitedUnsigned.h
@@ -313,13 +336,23 @@ SET(FreeCADBase_HPP_SRCS
     ZipHeader.h
 )
 
+SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/Format.h
+    CrashReporter/Manager.h
+    CrashReporter/Manager.cpp
+    CrashReporter/Reader.h
+    CrashReporter/Reader.cpp
+    CrashReporter/Writer.h
+    CrashReporter/Writer.cpp
+)
+
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
-    ${FreeCADBase_QRC_SRCS}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
+    ${FreeCADBase_CrashReporter_SRCS}
     PyTools.c
     PyTools.h
     PreCompiled.h
@@ -330,7 +363,10 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
+        CrashReporter/WindowsCrashReporter.cpp
+        CrashReporter/WindowsCrashReporter.h
     )
+
 ENDIF(MSVC)
 
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
@@ -353,9 +389,7 @@ if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADBase)
-endif()
+target_compile_warn_error(FreeCADBase)
 
 SET_BIN_DIR(FreeCADBase FreeCADBase)
 

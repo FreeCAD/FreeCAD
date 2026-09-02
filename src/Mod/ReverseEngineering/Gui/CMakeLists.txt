@@ -9,7 +9,11 @@ set (ReverseEngineering_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/ReverseEngi
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${ReverseEngineering_TR_QRC} ${QM_SRCS})
-qt_add_resources(ReenGui_QRC_SRCS Resources/ReverseEngineering.qrc ${ReverseEngineering_TR_QRC})
+qt_add_resources(ReenGui_QRC_SRCS
+    Resources/ReverseEngineering.qrc
+    ${ReverseEngineering_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 set(Dialogs_UIC_SRCS
     FitBSplineCurve.ui
@@ -75,9 +79,7 @@ if (MSVC)
     target_compile_options(ReverseEngineeringGui PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(ReverseEngineeringGui)
-endif()
+target_compile_warn_error(ReverseEngineeringGui)
 
 SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)

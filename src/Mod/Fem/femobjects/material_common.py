@@ -94,6 +94,16 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
                 value=None,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyString",
+                name="MaterialName",
+                group="Material",
+                doc="Material name",
+                read_only=True,
+                value="",
+            )
+        )
 
         return prop
 
@@ -113,8 +123,19 @@ class MaterialCommon(base_fempythonobject.BaseFemPythonObject):
         if not obj.UUID:
             obj.UUID = self._get_material_uuid(obj.Material)
 
+        # try update MaterialName from Material
+        if not obj.MaterialName and "Name" in obj.Material:
+            obj.MaterialName = obj.Material["Name"]
+
         if not obj.hasExtension("App::SuppressibleExtensionPython"):
             obj.addExtension("App::SuppressibleExtensionPython")
+
+    def onChanged(self, obj, prop):
+        if prop == "Material":
+            if "Name" in obj.Material:
+                obj.MaterialName = obj.Material["Name"]
+            else:
+                obj.MaterialName = ""
 
     def _get_material_uuid(self, material):
         if not material:

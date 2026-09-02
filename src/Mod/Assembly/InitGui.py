@@ -21,8 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import Assembly_rc
-
 
 class AssemblyCommandGroup:
     def __init__(self, cmdlist, menu, tooltip=None):
@@ -61,9 +59,19 @@ class AssemblyWorkbench(Workbench):
         translate = FreeCAD.Qt.translate
 
         # load the builtin modules
+        import AssemblyGui
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandInsertNewPart, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView, CommandCreateSimulation, CommandCreateBom
+        import CommandCreateAssembly
+        import CommandInsertLink
+        import CommandInsertNewPart
+        import CommandCreateJoint
+        import CommandSolveAssembly
+        import CommandExportASMT
+        import CommandCreateView
+        import CommandCreateSimulation
+        import CommandCreateSnapshot
+        import CommandCreateBom
         import Preferences
 
         FreeCADGui.addLanguagePath(":/translations")
@@ -79,6 +87,7 @@ class AssemblyWorkbench(Workbench):
             "Assembly_Insert",
             "Assembly_SolveAssembly",
             "Assembly_CreateView",
+            "Assembly_CreateSnapshot",
             "Assembly_CreateSimulation",
             "Assembly_CreateBom",
         ]
@@ -86,10 +95,12 @@ class AssemblyWorkbench(Workbench):
         cmdListMenuOnly = [
             "Assembly_LinkSelectLinked",
             "Assembly_ExportASMT",
+            "Assembly_SelectJointsOfComponent",
         ]
 
         cmdListJoints = [
             "Assembly_ToggleGrounded",
+            "Assembly_CreateJointRigidGroup",
             "Separator",
             "Assembly_CreateJointFixed",
             "Assembly_CreateJointRevolute",
@@ -126,7 +137,22 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.Control.clearTaskWatcher()
 
     def ContextMenu(self, recipient):
-        pass
+        import UtilsAssembly
+
+        assembly = UtilsAssembly.activeAssembly()
+        if assembly is None:
+            return
+
+        selection = Gui.Selection.getSelectionEx("*", 0)
+        if not selection:
+            return
+
+        for sel in selection:
+            for sub_name in sel.SubElementNames:
+                comp, new_sub = UtilsAssembly.getComponentReference(assembly, sel.Object, sub_name)
+                if comp:
+                    self.appendContextMenu("", ["Assembly_SelectJointsOfComponent"])
+                    return
 
     def setWatchers(self):
         import UtilsAssembly

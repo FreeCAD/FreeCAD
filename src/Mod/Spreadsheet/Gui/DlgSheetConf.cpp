@@ -25,7 +25,6 @@
 
 #include <QMessageBox>
 
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
@@ -44,17 +43,27 @@ DlgSheetConf::DlgSheetConf(Sheet* sheet, Range range, QWidget* parent)
     : QDialog(parent)
     , sheet(sheet)
     , ui(new Ui::DlgSheetConf)
+    , originalRange(range)
 {
     ui->setupUi(this);
 
-    if (range.colCount() == 1) {
-        auto to = range.to();
-        to.setCol(CellAddress::MAX_COLUMNS - 1);
-        range = Range(range.from(), to);
-    }
-
     ui->lineEditStart->setText(QString::fromLatin1(range.from().toString().c_str()));
     ui->lineEditEnd->setText(QString::fromLatin1(range.to().toString().c_str()));
+    ui->radioButtonOrientationHorizontal->setChecked(range.from().col() != range.to().col());
+    ui->radioButtonOrientationVertical->setChecked(range.from().col() == range.to().col());
+
+    connect(
+        ui->radioButtonOrientationHorizontal,
+        &QRadioButton::clicked,
+        this,
+        &DlgSheetConf::onOrientationChanged
+    );
+    connect(
+        ui->radioButtonOrientationVertical,
+        &QRadioButton::clicked,
+        this,
+        &DlgSheetConf::onOrientationChanged
+    );
 
     ui->lineEditProp->setDocumentObject(sheet, false);
 
@@ -88,25 +97,39 @@ App::Property* DlgSheetConf::prepare(
     bool init
 )
 {
-    from = sheet->getCellAddress(ui->lineEditStart->text().trimmed().toLatin1().constData());
-    to = sheet->getCellAddress(ui->lineEditEnd->text().trimmed().toLatin1().constData());
+    from = originalRange.from();
+    to = originalRange.to();
 
-    if (from.col() >= to.col()) {
-        FC_THROWM(Base::RuntimeError, "Invalid cell range");
+    // rangeConf is supposed to hold the range of string cells, each holding
+    // the name of a configuration. The '-' / '|' below indicates a growing but
+    // continuous row / column (respectively), so that we can auto include new
+    // configurations. We'll bind the string list to a PropertyEnumeration for
+    // dynamical switching of the configuration.
+
+    if (ui->radioButtonOrientationVertical->isChecked()) {
+        if (from.row() >= to.row()) {
+            FC_THROWM(Base::RuntimeError, "Invalid cell range");
+        }
+
+        // Setup column as parameters, and row as configurations
+        to.setCol(from.col());
+
+        CellAddress confFrom(from.row(), from.col() + 1);
+        rangeConf = confFrom.toString();
+        rangeConf += ":-";
     }
+    else {
+        if (from.col() >= to.col()) {
+            FC_THROWM(Base::RuntimeError, "Invalid cell range");
+        }
 
-    // Setup row as parameters, and column as configurations
-    to.setRow(from.row());
+        // Setup row as parameters, and column as configurations
+        to.setRow(from.row());
 
-    CellAddress confFrom(from.row() + 1, from.col());
-    rangeConf = confFrom.toString();
-    // rangeConf is supposed to hold the range of string cells, each
-    // holding the name of a configuration. The '|' below indicates a
-    // growing but continuous column, so that we can auto include new
-    // configurations. We'll bind the string list to a
-    // PropertyEnumeration for dynamical switching of the
-    // configuration.
-    rangeConf += ":|";
+        CellAddress confFrom(from.row() + 1, from.col());
+        rangeConf = confFrom.toString();
+        rangeConf += ":|";
+    }
 
     if (!init) {
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
@@ -202,7 +225,7 @@ void DlgSheetConf::accept()
             FC_THROWM(Base::RuntimeError, "Invalid property expression: " << expr->toString());
         }
 
-        AutoTransaction guard("Setup conf table");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Setup conf table"));
         commandActive = true;
 
         // unbind any previous binding
@@ -264,36 +287,94 @@ void DlgSheetConf::accept()
             prop->getFullName()
         );
 
-        // Adjust the range to skip the first cell
-        range = Range(from.row(), from.col() + 1, to.row(), to.col());
+        if (ui->radioButtonOrientationVertical->isChecked()) {
+            // Adjust the range to skip the first cell (containing variant string)
+            range = Range(from.row() + 1, from.col(), to.row(), to.col());
 
-        // Formulate expression to calculate the row binding using
-        // PropertyEnumeration
-        Gui::cmdAppObjectArgs(
-            sheet,
-            "setExpression('.cells.Bind.%s.%s', "
-            "'tuple(.cells, <<%s>> + str(hiddenref(%s)+%d), <<%s>> + str(hiddenref(%s)+%d))')",
-            range.from().toString(CellAddress::Cell::ShowRowColumn),
-            range.to().toString(CellAddress::Cell::ShowRowColumn),
-            range.from().toString(CellAddress::Cell::ShowColumn),
-            prop->getFullName(),
-            from.row() + 2,
-            range.to().toString(CellAddress::Cell::ShowColumn),
-            prop->getFullName(),
-            from.row() + 2
-        );
+            // Dynamically bind the active configuration column to the
+            // configuration column selected by the property enumeration
+            // variant. For example, if the active configuration column is
+            // B2:B4, we would bind to C2:C4 for variant 0, D2:D4 for variant
+            // 1, and so on. The column varies with the selected property
+            // enumeration variant, but the rows are fixed.
+            //
+            // The bind target cell range is:
+            //      <dynamic column><from row>:<dynamic column><to row>
+            // where <from row> is fixed to range.from().row() + 1, <to row> is
+            // fixed to range.to().row() + 1, and <dynamic column> is the
+            // configuration table column offset plus the property enumeration
+            // variant index.
+            //
+            // The + 1 constants are needed because the expression function
+            // address() is 1-based, while row() and col() are 0-based.
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.Bind.%1$s.%2$s', 'tuple(.cells; "
+                "address(%5$d; %3$d+hiddenref(%4$s); 4); "
+                "address(%6$d; %3$d+hiddenref(%4$s); 4))')",
+                range.from().toString(CellAddress::Cell::ShowRowColumn),
+                range.to().toString(CellAddress::Cell::ShowRowColumn),
+                from.col() + 2,
+                prop->getFullName(),
+                range.from().row() + 1,
+                range.to().row() + 1
+            );
+        }
+        else {
+            // Adjust the range to skip the first cell (containing variant string)
+            range = Range(from.row(), from.col() + 1, to.row(), to.col());
+
+            // Dynamically bind the active configuration row to the
+            // configuration row selected by the property enumeration variant.
+            // For example, if the active configuration row is located at
+            // B2:D2, we would bind to B3:D3 for variant 0, B4:D4 for variant
+            // 1, and so on. The row varies with the selected property
+            // enumeration variant, but the columns are fixed.
+            //
+            // The bind target cell range is:
+            //      <from column><dynamic row>:<to column><dynamic row>
+            // where <from column> is fixed to range.from().col() + 1, <to
+            // column> is fixed to range.to().col() + 1, and <dynamic row> is
+            // the configuration table row offset plus the property enumeration
+            // variant index.
+            //
+            // The + 1 constants are needed because the expression function
+            // address() is 1-based, while row() and col() are 0-based.
+            Gui::cmdAppObjectArgs(
+                sheet,
+                "setExpression('.cells.Bind.%1$s.%2$s', 'tuple(.cells; "
+                "address(%3$d+hiddenref(%4$s); %5$d; 4); "
+                "address(%3$d+hiddenref(%4$s); %6$d; 4))')",
+                range.from().toString(CellAddress::Cell::ShowRowColumn),
+                range.to().toString(CellAddress::Cell::ShowRowColumn),
+                from.row() + 2,
+                prop->getFullName(),
+                range.from().col() + 1,
+                range.to().col() + 1
+            );
+        }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Setup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
+}
+
+void DlgSheetConf::onOrientationChanged()
+{
+    CellAddress from, to;
+    std::string rangeConf;
+    ObjectIdentifier path;
+    prepare(from, to, rangeConf, path, true);
+    ui->lineEditStart->setText(QString::fromLatin1(from.toString().c_str()));
+    ui->lineEditEnd->setText(QString::fromLatin1(to.toString().c_str()));
 }
 
 void DlgSheetConf::onDiscard()
@@ -307,7 +388,7 @@ void DlgSheetConf::onDiscard()
 
         Range range(from, to);
 
-        AutoTransaction guard("Unsetup conf table");
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Unsetup conf table"));
         commandActive = true;
 
         // unbind any previous binding
@@ -341,14 +422,14 @@ void DlgSheetConf::onDiscard()
         }
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::commitCommand();
+        sheet->getDocument()->commitTransaction();
         QDialog::accept();
     }
     catch (Base::Exception& e) {
         e.reportException();
         QMessageBox::critical(this, tr("Unsetup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
 }

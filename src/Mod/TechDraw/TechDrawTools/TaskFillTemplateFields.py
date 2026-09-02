@@ -34,7 +34,6 @@ import FreeCADGui as Gui
 import datetime
 from datetime import date
 import csv
-import codecs
 from fractions import Fraction
 import os.path
 import TechDraw
@@ -62,7 +61,7 @@ listofkeys = [
 file_path = App.getResourceDir() + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
 
 if os.path.exists(file_path):
-    with codecs.open(file_path, encoding="utf-8") as fp:
+    with open(file_path, encoding="utf-8", newline="") as fp:
         reader = csv.DictReader(fp)
         if listofkeys == reader.fieldnames:
             for row in reader:
@@ -532,17 +531,15 @@ class TaskFillTemplateFields:
         transactionName = QtCore.QT_TRANSLATE_NOOP(
             "Techdraw_FillTemplateFields", "Fill template fields"
         )
-        App.setActiveTransaction(transactionName)
+        App.ActiveDocument.openTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
-        App.closeActiveTransaction(False)
+        App.ActiveDocument.commitTransaction()
         self.close()
-
-        App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()

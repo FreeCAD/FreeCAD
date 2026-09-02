@@ -1,5 +1,9 @@
 <RCC>
     <qresource>
+        <file>icons/origin-x.svg</file>
+        <file>icons/origin-y.svg</file>
+        <file>icons/origin-z.svg</file>
+        <file>icons/set-origin.svg</file>
         <file>icons/CAM_Adaptive.svg</file>
         <file>icons/CAM_3DPocket.svg</file>
         <file>icons/CAM_3DSurface.svg</file>
@@ -28,7 +32,10 @@
         <file>icons/CAM_Face.svg</file>
         <file>icons/CAM_FacePocket.svg</file>
         <file>icons/CAM_FaceProfile.svg</file>
+        <file>icons/CAM_FeedsSpeeds.svg</file>
         <file>icons/CAM_Heights.svg</file>
+        <file>icons/CAM_HeightsDiagram.svg</file>
+        <file>icons/CAM_HeightsDiagram_NoFinish.svg</file>
         <file>icons/CAM_Helix.svg</file>
         <file>icons/CAM_Inspect.svg</file>
         <file>icons/CAM_Job.svg</file>
@@ -65,9 +72,23 @@
         <file>icons/CAM_ToolTable.svg</file>
         <file>icons/CAM_ToolTableAdd.svg</file>
         <file>icons/CAM_ToolTableRemove.svg</file>
+        <file>icons/CAM_UpdateDocumentTools.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
+        <file>icons/CAM_RotarySurface.svg</file>
         <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
+        <file>icons/arrow-ccw-x.svg</file>
+        <file>icons/arrow-ccw-y.svg</file>
+        <file>icons/arrow-ccw-z.svg</file>
+        <file>icons/arrow-cw-x.svg</file>
+        <file>icons/arrow-cw-y.svg</file>
+        <file>icons/arrow-cw-z.svg</file>
+        <file>icons/arrow-down-y.svg</file>
+        <file>icons/arrow-down-z.svg</file>
+        <file>icons/arrow-left-x.svg</file>
+        <file>icons/arrow-right-x.svg</file>
+        <file>icons/arrow-up-y.svg</file>
+        <file>icons/arrow-up-z.svg</file>
         <file>icons/arrow-cw.svg</file>
         <file>icons/arrow-down.svg</file>
         <file>icons/arrow-left-down.svg</file>
@@ -77,15 +98,24 @@
         <file>icons/arrow-right-up.svg</file>
         <file>icons/arrow-right.svg</file>
         <file>icons/arrow-up.svg</file>
+        <file>icons/move-to-origin.svg</file>
         <file>icons/edge-join-miter-not.svg</file>
         <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/edge-join-round.svg</file>
+        <file>icons/flute-ramp-linear.svg</file>
+        <file>icons/flute-ramp-s-curve.svg</file>
+        <file>icons/flute-ramp-smooth.svg</file>
+        <file>icons/flute-ramp-fillet.svg</file>
+        <file>icons/flute-fluting-ramp-full.svg</file>
+        <file>icons/flute-fluting-ramp-start.svg</file>
+        <file>icons/flute-fluting-ramp-start-end.svg</file>
         <file>icons/preferences-cam.svg</file>
         <file>panels/AxisMapEdit.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
+        <file>panels/DlgPostProcess.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
@@ -95,6 +125,7 @@
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/DragKnifeEdit.ui</file>
         <file>panels/DressUpLeadInOutEdit.ui</file>
+        <file>panels/FeedsSpeedsPresetEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/LibraryProperties.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
@@ -114,12 +145,15 @@
         <file>panels/PageOpMillFacingEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PageOpFluteEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
+        <file>panels/PageOpRotarySurfaceEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpTappingEdit.ui</file>
         <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
+        <file>panels/PageToolControllerEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyBag.ui</file>
@@ -155,5 +189,9 @@
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
+        <file>icons/model.svg</file>
+        <file>icons/stock.svg</file>
+        <file>icons/center-in-stock.svg</file>
+        <file>icons/xy-in-stock.svg</file>
     </qresource>
 </RCC>

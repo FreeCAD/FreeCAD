@@ -39,8 +39,8 @@ def get_information():
     return {
         "name": "Magnetic Field Around Wire",
         "meshtype": "solid",
-        "meshelement": "Tet10",
-        "constraints": ["electrostatic potential", "magnetization"],
+        "meshelement": "Tet4",
+        "constraints": ["electromagnetic", "magnetization"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["electromagnetic"],
@@ -110,7 +110,7 @@ def setup(doc=None, solvertype="elmer"):
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         eq_electrostatic = ObjectsFem.makeEquationMagnetodynamic(doc, solver_obj)
-        eq_electrostatic.AngularFrequency = "100 kHz"
+        eq_electrostatic.Frequency = "100 kHz"
         eq_electrostatic.BiCGstablDegree = 4
         eq_electrostatic.IsHarmonic = True
         eq_electrostatic.LinearIterativeMethod = "BiCGStabl"
@@ -158,7 +158,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # axial field around the wire
-    AxialField = ObjectsFem.makeConstraintElectrostaticPotential(doc, "AxialField")
+    AxialField = ObjectsFem.makeConstraintElectromagnetic(doc, "AxialField")
     AxialField.References = [
         (BooleanFragments, "Face4"),
         (BooleanFragments, "Face5"),
@@ -170,7 +170,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(AxialField)
 
     # voltage on one end
-    Voltage = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Voltage")
+    Voltage = ObjectsFem.makeConstraintElectromagnetic(doc, "Voltage")
     Voltage.References = [(BooleanFragments, "Face3")]
     Voltage.AV_re = "10.000 mV"
     Voltage.AV_im = "0 V"
@@ -180,7 +180,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(Voltage)
 
     # ground on other end
-    Ground = ObjectsFem.makeConstraintElectrostaticPotential(doc, "Ground")
+    Ground = ObjectsFem.makeConstraintElectromagnetic(doc, "Ground")
     Ground.References = [(BooleanFragments, "Face2")]
     Ground.AV_re = "0 V"
     Ground.AV_im = "0 V"

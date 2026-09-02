@@ -24,6 +24,10 @@
 #include "Camera.h"
 #include "Utilities.h"
 
+#include <App/Application.h>
+
+#include <cmath>
+
 using namespace Gui;
 
 
@@ -113,6 +117,80 @@ SbRotation Camera::rotation(Camera::Orientation view)
         default:
             return top();
     }
+}
+
+SbRotation Camera::rotation(const std::string& view, Camera::Orientation fallback)
+{
+    if (view == "Top") {
+        return rotation(Top);
+    }
+    if (view == "Bottom") {
+        return rotation(Bottom);
+    }
+    if (view == "Front") {
+        return rotation(Front);
+    }
+    if (view == "Rear") {
+        return rotation(Rear);
+    }
+    if (view == "Left") {
+        return rotation(Left);
+    }
+    if (view == "Right") {
+        return rotation(Right);
+    }
+    if (view == "Isometric") {
+        return rotation(Isometric);
+    }
+    if (view == "Dimetric") {
+        return rotation(Dimetric);
+    }
+    if (view == "Trimetric") {
+        return rotation(Trimetric);
+    }
+    if (view == "Custom") {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/View/Custom"
+        );
+        SbRotation rot;
+        rot.setValue(
+            static_cast<float>(hGrp->GetFloat("Q0", 0)),
+            static_cast<float>(hGrp->GetFloat("Q1", 0)),
+            static_cast<float>(hGrp->GetFloat("Q2", 0)),
+            static_cast<float>(hGrp->GetFloat("Q3", 1))
+        );
+        return rot;
+    }
+
+    return rotation(fallback);
+}
+
+SbRotation Camera::defaultOrientation(const char* fallbackView)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    return rotation(hGrp->GetASCII("NewDocumentCameraOrientation", fallbackView), Top);
+}
+
+bool Camera::rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float squaredTolerance)
+{
+    float l0 {};
+    float l1 {};
+    float l2 {};
+    float l3 {};
+    float r0 {};
+    float r1 {};
+    float r2 {};
+    float r3 {};
+    lhs.getValue(l0, l1, l2, l3);
+    rhs.getValue(r0, r1, r2, r3);
+    const float dot = l0 * r0 + l1 * r1 + l2 * r2 + l3 * r3;
+    const float absDot = std::fabs(dot);
+    // For unit quaternions, q and -q encode the same rotation, so compare
+    // against the closer sign.
+    const float squaredDistance = 2.0F * (1.0F - absDot);
+    return squaredDistance <= squaredTolerance;
 }
 
 Base::Rotation Camera::convert(Camera::Orientation view)

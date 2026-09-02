@@ -65,19 +65,20 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     PointSize.setStatus(App::Property::Hidden, true);
     DisplayMode.setStatus(App::Property::Hidden, true);
 
-    // get the datum coloring scheme
-    //  set default color for datums (golden yellow with 60% transparency)
+    // Set the default datum face color (golden yellow with 60% transparency).
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/PartDesign"
     );
     unsigned long shcol = hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099);
+    unsigned long lncol = hGrp->GetUnsigned("DefaultDatumLineColor", 0xFA9600FF);
     Base::Color col((uint32_t)shcol);
+    Base::Color lineCol((uint32_t)lncol);
 
     ShapeAppearance.setDiffuseColor(col);
-    LineColor.setValue(col);
-    PointColor.setValue(col);
+    LineColor.setValue(lineCol);
+    PointColor.setValue(lineCol);
     Transparency.setValue(60);
-    LineWidth.setValue(1);
+    LineWidth.setValue(Gui::ViewParams::instance()->getDefaultShapeLineWidth());
 }
 
 ViewProviderShapeBinder::~ViewProviderShapeBinder() = default;
@@ -225,7 +226,7 @@ void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, c
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     func->trigger(act, [this]() {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
 
         Gui::Document* document = this->getDocument();
         if (document) {
@@ -261,16 +262,15 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property* prop)
         Base::Color shapeColor, lineColor, pointColor;
         int transparency, linewidth;
         if (UseBinderStyle.getValue()) {
-            // get the datum coloring scheme
-            //  set default color for datums (golden yellow with 60% transparency)
+            // Set the default datum face color (golden yellow with 60% transparency).
             static ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/PartDesign"
             );
             shapeColor.setPackedValue(hGrp->GetUnsigned("DefaultDatumColor", 0xFFD70099));
-            lineColor = shapeColor;
-            pointColor = shapeColor;
+            lineColor.setPackedValue(hGrp->GetUnsigned("DefaultDatumLineColor", 0xFA9600FF));
+            pointColor = lineColor;
             transparency = 60;
-            linewidth = 1;
+            linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
         }
         else {
             shapeColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());
@@ -436,13 +436,14 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction)
         return;
     }
 
-    App::GetApplication().setActiveTransaction("Sync binder");
+
+    getDocument()->openCommand("Sync binder");
     try {
         if (relative) {
             self->Context.setValue(parent, parentSub.c_str());
         }
         self->update(PartDesign::SubShapeBinder::UpdateForced);
-        App::GetApplication().closeActiveTransaction();
+        getDocument()->commitCommand();
         return;
     }
     catch (Base::Exception& e) {
@@ -460,7 +461,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction)
         }
         FC_ERR(str.str());
     }
-    App::GetApplication().closeActiveTransaction(true);
+    getDocument()->abortCommand();
 }
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const

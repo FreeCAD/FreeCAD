@@ -34,6 +34,7 @@ class QHBoxLayout;
 class QToolButton;
 class QCheckBox;
 class QSpacerItem;
+class QLabel;
 QT_END_NAMESPACE
 
 namespace Gui
@@ -68,6 +69,8 @@ public:
     QPlainTextEdit* getEditor() const;
     void setDisplayName(DisplayName);
     void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
+
+    void updateInputHints();
 
     const char* getName() const override
     {
@@ -112,9 +115,6 @@ private Q_SLOTS:
     void undoAvailable(bool);
     void redoAvailable(bool);
 
-Q_SIGNALS:
-    void changeFileName(const QString&);
-
 private:
     void setCurrentFileName(const QString& fileName);
     bool saveFile();
@@ -140,13 +140,8 @@ public:
 
 public Q_SLOTS:
     void executeScript();
-    void startDebug();
-    void toggleBreakpoint();
-    void showDebugMarker(int line);
-    void hideDebugMarker();
 
 private:
-    PythonEditor* _pye;
     PythonTracingWatcher* watcher;
 };
 
@@ -158,22 +153,34 @@ public:
     explicit SearchBar(QWidget* parent = nullptr);
 
     void setEditor(QPlainTextEdit* textEdit);
+    QString getSearchText() const;
 
 protected:
     void keyPressEvent(QKeyEvent*) override;
     void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
-    void activate();
+    void activate(const QString& prefill = QString());
     void deactivate();
     void findPrevious();
     void findNext();
     void findCurrent();
 
+Q_SIGNALS:
+    void textChanged(const QString& text);
+
 private:
     void retranslateUi();
     void findText(bool skip, bool next, const QString& str);
     void updateButtons();
+    struct SearchResults
+    {
+        QVector<QPair<int, int>> matchRanges;
+        int currentIndex = -1;
+    };
+    SearchResults findAllMatches(const QString& str);
+    void updateSearchResults(const QString& str);
+    void highlightSearchResults(const SearchResults& matches);
 
 private:
     QPlainTextEdit* textEditor;
@@ -181,10 +188,12 @@ private:
     QSpacerItem* horizontalSpacer;
     QToolButton* closeButton;
     QLineEdit* searchText;
+    QLabel* resultLabel;
     QToolButton* prevButton;
     QToolButton* nextButton;
     QCheckBox* matchCase;
     QCheckBox* matchWord;
+    bool skipSearch = false;
 };
 
 }  // namespace Gui

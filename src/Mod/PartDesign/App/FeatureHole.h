@@ -27,7 +27,7 @@
 
 #include <optional>
 #include <App/PropertyUnits.h>
-#include "json_fwd.hpp"
+#include "nlohmann/json_fwd.hpp"
 #include "FeatureSketchBased.h"
 
 class Property;
@@ -52,6 +52,7 @@ public:
 
     App::PropertyBool Threaded;
     App::PropertyBool ModelThread;
+    App::PropertyBool CosmeticThread;
     App::PropertyLength ThreadPitch;
     App::PropertyEnumeration ThreadType;
     App::PropertyEnumeration ThreadSize;
@@ -77,6 +78,9 @@ public:
     App::PropertyBool UseCustomThreadClearance;
     App::PropertyLength CustomThreadClearance;
     App::PropertyInteger BaseProfileType;
+    App::PropertyEnumeration StartType;
+    App::PropertyLength StartOffset;
+    App::PropertyLinkSub StartReference;
 
     enum BaseProfileTypeOptions
     {
@@ -129,6 +133,8 @@ public:
     virtual void updateProps();
     bool isDynamicCounterbore(const std::string& thread, const std::string& holeCutType);
     bool isDynamicCountersink(const std::string& thread, const std::string& holeCutType);
+    double getThreadPitch() const;
+    double getStartOffset() const;
 
     Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
     TopoShape findHoles(
@@ -136,6 +142,7 @@ public:
         const TopoShape& profileshape,
         const TopoDS_Shape& protohole
     ) const;
+    std::vector<gp_Pnt> getHoleLocations() const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -194,6 +201,9 @@ private:
     static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
+    // Populated during findHoles() and consumed by
+    // ViewProviderHole for cosmetic thread matching.
+    mutable std::vector<gp_Pnt> _holeLocations;
 
     /* Counter-xxx */
     // public:
@@ -288,7 +298,6 @@ private:
     double getCountersinkAngle() const;
     double getThreadClassClearance() const;
     double getThreadRunout(int mode = 1) const;
-    double getThreadPitch() const;
     double getThreadProfileAngle();
     void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;

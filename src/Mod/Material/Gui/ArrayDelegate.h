@@ -24,7 +24,6 @@
 #pragma once
 
 #include <QDialog>
-#include <QDir>
 #include <QStandardItem>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>

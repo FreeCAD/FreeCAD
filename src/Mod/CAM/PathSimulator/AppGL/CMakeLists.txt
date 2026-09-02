@@ -24,8 +24,6 @@ SET(CAMSimulator_SRCS_Module
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
     PreCompiled.h
-    ViewCAMSimulator.cpp
-    ViewCAMSimulator.h
 )
 
 SET(CAMSimulator_SRCS_Core
@@ -45,6 +43,7 @@ SET(CAMSimulator_SRCS_Core
     MillPathSegment.h
     MillSimulation.cpp
     MillSimulation.h
+    OpenGlWrapper.cpp
     OpenGlWrapper.h
     Shader.cpp
     Shader.h
@@ -60,6 +59,16 @@ SET(CAMSimulator_SRCS_Core
     Texture.h
     TextureLoader.cpp
     TextureLoader.h
+    ViewCAMSimulator.cpp
+    ViewCAMSimulator.h
+    Dummy3DViewer.cpp
+    Dummy3DViewer.h
+    TopoShapeViewProvider.cpp
+    TopoShapeViewProvider.h
+    CAMSettings.cpp
+    CAMSettings.h
+    View3DSettings.cpp
+    View3DSettings.h
 )
 
 generate_from_py(CAMSim)
@@ -96,9 +105,7 @@ if(FREECAD_USE_PCH)
     set_source_files_properties(${CAMSimulator_SRCS_Core} PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(CAMSimulator)
-endif()
+target_compile_warn_error(CAMSimulator)
 
 SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)

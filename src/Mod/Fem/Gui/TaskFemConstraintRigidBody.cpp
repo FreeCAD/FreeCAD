@@ -299,7 +299,7 @@ void TaskFemConstraintRigidBody::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
@@ -308,7 +308,7 @@ void TaskFemConstraintRigidBody::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -316,7 +316,7 @@ void TaskFemConstraintRigidBody::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -358,7 +358,7 @@ void TaskFemConstraintRigidBody::addToSelection()
                         "Only one type of selection (vertex, face or edge) per "
                         "constraint allowed!"
                     );
-                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    QMessageBox::warning(this, tr("Selection Error"), msg);
                     addMe = false;
                     break;
                 }
@@ -381,7 +381,7 @@ void TaskFemConstraintRigidBody::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintRigidBody* pcConstraint = ConstraintView->getObject<Fem::ConstraintRigidBody>();
@@ -391,7 +391,7 @@ void TaskFemConstraintRigidBody::removeFromSelection()
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
          ++it) {  // for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it->getSubNames();
@@ -806,7 +806,7 @@ bool TaskDlgFemConstraintRigidBody::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     return TaskDlgFemConstraint::accept();

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Polygon objects."""
+
 ## @package make_polygon
 # \ingroup draftmake
 # \brief Provides functions to create Polygon objects.

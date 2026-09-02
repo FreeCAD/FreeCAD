@@ -106,6 +106,24 @@ class ConstraintTie(base_fempythonobject.BaseFemPythonObject):
                 value=1,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBoolList",
+                name="ReversedMaster",
+                group="Geometry",
+                doc="Use reversed normal direction for master references",
+                value=[False],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBoolList",
+                name="ReversedSlave",
+                group="Geometry",
+                doc="Use reversed normal direction for slave references",
+                value=[False],
+            )
+        )
 
         return prop
 

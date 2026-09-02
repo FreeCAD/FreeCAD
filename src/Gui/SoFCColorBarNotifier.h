@@ -29,14 +29,14 @@
 namespace Gui
 {
 
-class SoFCColorBarBase;
+class SoFCColorBar;
 
 class GuiExport SoFCColorBarNotifier: public ParameterGrp::ObserverType  // NOLINT
 {
 public:
     static SoFCColorBarNotifier& instance();
-    void attach(SoFCColorBarBase* bar);
-    void detach(SoFCColorBarBase* bar);
+    void attach(SoFCColorBar* bar);
+    void detach(SoFCColorBar* bar);
     void OnChange(ParameterGrp::SubjectType& caller, ParameterGrp::MessageType reason) override;
 
 private:
@@ -46,7 +46,7 @@ private:
     FC_DISABLE_COPY_MOVE(SoFCColorBarNotifier)
 
 private:
-    std::set<SoFCColorBarBase*> bars;
+    std::set<SoFCColorBar*> bars;
     ParameterGrp::handle group;
 };
 

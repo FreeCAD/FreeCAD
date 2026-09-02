@@ -23,13 +23,17 @@
  ***************************************************************************/
 
 #include "Adaptive.hpp"
+#include <cstddef>
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <cstring>
 #include <ctime>
+#include <climits>
 #include <algorithm>
+#include <map>
 #include <numbers>
-#include <optional>
+#include <string>
 
 namespace ClipperLib
 {
@@ -43,6 +47,9 @@ using namespace std;
 #define SAME_POINT_TOL_SQRD_SCALED 4.0
 #define UNUSED(expr) (void)(expr)
 
+//*****************************************
+// SVG Debug Info
+//*****************************************
 //*****************************************
 // Utils - inline
 //*****************************************
@@ -411,6 +418,8 @@ double DistancePointToPathsSqrd(
 }
 
 // joins collinear segments (within the tolerance)
+// TODO when migrating to Clipper 2, this function can be deleted and replaced with SimplifyPath(s),
+// which also handles open paths correctly
 void CleanPath(const Path& inp, Path& outpt, double tolerance)
 {
     if (inp.size() < 3) {
@@ -559,16 +568,14 @@ IntPoint Compute2DPolygonCentroid(const Path& vertices)
 // point must be within first path (boundary) and must not be within all other paths (holes)
 bool IsPointWithinCutRegion(const Paths& toolBoundPaths, const IntPoint& point)
 {
+    bool inside = false;
     for (size_t i = 0; i < toolBoundPaths.size(); i++) {
         int pip = PointInPolygon(point, toolBoundPaths[i]);
-        if (i == 0 && pip == 0) {
-            return false;  // is outside or on boundary
-        }
-        if (i > 0 && pip != 0) {
-            return false;  // is inside hole
+        if (pip != 0) {
+            inside = !inside;
         }
     }
-    return true;
+    return inside;
 }
 
 /* finds intersection of line segment with line segment */
@@ -756,52 +763,123 @@ void SmoothPaths(Paths& paths, double stepSize, long pointCount, long iterations
     ScaleDownPaths(paths, scale);
 }
 
-bool PopPathWithClosestPoint(
-    Paths& paths /*closest path is removed from collection and shifted to
-                    start with closest point */
-    ,
+// PopNextFinishingPass: Select and remove the next finishing pass to execute
+//
+// This function examines all available finishing paths (both closed and open) and selects
+// the best one to execute next based on proximity to the current tool position (p1).
+//
+// Requirements:
+//   - At least one finishing path must be available (either closed or open)
+//
+// Behavior:
+//   - Searches through both closedFinishingPaths and openFinishingPaths to find the
+//     closest point to the current tool position
+//   - For CLOSED paths: Can start at any point along the path. The path is rotated
+//     (shifted) so that execution begins at the closest point. The extraDistanceAround
+//     parameter allows advancing further along the path before starting.
+//   - For OPEN paths: Must start at the first vertex (index 0). No rotation is allowed.
+//     These paths represent segments where only part of the geometry needs finishing.
+//
+// Return:
+//   - true: A closed finishing path was selected and returned in 'result'. The path is
+//     removed from closedFinishingPaths.
+//   - false: An open finishing path was selected and returned in 'result'. The path is
+//     removed from openFinishingPaths.
+//   - If no paths remain in either list, the function returns false with an empty result.
+//
+bool PopNextFinishingPass(
+    Paths& closedFinishingPaths,
+    Paths& openFinishingPaths,
     IntPoint p1,
     Path& result,
     double extraDistanceAround = 0
 )
 {
-
-    if (paths.empty()) {
+    // Early return if no paths remain in either list
+    if (closedFinishingPaths.empty() && openFinishingPaths.empty()) {
+        result.clear();
         return false;
     }
 
     double minDistSqrd = __DBL_MAX__;
     size_t closestPathIndex = 0;
-    long closestPointIndex = 0;
-    for (size_t pathIndex = 0; pathIndex < paths.size(); pathIndex++) {
-        Path& path = paths.at(pathIndex);
+    size_t closestPointIndex = 0;
+    bool closestIsClosed = closedFinishingPaths.size() > 0;
+
+    // Search through closed finishing paths (can start at any point)
+    for (size_t pathIndex = 0; pathIndex < closedFinishingPaths.size(); pathIndex++) {
+        Path& path = closedFinishingPaths.at(pathIndex);
         for (size_t i = 0; i < path.size(); i++) {
             double dist = DistanceSqrd(p1, path.at(i));
             if (dist < minDistSqrd) {
                 minDistSqrd = dist;
                 closestPathIndex = pathIndex;
-                closestPointIndex = long(i);
+                closestPointIndex = i;
+                closestIsClosed = true;
             }
         }
     }
 
-    Path& closestPath = paths.at(closestPathIndex);
-    while (extraDistanceAround > 0) {
-        long nexti = (closestPointIndex + 1) % closestPath.size();
-        extraDistanceAround -= sqrt(DistanceSqrd(closestPath[closestPointIndex], closestPath[nexti]));
-        closestPointIndex = nexti;
+    // Search through open finishing paths (can only start at first vertex)
+    for (size_t pathIndex = 0; pathIndex < openFinishingPaths.size(); pathIndex++) {
+        Path& path = openFinishingPaths.at(pathIndex);
+        if (!path.empty()) {
+            double dist = DistanceSqrd(p1, path.at(0));
+            if (dist < minDistSqrd) {
+                minDistSqrd = dist;
+                closestPathIndex = pathIndex;
+                closestPointIndex = 0;
+                closestIsClosed = false;
+            }
+        }
     }
 
+    // Handle open path: copy as-is (no rotation) and remove from list
+    if (!closestIsClosed) {
+        Path& closestPath = openFinishingPaths.at(closestPathIndex);
+        result = closestPath;  // Copy path as-is, starting at first vertex
+        openFinishingPaths.erase(openFinishingPaths.begin() + closestPathIndex);
+        return false;  // Return false to indicate open path
+    }
+
+    // Handle closed path: rotate to start at closest point and remove from list
+    // Copy the path before erasing to avoid dangling reference
+    Path closestPath = closedFinishingPaths.at(closestPathIndex);
+    closedFinishingPaths.erase(closedFinishingPaths.begin() + closestPathIndex);
     result.clear();
-    // make new path starting with that point
-    for (size_t i = 0; i < closestPath.size(); i++) {
-        long index = closestPointIndex + long(i);
-        index = index % closestPath.size();
+
+    // Apply extraDistanceAround to advance further along the path before starting
+    // Interpolate as needed
+    while (extraDistanceAround > 0) {
+        size_t nexti = (closestPointIndex + 1) % closestPath.size();
+        const IntPoint& p1 = closestPath[closestPointIndex];
+        const IntPoint& p2 = closestPath[nexti];
+        double distToNext = sqrt(DistanceSqrd(p1, p2));
+        closestPointIndex = nexti;
+
+        if (distToNext <= extraDistanceAround) {
+            extraDistanceAround -= distToNext;
+        }
+        else {
+            // Interpolate to produce the first vertex
+            double interp = extraDistanceAround / distToNext;  // Fraction along the edge
+            IntPoint interpolated(
+                cInt(p1.X * (1 - interp) + p2.X * interp),
+                cInt(p1.Y * (1 - interp) + p2.Y * interp),
+                p1.Z
+            );
+            result.push_back(interpolated);
+            extraDistanceAround = 0;
+        }
+    }
+
+    // Output the remaining points from that start poitn
+    for (size_t offset = 0; offset < closestPath.size(); offset++) {
+        size_t index = (closestPointIndex + offset) % closestPath.size();
         result.push_back(closestPath.at(index));
     }
-    // remove the closest path
-    paths.erase(paths.begin() + closestPathIndex);
-    return true;
+
+    return true;  // Return true to indicate closed path
 }
 
 void DeduplicatePaths(const Paths& inputs, Paths& outputs)
@@ -980,6 +1058,18 @@ public:
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
     }
+
+    void AddClearedPaths(const Paths& paths)
+    {
+        clip.Clear();
+        clip.AddPaths(clearedPaths, PolyType::ptSubject, true);
+        clip.AddPaths(paths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctUnion, clearedPaths);
+        CleanPolygons(clearedPaths);
+        bboxPathsInvalid = true;
+        bboxClippedInvalid = true;
+    }
+
     void ExpandCleared(const Path toClearToolPath)
     {
         if (toClearToolPath.empty()) {
@@ -1071,6 +1161,13 @@ private:
 //***************************************
 // Linear Interpolation - area vs angle
 //***************************************
+struct InterpItem
+{
+    std::pair<double, IntPoint> angle;
+    double error;
+    bool isConventional;
+};
+
 class Interpolation
 {
 public:
@@ -1084,41 +1181,65 @@ public:
     }
     bool bothSides()
     {
-        return m_min && m_max && m_min->second < 0 && m_max->second >= 0;
+        return m_min && m_max && m_min->error < 0 && m_max->error >= 0
+            && (!m_min->isConventional || !m_max->isConventional);
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
-    void addPoint(double error, std::pair<double, IntPoint> angle, bool allowSkip = false)
+    void addPoint(double error, std::pair<double, IntPoint> angle, bool allowSkip, bool isConventional)
     {
+        const InterpItem newItem = {angle, error, isConventional};
+
         if (!m_min) {
-            m_min = {angle, error};
+            m_min = newItem;
         }
         else if (!m_max) {
-            m_max = {angle, error};
-            if (m_min->second > m_max->second) {
+            m_max = newItem;
+            if (m_min->error > m_max->error) {
                 auto tmp = m_min;
                 m_min = m_max;
                 m_max = tmp;
             }
         }
+        else if (isConventional && (m_min->isConventional ^ m_max->isConventional)) {
+            if (!allowSkip) {
+                if (m_min->isConventional) {
+                    m_min.reset();
+                }
+                else {
+                    m_max.reset();
+                }
+                addPoint(error, angle, false, isConventional);
+            }
+        }
         else if (bothSides()) {
             if (error < 0) {
-                m_min = {angle, error};
+                m_min = newItem;
             }
             else {
-                m_max = {angle, error};
+                m_max = newItem;
             }
         }
         else {
-            if (allowSkip && abs(error) > abs(m_min->second) && abs(error) > abs(m_max->second)) {
+            if (allowSkip && abs(error) > abs(m_min->error) && abs(error) > abs(m_max->error)
+                && (isConventional || !m_min->isConventional || !m_max->isConventional)) {
                 return;
             }
-            if (abs(m_min->second) > abs(m_max->second)) {
+
+            if (m_min->isConventional ^ m_max->isConventional) {
+                if (m_min->isConventional) {
+                    m_min.reset();
+                }
+                else {
+                    m_max.reset();
+                }
+            }
+            else if (abs(m_min->error) > abs(m_max->error)) {
                 m_min.reset();
             }
             else {
                 m_max.reset();
             }
-            addPoint(error, angle);
+            addPoint(error, angle, false, isConventional);
         }
     }
 
@@ -1131,7 +1252,7 @@ public:
         if (!m_max) {
             return MAX_ANGLE;
         }
-        double p = (0 - m_min->second) / (m_max->second - m_min->second);
+        double p = (0 - m_min->error) / (m_max->error - m_min->error);
 
         // Ensure search is sufficiently efficient -- this is a compromise
         // between binary search (p = 0.5, guaranteed search completion in log
@@ -1140,7 +1261,7 @@ public:
         const double minInterp = .2;
         p = max(min(p, 1 - minInterp), minInterp);
 
-        return m_min->first.first * (1 - p) + m_max->first.first * p;
+        return m_min->angle.first * (1 - p) + m_max->angle.first * p;
     }
 
     double clampAngle(double angle)
@@ -1155,232 +1276,8 @@ public:
 
 public:
     // {{angle, clipper point}, error}
-    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_min;
-    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_max;
-};
-
-//***************************************
-// Engage Point
-//***************************************
-
-class EngagePoint
-{
-public:
-    struct EngageState
-    {
-        size_t currentPathIndex = 0;
-        size_t currentSegmentIndex = 0;
-        double segmentPos = 0;
-        double totalDistance = 0;
-        double currentPathLength = 0;
-        int passes = 0;
-
-        double metric = 0;  // engage point metric
-
-        bool operator<(const EngageState& other) const
-        {
-            return (metric < other.metric);
-        }
-    };
-    EngagePoint(const Paths& p_toolBoundPaths)
-    {
-        SetPaths(p_toolBoundPaths);
-
-        state.currentPathIndex = 0;
-        state.currentSegmentIndex = 0;
-        state.segmentPos = 0;
-        state.totalDistance = 0;
-        calculateCurrentPathLength();
-    }
-
-    void SetPaths(const Paths& paths)
-    {
-        toolBoundPaths = paths;
-        state.currentPathIndex = 0;
-        state.currentSegmentIndex = 0;
-        state.segmentPos = 0;
-        state.totalDistance = 0;
-        state.passes = 0;
-        calculateCurrentPathLength();
-    }
-
-    EngageState GetState()
-    {
-        return state;
-    }
-
-    void SetState(const EngageState& new_state)
-    {
-        state = new_state;
-    }
-
-    void ResetPasses()
-    {
-        state.passes = 0;
-    }
-    void moveToClosestPoint(const IntPoint& pt, double step)
-    {
-
-        Path result;
-        IntPoint current = pt;
-        // chain paths according to distance in between
-        Paths toChain = toolBoundPaths;
-        toolBoundPaths.clear();
-        // if(toChain.size()>0) {
-        // 	toolBoundPaths.push_back(toChain.front());
-        // 	toChain.erase(toChain.begin());
-        // }
-        while (PopPathWithClosestPoint(toChain, current, result)) {
-            toolBoundPaths.push_back(result);
-            if (!result.empty()) {
-                current = result.back();
-            }
-        }
-
-        double minDistSq = __DBL_MAX__;
-        size_t minPathIndex = state.currentPathIndex;
-        size_t minSegmentIndex = state.currentSegmentIndex;
-        double minSegmentPos = state.segmentPos;
-        state.totalDistance = 0;
-        for (;;) {
-            while (moveForward(step)) {
-                double distSqrd = DistanceSqrd(pt, getCurrentPoint());
-                if (distSqrd < minDistSq) {
-                    minDistSq = distSqrd;
-                    minPathIndex = state.currentPathIndex;
-                    minSegmentIndex = state.currentSegmentIndex;
-                    minSegmentPos = state.segmentPos;
-                }
-            }
-            if (!nextPath()) {
-                break;
-            }
-        }
-        state.currentPathIndex = minPathIndex;
-        state.currentSegmentIndex = minSegmentIndex;
-        state.segmentPos = minSegmentPos;
-        calculateCurrentPathLength();
-        ResetPasses();
-    }
-    bool nextEngagePoint(
-        Adaptive2d* parent,
-        ClearedArea& clearedArea,
-        double step,
-        double minCutArea,
-        double maxCutArea,
-        int maxPases = 2
-    )
-    {
-        Perf_NextEngagePoint.Start();
-        double prevArea = 0;  // we want to make sure that we catch the point where the area is on
-                              // raising slope
-        const IntPoint dummyInitialPoint(-1000000000, -1000000000);
-        for (;;) {
-            if (!moveForward(step)) {
-                if (!nextPath()) {
-                    state.passes++;
-                    if (state.passes >= maxPases) {
-                        Perf_NextEngagePoint.Stop();
-                        return false;  // nothing more to cut
-                    }
-                    prevArea = 0;
-                }
-            }
-            IntPoint cpt = getCurrentPoint();
-            double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea);
-            if (area > minCutArea && area < maxCutArea && area > prevArea) {
-                Perf_NextEngagePoint.Stop();
-                return true;
-            }
-            prevArea = area;
-        }
-    }
-    IntPoint getCurrentPoint()
-    {
-        const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
-        double segLength = sqrt(DistanceSqrd(*p1, *p2));
-        return IntPoint(
-            long(p1->X + state.segmentPos * double(p2->X - p1->X) / segLength),
-            long(p1->Y + state.segmentPos * double(p2->Y - p1->Y) / segLength)
-        );
-    }
-
-    DoublePoint getCurrentDir()
-    {
-        const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
-        double segLength = sqrt(DistanceSqrd(*p1, *p2));
-        return DoublePoint(double(p2->X - p1->X) / segLength, double(p2->Y - p1->Y) / segLength);
-    }
-
-    bool moveForward(double distance)
-    {
-        const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        if (distance < NTOL) {
-            throw std::invalid_argument("distance must be positive");
-        }
-        state.totalDistance += distance;
-        double segmentLength = currentSegmentLength();
-        while (state.segmentPos + distance > segmentLength) {
-            state.currentSegmentIndex++;
-            if (state.currentSegmentIndex >= pth->size()) {
-                state.currentSegmentIndex = 0;
-            }
-            distance = distance - (segmentLength - state.segmentPos);
-            state.segmentPos = 0;
-            segmentLength = currentSegmentLength();
-        }
-        state.segmentPos += distance;
-        return state.totalDistance <= 1.2 * state.currentPathLength;
-    }
-
-    bool nextPath()
-    {
-        state.currentPathIndex++;
-        state.currentSegmentIndex = 0;
-        state.segmentPos = 0;
-        state.totalDistance = 0;
-        if (state.currentPathIndex >= toolBoundPaths.size()) {
-            state.currentPathIndex = 0;
-            calculateCurrentPathLength();
-            return false;
-        }
-        calculateCurrentPathLength();
-        return true;
-    }
-
-private:
-    Paths toolBoundPaths;
-    EngageState state;
-    Clipper clip;
-    void calculateCurrentPathLength()
-    {
-        const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        size_t size = pth->size();
-        state.currentPathLength = 0;
-        for (size_t i = 0; i < size; i++) {
-            const IntPoint* p1 = &pth->at(i > 0 ? i - 1 : size - 1);
-            const IntPoint* p2 = &pth->at(i);
-            state.currentPathLength += sqrt(DistanceSqrd(*p1, *p2));
-        }
-    }
-
-    double currentSegmentLength()
-    {
-        const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
-        return sqrt(DistanceSqrd(*p1, *p2));
-    }
+    std::optional<InterpItem> m_min;
+    std::optional<InterpItem> m_max;
 };
 
 //***************************************
@@ -1398,13 +1295,16 @@ Adaptive2d::Adaptive2d()
 // inverted
 //
 // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
+// 0.5) Rotate all geometry so the vector from c1 to c2 points up (y+)
 // 1) Find all x-coordinates of interest:
 //   a) All polygon vertices
 //   b) Intersection of all polygons with c1
 //   c) Intersection of all polygons with c2
 //   d) There are no self-intersections or intersection points with other polygons (guarantee from
-//   clipper), so we don't have to compute those e) Compute intersection points between c1 and c2 f)
-//   Add c1's and c2's vertical tangents to the list
+//   clipper), so we don't have to compute those
+//   e) Compute intersection points between c1 and c2
+//   f) //   Add c1's and c2's vertical tangents to the list
+//   g) x=c2.X
 // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r. We will consider
 // ranges of x-values between these points 3) For each non-empty range in x, construct a vertical
 // line through its midpoint
@@ -1421,21 +1321,16 @@ Adaptive2d::Adaptive2d()
 //       a) If outsideCount=0, totalArea += integral(x0, x1, crossed boundary)
 //       b) If outsideCount was 0 and just changed to 1, totalArea -= integral(x0, x1, crossed
 //       boundary)
-//         ...careful with the signs on those integrals; TODO be sure to add area from c2 and
+//         ...careful with the signs on those integrals; be sure to add area from c2 and
 //         subtract from other shapes
-// 4) Return accumulated area
-double Adaptive2d::CalcCutArea(
-    Clipper& clip,
-    const IntPoint& c1,
-    const IntPoint& c2,
-    ClearedArea& clearedArea,
-    bool preventConventional
-)
+//     3) if x<c2.X, additionally accumulate area in conventionalArea, for detection of conventional
+//     cutting
+// 4) Return <totalArea, conventionalArea>
+std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, ClearedArea& clearedArea)
 {
-
     double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
-        return 0;
+        return {0, 0};
     }
 
     Perf_CalcCutAreaCirc.Start();
@@ -1467,24 +1362,43 @@ double Adaptive2d::CalcCutArea(
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
-            polygon.push_back({(double)p.X, (double)p.Y});
+            polygon.emplace_back((double)p.X, (double)p.Y);
         }
         polygons.push_back(polygon);
     }
 
+    // 0.5) Rotate all geometry so the vector from c1 to c2 points up (y+)
+    {
+        const double angle = std::numbers::pi / 2 - atan2(c2.Y - c1.Y, c2.X - c1.X);
+        const double ca = cos(angle);
+        const double sa = sin(angle);
+        c1 = {(long long)(ca * c1.X - sa * c1.Y), (long long)(sa * c1.X + ca * c1.Y)};
+        c2 = {(long long)(ca * c2.X - sa * c2.Y), (long long)(sa * c2.X + ca * c2.Y)};
+        vector<vector<DoublePoint>> rotatedPolygons;
+        for (vector<DoublePoint>& pgon : polygons) {
+            vector<DoublePoint> rotated;
+            for (auto& p : pgon) {
+                rotated.push_back({ca * p.X - sa * p.Y, sa * p.X + ca * p.Y});
+            }
+            rotatedPolygons.push_back(rotated);
+        }
+
+        polygons = rotatedPolygons;
+    }
+
     // 1) Find all x-coordinates of interest:
     vector<double> xs;
-    for (const auto polygon : polygons) {
+    for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
-        for (const auto p : polygon) {
+        for (const auto& p : polygon) {
             xs.push_back(p.X);
         }
 
         // 1.b) Intersection of all polygons with c1
         // 1.c) Intersection of all polygons with c2
-        for (int i = 0; i < polygon.size(); i++) {
-            const auto p0 = polygon[i];
-            const auto p1 = polygon[(i + 1) % polygon.size()];
+        for (size_t i = 0; i < polygon.size(); i++) {
+            const auto& p0 = polygon[i];
+            const auto& p1 = polygon[(i + 1) % polygon.size()];
             if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.X);
@@ -1516,6 +1430,9 @@ double Adaptive2d::CalcCutArea(
     xs.push_back(xmin);
     xs.push_back(xmax);
 
+    // 1.g) x=c2.X
+    xs.push_back(c2.X);
+
     // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r
     {
         vector<double> xfilter;
@@ -1530,14 +1447,15 @@ double Adaptive2d::CalcCutArea(
 
     const auto interpX = [](const DoublePoint p0, const DoublePoint p1, double x) {
         const double interp = (x - p0.X) / (p1.X - p0.X);
-        const double y = p1.Y * interp + p0.Y * (1 - interp);
+        const double y = (p1.Y * interp) + (p0.Y * (1 - interp));
         return y;
     };
 
     // 3) For each non-empty range in x, construct a vertical line through its midpoint
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
-    for (int ix = 0; ix < xs.size() - 1; ix++) {
+    double conventionalArea = 0;
+    for (size_t ix = 0; ix + 1 < xs.size(); ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
         if (x0 == x1) {
@@ -1550,28 +1468,28 @@ double Adaptive2d::CalcCutArea(
         // circle index and top/bottom flag)
 
         // y, polygon index (or polygons.size() + circle index), edge index (or 0/1 for top/bottom half)
-        vector<tuple<double, int, int>> ys;
+        vector<tuple<double, size_t, size_t>> ys;
 
-        for (int ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
-            const auto polygon = polygons[ipolygon];
-            for (int iedge = 0; iedge < polygon.size(); iedge++) {
-                const auto p0 = polygon[iedge];
-                const auto p1 = polygon[(iedge + 1) % polygon.size()];
+        for (size_t ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
+            const auto& polygon = polygons[ipolygon];
+            for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
+                const auto& p0 = polygon[iedge];
+                const auto& p1 = polygon[(iedge + 1) % polygon.size()];
                 // note: we skip if the edge is vertical, p0.X == p1.X == xtest
                 if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
                     const double y = interpX(p0, p1, xtest);
-                    ys.push_back({y, ipolygon, iedge});
+                    ys.emplace_back(y, ipolygon, iedge);
                 }
             }
         }
 
-        for (int icircle = 0; icircle < circles.size(); icircle++) {
+        for (size_t icircle = 0; icircle < circles.size(); icircle++) {
             const DoublePoint c = circles[icircle];
             const double dx = abs(xtest - c.X);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
-                const double dy = sqrt(toolRadiusScaled * toolRadiusScaled - dx * dx);
-                ys.push_back({c.Y + dy, polygons.size() + icircle, 0});
-                ys.push_back({c.Y - dy, polygons.size() + icircle, 1});
+                const double dy = sqrt((toolRadiusScaled * toolRadiusScaled) - (dx * dx));
+                ys.emplace_back(c.Y + dy, polygons.size() + icircle, 0);
+                ys.emplace_back(c.Y - dy, polygons.size() + icircle, 1);
             }
         }
 
@@ -1588,14 +1506,12 @@ double Adaptive2d::CalcCutArea(
         // that crossing:
         //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
         std::vector<bool> outside;
-        for (int i = 0; i < polygons.size() + circles.size(); i++) {
+        outside.reserve(polygons.size() + circles.size());
+        for (size_t i = 0; i < polygons.size() + circles.size(); i++) {
             outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
         }
         int outsideCount = 1;
-        for (int iy = 0; iy < ys.size(); iy++) {
-            const int ishape = std::get<1>(ys[iy]);
-            const int ipart = std::get<2>(ys[iy]);
-
+        for (const auto& [_, ishape, ipart] : ys) {
             const bool prevOutside = outside[ishape];
             const int prevCount = outsideCount;
             outside[ishape] = !outside[ishape];
@@ -1609,13 +1525,16 @@ double Adaptive2d::CalcCutArea(
             if (outsideCount == 0 || prevCount == 0) {
                 if (ishape < polygons.size()) {
                     // crossed a polygon
-                    const auto polygon = polygons[ishape];
-                    const auto p0 = polygon[ipart];
-                    const auto p1 = polygon[(ipart + 1) % polygon.size()];
+                    const auto& polygon = polygons[ishape];
+                    const auto& p0 = polygon[ipart];
+                    const auto& p1 = polygon[(ipart + 1) % polygon.size()];
                     const auto y0 = interpX(p0, p1, x0);
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
                     area += entranceExitSign * newArea;
+                    if (xtest < c2.X) {
+                        conventionalArea += entranceExitSign * newArea;
+                    }
                 }
                 else {
                     // crossed a circle
@@ -1642,7 +1561,7 @@ double Adaptive2d::CalcCutArea(
                     const double tmidx = (x0 + x1) / 2;
                     const double tmidy = (y0 + y1) / 2;
                     const double th = sqrt(
-                        (tmidx - c.X) * (tmidx - c.X) + (tmidy - c.Y) * (tmidy - c.Y)
+                        ((tmidx - c.X) * (tmidx - c.X)) + ((tmidy - c.Y) * (tmidy - c.Y))
                     );
                     const double areaTriangle = tbase * th / 2;
                     const double areaSegment = areaSector - areaTriangle;
@@ -1651,15 +1570,19 @@ double Adaptive2d::CalcCutArea(
                     // the sign of the segment area is negative for bottom half of the circle,
                     // positive for top half
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
-                    const double newArea = circleSign * areaSegment + areaTrapezoid;
+                    const double newArea = (circleSign * areaSegment) + areaTrapezoid;
                     area += entranceExitSign * newArea;
+                    if (xtest < c2.X) {
+                        conventionalArea += entranceExitSign * newArea;
+                    }
                 }
             }
         }
     }
 
     Perf_CalcCutAreaCirc.Stop();
-    return area;
+
+    return {area, conventionalArea};
 }
 
 void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
@@ -1689,6 +1612,217 @@ void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
     }
 }
 
+// Write combined SVG with all accumulated paths from all regions
+void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
+{
+    // Calculate overall bounding box
+    long long minX = LLONG_MAX, minY = LLONG_MAX, maxX = LLONG_MIN, maxY = LLONG_MIN;
+
+    auto updateBBox = [&](const Paths& paths) {
+        for (const Path& path : paths) {
+            for (const auto& pt : path) {
+                minX = std::min(minX, pt.X);
+                minY = std::min(minY, pt.Y);
+                maxX = std::max(maxX, pt.X);
+                maxY = std::max(maxY, pt.Y);
+            }
+        }
+    };
+
+    // Regional collections (need unwrapping)
+    for (const Paths& regionPaths : svgInfo.allFinishingPaths) {
+        updateBBox(regionPaths);
+    }
+    for (const Paths& regionPaths : svgInfo.allToolBoundPaths) {
+        updateBBox(regionPaths);
+    }
+
+    // Single collections (direct)
+    updateBBox(svgInfo.step3Paths);
+    updateBBox(svgInfo.step4Paths);
+    updateBBox(svgInfo.step5e_inputPaths);
+
+    long long padding = std::max(maxX - minX, maxY - minY) / 10;
+    long long legendWidth = (maxX - minX) / 5;  // Legend takes 20% of width
+    minX -= padding + legendWidth;
+    minY -= padding;
+    maxX += padding;
+    maxY += padding;
+
+    std::ofstream svg("adaptive_preprocessing.svg");
+    svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << minX << " " << -maxY << " "
+        << (maxX - minX) << " " << (maxY - minY) << "\">\n";
+
+    // Add JavaScript for toggling visibility
+    svg << "<script type=\"text/javascript\"><![CDATA[\n";
+    svg << "function toggle(id) {\n";
+    svg << "  var el = document.getElementById(id);\n";
+    svg << "  var box = document.getElementById(id + '-box');\n";
+    svg << "  if (el.style.display === 'none') {\n";
+    svg << "    el.style.display = 'inline';\n";
+    svg << "    box.setAttribute('fill', box.getAttribute('data-color'));\n";
+    svg << "  } else {\n";
+    svg << "    el.style.display = 'none';\n";
+    svg << "    box.setAttribute('fill', '#cccccc');\n";
+    svg << "  }\n";
+    svg << "}\n";
+    svg << "]]></script>\n";
+
+    auto renderPathGroup =
+        [&](const std::string& groupId, const std::string& strokeColor, const Paths& paths) {
+            svg << "<g id=\"" << groupId << "\">\n";
+            for (size_t i = 0; i < paths.size(); i++) {
+                const Path& ip = paths[i];
+                if (!ip.empty()) {
+                    // Merge consecutive edges of the same dashedness into one <path> so that
+                    // stroke-dasharray renders continuously across short segments.
+                    bool inPath = false;
+                    bool curDash = false;
+                    for (size_t j = 0; j < ip.size(); j++) {
+                        const IntPoint& p1 = ip[j];
+                        const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                        bool edgeDash = !(p1.Z == 1 && p2.Z == 1);
+
+                        if (!inPath || edgeDash != curDash) {
+                            if (inPath) {
+                                svg << "\"/>\n";
+                            }
+                            curDash = edgeDash;
+                            inPath = true;
+                            svg << "<path stroke=\"" << strokeColor << "\" stroke-width=\""
+                                << (padding / 100) << "\" fill=\"none\"";
+                            if (curDash) {
+                                svg << " stroke-dasharray=\"" << (padding / 8) << ","
+                                    << (padding / 8) << "\"";
+                            }
+                            svg << " d=\"M" << p1.X << "," << -p1.Y;
+                        }
+                        svg << " L" << p2.X << "," << -p2.Y;
+                    }
+                    if (inPath) {
+                        svg << "\"/>\n";
+                    }
+                    // Add markers for Z=1 vertices
+                    for (const auto& pt : ip) {
+                        if (pt.Z == 1) {
+                            svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                                << (3 * padding / 50) << "\" fill=\"" << strokeColor << "\"/>\n";
+                        }
+                    }
+                }
+            }
+            svg << "</g>\n";
+        };
+
+    // Render all path groups
+    renderPathGroup("step3-paths", "green", svgInfo.step3Paths);
+    renderPathGroup("step4-paths", "orange", svgInfo.step4Paths);
+    renderPathGroup("step5a-paths", "cyan", svgInfo.step5a_stockRev);
+    renderPathGroup("step5b-paths", "magenta", svgInfo.step5b_outsideOfStock);
+    renderPathGroup("step5c-paths", "yellow", svgInfo.step5c_inputPathsUnion);
+    renderPathGroup("step5d-paths", "brown", svgInfo.step5d_clearedArea);
+    renderPathGroup("step5-paths", "purple", svgInfo.step5e_inputPaths);
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allToolBoundPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "tool-bound-paths-" + std::to_string(regionIdx + 1),
+            "blue",
+            svgInfo.allToolBoundPaths[regionIdx]
+        );
+    }
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allFinishingPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "finishing-paths-" + std::to_string(regionIdx + 1),
+            "red",
+            svgInfo.allFinishingPaths[regionIdx]
+        );
+    }
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allFinalClearedPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            svgInfo.allFinalClearedPaths[regionIdx]
+        );
+    }
+
+    // Legend (positioned in top-left within viewBox)
+    long long legendX = minX + padding / 2;
+    long long legendY = -maxY + padding;
+    long long boxSize = legendWidth / 15;
+    long long lineHeight = boxSize * 2;
+
+    // Calculate legend height based on number of entries
+    size_t numRegions = svgInfo.allToolBoundPaths.size();
+    size_t numLegendItems = 7 + numRegions * 3;  // 7 for steps 3,4,5a,5b,5c,5d,5 + 3 per region
+                                                 // (step 6, step 8, final cleared)
+    long long headingOffset = lineHeight;        // Space for heading
+
+    svg << "<g id=\"legend\">\n";
+
+    // Background for legend
+    svg << "<rect x=\"" << legendX << "\" y=\"" << legendY << "\" width=\"" << legendWidth
+        << "\" height=\"" << (lineHeight * numLegendItems + padding + headingOffset)
+        << "\" fill=\"white\" stroke=\"black\" stroke-width=\"" << (padding / 200)
+        << "\" opacity=\"0.9\"/>\n";
+
+    // Legend heading
+    svg << "<text x=\"" << (legendX + legendWidth / 2) << "\" y=\"" << (legendY + boxSize)
+        << "\" font-size=\"" << (boxSize * 1.2) << "\" text-anchor=\"middle\" font-weight=\"bold\""
+        << ">Click to Toggle</text>\n";
+
+    // Legend items (in step order)
+    int legendItem = 0;
+
+    auto renderLegendItem =
+        [&](const std::string& groupId, const std::string& color, const std::string& label) {
+            svg << "<rect id=\"" << groupId << "-box\" data-color=\"" << color << "\" x=\""
+                << (legendX + boxSize) << "\" y=\""
+                << (legendY + headingOffset + lineHeight * legendItem + boxSize) << "\" width=\""
+                << boxSize << "\" height=\"" << boxSize << "\" fill=\"" << color
+                << "\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+                << "\" style=\"cursor:pointer\" onclick=\"toggle('" << groupId << "')\"/>\n";
+            svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+                << (legendY + headingOffset + lineHeight * legendItem + boxSize * 1.5)
+                << "\" font-size=\"" << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('"
+                << groupId << "')\">" << label << "</text>\n";
+            legendItem++;
+        };
+
+    renderLegendItem("step3-paths", "green", "Step 3: Input Paths");
+    renderLegendItem("step4-paths", "orange", "Step 4: Profiling Areas");
+    renderLegendItem("step5a-paths", "cyan", "Step 5a: Stock Reversed");
+    renderLegendItem("step5b-paths", "magenta", "Step 5b: Outside Stock");
+    renderLegendItem("step5c-paths", "yellow", "Step 5c: Input Paths Union");
+    renderLegendItem("step5d-paths", "brown", "Step 5d: Cleared Area");
+    renderLegendItem("step5-paths", "purple", "Step 5e: Input Paths to be Finished");
+
+    for (size_t regionIdx = 0; regionIdx < numRegions; regionIdx++) {
+        std::string regionLabel = (numRegions > 1) ? " (Region " + std::to_string(regionIdx + 1) + ")"
+                                                   : "";
+        renderLegendItem(
+            "tool-bound-paths-" + std::to_string(regionIdx + 1),
+            "blue",
+            "Step 6: Tool Bound Paths" + regionLabel
+        );
+        renderLegendItem(
+            "finishing-paths-" + std::to_string(regionIdx + 1),
+            "red",
+            "Step 8: Finishing Paths" + regionLabel
+        );
+        renderLegendItem(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            "Final Cleared Area" + regionLabel
+        );
+    }
+
+    svg << "</g>\n";
+
+    svg << "</svg>";
+    svg.close();
+}
+
+
 //********************************************
 // Adaptive2d - Execute
 //********************************************
@@ -1696,6 +1830,7 @@ void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
 std::list<AdaptiveOutput> Adaptive2d::Execute(
     const DPaths& stockPaths,
     const DPaths& paths,
+    const DPaths& clearedPaths,
     std::function<bool(TPaths)> progressCallbackFn
 )
 {
@@ -1731,9 +1866,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     helixRampMaxRadiusScaled = long(helixRampTargetDiameter * scaleFactor / 2);
     helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
-    if (finishingProfile) {
-        finishPassOffsetScaled = long(stepOverScaled / 10);
-    }
+    finishPassOffsetScaled = finishingProfile ? long(stepOverScaled * FINISHING_THICKNESS_SCALE) : 0;
+
+    // Debug variables for SVG visualization
+    DebugSVGInfo svgInfo;
 
     ClipperOffset clipof;
     Clipper clip;
@@ -1795,125 +1931,648 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         stockInputPaths.push_back(cpth);
     }
 
+    // Convert cleared area
+    Paths initialClearedPaths;
+    for (size_t i = 0; i < clearedPaths.size(); i++) {
+        Path p;
+        for (size_t j = 0; j < clearedPaths[i].size(); j++) {
+            long x = long(clearedPaths[i][j].first * scaleFactor);
+            long y = long(clearedPaths[i][j].second * scaleFactor);
+            p.push_back({x, y});
+        }
+        initialClearedPaths.push_back(p);
+    }
+    SimplifyPolygons(initialClearedPaths);
+
     SimplifyPolygons(stockInputPaths);
-    // CleanPolygons(stockInputPaths,0.707);
 
-    //***************************************
-    //	Resolve hierarchy and run processing
-    //***************************************
-    double cornerRoundingOffset = 0.15 * toolRadiusScaled / 2;
-    if (opType == OperationType::otClearingInside || opType == OperationType::otClearingOutside) {
+    // Handle different clearing modes (inside/outside, clearing/profiling) and invoke the core
+    // adaptive algorithm
+    // 1) If outer clearing: add stock path to inputs
+    // 2) Fix input path orientation
+    // 3) Set Z=1 on all input paths to tag them as needing a finishing pass
+    // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
+    // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
+    // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
+    // 7) Loop over connected components using nesting level.
+    // 8) finishingPass = offset(currentTBP, finishingThickness), filtered for paths with Z=1
+    // 9) Compute bounds = offset(currentTBP, toolRadius)
+    // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
 
-        // prepare stock boundary overshooted paths
+    // 1) If outer clearing: add stock path to inputs
+    if (opType == OperationType::otClearingOutside) {
+        for (Path p : stockInputPaths) {
+            inputPaths.push_back(p);
+        }
+    }
+
+    // 2) Fix input path orientation
+    for (Path& p : inputPaths) {
+        // nesting count includes self, so odd is positive orientation
+        int nesting = getPathNestingLevel(p, inputPaths);
+        if ((nesting % 2 == 1) ^ Orientation(p)) {
+            ReversePath(p);
+        }
+    }
+
+    // 3) Set Z=1 on all input paths to tag them as needing a finishing pass
+    //
+    // When finishing passes are eventually generated, they will be created only for edges with
+    // z=1 on both end vertices. This is a little bit imprecise -- ideally the segments themselves
+    // would be tagged instead of their end vertices, but clipper doesn't support that feature
+    // natively. From what I've seen this is good enough in practice, but if it becomes problematic
+    // we can try to leverage vertex z-tagging to create a more complicated system for indirectly
+    // tagging edges.
+    for (Path& path : inputPaths) {
+        for (IntPoint& p : path) {
+            p.Z = 1;
+        }
+    }
+    svgInfo.step3Paths = inputPaths;
+
+    // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
+    //
+    // Adaptive "profiling" clears a small area offset from the input edges, but since the goal of
+    // the operation is profiling, rather than area clearing, only the input edge needs to be
+    // finished. The far sides of those areas do not require a finishing pass
+    if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
+        // offset by an extra finishPassOffsetScaled to compensate for undoing that later
+        long offset = 2 * (toolRadiusScaled + helixRampMaxRadiusScaled + finishPassOffsetScaled)
+            + MIN_STEP_CLIPPER;
+        if (opType == OperationType::otProfilingInside) {
+            offset = -offset;
+        }
+
+        Paths fullPaths;
+        Paths offsetPaths;
+
+        for (Path& path : inputPaths) {
+            clipof.Clear();
+            clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
+            clipof.Execute(offsetPaths, offset);
+
+            if (Orientation(path) ^ (offset > 0)) {
+                ReversePath(path);
+            }
+            clip.Clear();
+            clip.AddPaths(fullPaths, PolyType::ptSubject, true);
+            clip.AddPath(path, PolyType::ptClip, true);
+            for (Path& offsetPath : offsetPaths) {
+                for (IntPoint& p : offsetPath) {
+                    p.Z = 0;
+                }
+                if (Orientation(offsetPath) ^ (offset < 0)) {
+                    ReversePath(offsetPath);
+                }
+                clip.AddPath(offsetPath, PolyType::ptClip, true);
+            }
+            clip.Execute(ClipType::ctUnion, fullPaths);
+        }
+
+        inputPaths = fullPaths;
+        svgInfo.step4Paths = fullPaths;
+    }
+    else {
+        svgInfo.step4Paths = inputPaths;  // No change for non-profiling operations
+    }
+
+    // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
+    // clearedArea. Use Z=0 to mark the stock boundary as not needing to be finished
+    //
+    // We are working towards generating the toolBoundsPath -- the region in which the tool center
+    // is allowed to be. So far we have the basis for allowing the tool within the raw input
+    // regions. In this step, if going outside the stock is allowed, we add a boundary region
+    // outside the stock to the inputs so the tool will be allowed there too.
+    //
+    // All new paths created in this process have vertices tagged with Z=0 to prevent them from
+    // receiving finishing passes. Also, the new regions are added to the representation of
+    // already-cleared area so the algorithm knows that the tool *can* go there but does not need
+    // to.
+    if (!forceInsideOut) {
+
+        // 5a) Shrink the stock boundary to ensure overlap with input paths that hit the boundary
+        Paths stockRev;
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(stockRev, -2);
+        ReversePaths(stockRev);
+        svgInfo.step5a_stockRev = stockRev;
+
+        // 5b) Create outside-of-stock region
+        Paths outsideOfStock;
+        double overshootDistance = 4 * toolRadiusScaled + stockToLeave * scaleFactor;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-        double overshootDistance = 4 * toolRadiusScaled + stockToLeave * scaleFactor;
-        if (forceInsideOut) {
-            overshootDistance = 0;
-        }
-        Paths stockOvershoot;
-        clipof.Execute(stockOvershoot, overshootDistance);
-        ReversePaths(stockOvershoot);
+        clipof.Execute(outsideOfStock, overshootDistance);
+        svgInfo.step5b_outsideOfStock = outsideOfStock;
 
-        if (opType == OperationType::otClearingOutside) {
-            // add stock paths, with overshooting
-            for (const auto& p : stockOvershoot) {
-                inputPaths.push_back(p);
+        // 5c) Union input paths with stock regions
+        clip.Clear();
+        clip.AddPaths(inputPaths, PolyType::ptSubject, true);
+        clip.AddPaths(stockRev, PolyType::ptClip, true);
+        clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
+
+        // Z callback: output Z=1 if both vertices of either input edge have Z=1.
+        // This callback will be invoked on new vertices created while unioning areas (i.e.
+        // intersections between segments)
+        clip.ZFillFunction(
+            [](IntPoint& e1bot, IntPoint& e1top, IntPoint& e2bot, IntPoint& e2top, IntPoint& pt) {
+                // Check if both vertices of edge 1 have Z=1
+                bool edge1HasZ1 = (e1bot.Z == 1 && e1top.Z == 1);
+                // Check if both vertices of edge 2 have Z=1
+                bool edge2HasZ1 = (e2bot.Z == 1 && e2top.Z == 1);
+                // Set output Z=1 if either edge has both vertices with Z=1
+                pt.Z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
             }
-        }
-        else if (opType == OperationType::otClearingInside) {
-            // potential TODO: check if there are open paths, and try to close it through
-            // overshooted stock boundary
-        }
+        );
 
+        clip.Execute(ClipType::ctUnion, inputPaths);
+        svgInfo.step5c_inputPathsUnion = inputPaths;
+
+        // 5d) Update cleared area
         clipof.Clear();
-        clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        Paths paths;
-        clipof.Execute(paths, -toolRadiusScaled - finishPassOffsetScaled - cornerRoundingOffset);
-        for (const auto& current : paths) {
-            int nesting = getPathNestingLevel(current, paths);
-            if (nesting % 2 != 0 && (polyTreeNestingLimit == 0 || nesting <= polyTreeNestingLimit)) {
-                Paths toolBoundPaths;
-                toolBoundPaths.push_back(current);
-                if (polyTreeNestingLimit != nesting) {
-                    appendDirectChildPaths(toolBoundPaths, current, paths);
-                }
+        clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
+        clipof.Execute(outsideOfStock, 100 * toolRadiusScaled);
 
-                // offset back outwards - corner rounding
-                clipof.Clear();
-                clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-                clipof.Execute(toolBoundPaths, cornerRoundingOffset);
+        clip.Clear();
+        clip.AddPaths(initialClearedPaths, PolyType::ptSubject, true);
+        clip.AddPaths(stockRev, PolyType::ptClip, true);
+        clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctUnion, initialClearedPaths);
+        svgInfo.step5d_clearedArea = initialClearedPaths;
+    }
 
-                // restore original bound paths
-                // bounding paths - i.e. area that must be cleared inside
-                // it's not the same as input paths due to filtering (nesting logic) and corner
-                // rounding
-                Paths boundPaths;
-                clipof.Clear();
-                clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-                clipof.Execute(boundPaths, toolRadiusScaled + finishPassOffsetScaled);
-                ProcessPolyNode(boundPaths, toolBoundPaths);
+    // 5e) Use initialClearedPaths to zero out Z-values for parts of the input paths that do not
+    // need to be finished. This was added after the fact and I probably ought to make it a
+    // high-level step of its own, but I didn't want to renumber everything.
+    //
+    // So far, "input" paths are tagged as needing to be finished if the user input them, but not if
+    // they are generated to allow tool movement outside the stock or if they are generated as the
+    // boundary region of a path to be profiled. However, in addition to these exceptions, some
+    // (complete or incomplete) sections of user-specified input paths also do not require finishing
+    // passes because they protrude into regions that are already clear. For example, if the user
+    // runs adaptive on the same face twice, first with a large tool and then again with a small
+    // tool (with rest machining enabled), much of the boundary of the small-tool adaptive operation
+    // may already be cleared, and does not require a finishing pass. Only the input boundaries that
+    // are actually cut in the current operation require a finishing pass. (If the user wants a
+    // full-boundary finishing pass with the small tool in this scenario, they should leave some
+    // stock uncut at the boundary of the large-tool pass.)
+    //
+    // This computation is done by computing the initial non-cleared area and intersecting it with
+    // the input path boundary. The portions of the boundary present in this intersection need to be
+    // finished; the rest do not.
+    //
+    // Unfortunately, Clipper does not natively support this sort of "update z if in intersection"
+    // operation. In order build it out of clipper primitives, we start by creating a copy of the
+    // input path with z-values corresponding to the index/position in the original input. This
+    // enables us to keep track of which vertex is which after taking the intersection. Then create
+    // the updated version of the path by simultaneously iterating through the original input path
+    // and the intersection result and re-assembling the input boundary path with appropriately
+    // (z=0/z=1) tagged vertices to specify if they require a finishing pass.
+    //
+    // There is some subtlety to this tracking+reassembly process because new vertices may be
+    // generated by the intersection operation, subdividing input edges one or more times. These
+    // vertices are assigned new z-values that uniquely identify them, but these z-values do not
+    // correspond to the index of any vertex in the initial path. For these newly generated points,
+    // we separately track their position along the boundary (represented as a floating point number
+    // interpolating the positions of the vertices of their parent edges). We also check if the
+    // parent edge needs to be finished (at least as understood prior to this computation). If so,
+    // we also tag this splitting vertex as needing to be finished to preserve that property when
+    // the edge is split.
+    //
+    // During path reassembly, information about new/split-edge vertices needs to be looked up by a
+    // different process than original vertices, but all of the same information (position/order on
+    // the path, potentially requires finishing) is present, so after the information lookup is
+    // complete they can be handled the same way as original vertices.
+    {
+
+        // Clipper 1's z-callback mechanism doesn't support binding local variables, so we convert
+        // to clipper 2 for this operation. This code will go away soon when we convert all of
+        // adaptive to clipper 2
+
+        // Convert initialClearedPaths to Clipper2
+        Clipper2Lib::Paths64 initialClearedPaths2;
+        for (const auto& clearedPath : initialClearedPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : clearedPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
             }
+            initialClearedPaths2.push_back(p);
+        }
+
+        // Convert stockInputPaths to Clipper2
+        Clipper2Lib::Paths64 stockInputPaths2;
+        for (const auto& stockPath : stockInputPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : stockPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
+            }
+            stockInputPaths2.push_back(p);
+        }
+
+        // Compute noncleared area = stock - cleared
+        Clipper2Lib::Clipper64 clipDiff;
+        clipDiff.AddSubject(stockInputPaths2);
+        clipDiff.AddClip(initialClearedPaths2);
+        Clipper2Lib::Paths64 nonclearedPaths;
+        clipDiff.Execute(
+            Clipper2Lib::ClipType::Difference,
+            Clipper2Lib::FillRule::EvenOdd,
+            nonclearedPaths
+        );
+
+        Paths updatedPaths;
+        for (const auto& path : inputPaths) {
+            // Create a copy of the path with z value specifying the index. Points are initialized
+            // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
+            // index + 1
+            Clipper2Lib::Path64 indexedPath;
+            for (size_t i = 0; i < path.size(); i++) {
+                indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
+            }
+            // Explicitly close the path, before doing a boolean operation on it as an open (well,
+            // "not implicitly closed") path. Unfortunately clipper treats points as interchangeable
+            // if they have equal x and y even if z is different, so this end vertex also shares the
+            // start vertex's z-value.
+            indexedPath.push_back(indexedPath[0]);
+
+            // Prepare structures to store information about newly generated/edge-splitting points
+            const int firstNewZ = static_cast<int>(path.size()) + 2;
+            int nextNewZ = firstNewZ;
+            std::map<int, double> newZPosition;
+            std::map<int, cInt> newZNeedsFinishing;
+
+            // Create a new clipper object to avoid overwriting the z callback of the main one
+            Clipper2Lib::Clipper64 clip2;
+            clip2.SetZCallback([&nextNewZ, &newZPosition, &newZNeedsFinishing, &path](
+                                   const Clipper2Lib::Point64& e1bot,
+                                   const Clipper2Lib::Point64& e1top,
+                                   const Clipper2Lib::Point64& e2bot,
+                                   const Clipper2Lib::Point64& e2top,
+                                   Clipper2Lib::Point64& pt
+                               ) {
+                (void)e2bot;
+                (void)e2top;
+                // If the split-edge point is actuall at an edge then we have no need for a new
+                // z-value. Otherwise, generate a new z value
+                if (pt.x == e1bot.x && pt.y == e1bot.y) {
+                    pt.z = e1bot.z;
+                    return;
+                }
+                if (pt.x == e1top.x && pt.y == e1top.y) {
+                    pt.z = e1top.z;
+                    return;
+                }
+                pt.z = nextNewZ++;
+
+                // Compute the position of the new point by interpolating the z-values of its input
+                // parent edge (e1 is the parent edge of the subject/input path; e2 comes from the
+                // clipping/cleared area path)
+
+                // Compute distance from e1bot to e1top
+                double dx_total = e1top.x - e1bot.x;
+                double dy_total = e1top.y - e1bot.y;
+                double dist_total = sqrt(dx_total * dx_total + dy_total * dy_total);
+
+                // Compute distance from e1bot to pt
+                double dx_pt = pt.x - e1bot.x;
+                double dy_pt = pt.y - e1bot.y;
+                double dist_pt = sqrt(dx_pt * dx_pt + dy_pt * dy_pt);
+
+                // Compute interpolated position Z value. In most cases edges are z=n and z=n+1, and
+                // we do a simple interpolation. However, the final edge connects z=path.size() to
+                // z=1, and that interpolation result does not correctly specify the position of the
+                // new point. Instead, we detect that case and interpolate between path.size() and
+                // path.size() + 1.
+                double e1bot_effective = (static_cast<std::size_t>(e1bot.z) == 1
+                                          && static_cast<std::size_t>(e1top.z) == path.size())
+                    ? static_cast<double>((path.size() + 1))
+                    : static_cast<double>(e1bot.z);
+                double e1top_effective = (e1top.z == 1
+                                          && static_cast<std::size_t>(e1bot.z) == path.size())
+                    ? (path.size() + 1)
+                    : static_cast<double>(e1top.z);
+                double interp = dist_pt / dist_total;
+                double interpZ = e1bot_effective + interp * (e1top_effective - e1bot_effective);
+
+                // Update data structures for the new point
+                newZPosition[pt.z] = interpZ;
+
+                // I'm pretty sure e1bot and e1top are always original vertices, but just in case
+                // we can handle the alternative possibility
+                cInt e1bot_finishing = (e1bot.z >= 1
+                                        && static_cast<std::size_t>(e1bot.z) <= path.size())
+                    ? path[e1bot.z - 1].Z
+                    : newZNeedsFinishing[static_cast<int>(e1bot.z)];
+                cInt e1top_finishing = (e1top.z >= 1
+                                        && static_cast<std::size_t>(e1top.z) <= path.size())
+                    ? path[e1top.z - 1].Z
+                    : newZNeedsFinishing[static_cast<int>(e1top.z)];
+                newZNeedsFinishing[pt.z] = e1bot_finishing && e1top_finishing;
+            });
+
+            // Intersect the input boundary (i.e. open path intersection) with the noncleared area
+            clip2.AddOpenSubject({indexedPath});
+            clip2.AddClip(nonclearedPaths);
+            Clipper2Lib::Paths64 unusedClosedPaths, nonclearedInputs;
+            clip2.Execute(
+                Clipper2Lib::ClipType::Intersection,
+                Clipper2Lib::FillRule::EvenOdd,
+                unusedClosedPaths,
+                nonclearedInputs
+            );
+
+            // Prepare for the final reassembly process by collecting all points from the
+            // intersection result. Also remove duplicate representations of the start/end point,
+            // since we will switch back to the clipper default of implicitly-closed paths
+            std::vector<IntPoint> nonclearedPoints;
+            bool hasZ1 = false;
+            for (const auto& nonclearedPath : nonclearedInputs) {
+                for (const auto& pt : nonclearedPath) {
+                    if (pt.z != 1 || !hasZ1) {
+                        nonclearedPoints.push_back({pt.x, pt.y, pt.z});
+                    }
+                    hasZ1 |= pt.z == 1;
+                }
+            }
+            indexedPath.pop_back();  // remove duplicate start point from the input
+
+            // Further prepare for reassembly by sorting the collected points by their position
+            // (z-value for original points, newZPosition for new points). This allows us to
+            // reassemble with a single pass, simultaneously iterating through both the original
+            // input points and the intersection results in order of increasing position.
+            std::sort(
+                nonclearedPoints.begin(),
+                nonclearedPoints.end(),
+                [&newZPosition, &firstNewZ](const IntPoint& p1, const IntPoint& p2) {
+                    double val1 = (p1.Z >= firstNewZ) ? newZPosition.at(p1.Z) : (double)p1.Z;
+                    double val2 = (p2.Z >= firstNewZ) ? newZPosition.at(p2.Z) : (double)p2.Z;
+                    return val1 < val2;
+                }
+            );
+
+            // Reassemble the updated input path with new z-values.
+            //
+            // Case 1: Points present in the original input and not the intersection appear in
+            // cleared area and do not require finishing (set z=0).
+            //
+            // Case 2: Points present in the intersection and not the original input are
+            // generated/edge-splitting points and need to be added. They appear in the non-cleared
+            // area, so they should be finished if their parent edge wanted finishing (i.e. use the
+            // value in newZNeedsFinishing).
+            //
+            // Case 3: Points present in both appear in the non-cleared area, so they should be
+            // finished if they are already tagged for finishing (i.e. keep the original z-value
+            // from the input).
+            Path updatedPath;
+            auto nonclearedIt = nonclearedPoints.begin();
+            auto indexedIt = indexedPath.begin();
+
+            while (indexedIt != indexedPath.end() || nonclearedIt != nonclearedPoints.end()) {
+                // Get position of next noncleared point (if any remain)
+                double nextNonclearedPos = (nonclearedIt != nonclearedPoints.end())
+                    ? ((nonclearedIt->Z >= firstNewZ) ? newZPosition.at(nonclearedIt->Z)
+                                                      : static_cast<double>(nonclearedIt->Z))
+                    : std::numeric_limits<double>::max();
+
+                // Get position of next indexed path point (if any)
+                double nextPathPos = (indexedIt != indexedPath.end())
+                    ? static_cast<double>(indexedIt->z)
+                    : std::numeric_limits<double>::max();
+
+                if (nextPathPos < nextNonclearedPos) {
+                    // Case 1: original point is not in the noncleared region
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    newPt.Z = 0;
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                }
+                else if (nextNonclearedPos < nextPathPos) {
+                    // Case 2: newly generated/split-edge point in the noncleared region
+                    IntPoint newPt = *nonclearedIt;
+                    newPt.Z = newZNeedsFinishing.at(newPt.Z);
+                    updatedPath.push_back(newPt);
+                    nonclearedIt++;
+                }
+                else {
+                    // Case 3: the same point is present in both lists
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                    nonclearedIt++;
+                }
+            }
+
+            updatedPaths.push_back(updatedPath);
+        }
+
+        inputPaths = updatedPaths;
+        svgInfo.step5e_inputPaths = inputPaths;
+    }
+
+    // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
+    //
+    // This represents the locations the tool center is allowed to be during the main adatpive
+    // pass, prior to applying finishing profiling.
+    //
+    // Note: Clipper1 doesn't preserve Z values when performing offset operations, so we
+    // convert to Clipper2 to perform the offset. This temporary conversion will be eliminated soon
+    // when we convert the full operation to clipper 2.
+    Clipper2Lib::Paths64 inputPaths2;
+    inputPaths2.reserve(inputPaths.size());
+    for (const auto& path : inputPaths) {
+        Clipper2Lib::Path64 p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.X, pt.Y, pt.Z);  // IntPoint -> Point64
+        }
+        inputPaths2.emplace_back(p);
+    }
+
+    // Use ClipperOffset with Z callback to preserve Z=1 marking
+    // Note that PreserveCollinear must be set of ClipperOffset (it is already set by default on
+    // Clipper64) to avoid accidentally optimizing out collinear points with differing z-values
+    Clipper2Lib::ClipperOffset clipof2;
+    clipof2.PreserveCollinear(true);
+    clipof2.AddPaths(inputPaths2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+    // Z callback: output Z=1 if both vertices of either input edge have Z=1
+    clipof2.SetZCallback([](const Clipper2Lib::Point64& e1bot,
+                            const Clipper2Lib::Point64& e1top,
+                            const Clipper2Lib::Point64& e2bot,
+                            const Clipper2Lib::Point64& e2top,
+                            Clipper2Lib::Point64& pt) {
+        // Check if both vertices of edge 1 have Z=1
+        bool edge1HasZ1 = (e1bot.z == 1 && e1top.z == 1);
+        // Check if both vertices of edge 2 have Z=1
+        bool edge2HasZ1 = (e2bot.z == 1 && e2top.z == 1);
+        // Set output Z=1 if either edge has both vertices with Z=1
+        pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
+    });
+
+    Clipper2Lib::Paths64 toolBounds2;
+    clipof2.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds2);
+
+    /* Convert results back to clipper1 */
+    Paths toolBounds;
+    toolBounds.reserve(toolBounds2.size());
+    for (const auto& path : toolBounds2) {
+        Path p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> IntPoint
+        }
+        toolBounds.emplace_back(p);
+    }
+
+    // 7) Loop over connected components of toolBounds
+    //
+    // The main adaptive algorithm (ProcessPolyNode) is run on one connected component at a time
+    // to facilitate considering a helix-down entrance exclusively for the initial engagement of
+    // each component and using entrances from the cleared area for all subsequent reengagements.
+    //
+    // Note that connectivity here is determined based on the toolBounds representation, which
+    // indicates where the tool center is allowed to be. If two regions are connected only by
+    // narrow channels that do not fit the tool, they will be split up for independent processing
+    // here. This guarantees that the region provided to ProcessPolyNode can be fully cleared by
+    // repeated reengagement from the cleared area after the initial entrance (which may require
+    // helixing down).
+    //
+    // When we loop over toolBounds, we look for outer boundaries only. When we find one, we also
+    // accumulate all top-level holes inside of them. The boundary path and immediate hole paths are
+    // processed together. Any further-nested paths (i.e. appearing inside a hole) will be processed
+    // in a separate iteration of the loop.
+    for (const auto& current : toolBounds) {
+        // Nesting counts itself and the number of polygons containing it, so nesting % 2 == 1
+        // specifies exterior boundaries and nesting % 2 == 0 specifies holes
+        int nesting = getPathNestingLevel(current, toolBounds);
+        if (nesting % 2 != 0) {
+            // current is an exterior boundary; now find all the holes directly inside it
+            Paths currentTBP;
+            currentTBP.push_back(current);
+
+            for (size_t iother = 0; iother < toolBounds.size(); iother++) {
+                const auto& other = toolBounds[iother];
+
+                if (PointInPolygon(other.front(), current) != 0) {
+                    if (getPathNestingLevel(other, toolBounds) == nesting + 1) {
+                        currentTBP.push_back(other);
+                    }
+                }
+            }
+
+            // 8) finishingPass = offset(currentTBP, finishingThickness)
+            //
+            // Now that we have currentTBP representing where the tool center may be while during
+            // the main clearing operation, we need to reconstruct the required finishing passes for
+            // that region.
+            //
+            // Note that it is
+            // important that we offset the input inward to create the TBP and then offset part of
+            // the way back outwards from the TBP to create the finishing pass, and that we do not
+            // directly compute the finishing pass from the input by only offsetting inwards. If the
+            // input has narrow channels that are just wide enough to fit the tool for a finishing
+            // pass, those regions will not be wide enough for interior clearing. If we actually
+            // executed this "finishing" pass, the tool would be slotting when it entered that
+            // region. By instead constructing our finising pass by offsetting outward from the TBP,
+            // we guarantee that all points on the finishing pass represent a small stepover cut
+            // from already-cleared area. Thin channels that just barely/exactly fit the tool will
+            // not be cut, but that is a reality of an adaptive cutting process -- such regions must
+            // be cut by a slotting operation instead.
+            //
+            // Note that clipper 1 drops z values on offset operations, so we must convert to
+            // Clipper2. This temporary measure will be eliminated soon when we convert the full
+            // operation to clipper 2.
+
+            // Convert currentTBP to Clipper2 format
+            Clipper2Lib::Paths64 currentTBP2;
+            currentTBP2.reserve(currentTBP.size());
+            for (const auto& path : currentTBP) {
+                Clipper2Lib::Path64 p;
+                p.reserve(path.size());
+                for (const auto& pt : path) {
+                    p.emplace_back(pt.X, pt.Y, pt.Z);  // IntPoint -> Point64
+                }
+                currentTBP2.emplace_back(p);
+            }
+
+            clipof2.Clear();
+            clipof2.AddPaths(currentTBP2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+            Clipper2Lib::Paths64 finishingPass2;
+            clipof2.Execute(finishPassOffsetScaled, finishingPass2);
+
+            // Convert results back to Clipper1 format (preserving Z values)
+            Paths finishingPass;
+            finishingPass.reserve(finishingPass2.size());
+
+            for (const auto& path : finishingPass2) {
+                Path p;
+                p.reserve(path.size());
+                for (const auto& pt : path) {
+                    p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> IntPoint
+                }
+                finishingPass.emplace_back(p);
+            }
+
+            // 9) Compute bounds = offset(currentTBP, toolRadius)
+            //
+            // These paths represent the region that will actually be cleared by the interior
+            // clearing process. They do not include the region cleared by the finishing pass.
+            //
+            // When the interior clearing process completes, we will assert that this region is
+            // fully cleared. In order to make the numerics work correctly on this check, we
+            // actually need this region to be *slightly* smaller than its ideal/nominal size.
+            // Specifically, each offset operation we perform can produce up to 1 unit of error.
+            // (This is a necessary result of working on an integer grid because there must be an
+            // orientation for input segments where a tiny perturbation in the input orientation
+            // (which can always be achieved, even on an integer grid) changes the output location.
+            // This is an output change of 1 for an input change of epsilon, but the non-dicritized
+            // output would only have changed by epsilon. Therefore, offset operations must have
+            // potential to accumulate error of up to 1 unit per offset operation). We perform 2
+            // offset operations to produce this path (input -> TBP -> BP), and we will do 1 more
+            // when computing the cleared area. So when computing BP, we leave a buffer of 3 units
+            // to ensure it will be seen as fully cleared when checking a correct interior clearing
+            // pass. This process is a bit finicky -- take great care if you modify it!
+            Paths boundPath;
+            clipof.Clear();
+            clipof.AddPaths(currentTBP, JoinType::jtRound, EndType::etClosedPolygon);
+            clipof.Execute(boundPath, toolRadiusScaled - 3);
+
+            // Skip path generation if bounds are fully cleared
+            //
+            // Note: should we also be checking that finishing passes (if any are required) are
+            // also clear? I'd think so, but I'm just documenting now and not going to change it.
+            // If I were to implement that, I'd do subtract(offset(finishing, toolRadius), cleared)
+            // and if the result contains any z=1 segments then there is finishing work left to do.
+            // I don't know if ProcessPolyNode is well equipped to handle a fully pre-cleared
+            // interior region with only finishing work to do; probably it has never been tested and
+            // it is not!
+            {
+                Paths boundsToClear;
+                clip.Clear();
+                clip.AddPaths(boundPath, PolyType::ptSubject, true);
+                clip.AddPaths(initialClearedPaths, PolyType::ptClip, true);
+                clip.Execute(ClipType::ctDifference, boundsToClear);
+                if (!boundsToClear.size()) {
+                    continue;
+                }
+            }
+
+            svgInfo.allToolBoundPaths.push_back(currentTBP);
+            svgInfo.allFinishingPaths.push_back(finishingPass);
+
+            // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
+            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths, &svgInfo);
         }
     }
 
-    if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
-        double offset = opType == OperationType::otProfilingInside
-            ? -2 * (helixRampMaxRadiusScaled + toolRadiusScaled) - MIN_STEP_CLIPPER
-            : 2 * (helixRampMaxRadiusScaled + toolRadiusScaled) + MIN_STEP_CLIPPER;
-        for (const auto& current : inputPaths) {
-            int nesting = getPathNestingLevel(current, inputPaths);
-            if (nesting % 2 != 0 && (polyTreeNestingLimit == 0 || nesting <= polyTreeNestingLimit)) {
-                Paths profilePaths;
-                profilePaths.push_back(current);
-                if (polyTreeNestingLimit != nesting) {
-                    appendDirectChildPaths(profilePaths, current, inputPaths);
-                }
-                for (size_t i = 0; i < profilePaths.size(); i++) {
-                    double efOffset = i == 0 ? offset : -offset;
-                    clipof.Clear();
-                    clipof.AddPath(profilePaths[i], JoinType::jtSquare, EndType::etClosedPolygon);
-                    Paths off1;
-                    clipof.Execute(off1, efOffset);
-                    // make poly between original path and offset path
-                    Paths boundPaths;
-                    clip.Clear();
-                    if (efOffset < 0) {
-                        clip.AddPath(profilePaths[i], PolyType::ptSubject, true);
-                        clip.AddPaths(off1, PolyType::ptClip, true);
-                    }
-                    else {
-                        clip.AddPaths(off1, PolyType::ptSubject, true);
-                        clip.AddPath(profilePaths[i], PolyType::ptClip, true);
-                    }
-                    clip.Execute(ClipType::ctDifference, boundPaths, PolyFillType::pftEvenOdd);
+#ifdef DEBUG_SVG
+    writePreprocessingSVG(svgInfo);
+#else
+    UNUSED(svgInfo);
+#endif
 
-                    /** tool bounds */
-                    Paths toolBoundPaths;
-                    clipof.Clear();
-                    clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-                    clipof.Execute(
-                        toolBoundPaths,
-                        -toolRadiusScaled - finishPassOffsetScaled - cornerRoundingOffset
-                    );
-
-                    /** offset back outwards - corner rounding */
-                    clipof.Clear();
-                    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-                    clipof.Execute(toolBoundPaths, cornerRoundingOffset);
-
-                    // restore original bound paths
-                    // bounding paths - i.e. area that must be cleared inside
-                    // it's not the same as above due to corner rounding
-                    clipof.Clear();
-                    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-                    clipof.Execute(boundPaths, toolRadiusScaled + finishPassOffsetScaled);
-
-                    ProcessPolyNode(boundPaths, toolBoundPaths);
-                }
-            }
-        }
-    }
     return results;
 }
 
@@ -1925,7 +2584,8 @@ bool Adaptive2d::FindEntryPoint(
     IntPoint& entryPoint /*output*/,
     IntPoint& toolPos,
     DoublePoint& toolDir,
-    long& helixRadiusScaled
+    long& helixRadiusScaled,
+    AdaptiveOutput& adaptiveOutput
 )
 {
     Paths incOffset;
@@ -1934,7 +2594,13 @@ bool Adaptive2d::FindEntryPoint(
     ClipperOffset clipof;
     bool found = false;
     Paths clearedPaths;
-    Paths checkPaths = toolBoundPaths;
+
+    Paths checkPaths;
+    clip.Clear();
+    clip.AddPaths(toolBoundPaths, PolyType::ptSubject, true);
+    clip.AddPaths(clearedArea.GetCleared(), PolyType::ptClip, true);
+    clip.Execute(ClipType::ctDifference, checkPaths);
+
     for (int iter = 0; iter < 10; iter++) {
         clipof.Clear();
         clipof.AddPaths(checkPaths, JoinType::jtSquare, EndType::etClosedPolygon);
@@ -2005,7 +2671,7 @@ bool Adaptive2d::FindEntryPoint(
                 }
                 helixRadiusScaled = minSize;
                 checkHelixFit(helixRadiusScaled);  // set clearedPaths for final size
-                clearedArea.SetClearedPaths(clearedPaths);
+                clearedArea.AddClearedPaths(clearedPaths);
             }
         }
 
@@ -2029,6 +2695,7 @@ bool Adaptive2d::FindEntryPoint(
     }
 
     if (!found) {
+        adaptiveOutput.StartPointNotFound = true;
         cerr << "Start point not found!" << endl;
     }
     if (found) {
@@ -2045,57 +2712,6 @@ bool Adaptive2d::FindEntryPoint(
         toolDir = DoublePoint(1.0, 0.0);
     }
     return found;
-}
-
-bool Adaptive2d::FindEntryPointOutside(
-    TPaths& progressPaths,
-    const Paths& toolBoundPaths,
-    const Paths& boundPaths,
-    ClearedArea& clearedArea /*output-initial cleared area by helix*/,
-    IntPoint& entryPoint /*output*/,
-    IntPoint& toolPos,
-    DoublePoint& toolDir
-)
-{
-
-    UNUSED(progressPaths);  // to silence compiler warning
-    UNUSED(boundPaths);     // to silence compiler warning
-
-    Clipper clip;
-    ClipperOffset clipof;
-    Paths clearedPaths;
-    // check if boundary shape to cut is outside the stock
-    for (const auto& pth : toolBoundPaths) {
-        for (size_t i = 0; i < pth.size(); i++) {
-            IntPoint checkPoint = pth[i];
-            IntPoint lastPoint = i > 0 ? pth[i - 1] : pth.back();
-            // if point is outside the stock
-            if (PointInPolygon(checkPoint, stockInputPaths.front()) == 0) {
-
-                clipof.Clear();
-                clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-                clipof.Execute(clearedPaths, 1000 * toolRadiusScaled);
-
-                clip.Clear();
-                clip.AddPaths(clearedPaths, PolyType::ptSubject, true);
-                clip.AddPaths(stockInputPaths, PolyType::ptClip, true);
-                clip.Execute(ClipType::ctDifference, clearedPaths);
-                CleanPolygons(clearedPaths);
-                SimplifyPolygons(clearedPaths);
-                clearedArea.SetClearedPaths(clearedPaths);
-                entryPoint = checkPoint;
-                toolPos = entryPoint;
-                // find tool dir
-                double len = sqrt(DistanceSqrd(lastPoint, checkPoint));
-                toolDir = DoublePoint(
-                    (checkPoint.X - lastPoint.X) / len,
-                    (checkPoint.Y - lastPoint.Y) / len
-                );
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 //************************************************************
@@ -2163,7 +2779,7 @@ bool Adaptive2d::IsAllowedToCutTrough(
                 long(p1.X + double(p2.X - p1.X) * p),
                 long(p1.Y + double(p2.Y - p1.Y) * p)
             );
-            double area = CalcCutArea(clip, toolPos1, toolPos2, cleared, false);
+            double area = CalcCutArea(toolPos1, toolPos2, cleared).first;
             // if we are cutting above optimal -> not clear to cut
             if (area > areaFactor * stepSize * optimalCutAreaPD) {
                 Perf_IsAllowedToCutTrough.Stop();
@@ -2188,6 +2804,19 @@ bool Adaptive2d::ResolveLinkPath(
     Path& output
 )
 {
+    // Future work: reimplement this function with a modified version of the
+    // algorithm from https://annas-archive.li/scidb/10.1002/net.3230140304/
+    // 1) offset cleared area by tool radius, to effectively reduce the tool to a point
+    // 2) actually further offset by whatever distance we want G0 to be from stock
+    // 3) if start/end are outside that area, generate straight-line paths to them
+    // 4) perform delaunay triangulation with clipper 2 (needs upgraded clipper!)
+    // 5) do shortest path search along the triangulation from start to end,
+    // producing a triangle strip (exact details tbd)
+    // 6) finish the shortest path algorithm as specified in the paper
+    // The result is O(n log n) shortest path (up to selection of the
+    // appropriate triangle strip), which should be an improvement in both run
+    // time and result over our current algorithm
+
     vector<pair<IntPoint, IntPoint>> queue;
     queue.emplace_back(startPoint, endPoint);
     Path checkPath;
@@ -2308,15 +2937,10 @@ bool Adaptive2d::ResolveLinkPath(
                 IntPoint checkPoint1(midPoint.X + offset * pDir.X, midPoint.Y + offset * pDir.Y);
                 IntPoint checkPoint2(midPoint.X - offset * pDir.X, midPoint.Y - offset * pDir.Y);
 
-                if (DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint1, clp, pindex, sindex, par)
-                    < DistancePointToPathsSqrd(
-                        clearedArea.GetCleared(),
-                        checkPoint2,
-                        clp,
-                        pindex,
-                        sindex,
-                        par
-                    )) {
+                if (
+                    DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint1, clp, pindex, sindex, par)
+                    < DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint2, clp, pindex, sindex, par)
+                ) {
                     // exchange points
                     IntPoint tmp = checkPoint2;
                     checkPoint2 = checkPoint1;
@@ -2358,17 +2982,48 @@ bool Adaptive2d::MakeLeadPath(
     bool leadIn,
     const IntPoint& startPoint,
     const DoublePoint& startDir,
-    const IntPoint& beaconPoint,
-    ClearedArea& clearedArea,
+    IntPoint beaconPoint,
+    ClearedArea& clearedAreaOriginal,
     const Paths& toolBoundPaths,
-    Path& output
+    Path& output,
+    AdaptiveOutput& adaptiveOutput
 )
 {
+    output.push_back(startPoint);
+    double stepSize = min(MIN_STEP_CLIPPER * 8, 0.2 * stepOverScaled + 1);
+
+    // make a copy of clearedArea to update as the path progresses (for lead out only)
+    ClearedArea clearedArea(toolRadiusScaled);
+    clearedArea.SetClearedPaths(clearedAreaOriginal.GetCleared());
+
+    // compute acceptable tool end locations
+    ClipperOffset clipof;
+    clipof.Clear();
+    Paths cleared;
+    clipof.AddPaths(clearedArea.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
+
+    // move the beacon to an acceptable location if necessary
+    if (cleared.size() == 0) {
+        return false;
+    }
+
+    if (getPathNestingLevel({beaconPoint}, cleared) % 2 == 0) {
+        IntPoint clp;  // to store closest point
+        size_t clpPathIndex;
+        size_t clpSegmentIndex;
+        double clpParameter;
+        DistancePointToPathsSqrd(cleared, beaconPoint, clp, clpPathIndex, clpSegmentIndex, clpParameter);
+        beaconPoint = clp;
+    }
+
     IntPoint currentPoint = startPoint;
     DoublePoint targetDir = DirectionV(currentPoint, beaconPoint);
+
     double distanceToBeacon = sqrt(DistanceSqrd(startPoint, beaconPoint));
-    double stepSize = 0.2 * stepOverScaled + 1;
-    double maxPathLen = stepOverScaled;
+    double minExitLength = min(toolRadiusScaled / 5., min(stepOverScaled, distanceToBeacon / 2));
+    double maxLength = max(distanceToBeacon * 2, stepSize * 10);
+    std::optional<double> clearedStartLen;
     DoublePoint nextDir = startDir;
     IntPoint nextPoint
         = IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
@@ -2376,20 +3031,21 @@ bool Adaptive2d::MakeLeadPath(
     double adaptFactor = 0.4;
     double alfa = std::numbers::pi / 64;
     double pathLen = 0;
-    checkPath.push_back(nextPoint);
+    checkPath.push_back(currentPoint);
     for (int i = 0; i < 10000; i++) {
-        if (IsAllowedToCutTrough(
-                IntPoint(
-                    currentPoint.X + MIN_STEP_CLIPPER * nextDir.X,
-                    currentPoint.Y + MIN_STEP_CLIPPER * nextDir.Y
-                ),
-                nextPoint,
-                clearedArea,
-                toolBoundPaths
-            )) {
-            if (output.empty()) {
-                output.push_back(currentPoint);
+        if (IsAllowedToCutTrough(currentPoint, nextPoint, clearedArea, toolBoundPaths)) {
+            if (!leadIn) {
+                // For lead out paths, update/recompute the cleared area
+                checkPath.push_back(nextPoint);
+                clearedArea.ExpandCleared(checkPath);
+                checkPath.clear();
+                checkPath.push_back(nextPoint);
+
+                clipof.Clear();
+                clipof.AddPaths(clearedArea.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
+                clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
             }
+
             output.push_back(nextPoint);
             currentPoint = nextPoint;
             pathLen += stepSize;
@@ -2399,11 +3055,32 @@ bool Adaptive2d::MakeLeadPath(
                 nextDir.Y + adaptFactor * targetDir.Y
             );
             NormalizeV(nextDir);
-            if (pathLen > maxPathLen) {
-                break;
+
+            // check if cleared
+            if (getPathNestingLevel({currentPoint}, cleared) % 2 == 1) {
+                if (!clearedStartLen) {
+                    clearedStartLen = {pathLen};
+                }
+
+                // if the path is long enough, exit with success
+                if (pathLen > minExitLength && pathLen - *clearedStartLen > MIN_STEP_CLIPPER) {
+                    return true;
+                }
             }
-            if (pathLen > distanceToBeacon / 2) {
-                break;
+            else {
+                clearedStartLen = {};
+            }
+
+            // if traveled too far without getting to a clear area, exit with failure
+            if (pathLen > maxLength) {
+                if (getPathNestingLevel({currentPoint}, clearedArea.GetCleared()) % 2 == 1) {
+                    return true;
+                }
+                else {
+                    adaptiveOutput.LeadPathFailed = true;
+                    cerr << "MakeLeadPath failed: overtravel without getting to cleared area" << endl;
+                    return false;
+                }
             }
         }
         else {
@@ -2412,118 +3089,82 @@ bool Adaptive2d::MakeLeadPath(
         nextPoint
             = IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
     }
-    if (output.empty()) {
-        output.push_back(startPoint);
-    }
-    return true;
+
+    return false;
 }
-void Adaptive2d::AppendToolPath(
-    TPaths& progressPaths,
-    AdaptiveOutput& output,
-    const Path& passToolPath,
-    ClearedArea& clearedBefore,
-    ClearedArea& clearedAfter,
-    const Paths& toolBoundPaths
+
+std::optional<TPaths> Adaptive2d::FindLinkPath(
+    const std::optional<IntPoint>& prevPoint,
+    const IntPoint& pathStart,
+    const DoublePoint& pathDir,
+    ClearedArea& cleared,
+    const Paths& toolBoundPaths,
+    AdaptiveOutput& adaptiveOutput
 )
 {
-    if (passToolPath.size() < 2) {
-        return;
-    }
     Perf_AppendToolPath.Start();
-    UNUSED(progressPaths);  // to silence compiler warning,var is occasionally used in dev. for
-                            // debugging
+    TPaths result;
 
-    IntPoint endPoint(passToolPath[0]);
-    // if there is a previous path - need to resolve linking move to new path
-    if (!output.AdaptivePaths.empty() && output.AdaptivePaths.back().second.size() > 1) {
-        auto& lastTPath = output.AdaptivePaths.back();
+    IntPoint endPoint(pathStart);
 
-        auto& lastPrevTPoint = lastTPath.second.at(lastTPath.second.size() - 2);
-        auto& lastTPoint = lastTPath.second.back();
+    // if the link distance is very short, no special linking is required
+    double linkDistance = prevPoint ? sqrt(DistanceSqrd(*prevPoint, endPoint)) : stepOverScaled;
+    if (linkDistance >= NTOL) {
+        size_t clpPathIndex;
+        size_t clpSegmentIndex;
+        double clpParameter;
+        IntPoint clp;
 
-        IntPoint startPrevPoint(
-            long(lastPrevTPoint.first * scaleFactor),
-            long(lastPrevTPoint.second * scaleFactor)
+        double beaconOffset = max(min(stepOverScaled, linkDistance / 2) * 1.5, 8 * MIN_STEP_CLIPPER);
+
+        // plan the lead in, as a reverse-direction lead out
+        double eDistToBounds = DistancePointToPathsSqrd(
+            toolBoundPaths,
+            endPoint,
+            clp,
+            clpPathIndex,
+            clpSegmentIndex,
+            clpParameter
         );
-        IntPoint startPoint(long(lastTPoint.first * scaleFactor), long(lastTPoint.second * scaleFactor));
 
-        // first we try to cut through the linking move for short distances
-        bool linkFound = false;
-        double linkDistance = sqrt(DistanceSqrd(startPoint, endPoint));
-        if (linkDistance < NTOL) {
-            linkFound = true;
+        DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
+
+        DoublePoint endBoundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+        if (eDistToBounds > beaconOffset) {
+            endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
+        }
+        DoublePoint endBeaconDir = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
+        NormalizeV(endBeaconDir);
+
+        IntPoint endBeacon(
+            endPoint.X + beaconOffset * endBeaconDir.X,
+            endPoint.Y + beaconOffset * endBeaconDir.Y
+        );
+
+        Path leadInPath;
+        bool leadInOk = MakeLeadPath(
+            true,
+            endPoint,
+            revEndDir,
+            endBeacon,
+            cleared,
+            toolBoundPaths,
+            leadInPath,
+            adaptiveOutput
+        );
+        ReversePath(leadInPath);
+
+        if (!leadInOk) {
+            Perf_AppendToolPath.Stop();
+            return {};
         }
 
-        if (!linkFound) {
-            size_t clpPathIndex;
-            size_t clpSegmentIndex;
-            double clpParameter;
-            IntPoint clp;
+        // Compute linking path
+        Path linkPath;
+        MotionType linkType = MotionType::mtCutting;
 
-            double beaconOffset = stepOverScaled;
-            if (beaconOffset > linkDistance) {
-                beaconOffset = linkDistance;
-            }
-
-            double pathLen = PathLength(passToolPath);
-            if (beaconOffset > pathLen / 2) {
-                beaconOffset = pathLen / 2;
-            }
-            if (beaconOffset > linkDistance / 2) {
-                beaconOffset = linkDistance / 2;
-            }
-
-            DistancePointToPathsSqrd(
-                toolBoundPaths,
-                startPoint,
-                clp,
-                clpPathIndex,
-                clpSegmentIndex,
-                clpParameter
-            );
-            DoublePoint startDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
-
-            DistancePointToPathsSqrd(
-                toolBoundPaths,
-                endPoint,
-                clp,
-                clpPathIndex,
-                clpSegmentIndex,
-                clpParameter
-            );
-            DoublePoint endDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
-
-            IntPoint startBeacon(
-                startPoint.X - beaconOffset * (startDir.Y - startDir.X),
-                startPoint.Y + beaconOffset * (startDir.X + startDir.Y)
-            );
-            IntPoint endBeacon(
-                endPoint.X - beaconOffset * (endDir.X + endDir.Y),
-                endPoint.Y + beaconOffset * (endDir.X - endDir.Y)
-            );
-            Path leadOutPath;
-            MakeLeadPath(false, startPoint, startDir, startBeacon, clearedBefore, toolBoundPaths, leadOutPath);
-
-            Path leadInPath;
-            MakeLeadPath(
-                true,
-                endPoint,
-                DoublePoint(-endDir.X, -endDir.Y),
-                endBeacon,
-                clearedBefore,
-                toolBoundPaths,
-                leadInPath
-            );
-            ReversePath(leadInPath);
-
-            Path linkPath;
-            MotionType linkType = MotionType::mtCutting;
-
-            // this is not needed:
-            // clearedBefore.ExpandCleared(leadInPath);
-            // clearedBefore.ExpandCleared(leadOutPath);
-
-            if (ResolveLinkPath(leadOutPath.back(), leadInPath.front(), clearedBefore, linkPath)) {
+        if (prevPoint) {
+            if (ResolveLinkPath(*prevPoint, leadInPath.front(), cleared, linkPath)) {
                 linkType = MotionType::mtLinkClear;
                 double remainingLeadInExtension = stepOverScaled / 2;
                 while (linkPath.size() >= 2 && remainingLeadInExtension > NTOL) {
@@ -2542,7 +3183,7 @@ void Adaptive2d::AppendToolPath(
                         Path checkPath;
                         checkPath.push_back(p2);
                         checkPath.push_back(splitPoint);
-                        if (!IsClearPath(checkPath, clearedBefore, 0)) {
+                        if (!IsClearPath(checkPath, cleared, 0)) {
                             remainingLeadInExtension = stepOverScaled / 2;
                         }
                     }
@@ -2554,7 +3195,7 @@ void Adaptive2d::AppendToolPath(
                             Path checkPath;
                             checkPath.push_back(p2);
                             checkPath.push_back(p1);
-                            if (!IsClearPath(checkPath, clearedBefore, 0)) {
+                            if (!IsClearPath(checkPath, cleared, 0)) {
                                 remainingLeadInExtension = stepOverScaled / 2;
                             }
                         }
@@ -2563,18 +3204,18 @@ void Adaptive2d::AppendToolPath(
             }
             else {
                 linkType = MotionType::mtLinkNotClear;
-                double dist = sqrt(DistanceSqrd(leadOutPath.back(), leadInPath.front()));
+                double dist = sqrt(DistanceSqrd(*prevPoint, leadInPath.front()));
                 if (dist < 2 * stepOverScaled
                     && IsAllowedToCutTrough(
                         IntPoint(
-                            leadOutPath.back().X + (leadInPath.front().X - leadOutPath.back().X) / dist,
-                            leadOutPath.back().Y + (leadInPath.front().Y - leadOutPath.back().Y) / dist
+                            prevPoint->X + (leadInPath.front().X - prevPoint->X) / dist,
+                            prevPoint->Y + (leadInPath.front().Y - prevPoint->Y) / dist
                         ),
                         IntPoint(
-                            leadInPath.front().X - (leadInPath.front().X - leadOutPath.back().X) / dist,
-                            leadInPath.front().Y - (leadInPath.front().Y - leadOutPath.back().Y) / dist
+                            leadInPath.front().X - (leadInPath.front().X - prevPoint->X) / dist,
+                            leadInPath.front().Y - (leadInPath.front().Y - prevPoint->Y) / dist
                         ),
-                        clearedBefore,
+                        cleared,
                         toolBoundPaths
                     )) {
                     linkType = MotionType::mtCutting;
@@ -2582,81 +3223,63 @@ void Adaptive2d::AppendToolPath(
                 // add direct linking move at clear height
 
                 linkPath.clear();
-                linkPath.push_back(leadOutPath.back());
+                linkPath.push_back(*prevPoint);
                 linkPath.push_back(leadInPath.front());
             }
+        }
 
-            /* paths smoothing*/
-            Paths linkPaths;
-            linkPaths.push_back(leadOutPath);
-            linkPaths.push_back(linkPath);
-            linkPaths.push_back(leadInPath);
+        /* paths smoothing*/
+        Paths linkPaths;
+        linkPaths.push_back(linkPath);
+        linkPaths.push_back(leadInPath);
 
-            if (linkType == MotionType::mtLinkClear) {
-                SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
-            }
+        if (linkType == MotionType::mtLinkClear) {
+            SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
+        }
 
-            leadOutPath = linkPaths[0];
-            linkPath = linkPaths[1];
-            leadInPath = linkPaths[2];
+        linkPath = linkPaths[0];
+        leadInPath = linkPaths[1];
 
-            // add lead-out move
+        if (prevPoint) {
+            // add linking path
             TPath linkPath1;
-            linkPath1.first = MotionType::mtCutting;
-            for (const auto& pt : leadOutPath) {
+            linkPath1.first = linkType;
+            for (const auto& pt : linkPath) {
                 linkPath1.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
             }
-            output.AdaptivePaths.push_back(linkPath1);
-
-            // add linking path
-            TPath linkPath2;
-            linkPath2.first = linkType;
-            for (const auto& pt : linkPath) {
-                linkPath2.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
-            }
-            output.AdaptivePaths.push_back(linkPath2);
-
-            // add lead-in move
-            TPath linkPath3;
-            linkPath3.first = MotionType::mtCutting;
-            for (const auto& pt : leadInPath) {
-                linkPath3.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
-            }
-
-            output.AdaptivePaths.push_back(linkPath3);
-
-            clearedAfter.ExpandCleared(leadInPath);
-            clearedAfter.ExpandCleared(leadOutPath);
-
-            linkFound = true;
+            result.push_back(linkPath1);
         }
-        if (!linkFound) {  // nothing clear so far - check direct link with no interim points -
-                           // either this is clear or we need to raise the tool
-            Path tp;
-            tp << startPoint;
-            tp << endPoint;
-            MotionType mt = IsClearPath(tp, clearedBefore) ? MotionType::mtLinkClear
-                                                           : MotionType::mtLinkNotClear;
 
-            // make cutting move through small clear links
-            if (mt == MotionType::mtLinkClear && linkDistance < toolRadiusScaled) {
-                mt = MotionType::mtCutting;
-                clearedAfter.ExpandCleared(tp);
-            }
-
-            TPath linkPath;
-            linkPath.first = mt;
-            linkPath.second.emplace_back(
-                double(startPoint.X) / scaleFactor,
-                double(startPoint.Y) / scaleFactor
-            );
-            linkPath.second.emplace_back(
-                double(endPoint.X) / scaleFactor,
-                double(endPoint.Y) / scaleFactor
-            );
-            output.AdaptivePaths.push_back(linkPath);
+        // add lead-in move
+        TPath linkPath2;
+        linkPath2.first = MotionType::mtCutting;
+        for (const auto& pt : leadInPath) {
+            linkPath2.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
         }
+
+        result.push_back(linkPath2);
     }
+
+    Perf_AppendToolPath.Stop();
+    return {result};
+}
+
+std::optional<std::pair<IntPoint, DoublePoint>> Adaptive2d::AppendToolPath(
+    AdaptiveOutput& output,
+    const Path& passToolPath,
+    TPaths& linkPath,
+    ClearedArea& cleared,
+    const Paths& toolBoundPaths
+)
+{
+    std::optional<std::pair<IntPoint, DoublePoint>> result;  // new toolPos and toolDir after lead out
+
+    Perf_AppendToolPath.Start();
+
+    for (TPath& lp : linkPath) {
+        output.AdaptivePaths.push_back(lp);
+    }
+
     TPath cutPath;
     cutPath.first = MotionType::mtCutting;
     for (const auto& p : passToolPath) {
@@ -2668,8 +3291,79 @@ void Adaptive2d::AppendToolPath(
 
     if (!cutPath.second.empty()) {
         output.AdaptivePaths.push_back(cutPath);
+
+        // plan the lead out
+        if (passToolPath.size() >= 2) {
+            IntPoint prevPoint = passToolPath.back();
+            DoublePoint prevDir = GetPathDirectionV(passToolPath, passToolPath.size() - 1);
+
+            size_t clpPathIndex;
+            size_t clpSegmentIndex;
+            double clpParameter;
+            IntPoint clp;
+            double distToBounds = DistancePointToPathsSqrd(
+                toolBoundPaths,
+                prevPoint,
+                clp,
+                clpPathIndex,
+                clpSegmentIndex,
+                clpParameter
+            );
+
+            DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+            double beaconOffset
+                = max(min(stepOverScaled, PathLength(passToolPath) / 2) * 1.5, 8 * MIN_STEP_CLIPPER);
+            if (distToBounds > beaconOffset) {
+                boundaryDir = prevDir;  // if boundary is far away, use beacon to leave the path
+            }
+            DoublePoint beaconDir = {prevDir.X - boundaryDir.Y, prevDir.Y + boundaryDir.X};
+            NormalizeV(beaconDir);
+
+            IntPoint beacon(
+                prevPoint.X + beaconOffset * beaconDir.X,
+                prevPoint.Y + beaconOffset * beaconDir.Y
+            );
+
+            Path leadOutPath;
+            bool ok = MakeLeadPath(
+                false,
+                prevPoint,
+                prevDir,
+                beacon,
+                cleared,
+                toolBoundPaths,
+                leadOutPath,
+                output
+            );
+
+            if (ok && leadOutPath.size() >= 1) {
+                // smooth path
+                Paths linkPaths;
+                linkPaths.push_back(leadOutPath);
+                SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
+                leadOutPath = linkPaths[0];
+
+                // scale and output
+                TPath out;
+                out.first = MotionType::mtCutting;
+                for (auto& p : leadOutPath) {
+                    out.second.push_back({((double)p.X) / scaleFactor, ((double)p.Y) / scaleFactor});
+                }
+                output.AdaptivePaths.push_back(out);
+                cleared.ExpandCleared(leadOutPath);
+
+                IntPoint p2 = leadOutPath.back();
+                IntPoint p1 = leadOutPath.size() >= 2 ? leadOutPath[leadOutPath.size() - 2]
+                                                      : prevPoint;
+                DoublePoint dir = DirectionV(p1, p2);
+
+                result = {{p2, dir}};
+            }
+        }
     }
     Perf_AppendToolPath.Stop();
+
+    return result;
 }
 
 void Adaptive2d::CheckReportProgress(TPaths& progressPaths, bool force)
@@ -2723,21 +3417,110 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths paths, MotionTy
     }
 }
 
-void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt)
+// performs the intersection of the path (subject) and the area (obj), preserving
+// orientation and (closed-path) connectivity
+Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj, bool isClosed = true)
 {
-    if (!pth.empty()) {
-        progressPaths.push_back(TPath());
-        progressPaths.back().first = mt;
-        for (const auto pt : pth) {
-            progressPaths.back().second.emplace_back(
-                double(pt.X) / scaleFactor,
-                double(pt.Y) / scaleFactor
-            );
+    if (isClosed) {
+        subject.push_back(subject[0]);  // close path explicitly before treating it as open
+    }
+
+    // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
+    // this ensures new points have unique z but come between the points they're made from
+    for (size_t i = 0; i < subject.size(); i++) {
+        subject[i].Z = i * 2 + 1;
+    }
+    for (Path& path : obj) {
+        for (IntPoint& p : path) {
+            p.Z = 0;
         }
     }
+    auto zfill = [](IntPoint& e1b, IntPoint& e1t, IntPoint& e2b, IntPoint& e2t, IntPoint& p) {
+        if (e1b.Z != 0 && e1t.Z != 0) {
+            p.Z = (e1b.Z + e1t.Z) / 2;
+        }
+        else if (e2b.Z != 0 && e2t.Z != 0) {
+            p.Z = (e2b.Z + e2t.Z) / 2;
+        }
+    };
+    clip.ZFillFunction(zfill);
+
+    PolyTree diffTree;
+    Paths diff;
+    clip.Clear();
+    clip.AddPath(subject, PolyType::ptSubject, false);
+    clip.AddPaths(obj, PolyType::ptClip, true);
+    clip.Execute(ClipType::ctIntersection, diffTree);
+    clip.ZFillFunction(0);
+    OpenPathsFromPolyTree(diffTree, diff);
+
+    // restore orientation
+    for (Path& p : diff) {
+        for (size_t i = 0; i < p.size() - 1; i++) {
+            if (p[i].Z != 0 && p[i + 1].Z != 0) {
+                if (p[i].Z + 1 != p[i + 1].Z && p[i].Z + 2 != p[i + 1].Z) {
+                    ReversePath(p);
+                }
+
+                break;
+            }
+        }
+    }
+
+    // collect result, joining any path that goes through the end point
+    const int zstart = 1;
+    const int zend = subject.size() * 2 - 1;
+    std::optional<Path> start, end;
+    Paths result;
+    for (Path& p : diff) {
+        if (p[0].Z == zstart) {
+            start = {p};
+        }
+        else if (p.back().Z == zend) {
+            end = {p};
+        }
+        else {
+            result.push_back(p);
+        }
+    }
+    if (start && end) {
+        Path joined = *end;
+        // append points from start, skipping the first, which is a repeat
+        for (size_t i = 1; i < start->size(); i++) {
+            joined.push_back((*start)[i]);
+        }
+        result.push_back(joined);
+    }
+    else {
+        if (start) {
+            result.push_back(*start);
+        }
+        if (end) {
+            result.push_back(*end);
+        }
+    }
+
+    return result;
 }
 
-void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
+struct IterateNextStepOutput
+{
+    std::optional<double> iterationAngle;
+    bool tooManyIterations = false;
+    bool failed;
+    double area;
+    double errorFraction;
+    IntPoint newToolPos;
+    DoublePoint newToolDir;
+};
+
+void Adaptive2d::ProcessPolyNode(
+    Paths boundPaths,
+    Paths toolBoundPaths,
+    Paths finishingPaths,
+    const Paths& initialClearedPaths,
+    DebugSVGInfo* svgInfo
+)
 {
     Perf_ProcessPolyNode.Start();
     current_region++;
@@ -2759,92 +3542,35 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     CleanPolygons(boundPaths);
     SimplifyPolygons(boundPaths);
 
+    Paths tbpMinus;  // toolBoundPaths shrunk by some buffer room
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpMinus, -2);
+    CleanPolygons(tbpMinus);
+    SimplifyPolygons(tbpMinus);
+
     AddPathsToProgress(progressPaths, toolBoundPaths, MotionType::mtLinkClear);
 
     IntPoint toolPos;
     DoublePoint toolDir;
+
+    // Initialize cleared area from previously cleared paths
     ClearedArea cleared(toolRadiusScaled);
-    bool outsideEntry = false;
-    bool firstEngagePoint = true;
-    Paths engageBounds = toolBoundPaths;
-
-    if (!forceInsideOut
-        && FindEntryPointOutside(
-            progressPaths,
-            toolBoundPaths,
-            boundPaths,
-            cleared,
-            entryPoint,
-            toolPos,
-            toolDir
-        )) {
-        if (!Orientation(engageBounds[0])) {
-            ReversePath(engageBounds[0]);
-        }
-        // add initial offset of cleared area to engage paths
-        Paths outsideEngage;
-        clipof.Clear();
-        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(outsideEngage, toolRadiusScaled - stepOverFactor * toolRadiusScaled);
-        CleanPolygons(outsideEngage);
-        ReversePaths(outsideEngage);
-        for (const auto& p : outsideEngage) {
-            engageBounds.push_back(p);
-        }
-        outsideEntry = true;
-    }
-    else {
-        if (!FindEntryPoint(
-                progressPaths,
-                toolBoundPaths,
-                boundPaths,
-                cleared,
-                entryPoint,
-                toolPos,
-                toolDir,
-                helixRadiusScaled
-            )) {
-            Perf_ProcessPolyNode.Stop();
-            return;
-        }
-    }
-
-    EngagePoint engage(engageBounds);  // engage point stepping instance
-
-    if (outsideEntry) {
-        engage.moveToClosestPoint(toolPos, 2 * MIN_STEP_CLIPPER);
-        engage.moveForward(MIN_STEP_CLIPPER);
-        toolPos = engage.getCurrentPoint();
-        toolDir = engage.getCurrentDir();
-        entryPoint = toolPos;
-    }
-
-    // cout << "Entry point:" << double(entryPoint.X)/scaleFactor << "," <<
-    // double(entryPoint.Y)/scaleFactor << endl;
-
-    AdaptiveOutput output;
-    output.ReturnMotionType = 0;
-    output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
-    output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
+    cleared.SetClearedPaths(initialClearedPaths);
 
     long stepScaled = long(MIN_STEP_CLIPPER);
-    IntPoint engagePoint;
-
-    IntPoint newToolPos;
-    DoublePoint newToolDir;
 
     CheckReportProgress(progressPaths, true);
 
-    IntPoint startPoint = toolPos;
-    output.StartPoint = DPoint(double(startPoint.X) / scaleFactor, double(startPoint.Y) / scaleFactor);
-
     Path passToolPath;  // to store pass toolpath
     Path toClearPath;
-    IntPoint clp;                 // to store closest point
+    IntPoint clp;  // to store closest point
+    size_t clpPathIndex;
+    size_t clpSegmentIndex;
+    double clpParameter;
     vector<DoublePoint> gyro;     // used to average tool direction
     vector<double> angleHistory;  // use to predict deflection angle
     double angle = std::numbers::pi;
-    engagePoint = toolPos;
     Interpolation interp;  // interpolation instance
 
     long total_iterations = 0;
@@ -2853,16 +3579,595 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     long total_output_points = 0;
     long over_cut_count = 0;
     long bad_engage_count = 0;
-    double prevDistFromStart = 0;
-    double refinement_factor = 1;
-    bool prevDistTrend = false;
 
     double perf_total_len = 0;
+
+    AdaptiveOutput output;
+    output.clipperScale = double(scaleFactor);
 #ifdef DEV_MODE
     clock_t start_clock = clock();
 #endif
     ClearedArea clearedBeforePass(toolRadiusScaled);
     clearedBeforePass.SetClearedPaths(cleared.GetCleared());
+
+    DoublePoint lastExpandToolDir = toolDir;
+
+    const auto iterateNextStep = [&](const IntPoint& toolPos,
+                                     const DoublePoint& toolDir,
+                                     bool warnRotate) {
+        IterateNextStepOutput out;
+        out.tooManyIterations = false;
+        out.failed = false;
+
+        Perf_DistanceToBoundary.Start();
+
+        double distanceToBoundary = sqrt(
+            DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
+        );
+        DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+
+        Perf_DistanceToBoundary.Stop();
+        double distanceToEngage = sqrt(DistanceSqrd(toolPos, entryPoint));
+
+        double targetAreaPD = optimalCutAreaPD;
+
+        // set the step size: 1x to 8x base size
+        double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
+        if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
+            stepScaled = long(MIN_STEP_CLIPPER);
+        }
+        else if (fabs(angle) > NTOL) {
+            stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
+        }
+        else {
+            stepScaled = long(MIN_STEP_CLIPPER * 8);
+        }
+
+        // clamp the step size - for stability
+        if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
+            stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
+        }
+        if (stepScaled < MIN_STEP_CLIPPER) {
+            stepScaled = long(MIN_STEP_CLIPPER);
+        }
+
+        //*****************************
+        // ANGLE vs AREA ITERATIONS
+        //*****************************
+        double predictedAngle = averageDV(angleHistory);
+        double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
+        double errorFraction = 1;
+        double area = 0;
+        bool isConventional = false;
+        const double conventionalCutoff = 0.51;  // allow some room for rounding, but otherwise < 50%
+        double areaPD = 0;
+        interp.clear();
+        /******************************/
+        Perf_PointIterations.Start();
+        int iteration;
+        bool pointNotInterp;
+        bool foundArea = false;
+        IntPoint newToolPos;
+        DoublePoint newToolDir;
+        for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
+            total_iterations++;
+            if (iteration == 0) {
+                angle = predictedAngle;
+                pointNotInterp = true;
+            }
+            else if (iteration == 1) {
+                angle = interp.MIN_ANGLE;  // max engage
+                pointNotInterp = true;
+            }
+            else if (iteration == 2) {
+                if (interp.bothSides()) {
+                    angle = interp.interpolateAngle();
+                    pointNotInterp = false;
+                }
+                else {
+                    angle = interp.MAX_ANGLE;  // min engage
+                    pointNotInterp = true;
+                }
+            }
+            else if (iteration == 3 && !foundArea) {
+                // Expand cleared area
+                cleared.ExpandCleared(toClearPath);
+                toClearPath.clear();
+                lastExpandToolDir = toolDir;
+
+                // Find nearby uncleared area in the forward direction
+                Paths clearedArea = cleared.GetCleared();
+
+                // 1.5 > sqrt(2) for the constructed triangle to contain possible steps
+                double dist = (stepScaled + toolRadiusScaled) * 1.5;
+                Path triangle = {toolPos};
+                DoublePoint leftAngle = rotate(toolDir, -std::numbers::pi / 4);
+                DoublePoint rightAngle = rotate(toolDir, std::numbers::pi / 4);
+                triangle.push_back(
+                    {(long long)(toolPos.X + rightAngle.X * dist),
+                     (long long)(toolPos.Y + rightAngle.Y * dist)}
+                );
+                triangle.push_back(
+                    {(long long)(toolPos.X + leftAngle.X * dist),
+                     (long long)(toolPos.Y + leftAngle.Y * dist)}
+                );
+
+                clip.Clear();
+                clip.AddPath(triangle, PolyType::ptSubject, true);
+                clip.AddPaths(clearedArea, PolyType::ptClip, true);
+                clip.Execute(ClipType::ctDifference, clearedArea);
+
+                if (clearedArea.size() == 0) {
+                    continue;
+                }
+
+                // Find the closest point on the boundary, and try stepping towards it
+                DistancePointToPathsSqrd(
+                    clearedArea,
+                    toolPos,
+                    clp,
+                    clpPathIndex,
+                    clpSegmentIndex,
+                    clpParameter
+                );
+                double dy = clp.Y - toolPos.Y;
+                double dx = clp.X - toolPos.X;
+                double len = sqrt(dx * dx + dy * dy);
+                angle = asin((dy * toolDir.X - dx * toolDir.Y) / len);
+            }
+            else if (!foundArea) {
+                // if the previous iteration didn't cut area then nothing will; exit early
+                angle = 0;
+                area = 0;
+                areaPD = 0;
+                break;
+            }
+            else {
+                angle = interp.interpolateAngle();
+                pointNotInterp = false;
+            }
+            angle = interp.clampAngle(angle);
+
+            newToolDir = rotate(toolDir, angle);
+            newToolPos = IntPoint(
+                long(toolPos.X + newToolDir.X * stepScaled),
+                long(toolPos.Y + newToolDir.Y * stepScaled)
+            );
+
+            // Skip iteration if this IntPoint has already been processed
+            bool intRepeat = false;
+            if (interp.m_min && newToolPos == interp.m_min->angle.second) {
+                interp.m_min = {{angle, newToolPos}, interp.m_min->error, interp.m_min->isConventional};
+                intRepeat = true;
+            }
+            if (interp.m_max && newToolPos == interp.m_max->angle.second) {
+                interp.m_max = {{angle, newToolPos}, interp.m_max->error, interp.m_max->isConventional};
+                intRepeat = true;
+            }
+
+            if (intRepeat) {
+                if (interp.m_min && interp.m_max
+                    && abs(interp.m_min->angle.second.X - interp.m_max->angle.second.X) <= 1
+                    && abs(interp.m_min->angle.second.Y - interp.m_max->angle.second.Y) <= 1) {
+                    if (pointNotInterp) {
+                        // if this happens while testing min/max of the range it doesn't mean
+                        // anything; only exit early if interpolation is down to adjacent
+                        // integers
+                        continue;
+                    }
+                    // exit early, selecting the better of the two adjacent integers
+                    double error;
+                    if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
+                        if (!interp.m_min->isConventional) {
+                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                            newToolPos = interp.m_min->angle.second;
+                            error = interp.m_min->error;
+                            isConventional = interp.m_min->isConventional;
+                        }
+                        else {
+                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                            newToolPos = interp.m_max->angle.second;
+                            error = interp.m_max->error;
+                            isConventional = interp.m_max->isConventional;
+                        }
+                    }
+                    else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
+                        newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                        newToolPos = interp.m_min->angle.second;
+                        error = interp.m_min->error;
+                        isConventional = interp.m_min->isConventional;
+                    }
+                    else {
+                        newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                        newToolPos = interp.m_max->angle.second;
+                        error = interp.m_max->error;
+                        isConventional = interp.m_max->isConventional;
+                    }
+                    areaPD = error + targetAreaPD;
+                    area = areaPD * double(stepScaled);
+                    out.iterationAngle = angle;
+                    break;
+                }
+                continue;
+            }
+
+            const auto caRet = CalcCutArea(toolPos, newToolPos, cleared);
+            area = std::get<0>(caRet);
+            double conventionalArea = std::get<1>(caRet);
+            double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
+            isConventional = fractionConventional >= conventionalCutoff;
+            if (area > 0) {
+                foundArea = true;
+            }
+
+            areaPD = area / double(stepScaled);  // area per distance
+            double error = areaPD - targetAreaPD;
+            errorFraction = abs(error / optimalCutAreaPD);
+            interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
+            if (fabs(error) < maxError && !isConventional) {
+                out.iterationAngle = angle;
+                break;
+            }
+            if (iteration == MAX_ITERATIONS - 1) {
+                out.tooManyIterations = true;
+            }
+        }
+        Perf_PointIterations.Stop();
+
+        bool recalcArea = false;
+
+        if (area > 0) {
+            //**********************************************
+            // CHECK AND RECORD NEW TOOL POS
+            //**********************************************
+            long rotateStep = 0;
+            double rotateIncrement;
+            {
+                double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
+                double toolAngle = atan2(newToolDir.Y, newToolDir.X);
+                double delta = boundaryAngle - toolAngle;
+                if (delta > std::numbers::pi) {
+                    delta -= 2 * std::numbers::pi;
+                }
+                if (delta < -std::numbers::pi) {
+                    delta += 2 * std::numbers::pi;
+                }
+                rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
+            }
+            while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
+                rotateStep++;
+                // if new tool pos. outside boundary rotate until back in
+                recalcArea = true;
+                newToolDir = rotate(newToolDir, rotateIncrement);
+                newToolPos = IntPoint(
+                    long(toolPos.X + newToolDir.X * stepScaled),
+                    long(toolPos.Y + newToolDir.Y * stepScaled)
+                );
+            }
+            if (rotateStep >= 180) {
+#ifdef DEV_MODE
+                if (warnRotate) {
+                    output.UnexpectedRotateIterations = true;
+                    cerr << "Warning: unexpected number of rotate iterations." << endl;
+                }
+#else
+                UNUSED(warnRotate);
+#endif
+                out.failed = true;
+            }
+
+            if (recalcArea) {
+                const auto caRet = CalcCutArea(toolPos, newToolPos, cleared);
+                area = std::get<0>(caRet);
+                areaPD = area / double(stepScaled);  // area per distance
+                double error = areaPD - targetAreaPD;
+                errorFraction = abs(error / optimalCutAreaPD);
+
+                double conventionalArea = std::get<1>(caRet);
+                double fractionConventional = area == 0 ? 0 : conventionalArea / area;
+                isConventional = fractionConventional >= conventionalCutoff;
+            }
+
+            // safety condition
+            if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
+                over_cut_count++;
+                out.failed = true;
+            }
+        }
+
+        out.area = area;
+        out.failed |= isConventional;
+        out.failed |= area < 1;
+        out.newToolPos = newToolPos;
+        out.newToolDir = newToolDir;
+        out.errorFraction = errorFraction;
+        return out;
+    };
+
+    const auto initToolDir = [&](const IntPoint& toolPos, const DoublePoint& baseDir) {
+        DoublePoint testDirs[] = {
+            {baseDir.X, baseDir.Y},
+            {-baseDir.Y, baseDir.X},
+            {-baseDir.X, -baseDir.Y},
+            {baseDir.Y, -baseDir.X}
+        };
+        std::optional<std::pair<DoublePoint, double>> bestDir;
+        bool allZero = true;
+        for (const auto& testDir : testDirs) {
+            const auto itResult = iterateNextStep(toolPos, testDir, false);
+            if (itResult.area != 0) {
+                allZero = false;
+            }
+            if (!itResult.failed) {
+                if (!bestDir || itResult.errorFraction < bestDir->second) {
+                    bestDir = {itResult.newToolDir, itResult.errorFraction};
+                }
+            }
+        }
+
+        if (bestDir) {
+            return std::optional<DoublePoint> {bestDir->first};
+        }
+        else if (allZero) {
+            Paths clearedArea = cleared.GetCleared();
+            if (DistancePointToPathsSqrd(clearedArea, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
+                < toolRadiusScaled * toolRadiusScaled) {
+                IntPoint p2 = Compute2DPolygonCentroid(clearedArea[clpPathIndex]);
+                DoublePoint dir = DirectionV(toolPos, p2);
+                return std::optional<DoublePoint> {dir};
+            }
+            return std::optional<DoublePoint> {};
+        }
+        else {
+            return std::optional<DoublePoint> {};
+        }
+    };
+
+    const auto _getEngagePoint = [&](const std::optional<IntPoint>& prevPos,
+                                     long engagementProtrusion) {
+        // engagePoint, engageDir, heuristicCost
+        std::vector<std::tuple<IntPoint, DoublePoint, double>> engagePoints;
+
+        const auto addEngagePoint = [&](const IntPoint& engagePoint, const DoublePoint& engageDir) {
+            double cost_mm = (prevPos ? sqrt(DistanceSqrd(*prevPos, engagePoint)) / scaleFactor : 0);
+            engagePoints.emplace_back(
+                std::tuple<IntPoint, DoublePoint, double> {engagePoint, engageDir, cost_mm}
+            );
+        };
+
+        Paths clearedArea = cleared.GetCleared();
+
+        // offset inward to find places the tool can start
+        long engageBuffer = 2;  // smooths out the integer rounding in the two offsets, +toolRadius
+                                // and -toolRadius
+        Paths preEngage;
+        clipof.Clear();
+        clipof.AddPaths(clearedArea, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(preEngage, -(toolRadiusScaled + engageBuffer));
+
+        // offset outward to find places that would protrude outside the cleared area
+        Paths engagePaths;
+        clipof.Clear();
+        clipof.AddPaths(preEngage, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, engageBuffer + engagementProtrusion);
+
+        // clip engage candidates with tool bounds
+        for (Path& engagePath : engagePaths) {
+            // rotate the closed path so it starts with the closest point
+            // this is useful because if the path does not get clipped, any point on
+            // the path is a valid start location (not just the first) but we want to
+            // test against the closest one
+            Path rotated;
+            if (!prevPos) {
+                rotated = engagePath;
+            }
+            else {
+                int iClosest = 0;
+                double dsqClosest = __DBL_MAX__;
+                for (size_t i = 0; i < engagePath.size(); i++) {
+                    double dsq = DistanceSqrd(*prevPos, engagePath[i]);
+                    if (dsq < dsqClosest) {
+                        dsqClosest = dsq;
+                        iClosest = i;
+                    }
+                }
+
+                for (size_t i = 0; i < engagePath.size(); i++) {
+                    rotated.push_back(engagePath[(i + iClosest) % engagePath.size()]);
+                }
+            }
+
+            // clip with tbpMinus instead of toolBoundPaths to ensure that all
+            // resulting points are inside toolBoundPaths, and not rounded to an
+            // integer coordinate outside of it
+            Paths openPaths = PathIntersectArea(clip, rotated, tbpMinus);
+
+            for (Path& open : openPaths) {
+                bool added = false;
+                double dToGo = 0;  // first step is 0 -- start point
+                size_t seg = 0;
+                double segD = 0;
+                while (!added && seg < open.size() - 1) {
+                    // step to next point
+                    IntPoint p;
+                    DoublePoint segDir;
+                    do {
+                        IntPoint p1 = open[seg];
+                        IntPoint p2 = open[seg + 1];
+                        double segLen = sqrt(DistanceSqrd(p1, p2));
+                        segDir = {(p2.X - p1.X) / segLen, (p2.Y - p1.Y) / segLen};
+                        if (segLen - segD > dToGo) {
+                            // interpolate current segment
+                            segD += dToGo;
+                            dToGo = 0;
+                            double interp = segD / segLen;
+                            p = {
+                                (long long)(p2.X * interp + p1.X * (1 - interp)),
+                                (long long)(p2.Y * interp + p1.Y * (1 - interp))
+                            };
+                        }
+                        else {
+                            dToGo -= segLen - segD;
+                            segD = 0;
+                            seg++;
+                            p = p2;  // ensures that we try the endpoint too
+                        }
+                    } while (dToGo > 0 && seg < open.size() - 1);
+
+                    // Attempt to add the point
+                    const auto toolDir = initToolDir(p, segDir);
+                    if (toolDir) {
+                        addEngagePoint(p, *toolDir);
+                        added = true;
+                    }
+
+                    dToGo = MIN_STEP_CLIPPER;  // all subsequent steps are MIN_STEP_CLIPPER
+                }
+            }
+        }
+
+        // sort engagePoints based on connection cost
+        std::sort(
+            engagePoints.begin(),
+            engagePoints.end(),
+            [](std::tuple<IntPoint, DoublePoint, double> aa,
+               std::tuple<IntPoint, DoublePoint, double> bb) {
+                return std::get<double>(aa) < std::get<double>(bb);
+            }
+        );
+
+        double bestCost = __DBL_MAX__;
+        TPaths bestLink;
+        IntPoint bestPos;
+        DoublePoint bestDir;
+
+        for (const auto& ep : engagePoints) {
+            if (std::get<double>(ep) < bestCost) {
+                std::optional<TPaths> link = FindLinkPath(
+                    prevPos,
+                    std::get<IntPoint>(ep),
+                    std::get<DoublePoint>(ep),
+                    cleared,
+                    toolBoundPaths,
+                    output
+                );
+                if (!link) {
+                    continue;
+                }
+
+                double cost_mm = 0;
+                std::optional<DPoint> prev = prevPos
+                    ? std::optional<DPoint> {{prevPos->X / (double)scaleFactor, prevPos->Y / (double)scaleFactor}}
+                    : std::optional<DPoint> {};
+                for (TPath tp : *link) {
+                    if (tp.first == MotionType::mtLinkNotClear) {
+                        cost_mm += 10000;  // prioritize links that don't require retraction
+                    }
+                    for (size_t i = 0; i < tp.second.size(); i++) {
+                        DPoint cur = tp.second[i];
+                        if (prev) {
+                            double dx = cur.first - prev->first;
+                            double dy = cur.second - prev->second;
+                            double dist = sqrt(dx * dx + dy * dy);
+                            cost_mm += dist;
+                        }
+                        prev = {cur};
+                    }
+                }
+
+                if (cost_mm < bestCost) {
+                    bestCost = cost_mm;
+                    bestLink = *link;
+                    bestPos = std::get<IntPoint>(ep);
+                    bestDir = std::get<DoublePoint>(ep);
+                }
+            }
+        }
+
+        if (bestCost < __DBL_MAX__) {
+            return std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> {
+                {bestPos, bestDir, bestLink}
+            };
+        }
+        else {
+            return std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> {};
+        }
+    };
+
+    const auto getEngagePoint = [&](const std::optional<IntPoint>& prevPos) {
+        Perf_NextEngagePoint.Start();
+
+        // Compute how far into the material the first engagement should be
+        const double targetArea = optimalCutAreaPD * MIN_STEP_CLIPPER;
+        // Area of a segment of a circle: A = R^2 / 2 * (theta - sin(theta))
+        // 2nd order Taylor expansion: A = R^2 / 2 * (theta^3/6) = R^2 * theta^3 / 12
+        // Solve for theta: theta = (12 * A / R^2)^(1/3)
+        const double theta = std::pow(12 * targetArea / toolRadiusScaled / toolRadiusScaled, 1 / 3.);
+        const double protrusion = toolRadiusScaled - cos(theta / 2) * toolRadiusScaled;
+        const long engagementProtrusion
+            = (long)min(protrusion, stepOverScaled * FINISHING_THICKNESS_SCALE);
+
+        // Get engagement point. First attempt with the desired offsets, then fallback
+        auto result = _getEngagePoint(prevPos, engagementProtrusion);
+        if (!result) {
+            // consider retry at tiny protrusion?
+            // result = _getEngagePoint(prevPos, 4);
+        }
+
+        // update cleared area
+        if (result) {
+            for (const TPath& linkPath : std::get<TPaths>(*result)) {
+                if (linkPath.first == MotionType::mtCutting) {
+                    Path p;
+                    for (const DPoint& dp : linkPath.second) {
+                        p.push_back(
+                            {(long long)(dp.first * scaleFactor), (long long)(dp.second * scaleFactor)}
+                        );
+                    }
+                    cleared.ExpandCleared(p);
+                }
+            }
+        }
+
+        Perf_NextEngagePoint.Stop();
+        return result;
+    };
+
+    std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> engagePoint = getEngagePoint({});
+    TPaths linkPath;
+    if (engagePoint) {
+        toolPos = std::get<IntPoint>(*engagePoint);
+        toolDir = std::get<DoublePoint>(*engagePoint);
+        linkPath = std::get<TPaths>(*engagePoint);
+        entryPoint = linkPath.size() > 0
+            ? IntPoint {(long long)(linkPath[0].second[0].first * scaleFactor), (long long)(linkPath[0].second[0].second * scaleFactor)}
+            : toolPos;
+        output.StartPoint
+            = DPoint(double(entryPoint.X) / scaleFactor, double(entryPoint.Y) / scaleFactor);
+    }
+    else {
+        // Engagement failed; instead helix down
+        if (!FindEntryPoint(
+                progressPaths,
+                toolBoundPaths,
+                boundPaths,
+                cleared,
+                entryPoint,
+                toolPos,
+                toolDir,
+                helixRadiusScaled,
+                output
+            )) {
+            Perf_ProcessPolyNode.Stop();
+            results.push_back(output);
+            return;
+        }
+        output.StartPoint = DPoint(double(toolPos.X) / scaleFactor, double(toolPos.Y) / scaleFactor);
+    }
+
+    output.ReturnMotionType = 0;
+    output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
+    output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
 
     //*******************************
     // LOOP - PASSES
@@ -2875,6 +4180,20 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         passToolPath.clear();
         toClearPath.clear();
         angleHistory.clear();
+        angleHistory.push_back(0);
+
+        // include linking path in cleared area
+        for (TPath lp : linkPath) {
+            if (lp.first == MotionType::mtCutting || lp.first == MotionType::mtLinkClear) {
+                Path scaledP;
+                for (auto& p : lp.second) {
+                    scaledP.push_back(
+                        {(long long)(p.first * scaleFactor), (long long)(p.second * scaleFactor)}
+                    );
+                }
+                cleared.ExpandCleared(scaledP);
+            }
+        }
 
         // append a new path to progress info paths
         if (progressPaths.empty()) {
@@ -2888,7 +4207,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         }
 
         angle = std::numbers::pi / 4;  // initial pass angle
-        bool recalcArea = false;
         double cumulativeCutArea = 0;
         // init gyro
         gyro.clear();
@@ -2896,12 +4214,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             gyro.push_back(toolDir);
         }
 
-        size_t clpPathIndex;
-        size_t clpSegmentIndex;
-        double clpParameter;
-        double passLength = 0;
-        double noCutDistance = 0;
-        clearedBeforePass.SetClearedPaths(cleared.GetCleared());
         //*******************************
         // LOOP - POINTS
         //*******************************
@@ -2912,271 +4224,64 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
             total_points++;
             AverageDirection(gyro, toolDir);
-            Perf_DistanceToBoundary.Start();
 
-            double distanceToBoundary = sqrt(
-                DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
-            );
-            DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
-            double distBoundaryPointToEngage = sqrt(DistanceSqrd(clp, engagePoint));
+            const auto itResult = iterateNextStep(toolPos, toolDir, true);
 
-            Perf_DistanceToBoundary.Stop();
-            double distanceToEngage = sqrt(DistanceSqrd(toolPos, engagePoint));
-
-            double targetAreaPD = optimalCutAreaPD;
-
-            // set the step size: 1x to 8x base size
-            double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
-            if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
-                stepScaled = long(MIN_STEP_CLIPPER);
-            }
-            else if (fabs(angle) > NTOL) {
-                stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
-            }
-            else {
-                stepScaled = long(MIN_STEP_CLIPPER * 8);
+            if (itResult.tooManyIterations) {
+                total_exceeded++;
             }
 
-            // clamp the step size - for stability
-            if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
-                stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
-            }
-            if (stepScaled < MIN_STEP_CLIPPER) {
-                stepScaled = long(MIN_STEP_CLIPPER);
-            }
-
-            //*****************************
-            // ANGLE vs AREA ITERATIONS
-            //*****************************
-            double predictedAngle = averageDV(angleHistory);
-            double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
-            double area = 0;
-            double areaPD = 0;
-            interp.clear();
-            /******************************/
-            Perf_PointIterations.Start();
-            int iteration;
-            double prev_error = __DBL_MAX__;
-            bool pointNotInterp;
-            for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
-                total_iterations++;
-                if (iteration == 0) {
-                    angle = predictedAngle;
-                    pointNotInterp = true;
-                }
-                else if (iteration == 1) {
-                    angle = interp.MIN_ANGLE;  // max engage
-                    pointNotInterp = true;
-                }
-                else if (iteration == 2) {
-                    if (interp.bothSides()) {
-                        angle = interp.interpolateAngle();
-                        pointNotInterp = false;
-                    }
-                    else {
-                        angle = interp.MAX_ANGLE;  // min engage
-                        pointNotInterp = true;
-                    }
-                }
-                else {
-                    angle = interp.interpolateAngle();
-                    pointNotInterp = false;
-                }
-                angle = interp.clampAngle(angle);
-
-                newToolDir = rotate(toolDir, angle);
-                newToolPos = IntPoint(
-                    long(toolPos.X + newToolDir.X * stepScaled),
-                    long(toolPos.Y + newToolDir.Y * stepScaled)
-                );
-
-                // Skip iteration if this IntPoint has already been processed
-                bool intRepeat = false;
-                if (interp.m_min && newToolPos == interp.m_min->first.second) {
-                    interp.m_min = {{angle, newToolPos}, interp.m_min->second};
-                    intRepeat = true;
-                }
-                if (interp.m_max && newToolPos == interp.m_max->first.second) {
-                    interp.m_max = {{angle, newToolPos}, interp.m_max->second};
-                    intRepeat = true;
-                }
-
-                if (intRepeat) {
-                    if (interp.m_min && interp.m_max
-                        && abs(interp.m_min->first.second.X - interp.m_max->first.second.X) <= 1
-                        && abs(interp.m_min->first.second.Y - interp.m_max->first.second.Y) <= 1) {
-                        if (pointNotInterp) {
-                            // if this happens while testing min/max of the range it doesn't mean
-                            // anything; only exit early if interpolation is down to adjacent
-                            // integers
-                            continue;
-                        }
-                        // exit early, selecting the better of the two adjacent integers
-                        double error;
-                        if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
-                            newToolDir = rotate(toolDir, interp.m_min->first.first);
-                            newToolPos = interp.m_min->first.second;
-                            error = interp.m_min->second;
-                        }
-                        else {
-                            newToolDir = rotate(toolDir, interp.m_max->first.first);
-                            newToolPos = interp.m_max->first.second;
-                            error = interp.m_max->second;
-                        }
-                        areaPD = error + targetAreaPD;
-                        area = areaPD * double(stepScaled);
-                        break;
-                    }
-                    continue;
-                }
-
-                area = CalcCutArea(clip, toolPos, newToolPos, cleared);
-
-                areaPD = area / double(stepScaled);  // area per distance
-                double error = areaPD - targetAreaPD;
-                interp.addPoint(error, {angle, newToolPos}, pointNotInterp);
-                // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
-                //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
-                //      << endl;
-                if (fabs(error) < maxError) {
-                    angleHistory.push_back(angle);
+            if (!itResult.failed) {  // cut is ok - record it
+                if (itResult.iterationAngle) {
+                    angleHistory.push_back(*itResult.iterationAngle);
                     if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
                         angleHistory.erase(angleHistory.begin());
                     }
-                    break;
                 }
-                if (iteration == MAX_ITERATIONS - 1) {
-                    total_exceeded++;
+
+                // if the path has changed direction by more than 45 degrees (such that we consider
+                // continuations (>45)+45>90 degrees from the original direction) then we need to
+                // update cleared paths
+                if (lastExpandToolDir.X * itResult.newToolDir.X
+                        + lastExpandToolDir.Y * itResult.newToolDir.Y
+                    < cos(std::numbers::pi / 4)) {
+                    cleared.ExpandCleared(toClearPath);
+                    toClearPath.clear();
+                    lastExpandToolDir = toolDir;
                 }
-                prev_error = error;
-            }
-            Perf_PointIterations.Stop();
 
-            recalcArea = false;
-            // approach end boundary tangentially
-            double relDistToBoundary = 4 * distanceToBoundary / stepOverScaled;
-            if (relDistToBoundary <= 1.0 && passLength > 2 * stepOverFactor
-                && distanceToEngage > 2 * stepOverScaled
-                && distBoundaryPointToEngage > 2 * stepOverScaled) {
-
-                // 10 degrees per stepOver? idk, let's try it
-                double maxAngleToBoundary = 10 * std::numbers::pi / 180
-                    * max(1., distanceToBoundary / stepOverScaled);
-
-                // compute current approach angle
-                double cosAngle = newToolDir.X * boundaryDir.X + newToolDir.Y * boundaryDir.Y;
-                DoublePoint bdir = boundaryDir;
-                if (cosAngle < 0) {
-                    // approaching the edge backwards: recompute for flipped boundary edge
-                    bdir = {-bdir.X, -bdir.Y};
-                    cosAngle = -cosAngle;
-                }
-                double angle = acos(min(1., max(0., cosAngle)));
-                if (abs(angle) > maxAngleToBoundary) {
-                    double sign = bdir.X * newToolDir.Y - bdir.Y * newToolDir.X > 0 ? 1 : -1;
-                    double desiredAngle = maxAngleToBoundary * sign;
-                    newToolDir = rotate(bdir, desiredAngle);
-                    NormalizeV(newToolDir);
-                    newToolPos = IntPoint(
-                        long(toolPos.X + newToolDir.X * stepScaled),
-                        long(toolPos.Y + newToolDir.Y * stepScaled)
-                    );
-                    recalcArea = true;
-                }
-            }
-
-            //**********************************************
-            // CHECK AND RECORD NEW TOOL POS
-            //**********************************************
-            long rotateStep = 0;
-            while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
-                rotateStep++;
-                // if new tool pos. outside boundary rotate until back in
-                recalcArea = true;
-                newToolDir = rotate(newToolDir, std::numbers::pi / 90);
-                newToolPos = IntPoint(
-                    long(toolPos.X + newToolDir.X * stepScaled),
-                    long(toolPos.Y + newToolDir.Y * stepScaled)
-                );
-            }
-            if (rotateStep >= 180) {
-#ifdef DEV_MODE
-                cerr << "Warning: unexpected number of rotate iterations." << endl;
-#endif
-                break;
-            }
-
-            if (recalcArea) {
-                area = CalcCutArea(clip, toolPos, newToolPos, cleared);
-            }
-
-            // safety condition
-            if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
-                over_cut_count++;
-                break;
-            }
-
-            // update cleared paths when trend of distance from start point changes sign (starts to
-            // get closer, or start to get farther)
-            double distFromStart = sqrt(DistanceSqrd(toolPos, startPoint));
-            bool distanceTrend = distFromStart > prevDistFromStart ? true : false;
-
-            if (distanceTrend != prevDistTrend) {
-                cleared.ExpandCleared(toClearPath);
-                toClearPath.clear();
-            }
-            prevDistTrend = distanceTrend;
-            prevDistFromStart = distFromStart;
-
-            if (area > 0) {  // cut is ok - record it
-                noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
                 }
-                toClearPath.push_back(newToolPos);
+                toClearPath.push_back(itResult.newToolPos);
 
-                cumulativeCutArea += area;
+                cumulativeCutArea += itResult.area;
 
                 // append to toolpaths
                 if (passToolPath.empty()) {
-                    // in outside entry first successful cut defines the "helix center" and start
-                    // point in this case helix diameter is 0 (straight line downwards)
-                    if (output.AdaptivePaths.empty() && outsideEntry) {
-                        entryPoint = toolPos;
-                        output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
-                        output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
-                        output.StartPoint = DPoint(
-                            double(entryPoint.X) / scaleFactor,
-                            double(entryPoint.Y) / scaleFactor
-                        );
-                    }
                     passToolPath.push_back(toolPos);
                 }
-                passToolPath.push_back(newToolPos);
+                passToolPath.push_back(itResult.newToolPos);
                 perf_total_len += stepScaled;
-                passLength += stepScaled;
-                toolPos = newToolPos;
+                toolPos = itResult.newToolPos;
 
                 // append to progress info paths
                 if (progressPaths.empty()) {
                     progressPaths.push_back(TPath());
                 }
                 progressPaths.back().second.emplace_back(
-                    double(newToolPos.X) / scaleFactor,
-                    double(newToolPos.Y) / scaleFactor
+                    double(itResult.newToolPos.X) / scaleFactor,
+                    double(itResult.newToolPos.Y) / scaleFactor
                 );
 
                 // append gyro
-                gyro.push_back(newToolDir);
+                gyro.push_back(itResult.newToolDir);
                 gyro.erase(gyro.begin());
                 CheckReportProgress(progressPaths);
             }
             else {
                 // cout<<"Break: no cut @" << point_index << endl;
-                if (noCutDistance > stepOverScaled) {
-                    break;
-                }
-                noCutDistance += stepScaled;
+                break;
             }
         } /* end of points loop*/
 
@@ -3184,142 +4289,205 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
-        const double minArea = MIN_CUT_AREA_FACTOR * MIN_STEP_CLIPPER * optimalCutAreaPD;
-        if (cumulativeCutArea > minArea) {
+
+        Paths newlyClearedAreas;
+        clip.Clear();
+        clip.AddPaths(cleared.GetCleared(), PolyType::ptSubject, true);
+        clip.AddPaths(clearedBeforePass.GetCleared(), PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, newlyClearedAreas);
+        cumulativeCutArea = 0;
+        for (Path& a : newlyClearedAreas) {
+            int nesting = getPathNestingLevel(a, newlyClearedAreas);
+            cumulativeCutArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(a));
+        }
+
+        if (cumulativeCutArea >= 1) {
             Path cleaned;
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
             total_output_points += long(cleaned.size());
-            AppendToolPath(progressPaths, output, cleaned, clearedBeforePass, cleared, toolBoundPaths);
+            auto newPos = AppendToolPath(output, cleaned, linkPath, cleared, toolBoundPaths);
+            if (newPos) {
+                toolPos = newPos->first;
+                toolDir = newPos->second;
+            }
             CheckReportProgress(progressPaths);
             bad_engage_count = 0;
-            engage.ResetPasses();
         }
         else {
             bad_engage_count++;
         }
 
         if (bad_engage_count > 10000) {
+            output.TooManyFailedEngagements = true;
             cerr << "Break (next valid engage point not found)." << endl;
             break;
         }
 
-        /*****NEXT ENGAGE POINT******/
-        if (firstEngagePoint) {
-            engage.moveToClosestPoint(newToolPos, stepScaled + 1);
-            firstEngagePoint = false;
+        clearedBeforePass.SetClearedPaths(cleared.GetCleared());
+        engagePoint = getEngagePoint({toolPos});
+        if (engagePoint) {
+            toolPos = std::get<IntPoint>(*engagePoint);
+            toolDir = std::get<DoublePoint>(*engagePoint);
+            linkPath = std::get<TPaths>(*engagePoint);
+            lastExpandToolDir = toolDir;
         }
-
-        {
-            // This constant is chosen so that when cutting a small strip (i.e. when
-            // approaching a boundary), the strip size at which the cut is too small to
-            // continue is _also_ too small to be worth starting a new engagement
-            // elsewhere in the strip
-            const double CORRECT_MIN_CUT_VS_ENGAGE = toolRadiusScaled * 1. / MIN_STEP_CLIPPER;
-
-            double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled * refinement_factor;
-
-            if (!engage.nextEngagePoint(
-                    this,
-                    cleared,
-                    moveDistance,
-                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
-                    4 * referenceCutArea * stepOverFactor
-                )) {
-                // check if there are any uncleared area left
-                Paths remaining;
-                for (const auto& p : cleared.GetCleared()) {
-                    if (!p.empty() && IsPointWithinCutRegion(toolBoundPaths, p.front())
-                        && DistancePointToPathsSqrd(
-                               boundPaths,
-                               p.front(),
-                               clp,
-                               clpPathIndex,
-                               clpSegmentIndex,
-                               clpParameter
-                           ) > 4 * toolRadiusScaled * toolRadiusScaled) {
-                        remaining.push_back(p);
-                    }
-                };
-                if (remaining.empty()) {
-                    cout << "All cleared." << endl;
-                    break;
+        else {
+            // check if there are any uncleared area left
+            Paths remaining;
+            for (const auto& p : cleared.GetCleared()) {
+                if (!p.empty() && IsPointWithinCutRegion(toolBoundPaths, p.front())
+                    && DistancePointToPathsSqrd(
+                           boundPaths,
+                           p.front(),
+                           clp,
+                           clpPathIndex,
+                           clpSegmentIndex,
+                           clpParameter
+                       ) > 4 * toolRadiusScaled * toolRadiusScaled) {
+                    remaining.push_back(p);
                 }
-                else {
-                    cout << "Clearing " << remaining.size() << " remaining internal path(s)." << endl;
-                }
-
-                // try to find new engage point along the remaining
-                clipof.Clear();
-                clipof.AddPaths(remaining, JoinType::jtRound, EndType::etClosedPolygon);
-                clipof.Execute(remaining, toolRadiusScaled - 0.5 * stepOverScaled);
-
-                ReversePaths(remaining);
-                engage.SetPaths(remaining);
-                engage.moveToClosestPoint(newToolPos, stepScaled + 1);
-                if (!engage.nextEngagePoint(
-                        this,
-                        cleared,
-                        moveDistance,
-                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
-                        4 * referenceCutArea * stepOverFactor
-                    )) {
-                    break;
-                }
+            };
+            if (remaining.empty()) {
+                cout << "All cleared." << endl;
+                break;
             }
+
+            output.UnclearedAreaRemains = true;
+            cerr << "NO ENGAGEMENTS LEFT BUT NOT ALL CELARED!!! " << endl;
+            break;
         }
-        toolPos = engage.getCurrentPoint();
-        toolDir = engage.getCurrentDir();
     }
+
+    // sanity check for finishing paths - check the area of finishing cut
+    Paths clearedLocations;
+    clipof.Clear();
+    clipof.AddPaths(cleared.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(clearedLocations, long(-toolRadiusScaled));
+
+    Paths tbpShrink;
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpShrink, long(-stepOverScaled * FINISHING_THICKNESS_SCALE - MIN_STEP_CLIPPER));
+
+    Paths uncut;
+    clip.Clear();
+    clip.AddPaths(tbpShrink, PolyType::ptSubject, true);
+    clip.AddPaths(clearedLocations, PolyType::ptClip, true);
+    clip.Execute(ClipType::ctDifference, uncut);
+
+    if (uncut.size() > 0) {
+        output.FailedToSetUpFinishingPass = true;
+        cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
+                "results."
+             << endl
+             << "Hint: try to modify accuracy and/or step-over." << endl;
+    }
+
 
     //**********************************
     //*  FINISHING PASS                *
     //**********************************
     if (finishingProfile) {
-        Paths finishingPaths;
-        clipof.Clear();
-        clipof.AddPaths(boundPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(finishingPaths, -toolRadiusScaled);
+        // update tool bound paths to correspond to the finishing paths instead of the interior
+        {
+            Paths tbpModified;
+            for (const Path& fp : finishingPaths) {
+                clipof.Clear();
+                clipof.AddPath(fp, JoinType::jtRound, EndType::etClosedPolygon);
+                int offset = (getPathNestingLevel(fp, finishingPaths) % 2 == 1) ? 3 : -3;
+                Paths out;
+                clipof.Execute(out, offset);
 
-        clipof.Clear();
-        clipof.AddPaths(finishingPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(toolBoundPaths, -1);
+                bool orientation = Orientation(fp);
+                for (Path& p : out) {
+                    if (Orientation(p) != orientation) {
+                        ReversePath(p);
+                    }
+                    tbpModified.push_back(p);
+                }
+            }
 
-        IntPoint lastPoint = toolPos;
+            toolBoundPaths = tbpModified;
+        }
+
+        // Split finishingPaths into closed (all Z=1) and open (partial Z=1) paths
+        Paths closedFinishingPaths;
+        Paths openFinishingPaths;
+
+        for (const auto& p : finishingPaths) {
+            // Find starting index: first Z=0, or 0 if none found
+            size_t startIdx = 0;
+            for (size_t i = 0; i < p.size(); i++) {
+                if (p[i].Z == 0) {
+                    startIdx = i;
+                    break;
+                }
+            }
+
+            // Loop through path starting at startIdx, collecting Z=1 vertices
+            Path currentPath;
+            for (size_t offset = 0; offset < p.size(); offset++) {
+                size_t i = (startIdx + offset) % p.size();
+                const IntPoint& pt = p[i];
+
+                if (pt.Z == 1) {
+                    // Add Z=1 point to current path
+                    currentPath.push_back(pt);
+                }
+                else {
+                    // Z=0: if we have accumulated points, save them to open list
+                    if (!currentPath.empty()) {
+                        openFinishingPaths.push_back(currentPath);
+                        currentPath.clear();
+                    }
+                }
+            }
+
+            // After loop completes, check what we accumulated
+            if (currentPath.size() == p.size()) {
+                // All vertices were Z=1 - add to closed list
+                closedFinishingPaths.emplace_back(p);
+            }
+            else if (currentPath.size() > 0) {
+                // Partial Z=1 segment remains - add to open list
+                openFinishingPaths.push_back(currentPath);
+            }
+            else {
+                // No Z=1 vertices found
+            }
+        }
+
+
         Path finShiftedPath;
 
-        bool allCutsAllowed = true;
-        while (!stopProcessing
-               && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath, stepOverScaled)) {
+        // Create offset version of stock boundary to check if finishing passes are within tool radius
+        Paths stockExpandedPaths;
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(stockExpandedPaths, toolRadiusScaled);
+
+        while (!stopProcessing && (!closedFinishingPaths.empty() || !openFinishingPaths.empty())) {
+            bool isClosedPath = PopNextFinishingPass(
+                closedFinishingPaths,
+                openFinishingPaths,
+                toolPos,
+                finShiftedPath,
+                stepOverScaled
+            );
+
             if (finShiftedPath.empty()) {
                 continue;
             }
-            // skip finishing passes outside the stock boundary - no sense to cut where is no
-            // material
-            bool allPointsOutside = true;
-            IntPoint p1 = finShiftedPath.front();
-            for (const auto& pt : finShiftedPath) {
-
-                // midpoint
-                if (IsPointWithinCutRegion(
-                        stockInputPaths,
-                        IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2)
-                    )) {
-                    allPointsOutside = false;
-                    break;
-                }
-                // current point
-                if (IsPointWithinCutRegion(stockInputPaths, pt)) {
-                    allPointsOutside = false;
-                    break;
-                }
-
-                p1 = pt;
-            }
-            if (allPointsOutside) {
+            // skip finishing passes outside the stock boundary that do not cut any stock
+            Path finShiftedPathCopy = finShiftedPath;
+            Paths intersection
+                = PathIntersectArea(clip, finShiftedPathCopy, stockExpandedPaths, isClosedPath);
+            if (intersection.empty()) {
                 continue;
             }
 
             progressPaths.push_back(TPath());
+            progressPaths.back().first = MotionType::mtCutting;
             // show in progress cb
             for (auto& pt : finShiftedPath) {
                 progressPaths.back().second.emplace_back(
@@ -3328,84 +4496,129 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 );
             }
 
-            if (!finShiftedPath.empty()) {
-                finShiftedPath << finShiftedPath.front();  // make sure its closed
+            // For closed paths, close the loop by adding the start point at the end
+            if (isClosedPath && !finShiftedPath.empty()) {
+                progressPaths.back().second.emplace_back(
+                    double(finShiftedPath.front().X) / scaleFactor,
+                    double(finShiftedPath.front().Y) / scaleFactor
+                );
             }
 
+            // Clean path
             Path finCleaned;
             CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
 
-            // sanity check for finishing paths - check the area of finishing cut
-            for (size_t i = 1; i < finCleaned.size(); i++) {
-                if (!IsAllowedToCutTrough(
-                        finCleaned.at(i - 1),
-                        finCleaned.at(i),
-                        cleared,
-                        toolBoundPaths,
-                        2.0,
-                        true
-                    )) {
-                    allCutsAllowed = false;
+            // Ensure correct endpoint after cleaning
+            IntPoint endPoint = isClosedPath ? finCleaned.front() : finShiftedPath.back();
+            if (finCleaned.back() != endPoint) {
+                // make sure it ends correctly, but don't risk ruining the final direction by making
+                // a very short segment
+                if (sqrt(DistanceSqrd(endPoint, finCleaned.back())) < FINISHING_CLEAN_PATH_TOLERANCE) {
+                    finCleaned.pop_back();
                 }
+                finCleaned.push_back(endPoint);
             }
 
-            // make sure it's closed
-            finCleaned.push_back(finCleaned.front());
-            AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths);
+            std::optional<TPaths> linkPath = FindLinkPath(
+                toolPos,
+                finCleaned[0],
+                GetPathDirectionV(finCleaned, 1),
+                cleared,
+                toolBoundPaths,
+                output
+            );
+            if (!linkPath) {
+                output.FinishingLeadInFailed = true;
+                cerr << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
+            }
+            else {
+                auto newPos = AppendToolPath(output, finCleaned, *linkPath, cleared, toolBoundPaths);
+                if (newPos) {
+                    toolPos = newPos->first;
+                    toolDir = newPos->second;
+                }
+                else {
+                    toolPos = finCleaned.back();
+                    toolDir = GetPathDirectionV(finCleaned, finCleaned.size() - 1);
+                }
 
-            cleared.ExpandCleared(finCleaned);
-
-            if (!finCleaned.empty()) {
-                lastPoint.X = finCleaned.back().X;
-                lastPoint.Y = finCleaned.back().Y;
+                cleared.ExpandCleared(finCleaned);
+                for (TPath lp : *linkPath) {
+                    if (lp.first == MotionType::mtCutting) {
+                        Path scaledP;
+                        for (auto& p : lp.second) {
+                            scaledP.push_back(
+                                {(long long)(p.first * scaleFactor),
+                                 (long long)(p.second * scaleFactor)}
+                            );
+                        }
+                        cleared.ExpandCleared(scaledP);
+                    }
+                }
             }
         }
 
         Path returnPath;
-        returnPath << lastPoint;
+        returnPath << toolPos;
         returnPath << entryPoint;
         output.ReturnMotionType = IsClearPath(returnPath, cleared) ? MotionType::mtLinkClear
                                                                    : MotionType::mtLinkNotClear;
-
-        // dump performance results
-#ifdef DEV_MODE
-        Perf_ProcessPolyNode.Stop();
-        Perf_ProcessPolyNode.DumpResults();
-        Perf_PointIterations.DumpResults();
-        Perf_CalcCutAreaCirc.DumpResults();
-        Perf_NextEngagePoint.DumpResults();
-        Perf_ExpandCleared.DumpResults();
-        Perf_DistanceToBoundary.DumpResults();
-        Perf_AppendToolPath.DumpResults();
-        Perf_IsAllowedToCutTrough.DumpResults();
-        Perf_IsClearPath.DumpResults();
-#endif
-        CheckReportProgress(progressPaths, true);
-#ifdef DEV_MODE
-        double duration = ((double)(clock() - start_clock)) / CLOCKS_PER_SEC;
-        cout << "PolyNode perf:" << perf_total_len / double(scaleFactor) / duration << " mm/sec"
-             << " processed_points:" << total_points << " output_points:" << total_output_points
-             << " total_iterations:" << total_iterations
-             << " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
-             << " total_exceeded:" << total_exceeded << " ("
-             << 100 * double(total_exceeded) / double(total_points) << "%)" << endl;
-#else
-        (void)total_output_points;
-        (void)over_cut_count;
-        (void)total_exceeded;
-        (void)total_points;
-        (void)total_iterations;
-        (void)perf_total_len;
-#endif
-
-        // warn about invalid paths being detected
-        if (!allCutsAllowed) {
-            cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
-                    "results."
-                 << endl
-                 << "Hint: try to modify accuracy and/or step-over." << endl;
-        }
     }
+
+    // dump performance results
+    Perf_ProcessPolyNode.Stop();
+#ifdef DEV_MODE
+    Perf_ProcessPolyNode.DumpResults();
+    Perf_PointIterations.DumpResults();
+    Perf_CalcCutAreaCirc.DumpResults();
+    Perf_NextEngagePoint.DumpResults();
+    Perf_ExpandCleared.DumpResults();
+    Perf_DistanceToBoundary.DumpResults();
+    Perf_AppendToolPath.DumpResults();
+    Perf_IsAllowedToCutTrough.DumpResults();
+    Perf_IsClearPath.DumpResults();
+#endif
+    CheckReportProgress(progressPaths, true);
+#ifdef DEV_MODE
+    double duration = ((double)(clock() - start_clock)) / CLOCKS_PER_SEC;
+    cout << "PolyNode perf:" << perf_total_len / double(scaleFactor) / duration << " mm/sec"
+         << " processed_points:" << total_points << " output_points:" << total_output_points
+         << " total_iterations:" << total_iterations
+         << " iter_per_point:" << (double(total_iterations) / ((double(total_points) + 0.001)))
+         << " total_exceeded:" << total_exceeded << " ("
+         << 100 * double(total_exceeded) / double(total_points) << "%)" << endl;
+#else
+    (void)total_output_points;
+    (void)over_cut_count;
+    (void)total_exceeded;
+    (void)total_points;
+    (void)total_iterations;
+    (void)perf_total_len;
+#endif
+
+    // Calculate newly cleared area (final - initial)
+    // First calculate initial cleared area
+    double initialClearedArea = 0.0;
+    for (const Path& path : initialClearedPaths) {
+        int nesting = getPathNestingLevel(path, initialClearedPaths);
+        initialClearedArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(path));
+    }
+
+    // Then calculate final cleared area
+    const Paths& clearedPaths = cleared.GetCleared();
+    if (svgInfo) {
+        svgInfo->allFinalClearedPaths.push_back(clearedPaths);
+    }
+    double finalClearedArea = 0.0;
+    for (const Path& path : clearedPaths) {
+        int nesting = getPathNestingLevel(path, clearedPaths);
+        finalClearedArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(path));
+    }
+
+    // Convert from scaled units to real units (scaleFactor is applied twice for area)
+    // and subtract initial from final to get only newly cleared area
+    output.ClearedArea = (finalClearedArea - initialClearedArea) / (scaleFactor * scaleFactor);
+
     results.push_back(output);
 }
 

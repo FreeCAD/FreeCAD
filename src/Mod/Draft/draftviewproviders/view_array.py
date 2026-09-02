@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Array object."""
+
 ## @package view_array
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Array object.

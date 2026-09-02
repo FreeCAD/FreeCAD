@@ -45,6 +45,7 @@ This module builds only the first element, the twisted ribcage.
 The tunnel and walkway are built with the `twisted bridge`
 object in the Arch Workbench.
 """
+
 ## @package pathtwistedarray
 # \ingroup draftobjects
 # \brief Provides the object code for the TwistedArray object.

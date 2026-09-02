@@ -9,6 +9,9 @@
 #include "Curve.h"
 #include "Area.h"
 
+namespace heeks
+{
+
 void CArc::SetDirWithPoint(const Point& p)
 {
     double angs = atan2(m_s.y - m_c.y, m_s.x - m_c.x);
@@ -137,3 +140,5 @@ void CArc::GetSegments(void (*callbackfunc)(const double* p), double pixels_per_
         y += ry * radial_factor;
     }
 }
+
+}  // namespace heeks

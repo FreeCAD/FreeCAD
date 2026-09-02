@@ -81,8 +81,9 @@ class Container(object):
         elif container.hasExtension("App::GroupExtension"):
             result = container.Group
             if container.hasExtension("App::GeoFeatureGroupExtension"):
-                # geofeaturegroup's group contains all objects within the CS, we don't want that
-                result = [obj for obj in result if obj.getParentGroup() is not container]
+                # geofeaturegroup's group contains all objects within the CS, we don't want that.
+                # Objects in a nested plain group have a non-None getParentGroup(); exclude them.
+                result = [obj for obj in result if obj.getParentGroup() is None]
             return result
         elif container.isDerivedFrom("App::Origin"):
             return []
@@ -196,6 +197,8 @@ def isAContainer(obj, links_too=False):
     if obj.hasExtension("App::GroupExtension"):
         return True
     if obj.isDerivedFrom("App::Origin"):
+        return True
+    if obj.isDerivedFrom("App::Link") and links_too:
         return True
     if obj.hasChildElement():
         return True if links_too else False

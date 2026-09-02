@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, deprecated_attributes
+from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 from typing import Final
 
@@ -14,6 +15,13 @@ from typing import Final
     FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Constructor=True,
 )
+@deprecated_attributes(
+    Center={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Location",
+    },
+)
 class Conic(GeometryCurve):
     """
     Describes an abstract conic in 3d space
@@ -22,10 +30,10 @@ class Conic(GeometryCurve):
     Licence: LGPL
     """
 
-    Location: object = ...
+    Location: Vector = ...
     """Location of the conic."""
 
-    Center: object = ...
+    Center: Vector = ...
     """Deprecated -- use Location."""
 
     Eccentricity: Final[float] = ...
@@ -40,11 +48,11 @@ class Conic(GeometryCurve):
     AngleXU: float = ...
     """The angle between the X axis and the major axis of the conic."""
 
-    Axis: object = ...
+    Axis: Vector = ...
     """The axis direction of the circle"""
 
-    XAxis: object = ...
+    XAxis: Vector = ...
     """The X axis direction of the circle"""
 
-    YAxis: object = ...
+    YAxis: Vector = ...
     """The Y axis direction of the circle"""

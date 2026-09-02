@@ -34,7 +34,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 #include "TaskMeasure.h"
-
+#include "TaskMassProperties.h"
 
 //===========================================================================
 // Std_Measure
@@ -49,9 +49,9 @@ StdCmdMeasure::StdCmdMeasure()
 {
     sGroup = "Measure";
     sMenuText = QT_TR_NOOP("&Measure");
-    sToolTipText = QT_TR_NOOP("Measure a feature");
+    sToolTipText = QT_TR_NOOP("Measures a feature");
     sWhatsThis = "Std_Measure";
-    sStatusTip = QT_TR_NOOP("Measure a feature");
+    sStatusTip = QT_TR_NOOP("Measures a feature");
     sPixmap = "umf-measurement";
 }
 
@@ -84,6 +84,52 @@ void CreateMeasureCommands()
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     auto cmd = new StdCmdMeasure();
+    cmd->initAction();
+    rcCmdMgr.addCommand(cmd);
+}
+
+DEF_STD_CMD_A(StdCmdMassProperties)
+
+StdCmdMassProperties::StdCmdMassProperties()
+    : Command("Std_MassProperties")
+{
+    sGroup = "MassProperties";
+    sMenuText = QT_TR_NOOP("Mass Properties");
+    sToolTipText = QT_TR_NOOP("Calculates mass properties of selected objects");
+    sWhatsThis = "Std_MassProperties";
+    sStatusTip = sToolTipText;
+    sPixmap = "MassPropertiesIcon";
+}
+
+void StdCmdMassProperties::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    MassPropertiesGui::TaskMassProperties* task = new MassPropertiesGui::TaskMassProperties();
+    task->setDocumentName(this->getDocument()->getName());
+    Gui::Control().showDialog(task);
+}
+
+bool StdCmdMassProperties::isActive()
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc || doc->countObjectsOfType<App::GeoFeature>() == 0) {
+        return false;
+    }
+
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
+        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        return !viewer->isEditing();
+    }
+    return false;
+}
+
+void CreateMassPropertiesCommands()
+{
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    auto cmd = new StdCmdMassProperties();
     cmd->initAction();
     rcCmdMgr.addCommand(cmd);
 }

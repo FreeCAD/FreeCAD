@@ -107,6 +107,7 @@ DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , ui(new Ui_DlgRevolution)
     , filter(nullptr)
+    , filterSelection(false)
 {
     ui->setupUi(this);
     setupConnections();
@@ -530,7 +531,8 @@ void DlgRevolution::accept()
 
 void DlgRevolution::onSelectLineClicked()
 {
-    if (!filter) {
+    if (!filterSelection) {
+        filterSelection = true;
         filter = new EdgeSelection();
         Gui::Selection().addSelectionGate(filter);
         ui->selectLine->setText(tr("Selecting… (Line or Arc)"));
@@ -538,6 +540,7 @@ void DlgRevolution::onSelectLineClicked()
     else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
         ui->selectLine->setText(tr("Select Reference"));
     }
 }
@@ -634,8 +637,8 @@ void DlgRevolution::autoSolid()
                 return;
             }
             ShapeExtend_Explorer xp;
-            Handle(TopTools_HSequenceOfShape) leaves
-                = xp.SeqFromCompound(sh, /*recursive= */ Standard_True);
+            Handle(TopTools_HSequenceOfShape)
+                leaves = xp.SeqFromCompound(sh, /*recursive= */ Standard_True);
             int cntClosedWires = 0;
             for (int i = 0; i < leaves->Length(); i++) {
                 const TopoDS_Shape& leaf = leaves->Value(i + 1);

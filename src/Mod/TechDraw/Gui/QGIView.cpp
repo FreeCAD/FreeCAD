@@ -84,7 +84,8 @@ QGIView::QGIView()
     m_label(new QGCustomLabel()),
     m_border(new QGCustomBorder()),
     m_caption(new QGICaption()),
-    m_lock(new QGCustomImage())
+    m_lock(new QGCustomImage()),
+    m_inhibitSnapOnPosChange(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -185,7 +186,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         else {
             // For general views we check if we need to snap to a position
             if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
-                snapPosition(newPos);
+                if (!m_inhibitSnapOnPosChange) {
+                    snapPosition(newPos);
+                }
+                m_inhibitSnapOnPosChange = false;
             }
         }
 
@@ -195,7 +199,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     // wf: why scene()? because if our selected state has changed because we have been removed from
     //     the scene, we don't do anything except wait to be deleted.
     if (change == ItemSelectedHasChanged && scene()) {
-        if (isSelected() || hasSelectedChildren(this)) {
+        if (isViewSelected()) {
             m_colCurrent = getSelectColor();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
@@ -246,7 +250,7 @@ void QGIView::dragFinished()
     bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
 
     if (ownTransaction) {
-        Gui::Command::openCommand("Drag view");
+        viewObj->getDocument()->openTransaction("Drag view");
     }
     // tell the feature that we have moved
     Gui::ViewProvider *vp = getViewProvider(viewObj);
@@ -264,7 +268,7 @@ void QGIView::dragFinished()
         snapping = false;
     }
     if (ownTransaction) {
-        Gui::Command::commitCommand();
+        viewObj->getDocument()->commitTransaction();
     }
 }
 
@@ -273,6 +277,10 @@ void QGIView::dragFinished()
 //! position, otherwise it is the position within the ProjectionGroup.
 void QGIView::snapPosition(QPointF& newPosition)
 {
+    if (m_inhibitSnapOnPosChange) {
+        return;
+    }
+
     if (!Preferences::SnapViews()) {
         return;
     }
@@ -512,13 +520,39 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     event->setModifiers(originalModifiers);
 }
 
+void QGIView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    auto* feature = getViewObject();
+    if (!feature) {
+        QGraphicsItemGroup::mouseDoubleClickEvent(event);
+        return;
+    }
+
+    // a projection group item should edit its parent group, not itself
+    App::DocumentObject* target = feature;
+    if (auto* dpgi = freecad_cast<TechDraw::DrawProjGroupItem*>(feature)) {
+        if (auto* group = dpgi->getPGroup()) {
+            target = group;
+        }
+    }
+
+    auto* vp = getViewProvider(target);
+    if (vp && vp->doubleClicked()) {
+        event->accept();
+        return;
+    }
+
+    QGraphicsItemGroup::mouseDoubleClickEvent(event);
+}
+
+
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverEnterEvent(event);
 
     m_isHovered = true;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
     } else {
         m_colCurrent = getPreColor();
@@ -538,7 +572,7 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     m_isHovered = false;
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         m_colCurrent = getSelectColor();
         m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
     } else {
@@ -550,19 +584,15 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     drawBorder();
 }
 
-//sets position in /Gui(graphics), not /App
-void QGIView::setPosition(qreal xPos, qreal yPos)
+//! get the X&Y position from the feature in Page coords (could be parent coords?), convert to Qt coords and update
+//! this graphic item's scene position.
+void QGIView::updatePositionFromFeatureXY()
 {
-    double newX = xPos;
-    double newY = -yPos;
-    double oldX = pos().x();
-    double oldY = pos().y();
-
-    if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
-        TechDraw::DrawUtil::fpCompare(newY, oldY)) {
-        return;
-    } else {
-        setPos(newX, newY);
+    if (getViewObject()) {
+        m_inhibitSnapOnPosChange = true;
+        double xFeat = Rez::guiX(getViewObject()->X.getValue());
+        double yFeat = Rez::guiX(getViewObject()->Y.getValue());
+        setPos(xFeat, -yFeat);
     }
 }
 
@@ -579,14 +609,12 @@ QGIViewClip* QGIView::getClipGroup()
     return parentView;
 }
 
+//! called from ViewProvider when feature properties change.
 void QGIView::updateView(bool forceUpdate)
 {
-    setMovableFlag();
+    Q_UNUSED(forceUpdate);
 
-    if (getViewObject() && forceUpdate) {
-        setPosition(Rez::guiX(getViewObject()->X.getValue()),
-                    Rez::guiX(getViewObject()->Y.getValue()));
-    }
+    setMovableFlag();
 
     double appRotation = getViewObject()->Rotation.getValue();
     double guiRotation = rotation();
@@ -658,14 +686,6 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    double xFeat, yFeat;
-    if (getViewObject()) {
-        xFeat = Rez::guiX(getViewObject()->X.getValue());
-        yFeat = Rez::guiX(getViewObject()->Y.getValue());
-        if (!getViewObject()->LockPosition.getValue()) {
-            setPosition(xFeat, yFeat);
-        }
-    }
     if (isVisible()) {
         show();
     } else {
@@ -924,7 +944,14 @@ void QGIView::removeChild(QGIView* child)
 void QGIView::hideFrame()
 {
     m_border->hide();
-    m_label->hide();
+
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (vp && vp->KeepLabel.getValue()) {
+        m_label->show();
+    }
+    else {
+        m_label->hide();
+    }
 }
 
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
@@ -1046,20 +1073,6 @@ void QGIView::makeMark(double xPos, double yPos, QColor color)
     vItem->setZValue(ZVALUE::VERTEX);
 }
 
-//! true if parent has any children which are selected
-bool QGIView::hasSelectedChildren(QGIView* parent)
-{
-    QList<QGraphicsItem*> children = parent->childItems();
-
-    auto itMatch = std::find_if(children.begin(), children.end(),
-             [&](QGraphicsItem* child) {
-                return child->isSelected();
-             });
-
-    return itMatch != children.end();
-}
-
-
 void QGIView::makeMark(Base::Vector3d pos, QColor color)
 {
     makeMark(pos.x, pos.y, color);
@@ -1072,6 +1085,7 @@ void QGIView::makeMark(QPointF pos, QColor color)
 
 void QGIView::updateFrameVisibility()
 {
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (shouldShowFrame()) {
         m_border->show();
         m_label->show();
@@ -1080,11 +1094,31 @@ void QGIView::updateFrameVisibility()
         }
     } else {
         m_border->hide();
-        m_label->hide();
+        if (vp && vp->KeepLabel.getValue()) {
+            m_label->show();
+        } else {
+            m_label->hide();
+        }
         if (m_lock) {
              m_lock->hide();
         }
     }
+}
+
+// true if the whole view (not just a sub-element) is selected in the App selection
+bool QGIView::isViewSelected() const
+{
+    if (!viewObj || !viewObj->getDocument()) {
+        return false;
+    }
+    const auto selection =
+        Gui::Selection().getSelectionEx(viewObj->getDocument()->getName());
+    for (const auto& selObj : selection) {
+        if (selObj.getObject() == viewObj) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool QGIView::shouldShowFrame() const
@@ -1093,7 +1127,7 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         return true;
     }
 
@@ -1105,11 +1139,9 @@ bool QGIView::shouldShowFrame() const
             return true;
         case ViewFrameMode::AlwaysOff:
             return false;
-            break;
         default:
             return m_isHovered;
-    };
-
+    }
 }
 
 bool QGIView::shouldShowFromViewProvider() const
@@ -1129,17 +1161,22 @@ bool QGIView::shouldShowFromViewProvider() const
 
 bool QGIView::isExporting() const
 {
-    auto* view{freecad_cast<TechDraw::DrawView*>(getViewObject())};
-    auto vpPage = getViewProviderPage(view);
-    if (!view || !vpPage) {
+    auto* obj = getViewObject();
+    if (!obj || !obj->getDocument()) {
         return false;
     }
-
+    auto* view = freecad_cast<TechDraw::DrawView*>(obj);
+    if (!view) {
+        return false;
+    }
+    auto vpPage = getViewProviderPage(view);
+    if (!vpPage) {
+        return false;
+    }
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
         return false;
     }
-
     return scenePage->getExportingAny();
 }
 

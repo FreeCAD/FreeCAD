@@ -64,7 +64,7 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
 
     def open(self):
         # open a new transaction if non is open
-        if not FreeCAD.getActiveTransaction():
+        if FreeCAD.ActiveDocument.getBookedTransactionID() == 0:
             FreeCAD.ActiveDocument.openTransaction(
                 translate("FEM", "Edit {}").format(self.obj.Label)
             )

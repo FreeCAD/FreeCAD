@@ -40,6 +40,7 @@ class GraphvizWorker;
 class GuiExport GraphvizView: public MDIView
 {
     Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);

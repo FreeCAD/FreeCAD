@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <fastsignals/signal.h>
+
 #include <Mod/Start/StartGlobal.h>
 #include <Base/Type.h>
 #include <Gui/MDIView.h>
@@ -70,6 +72,7 @@ public:
     void newAssemblyFile();
     void newDraftFile();
     void newArchFile();
+    void recentFileAdded(const QString& filename);
 
     bool onHasMsg(const char* pMsg) const override;
 
@@ -116,6 +119,7 @@ private:
     QLabel* _customFolderLabel;
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
+    fastsignals::scoped_connection _saveddoc;
 
     bool isInitialized = false;
 

@@ -257,7 +257,7 @@ void Gui::PreferencePackManager::importConfig(
 
 // TODO(Shvedov): Is this suitable place for this method? It is more generic,
 // and maybe more suitable place at Application?
-std::vector<std::filesystem::path> Gui::PreferencePackManager::modPaths() const
+std::vector<std::filesystem::path> Gui::PreferencePackManager::modPaths()
 {
     auto userModPath = fs::path(Base::FileInfo::stringToPath(App::Application::getUserAppDataDir()))
         / "Mod";
@@ -548,8 +548,10 @@ static void copyTemplateParameters(
     }
 }
 
-static void copyTemplateParameters(/*const*/ ParameterManager& templateParameterManager,
-                                   ParameterManager& outputParameterManager)
+static void copyTemplateParameters(
+    /*const*/ ParameterManager& templateParameterManager,
+    ParameterManager& outputParameterManager
+)
 {
     auto groups = templateParameterManager.GetGroups();
     for (auto& group : groups) {

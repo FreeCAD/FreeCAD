@@ -2,7 +2,7 @@
 
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 generate_from_py(ViewProvider)
@@ -20,13 +20,18 @@ set (PartDesign_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/PartDesign_translat
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${PartDesign_TR_QRC} ${QM_SRCS})
-qt_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc ${PartDesign_TR_QRC})
+qt_add_resources(PartDesignGui_SRCS
+    Resources/PartDesign.qrc
+    ${PartDesign_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
     TaskPadPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
+    TaskDefeaturingParameters.ui
     TaskDraftParameters.ui
     TaskThicknessParameters.ui
     TaskBooleanParameters.ui
@@ -69,6 +74,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderChamfer.h
     ViewProviderFillet.cpp
     ViewProviderFillet.h
+    ViewProviderDefeaturing.cpp
+    ViewProviderDefeaturing.h
     ViewProviderDraft.cpp
     ViewProviderDraft.h
     ViewProviderThickness.cpp
@@ -141,6 +148,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFilletParameters.ui
     TaskFilletParameters.cpp
     TaskFilletParameters.h
+    TaskDefeaturingParameters.ui
+    TaskDefeaturingParameters.cpp
+    TaskDefeaturingParameters.h
     TaskDraftParameters.ui
     TaskDraftParameters.cpp
     TaskDraftParameters.h
@@ -255,9 +265,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartDesignGui)
-endif()
+target_compile_warn_error(PartDesignGui)
 
 SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)

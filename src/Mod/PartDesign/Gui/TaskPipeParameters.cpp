@@ -59,6 +59,38 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPipeParameters */
 
+namespace
+{
+bool isSubtractivePipe(ViewProviderPipe* view)
+{
+    auto* pipe = view->getObject<PartDesign::Pipe>();
+    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+std::string pipeTaskIconName(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? "PartDesign_SubtractivePipe" : "PartDesign_AdditivePipe";
+}
+
+QString pipeTaskTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeParameters::tr("Subtractive Pipe Parameters")
+                                   : TaskPipeParameters::tr("Additive Pipe Parameters");
+}
+
+QString pipeOrientationTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeOrientation::tr("Subtractive Pipe Section Orientation")
+                                   : TaskPipeOrientation::tr("Additive Pipe Section Orientation");
+}
+
+QString pipeScalingTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeScaling::tr("Subtractive Pipe Section Transformation")
+                                   : TaskPipeScaling::tr("Additive Pipe Section Transformation");
+}
+}  // namespace
+
 
 //**************************************************************************
 //**************************************************************************
@@ -66,13 +98,23 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe Parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeTaskTitle(PipeView))
     , ui(new Ui_TaskPipeParameters)
     , stateHandler(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    // Enable multi-selection in edges list
+    ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    // Ctrl+A should select edges list, not tree view
+    auto* selectAll = new QAction(tr("Select All"), this);
+    selectAll->setShortcut(QKeySequence::SelectAll);
+    selectAll->setShortcutContext(Qt::WidgetShortcut);
+    ui->listWidgetReferences->addAction(selectAll);
+    connect(selectAll, &QAction::triggered, ui->listWidgetReferences, &QListWidget::selectAll);
+
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
@@ -95,6 +137,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskPipeParameters::onDeleteEdge);
+    connect(ui->buttonRefRemove, &QToolButton::clicked, this, &TaskPipeParameters::onDeleteEdge);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     this->groupLayout()->addWidget(proxy);
@@ -189,8 +232,9 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->profileBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd
+            ) {
                 QString sub = QString::fromStdString(msg.pSubName);
                 if (!sub.isEmpty()) {
                     QListWidgetItem* item = new QListWidgetItem();
@@ -207,8 +251,10 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove) {
+            else if (
+                stateHandler->getSelectionMode()
+                == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove
+            ) {
                 QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
@@ -217,8 +263,9 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->clear();
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpine) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refSpine
+            ) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -282,26 +329,28 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
 
 void TaskPipeParameters::onDeleteEdge()
 {
-    // Delete the selected path edge
-    int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
-    if (item) {
+    auto items = ui->listWidgetReferences->selectedItems();
+    if (items.empty()) {
+        return;
+    }
+
+    const auto pipe = getObject<PartDesign::Pipe>();
+    std::vector<std::string> refs = pipe->Spine.getSubValues();
+
+    for (auto* item : items) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        delete item;
+        std::string obj = data.constData();
 
-        // search inside the list of spines
-        const auto pipe = getObject<PartDesign::Pipe>();
-        std::vector<std::string> refs = pipe->Spine.getSubValues();
-        const std::string obj = data.constData();
+        delete ui->listWidgetReferences->takeItem(ui->listWidgetReferences->row(item));
 
-        // if something was found, delete it and update the spine list
         if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
             refs.erase(f);
-            pipe->Spine.setValue(pipe->Spine.getValue(), refs);
-            clearButtons();
-            recomputeFeature();
         }
     }
+
+    pipe->Spine.setValue(pipe->Spine.getValue(), refs);
+    clearButtons();
+    recomputeFeature();
 }
 
 bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
@@ -443,7 +492,7 @@ bool TaskPipeParameters::accept()
     auto pipe = getObject<PartDesign::Pipe>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pipe, false);
     if (!pcActiveBody) {
-        QMessageBox::warning(this, tr("Input error"), tr("No active body"));
+        QMessageBox::warning(this, tr("Input Error"), tr("No active body"));
         return false;
     }
     // auto pcActivePart = PartDesignGui::getPartFor (pcActiveBody, false);
@@ -471,8 +520,10 @@ bool TaskPipeParameters::accept()
     if (spine && !pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
         extReference = true;
     }
-    else if (auxSpine && !pcActiveBody->hasObject(auxSpine)
-             && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+    else if (
+        auxSpine && !pcActiveBody->hasObject(auxSpine)
+        && !pcActiveBody->getOrigin()->hasObject(auxSpine)
+    ) {
         extReference = true;
     }
     else {
@@ -502,8 +553,9 @@ bool TaskPipeParameters::accept()
                 );
                 copies.push_back(pipe->Spine.getValue());
             }
-            else if (!pcActiveBody->hasObject(auxSpine)
-                     && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+            else if (
+                !pcActiveBody->hasObject(auxSpine) && !pcActiveBody->getOrigin()->hasObject(auxSpine)
+            ) {
                 pipe->AuxiliarySpine.setValue(
                     PartDesignGui::TaskFeaturePick::makeCopy(
                         auxSpine,
@@ -551,7 +603,7 @@ bool TaskPipeParameters::accept()
             throw Base::RuntimeError(getObject()->getStatusString());
         }
         Gui::cmdGuiDocument(pipe, "resetEdit()");
-        Gui::Command::commitCommand();
+        pipe->getDocument()->commitTransaction();
 
         // we need to add the copied features to the body after the command action, as otherwise
         // FreeCAD crashes unexplainably
@@ -560,7 +612,8 @@ bool TaskPipeParameters::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));
+        pipe->getDocument()->abortTransaction();
+        QMessageBox::warning(this, tr("Input Error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 
@@ -574,7 +627,7 @@ bool TaskPipeParameters::accept()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Orientation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeOrientationTitle(PipeView))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -611,6 +664,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskPipeOrientation::onDeleteItem);
+    connect(ui->buttonRefRemove, &QToolButton::clicked, this, &TaskPipeOrientation::onDeleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     this->groupLayout()->addWidget(proxy);
@@ -730,8 +784,10 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                     ui->profileBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove) {
+            else if (
+                stateHandler->getSelectionMode()
+                == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove
+            ) {
                 QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
@@ -740,8 +796,9 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                     ui->profileBaseEdit->clear();
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refAuxSpine) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refAuxSpine
+            ) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -869,7 +926,7 @@ void TaskPipeOrientation::updateUI(int idx)
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Transformation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeScalingTitle(PipeView))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {
@@ -898,6 +955,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskPipeScaling::onDeleteSection);
+    connect(ui->buttonRefRemove, &QToolButton::clicked, this, &TaskPipeScaling::onDeleteSection);
 
     connect(
         ui->listWidgetReferences->model(),
@@ -1005,8 +1063,10 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
                     );
                     ui->listWidgetReferences->addItem(item);
                 }
-                else if (stateHandler->getSelectionMode()
-                         == StateHandlerTaskPipe::SelectionModes::refSectionRemove) {
+                else if (
+                    stateHandler->getSelectionMode()
+                    == StateHandlerTaskPipe::SelectionModes::refSectionRemove
+                ) {
                     removeFromListWidget(ui->listWidgetReferences, label);
                 }
             }

@@ -116,7 +116,7 @@ ExportCompactSub(
 
 # and that's kind of how its done:
 for w in App.activeDocument().Trajectory.Trajectory.Waypoints:
-    (A, B, C) = w.Pos.Rotation.toEuler()
+    A, B, C = w.Pos.Rotation.toEuler()
     print(
         "LIN {X %.3f,Y %.3f,Z %.3f,A %.3f,B %.3f,C %.3f} ; %s"
         % (w.Pos.Base.x, w.Pos.Base.y, w.Pos.Base.z, A, B, C, w.Name)

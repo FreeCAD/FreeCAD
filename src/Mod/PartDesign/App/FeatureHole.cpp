@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <cstring>
 #include <limits>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
@@ -52,6 +53,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <Base/Converter.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
@@ -62,7 +64,7 @@
 #include <Mod/Part/App/Tools.h>
 
 #include "FeatureHole.h"
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 
 #include <numbers>
 
@@ -166,66 +168,66 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] = {
      {"M22x2.0", 22.0, 2.00, 20.00},   {"M24x1.0", 24.0, 1.00, 23.00},
      {"M24x1.5", 24.0, 1.50, 22.50},   {"M24x2.0", 24.0, 2.00, 22.00},
      {"M25x1.0", 25.0, 1.00, 24.00},   {"M25x1.5", 25.0, 1.50, 23.50},
-     {"M25x2.0", 25.0, 2.00, 23.00},   {"M27x1.0", 27.0, 1.00, 26.00},
-     {"M27x1.5", 27.0, 1.50, 25.50},   {"M27x2.0", 27.0, 2.00, 25.00},
-     {"M28x1.0", 28.0, 1.00, 27.00},   {"M28x1.5", 28.0, 1.50, 26.50},
-     {"M28x2.0", 28.0, 2.00, 26.00},   {"M30x1.0", 30.0, 1.00, 29.00},
-     {"M30x1.5", 30.0, 1.50, 28.50},   {"M30x2.0", 30.0, 2.00, 28.00},
-     {"M30x3.0", 30.0, 3.00, 27.00},   {"M32x1.5", 32.0, 1.50, 30.50},
-     {"M32x2.0", 32.0, 2.00, 30.00},   {"M33x1.5", 33.0, 1.50, 31.50},
-     {"M33x2.0", 33.0, 2.00, 31.00},   {"M33x3.0", 33.0, 3.00, 30.00},
-     {"M35x1.5", 35.0, 1.50, 33.50},   {"M35x2.0", 35.0, 2.00, 33.00},
+     {"M25x2.0", 25.0, 2.00, 23.00},   {"M26x1.5", 27.0, 1.00, 24.50},
+     {"M27x1.0", 27.0, 1.00, 26.00},   {"M27x1.5", 27.0, 1.50, 25.50},
+     {"M27x2.0", 27.0, 2.00, 25.00},   {"M28x1.0", 28.0, 1.00, 27.00},
+     {"M28x1.5", 28.0, 1.50, 26.50},   {"M28x2.0", 28.0, 2.00, 26.00},
+     {"M30x1.0", 30.0, 1.00, 29.00},   {"M30x1.5", 30.0, 1.50, 28.50},
+     {"M30x2.0", 30.0, 2.00, 28.00},   {"M30x3.0", 30.0, 3.00, 27.00},
+     {"M32x1.5", 32.0, 1.50, 30.50},   {"M32x2.0", 32.0, 2.00, 30.00},
+     {"M33x1.5", 33.0, 1.50, 31.50},   {"M33x2.0", 33.0, 2.00, 31.00},
+     {"M33x3.0", 33.0, 3.00, 30.00},   {"M35x1.5", 35.0, 1.50, 33.50},
      {"M36x1.5", 36.0, 1.50, 34.50},   {"M36x2.0", 36.0, 2.00, 34.00},
-     {"M36x3.0", 36.0, 3.00, 33.00},   {"M39x1.5", 39.0, 1.50, 37.50},
-     {"M39x2.0", 39.0, 2.00, 37.00},   {"M39x3.0", 39.0, 3.00, 36.00},
-     {"M40x1.5", 40.0, 1.50, 38.50},   {"M40x2.0", 40.0, 2.00, 38.00},
-     {"M40x3.0", 40.0, 3.00, 37.00},   {"M42x1.5", 42.0, 1.50, 40.50},
-     {"M42x2.0", 42.0, 2.00, 40.00},   {"M42x3.0", 42.0, 3.00, 39.00},
-     {"M42x4.0", 42.0, 4.00, 38.00},   {"M45x1.5", 45.0, 1.50, 43.50},
-     {"M45x2.0", 45.0, 2.00, 43.00},   {"M45x3.0", 45.0, 3.00, 42.00},
-     {"M45x4.0", 45.0, 4.00, 41.00},   {"M48x1.5", 48.0, 1.50, 46.50},
-     {"M48x2.0", 48.0, 2.00, 46.00},   {"M48x3.0", 48.0, 3.00, 45.00},
-     {"M48x4.0", 48.0, 4.00, 44.00},   {"M50x1.5", 50.0, 1.50, 48.50},
-     {"M50x2.0", 50.0, 2.00, 48.00},   {"M50x3.0", 50.0, 3.00, 47.00},
-     {"M52x1.5", 52.0, 1.50, 50.50},   {"M52x2.0", 52.0, 2.00, 50.00},
-     {"M52x3.0", 52.0, 3.00, 49.00},   {"M52x4.0", 52.0, 4.00, 48.00},
-     {"M55x1.5", 55.0, 1.50, 53.50},   {"M55x2.0", 55.0, 2.00, 53.00},
-     {"M55x3.0", 55.0, 3.00, 52.00},   {"M55x4.0", 55.0, 4.00, 51.00},
-     {"M56x1.5", 56.0, 1.50, 54.50},   {"M56x2.0", 56.0, 2.00, 54.00},
-     {"M56x3.0", 56.0, 3.00, 53.00},   {"M56x4.0", 56.0, 4.00, 52.00},
-     {"M58x1.5", 58.0, 1.50, 56.50},   {"M58x2.0", 58.0, 2.00, 56.00},
-     {"M58x3.0", 58.0, 3.00, 55.00},   {"M58x4.0", 58.0, 4.00, 54.00},
-     {"M60x1.5", 60.0, 1.50, 58.50},   {"M60x2.0", 60.0, 2.00, 58.00},
-     {"M60x3.0", 60.0, 3.00, 57.00},   {"M60x4.0", 60.0, 4.00, 56.00},
-     {"M62x1.5", 62.0, 1.50, 60.50},   {"M62x2.0", 62.0, 2.00, 60.00},
-     {"M62x3.0", 62.0, 3.00, 59.00},   {"M62x4.0", 62.0, 4.00, 58.00},
-     {"M64x1.5", 64.0, 1.50, 62.50},   {"M64x2.0", 64.0, 2.00, 62.00},
-     {"M64x3.0", 64.0, 3.00, 61.00},   {"M64x4.0", 64.0, 4.00, 60.00},
-     {"M65x1.5", 65.0, 1.50, 63.50},   {"M65x2.0", 65.0, 2.00, 63.00},
-     {"M65x3.0", 65.0, 3.00, 62.00},   {"M65x4.0", 65.0, 4.00, 61.00},
-     {"M68x1.5", 68.0, 1.50, 66.50},   {"M68x2.0", 68.0, 2.00, 66.00},
-     {"M68x3.0", 68.0, 3.00, 65.00},   {"M68x4.0", 68.0, 4.00, 64.00},
-     {"M70x1.5", 70.0, 1.50, 68.50},   {"M70x2.0", 70.0, 2.00, 68.00},
-     {"M70x3.0", 70.0, 3.00, 67.00},   {"M70x4.0", 70.0, 4.00, 66.00},
-     {"M70x6.0", 70.0, 6.00, 64.00},   {"M72x1.5", 72.0, 1.50, 70.50},
-     {"M72x2.0", 72.0, 2.00, 70.00},   {"M72x3.0", 72.0, 3.00, 69.00},
-     {"M72x4.0", 72.0, 4.00, 68.00},   {"M72x6.0", 72.0, 6.00, 66.00},
-     {"M75x1.5", 75.0, 1.50, 73.50},   {"M75x2.0", 75.0, 2.00, 73.00},
-     {"M75x3.0", 75.0, 3.00, 72.00},   {"M75x4.0", 75.0, 4.00, 71.00},
-     {"M75x6.0", 75.0, 6.00, 69.00},   {"M76x1.5", 76.0, 1.50, 74.50},
-     {"M76x2.0", 76.0, 2.00, 74.00},   {"M76x3.0", 76.0, 3.00, 73.00},
-     {"M76x4.0", 76.0, 4.00, 72.00},   {"M76x6.0", 76.0, 6.00, 70.00},
-     {"M80x1.5", 80.0, 1.50, 78.50},   {"M80x2.0", 80.0, 2.00, 78.00},
-     {"M80x3.0", 80.0, 3.00, 77.00},   {"M80x4.0", 80.0, 4.00, 76.00},
-     {"M80x6.0", 80.0, 6.00, 74.00},   {"M85x2.0", 85.0, 2.00, 83.00},
-     {"M85x3.0", 85.0, 3.00, 82.00},   {"M85x4.0", 85.0, 4.00, 81.00},
-     {"M85x6.0", 85.0, 6.00, 79.00},   {"M90x2.0", 90.0, 2.00, 88.00},
-     {"M90x3.0", 90.0, 3.00, 87.00},   {"M90x4.0", 90.0, 4.00, 86.00},
-     {"M90x6.0", 90.0, 6.00, 84.00},   {"M95x2.0", 95.0, 2.00, 93.00},
-     {"M95x3.0", 95.0, 3.00, 92.00},   {"M95x4.0", 95.0, 4.00, 91.00},
-     {"M95x6.0", 95.0, 6.00, 89.00},   {"M100x2.0", 100.0, 2.00, 98.00},
-     {"M100x3.0", 100.0, 3.00, 97.00}, {"M100x4.0", 100.0, 4.00, 96.00},
-     {"M100x6.0", 100.0, 6.00, 94.00}},
+     {"M36x3.0", 36.0, 3.00, 33.00},   {"M38x1.5", 39.0, 1.50, 36.50},
+     {"M39x1.5", 39.0, 1.50, 37.50},   {"M39x2.0", 39.0, 2.00, 37.00},
+     {"M39x3.0", 39.0, 3.00, 36.00},   {"M40x1.5", 40.0, 1.50, 38.50},
+     {"M40x2.0", 40.0, 2.00, 38.00},   {"M40x3.0", 40.0, 3.00, 37.00},
+     {"M42x1.5", 42.0, 1.50, 40.50},   {"M42x2.0", 42.0, 2.00, 40.00},
+     {"M42x3.0", 42.0, 3.00, 39.00},   {"M42x4.0", 42.0, 4.00, 38.00},
+     {"M45x1.5", 45.0, 1.50, 43.50},   {"M45x2.0", 45.0, 2.00, 43.00},
+     {"M45x3.0", 45.0, 3.00, 42.00},   {"M45x4.0", 45.0, 4.00, 41.00},
+     {"M48x1.5", 48.0, 1.50, 46.50},   {"M48x2.0", 48.0, 2.00, 46.00},
+     {"M48x3.0", 48.0, 3.00, 45.00},   {"M48x4.0", 48.0, 4.00, 44.00},
+     {"M50x1.5", 50.0, 1.50, 48.50},   {"M50x2.0", 50.0, 2.00, 48.00},
+     {"M50x3.0", 50.0, 3.00, 47.00},   {"M52x1.5", 52.0, 1.50, 50.50},
+     {"M52x2.0", 52.0, 2.00, 50.00},   {"M52x3.0", 52.0, 3.00, 49.00},
+     {"M52x4.0", 52.0, 4.00, 48.00},   {"M55x1.5", 55.0, 1.50, 53.50},
+     {"M55x2.0", 55.0, 2.00, 53.00},   {"M55x3.0", 55.0, 3.00, 52.00},
+     {"M55x4.0", 55.0, 4.00, 51.00},   {"M56x1.5", 56.0, 1.50, 54.50},
+     {"M56x2.0", 56.0, 2.00, 54.00},   {"M56x3.0", 56.0, 3.00, 53.00},
+     {"M56x4.0", 56.0, 4.00, 52.00},   {"M58x1.5", 58.0, 1.50, 56.50},
+     {"M58x2.0", 58.0, 2.00, 56.00},   {"M58x3.0", 58.0, 3.00, 55.00},
+     {"M58x4.0", 58.0, 4.00, 54.00},   {"M60x1.5", 60.0, 1.50, 58.50},
+     {"M60x2.0", 60.0, 2.00, 58.00},   {"M60x3.0", 60.0, 3.00, 57.00},
+     {"M60x4.0", 60.0, 4.00, 56.00},   {"M62x1.5", 62.0, 1.50, 60.50},
+     {"M62x2.0", 62.0, 2.00, 60.00},   {"M62x3.0", 62.0, 3.00, 59.00},
+     {"M62x4.0", 62.0, 4.00, 58.00},   {"M64x1.5", 64.0, 1.50, 62.50},
+     {"M64x2.0", 64.0, 2.00, 62.00},   {"M64x3.0", 64.0, 3.00, 61.00},
+     {"M64x4.0", 64.0, 4.00, 60.00},   {"M65x1.5", 65.0, 1.50, 63.50},
+     {"M65x2.0", 65.0, 2.00, 63.00},   {"M65x3.0", 65.0, 3.00, 62.00},
+     {"M65x4.0", 65.0, 4.00, 61.00},   {"M68x1.5", 68.0, 1.50, 66.50},
+     {"M68x2.0", 68.0, 2.00, 66.00},   {"M68x3.0", 68.0, 3.00, 65.00},
+     {"M68x4.0", 68.0, 4.00, 64.00},   {"M70x1.5", 70.0, 1.50, 68.50},
+     {"M70x2.0", 70.0, 2.00, 68.00},   {"M70x3.0", 70.0, 3.00, 67.00},
+     {"M70x4.0", 70.0, 4.00, 66.00},   {"M70x6.0", 70.0, 6.00, 64.00},
+     {"M72x1.5", 72.0, 1.50, 70.50},   {"M72x2.0", 72.0, 2.00, 70.00},
+     {"M72x3.0", 72.0, 3.00, 69.00},   {"M72x4.0", 72.0, 4.00, 68.00},
+     {"M72x6.0", 72.0, 6.00, 66.00},   {"M75x1.5", 75.0, 1.50, 73.50},
+     {"M75x2.0", 75.0, 2.00, 73.00},   {"M75x3.0", 75.0, 3.00, 72.00},
+     {"M75x4.0", 75.0, 4.00, 71.00},   {"M75x6.0", 75.0, 6.00, 69.00},
+     {"M76x1.5", 76.0, 1.50, 74.50},   {"M76x2.0", 76.0, 2.00, 74.00},
+     {"M76x3.0", 76.0, 3.00, 73.00},   {"M76x4.0", 76.0, 4.00, 72.00},
+     {"M76x6.0", 76.0, 6.00, 70.00},   {"M80x1.5", 80.0, 1.50, 78.50},
+     {"M80x2.0", 80.0, 2.00, 78.00},   {"M80x3.0", 80.0, 3.00, 77.00},
+     {"M80x4.0", 80.0, 4.00, 76.00},   {"M80x6.0", 80.0, 6.00, 74.00},
+     {"M85x2.0", 85.0, 2.00, 83.00},   {"M85x3.0", 85.0, 3.00, 82.00},
+     {"M85x4.0", 85.0, 4.00, 81.00},   {"M85x6.0", 85.0, 6.00, 79.00},
+     {"M90x2.0", 90.0, 2.00, 88.00},   {"M90x3.0", 90.0, 3.00, 87.00},
+     {"M90x4.0", 90.0, 4.00, 86.00},   {"M90x6.0", 90.0, 6.00, 84.00},
+     {"M95x2.0", 95.0, 2.00, 93.00},   {"M95x3.0", 95.0, 3.00, 92.00},
+     {"M95x4.0", 95.0, 4.00, 91.00},   {"M95x6.0", 95.0, 6.00, 89.00},
+     {"M100x2.0", 100.0, 2.00, 98.00}, {"M100x3.0", 100.0, 3.00, 97.00},
+     {"M100x4.0", 100.0, 4.00, 96.00}, {"M100x6.0", 100.0, 6.00, 94.00}},
     /* UNC */
     {
         {"#1", 1.854, 0.397, 1.50},      {"#2", 2.184, 0.454, 1.85},
@@ -544,6 +546,10 @@ const App::PropertyAngle::Constraints Hole::floatAngle = {
 const App::PropertyQuantityConstraint::Constraints diameterRange
     = {10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
 
+// Custom clearance can be negative or positive to adjust for manufacturing
+const App::PropertyQuantityConstraint::Constraints clearanceRange
+    = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), 0.1};
+
 Hole::Hole()
 {
     addSubType = FeatureAddSub::Subtractive;
@@ -553,6 +559,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(Threaded, (false), "Hole", App::Prop_None, "Threaded");
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
+
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
 
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
@@ -636,6 +644,7 @@ Hole::Hole()
         App::Prop_None,
         "Custom thread clearance (overrides ThreadClass)"
     );
+    CustomThreadClearance.setConstraints(&clearanceRange);
 
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
@@ -646,6 +655,39 @@ Hole::Hole()
         App::Prop_None,
         "Which profile feature to base the holes on"
     );
+    ADD_PROPERTY_TYPE(StartType, (0L), "Start", App::Prop_None, "How to define the start plane");
+    StartType.setEnums(StartTypesEnums);
+    ADD_PROPERTY_TYPE(StartOffset, (0.0), "Start", App::Prop_None, "Offset from the start plane");
+    ADD_PROPERTY_TYPE(
+        StartReference,
+        (nullptr),
+        "Start",
+        App::Prop_None,
+        "Face, plane or sketch used as the start reference"
+    );
+}
+
+double Hole::getStartOffset() const
+{
+    const char* startType = StartType.getValueAsString();
+    if (std::strcmp(startType, "Profile plane") == 0) {
+        return 0.0;
+    }
+    if (std::strcmp(startType, "Offset") == 0) {
+        return StartOffset.getValue();
+    }
+
+    TopoShape profileShape = getProfileShape(
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+        | Part::ShapeOption::Transform | Part::ShapeOption::DontSimplifyCompound
+    );
+    gp_Dir direction = Base::convertTo<gp_Dir>(guessNormalDirection(profileShape));
+    if (!Reversed.getValue()) {
+        direction.Reverse();
+    }
+
+    TopLoc_Location identity;
+    return getStartReferenceOffset(profileShape, StartReference, direction, StartOffset.getValue(), identity);
 }
 
 void Hole::updateHoleCutParams()
@@ -1268,7 +1310,12 @@ void Hole::findClosestDesignation()
 
 void Hole::onChanged(const App::Property* prop)
 {
-    if (prop == &ThreadType) {
+    if (prop == &StartType) {
+        const bool hasOffset = std::strcmp(StartType.getValueAsString(), "Profile plane") != 0;
+        StartOffset.setReadOnly(!hasOffset);
+        StartReference.setReadOnly(std::strcmp(StartType.getValueAsString(), "Reference") != 0);
+    }
+    else if (prop == &ThreadType) {
         std::string type;
 
         if (ThreadType.isValid()) {
@@ -1347,7 +1394,7 @@ void Hole::onChanged(const App::Property* prop)
         ThreadClass.setReadOnly(isNone || !isThreaded);
         ThreadDepthType.setReadOnly(isNone || !isThreaded);
         ThreadDepth.setReadOnly(isNone || !isThreaded);
-        ModelThread.setReadOnly(!isNone && isThreaded);
+        ModelThread.setReadOnly(isNone || !isThreaded);
         UseCustomThreadClearance.setReadOnly(isNone || !isThreaded || !ModelThread.getValue());
         CustomThreadClearance.setReadOnly(
             !UseCustomThreadClearance.getValue() || UseCustomThreadClearance.isReadOnly()
@@ -1408,6 +1455,7 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setReadOnly(false);
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1421,6 +1469,8 @@ void Hole::onChanged(const App::Property* prop)
             }
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None") {
@@ -1443,6 +1493,14 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            CosmeticThread.setValue(false);
+        }
+    }
+    else if (prop == &CosmeticThread) {
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            ModelThread.setValue(false);
+        }
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
@@ -1661,7 +1719,8 @@ short Hole::mustExecute() const
         || Depth.isTouched() || DrillPoint.isTouched() || DrillPointAngle.isTouched()
         || Tapered.isTouched() || TaperedAngle.isTouched() || ModelThread.isTouched()
         || UseCustomThreadClearance.isTouched() || CustomThreadClearance.isTouched()
-        || ThreadDepthType.isTouched() || ThreadDepth.isTouched() || BaseProfileType.isTouched()) {
+        || ThreadDepthType.isTouched() || ThreadDepth.isTouched() || BaseProfileType.isTouched()
+        || StartType.isTouched() || StartOffset.isTouched() || StartReference.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -1698,6 +1757,9 @@ void Hole::updateProps()
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
     onChanged(&BaseProfileType);
+    onChanged(&StartType);
+    onChanged(&StartOffset);
+    onChanged(&StartReference);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -1729,6 +1791,11 @@ App::DocumentObjectExecReturn* Hole::execute()
     }
 
     try {
+        if (Diameter.getValue() < diameterRange.LowerBound) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Diameter too small")
+            );
+        }
         std::string method(DepthType.getValueAsString());
         double length = 0.0;
 
@@ -1751,6 +1818,20 @@ App::DocumentObjectExecReturn* Hole::execute()
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
         zDir.Transform(invObjLoc.Transformation());
         gp_Vec xDir = computePerpendicular(zDir);
+
+        gp_Dir holeDirection(zDir);
+        holeDirection.Reverse();
+        const char* startType = StartType.getValueAsString();
+        const double startOffset = std::strcmp(startType, "Profile plane") == 0 ? 0.0
+            : std::strcmp(startType, "Offset") == 0 ? StartOffset.getValue()
+                                                    : getStartReferenceOffset(
+                                                          profileshape,
+                                                          StartReference,
+                                                          holeDirection,
+                                                          StartOffset.getValue(),
+                                                          invObjLoc
+                                                      );
+        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset);
 
         if (method == "Dimension") {
             length = Depth.getValue();
@@ -2011,12 +2092,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                 result = compound;
             }
             else {
-                result.makeElementBoolean(
-                    maker,
-                    {base, compound},
-                    getNameInDocument(),
-                    Precision::Confusion()
-                );
+                result.makeElementBoolean(maker, {base, compound}, nullptr, FuzzyTolerance.getValue());
             }
             result = getSolid(result);
             retry = false;
@@ -2038,12 +2114,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             for (auto& hole : holes) {
                 ++i;
                 try {
-                    result.makeElementBoolean(
-                        maker,
-                        {base, hole},
-                        getNameInDocument(),
-                        Precision::Confusion()
-                    );
+                    result.makeElementBoolean(maker, {base, hole}, nullptr, FuzzyTolerance.getValue());
                 }
                 catch (Standard_Failure&) {
                     std::string msg(
@@ -2188,8 +2259,10 @@ TopoShape Hole::findHoles(
 ) const
 {
     TopoShape result(0);
+    _holeLocations.clear();
 
     auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
+        _holeLocations.push_back(loc);
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), gp_Pnt(loc.X(), loc.Y(), loc.Z()));
 
@@ -2247,6 +2320,11 @@ TopoShape Hole::findHoles(
         }
     }
     return TopoShape().makeElementCompound(holes);
+}
+
+std::vector<gp_Pnt> Hole::getHoleLocations() const
+{
+    return _holeLocations;
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 add_library(Sketcher SHARED)
@@ -165,9 +165,7 @@ if (MSVC)
     target_compile_options(Sketcher PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Sketcher)
-endif()
+target_compile_warn_error(Sketcher)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Sketcher PRIVATE

@@ -19,6 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Auto code generator for parameters in Preferences/TreeView"""
+
 import sys
 from os import path
 
@@ -60,7 +61,7 @@ Params = [
     ParamBool("KeepRootOrder", True),
     ParamBool("TreeActiveAutoExpand", True),
     ParamUInt("TreeActiveColor", 0xE6E6FFFF, on_change=True),
-    ParamUInt("TreeEditColor", 0x929200FF, on_change=True),
+    ParamUInt("TreeEditColor", 0x00ABFFFF, on_change=True),
     ParamUInt("SelectingGroupColor", 0x408081FF, on_change=True),
     ParamBool("TreeActiveBold", True, on_change=True),
     ParamBool("TreeActiveItalic", False, on_change=True),

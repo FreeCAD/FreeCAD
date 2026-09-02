@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the base viewprovider code for the Link objects."""
+
 ## @package view_draftlink
 # \ingroup draftviewproviders
 # \brief Provides the base viewprovider code for the Link objects.
@@ -54,6 +55,10 @@ class ViewProviderDraftLink(ViewProviderDraft):
             return ":/icons/Draft_PathTwistedLinkArray.svg"
         elif tp == "PointArray":
             return ":/icons/Draft_PointLinkArray.svg"
+
+    def updateData(self, obj, prop):
+        if prop == "Base":
+            obj.ViewObject.update()
 
     def claimChildren(self):
         obj = self.Object

@@ -2,7 +2,7 @@
 
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 generate_from_py(Body)
@@ -69,6 +69,8 @@ SET(FeaturesDressUp_SRCS
     FeatureDraft.h
     FeatureThickness.cpp
     FeatureThickness.h
+    FeatureDefeaturing.cpp
+    FeatureDefeaturing.h
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
@@ -81,6 +83,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePad.h
     FeaturePocket.cpp
     FeaturePocket.h
+    FeatureRevolved.cpp
+    FeatureRevolved.h
     FeatureRevolution.cpp
     FeatureRevolution.h
     FeatureGroove.cpp
@@ -111,6 +115,8 @@ SET(Module_SRCS
     PreCompiled.h
     Measure.cpp
     Measure.h
+    PartDesignParameter.cpp
+    PartDesignParameter.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
@@ -150,9 +156,7 @@ if (MSVC)
     target_compile_options(PartDesign PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartDesign)
-endif()
+target_compile_warn_error(PartDesign)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(PartDesign PRIVATE

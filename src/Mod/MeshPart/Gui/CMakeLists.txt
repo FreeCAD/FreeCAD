@@ -28,7 +28,11 @@ set (MeshPart_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/MeshPart_translation.
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${MeshPart_TR_QRC} ${QM_SRCS})
-qt_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc ${MeshPart_TR_QRC})
+qt_add_resources(MeshPartGui_QRC_SRCS
+    Resources/MeshPart.qrc
+    ${MeshPart_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
@@ -83,10 +87,7 @@ if (MSVC)
     target_compile_options(MeshPartGui PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshPartGui)
-endif()
-
+target_compile_warn_error(MeshPartGui)
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)

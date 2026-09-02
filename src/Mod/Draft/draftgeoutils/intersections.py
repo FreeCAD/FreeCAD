@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to calculate intersections of shapes."""
+
 ## @package intersections
 # \ingroup draftgeoutils
 # \brief Provides various functions to calculate intersections of shapes.

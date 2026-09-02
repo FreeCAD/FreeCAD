@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to join lines and wires."""
+
 ## @package gui_join
 # \ingroup draftguitools
 # \brief Provides GUI tools to join lines and wires.

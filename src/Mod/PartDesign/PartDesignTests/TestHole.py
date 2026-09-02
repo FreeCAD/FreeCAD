@@ -25,6 +25,7 @@ from math import pi
 import unittest
 
 import FreeCAD
+import Part
 import TestSketcherApp
 
 App = FreeCAD
@@ -67,6 +68,49 @@ class TestHole(unittest.TestCase):
         self.Hole.Tapered = 0  # On/off
         self.Doc.recompute()
         self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 10)
+
+    def testStartOffset(self):
+        self.Hole.Diameter = 6
+        self.Hole.Depth = 5
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+        self.Hole.StartType = "Offset"
+        self.Hole.StartOffset = 2
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 5)
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMin, 2)
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMax, 7)
+
+        reference = self.Doc.addObject("Part::Feature", "StartReference")
+        reference.Shape = Part.makePlane(20, 20, App.Vector(-10, -10, 1))
+        self.Hole.StartType = "Reference"
+        self.Hole.StartReference = (reference, ["Face1"])
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Hole.Shape.Volume, 10**3 - pi * 3**2 * 5)
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMin, 3)
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMax, 8)
+
+    def testStartReferenceOffsetForPointProfile(self):
+        self.HoleSketch.deleteAllGeometry()
+        self.HoleSketch.AttachmentOffset.Base.z = 10
+        for point in ((2, 2), (8, 2), (2, 8), (8, 8)):
+            self.HoleSketch.addGeometry(Part.Point(App.Vector(*point)), False)
+
+        self.Hole.BaseProfileType = 1
+        self.Hole.Diameter = 2
+        self.Hole.Depth = 5
+        self.Hole.DepthType = 0
+        self.Hole.DrillPoint = 0
+
+        reference = self.Doc.addObject("Part::Feature", "StartReference")
+        reference.Shape = Part.makePlane(20, 20, App.Vector(-5, -5, 20))
+        self.Hole.StartType = "Reference"
+        self.Hole.StartReference = (reference, ["Face1"])
+        self.Hole.StartOffset = 2
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMin, 22)
+        self.assertAlmostEqual(self.Hole.AddSubShape.BoundBox.ZMax, 27)
 
     def testTaperedHole(self):
         self.Hole.Diameter = 6
@@ -299,6 +343,7 @@ class TestHole(unittest.TestCase):
                 "M25x1.0",
                 "M25x1.5",
                 "M25x2.0",
+                "M26x1.5",
                 "M27x1.0",
                 "M27x1.5",
                 "M27x2.0",
@@ -315,10 +360,10 @@ class TestHole(unittest.TestCase):
                 "M33x2.0",
                 "M33x3.0",
                 "M35x1.5",
-                "M35x2.0",
                 "M36x1.5",
                 "M36x2.0",
                 "M36x3.0",
+                "M38x1.5",
                 "M39x1.5",
                 "M39x2.0",
                 "M39x3.0",

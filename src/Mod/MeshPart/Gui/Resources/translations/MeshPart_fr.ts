@@ -264,7 +264,7 @@ Cette commande ne fonctionne qu'avec un objet Mesh, et non avec une face ou une 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
       <source>Start</source>
-      <translation>Démarrer</translation>
+      <translation>Début</translation>
     </message>
   </context>
   <context>
@@ -383,19 +383,14 @@ La valeur la plus petite est 0.</translation>
       <translation>Utiliser le mailleur Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finesse :</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
-      <translation>Très grossièrement</translation>
+      <translation>Très important</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation>Grossier</translation>
+      <translation>Important</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
@@ -438,6 +433,11 @@ La valeur la plus petite est 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Si ce paramètre est plus petit, le maillage devient plus fin.
 Une valeur dans la plage de 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finesse</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
@@ -490,7 +490,7 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>

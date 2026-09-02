@@ -25,7 +25,6 @@ import FreeCAD
 from FreeCAD import Vector as vec
 
 from BasicShapes import Shapes
-from Draft import clone
 from Part import makeLine
 
 import Fem
@@ -108,8 +107,9 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     # standard ring
-    ring_top = clone(ring_bottom, delta=vec(0, 0, 20))
-    ring_top.Label = "RingTop"
+    ring_top = doc.addObject("Part::Mirroring", "RingTop")
+    ring_top.Source = ring_bottom
+    ring_top.Base.z = 15
 
     # compound of both rings
     geom_obj = doc.addObject("Part::Compound", "TheRingOfFire")
@@ -172,12 +172,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj_std)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, ("Face6", "Face14"))]
     analysis.addObject(con_fixed)
 
     # constraint centrif
-    con_centrif = ObjectsFem.makeConstraintCentrif(doc, "ConstraintCentrif")
+    con_centrif = ObjectsFem.makeConstraintCentrif(doc, "CentrifugalForce")
     con_centrif.RotationFrequency = "100 Hz"
     con_centrif.RotationAxis = [(axis_line, "Edge1")]
     analysis.addObject(con_centrif)

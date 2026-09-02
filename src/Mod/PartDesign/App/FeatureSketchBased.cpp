@@ -22,6 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <optional>
+#include <ranges>
 #include <Bnd_Box.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
@@ -40,12 +45,15 @@
 #include <Extrema_POnCurv.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Pln.hxx>
+#include <gp_Trsf.hxx>
 #include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <Standard_Version.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
@@ -54,9 +62,13 @@
 
 #include <App/Document.h>
 #include <App/Datums.h>
+#include <Base/Converter.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/Tools.h>
 
+#include "Body.h"
 #include "FeatureSketchBased.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -67,7 +79,16 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 using namespace PartDesign;
 
+double PartDesign::normalizeAngleRadians(double angle)
+{
+    constexpr double fullRotation = 2.0 * std::numbers::pi;
+    angle = Base::fmod(angle, fullRotation);
+    return fullRotation - angle < Precision::Angular() ? 0.0 : angle;
+}
+
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
+
+const char* ProfileBased::StartTypesEnums[] = {"Profile plane", "Offset", "Reference", nullptr};
 
 ProfileBased::ProfileBased()
 {
@@ -292,7 +313,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                             openshape.makeElementCompound(
                                 openwires,
                                 nullptr,
-                                TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                             );
                             if (wires.empty()) {
                                 shape = TopoShape();
@@ -301,7 +322,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                                 shape.makeElementCompound(
                                     wires,
                                     nullptr,
-                                    TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                                 );
                             }
                         }
@@ -628,8 +649,9 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     if (!sketch) {
         shape = getTopoShapeVerifiedFace(true);
     }
-    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-             && sketch->AttachmentSupport.getValue()) {
+    else if (
+        sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->AttachmentSupport.getValue()
+    ) {
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
@@ -692,6 +714,11 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
     if (spt) {
+        // Attaching to a Body positions the profile but must not import its complete tip shape.
+        // Feature supports remain implicit bases for compatibility with legacy files.
+        if (spt->isDerivedFrom<PartDesign::Body>()) {
+            return Feature::getBaseObject(silent);
+        }
         if (spt->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(spt);
         }
@@ -720,6 +747,15 @@ void ProfileBased::onChanged(const App::Property* prop)
     FeatureAddSub::onChanged(prop);
 }
 
+void ProfileBased::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase)
+{
+    // Sketches are independent objects with their own attachment; leave them
+    // alone. Only redirect when Profile references the deleted base directly.
+    if (Profile.getValue() && !Profile.getValue()->isDerivedFrom<Part::Part2DObject>()) {
+        relinkToMatchingSubelements(Profile, oldBase, newBase);
+    }
+}
+
 void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace)
 {
     App::DocumentObject* ref = refFace.getValue();
@@ -746,15 +782,125 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 }
 
+namespace
+{
+std::optional<double> getPlanarStartReferenceDistance(
+    const TopoShape& profileShape,
+    const TopoShape& referenceShape,
+    const gp_Dir& direction
+)
+{
+    TopoShape referenceFace = referenceShape;
+    if (referenceFace.shapeType(true) != TopAbs_FACE) {
+        referenceFace = referenceFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    BRepAdaptor_Surface surface(TopoDS::Face(referenceFace.getShape()));
+    if (surface.GetType() != GeomAbs_Plane) {
+        return std::nullopt;
+    }
+
+    Base::Vector3d profileCenter;
+    if (!profileShape.getCenterOfGravity(profileCenter)) {
+        return std::nullopt;
+    }
+
+    const gp_Dir normal = surface.Plane().Axis().Direction();
+    const double denominator = gp_Vec(direction).Dot(gp_Vec(normal));
+    if (std::fabs(denominator) <= Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    const gp_Vec profileToReference(Base::convertTo<gp_Pnt>(profileCenter), surface.Plane().Location());
+    return profileToReference.Dot(gp_Vec(normal)) / denominator;
+}
+}  // namespace
+
+double ProfileBased::getStartReferenceOffset(
+    const TopoShape& profileShape,
+    const App::PropertyLinkSub& reference,
+    const gp_Dir& direction,
+    double offset,
+    const TopLoc_Location& invObjLoc
+) const
+{
+    if (!reference.getValue()) {
+        return 0.0;
+    }
+
+    TopoShape referenceShape;
+    const auto& subValues = reference.getSubValues();
+    if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
+        if (!subValues.empty()) {
+            const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
+                | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+            referenceShape = Part::Feature::getTopoShape(
+                reference.getValue(),
+                options,
+                subValues.front().c_str()
+            );
+        }
+        if (!referenceShape.hasSubShape(TopAbs_FACE)) {
+            referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+        }
+    }
+    else {
+        getUpToFaceFromLinkSub(referenceShape, reference);
+    }
+    referenceShape.move(invObjLoc);
+
+    if (const auto distance = getPlanarStartReferenceDistance(profileShape, referenceShape, direction)) {
+        return *distance + offset;
+    }
+
+    auto faces = Part::findAllFacesCutBy(referenceShape, profileShape, direction);
+    double directionFactor = 1.0;
+    if (faces.empty()) {
+        gp_Dir oppositeDirection = direction;
+        oppositeDirection.Reverse();
+        faces = Part::findAllFacesCutBy(referenceShape, profileShape, oppositeDirection);
+        directionFactor = -1.0;
+    }
+
+    if (faces.empty()) {
+        throw Base::ValueError("SketchBased: Start reference does not intersect the profile direction");
+    }
+
+    const auto nearest = std::ranges::min_element(faces, {}, &Part::cutTopoShapeFaces::distsq);
+    return directionFactor * std::sqrt(nearest->distsq) + offset;
+}
+
+TopoShape ProfileBased::moveProfileToStart(
+    const TopoShape& profileShape,
+    const gp_Dir& direction,
+    double offset
+)
+{
+    if (std::fabs(offset) < Precision::Confusion()) {
+        return profileShape;
+    }
+
+    TopoShape result = profileShape.makeElementCopy();
+    gp_Trsf transform;
+    transform.SetTranslation(gp_Vec(direction) * offset);
+    result.move(transform);
+    return result;
+}
+
 int ProfileBased::getUpToShapeFromLinkSubList(
     TopoShape& upToShape,
     const App::PropertyLinkSubList& refShape
 )
 {
-    int ret = 0;
-
     auto subSets = refShape.getSubListValues();
 
+    // early returns if only one full shape is selected
+    if (subSets.size() == 1 && (subSets[0].second.empty() || subSets[0].second[0].empty())) {
+        upToShape = Part::Feature::getTopoShape(subSets[0].first, Part::ShapeOption::ResolveLink);
+        return 2;  // 0 and 1 have special treatment but true face count isn't relevant
+    }
+
+    int ret = 0;
     std::vector<TopoShape> faceList;
     for (auto& subSet : subSets) {
         auto ref = subSet.first;
@@ -775,22 +921,19 @@ int ProfileBased::getUpToShapeFromLinkSubList(
                         | Part::ShapeOption::Transform
                 );
 
-
-                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
+                for (const auto& face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
                     faceList.push_back(face);
                     ret++;
                 }
             }
             else {
                 for (auto& subString : subStrings) {
-                    auto shape = Part::Feature::getShape(
+                    TopoShape face = Part::Feature::getTopoShape(
                         ref,
                         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
                             | Part::ShapeOption::Transform,
                         subString.c_str()
                     );
-
-                    TopoShape face = shape;
                     face = face.makeElementFace();
                     if (face.isNull()) {
                         throw Base::ValueError("SketchBased: Failed to extract face");
@@ -908,6 +1051,47 @@ void ProfileBased::getUpToFace(
     BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
     if (distSS.Value() < Precision::Confusion()) {
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+    }
+}
+
+void ProfileBased::getUpToFace(
+    TopoShape& upToFace,
+    const TopoShape& support,
+    const TopoShape& sketchshape,
+    const std::string& method,
+    const gp_Ax1& axis
+)
+{
+    if ((method == "UpToLast") || (method == "UpToFirst")) {
+        std::vector<Part::cutTopoShapeFaces> cfaces
+            = Part::findAllFacesCutBy(support, sketchshape, axis);
+        if (cfaces.empty()) {
+            throw Base::ValueError("SketchBased: No faces found in this direction");
+        }
+
+        // Find nearest/furthest face
+        std::sort(cfaces.begin(), cfaces.end(), [](const auto& it1, const auto& it2) {
+            return it1.distsq < it2.distsq;
+        });
+        upToFace = (method == "UpToLast" ? cfaces.back().face : cfaces.front().face);
+    }
+
+    if (upToFace.shapeType(true) != TopAbs_FACE) {
+        if (!upToFace.hasSubShape(TopAbs_FACE)) {
+            throw Base::ValueError("SketchBased: Up to face: No face found");
+        }
+        upToFace = upToFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    TopoDS_Face face = TopoDS::Face(upToFace.getShape());
+
+    // Check that the upToFace does not intersect the sketch face and
+    // is not normal to the rotation axis
+    BRepAdaptor_Surface adapt(face);
+    if (adapt.GetType() == GeomAbs_Plane) {
+        if (axis.Direction().IsParallel(adapt.Plane().Axis().Direction(), Precision::Confusion())) {
+            throw Base::ValueError("SketchBased: Up to face: Must not be normal to rotation axis!");
+        }
     }
 }
 

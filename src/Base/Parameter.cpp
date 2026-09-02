@@ -40,10 +40,6 @@
 #include <string>
 #include <utility>
 
-#include <QFileInfo>
-#include <QLockFile>
-#include <QDir>
-
 #include <FCConfig.h>
 
 #ifdef FC_OS_LINUX
@@ -57,6 +53,8 @@
 #include "Parameter.inl"
 #include "Console.h"
 #include "Exception.h"
+#include "FileInfo.h"
+#include "FileLock.h"
 #include "Tools.h"
 
 FC_LOG_LEVEL_INIT("Parameter", true, true)
@@ -614,11 +612,13 @@ const char* ParameterGrp::GetAttribute(
 
     const char* T = TypeName(Type);
     if (!T) {
+        Value = Default;
         return Default;
     }
 
     DOMElement* pcElem = FindElement(_pGroupNode, T, Name);
     if (!pcElem) {
+        Value = Default;
         return Default;
     }
 
@@ -661,6 +661,9 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetAttributeMap(
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
             if (Type == ParamType::FCGroup) {
                 res.emplace_back(Name, std::string());
+            }
+            else if (Type == ParamType::FCText) {
+                res.emplace_back(Name, GetASCII(Name.c_str()));
             }
             else {
                 res.emplace_back(
@@ -1795,10 +1798,9 @@ bool ParameterManager::IgnoreSave() const
 
 namespace
 {
-QString getLockFile(const Base::FileInfo& file)
+std::string getLockFile(const Base::FileInfo& file)
 {
-    QFileInfo fi(QDir::tempPath(), QString::fromStdString(file.fileName() + ".lock"));
-    return fi.absoluteFilePath();
+    return Base::FileInfo::getTempPath() + file.fileName() + ".lock";
 }
 
 int getTimeout()
@@ -1827,7 +1829,7 @@ int ParameterManager::LoadDocument(const char* sFileName)
 {
     try {
         Base::FileInfo file(sFileName);
-        QLockFile lock(getLockFile(file));
+        Base::FileLock lock(getLockFile(file));
         if (!lock.tryLock(getTimeout())) {
             // Continue with empty config
             CreateDocument();
@@ -1934,7 +1936,7 @@ void ParameterManager::SaveDocument(const char* sFileName) const
 {
     try {
         Base::FileInfo file(sFileName);
-        QLockFile lock(getLockFile(file));
+        Base::FileLock lock(getLockFile(file));
         if (!lock.tryLock(getTimeout())) {
             std::cerr << "Failed to access file for writing: " << sFileName << std::endl;
             return;
@@ -2051,10 +2053,10 @@ void ParameterManager::CreateDocument()
     rootElem->appendChild(_pGroupNode);
 }
 
-void ParameterManager::CheckDocument() const
+bool ParameterManager::CheckDocument() const
 {
     if (!_pDocument) {
-        return;
+        return false;
     }
 
     try {
@@ -2089,7 +2091,7 @@ void ParameterManager::CheckDocument() const
         Grammar* grammar = parser.loadGrammar(xsdFile, Grammar::SchemaGrammarType, true);
         if (!grammar) {
             Base::Console().error("Grammar file cannot be loaded.\n");
-            return;
+            return false;
         }
 
         parser.setExternalNoNamespaceSchemaLocation("Parameter.xsd");
@@ -2110,12 +2112,18 @@ void ParameterManager::CheckDocument() const
                 "Unexpected XML structure detected: %zu errors\n",
                 parser.getErrorCount()
             );
+            return false;
         }
     }
     catch (XMLException& e) {
-        std::cerr << "An error occurred while checking document. Msg is:" << std::endl
-                  << StrX(e.getMessage()) << std::endl;
+        Base::Console().error(
+            "An error occurred while checking document:%s\n",
+            StrX(e.getMessage()).c_str()
+        );
+        return false;
     }
+
+    return true;
 }
 
 

@@ -41,7 +41,7 @@ This system is designed to be fully compatible and backwards-compatible with the
 The binding system is built around a few core components:
 
 * **Metadata Decorators:**
-    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
+    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`, `@deprecated_attributes`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
 
 * **C++ Python Stub Generation:**
     The system generates C++ Python stubs that act as a direct mapping to the corresponding C++ classes. These stubs include method signatures, attributes, and detailed docstrings and uses the same code
@@ -88,6 +88,65 @@ class PrecisionPy(PyObjectBase):
 
 Classes are defined in a way that closely mirrors the C++ counterparts. The Python classes use decorators to attach metadata and include docstrings that retain original formatting.
 
+### Module Definitions
+
+Module-level Python APIs can be declared in `.module.pyi` files. These files export
+top-level functions instead of `PyObjectBase` wrapper classes, and the generator emits
+`<Name>ModulePy.h/.cpp` helpers that can be attached to a handwritten `Py::ExtensionModule`
+using `PyModule_AddFunctions()`.
+
+The module name defaults to the `.module.pyi` filename, and the C++ namespace defaults
+to that same value. Use `Base.Metadata.module(...)` only when you need to override those
+defaults.
+
+Generated module bindings use separate source ownership:
+
+- the generator owns `<Name>ModulePy.h` and `<Name>ModulePy.cpp` in the build tree
+- handwritten implementations, when needed, live in source-owned `<Name>ModulePyImp.cpp`
+- callback-backed and `Runtime="ExtensionModule"` modules usually do not need a
+  `ModulePyImp.cpp`
+
+Register module bindings with `generate_module_from_py(...)` and append the returned
+generated sources to the target that owns the module:
+
+```cmake
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+
+set(FreeCADBase_CPP_SRCS
+    Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
+)
+```
+
+If a generated method is not callback-backed, the generated wrapper calls a
+`<Name>ModulePy::<method>(...)` implementer. Add the source-owned
+`<Name>ModulePyImp.cpp` to the same target in that case. Missing implementers should
+fail at link time rather than being silently replaced with generated skeletons.
+
+**Example:**
+
+```python
+from Base.Metadata import no_args
+
+"""Material subsystem helpers."""
+
+def addMaterialObserver(observer: object, /) -> None:
+    """
+    Register a material observer.
+    """
+    ...
+
+@no_args
+def refresh() -> None:
+    """
+    Refresh cached material data.
+    """
+    ...
+```
+
 ### Method Overloading
 
 For methods that require multiple signatures (overloads), use the `@overload` decorator. A final implementation that handles variable arguments (`*args`, `**kwargs`) is provided as a placeholder.
@@ -112,12 +171,79 @@ class QuantityPy(PyObjectBase):
         ...
 ```
 
-The `@overload` variants are not actually used by the generator, but solely for the purpose of
-providing Python type hinting to be used by type checkers like mypy.
+The `@overload` variants are not used for method code generation and primarily exist to
+provide Python type hinting for type checkers like mypy. Overload-only constructors are the
+exception: when the overload set carries constructor documentation, that documentation is
+folded into the exported class documentation, because constructor bindings are generated
+through `Constructor=True` rather than a normal method stub.
+
+### Deprecation
+
+Deprecated methods and classes should use the keyword-only `deprecated` metadata
+decorator. It records the lifecycle explicitly while generated public stubs expose
+the standard PEP 702 decorator so type checkers can flag call sites:
+
+```python
+from Metadata import deprecated
+
+class ShapePy(PyObjectBase):
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="fuse()",
+    )
+    def multiFuse(self, tools) -> object:
+        """
+        Deprecated: use fuse() instead.
+        """
+        ...
+```
+
+The binding generator formats the lifecycle metadata into a deprecation message and
+emits a runtime `DeprecationWarning` from the generated wrapper. Binding specs accept
+only structured keyword-only metadata.
+
+Deprecated attributes should use structured `@deprecated_attributes(...)` metadata on
+the enclosing class:
+
+```python
+from Metadata import deprecated_attributes
+
+@deprecated_attributes(
+    Wire={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "OuterWire",
+    },
+)
+class TopoShapeFace(TopoShape):
+    Wire: object = ...
+    """Legacy alias for the outer wire of this face. Use OuterWire instead."""
+```
+
+String values and docstring markers like `Deprecated:` or `deprecated --` are
+documentation only. Attribute deprecations require structured metadata.
 
 ### Attributes and Read-Only Properties
 
 Attributes defined as read-only are annotated with `Final` from Python’s `typing` module to indicate immutability.
+
+Properties with distinct getter and setter contracts use the standard Python
+property syntax. The getter and setter are represented as one binding attribute;
+the binding generator still emits the corresponding `get<Name>()` and
+`set<Name>()` C++ wrapper declarations while preserving the asymmetric Python
+annotations for the type-checking tools.
+
+```python
+from typing import Sequence
+
+class MatrixPy(PyObjectBase):
+    @property
+    def A(self) -> tuple[float, ...]: ...
+
+    @A.setter
+    def A(self, value: Sequence[float]) -> None: ...
+```
 
 **Example:**
 

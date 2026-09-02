@@ -181,7 +181,12 @@ void Gui::registerUserInputEnumInPython(PyObject* module)
         {"KeyF35", KeyF35},
 
         // Mouse Keys
+        {"Mouse", Mouse},
         {"MouseMove", MouseMove},
+        {"MouseMoveLeft", MouseMoveLeft},
+        {"MouseMoveMiddle", MouseMoveMiddle},
+        {"MouseMoveRight", MouseMoveRight},
+        {"MouseDoubleLeft", MouseDoubleLeft},
         {"MouseLeft", MouseLeft},
         {"MouseRight", MouseRight},
         {"MouseMiddle", MouseMiddle},

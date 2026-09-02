@@ -67,8 +67,8 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     try {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(pDir)->value();
-        Handle(Geom_SurfaceOfLinearExtrusion) curve2
-            = new Geom_SurfaceOfLinearExtrusion(curve, gp_Dir(dir.x, dir.y, dir.z));
+        Handle(Geom_SurfaceOfLinearExtrusion)
+            curve2 = new Geom_SurfaceOfLinearExtrusion(curve, gp_Dir(dir.x, dir.y, dir.z));
         getGeomSurfaceOfExtrusionPtr()->setHandle(curve2);
         return 0;
     }
@@ -81,9 +81,8 @@ int SurfaceOfExtrusionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Object SurfaceOfExtrusionPy::getDirection() const
 {
-    Handle(Geom_SurfaceOfLinearExtrusion) curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_SurfaceOfLinearExtrusion)
+        curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(getGeometryPtr()->handle());
     const gp_Dir& dir = curve->Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
@@ -93,16 +92,14 @@ void SurfaceOfExtrusionPy::setDirection(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d dir = static_cast<Base::VectorPy*>(p)->value();
-        Handle(Geom_SurfaceOfLinearExtrusion) curve = Handle(
-            Geom_SurfaceOfLinearExtrusion
-        )::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_SurfaceOfLinearExtrusion)
+            curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d dir = Base::getVectorFromTuple<double>(p);
-        Handle(Geom_SurfaceOfLinearExtrusion) curve = Handle(
-            Geom_SurfaceOfLinearExtrusion
-        )::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_SurfaceOfLinearExtrusion)
+            curve = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(getGeometryPtr()->handle());
         curve->SetDirection(gp_Dir(dir.x, dir.y, dir.z));
     }
     else {
@@ -119,9 +116,8 @@ extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve) & c);
 
 Py::Object SurfaceOfExtrusionPy::getBasisCurve() const
 {
-    Handle(Geom_SurfaceOfLinearExtrusion) surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_SurfaceOfLinearExtrusion)
+        surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(getGeometryPtr()->handle());
     Handle(Geom_Curve) curve = surf->BasisCurve();
     return makeGeometryCurvePy(curve);
 }
@@ -137,9 +133,8 @@ void SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
         }
 
         try {
-            Handle(Geom_SurfaceOfLinearExtrusion) curve2 = Handle(
-                Geom_SurfaceOfLinearExtrusion
-            )::DownCast(getGeometryPtr()->handle());
+            Handle(Geom_SurfaceOfLinearExtrusion)
+                curve2 = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast(getGeometryPtr()->handle());
             curve2->SetBasisCurve(curve);
         }
         catch (Standard_Failure& e) {

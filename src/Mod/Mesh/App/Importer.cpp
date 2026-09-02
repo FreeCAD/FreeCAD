@@ -40,29 +40,42 @@ void Importer::load(const std::string& fileName)
 {
     MeshObject mesh;
     MeshCore::Material mat;
+    std::string name;
 
-    if (mesh.load(fileName.c_str(), &mat)) {
+    if (mesh.load(fileName.c_str(), &mat, &name)) {
+        Feature* feature = nullptr;
         Base::FileInfo file(fileName.c_str());
         unsigned long segmct = mesh.countSegments();
         if (segmct > 1) {
             createMeshFromSegments(file.fileNamePure(), mat, mesh);
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_VERTEX
-                 && mat.diffuseColor.size() == mesh.countPoints()) {
-            Feature* feature = createMesh(file.fileNamePure(), mesh);
+        else if (
+            mat.binding == MeshCore::MeshIO::PER_VERTEX
+            && mat.diffuseColor.size() == mesh.countPoints()
+        ) {
+            feature = createMesh(file.fileNamePure(), mesh);
             addVertexColors(feature, mat.diffuseColor);
             feature->purgeTouched();
         }
-        else if (mat.binding == MeshCore::MeshIO::PER_FACE
-                 && mat.diffuseColor.size() == mesh.countFacets()) {
-            Feature* feature = createMesh(file.fileNamePure(), mesh);
+        else if (
+            mat.binding == MeshCore::MeshIO::PER_FACE && mat.diffuseColor.size() == mesh.countFacets()
+        ) {
+            feature = createMesh(file.fileNamePure(), mesh);
             addFaceColors(feature, mat.diffuseColor);
             feature->purgeTouched();
         }
         else {
-            Feature* feature = createMesh(file.fileNamePure(), mesh);
+            feature = createMesh(file.fileNamePure(), mesh);
             feature->purgeTouched();
         }
+
+        if (feature && !name.empty()) {
+            feature->Label.setValue(name);
+            feature->purgeTouched();
+        }
+    }
+    else {
+        Base::Console().error("Failed to load %s\n", fileName.c_str());
     }
 }
 

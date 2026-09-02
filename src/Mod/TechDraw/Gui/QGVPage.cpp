@@ -104,8 +104,10 @@ public:
     {
         const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
         if (strcmp(Reason, "NavigationStyle") == 0) {
-            std::string model =
-                rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.GetASCII(
+                "NavigationStyle",
+                std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+            );
             page->setNavigationStyle(model);
         }
         else if (strcmp(Reason, "InvertZoom") == 0) {
@@ -474,6 +476,15 @@ void QGVPage::mousePressEvent(QMouseEvent* event)
         toolHandler->mousePressEvent(event);
     }
     else {
+        if (event->button() == Qt::RightButton && m_parentMDI) {
+            if (QGraphicsItem* item = itemAt(event->pos())) {
+                m_parentMDI->selectOnRightPress(item);
+            }
+            m_navStyle->handleMousePressEvent(event);
+            // do not call base class because it would clear the 
+            // selection on right click
+            return;
+        }
         m_navStyle->handleMousePressEvent(event);
     }
     QGraphicsView::mousePressEvent(event);
@@ -614,8 +625,10 @@ std::string QGVPage::getNavStyleParameter()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    std::string model =
-        hGrp->GetASCII("NavigationStyle", NavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII(
+        "NavigationStyle",
+        std::string {NavigationStyle::getClassTypeId().getName()}.c_str()
+    );
     return model;
 }
 

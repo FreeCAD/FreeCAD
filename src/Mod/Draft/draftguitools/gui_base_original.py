@@ -29,6 +29,7 @@
 This class is used by Gui Commands to set up some properties
 of the DraftToolBar, the Snapper, and the working plane.
 """
+
 ## @package gui_base_original
 # \ingroup draftguitools
 # \brief Provides the base classes for most old Draft Gui Commands.
@@ -107,9 +108,8 @@ class DraftTool:
 
         # The Part module is first initialized when using any Gui Command
         # for the first time.
-        global Part, DraftGeomUtils
+        global Part
         import Part
-        import DraftGeomUtils
 
         self.call = None
         self.commitList = []
@@ -285,16 +285,39 @@ class Modifier(DraftTool):
 
     It inherits `DraftTool`, which sets up the majority of the behavior
     of this class.
+
+    Modifier tools share a two-phase input flow: first the user picks the
+    object(s) to operate on, then the user supplies one or more reference
+    points (base point, angle, distance, mirror line, etc.). The
+    ``selection_done`` flag distinguishes the two phases so the base class
+    can provide the selection-phase hint by default; subclasses override
+    ``get_action_hints`` to describe their action-phase steps.
+
+    Subclasses that only operate on a single object set
+    ``multi_object_selection`` to ``False`` so the selection hint is phrased
+    in the singular.
     """
+
+    multi_object_selection = True
 
     def __init__(self):
         super().__init__()
         self.copymode = False
+        self.selection_done = False
 
     def Activated(self, name="None", is_subtool=False):
         super().Activated(name, is_subtool)
         # call _save to sync with _restore called in finish method
         self.wp._save()
+        self.selection_done = False
+
+    def get_hints(self):
+        if not self.selection_done:
+            return gui_tool_utils._get_hint_select_object(self.multi_object_selection)
+        return self.get_action_hints()
+
+    def get_action_hints(self):
+        return []
 
 
 ## @}

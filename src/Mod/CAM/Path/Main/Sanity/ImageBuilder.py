@@ -31,7 +31,6 @@ import Path.Log
 import os
 import tempfile
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -53,12 +52,21 @@ class ImageBuilder:
 class ImageBuilderFactory:
     @staticmethod
     def get_image_builder(file_path, **kwargs):
-        # return DummyImageBuilder(file_path, **kwargs)
-        if FreeCAD.GuiUp:
+        if not FreeCAD.GuiUp:
+            return DummyImageBuilder(file_path)
+        if (
+            os.environ.get("WAYLAND_DISPLAY")
+            or os.environ.get("XDG_SESSION_TYPE", "").lower() == "wayland"
+        ):
+            Path.Log.warning(
+                "Wayland session detected: skipping GUI image generation to avoid segfaults"
+            )
+            return DummyImageBuilder(file_path)
+        try:
             return GuiImageBuilder(file_path, **kwargs)
-        else:
-            return DummyImageBuilder(file_path, **kwargs)
-        # return NonGuiImageBuilder(file_path, **kwargs)
+        except Exception as e:
+            Path.Log.warning(f"GuiImageBuilder init failed: {e}, falling back to DummyImageBuilder")
+            return DummyImageBuilder(file_path)
 
 
 class DummyImageBuilder(ImageBuilder):
@@ -88,7 +96,8 @@ class GuiImageBuilder(ImageBuilder):
 
     def __del__(self):
         Path.Log.debug("Destroying GuiImageBuilder")
-        self.restore_visibility()
+        if hasattr(self, "visible"):
+            self.restore_visibility()
 
     def prepare_view(self, obj, view="default"):
         # Create a new view
@@ -151,26 +160,38 @@ class GuiImageBuilder(ImageBuilder):
             o.Visibility = True
 
     def build_image(self, obj, image_name, as_bytes=False, view="default"):
-        Path.Log.debug("CAM - Building image\n")
         """
         Makes an image of the target object. Returns either the image as bytes or a filename.
+        On failure, logs a warning and returns b"" (as_bytes) or "" (file path).
         """
-
-        idx = self.prepare_view(obj, view=view)
-
-        if as_bytes:
-            # Capture directly to memory without writing to disk
-            img_bytes = self.capture_image_to_bytes()
-            self.destroy_view(idx)
-            return img_bytes
-        else:
-            # Write to disk as before
-            file_path = os.path.join(self.file_path, image_name)
-            self.capture_image(file_path)
-            self.destroy_view(idx)
-            result = f"{file_path}_t.png"
-            Path.Log.debug(f"Image saved to: {result}")
-            return result
+        Path.Log.debug("CAM - Building image\n")
+        idx = None
+        try:
+            idx = self.prepare_view(obj, view=view)
+            if as_bytes:
+                img_bytes = self.capture_image_to_bytes()
+                self.destroy_view(idx)
+                return img_bytes
+            else:
+                file_path = os.path.join(self.file_path, image_name)
+                self.capture_image(file_path)
+                self.destroy_view(idx)
+                result = f"{file_path}_t.png"
+                Path.Log.debug(f"Image saved to: {result}")
+                return result
+        except Exception as e:
+            Path.Log.warning(f"Image capture failed for {image_name}: {e}")
+            if idx is not None:
+                try:
+                    self.destroy_view(idx)
+                except Exception:
+                    pass
+            if hasattr(self, "visible"):
+                try:
+                    self.restore_visibility()
+                except Exception:
+                    pass
+            return b"" if as_bytes else ""
 
     def capture_image(self, file_path):
         FreeCADGui.updateGui()

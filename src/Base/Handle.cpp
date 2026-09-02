@@ -26,8 +26,6 @@
 #include <cassert>
 #include <iostream>
 
-#include <QAtomicInt>
-
 #include "Handle.h"
 
 
@@ -37,44 +35,45 @@ using namespace Base;
 // Construction/Destruction
 
 Handled::Handled()
-    : _lRefCount(new QAtomicInt(0))
 {}
 
 Handled::~Handled()
 {
-    if (static_cast<int>(*_lRefCount) != 0) {
+    if (_refCount.load(std::memory_order_relaxed) != 0) {
         std::cerr << "Reference counter of deleted object is not zero!!!!!" << std::endl;
     }
-    delete _lRefCount;
 }
 
 void Handled::ref() const
 {
-    _lRefCount->ref();
+    _refCount.fetch_add(1, std::memory_order_relaxed);
 }
 
 void Handled::unref() const
 {
-    assert(*_lRefCount > 0);
-    if (!_lRefCount->deref()) {
+    const int prev = _refCount.fetch_sub(1, std::memory_order_acq_rel);
+    assert(prev > 0);
+    if (prev == 1) {
+        std::atomic_thread_fence(std::memory_order_acquire);
         delete this;
     }
 }
 
 int Handled::unrefNoDelete() const
 {
-    int res = _lRefCount->deref();
-    assert(res >= 0);
-    return res;
+    const int prev = _refCount.fetch_sub(1, std::memory_order_acq_rel);
+    assert(prev > 0);
+    const int after = prev - 1;
+    return after != 0;
 }
 
 int Handled::getRefCount() const
 {
-    return static_cast<int>(*_lRefCount);
+    return _refCount.load(std::memory_order_relaxed);
 }
 
 Handled& Handled::operator=(const Handled& /*unused*/)
 {
-    // we must not assign _lRefCount
+    // we must not assign _refCount
     return *this;
 }

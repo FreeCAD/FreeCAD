@@ -32,6 +32,7 @@ in other modules of the workbench, and which require
 the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
+
 ## @package gui_utils
 # \ingroup draftutils
 # \brief Provides utility functions that deal with GUI interactions.
@@ -571,9 +572,9 @@ def format_object(target, origin=None, ignore_construction=False):
             if obrep.getEditorMode(p):
                 continue
             val = getattr(matchrep, p)
-            if isinstance(val, tuple):
+            if isinstance(val, (list, tuple)):
                 if len(val) != len_faces:
-                    val = (val[0],)
+                    val = [val[0]]
             elif hasattr(val, "Value"):
                 val = val.Value
             try:
@@ -584,7 +585,15 @@ def format_object(target, origin=None, ignore_construction=False):
             obrep.DisplayMode = matchrep.DisplayMode
         if hasattr(obrep, "DiffuseColor"):
             difcol = get_diffuse_color(origin)
-            if difcol and len(difcol) == len_faces:
+            if difcol and (len(difcol) == len_faces or hasattr(origin, "ColoredElements")):
+                # Since v1.1, Links, Link arrays and LinkGroups have a ShapeAppearance property
+                # that replaces their former ShapeMaterial property. The property has a default
+                # hard-coded value and is only used if OverrideMaterial is set to True. Because
+                # of the new property name the ShapeAppearance property they used to inherit
+                # from their source object is effectively overridden in the PropertiesList. But
+                # (if OverrideMaterial is False) the ShapeAppearance of the source object is
+                # used. As a workaround we always apply the difcolor for those object types.
+                # Note that we currently completely ignore the OverrideMaterial property.
                 obrep.DiffuseColor = difcol
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.
@@ -996,76 +1005,6 @@ def end_all_events():
     )  # 100ms (50ms is too short) timer guarantees the loop below runs at least that long
     while not ender.delay_is_done:
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-
-
-def toggle_working_plane(obj, action=None, restore=False, dialog=None):
-    """Toggle the active state of a working plane object.
-
-    This function handles the common logic for activating and deactivating
-    working plane objects like BuildingParts and WorkingPlaneProxies.
-    It can be used by different modules that need to implement similar
-    working plane activation behavior.
-
-    Parameters
-    ----------
-    obj : App::DocumentObject
-        The object to activate or deactivate as a working plane.
-    action : QAction, optional
-        The action button that triggered this function, to update its checked state.
-    restore : bool, optional
-        If True, will restore the previous working plane when deactivating.
-        Defaults to False.
-    dialog : QDialog, optional
-        If provided, will update the checked state of the activate button in the dialog.
-
-    Returns
-    -------
-    bool
-        True if the object was activated, False if it was deactivated.
-    """
-
-    # Determine the appropriate context based on object type
-    context = "Arch"
-    obj_type = utils.get_type(obj)
-    if obj_type == "IfcBuildingStorey":
-        context = "NativeIFC"
-
-    # Check if the object is already active in its context
-    is_active_arch = Gui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj
-    is_active_ifc = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj
-    is_active = is_active_arch or is_active_ifc
-    if is_active:
-        # Deactivate the object
-        if is_active_arch:
-            Gui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-        if is_active_ifc:
-            Gui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
-
-        if (
-            hasattr(obj, "ViewObject")
-            and hasattr(obj.ViewObject, "Proxy")
-            and hasattr(obj.ViewObject.Proxy, "setWorkingPlane")
-        ):
-            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
-        if action:
-            action.setChecked(False)
-        if dialog and hasattr(dialog, "buttonActive"):
-            dialog.buttonActive.setChecked(False)
-        return False
-    else:
-        # Activate the object
-        Gui.ActiveDocument.ActiveView.setActiveObject(context, obj)
-        if (
-            hasattr(obj, "ViewObject")
-            and hasattr(obj.ViewObject, "Proxy")
-            and hasattr(obj.ViewObject.Proxy, "setWorkingPlane")
-        ):
-            obj.ViewObject.Proxy.setWorkingPlane()
-        if action:
-            action.setChecked(True)
-        if dialog and hasattr(dialog, "buttonActive"):
-            dialog.buttonActive.setChecked(True)
-        return True
 
 
 ## @}

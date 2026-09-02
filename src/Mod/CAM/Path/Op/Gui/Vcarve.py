@@ -32,7 +32,6 @@ import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
 
-
 __title__ = "CAM Vcarve Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
@@ -60,16 +59,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         added = False
         shapes = self.obj.BaseShapes
         for sel in selection:
-            job = PathUtils.findParentJob(self.obj)
-            base = job.Proxy.resourceClone(job, sel.Object)
-            if not base:
-                Path.Log.notice(
-                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
-                    % (sel.Object.Label, job.Label)
-                )
-                continue
+            base = sel.Object
             if base in shapes:
-                Path.Log.notice("Base shape %s already in the list".format(sel.Object.Label))
+                Path.Log.notice(
+                    (translate("CAM", "Base shape %s already in the list") + "\n")
+                    % (sel.Object.Label)
+                )
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:
@@ -116,6 +111,21 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         Path.Log.debug("Setting new base shapes: %s -> %s" % (self.obj.BaseShapes, shapes))
         self.obj.BaseShapes = shapes
         return self.super().updateBase()
+
+
+class TaskPanelToolControllerPage(PathOpGui.TaskPanelToolControllerPage):
+    """Tool Controller page that reports Vcarve's v-bit tool requirement."""
+
+    def getFields(self, obj):
+        try:
+            super(TaskPanelToolControllerPage, self).getFields(obj)
+        except PathUtils.PathNoTCExistsException:
+            title = translate("CAM", "No valid toolcontroller")
+            message = translate(
+                "CAM",
+                "This operation requires a tool controller with a v-bit tool",
+            )
+            self.show_error_message(title, message)
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -168,19 +178,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.finishingPassZOffsetSpinBox.updateProperty()
 
-        self.updateCoolant(obj, self.form.coolantController)
-
-        try:
-            self.updateToolController(obj, self.form.toolController)
-        except PathUtils.PathNoTCExistsException:
-            title = translate("CAM", "No valid toolcontroller")
-            message = translate(
-                "CAM",
-                "This operation requires a tool controller with a v-bit tool",
-            )
-
-            self.show_error_message(title, message)
-
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.discretize.setValue(obj.Discretize)
@@ -189,9 +186,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.optimizeMovementsEnabled.setChecked(obj.OptimizeMovements)
 
         self.finishingPassZOffsetSpinBox.updateWidget()
-
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
 
         self.updateFormConditionalState(self.form)
 
@@ -205,13 +199,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         signals.append(self.form.optimizeMovementsEnabled.stateChanged)
 
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):
         """taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries."""
         return TaskPanelBaseGeometryPage(obj, features)
+
+    def taskPanelToolControllerPage(self, obj, features):
+        """taskPanelToolControllerPage(obj, features) ... Vcarve requires a v-bit
+        tool, so report that requirement if an incompatible tool controller is
+        selected."""
+        return TaskPanelToolControllerPage(obj, features)
 
 
 Command = PathOpGui.SetupOperation(

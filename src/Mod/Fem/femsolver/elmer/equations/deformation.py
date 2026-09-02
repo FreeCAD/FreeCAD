@@ -107,14 +107,14 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
             "App::PropertyString",
             "Variable",
             "Deformation",
-            "Only for a 2D model change the '3' to '2'",
+            "Variable name",
             locked=True,
         )
 
         obj.Priority = 10
         obj.CalculatePrincipal = True
         obj.CalculateStresses = True
-        obj.Variable = "-dofs 3 Displacement"
+        obj.Variable = "Displacement"
 
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.DeformationViewProxy):

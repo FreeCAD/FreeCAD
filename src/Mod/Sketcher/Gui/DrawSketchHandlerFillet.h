@@ -32,7 +32,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
@@ -40,8 +39,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class FilletSelection: public Gui::SelectionFilterGate
 {
@@ -83,6 +80,14 @@ public:
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
+                // TODO: This could return true for any curve as long as
+                // int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim,
+                // bool createCorner, bool chamfer) evaluates two correct points that can be bound
+                // by an arc created using GeomArcOfCircle* createFilletGeometry(const Geometry*
+                // geo1, const Geometry* geo2, const Base::Vector3d& refPnt1, const Base::Vector3d&
+                // refPnt2, double radius, int& pos1, int& pos2, bool& reverse, Base::Vector3d&
+                // cornerPoint) See int SketchObject::fillet(int GeoId, PointPos PosId, double
+                // radius, bool trim, bool createCorner, bool chamfer)
             }
         }
         return false;
@@ -169,8 +174,7 @@ private:
             int GeoId;
             PointPos PosId = PointPos::none;
             obj->getGeoVertexIndex(vtId, GeoId, PosId);
-            const Part::Geometry* geom = obj->getGeometry(GeoId);
-            if (isLineSegment(*geom) && (PosId == PointPos::start || PosId == PointPos::end)) {
+            if (PosId == PointPos::start || PosId == PointPos::end) {
 
                 // guess fillet radius
                 double radius = -1;
@@ -209,7 +213,7 @@ private:
                 int filletGeoId = getHighestCurveIndex() + (isChamfer ? 2 : 1);
                 // create fillet at point
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                     Gui::cmdAppObjectArgs(
                         obj,
                         "fillet(%d,%d,%f,%s,%s,%s)",
@@ -225,7 +229,7 @@ private:
                         Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
                     }
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
                 }
                 catch (const Base::Exception& e) {
                     Gui::NotifyUserError(
@@ -233,13 +237,12 @@ private:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to create fillet"),
                         e.what()
                     );
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
 
                 tryAutoRecomputeIfNotSolve(obj);
-            }
-        }
-
+            }  // end if curve endpoint
+        }  // end if vertex
         else {
             Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
             Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
@@ -258,6 +261,7 @@ private:
                 auto* line2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
                 radius = Part::suggestFilletRadius(line1, line2, refPnt1, refPnt2);
+
                 if (radius < 0) {
                     return;
                 }
@@ -267,7 +271,7 @@ private:
 
             // create fillet between lines
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
                 Gui::cmdAppObjectArgs(
                     obj,
                     "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f,%s,%s,%s)",
@@ -282,7 +286,7 @@ private:
                     preserveCorner ? "True" : "False",
                     isChamfer ? "True" : "False"
                 );
-                Gui::Command::commitCommand();
+                commitCommand();
             }
             catch (const Base::CADKernelError& e) {
                 if (e.getTranslatable()) {
@@ -293,12 +297,12 @@ private:
                     );
                 }
                 Gui::Selection().clearSelection();
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             catch (const Base::ValueError& e) {
                 Gui::TranslatedUserError(sketchgui, tr("Value Error"), tr(e.getMessage().c_str()));
                 Gui::Selection().clearSelection();
-                Gui::Command::abortCommand();
+                abortCommand();
             }
 
             tryAutoRecompute(obj);

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Ellipse objects."""
+
 ## @package make_ellipse
 # \ingroup draftmake
 # \brief Provides functions to create Ellipse objects.

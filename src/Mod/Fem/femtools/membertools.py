@@ -27,12 +27,12 @@ This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.
 """
 
-
 __title__ = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
+from FreeCAD import Base
 from . import femutils
 
 
@@ -145,11 +145,11 @@ def get_mesh_to_solve(analysis):
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
-                return (None, "FEM: multiple mesh in analysis not yet supported!")
+                raise Base.FreeCADError("FEM: multiple meshes in analysis are not supported yet")
     if mesh_to_solve is not None:
-        return (mesh_to_solve, "")
+        return mesh_to_solve
     else:
-        return (None, "FEM: no mesh object found in analysis.")
+        raise Base.FreeCADError("FEM: no mesh object found in analysis.")
 
 
 class AnalysisMember:
@@ -283,7 +283,7 @@ class AnalysisMember:
         self.cons_temperature = self.get_several_member("Fem::ConstraintTemperature")
         self.cons_tie = self.get_several_member("Fem::ConstraintTie")
         self.cons_transform = self.get_several_member("Fem::ConstraintTransform")
-        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectrostaticPotential")
+        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectromagnetic")
         self.cons_electricchargedensity = self.get_several_member(
             "Fem::ConstraintElectricChargeDensity"
         )

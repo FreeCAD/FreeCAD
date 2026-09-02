@@ -44,6 +44,7 @@ Body 1
 End
 
 Material 1
+  Density = Real 7900.0
   Name = String "Steel-Generic"
   Poisson ratio = Real 0.3
   Youngs Modulus = Real 200000000000.0
@@ -58,6 +59,7 @@ Solver 2
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
   Exec Solver = String "After simulation"
+  Output Directory = File "Result"
   Output File Name = File "FreeCAD"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
   Save Geometry Ids = Logical False

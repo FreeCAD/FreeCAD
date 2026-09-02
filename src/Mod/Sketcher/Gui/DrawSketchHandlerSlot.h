@@ -38,16 +38,12 @@
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
 
 class DrawSketchHandlerSlot;
 
@@ -176,13 +172,13 @@ private:
         firstCurve = getHighestCurveIndex() + 1;
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -191,7 +187,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -517,7 +513,7 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
                     Base::Unit::Angle
                 );
             }
-            else if (vec.Length() > Precision::Confusion()) {
+            else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                 double ovpRange = Base::toRadians(fourthParam->getValue());
 
                 if (fabs(range - ovpRange) > Precision::Confusion()) {

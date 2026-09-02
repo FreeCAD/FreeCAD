@@ -62,24 +62,25 @@
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
-#include "SoFCColorGradient.h"
-#include "SoFCColorLegend.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
-#include "SoTextLabel.h"
+#include "SoLabelNodes.h"
 #include "SoDatumLabel.h"
+#include "TranslateManip.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Inventor/SmSwitchboard.h"
 #include "Inventor/So3DAnnotation.h"
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoDrawingGrid.h"
+#include "Inventor/SoFCScreenSpaceGroup.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
+#include "Inventor/SoNaviCube.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
 #include "Inventor/SoToggleSwitch.h"
@@ -103,130 +104,131 @@ SbBool Gui::SoFCDB::isInitialized()
 
 void Gui::SoFCDB::init()
 {
-    SoInteraction ::init();
-    SoDevicePixelRatioElement ::initClass();
-    SoGLRenderActionElement ::initClass();
-    SoFCInteractiveElement ::initClass();
-    SoGLWidgetElement ::initClass();
-    SoFCColorBarBase ::initClass();
-    SoFCColorBar ::initClass();
-    SoFCColorLegend ::initClass();
-    SoFCColorGradient ::initClass();
-    SoFCBackgroundGradient ::initClass();
-    SoFCBoundingBox ::initClass();
-    SoFCSelection ::initClass();
-    SoFCUnifiedSelection ::initClass();
-    SoFCPreselectionAction ::initClass();
-    SoFCSelectionAction ::initClass();
-    SoFCDocumentAction ::initClass();
-    SoGLWidgetNode ::initClass();
-    SoGLVBOActivatedElement ::initClass();
-    SoFCEnableSelectionAction ::initClass();
-    SoFCEnablePreselectionAction ::initClass();
-    SoFCSelectionColorAction ::initClass();
-    SoFCHighlightColorAction ::initClass();
-    SoFCDocumentObjectAction ::initClass();
-    SoGLSelectAction ::initClass();
-    SoVisibleFaceAction ::initClass();
-    SoUpdateVBOAction ::initClass();
-    SoBoxSelectionRenderAction ::initClass();
-    SoFCVectorizeSVGAction ::initClass();
-    SoFCVectorizeU3DAction ::initClass();
-    SoHighlightElementAction ::initClass();
-    SoSelectionElementAction ::initClass();
-    SoVRMLAction ::initClass();
-    SoSkipBoundingGroup ::initClass();
-    SoTextLabel ::initClass();
-    SoDatumLabel ::initClass();
-    SoColorBarLabel ::initClass();
-    SoStringLabel ::initClass();
-    SoFrameLabel ::initClass();
-    TranslateManip ::initClass();
-    SoShapeScale ::initClass();
-    SoAxisCrossKit ::initClass();
-    SoRegPoint ::initClass();
-    SoDrawingGrid ::initClass();
-    SoFCTransform ::initClass();
-    SoAutoZoomTranslation ::initClass();
-    MarkerBitmaps ::initClass();
-    SoTransformDragger ::initClass();
-    SoLinearGeometryKit ::initClass();
-    SoArrowGeometry ::initClass();
-    SoLinearGeometryBaseKit ::initClass();
-    SoArrowBase ::initClass();
-    SoRotatorGeometryKit ::initClass();
-    SoRotatorGeometry ::initClass();
-    SoRotatorGeometry2 ::initClass();
-    SoRotatorArrow ::initClass();
-    SoRotatorGeometryBaseKit ::initClass();
-    SoRotatorBase ::initClass();
-    SoToggleSwitch ::initClass();
-    GizmoContainer ::initClass();
-    SmSwitchboard ::initClass();
-    SoFCSeparator ::initClass();
-    SoFCSelectionRoot ::initClass();
-    SoFCPathAnnotation ::initClass();
-    SoMouseWheelEvent ::initClass();
-    So3DAnnotation ::initClass();
-    SoDelayedAnnotationsElement ::initClass();
-    SoFCPlacementIndicatorKit ::initClass();
+    SoInteraction::init();
+    SoDevicePixelRatioElement::initClass();
+    SoGLRenderActionElement::initClass();
+    SoFCInteractiveElement::initClass();
+    SoGLWidgetElement::initClass();
+    SoFCColorBar::initClass();
+    SoFCScreenSpaceGroup::initClass();
+    SoFCBackgroundGradient::initClass();
+    SoFCBoundingBox::initClass();
+    SoFCSelection::initClass();
+    SoFCUnifiedSelection::initClass();
+    SoFCPreselectionAction::initClass();
+    SoFCSelectionAction::initClass();
+    SoFCDocumentAction::initClass();
+    SoGLWidgetNode::initClass();
+    SoGLVBOActivatedElement::initClass();
+    SoFCEnableSelectionAction::initClass();
+    SoFCEnablePreselectionAction::initClass();
+    SoFCSelectionColorAction::initClass();
+    SoFCHighlightColorAction::initClass();
+    SoFCDocumentObjectAction::initClass();
+    SoGLSelectAction::initClass();
+    SoVisibleFaceAction::initClass();
+    SoUpdateVBOAction::initClass();
+    SoBoxSelectionRenderAction::initClass();
+    SoFCVectorizeSVGAction::initClass();
+    SoFCVectorizeU3DAction::initClass();
+    SoHighlightElementAction::initClass();
+    SoSelectionElementAction::initClass();
+    SoVRMLAction::initClass();
+    SoSkipBoundingGroup::initClass();
+    SoSkipBoundingBoxElement::initClass();
+    SoDatumLabel::initClass();
+    SoColorBarLabel::initClass();
+    SoStringLabel::initClass();
+    SoFrameLabel::initClass();
+    TranslateManip::initClass();
+    SoShapeScale::initClass();
+    SoAxisCrossKit::initClass();
+    SoRegPoint::initClass();
+    SoDrawingGrid::initClass();
+    SoNaviCube::initClass();
+    SoFCTransform::initClass();
+    SoAutoZoomTranslation::initClass();
+    MarkerBitmaps::initClass();
+    SoTransformDragger::initClass();
+    SoLinearGeometryKit::initClass();
+    SoArrowGeometry::initClass();
+    SoSphereGeometry::initClass();
+    SoLinearGeometryBaseKit::initClass();
+    SoArrowBase::initClass();
+    SoRotatorGeometryKit::initClass();
+    SoRotatorGeometry::initClass();
+    SoRotatorGeometry2::initClass();
+    SoRotatorArrow::initClass();
+    SoRotatorGeometryBaseKit::initClass();
+    SoRotatorBase::initClass();
+    SoToggleSwitch::initClass();
+    GizmoContainer::initClass();
+    SmSwitchboard::initClass();
+    SoFCSeparator::initClass();
+    SoFCSelectionRoot::initClass();
+    SoFCPathAnnotation::initClass();
+    SoMouseWheelEvent::initClass();
+    So3DAnnotation::initClass();
+    SoDelayedAnnotationsElement::initClass();
+    SoFCPlacementIndicatorKit::initClass();
 
-    PropertyItem ::init();
-    PropertySeparatorItem ::init();
-    PropertyStringItem ::init();
-    PropertyFontItem ::init();
-    PropertyIntegerItem ::init();
-    PropertyIntegerConstraintItem ::init();
-    PropertyFloatItem ::init();
-    PropertyUnitItem ::init();
-    PropertyFloatConstraintItem ::init();
-    PropertyPrecisionItem ::init();
-    PropertyUnitConstraintItem ::init();
-    PropertyAngleItem ::init();
-    PropertyBoolItem ::init();
-    PropertyVectorItem ::init();
-    PropertyVectorListItem ::init();
-    PropertyVectorDistanceItem ::init();
-    PropertyPositionItem ::init();
-    PropertyDirectionItem ::init();
-    PropertyMatrixItem ::init();
-    PropertyPlacementItem ::init();
-    PropertyRotationItem ::init();
-    PropertyEnumItem ::init();
-    PropertyStringListItem ::init();
-    PropertyFloatListItem ::init();
-    PropertyIntegerListItem ::init();
-    PropertyColorItem ::init();
-    PropertyMaterialItem ::init();
-    PropertyMaterialListItem ::init();
-    PropertyFileItem ::init();
-    PropertyPathItem ::init();
-    PropertyTransientFileItem ::init();
-    PropertyLinkItem ::init();
-    PropertyLinkListItem ::init();
+    PropertyItem::init();
+    PropertySeparatorItem::init();
+    PropertyStringItem::init();
+    PropertyFontItem::init();
+    PropertyIntegerItem::init();
+    PropertyIntegerConstraintItem::init();
+    PropertyFloatItem::init();
+    PropertyUnitItem::init();
+    PropertyFloatConstraintItem::init();
+    PropertyPrecisionItem::init();
+    PropertyUnitConstraintItem::init();
+    PropertyAngleItem::init();
+    PropertyBoolItem::init();
+    PropertyVectorItem::init();
+    PropertyVectorListItem::init();
+    PropertyVectorDistanceItem::init();
+    PropertyPositionItem::init();
+    PropertyDirectionItem::init();
+    PropertyMatrixItem::init();
+    PropertyPlacementItem::init();
+    PropertyRotationItem::init();
+    PropertyEnumItem::init();
+    PropertyStringListItem::init();
+    PropertyFloatListItem::init();
+    PropertyIntegerListItem::init();
+    PropertyColorItem::init();
+    PropertyMaterialItem::init();
+    PropertyMaterialListItem::init();
+    PropertyFileItem::init();
+    PropertyPathItem::init();
+    PropertyTransientFileItem::init();
+    PropertyLinkItem::init();
+    PropertyLinkListItem::init();
+    PropertyMapItem::init();
 
-    NavigationStyle ::init();
-    UserNavigationStyle ::init();
-    NavigationStateChart ::init();
-    BlenderNavigationStyle ::init();
-    CADNavigationStyle ::init();
-    GestureNavigationStyle ::init();
-    MayaGestureNavigationStyle ::init();
-    OpenCascadeNavigationStyle ::init();
-    InventorNavigationStyle ::init();
-    OpenSCADNavigationStyle ::init();
-    RevitNavigationStyle ::init();
-    SiemensNXNavigationStyle ::init();
-    SolidWorksNavigationStyle ::init();
-    TinkerCADNavigationStyle ::init();
-    TouchpadNavigationStyle ::init();
+    NavigationStyle::init();
+    UserNavigationStyle::init();
+    NavigationStateChart::init();
+    BlenderNavigationStyle::init();
+    CADNavigationStyle::init();
+    GestureNavigationStyle::init();
+    MayaGestureNavigationStyle::init();
+    OpenCascadeNavigationStyle::init();
+    InventorNavigationStyle::init();
+    OpenSCADNavigationStyle::init();
+    RevitNavigationStyle::init();
+    SiemensNXNavigationStyle::init();
+    SolidWorksNavigationStyle::init();
+    TinkerCADNavigationStyle::init();
+    TouchpadNavigationStyle::init();
 
-    GLGraphicsItem ::init();
-    GLFlagWindow ::init();
+    GLGraphicsItem::init();
+    GLFlagWindow::init();
 
-    SelectionObject ::init();
+    SelectionObject::init();
 
-    ArcEngine ::initClass();
+    ArcEngine::initClass();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
@@ -244,25 +246,22 @@ void Gui::SoFCDB::finish()
     // Coin doesn't provide a mechanism to free static members of own data types.
     // Hence, we need to define a static method e.g. 'finish()' for all new types
     // to invoke the private member function 'atexit_cleanup()'.
-    SoFCColorBarBase ::finish();
-    SoFCColorBar ::finish();
-    SoFCColorLegend ::finish();
-    SoFCColorGradient ::finish();
-    SoFCBackgroundGradient ::finish();
-    SoFCBoundingBox ::finish();
-    SoFCSelection ::finish();
-    SoFCPreselectionAction ::finish();
-    SoFCSelectionAction ::finish();
-    SoFCDocumentAction ::finish();
-    SoFCDocumentObjectAction ::finish();
-    SoFCEnableSelectionAction ::finish();
-    SoFCEnablePreselectionAction ::finish();
-    SoFCSelectionColorAction ::finish();
-    SoUpdateVBOAction ::finish();
-    SoFCHighlightColorAction ::finish();
-    SoFCSeparator ::finish();
-    SoFCSelectionRoot ::finish();
-    SoFCPathAnnotation ::finish();
+    SoFCColorBar::finish();
+    SoFCBackgroundGradient::finish();
+    SoFCBoundingBox::finish();
+    SoFCSelection::finish();
+    SoFCPreselectionAction::finish();
+    SoFCSelectionAction::finish();
+    SoFCDocumentAction::finish();
+    SoFCDocumentObjectAction::finish();
+    SoFCEnableSelectionAction::finish();
+    SoFCEnablePreselectionAction::finish();
+    SoFCSelectionColorAction::finish();
+    SoUpdateVBOAction::finish();
+    SoFCHighlightColorAction::finish();
+    SoFCSeparator::finish();
+    SoFCSelectionRoot::finish();
+    SoFCPathAnnotation::finish();
 
     storage->unref();
     storage = nullptr;
@@ -517,7 +516,7 @@ void Gui::SoFCDB::writeX3DFields(
         SbName name = node->getName();
         std::stringstream str;
         if (name.getLength() == 0) {
-            str << "o" << numDEF++;
+            str << type << '_' << numDEF++;
         }
         else {
             str << name.getString();
@@ -700,9 +699,9 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         << "  <head>\n"
         << "    <meta charset=\"utf-8\"/>\n"
         << "    <title>FreeCAD X3DOM Export</title>\n"
-        << "    <script src=\"http://www.x3dom.org/download/x3dom.js\"> </script>\n"
+        << "    <script src=\"https://www.x3dom.org/download/x3dom.js\"> </script>\n"
         << "    <link rel=\"stylesheet\" type=\"text/css\" "
-           "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
+           "href=\"https://www.x3dom.org/download/x3dom.css\"/>\n"
         << "  </head>\n"
         << "  <body>\n"
         << "    <div>\n";

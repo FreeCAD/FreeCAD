@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
@@ -47,9 +48,86 @@
 
 using namespace PartDesignGui;
 
+namespace
+{
+bool isSubtractivePrimitive(PartDesign::FeaturePrimitive* primitive)
+{
+    return primitive->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+const char* primitiveTypeName(PartDesign::FeaturePrimitive::Type type)
+{
+    switch (type) {
+        case PartDesign::FeaturePrimitive::Box:
+            return "Box";
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return "Cylinder";
+        case PartDesign::FeaturePrimitive::Sphere:
+            return "Sphere";
+        case PartDesign::FeaturePrimitive::Cone:
+            return "Cone";
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return "Ellipsoid";
+        case PartDesign::FeaturePrimitive::Torus:
+            return "Torus";
+        case PartDesign::FeaturePrimitive::Prism:
+            return "Prism";
+        case PartDesign::FeaturePrimitive::Wedge:
+            return "Wedge";
+    }
+
+    return "Primitive";
+}
+
+std::string primitiveTaskIconName(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    std::string iconName = "PartDesign_";
+    iconName += isSubtractivePrimitive(primitive) ? "Subtractive" : "Additive";
+    iconName += primitiveTypeName(primitive->getPrimitiveType());
+    return iconName;
+}
+
+QString primitiveTaskTitle(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    const bool subtractive = isSubtractivePrimitive(primitive);
+
+    switch (primitive->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Box Parameters")
+                               : TaskBoxPrimitives::tr("Additive Box Parameters");
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cylinder Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cylinder Parameters");
+        case PartDesign::FeaturePrimitive::Sphere:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Sphere Parameters")
+                               : TaskBoxPrimitives::tr("Additive Sphere Parameters");
+        case PartDesign::FeaturePrimitive::Cone:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cone Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cone Parameters");
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Ellipsoid Parameters")
+                               : TaskBoxPrimitives::tr("Additive Ellipsoid Parameters");
+        case PartDesign::FeaturePrimitive::Torus:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Torus Parameters")
+                               : TaskBoxPrimitives::tr("Additive Torus Parameters");
+        case PartDesign::FeaturePrimitive::Prism:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Prism Parameters")
+                               : TaskBoxPrimitives::tr("Additive Prism Parameters");
+        case PartDesign::FeaturePrimitive::Wedge:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Wedge Parameters")
+                               : TaskBoxPrimitives::tr("Additive Wedge Parameters");
+    }
+
+    return subtractive ? TaskBoxPrimitives::tr("Subtractive Primitive Parameters")
+                       : TaskBoxPrimitives::tr("Additive Primitive Parameters");
+}
+}  // namespace
+
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive Parameters"), true, parent)
+  : TaskBox(Gui::BitmapFactory().pixmap(primitiveTaskIconName(vp).c_str()), primitiveTaskTitle(vp), true, parent)
   , ui(new Ui_DlgPrimitives)
   , vp(vp)
 {
@@ -382,6 +460,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
+    Gui::getMainWindow()->hideHints();
+
     // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
@@ -1038,6 +1118,24 @@ void TaskBoxPrimitives::setupGizmos()
     }
 
     setGizmoPositions();
+
+    if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
+        const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
+        const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
+
+        QString message;
+        if (coarseByDefault) {
+            message = tr("%1 fine dragging");
+        }
+        else {
+            message = tr("%1 coarse dragging");
+        }
+
+        Gui::getMainWindow()->showHints({{
+            .message = message,
+            .sequences = {{key}},
+        }});
+    }
 }
 
 void TaskBoxPrimitives::setGizmoPositions()
@@ -1108,7 +1206,8 @@ bool TaskDlgPrimitiveParameters::accept()
 bool TaskDlgPrimitiveParameters::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    // Gui::Command::abortCommand();
+    vp_prm->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;

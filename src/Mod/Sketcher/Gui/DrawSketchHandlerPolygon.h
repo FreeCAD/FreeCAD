@@ -35,7 +35,6 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include "DrawSketchDefaultWidgetController.h"
@@ -45,8 +44,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerPolygon;
 
@@ -108,7 +105,7 @@ private:
     {
         unsetCursor();
         resetPositionText();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
             Gui::Command::doCommand(
@@ -125,7 +122,7 @@ private:
                 constructionModeAsBooleanText()
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
@@ -136,7 +133,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -151,21 +148,36 @@ private:
     void generateAutoConstraints() override
     {
         // add auto constraints at the center of the polygon
-        int circlegeoid = getHighestCurveIndex();
-        int lastsidegeoid = getHighestCurveIndex() - 1;
-        if (sugConstraints[0].size() > 0) {
-            generateAutoConstraintsOnElement(sugConstraints[0], circlegeoid, Sketcher::PointPos::mid);
-        }
+        auto* obj = sketchgui->getObject<Sketcher::SketchObject>();
+        for (int geoId = getHighestCurveIndex(); geoId >= 0; geoId--) {
+            const Part::Geometry* geo = obj->getGeometry(geoId);
+            if (geo->is<Part::GeomCircle>()) {
+                int circlegeoid = geoId;
+                int lastsidegeoid = geoId - 1;
+                if (sugConstraints[0].size() > 0) {
+                    generateAutoConstraintsOnElement(
+                        sugConstraints[0],
+                        circlegeoid,
+                        Sketcher::PointPos::mid
+                    );
+                }
 
-        // add auto constraints to the last side of the polygon
-        if (sugConstraints[1].size() > 0) {
-            generateAutoConstraintsOnElement(sugConstraints[1], lastsidegeoid, Sketcher::PointPos::end);
-        }
+                // add auto constraints to the last side of the polygon
+                if (sugConstraints[1].size() > 0) {
+                    generateAutoConstraintsOnElement(
+                        sugConstraints[1],
+                        lastsidegeoid,
+                        Sketcher::PointPos::end
+                    );
+                }
 
-        // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
-        // parameters are accurate This is particularly important for adding widget mandated
-        // constraints.
-        removeRedundantAutoConstraints();
+                // Ensure temporary autoconstraints do not generate a redundancy and that the
+                // geometry parameters are accurate This is particularly important for adding widget
+                // mandated constraints.
+                removeRedundantAutoConstraints();
+                return;
+            }
+        }
     }
 
     void createAutoConstraints() override
@@ -275,14 +287,14 @@ private:
                  .hints =
                      {
                          {tr("%1 pick polygon center"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick rotation and size"), {MouseMove}},
                          {tr("%1 confirm"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }
@@ -327,7 +339,7 @@ void DSHPolygonController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("ToolWidgetManager_p4", "Sides (+'U'/ -'J')")
+        QApplication::translate("ToolWidgetManager_p4", "Sides")
     );
     toolWidget->setParameter(WParameter::First,
                              handler->numberOfCorners);  // unconditionally set
@@ -487,43 +499,95 @@ void DSHPolygonController::computeNextDrawSketchHandlerMode()
 template<>
 void DSHPolygonController::addConstraints()
 {
+    App::DocumentObject* obj = handler->sketchgui->getObject();
+
     int lastCurve = handler->getHighestCurveIndex();
 
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
     auto radius = onViewParameters[OnViewParameter::Third]->getValue();
+    auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
 
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto radiusSet = onViewParameters[OnViewParameter::Third]->isSet;
+    auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
 
     using namespace Sketcher;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(
-            GeoElementId(lastCurve, PointPos::mid),
-            GeoElementId::VAxis,
-            x0,
-            handler->sketchgui->getObject()
-        );
+        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(
-            GeoElementId(lastCurve, PointPos::mid),
-            GeoElementId::HAxis,
-            y0,
-            handler->sketchgui->getObject()
-        );
+        ConstraintToAttachment(GeoElementId(lastCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
     };
 
     auto constraintradius = [&]() {
-        Gui::cmdAppObjectArgs(
-            handler->sketchgui->getObject(),
-            "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-            lastCurve,
-            radius
-        );
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ", lastCurve, radius);
+    };
+
+    auto constraintAngle = [&]() {
+        int circleGeoId = lastCurve;
+        int lastSideGeoId = lastCurve - 1;
+
+        using std::numbers::pi;
+        // for horizontal/vertical angles add according constraint instead of angle constraint
+        if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
+                circleGeoId,
+                static_cast<int>(PointPos::mid),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
+        }
+        else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
+                circleGeoId,
+                static_cast<int>(PointPos::mid),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
+        }
+        else {
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
+                handler->centerPoint.x,
+                handler->centerPoint.y,
+                handler->firstCorner.x,
+                handler->firstCorner.y
+            );
+
+            int radialGeoId = handler->getHighestCurveIndex();
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
+                radialGeoId,
+                static_cast<int>(PointPos::start),
+                circleGeoId,
+                static_cast<int>(PointPos::mid)
+            );
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
+                radialGeoId,
+                static_cast<int>(PointPos::end),
+                lastSideGeoId,
+                static_cast<int>(PointPos::end)
+            );
+
+            Gui::cmdAppObjectArgs(
+                obj,
+                "addConstraint(Sketcher.Constraint('Angle',%d,%f))",
+                radialGeoId,
+                angle
+            );
+        }
     };
 
     // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
@@ -539,6 +603,10 @@ void DSHPolygonController::addConstraints()
 
         if (radiusSet) {
             constraintradius();
+        }
+
+        if (angleSet) {
+            constraintAngle();
         }
     }
     else {  // There is a valid diagnose.
@@ -573,6 +641,10 @@ void DSHPolygonController::addConstraints()
         // always be set
         if (radiusSet && circle.isRadiusDoF()) {
             constraintradius();
+        }
+
+        if (angleSet) {
+            constraintAngle();
         }
     }
 }

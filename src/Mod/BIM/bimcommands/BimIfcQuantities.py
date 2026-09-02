@@ -183,7 +183,7 @@ class BIM_IfcQuantities:
         self.qtokeys.sort()
         self.form.comboQto.addItems(
             [
-                translate("BIM", "Add quantity set..."),
+                translate("BIM", "Add quantity set…"),
             ]
             + self.qtokeys
         )

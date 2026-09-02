@@ -30,6 +30,7 @@
 
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIView.h"
 #include "ViewProviderProjGroupItem.h"
@@ -52,7 +53,7 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 
 void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    ViewProviderViewPart::updateData(prop);
 
     //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
 
@@ -124,8 +125,18 @@ bool ViewProviderProjGroupItem::doubleClicked()
     return true;
 }
 
-bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
+bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string>& subNames)
 {
+    // If cosmetic sub-elements are selected, delete only those and veto object deletion.
+    if (!subNames.empty()) {
+        if (TechDraw::DrawViewPart* dvp = getViewObject()) {
+            dvp->deleteCosmeticElements(subNames);
+            dvp->refreshAllCosmetic();
+            dvp->requestPaint();
+            return false;
+        }
+    }
+
     // we cannot delete the anchor view, thus check if the item is the front item
     // we also cannot delete if the item has a section or detail view
 

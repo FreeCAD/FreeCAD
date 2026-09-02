@@ -31,7 +31,6 @@ from Path.Tool.toolbit import ToolBit
 import Path.Base.Generator.toolchange as toolchange
 import Path.Dressup.Utils as PathDressup
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -54,6 +53,7 @@ class ToolControllerTemplate:
     LeadOutFeed = "leadoutfeed"
     Name = "name"
     RampFeed = "rampfeed"
+    NoEngagementFeed = "noengagementfeed"
     SpindleDir = "dir"
     SpindleSpeed = "speed"
     ToolNumber = "nr"
@@ -192,6 +192,16 @@ class ToolController:
 
         obj.addProperty(
             "App::PropertySpeed",
+            "NoEngagementFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Feed rate used when the tool is not engaged in material, but is also not retracted",
+            ),
+        )
+
+        obj.addProperty(
+            "App::PropertySpeed",
             "LeadInFeed",
             "Feed",
             QT_TRANSLATE_NOOP("App::Property", "Feed rate for lead-in moves"),
@@ -274,6 +284,7 @@ class ToolController:
                 "Feed",
                 QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
             )
+            obj.setExpression("RampFeed", "HorizFeed")
             _migrateRampDressups(obj)
             needsRecompute = True
 
@@ -296,6 +307,17 @@ class ToolController:
             )
             obj.setExpression("LeadOutFeed", "HorizFeed")
             needsRecompute = True
+
+        if not hasattr(obj, "NoEngagementFeed"):
+            obj.addProperty(
+                "App::PropertySpeed",
+                "NoEngagementFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Feed rate used when the tool is not engaged in material, but is also not retracted",
+                ),
+            )
 
         if needsRecompute:
             obj.recompute()
@@ -331,6 +353,10 @@ class ToolController:
                     )
                 if template.get(ToolControllerTemplate.RampFeed):
                     obj.RampFeed = template.get(ToolControllerTemplate.RampFeed, obj.RampFeed)
+                if template.get(ToolControllerTemplate.NoEngagementFeed):
+                    obj.NoEngagementFeed = template.get(
+                        ToolControllerTemplate.NoEngagementFeed, obj.NoEngagementFeed
+                    )
                 if template.get(ToolControllerTemplate.VertRapid):
                     obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
                 if template.get(ToolControllerTemplate.HorizRapid):
@@ -388,6 +414,7 @@ class ToolController:
         attrs[ToolControllerTemplate.LeadInFeed] = "%s" % (obj.LeadInFeed)
         attrs[ToolControllerTemplate.LeadOutFeed] = "%s" % (obj.LeadOutFeed)
         attrs[ToolControllerTemplate.RampFeed] = "%s" % (obj.RampFeed)
+        attrs[ToolControllerTemplate.NoEngagementFeed] = "%s" % (obj.NoEngagementFeed)
         attrs[ToolControllerTemplate.VertRapid] = "%s" % (obj.VertRapid)
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
@@ -482,8 +509,11 @@ def copyTC(tc, job):
         try:
             if prop not in ["Label", "Label2"]:
                 setattr(newtc, prop, getattr(tc, prop))
-        except RuntimeError:
-            # Ignore errors for read-only properties
+        except (RuntimeError, AttributeError):
+            # RuntimeError: read-only property.
+            # AttributeError: prop is a dynamically-added property (e.g. the
+            # Feeds & Speeds wizard's FeedSpeedProvenance/OpTypeHint) that
+            # exists on tc but was never added to the freshly-created newtc.
             pass
     for attr, expr in tc.ExpressionEngine:
         newtc.setExpression(attr, expr)

@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 from PySide.QtCore import QProcess, QProcessEnvironment
 import os
 import re
+import numpy as np
 import shutil
 
 import FreeCAD
@@ -48,15 +49,15 @@ class ElmerTools(ObjectTools):
         super().__init__(obj)
         self.model_file = ""
         self._result_format = ""
+        self.frames_info = writer.FRAMES_INFO
+        self.frames_values_file = ""
 
     def prepare(self):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
         w.write_solver_input()
-
-        mesh = w.getSingleMember("Fem::FemMeshObject")
-        if not mesh.FemMesh.Groups:
-            raise ValueError(f"Mesh object '{mesh.Label}' has no groups, please remesh\n")
-
+        self.frames_info = w.frames_info
+        self.frames_values_file = w.frames_values_file
+        mesh = w.getMesh()
         mesh_file = os.path.join(self.obj.WorkingDirectory, "mesh.unv")
         mesh.FemMesh.write(mesh_file)
 
@@ -73,7 +74,7 @@ class ElmerTools(ObjectTools):
             # MPI parallel computing version
             grid_args.extend(["-partdual", "-metiskway", str(num_proc)])
             p.start(grid_bin, grid_args)
-            p.waitForFinished()
+            p.waitForFinished(-1)
 
         self.model_file = os.path.join(self.obj.WorkingDirectory, writer._SIF_NAME)
         handled = w.getHandledConstraints()
@@ -93,10 +94,10 @@ class ElmerTools(ObjectTools):
 
         if num_proc > 1:
             # MPI parallel computing version
-            mpi = shutil.which("mpiexec")
+            mpi_bin = settings.get_binary("MPIElmer")
             self._result_format = ".pvtu"
             command_list = ["-n", str(num_proc), elmer_bin]
-            self.process.start(mpi, command_list)
+            self.process.start(mpi_bin, command_list)
         else:
             self._result_format = ".vtu"
             command_list = []
@@ -112,11 +113,16 @@ class ElmerTools(ObjectTools):
         self._load_dat_results()
 
     def _clear_results(self):
-        dir_content = os.listdir(self.obj.WorkingDirectory)
-        for f in dir_content:
+        dat_dir = os.path.join(self.obj.WorkingDirectory, writer.SCALARS_DIRECTORY)
+        shutil.rmtree(dat_dir, ignore_errors=True)
+        res_dir = os.path.join(self.obj.WorkingDirectory, writer.RESULT_DIRECTORY)
+        shutil.rmtree(res_dir, ignore_errors=True)
+
+        # try to remove posible .dat files in working directory
+        for f in os.listdir(self.obj.WorkingDirectory):
             path = os.path.join(self.obj.WorkingDirectory, f)
             base, ext = os.path.splitext(path)
-            if ext in [".vtu", ".vtp", ".pvtu", ".pvd", ".dat"]:
+            if ext == ".dat":
                 os.remove(path)
 
     def _load_vtk_results(self):
@@ -137,14 +143,11 @@ class ElmerTools(ObjectTools):
             self.obj.Results = tmp
             create = True
 
-        files = os.listdir(self.obj.WorkingDirectory)
-        for f in files:
-            base, ext = os.path.splitext(f)
-            if ext == self._result_format:
-                res = os.path.join(self.obj.WorkingDirectory, f)
-                pipeline.read(res)
-                break
-
+        try:
+            self._collect_multiframe(pipeline)
+        except Exception:
+            # do nothing
+            pass
         if create:
             # default display mode
             pipeline.ViewObject.DisplayMode = "Surface"
@@ -154,6 +157,51 @@ class ElmerTools(ObjectTools):
                 # beware of possible suffix Im or Re
                 if f.lower().startswith(self._get_default_field()):
                     pipeline.ViewObject.Field = f
+                    break
+
+    def _collect_multiframe(self, pipeline):
+        mode, unit, descr = self.frames_info
+        dat_dir = os.path.join(self.obj.WorkingDirectory, writer.SCALARS_DIRECTORY)
+        res_dir = os.path.join(self.obj.WorkingDirectory, writer.RESULT_DIRECTORY)
+        try:
+            files = os.listdir(res_dir)
+        except FileNotFoundError:
+            return None
+
+        # in transient mode, .pvd file is generated
+        if mode is not None:
+            res_list = []
+            for f in files:
+                base, ext = os.path.splitext(f)
+                if ext == self._result_format:
+                    res_list.append(f)
+            if not res_list:
+                return None
+
+            # sort files by numbering
+            res_list = sorted(res_list)
+            res_list = [os.path.join(res_dir, i) for i in res_list]
+            dat_file = os.path.join(dat_dir, self.frames_values_file)
+            # manually editing of the .sif file could break the collection
+            # try some strategy to allways collect results
+            frames = []
+            try:
+                # get frames values. Reshape to allways get a list
+                frames = np.loadtxt(dat_file).reshape(-1).tolist()
+                pipeline.read(res_list, frames, unit, descr)
+            except Exception:
+                # there is an inconsistency. Modify multiframe info
+                frames = list(range(len(res_list)))
+                pipeline.read(res_list, frames, FreeCAD.Units.Unit(""), "")
+                FreeCAD.Console.PrintWarning("Multiframe information ignored\n")
+        else:
+            for f in files:
+                base, ext = os.path.splitext(f)
+                if ext == self._result_format:
+                    res = os.path.join(res_dir, f)
+                    pipeline.read(res)
+                    if self.obj.SimulationType == "Transient":
+                        pipeline.setTimeInfo(descr, unit)
                     break
 
     def _load_dat_results(self):
@@ -171,14 +219,38 @@ class ElmerTools(ObjectTools):
             tmp = self.obj.Results
             tmp.append(dat)
             self.obj.Results = tmp
+        try:
+            self._collect_dat(dat)
+        except Exception:
+            # do nothing
+            pass
 
+    def _collect_dat(self, dat):
+        dat_text = ""
+        dat_dir = os.path.join(self.obj.WorkingDirectory, writer.SCALARS_DIRECTORY)
+        files = []
+        if os.path.isdir(dat_dir):
+            files = os.listdir(dat_dir)
+        for f in files:
+            if f.endswith(".dat"):
+                # search for .names files
+                f_names = f + ".names"
+                if f_names in files:
+                    names_file = os.path.join(dat_dir, f_names)
+                    with open(names_file, "r") as file:
+                        dat_text += file.read() + "\n"
+                dat_file = os.path.join(dat_dir, f)
+                with open(dat_file, "r") as file:
+                    dat_text += file.read() + "\n\n"
+        # collect possible .dat from working directory
         files = os.listdir(self.obj.WorkingDirectory)
         for f in files:
             if f.endswith(".dat"):
                 dat_file = os.path.join(self.obj.WorkingDirectory, f)
+                dat_text += f + "\n\n"
                 with open(dat_file, "r") as file:
-                    dat.Text = file.read()
-                break
+                    dat_text += file.read() + "\n\n"
+        dat.Text = dat_text
 
     def _get_default_field(self):
         default = "None"

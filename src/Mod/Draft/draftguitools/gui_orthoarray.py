@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create orthogonal Array objects."""
+
 ## @package gui_orthoarray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create orthogonal Array objects.

@@ -32,7 +32,7 @@
       <item>
        <layout class="QFormLayout" name="formLayout_1">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="labelStyleIn">
           <property name="text">
            <string>Style</string>
           </property>
@@ -55,7 +55,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="labelRadiusIn">
           <property name="text">
            <string>Radius/length</string>
           </property>
@@ -65,7 +65,7 @@
          <widget class="Gui::QuantitySpinBox" name="dspRadiusIn"/>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_1">
+         <widget class="QLabel" name="labelAngleIn">
           <property name="text">
            <string>Angle</string>
           </property>
@@ -74,8 +74,18 @@
         <item row="2" column="1">
          <widget class="Gui::QuantitySpinBox" name="dspAngleIn"/>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelExtendIn">
+          <property name="text">
+           <string>Extend</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::QuantitySpinBox" name="dspExtendIn"/>
+        </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="labelOffsetIn">
           <property name="text">
            <string>Offset Entrance Location</string>
           </property>
@@ -108,7 +118,7 @@
       <item>
        <layout class="QFormLayout" name="formLayout_2">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_13">
+         <widget class="QLabel" name="labelStyleOut">
           <property name="text">
            <string>Style</string>
           </property>
@@ -131,7 +141,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_15">
+         <widget class="QLabel" name="labelRadiusOut">
           <property name="text">
            <string>Radius/length</string>
           </property>
@@ -141,7 +151,7 @@
          <widget class="Gui::QuantitySpinBox" name="dspRadiusOut"/>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="labelAngleOut">
           <property name="text">
            <string>Angle</string>
           </property>
@@ -150,8 +160,18 @@
         <item row="2" column="1">
          <widget class="Gui::QuantitySpinBox" name="dspAngleOut"/>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labelExtendOut">
+          <property name="text">
+           <string>Extend</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::QuantitySpinBox" name="dspExtendOut"/>
+        </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_17">
+         <widget class="QLabel" name="labelOffsetOut">
           <property name="text">
            <string>Offset Exit Location</string>
           </property>
@@ -191,14 +211,14 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="labelThreshold">
        <property name="text">
         <string>Retract Threshold</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="Gui::QuantitySpinBox" name="dspRetractThreshold">
+      <widget class="Gui::QuantitySpinBox" name="dspThreshold">
        <property name="unit" stdset="0">
         <string notr="true"/>
        </property>

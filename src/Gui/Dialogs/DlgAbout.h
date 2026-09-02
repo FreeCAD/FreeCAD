@@ -54,6 +54,7 @@ private:
 class GuiExport LicenseView: public Gui::MDIView
 {
     Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
     explicit LicenseView(QWidget* parent = nullptr);
@@ -90,7 +91,6 @@ protected:
     void showCollectionInformation();
     void showPrivacyPolicy();
     void showOrHideImage(const QRect& rect);
-    void addModuleInfo(QTextStream& inout_str, const QString& modPath, bool& inout_first);
 
 protected:
     QPixmap aboutImage() const;
