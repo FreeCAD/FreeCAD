@@ -39,8 +39,6 @@
 #include <Mod/Part/App/Tools.h>
 
 
-FC_LOG_LEVEL_INIT("PartDesign", true, true)
-
 using namespace PartDesign;
 
 namespace PartDesign
