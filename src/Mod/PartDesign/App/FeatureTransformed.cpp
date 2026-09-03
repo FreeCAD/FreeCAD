@@ -35,6 +35,7 @@
 #include <algorithm>
 #include <array>
 #include <unordered_map>
+#include <string>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -304,7 +305,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
                     continue;
                 }
 
-                shape = shape.makeElementTransform(trsf);
+                shape.makeElementTransform(shape, trsf);
 
                 builder.Add(compound, shape.getShape());
             }
@@ -316,8 +317,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     switch (mode) {
         case Mode::FeatureResult: {
             std::vector<FeatureShape> shapes(originals.size());
-            App::DocumentObjectExecReturn* ret
-                = computeFeatureShapes(transformations, supportShape, originals, shapes);
+            App::DocumentObjectExecReturn* ret = computeFeatureShapes(supportShape, originals, shapes);
             if (ret) {
                 return ret;
             }
@@ -485,31 +485,44 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
         }
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
-            addShape.makeElementTransform(addShape, trsf);
+            addShape.makeElementTransform(
+                addShape,
+                trsf,
+                std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
+            );
         }
         if (!subShape.isNull()) {
-            subShape.makeElementTransform(subShape, trsf);
+            subShape.makeElementTransform(
+                subShape,
+                trsf,
+                std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
+            );
         }
         if (!addShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, addShape);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementFuse(shapes);
+            supportShape.makeElementFuse(
+                shapes,
+                std::format("Fuse_add_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
+            );
         }
         if (!subShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, subShape);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementCut(shapes);
+            supportShape.makeElementCut(
+                shapes,
+                std::format("Cut_sub_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
+            );
         }
     }
     return nullptr;
 }
 
 App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
-    const std::vector<gp_Trsf>& transformations,
     const Part::TopoShape& supportShape,
     const std::vector<DocumentObject*>& originals,
     std::vector<FeatureShape>& shapes
@@ -517,7 +530,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 {
 
     // compute the difference solid between each Feature and the shape of its previous Feature,
-    // * for additive operations, we take (toolShape - previousShape) and use it to Fuse later.
+    // * for additive operations, we take (toolShape-previousShape) and use it to Fuse later.
     // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
     // later.
     // Then apply them in order to the shape from the Feature before this FeatureTransformed.
@@ -572,13 +585,25 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
-            addShape.makeElementTransform(addShape, trsf);
+            addShape.makeElementTransform(
+                addShape,
+                trsf,
+                std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
+            );
             if (prevShape != NULL) {
-                addShape.makeElementCut({addShape, prevShape});
+                addShape.makeElementCut(
+                    {addShape, prevShape},
+                    std::format(
+                        "Cut_add_{}-{}",
+                        feature->getNameInDocument(),
+                        prevFeature->getNameInDocument()
+                    )
+                        .c_str()
+                );
             }
 
             if (!addShape.isNull()) {
-                shapes.push_back({addShape, Operation::Add});
+                shapes.push_back({feature->getNameInDocument(), addShape, Operation::Add});
             }
         }
 
@@ -588,7 +613,11 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 // skip this feature if it is subtractive with nothing to subtract it from
             }
 
-            subShape.makeElementTransform(subShape, trsf);
+            subShape.makeElementTransform(
+                subShape,
+                trsf,
+                std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
+            );
 
             // we need to unwrap the pocket toolShapes because
             // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
@@ -601,13 +630,27 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 subShapes.push_back(subShape);
             }
 
+            size_t i = 0;
             for (auto s : subShapes) {
-                s.makeElementCommon({s, prevShape});
+                s.makeElementCommon(
+                    {s, prevShape},
+                    std::format(
+                        "Common_sub_{}[{}]+{}",
+                        feature->getNameInDocument(),
+                        i,
+                        prevFeature->getNameInDocument()
+                    )
+                        .c_str()
+                );
 
                 if (!s.isNull()) {
                     // TODO: We could merge them back together ?
-                    shapes.push_back({s, Operation::Sub});
+                    shapes.push_back(
+                        {std::format("{}[{}]", feature->getNameInDocument(), i), s, Operation::Sub}
+                    );
                 }
+
+                i++;
             }
         }
 
@@ -626,7 +669,7 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 )
 {
     std::vector<FeatureShape> shapes;
-    auto* ret = computeFeatureShapes(transformations, supportShape, originals, shapes);
+    auto* ret = computeFeatureShapes(supportShape, originals, shapes);
 
     if (ret) {
         return ret;
@@ -642,11 +685,17 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
         switch (element.operation) {
             case Operation::Add:
-                supportShape.makeElementFuse(transformedShapes);
+                supportShape.makeElementFuse(
+                    transformedShapes,
+                    std::format("Fuse_add_+{}", element.source).c_str()
+                );
                 break;
 
             case Operation::Sub:
-                supportShape.makeElementCut(transformedShapes);
+                supportShape.makeElementCut(
+                    transformedShapes,
+                    std::format("Cut_sub_-{}", element.source).c_str()
+                );
                 break;
 
             default:
@@ -671,7 +720,15 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
     if (Base::Sequencer().wasCanceled()) {
         return new App::DocumentObjectExecReturn("User aborted");
     }
-    supportShape.makeElementFuse(shapes);
+    supportShape.makeElementFuse(
+        shapes,
+        std::format(
+            "Fuse_add_-{}",
+            this->getFeatureBody() == nullptr ? "<no body>"
+                                              : this->getFeatureBody()->getNameInDocument()
+        )
+            .c_str()
+    );
     return nullptr;
 }
 

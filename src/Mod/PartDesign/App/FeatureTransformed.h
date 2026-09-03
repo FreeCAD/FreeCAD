@@ -127,6 +127,7 @@ private:
     };
     struct FeatureShape
     {
+        std::string source;
         Part::TopoShape shape;
         Operation operation;
     };
@@ -148,7 +149,6 @@ private:
     );
 
     App::DocumentObjectExecReturn* computeFeatureShapes(
-        const std::vector<gp_Trsf>& transformations,
         const Part::TopoShape& supportShape,
         const std::vector<DocumentObject*>& originals,
         std::vector<FeatureShape>& shapes
