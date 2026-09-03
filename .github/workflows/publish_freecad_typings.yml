@@ -34,12 +34,10 @@ permissions:
   contents: read
 
 jobs:
-  publish:
-    name: Build and publish to PyPI
+  build:
+    name: Build package
     runs-on: ubuntu-latest
-    environment: pypi
     permissions:
-      id-token: write
       contents: read
 
     steps:
@@ -79,7 +77,35 @@ jobs:
         run: uv build
         working-directory: src/Tools/typing/generated
 
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: src/Tools/typing/generated/dist
+          retention-days: 1
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
         with:
-          packages-dir: src/Tools/typing/generated/dist
+          packages-dir: dist
