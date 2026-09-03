@@ -337,6 +337,7 @@ void SplashScreen::setShowMessages(bool on)
 
 QPixmap SplashScreen::splashImage()
 {
+    constexpr std::string_view DEV = "dev";
     // search in the UserAppData dir as very first
     QPixmap splash_image;
     bool usingDefaultSplash = false;
@@ -377,11 +378,11 @@ QPixmap SplashScreen::splashImage()
     );
     if (tc != App::Application::Config().end() && wc != App::Application::Config().end()) {
         QString title = qApp->applicationName();
-        QString major = QString::fromStdString(App::Application::Config()["BuildVersionMajor"]);
-        QString minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
-        QString point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
-        QString suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
-        QString version = QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix);
+        const std::string major = App::Application::Config()["BuildVersionMajor"];
+        const std::string minor = App::Application::Config()["BuildVersionMinor"];
+        const std::string point = App::Application::Config()["BuildVersionPoint"];
+        const std::string suffix = App::Application::Config()["BuildVersionSuffix"];
+        std::string version = fmt::format("{}.{}.{}{}", major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string, std::string>::const_iterator te = App::Application::Config().find(
@@ -400,7 +401,7 @@ QPixmap SplashScreen::splashImage()
             title = QString::fromStdString(te->second);
         }
         if (tv != App::Application::Config().end()) {
-            version = QString::fromStdString(tv->second);
+            version = tv->second;
         }
         if (tp != App::Application::Config().end()) {
             position = QString::fromStdString(tp->second);
@@ -408,6 +409,7 @@ QPixmap SplashScreen::splashImage()
         if (tf != App::Application::Config().end()) {
             fontFamily = QString::fromStdString(tf->second);
         }
+        const QString versionText = QString::fromStdString(version);
 
         QPainter painter;
         painter.begin(&splash_image);
@@ -435,7 +437,7 @@ QPixmap SplashScreen::splashImage()
             const QString versionLabel = QStringLiteral("version");
             const QFontMetricsF numberMetrics(numberFont);
             const QFontMetricsF labelMetrics(labelFont);
-            const QRectF numberBounds = numberMetrics.boundingRect(version);
+            const QRectF numberBounds = numberMetrics.boundingRect(versionText);
             const QRectF labelBounds = labelMetrics.boundingRect(versionLabel);
             // Match the version line to the wordmark geometry in freecadsplash.svg.
             constexpr qreal versionRight = 418;
@@ -443,7 +445,7 @@ QPixmap SplashScreen::splashImage()
             constexpr qreal versionSpacing = 8.0;
             const qreal numberPosition = versionRight - numberBounds.right();
             painter.setFont(numberFont);
-            painter.drawText(QPointF(numberPosition, versionBaseline), version);
+            painter.drawText(QPointF(numberPosition, versionBaseline), versionText);
             painter.setFont(labelFont);
             painter.drawText(
                 QPointF(
@@ -453,7 +455,7 @@ QPixmap SplashScreen::splashImage()
                 versionLabel
             );
 
-            if (suffix == QStringLiteral("dev") && warningColor.isValid()) {
+            if (suffix == DEV && warningColor.isValid()) {
                 numberFont.setPixelSize(10);
                 numberFont.setHintingPreference(QFont::PreferVerticalHinting);
                 painter.setFont(numberFont);
@@ -486,7 +488,7 @@ QPixmap SplashScreen::splashImage()
         QFont fontVer = painter.font();
         fontVer.setPointSizeF(11.0);
         QFontMetrics metricVer(fontVer);
-        int v = QtTools::horizontalAdvance(metricVer, version);
+        int v = QtTools::horizontalAdvance(metricVer, versionText);
 
         int x = -1, y = -1;
         QRegularExpression rx(QLatin1String("(\\d+).(\\d+)"));
@@ -508,8 +510,8 @@ QPixmap SplashScreen::splashImage()
                 painter.drawText(x, y, title);
             }
             painter.setFont(fontVer);
-            painter.drawText(x + (l + 235), y - 7, version);
-            if (suffix == QStringLiteral("dev") && warningColor.isValid()) {
+            painter.drawText(x + (l + 235), y - 7, versionText);
+            if (suffix == DEV && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
                 fontVer.setHintingPreference(QFont::PreferVerticalHinting);
                 painter.setFont(fontVer);
