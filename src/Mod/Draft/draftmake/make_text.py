@@ -152,9 +152,9 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
     removed_in="28.3",
     replacement="Draft.make_text()",
 )
-def makeText(*args, **kwarg):
+def makeText(stringlist, point=App.Vector(0, 0, 0), screen=False):
     """DEPRECATED. Use 'make_text'."""
-    return make_text(*args, **kwarg)
+    return make_text(stringlist, point, screen)
 
 
 def convert_draft_texts(textslist=None):

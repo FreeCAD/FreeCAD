@@ -158,9 +158,9 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     removed_in="28.3",
     replacement="Draft.make_point_array()",
 )
-def makePointArray(*args, **kwarg):
+def makePointArray(base, ptlst):
     """DEPRECATED. Use 'make_point_array'."""
-    return make_point_array(*args, **kwarg)
+    return make_point_array(base, ptlst)
 
 
 ## @}

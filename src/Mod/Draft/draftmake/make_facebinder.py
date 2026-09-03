@@ -70,7 +70,7 @@ def make_facebinder(selectionset, name="Facebinder"):
 @deprecated(
     deprecated_in="26.3",
     removed_in="28.3",
-    replacement="Draft.make_bezcurve()",
+    replacement="Draft.make_facebinder()",
 )
 def makeFacebinder(*args, **kwarg):
     """DEPRECATED. Use 'make_facebinder'."""

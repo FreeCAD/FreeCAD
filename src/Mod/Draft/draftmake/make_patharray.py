@@ -315,9 +315,19 @@ def make_path_array(
     removed_in="28.3",
     replacement="Draft.make_path_array()",
 )
-def makePathArray(*args, **kwarg):
+def makePathArray(
+    baseobject, pathobject, count, xlate=None, align=False, pathobjsubs=[], use_link=False
+):
     """DEPRECATED. Use 'make_path_array'."""
-    return make_path_array(*args, **kwarg)
+    return make_path_array(
+        baseobject,
+        pathobject,
+        count=count,
+        extra=xlate,
+        subelements=pathobjsubs,
+        align=align,
+        use_link=use_link,
+    )
 
 
 def make_path_twisted_array(base_object, path_object, count=15, rot_factor=0.25, use_link=True):
