@@ -19,7 +19,7 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -33,6 +33,13 @@
        <number>0</number>
       </property>
       <item>
+       <widget class="QLabel" name="transformationModeLabel">
+        <property name="text">
+         <string>Transformation Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QComboBox" name="transformationMode">
         <item>
          <property name="text">
@@ -41,7 +48,7 @@
         </item>
         <item>
          <property name="text">
-          <string comment="Pattern the body's whole solid">Whole Body</string>
+          <string comment="Pattern the body's entire solid">Whole Body</string>
          </property>
         </item>
         <item>
@@ -52,6 +59,8 @@
        </widget>
       </item>
      </layout>
+     <zorder>transformationMode</zorder>
+     <zorder>transformationModeLabel</zorder>
     </widget>
    </item>
    <item>
