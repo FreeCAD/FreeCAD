@@ -1663,6 +1663,9 @@ public:
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName& name);
 
+    /// Recursively expands a compond into individual TopoShapes and stores them in `res`
+    static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res);
+
     Data::MappedName setElementComboName(
         const Data::IndexedName& element,
         const std::vector<Data::MappedName>& names,
