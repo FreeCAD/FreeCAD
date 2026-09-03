@@ -22,8 +22,9 @@
 # ***************************************************************************
 
 # Publish freecad-typings to PyPI via trusted publishing (OIDC).
-# Manual dispatch only. Fails if version.json carries a non-empty suffix
-# (dev, RC, etc.) — only stable releases are published.
+# Manual dispatch only. Stable releases (empty suffix) go to PyPI.
+# Pre-releases (dev, RC, etc.) go to TestPyPI with a run-number
+# suffix (e.g. 26.3.0.dev42) so each upload has a unique version.
 
 name: Publish freecad-typings
 
@@ -39,6 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      is_stable: ${{ steps.version.outputs.is_stable }}
+      version_override: ${{ steps.version.outputs.version_override }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -57,21 +61,27 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
-      - name: Verify stable version
+      - name: Determine release type
+        id: version
         run: |
           suffix=$(python3 -c "import json; print(json.load(open('version.json'))['version_suffix'])")
-          if [ -n "$suffix" ]; then
-            echo "::error::version_suffix is '${suffix}' — only stable releases (empty suffix) may be published."
-            exit 1
-          fi
           version=$(python3 -c "import json; d=json.load(open('version.json')); s='.'+d['version_suffix'] if d['version_suffix'] else ''; print(f\"{d['version_major']}.{d['version_minor']}.{d['version_patch']}{s}\")")
-          echo "Publishing version: ${version}"
+          if [ -n "$suffix" ]; then
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            echo "version_override=${version}.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+            echo "Pre-release (suffix='${suffix}') — will publish to TestPyPI as ${version}.${{ github.run_number }}."
+          else
+            echo "is_stable=true" >> "$GITHUB_OUTPUT"
+            echo "Stable release — will publish to PyPI."
+          fi
 
       - name: Generate stubs
         run: |
-          python3 src/Tools/typing/generate_stubs.py \
-            --root . \
-            --out-dir src/Tools/typing/generated
+          args="--root . --out-dir src/Tools/typing/generated"
+          if [ -n "${{ steps.version.outputs.version_override }}" ]; then
+            args="$args --version-override ${{ steps.version.outputs.version_override }}"
+          fi
+          python3 src/Tools/typing/generate_stubs.py $args
 
       - name: Build package
         run: uv build
@@ -87,6 +97,7 @@ jobs:
   publish:
     name: Publish to PyPI
     needs: build
+    if: needs.build.outputs.is_stable == 'true'
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -109,3 +120,31 @@ jobs:
         uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
         with:
           packages-dir: dist
+
+  publish_testpypi:
+    name: Publish to TestPyPI
+    needs: build
+    if: needs.build.outputs.is_stable == 'false'
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
+        with:
+          packages-dir: dist
+          repository-url: https://test.pypi.org/legacy/
