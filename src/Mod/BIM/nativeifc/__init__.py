@@ -36,11 +36,12 @@ def report_missing_ifcopenshell():
     if _ifcopenshell_state["reported_missing"]:
         return
 
-    FreeCAD.Console.PrintError(
-        translate(
-            "BIM",
-            "IfcOpenShell was not found on this system. IFC support is disabled",
-        )
-        + "\n"
+    status = ifc_backend.get_status()
+    message = translate(
+        "BIM",
+        "IfcOpenShell is unavailable or does not provide the APIs required by FreeCAD",
     )
+    if status.error:
+        message += f": {status.error}"
+    FreeCAD.Console.PrintError(message + "\n")
     _ifcopenshell_state["reported_missing"] = True
