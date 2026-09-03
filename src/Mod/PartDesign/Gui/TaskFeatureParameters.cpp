@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QComboBox>
+#include <QLabel>
 #include <QMessageBox>
 
 
@@ -34,6 +36,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ui_TaskPreviewParameters.h"
@@ -122,6 +125,37 @@ TaskFeatureParameters::TaskFeatureParameters(
 TaskFeatureParameters::~TaskFeatureParameters()
 {
     hideDraggerHints();
+}
+
+void TaskFeatureParameters::setupOperation(QLabel* label, QComboBox* combo)
+{
+    auto feature = getObject<PartDesign::FeatureAddSub>();
+    hasOperation = feature
+        && feature->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
+    label->setVisible(hasOperation);
+    combo->setVisible(hasOperation);
+    if (!hasOperation) {
+        return;
+    }
+
+    combo->setCurrentIndex(feature->Operation.getValue());
+    combo->setDisabled(feature->Operation.isReadOnly());
+    connect(combo, qOverload<int>(&QComboBox::activated), this, [this](int index) {
+        if (auto feature = getObject<PartDesign::FeatureAddSub>()) {
+            feature->Operation.setValue(index);
+            recomputeFeature();
+        }
+    });
+}
+
+void TaskFeatureParameters::apply()
+{
+    if (hasOperation) {
+        auto feature = getObject<PartDesign::FeatureAddSub>();
+        if (!feature->Operation.isReadOnly()) {
+            FCMD_OBJ_CMD(feature, "Operation = \"" << feature->Operation.getValueAsString() << "\"");
+        }
+    }
 }
 
 void TaskFeatureParameters::showDraggerHints()

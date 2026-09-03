@@ -36,6 +36,8 @@
 #include "TaskDatumParameters.h"
 #include "TaskFeatureParameters.h"
 
+class QGridLayout;
+
 namespace App
 {
 class Property;
@@ -107,7 +109,11 @@ public Q_SLOTS:
 
     void onPlacementChanged();
 
+protected:
+    void changeEvent(QEvent* e) override;
+
 private:
+    void setupOperation(QGridLayout* grid);
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 

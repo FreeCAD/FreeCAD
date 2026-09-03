@@ -32,6 +32,9 @@
 
 #include "ViewProvider.h"
 
+class QComboBox;
+class QLabel;
+
 namespace PartDesignGui
 {
 
@@ -76,8 +79,7 @@ public:
     virtual void saveHistory()
     {}
     /// apply changes made in the parameters input to the model via commands
-    virtual void apply()
-    {}
+    virtual void apply();
 
     void recomputeFeature();
 
@@ -87,6 +89,7 @@ public:
     }
 
 protected:
+    void setupOperation(QLabel* label, QComboBox* combo);
     void showDraggerHints();
     void hideDraggerHints();
 
@@ -144,6 +147,7 @@ protected:
 
 private:
     bool blockUpdate;
+    bool hasOperation = false;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
