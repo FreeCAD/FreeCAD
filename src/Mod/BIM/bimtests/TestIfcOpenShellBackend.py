@@ -25,6 +25,7 @@ def _modules(*, serialized=True, iterator=True, version="0.8.5"):
     root.ifcopenshell_wrapper = SimpleNamespace(**wrapper_values)
 
     result = {name: ModuleType(name) for name in backend.REQUIRED_MODULES}
+    result["ifcopenshell.guid"] = ModuleType("ifcopenshell.guid")
     result["ifcopenshell"] = root
     result["ifcopenshell.api"].run = lambda *args, **kwargs: None
     result["ifcopenshell.api.aggregate"].assign_object = lambda *args, **kwargs: None
@@ -52,6 +53,7 @@ def _modules(*, serialized=True, iterator=True, version="0.8.5"):
     result["ifcopenshell.geom"].settings = lambda *args, **kwargs: None
     result["ifcopenshell.geom"].create_shape = lambda *args, **kwargs: None
     result["ifcopenshell.entity_instance"].entity_instance = EntityInstance
+    result["ifcopenshell.guid"].new = lambda: "0" * 22
     if iterator:
         result["ifcopenshell.geom"].iterator = lambda *args, **kwargs: None
     return result
@@ -137,6 +139,27 @@ class TestIfcOpenShellBackend(unittest.TestCase):
 
         self.assertFalse(status.available)
         self.assertIn("ifcopenshell.open", status.error)
+
+    def test_guid_does_not_require_file_or_geometry_apis(self):
+        modules = _modules()
+        del modules["ifcopenshell"].open
+        guid_modules = {name: modules[name] for name in backend.GUID_MODULES}
+        with patch.object(backend.importlib, "import_module", side_effect=guid_modules.__getitem__):
+            status = backend.get_status(capability=backend.GUID)
+            guid = backend.new_guid()
+
+        self.assertTrue(status.available)
+        self.assertEqual(guid, "0" * 22)
+
+    def test_guid_requires_generator_api(self):
+        modules = _modules()
+        del modules["ifcopenshell.guid"].new
+        guid_modules = {name: modules[name] for name in backend.GUID_MODULES}
+        with patch.object(backend.importlib, "import_module", side_effect=guid_modules.__getitem__):
+            status = backend.get_status(capability=backend.GUID)
+
+        self.assertFalse(status.available)
+        self.assertIn("ifcopenshell.guid.new", status.error)
 
     def test_partial_installation_is_unavailable(self):
         modules = _modules()

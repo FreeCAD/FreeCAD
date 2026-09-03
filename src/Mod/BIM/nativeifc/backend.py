@@ -18,6 +18,7 @@ IMPORT_MODULES = (
 
 EXPLORER_MODULES = (*IMPORT_MODULES, "ifcopenshell.entity_instance")
 READ_MODULES = ("ifcopenshell",)
+GUID_MODULES = ("ifcopenshell", "ifcopenshell.guid")
 
 REQUIRED_MODULES = (
     "ifcopenshell",
@@ -41,11 +42,12 @@ REQUIRED_MODULES = (
 )
 
 READ = "read"
+GUID = "guid"
 IMPORT = "import"
 MULTICORE_IMPORT = "multicore_import"
 EXPLORER = "explorer"
 EXPORT = "export"
-_CAPABILITIES = (READ, IMPORT, MULTICORE_IMPORT, EXPLORER, EXPORT)
+_CAPABILITIES = (READ, GUID, IMPORT, MULTICORE_IMPORT, EXPLORER, EXPORT)
 
 
 class IfcOpenShellUnavailable(ImportError):
@@ -84,6 +86,8 @@ def _load(capability: str) -> tuple[dict[str, ModuleType], BackendStatus]:
         required_modules = EXPLORER_MODULES
     elif capability == READ:
         required_modules = READ_MODULES
+    elif capability == GUID:
+        required_modules = GUID_MODULES
     else:
         required_modules = IMPORT_MODULES
     modules = {name: importlib.import_module(name) for name in required_modules}
@@ -96,9 +100,13 @@ def _load(capability: str) -> tuple[dict[str, ModuleType], BackendStatus]:
         or hasattr(legacy_settings, "USE_BREP_DATA")
     )
 
-    required_callables = {
-        "ifcopenshell.open": getattr(module, "open", None),
-    }
+    required_callables = {}
+    if capability == GUID:
+        required_callables["ifcopenshell.guid.new"] = getattr(
+            modules["ifcopenshell.guid"], "new", None
+        )
+    else:
+        required_callables["ifcopenshell.open"] = getattr(module, "open", None)
     if capability in (IMPORT, MULTICORE_IMPORT, EXPLORER):
         required_callables.update(
             {
@@ -227,6 +235,13 @@ def get_module(name: str, capability: str = EXPORT) -> ModuleType:
         return _modules[capability][name]
     except KeyError as exc:
         raise ValueError(f"module {name!r} is not part of the {capability!r} capability") from exc
+
+
+def new_guid() -> str:
+    """Return a compressed IFC globally unique identifier."""
+
+    guid = get_module("ifcopenshell.guid", capability=GUID)
+    return guid.new()
 
 
 def create_geometry_settings(

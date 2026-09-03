@@ -235,6 +235,8 @@ SET(bimtests_SRCS
     bimtests/TestBimSetup.py
     bimtests/TestBimIfcExplorer.py
     bimtests/TestBimClassification.py
+    bimtests/TestIfcStructuralExport.py
+    bimtests/TestIfcLegacyExport.py
     bimtests/TestArchAxis.py
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
