@@ -35,6 +35,7 @@
 #include <algorithm>
 #include <array>
 #include <unordered_map>
+#include <string>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -286,7 +287,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
                     continue;
                 }
 
-                shape = shape.makeElementTransform(trsf);
+                shape.makeElementTransform(shape, trsf);
 
                 builder.Add(compound, shape.getShape());
             }
@@ -296,12 +297,21 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
     };
 
     switch (mode) {
-        case Mode::FeatureResult:
-            // NOTE: this shows the same as Mode::Feature because to show a more accurate
-            // representation, we'd need to actually compute the boolean operations. Maybe a better
-            // idea would be to make each instance of the features a different color to show that
-            // they are actually independent ?
-        case Mode::Features:
+        case Mode::FeatureResult: {
+            std::vector<FeatureShape> shapes(originals.size());
+            App::DocumentObjectExecReturn* ret = computeFeatureShapes(supportShape, originals, shapes);
+            if (ret) {
+                return ret;
+            }
+            std::vector<TopoShape> compoundShapes(shapes.size());
+            for (auto s : shapes) {
+                compoundShapes.push_back(s.shape);
+            }
+            PreviewShape.setValue(TopoShape().makeCompound(compoundShapes));
+            return StdReturn;
+        }
+
+        case Mode::Features: {
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
 
@@ -457,33 +467,47 @@ App::DocumentObjectExecReturn* Transformed::executeFeatures(
         }
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
-            addShape = addShape.makeElementTransform(trsf);
+            addShape.makeElementTransform(
+                addShape,
+                trsf,
+                std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
+            );
         }
         if (!subShape.isNull()) {
-            subShape = subShape.makeElementTransform(trsf);
+            subShape.makeElementTransform(
+                subShape,
+                trsf,
+                std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
+            );
         }
         if (!addShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, addShape);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementFuse(shapes);
+            supportShape.makeElementFuse(
+                shapes,
+                std::format("Fuse_add_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
+            );
         }
         if (!subShape.isNull()) {
             auto shapes = getTransformedCompShape(transformations, supportShape, subShape);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementCut(shapes);
+            supportShape.makeElementCut(
+                shapes,
+                std::format("Cut_sub_{}-{}", feature->getNameInDocument(), shapes.size()).c_str()
+            );
         }
     }
     return nullptr;
 }
 
-App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
-    const std::vector<gp_Trsf>& transformations,
-    Part::TopoShape& supportShape,
-    const std::vector<DocumentObject*>& originals
+App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
+    const Part::TopoShape& supportShape,
+    const std::vector<DocumentObject*>& originals,
+    std::vector<FeatureShape>& shapes
 )
 {
     enum class Operation : std::uint8_t
@@ -498,7 +522,7 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
     };
 
     // compute the difference solid between each Feature and the shape of its previous Feature,
-    // * for additive operations, we take (toolShape - previousShape) and use it to Fuse later.
+    // * for additive operations, we take (toolShape-previousShape) and use it to Fuse later.
     // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
     // later. Then apply them in order to the shape from the Feature before this FeatureTransformed.
     std::vector<FeatureShape> shapes;
@@ -553,13 +577,25 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
-            addShape.makeElementTransform(addShape, trsf);
+            addShape.makeElementTransform(
+                addShape,
+                trsf,
+                std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
+            );
             if (prevShape != NULL) {
-                addShape.makeElementCut({addShape, prevShape});
+                addShape.makeElementCut(
+                    {addShape, prevShape},
+                    std::format(
+                        "Cut_add_{}-{}",
+                        feature->getNameInDocument(),
+                        prevFeature->getNameInDocument()
+                    )
+                        .c_str()
+                );
             }
 
             if (!addShape.isNull()) {
-                shapes.push_back({addShape, Operation::Add});
+                shapes.push_back({feature->getNameInDocument(), addShape, Operation::Add});
             }
         }
 
@@ -573,7 +609,11 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
                 // skip this feature if it is subtractive with nothing to subtract it from
             }
 
-            subShape.makeElementTransform(subShape, trsf);
+            subShape.makeElementTransform(
+                subShape,
+                trsf,
+                std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
+            );
 
             std::vector<Part::TopoShape> subShapes;
             if (subShape.shapeType() == TopAbs_COMPOUND) {
@@ -583,18 +623,49 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
                 subShapes.push_back(subShape);
             }
 
+            size_t i = 0;
             for (auto s : subShapes) {
-                s.makeElementCommon({s, prevShape});
+                s.makeElementCommon(
+                    {s, prevShape},
+                    std::format(
+                        "Common_sub_{}[{}]+{}",
+                        feature->getNameInDocument(),
+                        i,
+                        prevFeature->getNameInDocument()
+                    )
+                        .c_str()
+                );
 
                 if (!s.isNull()) {
-                    shapes.push_back({s, Operation::Sub});
+                    // TODO: We could merge them back together ?
+                    shapes.push_back(
+                        {std::format("{}[{}]", feature->getNameInDocument(), i), s, Operation::Sub}
+                    );
                 }
+
+                i++;
             }
         }
 
         if (Base::Sequencer().wasCanceled()) {
             return new App::DocumentObjectExecReturn("User aborted");
         }
+    }
+
+    return nullptr;
+}
+
+App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
+    const std::vector<gp_Trsf>& transformations,
+    Part::TopoShape& supportShape,
+    const std::vector<DocumentObject*>& originals
+)
+{
+    std::vector<FeatureShape> shapes;
+    auto* ret = computeFeatureShapes(supportShape, originals, shapes);
+
+    if (ret) {
+        return ret;
     }
 
     for (auto& element : shapes) {
@@ -606,11 +677,17 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
         switch (element.operation) {
             case Operation::Add:
-                supportShape.makeElementFuse(transformedShapes);
+                supportShape.makeElementFuse(
+                    transformedShapes,
+                    std::format("Fuse_add_+{}", element.source).c_str()
+                );
                 break;
 
             case Operation::Sub:
-                supportShape.makeElementCut(transformedShapes);
+                supportShape.makeElementCut(
+                    transformedShapes,
+                    std::format("Cut_sub_-{}", element.source).c_str()
+                );
                 break;
 
             default:
@@ -635,7 +712,15 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
     if (Base::Sequencer().wasCanceled()) {
         return new App::DocumentObjectExecReturn("User aborted");
     }
-    supportShape.makeElementFuse(shapes);
+    supportShape.makeElementFuse(
+        shapes,
+        std::format(
+            "Fuse_add_-{}",
+            this->getFeatureBody() == nullptr ? "<no body>"
+                                              : this->getFeatureBody()->getNameInDocument()
+        )
+            .c_str()
+    );
     return nullptr;
 }
 
