@@ -157,6 +157,16 @@ public:
     // restore the binary persistence data from a stream. Must have the format used by dumpToStream
     void restoreFromStream(std::istream& stream);
 
+    bool canBeCachedForDocument() const
+    {
+        return cachedForDocument;
+    }
+
+    void setCanBeCachedForDocument(bool canBeCached)
+    {
+        cachedForDocument = canBeCached;
+    }
+
 private:
     /** This method is used at the end of restoreFromStream()
      * after all data files have been read in.
@@ -165,6 +175,8 @@ private:
      */
     virtual void restoreFinished()
     {}
+
+    bool cachedForDocument = false;
 };
 
 }  // namespace Base

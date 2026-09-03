@@ -58,6 +58,7 @@
 
 using namespace App;
 using namespace XERCES_CPP_NAMESPACE;
+namespace fs = std::filesystem;
 
 namespace
 {
@@ -88,6 +89,7 @@ std::map<std::string, std::string> initMap()
                                                   {"Company", ""},
                                                   {"CreatedBy", ""},
                                                   {"CreationDate", ""},
+                                                  {"DocumentCacheDir", ""},
                                                   {"Label", ""},
                                                   {"LastModifiedBy", ""},
                                                   {"LastModifiedDate", ""},
@@ -168,6 +170,7 @@ private:
         metadata.company = propMap.at("Company");
         metadata.createdBy = propMap.at("CreatedBy");
         metadata.creationDate = propMap.at("CreationDate");
+        metadata.documentCacheDir = propMap.at("DocumentCacheDir");
         metadata.label = propMap.at("Label");
         metadata.lastModifiedBy = propMap.at("LastModifiedBy");
         metadata.lastModifiedDate = propMap.at("LastModifiedDate");
@@ -217,6 +220,7 @@ public:
         metadata.company = propMap.at("Company");
         metadata.createdBy = propMap.at("CreatedBy");
         metadata.creationDate = propMap.at("CreationDate");
+        metadata.documentCacheDir = propMap.at("DocumentCacheDir");
         metadata.label = propMap.at("Label");
         metadata.lastModifiedBy = propMap.at("LastModifiedBy");
         metadata.lastModifiedDate = propMap.at("LastModifiedDate");
@@ -232,22 +236,10 @@ public:
 
     FilterAction startElement(DOMElement* node) override
     {
-        std::array property = {chLatin_P,
-                               chLatin_r,
-                               chLatin_o,
-                               chLatin_p,
-                               chLatin_e,
-                               chLatin_r,
-                               chLatin_t,
-                               chLatin_y,
-                               chNull};
-        if (XMLString::equals(node->getNodeName(), property.data())) {
-            std::array name = {chLatin_n,
-                               chLatin_a,
-                               chLatin_m,
-                               chLatin_e,
-                               chNull};
-            if (DOMAttr* attr = node->getAttributeNode(name.data())) {
+        constexpr auto Property = XMLTools::toXMLCh("Property");
+        if (XMLString::equals(node->getNodeName(), Property.data())) {
+            constexpr auto Name = XMLTools::toXMLCh("name");
+            if (DOMAttr* attr = node->getAttributeNode(Name.data())) {
                 std::string value = StrX(attr->getNodeValue()).c_str();
                 auto it = propMap.find(value);
                 if (it != propMap.end()) {
@@ -259,14 +251,23 @@ public:
             }
         }
 
-        std::array string = {chLatin_S,
-                             chLatin_t,
-                             chLatin_r,
-                             chLatin_i,
-                             chLatin_n,
-                             chLatin_g,
-                             chNull};
-        if (XMLString::equals(node->getNodeName(), string.data())) {
+        // Two metedata properties have type Uuid and Path instead of String.
+        constexpr auto Uuid = XMLTools::toXMLCh("Uuid");
+        constexpr auto Path = XMLTools::toXMLCh("Path");
+        const auto addProperty = [&](const char* property, auto nodeName) {
+            if (XMLString::equals(node->getNodeName(), nodeName.data())) {
+                if (!currentProperty.empty() && currentProperty == property) {
+                    propMap[currentProperty] = readValue(node->getParentNode());
+                    currentProperty.clear();
+                }
+            }
+        };
+        addProperty("Uid", Uuid);
+        addProperty("DocumentCacheDir", Path);
+
+        // other properties have type String.
+        constexpr auto String = XMLTools::toXMLCh("String");
+        if (XMLString::equals(node->getNodeName(), String.data())) {
             if (!currentProperty.empty()) {
                 propMap[currentProperty] = readValue(node->getParentNode());
                 currentProperty.clear();
@@ -274,14 +275,7 @@ public:
         }
 
         // This is the node after the 'Properties' element of the document
-        std::array Objects = {chLatin_O,
-                              chLatin_b,
-                              chLatin_j,
-                              chLatin_e,
-                              chLatin_c,
-                              chLatin_t,
-                              chLatin_s,
-                              chNull};
+        constexpr auto Objects = XMLTools::toXMLCh("Objects");
         if (XMLString::equals(node->getNodeName(), Objects.data())) {
             ThrowXML(ParseException,XMLExcepts::Parser_Parse1);
         }
@@ -625,11 +619,40 @@ bool ProjectFile::containsFile(const std::string& name) const
     return entry != nullptr;
 }
 
+bool ProjectFile::containsFileInDocumentCache(const std::string& name) const
+{
+    ProjectFile::Metadata metadata = getMetadata();
+    if (metadata.documentCacheDir.empty()) {
+        return false;
+    }
+
+    fs::path pathInCache = fs::path(metadata.documentCacheDir) / name;
+    if (pathInCache.is_relative()) {
+        fs::path filePath = fs::path(stdFile);
+        fs::path dirFile = filePath.parent_path();
+        pathInCache = dirFile / pathInCache;
+    }
+
+    Base::FileInfo fi(pathInCache.string());
+    return fi.exists();
+}
+
 uint32_t ProjectFile::sizeOfFile(const std::string& name) const
 {
-    zipios::ZipFile project(stdFile);
-    auto entry = project.getEntry(name);
-    return entry == nullptr ? 0 : entry->getSize();
+    if (containsFile(name)) {
+        zipios::ZipFile project(stdFile);
+        auto entry = project.getEntry(name);
+        return entry == nullptr ? 0 : entry->getSize();
+    }
+
+    if (containsFileInDocumentCache(name)) {
+        ProjectFile::Metadata metadata = getMetadata();
+        std::string path = metadata.documentCacheDir + "/" + name;
+        Base::FileInfo fi(path);
+        return fi.size();
+    }
+
+    return 0;
 }
 
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
@@ -725,6 +748,18 @@ void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str
     std::unique_ptr<std::istream> istr(project.getInputStream(name));
     if (istr) {
         *istr >> str.rdbuf();
+    }
+}
+
+void ProjectFile::readInputFileFromDocumentCache(const std::string& name, std::ostream& str) const
+{
+    ProjectFile::Metadata metadata = getMetadata();
+    std::string path = metadata.documentCacheDir + "/" + name;
+    Base::FileInfo fi(path);
+    if (fi.exists()) {
+        Base::ifstream file(fi, std::ios::in | std::ios::binary);
+        file >> str.rdbuf();
+        file.close();
     }
 }
 

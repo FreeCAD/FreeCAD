@@ -1198,6 +1198,7 @@ private:
 
     fastsignals::scoped_connection constraintsRenamedConn;
     fastsignals::scoped_connection constraintsRemovedConn;
+    fastsignals::scoped_connection startSaveDocumentConnection;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 

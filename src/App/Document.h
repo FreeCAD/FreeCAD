@@ -185,6 +185,8 @@ public:
     PropertyMap Material;
     /// Read-only name of the temp dir created when the document is opened.
     PropertyString TransientDir;
+    /// Name of the cache dir for this document
+    PropertyPath DocumentCacheDir;
     /// Tip object of the document (if any).
     PropertyLink Tip;
     /// Tip object name of the document (if any).
@@ -1254,8 +1256,9 @@ public:
      * Called by objects during restore to ask for recompute.
      *
      * @param[in] obj The object to mark for recompute.
+     * @param[in] forMigration Whether this is for migration purposes or not.
      */
-    void addRecomputeObject(DocumentObject* obj);
+    void addRecomputeObject(DocumentObject* obj, bool forMigration = true);
 
     /// Get the old label of an object before it was changed.
     const std::string& getOldLabel() const
@@ -1471,6 +1474,8 @@ private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
     [[nodiscard]] Base::ScopeGuard setDefiningTransaction();
+
+    std::string resolveDocumentCacheDir(std::string_view filename) const;
 
 private:
     // # Data Member of the document

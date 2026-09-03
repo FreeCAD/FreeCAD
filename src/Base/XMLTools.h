@@ -46,6 +46,19 @@ class BaseExport XMLTools
 public:
     static std::string toStdString(const XMLCh* const toTranscode);
     static std::basic_string<XMLCh> toXMLString(const char* const fromTranscode);
+
+    // NOLINTBEGIN(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays)
+    template<std::size_t N>
+    static constexpr std::array<XMLCh, N> toXMLCh(const char (&str)[N])
+    {
+
+        std::array<XMLCh, N> result {};
+        for (std::size_t i = 0; i < N; ++i) {
+            result[i] = static_cast<XMLCh>(str[i]);
+        }
+        return result;
+    }
+    // NOLINTEND(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays)
     static std::string escapeXml(const std::string& input);
     static void initialize();
     static void terminate();

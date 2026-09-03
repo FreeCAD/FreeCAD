@@ -61,6 +61,9 @@ public:
 
 protected:
     Type addSubType {Additive};
+
+private:
+    fastsignals::scoped_connection startSaveDocumentConnection;
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

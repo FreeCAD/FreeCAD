@@ -127,6 +127,8 @@ SketchObject::SketchObject() : geoLastId(0)
                       (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
                       "");
 
+    CanComputeShape.setValue(true);
+
     Geometry.setOrderRelevant(true);
 
     allowOtherBody = true;
@@ -157,6 +159,11 @@ SketchObject::SketchObject() : geoLastId(0)
     constraintsRenamedConn = Constraints.signalConstraintsRenamed.connect(
         std::bind(&Sketcher::SketchObject::constraintsRenamed, this, sp::_1));
     //NOLINTEND
+
+    startSaveDocumentConnection = App::GetApplication().signalStartSaveDocument.connect(
+            [this](const App::Document& /*doc*/, const std::string& /*filename*/) {
+                InternalShape.setCanBeCachedForDocument(CanComputeShape.getValue());
+            });
 
     analyser = new SketchAnalysis(this);
 

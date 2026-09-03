@@ -97,9 +97,26 @@ Feature::Feature()
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
     auto mat = Materials::MaterialManager::defaultMaterial();
     ADD_PROPERTY(ShapeMaterial, (*mat));
+    ADD_PROPERTY_TYPE(
+        CanComputeShape,
+        (false),
+        nullptr,
+        App::PropertyType::Prop_Hidden,
+        "Whether the shape can be computed by this document object"
+    );
+
+    startSaveDocumentConnection = App::GetApplication().signalStartSaveDocument.connect(
+        [this](const App::Document& /*doc*/, const std::string& /*filename*/) {
+            Shape.setCanBeCachedForDocument(CanComputeShape.getValue());
+        }
+    );
 }
 
-Feature::~Feature() = default;
+Feature::~Feature()
+{
+    startSaveDocumentConnection.disconnect();
+}
+
 
 short Feature::mustExecute() const
 {
@@ -1640,8 +1657,13 @@ Feature* Feature::create(const TopoShape& shape, const char* name, App::Document
 
 void Feature::onDocumentRestored()
 {
-    // expandShapeContents();
-    App::GeoFeature::onDocumentRestored();
+    if (CanComputeShape.getValue() && Shape.getShape().isNull()) {
+        // A normal touch does not work because that is cleared in the
+        // recompute phase.
+        App::Document* doc = getDocument();
+        doc->addRecomputeObject(this, /*forMigration = */ false);
+    }
+    GeoFeature::onDocumentRestored();
 }
 
 ShapeHistory Feature::buildHistory(
