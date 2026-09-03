@@ -120,6 +120,17 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
+    enum class Operation : std::uint8_t
+    {
+        Add,
+        Sub
+    };
+    struct FeatureShape
+    {
+        Part::TopoShape shape;
+        Operation operation;
+    };
+
     App::DocumentObjectExecReturn* executeFeatures(
         const std::vector<gp_Trsf>& transformations,
         Part::TopoShape& supportShape,
@@ -134,6 +145,13 @@ private:
         const std::vector<gp_Trsf>& transformations,
         Part::TopoShape& supportShape,
         const std::vector<DocumentObject*>& originals
+    );
+
+    App::DocumentObjectExecReturn* computeFeatureShapes(
+        const std::vector<gp_Trsf>& transformations,
+        const Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals,
+        std::vector<FeatureShape>& shapes
     );
 
     std::vector<TopoShape> getTransformedCompShape(
