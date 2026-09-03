@@ -1025,20 +1025,23 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         box.addButton(&checkBox, QMessageBox::ResetRole);
     }
 
-    // add shortcuts
-    QAbstractButton* saveBtn = box.button(QMessageBox::Save);
-    if (saveBtn->shortcut().isEmpty()) {
-        QString text = saveBtn->text();
-        text.prepend(QLatin1Char('&'));
-        saveBtn->setShortcut(QKeySequence::mnemonic(text));
-    }
-
-    QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
-    if (discardBtn->shortcut().isEmpty()) {
-        QString text = discardBtn->text();
-        text.prepend(QLatin1Char('&'));
-        discardBtn->setShortcut(QKeySequence::mnemonic(text));
-    }
+    // Show and honor S / D / C mnemonics on the standard buttons.
+    auto applyMnemonic = [](QAbstractButton* btn) {
+        if (!btn) {
+            return;
+        }
+        QString text = btn->text();
+        if (!text.contains(QLatin1Char('&'))) {
+            text.prepend(QLatin1Char('&'));
+            btn->setText(text);
+        }
+        if (btn->shortcut().isEmpty()) {
+            btn->setShortcut(QKeySequence::mnemonic(text));
+        }
+    };
+    applyMnemonic(box.button(QMessageBox::Save));
+    applyMnemonic(box.button(QMessageBox::Discard));
+    applyMnemonic(box.button(QMessageBox::Cancel));
 
     int res = ConfirmSaveResult::Cancel;
     box.adjustSize();  // Silence warnings from Qt on Windows
