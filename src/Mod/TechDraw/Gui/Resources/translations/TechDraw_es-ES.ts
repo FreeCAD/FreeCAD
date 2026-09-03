@@ -480,17 +480,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1134"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Acotación Horizontal en Cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1137"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Espacia uniformemente las dimensiones horizontales seleccionadas:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Selecciona dos o más dimensiones horizontales&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -498,19 +498,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="956"/>
+      <location filename="../../CommandExtensionDims.cpp" line="957"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="957"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1211"/>
+      <location filename="../../CommandExtensionDims.cpp" line="958"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1212"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Acotación Horizontal en Cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="958"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1212"/>
+      <location filename="../../CommandExtensionDims.cpp" line="959"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1213"/>
       <source>Evenly spaces the selected horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Espacia uniformemente las dimensiones horizontales seleccionadas:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Selecciona dos o más dimensiones horizontales&lt;br&gt;- La primera dimensión define la posición&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -518,19 +518,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1098"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1099"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1099"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1229"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1100"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1230"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Acotación Oblicua en Cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1100"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1230"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1101"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1231"/>
       <source>Evenly spaces the selected oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Espacia uniformemente las cotas oblicuas seleccionadas:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Selecciona dos o más cotas oblicuas paralelas&lt;br&gt;- La primera cota define la posición&lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -538,19 +538,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1023"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1024"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1024"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1220"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1025"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1221"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Cotas verticales en cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1025"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1221"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1026"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1222"/>
       <source>Evenly spaces the selected vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Espacia uniformemente las dimensiones verticales seleccionadas:&lt;br&gt;- Especifica el espaciado en cascada (opcional)&lt;br&gt;- Selecciona dos o más dimensiones verticales &lt;br&gt;- La primera dimensión define la posición &lt;br&gt;- Haz clic en esta herramienta</translation>
     </message>
@@ -558,17 +558,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Dimensión horizontal del chaflán</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2119"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Inserta una dimensión horizontal y angular para un chaflán a partir de 2 vértices seleccionados</translation>
     </message>
@@ -636,17 +636,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1508"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Cota en cadena horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1511"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
@@ -654,17 +654,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1879"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1880"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Cota horizontal.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1880"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1881"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Agrega dimensiones horizontales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
@@ -672,23 +672,23 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1288"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1289"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1289"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1290"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
       <source>Horizontal Chain Dimension</source>
       <translation>Cadena de cotas horizontales.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1290"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1291"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices</source>
       <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1584"/>
       <source>Inserts a sequence of aligned horizontal dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Inserta una secuencia de dimensiones horizontales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
@@ -696,19 +696,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2182"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2183"/>
       <source>Horizontal Chamfer Dimension</source>
       <translation>Dimensión horizontal del chaflán</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2183"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2022"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2184"/>
       <source>Inserts a horizontal size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Inserta una dimensión horizontal y angular para un chaflán a partir de 2 vértices seleccionados</translation>
     </message>
@@ -716,19 +716,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1951"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
       <source>Horizontal Coordinate Dimension</source>
       <translation>Cota horizontal.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1656"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1953"/>
       <source>Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Agrega dimensiones horizontales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
@@ -736,17 +736,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2210"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2211"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2211"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
       <source>Arc Length Dimension</source>
       <translation>Longitud de arco.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2212"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2213"/>
       <source>Inserts an arc length dimension to the selected arc</source>
       <translation>Inserta una cota de longitud de arco en el arco seleccionado</translation>
     </message>
@@ -754,19 +754,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1476"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1477"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1477"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1592"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1478"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1593"/>
       <source>Oblique Chain Dimension</source>
       <translation>Cota en cadena inclinada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1478"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1593"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1479"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1594"/>
       <source>Inserts a sequence of aligned oblique dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Inserta una secuencia de dimensiones oblicuas alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
@@ -774,19 +774,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1847"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1848"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1848"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1961"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
       <source>Oblique Coordinate Dimension</source>
       <translation>Cota de coordenadas oblicuas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1849"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1962"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1850"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1963"/>
       <source>Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Agrega cotas oblicuas uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
@@ -794,23 +794,23 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1354"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1355"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1355"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1587"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1356"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
       <source>Vertical Chain Dimension</source>
       <translation>Cota en cadena vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1356"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1357"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices</source>
       <translation>Inserta una secuencia de cotas verticales alineadas en al menos tres vértices seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1589"/>
       <source>Inserts a sequence of aligned vertical dimensions to at least three selected vertices, where the first two define the direction</source>
       <translation>Inserta una secuencia de cotas verticales alineadas en al menos tres vértices seleccionados, donde los dos primeros definen la dirección</translation>
     </message>
@@ -818,19 +818,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2085"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2086"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2086"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2187"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2087"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2188"/>
       <source>Vertical Chamfer Dimension</source>
       <translation>Dimensión vertical del chaflán</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2087"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2188"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2088"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2189"/>
       <source>Inserts a vertical size and angle dimension for a chamfer from 2 selected vertices</source>
       <translation>Inserta una cota vertical y angular para un chaflán a partir de 2 vértices seleccionados</translation>
     </message>
@@ -838,19 +838,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1722"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1956"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1724"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
       <source>Vertical Coordinate Dimension</source>
       <translation>Cota de coordenadas verticales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1724"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1957"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1725"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1958"/>
       <source>Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline</source>
       <translation>Agrega cotas verticales uniformemente espaciadas entre 3 o más vértices alineados a una línea base común</translation>
     </message>
@@ -858,17 +858,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2259"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2260"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2261"/>
       <source>Customize Format Label</source>
       <translation>Personalizar formato de etiqueta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2261"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2262"/>
       <source>Customizes the format label of a selected dimension or balloon</source>
       <translation>Personaliza la etiqueta de formato de una cota o globo seleccionado</translation>
     </message>
@@ -876,19 +876,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="491"/>
+      <location filename="../../CommandExtensionDims.cpp" line="492"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="492"/>
-      <location filename="../../CommandExtensionDims.cpp" line="593"/>
+      <location filename="../../CommandExtensionDims.cpp" line="493"/>
+      <location filename="../../CommandExtensionDims.cpp" line="594"/>
       <source>Decrease Decimal Places</source>
       <translation>Reducir lugares decimales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="493"/>
-      <location filename="../../CommandExtensionDims.cpp" line="594"/>
+      <location filename="../../CommandExtensionDims.cpp" line="494"/>
+      <location filename="../../CommandExtensionDims.cpp" line="595"/>
       <source>Decreases the number of decimal places of the dimension</source>
       <translation>Disminuye el número de decimales de la cota</translation>
     </message>
@@ -1026,19 +1026,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="460"/>
+      <location filename="../../CommandExtensionDims.cpp" line="461"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="461"/>
-      <location filename="../../CommandExtensionDims.cpp" line="588"/>
+      <location filename="../../CommandExtensionDims.cpp" line="462"/>
+      <location filename="../../CommandExtensionDims.cpp" line="589"/>
       <source>Increase Decimal Places</source>
       <translation>Aumentar lugares decimales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="462"/>
-      <location filename="../../CommandExtensionDims.cpp" line="589"/>
+      <location filename="../../CommandExtensionDims.cpp" line="463"/>
+      <location filename="../../CommandExtensionDims.cpp" line="590"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Aumenta el número de decimales de la cota</translation>
     </message>
@@ -1046,17 +1046,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="523"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="523"/>
+      <location filename="../../CommandExtensionDims.cpp" line="524"/>
       <source>Increase Decimal Places</source>
       <translation>Aumentar lugares decimales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="524"/>
+      <location filename="../../CommandExtensionDims.cpp" line="525"/>
       <source>Increases the number of decimal places of the dimension</source>
       <translation>Aumenta el número de decimales de la dimensión</translation>
     </message>
@@ -1064,19 +1064,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="163"/>
+      <location filename="../../CommandExtensionDims.cpp" line="164"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="164"/>
-      <location filename="../../CommandExtensionDims.cpp" line="393"/>
+      <location filename="../../CommandExtensionDims.cpp" line="165"/>
+      <location filename="../../CommandExtensionDims.cpp" line="394"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Insertar Prefijo &apos;⌀&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="165"/>
-      <location filename="../../CommandExtensionDims.cpp" line="394"/>
+      <location filename="../../CommandExtensionDims.cpp" line="166"/>
+      <location filename="../../CommandExtensionDims.cpp" line="395"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension</source>
       <translation>Inserta un símbolo &apos;⌀&apos; al principio de la cota</translation>
     </message>
@@ -1084,17 +1084,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="313"/>
+      <location filename="../../CommandExtensionDims.cpp" line="314"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="314"/>
+      <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>Insertar Prefijo &apos;⌀&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="315"/>
+      <location filename="../../CommandExtensionDims.cpp" line="316"/>
       <source>Inserts a &apos;⌀&apos; symbol at the beginning of the dimension text</source>
       <translation>Inserta un símbolo &apos;⌀&apos; al principio del texto de la cota</translation>
     </message>
@@ -1102,19 +1102,19 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="194"/>
+      <location filename="../../CommandExtensionDims.cpp" line="195"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="195"/>
-      <location filename="../../CommandExtensionDims.cpp" line="398"/>
+      <location filename="../../CommandExtensionDims.cpp" line="196"/>
+      <location filename="../../CommandExtensionDims.cpp" line="399"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>Insertar Prefijo &apos;□&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="196"/>
-      <location filename="../../CommandExtensionDims.cpp" line="399"/>
+      <location filename="../../CommandExtensionDims.cpp" line="197"/>
+      <location filename="../../CommandExtensionDims.cpp" line="400"/>
       <source>Inserts a &apos;□&apos; symbol at the beginning of the dimension</source>
       <translation>Inserta un símbolo &apos;□&apos; al principio de la cota</translation>
     </message>
@@ -1202,17 +1202,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="809"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Alinear cotas de cadena horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="809"/>
+      <location filename="../../CommandExtensionDims.cpp" line="810"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Alinea las cotas horizontales para crear una cota de cadena:&lt;br&gt;- Seleccione dos o más cotas horizontales&lt;br&gt; - La primera cota define la posición &lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
@@ -1220,23 +1220,23 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="643"/>
+      <location filename="../../CommandExtensionDims.cpp" line="644"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="644"/>
+      <location filename="../../CommandExtensionDims.cpp" line="645"/>
       <source>Align Horizontal Chain Dimensions</source>
       <translation>Alinear cotas de cadena horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="645"/>
-      <location filename="../../CommandExtensionDims.cpp" line="884"/>
+      <location filename="../../CommandExtensionDims.cpp" line="646"/>
+      <location filename="../../CommandExtensionDims.cpp" line="885"/>
       <source>Aligns the horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Alinea las cotas horizontales para crear una cota de cadena:&lt;br&gt; - Seleccione dos o más cotas horizontales&lt;br&gt; - La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="883"/>
+      <location filename="../../CommandExtensionDims.cpp" line="884"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Posicionar cotas horizontales encadenadas</translation>
     </message>
@@ -1244,23 +1244,23 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="772"/>
+      <location filename="../../CommandExtensionDims.cpp" line="773"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="773"/>
+      <location filename="../../CommandExtensionDims.cpp" line="774"/>
       <source>Align Oblique Chain Dimensions</source>
       <translation>Alinear cotas de cadena inclinadas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="774"/>
-      <location filename="../../CommandExtensionDims.cpp" line="900"/>
+      <location filename="../../CommandExtensionDims.cpp" line="775"/>
+      <location filename="../../CommandExtensionDims.cpp" line="901"/>
       <source>Aligns the oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Alinea las cotas oblicuas para crear una cota de cadena:&lt;br&gt; - Seleccione dos o más cotas oblicuas paralelas&lt;br&gt; - La primera cota define la posición&lt;br&gt;- Haga clic en esta herramienta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="899"/>
+      <location filename="../../CommandExtensionDims.cpp" line="900"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Posicionar cotas oblicuas encadenadas</translation>
     </message>
@@ -1268,23 +1268,23 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="705"/>
+      <location filename="../../CommandExtensionDims.cpp" line="706"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="706"/>
+      <location filename="../../CommandExtensionDims.cpp" line="707"/>
       <source>Align Vertical Chain Dimensions</source>
       <translation>Cotas de la cadena vertical de alineación</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="707"/>
-      <location filename="../../CommandExtensionDims.cpp" line="892"/>
+      <location filename="../../CommandExtensionDims.cpp" line="708"/>
+      <location filename="../../CommandExtensionDims.cpp" line="893"/>
       <source>Aligns the vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Alinea las cotas verticales para crear una cota de cadena:&lt;br&gt; - Seleccione dos o más cotas verticales&lt;br&gt; - La primera cota define la posición&lt;br&gt; - Haga clic en esta herramienta</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="892"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Posicionar cotas verticales encadenadas</translation>
     </message>
@@ -1292,17 +1292,17 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="282"/>
+      <location filename="../../CommandExtensionDims.cpp" line="283"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="283"/>
+      <location filename="../../CommandExtensionDims.cpp" line="284"/>
       <source>Remove Prefix</source>
       <translation>Eliminar prefijo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="284"/>
+      <location filename="../../CommandExtensionDims.cpp" line="285"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Elimina los símbolos de prefijo al principio de la cota</translation>
     </message>
@@ -2211,12 +2211,12 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Agregar vértices de cuadrante</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
       <source>Edit Annotation</source>
       <translation>Editar anotación</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Crear Anotación</translation>
@@ -2440,7 +2440,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Crear imagen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="511"/>
+      <location filename="../../QGIViewBalloon.cpp" line="525"/>
       <source>Drag Balloon</source>
       <translation>Arrastrar Globo</translation>
     </message>
@@ -2516,92 +2516,92 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Añadir vértice cosmético</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="254"/>
+      <location filename="../../CommandExtensionDims.cpp" line="255"/>
       <source>TechDraw Remove Prefix</source>
       <translation>Eliminar prefijo de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="258"/>
+      <location filename="../../CommandExtensionDims.cpp" line="259"/>
       <source>Remove Prefix</source>
       <translation>Eliminar prefijo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="432"/>
+      <location filename="../../CommandExtensionDims.cpp" line="433"/>
       <source>Increase/Decrease Decimal</source>
       <translation>Incrementar/Reducir decimales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="617"/>
+      <location filename="../../CommandExtensionDims.cpp" line="618"/>
       <source>Position Horizontal Chain Dimension</source>
       <translation>Cota de la posición horizontal de la cadena</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="678"/>
+      <location filename="../../CommandExtensionDims.cpp" line="679"/>
       <source>Position Vert Chain Dimension</source>
       <translation>Cota de la posición vertical de la cadena</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="740"/>
+      <location filename="../../CommandExtensionDims.cpp" line="741"/>
       <source>Position Oblique Chain Dimension</source>
       <translation>Cota de la posición oblicua de la cadena</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="926"/>
+      <location filename="../../CommandExtensionDims.cpp" line="927"/>
       <source>Cascade Horizontal Dimension</source>
       <translation>Cota horizontal en cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="992"/>
+      <location filename="../../CommandExtensionDims.cpp" line="993"/>
       <source>Cascade Vertical Dimension</source>
       <translation>Cota vertical en cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1059"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1060"/>
       <source>Cascade Oblique Dimension</source>
       <translation>Cota oblicua en cascada</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1258"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1259"/>
       <source>Create Horizontal Chain Dimension</source>
       <translation>Crear cota horizontal de cadena</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1323"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1324"/>
       <source>Create Vert Chain dimension</source>
       <translation>Crear cota de cadena de vértices</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1388"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1389"/>
       <source>Create oblique chain dimension</source>
       <translation>Crear cota de cadena oblicua</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1618"/>
       <source>Create Horizontal Coord Dimension</source>
       <translation>Crear cota de coordenadas horizontales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1686"/>
       <source>Create vert coord dimension</source>
       <translation>Crear cota de coordenada vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1755"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1756"/>
       <source>Create oblique coord dimension</source>
       <translation>Crear cota de coordenada oblicua</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1986"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1987"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Crear cota horizontal de chaflán</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2053"/>
       <source>Create Vert Chamfer Dimension</source>
       <translation>Crear cota vertical de chaflán</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2228"/>
       <source>Create Arc Length Dimension</source>
       <translation>Crear cota de longitud de arco</translation>
     </message>
@@ -3052,6 +3052,8 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="635"/>
       <location filename="../../Command.cpp" line="645"/>
       <location filename="../../Command.cpp" line="862"/>
@@ -3097,8 +3099,6 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3158,6 +3158,21 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>FreeCAD no pudo encontrar una página para exportar</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1899"/>
+      <source>Save DXF file</source>
+      <translation>Guardar archivo DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2089"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>La dirección seleccionada está dentro de %1 grados de una dirección estándar. ¿Reemplazar la dirección seleccionada con %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2094"/>
+      <source>Direction is close to standard</source>
+      <translation>La dirección está cerca del estándar</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="597"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Seleccione los objetos que desea dividir o una vista base y los objetos de definición de división</translation>
@@ -3174,9 +3189,13 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>No hay formas, grupos o enlaces en esta selección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="745"/>
-      <location filename="../../Command.cpp" line="838"/>
-      <location filename="../../Command.cpp" line="901"/>
+      <location filename="../../CommandExtensionDims.cpp" line="326"/>
+      <location filename="../../CommandExtensionDims.cpp" line="535"/>
+      <location filename="../../CommandExtensionDims.cpp" line="823"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
@@ -3188,6 +3207,18 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandCreateDims.cpp" line="1885"/>
       <location filename="../../CommandCreateDims.cpp" line="1981"/>
       <location filename="../../CommandCreateDims.cpp" line="2106"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandExtensionPack.cpp" line="302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="605"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1225"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
+      <location filename="../../Command.cpp" line="745"/>
+      <location filename="../../Command.cpp" line="838"/>
+      <location filename="../../Command.cpp" line="901"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3203,26 +3234,17 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="302"/>
-      <location filename="../../CommandExtensionPack.cpp" line="605"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1225"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1768"/>
-      <location filename="../../CommandExtensionDims.cpp" line="325"/>
-      <location filename="../../CommandExtensionDims.cpp" line="534"/>
-      <location filename="../../CommandExtensionDims.cpp" line="822"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1150"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1521"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
       <source>Task in progress</source>
       <translation>Tarea en progreso</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="327"/>
+      <location filename="../../CommandExtensionDims.cpp" line="536"/>
+      <location filename="../../CommandExtensionDims.cpp" line="824"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1152"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1523"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1892"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2130"/>
       <location filename="../../Command.cpp" line="746"/>
       <location filename="../../Command.cpp" line="839"/>
       <location filename="../../Command.cpp" line="902"/>
@@ -3241,13 +3263,6 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionDims.cpp" line="326"/>
-      <location filename="../../CommandExtensionDims.cpp" line="535"/>
-      <location filename="../../CommandExtensionDims.cpp" line="823"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1151"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1522"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2129"/>
       <source>Close active task dialog and try again</source>
       <translation>Cierre el cuadro de diálogo de la tarea activa e inténtelo de nuevo</translation>
     </message>
@@ -3268,14 +3283,14 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>No hay vista base, formas, grupos o enlaces en esta selección</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1198"/>
       <location filename="../../CommandCreateDims.cpp" line="2371"/>
+      <location filename="../../Command.cpp" line="1198"/>
       <source>Select an object first</source>
       <translation>Seleccione un objeto en primer lugar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1205"/>
       <location filename="../../CommandCreateDims.cpp" line="2379"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>Too many objects selected</source>
       <translation>Demasiados objetos seleccionados</translation>
     </message>
@@ -3298,21 +3313,6 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../Command.cpp" line="1885"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Esta página contiene una vista BIM que no se exportará. ¿Desea continuar?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1899"/>
-      <source>Save DXF file</source>
-      <translation>Guardar archivo DXF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2089"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>La dirección seleccionada está dentro de %1 grados de una dirección estándar. ¿Reemplazar la dirección seleccionada con %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2094"/>
-      <source>Direction is close to standard</source>
-      <translation>La dirección está cerca del estándar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1418"/>
@@ -3441,18 +3441,8 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Seleccione un archivo SVG para abrir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1204"/>
-      <location filename="../../Command.cpp" line="1212"/>
-      <location filename="../../Command.cpp" line="1224"/>
-      <location filename="../../CommandDecorate.cpp" line="418"/>
-      <location filename="../../CommandDecorate.cpp" line="425"/>
-      <location filename="../../CommandDecorate.cpp" line="432"/>
-      <location filename="../../CommandDecorate.cpp" line="439"/>
-      <location filename="../../CommandDecorate.cpp" line="445"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../CommandCreateDims.cpp" line="2007"/>
       <location filename="../../CommandCreateDims.cpp" line="2023"/>
       <location filename="../../CommandCreateDims.cpp" line="2049"/>
@@ -3465,9 +3455,19 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../CommandCreateDims.cpp" line="2370"/>
       <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
+      <location filename="../../CommandDecorate.cpp" line="439"/>
+      <location filename="../../CommandDecorate.cpp" line="445"/>
       <location filename="../../CommandExtensionPack.cpp" line="1881"/>
       <location filename="../../CommandExtensionPack.cpp" line="2005"/>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1204"/>
+      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Incorrect Selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -3596,12 +3596,12 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Seleccione 2 líneas rectas</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="900"/>
       <location filename="../../CommandExtensionPack.cpp" line="923"/>
       <location filename="../../CommandExtensionPack.cpp" line="945"/>
       <location filename="../../CommandExtensionPack.cpp" line="981"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <source>Wrong Selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
@@ -3799,34 +3799,34 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Esta función necesita una página</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Export Page as PDF</source>
       <translation>Exportar página a formato PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="760"/>
       <source>Export page as SVG</source>
       <translation>Exportar página como SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="561"/>
+      <location filename="../../MDIViewPage.cpp" line="783"/>
       <source>Export page as DXF</source>
       <translation>Exportar página como DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="602"/>
+      <location filename="../../MDIViewPage.cpp" line="824"/>
       <source>Unable to Write File</source>
       <translation>No se puede escribir el archivo</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="603"/>
+      <location filename="../../MDIViewPage.cpp" line="825"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD no puede abrir el archivo %1 para escritura. Es posible que el archivo esté abierto en otro programa.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <source>Are you sure you want to continue?</source>
       <translation>¿Está seguro de que desea continuar?</translation>
     </message>
@@ -3851,7 +3851,7 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Editar línea de referencia</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="376"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>Editor de texto enriquecido</translation>
     </message>
@@ -3959,150 +3959,150 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Editar vista de detalles</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="109"/>
+      <location filename="../../CommandExtensionDims.cpp" line="110"/>
       <source>TechDraw Insert Prefix</source>
       <translation>Prefijo de inserción de TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="143"/>
+      <location filename="../../CommandExtensionDims.cpp" line="144"/>
       <source>Insert Prefix</source>
       <translation>Insertar prefijo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="428"/>
+      <location filename="../../CommandExtensionDims.cpp" line="429"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>Incrementar/Reducir decimales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="613"/>
-      <location filename="../../CommandExtensionDims.cpp" line="622"/>
+      <location filename="../../CommandExtensionDims.cpp" line="614"/>
+      <location filename="../../CommandExtensionDims.cpp" line="623"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>TechDraw Cota en cadena Horizontal </translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="623"/>
-      <location filename="../../CommandExtensionDims.cpp" line="932"/>
+      <location filename="../../CommandExtensionDims.cpp" line="624"/>
+      <location filename="../../CommandExtensionDims.cpp" line="933"/>
       <source>No horizontal dimensions selected</source>
       <translation>No se seleccionó ninguna cota horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="674"/>
-      <location filename="../../CommandExtensionDims.cpp" line="683"/>
+      <location filename="../../CommandExtensionDims.cpp" line="675"/>
+      <location filename="../../CommandExtensionDims.cpp" line="684"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>TechDraw Cota en cadena Vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="684"/>
-      <location filename="../../CommandExtensionDims.cpp" line="998"/>
+      <location filename="../../CommandExtensionDims.cpp" line="685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="999"/>
       <source>No vertical dimensions selected</source>
       <translation>No se seleccionó ninguna cota vertical</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="736"/>
-      <location filename="../../CommandExtensionDims.cpp" line="745"/>
+      <location filename="../../CommandExtensionDims.cpp" line="737"/>
+      <location filename="../../CommandExtensionDims.cpp" line="746"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>TechDraw Cota en cadena Oblicua</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="746"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1065"/>
+      <location filename="../../CommandExtensionDims.cpp" line="747"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1066"/>
       <source>No oblique dimensions selected</source>
       <translation>No se seleccionó ninguna cota oblicua</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="922"/>
-      <location filename="../../CommandExtensionDims.cpp" line="931"/>
+      <location filename="../../CommandExtensionDims.cpp" line="923"/>
+      <location filename="../../CommandExtensionDims.cpp" line="932"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>TechDraw Cota en cascada Horizontal </translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="988"/>
-      <location filename="../../CommandExtensionDims.cpp" line="997"/>
+      <location filename="../../CommandExtensionDims.cpp" line="989"/>
+      <location filename="../../CommandExtensionDims.cpp" line="998"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>TechDraw Cota en cascada Vertical </translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1055"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1064"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1056"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1065"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>TechDraw Cota en cascada Oblicua </translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1254"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1255"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>Crear cotas horizontales encadenadas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1319"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1320"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>Crear cotas verticales encadenadas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1384"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1385"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>Crear cotas verticales encadenadas oblicuas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1613"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
       <source>TechDraw Create Horizontal Coordinate Dimension</source>
       <translation>Crear dimensión de coordenadas horizontales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1682"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1683"/>
       <source>TechDraw Create Vertical Coord dimension</source>
       <translation>Crear dimensión de coordenadas verticales</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2380"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2381"/>
       <source>No sub-elements selected</source>
       <translation>No se han seleccionado subelementos</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1751"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1752"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>Crear cotas verticales encadenadas oblicuas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="117"/>
       <source>Prefix Text</source>
       <translation>Texto prefijo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1982"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1983"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>Insertar cota de chaflán horizontal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2049"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>Crear cotas verticales encadenadas</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2223"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2224"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>Insertar cota de longitud del arco</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2271"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2272"/>
       <source>TechDraw Customize Format</source>
       <translation>TechDraw personalizar formato</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2146"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2344"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <source>Selection is empty</source>
       <translation>No ha seleccionado nada</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="2361"/>
       <location filename="../../CommandExtensionPack.cpp" line="2153"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2360"/>
       <source>No object selected</source>
       <translation>Ningún objeto seleccionado </translation>
     </message>
@@ -4272,19 +4272,24 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <translation>Editar línea central</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="117"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>Editor de texto enriquecido</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="156"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>Creador de texto enriquecido</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="374"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation>Creador de texto enriquecido</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="55"/>
+      <source>Updates the text</source>
+      <translation>Actualiza el texto</translation>
     </message>
     <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
@@ -4295,11 +4300,6 @@ Si no hay ningún objeto seleccionado, se abre un explorador de archivos para el
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation>Seleccione un símbolo</translation>
-    </message>
-    <message>
-      <location filename="../../TemplateTextField.cpp" line="55"/>
-      <source>Updates the text</source>
-      <translation>Actualiza el texto</translation>
     </message>
   </context>
   <context>
@@ -4323,17 +4323,17 @@ tiene un símbolo de soldadura que se rompería.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
     </message>
@@ -6300,66 +6300,66 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
-      <source>Toggle &amp;Keep Updated</source>
-      <translation>Alternar el mantener actualizado</translation>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <source>&amp;Keep Updated</source>
+      <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
-      <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <source>Show &amp;Frames</source>
+      <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
-      <source>Toggle &amp;Grid</source>
-      <translation>Activar/Desactivar rejilla</translation>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <source>Show &amp;Grid</source>
+      <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportar SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="113"/>
       <source>Export DXF</source>
       <translation>Exportar DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="117"/>
       <source>Export PDF</source>
       <translation>Exportar en PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="121"/>
       <source>Print All Pages</source>
       <translation>Imprimir todas las páginas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="428"/>
+      <location filename="../../MDIViewPage.cpp" line="445"/>
       <source>Different orientation</source>
       <translation>Orientación diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="446"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>La impresora usa una orientación diferente al dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="438"/>
+      <location filename="../../MDIViewPage.cpp" line="455"/>
       <source>Different paper size</source>
       <translation>Tamaño de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="439"/>
+      <location filename="../../MDIViewPage.cpp" line="456"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La impresora usa un tamaño de papel distinto al del dibujo.
 ¿Desea continuar?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1161"/>
+      <location filename="../../MDIViewPage.cpp" line="1404"/>
       <source>Selected:</source>
       <translation>Seleccionado:</translation>
     </message>
@@ -7544,7 +7544,7 @@ Si se marca &apos;igual tolerancia&apos;, se sustituirá por el valor negativo d
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>Establece el ángulo de línea de extensión para que coincida con la arista o vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
@@ -7555,7 +7555,7 @@ Si se marca &apos;igual tolerancia&apos;, se sustituirá por el valor negativo d
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>Establece el ángulo de línea de cota para que coincida con la arista o vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>
@@ -8443,7 +8443,7 @@ usando el espaciados X/Y dado</translation>
       <translation>DashDotDot</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="661"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>Anotación de texto enriquecido</translation>
     </message>
@@ -8778,12 +8778,12 @@ usando el espaciados X/Y dado</translation>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="408"/>
+      <location filename="../../CommandExtensionDims.cpp" line="409"/>
       <source>Remove Prefix</source>
       <translation>Eliminar prefijo</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="409"/>
+      <location filename="../../CommandExtensionDims.cpp" line="410"/>
       <source>Removes the prefix symbols at the beginning of the dimension</source>
       <translation>Elimina los símbolos de prefijo al principio de la cota</translation>
     </message>
@@ -9888,19 +9888,19 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="225"/>
+      <location filename="../../CommandExtensionDims.cpp" line="226"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="226"/>
-      <location filename="../../CommandExtensionDims.cpp" line="403"/>
+      <location filename="../../CommandExtensionDims.cpp" line="227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="404"/>
       <source>Insert &apos;n×&apos; Prefix</source>
       <translation>Insertar prefijo &apos;n×&apos;</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="227"/>
-      <location filename="../../CommandExtensionDims.cpp" line="404"/>
+      <location filename="../../CommandExtensionDims.cpp" line="228"/>
+      <location filename="../../CommandExtensionDims.cpp" line="405"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
       <translation>Inserta un recuento de características repetidas al principio de la dimensión</translation>
     </message>
@@ -10304,6 +10304,14 @@ hay un diálogo de tareas abierto.</translation>
     </message>
   </context>
   <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="454"/>
+      <source>Restore Invisible Lines</source>
+      <translation>Restaurar Líneas Invisibles</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10337,14 +10345,6 @@ hay un diálogo de tareas abierto.</translation>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation>Alterna la cuadrícula en la página activa</translation>
-    </message>
-  </context>
-  <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
-    <message>
-      <location filename="../../TaskLineDecor.cpp" line="454"/>
-      <source>Restore Invisible Lines</source>
-      <translation>Restaurar Líneas Invisibles</translation>
     </message>
   </context>
   <context>

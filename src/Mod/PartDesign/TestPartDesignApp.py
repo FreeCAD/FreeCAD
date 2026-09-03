@@ -48,6 +48,7 @@ from PartDesignTests.TestLinearPattern import TestLinearPattern
 from PartDesignTests.TestPolarPattern import TestPolarPattern
 from PartDesignTests.TestMultiTransform import TestMultiTransform
 from PartDesignTests.TestBoolean import TestBoolean
+from PartDesignTests.TestBaseFeature import TestBaseFeature
 
 # dressup features
 from PartDesignTests.TestFillet import TestFillet

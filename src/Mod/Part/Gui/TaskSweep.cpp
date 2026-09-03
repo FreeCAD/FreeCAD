@@ -23,13 +23,14 @@
  ***************************************************************************/
 
 
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTimer>
 #include <QTreeWidget>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -203,7 +204,7 @@ void SweepWidget::findShapes()
             }
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                     hEdges,
                     Precision::Confusion(),
                     Standard_False,
@@ -282,7 +283,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
                 hEdges->Append(xp.Current());
             }
 
-            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+            Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                 hEdges,
                 Precision::Confusion(),
                 Standard_True,

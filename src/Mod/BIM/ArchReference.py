@@ -786,7 +786,7 @@ class ViewProviderArchReference:
         # check node contents
         rootnode = obj.ViewObject.RootNode
         # display mode switch
-        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        switch = obj.ViewObject.SwitchNode
         if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
@@ -818,7 +818,7 @@ class ViewProviderArchReference:
         # check node contents
         rootnode = obj.ViewObject.RootNode
         # display mode switch
-        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        switch = obj.ViewObject.SwitchNode
         if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"

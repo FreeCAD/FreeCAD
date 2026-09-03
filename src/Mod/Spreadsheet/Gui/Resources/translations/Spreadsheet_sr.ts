@@ -413,16 +413,6 @@
       <translation>Обриши ћелије</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation>Поставка конфигурационе табеле</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation>Поништи поставку конфигурационе табеле</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Повежи ћелије</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Одвежи ћелије</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Поставка конфигурационе табеле</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Поништи поставку конфигурационе табеле</translation>
     </message>
   </context>
   <context>

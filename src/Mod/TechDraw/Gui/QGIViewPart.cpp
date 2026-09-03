@@ -921,6 +921,7 @@ void QGIViewPart::drawCenterLines(bool b)
     if (b) {
         bool horiz = vp->HorizCenterLine.getValue();
         bool vert = vp->VertCenterLine.getValue();
+        const QColor centerColor = PreferencesGui::getAccessibleQColor(PreferencesGui::centerQColor());
 
         QGICenterLine* centerLine{nullptr};
         double sectionSpan{0};
@@ -941,7 +942,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::green);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -958,7 +959,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::red);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -1003,8 +1004,6 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         scene()->addItem(highlight);
         highlight->setReference(viewDetail->Reference.getValue());
 
-        Base::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
-        highlight->setColor(color.asValue<QColor>());
         highlight->setFeatureName(viewDetail->getNameInDocument());
 
         highlight->setInteractive(false);
@@ -1023,8 +1022,10 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
                              vp->IsoWidth.getValue()));
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(getFont(), fontSize);
+        Base::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
+        highlight->setColor(color.asValue<QColor>());
         highlight->setZValue(ZVALUE::HIGHLIGHT);
-        highlight->setReferenceAngle(vpDetail->HighlightAdjust.getValue());
+        highlight->setReferenceAngle(vp->HighlightAdjust.getValue());
 
         //handle conversion of apparent X,Y to rotated
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
@@ -1115,7 +1116,7 @@ void QGIViewPart::drawBreakLines()
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
         breakLine->setBreakType(breakType);
         breakLine->setZValue(ZVALUE::SECTIONLINE);
-        Base::Color color = prefBreaklineColor();
+        Base::Color color = vp->BreakLineColor.getValue();
         breakLine->setBreakColor(color.asValue<QColor>());
         breakLine->setRotation(-dbv->Rotation.getValue());
         breakLine->draw();

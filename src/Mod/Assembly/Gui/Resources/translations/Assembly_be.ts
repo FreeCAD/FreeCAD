@@ -35,12 +35,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="49"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>Вырашыць зборку</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="54"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>Вырашае бягучую актыўную зборку.</translation>
     </message>
@@ -48,12 +48,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="84"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>Бягучы аб'ект</translation>
     </message>
@@ -93,17 +93,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly</source>
       <translation>Зборка</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="123"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly Joints</source>
       <translation>Злучэнні зборкі</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="126"/>
+      <location filename="../../../InitGui.py" line="125"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Зборка</translation>
     </message>
@@ -137,7 +137,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1896"/>
+      <location filename="../../../JointObject.py" line="2051"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
@@ -187,22 +187,27 @@
       <translation>Змяніць злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1420"/>
+      <source>Update Stored Positions</source>
+      <translation>Абнавіць захаваныя становішчы</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1859"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Абраць два элемента з дзвюх асобных частак</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1898"/>
+      <location filename="../../../JointObject.py" line="2053"/>
       <source>Radius 1</source>
       <translation>Радыус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1900"/>
+      <location filename="../../../JointObject.py" line="2055"/>
       <source>Thread pitch</source>
       <translation>Крок разьбы</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1902"/>
+      <location filename="../../../JointObject.py" line="2057"/>
       <source>Pitch radius</source>
       <translation>Радыус падачы</translation>
     </message>
@@ -545,39 +550,69 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>Невядомы фармат экспарту відэа</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="170"/>
+      <location filename="../../../InitGui.py" line="169"/>
       <source>Create</source>
       <translation>Стварыць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="185"/>
       <source>Activate</source>
       <translation>Задзейнічаць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="219"/>
       <source>Insert</source>
       <translation>Уставіць</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="231"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Grounding</source>
       <translation>Зазямленне</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="258"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Constraints</source>
       <translation>Абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="274"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Tools</source>
       <translation>Інструменты</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="287"/>
+      <location filename="../../../InitGui.py" line="286"/>
       <source>Simulation</source>
       <translation>Мадэляванне</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation>Радыяльны перанос</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>Вярчэнне</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation>Перанос</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation>Вугал руха ў разгорнутым выглядзе</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation>Адлегласць руха ў разгорнутым выглядзе</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation>Правіць размяшчэнне</translation>
     </message>
   </context>
   <context>
@@ -703,24 +738,29 @@ SLOPE - вызначае крутасць пераходу ад 0 да H1 і а�
       <translation>{order} спасылак злучэння</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1288"/>
+      <location filename="../../../JointObject.py" line="1284"/>
+      <source>List of references to compnents to group together</source>
+      <translation>Спіс спасылак на кампаненты для аб'яднання ў суполкі</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1443"/>
       <source>The object to ground</source>
       <translation>Аб'ект для замацавання</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="376"/>
-      <location filename="../../../CommandCreateView.py" line="413"/>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>Аб'екты, які перамешчаныя пры перамяшчэнні</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="388"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ход перамяшчэння.
 Канцавое размяшчэнне з'яўляецца вынікам пачатковага размяшчэння * гэтае размяшчэння.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>Тып перамяшчэння</translation>
     </message>
@@ -998,52 +1038,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Аб'ект, які звязаны з адным ці некалькімі злучэннямі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Ці сапраўды перамясціць аб'ект і выдаліць звязаныя з ім злучэнні?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
       <source>Move part</source>
       <translation>Рухаць дэталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Empty Assembly</source>
       <translation>Пустая зборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Over-constrained:</source>
       <translation>Празмерна-абмежаваны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
       <source>Malformed joints:</source>
       <translation>Скажоныя злучэнні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
       <source>and %1 more</source>
       <translation>і яшчэ %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Solver failed to converge</source>
       <translation>Сродку рашэння не атрымалася сысціся</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
       <source>Under-constrained:</source>
       <translation>Недастаткова абмежаваны:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ступень свабоды</numerusform>
@@ -1053,7 +1093,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>Fully constrained</source>
       <translation>Цалкам абмежаваны</translation>
     </message>
@@ -1061,12 +1101,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
       <translation>Шрубавае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
       <translation>Стварае шрубавае злучэнне, якое злучае дэталь са слізгальным злучэннем з дэталлю з паваротным злучэннем.
 Абярыце тыя ж сістэмы каардынат, што і для паваротнага і слізгальнага злучэнняў.
@@ -1076,12 +1116,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
       <translation>Злучэнне зубчастае кола / рамень</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>Стварае зубчастае ці раменнае злучэнне, якое злучае дзве шасцярні, якія верцяцца разам.
 Абярыце тыя ж сістэмы каардынат, што і для злучэнняў, якія верцяцца.</translation>
@@ -1391,12 +1431,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
       <translation>Нерухомае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
       <translation>1 - калі зборка актыўная: стварае злучэнне, статычна фіксуе дзве дэталі разам, прадухіляючы любое перамяшчэнне ці паварот.
 2 - калі бягучая дэталь: пазіцыянуе складовыя часткі, супастаўляючы абраныя сістэмы каардынат. Другая абраная дэталь будзе перамешчаная.</translation>
@@ -1405,12 +1445,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
       <translation>Вярчальнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>Стварае злучэнне, якое верціцца, якое забяспечвае кручэнне абранай дэталі вакол адной восі</translation>
     </message>
@@ -1418,12 +1458,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
       <translation>Цыліндрычнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>Стварае цыліндрычнае злучэнне, якое забяспечвае кручэнне і перамяшчэнне наўздоўж адной восі паміж сабранымі дэталямі</translation>
     </message>
@@ -1431,12 +1471,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
       <translation>Слізгальнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>Стварае злучэнне, якое слізгаецца, якое дазваляе лінейнае перамяшчэнне наўздоўж адной восі, але абмяжоўвае вярчэнне паміж абранымі дэталямі</translation>
     </message>
@@ -1444,12 +1484,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
       <translation>Шаравы шарнір</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>Стварае шаравы шарнір, які злучае дэталі ў адной кропцы, якое забяспечвае неабмежаванае перамяшчэнне да таго часу, пакуль кропкі злучэння застаюцца ў кантакце</translation>
     </message>
@@ -1457,12 +1497,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
       <translation>Праставачнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
       <translation>Стварае сумеснае злучэнне, якое фіксуе адлегласць паміж абранымі аб'ектамі.
 Стварае адно з некалькіх розных злучэнняў на аснове абранага аб'екта.
@@ -1473,12 +1513,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
       <translation>Паралельныя злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>Стварае паралельнае злучэнне, якое робіць вось Z у абраных сістэмах каардынат паралельнымі</translation>
     </message>
@@ -1486,12 +1526,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
       <translation>Перпендыкулярнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>Стварае перпендыкулярнае злучэнне, якое робіць вось Z у абраных сістэмах каардынат перпендыкулярнымі</translation>
     </message>
@@ -1499,12 +1539,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
       <translation>Вугал злучэння</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>Стварае вуглавое злучэнне, якое фіксуе вугал паміж восямі Z у абраных сістэмах каардынат</translation>
     </message>
@@ -1512,12 +1552,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
       <translation>Злучэнне зубчастай рэйкі і шасцярні</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
       <translation>Стварае рэечны шарнір, які злучае дэталь са слізгальным злучэннем з дэталлю з паваротным злучэннем.
 Абірае тыя ж сістэмы каардынат, што і для паваротнага і слізгальнага злучэнняў.
@@ -1527,12 +1567,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
       <translation>Зубчастае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>Стварае зубчастае злучэнне, якое злучае дзве шасцярні, якія верцяцца разам.
 Яны будуць мець адваротны напрамак вярчэння.
@@ -1543,12 +1583,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
       <translation>Раменнае злучэнне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>Стварае раменнае злучэнне, якое злучае два аб'екты, якія верцяцца.
 Яны будуць круціцца ў адным напрамку.
@@ -1559,12 +1599,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
       <translation>Пераключыць замацаванне</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
       <translation>Пераключыць зазямленне дэталі.
 Зазямленне дэталі пастаянна фіксуе яе становішча ў зборцы, прадухіляючы любое перамяшчэнне ці паварот.</translation>
@@ -1586,12 +1626,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="53"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
       <translation>Пашыраны выгляд</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="58"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Стварае разгорнуты выгляд бягучай зборкі</translation>
     </message>
@@ -1644,6 +1684,25 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
       <translation>Абірае гэтыя скажоныя злучэнні</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Абраць па меншай меры два кампанента, каб стварыць жорсткую суполку</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Стварыць жорсткую суполку</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>Стварыць жорсткую суполку.
+Стварае жорсткую суполку, якая ўвесь час звязвае абраныя кампаненты разам.</translation>
     </message>
   </context>
   <context>

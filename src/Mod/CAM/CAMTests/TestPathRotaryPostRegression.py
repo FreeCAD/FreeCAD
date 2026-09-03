@@ -166,6 +166,7 @@ class TestPathRotaryPostRegression(PathTestBase):
         # axis. Pin a stub A-around-X axis on the Job so the resolver
         # picks it up.
         class _StubMachine:
+            has_rotary_axes = True
             rotary_axes = {
                 "A": RotaryAxis(
                     name="A",

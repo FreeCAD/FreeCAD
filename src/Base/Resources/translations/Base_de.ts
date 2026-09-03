@@ -54,4 +54,42 @@
       <translation>Meter dezimal (m, m², m³)</translation>
     </message>
   </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../Exception.cpp" line="321"/>
+      <source>File not found</source>
+      <translation>Datei nicht gefunden</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="323"/>
+      <source>No permission to read the file</source>
+      <translation>Keine Berechtigung zum Lesen der Datei</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="325"/>
+      <source>No write permission for the file or the file is read-only</source>
+      <translation>Es besteht keine Schreibberechtigung für die Datei oder die Datei ist schreibgeschützt</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="326"/>
+      <source>File format not supported</source>
+      <translation>Dateiformat nicht unterstützt</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="327"/>
+      <source>Error reading from file</source>
+      <translation>Fehler beim Lesen der Datei</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="328"/>
+      <source>Error writing to file</source>
+      <translation>Fehler beim Schreiben in die Datei</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="330"/>
+      <source>Directory does not exist</source>
+      <translation>Verzeichnis existiert nicht</translation>
+    </message>
+  </context>
 </TS>

@@ -710,8 +710,8 @@ For stock from the base object&apos;s bounding box it means the extra material i
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
-      <location filename="../panels/PropertyBag.ui" line="62"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
+      <location filename="../panels/PropertyBag.ui" line="62"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
       <source>Add</source>
       <translation>추가</translation>
@@ -723,17 +723,28 @@ For stock from the base object&apos;s bounding box it means the extra material i
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
-      <location filename="../panels/PropertyBag.ui" line="48"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+      <location filename="../panels/PropertyBag.ui" line="48"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
+      <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <source>Clear</source>
       <translation>지우기</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
+      <source>Feature</source>
+      <translation>피처</translation>
+    </message>
+    <message>
+      <location filename="../panels/ToolEditor.ui" line="96"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
+      <source>Diameter</source>
+      <translation>지름</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
@@ -779,17 +790,6 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation type="unfinished">#</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
-      <source>Feature</source>
-      <translation>피처</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
-      <location filename="../panels/ToolEditor.ui" line="96"/>
-      <source>Diameter</source>
-      <translation>지름</translation>
-    </message>
-    <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="144"/>
       <source>Blind</source>
       <translation>블라인드</translation>
@@ -831,14 +831,14 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="65"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="26"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="82"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="43"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
       <source>Y</source>
       <translation>Y</translation>
@@ -881,7 +881,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>작업의 시작 깊이입니다. 작업이 처리해야 하는 Z축의 가장 높은 지점입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="40"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
       <translation>선택한 피처의 Z 값을 작업의 시작 깊이로 전달합니다</translation>
@@ -893,7 +893,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>최종 깊이</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="61"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>작업의 깊이로, 작업이 처리해야 하는 Z축의 가장 낮은 값에 해당합니다.</translation>
@@ -904,97 +904,71 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>선택한 피처의 Z 값을 작업의 최종 깊이로 전달합니다</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="178"/>
-      <source>Step down</source>
-      <translation>스텝다운</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="185"/>
-      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
-      <translation>작업이 레이어 사이에서 Z축 방향으로 하강하는 깊이입니다. 이 값은 사용되는 툴, 절삭할 소재, 사용 가능한 쿨런트 등 여러 요인에 따라 달라집니다. 적절한 값은 툴 제조사 데이터 시트를 참조하십시오.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="210"/>
-      <source>Finish step down</source>
-      <translation>마무리 스텝다운</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
-      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
-      <translation>작업의 최종 절삭 깊이입니다. 더 깨끗한 마무리를 위해 사용할 수 있습니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
-      <source>Min Diameter</source>
-      <translation>최소 직경</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="334"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="57"/>
-      <source>Max diameter</source>
-      <translation>최대 직경</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
-      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
-      <translation>선택한 피처의 Z 값을 작업의 최종 깊이로 전달합니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="104"/>
-      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation>이 높이 이상에서 툴비트를 급송으로 이동할 수 있습니다. 이 높이 아래에서는 모든 측면 및 하향 이동이 이송 속도로 수행됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="132"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="126"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="139"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="133"/>
       <source>Start height of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation type="unfinished">Start height of the operation. The highest point in Z-axis the operation needs to process.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="152"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="146"/>
       <source>Transfer the Z value of the selected feature as the start height for the operation</source>
       <translation type="unfinished">Transfer the Z value of the selected feature as the start height for the operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="217"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <source>Step down</source>
+      <translation>스텝다운</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
+      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
+      <translation>작업이 레이어 사이에서 Z축 방향으로 하강하는 깊이입니다. 이 값은 사용되는 툴, 절삭할 소재, 사용 가능한 쿨런트 등 여러 요인에 따라 달라집니다. 적절한 값은 툴 제조사 데이터 시트를 참조하십시오.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
+      <source>Finish step down</source>
+      <translation>마무리 스텝다운</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="211"/>
       <source>Height of the final cut of the operation. Can be used to produce a cleaner finish.</source>
       <translation type="unfinished">Height of the final cut of the operation. Can be used to produce a cleaner finish.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="242"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="236"/>
       <source>Final</source>
       <translation type="unfinished">Final</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="249"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="243"/>
       <source>The height of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation type="unfinished">The height of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="262"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="256"/>
       <source>Transfer the Z value of the selected feature as the final height for the operation</source>
       <translation type="unfinished">Transfer the Z value of the selected feature as the final height for the operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="293"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="287"/>
       <source>Linking</source>
       <translation type="unfinished">Linking</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="299"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="293"/>
       <source>Collision Avoidance Strategy</source>
       <translation type="unfinished">Collision Avoidance Strategy</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="306"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="300"/>
       <source>How collision detection is performed when the tool moves between features.
 
 Retract Height: No collision detection, uses retract height for rapid moves between areas
@@ -1013,14 +987,40 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
           </translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="320"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="314"/>
       <source>Collision Clearance</source>
       <translation type="unfinished">Collision Clearance</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="327"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="321"/>
       <source>Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</source>
       <translation type="unfinished">Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
+      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
+      <translation>작업의 최종 절삭 깊이입니다. 더 깨끗한 마무리를 위해 사용할 수 있습니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
+      <source>Min Diameter</source>
+      <translation>최소 직경</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="318"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
+      <source>Max diameter</source>
+      <translation>최대 직경</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
+      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
+      <translation>선택한 피처의 Z 값을 작업의 최종 깊이로 전달합니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
+      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
+      <translation>이 높이 이상에서 툴비트를 급송으로 이동할 수 있습니다. 이 높이 아래에서는 모든 측면 및 하향 이동이 이송 속도로 수행됩니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="69"/>
@@ -1028,38 +1028,27 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
       <translation>툴비트의 측면 이동이 치구 또는 파트/소재 자체에 의해 방해받지 않는 높이입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
       <source>Coolant Mode</source>
       <translation>쿨런트 모드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="24"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
       <source>Tool Controller</source>
       <translation>툴 컨트롤러</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="34"/>
       <source>Coolant</source>
       <translation>쿨런트</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="96"/>
       <source>Type of adaptive operation</source>
       <translation>적응형 작업의 유형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="78"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="45"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -1068,200 +1057,183 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 큰 값(오른쪽으로 갈수록)은 계산 속도가 빠르고, 작은 값(왼쪽으로 갈수록)은 더 정확한 툴패스가 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="115"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="82"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>선택한 형상의 안쪽 또는 바깥쪽을 절삭합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="223"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="159"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>클리어된 영역 위의 급송 연결 이동 중 툴을 얼마나 올릴지 지정합니다. 연결 경로가 클리어되지 않으면 툴이 클리어런스 높이까지 올라갑니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="176"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>점 간 직선 거리와 비교한 툴 유지 연결 경로의 최대 길이입니다. 초과하면 툴을 클리어런스 높이까지 올려 연결합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="324"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="308"/>
       <source>Angle of the helix entry cone</source>
       <translation>나선 진입 콘의 각도입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="33"/>
       <source>Tool controller</source>
       <translation>툴 컨트롤러</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
-      <source>Edit Tool Controller</source>
-      <translation>툴 컨트롤러 편집</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="38"/>
       <source>Accuracy vs performance</source>
       <translation>정확도 대 성능</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
-      <source>Force clearing inside-out</source>
-      <translation>안쪽에서 바깥쪽으로 강제 클리어링</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>Finishing profile</source>
-      <translation>마무리 프로파일</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="136"/>
-      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
-      <translation>XY 평면에 남길 소재의 양입니다(예: 마무리 작업용)</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
-      <source>XY stock to leave</source>
-      <translation>XY 잔여 소재</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
-      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
-      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="178"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="103"/>
       <source>Step over (percent)</source>
       <translation type="unfinished">Step over (percent)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="185"/>
-      <source>The sideways distance the cutting tool moves between successive passes.</source>
-      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes.</translation>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="110"/>
+      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
+      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="195"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="366"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="145"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="135"/>
       <source>Step over (distance)</source>
       <translation type="unfinished">Step over (distance)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="276"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="142"/>
+      <source>The sideways distance the cutting tool moves between successive passes.</source>
+      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
+      <source>Toggle keep tool down ratio between 0 and tool diameter</source>
+      <translation type="unfinished">Toggle keep tool down ratio between 0 and tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
+      <source>Force clearing inside-out</source>
+      <translation>안쪽에서 바깥쪽으로 강제 클리어링</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="260"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation>&lt;b&gt;나선 매개변수&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="307"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="95"/>
+      <source>Max pitch</source>
+      <translation>최대 피치</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="108"/>
+      <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
+      <translation>나선의 한 회전에서 허용되는 최대 하강량입니다. 0으로 설정하면 피치 제한이 비활성화됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="115"/>
+      <source>Max ramp angle</source>
+      <translation>최대 램프 각도</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="291"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
       <translation>최대 허용 램프 진입 각도입니다. 0으로 지정하면 램프 각도 제한이 비활성화됩니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="317"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="301"/>
       <source>Cone angle</source>
       <translation>콘 각도</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="341"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="325"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
       <translation>최대(및 명목상) 나선 진입 직경으로, 툴 직경의 백분율입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="363"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="347"/>
       <source>Min diameter</source>
       <translation>최소 직경</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="370"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="354"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
       <translation>최소 허용 진입 직경으로, 툴 직경의 백분율입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="202"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="234"/>
       <source>Use outline</source>
       <translation>윤곽 사용</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="216"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="89"/>
       <source>Operation type</source>
       <translation>작업 유형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="233"/>
-      <source>Keep tool down ratio</source>
-      <translation>툴 유지 비율</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="240"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="152"/>
       <source>Lift distance</source>
       <translation>인상 거리</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="247"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="75"/>
       <source>Cut region</source>
       <translation>절삭 영역</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="398"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
       <source>Stop</source>
       <translation>정지</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="188"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
       <source>Direction</source>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="155"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="59"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="66"/>
       <source>CW</source>
       <translation>시계 방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="160"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="71"/>
       <source>CCW</source>
       <translation>반시계 방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="200"/>
       <source>Join</source>
       <translation>결합</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="296"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="207"/>
       <source>Round joint</source>
       <translation>라운드 연결</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="315"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="226"/>
       <source>Miter joint</source>
       <translation>마이터 연결</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="205"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="232"/>
       <location filename="../panels/ToolEditor.ui" line="77"/>
       <location filename="../panels/ToolEditor.ui" line="134"/>
       <location filename="../panels/ToolEditor.ui" line="144"/>
@@ -1271,21 +1243,23 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/ToolEditor.ui" line="223"/>
       <location filename="../panels/ToolEditor.ui" line="240"/>
       <location filename="../panels/ToolEditor.ui" line="280"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="116"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="143"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="202"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="113"/>
       <source>Width of chamfer cut</source>
       <translation>챔퍼 절삭의 너비</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="229"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="140"/>
       <source>Extra depth of tool immersion</source>
       <translation>툴 침입의 추가 깊이</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="388"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="299"/>
       <source>TextLabel</source>
       <translation>텍스트 라벨</translation>
     </message>
@@ -1310,54 +1284,54 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>태핑</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="87"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
       <source>Do not retract after every hole</source>
       <translation>모든 홀 후 리트렉트하지 않음</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="90"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="62"/>
       <source>Keep tool down</source>
       <translation>툴 다운 유지</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="74"/>
       <source>Peck</source>
       <translation>펙</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="134"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="126"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="91"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="81"/>
       <source>Extend depth</source>
       <translation>확장 깊이</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="146"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="111"/>
       <source>Drill tip</source>
       <translation>드릴 팁</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="151"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="116"/>
       <source>2x drill tip</source>
       <translation>2x 드릴 팁</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
       <source>Depth</source>
       <translation>깊이</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="97"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="94"/>
       <source>Retract</source>
       <translation type="unfinished">Retract</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="183"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="148"/>
       <source>Chip break</source>
       <translation>칩브레이크</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="101"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="166"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="131"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="48"/>
       <source>Dwell</source>
       <translation>드웰</translation>
     </message>
@@ -1367,126 +1341,104 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>형식</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="84"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="41"/>
+      <source>Time</source>
+      <translation>시간</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
       <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
       <translation>⚠ 사용 중단됨: 태핑 작업은 사용 중단되었으며 향후 릴리스에서 제거됩니다. 대신 전략을 &apos;태핑&apos;으로 설정한 드릴링 작업을 사용하십시오. 기존 태핑 작업은 계속 작동하지만 새로 만들 수는 없습니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="94"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="119"/>
-      <source>Time</source>
-      <translation>시간</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="114"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="61"/>
       <source>Tap tip</source>
       <translation>탭 팁</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="119"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="66"/>
       <source>2x tap tip</source>
       <translation>2x 탭 팁</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="51"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="72"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 작업에 사용할 툴 및 설정입니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
-      <source>ToolController</source>
-      <translation>툴컨트롤러</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="109"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="106"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="56"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="190"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="155"/>
       <source>Feed retract</source>
       <translation>피드 리트렉트</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="193"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="158"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
       <translation>G85: 급송 대신 지정된 피드 속도로 홀에서 리트렉트합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="47"/>
       <source>Start from</source>
       <translation>시작 위치</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="77"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="54"/>
       <source>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</source>
       <translation>나선 작업이 안쪽에서 시작하여 바깥쪽으로 진행할지, 또는 바깥쪽에서 시작하여 중심으로 진행할지 지정합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="81"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="34"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="58"/>
       <source>Inside</source>
       <translation>안쪽</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="86"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="23"/>
+      <source>Side</source>
+      <translation>측면</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="30"/>
+      <source>Side of profile on which create Path</source>
+      <translation>경로를 생성할 프로파일의 측면입니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="39"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Outside</source>
       <translation>바깥쪽</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="71"/>
       <source>Cut mode</source>
       <translation>절삭 모드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="101"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="78"/>
       <source>The direction of the circular cuts</source>
       <translation>원형 절삭의 방향입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="283"/>
-      <source>Max pitch</source>
-      <translation>최대 피치</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="131"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="290"/>
-      <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
-      <translation>나선의 한 회전에서 허용되는 최대 하강량입니다. 0으로 설정하면 피치 제한이 비활성화됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="300"/>
-      <source>Max ramp angle</source>
-      <translation>최대 램프 각도</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="151"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="128"/>
       <source>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</source>
       <translation>최대 허용 램프 진입 각도입니다. 0으로 설정하면 램프 각도 제한이 비활성화됩니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="165"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="229"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="142"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
       <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="187"/>
-      <source>Stock to leave (outer radial)</source>
-      <translation>잔여 스톡(외부 방사형)</translation>
+      <location filename="../panels/PageOpHelixEdit.ui" line="164"/>
+      <source>Radial stock to leave (outer)</source>
+      <translation type="unfinished">Radial stock to leave (outer)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="197"/>
-      <source>Extra value to stay away from shape</source>
-      <translation>형상에서 벗어나는 추가 값</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="108"/>
-      <source>Extra offset</source>
-      <translation>추가 오프셋</translation>
+      <location filename="../panels/PageOpHelixEdit.ui" line="174"/>
+      <source>How much stock to leave on the outer wall for this operation</source>
+      <translation type="unfinished">How much stock to leave on the outer wall for this operation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="58"/>
@@ -1554,12 +1506,12 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>비활성화</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="23"/>
       <source>Boundary Shape</source>
       <translation>경계 셰이프</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="77"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="30"/>
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.</source>
@@ -1568,719 +1520,644 @@ The latter can be used to face of the entire stock area to ensure uniform height
 후자의 경우 전체 스톡 영역을 페이싱하여 후속 작업의 균일한 높이를 보장하는 데 사용할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="52"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="45"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="49"/>
       <source>Cut Mode</source>
       <translation>절삭 모드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="82"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="56"/>
       <source>Climb</source>
       <translation>클라이밍</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="61"/>
       <source>Conventional</source>
       <translation>컨벤셔널</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="69"/>
       <source>Pattern</source>
       <translation>패턴</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="40"/>
       <source>The tool and its settings to be used for this operation</source>
       <translation>이 작업에 사용할 툴 및 설정입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="47"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="58"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
       <source>Coolant mode</source>
       <translation>쿨런트 모드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="102"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
+      <source>The coolant mode to be used for this operation</source>
+      <translation type="unfinished">The coolant mode to be used for this operation</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="52"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
       <translation>절삭 모드는 툴비트의 한쪽 절삭이 결과 파트를 나타내고 다른 쪽은 이미 밀링되었거나 나중에 제거될 것으로 가정합니다. 클라이밍 모드는 회전할 때마다 툴비트가 절삭 안으로 이동하는 것이고, 컨벤셔널 모드는 툴비트의 회전과 툴의 측면 이동이 같은 방향입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="76"/>
       <source>Pattern the tool bit is moved in to clear the material</source>
       <translation>재질을 클리어링하기 위해 툴비트가 이동하는 패턴입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="133"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="83"/>
       <source>ZigZag</source>
       <translation>지그재그</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="143"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
       <source>Spiral</source>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="98"/>
       <source>ZigZagOffset</source>
-      <translation>지그재그오프셋</translation>
+      <translation>지그재그 편위</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="153"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="103"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="158"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="108"/>
       <source>Grid</source>
       <translation>그리드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="163"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
       <source>Triangle</source>
       <translation>삼각형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="171"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="121"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="63"/>
       <source>Angle</source>
       <translation>각도</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="128"/>
       <source>Angle in which the pattern is applied</source>
       <translation>패턴이 적용되는 각도입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
-      <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
-      <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
-      <source>%</source>
-      <translation>%</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="278"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="221"/>
-      <source>Set picked point as start point</source>
-      <translation>선택한 점을 시작점으로 지정</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
-      <source>Material allowance</source>
-      <translation>재질 여유분</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="221"/>
-      <source>The amount of material that should be left by this operation in relation to the target shape</source>
-      <translation>목표 형상에 대해 이 작업이 남겨야 하는 재질의 양입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
-      <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
-      <translation>선택하면 작업이 선택한 기본 지오메트리의 윤곽을 사용하고 모든 홀을 무시합니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
-      <source>Ignore holes</source>
-      <translation>홀 무시</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
-      <source>Specify if this operation uses a starting point</source>
-      <translation>이 작업이 시작점을 사용하는지 지정합니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="271"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="271"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="214"/>
-      <source>Use start point</source>
-      <translation>시작점 사용</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
-      <source>Clear edges</source>
-      <translation>모서리 정리</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
-      <source>Min travel</source>
-      <translation>최소 이동</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
-      <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation>이전 작업에 의해 이미 정리된 가공 영역을 건너뛰려면 선택하십시오</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="209"/>
-      <source>Use rest machining</source>
-      <translation>잔삭 가공 사용</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="59"/>
-      <source>Probe grid points</source>
-      <translation>탐침 그리드 점</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="102"/>
-      <source>Probe</source>
-      <translation>탐침</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="108"/>
-      <source>X offset</source>
-      <translation>X 오프셋</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="122"/>
-      <source>Y offset</source>
-      <translation>Y 오프셋</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
-      <source>File name</source>
-      <translation>파일명</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="139"/>
-      <source>Output</source>
-      <translation>출력</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="152"/>
-      <source>Enter the filename where the probe points should be written</source>
-      <translation>탐침 점이 기록될 파일명을 입력하십시오</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
-      <source>ProbePoints.txt</source>
-      <translation>ProbePoints.txt 파일</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="81"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
-      <source>PLACEHOLDER</source>
-      <translation>자리표시자</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="145"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="96"/>
-      <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
-      <translation>프로파일이 수행되는 방향으로, 시계 방향 또는 반시계 방향입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="121"/>
-      <source>The amount of extra material left by this operation in relation to the target shape</source>
-      <translation>목표 형상에 대해 이 작업이 남기는 추가 재질의 양입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
-      <source>Cut side</source>
-      <translation>절삭 측면</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="77"/>
-      <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if &apos;Use compensation&apos; is checked (the default).</source>
-      <translation>프로파일이 기본 지오메트리 피처의 안쪽 또는 바깥쪽에서 수행될지 지정합니다. &apos;보상 사용&apos;이 선택된 경우(기본값)에만 적용됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="128"/>
-      <source>Number of passes</source>
-      <translation>패스 수</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
-      <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
-      <translation>수행할 패스 수입니다. 2 이상인 경우 &apos;패스 스탭오버&apos;에 0이 아닌 값이 필요합니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="145"/>
-      <source>Pass stepover</source>
-      <translation>패스 스탭오버</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="158"/>
-      <source>If doing multiple passes, the extra offset of each additional pass</source>
-      <translation>여러 패스를 수행할 경우, 각 추가 패스의 추가 오프셋입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="211"/>
-      <source>Check if this operation should use a starting point</source>
-      <translation>이 작업이 시작점을 사용해야 하는지 확인하십시오</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="171"/>
-      <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
-      <translation>이 프로파일 작업이 기본 지오메트리의 홀도 처리해야 하는지 확인하십시오. 발견된 홀은 자동으로 반대 절삭 측면에 오프셋되고 둘레와 반대 방향으로 수행됩니다. 이에는 원통형 홀이 포함되지 않으며, 이는 드릴링될 것으로 가정합니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
-      <source>Process holes</source>
-      <translation>홀 처리</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="181"/>
-      <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by &apos;Cut side&apos;.</source>
-      <translation>선택하면 프로파일 작업이 툴 반경만큼 오프셋됩니다. 오프셋 방향은 &apos;절삭 측면&apos;에 의해 결정됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="191"/>
-      <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</source>
-      <translation>이 프로파일 작업이 일반적으로 드릴링되는 원통형 홀에도 적용되도록 하려면 선택하십시오. 적절한 크기의 드릴이 없거나 홀 수가 툴 교환을 정당화하지 않을 때 유용합니다. 절삭 측면과 방향은 지정된 값에 대해 반전됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="194"/>
-      <source>Process circles</source>
-      <translation>원형 처리</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="201"/>
-      <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
-      <translation>이 프로파일 작업이 기본 지오메트리 형상의 외부 둘레도 처리해야 하는지 확인하십시오</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="184"/>
-      <source>Use Compensation</source>
-      <translation>보상 사용</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
-      <source>Process Perimeter</source>
-      <translation>둘레 처리</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="134"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="196"/>
-      <source>Vertex</source>
-      <translation>정점</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="148"/>
-      <source>End Feature Reference</source>
-      <translation>종료 피처 참조</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
-      <source>Choose what point to use on the first selected feature</source>
-      <translation>첫 번째 선택한 피처에 사용할 점을 선택하십시오</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
-      <source> The tool and its settings to be used for this operation</source>
-      <translation>이 작업에 사용할 툴 및 설정입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
-      <source>Clearing Pattern</source>
-      <translation>정리하기 패턴</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
-      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
-      <translation>면을 정리하기 위한 패턴: 지그재그, 양방향, 단방향 또는 나선형</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
-      <source>Climb or Conventional milling direction</source>
-      <translation>클라이밍 또는 컨벤셔널 밀링 방향</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
-      <source>Rotation angle for angled facing operations</source>
-      <translation>각도 페이싱 작업의 회전 각도입니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="73"/>
       <source>°</source>
       <translation>°</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
-      <source>Reverse</source>
-      <translation>반전</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="157"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
+      <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
+      <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
-      <source>Reverse the cutting direction for the selected pattern</source>
-      <translation>선택한 패턴의 절삭 방향을 반전합니다</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="186"/>
+      <source>The amount of material that should be left by this operation in relation to the target shape</source>
+      <translation>목표 형상에 대해 이 작업이 남겨야 하는 재질의 양입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
-      <source>Pass Extension</source>
-      <translation>패스 확장</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
+      <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
+      <translation>선택하면 작업이 선택한 기본 지오메트리의 윤곽을 사용하고 모든 홀을 무시합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
-      <translation>툴 해제를 위해 절삭을 다각형 경계 너머로 확장하는 거리입니다</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
+      <source>Ignore holes</source>
+      <translation>홀 무시</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
-      <source>Stock Extension</source>
-      <translation>스톡 확장</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
+      <source>Specify if this operation uses a starting point</source>
+      <translation>이 작업이 시작점을 사용하는지 지정합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
-      <source>Extends the boundary in both direction</source>
-      <translation>경계를 양방향으로 확장합니다</translation>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="190"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
+      <source>Use start point</source>
+      <translation>시작점 사용</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
-      <source>Stock To Leave (axial)</source>
-      <translation>잔여 스톡(축방향)</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
+      <source>Clear edges</source>
+      <translation>모서리 정리</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
-      <source>Stock to leave for the operation</source>
-      <translation>작업을 위한 잔여 스톡입니다</translation>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="248"/>
+      <source>Min travel</source>
+      <translation>최소 이동</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="255"/>
+      <source>Check to skip machining regions that have already been cleared by previous operations</source>
+      <translation>이전 작업에 의해 이미 정리된 가공 영역을 건너뛰려면 선택하십시오</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <source>Use rest machining</source>
+      <translation>잔삭 가공 사용</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="20"/>
+      <source>Probe grid points</source>
+      <translation>탐침 그리드 점</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="63"/>
+      <source>Probe</source>
+      <translation>탐침</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="69"/>
+      <source>X offset</source>
+      <translation>X 편위</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="83"/>
+      <source>Y offset</source>
+      <translation>Y 편위</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="106"/>
+      <source>File name</source>
+      <translation>파일명</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="100"/>
+      <source>Output</source>
+      <translation>출력</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="113"/>
+      <source>Enter the filename where the probe points should be written</source>
+      <translation>탐침 점이 기록될 파일명을 입력하십시오</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProbeEdit.ui" line="116"/>
+      <source>ProbePoints.txt</source>
+      <translation>ProbePoints.txt 파일</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="34"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="53"/>
+      <source>PLACEHOLDER</source>
+      <translation>자리표시자</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="49"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="56"/>
+      <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
+      <translation>프로파일이 수행되는 방향으로, 시계 방향 또는 반시계 방향입니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="23"/>
+      <source>Cut side</source>
+      <translation>절삭 측면</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="30"/>
+      <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if &apos;Use compensation&apos; is checked (the default).</source>
+      <translation>프로파일이 기본 지오메트리 피처의 안쪽 또는 바깥쪽에서 수행될지 지정합니다. &apos;보상 사용&apos;이 선택된 경우(기본값)에만 적용됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="179"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
+      <source>Radial stock to leave</source>
+      <translation type="unfinished">Radial stock to leave</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="68"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="204"/>
+      <source>How much stock to leave on the walls for this operation</source>
+      <translation type="unfinished">How much stock to leave on the walls for this operation</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="75"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="193"/>
+      <source>Retract threshold</source>
+      <translation type="unfinished">Retract threshold</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="200"/>
+      <source>Distance which will attempts to avoid unnecessary retractions</source>
+      <translation type="unfinished">Distance which will attempts to avoid unnecessary retractions</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="92"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="210"/>
+      <source>Toggle retract threshold between 0 and tool diameter</source>
+      <translation type="unfinished">Toggle retract threshold between 0 and tool diameter</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="107"/>
+      <source>Number of passes</source>
+      <translation>패스 수</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="120"/>
+      <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
+      <translation>수행할 패스 수입니다. 2 이상인 경우 &apos;패스 스탭오버&apos;에 0이 아닌 값이 필요합니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
+      <source>Pass stepover</source>
+      <translation>패스 스탭오버</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="134"/>
+      <source>If doing multiple passes, the extra offset of each additional pass</source>
+      <translation>여러 패스를 수행할 경우, 각 추가 패스의 추가 오프셋입니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="187"/>
+      <source>Check if this operation should use a starting point</source>
+      <translation>이 작업이 시작점을 사용해야 하는지 확인하십시오</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="197"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="275"/>
+      <source>Set picked point as start point</source>
+      <translation>선택한 점을 시작점으로 지정</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
+      <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
+      <translation>이 프로파일 작업이 기본 지오메트리의 홀도 처리해야 하는지 확인하십시오. 발견된 홀은 자동으로 반대 절삭 측면에 오프셋되고 둘레와 반대 방향으로 수행됩니다. 이에는 원통형 홀이 포함되지 않으며, 이는 드릴링될 것으로 가정합니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
+      <source>Process holes</source>
+      <translation>홀 처리</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
+      <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by &apos;Cut side&apos;.</source>
+      <translation>선택하면 프로파일 작업이 툴 반경만큼 오프셋됩니다. 오프셋 방향은 &apos;절삭 측면&apos;에 의해 결정됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
+      <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</source>
+      <translation>이 프로파일 작업이 일반적으로 드릴링되는 원통형 홀에도 적용되도록 하려면 선택하십시오. 적절한 크기의 드릴이 없거나 홀 수가 툴 교환을 정당화하지 않을 때 유용합니다. 절삭 측면과 방향은 지정된 값에 대해 반전됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
+      <source>Process circles</source>
+      <translation>원형 처리</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
+      <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
+      <translation>이 프로파일 작업이 기본 지오메트리 형상의 외부 둘레도 처리해야 하는지 확인하십시오</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
+      <source>Use Compensation</source>
+      <translation>보상 사용</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
+      <source>Process Perimeter</source>
+      <translation>둘레 처리</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="88"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="150"/>
+      <source>Vertex</source>
+      <translation>정점</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
+      <source>End Feature Reference</source>
+      <translation>종료 피처 참조</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="51"/>
+      <source>Choose what point to use on the first selected feature</source>
+      <translation>첫 번째 선택한 피처에 사용할 점을 선택하십시오</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="32"/>
       <source>Start feature reference</source>
       <translation>시작 피처 참조</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="104"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="176"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="58"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="130"/>
       <source>Center of mass</source>
       <translation>무게 중심</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="109"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="181"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="63"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="135"/>
       <source>Center of bounding box</source>
       <translation>바운딩 박스 중심</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="114"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="186"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="68"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="140"/>
       <source>Lowest point</source>
       <translation>최저점</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="119"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="191"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="73"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="145"/>
       <source>Highest point</source>
       <translation>최고점</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="124"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
       <source>Long edge</source>
       <translation>긴 모서리</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="129"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="83"/>
       <source>Short edge</source>
       <translation>짧은 모서리</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="123"/>
       <source>Choose what point to use on the second selected feature</source>
       <translation>두 번째 선택한 피처에 사용할 점을 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="229"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="183"/>
       <source>No base geometry Selected</source>
       <translation>선택된 기본 지오메트리 없음</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="235"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="189"/>
       <source>No base geometry selected</source>
       <translation>선택된 기본 지오메트리 없음</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="248"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="202"/>
       <source>Currently using custom point inputs in the property view of the data tab</source>
       <translation>현재 데이터 탭의 속성 보기에서 사용자 정의 점 입력을 사용하고 있습니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="251"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="205"/>
       <source>Currently using custom point inputs available in the property view of the data tab</source>
       <translation>현재 데이터 탭의 속성 보기에서 사용 가능한 사용자 정의 점 입력을 사용하고 있습니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="282"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="236"/>
       <source>Extend path start</source>
       <translation>경로 시작 확장</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="359"/>
-      <source>Set the cut pattern for the operation</source>
-      <translation>작업의 절삭 패턴을 지정합니다</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="363"/>
-      <source>Directional</source>
-      <translation>단방향</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="368"/>
-      <source>Bidirectional</source>
-      <translation>양방향</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="306"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="62"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="51"/>
       <source>Layer mode</source>
       <translation>레이어 모드</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="376"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="313"/>
+      <source>Set the cut pattern for the operation</source>
+      <translation>작업의 절삭 패턴을 지정합니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
+      <source>Directional</source>
+      <translation>단방향</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="322"/>
+      <source>Bidirectional</source>
+      <translation>양방향</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSlotEdit.ui" line="330"/>
       <source>Path orientation</source>
       <translation>경로 방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="383"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="337"/>
       <source>Choose the path orientation with regard to the features selected</source>
       <translation>선택한 피처에 대한 경로 방향을 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="387"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="341"/>
       <source>Start to end</source>
       <translation>시작에서 끝</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="298"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="252"/>
       <source>Positive extends the beginning of the path, negative shortens</source>
       <translation>양수는 경로 시작을 확장하고, 음수는 단축합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="308"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="262"/>
       <source>Extend Path End</source>
       <translation>경로 끝 확장</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="324"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="278"/>
       <source>Positive extends the end of the path, negative shortens</source>
       <translation>양수는 경로 끝을 확장하고, 음수는 단축합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="74"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="58"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
       <translation>깊이에서 단일 패스로 작업을 완료하거나, 최종 깊이까지 여러 패스로 수행합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="346"/>
       <source>Perpendicular</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="400"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="354"/>
       <source>Enable to reverse the cut direction of the slot path</source>
       <translation>슬롯 경로의 절삭 방향을 반전하려면 활성화하십시오</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="403"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>Reverse cut direction</source>
       <translation>절삭 방향 반전</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="30"/>
       <source>Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</source>
       <translation>사용할 알고리즘을 선택하십시오: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; 또는 &apos;Experimental&apos;(OCL 미사용).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="86"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="23"/>
       <source>Bounding box</source>
       <translation>바운딩 박스</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="55"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="30"/>
       <source>Select the overall boundary for the operation</source>
       <translation>작업의 전체 경계를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="37"/>
       <source>Scan type</source>
       <translation>스캔 유형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="44"/>
       <source>Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</source>
       <translation>플래너: 평면 3D 표면 스캔. 로테이셔널: 4축 회전 스캔.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="124"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="81"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="65"/>
       <source>Cut pattern</source>
       <translation>절삭 패턴</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="93"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="72"/>
       <source>Set the geometric clearing pattern to use for the operation</source>
       <translation>작업에 사용할 기하학적 정리하기 패턴을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="79"/>
       <source>Profile edges</source>
       <translation>모서리 프로파일</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="86"/>
       <source>Profile the edges of the selection</source>
       <translation>선택 영역의 모서리를 프로파일합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="93"/>
       <source>Avoid last X faces</source>
       <translation>마지막 X개 면 회피</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="100"/>
       <source>Avoid cutting the last &apos;n&apos; faces in the base geometry list of selected faces</source>
       <translation>선택한 면의 기본 지오메트리 목록에서 마지막 &apos;n&apos;개 면의 절삭을 회피합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="154"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="107"/>
       <source>Bounding box extra offset X, Y</source>
       <translation>바운딩 박스 추가 오프셋 X, Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="169"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="122"/>
       <source>Additional offset to the selected bounding box along the X axis</source>
       <translation>선택한 바운딩 박스의 X축을 따른 추가 오프셋입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="179"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="132"/>
       <source>Additional offset to the selected bounding box along the Y axis</source>
       <translation>선택한 바운딩 박스의 Y축을 따른 추가 오프셋입니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="144"/>
       <source>Drop cutter direction</source>
       <translation>드롭 커터 방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>드롭커터 선이 이 축에 평행하게 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="156"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="212"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="113"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="165"/>
       <source>Set the Z-axis depth offset from the target surface</source>
       <translation>목표 표면으로부터의 Z축 깊이 오프셋을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="268"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="221"/>
       <source>Set to true if specifying a start point</source>
       <translation>시작점을 지정하려면 활성화하십시오</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="231"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="281"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="188"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="234"/>
       <source>Optimize linear paths</source>
       <translation>선형 경로 최적화</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="288"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="241"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected faces</source>
       <translation>활성화하면 커터가 모델 또는 선택한 면의 경계 내부에 유지됩니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="291"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
       <source>Boundary enforcement</source>
       <translation>경계 강제 적용</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="304"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
       <source>Optimize stepover transitions</source>
       <translation>스탭오버 전환 최적화</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="201"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="258"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="158"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="211"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>샘플링 해상도를 설정합니다. 값이 작을수록 처리 시간이 빠르게 증가합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="211"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="168"/>
       <source>Min Sample interval</source>
       <translation>최소 샘플 간격</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="218"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="175"/>
       <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>최소 샘플링 해상도를 설정합니다. 값이 작을수록 처리 시간이 빠르게 증가합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="228"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="278"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="185"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="231"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>선형 경로(공선 점)의 최적화를 활성화합니다. G-code 출력에서 불필요한 공선 점을 제거합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="301"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="254"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
       <translation>각 스탭오버 경로 간 전환과 경로 내 구간의 개별 최적화를 활성화합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="158"/>
       <source>Depth offset</source>
-      <translation>깊이 오프셋</translation>
+      <translation>깊이 편위</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="106"/>
       <source>Boundary adjustment</source>
       <translation>경계 조정</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="135"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="123"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
       <source>Step over</source>
       <translation>스탭오버</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="179"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
@@ -2289,8 +2166,8 @@ A step over of 100% results in no overlap between two different cycles.</source>
 100%의 스탭 오버는 두 사이클 사이에 겹침이 없음을 의미합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="251"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="151"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="204"/>
       <source>Sample interval</source>
       <translation>샘플 간격</translation>
     </message>
@@ -2344,11 +2221,11 @@ Default: OpToolDiameter</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="103"/>
       <source>Offset</source>
-      <translation>편차</translation>
+      <translation>편위</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="113"/>
       <location filename="../panels/PageHeightsEdit.ui" line="62"/>
+      <location filename="../panels/SetupGlobal.ui" line="113"/>
       <source>Clearance</source>
       <translation>여유거리</translation>
     </message>
@@ -2419,119 +2296,114 @@ Default: 3 mm</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="53"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
       <source>Thread</source>
       <translation>나사</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="59"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="26"/>
       <source>Orientation</source>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="73"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="40"/>
       <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
       <translation>유형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="86"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="53"/>
       <source>Fit</source>
       <translation>적합</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="106"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="73"/>
       <source>Major diameter</source>
       <translation>외경</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="84"/>
       <source>Minor diameter</source>
       <translation>내경</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="150"/>
       <source>Lead in/out</source>
       <translation>리드 인/아웃</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="95"/>
       <source>Pitch</source>
       <translation>피치</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
-      <source>The tool and its settings to be used for this operation.</source>
-      <translation>이 작업에 사용할 툴 및 설정입니다.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="155"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="110"/>
       <source>TPI</source>
       <translation>인치당 나사산 수(TPI)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="165"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="171"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="126"/>
       <source>Passes</source>
       <translation>패스</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="25"/>
       <source>Discretization Deflection</source>
       <translation>이산화 편차</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="79"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="32"/>
       <source>This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</source>
       <translation>이 값은 호를 세그먼트로 이산화하는 데 사용됩니다. 값이 작을수록 G-code가 커집니다. 값이 클수록 중앙선 경로에 원치 않는 세그먼트가 발생할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
       <source>Filter colinear lines</source>
       <translation>공선 선 필터</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="111"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="64"/>
       <source>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
       <translation>보로노이 다이어그램에서 공선 세그먼트가 필터링되는 강도를 설정합니다. 유효한 값은 0-90도입니다(값이 클수록 더 많이 필터링). 기본값 = 10</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="77"/>
       <source>Finishing pass Z offset</source>
       <translation>마무리 패스 Z 오프셋</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="131"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="84"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
       <translation>마무리 패스 실행을 위한 엔드밀 오프셋입니다. &quot;퍼지 스킨&quot; 또는 기타 아티팩트를 제거하려면 -0.2 mm 같은 작은 값을 사용하십시오.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="147"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="100"/>
       <source>After carving, travel again the path to remove artifacts and imperfections</source>
       <translation>카빙 후 아티팩트와 불완전한 부분을 제거하기 위해 경로를 다시 이동합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="106"/>
       <source>Finishing pass</source>
       <translation>마무리 패스</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="160"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="113"/>
       <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies.</source>
       <translation>인접 모서리로 이동할 때 엔드밀을 올리지 않도록 경로를 최적화합니다. 서브밀리미터 부정확성이 발생할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="163"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="116"/>
       <source>Optimize movements</source>
       <translation>이동 최적화</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="23"/>
       <source>Algorithm</source>
       <translation>알고리즘</translation>
     </message>
@@ -2588,7 +2460,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length offset</source>
-      <translation>길이 오프셋</translation>
+      <translation>길이 편위</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -2694,164 +2566,209 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation>태그 생성</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="23"/>
       <source>Start at vertex</source>
       <translation>정점에서 시작</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="30"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>각인이 시작되어야 하는 기본 형상 문자열의 정점 번호를 지정합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
-      <source>Tool controller that supplies the cutter geometry, feed and speed for this operation.</source>
-      <translation type="unfinished">Tool controller that supplies the cutter geometry, feed and speed for this operation.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="39"/>
-      <source>Coolant mode emitted at the start of the operation.</source>
-      <translation type="unfinished">Coolant mode emitted at the start of the operation.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
-      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation type="unfinished">Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="62"/>
-      <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="67"/>
-      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation type="unfinished">Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="72"/>
-      <source>Feed Mode</source>
-      <translation type="unfinished">Feed Mode</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="77"/>
-      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation type="unfinished">How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="82"/>
-      <source>Start X</source>
-      <translation type="unfinished">Start X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="87"/>
-      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
-      <translation type="unfinished">Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
-      <source>Stop X</source>
-      <translation type="unfinished">Stop X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="97"/>
-      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
-      <translation type="unfinished">Axial stop position along the rotary axis (mm). Must be greater than Start X.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="102"/>
-      <source>Start Angle</source>
-      <translation type="unfinished">Start Angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="107"/>
-      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
-      <translation type="unfinished">Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="112"/>
-      <source>Stop Angle</source>
-      <translation type="unfinished">Stop Angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="117"/>
-      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
-      <translation type="unfinished">Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="122"/>
-      <source>Step Over</source>
-      <translation>스탭오버</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
-      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation type="unfinished">Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="132"/>
-      <source>Angular Resolution</source>
-      <translation type="unfinished">Angular Resolution</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="137"/>
-      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
-      <translation type="unfinished">Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="142"/>
-      <source>Radial Stock To Leave</source>
-      <translation type="unfinished">Radial Stock To Leave</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="147"/>
-      <source>Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
-      <translation type="unfinished">Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="152"/>
-      <source>Max Feed</source>
-      <translation type="unfinished">Max Feed</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="157"/>
-      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
-      <translation type="unfinished">Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
-      <source>Restrict to Selected Faces</source>
-      <translation type="unfinished">Restrict to Selected Faces</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="163"/>
-      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
-      <translation type="unfinished">When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="23"/>
       <source>G-code source</source>
       <translation type="unfinished">G-code source</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="79"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="30"/>
       <source>Select source of the G-code</source>
       <translation type="unfinished">Select source of the G-code</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="83"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="34"/>
       <source>Text</source>
       <translation>글자</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="88"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="39"/>
       <source>File</source>
       <translation>파일</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="118"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="69"/>
       <source>Enter the filename containing the G-code</source>
       <translation type="unfinished">Enter the filename containing the G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
+      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
+      <translation type="unfinished">Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
+      <source>Cut Pattern</source>
+      <translation type="unfinished">Cut Pattern</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
+      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
+      <translation type="unfinished">Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
+      <source>Feed Mode</source>
+      <translation type="unfinished">Feed Mode</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
+      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
+      <translation type="unfinished">How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
+      <source>Start X</source>
+      <translation type="unfinished">Start X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
+      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
+      <translation type="unfinished">Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
+      <source>Stop X</source>
+      <translation type="unfinished">Stop X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
+      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
+      <translation type="unfinished">Axial stop position along the rotary axis (mm). Must be greater than Start X.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
+      <source>Start Angle</source>
+      <translation type="unfinished">Start Angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
+      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
+      <translation type="unfinished">Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
+      <source>Stop Angle</source>
+      <translation type="unfinished">Stop Angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
+      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
+      <translation type="unfinished">Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
+      <source>Step Over</source>
+      <translation>스탭오버</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
+      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
+      <translation type="unfinished">Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
+      <source>Angular Resolution</source>
+      <translation type="unfinished">Angular Resolution</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
+      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
+      <translation type="unfinished">Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
+      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
+      <translation type="unfinished">How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
+      <source>Max Feed</source>
+      <translation type="unfinished">Max Feed</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
+      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
+      <translation type="unfinished">Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
+      <source>Restrict to Selected Faces</source>
+      <translation type="unfinished">Restrict to Selected Faces</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
+      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
+      <translation type="unfinished">When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
+      <source>Clearing Pattern</source>
+      <translation>정리하기 패턴</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
+      <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
+      <translation>면을 정리하기 위한 패턴: 지그재그, 양방향, 단방향 또는 나선형</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="56"/>
+      <source>Climb or Conventional milling direction</source>
+      <translation>클라이밍 또는 컨벤셔널 밀링 방향</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
+      <source>Rotation angle for angled facing operations</source>
+      <translation>각도 페이싱 작업의 회전 각도입니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
+      <source>Reverse</source>
+      <translation>반전</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
+      <source>Reverse the cutting direction for the selected pattern</source>
+      <translation>선택한 패턴의 절삭 방향을 반전합니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
+      <source>Pass Extension</source>
+      <translation>패스 확장</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
+      <translation>툴 해제를 위해 절삭을 다각형 경계 너머로 확장하는 거리입니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="154"/>
+      <source>Stock Extension</source>
+      <translation>스톡 확장</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="161"/>
+      <source>Extends the boundary in both direction</source>
+      <translation>경계를 양방향으로 확장합니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="174"/>
+      <source>Axial stock to leave</source>
+      <translation type="unfinished">Axial stock to leave</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
+      <source>How much stock to leave on the floor for this operation</source>
+      <translation type="unfinished">How much stock to leave on the floor for this operation</translation>
     </message>
   </context>
   <context>
@@ -3225,6 +3142,20 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>G-code 쓰기 전에 편집기 표시</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="436"/>
+      <source>Maximum lines of G-code to use highlighter</source>
+      <translation type="unfinished">Maximum lines of G-code to use highlighter</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="443"/>
+      <source>Limits lines of G-code which will allow to use highlighter.
+Decrease value if gets perfomance problem in Inspect or export G-code windows.
+Set to zero to disable G-code highlighter.</source>
+      <translation type="unfinished">Limits lines of G-code which will allow to use highlighter.
+Decrease value if gets perfomance problem in Inspect or export G-code windows.
+Set to zero to disable G-code highlighter.</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
       <translation>새 형상의 기본 선 두께입니다</translation>
@@ -3379,8 +3310,8 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>축 매핑 드레스업</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
       <source>Radius</source>
       <translation>반경</translation>
     </message>
@@ -3563,7 +3494,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="37"/>
       <source>Offset distance</source>
-      <translation>오프셋 거리</translation>
+      <translation>편위 거리</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="44"/>
@@ -3749,29 +3680,39 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
-      <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
+      <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>경로 시뮬레이터</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy</source>
       <translation>정확도</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate/resume simulation</source>
       <translation>시뮬레이션 활성화/재개</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
+      <source>Set default state in accordance with operations visibility</source>
+      <translation type="unfinished">Set default state in accordance with operations visibility</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
+      <source>Follow operations visibility</source>
+      <translation type="unfinished">Follow operations visibility</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3784,8 +3725,8 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>정지</translation>
     </message>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="58"/>
       <source>Play</source>
       <translation>재생</translation>
     </message>
@@ -3849,16 +3790,6 @@ See the file save policy below on how to deal with name conflicts.</source>
       <source>New CAMotics File</source>
       <translation>새 CAMotics 파일</translation>
     </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
-      <source>Set default state in accordance with operations visibility</source>
-      <translation type="unfinished">Set default state in accordance with operations visibility</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
-      <source>Follow operations visibility</source>
-      <translation type="unfinished">Follow operations visibility</translation>
-    </message>
   </context>
   <context>
     <name>pathEdit</name>
@@ -3890,7 +3821,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="988"/>
       <location filename="../panels/PathEdit.ui" line="1438"/>
-      <location filename="../panels/PathEdit.ui" line="1657"/>
+      <location filename="../panels/PathEdit.ui" line="1687"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
@@ -4395,7 +4326,7 @@ Default: OpToolDiameter</source>
     <message>
       <location filename="../panels/PathEdit.ui" line="824"/>
       <source>Offset</source>
-      <translation>편차</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="834"/>
@@ -4418,6 +4349,7 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="887"/>
+      <location filename="../panels/PathEdit.ui" line="1603"/>
       <source>Coolant</source>
       <translation>쿨런트</translation>
     </message>
@@ -4519,17 +4451,42 @@ Default: 3 mm</source>
       <translation>작업 계획</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1677"/>
+      <location filename="../panels/PathEdit.ui" line="1580"/>
+      <source>#</source>
+      <translation type="unfinished">#</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1585"/>
+      <source>Operation</source>
+      <translation>작업</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1590"/>
+      <source>Tool</source>
+      <translation>도구</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1598"/>
+      <source>Tool Controller</source>
+      <translation>툴 컨트롤러</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1608"/>
+      <source>Time</source>
+      <translation>시간</translation>
+    </message>
+    <message>
+      <location filename="../panels/PathEdit.ui" line="1707"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1688"/>
+      <location filename="../panels/PathEdit.ui" line="1718"/>
       <source>Advanced</source>
       <translation>고급</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="1698"/>
+      <location filename="../panels/PathEdit.ui" line="1728"/>
       <source>Operation Defaults</source>
       <translation type="unfinished">Operation Defaults</translation>
     </message>
@@ -4603,64 +4560,64 @@ Default: 3 mm</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="74"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="75"/>
       <source>Drag Slider to Simulate</source>
       <translation>슬라이더를 드래그하여 시뮬레이션</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="84"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="85"/>
       <source>Save Project As</source>
       <translation>프로젝트를 다른 이름으로 저장</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="86"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="87"/>
       <source>CAMotics Project (*.camotics)</source>
       <translation>CAMotics 프로젝트 (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="798"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="812"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H(수평)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="801"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="815"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V(수직)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="804"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="818"/>
       <source>Tool number</source>
       <translation>툴 번호</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="807"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="821"/>
       <source>Horizontal feedrate</source>
       <translation>수평 피드 속도</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="810"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="824"/>
       <source>Vertical feedrate</source>
       <translation>수직 피드 속도</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="813"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="827"/>
       <source>Spindle RPM</source>
       <translation>스핀들 RPM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="703"/>
+      <location filename="../../../Path/Op/Util.py" line="704"/>
       <source>Selected tool is not a drill</source>
       <translation>선택한 툴은 드릴이 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="710"/>
+      <location filename="../../../Path/Op/Util.py" line="711"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>잘못된 절삭날 각도 %.2f, 0° 초과 180° 이하여야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="720"/>
+      <location filename="../../../Path/Op/Util.py" line="721"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>절삭날 각도 (%.2f)로 인해 툴팁 길이가 음수가 됩니다</translation>
     </message>
@@ -4688,37 +4645,37 @@ Default: 3 mm</source>
   <context>
     <name>PathGeom</name>
     <message>
-      <location filename="../../../Path/Geom.py" line="192"/>
+      <location filename="../../../Path/Geom.py" line="206"/>
       <source>face %s not handled, assuming not vertical</source>
       <translation>면 %s이(가) 처리되지 않아 수직이 아닌 것으로 가정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="207"/>
+      <location filename="../../../Path/Geom.py" line="221"/>
       <source>edge %s not handled, assuming not vertical</source>
       <translation>모서리 %s이(가) 처리되지 않아 수직이 아닌 것으로 가정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="211"/>
+      <location filename="../../../Path/Geom.py" line="225"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical(%s)은(는) 지원되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="241"/>
+      <location filename="../../../Path/Geom.py" line="255"/>
       <source>isHorizontal(%s) not supported</source>
       <translation>isHorizontal(%s)은(는) 지원되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="747"/>
+      <location filename="../../../Path/Geom.py" line="761"/>
       <source>%s not supported for flipping</source>
       <translation>%s은(는) 뒤집기에 지원되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="804"/>
+      <location filename="../../../Path/Geom.py" line="818"/>
       <source>Zero working area to process. Check your selection and settings.</source>
       <translation>처리할 작업 영역이 없습니다. 선택 및 설정을 확인하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="874"/>
+      <location filename="../../../Path/Geom.py" line="888"/>
       <source>Can not restore order of faces.</source>
       <translation>면의 순서를 복원할 수 없습니다.</translation>
     </message>
@@ -4734,6 +4691,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="126"/>
       <source>Default speed for horizontal rapid moves.</source>
+      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) str = Z|R for G98/G99, for drill cycles float = field(default=None) int = field(default=0) int = field(default=None)</extracomment>
       <translation>수평 급송 이동의 기본 속도입니다.</translation>
     </message>
     <message>
@@ -4795,8 +4753,8 @@ Default: 3 mm</source>
       <translation type="unfinished">Default collision avoidance strategy for new operations.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="936"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="936"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>수정할 기본 경로입니다</translation>
@@ -4925,9 +4883,9 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="61"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="49"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="77"/>
       <source>The base toolpath to modify</source>
       <translation>수정할 기본 툴패스입니다</translation>
     </message>
@@ -4947,100 +4905,108 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <translation>코너 동작 중 올리는 높이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="83"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
       <source>Modify lead in to toolpath</source>
       <translation>툴패스로의 리드 인을 수정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="89"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="85"/>
       <source>Modify lead out from toolpath</source>
       <translation>툴패스에서의 리드 아웃을 수정합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="215"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="431"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="93"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="357"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>불필요한 리트렉트를 피하려는 거리를 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="297"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="99"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="225"/>
       <source>The style of motion into the toolpath</source>
       <translation>툴패스로의 이동 스타일입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="314"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="106"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="242"/>
       <source>The style of motion out of the toolpath</source>
       <translation>툴패스에서의 이동 스타일입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="123"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="330"/>
-      <source>Angle of the Lead-In (1..90)</source>
-      <translation>리드 인의 각도입니다 (1..90)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="129"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="338"/>
-      <source>Angle of the Lead-Out (1..90)</source>
-      <translation>리드 아웃의 각도입니다 (1..90)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="135"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="367"/>
-      <source>Determine length of the Lead-In</source>
-      <translation>리드 인의 길이를 결정합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="141"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="382"/>
-      <source>Determine length of the Lead-Out</source>
-      <translation>리드 아웃의 길이를 결정합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="147"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="400"/>
-      <source>Invert Lead-In direction</source>
-      <translation>리드 인 방향 반전</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="153"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="407"/>
-      <source>Invert Lead-Out direction</source>
-      <translation>리드 아웃 방향 반전</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="159"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="414"/>
-      <source>Move start point</source>
-      <translation>시작점 이동</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="165"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="421"/>
-      <source>Move end point</source>
-      <translation>끝점 이동</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="174"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="446"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="170"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="374"/>
       <source>Extends Lead-in distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>리드 인 거리를 확장합니다.
 호, 선, 수직, 접선 스타일에만 해당됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="183"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="459"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="179"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="387"/>
       <source>Extends Lead-out distance
 Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>리드 아웃 거리를 확장합니다.
 호, 선, 수직, 접선 스타일에만 해당됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="117"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="258"/>
+      <source>Angle of the Lead-In (1..90)</source>
+      <translation>리드 인의 각도입니다 (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="266"/>
+      <source>Angle of the Lead-Out (1..90)</source>
+      <translation>리드 아웃의 각도입니다 (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="131"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="293"/>
+      <source>Determine length of the Lead-In</source>
+      <translation>리드 인의 길이를 결정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="119"/>
+      <source>Angle of the Lead-In</source>
+      <translation type="unfinished">Angle of the Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="125"/>
+      <source>Angle of the Lead-Out</source>
+      <translation type="unfinished">Angle of the Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="137"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="308"/>
+      <source>Determine length of the Lead-Out</source>
+      <translation>리드 아웃의 길이를 결정합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="143"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="326"/>
+      <source>Invert Lead-In direction</source>
+      <translation>리드 인 방향 반전</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="149"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="333"/>
+      <source>Invert Lead-Out direction</source>
+      <translation>리드 아웃 방향 반전</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="155"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="340"/>
+      <source>Move start point</source>
+      <translation>시작점 이동</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="161"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="347"/>
+      <source>Move end point</source>
+      <translation>끝점 이동</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="113"/>
       <source>Perform plunges with G0</source>
       <translation>G0으로 플런지를 수행합니다</translation>
     </message>
@@ -5070,6 +5036,12 @@ Ramp Method 3: Ramp down along the path until traveled half of the Z distance, c
 Above this depth ramps are not generated, but motion commands are passed through as is.</source>
       <translation type="unfinished">The depth where the ramp dressup is enabled.
 Above this depth ramps are not generated, but motion commands are passed through as is.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="97"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="182"/>
+      <source>Calculate ramp angle from vertical plane</source>
+      <translation type="unfinished">Calculate ramp angle from vertical plane</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="80"/>
@@ -5190,8 +5162,8 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>작업의 모든 툴 컨트롤러 모음입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="296"/>
-      <location filename="../../../Path/Op/Base.py" line="569"/>
+      <location filename="../../../Path/Op/Base.py" line="297"/>
+      <location filename="../../../Path/Op/Base.py" line="570"/>
       <location filename="../../../Path/Main/Job.py" line="543"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>작업 사이클 시간 추정</translation>
@@ -5237,32 +5209,32 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>양수 Z 방향의 파트 바운딩 박스에서의 추가 여유분입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="242"/>
+      <location filename="../../../Path/Main/Stock.py" line="264"/>
       <source>Length of this stock box</source>
       <translation>이 스톡 박스의 길이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="248"/>
+      <location filename="../../../Path/Main/Stock.py" line="270"/>
       <source>Width of this stock box</source>
       <translation>이 스톡 박스의 너비입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="254"/>
+      <location filename="../../../Path/Main/Stock.py" line="276"/>
       <source>Height of this stock box</source>
       <translation>이 스톡 박스의 높이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="294"/>
+      <location filename="../../../Path/Main/Stock.py" line="316"/>
       <source>Radius of this stock cylinder</source>
       <translation>이 스톡 실린더의 반경입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="300"/>
+      <location filename="../../../Path/Main/Stock.py" line="322"/>
       <source>Height of this stock cylinder</source>
       <translation>이 스톡 실린더의 높이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="336"/>
+      <location filename="../../../Path/Main/Stock.py" line="358"/>
       <source>Internal representation of stock type</source>
       <translation>스톡 유형의 내부 표현입니다</translation>
     </message>
@@ -5272,19 +5244,18 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>픽스처 오프셋 번호</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="270"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
+      <location filename="../../../Path/Op/Base.py" line="271"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>False로 설정하면 작업이 코드를 생성하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1547"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1549"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>툴이 절삭해야 하는 선택한 면의 측면입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1556"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1558"/>
       <source>Type of adaptive operation</source>
       <translation>어댑티브 작업의 유형입니다</translation>
     </message>
@@ -5295,84 +5266,84 @@ Above this depth ramps are not generated, but motion commands are passed through
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="155"/>
-      <location filename="../../../Path/Op/Helix.py" line="537"/>
+      <location filename="../../../Path/Op/Helix.py" line="557"/>
       <source>The direction of the circular cuts</source>
       <translation>원형 절삭의 방향입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1576"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1961"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>각 패스에서 스탭오버할 커터 직경의 백분율입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="176"/>
-      <source>Offset inner radius
+      <source>Set how much stock to leave on the inner wall for the operation.
 Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
 For External profile - profile radius</source>
-      <translation>내부 반경 오프셋입니다.
-내부 프로파일의 기본 내부 반경은 툴 반경이며, (-툴반경)보다 작을 수 없습니다.
-외부 프로파일의 경우 - 프로파일 반경입니다</translation>
+      <translation type="unfinished">Set how much stock to leave on the inner wall for the operation.
+Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
+For External profile - profile radius</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="185"/>
-      <location filename="../../../Path/Op/Helix.py" line="385"/>
-      <source>Extra offset from the profile</source>
-      <translation>프로파일에서의 추가 오프셋입니다</translation>
+      <location filename="../../../Path/Op/Helix.py" line="405"/>
+      <source>Set how much stock to leave on the outer wall for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the outer wall for the operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="194"/>
-      <location filename="../../../Path/Op/Helix.py" line="440"/>
+      <location filename="../../../Path/Op/Helix.py" line="460"/>
       <source>Cone angle of the Helix</source>
       <translation>나선의 콘 각도입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="203"/>
-      <location filename="../../../Path/Op/Helix.py" line="398"/>
+      <location filename="../../../Path/Op/Helix.py" line="418"/>
       <source>Create only one Helix</source>
       <translation>하나의 나선만 생성합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="212"/>
-      <location filename="../../../Path/Op/Helix.py" line="408"/>
+      <location filename="../../../Path/Op/Helix.py" line="428"/>
       <source>Create spiral mill</source>
       <translation>나선형 밀을 생성합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="221"/>
-      <location filename="../../../Path/Op/Helix.py" line="418"/>
+      <location filename="../../../Path/Op/Helix.py" line="438"/>
       <source>Create finish full circle for helix</source>
       <translation>나선의 마무리 전체 원을 생성합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="230"/>
-      <location filename="../../../Path/Op/Helix.py" line="429"/>
+      <location filename="../../../Path/Op/Helix.py" line="449"/>
       <source>Create finish full circle for spiral</source>
       <translation>스파이럴의 마무리 전체 원을 생성합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="239"/>
-      <location filename="../../../Path/Op/Helix.py" line="450"/>
+      <location filename="../../../Path/Op/Helix.py" line="470"/>
       <source>Side of profile on which create Path</source>
       <translation>경로를 생성할 프로파일의 측면입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="248"/>
-      <location filename="../../../Path/Op/Helix.py" line="461"/>
+      <location filename="../../../Path/Op/Helix.py" line="481"/>
       <source>Move from wall while retract if there is free space</source>
       <translation>여유 공간이 있으면 리트렉트 중 벽에서 이동합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="257"/>
-      <location filename="../../../Path/Op/Helix.py" line="472"/>
+      <location filename="../../../Path/Op/Helix.py" line="492"/>
       <source>Override arcs feed rate to get constant tool cutting speed</source>
       <translation>일정한 툴 절삭 속도를 얻기 위해 호의 피드 속도를 재정의합니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="267"/>
-      <location filename="../../../Path/Op/Helix.py" line="483"/>
+      <location filename="../../../Path/Op/Helix.py" line="503"/>
       <source>Replace profiles diameter to get identical size of the holes
 This value can not be less than tool diameter</source>
       <translation>동일한 크기의 홀을 얻기 위해 프로파일 직경을 대체합니다.
@@ -5380,7 +5351,7 @@ This value can not be less than tool diameter</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="278"/>
-      <location filename="../../../Path/Op/Helix.py" line="495"/>
+      <location filename="../../../Path/Op/Helix.py" line="515"/>
       <source>Determine position of the start and end point
 Angle 0 means start and end points located along axis X
 Set -1 to calculate optimal angle automatically</source>
@@ -5390,8 +5361,8 @@ Set -1 to calculate optimal angle automatically</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
-      <location filename="../../../Path/Op/Helix.py" line="509"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
+      <location filename="../../../Path/Op/Helix.py" line="529"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1688"/>
       <source>The maximum allowable descent in a single revolution of the helix
 Set to zero to disable limitation by pitch</source>
       <translation>나선의 한 회전에서 허용되는 최대 하강량입니다.
@@ -5399,33 +5370,39 @@ Set to zero to disable limitation by pitch</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="298"/>
-      <location filename="../../../Path/Op/Helix.py" line="527"/>
+      <location filename="../../../Path/Op/Helix.py" line="547"/>
       <source>The maximum allowable ramp entry angle
 Set to zero to disable limitation by ramp angle</source>
       <translation>최대 허용 램프 진입 각도입니다.
 0으로 설정하면 램프 각도 제한을 비활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="372"/>
-      <source>Offset inner radius
-Default inner radius is Tool radius and can not be less than (-ToolRadius)
-For External profile - profile radius</source>
-      <translation>내부 반경 오프셋입니다.
-기본 내부 반경은 툴 반경이며, (-툴반경)보다 작을 수 없습니다.
-외부 프로파일의 경우 - 프로파일 반경입니다.</translation>
+      <location filename="../../../Path/Op/Helix.py" line="307"/>
+      <location filename="../../../Path/Op/Helix.py" line="575"/>
+      <source>Allows to process cone helix from bottom to top</source>
+      <translation type="unfinished">Allows to process cone helix from bottom to top</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
+      <location filename="../../../Path/Op/Helix.py" line="392"/>
+      <source>Set how much stock to leave on the inner wall for the operation.
+Default inner radius is Tool radius and can not be less than (-ToolRadius)
+For External profile - profile radius</source>
+      <translation type="unfinished">Set how much stock to leave on the inner wall for the operation.
+Default inner radius is Tool radius and can not be less than (-ToolRadius)
+For External profile - profile radius</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1585"/>
       <source>Lift distance for rapid moves</source>
       <translation>급송 이동을 위한 리프트 거리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1594"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>점 간 직선 거리와 비교한 툴 다운 유지 경로의 최대 길이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1567"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5434,94 +5411,84 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 큰 값(오른쪽으로 갈수록)은 계산 속도가 빠르고, 작은 값(왼쪽으로 갈수록)은 더 정확한 툴패스가 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
-      <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
-      <translation>XY 평면에 남길 스톡의 양입니다(예: 마무리 작업용)</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="1612"/>
+      <source>Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation type="unfinished">Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>Z축을 따라 남길 스톡의 양입니다(예: 마무리 작업용). 이 속성은 ModelAwareExperiment가 활성화된 경우에만 사용됩니다.</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="1621"/>
+      <source>Force plunging into material inside and clearing towards the edges</source>
+      <translation>안쪽 재질로 플런지를 강제하고 모서리 방향으로 정리합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1630"/>
+      <source>To take a finishing profile path at the end</source>
+      <translation>마지막에 마무리 프로파일 경로를 수행합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1637"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1647"/>
+      <source>Stop processing</source>
+      <translation>처리 정지</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1678"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation>최대 허용 램프 진입 각도입니다.
 0으로 지정하면 램프 각도 제한을 비활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1706"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1900"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation>최대(및 명목상) 나선 진입 직경으로, 툴 직경의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1715"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1909"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation>최소 허용 나선 진입 직경으로, 툴 직경의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
-      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>깊이 대신 영역별로 절삭을 정렬합니다. 이 속성은 ModelAwareExperiment가 활성화된 경우에만 사용됩니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
-      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation>3D 지오메트리를 존중하고 오버행 아래 절삭을 방지하는 실험적 모델 인식 기능을 활성화합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
-      <translation>Z축을 따라 남길 스톡의 양입니다(예: 마무리 작업용)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1931"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
-      <source>Force plunging into material inside and clearing towards the edges</source>
-      <translation>안쪽 재질로 플런지를 강제하고 모서리 방향으로 정리합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
-      <source>To take a finishing profile path at the end</source>
-      <translation>마지막에 마무리 프로파일 경로를 수행합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
-      <source>Stop processing</source>
-      <translation>처리 정지</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1657"/>
       <source>Internal input state</source>
       <translation>내부 입력 상태</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1666"/>
       <source>Internal output state</source>
       <translation>내부 출력 상태</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1697"/>
       <source>Helix cone angle (degrees)</source>
       <translation>나선 콘 각도(도)입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="168"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1724"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="82"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>기본 지오메트리의 윤곽을 사용합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1742"/>
+      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>깊이 대신 영역별로 절삭을 정렬합니다. 이 속성은 ModelAwareExperiment가 활성화된 경우에만 사용됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1757"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1881"/>
+      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
+      <translation>3D 지오메트리를 존중하고 오버행 아래 절삭을 방지하는 실험적 모델 인식 기능을 활성화합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1859"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>깊이 대신 영역별로 절삭을 정렬합니다.</translation>
     </message>
@@ -5532,39 +5499,38 @@ Set to zero to disable limitation by ramp angle</source>
       <translation>호를 이산 세그먼트로 분할합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="188"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
+      <location filename="../../../Path/Op/Base.py" line="189"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="68"/>
       <source>The base geometry for this operation</source>
       <translation>이 작업의 기본 지오메트리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="197"/>
+      <location filename="../../../Path/Op/Base.py" line="198"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>계산된 시작 깊이 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="205"/>
+      <location filename="../../../Path/Op/Base.py" line="206"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>계산된 최종 깊이 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="213"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
+      <location filename="../../../Path/Op/Base.py" line="214"/>
       <source>Holds the diameter of the tool</source>
       <translation>툴의 직경을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="221"/>
+      <location filename="../../../Path/Op/Base.py" line="222"/>
       <source>Holds the max Z value of Stock</source>
       <translation>스톡의 최대 Z 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="228"/>
+      <location filename="../../../Path/Op/Base.py" line="229"/>
       <source>Holds the min Z value of Stock</source>
       <translation>스톡의 최소 Z 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="245"/>
+      <location filename="../../../Path/Op/Base.py" line="246"/>
       <source>Method collision detection to create optimal path between areas
 
 Clearance Height: no collision detection, uses clearance height for rapid moves between areas
@@ -5581,110 +5547,111 @@ Tool Diameter: balanced - checks clearance using the tool diameter
 Tool Shape: safest - checks clearance using the cross section of the tool shape</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="258"/>
+      <location filename="../../../Path/Op/Base.py" line="259"/>
       <source>Distance for collision detection</source>
       <translation>충돌 감지를 위한 거리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="278"/>
-      <location filename="../../../Path/Op/Base.py" line="578"/>
+      <location filename="../../../Path/Op/Base.py" line="279"/>
+      <location filename="../../../Path/Op/Base.py" line="579"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>포스트 프로세서가 블록 삭제 명령을 추가할 수 있도록 활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="284"/>
+      <location filename="../../../Path/Op/Base.py" line="285"/>
       <source>An optional comment for this Operation</source>
       <translation>이 작업에 대한 선택적 주석입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="290"/>
+      <location filename="../../../Path/Op/Base.py" line="291"/>
       <source>User Assigned Label</source>
       <translation>사용자 지정 레이블</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="307"/>
-      <location filename="../../../Path/Op/Base.py" line="606"/>
+      <location filename="../../../Path/Op/Base.py" line="308"/>
+      <location filename="../../../Path/Op/Base.py" line="607"/>
       <source>The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</source>
       <translation type="unfinished">The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="321"/>
+      <location filename="../../../Path/Op/Base.py" line="322"/>
       <source>Base locations for this operation</source>
       <translation>이 작업의 기본 위치입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="332"/>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
+      <location filename="../../../Path/Op/Base.py" line="333"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="90"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>경로를 계산하는 데 사용될 툴 컨트롤러입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="341"/>
+      <location filename="../../../Path/Op/Base.py" line="342"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="96"/>
       <source>Coolant mode for this operation</source>
       <translation>이 작업의 쿨런트 모드입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="349"/>
+      <location filename="../../../Path/Op/Base.py" line="350"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>툴의 시작 깊이 - Z의 첫 번째 절삭 깊이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="355"/>
+      <location filename="../../../Path/Op/Base.py" line="356"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>툴의 최종 깊이 - Z의 가장 낮은 값입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="369"/>
+      <location filename="../../../Path/Op/Base.py" line="370"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>시작 깊이는 파생 값을 위한 내부 전용입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="380"/>
-      <location filename="../../../Path/Op/Base.py" line="586"/>
+      <location filename="../../../Path/Op/Base.py" line="381"/>
+      <location filename="../../../Path/Op/Base.py" line="587"/>
       <source>Incremental Step Down of Tool</source>
       <translation>툴의 증분 스텝다운입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="388"/>
+      <location filename="../../../Path/Op/Base.py" line="389"/>
       <source>Maximum material removed on final pass.</source>
       <translation>최종 패스에서 제거되는 최대 재질입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="399"/>
+      <location filename="../../../Path/Op/Base.py" line="400"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>클램프 및 장애물을 피하기 위해 필요한 높이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="405"/>
+      <location filename="../../../Path/Op/Base.py" line="406"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>위치 간 급송 안전 높이입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="413"/>
+      <location filename="../../../Path/Op/Base.py" line="414"/>
       <source>The start point of this path</source>
       <translation>이 경로의 시작점입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="418"/>
-      <location filename="../../../Path/Op/Waterline.py" line="463"/>
-      <location filename="../../../Path/Op/Base.py" line="419"/>
       <location filename="../../../Path/Op/Slot.py" line="223"/>
+      <location filename="../../../Path/Op/Base.py" line="420"/>
+      <location filename="../../../Path/Op/Waterline.py" line="463"/>
+      <location filename="../../../Path/Op/Surface.py" line="418"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>시작점을 지정하려면 True로 설정하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="427"/>
+      <location filename="../../../Path/Op/Base.py" line="428"/>
       <source>Lower limit of the turning diameter</source>
       <translation>터닝 직경의 하한입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="433"/>
+      <location filename="../../../Path/Op/Base.py" line="434"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>터닝 직경의 상한입니다.</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Base.py" line="550"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
-      <location filename="../../../Path/Op/Base.py" line="549"/>
       <source>Coolant option for this operation</source>
       <translation>이 작업의 쿨런트 옵션입니다</translation>
     </message>
@@ -5773,7 +5740,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="170"/>
       <location filename="../../../Path/Op/Drilling.py" line="239"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="204"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="201"/>
       <source>Apply G99 retraction: only retract to StartDepth between holes in this operation</source>
       <translation>G99 리트렉트 적용: 이 작업의 홀 사이에서 시작 깊이까지만 리트렉트합니다</translation>
     </message>
@@ -5889,11 +5856,6 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <translation>안쪽 또는 바깥쪽에서 절삭을 시작합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="145"/>
-      <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation>최종 프로파일에서 벗어나는 추가 값입니다. 조삭 툴패스에 적합합니다</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/MillFace.py" line="97"/>
       <source>Shape to use for calculating Boundary</source>
       <translation>경계를 계산하는 데 사용할 형상입니다</translation>
@@ -5909,10 +5871,10 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <translation>면 내부의 돌출된 영역의 밀링을 제외합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Pocket.py" line="67"/>
-      <location filename="../../../Path/Op/Surface.py" line="240"/>
-      <location filename="../../../Path/Op/Waterline.py" line="267"/>
       <location filename="../../../Path/Op/Profile.py" line="119"/>
+      <location filename="../../../Path/Op/Waterline.py" line="267"/>
+      <location filename="../../../Path/Op/Surface.py" line="240"/>
+      <location filename="../../../Path/Op/Pocket.py" line="67"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>여러 기본 지오메트리 피처를 처리하는 방법을 선택하십시오.</translation>
     </message>
@@ -5955,17 +5917,6 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <translation>불필요한 리트렉트를 피하려는 거리를 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
-      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
-      <location filename="../../../Path/Op/Profile.py" line="226"/>
-      <source>Order processing of the shapes
-Automatic: uses nearest neighbour algorithm to sort shapes
-Manual: uses order of shapes selection</source>
-      <translation>형상의 처리 순서입니다
-자동: 최근접 이웃 알고리즘을 사용하여 형상을 정렬합니다
-수동: 형상 선택 순서를 사용합니다</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/PocketBase.py" line="215"/>
       <location filename="../../../Path/Op/PocketBase.py" line="281"/>
       <source>Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, &gt;50%) to ensure full area coverage.</source>
@@ -5982,10 +5933,10 @@ Manual: uses order of shapes selection</source>
       <translation>경로의 3D 정렬을 사용합니다</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1733"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1848"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
       <translation>이전 작업에 의해 이미 정리된 가공 영역을 건너뜁니다.</translation>
     </message>
@@ -6021,8 +5972,8 @@ Manual: uses order of shapes selection</source>
       <translation type="unfinished">Limit probe area by shape. Point should be inside shape at final depth</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/PocketBase.py" line="136"/>
       <location filename="../../../Path/Op/Profile.py" line="110"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="136"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>툴패스가 파트를 돌아야 하는 방향으로, 시계 방향(CW) 또는 반시계 방향(CCW)입니다</translation>
     </message>
@@ -6079,20 +6030,31 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
 개별 HandleMultipleFeatures 및 비활성화된 UseStartPoint와 함께만 사용해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="128"/>
+      <location filename="../../../Path/Op/Profile.py" line="226"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="206"/>
+      <location filename="../../../Path/Op/PocketBase.py" line="303"/>
+      <source>Order processing of the shapes
+Automatic: uses nearest neighbour algorithm to sort shapes
+Manual: uses order of shapes selection</source>
+      <translation>형상의 처리 순서입니다
+자동: 최근접 이웃 알고리즘을 사용하여 형상을 정렬합니다
+수동: 형상 선택 순서를 사용합니다</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
+      <location filename="../../../Path/Op/Surface.py" line="128"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>모듈이 DEBUG 모드일 때 임시 경로 구성 객체를 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="284"/>
       <location filename="../../../Path/Op/Waterline.py" line="329"/>
+      <location filename="../../../Path/Op/Surface.py" line="284"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>작업에 사용할 기하학적 정리하기 패턴을 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="319"/>
       <location filename="../../../Path/Op/Waterline.py" line="370"/>
+      <location filename="../../../Path/Op/Surface.py" line="319"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>깊이에서 단일 패스로 작업을 완료하거나, 최종 깊이까지 여러 패스로 수행합니다.</translation>
     </message>
@@ -6157,8 +6119,8 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>이 작업의 툴패스에 대한 사용자 정의 시작점입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="412"/>
       <location filename="../../../Path/Op/Waterline.py" line="457"/>
+      <location filename="../../../Path/Op/Surface.py" line="412"/>
       <source>The custom start point for the path of this operation</source>
       <translation>이 작업의 경로에 대한 사용자 정의 시작점입니다</translation>
     </message>
@@ -6204,80 +6166,85 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>플래너: 평면 3D 표면 스캔. 로테이셔널: 4축 회전 스캔.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="205"/>
       <location filename="../../../Path/Op/Waterline.py" line="232"/>
+      <location filename="../../../Path/Op/Surface.py" line="205"/>
       <source>Avoid cutting the last &apos;N&apos; faces in the Base Geometry list of selected faces.</source>
       <translation>선택한 면의 기본 지오메트리 목록에서 마지막 &apos;N&apos;개 면의 절삭을 회피합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="213"/>
       <location filename="../../../Path/Op/Waterline.py" line="240"/>
+      <location filename="../../../Path/Op/Surface.py" line="213"/>
       <source>Do not cut internal features on avoided faces.</source>
       <translation>회피된 면의 내부 피처를 절삭하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="222"/>
       <location filename="../../../Path/Op/Waterline.py" line="249"/>
+      <location filename="../../../Path/Op/Surface.py" line="222"/>
       <source>Positive values push the cutter toward, or beyond, the boundary. Negative values retract the cutter away from the boundary.</source>
       <translation>양수 값은 커터를 경계 쪽 또는 경계 너머로 밀어냅니다. 음수 값은 커터를 경계에서 멀리 되돌립니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="231"/>
       <location filename="../../../Path/Op/Waterline.py" line="258"/>
+      <location filename="../../../Path/Op/Surface.py" line="231"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected face(s).</source>
       <translation>활성화하면 커터가 모델 또는 선택한 면의 경계 내부에 유지됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="249"/>
       <location filename="../../../Path/Op/Waterline.py" line="276"/>
+      <location filename="../../../Path/Op/Surface.py" line="249"/>
       <source>Positive values push the cutter toward, or into, the feature. Negative values retract the cutter away from the feature.</source>
       <translation>양수 값은 커터를 피처 쪽 또는 피처 안으로 밀어냅니다. 음수 값은 커터를 피처에서 멀리 되돌립니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="258"/>
       <location filename="../../../Path/Op/Waterline.py" line="285"/>
+      <location filename="../../../Path/Op/Surface.py" line="258"/>
       <source>Cut internal feature areas within a larger selected face.</source>
       <translation>더 큰 선택한 면 내의 내부 피처 영역을 절삭합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="266"/>
+      <location filename="../../../Path/Op/Waterline.py" line="294"/>
+      <source>Select the algorithm to use: OCL Dropcutter*, OCL Adaptive or Experimental (Not OCL based).</source>
+      <translation>사용할 알고리즘을 선택하십시오: OCL Dropcutter*, OCL Adaptive 또는 Experimental(OCL 미사용).</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Waterline.py" line="302"/>
+      <location filename="../../../Path/Op/Surface.py" line="266"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>작업의 전체 경계를 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="275"/>
       <location filename="../../../Path/Op/Waterline.py" line="320"/>
+      <location filename="../../../Path/Op/Surface.py" line="275"/>
       <source>Set the direction for the cutting tool to engage the material: Climb (ClockWise) or Conventional (CounterClockWise)</source>
       <translation>절삭 툴이 재질에 진입하는 방향을 설정합니다: 클라이밍(시계 방향) 또는 컨벤셔널(반시계 방향)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="292"/>
       <location filename="../../../Path/Op/Waterline.py" line="337"/>
+      <location filename="../../../Path/Op/Surface.py" line="292"/>
       <source>The yaw angle used for certain clearing patterns</source>
       <translation>특정 정리하기 패턴에 사용되는 요 각도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="301"/>
       <location filename="../../../Path/Op/Waterline.py" line="346"/>
+      <location filename="../../../Path/Op/Surface.py" line="301"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
       <translation>스탭오버 경로의 절삭 순서를 반전합니다. 원형 절삭 패턴의 경우 바깥쪽에서 시작하여 중심 방향으로 진행합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="310"/>
       <location filename="../../../Path/Op/Waterline.py" line="355"/>
+      <location filename="../../../Path/Op/Surface.py" line="310"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
       <translation>목표 표면으로부터의 Z축 깊이 오프셋을 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="325"/>
       <location filename="../../../Path/Op/Waterline.py" line="376"/>
+      <location filename="../../../Path/Op/Surface.py" line="325"/>
       <source>Set the start point for the cut pattern.</source>
       <translation>절삭 패턴의 시작점을 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="334"/>
       <location filename="../../../Path/Op/Waterline.py" line="385"/>
+      <location filename="../../../Path/Op/Surface.py" line="334"/>
       <source>Choose location of the center point for starting the cut pattern.</source>
       <translation>절삭 패턴을 시작할 중심점의 위치를 선택하십시오.</translation>
     </message>
@@ -6287,26 +6254,31 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>선택 영역의 모서리를 프로파일합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="349"/>
       <location filename="../../../Path/Op/Waterline.py" line="394"/>
+      <location filename="../../../Path/Op/Surface.py" line="349"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>샘플링 해상도를 설정합니다. 값이 작을수록 처리 시간이 빠르게 증가합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="358"/>
+      <location filename="../../../Path/Op/Waterline.py" line="403"/>
+      <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
+      <translation>최소 샘플링 해상도를 설정합니다. 값이 작을수록 처리 시간이 빠르게 증가합니다.</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Waterline.py" line="412"/>
+      <location filename="../../../Path/Op/Surface.py" line="358"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
       <translation>툴 직경을 기준으로 스탭오버 백분율을 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="367"/>
       <location filename="../../../Path/Op/Waterline.py" line="421"/>
+      <location filename="../../../Path/Op/Surface.py" line="367"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>선형 경로(공선 점)의 최적화를 활성화합니다. G-code 출력에서 불필요한 공선 점을 제거합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="376"/>
       <location filename="../../../Path/Op/Waterline.py" line="430"/>
+      <location filename="../../../Path/Op/Surface.py" line="376"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
       <translation>각 스탭오버 경로 간 전환과 경로 내 구간의 개별 최적화를 활성화합니다.</translation>
     </message>
@@ -6316,14 +6288,14 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>`Circular` 및 `CircularZigZag` 절삭 패턴에 대해 공면 호를 G2/G3 G-code 명령으로 변환합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="394"/>
       <location filename="../../../Path/Op/Waterline.py" line="439"/>
+      <location filename="../../../Path/Op/Surface.py" line="394"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
       <translation>이 임계값보다 작은 공선 및 공반경 아티팩트 간격이 경로에서 닫힙니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="403"/>
       <location filename="../../../Path/Op/Waterline.py" line="448"/>
+      <location filename="../../../Path/Op/Surface.py" line="403"/>
       <source>Feedback: three smallest gaps identified in the path geometry.</source>
       <translation>피드백: 경로 지오메트리에서 식별된 세 개의 가장 작은 간격입니다.</translation>
     </message>
@@ -6430,16 +6402,6 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>값이 작을수록 더 정밀하고 정확한 메시가 생성됩니다. 값이 작아도 처리 시간이 크게 증가하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Waterline.py" line="294"/>
-      <source>Select the algorithm to use: OCL Dropcutter*, OCL Adaptive or Experimental (Not OCL based).</source>
-      <translation>사용할 알고리즘을 선택하십시오: OCL Dropcutter*, OCL Adaptive 또는 Experimental(OCL 미사용).</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Waterline.py" line="403"/>
-      <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
-      <translation>최소 샘플링 해상도를 설정합니다. 값이 작을수록 처리 시간이 빠르게 증가합니다.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Waterline.py" line="311"/>
       <source>Set to clear last layer in a `Multi-pass` operation.</source>
       <translation>`다중 패스` 작업에서 마지막 레이어를 정리하도록 설정합니다.</translation>
@@ -6480,19 +6442,19 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="109"/>
       <source>Percent of copies to randomly offset</source>
-      <translation>무작위로 오프셋할 복사본의 백분율입니다</translation>
+      <translation>무작위로 편위시킬 복사본의 백분율입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="176"/>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
       <source>Maximum random offset of copies</source>
-      <translation>복사본의 최대 무작위 오프셋입니다</translation>
+      <translation>복사본의 최대 무작위 편위입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="182"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="272"/>
       <source>Use randomly offset</source>
-      <translation>무작위 오프셋 사용</translation>
+      <translation>무작위 편위 사용</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="188"/>
@@ -6584,9 +6546,9 @@ If selection without sub elements:
       <translation>툴패스를 계산하는 데 사용될 툴 컨트롤러입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="80"/>
       <source>Operations cycle time estimation</source>
       <translation>작업 사이클 시간 추정</translation>
     </message>
@@ -6633,62 +6595,68 @@ If selection without sub elements:
       <translation>형상의 사용자 정의 속성: {name}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="144"/>
+      <location filename="../../../Path/Tool/Controller.py" line="145"/>
       <source>The active tool</source>
       <translation>활성 툴입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="151"/>
+      <location filename="../../../Path/Tool/Controller.py" line="152"/>
       <source>The speed of the cutting spindle in RPM</source>
       <translation>절삭 스핀들의 속도(RPM)입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="157"/>
+      <location filename="../../../Path/Tool/Controller.py" line="158"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="364"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="857"/>
       <source>Direction of spindle rotation</source>
       <translation>스핀들 회전 방향입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="163"/>
+      <location filename="../../../Path/Tool/Controller.py" line="164"/>
       <source>Feed rate for vertical moves in Z</source>
       <translation>Z축 수직 이동의 피드 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="169"/>
+      <location filename="../../../Path/Tool/Controller.py" line="170"/>
       <source>Feed rate for horizontal moves</source>
       <translation>수평 이동의 피드 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="175"/>
+      <location filename="../../../Path/Tool/Controller.py" line="176"/>
       <source>Rapid rate for vertical moves in Z</source>
       <translation>Z축 수직 이동의 급송 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="181"/>
+      <location filename="../../../Path/Tool/Controller.py" line="182"/>
       <source>Rapid rate for horizontal moves</source>
       <translation>수평 이동의 급송 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="188"/>
-      <location filename="../../../Path/Tool/Controller.py" line="274"/>
+      <location filename="../../../Path/Tool/Controller.py" line="189"/>
+      <location filename="../../../Path/Tool/Controller.py" line="285"/>
       <source>Feed rate for ramp moves</source>
       <translation>램프 이동의 피드 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="196"/>
-      <location filename="../../../Path/Tool/Controller.py" line="285"/>
+      <location filename="../../../Path/Tool/Controller.py" line="200"/>
+      <location filename="../../../Path/Tool/Controller.py" line="319"/>
+      <source>Feed rate used when the tool is not engaged in material, but is also not retracted</source>
+      <translation type="unfinished">Feed rate used when the tool is not engaged in material, but is also not retracted</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="207"/>
+      <location filename="../../../Path/Tool/Controller.py" line="296"/>
       <source>Feed rate for lead-in moves</source>
       <translation>리드 인 이동의 피드 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="204"/>
-      <location filename="../../../Path/Tool/Controller.py" line="295"/>
+      <location filename="../../../Path/Tool/Controller.py" line="215"/>
+      <location filename="../../../Path/Tool/Controller.py" line="306"/>
       <source>Feed rate for lead-out moves</source>
       <translation>리드 아웃 이동의 피드 속도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="437"/>
+      <location filename="../../../Path/Tool/Controller.py" line="464"/>
       <source>The tool used by this controller</source>
       <translation>이 컨트롤러가 사용하는 툴입니다</translation>
     </message>
@@ -6718,14 +6686,235 @@ If selection without sub elements:
       <translation>탭 깊이가 확장되는 정도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="64"/>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="62"/>
+      <source>Make &apos;False&apos; to prevent operation from generating code</source>
+      <translation type="unfinished">Make &apos;False&apos; to prevent operation from generating code</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="74"/>
       <source>An optional comment for this operation</source>
       <translation>이 작업에 대한 선택적 주석입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="71"/>
-      <source>User assigned label</source>
-      <translation>사용자 지정 레이블</translation>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="104"/>
+      <source>Normal move feed rate</source>
+      <translation type="unfinished">Normal move feed rate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="110"/>
+      <source>Vertical only (step down) move feed rate</source>
+      <translation type="unfinished">Vertical only (step down) move feed rate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="118"/>
+      <source>Feed start position</source>
+      <translation type="unfinished">Feed start position</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="124"/>
+      <source>Enable feed start position</source>
+      <translation type="unfinished">Enable feed start position</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="132"/>
+      <source>Use absolute arc center mode (G90.1)</source>
+      <translation type="unfinished">Use absolute arc center mode (G90.1)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="148"/>
+      <source>Arc drawing plane, corresponding to G17, G18 and G19.
+
+If not &apos;None&apos;, the output wires will be transformed to align with the selected plane,
+and the corresponding GCode will be inserted.
+
+&apos;Auto&apos; means the plane is determined by the first encountered arc plane.
+If the found plane does not align to any GCode plane, XY plane is used.
+
+&apos;Variable&apos; means the arc plane can be changed during operation
+to align to the arc encountered.</source>
+      <translation type="unfinished">Arc drawing plane, corresponding to G17, G18 and G19.
+
+If not &apos;None&apos;, the output wires will be transformed to align with the selected plane,
+and the corresponding GCode will be inserted.
+
+&apos;Auto&apos; means the plane is determined by the first encountered arc plane.
+If the found plane does not align to any GCode plane, XY plane is used.
+
+&apos;Variable&apos; means the arc plane can be changed during operation
+to align to the arc encountered.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="159"/>
+      <source>Break long curves into segments of this length.
+One use case is for PCB autolevel,
+so that more correction points can be inserted.</source>
+      <translation type="unfinished">Break long curves into segments of this length.
+One use case is for PCB autolevel,
+so that more correction points can be inserted.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="170"/>
+      <source>Deflection for non circular curve discretization.
+
+It also also used for discretizing circular wires,
+when you &apos;Explode&apos; the shape for wire operations</source>
+      <translation type="unfinished">Deflection for non circular curve discretization.
+
+It also also used for discretizing circular wires,
+when you &apos;Explode&apos; the shape for wire operations</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="181"/>
+      <source>Minimum distance for the generated new wires.
+Wires maybe broken if the algorithm see fits.
+
+Set zero to disable wire breaking.</source>
+      <translation type="unfinished">Minimum distance for the generated new wires.
+Wires maybe broken if the algorithm see fits.
+
+Set zero to disable wire breaking.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="195"/>
+      <source>Enforce loop orientation.
+
+&apos;Normal&apos; means CCW for outer wires when looking against
+the positive axis direction and CW for inner wires.
+
+&apos;Reversed&apos; means the other way round.</source>
+      <translation type="unfinished">Enforce loop orientation.
+
+&apos;Normal&apos; means CCW for outer wires when looking against
+the positive axis direction and CW for inner wires.
+
+&apos;Reversed&apos; means the other way round.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="201"/>
+      <source>Enforce open path direction</source>
+      <translation type="unfinished">Enforce open path direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="211"/>
+      <source>Invert direction on each step down.
+Only if &apos;HandleMultipleFeatures&apos; is &apos;Individually&apos;.</source>
+      <translation type="unfinished">Invert direction on each step down.
+Only if &apos;HandleMultipleFeatures&apos; is &apos;Individually&apos;.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="222"/>
+      <source>If two wire&apos;s end points are separated within this threshold,
+they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.</source>
+      <translation type="unfinished">If two wire&apos;s end points are separated within this threshold,
+they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="228"/>
+      <source>Add move to Clearanc Height Out in the end</source>
+      <translation type="unfinished">Add move to Clearanc Height Out in the end</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="234"/>
+      <source>Tool retraction axis</source>
+      <translation type="unfinished">Tool retraction axis</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="242"/>
+      <source>Choose how to process multiple Base Geometry features</source>
+      <translation type="unfinished">Choose how to process multiple Base Geometry features</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="248"/>
+      <source>Parameters of Path.fromShapes(**params)</source>
+      <translation type="unfinished">Parameters of Path.fromShapes(**params)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="268"/>
+      <source>Wire sorting mode to optimize travel distance.
+
+&apos;2D5&apos; explode shapes into wires, and groups the shapes by its plane.
+The &apos;start&apos; position chooses the first plane to start.
+The algorithm will then sort within the plane and then move on to the next nearest plane.
+
+&apos;3D&apos; makes no assumption of planarity. The sorting is done across 3D space.
+
+&apos;Greedy&apos; like &apos;2D5&apos; but will try to minimize travel by searching for nearest path below the current milling layer.
+The path in lower layer is only selected if the moving distance is within the value given in &apos;threshold&apos;.</source>
+      <translation type="unfinished">Wire sorting mode to optimize travel distance.
+
+&apos;2D5&apos; explode shapes into wires, and groups the shapes by its plane.
+The &apos;start&apos; position chooses the first plane to start.
+The algorithm will then sort within the plane and then move on to the next nearest plane.
+
+&apos;3D&apos; makes no assumption of planarity. The sorting is done across 3D space.
+
+&apos;Greedy&apos; like &apos;2D5&apos; but will try to minimize travel by searching for nearest path below the current milling layer.
+The path in lower layer is only selected if the moving distance is within the value given in &apos;threshold&apos;.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="278"/>
+      <source>Controls vertex sampling on wire for nearest point searching.
+The sampling is dong using OCC GCPnts_UniformAbscissa.</source>
+      <translation type="unfinished">Controls vertex sampling on wire for nearest point searching.
+The sampling is dong using OCC GCPnts_UniformAbscissa.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="286"/>
+      <source>Nearest k sampling vertices are considered during sorting</source>
+      <translation type="unfinished">Nearest k sampling vertices are considered during sorting</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="297"/>
+      <source>If true, each motion GCode will contain full coordinate and feedrate</source>
+      <translation type="unfinished">If true, each motion GCode will contain full coordinate and feedrate</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="309"/>
+      <source>Emit preambles G90.1 G17 G18 G19
+
+Note that emitting preambles between moves breaks some dressups
+and prevents path optimization on some controllers</source>
+      <translation type="unfinished">Emit preambles G90.1 G17 G18 G19
+
+Note that emitting preambles between moves breaks some dressups
+and prevents path optimization on some controllers</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="317"/>
+      <source>Start depth with step depth.</source>
+      <translation type="unfinished">Start depth with step depth.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="323"/>
+      <source>Incremental Step Down of Tool.</source>
+      <translation type="unfinished">Incremental Step Down of Tool.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="332"/>
+      <source>Retraction
+
+Tool retraction absolute coordinate along retraction axis</source>
+      <translation type="unfinished">Retraction
+
+Tool retraction absolute coordinate along retraction axis</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="341"/>
+      <source>Clearance height in the end</source>
+      <translation type="unfinished">Clearance height in the end</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="352"/>
+      <source>Resume Height
+
+When return from last retraction,
+this gives the pause of the next move</source>
+      <translation type="unfinished">Resume Height
+
+When return from last retraction,
+this gives the pause of the next move</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="41"/>
@@ -6736,6 +6925,47 @@ If selection without sub elements:
       <location filename="../../../Path/Tool/toolbit/mixins/cutting.py" line="40"/>
       <source>Chipload per tooth</source>
       <translation>이빨당 칩로드입니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
+      <source>Set the cut mode for the operation.</source>
+      <translation>작업의 절삭 모드를 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
+      <source>Set the clearing pattern for the operation.</source>
+      <translation>작업의 정리하기 패턴을 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
+      <source>Set the angle for the operation.</source>
+      <translation>작업의 각도를 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
+      <source>Set the stepover percentage of tool diameter.</source>
+      <translation>툴 직경의 스탭오버 백분율을 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1870"/>
+      <source>Set how much stock to leave on the floor for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the floor for the operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
+      <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
+      <translation>툴 해제를 위해 절삭을 다각형 경계 너머로 확장하는 거리입니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
+      <source>Extends the boundary in both direction.</source>
+      <translation>경계를 양방향으로 확장합니다.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
+      <source>Reverse the cutting direction for the selected pattern.</source>
+      <translation>선택한 패턴의 절삭 방향을 반전합니다.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="126"/>
@@ -6769,8 +6999,10 @@ If selection without sub elements:
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
-      <source>Radial finish allowance left on the surface.</source>
-      <translation type="unfinished">Radial finish allowance left on the surface.</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="1603"/>
+      <location filename="../../../Path/Op/Profile.py" line="145"/>
+      <source>Set how much stock to leave on the walls for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the walls for the operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="180"/>
@@ -6808,44 +7040,24 @@ If selection without sub elements:
       <translation type="unfinished">Tessellation angular deflection. Smaller = finer mesh.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="131"/>
-      <source>Set the cut mode for the operation.</source>
-      <translation>작업의 절삭 모드를 설정합니다.</translation>
+      <location filename="../../../Path/Op/PocketShape.py" line="94"/>
+      <source>Close open area formed by edges or vertical faces by straight line.</source>
+      <translation type="unfinished">Close open area formed by edges or vertical faces by straight line.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="140"/>
-      <source>Set the clearing pattern for the operation.</source>
-      <translation>작업의 정리하기 패턴을 설정합니다.</translation>
+      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="104"/>
+      <source>JSON-encoded list of feeds &amp; speeds presets</source>
+      <translation type="unfinished">JSON-encoded list of feeds &amp; speeds presets</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="149"/>
-      <source>Set the angle for the operation.</source>
-      <translation>작업의 각도를 설정합니다.</translation>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
+      <source>Hint indicating which op category this TC is intended for</source>
+      <translation type="unfinished">Hint indicating which op category this TC is intended for</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="158"/>
-      <source>Set the stepover percentage of tool diameter.</source>
-      <translation>툴 직경의 스탭오버 백분율을 설정합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
-      <source>Set the stock to leave for the operation.</source>
-      <translation>작업을 위한 잔여 스톡을 설정합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="176"/>
-      <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
-      <translation>툴 해제를 위해 절삭을 다각형 경계 너머로 확장하는 거리입니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="185"/>
-      <source>Extends the boundary in both direction.</source>
-      <translation>경계를 양방향으로 확장합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="194"/>
-      <source>Reverse the cutting direction for the selected pattern.</source>
-      <translation>선택한 패턴의 절삭 방향을 반전합니다.</translation>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
+      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
+      <translation type="unfinished">Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="42"/>
@@ -6874,23 +7086,8 @@ If selection without sub elements:
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="72"/>
-      <source>Define the reference edge or plane for mirroring</source>
-      <translation>미러링을 위한 참조 모서리 또는 평면을 정의합니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="103"/>
-      <source>JSON-encoded list of feeds &amp; speeds presets</source>
-      <translation type="unfinished">JSON-encoded list of feeds &amp; speeds presets</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
-      <source>Hint indicating which op category this TC is intended for</source>
-      <translation type="unfinished">Hint indicating which op category this TC is intended for</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
-      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
-      <translation type="unfinished">Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</translation>
+      <source>Center point of selected shape defines offset</source>
+      <translation type="unfinished">Center point of selected shape defines offset</translation>
     </message>
   </context>
   <context>
@@ -6919,12 +7116,27 @@ If selection without sub elements:
       <translation>스톡 재질 속성은 사용 중단되었습니다. 재질 속성을 제거합니다. 형상 재질을 할당하려면 기본 재질 시스템을 사용하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="599"/>
+      <location filename="../../../Path/Main/Stock.py" line="221"/>
+      <source>Stock length can not be zero or negative. Used length %s mm</source>
+      <translation type="unfinished">Stock length can not be zero or negative. Used length %s mm</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="231"/>
+      <source>Stock width can not be zero or negative. Used width %s mm</source>
+      <translation type="unfinished">Stock width can not be zero or negative. Used width %s mm</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="241"/>
+      <source>Stock height can not be zero or negative. Used height %s mm</source>
+      <translation type="unfinished">Stock height can not be zero or negative. Used height %s mm</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Stock.py" line="621"/>
       <source>Unsupported stock type named {}</source>
       <translation>지원되지 않는 스톡 유형: {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Stock.py" line="603"/>
+      <location filename="../../../Path/Main/Stock.py" line="625"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>지원되지 않는 PathStock 템플릿 버전 {}</translation>
     </message>
@@ -7030,19 +7242,6 @@ If selection without sub elements:
       <location filename="../../../Path/Op/Profile.py" line="621"/>
       <source>Unable to create path for face(s).</source>
       <translation>면에 대한 경로를 생성할 수 없습니다.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathPocket</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="83"/>
-      <source>Pass Extension</source>
-      <translation>패스 확장</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="89"/>
-      <source>The distance the facing operation will extend beyond the boundary shape.</source>
-      <translation>페이싱 작업이 경계 형상 너머로 확장되는 거리입니다.</translation>
     </message>
   </context>
   <context>
@@ -7258,7 +7457,7 @@ If selection without sub elements:
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
       <location filename="../../../Path/Op/Waterline.py" line="129"/>
       <source>Offset</source>
-      <translation>편차</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="117"/>
@@ -7396,81 +7595,86 @@ If selection without sub elements:
       <translation>False로 설정하면 작업이 코드를 생성하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="315"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="316"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="321"/>
       <source>Set Workplane from Face</source>
       <translation>면에서 작업 평면 설정</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="821"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="829"/>
       <source>Base Geometry</source>
       <translation>기본 지오메트리</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="941"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="949"/>
       <source>Multiple operations are labeled as</source>
       <translation>여러 작업이 다음으로 레이블 지정됨:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1015"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1023"/>
       <source>Base Location</source>
       <translation>기본 위치</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1218"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1226"/>
       <source>Heights</source>
       <translation>높이</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1160"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1168"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>이 작업에서는 최종 깊이를 수정할 수 없습니다.
 최종 깊이를 수동으로 설정해야 하는 경우 다른 작업을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1349"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1361"/>
+      <source>Tool Controller</source>
+      <translation>툴 컨트롤러</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1398"/>
       <source>Diameters</source>
       <translation>직경</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1381"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1430"/>
       <source>AreaOp Operation</source>
       <translation>AreaOp 작업</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1437"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1492"/>
       <source>Operation</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1504"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1559"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>AreaOp 작업 삭제</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
       <source>Start Point Selection</source>
       <translation>시작점 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1699"/>
       <source>Selects the start point</source>
       <translation>시작점을 선택합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1749"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>적합한 툴 컨트롤러를 찾을 수 없습니다.
 작업 생성을 중단합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1753"/>
       <source>No tool controller, aborting op creation</source>
       <translation>툴 컨트롤러가 없습니다. 작업 생성을 중단합니다</translation>
     </message>
@@ -7575,49 +7779,55 @@ Aborting op creation</source>
   <context>
     <name>CAM_SelectLoop</name>
     <message>
-      <location filename="../../../PathCommands.py" line="49"/>
+      <location filename="../../../PathCommands.py" line="51"/>
       <source>Finish Selecting Loop</source>
       <translation>루프 선택 완료</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="62"/>
-      <source>Completes the selection of edges or faces that forms a loop
+      <location filename="../../../PathCommands.py" line="70"/>
+      <source>Completes the selection of edges or faces that forms a loop.
+Works in described sequence, but can be forced by modifier key.
 
-Select vertical faces: searching loops faces which forms the walls.
+Face selection:
+    Vertical face: searching loops faces which forms the walls
+        or vertical faces with same center height (SHIFT).
+    Horizontal face: searching inner edges of the face (CTRL),
+        outer edges of the face (CTRL + ALT)
+        or horizontal faces at the same height (SHIFT).
+    Otherwise select all edges of the face (ALT).
 
-Select horizontal face: searching inner edges of the face or coplanar faces.
+Edge selection:
+    One edge: searching loop edges in horizontal plane.
+    Two edges: searching loop edges in wires of the shape or tangent edges (CTRL).
+    Otherwise searching horizontal wires which contain selected edges (ALT).
 
-Select one edge: searching loop edges in horizontal plane
-or wire which contain selected edge.
+Without sub selection:
+    Select all edges, faces (ALT) or vertexes (CTRL) of the model.</source>
+      <translation type="unfinished">Completes the selection of edges or faces that forms a loop.
+Works in described sequence, but can be forced by modifier key.
 
-Select two edges: searching loop edges in wires of the shape
-or tangent edges.
+Face selection:
+    Vertical face: searching loops faces which forms the walls
+        or vertical faces with same center height (SHIFT).
+    Horizontal face: searching inner edges of the face (CTRL),
+        outer edges of the face (CTRL + ALT)
+        or horizontal faces at the same height (SHIFT).
+    Otherwise select all edges of the face (ALT).
 
-Select three or more edges: searching horizontal wires.
+Edge selection:
+    One edge: searching loop edges in horizontal plane.
+    Two edges: searching loop edges in wires of the shape or tangent edges (CTRL).
+    Otherwise searching horizontal wires which contain selected edges (ALT).
 
-Without sub selection all edges of the shape will be selected.</source>
-      <translation type="unfinished">Completes the selection of edges or faces that forms a loop
-
-Select vertical faces: searching loops faces which forms the walls.
-
-Select horizontal face: searching inner edges of the face or coplanar faces.
-
-Select one edge: searching loop edges in horizontal plane
-or wire which contain selected edge.
-
-Select two edges: searching loop edges in wires of the shape
-or tangent edges.
-
-Select three or more edges: searching horizontal wires.
-
-Without sub selection all edges of the shape will be selected.</translation>
+Without sub selection:
+    Select all edges, faces (ALT) or vertexes (CTRL) of the model.</translation>
     </message>
   </context>
   <context>
     <name>CAM_DressupLeadInOut</name>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="37"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="113"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="123"/>
       <source>Style</source>
       <translation>스타일</translation>
     </message>
@@ -7628,139 +7838,145 @@ Without sub selection all edges of the shape will be selected.</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="70"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="146"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="156"/>
       <source>Angle</source>
       <translation>각도</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="60"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="136"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="146"/>
       <source>Radius/length</source>
       <translation>반경/길이</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="80"/>
-      <source>Offset Entrance Location</source>
-      <translation>입구 위치 오프셋</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="166"/>
+      <source>Extend</source>
+      <translation type="unfinished">Extend</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="90"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="166"/>
+      <source>Offset Entrance Location</source>
+      <translation>입구 위치 편위</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="100"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Invert Direction</source>
       <translation>방향 반전</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
       <source>Lead Out</source>
       <translation>리드 아웃</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="156"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="176"/>
       <source>Offset Exit Location</source>
-      <translation>출구 위치 오프셋</translation>
+      <translation>출구 위치 편위</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="189"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="209"/>
       <source>Rapid plunge</source>
       <translation>급송 하강</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="196"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="216"/>
       <source>Retract Threshold</source>
       <translation>리트렉트 임계값</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="206"/>
       <source>Plunge at rapid speed</source>
       <translation>급송 속도로 하강합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="50"/>
       <source>Arc</source>
       <translation>호</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1727"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="859"/>
       <source>Lead In/Out</source>
       <translation>리드 인/아웃</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
       <source>Perpendicular</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
       <source>Tangent</source>
       <translation>접선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
       <source>Arc3d</source>
       <translation>호3D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
       <source>ArcZ</source>
       <translation>호Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
       <source>ArcZFollow</source>
       <translation>호Z따르기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
       <source>Helix</source>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
       <source>Line3d</source>
       <translation>선3D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="64"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
       <source>LineZ</source>
       <translation>선Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="65"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
       <source>LineZFollow</source>
       <translation>선Z따르기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="66"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="62"/>
       <source>No Retract</source>
       <translation>리트렉트 없음</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
       <source>Vertical</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="282"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="558"/>
       <source>Can not get parameters from base operation and path</source>
       <translation type="unfinished">Can not get parameters from base operation and path</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1731"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="863"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>선택한 경로의 진입 및 종료 동작을 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1761"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="894"/>
       <source>The selected object is not a path</source>
       <translation>선택한 객체가 경로가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1766"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="899"/>
       <source>Select a profile object</source>
       <translation>프로파일 객체를 선택하십시오</translation>
     </message>
@@ -7856,12 +8072,12 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_DressupDogbone</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="331"/>
+      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="332"/>
       <source>Dogbone</source>
       <translation>도그본</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="335"/>
+      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="336"/>
       <source>Creates a dogbone dress-up object from a selected toolpath</source>
       <translation>선택한 툴패스에서 도그본 드레스업 객체를 생성합니다</translation>
     </message>
@@ -7890,42 +8106,42 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_DressupRampEntry</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="118"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="124"/>
       <source>RampMethod1</source>
       <translation>램프방법1</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="119"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="125"/>
       <source>RampMethod2</source>
       <translation>램프방법2</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="120"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="126"/>
       <source>RampMethod3</source>
       <translation>램프방법3</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="299"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="317"/>
       <source>The selected object is not a path</source>
       <translation>선택한 객체가 경로가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="304"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="322"/>
       <source>Select a profile object</source>
       <translation>프로파일 객체를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="117"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="123"/>
       <source>Helix</source>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="265"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="283"/>
       <source>Ramp Entry</source>
       <translation>램프 진입</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="269"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="287"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>선택한 툴패스에서 램프 진입 드레스업 객체를 생성합니다</translation>
     </message>
@@ -7933,28 +8149,32 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Probe</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="325"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="330"/>
       <source>Select Probe Point File</source>
       <translation>탐침 점 파일 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="327"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="332"/>
+      <source>All Files (*)</source>
+      <translation type="unfinished">All Files (*)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="114"/>
       <source>All Files (*.*)</source>
       <translation>모든 파일 (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="105"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="112"/>
       <source>Select Output File</source>
       <translation>출력 파일 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="119"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="126"/>
       <source>Probe</source>
       <translation>탐침</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="120"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="127"/>
       <source>Create a Probing Grid from a job stock</source>
       <translation>작업 스톡에서 탐침 그리드를 생성합니다</translation>
     </message>
@@ -7987,12 +8207,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>경로 점 %s이(가) 탐침 영역 %s, %s 밖에 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="388"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="393"/>
       <source>Z Depth Correction</source>
       <translation>Z 깊이 보정</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="392"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="397"/>
       <source>Corrects Z depth using a probe map</source>
       <translation>탐침 맵을 사용하여 Z 깊이를 보정합니다</translation>
     </message>
@@ -8005,9 +8225,67 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>픽스쳐</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="58"/>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="78"/>
+      <source>Presets</source>
+      <translation type="unfinished">Presets</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="60"/>
+      <source>Geometry</source>
+      <translation>도형</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="120"/>
+      <source>Tool Updates Available</source>
+      <translation type="unfinished">Tool Updates Available</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="144"/>
+      <source>&apos;{}&apos; has tools that differ from the library (newer presets, changed dimensions - e.g. a regrind - or both). Updating replaces the whole tool with the current library version and recomputes the document - expand a row to review before applying.</source>
+      <translation type="unfinished">&apos;{}&apos; has tools that differ from the library (newer presets, changed dimensions - e.g. a regrind - or both). Updating replaces the whole tool with the current library version and recomputes the document - expand a row to review before applying.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="155"/>
+      <source>Job</source>
+      <translation type="unfinished">Job</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="156"/>
+      <source>Tool #</source>
+      <translation type="unfinished">Tool #</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="157"/>
       <location filename="../../../Path/Main/Job.py" line="278"/>
       <source>Tool</source>
       <translation>툴</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="158"/>
+      <source>Changes</source>
+      <translation type="unfinished">Changes</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="206"/>
+      <source>Select all</source>
+      <translation type="unfinished">Select all</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="225"/>
+      <source>Update</source>
+      <translation>업데이트</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="346"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="373"/>
+      <source>Update Tools from Library</source>
+      <translation type="unfinished">Update Tools from Library</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="347"/>
+      <source>This job has no tool updates available.</source>
+      <translation type="unfinished">This job has no tool updates available.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="279"/>
@@ -8036,87 +8314,87 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>다축</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="363"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="369"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="389"/>
       <source>Assign Stock Material</source>
       <translation type="unfinished">Assign Stock Material</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="679"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
       <source>Stock not a cylinder!</source>
       <translation>스톡이 실린더가 아닙니다!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="888"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="902"/>
       <source>(none assigned)</source>
       <translation type="unfinished">(none assigned)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1139"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1192"/>
       <source>Select Output File</source>
       <translation>출력 파일 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1141"/>
-      <source>All Files (*.*)</source>
-      <translation>모든 파일 (*.*)</translation>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1194"/>
+      <source>All Files (*)</source>
+      <translation type="unfinished">All Files (*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1471"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1539"/>
       <source>Picking: Model</source>
       <translation type="unfinished">Picking: Model</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1473"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1541"/>
       <source>Picking: Stock</source>
       <translation type="unfinished">Picking: Stock</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1553"/>
-      <source>Unsupported stock object %s</source>
-      <translation>지원되지 않는 스톡 객체 %s</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1569"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>지원되지 않는 스톡 유형 %s (%d)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
-      <source>Model Selection</source>
-      <translation>모델 선택</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1813"/>
-      <source>Warning</source>
-      <translation>경고</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1814"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1882"/>
       <source>Add one.</source>
       <translation type="unfinished">Add one.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1815"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1621"/>
+      <source>Unsupported stock object %s</source>
+      <translation>지원되지 않는 스톡 객체 %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>지원되지 않는 스톡 유형 %s (%d)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1725"/>
+      <source>Model Selection</source>
+      <translation>모델 선택</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1881"/>
+      <source>Warning</source>
+      <translation>경고</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1883"/>
       <source>Ok</source>
       <translation>확인</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1817"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1885"/>
       <source>Add</source>
       <translation>추가</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1828"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1896"/>
       <source>This job has no base model.</source>
       <translation>이 작업에 기본 모델이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1835"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1903"/>
       <source>This job has no tool.</source>
       <translation>이 작업에 툴이 없습니다.</translation>
     </message>
@@ -8197,23 +8475,23 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Inspect</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="136"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="72"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows path commands in FreeCAD base units (mm/s).&lt;br&gt;Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;참고&lt;/b&gt;: 이 대화 상자는 FreeCAD 기본 단위(mm/s)로 경로 명령을 표시합니다.&lt;br&gt;값은 후처리 과정에서 원하는 단위로 변환됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="258"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="164"/>
       <source>Inspect Toolpath</source>
       <translation>툴패스 검사</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="262"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="168"/>
       <source>Inspects the contents of a toolpath object</source>
       <translation>툴패스 객체의 내용을 검사합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="277"/>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="282"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="183"/>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="188"/>
       <source>Select exactly one path object</source>
       <translation>정확히 하나의 경로 객체를 선택하십시오</translation>
     </message>
@@ -8429,7 +8707,7 @@ Without sub selection all edges of the shape will be selected.</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Work Offsets</source>
-      <translation>작업 오프셋</translation>
+      <translation>작업 편위</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
@@ -8628,8 +8906,8 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>레거시 CAM 시뮬레이터</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>스톡에서 G-code를 시뮬레이션합니다</translation>
     </message>
@@ -8637,32 +8915,32 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
       <source>Outside</source>
       <translation>바깥쪽</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1517"/>
       <source>Inside</source>
       <translation>안쪽</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1518"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1520"/>
       <source>Clearing</source>
       <translation>정리하기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1521"/>
       <source>Profiling</source>
       <translation>프로파일링</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="217"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="221"/>
       <source>Adaptive</source>
       <translation>어댑티브</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="218"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="222"/>
       <source>Adaptive clearing and profiling</source>
       <translation>어댑티브 정리하기 및 프로파일링</translation>
     </message>
@@ -8670,32 +8948,37 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="486"/>
+      <location filename="../../../Path/Op/Base.py" line="487"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="487"/>
+      <location filename="../../../Path/Op/Base.py" line="488"/>
       <source>Flood</source>
       <translation>주수 냉각</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="488"/>
+      <location filename="../../../Path/Op/Base.py" line="489"/>
       <source>Mist</source>
       <translation>안개 분사</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="647"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="644"/>
       <source>Copy {0}…</source>
       <translation>{0} 복사…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="648"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="645"/>
       <source>New tool controller…</source>
       <translation>새 툴 컨트롤러…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="693"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="696"/>
+      <source>This tool controller is used by 1 other operation.</source>
+      <translation type="unfinished">This tool controller is used by 1 other operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="699"/>
       <source>This tool controller is used by {0} other operations.</source>
       <translation>이 툴 컨트롤러는 {0}개의 다른 작업에서 사용됩니다.</translation>
     </message>
@@ -8703,62 +8986,62 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="843"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No parent job found for operation.</source>
       <translation>작업의 상위 작업을 찾을 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="848"/>
+      <location filename="../../../Path/Op/Base.py" line="849"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>상위 작업 %s에 기본 객체가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1119"/>
+      <location filename="../../../Path/Op/Base.py" line="1114"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>툴 컨트롤러가 선택되지 않았습니다. 경로를 작성하려면 툴이 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1133"/>
+      <location filename="../../../Path/Op/Base.py" line="1128"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>툴을 찾을 수 없거나 직경이 0입니다. 경로를 작성하려면 툴이 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="661"/>
+      <location filename="../../../Path/Op/Util.py" line="662"/>
       <source>No Tool Controller selected.</source>
       <translation>툴 컨트롤러가 선택되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="664"/>
+      <location filename="../../../Path/Op/Util.py" line="665"/>
       <source>Tool Error</source>
       <translation>툴 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="676"/>
+      <location filename="../../../Path/Op/Util.py" line="677"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>사이클 시간을 계산하려면 툴 컨트롤러의 피드 속도가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="679"/>
+      <location filename="../../../Path/Op/Util.py" line="680"/>
       <source>Tool Feedrate Error</source>
       <translation>툴 피드 속도 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="685"/>
+      <location filename="../../../Path/Op/Util.py" line="686"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>더 정확한 사이클 시간을 위해 설정 시트에 툴 컨트롤러 급송 속도를 추가하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Util.py" line="693"/>
+      <location filename="../../../Path/Op/Util.py" line="694"/>
       <source>Cycletime Error</source>
       <translation>사이클 시간 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1265"/>
+      <location filename="../../../Path/Op/Base.py" line="1259"/>
       <source>Base object %s.%s already in the list</source>
       <translation>기본 객체 %s.%s이(가) 이미 목록에 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1275"/>
+      <location filename="../../../Path/Op/Base.py" line="1269"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>기본 객체 %s.%s이(가) 작업에 의해 거부되었습니다</translation>
     </message>
@@ -8789,25 +9072,20 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>비평면 어댑티브 시작도 사용할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="75"/>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="66"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation>%s은(는) 작업 %s의 기본 모델 객체가 아닙니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="176"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="78"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="124"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="59"/>
       <source>No valid toolcontroller</source>
       <translation>유효한 툴 컨트롤러가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="181"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="128"/>
       <source>This operation requires a tool controller with a v-bit tool</source>
       <translation>이 작업에는 V비트 툴이 있는 툴 컨트롤러가 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <source>Base shape %s already in the list</source>
       <translation>기본 형상 %s이(가) 이미 목록에 있습니다</translation>
     </message>
@@ -8822,12 +9100,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>범용 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="75"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="63"/>
       <source>This operation requires a tool controller with a probe tool</source>
       <translation>이 작업에는 탐침 툴이 있는 툴 컨트롤러가 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="117"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="82"/>
       <source>This operation requires a tool controller with a threadmilling tool</source>
       <translation>이 작업에는 나사밀링 툴이 있는 툴 컨트롤러가 필요합니다</translation>
     </message>
@@ -9014,9 +9292,9 @@ This will not delete the toolbits contained within it.</source>
 이 작업은 그 안에 들어 있는 툴비트를 삭제하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="470"/>
+      <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
@@ -9104,7 +9382,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>선택한 툴비트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다. 툴비트가 디스크와 이를 포함하는 모든 라이브러리에서 제거됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="258"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="267"/>
       <source>Selected faces should be vertical</source>
       <translation>선택한 면은 수직이어야 합니다</translation>
     </message>
@@ -9112,32 +9390,6 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="78"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation>{diameter} {pitch} {rotation} 탭, {flutes}날, 절삭날 길이 {cutting_edge_length}</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="375"/>
-      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation>어댑티브 작업이 경계 와이어를 결정할 수 없습니다. 기본 지오메트리를 선택했습니까?</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="226"/>
-      <source>CAM Export Gcode</source>
-      <translation>CAM G-code 내보내기</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="244"/>
-      <source>Save With Changes</source>
-      <translation>변경 사항 저장</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="251"/>
-      <location filename="../../../Path/Post/Utils.py" line="254"/>
-      <source>Save Without Changes</source>
-      <translation>변경 없이 저장</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Utils.py" line="252"/>
-      <source>Abort</source>
-      <translation>중단</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="317"/>
@@ -9347,114 +9599,85 @@ This will not delete the toolbits contained within it.</source>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="493"/>
-      <source>Expand drill-cycles</source>
-      <translation type="unfinished">Expand drill-cycles</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="498"/>
-      <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
-      <translation type="unfinished">Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="503"/>
       <source>Allow tool-change</source>
       <translation type="unfinished">Allow tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="508"/>
+      <location filename="../../../Path/Post/Processor.py" line="498"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation type="unfinished">Unchecked to suppress tool-change (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="513"/>
-      <location filename="../../../Path/Post/Processor.py" line="518"/>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
+      <location filename="../../../Path/Post/Processor.py" line="508"/>
       <source>Unit-command in output</source>
       <translation type="unfinished">Unit-command in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="523"/>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
       <source>Axis precision in output</source>
       <translation type="unfinished">Axis precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="528"/>
+      <location filename="../../../Path/Post/Processor.py" line="518"/>
       <source>Decimals of precision for axis motion</source>
       <translation type="unfinished">Decimals of precision for axis motion</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="533"/>
+      <location filename="../../../Path/Post/Processor.py" line="523"/>
       <source>Feedrate precision in output</source>
       <translation type="unfinished">Feedrate precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="538"/>
+      <location filename="../../../Path/Post/Processor.py" line="528"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation type="unfinished">Decimals of precision for feedrate (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <location filename="../../../Path/Post/Processor.py" line="533"/>
       <source>Spindle-speed precision in output</source>
       <translation type="unfinished">Spindle-speed precision in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="548"/>
+      <location filename="../../../Path/Post/Processor.py" line="538"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation type="unfinished">Decimals of precision for spindle-speed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="553"/>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
       <source>Output F parameter for G0 (rapid)</source>
       <translation type="unfinished">Output F parameter for G0 (rapid)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="558"/>
+      <location filename="../../../Path/Post/Processor.py" line="548"/>
       <source>Whether to output the F parameter for G0 (rapid moves)</source>
       <translation type="unfinished">Whether to output the F parameter for G0 (rapid moves)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
-      <source>Grbl post processor</source>
-      <translation>Grbl 후처리기</translation>
+      <location filename="../../../Path/Post/Utils.py" line="194"/>
+      <source>CAM Export Gcode</source>
+      <translation>CAM G-code 내보내기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
-      <source>Path Blending Mode</source>
-      <translation>경로 블렌딩 모드</translation>
+      <location filename="../../../Path/Post/Utils.py" line="204"/>
+      <source>Save With Changes</source>
+      <translation>변경 사항 저장</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
-      <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
-      <translation>경로 블렌딩 모드: EXACT_PATH (G61) 각 지점에서 정지, EXACT_STOP (G61.1) 경로 끝에서 정지, BLEND (G64) 부드러운 이동 허용</translation>
+      <location filename="../../../Path/Post/Utils.py" line="211"/>
+      <location filename="../../../Path/Post/Utils.py" line="214"/>
+      <source>Save Without Changes</source>
+      <translation>변경 없이 저장</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
-      <source>Blend Tolerance</source>
-      <translation>블렌딩 공차</translation>
+      <location filename="../../../Path/Post/Utils.py" line="212"/>
+      <source>Abort</source>
+      <translation>중단</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
-      <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
-      <translation>BLEND 모드의 공차(P 값): 0 = 공차 없음 (G64), &gt;0 = 공차 (G64 P-), 현재 단위</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
-      <source>LinuxCNC post processor</source>
-      <translation>LinuxCNC 후처리기</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
-      <source>Centroid post processor</source>
-      <translation>Centroid 후처리기</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
-      <source>Test post processor</source>
-      <translation>테스트 후처리기</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
-      <source>Marlin post processor</source>
-      <translation>Marlin 후처리기</translation>
+      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
+      <source>Mach3_Mach4 post processor</source>
+      <translation>Mach3/Mach4 후처리기</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/opensbp_post.py" line="167"/>
@@ -9492,19 +9715,14 @@ This will not delete the toolbits contained within it.</source>
       <translation>ShopBot 컨트롤러용 OpenSBP 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
-      <source>Mach3_Mach4 post processor</source>
-      <translation>Mach3/Mach4 후처리기</translation>
+      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
+      <source>Test post processor</source>
+      <translation>테스트 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
-      <source>Masso G3 post processor</source>
-      <translation>Masso G3 후처리기</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
-      <source>Refactored SmoothieBoard post processor</source>
-      <translation>리팩토링된 SmoothieBoard 후처리기</translation>
+      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
+      <source>Centroid post processor</source>
+      <translation>Centroid 후처리기</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="91"/>
@@ -9572,24 +9790,74 @@ This will not delete the toolbits contained within it.</source>
       <translation>범용 플라즈마 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1303"/>
-      <source>Exceeded length in cutTravelEnd</source>
-      <translation>cutTravelEnd에서 길이 초과</translation>
+      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
+      <source>Marlin post processor</source>
+      <translation>Marlin 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1324"/>
-      <source>Exceeded length in cutTravelBegin</source>
-      <translation>cutTravelBegin에서 길이 초과</translation>
+      <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
+      <source>Masso G3 post processor</source>
+      <translation>Masso G3 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Inspect.py" line="100"/>
-      <source>CAM Inspect</source>
-      <translation>CAM 검사</translation>
+      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
+      <source>Refactored SmoothieBoard post processor</source>
+      <translation>리팩토링된 SmoothieBoard 후처리기</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
+      <source>Grbl post processor</source>
+      <translation>Grbl 후처리기</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
+      <source>Path Blending Mode</source>
+      <translation>경로 블렌딩 모드</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
+      <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
+      <translation>경로 블렌딩 모드: EXACT_PATH (G61) 각 지점에서 정지, EXACT_STOP (G61.1) 경로 끝에서 정지, BLEND (G64) 부드러운 이동 허용</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
+      <source>Blend Tolerance</source>
+      <translation>블렌딩 공차</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
+      <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
+      <translation>BLEND 모드의 공차(P 값): 0 = 공차 없음 (G64), &gt;0 = 공차 (G64 P-), 현재 단위</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
+      <source>LinuxCNC post processor</source>
+      <translation>LinuxCNC 후처리기</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="377"/>
+      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
+      <translation>어댑티브 작업이 경계 와이어를 결정할 수 없습니다. 기본 지오메트리를 선택했습니까?</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
       <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
       <translation>{diameter} 팁, 테이퍼 {taper_angle}, {flutes}날 테이퍼 볼 노즈, 절삭날 높이 {cutting_edge_height}</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Inspect.py" line="44"/>
+      <source>CAM Inspect</source>
+      <translation>CAM 검사</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="922"/>
+      <source>Exceeded length in cutTravelEnd</source>
+      <translation>cutTravelEnd에서 길이 초과</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="943"/>
+      <source>Exceeded length in cutTravelBegin</source>
+      <translation>cutTravelBegin에서 길이 초과</translation>
     </message>
   </context>
   <context>
@@ -9631,12 +9899,12 @@ This will not delete the toolbits contained within it.</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="71"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="276"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="268"/>
       <source>Drilling</source>
       <translation>드릴</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="280"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="272"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
       <translation>기본 객체의 피처로부터 드릴 툴패스를 생성합니다</translation>
     </message>
@@ -9644,12 +9912,12 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_Helix</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="124"/>
       <source>Helix</source>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="129"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="125"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
       <translation>기본 객체의 피처로부터 나선형 툴패스를 생성합니다</translation>
     </message>
@@ -9744,12 +10012,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
-      <translation>지그재그 오프셋</translation>
+      <translation>지그재그 편위</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="73"/>
@@ -9792,7 +10060,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>확장</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="206"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="199"/>
       <source>Set start point: %s, %s</source>
       <translation>시작점 설정: %s, %s</translation>
     </message>
@@ -9992,15 +10260,15 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Op/Slot.py" line="1659"/>
       <location filename="../../../Path/Op/Slot.py" line="1667"/>
       <source>Current offset value produces negative radius.</source>
-      <translation>현재 오프셋 값이 음수 반경을 생성합니다.</translation>
+      <translation>현재 편위 값은 음수 반지름을 생성합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Slot.py" line="281"/>
+      <location filename="../../../Path/Op/Gui/Slot.py" line="274"/>
       <source>Slot</source>
       <translation>슬롯</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Slot.py" line="291"/>
+      <location filename="../../../Path/Op/Gui/Slot.py" line="284"/>
       <source>Create a single horizontal slot between two points.
 
 Points can be specified through selected geometry or custom points.
@@ -10079,7 +10347,7 @@ Allowed selection only from one model:
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="454"/>
@@ -10154,12 +10422,12 @@ Allowed selection only from one model:
       <translation>회전</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Surface.py" line="275"/>
+      <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
       <source>3D Surface</source>
       <translation>3D 표면</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Surface.py" line="276"/>
+      <location filename="../../../Path/Op/Gui/Surface.py" line="270"/>
       <source>Create a 3D Surface Operation from a model</source>
       <translation>모델에서 3D 표면 작업을 생성합니다</translation>
     </message>
@@ -10232,12 +10500,12 @@ Allowed selection only from one model:
       <translation>컨벤셔널</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="252"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="258"/>
       <source>Thread Milling</source>
       <translation>나사 밀링</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="256"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="262"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
       <translation>기본 객체의 피처로부터 나사 밀링 툴패스를 생성합니다</translation>
     </message>
@@ -10255,12 +10523,12 @@ Allowed selection only from one model:
       <translation>각인기의 절삭날 각도는 180도 미만이어야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="220"/>
       <source>Vcarve</source>
       <translation>V카브</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
       <source>Creates a medial line engraving toolpath</source>
       <translation>중심선 각인 툴패스를 생성합니다</translation>
     </message>
@@ -10312,17 +10580,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="122"/>
       <source>Select file containing the gcode</source>
       <translation type="unfinished">Select file containing the gcode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="143"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="137"/>
       <source>Custom</source>
       <translation>사용자 지정</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="144"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="138"/>
       <source>Create custom G-code snippet</source>
       <translation>사용자 정의 G-code 스니펫을 생성합니다</translation>
     </message>
@@ -10330,12 +10598,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Deburr</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
+      <location filename="../../../Path/Op/Gui/Deburr.py" line="136"/>
       <source>Deburr</source>
       <translation>버 제거</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Deburr.py" line="143"/>
+      <location filename="../../../Path/Op/Gui/Deburr.py" line="137"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
       <translation>모서리를 따라 또는 면 주위에 버 제거 툴패스를 생성합니다</translation>
     </message>
@@ -10343,12 +10611,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Engrave</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="171"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="157"/>
       <source>Engrave</source>
       <translation>각인</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="174"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="160"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
       <translation>Draft ShapeString 주위에 각인 툴패스를 생성합니다</translation>
     </message>
@@ -10435,12 +10703,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Waterline</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Waterline.py" line="205"/>
+      <location filename="../../../Path/Op/Gui/Waterline.py" line="199"/>
       <source>Waterline</source>
       <translation>워터라인</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Waterline.py" line="206"/>
+      <location filename="../../../Path/Op/Gui/Waterline.py" line="200"/>
       <source>Create a Waterline toolpath from a model</source>
       <translation>모델에서 워터라인 툴패스를 생성합니다</translation>
     </message>
@@ -10458,121 +10726,121 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>선택한 작업을 후처리합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="345"/>
+      <location filename="../../../Path/Post/Command.py" line="352"/>
       <source>Post Process Selected</source>
       <translation>선택 항목 후처리</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Command.py" line="347"/>
+      <location filename="../../../Path/Post/Command.py" line="354"/>
       <source>Post Processes the selected operations</source>
       <translation>선택한 작업을 후처리합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="124"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1010"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1023"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1037"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1047"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1087"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1125"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="127"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1064"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1077"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1091"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1101"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1141"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1179"/>
       <source>Generate Output</source>
       <translation>출력 생성</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="160"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="169"/>
       <source>Post Processing - Job: {}</source>
       <translation>후처리 - 작업: {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="167"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="176"/>
       <source>(none)</source>
       <translation>(없음)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="312"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="321"/>
       <source>Postprocessor Properties</source>
       <translation>후처리기 속성</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="539"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="548"/>
       <source>(no fixtures defined)</source>
       <translation>(정의된 픽스쳐 없음)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="624"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="678"/>
       <source>No issues found.</source>
       <translation>문제가 발견되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="657"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="711"/>
       <source>{} critical issue(s) — review before machining.</source>
       <translation>{}개의 중요 문제 - 가공 전 검토하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="664"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="718"/>
       <source>{} advisory notice(s) found.</source>
       <translation>{}개의 권고 사항이 발견되었습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="684"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="738"/>
       <source>Operations ({}/{})</source>
       <translation>작업 ({}/{})</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="690"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="744"/>
       <source>Warnings (!) {}</source>
       <translation>경고 (!) {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="693"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="747"/>
       <source>Warnings {}</source>
       <translation>경고 {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="696"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="750"/>
       <source>Warnings</source>
       <translation>경고</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="751"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="805"/>
       <source>Workplan</source>
       <translation>작업 계획</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1013"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1026"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1067"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1080"/>
       <source>The selected machine has no post-processor configured.</source>
       <translation>선택한 장비에 구성된 후처리기가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1038"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1092"/>
       <source>No post-processor configured for this job.</source>
       <translation>이 작업에 구성된 후처리기가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1088"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1142"/>
       <source>Post-processor returned no output.</source>
       <translation>후처리기가 출력을 반환하지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1126"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1180"/>
       <source>Error during generation:
 {}</source>
       <translation>생성 중 오류:
 {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1186"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1240"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1272"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1328"/>
       <source>Select Output Folder</source>
       <translation>출력 폴더 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1307"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1363"/>
       <source>{} error(s) while saving:
 {}</source>
       <translation>저장 중 {}개 오류:
@@ -10595,17 +10863,17 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_ToolController</name>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="230"/>
+      <location filename="../../../Path/Tool/Controller.py" line="241"/>
       <source>Forward</source>
       <translation>정방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="231"/>
+      <location filename="../../../Path/Tool/Controller.py" line="242"/>
       <source>Reverse</source>
       <translation>역방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Controller.py" line="232"/>
+      <location filename="../../../Path/Tool/Controller.py" line="243"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
@@ -10620,7 +10888,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>활성 작업에 새 툴 컨트롤러를 추가합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="252"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="256"/>
       <source>Feeds and Speeds Wizard</source>
       <translation type="unfinished">Feeds and Speeds Wizard</translation>
     </message>
@@ -10697,12 +10965,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>시작점 설정: %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="198"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="209"/>
       <source>Profile</source>
       <translation>프로파일</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="199"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="210"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>전체 모델, 선택한 면 또는 선택한 모서리를 프로파일합니다</translation>
     </message>
@@ -10710,12 +10978,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="318"/>
       <source>Simulates using CAMotics</source>
       <translation>CAMotics를 사용하여 시뮬레이션합니다</translation>
     </message>
@@ -10756,12 +11024,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>2배 드릴 팁</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Tapping.py" line="180"/>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="172"/>
       <source>Tapping</source>
       <translation>태핑</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Tapping.py" line="184"/>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="176"/>
       <source>Creates a Tapping toolpath from the features of a base object</source>
       <translation>기본 객체의 피처로부터 탭핑 툴패스를 생성합니다</translation>
     </message>
@@ -10808,12 +11076,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="182"/>
       <source>Toggle Operation</source>
       <translation>작업 전환</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="153"/>
+      <location filename="../../../PathCommands.py" line="186"/>
       <source>Toggles the active state of the operation</source>
       <translation>작업의 활성 상태를 전환합니다</translation>
     </message>
@@ -10821,12 +11089,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="219"/>
+      <location filename="../../../PathCommands.py" line="252"/>
       <source>Copy Operation</source>
       <translation>작업 복사</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="220"/>
+      <location filename="../../../PathCommands.py" line="253"/>
       <source>Copies the operation in the job</source>
       <translation>작업 내의 작업을 복사합니다</translation>
     </message>
@@ -10852,26 +11120,12 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="428"/>
       <source>Property Bag</source>
-      <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) str = Z|R for G98/G99, for drill cycles float = field(default=None) int = field(default=0) int = field(default=None)</extracomment>
       <translation>속성 백</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="432"/>
       <source>Creates an object which can be used to store reference properties</source>
       <translation>참조 속성을 저장하는 데 사용할 수 있는 객체를 생성합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_PathShapeTC</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="182"/>
-      <source>Path From Shape TC</source>
-      <translation>형상 TC에서 경로</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="186"/>
-      <source>Creates a path from the selected shapes with the tool controller</source>
-      <translation>선택한 형상에서 툴 컨트롤러로 경로를 생성합니다</translation>
     </message>
   </context>
   <context>
@@ -10928,27 +11182,32 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="144"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="131"/>
+      <source>Check for tool updates from the library when opening a document</source>
+      <translation type="unfinished">Check for tool updates from the library when opening a document</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="153"/>
       <source>Select Asset Directory</source>
       <translation>에셋 디렉터리 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="163"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="172"/>
       <source>Warning</source>
       <translation>경고</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="164"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="173"/>
       <source>The selected asset path is not writable.</source>
       <translation>선택한 에셋 경로에 쓸 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="222"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="233"/>
       <source>Delete Machine</source>
       <translation>장비 삭제</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="225"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="236"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>이 장비 파일을 삭제하시겠습니까?</translation>
     </message>
@@ -10970,78 +11229,78 @@ Several operations can be used with identical tool controller and coolant mode</
     <name>ToolBitShape</name>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
       <source>Cutting edge height</source>
       <translation>절삭날 높이</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
       <source>Diameter</source>
       <translation>직경</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
       <source>Flutes</source>
       <translation>날 수</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
       <source>Overall tool length</source>
       <translation>툴 전체 길이</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
       <source>Shank diameter</source>
       <translation>샹크 직경</translation>
     </message>
@@ -11058,8 +11317,8 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <source>Tip diameter</source>
       <translation>팁 직경</translation>
     </message>
@@ -11074,19 +11333,14 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>알 수 없는 사용자 정의 셰이프</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="36"/>
       <source>Crest height</source>
       <translation>크레스트 높이</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
-      <source>Cutting diameter</source>
-      <translation>절삭 직경</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="64"/>
       <source>Cutting angle</source>
       <translation>절삭 각도</translation>
     </message>
@@ -11101,14 +11355,14 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>외경</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="52"/>
       <source>Neck diameter</source>
       <translation>넥 직경</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="56"/>
       <source>Neck length</source>
       <translation>넥 길이</translation>
     </message>
@@ -11199,6 +11453,11 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>탭</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="40"/>
+      <source>Cutting diameter</source>
+      <translation>절삭 직경</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="72"/>
       <source>Thread Mill</source>
       <translation>나사 밀</translation>
@@ -11285,57 +11544,62 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>Frame</name>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="26"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="30"/>
       <source>Controller Name / Tool Number</source>
       <translation>컨트롤러 이름 / 툴 번호</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="64"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="68"/>
       <source>Horizontal feed</source>
       <translation>수평 피드</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="93"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="94"/>
       <source>Vertical feed</source>
       <translation>수직 피드</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="122"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="120"/>
       <source>Lead-in feed</source>
       <translation>리드 인 피드</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="151"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="146"/>
       <source>Lead-out feed</source>
       <translation>리드 아웃 피드</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="180"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="172"/>
       <source>Ramp feed</source>
       <translation>램프 피드</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="209"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="198"/>
+      <source>No-Engagement feed</source>
+      <translation type="unfinished">No-Engagement feed</translation>
+    </message>
+    <message>
+      <location filename="../panels/ToolControllerEdit.ui" line="224"/>
       <source>Horizontal rapid</source>
       <translation>수평 급송</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="238"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="250"/>
       <source>Vertical rapid</source>
       <translation>수직 급송</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="270"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="279"/>
       <source>Spindle</source>
       <translation>스핀들</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="283"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="292"/>
       <source>Forward</source>
       <translation>정방향</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="288"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="297"/>
       <source>Reverse</source>
       <translation>역방향</translation>
     </message>
@@ -11417,137 +11681,6 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
   </context>
   <context>
-    <name>CAMSimulator::GuiDisplay</name>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
-      <source>Play simulation</source>
-      <translation>시뮬레이션 재생</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
-      <source>Single step simulation</source>
-      <translation>단일 스텝 시뮬레이션</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
-      <source>Decrease simulation speed</source>
-      <translation>시뮬레이션 속도 감소</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
-      <source>Increase simulation speed</source>
-      <translation>시뮬레이션 속도 증가</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
-      <source>x1</source>
-      <translation>x1</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
-      <source>Reset camera</source>
-      <translation>카메라 초기화</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
-      <source>Toggle view simulation/model</source>
-      <translation>시뮬레이션/모델 뷰 전환</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
-      <source>Toggle turn table animation</source>
-      <translation>턴테이블 애니메이션 전환</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
-      <source>Show/hide tool path</source>
-      <translation>툴패스 표시/숨김</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
-      <source>Toggle ambient occlusion</source>
-      <translation>주변광 차단 전환</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
-      <source>x%1</source>
-      <translation>x%1</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeedsSpeedsPresetEdit</name>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
-      <source>Edit preset</source>
-      <translation type="unfinished">Edit preset</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
-      <source>Name:</source>
-      <translation type="unfinished">Name:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
-      <source>Material:</source>
-      <translation type="unfinished">Material:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
-      <source>(none)</source>
-      <translation>(없음)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
-      <source>Browse…</source>
-      <translation type="unfinished">Browse…</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
-      <source>Generic (any material)</source>
-      <translation type="unfinished">Generic (any material)</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
-      <source>Op type:</source>
-      <translation type="unfinished">Op type:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
-      <source>Surface speed:</source>
-      <translation type="unfinished">Surface speed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="94"/>
-      <source>Chipload (per tooth):</source>
-      <translation type="unfinished">Chipload (per tooth):</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="117"/>
-      <source>Vert feed ratio:</source>
-      <translation type="unfinished">Vert feed ratio:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="145"/>
-      <source>Direct feed and speed</source>
-      <translation type="unfinished">Direct feed and speed</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="151"/>
-      <source>Horiz feed:</source>
-      <translation type="unfinished">Horiz feed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="174"/>
-      <source>Spindle speed:</source>
-      <translation type="unfinished">Spindle speed:</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="200"/>
-      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
-      <translation type="unfinished">Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</translation>
-    </message>
-  </context>
-  <context>
     <name>DlgPostProcess</name>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="14"/>
@@ -11618,7 +11751,7 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="155"/>
-      <location filename="../panels/DlgPostProcess.ui" line="282"/>
+      <location filename="../panels/DlgPostProcess.ui" line="310"/>
       <source>Options</source>
       <translation>옵션</translation>
     </message>
@@ -11654,449 +11787,231 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="232"/>
+      <source>#</source>
+      <translation type="unfinished">#</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="237"/>
       <source>Operation</source>
       <translation>작업</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="242"/>
+      <source>Tool</source>
+      <translation>도구</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="250"/>
+      <source>Tool Controller</source>
+      <translation>툴 컨트롤러</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="255"/>
+      <source>Coolant</source>
+      <translation>쿨런트</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="260"/>
+      <source>Time</source>
+      <translation>시간</translation>
+    </message>
+    <message>
+      <location filename="../panels/DlgPostProcess.ui" line="270"/>
       <source>Select All</source>
       <translation>전체 선택</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="249"/>
+      <location filename="../panels/DlgPostProcess.ui" line="277"/>
       <source>Select None</source>
       <translation>선택 해제</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="256"/>
+      <location filename="../panels/DlgPostProcess.ui" line="284"/>
       <source>Show the workplan (postable items structure)</source>
       <translation>작업 계획 표시 (후처리 가능 항목 구조)</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="259"/>
+      <location filename="../panels/DlgPostProcess.ui" line="287"/>
       <source>Workplan</source>
       <translation>작업 계획</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="309"/>
+      <location filename="../panels/DlgPostProcess.ui" line="337"/>
       <source>(Select a machine on the Overview tab to see machine output options)</source>
       <translation>(개요 탭에서 장비를 선택하면 장비 출력 옵션이 표시됩니다)</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="337"/>
+      <location filename="../panels/DlgPostProcess.ui" line="365"/>
       <source>Output</source>
       <translation>출력</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="345"/>
+      <location filename="../panels/DlgPostProcess.ui" line="373"/>
       <source>Output folder</source>
       <translation type="unfinished">Output folder</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="352"/>
+      <location filename="../panels/DlgPostProcess.ui" line="380"/>
       <source>Folder where G-code files will be saved</source>
       <translation>G-code 파일이 저장될 폴더</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="355"/>
+      <location filename="../panels/DlgPostProcess.ui" line="383"/>
       <source>(resolved when output is generated)</source>
       <translation>(출력 생성 시 확인됨)</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="368"/>
+      <location filename="../panels/DlgPostProcess.ui" line="396"/>
       <source>Browse…</source>
       <translation type="unfinished">Browse…</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="379"/>
+      <location filename="../panels/DlgPostProcess.ui" line="407"/>
       <source>Filename template</source>
       <translation type="unfinished">Filename template</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="386"/>
+      <location filename="../panels/DlgPostProcess.ui" line="414"/>
       <source>Filename template. Substitutions: %j=job name, %d=document, %T=tool, %W=fixture, %O=operation</source>
       <translation>파일명 템플릿. 치환: %j=작업 이름, %d=문서, %T=툴, %W=픽스쳐, %O=작업</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="389"/>
+      <location filename="../panels/DlgPostProcess.ui" line="417"/>
       <source>e.g. %j.nc</source>
       <translation>예: %j.nc</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="405"/>
+      <location filename="../panels/DlgPostProcess.ui" line="433"/>
       <source>Regenerate output filenames using this template</source>
       <translation>이 템플릿을 사용하여 출력 파일명을 다시 생성합니다</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="408"/>
+      <location filename="../panels/DlgPostProcess.ui" line="436"/>
       <source>Apply</source>
       <translation>적용</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="420"/>
+      <location filename="../panels/DlgPostProcess.ui" line="448"/>
       <source>Press &quot;Generate Output&quot; to preview G-code before saving.</source>
       <translation>저장 전 G-code를 미리 보려면 &quot;출력 생성&quot;을 누르십시오.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="440"/>
+      <location filename="../panels/DlgPostProcess.ui" line="468"/>
       <source>Generated output files. Select a file to view or edit its contents.</source>
       <translation>생성된 출력 파일입니다. 내용을 보거나 편집하려면 파일을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="451"/>
+      <location filename="../panels/DlgPostProcess.ui" line="479"/>
       <source>G-code content for the selected file. You may edit before saving.</source>
       <translation>선택한 파일의 G-code 내용입니다. 저장 전에 편집할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="464"/>
+      <location filename="../panels/DlgPostProcess.ui" line="492"/>
       <source>Save to Disk</source>
       <translation>디스크에 저장</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="487"/>
+      <location filename="../panels/DlgPostProcess.ui" line="515"/>
       <source>Warnings</source>
       <translation>경고</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="496"/>
+      <location filename="../panels/DlgPostProcess.ui" line="524"/>
       <source>No issues found</source>
       <translation type="unfinished">No issues found</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="506"/>
+      <location filename="../panels/DlgPostProcess.ui" line="534"/>
       <source>Validation issues found in the job. WARNING and CAUTION items should be addressed before machining.</source>
       <translation>작업에서 검증 문제가 발견되었습니다. 경고 및 주의 항목은 가공 전에 해결해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="528"/>
+      <location filename="../panels/DlgPostProcess.ui" line="556"/>
       <source>Severity</source>
       <translation>심각도</translation>
     </message>
     <message>
-      <location filename="../panels/DlgPostProcess.ui" line="533"/>
+      <location filename="../panels/DlgPostProcess.ui" line="561"/>
       <source>Note</source>
       <translation>메모</translation>
     </message>
   </context>
   <context>
-    <name>PathHelix</name>
+    <name>FeedsSpeedsPresetEdit</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="711"/>
-      <source>Skipped hole at position %s</source>
-      <translation>%s 위치의 홀을 건너뛰었습니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>Waterline</name>
-    <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
-      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
-      <translation>: 모델의 상단 면 아래의 스텝만 처리됩니다.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_RotarySurface</name>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="112"/>
-      <source>New property added to</source>
-      <translation>새 속성이 추가됨:</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
+      <source>Edit preset</source>
+      <translation type="unfinished">Edit preset</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="114"/>
-      <source>Check default value(s).</source>
-      <translation>기본값을 확인하십시오.</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
+      <source>Name:</source>
+      <translation type="unfinished">Name:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="243"/>
-      <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="244"/>
-      <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="247"/>
-      <source>Spiral</source>
-      <translation>나선형</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="248"/>
-      <source>Parallel</source>
-      <translation>평행</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="249"/>
-      <source>Rings</source>
-      <translation type="unfinished">Rings</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="252"/>
-      <source>Surface Speed</source>
-      <translation type="unfinished">Surface Speed</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="253"/>
-      <source>Axial Only</source>
-      <translation type="unfinished">Axial Only</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="161"/>
-      <source>Rotary Surface</source>
-      <translation type="unfinished">Rotary Surface</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="165"/>
-      <source>Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</source>
-      <translation type="unfinished">Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MIllFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
-      <source>New property added to</source>
-      <translation>새 속성이 추가됨:</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MillFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
-      <source>Check default value(s).</source>
-      <translation>기본값을 확인하십시오.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
-      <source>Climb</source>
-      <translation>클라이밍</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
-      <source>Conventional</source>
-      <translation>컨벤셔널</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
-      <source>ZigZag</source>
-      <translation>지그재그</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
-      <source>Bidirectional</source>
-      <translation>양방향</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
-      <source>Directional</source>
-      <translation>단방향</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
-      <source>Spiral</source>
-      <translation>나선형</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
-      <source>Mill Facing</source>
-      <translation>밀 페이싱</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
-      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
-      <translation>스톡의 상단 표면을 가공하기 위한 밀 페이싱 작업을 생성합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>MirrorDressup</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="105"/>
-      <source>No base operation</source>
-      <translation>기본 작업이 없습니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="112"/>
-      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>기본 객체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="119"/>
-      <source>Base operation &apos;%s&apos; with empty path</source>
-      <translation>빈 경로를 가진 기본 작업 &apos;%s&apos;</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_DressupMirror</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="266"/>
-      <source>Mirror</source>
-      <translation>미러</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="268"/>
-      <source>Creates mirror of a selected path</source>
-      <translation>선택한 경로의 미러를 생성합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_FeedsSpeeds</name>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="214"/>
-      <source>Optional, e.g. &apos;Aluminum aggressive&apos;</source>
-      <translation type="unfinished">Optional, e.g. &apos;Aluminum aggressive&apos;</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="239"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="511"/>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="348"/>
-      <source>(any)</source>
-      <translation type="unfinished">(any)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="428"/>
-      <source>(none)</source>
-      <translation>(없음)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="468"/>
-      <source>Name</source>
-      <translation>이름</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="469"/>
-      <source>Material</source>
-      <translation>재료</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="470"/>
-      <source>Op type</source>
-      <translation type="unfinished">Op type</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="471"/>
-      <source>Surface speed</source>
-      <translation type="unfinished">Surface speed</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="472"/>
-      <source>Chipload</source>
-      <translation type="unfinished">Chipload</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="473"/>
-      <source>Notes</source>
-      <translation>메모</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="483"/>
-      <source>Add preset</source>
-      <translation type="unfinished">Add preset</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="487"/>
-      <source>Edit</source>
-      <translation>편집</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="491"/>
-      <source>Delete</source>
-      <translation>삭제</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="508"/>
-      <source>(any material)</source>
-      <translation type="unfinished">(any material)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="521"/>
-      <source>raw fallback</source>
-      <translation type="unfinished">raw fallback</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
-      <source>Choose material</source>
-      <translation type="unfinished">Choose material</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="329"/>
-      <source>Suggest Feeds &amp; Speeds</source>
-      <translation type="unfinished">Suggest Feeds &amp; Speeds</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="340"/>
-      <source>(no tool)</source>
-      <translation type="unfinished">(no tool)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="341"/>
-      <source>Tool:</source>
-      <translation type="unfinished">Tool:</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
-      <source>(none — generic resolution)</source>
-      <translation type="unfinished">(none — generic resolution)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
       <source>Material:</source>
       <translation type="unfinished">Material:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
+      <source>(none)</source>
+      <translation>(없음)</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
+      <source>Browse…</source>
+      <translation type="unfinished">Browse…</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
+      <source>Generic (any material)</source>
+      <translation type="unfinished">Generic (any material)</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
       <source>Op type:</source>
       <translation type="unfinished">Op type:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="365"/>
-      <source>Apply preset:</source>
-      <translation type="unfinished">Apply preset:</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
+      <source>Surface speed:</source>
+      <translation type="unfinished">Surface speed:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
-      <source>Suggestion</source>
-      <translation type="unfinished">Suggestion</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
+      <source>Chipload (per tooth):</source>
+      <translation type="unfinished">Chipload (per tooth):</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="373"/>
-      <source>Source:</source>
-      <translation type="unfinished">Source:</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
+      <source>Vert feed ratio:</source>
+      <translation type="unfinished">Vert feed ratio:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="379"/>
-      <source>Confidence:</source>
-      <translation type="unfinished">Confidence:</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
+      <source>Direct feed and speed</source>
+      <translation type="unfinished">Direct feed and speed</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="384"/>
-      <source>Current</source>
-      <translation>현재</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
+      <source>Horiz feed:</source>
+      <translation type="unfinished">Horiz feed:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="386"/>
-      <source>Suggested</source>
-      <translation type="unfinished">Suggested</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
+      <source>Spindle speed:</source>
+      <translation type="unfinished">Spindle speed:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="388"/>
-      <source>Δ</source>
-      <translation type="unfinished">Δ</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
+      <source>Notes</source>
+      <translation>메모</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="424"/>
-      <source>Auto (use resolver)</source>
-      <translation type="unfinished">Auto (use resolver)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="518"/>
-      <source>No suggestion available</source>
-      <translation type="unfinished">No suggestion available</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="529"/>
-      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
-      <translation type="unfinished">No matching preset on this tool. Open the tool from the library to add presets.</translation>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="201"/>
+      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
+      <translation type="unfinished">Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</translation>
     </message>
   </context>
   <context>
@@ -12225,7 +12140,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
       <source>Use Tool Length Offset</source>
-      <translation>툴 길이 오프셋 사용</translation>
+      <translation>도구 길이 편위 사용</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
@@ -12741,6 +12656,458 @@ Several operations can be used with identical tool controller and coolant mode</
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2340"/>
       <source>Failed to save: {}</source>
       <translation>저장 실패: {}</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MIllFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
+      <source>New property added to</source>
+      <translation>새 속성이 추가됨:</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MillFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
+      <source>Check default value(s).</source>
+      <translation>기본값을 확인하십시오.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <source>Climb</source>
+      <translation>클라이밍</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
+      <source>Conventional</source>
+      <translation>컨벤셔널</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <source>ZigZag</source>
+      <translation>지그재그</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <source>Bidirectional</source>
+      <translation>양방향</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <source>Directional</source>
+      <translation>단방향</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
+      <source>Spiral</source>
+      <translation>나선형</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="159"/>
+      <source>Mill Facing</source>
+      <translation>밀 페이싱</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="162"/>
+      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
+      <translation>스톡의 상단 표면을 가공하기 위한 밀 페이싱 작업을 생성합니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_RotarySurface</name>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="112"/>
+      <source>New property added to</source>
+      <translation>새 속성이 추가됨:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="114"/>
+      <source>Check default value(s).</source>
+      <translation>기본값을 확인하십시오.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="243"/>
+      <source>Climb</source>
+      <translation type="unfinished">Climb</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="244"/>
+      <source>Conventional</source>
+      <translation type="unfinished">Conventional</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="247"/>
+      <source>Spiral</source>
+      <translation>나선형</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="248"/>
+      <source>Parallel</source>
+      <translation>평행</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="249"/>
+      <source>Rings</source>
+      <translation type="unfinished">Rings</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="252"/>
+      <source>Surface Speed</source>
+      <translation type="unfinished">Surface Speed</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="253"/>
+      <source>Axial Only</source>
+      <translation type="unfinished">Axial Only</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="155"/>
+      <source>Rotary Surface</source>
+      <translation type="unfinished">Rotary Surface</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="159"/>
+      <source>Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</source>
+      <translation type="unfinished">Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="752"/>
+      <source>Skipped hole at position %s</source>
+      <translation>%s 위치의 홀을 건너뛰었습니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>Pocket_Shape</name>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="163"/>
+      <source>Pocke_Shape can not process open wire.
+You can enable feature Close Open Path</source>
+      <translation type="unfinished">Pocke_Shape can not process open wire.
+You can enable feature Close Open Path</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="346"/>
+      <source>Processing vertical faces was failed</source>
+      <translation type="unfinished">Processing vertical faces was failed</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="354"/>
+      <source>Processing vertical faces was failed.
+You can enable feature Close Open Path</source>
+      <translation type="unfinished">Processing vertical faces was failed.
+You can enable feature Close Open Path</translation>
+    </message>
+  </context>
+  <context>
+    <name>Waterline</name>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
+      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
+      <translation>: 모델의 상단 면 아래의 스텝만 처리됩니다.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathShape</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
+      <source>Tool controller not selected for operation %s</source>
+      <translation type="unfinished">Tool controller not selected for operation %s</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_PathShape</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="674"/>
+      <source>Path from Shape</source>
+      <translation type="unfinished">Path from Shape</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="677"/>
+      <source>Creates path from selected shapes with tool controller</source>
+      <translation type="unfinished">Creates path from selected shapes with tool controller</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_FeedsSpeeds</name>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="330"/>
+      <source>Suggest Feeds &amp; Speeds</source>
+      <translation type="unfinished">Suggest Feeds &amp; Speeds</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="352"/>
+      <source>(no tool)</source>
+      <translation type="unfinished">(no tool)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="353"/>
+      <source>Tool:</source>
+      <translation type="unfinished">Tool:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <source>(none — generic resolution)</source>
+      <translation type="unfinished">(none — generic resolution)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <source>Material:</source>
+      <translation type="unfinished">Material:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="360"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="248"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="613"/>
+      <source>(any)</source>
+      <translation type="unfinished">(any)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
+      <source>Op type:</source>
+      <translation type="unfinished">Op type:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="377"/>
+      <source>Apply preset:</source>
+      <translation type="unfinished">Apply preset:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="381"/>
+      <source>Suggestion</source>
+      <translation type="unfinished">Suggestion</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="385"/>
+      <source>Source:</source>
+      <translation type="unfinished">Source:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="391"/>
+      <source>Confidence:</source>
+      <translation type="unfinished">Confidence:</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="396"/>
+      <source>Current</source>
+      <translation>현재</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="398"/>
+      <source>Suggested</source>
+      <translation type="unfinished">Suggested</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="400"/>
+      <source>Δ</source>
+      <translation type="unfinished">Δ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="436"/>
+      <source>Auto (use resolver)</source>
+      <translation type="unfinished">Auto (use resolver)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="530"/>
+      <source>No suggestion available</source>
+      <translation type="unfinished">No suggestion available</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="541"/>
+      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
+      <translation type="unfinished">No matching preset on this tool. Open the tool from the library to add presets.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
+      <source>Choose material</source>
+      <translation type="unfinished">Choose material</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="220"/>
+      <source>e.g. &apos;Aluminum aggressive&apos;</source>
+      <translation type="unfinished">e.g. &apos;Aluminum aggressive&apos;</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="443"/>
+      <source>(none)</source>
+      <translation>(없음)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="449"/>
+      <source>Name required</source>
+      <translation type="unfinished">Name required</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="450"/>
+      <source>Give the preset a name.</source>
+      <translation type="unfinished">Give the preset a name.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="457"/>
+      <source>Duplicate preset</source>
+      <translation type="unfinished">Duplicate preset</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="462"/>
+      <source>This tool already has a preset named &apos;%s&apos; for this material and op type.</source>
+      <translation type="unfinished">This tool already has a preset named &apos;%s&apos; for this material and op type.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="562"/>
+      <source>Name</source>
+      <translation>이름</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="563"/>
+      <source>Material</source>
+      <translation>재료</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="564"/>
+      <source>Op type</source>
+      <translation type="unfinished">Op type</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="565"/>
+      <source>Surface speed</source>
+      <translation type="unfinished">Surface speed</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="566"/>
+      <source>Chipload</source>
+      <translation type="unfinished">Chipload</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="567"/>
+      <source>Notes</source>
+      <translation>메모</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="579"/>
+      <source>Add preset</source>
+      <translation type="unfinished">Add preset</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="583"/>
+      <source>Edit</source>
+      <translation>편집</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="587"/>
+      <source>Copy</source>
+      <translation>복사</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="591"/>
+      <source>Delete</source>
+      <translation>삭제</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="610"/>
+      <source>(any material)</source>
+      <translation type="unfinished">(any material)</translation>
+    </message>
+  </context>
+  <context>
+    <name>MirrorDressup</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
+      <source>No base operation</source>
+      <translation>기본 작업이 없습니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="125"/>
+      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
+      <translation>기본 객체 &apos;%s&apos;은(는) Path::Feature에서 파생되지 않았습니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="132"/>
+      <source>Base operation &apos;%s&apos; with empty path</source>
+      <translation>빈 경로를 가진 기본 작업 &apos;%s&apos;</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupMirror</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="275"/>
+      <source>Mirror</source>
+      <translation>미러</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
+      <source>Creates mirror of a selected path</source>
+      <translation>선택한 경로의 미러를 생성합니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="306"/>
+      <source>The selected object is not a path</source>
+      <translation>선택한 객체가 경로가 아닙니다</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="310"/>
+      <source>Select a profile object</source>
+      <translation>프로파일 객체를 선택하십시오</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAMSimulator::GuiDisplay</name>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
+      <source>Play simulation</source>
+      <translation>시뮬레이션 재생</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
+      <source>Single step simulation</source>
+      <translation>단일 스텝 시뮬레이션</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
+      <source>Decrease simulation speed</source>
+      <translation>시뮬레이션 속도 감소</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
+      <source>Increase simulation speed</source>
+      <translation>시뮬레이션 속도 증가</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
+      <source>x1</source>
+      <translation>x1</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
+      <source>Reset camera</source>
+      <translation>카메라 초기화</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
+      <source>Toggle view simulation/model</source>
+      <translation>시뮬레이션/모델 뷰 전환</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
+      <source>Toggle turn table animation</source>
+      <translation>턴테이블 애니메이션 전환</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
+      <source>Show/hide tool path</source>
+      <translation>툴패스 표시/숨김</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
+      <source>Toggle ambient occlusion</source>
+      <translation>주변광 차단 전환</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
+      <source>x%1</source>
+      <translation>x%1</translation>
     </message>
   </context>
   <context>

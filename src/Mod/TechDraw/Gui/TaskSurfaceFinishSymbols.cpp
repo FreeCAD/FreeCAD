@@ -421,6 +421,7 @@ bool TaskSurfaceFinishSymbols::accept()
         page->addView(surfaceSymbol);
     }
 
+    surfaceSymbol->recomputeFeature();
     Gui::Command::commitCommand(tid);
     return true;
 }

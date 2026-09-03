@@ -1583,14 +1583,17 @@ PyObject* SketchObjectPy::trim(PyObject* args)
 {
     PyObject* pcObj;
     int GeoId;
+    PyObject* includeAxes = Py_False;
 
-    if (!PyArg_ParseTuple(args, "iO!", &GeoId, &(Base::VectorPy::Type), &pcObj)) {
+    if (
+        !PyArg_ParseTuple(args, "iO!|O!", &GeoId, &(Base::VectorPy::Type), &pcObj, &PyBool_Type, &includeAxes)
+    ) {
         return nullptr;
     }
 
     Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj)->value();
 
-    if (this->getSketchObjectPtr()->trim(GeoId, v1)) {
+    if (this->getSketchObjectPtr()->trim(GeoId, v1, Base::asBoolean(includeAxes))) {
         std::stringstream str;
         str << "Not able to trim curve with the given index: " << GeoId;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());

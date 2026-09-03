@@ -68,6 +68,8 @@ public:
 
     short mustExecute() const override;
 
+    bool snapsToPosition() const override { return true; }
+
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/

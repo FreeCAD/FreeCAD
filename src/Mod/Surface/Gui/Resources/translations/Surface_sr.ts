@@ -358,7 +358,7 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Закрпа</translation>
+      <translation>Попуни граничне криве</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
@@ -488,8 +488,8 @@ This command only works with a mesh object.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>Уреди сложену закрпу</translation>
     </message>

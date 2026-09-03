@@ -171,6 +171,15 @@ class FACEGate(PathBaseGate):
         return isFace
 
 
+class FLUTEGate(PathBaseGate):
+    def allow(self, doc, obj, sub):
+        if sub and sub[0:4] == "Edge":
+            return True
+        if sub and sub[0:4] == "Face":
+            return True
+        return False
+
+
 class PROFILEGate(PathBaseGate):
     def allow(self, doc, obj, sub):
         try:
@@ -315,6 +324,12 @@ def adaptiveselect():
         FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
 
 
+def fluteselect():
+    FreeCADGui.Selection.addSelectionGate(FLUTEGate())
+    if not Path.Preferences.suppressSelectionModeWarning():
+        FreeCAD.Console.PrintWarning("Flute Select Mode\n")
+
+
 def slotselect():
     FreeCADGui.Selection.addSelectionGate(ALLGate())
     if not Path.Preferences.suppressSelectionModeWarning():
@@ -370,6 +385,7 @@ def select(op):
     opsel["Profile Edges"] = eselect  # deprecated
     opsel["Profile Faces"] = fselect  # deprecated
     opsel["Profile"] = profileselect
+    opsel["Flute"] = fluteselect
     opsel["Slot"] = slotselect
     opsel["RotarySurface"] = surfaceselect
     opsel["Surface"] = surfaceselect

@@ -23,10 +23,11 @@
  ***************************************************************************/
 
 
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTreeWidget>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -136,7 +137,7 @@ void LoftWidget::findShapes()
             }
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                     hEdges,
                     Precision::Confusion(),
                     Standard_False,

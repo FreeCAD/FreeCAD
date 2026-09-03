@@ -25,6 +25,8 @@
 #pragma once
 
 #include <functional>
+#include <string>
+#include <array>
 
 #include <FCConfig.h>
 
@@ -71,7 +73,7 @@ enum GeoEnum
     RtPnt = -1,   // GeoId of the Root Point
     HAxis = -1,   // GeoId of the Horizontal Axis
     VAxis = -2,   // GeoId of the Vertical Axis
-    RefExt = -3,  // Starting GeoID of external geometry ( negative geoIds starting at this index)
+    RefExt = -3,  // Starting GeoID of external geometry (negative geoIds starting at this index)
     GeoUndef = -2000  // GeoId of an undefined Geometry (uninitialised or unused GeoId)
 };
 
@@ -85,10 +87,11 @@ enum GeoEnum
  */
 enum class PointPos : int
 {
-    none = 0,   // Edge of a geometry
-    start = 1,  // Starting point of a geometry
-    end = 2,    // End point of a geometry
-    mid = 3     // Mid point of a geometry
+    none = 0,    // Edge of a geometry
+    start = 1,   // Starting point of a geometry
+    end = 2,     // End point of a geometry
+    mid = 3,     // Mid point of a geometry
+    NumPointPos  // must be the last item
 };
 
 /** @brief      Struct for storing a {GeoId, PointPos} pair.
@@ -129,6 +132,18 @@ public:
     bool isCurve() const;
 
     int posIdAsInt() const;
+
+    std::string toString() const;
+
+    std::string pointPosToString() const
+    {
+        return pointPosToString(Pos);
+    }
+    static std::string pointPosToString(PointPos Pos);
+
+    constexpr static std::array<const char*, static_cast<size_t>(PointPos::NumPointPos)> pointPos2str {
+        {"none", "start", "end", "mid"}
+    };
 
     /** @brief GeoElementId of the Root Point
      */

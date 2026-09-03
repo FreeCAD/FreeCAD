@@ -90,6 +90,7 @@ struct DocumentP
     bool _isModified;
     bool _isTransacting;
     bool _isActive;
+    bool _restoredGuiDocument;
     bool _changeViewTouchDocument;
     bool _editWantsRestore;
     bool _editWantsRestorePrevious;
@@ -264,6 +265,14 @@ struct DocumentP
         _editObjs.insert(sobjs.begin(), sobjs.end());
     }
 
+    void resetFailedEditing()
+    {
+        _editViewProvider = nullptr;
+        _editViewProviderParent = nullptr;
+        _editObjs.clear();
+        _editingObject = nullptr;
+    }
+
     bool tryStartEditing(
         ViewProviderDocumentObject* vp,
         App::DocumentObject* obj,
@@ -283,15 +292,35 @@ struct DocumentP
 
     bool tryStartEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
     {
+        try {
+            return startEditing(svp, sobj, ModNum);
+        }
+        catch (const Base::Exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (const std::exception& e) {
+            resetFailedEditing();
+            FC_ERR("startEditing:" << e.what());
+            return false;
+        }
+        catch (...) {
+            resetFailedEditing();
+            FC_ERR("startEditing: Unknown C++ exception");
+            return false;
+        }
+    }
+
+    bool startEditing(ViewProviderDocumentObject* svp, App::DocumentObject* sobj, int ModNum)
+    {
         _editingObject = sobj;
         _editMode = ModNum;
         _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
                                   // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
-            _editViewProviderParent = nullptr;
-            _editObjs.clear();
-            _editingObject = nullptr;
+            resetFailedEditing();
             FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
             return false;
         }
@@ -436,6 +465,7 @@ Document::Document(App::Document* pcDocument, Application* app)
     d->_isModified = false;
     d->_isTransacting = false;
     d->_isActive = false;
+    d->_restoredGuiDocument = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -604,7 +634,15 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
         return trySetEdit(p, ModNum, subname);
     }
     catch (const Base::Exception& e) {
-        FC_ERR("" << e.what());
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (const std::exception& e) {
+        FC_ERR("setEdit:" << e.what());
+        return false;
+    }
+    catch (...) {
+        FC_ERR("setEdit: Unknown C++ exception");
         return false;
     }
 }
@@ -1671,7 +1709,7 @@ bool Document::save()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromStdString(e.getTranslatedMessage()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1735,7 +1773,7 @@ bool Document::saveAs()
         }
         catch (const Base::FileException& e) {
             e.reportException();
-            return askIfSavingFailed(QString::fromUtf8(e.what()));
+            return askIfSavingFailed(QString::fromUtf8(e.getTranslatedMessage().c_str()));
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(
@@ -1911,6 +1949,7 @@ void Document::Save(Base::Writer& writer) const
  */
 void Document::Restore(Base::XMLReader& reader)
 {
+    d->_restoredGuiDocument = false;
     reader.addFile("GuiDocument.xml", this);
 
     // hide all elements to avoid to update the 3d view when loading data files
@@ -1927,6 +1966,8 @@ void Document::Restore(Base::XMLReader& reader)
  */
 void Document::RestoreDocFile(Base::Reader& reader)
 {
+    d->_restoredGuiDocument = true;
+
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader
         = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
@@ -2047,6 +2088,15 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         ViewProvider* viewProvider = getViewProvider(act);
         if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
+
+    if (!d->_restoredGuiDocument) {
+        for (auto* mdiView : getMDIViews()) {
+            if (auto* view3D = freecad_cast<View3DInventor*>(mdiView)) {
+                view3D->viewAll();
+                break;
+            }
         }
     }
 

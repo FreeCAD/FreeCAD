@@ -96,7 +96,7 @@ def import_stpz(fn, fc, doc):
         ImportGui.open(tempfilepath)
     else:
         ImportGui.open(tempfilepath, doc.Name)
-    FreeCADGui.SendMsgToActiveView("ViewFit")
+    FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
     try:
         os.remove(tempfilepath)
     except OSError:

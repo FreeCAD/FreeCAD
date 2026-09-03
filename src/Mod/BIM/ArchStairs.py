@@ -2466,10 +2466,16 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
         if not obj:
             return
 
+        self._setRailingsVisibility(obj, vobj.Visibility)
+
+    def _setRailingsVisibility(self, obj, visible):
         for railing_name in ("RailingLeft", "RailingRight"):
             railing = getattr(obj, railing_name, None)
             if railing and hasattr(railing, "ViewObject"):
-                railing.ViewObject.Visibility = vobj.Visibility
+                railing.ViewObject.Visibility = visible
+        for child in getattr(obj, "Additions", []):
+            if Draft.getType(child) == "Stairs":
+                self._setRailingsVisibility(child, visible)
 
     def claimChildren(self):
         "Define which objects will appear as children in the tree view"

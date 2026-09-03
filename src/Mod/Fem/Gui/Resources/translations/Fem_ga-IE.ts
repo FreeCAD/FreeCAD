@@ -1813,102 +1813,102 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
       <translation>Scrios</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="196"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="239"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="250"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="342"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="374"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="384"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
-      <source>Selection Error</source>
-      <translation>Earráid Roghnúcháin</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Aghaidh amháin sa réad! - bogtha go dtí an máistir-aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
       <source>Select slave geometry of type: </source>
       <translation>Roghnaigh geoiméadracht sclábhaí den chineál seo: </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
-      <source>Face</source>
-      <translation>Aghaidh</translation>
+      <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="255"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
+      <source>Selection Error</source>
+      <translation>Earráid Roghnúcháin</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>cliceáil Cuir leis nó Bain</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Imeall, Aghaidh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
       <source>Select master geometry of type: </source>
       <translation>Roghnaigh máistir-gheoiméadracht an chineáil: </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Aon aghaidh mháistir amháin agus aon aghaidh sclábhaí amháin le haghaidh srian teagmhála!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
       <source>Nothing selected!</source>
       <translation>Níl aon rud roghnaithe!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="245"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Aghaidh sclábhaí amháin le haghaidh srian teagmhála!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
       <source>Selected object is not a part!</source>
       <translation>Ní cuid é an réad roghnaithe!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="380"/>
       <source>External object selection is not supported</source>
       <translation>Ní thacaítear le roghnú réada seachtracha</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="401"/>
       <source>Only faces can be picked (edges in 2D models)</source>
       <translation>Ní féidir ach aghaidheanna a phiocadh (imill i samhlacha 2T)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Máistir amháin le haghaidh srian teagmhála!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="385"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="390"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Aon aghaidh mháistir amháin le haghaidh srian teagmhála!</translation>
     </message>
@@ -2883,6 +2883,16 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
       <translation>Cumasaigh coigeartú</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintTie.ui" line="70"/>
+      <source>Reverse master</source>
+      <translation>Máistir droim ar ais</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintTie.ui" line="77"/>
+      <source>Reverse slave</source>
+      <translation>Sclábhaí droim ar ais</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -2895,12 +2905,12 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
       <translation>Réabhlóidí in aghaidh an tsoicind</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paraiméadar</translation>
     </message>
@@ -3210,14 +3220,14 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <translation>Leithead</translation>
     </message>
     <message>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3238,9 +3248,9 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <translation>Trastomhas seachtrach</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
-      <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/MeshShape.ui" line="109"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
     </message>
@@ -3318,14 +3328,14 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <translation>Gnáth go dtí an teorainn</translation>
     </message>
     <message>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Electromagnetic.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Airíonna Gné Anailíse</translation>
     </message>
@@ -3335,9 +3345,9 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <translation>Foinse Teasa</translation>
     </message>
     <message>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
-      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <source>Mode</source>
       <translation>Mód</translation>
     </message>
@@ -3508,197 +3518,21 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <translation>Uasmhéid eiliminte</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
       <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
       <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <source>Form</source>
       <translation>Foirm</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>Réimse</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <source>Frames</source>
-      <translation>Frámaí</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>Réimse amháin do gach fráma</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <source>Index</source>
-      <translation>Innéacs</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>Réimse X</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <source>Y field</source>
-      <translation>Réimse Y</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>Réimse Y amháin do gach fráma</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>Sainmhínigh méid an eilimint mogaill bunaithe ar an achar go dtí na geoiméadrachtaí tagartha roghnaithe.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Méid mogaill nuair a bhíonn an fad = an tUasmhéid Achair</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>An fad ag a mbeidh méid an mhogalra SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Méid</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Méid mogaill nuair a bhíonn an fad &lt; an t-íosmhéid achair</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <source>Distance</source>
-      <translation>Fad</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>An fad a mbeidh an mogalra suas go dtí an SizeMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <source>Diagram</source>
-      <translation>Léaráid</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>Idirshuíomh</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>Méid samplála</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>Líon na bpointí samplála a úsáidtear chun cuartha agus dromchlaí a dhíscréidiú. I gcás dromchlaí, is é méid na samplála in aghaidh an treo é.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>Sainmhíníonn sé seo an bhfuil idirshuíomh mhéid mogaill idir SizeMinimum agus SizeMaximum ina fheidhm líneach nó ina fheidhm sigmóideach</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>Líneach</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation>Cruthaigh líon sainithe nóid mogaill ar imill le halgartam struchtúrtha.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation>Líon na nóid ar an imeall</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <source>Progression</source>
-      <translation>Dul Chun Cinn</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>Inbhéartaigh</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <source>Nodes</source>
-      <translation>Nóid</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <source>Bump</source>
-      <translation>Cnapán</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <source>Constant</source>
-      <translation>Tairiseach</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation>Comhéifeacht</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation>Comhéifeacht don ráta fáis cnapáin/dul chun cinn</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
@@ -3746,6 +3580,109 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <location filename="../ui/MeshPreview.ui" line="197"/>
       <source>…</source>
       <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <source>Field</source>
+      <translation>Réimse</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <source>Frames</source>
+      <translation>Frámaí</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>Réimse amháin do gach fráma</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>Innéacs</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>Réimse X</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <source>Y field</source>
+      <translation>Réimse Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>Réimse Y amháin do gach fráma</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation>Cruthaigh líon sainithe nóid mogaill ar imill le halgartam struchtúrtha.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation>Líon na nóid ar an imeall</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <source>Progression</source>
+      <translation>Dul Chun Cinn</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>Inbhéartaigh</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <source>Nodes</source>
+      <translation>Nóid</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <source>Bump</source>
+      <translation>Cnapán</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <source>Constant</source>
+      <translation>Tairiseach</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <source>Diagram</source>
+      <translation>Léaráid</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>Comhéifeacht</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation>Comhéifeacht don ráta fáis cnapáin/dul chun cinn</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
@@ -3796,6 +3733,220 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <translation>Sorcóir</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
+      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
+      <translation>Roghnaigh il-aghaidheanna le 3 nó 4 imeall, roghnach le buaicphointí coirnéil d'aghaidheanna 3-thaobhacha.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;nó&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roghnaigh aghaidh amháin le níos mó ná 4 imeall agus roghnaigh na 3 nó 4 nóid cúinne chomh maith.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <source>Icon</source>
+      <translation>Deilbhín</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
+      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
+      <translation>Ní mór líon comhionann nóid mogaill a bheith ag na himill os coinne (nó sreanga idir pointí coirnéil). Is é an bealach is fusa chun seo a bhaint amach ná cuar traschríochacha a úsáid.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
+      <source>Define if the triangles on the surface shall be recombined into quads</source>
+      <translation>Sainmhínigh an ndéanfar na triantáin ar an dromchla a athcheangal ina gceathairdhreacha</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <source>Recombine</source>
+      <translation>Athcheangail</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
+      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
+      <translation>Sainmhínigh conas a bhfuil na triantáin dírithe laistigh den mhogalra traschríochnaithe (mura bhfuil siad athcheangailte)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
+      <source>Triangle Orientation</source>
+      <translation>Treoshuíomh an Triantáin</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
+      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </source>
+      <translation>Má ghníomhaítear é, éiríonn gach imeall de na dromchlaí roghnaithe nach bhfuil cuar traschríochach sainmhínithe acu traschríochach go huathoibríoch.
+Bain úsáid as sainmhínithe cuar traschríochach atá suite go straitéiseach chun an algartam uathoibríoch a threorú.
+
+Nótaí:
+1. Scaipeann cuar sainmhínithe ag an úsáideoir chuig imill urchomhaireacha na n-aghaidheanna, thar na haghaidheanna roghnaithe go léir.
+2. Oibríonn sé le haghaidheanna 3- nó 4-thaobhacha amháin. Ní mór aghaidheanna iltaobhacha a dhéanamh de láimh.
+3. Oibríonn sé leis an gcuid is mó d'aghaidheanna, bíodh siad ceangailte nó neamhcheangailte </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
+      <source>Auto apply transfinite curves</source>
+      <translation>Cuir cuar traschríochacha i bhfeidhm go huathoibríoch</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <source>Distribution</source>
+      <translation>Dáileadh</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <source>Bump Inverted</source>
+      <translation>Cnapán Inbhéartaithe</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <source>Progression Inverted</source>
+      <translation>Dul Chun Cinn Inbhéartaithe</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>Cruthaíonn sé mogalra struchtúrtha i dtoirt atá treoraithe ag a dhromchlaí traschríocha.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>Roghnaigh aon líon imleabhar 5- nó 6-thaobhach</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>Ní mór do gach dromchla toirte a bheith traschríochach. Má tá cineálacha mogaill éagsúla ag na dromchlaí (ceathairshníomhacha vs. triantáin), ní mór an toirt a mhogallú freisin agus eilimintí measctha cumasaithe.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>Eilimintí mogalra measctha</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>Má ghníomhaítear é, bíonn gach imeall agus dromchla a bhaineann leis na toirteanna roghnaithe nach bhfuil sainmhíniú traschríochach acu traschríochach go huathoibríoch.
+
+Bain úsáid as sainmhínithe cuar agus dromchla traschríochacha atá suite go straitéiseach chun an algartam uathoibríoch a threorú.
+
+Nótaí:
+1. Scaipeann cuar sainmhínithe ag an úsáideoir chuig imill urchomhaireacha na n-aghaidheanna, thar na haghaidheanna roghnaithe go léir.
+
+2. Oibríonn sé le haon líon toirteanna, bíodh siad ceangailte nó neamhcheangailte </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>Cuir dromchlaí agus cuartha traschríochacha i bhfeidhm go huathoibríoch</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Dromchla</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>Sainmhínigh méid an eilimint mogaill bunaithe ar an achar go dtí na geoiméadrachtaí tagartha roghnaithe.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>Méid mogaill nuair a bhíonn an fad = an tUasmhéid Achair</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>An fad ag a mbeidh méid an mhogalra SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Méid</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>Méid mogaill nuair a bhíonn an fad &lt; an t-íosmhéid achair</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>Fad</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>An fad a mbeidh an mogalra suas go dtí an SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>Idirshuíomh</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>Méid samplála</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>Líon na bpointí samplála a úsáidtear chun cuartha agus dromchlaí a dhíscréidiú. I gcás dromchlaí, is é méid na samplála in aghaidh an treo é.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>Sainmhíníonn sé seo an bhfuil idirshuíomh mhéid mogaill idir SizeMinimum agus SizeMaximum ina fheidhm líneach nó ina fheidhm sigmóideach</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>Líneach</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
       <source>Type</source>
@@ -3826,17 +3977,6 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
       <translation>Ríomh an fad go dtí na himill tagartha roghnaithe agus sonraigh méid an mhogalra go neamhspleách sa treo gnáth agus comhthreomhar leis an gcuar is gaire. Ar mhaithe le héifeachtúlacht, cuirtear sraith pointí samplála in ionad gach cuar, agus ríomhtar an fad chucu i ndáiríre.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <source>Icon</source>
-      <translation>Deilbhín</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
@@ -3961,162 +4101,6 @@ Sampla: "F2 + Sin(z)"</translation>
       <translation>Úsáideann sé réimse sonraí ó phíblíne iarphróiseála FEM mar mhéid mogaill. Ligeann sé seo duit an mogalra a oiriúnú de réir iompar fisiceach an toraidh.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>Cruthaíonn sé mogalra struchtúrtha i dtoirt atá treoraithe ag a dhromchlaí traschríocha.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>Roghnaigh aon líon imleabhar 5- nó 6-thaobhach</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>Ní mór do gach dromchla toirte a bheith traschríochach. Má tá cineálacha mogaill éagsúla ag na dromchlaí (ceathairshníomhacha vs. triantáin), ní mór an toirt a mhogallú freisin agus eilimintí measctha cumasaithe.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>Eilimintí mogalra measctha</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>Má ghníomhaítear é, bíonn gach imeall agus dromchla a bhaineann leis na toirteanna roghnaithe nach bhfuil sainmhíniú traschríochach acu traschríochach go huathoibríoch.
-
-Bain úsáid as sainmhínithe cuar agus dromchla traschríochacha atá suite go straitéiseach chun an algartam uathoibríoch a threorú.
-
-Nótaí:
-1. Scaipeann cuar sainmhínithe ag an úsáideoir chuig imill urchomhaireacha na n-aghaidheanna, thar na haghaidheanna roghnaithe go léir.
-
-2. Oibríonn sé le haon líon toirteanna, bíodh siad ceangailte nó neamhcheangailte </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>Cuir dromchlaí agus cuartha traschríochacha i bhfeidhm go huathoibríoch</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <source>Distribution</source>
-      <translation>Dáileadh</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <source>Bump Inverted</source>
-      <translation>Cnapán Inbhéartaithe</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <source>Progression Inverted</source>
-      <translation>Dul Chun Cinn Inbhéartaithe</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Dromchla</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <source>Recombine</source>
-      <translation>Athcheangail</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation>Socruithe réamhamhairc scagtha domhanda</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>Cumasaíonn sé seo go huathoibríoch léirshamhlú mhéid an mhogalra scagtha nuair a osclaítear dialóg tasc scagtha.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>Cumasaigh go huathoibríoch ar oscailt</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>Cinneann sé cé chomh mín is atá an mogalra réamhamhairc. Ciallaíonn uimhir níos mó mogalra níos míne (eilimintí mogalra níos lú)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>Réamhamharc ar mhíne mogalra</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
-      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation>Roghnaigh il-aghaidheanna le 3 nó 4 imeall, roghnach le buaicphointí coirnéil d'aghaidheanna 3-thaobhacha.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;nó&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Roghnaigh aghaidh amháin le níos mó ná 4 imeall agus roghnaigh na 3 nó 4 nóid cúinne chomh maith.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
-      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation>Ní mór líon comhionann nóid mogaill a bheith ag na himill os coinne (nó sreanga idir pointí coirnéil). Is é an bealach is fusa chun seo a bhaint amach ná cuar traschríochacha a úsáid.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
-      <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation>Sainmhínigh an ndéanfar na triantáin ar an dromchla a athcheangal ina gceathairdhreacha</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
-      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation>Sainmhínigh conas a bhfuil na triantáin dírithe laistigh den mhogalra traschríochnaithe (mura bhfuil siad athcheangailte)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
-      <source>Triangle Orientation</source>
-      <translation>Treoshuíomh an Triantáin</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
-      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
-
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </source>
-      <translation>Má ghníomhaítear é, éiríonn gach imeall de na dromchlaí roghnaithe nach bhfuil cuar traschríochach sainmhínithe acu traschríochach go huathoibríoch.
-Bain úsáid as sainmhínithe cuar traschríochach atá suite go straitéiseach chun an algartam uathoibríoch a threorú.
-
-Nótaí:
-1. Scaipeann cuar sainmhínithe ag an úsáideoir chuig imill urchomhaireacha na n-aghaidheanna, thar na haghaidheanna roghnaithe go léir.
-2. Oibríonn sé le haghaidheanna 3- nó 4-thaobhacha amháin. Ní mór aghaidheanna iltaobhacha a dhéanamh de láimh.
-3. Oibríonn sé leis an gcuid is mó d'aghaidheanna, bíodh siad ceangailte nó neamhcheangailte </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
-      <source>Auto apply transfinite curves</source>
-      <translation>Cuir cuar traschríochacha i bhfeidhm go huathoibríoch</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
       <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
       <translation>Tarraing an míniú atá le hathrú isteach sa réad Láimhseáil sa chrann doiciméad</translation>
@@ -4235,6 +4219,32 @@ F = (G(Cineál + Deilte/2) - G(Cineál - Deilte/2)) / Deilte
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
       <translation>Cineál</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation>Socruithe réamhamhairc scagtha domhanda</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>Cumasaíonn sé seo go huathoibríoch léirshamhlú mhéid an mhogalra scagtha nuair a osclaítear dialóg tasc scagtha.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>Cumasaigh go huathoibríoch ar oscailt</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>Cinneann sé cé chomh mín is atá an mogalra réamhamhairc. Ciallaíonn uimhir níos mó mogalra níos míne (eilimintí mogalra níos lú)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>Réamhamharc ar mhíne mogalra</translation>
     </message>
   </context>
   <context>
@@ -5009,43 +5019,53 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Roghnaigh máistir-gheoiméadracht an chineáil: Aghaidh; cliceáil Cuir leis nó Bain</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Roghnaigh máistir-gheoiméadracht an chineáil: Imeall, Aghaidh; cliceáil Cuir leis nó Bain</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Roghnaigh geoiméadracht sclábhaí den chineál: Aghaidh; cliceáil Cuir leis nó Bain</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Roghnaigh geoiméadracht sclábhaí den chineál: Imeall, Aghaidh; cliceáil Cuir leis nó Bain</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="151"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="150"/>
       <source>Parameters</source>
       <translation>Paraiméadair</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="157"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="156"/>
       <source>Contact stiffness</source>
       <translation>Déineacht teagmhála</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="180"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="179"/>
       <source>Clearance adjustment</source>
       <translation>Coigeartú imréitigh</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="203"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="202"/>
       <source>Enable friction</source>
       <translation>Cumasaigh frithchuimilt</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="210"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="209"/>
       <source>Friction coefficient</source>
       <translation>Comhéifeacht frithchuimilte</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="233"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="232"/>
       <source>Stick slope</source>
       <translation>Fána bata</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="255"/>
+      <source>Reverse master</source>
+      <translation>Máistir droim ar ais</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="262"/>
+      <source>Reverse slave</source>
+      <translation>Sclábhaí droim ar ais</translation>
     </message>
   </context>
   <context>
@@ -6519,23 +6539,23 @@ Please select a result type first.</source>
 Roghnaigh cineál toraidh ar dtús le do thoil.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="617"/>
       <source>Histogram of {}</source>
       <translation>Histogram de {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
       <source>Nodes</source>
       <translation>Nóid</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="770"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="769"/>
       <source>Result mesh is empty</source>
       <translation>Tá an mogalra torthaí folamh</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="784"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="793"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="783"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="792"/>
       <source>No result object</source>
       <translation>Gan aon réad torthaí</translation>
     </message>
@@ -6715,14 +6735,14 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Cuir in Eagar {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>Taispeáin Plota</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>Taispeáin Sonraí</translation>
     </message>
@@ -6757,8 +6777,8 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Sonraí Tábla</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <source>The name used in the plots legend</source>
       <translation>An t-ainm a úsáidtear i finscéal na bplotaí</translation>
     </message>
@@ -6785,8 +6805,8 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Leithead an bharra, idir 0 agus 1 (1 gan bearnaí)</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <source>The style the line is drawn in</source>
       <translation>An stíl ina dtarraingítear an líne</translation>
     </message>
@@ -6811,28 +6831,28 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Líon na mboscaí ina roinntear na sonraí</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <source>The histogram plot title</source>
       <translation>Teideal phlota an histeagram</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <source>The label shown for the histogram X axis</source>
       <translation>An lipéad a thaispeántar don ais X ar an histeagram</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <source>The label shown for the histogram Y axis</source>
       <translation>An lipéad a thaispeántar don ais Y ar an histeagram</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <source>Determines if the legend is plotted</source>
       <translation>Cinneann sé an bhfuil an finscéal plotaithe</translation>
     </message>
@@ -6875,6 +6895,11 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
       <source>default</source>
       <translation>réamhshocraithe</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/base_femlogtaskpanel.py" line="243"/>
+      <source>Run</source>
+      <translation>Rith</translation>
     </message>
   </context>
   <context>
@@ -7809,9 +7834,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Foirm an ghlif</translation>
@@ -7852,10 +7877,10 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Sféar</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
@@ -7867,9 +7892,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Treoshuíomh</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Dada</translation>
@@ -7891,9 +7916,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Sonraí</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Iolraitheoir tairiseach a úsáidtear chun na glifí a scálú</translation>
@@ -7909,8 +7934,8 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Athraíonn sé an fachtóir scála faoi +/- 50% den fhachtóir scála socraithe</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Más veicteoir atá sna sonraí scála, cinneann an airí seo an ndéantar an gliff a scálaiú de réir mhéid an veicteora nó de réir na gcomhpháirteanna aonair</translation>
@@ -8498,35 +8523,35 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Foirm</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Stíl tarraingthe imlíne (Ní tharraingíonn aon cheann imlínte)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Leithead na línte uile (imlíne agus haisteáil)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
       <translation>Patrún hata</translation>
     </message>
@@ -8546,8 +8571,8 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Barraí</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
       <translation>Finscéal</translation>
     </message>
@@ -8557,8 +8582,8 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Dath na línte uile (imlíne barra agus haistí)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
       <translation>Dath na mbarraí san histogram</translation>
     </message>
@@ -8718,6 +8743,118 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>Rialú Réiteoir Z88</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Eolaire oibre</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Scríobh</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Eagar</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Cosán chuig an eolaire oibre. Fág bán chun roghanna úsáideora a úsáid</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Paraiméadair an Réititheora</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>Cineál réiteora</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Am</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Leagan an Réititheora</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Rialú Elmer Réiteoir</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Eolaire oibre</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Scríobh</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Eagar</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Cosán chuig an eolaire oibre. Fág bán chun roghanna úsáideora a úsáid</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Paraiméadair an Réititheora</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Cineál insamhalta</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Am</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Leagan an Réititheora</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_master</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
+      <source>Master Geometry Reference Selector</source>
+      <translation>Roghnóir Tagartha Máistir-Gheoiméadrachta</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_slave</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
+      <source>Slave Geometry Reference Selector</source>
+      <translation>Roghnóir Tagartha Geoiméadrachta Sclábhaí</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ConstraintElectromagnetic</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="268"/>
@@ -8864,102 +9001,6 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>Rialú Réiteoir Z88</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Eolaire oibre</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>Scríobh</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Eagar</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Cosán chuig an eolaire oibre. Fág bán chun roghanna úsáideora a úsáid</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Paraiméadair an Réititheora</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>Cineál réiteora</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>Am</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Leagan an Réititheora</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverElmer</name>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>Rialú Elmer Réiteoir</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Eolaire oibre</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>Scríobh</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Eagar</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Cosán chuig an eolaire oibre. Fág bán chun roghanna úsáideora a úsáid</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Paraiméadair an Réititheora</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>Cineál insamhalta</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>Am</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Leagan an Réititheora</translation>
-    </message>
-  </context>
-  <context>
     <name>FemToolsCcx</name>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="421"/>
@@ -8991,17 +9032,33 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>
@@ -9010,6 +9067,54 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>
@@ -9028,65 +9133,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>
@@ -9100,17 +9149,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
       <source>Input Error</source>
       <translation>Earráid Ionchuir</translation>
     </message>

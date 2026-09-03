@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Inspection</source>
       <translation>Перевірка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Inspection…</source>
       <translation>Перевірка…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="76"/>
+      <location filename="../../Command.cpp" line="77"/>
       <source>Inspects distance information</source>
       <translation>Перевірити інформацію про відстань</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="49"/>
       <source>Inspection</source>
       <translation>Перевірка</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
-      <source>Visual Inspection…</source>
-      <translation>Візуальний огляд…</translation>
+      <location filename="../../Command.cpp" line="50"/>
+      <source>Visual Inspection</source>
+      <translation>Візуальний огляд</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="50"/>
+      <location filename="../../Command.cpp" line="51"/>
       <source>Inspects the objects visually</source>
       <translation>Перевірити об'єкти візуально</translation>
     </message>
@@ -48,18 +48,18 @@
   <context>
     <name>InspectionGui::VisualInspection</name>
     <message>
-      <location filename="../../VisualInspection.ui" line="14"/>
+      <location filename="../../VisualInspection.cpp" line="85"/>
       <source>Visual Inspection</source>
       <translation>Візуальний огляд</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="23"/>
+      <location filename="../../VisualInspection.ui" line="17"/>
       <source>Actual</source>
       <translation>Актуальний</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
-      <location filename="../../VisualInspection.ui" line="66"/>
+      <location filename="../../VisualInspection.ui" line="72"/>
       <source>Objects</source>
       <translation>Обʼєкти</translation>
     </message>
@@ -69,23 +69,23 @@
       <translation>Номінальний</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="77"/>
+      <location filename="../../VisualInspection.ui" line="83"/>
       <source>Parameter</source>
       <translation>Параметр</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="97"/>
+      <location filename="../../VisualInspection.ui" line="103"/>
       <source>Search distance</source>
       <translation>Відстань пошуку</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="129"/>
-      <location filename="../../VisualInspection.ui" line="174"/>
+      <location filename="../../VisualInspection.ui" line="135"/>
+      <location filename="../../VisualInspection.ui" line="180"/>
       <source> mm</source>
       <translation> мм</translation>
     </message>
     <message>
-      <location filename="../../VisualInspection.ui" line="145"/>
+      <location filename="../../VisualInspection.ui" line="151"/>
       <source>Thickness</source>
       <translation>Товщина</translation>
     </message>

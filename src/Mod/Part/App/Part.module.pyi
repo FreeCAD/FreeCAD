@@ -12,6 +12,8 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, TypedDict, overload
 
+from Base.Metadata import deprecated
+
 Point3: TypeAlias = tuple[float, float, float]
 ShapeSequence: TypeAlias = Sequence[Shape] | Shape
 EdgeSequence: TypeAlias = Sequence[Edge]
@@ -33,10 +35,12 @@ ExportUnits = TypedDict(
 )
 
 # File and document I/O
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="Import.open")
 def open(name: str, /) -> None:
     """Open one Part-supported file into the active document context."""
     ...
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="Import.insert")
 def insert(name: str, doc_name: str, /) -> None:
     """Insert one Part-supported file into an existing document."""
     ...

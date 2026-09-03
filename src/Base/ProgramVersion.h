@@ -34,6 +34,8 @@ namespace Base
 enum class Version : std::uint8_t
 {
     v0_1x,
+    v0_14,
+    v0_15,
     v0_16,
     v0_17,
     v0_18,
@@ -56,6 +58,11 @@ inline Version getVersion(std::string_view str)
         Version version;
     };
     static const std::initializer_list<VersionItem> items = {
+        // "pre-0.14" is the default version string used by the document reader
+        // if the ProgramVersion attribute is missing
+        {.name="pre-0.14", .version=Version::v0_1x},
+        {.name="0.14", .version=Version::v0_14},
+        {.name="0.15", .version=Version::v0_15},
         {.name="0.16", .version=Version::v0_16},
         {.name="0.17", .version=Version::v0_17},
         {.name="0.18", .version=Version::v0_18},

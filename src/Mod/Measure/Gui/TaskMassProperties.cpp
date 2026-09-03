@@ -30,6 +30,7 @@
 #include <QTimer>
 
 #include <QtWidgets>
+#include <optional>
 #include <unordered_set>
 #include <sstream>
 #include <tuple>
@@ -44,6 +45,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Parameter.h>
@@ -71,10 +73,15 @@
 #include <App/PropertyUnits.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
 
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
+#include <BRepAdaptor_Curve.hxx>
 #include <BRep_Builder.hxx>
+#include <gp_Lin.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 
 using namespace MassPropertiesGui;
 
@@ -197,6 +204,63 @@ static int getUnitsSchemaIndex(int comboIndex, int preferredSchemaIndex)
     }
 }
 
+struct AxisSelectionReference
+{
+    MassPropertiesAxisReference axis;
+    std::string label;
+};
+
+static std::optional<AxisSelectionReference> getAxisReferenceFromSelection(
+    const Gui::SelectionSingleton::SelObj& selObj
+)
+{
+    if (!selObj.pObject || !selObj.SubName || !selObj.SubName[0]) {
+        return std::nullopt;
+    }
+
+    using enum Part::ShapeOption;
+    TopoDS_Shape shape = Part::Feature::getShape(
+        selObj.pObject,
+        NeedSubElement | ResolveLink | Transform,
+        selObj.SubName
+    );
+
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        return std::nullopt;
+    }
+
+    BRepAdaptor_Curve curve(TopoDS::Edge(shape));
+    if (curve.GetType() != GeomAbs_Line) {
+        return std::nullopt;
+    }
+
+    gp_Lin line = curve.Line();
+    AxisSelectionReference reference;
+    reference.axis.origin = Base::convertTo<Base::Vector3d>(line.Location());
+    reference.axis.direction = Base::convertTo<Base::Vector3d>(line.Direction());
+    if (reference.axis.direction.Length() <= Base::Precision::Confusion()) {
+        return std::nullopt;
+    }
+    reference.axis.direction.Normalize();
+
+    reference.label = selObj.pObject->getNameInDocument();
+
+    App::ElementNamePair elementName;
+    App::DocumentObject* elementObject
+        = App::GeoFeature::resolveElement(selObj.pObject, selObj.SubName, elementName);
+    if (elementObject && elementObject != selObj.pObject && elementObject->getNameInDocument()) {
+        reference.label += ".";
+        reference.label += elementObject->getNameInDocument();
+    }
+
+    if (!elementName.oldName.empty()) {
+        reference.label += ".";
+        reference.label += elementName.oldName;
+    }
+
+    return reference;
+}
+
 TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , panel(new TaskMassPropertiesWidget)
@@ -206,6 +270,7 @@ TaskMassProperties::TaskMassProperties()
     currentMode = MassPropertiesMode::CenterOfGravity;
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
+    currentAxisReference.reset();
 
     qApp->installEventFilter(this);
 
@@ -306,49 +371,58 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
 
     if (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Delete) {
-            if (event->type() == QEvent::ShortcutOverride) {
-                event->accept();
-                return true;
-            }
-
-            if (panel->ui.objectList->hasFocus()) {
-                QList<QListWidgetItem*> selectedItems = panel->ui.objectList->selectedItems();
-                if (selectedItems.empty()) {
-                    event->accept();
-                    return true;
-                }
-
-                std::vector<QString> toRemove;
-                for (auto* item : selectedItems) {
-                    toRemove.push_back(item->data(Qt::UserRole).toString());
-                }
-
-                if (toRemove.size() == static_cast<std::size_t>(panel->ui.objectList->count())) {
-                    Gui::Selection().clearSelection();
-                }
-
-                for (const auto& userData : toRemove) {
-                    QStringList parts = userData.split(QStringLiteral("|"));
-                    if (parts.size() == 3) {
-                        std::string docName = parts[0].toStdString();
-                        std::string objName = parts[1].toStdString();
-                        std::string subName = parts[2].toStdString();
-                        Gui::Selection().rmvSelection(
-                            docName.empty() ? nullptr : docName.c_str(),
-                            objName.empty() ? nullptr : objName.c_str(),
-                            subName.empty() ? nullptr : subName.c_str()
-                        );
-                    }
-                }
-
-                event->accept();
-                return true;
-            }
-
+        if (keyEvent->key() != Qt::Key_Delete && keyEvent->key() != Qt::Key_Backspace) {
             event->accept();
             return true;
         }
+        if (event->type() == QEvent::ShortcutOverride) {
+            event->accept();
+            return true;
+        }
+    }
+    else if (event->type() == QEvent::MouseButtonRelease) {
+        auto* mouseEvent = static_cast<QMouseEvent*>(event);
+        if (mouseEvent->button() != Qt::RightButton) {
+            return Gui::TaskView::TaskDialog::eventFilter(watched, event);
+        }
+    }
+    else {
+        return Gui::TaskView::TaskDialog::eventFilter(watched, event);
+    }
+
+
+    if (panel->ui.objectList->hasFocus()) {
+        QList<QListWidgetItem*> selectedItems = panel->ui.objectList->selectedItems();
+        if (selectedItems.empty()) {
+            event->accept();
+            return true;
+        }
+
+        std::vector<QString> toRemove;
+        for (auto* item : selectedItems) {
+            toRemove.push_back(item->data(Qt::UserRole).toString());
+        }
+
+        if (toRemove.size() == static_cast<std::size_t>(panel->ui.objectList->count())) {
+            Gui::Selection().clearSelection();
+        }
+
+        for (const auto& userData : toRemove) {
+            QStringList parts = userData.split(QStringLiteral("|"));
+            if (parts.size() == 3) {
+                std::string docName = parts[0].toStdString();
+                std::string objName = parts[1].toStdString();
+                std::string subName = parts[2].toStdString();
+                Gui::Selection().rmvSelection(
+                    docName.empty() ? nullptr : docName.c_str(),
+                    objName.empty() ? nullptr : objName.c_str(),
+                    subName.empty() ? nullptr : subName.c_str()
+                );
+            }
+        }
+
+        event->accept();
+        return true;
     }
 
     return Gui::TaskView::TaskDialog::eventFilter(watched, event);
@@ -370,6 +444,10 @@ void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
         removeTemporaryObjects();
         clearUiFields();
         panel->ui.objectList->clear();
+        currentDatum = nullptr;
+        hasCurrentDatumPlacement = false;
+        currentAxisReference.reset();
+        panel->ui.customEdit->clear();
     });
 }
 
@@ -403,6 +481,7 @@ void TaskMassProperties::escape()
     selectingCustomCoordSystem = false;
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
+    currentAxisReference.reset();
     panel->ui.customEdit->clear();
 
     currentInfo = MassPropertiesData {};
@@ -411,20 +490,11 @@ void TaskMassProperties::escape()
 void TaskMassProperties::removeTemporaryObjects()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    if (!doc) {
+    if (!doc || !doc->getObject("MassPropertiesPreview")) {
         return;
     }
 
-    if (!doc->getObject("MassPropertiesPreview")) {
-        return;
-    }
-
-    doc->openTransaction("Remove temporary mass properties object");
-    if (doc->getObject("MassPropertiesPreview")) {
-        doc->removeObject("MassPropertiesPreview");
-    }
-
-    doc->commitTransaction();
+    doc->removeObject("MassPropertiesPreview");
 }
 
 
@@ -876,9 +946,40 @@ void TaskMassProperties::tryUpdate()
 
     hasCurrentDatumPlacement = false;
 
+    auto restoreSavedSelection = [&]() {
+        isUpdating = true;
+        Gui::Selection().clearSelection();
+        for (const auto& sel : savedSelection) {
+            if (std::get<2>(sel).empty()) {
+                Gui::Selection().addSelection(std::get<0>(sel).c_str(), std::get<1>(sel).c_str());
+            }
+            else {
+                Gui::Selection().addSelection(
+                    std::get<0>(sel).c_str(),
+                    std::get<1>(sel).c_str(),
+                    std::get<2>(sel).c_str()
+                );
+            }
+        }
+        savedSelection.clear();
+        isUpdating = false;
+    };
+
     if (selectingCustomCoordSystem) {
 
         for (const auto& selObj : guiSelection) {
+            if (auto axisReference = getAxisReferenceFromSelection(selObj)) {
+                panel->ui.customEdit->setText(QString::fromStdString(axisReference->label));
+                currentDatum = nullptr;
+                hasCurrentDatumPlacement = false;
+                currentAxisReference = axisReference->axis;
+                selectingCustomCoordSystem = false;
+
+                restoreSavedSelection();
+                tryUpdate();
+                return;
+            }
+
             App::DocumentObject* coordSystem = selObj.pObject;
 
             if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
@@ -896,30 +997,13 @@ void TaskMassProperties::tryUpdate()
             if (isReferenceObject(coordSystem)) {
                 panel->ui.customEdit->setText(QString::fromStdString(coordLabel(coordSystem)));
                 currentDatum = coordSystem;
+                currentAxisReference.reset();
                 currentDatumPlacement
                     = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
                 selectingCustomCoordSystem = false;
 
-                isUpdating = true;
-                Gui::Selection().clearSelection();
-                for (const auto& sel : savedSelection) {
-                    if (std::get<2>(sel).empty()) {
-                        Gui::Selection().addSelection(
-                            std::get<0>(sel).c_str(),
-                            std::get<1>(sel).c_str()
-                        );
-                    }
-                    else {
-                        Gui::Selection().addSelection(
-                            std::get<0>(sel).c_str(),
-                            std::get<1>(sel).c_str(),
-                            std::get<2>(sel).c_str()
-                        );
-                    }
-                }
-                savedSelection.clear();
-                isUpdating = false;
+                restoreSavedSelection();
                 tryUpdate();
                 return;
             }
@@ -929,6 +1013,17 @@ void TaskMassProperties::tryUpdate()
     for (const auto& selObj : guiSelection) {
         if (!selObj.pObject) {
             continue;
+        }
+
+        if (currentMode == MassPropertiesMode::Custom && !selectingCustomCoordSystem) {
+            if (auto axisReference = getAxisReferenceFromSelection(selObj)) {
+                panel->ui.customEdit->setText(QString::fromStdString(axisReference->label));
+                currentDatum = nullptr;
+                hasCurrentDatumPlacement = false;
+                currentAxisReference = axisReference->axis;
+                referenceDatum = nullptr;
+                continue;
+            }
         }
 
         App::DocumentObject* displayObject = selObj.pObject;
@@ -981,6 +1076,7 @@ void TaskMassProperties::tryUpdate()
         if (isReferenceObject(coordSystem)) {
             if (currentMode == MassPropertiesMode::Custom && !selectingCustomCoordSystem) {
                 currentDatum = coordSystem;
+                currentAxisReference.reset();
                 currentDatumPlacement
                     = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
@@ -1035,7 +1131,8 @@ void TaskMassProperties::tryUpdate()
         panel->ui.customEdit->clear();
     }
 
-    if (currentMode == MassPropertiesMode::Custom && !referenceDatum) {
+    const bool hasAxisReference = currentAxisReference.has_value();
+    if (currentMode == MassPropertiesMode::Custom && !referenceDatum && !hasAxisReference) {
         this->clearUiFields();
         this->removeTemporaryObjects();
         return;
@@ -1053,10 +1150,12 @@ void TaskMassProperties::tryUpdate()
         objectsToMeasure,
         currentMode,
         referenceDatum,
-        hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr
+        hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr,
+        hasAxisReference ? &*currentAxisReference : nullptr
     );
 
-    if (info.volume.getValue() == 0.0 && info.mass.getValue() == 0.0) {
+    if (info.volume.getValue() == 0.0 && info.mass.getValue() == 0.0
+        && info.surfaceArea.getValue() == 0.0) {
         this->clearUiFields();
         this->removeTemporaryObjects();
         objectsToMeasure.clear();
@@ -1118,78 +1217,86 @@ void TaskMassProperties::tryUpdate()
 
     const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Average)") : QString();
 
-    setText(panel->ui.volumeEdit, info.volume);
-    setText(panel->ui.massEdit, info.mass);
+    if (info.mass.getValue() + info.volume.getValue() != 0.0) {
+        setText(panel->ui.volumeEdit, info.volume);
+        setText(panel->ui.massEdit, info.mass);
+        setText(panel->ui.densityEdit, info.density, densitySuffix);
+    }
+
     setText(panel->ui.surfaceAreaEdit, info.surfaceArea);
-    setText(panel->ui.densityEdit, info.density, densitySuffix);
 
-    setText(panel->ui.cogXText, Base::Quantity(info.cog.x, Base::Unit::Length));
-    setText(panel->ui.cogYText, Base::Quantity(info.cog.y, Base::Unit::Length));
-    setText(panel->ui.cogZText, Base::Quantity(info.cog.z, Base::Unit::Length));
-    setText(panel->ui.covXText, Base::Quantity(info.cov.x, Base::Unit::Length));
-    setText(panel->ui.covYText, Base::Quantity(info.cov.y, Base::Unit::Length));
-    setText(panel->ui.covZText, Base::Quantity(info.cov.z, Base::Unit::Length));
 
-    setText(panel->ui.inertiaJoxText, Base::Quantity(info.inertiaJo.x, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJoyText, Base::Quantity(info.inertiaJo.y, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJozText, Base::Quantity(info.inertiaJo.z, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJxyText, Base::Quantity(info.inertiaJCross.x, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJzxText, Base::Quantity(info.inertiaJCross.y, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJzyText, Base::Quantity(info.inertiaJCross.z, Base::Unit::Inertia));
+    if (info.mass.getValue() != 0.0) {
+        setText(panel->ui.cogXText, Base::Quantity(info.cog.x, Base::Unit::Length));
+        setText(panel->ui.cogYText, Base::Quantity(info.cog.y, Base::Unit::Length));
+        setText(panel->ui.cogZText, Base::Quantity(info.cog.z, Base::Unit::Length));
+        setText(panel->ui.covXText, Base::Quantity(info.cov.x, Base::Unit::Length));
+        setText(panel->ui.covYText, Base::Quantity(info.cov.y, Base::Unit::Length));
+        setText(panel->ui.covZText, Base::Quantity(info.cov.z, Base::Unit::Length));
+        setText(panel->ui.inertiaJoxText, Base::Quantity(info.inertiaJo.x, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJoyText, Base::Quantity(info.inertiaJo.y, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJozText, Base::Quantity(info.inertiaJo.z, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJxyText, Base::Quantity(info.inertiaJCross.x, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJzxText, Base::Quantity(info.inertiaJCross.y, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJzyText, Base::Quantity(info.inertiaJCross.z, Base::Unit::Inertia));
 
-    setText(panel->ui.inertiaJxText, Base::Quantity(info.inertiaJ.x, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJyText, Base::Quantity(info.inertiaJ.y, Base::Unit::Inertia));
-    setText(panel->ui.inertiaJzText, Base::Quantity(info.inertiaJ.z, Base::Unit::Inertia));
-    setText(panel->ui.axisInertiaText, Base::Quantity(info.axisInertia, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJxText, Base::Quantity(info.inertiaJ.x, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJyText, Base::Quantity(info.inertiaJ.y, Base::Unit::Inertia));
+        setText(panel->ui.inertiaJzText, Base::Quantity(info.inertiaJ.z, Base::Unit::Inertia));
+        setText(panel->ui.axisInertiaText, Base::Quantity(info.axisInertia, Base::Unit::Inertia));
+    }
 
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && referenceDatum
-        && referenceDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (hasAxisReference || (referenceDatum && referenceDatum->isDerivedFrom<App::Line>()));
 
     const auto infoSnapshot = currentInfo;
-    QTimer::singleShot(0, this, [infoSnapshot, hasAxisSelection]() {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (!doc) {
-            return;
-        }
+    if (info.mass.getValue() != 0.0) {
+        QTimer::singleShot(0, this, [infoSnapshot, hasAxisSelection]() {
+            App::Document* doc = App::GetApplication().getActiveDocument();
+            if (!doc) {
+                return;
+            }
 
-        App::DocumentObject* obj = doc->getObject("MassPropertiesPreview");
-        if (!obj) {
-            obj = doc->addObject("Measure::Result", "MassPropertiesPreview");
-        }
 
-        obj->Visibility.setValue(true);
+            App::DocumentObject* obj = doc->getObject("MassPropertiesPreview");
+            if (!obj) {
+                obj = doc->addObject("Measure::Result", "MassPropertiesPreview");
+            }
 
-        auto* guiDoc = Gui::Application::Instance->activeDocument();
-        if (!guiDoc) {
-            return;
-        }
+            obj->Visibility.setValue(true);
 
-        auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(obj));
-        if (!view) {
-            return;
-        }
+            auto* guiDoc = Gui::Application::Instance->activeDocument();
+            if (!guiDoc) {
+                return;
+            }
 
-        if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
-            resultView->setCenters(infoSnapshot.cog, infoSnapshot.cov);
-            resultView->setPrincipalAxes(
-                infoSnapshot.cog,
-                infoSnapshot.principalAxis1,
-                infoSnapshot.principalAxis2,
-                infoSnapshot.principalAxis3,
-                !hasAxisSelection
-            );
-        }
+            auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(obj));
+            if (!view) {
+                return;
+            }
 
-        view->setShowable(true);
-        view->ShowInTree.setValue(false);
-        view->show();
-    });
+            if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
+                resultView->setCenters(infoSnapshot.cog, infoSnapshot.cov);
+                resultView->setPrincipalAxes(
+                    infoSnapshot.cog,
+                    infoSnapshot.principalAxis1,
+                    infoSnapshot.principalAxis2,
+                    infoSnapshot.principalAxis3,
+                    !hasAxisSelection
+                );
+            }
+            view->setShowable(true);
+            view->ShowInTree.setValue(false);
+            view->show();
+        });
+    }
 }
 
 void TaskMassProperties::updateInertiaVisibility()
 {
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
 
     panel->ui.inertiaMatrixWidget->setVisible(!hasAxisSelection);
     panel->ui.inertiaDiagWidget->setVisible(!hasAxisSelection);
@@ -1315,8 +1422,9 @@ void TaskMassProperties::onCovDatumButtonPressed()
 
 void TaskMassProperties::onLcsButtonPressed()
 {
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
     if (!hasAxisSelection) {
         createLCS("Principal_Axes_LCS", false);
     }
@@ -1346,6 +1454,7 @@ void TaskMassProperties::onCoordinateSystemChanged(MassPropertiesMode coordSyste
         selectingCustomCoordSystem = false;
         currentDatum = nullptr;
         hasCurrentDatumPlacement = false;
+        currentAxisReference.reset();
         panel->ui.customEdit->clear();
     }
     if (Gui::Selection().getSelection().empty()) {
@@ -1364,7 +1473,8 @@ void TaskMassProperties::saveResult()
     App::Document* doc = App::GetApplication().getActiveDocument();
 
     if (!doc || panel->ui.objectList->count() == 0
-        || (currentMode == MassPropertiesMode::Custom && !currentDatum)) {
+        || (currentMode == MassPropertiesMode::Custom && !currentDatum
+            && !currentAxisReference.has_value())) {
         return;
     }
 
@@ -1474,8 +1584,9 @@ void TaskMassProperties::saveResult()
         Base::Quantity(currentInfo.cov.z, Base::Unit::Length)
     );
 
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
 
     if (hasAxisSelection) {
         setQuantity(

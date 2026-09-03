@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation>近似圆柱体</translation>
+      <translation>逼近圆柱体</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation>近似平面</translation>
+      <translation>逼近平面</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation>近似多项式曲面</translation>
+      <translation>逼近多项式曲面</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation>近似球体</translation>
+      <translation>逼近球体</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation>近似贝塞尔曲面</translation>
+      <translation>逼近贝塞尔曲面</translation>
     </message>
   </context>
   <context>
@@ -209,22 +209,22 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Fit plane</source>
-      <translation>适合平面</translation>
+      <translation>拟合平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="256"/>
       <source>Fit cylinder</source>
-      <translation>适合圆柱体</translation>
+      <translation>拟合圆柱体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="324"/>
       <source>Fit sphere</source>
-      <translation>适合球体</translation>
+      <translation>拟合球体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
-      <translation>适合多项式表面</translation>
+      <translation>拟合多项式曲面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>
@@ -237,10 +237,10 @@
       <translation>放置</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
-      <translation>适用于贝塞尔曲线</translation>
+      <translation>拟合贝塞尔曲线</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="87"/>
@@ -734,7 +734,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation>近似贝塞尔曲线</translation>
+      <translation>逼近贝塞尔曲线</translation>
     </message>
   </context>
   <context>

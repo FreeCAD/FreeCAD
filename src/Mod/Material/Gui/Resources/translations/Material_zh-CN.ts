@@ -994,7 +994,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ModelSelect.ui" line="49"/>
       <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>超级链接URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
@@ -1195,8 +1195,8 @@ If unchecked, they will be sorted by their name.</source>
       <translation>否则所有更改都将丢失。</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>确认删除</translation>

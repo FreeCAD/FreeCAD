@@ -1414,6 +1414,7 @@ void SelectionSingleton::selStackGoBack(int count)
     }
     if (!_SelList.empty()) {
         selStackPush(false, true);
+        clearCompleteSelection();
     }
     else {
         --count;
@@ -2177,28 +2178,6 @@ int SelectionSingleton::checkSelection(
         }
     }
     return 0;
-}
-
-const char* SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
-{
-    if (!obj) {
-        return {};
-    }
-
-    for (list<_SelObj>::const_iterator It = _SelList.begin(); It != _SelList.end(); ++It) {
-        if (It->pObject == obj) {
-            auto len = It->SubName.length();
-            if (!len) {
-                return "";
-            }
-            if (pSubName && strncmp(pSubName, It->SubName.c_str(), It->SubName.length()) == 0) {
-                if (pSubName[len] == 0 || pSubName[len - 1] == '.') {
-                    return It->SubName.c_str();
-                }
-            }
-        }
-    }
-    return nullptr;
 }
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)

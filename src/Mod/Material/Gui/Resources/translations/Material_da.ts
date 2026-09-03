@@ -1195,8 +1195,8 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Ellers vil alle ændringer gå tabt.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Bekræft sletning</translation>

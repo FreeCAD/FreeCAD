@@ -33,6 +33,7 @@ packages=(
   libboost-regex-dev
   libboost-serialization-dev
   libboost-thread-dev
+  libcoin-dev
   libeigen3-dev
   libexpat1-dev
   libgtest-dev
@@ -43,6 +44,7 @@ packages=(
   libocct-data-exchange-dev
   libocct-ocaf-dev
   libocct-visualization-dev
+  libopencamlib-dev
   libproj-dev
   libpcl-dev
   libpyside6-dev
@@ -69,10 +71,12 @@ packages=(
   python3-lark
   python3-markdown
   python3-matplotlib
+  python3-opencamlib
   python3-packaging
   python3-pip
   python3-ply
   python3-pybind11
+  python3-pivy
   python3-pyside6.qtcore
   python3-pyside6.qtgui
   python3-pyside6.qtnetwork

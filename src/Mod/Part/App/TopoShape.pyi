@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import deprecated, export, constmethod
 from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
@@ -10,6 +10,7 @@ from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
 
 @export(
+    PythonName="Part.Shape",
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
@@ -30,31 +31,31 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[List] = []
+    Faces: Final[List["Face"]] = []
     """List of faces in this shape."""
 
-    Vertexes: Final[List] = []
+    Vertexes: Final[List["Vertex"]] = []
     """List of vertexes in this shape."""
 
-    Shells: Final[List] = []
+    Shells: Final[List["Shell"]] = []
     """List of subsequent shapes in this shape."""
 
-    Solids: Final[List] = []
+    Solids: Final[List["Solid"]] = []
     """List of subsequent shapes in this shape."""
 
-    CompSolids: Final[List] = []
-    """List of subsequent shapes in this shape."""
+    CompSolids: Final[List["CompSolid"]] = []
+    """List of compound solids in this shape."""
 
-    Edges: Final[List] = []
+    Edges: Final[List["Edge"]] = []
     """List of Edges in this shape."""
 
-    Wires: Final[List] = []
+    Wires: Final[List["Wire"]] = []
     """List of wires in this shape."""
 
-    Compounds: Final[List] = []
+    Compounds: Final[List["Compound"]] = []
     """List of compounds in this shape."""
 
-    SubShapes: Final[List] = []
+    SubShapes: Final[List["TopoShape"]] = []
     """List of sub-shapes in this shape."""
 
     Length: Final[float] = 0.0
@@ -269,6 +270,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="fuse")
     @constmethod
     def multiFuse(
         self,

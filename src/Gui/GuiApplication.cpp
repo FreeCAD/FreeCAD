@@ -369,20 +369,31 @@ void GUISingleApplication::processMessages()
 
 WheelEventFilter::WheelEventFilter(QObject* parent)
     : QObject(parent)
+    , hGrp(App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General"))
 {}
+
+bool WheelEventFilter::isEnabled() const
+{
+    return hGrp->GetBool("ComboBoxWheelEventFilter", true);
+}
 
 bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
     if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel) {
-        return true;
+        return isEnabled();
     }
     auto sb = qobject_cast<QAbstractSpinBox*>(obj);
     if (sb) {
         if (ev->type() == QEvent::Show) {
-            sb->setFocusPolicy(Qt::StrongFocus);
+            if (isEnabled()) {
+                sb->setFocusPolicy(Qt::StrongFocus);
+            }
+            else if (sb->focusPolicy() == Qt::StrongFocus) {
+                sb->setFocusPolicy(Qt::WheelFocus);
+            }
         }
         else if (ev->type() == QEvent::Wheel) {
-            return !sb->hasFocus();
+            return isEnabled() && !sb->hasFocus();
         }
     }
     return false;

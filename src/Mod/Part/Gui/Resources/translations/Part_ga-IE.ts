@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="842"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>Aon</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="843"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="844"/>
+      <location filename="../../AttacherTexts.cpp" line="866"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>Imeall</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="845"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="847"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="848"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>Cuar</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="849"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>Ciorcal</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="850"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>Cónghearradh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="851"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>Éilips</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="852"/>
+      <location filename="../../AttacherTexts.cpp" line="874"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>Parabóil</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="853"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>Hipearbóla</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="855"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>Plána</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="856"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>Sféar</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="857"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>Rothlaigh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="858"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>Sorcóir</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="859"/>
+      <location filename="../../AttacherTexts.cpp" line="881"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>Tóras</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="860"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>Cón</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>Réad</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="885"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>Soladach</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="886"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>Sreang</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="727"/>
+      <location filename="../../AttacherTexts.cpp" line="749"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Díghníomhachtaithe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="728"/>
+      <location filename="../../AttacherTexts.cpp" line="750"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Tá an ceangaltán díchumasaithe. Is féidir pointe a bhogadh trí airí an tSeatáin a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="736"/>
+      <location filename="../../AttacherTexts.cpp" line="758"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Bunús an réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="737"/>
+      <location filename="../../AttacherTexts.cpp" line="759"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Cuirtear an pointe ag suíomh an réada. Oibríonn sé ar réada le socruithe, agus imill éilips/parabóla/hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="746"/>
+      <location filename="../../AttacherTexts.cpp" line="768"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Fócas1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="769"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Fócas éilips, parabóil, hipearbóil.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="755"/>
+      <location filename="../../AttacherTexts.cpp" line="777"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Fócas2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="778"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>An dara fócas ar éilips agus ar hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="764"/>
+      <location filename="../../AttacherTexts.cpp" line="786"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Ar an imeall</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="765"/>
+      <location filename="../../AttacherTexts.cpp" line="787"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Cuirtear an pointe ar an imeall, rialaíonn MapPathParameter cá háit. Ina theannta sin, is féidir an rinnphointe a nascadh isteach chun teilgean a dhéanamh.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="774"/>
+      <location filename="../../AttacherTexts.cpp" line="796"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Lár na cuartha</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="797"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Lár chiorcail luaineach imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="806"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Lár an mhais</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="807"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Lár mais na dtagairtí uile (glacantar leis go bhfuil dlúis chomhionanna).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="793"/>
+      <location filename="../../AttacherTexts.cpp" line="815"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Crosbhealach</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="816"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Níor cuireadh i bhfeidhm é</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="798"/>
+      <location filename="../../AttacherTexts.cpp" line="820"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="799"/>
+      <location filename="../../AttacherTexts.cpp" line="821"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Cuir an pointe data ag comhthráth le buaicphointe eile.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="807"/>
+      <location filename="../../AttacherTexts.cpp" line="829"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Pointe cóngarachta 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="808"/>
+      <location filename="../../AttacherTexts.cpp" line="830"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Pointe ar an gcéad tagairt atá is gaire don dara tagairt.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="816"/>
+      <location filename="../../AttacherTexts.cpp" line="838"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Pointe cóngarachta 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="817"/>
+      <location filename="../../AttacherTexts.cpp" line="839"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Pointe ar an dara tagairt is gaire don chéad tagairt.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="537"/>
+      <location filename="../../AttacherTexts.cpp" line="559"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Díghníomhachtaithe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="538"/>
+      <location filename="../../AttacherTexts.cpp" line="560"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tá an ceangaltán díchumasaithe. Is féidir líne a bhogadh trí airí an tSeatáin a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="546"/>
+      <location filename="../../AttacherTexts.cpp" line="568"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>X an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="547"/>
-      <location filename="../../AttacherTexts.cpp" line="567"/>
+      <location filename="../../AttacherTexts.cpp" line="569"/>
+      <location filename="../../AttacherTexts.cpp" line="589"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tá an líne ailínithe feadh ais X áitiúil an réada. Oibríonn sé ar réada le socrúcháin, agus imill éilips/parabóla/hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="556"/>
+      <location filename="../../AttacherTexts.cpp" line="578"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Y an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="579"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tá an líne ailínithe feadh ais Y áitiúil an réada. Oibríonn sé ar réada le socrúcháin, agus imill éilips/parabóla/hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="588"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Z an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="598"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Ais cuartha</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="599"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne atá ina hais de chiorcal luaineach le himill cuartha. Sainmhíníonn buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="608"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="609"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne threorach le haghaidh éilips, parabóil, hipearbóil.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="595"/>
+      <location filename="../../AttacherTexts.cpp" line="617"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="618"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>An dara líne threorach don éilips agus don hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="604"/>
+      <location filename="../../AttacherTexts.cpp" line="626"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asimptóit1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="605"/>
+      <location filename="../../AttacherTexts.cpp" line="627"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Asimptóit hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="609"/>
+      <location filename="../../AttacherTexts.cpp" line="631"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asimptóit2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="610"/>
+      <location filename="../../AttacherTexts.cpp" line="632"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>An dara hasimptóit den hipearbóla.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="614"/>
+      <location filename="../../AttacherTexts.cpp" line="636"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangent</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="637"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne tadhlaíoch le himill. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="623"/>
+      <location filename="../../AttacherTexts.cpp" line="645"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Gnáth go dtí an imeall</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="646"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Ailínigh le veicteoir N chóras comhordanáidí Frenet-Serret d'imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="633"/>
+      <location filename="../../AttacherTexts.cpp" line="655"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Déghnáth</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="656"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Ailínigh le veicteoir B de chóras comhordanáidí Frenet-Serret d'imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="665"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tadhlaí leis an dromchla (U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="666"/>
+      <location filename="../../AttacherTexts.cpp" line="675"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tadhlaí leis an dromchla, feadh paraiméadar U. Sainmhíníonn nasc buaicphointe cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="652"/>
+      <location filename="../../AttacherTexts.cpp" line="674"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tadhlaí leis an dromchla (V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="661"/>
+      <location filename="../../AttacherTexts.cpp" line="683"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Trí dhá phointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="662"/>
+      <location filename="../../AttacherTexts.cpp" line="684"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne a théann trí dhá bhuaicphointe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="670"/>
+      <location filename="../../AttacherTexts.cpp" line="692"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Crosbhealach</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="671"/>
+      <location filename="../../AttacherTexts.cpp" line="693"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Trasnú dhá aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="675"/>
+      <location filename="../../AttacherTexts.cpp" line="697"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Líne gaireachta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="676"/>
+      <location filename="../../AttacherTexts.cpp" line="698"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne a shíneann an fad is giorra idir cruthanna.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="684"/>
+      <location filename="../../AttacherTexts.cpp" line="706"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>1ú príomh-ais</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="685"/>
+      <location filename="../../AttacherTexts.cpp" line="707"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Leanann an líne an chéad phríomh-ais táimhe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="693"/>
+      <location filename="../../AttacherTexts.cpp" line="715"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>2ú príomh-ais</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="694"/>
+      <location filename="../../AttacherTexts.cpp" line="716"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Leanann an líne an dara príomh-ais táimhe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="702"/>
+      <location filename="../../AttacherTexts.cpp" line="724"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>3ú príomh-ais</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="703"/>
+      <location filename="../../AttacherTexts.cpp" line="725"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Leanann an líne an tríú príomh-ais táimhe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="711"/>
+      <location filename="../../AttacherTexts.cpp" line="733"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Gnáth go dtí an dromchla</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="712"/>
+      <location filename="../../AttacherTexts.cpp" line="734"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Líne ingearach leis an dromchla ag pointe atá socraithe ag an rinn.</translation>
@@ -507,207 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Díghníomhachtaithe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="308"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an ceangaltán díchumasaithe. Is féidir an réad a bhogadh trí airí an tSeatáin a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Aistrigh bunús</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="318"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an bunús ailínithe chun meaitseáil leis an mBuaicphointe. Rialaítear an treoshuíomh ag an airí Socrúcháin.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána ailínithe le plána áitiúil XY an réada nasctha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XZ an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="337"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána ailínithe le plána áitiúil XZ an réada nasctha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>YZ an Réada</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="346"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána ailínithe le plána áitiúil YZ an réada nasctha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="343"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY comhthreomhar leis an plána</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="355"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána X' Y' comhthreomhar leis an bplána (XY an réada) agus téann sé tríd an rinnphointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
+      <source>Midplane between faces</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation>Lárphlána idir aghaidheanna</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="365"/>
+      <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>Tá bunús an phlána i lár an bhealaigh idir dhá aghaidh phlánacha agus roinneann a threoshuíomh a n-uillinn go cothrom ina dhá leath. I gcás aghaidheanna neamh-chomhthreomhara, tá a líne trasnaithe sa phlána.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="375"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Aghaidh plána</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="376"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána ailínithe chun comhthráthach a dhéanamh leis an aghaidh phlánach.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="362"/>
+      <location filename="../../AttacherTexts.cpp" line="384"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Tadhlaí leis an dromchla</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="385"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Déantar an plána mar thadhlaí don dromchla ag an rinn.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="371"/>
+      <location filename="../../AttacherTexts.cpp" line="393"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Gnáth go dtí an imeall</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="372"/>
+      <location filename="../../AttacherTexts.cpp" line="394"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Déantar an plána a thadhlaí leis an imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="380"/>
+      <location filename="../../AttacherTexts.cpp" line="402"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="381"/>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
-      <location filename="../../AttacherTexts.cpp" line="401"/>
+      <location filename="../../AttacherTexts.cpp" line="403"/>
+      <location filename="../../AttacherTexts.cpp" line="413"/>
+      <location filename="../../AttacherTexts.cpp" line="423"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ailínigh le córas comhordanáidí Frenet-Serret an imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="390"/>
+      <location filename="../../AttacherTexts.cpp" line="412"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet, TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="422"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="432"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Comhlárnach</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="433"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ailínigh le plána i gciorcal luaineach imeall. Tá an bunús ailínithe le pointe cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="442"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>An Rannóg Réabhlóide</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="443"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Tá an plána ingearach leis an imeall, agus tá an ais-Y meaitseáilte le hais an chiorcail luaineach. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="452"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Plána faoi 3 phointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="453"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ailínigh an plána chun dul trí thrí bhuaicphointe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="439"/>
+      <location filename="../../AttacherTexts.cpp" line="461"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Gnáth go 3 phointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="462"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Rachaidh an plána trí na chéad dá bhuaicphointe, agus beidh sé ingearach leis an plána a théann trí thrí bhuaicphointe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="449"/>
+      <location filename="../../AttacherTexts.cpp" line="471"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Fillte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="472"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Mód speisialtachta le haghaidh polaihéadraí fillte. Roghnaigh 4 imeall in ord: imeall fillte, líne fillte, líne fillte eile, imeall fillte eile. Ailíneofar an plána le fillte an chéad imeall.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="482"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Táimhe 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="461"/>
+      <location filename="../../AttacherTexts.cpp" line="483"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Plána tógtha ar an dara agus an tríú príomh-ais táimhe (téann sé trí lár an mhaise).</translation>
@@ -788,269 +800,281 @@
       <translation>Tá an plána X' Y' comhthreomhar leis an plána (XY an réada) agus téann sé tríd an rinn.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY ar plána</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="123"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Tá an plána X' Y' ailínithe chun an aghaidh phlánach a chomhthráthú.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Tadhlaí XY leis an dromchla</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Déantar an plána X' Y' a thadhlaí leis an dromchla ag an rinn.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Z tadhlaí leis an imeall</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Tá ais Z' ailínithe le bheith tadhlaíoch leis an imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="150"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
-      <location filename="../../AttacherTexts.cpp" line="150"/>
-      <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="151"/>
+      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ailínigh le córas comhordanáidí Frenet-Serret an imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Comhlárnach</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>An Rannóg Réabhlóide</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ailínigh ais Y chun ais chiorcail luaineach imeall a mheaitseáil. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Fillte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="181"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ailínigh an plána XY le ciorcal luaineach imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <source>Midplane between faces</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation>Lárphlána idir aghaidheanna</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>Tá bunús an phlána i lár an bhealaigh idir dhá aghaidh phlánacha agus roinneann a threoshuíomh a n-uillinn go cothrom ina dhá leath. I gcás aghaidheanna neamh-chomhthreomhara, tá a líne trasnaithe sa phlána.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Plána XY faoi 3 phointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ailínigh an plána XY chun dul trí thrí bhuaicphointe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XZ-eitleán faoi 3 phointe</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ailínigh an plána XZ chun dul trí 3 phointe; rachaidh an ais X trí dhá chéad phointe.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="220"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Mód speisialtachta le haghaidh polaihéadraí fillte. Roghnaigh 4 imeall in ord: imeall fillte, líne fillte, líne fillte eile, imeall fillte eile. Ailíneofar an plána XY le fillte an chéad imeall.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>CS támh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Córas comhordanáidí táimhe, tógtha ar phríomhaiseanna táimhe agus lár maise.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="241"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna Z' agus X' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna Z' agus Y' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="512"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna X' agus Y' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="271"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna X' agus Z' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna Y' agus Z' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
+      <location filename="../../AttacherTexts.cpp" line="542"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="291"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna Y' agus X' i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="492"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="471"/>
+      <location filename="../../AttacherTexts.cpp" line="493"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh ais an phlána ghnáth agus an ais chothrománach i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="502"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="503"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh ais an phlána gnáth agus ingearach i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="513"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh aiseanna cothrománacha agus ingearacha an phlána i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="522"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="523"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh ais an phlána chothrománach agus an gnáthlíne i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="532"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ailínigh O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="533"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad bhuaicphointe. Ailínigh ais an phlána ingearach agus an gnáthlíne i dtreo an bhuaicphointe/feadh na líne.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="543"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Meaitseáil an bunús leis an gcéad Bhuaicphointe. Ailínigh aiseanna an phlána ingearacha agus cothrománacha i dtreo an bhuaicphointe/feadh na líne.</translation>
@@ -2176,17 +2200,17 @@ teilgean.</translation>
       <translation>Cuir córas comhordanáidí leis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2574"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
       <translation>Cuir eitleán sonraí leis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2607"/>
+      <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
       <translation/>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2640"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
       <translation>Cuir pointe sonraí leis</translation>
     </message>
@@ -2226,7 +2250,7 @@ teilgean.</translation>
       <translation>Athraigh dathanna aghaidhe</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>Lochta</translation>
     </message>
@@ -2257,12 +2281,12 @@ teilgean.</translation>
       <translation>Soladach</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>Scuab</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>Tionscadal ar dhromchla</translation>
     </message>
@@ -3371,79 +3395,79 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
-      <location filename="../../DlgPrimitives.cpp" line="298"/>
+      <location filename="../../DlgPrimitives.cpp" line="301"/>
       <source>Plane</source>
       <translation>Plána</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="45"/>
-      <location filename="../../DlgPrimitives.cpp" line="392"/>
+      <location filename="../../DlgPrimitives.cpp" line="395"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="54"/>
-      <location filename="../../DlgPrimitives.cpp" line="509"/>
+      <location filename="../../DlgPrimitives.cpp" line="512"/>
       <source>Cylinder</source>
       <translation>Sorcóir</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="63"/>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="631"/>
       <source>Cone</source>
       <translation>Cón</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="72"/>
-      <location filename="../../DlgPrimitives.cpp" line="742"/>
+      <location filename="../../DlgPrimitives.cpp" line="745"/>
       <source>Sphere</source>
       <translation>Sféar</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="81"/>
-      <location filename="../../DlgPrimitives.cpp" line="876"/>
+      <location filename="../../DlgPrimitives.cpp" line="879"/>
       <source>Ellipsoid</source>
       <translation>Eilipsóideach</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="90"/>
-      <location filename="../../DlgPrimitives.cpp" line="1010"/>
+      <location filename="../../DlgPrimitives.cpp" line="1013"/>
       <source>Torus</source>
       <translation>Tóras</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="99"/>
-      <location filename="../../DlgPrimitives.cpp" line="1131"/>
+      <location filename="../../DlgPrimitives.cpp" line="1134"/>
       <source>Prism</source>
       <translation>Priosma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="108"/>
-      <location filename="../../DlgPrimitives.cpp" line="1324"/>
+      <location filename="../../DlgPrimitives.cpp" line="1327"/>
       <source>Wedge</source>
       <translation>Ding</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="117"/>
-      <location filename="../../DlgPrimitives.cpp" line="1471"/>
+      <location filename="../../DlgPrimitives.cpp" line="1474"/>
       <source>Helix</source>
       <translation>Héilics</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="126"/>
-      <location filename="../../DlgPrimitives.cpp" line="1579"/>
+      <location filename="../../DlgPrimitives.cpp" line="1582"/>
       <source>Spiral</source>
       <translation>Bíorlach</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="135"/>
-      <location filename="../../DlgPrimitives.cpp" line="1678"/>
+      <location filename="../../DlgPrimitives.cpp" line="1681"/>
       <source>Circle</source>
       <translation>Ciorcal</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="144"/>
-      <location filename="../../DlgPrimitives.cpp" line="1787"/>
+      <location filename="../../DlgPrimitives.cpp" line="1790"/>
       <source>Ellipse</source>
       <translation>Éilips</translation>
     </message>
@@ -3454,13 +3478,13 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="162"/>
-      <location filename="../../DlgPrimitives.cpp" line="1983"/>
+      <location filename="../../DlgPrimitives.cpp" line="1986"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="171"/>
-      <location filename="../../DlgPrimitives.cpp" line="1875"/>
+      <location filename="../../DlgPrimitives.cpp" line="1878"/>
       <source>Regular polygon</source>
       <translation>Polagán rialta</translation>
     </message>
@@ -4037,25 +4061,25 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Pointe deiridh</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2102"/>
+      <location filename="../../DlgPrimitives.cpp" line="2105"/>
       <source>Vertex</source>
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2297"/>
-      <location filename="../../DlgPrimitives.cpp" line="2308"/>
-      <location filename="../../DlgPrimitives.cpp" line="2325"/>
-      <location filename="../../DlgPrimitives.cpp" line="2332"/>
+      <location filename="../../DlgPrimitives.cpp" line="2300"/>
+      <location filename="../../DlgPrimitives.cpp" line="2311"/>
+      <location filename="../../DlgPrimitives.cpp" line="2328"/>
+      <location filename="../../DlgPrimitives.cpp" line="2335"/>
       <source>Create %1</source>
       <translation>Cruthaigh %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2298"/>
+      <location filename="../../DlgPrimitives.cpp" line="2301"/>
       <source>No active document</source>
       <translation>Gan aon doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2651"/>
+      <location filename="../../DlgPrimitives.cpp" line="2654"/>
       <source>C&amp;reate</source>
       <translation>C&amp;ruthaigh</translation>
     </message>
@@ -4138,17 +4162,17 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>Réad teilgean</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>Gan aon doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>Ní féidir réad teilgean a chruthú</translation>
     </message>
@@ -4520,29 +4544,49 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Cumasaigh snapáil gharbh agus tú ag tarraingt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation>Cumasaíonn sé méaduithe snapála níos mó agus tarraingteoirí á ionramháil</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>Mionathraitheoir snap mín</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation>Sainmhíníonn sé seo an eochair mhodhnóra a úsáidtear le haghaidh snapáil mhion agus tú ag tarraingt</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>Iompar réamhshocraithe tarraingthe garbh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>Cinneann sé an bhfuil an tarraingt garbh nó mín gan an eochair mhionathraithe a shealbhú</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>Iolraitheoir gluaiseachta garbh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation>Iolraíonn sé an t-ardú gluaiseachta bonn nuair a bhíonn snapáil gharbh gníomhach</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>Céim rothlaithe garbh (céimeanna)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation>Socraíonn sé an chéim rothlaithe i gcéimeanna a chuirtear i bhfeidhm nuair a bhíonn snapáil gharbh gníomhach</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4875,37 +4919,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>Próifílí atá ar fáil</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>Próifílí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>Ró-bheagán eilimintí</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Tá gá le dhá bhuaicphointe, imeall, sreang nó aghaidh ar a laghad.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>Earráid ionchuir</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Buaic/Imeall/Sreang/Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>Lochta</translation>
     </message>
@@ -5005,17 +5049,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="363"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="364"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="365"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="366"/>
       <source>Type</source>
       <translation>Cineál</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="367"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="368"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
@@ -5234,79 +5278,79 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>Próifílí atá ar fáil</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>Próifílí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>Tá imeall nó sreang amháin ar a laghad ag teastáil.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>Roghnaigh imeall amháin ar a laghad ó réad amháin.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>Ró-bheagán eilimintí</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>Rogha Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>Rogha Mícheart</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>Ní féidir '%1' a úsáid mar phróifíl agus cosán.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>Earráid ionchuir</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>Déanta</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>Roghnaigh imeall ceangailte amháin nó níos mó sa radharc 3T agus brúigh 'Críochnaithe'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Tá an cosán scuabtha roghnaithe neamhbhailí.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>Cosán Scuabtha</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>Scuab</translation>
     </message>
@@ -5502,28 +5546,28 @@ comhordanáidí áitiúil an réada atá á cheangal.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>Shape Content</source>
       <translation>Ábhar Cruth</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1456"/>
       <source>Settings</source>
       <translation>Socruithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Default: false</source>
       <translation>Réamhshocrú: bréagach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Run boolean operation check</source>
       <translation>Rith seiceáil oibríochta booléanach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1220"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5532,165 +5576,165 @@ sa tseiceáil chaighdeánach geoiméadrachta BRep. Ní chiallaíonn na hearráid
 nach féidir an réad seiceáilte a úsáid. Réamhshocrú: bréagach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
       <translation>Aon-snáithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Rith an seiceáil geoiméadrachta i snáithe amháin. Tá sé seo níos moille,
 ach níos cobhsaí. Réamhshocrú: bréagach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors</source>
       <translation>Earráidí logála</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1245"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>Logáil earráidí chuig an radharc tuairiscithe. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
       <translation>Leathnaigh ábhar an chrutha</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Leathnaigh ábhar an chrutha. Tiocfaidh na hathruithe i bhfeidhm an chéad uair eile
 a úsáideann tú an uirlis seiceála geoiméadrachta. Réamhshocrú: bréagach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
       <source>Advanced shape content</source>
       <translation>Ábhar cruthanna ardleibhéil</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Taispeáin ábhar cruthanna ardleibhéil. Tiocfaidh na hathruithe i bhfeidhm an chéad
 uair eile a úsáideann tú an uirlis seiceála geoiméadrachta. Réamhshocrú: bréagach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Seiceálacha oibríochta booléan aonair:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
       <translation>Drochchineál</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
       <translation>Féin-trasnú</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Too small edge</source>
       <translation>Imeall róbheag</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
       <translation>Aghaidh neamh-aisghabhála</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Continuity</source>
       <translation>Leanúnachas</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Incompatibility of face</source>
       <translation>Neamh-chomhoiriúnacht aghaidhe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
       <translation>Neamh-chomhoiriúnacht an bhuaicphointe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
       <translation>Neamh-chomhoiriúnacht imeall</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
       <source>Invalid curve on surface</source>
       <translation>Cuar neamhbhailí ar dhromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
       <translation>Rith Seiceáil</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Seiceáil le haghaidh cineálacha argóintí lochtacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Skip this settings page</source>
       <translation>Scipeáil an leathanach socruithe seo</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>Scipeáil an leathanach socruithe seo agus rith an seiceáil geoiméadrachta go huathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Seiceáil le haghaidh féin-trasnuithe. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Seiceáil le haghaidh imill atá róbheag. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1325"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Seiceáil le haghaidh aghaidheanna nach féidir a aisghabháil. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1337"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Seiceáil le haghaidh leanúnachais. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1349"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Seiceáil le haghaidh aghaidheanna neamh-chomhoiriúnacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Seiceáil le haghaidh buaicphointí neamh-chomhoiriúnacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Seiceáil le haghaidh imill neamh-chomhoiriúnacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1385"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Seiceáil le haghaidh cuar neamhbhailí ar dhromchlaí. Réamhshocrú: fíor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1467"/>
       <source>Results</source>
       <translation>Torthaí</translation>
     </message>
@@ -5698,63 +5742,63 @@ Seiceálacha oibríochta booléan aonair:</translation>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="402"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
       <translation>Seiceáil Torthaí na Geoiméadrachta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
       <translation>Tá an seiceáil ar siúl…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
       <translation>Seiceáil oibríochta Boole…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
       <source>Check geometry</source>
       <translation>Seiceáil geoiméadracht</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="489"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
       <translation>Cruth nialasach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="491"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
       <translation>Scipeáilte</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
       <translation>Cruth gan teorainn</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="528"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="529"/>
       <source>Invalid</source>
       <translation>Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>Checking</source>
       <translation>Ag seiceáil</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="578"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
       <translation>Gan aon earráidí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 próiseáilte as %2 roghnaithe</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n cruth neamhbhailí.</numerusform>
@@ -5765,32 +5809,32 @@ Seiceálacha oibríochta booléan aonair:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
       <translation>chun radharc a thuairisciú.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="739"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
       <translation>Íosmhéid domhanda</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="747"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="748"/>
       <source>Global average</source>
       <translation>Meán domhanda</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="755"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="756"/>
       <source>Global maximum</source>
       <translation>Uasmhéid domhanda</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="714"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="715"/>
       <source>Checked object</source>
       <translation>Réad seiceáilte</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="731"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="732"/>
       <source>Tolerance information</source>
       <translation>Faisnéis faoi lamháltas</translation>
     </message>
@@ -5809,8 +5853,8 @@ Seiceálacha oibríochta booléan aonair:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
-      <source>2x%1 select and confirm</source>
-      <translation>Roghnaigh agus deimhnigh 2x%1</translation>
+      <source>%1 select and confirm</source>
+      <translation>%1 roghnaigh agus deimhnigh</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -5998,7 +6042,7 @@ Seiceálacha oibríochta booléan aonair:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Roghnaigh próifíl amháin ar a laghad agus imeall nó
@@ -6162,292 +6206,292 @@ Leanúint ar aghaidh?</translation>
       <translation>Níl aon tagairt roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>Imeall</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>Comhdhúil</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
       <translation>Soladach cumaisc</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
       <translation>Soladach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>Sliogán</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
       <translation>Sreang</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>Cruth</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
       <translation>Gan earráid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
       <translation>Pointe neamhbhailí ar an gcuar</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
       <translation>Pointe neamhbhailí ar chuar ar dhromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
       <translation>Pointe neamhbhailí ar dhromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
       <translation>Gan cuar 3T</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Multiple 3D curves</source>
       <translation>Il-chuar 3T</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
       <translation>Cuar 3T neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>No curve on surface</source>
       <translation>Gan cuar ar an dromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid curve on surface</source>
       <translation>Cuar neamhbhailí ar dhromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
       <translation>Cuar neamhbhailí ar dhromchla dúnta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
       <translation>Bratach neamhbhailí den raon céanna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
       <translation>Bratach neamhbhailí den pharaiméadar céanna</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
       <translation>Bratach neamhbhailí díghinithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
       <translation>Imeall saor</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
       <translation>Il-nasc neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
       <translation>Raon neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
       <translation>Sreang folamh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
       <translation>Imeall iomarcach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
       <translation>Sreang féin-trasnaithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
       <translation>Gan dromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
       <translation>Sreang neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
       <translation>Sreang iomarcach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
       <translation>Sreanga ag trasnú</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
       <translation>Imbrication neamhbhailí sreanga</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
       <translation>Blaosc folamh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Redundant face</source>
       <translation>Aghaidh iomarcach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
       <translation>Cruth neamh-threoraithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
       <translation>Gan dúnadh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
       <translation>Gan cheangal</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
       <translation>Fo-chruth nach bhfuil i gcruth</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
       <translation>Drochthreoshuíomh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Bad orientation of sub-shape</source>
       <translation>Drochthreoshuíomh an fho-chrutha</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Invalid tolerance value</source>
       <translation>Luach lamháltais neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="139"/>
       <source>Check failed</source>
       <translation>Theip ar an seiceáil</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
       <translation>Gan toradh</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="150"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
       <translation>Lasmuigh den raon uimhrithe:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: unknown check</source>
       <translation>Oibríocht Boole: seiceáil anaithnid</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
       <translation>Oibríocht Boole: cineál lochtach</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>Oibríocht Boole: féin-trasnú aimsithe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: edge too small</source>
       <translation>Oibríocht Booleanach: imeall róbheag</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>Oibríocht Booleanach: aghaidh neamh-aisghabhála</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>Oibríocht Boole: neamh-chomhoiriúnacht na buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>Oibríocht Boole: neamh-chomhoiriúnacht imeall</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>Oibríocht Boole: neamh-chomhoiriúnacht aghaidhe</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
       <source>Boolean operation: aborted</source>
       <translation>Oibríocht Boole: curtha ar ceal</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="180"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>Oibríocht Boole: cuar neamhbhailí ar dhromchla</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="181"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="182"/>
       <source>Boolean operation: not valid</source>
       <translation>Oibríocht Boole: neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="178"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>Oibríocht Booleánach: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="857"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="858"/>
       <source>Invalid</source>
       <translation>Neamhbhailí</translation>
     </message>
@@ -6708,10 +6752,10 @@ Leanúint ar aghaidh?</translation>
       <translation>Droch-Roghnú</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Lean ar aghaidh</translation>
     </message>
@@ -7300,17 +7344,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2663"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2664"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Datums</source>
       <translation>Dátaí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Cruthaíonn sé réad sonraí (córas comhordanáidí, plána, líne, nó pointe) is féidir a cheangal le réada eile</translation>
     </message>
@@ -7326,17 +7370,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2562"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Datum Plane</source>
       <translation>Plána Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Cruthaíonn sé plána sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7344,17 +7388,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2595"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2596"/>
+      <location filename="../../Command.cpp" line="2598"/>
       <source>Datum Line</source>
       <translation>Líne Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2597"/>
+      <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Cruthaíonn líne sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7362,17 +7406,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2628"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2629"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Datum Point</source>
       <translation>Pointe Sonraí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Cruthaíonn sé pointe sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7712,18 +7756,18 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
       <translation>Spásáil Uilleach</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="423"/>
-      <location filename="../../PatternParametersWidget.cpp" line="519"/>
+      <location filename="../../PatternParametersWidget.cpp" line="425"/>
+      <location filename="../../PatternParametersWidget.cpp" line="521"/>
       <source>Spacing %1</source>
       <translation>Spásáil %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="439"/>
+      <location filename="../../PatternParametersWidget.cpp" line="441"/>
       <source>Remove this spacing definition.</source>
       <translation>Bain an sainmhíniú spásála seo.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <location filename="../../PatternParametersWidget.cpp" line="942"/>
       <source>Reset spacing</source>
       <translation>Athshocraigh an spásáil</translation>
     </message>
@@ -7746,19 +7790,6 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>Déantóir aghaidhe aontaithe</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>Aontaithe: láimhseálann sé poill neadaithe, sreanga forluiteacha, agus dromchlaí cuartha</translation>
-    </message>
-  </context>
-  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7769,6 +7800,19 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>Déantóir aghaidhe aontaithe</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>Aontaithe: láimhseálann sé poill neadaithe, sreanga forluiteacha, agus dromchlaí cuartha</translation>
     </message>
   </context>
 </TS>

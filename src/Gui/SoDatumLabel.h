@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFName.h>
@@ -74,12 +75,31 @@ public:
         ARCLENGTH
     };
 
+    /** Identifies which visual layer of a datum label produced a selection hit.
+     *
+     * Presentation contains the dimension and extension lines. Annotation contains the
+     * label text and arrowheads, which receive higher preselection priority.
+     */
+    enum class SelectionPart
+    {
+        Presentation,
+        Annotation
+    };
+
     static void initClass();
     SoDatumLabel();
 
     /*The points have to be on XY plane, ie they need to be 2D points.
     To draw on other planes, you need to attach a SoTransform to the SoDatumLabel (or parent).*/
     void setPoints(SbVec3f p1, SbVec3f p2);
+
+    /** Classifies a picked point as presentation geometry or annotation geometry.
+     *
+     * @param objectPoint Pick intersection in this node's object coordinate system.
+     * @return Annotation for the text/arrow Z layer; Presentation for the
+     *         dimension/extension-line Z layer.
+     */
+    [[nodiscard]] SelectionPart classifySelectionPoint(const SbVec3f& objectPoint) const;
 
     /* returns the center point of the text of the label */
     SbVec3f getLabelTextCenter();
@@ -103,6 +123,7 @@ public:
     SoSFImage image;
     SoSFFloat lineWidth;
     SoSFFloat sampling;
+    SoSFUShort linePattern;
     bool useAntialiasing;
 
 protected:

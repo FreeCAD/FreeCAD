@@ -220,6 +220,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(name, ("osifont"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(linePattern, (0b1111111111111111));
     SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
@@ -264,6 +265,7 @@ SoDatumLabel::SoDatumLabel()
     m_Root->addChild(m_GeometryColor);
 
     m_DrawStyle = new SoDrawStyle;
+    m_DrawStyle->linePattern.connectFrom(&this->linePattern);
     m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
     m_Root->addChild(m_DrawStyle);
 
@@ -1295,6 +1297,16 @@ float SoDatumLabel::getScaleFactor(SoState* state) const
 void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
 {
     point[2] = z;
+}
+
+SoDatumLabel::SelectionPart SoDatumLabel::classifySelectionPoint(const SbVec3f& objectPoint) const
+{
+    // Geometry lies on one of two known Z layers. Coin returns an intersection point rather
+    // than the stored vertex value, so classify it by the nearest layer without an epsilon.
+    constexpr float selectionBoundary = (ZCONSTR + ZARROW_TEXT_OFFSET) * 0.5F;
+
+    return objectPoint[2] > selectionBoundary ? SelectionPart::Annotation
+                                              : SelectionPart::Presentation;
 }
 
 void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)

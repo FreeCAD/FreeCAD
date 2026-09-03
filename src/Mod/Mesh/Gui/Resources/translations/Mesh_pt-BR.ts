@@ -1595,7 +1595,7 @@ Com sombreamento plano, as normais da superfície não são definidas por vérti
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>Não é possível adicionar o triângulo para evitar geometrias não-manifold.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>
@@ -2258,8 +2258,8 @@ Visite https://openscad.org para instalá-lo.</translation>
       <translation>Exibir Cores</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Deixar modo informativo</translation>
     </message>

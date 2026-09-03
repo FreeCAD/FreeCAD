@@ -224,7 +224,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
-      <translation>Přizpůsobit polynomní povrch</translation>
+      <translation>Přizpůsobit polynomiální povrch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>
@@ -237,8 +237,8 @@
       <translation>Umístění</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="152"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Přizpůsobit B-splajn</translation>
     </message>

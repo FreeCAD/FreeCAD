@@ -54,4 +54,42 @@
       <translation>Deicheamh méadar (m, m², m³)</translation>
     </message>
   </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../Exception.cpp" line="321"/>
+      <source>File not found</source>
+      <translation>Níor aimsíodh an comhad</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="323"/>
+      <source>No permission to read the file</source>
+      <translation>Gan cead an comhad a léamh</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="325"/>
+      <source>No write permission for the file or the file is read-only</source>
+      <translation>Gan cead scríbhneoireachta don chomhad nó is comhad inléite amháin é</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="326"/>
+      <source>File format not supported</source>
+      <translation>Ní thacaítear le formáid comhaid</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="327"/>
+      <source>Error reading from file</source>
+      <translation>Earráid ag léamh ón gcomhad</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="328"/>
+      <source>Error writing to file</source>
+      <translation>Earráid ag scríobh chuig comhad</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="330"/>
+      <source>Directory does not exist</source>
+      <translation>Níl an t-eolaire ann</translation>
+    </message>
+  </context>
 </TS>

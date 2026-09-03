@@ -299,8 +299,9 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
+        final_depth = obj.FinalDepth.Value + obj.AxialStockToLeave.Value
         Path.Log.debug(
-            f"Depth parameters: clearance={obj.ClearanceHeight.Value}, safe={obj.SafeHeight.Value}, start={obj.StartDepth.Value}, step={obj.StepDown.Value}, final={obj.FinalDepth.Value + obj.AxialStockToLeave.Value}"
+            f"Depth parameters: clearance={obj.ClearanceHeight.Value}, safe={obj.SafeHeight.Value}, start={obj.StartDepth.Value}, step={obj.StepDown.Value}, final={final_depth}"
         )
         depthparams = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
@@ -308,7 +309,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             start_depth=obj.StartDepth.Value,
             step_down=obj.StepDown.Value,
             z_finish_step=finish_step,
-            final_depth=obj.FinalDepth.Value + obj.AxialStockToLeave.Value,
+            final_depth=final_depth,
             user_depths=None,
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
@@ -317,45 +318,22 @@ class ObjectMillFacing(PathOp.ObjectOp):
         # when a 3+2 workplane is active.
         if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
             Path.Log.debug(f"Stock: {self.stock.Label}")
-            stock_faces = self.stock.Shape.Faces
-            Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
-
-            # Find faces with normal pointing toward Z+ (upward)
-            z_up_faces = []
-            for face in stock_faces:
-                # Get face normal at center
-                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2
-                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2
-                normal = face.normalAt(u_mid, v_mid)
-                Path.Log.debug(f"Face normal: {normal}, Z component: {normal.z}")
-
-                # Check if normal points upward (Z+ direction) with some tolerance
-                if normal.z > 0.9:  # Allow for slight deviation from perfect vertical
-                    z_up_faces.append(face)
-                    Path.Log.debug(f"Found upward-facing face at Z={face.BoundBox.ZMax}")
-
-            if not z_up_faces:
-                Path.Log.error("No upward-facing faces found in stock")
-                raise ValueError("No upward-facing faces found in stock")
-
-            # From the upward-facing faces, select the highest one
-            top_face = max(z_up_faces, key=lambda f: f.BoundBox.ZMax)
-            Path.Log.debug(f"Selected top face ZMax: {top_face.BoundBox.ZMax}")
-            boundary_wire = top_face.OuterWire
-            Path.Log.debug(f"Wire vertices: {len(boundary_wire.Vertexes)}")
+            boundary_wires = self.stock.Shape.slice(FreeCAD.Vector(0, 0, 1), final_depth)
+            if not boundary_wires:
+                Path.Log.error("No shape found at final depth")
+                raise ValueError("No shape found at final depth")
         else:
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        boundary_wire = boundary_wire.makeOffset2D(
-            obj.StockExtension.Value, 2
-        )  # offset with intersection joins
+        # offset with intersection joins
+        boundary_wires = [w.makeOffset2D(obj.StockExtension.Value, 2) for w in boundary_wires]
 
         # Convert boundary to a rectangular polygon aligned to the cut angle.
         # Stock faces may have curved edges (e.g. cylindrical stock) and all
         # facing strategies assume a rectangular boundary.
         cut_angle = getattr(obj.Angle, "Value", obj.Angle)
-        boundary_wire = facing_common.get_angled_polygon(boundary_wire, cut_angle)
+        boundary_wire = facing_common.get_angled_polygon(boundary_wires, cut_angle)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"

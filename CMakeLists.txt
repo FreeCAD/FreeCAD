@@ -73,24 +73,6 @@ string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
-
-# Sanitizer support
-option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF)
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
-    option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
-    option(FREECAD_USE_SANITIZER_UBSAN "Enable UndefinedBehaviorSanitizer (UBSan)" OFF)
-    option(FREECAD_USE_SANITIZER_MSAN "Enable MemorySanitizer (MSan)" OFF)
-endif()
-
-mark_as_advanced(
-        FREECAD_USE_SANITIZER_ASAN
-        FREECAD_USE_SANITIZER_LSAN
-        FREECAD_USE_SANITIZER_TSAN
-        FREECAD_USE_SANITIZER_UBSAN
-        FREECAD_USE_SANITIZER_MSAN
-)
-
 # include local modules
 include(CheckCXXCompilerFlag)
 include(AddFileDependencies)
@@ -114,6 +96,7 @@ SetupZipIos()
 SetupClipper2()
 find_package(fmt REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc i18n)
+find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
     SetupPCL()
@@ -161,10 +144,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         find_python_runtime_dep(pillow PIL pillow_VERSION "Assembly simulation video export will not work properly.")
     endif()
 endif()
-
-if(BUILD_VR)
-    find_package(Rift)
-endif(BUILD_VR)
 
 SetLibraryVersions()
 SetGlobalCompilerAndLinkerSettings()

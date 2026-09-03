@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="49"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>Rozwiąż złożenie</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="54"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>Wykona operację "Rozwiązania" aktywnego złożenia.</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="84"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>Aktywny obiekt</translation>
     </message>
@@ -88,17 +88,17 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly</source>
       <translation>Złożenie</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="123"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly Joints</source>
       <translation>Połączenia złożeń</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="126"/>
+      <location filename="../../../InitGui.py" line="125"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Złożenie</translation>
     </message>
@@ -132,7 +132,7 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1896"/>
+      <location filename="../../../JointObject.py" line="2051"/>
       <source>Distance</source>
       <translation>Odległość</translation>
     </message>
@@ -182,22 +182,27 @@ Dzięki temu będzie on teraz zakotwiony.</translation>
       <translation>Edytuj połączenie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1420"/>
+      <source>Update Stored Positions</source>
+      <translation>Aktualizuj przechowywane pozycje</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1859"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Wybierz dwa elementy z dwóch oddzielnych części</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1898"/>
+      <location filename="../../../JointObject.py" line="2053"/>
       <source>Radius 1</source>
       <translation>Promień 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1900"/>
+      <location filename="../../../JointObject.py" line="2055"/>
       <source>Thread pitch</source>
       <translation>Skok gwintu</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1902"/>
+      <location filename="../../../JointObject.py" line="2057"/>
       <source>Pitch radius</source>
       <translation>Promień nachylenia</translation>
     </message>
@@ -542,42 +547,72 @@ Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Nieznany format eksportu wideo</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="170"/>
+      <location filename="../../../InitGui.py" line="169"/>
       <source>Create</source>
       <translation>Utwórz</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="185"/>
       <source>Activate</source>
       <translation>Aktywuj</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="219"/>
       <source>Insert</source>
       <translation>Wstaw</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="231"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Grounding</source>
       <translation>Kotwienie</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="258"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Constraints</source>
       <translation>Wiązania</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="274"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Tools</source>
       <translation>Narzędzia</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="287"/>
+      <location filename="../../../InitGui.py" line="286"/>
       <source>Simulation</source>
       <translation>Symulacja</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation>Przemieszczenie promieniowe</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>Obrót</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation>Przesunięcie</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation>Kąt tego przesunięcia widoku rozłożenia</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation>Odległość tego przesunięcia widoku rozłożenia</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation>Edytuj umiejscowienie</translation>
     </message>
   </context>
   <context>
@@ -704,23 +739,28 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
       <translation>{order} odniesienie połączenia</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1288"/>
+      <location filename="../../../JointObject.py" line="1284"/>
+      <source>List of references to compnents to group together</source>
+      <translation>Lista odniesień do komponentów do zgrupowania razem</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1443"/>
       <source>The object to ground</source>
       <translation>Obiekt do zakotwienia</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="376"/>
-      <location filename="../../../CommandCreateView.py" line="413"/>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>Obiekty przeniesione przez ruch</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="388"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Jest to ruch przesunięcia. Pozycja końcowa jest wynikiem pozycji początkowej * tej pozycji.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>Typ ruchu</translation>
     </message>
@@ -996,52 +1036,52 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Obiekt jest powiązany z jednym lub większą liczbą połączeń.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Czy chcesz przenieść obiekt i usunąć powiązane połączenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
       <source>Move part</source>
       <translation>Przesuń część</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Empty Assembly</source>
       <translation>Poste złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
       <source>Malformed joints:</source>
       <translation>Nieprawidłowe połączenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -1051,7 +1091,7 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -1059,12 +1099,12 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
       <translation>Połączenie śrubowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy połączenie śrubowe łączące część ze złączem przesuwnym z częścią ze złączem obrotowym&lt;/p&gt;&lt;p&gt;Wybierz te same układy współrzędnych co dla złączy obrotowego i przesuwnego. Promień podziałki określa stosunek ruchu między obracającą się śrubą a przesuwającą się częścią.&lt;/p&gt;</translation>
     </message>
@@ -1072,12 +1112,12 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
       <translation>Połączenie kół zębatych / pasowych</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy połączenie zębate lub pasowe łączące dwa obracające się koła zębate.&lt;/p&gt;&lt;p&gt; Wybierz te same układy współrzędnych, co dla przegubów obrotowych.&lt;/p&gt;</translation>
     </message>
@@ -1378,12 +1418,12 @@ Limit jednego głównego złożenia na plik.</translation>
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
       <translation>Połączenie stałe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
       <translation>&lt;p&gt;1 - Jeśli złożenie jest aktywne : Tworzy połączenie statycznie blokujące dwie części razem, zapobiegając wszelkim ruchom lub obrotom&lt;/p&gt;&lt;p&gt;2 - Jeśli aktywna jest część: Pozycjonuje części podrzędne poprzez dopasowanie wybranych układów współrzędnych. Druga wybrana część zostanie przesunięta.&lt;/p&gt;</translation>
     </message>
@@ -1391,12 +1431,12 @@ Limit jednego głównego złożenia na plik.</translation>
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
       <translation>Połączenia obrotowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>Utwórz połączenie z możliwością obrotu: 
 Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami</translation>
@@ -1405,12 +1445,12 @@ Pozwala na obrót wokół pojedynczej osi pomiędzy wybranymi częściami</trans
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
       <translation>Połączenie cylindryczne</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>Tworzy połączenie cylindryczne, 
 umożliwiając obrót wokół oraz przesuwanie wzdłuż jednej osi między złożonymi częściami.</translation>
@@ -1419,12 +1459,12 @@ umożliwiając obrót wokół oraz przesuwanie wzdłuż jednej osi między zło�
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
       <translation>Połączenie przesuwne</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>Tworzy łącze przesuwne: 
 Pozwala na ruch liniowy wzdłuż pojedynczej osi, 
@@ -1434,12 +1474,12 @@ ale ogranicza rotację pomiędzy wybranymi częściami</translation>
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
       <translation>Przegub kulowy</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>Tworzy przegub kulowy: Łączy części w punkcie, 
 umożliwiając nieograniczony ruch, 
@@ -1449,12 +1489,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
       <translation>Połączenie dystansowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy przegub dystansowy, który ustala odległość między wybranymi obiektami.&lt;/p&gt;&lt;p&gt;Tworzy jeden z kilku różnych typów przegubów w zależności od wyboru. Na przykład, odległość 0 między płaszczyzną a cylindrem tworzy przegub styczny. Odległość 0 między płaszczyznami sprawi, że staną się współpłaszczyznowe.&lt;/p&gt;</translation>
     </message>
@@ -1462,12 +1502,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
       <translation>Połączenie równoległe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>Tworzy połączenie równoległe, które ustawia osie Z wybranych układów współrzędnych równolegle.</translation>
     </message>
@@ -1475,12 +1515,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
       <translation>Połączenie prostopadłe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>Tworzy połączenie prostopadłe, które ustawia osie Z wybranych układów współrzędnych prostopadle.</translation>
     </message>
@@ -1488,12 +1528,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
       <translation>Połączenie kątowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>Tworzy połączenie kątowe, które ustala kąt między osiami Z wybranych układów współrzędnych.</translation>
     </message>
@@ -1501,12 +1541,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
       <translation>Połączenie zębatki i koła zębatego</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy połączenie zębatki i koła zębatego łączące część ze złączem przesuwnym z częścią ze złączem obrotowym&lt;/p&gt;&lt;p&gt;Wybierz te same układy współrzędnych co dla złączy obrotowego i przesuwnego. Promień podziałki określa stosunek ruchu między zębatką a kołem zębatym.&lt;/p&gt;</translation>
     </message>
@@ -1514,12 +1554,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
       <translation>Połączenie kół zębatych</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy przegub zębaty, który łączy dwa obracające się koła zębate. Będą się one obracać w przeciwnych kierunkach.&lt;/p&gt;&lt;p&gt; Wybierz te same układy współrzędnych, co dla przegubów obrotowych.&lt;/p&gt;</translation>
     </message>
@@ -1527,12 +1567,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
       <translation>Połączenie pasowe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Tworzy przegub pasowy, który łączy dwa obracające się obiekty. Będą się one obracać w tym samym kierunku.&lt;/p&gt;&lt;p&gt; Wybierz te same układy współrzędnych, co dla przegubów obrotowych.&lt;/p&gt;</translation>
     </message>
@@ -1540,12 +1580,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
       <translation>Włącz / wyłącz zakotwienie</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
       <translation>&lt;p&gt;Przełącza uziemienie części.&lt;/p&gt;&lt;p&gt;Uziemienie części trwale blokuje jej pozycję w złożeniu, uniemożliwiając jakikolwiek ruch lub obrót.</translation>
     </message>
@@ -1566,12 +1606,12 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="53"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
       <translation>Widok rozstrzelony</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="58"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Tworzy widok rozstrzelony bieżącego złożenia</translation>
     </message>
@@ -1623,6 +1663,24 @@ Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zd
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
       <translation>Zaznacza wadliwe połączenia</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Wybierz co najmniej 2 komponenty, aby utworzyć sztywną grupę</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Utwórz sztywną grupę</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Utwórz sztywną grupę.&lt;/p&gt;&lt;p&gt;Tworzy sztywną grupę, która trwale blokuje razem wybrane komponenty.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

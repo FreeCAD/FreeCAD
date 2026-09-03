@@ -500,14 +500,14 @@ class CubicBezCurve(gui_lines.Line):
         if len(self.node) < 2:
             return [
                 Gui.InputHint(
-                    translate("draft", "%1 click and drag to define first point and knot"),
-                    Gui.UserInput.MouseLeft,
+                    translate("draft", "%1 define first point and knot"),
+                    Gui.UserInput.MouseMoveLeft,
                 )
             ]
         return [
             Gui.InputHint(
-                translate("draft", "%1 click and drag to define next point and knot"),
-                Gui.UserInput.MouseLeft,
+                translate("draft", "%1 define next point and knot"),
+                Gui.UserInput.MouseMoveLeft,
             )
         ]
 

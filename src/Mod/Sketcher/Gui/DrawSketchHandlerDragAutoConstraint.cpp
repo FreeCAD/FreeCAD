@@ -24,13 +24,18 @@
 
 #include <algorithm>
 #include <cmath>
+#include <exception>
 #include <limits>
 #include <memory>
 #include <numbers>
 
+#include <QTimer>
 #include <QWidget>
 
+#include <App/Application.h>
 #include <Precision.hxx>
+#include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Sketch.h>
@@ -46,6 +51,23 @@ using namespace Sketcher;
 namespace
 {
 constexpr double DragAutoConstraintSnapDistanceFactor = 0.25;
+constexpr int DefaultDragAutoConstraintDelay = 400;
+constexpr int MaximumDragAutoConstraintDelay = 5000;
+
+int getDragAutoConstraintDelay()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
+    const auto delay = hGrp->GetInt("DragAutoConstraintDelay", DefaultDragAutoConstraintDelay);
+    return static_cast<int>(std::clamp(delay, 0L, static_cast<long>(MaximumDragAutoConstraintDelay)));
+}
+}  // namespace
+
+DrawSketchHandlerDragAutoConstraint::DrawSketchHandlerDragAutoConstraint()
+{
+    dwellTimer.setSingleShot(true);
+    QObject::connect(&dwellTimer, &QTimer::timeout, &dwellTimer, [this]() { onDwellTimerTimeout(); });
 }
 
 bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoElementId>& dragged) const
@@ -56,7 +78,7 @@ bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoEle
 
 void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElementId>& dragged)
 {
-    suggestedConstraints.clear();
+    clear();
 
     if (QWidget* widget = getCursorWidget()) {
         oldCursor = widget->cursor();
@@ -82,7 +104,9 @@ void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type,
 
 void DrawSketchHandlerDragAutoConstraint::clear()
 {
+    dwellTimer.stop();
     suggestedConstraints.clear();
+    draggedElements.clear();
     unsetCursor();
 }
 
@@ -198,6 +222,40 @@ void DrawSketchHandlerDragAutoConstraint::update(
     const Base::Vector2d& /*pos*/
 )
 {
+    dwellTimer.stop();
+    suggestedConstraints.clear();
+    unsetCursor();
+
+    this->draggedElements = draggedElements;
+
+    if (!canSuggestFor(this->draggedElements)) {
+        return;
+    }
+
+    dwellTimer.start(getDragAutoConstraintDelay());
+}
+
+void DrawSketchHandlerDragAutoConstraint::onDwellTimerTimeout()
+{
+    try {
+        updateSuggestions();
+    }
+    catch (const Base::Exception& e) {
+        clear();
+        Base::Console().error("Failed to update drag auto-constraints: %s\n", e.what());
+    }
+    catch (const std::exception& e) {
+        clear();
+        Base::Console().error("C++ exception while updating drag auto-constraints: %s\n", e.what());
+    }
+    catch (...) {
+        clear();
+        Base::Console().error("Unknown exception while updating drag auto-constraints\n");
+    }
+}
+
+void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
+{
     suggestedConstraints.clear();
 
     SketchObject* obj = getSketchObject();
@@ -276,7 +334,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
         CurveCandidate bestCurve;
 
         auto considerCurve = [&](int geoId, double distance, bool lineCenter = false) {
-            if (geoId == dragged.GeoId || distance >= snapDistance || distance >= bestCurve.distance) {
+            if (distance >= snapDistance || distance >= bestCurve.distance) {
                 return;
             }
 
@@ -287,7 +345,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
 
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); ++geoId) {
             const Part::Geometry* geo = getSolvedGeometry(geoId);
-            if (!geo) {
+            if (!geo || geoId == dragged.GeoId) {
                 continue;
             }
 
@@ -312,13 +370,21 @@ void DrawSketchHandlerDragAutoConstraint::update(
                 const bool lineCenter = (actualPos - midpoint).Length() < ab.Length() * 0.05;
                 considerCurve(geoId, distance, lineCenter);
             }
-            else if (geo->is<Part::GeomCircle>()) {
-                const auto* circle = static_cast<const Part::GeomCircle*>(geo);
+            else if (geo->isDerivedFrom<Part::GeomCurve>()) {
+                const auto* curve = static_cast<const Part::GeomCurve*>(geo);
+                double parameter;
 
-                const Base::Vector2d center = toVector2d(circle->getCenter());
-                const double distance = std::abs((actualPos - center).Length() - circle->getRadius());
-
-                considerCurve(geoId, distance);
+                try {
+                    if (curve->closestParameter(toVector3d(actualPos), parameter)) {
+                        const Base::Vector2d closestPoint = toVector2d(
+                            curve->pointAtParameter(parameter)
+                        );
+                        considerCurve(geoId, (actualPos - closestPoint).Length());
+                    }
+                }
+                catch (const Base::CADKernelError&) {
+                    continue;
+                }
             }
         }
 

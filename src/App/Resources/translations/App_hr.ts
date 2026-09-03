@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="621"/>
+      <location filename="../../Application.cpp" line="609"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
@@ -35,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1230"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -79,7 +79,7 @@ Korisnik zatim treba kliknuti gumb Osvježi u glavnoj alatnoj traci.</translatio
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Točka ishodišta</translation>
     </message>
   </context>
   <context>
@@ -88,8 +88,8 @@ Korisnik zatim treba kliknuti gumb Osvježi u glavnoj alatnoj traci.</translatio
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Pamti posljednji izbor korisnika o tome treba li primijeniti postavljanje CopyOnChange 
+na sve veze koje referenciraju isti konfigurabilni objekt</translation>
     </message>
   </context>
 </TS>

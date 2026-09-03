@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>310</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <!-- Flute settings frame -->
+   <item>
+    <widget class="QFrame" name="fluteOptions">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_flute">
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
+      </property>
+      <!-- Reverse direction -->
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="reverseDirection">
+        <property name="toolTip">
+         <string>Reverse the cut direction (enters at the deep end)</string>
+        </property>
+        <property name="text">
+         <string>Reverse Direction</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Blind end compensation -->
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="blindEndCompensation">
+        <property name="toolTip">
+         <string>Pull the path end back by the tool radius when the flute terminates at depth (blind end). Has no effect when the path ramps back up to stock surface.</string>
+        </property>
+        <property name="text">
+         <string>Blind End Compensation</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Combine tangent segments -->
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="combineTangentSegments">
+        <property name="toolTip">
+         <string>Merge connected edges that meet tangent-continuously (collinear lines or smoothly-joined curves) into a single flute path. Uncheck to keep every selected edge as its own independent flute path.</string>
+        </property>
+        <property name="text">
+         <string>Combine Tangent Segments</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Axial stock to leave -->
+      <item row="3" column="0">
+       <widget class="QLabel" name="axialStockToLeave_label">
+        <property name="text">
+         <string>Axial Stock to Leave</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::QuantitySpinBox" name="axialStockToLeave">
+        <property name="toolTip">
+         <string>Stock to leave in the axial (depth) direction</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <!-- 2D fluting frame — shown only when a flat (no-Z) wire is selected -->
+   <item>
+    <widget class="QFrame" name="flute2DOptions">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2d">
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
+      </property>
+      <!-- Section header label -->
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="flute2DHeader">
+        <property name="text">
+         <string>2D Fluting (flat wire selected)</string>
+        </property>
+        <property name="styleSheet">
+         <string>font-weight: bold;</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Fluting type -->
+      <item row="1" column="0">
+       <widget class="QLabel" name="flutingType_label">
+        <property name="text">
+         <string>Fluting Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="flutingType">
+        <property name="toolTip">
+         <string>Z profile for a flat (2D) wire: RampFull ramps the full length; RampStart ramps only the entry; RampStartEnd ramps entry and exit.</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Ramp type -->
+      <item row="2" column="0">
+       <widget class="QLabel" name="rampType_label">
+        <property name="text">
+         <string>Ramp Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="rampType">
+        <property name="toolTip">
+         <string>Shape of the Z ramp: Linear is a constant-rate plunge; S-Curve eases at both ends (smoothstep); Smooth is tangent to the floor with an angled entry; Fillet rolls tangentially into the floor for a rounded bottom.</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Ramp value mode: selects which of Ramp Length / Ramp % is used -->
+      <item row="3" column="0">
+       <widget class="QLabel" name="rampLengthType_label">
+        <property name="text">
+         <string>Ramp Length Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="rampLengthType">
+        <property name="toolTip">
+         <string>Whether Ramp Length or Ramp % defines the ramp size. They are independent — only the selected one is used, and it applies to every selected wire.</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Ramp length -->
+      <item row="4" column="0">
+       <widget class="QLabel" name="rampLength_label">
+        <property name="text">
+         <string>Ramp Length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::QuantitySpinBox" name="rampLength">
+        <property name="toolTip">
+         <string>Length of each ramp segment in mm. Used when Ramp Length Type is set to Length.</string>
+        </property>
+        <property name="unit">
+         <string>mm</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Ramp percent -->
+      <item row="5" column="0">
+       <widget class="QLabel" name="rampLengthPercent_label">
+        <property name="text">
+         <string>Ramp %</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="rampLengthPercent">
+        <property name="toolTip">
+         <string>Ramp size as a percentage of each wire's own length. Used when Ramp Length Type is set to Percent; applied independently to every selected wire.</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="suffix">
+         <string> %</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Flip start -->
+      <item row="6" column="0" colspan="2">
+       <widget class="QCheckBox" name="flipStart2D">
+        <property name="toolTip">
+         <string>Reverse which end of the flat wire is the ramp entry point.</string>
+        </property>
+        <property name="text">
+         <string>Flip Start</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QAbstractSpinBox</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

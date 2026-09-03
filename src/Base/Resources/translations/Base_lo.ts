@@ -54,4 +54,42 @@
       <translation>ແມັດແບບທົດສະນິຍົມ (ມ, ມ², ມ³)</translation>
     </message>
   </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../Exception.cpp" line="321"/>
+      <source>File not found</source>
+      <translation>ບໍ່ພົບໄຟລ໌</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="323"/>
+      <source>No permission to read the file</source>
+      <translation>ບໍ່ມີສິດອະນຸຍາດໃນການອ່ານໄຟລ໌</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="325"/>
+      <source>No write permission for the file or the file is read-only</source>
+      <translation>ບໍ່ມີສິດອະນຸຍາດໃນການຂຽນໄຟລ໌ ຫຼື ໄຟລ໌ແມ່ນອ່ານໄດ້ຢ່າງດຽວ</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="326"/>
+      <source>File format not supported</source>
+      <translation>ຮູບແບບໄຟລ໌ບໍ່ຮອງຮັບ</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="327"/>
+      <source>Error reading from file</source>
+      <translation>ເກີດຂໍ້ຜິດພາດໃນການອ່ານຈາກໄຟລ໌</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="328"/>
+      <source>Error writing to file</source>
+      <translation>ເກີດຂໍ້ຜິດພາດໃນການຂຽນລົງໄຟລ໌</translation>
+    </message>
+    <message>
+      <location filename="../../Exception.cpp" line="330"/>
+      <source>Directory does not exist</source>
+      <translation>ບໍ່ມີໄດເຣັກທໍຣີນີ້ຢູ່</translation>
+    </message>
+  </context>
 </TS>

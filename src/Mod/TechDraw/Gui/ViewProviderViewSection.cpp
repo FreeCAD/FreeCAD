@@ -61,6 +61,8 @@ ViewProviderViewSection::ViewProviderViewSection()
     static const char *lgroup = "Section Line";
     sPixmap = "TechDraw_TreeSection";
 
+    KeepLabel.setValue(true);
+
     ADD_PROPERTY_TYPE(CutSurfaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
                       fgroup, App::Prop_None, "Set color of the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),

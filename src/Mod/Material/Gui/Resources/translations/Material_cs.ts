@@ -697,7 +697,7 @@ Pokud není zaškrtnuto, budou seřazeny podle jména.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>Knihovna</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -1192,11 +1192,11 @@ Pokud není zaškrtnuto, budou seřazeny podle jména.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>Jinak budou všechny změny ztraceny.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Potvrdit odstranění</translation>

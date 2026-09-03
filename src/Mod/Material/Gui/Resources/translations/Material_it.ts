@@ -1195,8 +1195,8 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
       <translation>Altrimenti tutte le modifiche andranno perse.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Conferma Eliminazione</translation>

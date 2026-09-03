@@ -173,12 +173,14 @@ class StockFromBase(Stock):
         )
 
         obj.Base = base
-        obj.ExtXneg = 1.0
-        obj.ExtXpos = 1.0
-        obj.ExtYneg = 1.0
-        obj.ExtYpos = 1.0
-        obj.ExtZneg = 1.0
-        obj.ExtZpos = 1.0
+        _ext_unit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+        _default_ext = 3.175 if _ext_unit in ("in", '"') else 1.0  # 0.125" or 1mm
+        obj.ExtXneg = _default_ext
+        obj.ExtXpos = _default_ext
+        obj.ExtYneg = _default_ext
+        obj.ExtYpos = _default_ext
+        obj.ExtZneg = _default_ext
+        obj.ExtZpos = _default_ext
 
         # placement is only tracked on creation
         bb = shapeBoundBox(base.Group) if base else None
@@ -212,12 +214,34 @@ class StockFromBase(Stock):
             self.origin = FreeCAD.Vector(-obj.ExtXneg.Value, -obj.ExtYneg.Value, -obj.ExtZneg.Value)
 
             self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
-            self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+            if self.length <= 0:
+                self.length = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock length can not be zero or negative. Used length %s mm"
+                    )
+                    % self.MinExtent
+                )
 
-            if bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value <= 0:
-                Path.Log.error("Stock height can not be zero or negative\nSet ExtZneg = 1 mm")
-                obj.ExtZneg.Value = self.MinExtent
+            self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+            if self.width <= 0:
+                self.width = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock width can not be zero or negative. Used width %s mm"
+                    )
+                    % self.MinExtent
+                )
+
             self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
+            if self.height <= 0:
+                self.height = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock height can not be zero or negative. Used height %s mm"
+                    )
+                    % self.MinExtent
+                )
 
             shape = Part.makeBox(self.length, self.width, self.height, self.origin)
             shape.Placement = obj.Placement
@@ -347,9 +371,15 @@ def SetupStockObject(obj, stockType):
         import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 
         PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
-        obj.ViewObject.Transparency = 90
-        obj.ViewObject.PointSize = 5
-        obj.ViewObject.DisplayMode = "Wireframe"
+        obj.ViewObject.ShapeColor = (0.792, 0.718, 0.537)
+        obj.ViewObject.Transparency = 95
+        obj.ViewObject.LineColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.PointColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.DrawStyle = "Dotted"
+        obj.ViewObject.DisplayMode = "Flat Lines"
+        obj.ViewObject.PointSize = 1
+        obj.ViewObject.LineWidth = 1
+        obj.ViewObject.Selectable = False
 
 
 class FakeJob(object):

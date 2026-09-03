@@ -3364,7 +3364,22 @@ bool ViewProviderSketch::isConstructionMode() const
 
 void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
 {
+    if (geometryCreationMode == newMode) {
+        return;
+    }
+
     geometryCreationMode = newMode;
+
+    if (!editCoinManager) {
+        return;
+    }
+
+    editCoinManager->updateEditCurveAppearance(newMode);
+
+    Gui::MDIView* mdi = getActiveView();
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
+        static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
+    }
 }
 
 GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const
@@ -4122,7 +4137,8 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit Sketch"), receiver, member);
+    QAction* act = menu->addAction(tr("Edit Sketch"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -4301,11 +4317,19 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // In order to have updated solver information, solve must take "true", this cause the Geometry
     // property to be updated with the solver information, including solver extensions, and triggers
     // a draw(true) via ViewProvider::UpdateData.
-    getSketchObject()->solve(true);
+    try {
+        getSketchObject()->solve(true);
 
-    // Enable solver initial solution update while dragging.
-    getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
-        viewProviderParameters.recalculateInitialSolutionWhileDragging);
+        // Enable solver initial solution update while dragging.
+        getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
+            viewProviderParameters.recalculateInitialSolutionWhileDragging);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().error("ViewProviderSketch::setEdit: %s\n", e.GetMessageString());
+    }
 
     // intercept del key press from main app
     listener = std::make_unique<ShortcutListener>(this);
@@ -4488,6 +4512,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
+
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
     }
 
     setGridEnabled(nullptr);
@@ -5015,6 +5043,11 @@ void ViewProviderSketch::slotToolWidgetChanged(QWidget* newwidget)
 void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
 {
     editCoinManager->setConstraintSelectability(enabled);
+}
+
+void ViewProviderSketch::setOriginPointMarker(bool hollow)
+{
+    editCoinManager->setOriginPointMarker(hollow);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d& Pos, const SbString& text)

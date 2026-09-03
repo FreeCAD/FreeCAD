@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definierar grundfärgen på en yta när den belyses. Den anger hur objektet sprider ljuset jämnt i alla riktningar, oberoende av betraktarens vinkel. Den här egenskapen påverkar materialets färg mest.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definierar färgen på en yta vid indirekt, jämn belysning och anger hur den ser ut när den endast belyses av omgivningsljus i en scen, utan riktat ljus, skuggning eller högdagrar.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definierar färgen på en yta som ser ut att avge ljus som om den vore en ljuskälla, oberoende av extern belysning, så att objektet ser självlysande ut. Ställ in svart för att inte använda någon emissiv färg.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definierar färgen och intensiteten hos de ljusa, spegelliknande högdagrar som visas på blanka eller reflekterande ytor när ljus träffar dem direkt. Använd ljusa färger för blanka objekt.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definierar storleken och skärpan på spegelblänk på en yta. Högre värden ger små, skarpa blänk, medan lägre värden ger breda, mjuka blänk. Observera att blänkets intensitet definieras av spegelfärgen.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Definierar hur mycket ljus som passerar genom ett objekt och gör det delvis eller helt genomskinligt.</translation>
     </message>
   </context>
   <context>
@@ -1195,15 +1195,15 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
       <translation>Annars kommer alla ändringar att gå förlorade.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Bekräfta borttagning</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Ta bort raden?</translation>
     </message>

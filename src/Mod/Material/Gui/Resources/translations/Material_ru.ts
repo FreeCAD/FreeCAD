@@ -221,7 +221,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Подформа / Тип</translation>
+      <translation>Sub.Shape / Type</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Задаёт базовый цвет освещенной поверхности. Он показывает способность объекта рассеивать свет во всех направлениях, независимо от угла зрения. Это свойство в наибольшей степени влияет на цвет материала.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Определяет цвет поверхности при непрямом, равномерном освещении, показывая, как она выглядит при освещении только окружающим светом в сцене, без направленного света, затенения или бликов</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Определяет цвет поверхности, который выглядит так, как будто она излучает свет, подобно источнику света, независимо от внешнего освещения, делая объект самосветящимся. Установите черный цвет, чтобы не было эмиссионного цвета.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Определяет цвет и интенсивность ярких, зеркальных бликов, появляющихся на блестящих или отражающих поверхностях при прямом попадании света. Установите яркие цвета для блестящих объектов.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Определяет размер и резкость зеркальных бликов на поверхности. Более высокие значения дают маленькие, резкие блики, в то время как более низкие значения создают широкие, мягкие блики. Обратите внимание, что интенсивность бликов определяется цветом зеркального отражения.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Определяет, сколько света проходит через объект, делая его частично или полностью прозрачным</translation>
     </message>
   </context>
   <context>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Подформа / Тип</translation>
+      <translation>Sub.Shape / Type</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
@@ -652,7 +652,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ImageEdit.cpp" line="207"/>
       <location filename="../../ImageEdit.cpp" line="223"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Файлы изображений</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
@@ -1195,8 +1195,8 @@ If unchecked, they will be sorted by their name.</source>
       <translation>В противном случае все изменения будут потеряны.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Подтвердите удаление</translation>
@@ -1444,7 +1444,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Установить материал</translation>
     </message>
   </context>
 </TS>

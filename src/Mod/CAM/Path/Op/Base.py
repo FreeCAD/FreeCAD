@@ -24,8 +24,10 @@
 import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Constants
 import Path
 import Path.Base.Util as PathUtil
+import Path.Base.Generator.rotation as rotation
 import Path.Geom
 import PathScripts.PathUtils as PathUtils
 from Path.Op.Util import getCycleTimeEstimate
@@ -947,15 +949,9 @@ class ObjectOp(object):
                 obj.OpFinalDepth = zmin
             zmin = obj.OpFinalDepth.Value
 
-            def minZmax(z):
-                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(obj.StepDown.Value, 0):
-                    return z + obj.StepDown.Value
-                else:
-                    return z + 1
-
             # ensure zmax is higher than zmin
-            if (zmax - 0.0001) <= zmin:
-                zmax = minZmax(zmin)
+            if zmax < zmin or Path.Geom.isRoughly(zmax, zmin):
+                zmax = zmin
 
             # update start depth if requested and required
             if not Path.Geom.isRoughly(obj.OpStartDepth.Value, zmax):
@@ -1012,13 +1008,22 @@ class ObjectOp(object):
         wp = obj.Workplane
         z_up = FreeCAD.Vector(0, 0, 1)
 
-        # Check if workplane is effectively Z-up (no rotation needed)
+        machine = self.job.Proxy.getMachine() if self.job else None
+        has_rotaries = machine is not None and machine.has_rotary_axes
+
+        # A Z-up workplane needs no geometry transform, but on a machine with
+        # rotary axes the op must still command its pose explicitly: ops are
+        # atomic and cannot know what pose a previous op left the machine in.
         if wp.isEqual(z_up, 1e-6):
+            if has_rotaries:
+                chain = rotation.build_kinematic_chain(machine)
+                if chain:
+                    self._rotation_commands = [
+                        Path.Command("G0", {axis.name: 0.0 for axis in chain})
+                    ]
             return True
 
-        # Need rotation — get machine from job
-        machine = self.job.Proxy.getMachine() if self.job else None
-        if machine is None or not machine.has_rotary_axes:
+        if not has_rotaries:
             Path.Log.warning(
                 f"Operation {obj.Label}: Workplane requires rotation but "
                 f"no machine with rotary axes is configured"
@@ -1027,8 +1032,6 @@ class ObjectOp(object):
 
         # Solve orientation
         try:
-            import Path.Base.Generator.rotation as rotation
-
             result = rotation.solve_orientation(machine, wp)
             Path.Log.debug(result)
 
@@ -1199,13 +1202,12 @@ class ObjectOp(object):
         # move in the command list.
         # Add the command to turn it off right after the last non-rapid move in the command list.
         if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
-            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
-            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            # Find the first and last cutting moves (includes G1, G2, G3, and drill cycles)
             first_feed_index = None
             last_feed_index = None
 
             for i, cmd in enumerate(self.commandlist):
-                if cmd.Name in Path.Geom.CmdMove:
+                if cmd.Name in Constants.GCODE_MOVE:
                     if first_feed_index is None:
                         first_feed_index = i
                     last_feed_index = i

@@ -23,7 +23,7 @@
 # **************************************************************************
 
 
-import os, tempfile, unittest
+import os, re, tempfile, unittest, zipfile
 import FreeCAD, Part, Sketcher
 from Part import Precision
 
@@ -35,6 +35,53 @@ xy_normal = FreeCAD.Vector(0, 0, 1)
 def vec(x, y):
     """Shorthand to create a vector in the XY-plane"""
     return FreeCAD.Vector(x, y, 0)
+
+
+def signedDistanceToLine(line, point):
+    """Distance from point to line, positive when the point is counter-clockwise from the line"""
+    start = line.StartPoint
+    delta = line.EndPoint - start
+    return (delta.x * (point.y - start.y) - delta.y * (point.x - start.x)) / delta.Length
+
+
+def makeDocumentLookLegacy(path):
+    """Rewrite an FCStd in place so that its sketches look like they predate signed constraints.
+
+    Strips every constraint Orientation attribute and the whole ExternalGeo property, which is
+    exactly what a document saved by FreeCAD 0.21 and earlier looks like.
+    """
+    archive = zipfile.ZipFile(path)
+    members = {name: archive.read(name) for name in archive.namelist()}
+    archive.close()
+
+    document = members["Document.xml"].decode("utf-8")
+    document = re.sub(
+        r"<Constrain [^>]*/>",
+        lambda m: re.sub(r'\s*Orientation="\d+"', "", m.group(0)),
+        document,
+    )
+
+    def dropExternalGeo(match):
+        body, removed = re.subn(
+            r'[ \t]*<Property name="ExternalGeo" .*?</Property>\n',
+            "",
+            match.group("body"),
+            flags=re.DOTALL,
+        )
+        count = int(match.group("count")) - removed
+        return '<Properties Count="%d"%s>%s</Properties>' % (count, match.group("rest"), body)
+
+    document = re.sub(
+        r'<Properties Count="(?P<count>\d+)"(?P<rest>[^>]*)>(?P<body>.*?)</Properties>',
+        dropExternalGeo,
+        document,
+        flags=re.DOTALL,
+    )
+
+    members["Document.xml"] = document.encode("utf-8")
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as rewritten:
+        for name, data in members.items():
+            rewritten.writestr(name, data)
 
 
 def CreateRectangleSketch(SketchFeature, corner, lengths):
@@ -734,6 +781,134 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertGreater(sketch.Geometry[circle_q4_idx].Location.x, 0)
         self.assertLess(sketch.Geometry[circle_q4_idx].Location.y, 0)
 
+    def buildSketchOnProjectedEdge(self):
+        """Attach a sketch to the top face of a box and dimension a circle against a borrowed edge.
+
+        Returns the sketch, the index of a borrowed edge that projects to a line segment, and the
+        index of the circle constrained against it. The circle sits on the counter-clockwise side
+        of that line, which is the side an unsigned constraint gets mirrored away from.
+
+        The borrowed edge is chosen to run through the sketch origin, so that reversing the sketch
+        plane turns the projection around without also displacing it. That keeps the circle's
+        stored position a valid solution afterwards, and therefore keeps "the sketch must not move"
+        a meaningful thing to assert.
+        """
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 20
+        box.Width = 20
+        box.Height = 5
+        self.Doc.recompute()
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.AttachmentSupport = [(box, "Face6")]
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        # Edges perpendicular to the sketch plane project to points, so look for one that comes
+        # back as a line segment through the sketch origin.
+        external_index = None
+        for number in range(1, 13):
+            sketch.addExternal("Box", "Edge%d" % number)
+            self.Doc.recompute()
+            projected = sketch.ExternalGeo[-1]
+            if isinstance(projected, Part.LineSegment) and projected.StartPoint.Length < 1e-7:
+                external_index = len(sketch.ExternalGeo) - 1
+                break
+            sketch.delExternal(len(sketch.ExternalGeometry) - 1)
+            self.Doc.recompute()
+        self.assertIsNotNone(external_index, "no box edge projected to a line through the origin")
+        # Anything the two sketch axes already occupy would resolve without a rebuilt projection.
+        self.assertGreaterEqual(external_index, 2)
+
+        # Put the circle on the counter-clockwise side of the borrowed edge, whichever way round
+        # that edge happened to project. A constraint left unsigned defaults to the clockwise side,
+        # so a circle that started clockwise would be unaffected and prove nothing.
+        line = sketch.ExternalGeo[external_index]
+        direction = line.EndPoint - line.StartPoint
+        direction.normalize()
+        outward = FreeCAD.Vector(-direction.y, direction.x, 0)
+        centre = (line.StartPoint + line.EndPoint) * 0.5 + outward * 5.0
+
+        external_geo_id = -external_index - 1
+        circle = sketch.addGeometry(Part.Circle(centre, xy_normal, 2), False)
+        sketch.addConstraint(Sketcher.Constraint("Radius", circle, 2.0))
+        sketch.addConstraint(Sketcher.Constraint("Distance", circle, 3, external_geo_id, 5.0))
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+
+        self.assertAlmostEqual(
+            signedDistanceToLine(
+                sketch.ExternalGeo[external_index], sketch.Geometry[circle].Center
+            ),
+            5.0,
+            delta=Precision.confusion(),
+            msg="the circle is meant to sit 5 mm counter-clockwise of the borrowed edge",
+        )
+
+        return sketch, external_index, circle
+
+    def testLegacyExternalGeometryOrientationMigration(self):
+        # A document written before signed constraints existed stores neither a constraint
+        # Orientation nor an ExternalGeo property. The orientation then has to be recovered from
+        # the geometry in the file, which is only possible once the projected external geometry
+        # has been rebuilt. Deriving it any earlier leaves the constraint unsigned, the solver
+        # reads that as clockwise, and every such sketch that sat on the counter-clockwise side is
+        # silently mirrored on load.
+        sketch, external_index, circle = self.buildSketchOnProjectedEdge()
+        expected = App.Vector(sketch.Geometry[circle].Center)
+
+        # Name the file after the document so that reopening it keeps the name tearDown expects.
+        path = os.path.join(tempfile.mkdtemp(), self.Doc.Name + ".FCStd")
+        self.Doc.saveAs(path)
+        FreeCAD.closeDocument(self.Doc.Name)
+        makeDocumentLookLegacy(path)
+
+        self.Doc = FreeCAD.openDocument(path)
+        self.Doc.recompute()
+        sketch = self.Doc.getObject("Sketch")
+        self.assertSuccessfulSolve(sketch)
+        self.assertVectorAlmostEqual(sketch.Geometry[circle].Center, expected)
+
+    def testSymmetricKeepsConstraintOnTheMirroredSide(self):
+        # Mirroring reverses handedness, so a copied signed constraint has to be re-derived from
+        # the mirrored geometry. Carrying the original side over pins the copy to the wrong side
+        # of the mirrored line.
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        line = sketch.addGeometry(Part.LineSegment(vec(3, -10), vec(3, 10)), False)
+        circle = sketch.addGeometry(Part.Circle(vec(-2, 0), xy_normal, 5), False)
+        sketch.addConstraint(Sketcher.Constraint("Distance", circle, 3, line, 5.0))
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+
+        before = signedDistanceToLine(sketch.Geometry[line], sketch.Geometry[circle].Center)
+
+        # Mirror about the sketch vertical axis.
+        sketch.addSymmetric([line, circle], -2)
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+
+        after = signedDistanceToLine(sketch.Geometry[2], sketch.Geometry[3].Center)
+        self.assertAlmostEqual(after, -before, delta=Precision.confusion())
+
+    def testReversedExternalGeometryLeavesSketchInPlace(self):
+        # A signed constraint records the side of a line relative to the line direction. Reversing
+        # the sketch plane reverses the direction the borrowed edge projects in, so the recorded
+        # side has to be re-derived or the geometry gets dragged across the line.
+        sketch, external_index, circle = self.buildSketchOnProjectedEdge()
+        expected = App.Vector(sketch.Geometry[circle].Center)
+        before = App.Vector(sketch.ExternalGeo[external_index].EndPoint)
+
+        sketch.AttachmentOffset = App.Placement(
+            App.Vector(0, 0, 0), App.Rotation(App.Vector(1, 0, 0), 180)
+        )
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+
+        # The projection has to have turned around for this test to be exercising anything.
+        after = sketch.ExternalGeo[external_index].EndPoint
+        self.assertLess(after.dot(before), 0, "the borrowed edge did not reverse")
+        self.assertVectorAlmostEqual(sketch.Geometry[circle].Center, expected)
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -959,6 +1134,15 @@ class TestSketcherSolver(unittest.TestCase):
         status = sketch.solve()
         # TODO: can we get the solver's messages somehow to improve the message?
         self.assertTrue(status == 0, msg=msg or "solver didn't converge")
+
+    def assertVectorAlmostEqual(self, actual, expected, msg=None):
+        for axis in ("x", "y", "z"):
+            self.assertAlmostEqual(
+                getattr(actual, axis),
+                getattr(expected, axis),
+                delta=Precision.confusion(),
+                msg=msg or "expected %s but got %s" % (expected, actual),
+            )
 
     def assertShapeDistance(self, shape1, shape2, expected_distance, msg=None):
         distance, _, _ = shape1.distToShape(shape2)

@@ -28,6 +28,8 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import math
+
 from FreeCAD import Console
 from FreeCAD import Units
 
@@ -53,8 +55,8 @@ class MgDynwriter:
             s["Equation"] = "MgDynHarmonic"
             s["Procedure"] = sifio.FileAttr("MagnetoDynamics/WhitneyAVHarmonicSolver")
             s["Variable"] = "av[av re:1 av im:1]"
-            frequency = equation.AngularFrequency.getValueAs("Hz")
-            s["Angular Frequency"] = frequency
+            frequency = equation.Frequency.getValueAs("Hz")
+            s["Angular Frequency"] = frequency * 2 * math.pi
         s["Exec Solver"] = "Always"
         s["Optimize Bandwidth"] = True
         s["Stabilize"] = equation.Stabilize
@@ -87,8 +89,8 @@ class MgDynwriter:
         s["Exec Solver"] = "Before Saving"
         s["Procedure"] = sifio.FileAttr("MagnetoDynamics/MagnetoDynamicsCalcFields")
         if equation.IsHarmonic:
-            frequency = equation.AngularFrequency.getValueAs("Hz")
-            s["Angular Frequency"] = frequency
+            frequency = equation.Frequency.getValueAs("Hz")
+            s["Angular Frequency"] = frequency * 2 * math.pi
         s["Potential Variable"] = "av"
         if equation.CalculateCurrentDensity is True:
             s["Calculate Current Density"] = True

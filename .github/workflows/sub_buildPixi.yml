@@ -75,6 +75,7 @@ jobs:
       logdir: ${{ github.workspace }}/logs/
       reportdir: ${{ github.workspace }}/report/
       reportfilename: ${{ inputs.artifactBasename }}-${{ matrix.os }}-report.md
+      shellCmd: "pixi run bash -l {0}"
     outputs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
@@ -176,9 +177,10 @@ jobs:
       uses: ./.github/workflows/actions/runPythonTests
       with:
         testDescription: "CLI tests on build dir"
-        testCommand: pixi run ${{ env.builddir }}/bin/FreeCADCmd -t 0
+        testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
         logFile: ${{ env.logdir }}TestCLIBuild.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: FreeCAD GUI tests on build dir
       if: runner.os == 'Linux' && inputs.testOnBuildDir && !inputs.skipBuild
@@ -186,9 +188,10 @@ jobs:
       uses: ./.github/workflows/actions/runPythonTests
       with:
         testDescription: "GUI tests on build dir"
-        testCommand: pixi run xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
+        testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
         logFile: ${{ env.logdir }}TestGUIBuild.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: Coin node snapshot visual tests on build dir
       if: runner.os == 'Linux' && inputs.testCoinNodeSnapshots && !inputs.skipBuild
@@ -198,10 +201,11 @@ jobs:
         testDescription: "Coin node snapshot visual tests on build dir"
         testCommand: |
           FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
-          pixi run xvfb-run -a -s "-screen 0 1024x768x24" \
+          xvfb-run -a -s "-screen 0 1024x768x24" \
             "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
         logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: Upload Coin node snapshot artifacts (on failure)
       if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots && !inputs.skipBuild
@@ -212,7 +216,7 @@ jobs:
 
     - name: src/Tools tests
       if: "!inputs.skipBuild"
-      run: python3 -m unittest discover -s src/Tools/tests -p "test_*.py"
+      run: pixi run python -m unittest discover -s src/Tools/tests -p "test_*.py"
 
     - name: C++ tests
       timeout-minutes: 10
@@ -222,6 +226,7 @@ jobs:
         reportdir: ${{ env.reportdir }}
         builddir: ${{ env.builddir }}
         reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: CMake Install
       if: "!inputs.skipBuild"
@@ -234,9 +239,10 @@ jobs:
       uses: ./.github/workflows/actions/runPythonTests
       with:
         testDescription: "CLI tests on install"
-        testCommand: pixi run FreeCADCmd -t 0
+        testCommand: FreeCADCmd -t 0
         logFile: ${{ env.logdir }}TestCLIInstall.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: FreeCAD GUI tests on install
       # if: runner.os == 'Linux' && !inputs.skipBuild
@@ -246,9 +252,10 @@ jobs:
       uses: ./.github/workflows/actions/runPythonTests
       with:
         testDescription: "GUI tests on install"
-        testCommand: pixi run xvfb-run FreeCAD -t 0
+        testCommand: xvfb-run FreeCAD -t 0
         logFile: ${{ env.logdir }}TestGUIInstall.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+        shellCmd: ${{ env.shellCmd }}
 
     - name: Save Compiler Cache
       id: cache-save

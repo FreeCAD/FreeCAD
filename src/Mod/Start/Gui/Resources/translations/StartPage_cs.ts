@@ -271,7 +271,7 @@ Více složek může být přidáno pomocí ";;" pro oddělení cest.</translati
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Vytvořeno:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>

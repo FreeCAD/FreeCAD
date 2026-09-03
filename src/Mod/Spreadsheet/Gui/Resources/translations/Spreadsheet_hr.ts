@@ -281,7 +281,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="558"/>
       <source>Custom Colors</source>
-      <translation type="unfinished">Custom Colors</translation>
+      <translation>Prilagođena boja</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="206"/>
       <source>Clear text color</source>
-      <translation type="unfinished">Clear text color</translation>
+      <translation>Ukloni boju teksta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
@@ -379,7 +379,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="283"/>
       <source>Clear background color</source>
-      <translation type="unfinished">Clear background color</translation>
+      <translation>Ukloni pozadinsku boju</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
@@ -399,28 +399,18 @@
     <message>
       <location filename="../../SheetTableView.cpp" line="226"/>
       <source>Recompute Cells</source>
-      <translation type="unfinished">Recompute Cells</translation>
+      <translation>Preračunaj ćelije</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Ukloni stupce</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Obriši ćelije</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation type="unfinished">Setup conf table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation type="unfinished">Unsetup conf table</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
@@ -430,7 +420,17 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Poništite povezivanje ćelija</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Postavi konfiguracijsku tablicu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Rastavi konfiguracijsku tablicu</translation>
     </message>
   </context>
   <context>
@@ -982,17 +982,17 @@ Continue?</source>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Ćelije</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Najveći broj stupaca</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Najveći broj redaka</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -1170,7 +1170,7 @@ Zadano: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Ukloni stupce</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="185"/>
@@ -1180,7 +1180,7 @@ Zadano: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration Table</source>
-      <translation type="unfinished">Configuration Table</translation>
+      <translation>Konfiguracijska tablica</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>

@@ -125,7 +125,7 @@ def setup(doc=None, solvertype="elmer"):
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         solver_obj.CoordinateSystem = "Axi Symmetric"
         equation_magnetodynamic2D = ObjectsFem.makeEquationMagnetodynamic2D(doc, solver_obj)
-        equation_magnetodynamic2D.AngularFrequency = "50 kHz"
+        equation_magnetodynamic2D.Frequency = "50 kHz"
         equation_magnetodynamic2D.CalculateCurrentDensity = True
         equation_magnetodynamic2D.CalculateElectricField = True
         equation_magnetodynamic2D.CalculateJouleHeating = True
@@ -186,6 +186,14 @@ def setup(doc=None, solvertype="elmer"):
     CurrentDensity.NormalCurrentDensity_re = "250000.000 A/m^2"
     CurrentDensity.Mode = "Normal"
     analysis.addObject(CurrentDensity)
+
+    # constraint A potential vector
+    BoundaryPotential = ObjectsFem.makeConstraintElectromagnetic(doc, "BoundaryPotential")
+    BoundaryPotential.References = [(shell, "Edge6")]
+    BoundaryPotential.AV_re_3 = "0.0 Wb/m"
+    BoundaryPotential.AV_im_3 = "0.0 Wb/m"
+    BoundaryPotential.EnableAV_3 = True
+    analysis.addObject(BoundaryPotential)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]

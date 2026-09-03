@@ -264,17 +264,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
-      <translation type="unfinished">%1 add to measurement</translation>
+      <translation>%1 lägg till i mätningen</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
+      <translation>%1 ny mätning, %2 växla automatisk lagring</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
-      <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
+      <translation>%1 lägg till i mätningen, %2 växla automatisk lagring</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="281"/>
@@ -336,6 +336,11 @@
       <location filename="../../../App/AppMeasure.cpp" line="159"/>
       <source>Area</source>
       <translation>Område</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
@@ -408,7 +413,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Ytarea</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -437,7 +442,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="503"/>
       <source>Inertia Matrix</source>
-      <translation type="unfinished">Inertia Matrix</translation>
+      <translation>Tröghetsmatris</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="531"/>
@@ -472,7 +477,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="625"/>
       <source>Principal Moments of Inertia</source>
-      <translation type="unfinished">Principal Moments of Inertia</translation>
+      <translation>Huvudtröghetsmoment</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
@@ -492,12 +497,60 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>Skapa lokalt koordinatsystem för huvudaxlar</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
-      <translation type="unfinished">Inertia around axis</translation>
+      <translation>Tröghet runt axel</translation>
+    </message>
+  </context>
+  <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <source>Parameters</source>
+      <translation>Parametrar</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <source>Physical Properties</source>
+      <translation>Fysiska egenskaper</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <source>Center of Gravity</source>
+      <translation>Tyngdpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <source>Center of Volume</source>
+      <translation>Volymcentrum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <source>Inertia</source>
+      <translation>Tröghetsmoment</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <source>Close</source>
+      <translation>Stäng</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <source>Save</source>
+      <translation>Spara</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <source>Reset</source>
+      <translation>Återställ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <source> (Average)</source>
+      <translation> (Medelvärde)</translation>
     </message>
   </context>
   <context>
@@ -511,54 +564,6 @@
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
       <translation>Beräknar massegenskaper för valda objekt</translation>
-    </message>
-  </context>
-  <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
-      <source>Parameters</source>
-      <translation>Parametrar</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
-      <source>Physical Properties</source>
-      <translation>Fysiska egenskaper</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
-      <source>Center of Gravity</source>
-      <translation>Tyngdpunkt</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
-      <source>Center of Volume</source>
-      <translation>Volymcentrum</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
-      <source>Inertia</source>
-      <translation>Tröghetsmoment</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
-      <source>Close</source>
-      <translation>Stäng</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Save</source>
-      <translation>Spara</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
-      <source>Reset</source>
-      <translation>Återställ</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
-      <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
     </message>
   </context>
 </TS>

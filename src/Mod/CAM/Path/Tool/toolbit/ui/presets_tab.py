@@ -26,6 +26,7 @@ the ``Presets`` property immediately. Used as the last tab in the existing
 ToolBit editor's QTabWidget.
 """
 
+import functools
 import math
 from typing import List, Optional
 
@@ -37,6 +38,7 @@ from ...FeedsSpeeds import (
     OP_TYPES,
     get_presets,
     make_preset,
+    preset_key,
     set_presets,
 )
 
@@ -180,6 +182,8 @@ class _EditPresetDialog:
         diameter_mm: float = 0.0,
         flutes: Optional[int] = None,
         tool_chipload_mm: Optional[float] = None,
+        existing_keys=None,
+        select_name: bool = False,
         parent=None,
     ):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/FeedsSpeedsPresetEdit.ui")
@@ -195,6 +199,7 @@ class _EditPresetDialog:
         self._diameter_mm = float(diameter_mm) if diameter_mm else 0.0
         self._flutes = int(flutes) if flutes else 0
         self._tool_chipload_mm = float(tool_chipload_mm) if tool_chipload_mm else 0.0
+        self._existing_keys = set(existing_keys or ())
         self._syncing = False  # guards against feedback loops
 
         f = self.form
@@ -208,10 +213,14 @@ class _EditPresetDialog:
         self.vert_ratio_spin = f.vertRatioSpin
         self.raw_feed_spin = f.rawFeedSpin
         self.raw_speed_spin = f.rawSpeedSpin
+        self.notes_edit = f.notesEdit
 
         self.name_edit.setPlaceholderText(
-            translate("CAM_FeedsSpeeds", "Optional, e.g. 'Aluminum aggressive'")
+            translate("CAM_FeedsSpeeds", "e.g. 'Aluminum aggressive'")
         )
+
+        self.form.buttonBox.accepted.disconnect()
+        self.form.buttonBox.accepted.connect(self._on_accept)
 
         # Horiz feed (velocity) and chipload (length) map onto FreeCAD's
         # unit schema, so their Gui::QuantitySpinBox display follows the
@@ -255,6 +264,10 @@ class _EditPresetDialog:
         self.form.geometryHint.setVisible(self._diameter_mm <= 0 or self._flutes <= 0)
 
         self._populate_from_preset(self._initial)
+
+        if select_name:
+            self.name_edit.selectAll()
+            self.name_edit.setFocus()
 
     def exec_(self) -> int:
         return self.form.exec_()
@@ -302,6 +315,8 @@ class _EditPresetDialog:
     def _populate_from_preset(self, preset: dict) -> None:
         if preset.get("name"):
             self.name_edit.setText(preset["name"])
+        if preset.get("notes"):
+            self.notes_edit.setPlainText(preset["notes"])
         hint = preset.get("material_hint")
         if hint is None:
             self.generic_check.setChecked(True)
@@ -427,6 +442,28 @@ class _EditPresetDialog:
         else:
             self.material_label.setText(translate("CAM_FeedsSpeeds", "(none)"))
 
+    def _on_accept(self) -> None:
+        if not self.name_edit.text().strip():
+            QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_FeedsSpeeds", "Name required"),
+                translate("CAM_FeedsSpeeds", "Give the preset a name."),
+            )
+            return
+        candidate = self.build_preset()
+        if preset_key(candidate) in self._existing_keys:
+            QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_FeedsSpeeds", "Duplicate preset"),
+                translate(
+                    "CAM_FeedsSpeeds",
+                    "This tool already has a preset named '%s' for this material and op type.",
+                )
+                % candidate["name"],
+            )
+            return
+        self.form.accept()
+
     def build_preset(self) -> dict:
         if self.generic_check.isChecked():
             uuid = None
@@ -446,7 +483,62 @@ class _EditPresetDialog:
             surface_speed=self._get_surface_speed() or None,
             chipload=self._get_chipload() or None,
             vert_feed_ratio=self.vert_ratio_spin.value(),
+            notes=self.notes_edit.toPlainText().strip() or None,
         )
+
+
+@functools.total_ordering
+class _NumericTableWidgetItem(QtGui.QTableWidgetItem):
+    """Table item that displays formatted text (e.g. "300 m/min") but
+    sorts by the underlying numeric value, not the string - so 20 sorts
+    before 100 rather than after it. Missing values sort first.
+    """
+
+    def __init__(self, text: str, value: Optional[float]):
+        super().__init__(text)
+        self._value = value if value is not None else float("-inf")
+
+    # total_ordering derives __le__/__gt__/__ge__ from these two.
+    __hash__ = QtGui.QTableWidgetItem.__hash__
+
+    def __eq__(self, other):
+        if isinstance(other, _NumericTableWidgetItem):
+            return self._value == other._value
+        return super().__eq__(other)
+
+    def __lt__(self, other):
+        if isinstance(other, _NumericTableWidgetItem):
+            return self._value < other._value
+        return super().__lt__(other)
+
+
+_NOTES_COLUMN = 5
+
+
+class _PresetsTableHeader(QtGui.QHeaderView):
+    """Horizontal header that ignores presses on the Notes column.
+
+    Qt has no per-column way to disable click-to-sort - only a header-wide
+    ``sortIndicatorShown``. Reacting to ``sortIndicatorChanged`` after the
+    fact and bouncing the indicator back doesn't work reliably: Qt's own
+    click-to-sort connection and this one both react to the same signal,
+    and there's no guarantee this one runs second. Swallowing the press
+    itself is the one mechanism that's actually guaranteed - Qt's
+    click/sort state machine never sees a valid press for that section, so
+    the following release can't be recognized as a sort-triggering click.
+    """
+
+    def __init__(self, parent=None):
+        super().__init__(QtCore.Qt.Horizontal, parent)
+        # A freshly constructed QHeaderView defaults sectionsClickable to
+        # False, unlike the default header QTableWidget builds for itself -
+        # without this, no section (not just Notes) ever registers a click.
+        self.setSectionsClickable(True)
+
+    def mousePressEvent(self, event):
+        if self.logicalIndexAt(event.pos()) == _NOTES_COLUMN:
+            return
+        super().mousePressEvent(event)
 
 
 class PresetsTab(QtGui.QWidget):
@@ -463,6 +555,8 @@ class PresetsTab(QtGui.QWidget):
 
         self.table = QtGui.QTableWidget()
         self.table.setColumnCount(6)
+        self._header = _PresetsTableHeader(self.table)
+        self.table.setHorizontalHeader(self._header)
         self.table.setHorizontalHeaderLabels(
             [
                 translate("CAM_FeedsSpeeds", "Name"),
@@ -476,6 +570,8 @@ class PresetsTab(QtGui.QWidget):
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.table.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.table.setSortingEnabled(True)
+        self.table.cellDoubleClicked.connect(lambda row, column: self._on_edit())
         layout.addWidget(self.table)
 
         button_row = QtGui.QHBoxLayout()
@@ -487,6 +583,10 @@ class PresetsTab(QtGui.QWidget):
         self.edit_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Edit"))
         self.edit_button.clicked.connect(self._on_edit)
         button_row.addWidget(self.edit_button)
+
+        self.copy_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Copy"))
+        self.copy_button.clicked.connect(self._on_copy)
+        button_row.addWidget(self.copy_button)
 
         self.delete_button = QtGui.QPushButton(translate("CAM_FeedsSpeeds", "Delete"))
         self.delete_button.clicked.connect(self._on_delete)
@@ -500,6 +600,8 @@ class PresetsTab(QtGui.QWidget):
 
     def refresh(self) -> None:
         presets = self._presets()
+
+        self.table.setSortingEnabled(False)
         self.table.setRowCount(len(presets))
         for i, p in enumerate(presets):
             hint = p.get("material_hint")
@@ -509,23 +611,37 @@ class PresetsTab(QtGui.QWidget):
                 mat_text = hint.get("name") or hint.get("uuid") or "?"
             op_text = p.get("op_type_hint") or translate("CAM_FeedsSpeeds", "(any)")
             name_text = p.get("name") or ""
-            self.table.setItem(i, 0, QtGui.QTableWidgetItem(name_text))
+            name_item = QtGui.QTableWidgetItem(name_text)
+            name_item.setData(QtCore.Qt.UserRole, i)
+            self.table.setItem(i, 0, name_item)
             self.table.setItem(i, 1, QtGui.QTableWidgetItem(mat_text))
             self.table.setItem(i, 2, QtGui.QTableWidgetItem(op_text))
             self.table.setItem(
-                i, 3, QtGui.QTableWidgetItem(_fmt_surface_speed(p.get("surface_speed")))
+                i,
+                3,
+                _NumericTableWidgetItem(
+                    _fmt_surface_speed(p.get("surface_speed")), p.get("surface_speed")
+                ),
             )
-            self.table.setItem(i, 4, QtGui.QTableWidgetItem(_fmt_quantity(p.get("chipload"), "mm")))
-            notes = []
-            if p.get("raw_feed") is not None or p.get("raw_speed") is not None:
-                notes.append(translate("CAM_FeedsSpeeds", "raw fallback"))
-            self.table.setItem(i, 5, QtGui.QTableWidgetItem(", ".join(notes)))
+            self.table.setItem(
+                i,
+                4,
+                _NumericTableWidgetItem(_fmt_quantity(p.get("chipload"), "mm"), p.get("chipload")),
+            )
+            notes_text = (p.get("notes") or "").strip()
+            notes_item = QtGui.QTableWidgetItem(notes_text.replace("\n", " "))
+            if notes_text:
+                notes_item.setToolTip(notes_text)
+            self.table.setItem(i, _NOTES_COLUMN, notes_item)
+        self.table.setSortingEnabled(True)
+        self.table.resizeColumnsToContents()
 
     def _selected_index(self) -> Optional[int]:
         rows = self.table.selectionModel().selectedRows()
         if not rows:
             return None
-        return rows[0].row()
+        item = self.table.item(rows[0].row(), 0)
+        return item.data(QtCore.Qt.UserRole) if item is not None else None
 
     def _tool_geometry(self) -> tuple:
         """Read (diameter_mm, flutes) from the ToolBit doc object."""
@@ -557,16 +673,17 @@ class PresetsTab(QtGui.QWidget):
 
     def _on_add(self) -> None:
         d, f = self._tool_geometry()
+        presets = self._presets()
         dlg = _EditPresetDialog(
             None,
             diameter_mm=d,
             flutes=f,
             tool_chipload_mm=self._tool_chipload(),
+            existing_keys={preset_key(p) for p in presets},
             parent=self,
         )
         if dlg.exec_() != QtGui.QDialog.Accepted:
             return
-        presets = self._presets()
         presets.append(dlg.build_preset())
         set_presets(self._obj, presets)
         self.refresh()
@@ -577,10 +694,37 @@ class PresetsTab(QtGui.QWidget):
             return
         presets = self._presets()
         d, f = self._tool_geometry()
-        dlg = _EditPresetDialog(presets[idx], diameter_mm=d, flutes=f, parent=self)
+        dlg = _EditPresetDialog(
+            presets[idx],
+            diameter_mm=d,
+            flutes=f,
+            existing_keys={preset_key(p) for i, p in enumerate(presets) if i != idx},
+            parent=self,
+        )
         if dlg.exec_() != QtGui.QDialog.Accepted:
             return
         presets[idx] = dlg.build_preset()
+        set_presets(self._obj, presets)
+        self.refresh()
+
+    def _on_copy(self) -> None:
+        idx = self._selected_index()
+        if idx is None:
+            return
+        presets = self._presets()
+        d, f = self._tool_geometry()
+        dlg = _EditPresetDialog(
+            dict(presets[idx]),
+            diameter_mm=d,
+            flutes=f,
+            tool_chipload_mm=self._tool_chipload(),
+            existing_keys={preset_key(p) for p in presets},
+            select_name=True,
+            parent=self,
+        )
+        if dlg.exec_() != QtGui.QDialog.Accepted:
+            return
+        presets.append(dlg.build_preset())
         set_presets(self._obj, presets)
         self.refresh()
 

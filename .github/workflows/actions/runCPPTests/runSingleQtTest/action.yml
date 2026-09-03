@@ -14,6 +14,10 @@ inputs:
   testName:
     description: "A descriptive name for the test suite"
     required: true
+  shellCmd:
+    description: "Shell command to use for action steps (e.g. 'pixi run bash -l {0}')"
+    default: "bash -l {0}"
+    required: false
 outputs:
   reportText:
     description: "Report text"
@@ -23,7 +27,7 @@ runs:
   using: "composite"
   steps:
     - name: Run QtTest tests
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       env:
         QT_QPA_PLATFORM: offscreen
         TEST_COMMAND: ${{ inputs.testCommand }}
@@ -34,7 +38,7 @@ runs:
     - name: Parse test results
       if: always()
       id: report
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       env:
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
         TEST_NAME: ${{ inputs.testName }}

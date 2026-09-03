@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
-      <translation>&amp;Nytt kalkylblad</translation>
+      <translation>&amp;Nytt kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
-      <translation>Skapar ett nytt kalkylblad</translation>
+      <translation>Skapar ett nytt kalkylark</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="515"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="572"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="629"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="714"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="799"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="206"/>
       <source>Clear text color</source>
-      <translation type="unfinished">Clear text color</translation>
+      <translation>Rensa textfärg</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
@@ -413,16 +413,6 @@
       <translation>Klara celler</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation type="unfinished">Setup conf table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation type="unfinished">Unsetup conf table</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Binda celler</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Ta bort bindning mellan celler</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Konfigurera konfigurationstabell</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Avkonfigurera konfigurationstabell</translation>
     </message>
   </context>
   <context>
@@ -979,17 +979,17 @@ Fortsätta?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
       <source>Cells</source>
-      <translation type="unfinished">Cells</translation>
+      <translation>Celler</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="165"/>
       <source>Maximum number of columns</source>
-      <translation type="unfinished">Maximum number of columns</translation>
+      <translation>Högsta antal kolumner</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="175"/>
       <source>Maximum number of rows</source>
-      <translation type="unfinished">Maximum number of rows</translation>
+      <translation>Högsta antal rader</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="185"/>
@@ -999,7 +999,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Displays the cell alias using the custom format.</source>
-      <translation type="unfinished">Displays the cell alias using the custom format.</translation>
+      <translation>Visar cellaliaset med det anpassade formatet.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="194"/>
@@ -1009,7 +1009,7 @@ Fortsätta?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="207"/>
       <source>Sets the table view zoom level from 60% to 160%.</source>
-      <translation type="unfinished">Sets the table view zoom level from 60% to 160%.</translation>
+      <translation>Ställer in tabellvyns zoomnivå från 60 % till 160 %.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="210"/>
@@ -1129,33 +1129,33 @@ Standardvärde: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Rows Above</numerusform>
-        <numerusform>Insert %n Rows Above</numerusform>
+      <translation>
+        <numerusform>Infoga %n rad ovanför</numerusform>
+        <numerusform>Infoga %n rader ovanför</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Rows Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Rows Below</numerusform>
-        <numerusform>Insert %n Rows Below</numerusform>
+      <translation>
+        <numerusform>Infoga %n rad nedanför</numerusform>
+        <numerusform>Infoga %n rader nedanför</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Columns Left</numerusform>
-        <numerusform>Insert %n Columns Left</numerusform>
+      <translation>
+        <numerusform>Infoga %n kolumn till vänster</numerusform>
+        <numerusform>Infoga %n kolumner till vänster</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="165"/>
       <source>Insert %n Columns Right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Columns Right</numerusform>
-        <numerusform>Insert %n Columns Right</numerusform>
+      <translation>
+        <numerusform>Infoga %n kolumn till höger</numerusform>
+        <numerusform>Infoga %n kolumner till höger</numerusform>
       </translation>
     </message>
     <message>

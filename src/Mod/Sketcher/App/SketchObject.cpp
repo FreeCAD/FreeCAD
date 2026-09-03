@@ -1396,6 +1396,11 @@ void SketchObject::onSketchRestore()
         }else
             acceptGeometry();
 
+        // Must run after the external geometry above: the orientations are derived from the
+        // geometry the constraints reference, and projected external geometry does not exist
+        // before it is rebuilt or accepted.
+        migrateConstraintOrientations();
+
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
@@ -1433,6 +1438,19 @@ void SketchObject::onSketchRestore()
 }
 
 // clang-format on
+void SketchObject::migrateConstraintOrientations()
+{
+    // Migrate point-line and circle-line distance and tangency from unsigned to signed. Documents
+    // written before signed constraints existed carry no orientation at all, so the side each
+    // constraint was solved on has to be read back out of the geometry stored in the file.
+    auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+}
+
 void SketchObject::migrateSketch()
 {
     // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
@@ -1499,16 +1517,6 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
-    }
-
-    {
-        // Migrate point-line, circle-circle and circle-line distance from abs to signed
-        auto constraints = Constraints.getValues();
-        for (auto& constr : constraints) {
-            setOrientation(constr, false);
-        }
-
-        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */

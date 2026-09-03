@@ -400,22 +400,24 @@ class Dimension(gui_base_original.Creator):
                 # Draw constraint tracker line.
                 if shift and (not self.arcmode):
                     if len(self.node) == 2:
+                        # Save self.node[0] and self.node[1] so that they can be restored:
                         if not self.point1:
                             self.point1 = self.node[0]
                         if not self.point2:
                             self.point2 = self.node[1]
-                        # else:
-                        #     self.node[1] = self.point2
                         self.set_constraint_node()
                 else:
                     self.force = 0
                     self.proj_point1 = None
                     self.proj_point2 = None
+                    # Restore self.node[0] and self.node[1]:
                     if self.point1:
                         self.node[0] = self.point1
-                    if self.point2 and (len(self.node) > 1):
-                        self.node[1] = self.point2
-                        # self.point2 = None
+                        self.point1 = None
+                    if self.point2:
+                        if len(self.node) > 1:
+                            self.node[1] = self.point2
+                        self.point2 = None
                 # update the dimline
                 if self.node and not self.arcmode:
                     self.dimtrack.update(self.node + [self.point] + [self.chain])

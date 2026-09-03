@@ -1203,8 +1203,8 @@ Najlepiej dokonać zapisu jako nowy materiał.</translation>
       <translation>W przeciwnym razie wszystkie zmiany zostaną utracone.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Potwierdź usunięcie</translation>

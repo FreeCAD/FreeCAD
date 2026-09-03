@@ -21,21 +21,17 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <cmath>
-# include <algorithm>
-# include <iterator>
-# include <vector>
-# include <vtkUnstructuredGrid.h>
-# include <vtkMultiBlockDataSet.h>
-# include <vtkFieldData.h>
-# include <vtkStreamingDemandDrivenPipeline.h>
-# include <vtkFloatArray.h>
-# include <vtkInformation.h>
-# include <vtkInformationVector.h>
-#endif
+#include <cmath>
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <vtkUnstructuredGrid.h>
+#include <vtkMultiBlockDataSet.h>
+#include <vtkFieldData.h>
+#include <vtkStreamingDemandDrivenPipeline.h>
+#include <vtkFloatArray.h>
+#include <vtkInformation.h>
+#include <vtkInformationVector.h>
 
 #include "vtkFemFrameSourceAlgorithm.h"
 

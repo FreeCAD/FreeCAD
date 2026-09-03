@@ -117,6 +117,9 @@ private Q_SLOTS:
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
+    void startTypeChanged(int index);
+    void startOffsetChanged(double value);
+    void selectStartReference(bool checked);
     void setCutDiagram();
 
 private:
@@ -136,6 +139,12 @@ private:
         TapDrill = 1,
         Threaded = 2
     };
+    enum StartTypeIndex : int
+    {
+        ProfilePlane = 0,
+        Offset = 1,
+        Reference = 2
+    };
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -145,6 +154,10 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateHoleCutLimits(PartDesign::Hole* hole);
     void updateHoleTypeCombo();
+    void updateStartUI();
+    void updateStartReferenceName();
+    void selectedStartReference(const Gui::SelectionChanges& msg);
+    QString getStartReference() const;
 
 private:
     using Connection = fastsignals::scoped_connection;
@@ -156,6 +169,8 @@ private:
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* holeDepthGizmo = nullptr;
+    Gui::LinearGizmo* startOffsetGizmo = nullptr;
+    bool selectingStartReference = false;
     void setupGizmos(ViewProviderHole* vp);
     void setGizmoPositions();
 };

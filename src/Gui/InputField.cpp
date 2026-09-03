@@ -78,7 +78,7 @@ InputField::InputField(QWidget* parent)
     setValidator(new InputValidator(this));
     if (!App::GetApplication()
              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-             ->GetBool("ComboBoxWheelEventFilter", false)) {
+             ->GetBool("ComboBoxWheelEventFilter", true)) {
         setFocusPolicy(Qt::WheelFocus);
     }
     else {
@@ -779,12 +779,6 @@ void InputField::fixup(QString& input) const
     if (localePlus != asciiPlus) {
         input.replace(localePlus, asciiPlus);
     }
-
-    // workaround for improper handling of plus sign
-    // in Building US unit system
-    // https://github.com/FreeCAD/FreeCAD/issues/11345
-    QString asciiMinusMinus(QStringLiteral("--"));
-    input.replace(asciiPlus, asciiMinusMinus);
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const

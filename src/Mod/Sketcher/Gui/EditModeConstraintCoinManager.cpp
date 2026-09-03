@@ -1954,7 +1954,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
                 }
                 text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+                text->lineWidth = drawingParameters.DimensionalConstraintLineWidth
+                    * drawingParameters.pixelScalingFactor;
+                text->linePattern = drawingParameters.DimensionalConstraintLinePattern;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
@@ -2205,10 +2207,13 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     }
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
-    if (dynamic_cast<SoDatumLabel*>(tail)) {
+    if (auto* datumLabel = dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.Kind = datumLabel->classifySelectionPoint(Point->getObjectPoint())
+                        == SoDatumLabel::SelectionPart::Annotation
+                    ? ConstraintPreselectionResult::HitKind::DatumAnnotation
+                    : ConstraintPreselectionResult::HitKind::DatumPresentation;
                 result.ConstrIndices.insert(i);
                 result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
@@ -2978,14 +2983,7 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
 
 void EditModeConstraintCoinManager::sendConstraintIconToCoin(const QImage& icon, SoImage* soImagePtr)
 {
-    SoSFImage icondata = SoSFImage();
-
-    Gui::BitmapFactory().convert(icon, icondata);
-
-    SbVec2s iconSize(icon.width(), icon.height());
-
-    int four = 4;
-    soImagePtr->image.setValue(iconSize, 4, icondata.getValue(iconSize, four));
+    Gui::BitmapFactory().convert(icon, soImagePtr->image);
 
     // Set Image Alignment to Center
     soImagePtr->vertAlignment = SoImage::HALF;

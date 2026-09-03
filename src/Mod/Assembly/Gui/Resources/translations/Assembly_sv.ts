@@ -30,12 +30,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="49"/>
+      <location filename="../../../CommandSolveAssembly.py" line="48"/>
       <source>Solve Assembly</source>
       <translation>Lös montering</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="54"/>
+      <location filename="../../../CommandSolveAssembly.py" line="53"/>
       <source>Solves the currently active assembly.</source>
       <translation>Löser den aktuella aktiva monteringen.</translation>
     </message>
@@ -43,12 +43,12 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="84"/>
+      <location filename="../../../InitGui.py" line="82"/>
       <source>Assembly</source>
       <translation>Ihopsättning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="122"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly</source>
       <translation>Montering</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="123"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly Joints</source>
       <translation>Monteringsfogar</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="126"/>
+      <location filename="../../../InitGui.py" line="125"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Montering</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1896"/>
+      <location filename="../../../JointObject.py" line="2051"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -177,25 +177,30 @@
     <message>
       <location filename="../../../JointObject.py" line="1238"/>
       <source>Edit Joint</source>
-      <translation type="unfinished">Edit Joint</translation>
+      <translation>Redigera fog</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1420"/>
+      <source>Update Stored Positions</source>
+      <translation>Uppdatera lagrade positioner</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1859"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Välj 2 element från 2 separata delar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1898"/>
+      <location filename="../../../JointObject.py" line="2053"/>
       <source>Radius 1</source>
       <translation>Radie 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1900"/>
+      <location filename="../../../JointObject.py" line="2055"/>
       <source>Thread pitch</source>
       <translation>Gängstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1902"/>
+      <location filename="../../../JointObject.py" line="2057"/>
       <source>Pitch radius</source>
       <translation>Stigningsradie</translation>
     </message>
@@ -359,7 +364,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
+      <translation>Variabler som du måste ersätta med faktiska värden skrivs med versaler. ”initialValue” ersätts dynamiskt med den aktuella vinkeln eller det aktuella avståndet. Mer information om varje exempel finns i dess verktygstips.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
@@ -484,7 +489,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Det finns inte tillräckligt många bildrutor för att skapa en animering.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1068"/>
@@ -494,12 +499,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) är inte installerat. Det krävs för videoexport.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Genererar bildrutor …</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1101"/>
@@ -509,7 +514,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1128"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>Sätter samman animeringen …</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1150"/>
@@ -519,47 +524,77 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
-      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+      <translation>PyAV är inte installerat. Det krävs för videoexport.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Okänt format för videoexport</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="170"/>
+      <location filename="../../../InitGui.py" line="169"/>
       <source>Create</source>
       <translation>Skapa</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="186"/>
+      <location filename="../../../InitGui.py" line="185"/>
       <source>Activate</source>
       <translation>Aktivera</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="220"/>
+      <location filename="../../../InitGui.py" line="219"/>
       <source>Insert</source>
       <translation>Infoga</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="231"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Grounding</source>
       <translation>Jordning</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="258"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Constraints</source>
       <translation>Begränsningar</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="274"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Tools</source>
       <translation>Verktyg</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="287"/>
+      <location filename="../../../InitGui.py" line="286"/>
       <source>Simulation</source>
       <translation>Simulering</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation>Radiell förflyttning</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>Rotation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation>Translation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation>Vinkel för denna rörelse i sprängskissen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation>Avstånd för denna rörelse i sprängskissen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation>Redigera placering</translation>
     </message>
   </context>
   <context>
@@ -682,23 +717,28 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <translation>Ledens {order}-referens för fogen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1288"/>
+      <location filename="../../../JointObject.py" line="1284"/>
+      <source>List of references to compnents to group together</source>
+      <translation>Lista över referenser till komponenter som ska grupperas</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1443"/>
       <source>The object to ground</source>
       <translation>Objektet till marken</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="376"/>
-      <location filename="../../../CommandCreateView.py" line="413"/>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>De objekt som flyttas av flytten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="388"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Detta är rörelsens rörelse. Slutplaceringen är resultatet av startplaceringen * denna placering.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>Typ av flyttning</translation>
     </message>
@@ -750,22 +790,22 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Lista över komponenter som registrerats i den här ögonblicksbilden.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Lista över motsvarande placeringar för komponenterna.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Lista över komponenternas synlighetstillstånd.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Om sant löses monteringen efter att placeringarna har återställts när ögonblicksbilden tillämpas.</translation>
     </message>
   </context>
   <context>
@@ -843,7 +883,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
       <source>Rotate the joint 90 degrees</source>
-      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+      <translation>Rotera fogen 90 grader</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
@@ -975,52 +1015,52 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektet är kopplat till en eller flera fogar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Empty Assembly</source>
       <translation>Tom montering</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Over-constrained:</source>
       <translation>Överbegränsad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
       <source>and %1 more</source>
       <translation>och %1 mer</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -1028,7 +1068,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1036,25 +1076,25 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="318"/>
+      <location filename="../../../CommandCreateJoint.py" line="317"/>
       <source>Screw Joint</source>
       <translation>Skruvförband</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <location filename="../../../CommandCreateJoint.py" line="323"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en skruvfog som kopplar en del med en glidfog till en del med en rotationsfog&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidfogarna. Delningsradien definierar rörelseförhållandet mellan den roterande skruven och den glidande delen.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="391"/>
+      <location filename="../../../CommandCreateJoint.py" line="390"/>
       <source>Gears/Belt Joint</source>
       <translation>Kugghjul/remfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <location filename="../../../CommandCreateJoint.py" line="395"/>
       <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Skapar en kugghjuls- eller remkoppling som kopplar samman två roterande kugghjul.&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för revolutkopplingarna.&lt;/p&gt;</translation>
     </message>
@@ -1258,7 +1298,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>Spara animeringen som en GIF- eller videofil.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1351,25 +1391,25 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="77"/>
+      <location filename="../../../CommandCreateJoint.py" line="76"/>
       <source>Fixed Joint</source>
       <translation>Fast fog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="82"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 – Om en montering är aktiv: Skapar en fog som statiskt låser två delar till varandra och förhindrar all förflyttning och rotation&lt;/p&gt;&lt;p&gt;2 – Om en del är aktiv: Placerar underdelar genom att matcha valda koordinatsystem. Den andra valda delen flyttas.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="104"/>
+      <location filename="../../../CommandCreateJoint.py" line="103"/>
       <source>Revolute Joint</source>
       <translation>Vridfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="109"/>
+      <location filename="../../../CommandCreateJoint.py" line="108"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>Skapar en vridfog som möjliggör rotation runt en enda axel mellan valda delar</translation>
     </message>
@@ -1377,12 +1417,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="127"/>
+      <location filename="../../../CommandCreateJoint.py" line="126"/>
       <source>Cylindrical Joint</source>
       <translation>Cylindrisk fog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="132"/>
+      <location filename="../../../CommandCreateJoint.py" line="131"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>Skapar en cylindrisk fog som tillåter rotation runt och translation längs en enda axel mellan monterade delar</translation>
     </message>
@@ -1390,12 +1430,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="150"/>
+      <location filename="../../../CommandCreateJoint.py" line="149"/>
       <source>Slider Joint</source>
       <translation>Glidfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="155"/>
+      <location filename="../../../CommandCreateJoint.py" line="154"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>Skapar en glidfog som tillåter linjär rörelse längs en enda axel, men begränsar rotationen mellan valda delar</translation>
     </message>
@@ -1403,12 +1443,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="173"/>
+      <location filename="../../../CommandCreateJoint.py" line="172"/>
       <source>Ball Joint</source>
       <translation>Kulled</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="178"/>
+      <location filename="../../../CommandCreateJoint.py" line="177"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>Skapar en kulled som förbinder delar vid en punkt, vilket möjliggör obegränsad rörelse så länge anslutningspunkterna förblir i kontakt</translation>
     </message>
@@ -1416,12 +1456,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="196"/>
+      <location filename="../../../CommandCreateJoint.py" line="195"/>
       <source>Distance Joint</source>
       <translation>Distansfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <location filename="../../../CommandCreateJoint.py" line="202"/>
       <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Skapar en avståndsskarv som fixerar avståndet mellan de valda objekten&lt;/p&gt;&lt;p&gt;Skapar en av flera olika skarvar baserat på valet. Till exempel skapar ett avstånd på 0 mellan ett plan och en cylinder en tangentskarv. Ett avstånd på 0 mellan plan gör dem koplanära.&lt;/p&gt;</translation>
     </message>
@@ -1429,12 +1469,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="221"/>
+      <location filename="../../../CommandCreateJoint.py" line="220"/>
       <source>Parallel Joint</source>
       <translation>Parallellfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="226"/>
+      <location filename="../../../CommandCreateJoint.py" line="225"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>Skapar en parallellfog som gör Z-axeln i de valda koordinatsystemen parallella</translation>
     </message>
@@ -1442,12 +1482,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="246"/>
+      <location filename="../../../CommandCreateJoint.py" line="245"/>
       <source>Perpendicular Joint</source>
       <translation>Vinkelrät fog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="251"/>
+      <location filename="../../../CommandCreateJoint.py" line="250"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>Skapar en vinkelrät fog som gör Z-axeln i de valda koordinatsystemen vinkelräta</translation>
     </message>
@@ -1455,12 +1495,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="268"/>
       <source>Angle Joint</source>
       <translation>Vinkelförband</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="274"/>
+      <location filename="../../../CommandCreateJoint.py" line="273"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>Skapar en vinkelfog som fixerar vinkeln mellan Z-axeln i de valda koordinatsystemen</translation>
     </message>
@@ -1468,25 +1508,25 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="293"/>
       <source>Rack and Pinion Joint</source>
       <translation>Fog för kuggstång och kugghjul</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="299"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en kuggstångs- och kugghjulsfog som kopplar en del med en glidfog till en del med en rotationsfog&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för rotations- och glidfogarna. Delningsradien definierar rörelseförhållandet mellan kuggstången och kugghjulet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="342"/>
+      <location filename="../../../CommandCreateJoint.py" line="341"/>
       <source>Gears Joint</source>
       <translation>Kugghjulsfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <location filename="../../../CommandCreateJoint.py" line="347"/>
       <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Skapar en kugghjulsled som kopplar samman två roterande kugghjul. De kommer att ha omvänd rotationsriktning.&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för revolutförbindelserna.&lt;/p&gt;</translation>
     </message>
@@ -1494,12 +1534,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="366"/>
+      <location filename="../../../CommandCreateJoint.py" line="365"/>
       <source>Belt Joint</source>
       <translation>Bältesfog</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <location filename="../../../CommandCreateJoint.py" line="371"/>
       <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
       <translation>&lt;p&gt;Skapar en remled som kopplar samman två roterande objekt. De kommer att ha samma rotationsriktning.&lt;/p&gt;&lt;p&gt;Välj samma koordinatsystem som för revolutlederna.&lt;/p&gt;</translation>
     </message>
@@ -1507,14 +1547,14 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="431"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
       <translation>Växla jordad</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
+      <translation>&lt;p&gt;Växlar om en del är fixerad.&lt;/p&gt;&lt;p&gt;När en del fixeras låses dess position permanent i monteringen, vilket förhindrar all förflyttning och rotation.</translation>
     </message>
   </context>
   <context>
@@ -1533,12 +1573,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="53"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
       <translation>Exploderad vy</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="58"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Skapar en sprängskiss av den aktuella monteringen</translation>
     </message>
@@ -1571,26 +1611,44 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
       <source>Selects these conflicting joints</source>
-      <translation type="unfinished">Selects these conflicting joints</translation>
+      <translation>Väljer dessa motstridiga fogar</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
       <source>Selects these redundant joints</source>
-      <translation type="unfinished">Selects these redundant joints</translation>
+      <translation>Väljer dessa överflödiga fogar</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Selects these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>Monteringen har obundna komponenter som ger upphov till dessa frihetsgrader.
+Väljer dessa obundna komponenter.
+Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna delar som fortfarande har fria frihetsgrader.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
-      <translation type="unfinished">Selects these malformed joints</translation>
+      <translation>Väljer dessa felaktigt utformade fogar</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Välj minst två komponenter för att skapa en styv grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Skapa styv grupp</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Skapa en styv grupp.&lt;/p&gt;&lt;p&gt;Skapar en styv grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1598,22 +1656,22 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Ögonblicksbild</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Registrerar monteringens aktuella tillstånd (placeringar och synlighet). Om du dubbelklickar på objektet Ögonblicksbild återställs monteringen till detta tillstånd.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Skapa ögonblicksbild</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Återställ ögonblicksbild</translation>
     </message>
   </context>
   <context>
@@ -1626,12 +1684,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to Linked Assembly</source>
-      <translation type="unfinished">Go to Linked Assembly</translation>
+      <translation>Gå till länkad montering</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
       <source>Selects the linked assembly and switches to its original document</source>
-      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+      <translation>Väljer den länkade monteringen och växlar till dess ursprungliga dokument</translation>
     </message>
   </context>
   <context>
@@ -1649,7 +1707,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+      <translation>Väljer motstridiga fogar i den aktiva monteringen</translation>
     </message>
   </context>
   <context>
@@ -1667,7 +1725,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="202"/>
       <source>Selects redundant joints in the active assembly</source>
-      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+      <translation>Väljer överflödiga fogar i den aktiva monteringen</translation>
     </message>
   </context>
   <context>
@@ -1685,7 +1743,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+      <translation>Väljer felaktigt utformade fogar i den aktiva monteringen</translation>
     </message>
   </context>
   <context>
@@ -1698,12 +1756,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select Components With DoFs</source>
-      <translation type="unfinished">Select Components With DoFs</translation>
+      <translation>Välj komponenter med frihetsgrader</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
       <source>Selects unconstrained components in the active assembly</source>
-      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+      <translation>Väljer obundna komponenter i den aktiva monteringen</translation>
     </message>
   </context>
   <context>
@@ -1716,12 +1774,12 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select Component Joints</source>
-      <translation type="unfinished">Select Component Joints</translation>
+      <translation>Välj komponentfogar</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
       <source>Selects all joints referencing the selected component</source>
-      <translation type="unfinished">Selects all joints referencing the selected component</translation>
+      <translation>Väljer alla fogar som refererar till den valda komponenten</translation>
     </message>
   </context>
 </TS>

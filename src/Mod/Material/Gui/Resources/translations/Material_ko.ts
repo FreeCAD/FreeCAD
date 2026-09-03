@@ -1195,8 +1195,8 @@ If unchecked, they will be sorted by their name.</source>
       <translation>그렇지 않으면 모든 변경 사항이 손실됩니다.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>삭제 확인</translation>

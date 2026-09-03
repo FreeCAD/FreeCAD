@@ -29,6 +29,8 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/UnitsApi.h>
 #include <Base/Quantity.h>
+#include <App/Datums.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include <fmt/format.h>
 
@@ -223,6 +225,14 @@ void MeasureBase::onDocumentRestored()
 {
     // Force recompute the measurement
     recompute();
+}
+
+bool Measure::isDatum(const App::DocumentObject& ob)
+{
+    if (!ob.isValid()) {
+        return false;
+    }
+    return ob.isDerivedFrom<App::DatumElement>() || ob.isDerivedFrom<Part::Datum>();
 }
 
 // Python Drawing feature ---------------------------------------------------------

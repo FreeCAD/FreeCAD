@@ -48,10 +48,6 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     list(APPEND 3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
-if (BUILD_VR)
-    add_definitions(-DBUILD_VR )
-endif(BUILD_VR)
-
 if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
@@ -503,6 +499,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgDocumentObject.cpp
     Dialogs/DlgUnitsCalculatorImp.cpp
     Dialogs/DlgInputDialogImp.cpp
     Dialogs/DlgMacroExecuteImp.cpp
@@ -546,6 +543,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgDocumentObject.h
     Dialogs/DlgUnitsCalculatorImp.h
     Dialogs/DlgInputDialogImp.h
     Dialogs/DlgMacroExecuteImp.h
@@ -594,6 +592,7 @@ SET(Dialog_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgAddProperty.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgLocationAngle.ui
     Dialogs/DlgLocationPos.ui
     Dialogs/DlgMacroExecute.ui
@@ -605,7 +604,6 @@ SET(Dialog_SRCS
     Dialogs/DlgPreferencePackManagement.ui
     Dialogs/DlgProjectInformation.ui
     Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgTreeWidget.ui
@@ -906,9 +904,7 @@ SET(View3D_CPP_SRCS
     View3DInventor.cpp
     View3DInventorSelection.cpp
     View3DInventorViewer.cpp
-    View3DInventorRiftViewer.cpp
     View3DSettings.cpp
-    CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
@@ -928,9 +924,7 @@ SET(View3D_SRCS
     View3DInventorSelection.h
     View3DInventorViewer.h
     View3DPy.h
-    View3DInventorRiftViewer.h
     View3DSettings.h
-    CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
 )
@@ -1527,9 +1521,7 @@ if (MSVC)
     target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADGui)
-endif()
+target_compile_warn_error(FreeCADGui)
 
 SET_BIN_DIR(FreeCADGui FreeCADGui)
 

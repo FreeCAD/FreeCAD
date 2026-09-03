@@ -1,43 +1,36 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Dan Falck <ddfalck@gmail.com>
+# SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
-# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data"""
 
 import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
+import Part
 import Path
 import Path.Main.Job as PathJob
 import math
 from numpy import linspace
 import tsp_solver
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-Part = LazyLoader("Part", globals(), "Part")
-TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 
 translate = FreeCAD.Qt.translate
 
@@ -101,7 +94,7 @@ def loopdetect(obj, edge1, edge2):
     Path.Log.track()
     hashList = (edge1.hashCode(), edge2.hashCode())
     candidates = [w for w in obj.Shape.Wires for e in w.Edges if e.hashCode() in hashList]
-    loop = set([w for w in candidates if candidates.count(w) > 1])  # return the duplicate item
+    loop = {w for w in candidates if candidates.count(w) > 1}  # return the duplicates item
     if len(loop) == 1:
         return loop.pop().Edges
     else:
@@ -179,38 +172,39 @@ def tangentEdgeLoop(obj, edge1, edge2):
 
     loop = [edge1]
     hashes = [edge1.hashCode()]
-    startPoint = edge1.Vertexes[0].Point
-    lastEdge = edge1
-    lastIndex = -1
+    if Path.Geom.edgeConnectsTo(edge2, edge1.Vertexes[0].Point):
+        startPoint = edge1.Vertexes[-1].Point
+        nextIndex = 0
+    else:
+        startPoint = edge1.Vertexes[0].Point
+        nextIndex = -1
+
     objEdges = obj.Shape.Edges
-    for i in range(len(objEdges)):
-        if Path.Geom.pointsCoincide(lastEdge.Vertexes[lastIndex].Point, startPoint):
+    for i in range(len(objEdges) - 1):
+        if Path.Geom.pointsCoincide(loop[-1].Vertexes[nextIndex].Point, startPoint):
             # stop because return to start point and loop is closed
             break
 
-        lastPoint = lastEdge.Vertexes[lastIndex].Point
-        lastTangent = lastEdge.tangentAt(lastEdge.ParameterRange[lastIndex])
-        for e in objEdges:
-            if e.hashCode() in hashes:
+        point = loop[-1].Vertexes[nextIndex].Point
+        tangent = loop[-1].tangentAt(loop[-1].ParameterRange[nextIndex])
+        for candidate in objEdges:
+            if candidate.hashCode() in hashes:
                 # this edge is already in loop
                 continue
 
-            if Path.Geom.pointsCoincide(lastPoint, e.Vertexes[0].Point):
+            if Path.Geom.pointsCoincide(point, candidate.Vertexes[0].Point):
                 index = 0
-            elif Path.Geom.pointsCoincide(lastPoint, e.Vertexes[-1].Point):
+            elif Path.Geom.pointsCoincide(point, candidate.Vertexes[-1].Point):
                 index = -1
             else:
                 continue
 
-            tangent = e.tangentAt(e.ParameterRange[index])
-            if lastIndex == index:
-                tangent = -tangent
-            if Path.Geom.pointsCoincide(tangent, lastTangent, 0.05):
+            candidateTangent = candidate.tangentAt(candidate.ParameterRange[index])
+            if Path.Geom.compareVecs(tangent, candidateTangent, error=0.05):
                 # found next tangency edge
-                loop.append(e)
-                hashes.append(e.hashCode())
-                lastEdge = e
-                lastIndex = -1 if index == 0 else 0
+                loop.append(candidate)
+                hashes.append(candidate.hashCode())
+                nextIndex = -1 if index == 0 else 0
                 break
 
         else:
@@ -231,17 +225,25 @@ def innerEdgesFromFace(obj, face):
     return edges
 
 
-def horizontalFacesAtHeight(obj, z, tol=0.01):
-    """horizontalCoplanarFaces(obj, z) ... returns a list of face names with requested height."""
+def facesAtHeight(obj, z, face=None, tol=0.01):
+    """facesAtHeight(obj, z) ... returns a list of face names with requested height.
+    Given face uses to define orientation and filters result"""
+    if face and Path.Geom.isHorizontal(face):  # accept only horizontal faces
+        filter_func = Path.Geom.isHorizontal
+    elif face and Path.Geom.isVertical(face):  # accept only vertical faces
+        filter_func = Path.Geom.isVertical
+    else:  # accept faces with any orientatiotn
+        filter_func = lambda _: True
+
     names = [
         f"Face{i}"
         for i, f in enumerate(obj.Shape.Faces, 1)
-        if Path.Geom.isHorizontal(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
+        if filter_func(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
     ]
     if len(names) > 1:
         return names
 
-    return None
+    return []
 
 
 def horizontalFaceLoops(obj, faces):
@@ -337,11 +339,11 @@ def makeWorkplane(shape):
 def getEnvelope(partshape, subshape=None, depthparams=None):
     """
     getEnvelope(partshape, stockheight=None)
-    returns a shape corresponding to the partshape silhouette extruded to height.
-    if stockheight is given, the returned shape is extruded to that height otherwise the returned shape
+    Returns a shape corresponding to the partshape silhouette extruded to height.
+    If depthparams is given, the returned shape is extruded to that height otherwise the returned shape
     is the height of the original shape boundbox
     partshape = solid object
-    stockheight = float - Absolute Z height of the top of material before cutting.
+    To get flat face at height z use getEnvelope(shape, depthparams=depth_params(0, z, z, 0, 0, z)
     """
     Path.Log.track(partshape, subshape, depthparams)
 
@@ -447,13 +449,13 @@ def getOffsetArea(
 
 
 def reverseEdge(e):
-    if DraftGeomUtils.geomType(e) == "Circle":
+    if isinstance(e.Curve, Part.Circle):
         arcstpt = e.valueAt(e.FirstParameter)
         arcmid = e.valueAt((e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif DraftGeomUtils.geomType(e) == "LineSegment" or DraftGeomUtils.geomType(e) == "Line":
+    elif isinstance(e.Curve, (Part.Line, Part.LineSegment)):
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
@@ -486,31 +488,26 @@ def getToolShapeName(tool):
 
 def findToolController(obj, proxy, name=None):
     """returns a tool controller with a given name.
-    If no name is specified, returns the first controller.
+    If no name is specified, returns the last controller.
     if no controller is found, returns None"""
 
     Path.Log.track("name: {}".format(name))
-    c = None
-    if UserInput:
-        c = UserInput.selectedToolController()
-    if c is not None:
-        return c
+    tc = None
+    if name is None and UserInput and (tc := UserInput.selectedToolController()):
+        return tc  # tool controller selected in tree view
 
-    controllers = getToolControllers(obj, proxy)
-
-    if len(controllers) == 0:
+    if not (controllers := getToolControllers(obj, proxy)):
         raise PathNoTCExistsException()
 
     # If there's only one in the job, use it.
-    if len(controllers) == 1:
-        if name is None or name == controllers[0].Label:
-            tc = controllers[0]
-        else:
-            tc = None
-    elif name is not None:
-        tc = [i for i in controllers if i.Label == name][0]
-    elif UserInput:  # More than one, make the user choose.
+    if len(controllers) == 1 and (name is None or name == controllers[0].Label):
+        tc = controllers[0]
+    elif name is not None and (tcs := [i for i in controllers if i.Label == name]):
+        tc = tcs[0]
+    elif UserInput:  # open dialog to choose controller in Gui mode
         tc = UserInput.chooseToolController(controllers)
+    else:  # use last tool controller in console mode
+        tc = controllers[-1]
     return tc
 
 
@@ -617,7 +614,7 @@ def sort_locations(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get()
+        _, i, result = q.get()
 
         return result
 
@@ -1017,7 +1014,7 @@ def applyPlacementToPath(placement, path):
                 currI = i = params.get("I", 0)
                 currJ = j = params.get("J", 0)
 
-                i, j, k = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
+                i, j, _ = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
 
                 if currI != i:
                     params.update({"I": i})

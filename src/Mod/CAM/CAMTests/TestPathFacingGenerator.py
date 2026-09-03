@@ -675,6 +675,20 @@ class TestPathFacingGenerator(PathTestBase):
         # Should have 4 edges (rectangular)
         self.assertEqual(len(result.Edges), 4)
 
+    def test_get_angled_polygon_two_wires(self):
+        """Test get_angled_polygon with 0 degree rotation and two wires."""
+        result = facing_common.get_angled_polygon([self.square_wire, self.rectangle_wire], 0)
+
+        # Should get back a valid wire
+        self.assertTrue(result.isClosed())
+        # Bounding box should be a common for both wires
+        original_bb1 = self.square_wire.BoundBox
+        original_bb2 = self.rectangle_wire.BoundBox
+        common_bb = original_bb1.united(original_bb2)
+        result_bb = result.BoundBox
+        self.assertAlmostEqual(common_bb.XLength, result_bb.XLength, places=1)
+        self.assertAlmostEqual(common_bb.YLength, result_bb.YLength, places=1)
+
     def test_analyze_rectangle_axis_aligned(self):
         """Test polygon geometry extraction with axis-aligned rectangle."""
         result = facing_common.extract_polygon_geometry(self.rectangle_wire)
