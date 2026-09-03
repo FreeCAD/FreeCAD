@@ -991,7 +991,7 @@ class LinkView::Element: public LinkOwner
 public:
     LinkInfoPtr linkInfo;
     LinkView& handle;
-    CoinPtr<SoSwitch> pcSwitch;
+    CoinPtr<SoFCSwitch> pcSwitch;
     CoinPtr<SoFCSelectionRoot> pcRoot;
     CoinPtr<SoTransform> pcTransform;
     int groupIndex = -1;
@@ -1004,9 +1004,11 @@ public:
     {
         pcTransform = new SoTransform;
         pcRoot = new SoFCSelectionRoot(true);
-        pcSwitch = new SoSwitch;
+        pcSwitch = new SoFCSwitch;
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
+        // the sole child, so a tree preselection can draw a hidden element
+        pcSwitch->defaultChild = 0;
     }
 
     ~Element() override
