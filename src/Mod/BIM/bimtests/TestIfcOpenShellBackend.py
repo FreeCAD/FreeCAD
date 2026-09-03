@@ -25,6 +25,7 @@ def _modules(*, serialized=True, iterator=True, version="0.8.5"):
     root.ifcopenshell_wrapper = SimpleNamespace(**wrapper_values)
 
     result = {name: ModuleType(name) for name in ifc_backend.REQUIRED_MODULES}
+    result["ifcopenshell.guid"] = ModuleType("ifcopenshell.guid")
     result["ifcopenshell"] = root
     result["ifcopenshell.api"].run = lambda *args, **kwargs: None
     result["ifcopenshell.api.aggregate"].assign_object = lambda *args, **kwargs: None
@@ -52,6 +53,7 @@ def _modules(*, serialized=True, iterator=True, version="0.8.5"):
     result["ifcopenshell.geom"].settings = lambda *args, **kwargs: None
     result["ifcopenshell.geom"].create_shape = lambda *args, **kwargs: None
     result["ifcopenshell.entity_instance"].entity_instance = EntityInstance
+    result["ifcopenshell.guid"].new = lambda: "0" * 22
     if iterator:
         result["ifcopenshell.geom"].iterator = lambda *args, **kwargs: None
     return result
@@ -120,7 +122,9 @@ class TestIfcOpenShellBackend(unittest.TestCase):
     def test_read_does_not_require_geometry_or_export_apis(self):
         modules = _modules(serialized=False)
         read_modules = {name: modules[name] for name in ifc_backend.READ_MODULES}
-        with patch.object(ifc_backend.importlib, "import_module", side_effect=read_modules.__getitem__):
+        with patch.object(
+            ifc_backend.importlib, "import_module", side_effect=read_modules.__getitem__
+        ):
             status = ifc_backend.get_status(capability=ifc_backend.READ)
             loaded = ifc_backend.get_backend(capability=ifc_backend.READ)
 
@@ -132,11 +136,58 @@ class TestIfcOpenShellBackend(unittest.TestCase):
         modules = _modules()
         del modules["ifcopenshell"].open
         read_modules = {name: modules[name] for name in ifc_backend.READ_MODULES}
-        with patch.object(ifc_backend.importlib, "import_module", side_effect=read_modules.__getitem__):
+        with patch.object(
+            ifc_backend.importlib, "import_module", side_effect=read_modules.__getitem__
+        ):
             status = ifc_backend.get_status(capability=ifc_backend.READ)
 
         self.assertFalse(status.available)
         self.assertIn("ifcopenshell.open", status.error)
+
+    def test_guid_does_not_require_file_or_geometry_apis(self):
+        modules = _modules()
+        del modules["ifcopenshell"].open
+        guid_modules = {name: modules[name] for name in ifc_backend.GUID_MODULES}
+        with patch.object(
+            ifc_backend.importlib, "import_module", side_effect=guid_modules.__getitem__
+        ):
+            status = ifc_backend.get_status(capability=ifc_backend.GUID)
+            guid = ifc_backend.new_guid()
+
+        self.assertTrue(status.available)
+        self.assertEqual(guid, "0" * 22)
+
+    def test_guid_requires_generator_api(self):
+        modules = _modules()
+        del modules["ifcopenshell.guid"].new
+        guid_modules = {name: modules[name] for name in ifc_backend.GUID_MODULES}
+        with patch.object(
+            ifc_backend.importlib, "import_module", side_effect=guid_modules.__getitem__
+        ):
+            status = ifc_backend.get_status(capability=ifc_backend.GUID)
+
+        self.assertFalse(status.available)
+        self.assertIn("ifcopenshell.guid.new", status.error)
+
+    def test_legacy_export_does_not_require_nativeifc_apis(self):
+        modules = _modules(iterator=False)
+        modules = {name: modules[name] for name in ifc_backend.LEGACY_EXPORT_MODULES}
+        with patch.object(ifc_backend.importlib, "import_module", side_effect=modules.__getitem__):
+            self.assertTrue(ifc_backend.get_status(capability=ifc_backend.LEGACY_EXPORT).available)
+            self.assertFalse(ifc_backend.get_status(capability=ifc_backend.EXPORT).available)
+
+    def test_legacy_export_requires_file_and_guid_apis(self):
+        for module, attribute in (("ifcopenshell", "file"), ("ifcopenshell.guid", "new")):
+            with self.subTest(api=f"{module}.{attribute}"):
+                ifc_backend.invalidate()
+                modules = _modules()
+                delattr(modules[module], attribute)
+                with patch.object(
+                    ifc_backend.importlib, "import_module", side_effect=modules.__getitem__
+                ):
+                    status = ifc_backend.get_status(capability=ifc_backend.LEGACY_EXPORT)
+                self.assertFalse(status.available)
+                self.assertIn(f"{module}.{attribute}", status.error)
 
     def test_partial_installation_is_unavailable(self):
         modules = _modules()
@@ -226,7 +277,9 @@ class TestIfcOpenShellBackend(unittest.TestCase):
             ifc_backend.importlib, "import_module", side_effect=import_modules.__getitem__
         ):
             status = ifc_backend.get_status(capability=ifc_backend.MULTICORE_IMPORT)
-            geom = ifc_backend.get_module("ifcopenshell.geom", capability=ifc_backend.MULTICORE_IMPORT)
+            geom = ifc_backend.get_module(
+                "ifcopenshell.geom", capability=ifc_backend.MULTICORE_IMPORT
+            )
 
         self.assertTrue(status.available)
         self.assertIs(geom, modules["ifcopenshell.geom"])

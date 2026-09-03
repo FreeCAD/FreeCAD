@@ -235,6 +235,8 @@ SET(bimtests_SRCS
     bimtests/TestBimSetup.py
     bimtests/TestBimIfcExplorer.py
     bimtests/TestBimClassification.py
+    bimtests/TestIfcStructuralExport.py
+    bimtests/TestIfcLegacyExport.py
     bimtests/TestArchAxis.py
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
@@ -281,6 +283,7 @@ SET(bimtests_SRCS
 
 set(bimtests_FIXTURES
     bimtests/fixtures/FC_site_simple-102.FCStd
+    bimtests/fixtures/roundtrip_ifc4.ifc
     bimtests/fixtures/__init__.py
     bimtests/fixtures/BimFixtures.py
 )
