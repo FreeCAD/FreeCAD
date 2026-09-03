@@ -65,11 +65,22 @@ jobs:
         id: version
         run: |
           suffix=$(python3 -c "import json; print(json.load(open('version.json'))['version_suffix'])")
-          version=$(python3 -c "import json; d=json.load(open('version.json')); s='.'+d['version_suffix'] if d['version_suffix'] else ''; print(f\"{d['version_major']}.{d['version_minor']}.{d['version_patch']}{s}\")")
           if [ -n "$suffix" ]; then
             echo "is_stable=false" >> "$GITHUB_OUTPUT"
-            echo "version_override=${version}.${{ github.run_number }}" >> "$GITHUB_OUTPUT"
-            echo "Pre-release (suffix='${suffix}') — will publish to TestPyPI as ${version}.${{ github.run_number }}."
+            version_override=$(python3 -c "
+          import json
+          d = json.load(open('version.json'))
+          v = f\"{d['version_major']}.{d['version_minor']}.{d['version_patch']}\"
+          s = d['version_suffix'].lstrip('.')
+          if s.lower() == 'dev':
+              print(f'{v}.dev${{ github.run_number }}')
+          elif s:
+              print(f'{v}{s}')
+          else:
+              print(v)
+          ")
+            echo "version_override=${version_override}" >> "$GITHUB_OUTPUT"
+            echo "Pre-release (suffix='${suffix}') — will publish to TestPyPI as ${version_override}."
           else
             echo "is_stable=true" >> "$GITHUB_OUTPUT"
             echo "Stable release — will publish to PyPI."
@@ -88,7 +99,7 @@ jobs:
         working-directory: src/Tools/typing/generated
 
       - name: Upload dist artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: dist
           path: src/Tools/typing/generated/dist
@@ -111,7 +122,7 @@ jobs:
           egress-policy: audit
 
       - name: Download dist artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
           path: dist
@@ -138,7 +149,7 @@ jobs:
           egress-policy: audit
 
       - name: Download dist artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: dist
           path: dist
