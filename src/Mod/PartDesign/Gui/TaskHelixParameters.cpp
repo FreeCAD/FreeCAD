@@ -58,7 +58,7 @@ namespace
 bool isSubtractiveHelix(PartDesignGui::ViewProviderHelix* view)
 {
     auto* helix = view->getObject<PartDesign::Helix>();
-    return helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 std::string helixTaskIconName(PartDesignGui::ViewProviderHelix* view)

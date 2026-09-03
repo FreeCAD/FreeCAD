@@ -64,7 +64,7 @@ namespace
 bool isSubtractivePipe(ViewProviderPipe* view)
 {
     auto* pipe = view->getObject<PartDesign::Pipe>();
-    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 std::string pipeTaskIconName(ViewProviderPipe* view)
