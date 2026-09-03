@@ -755,10 +755,12 @@ void Helix::onChanged(const App::Property* prop)
 
 void Helix::onDocumentRestored()
 {
-    // Reflect deprectated Outside property value to Operation
+    // Reflect deprecated Outside property value to Operation
     if (addSubType == Type::Subtractive) {
-        Operation.setValue(Outside.getValue() ? "Common" : "Subtractive");
+        Operation.setValue(Outside.getValue() ? "Common" : "Subtraction");
     }
+
+    ProfileBased::onDocumentRestored();
 }
 
 void Helix::setReadWriteStatusForMode(HelixMode inputMode)
