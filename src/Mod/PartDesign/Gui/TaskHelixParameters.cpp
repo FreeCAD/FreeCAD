@@ -27,6 +27,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
+#include <limits>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Tools.h>
@@ -80,6 +81,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    ui->height->setMinimum(-std::numeric_limits<double>::max());
+    ui->height2->setMinimum(-std::numeric_limits<double>::max());
     this->groupLayout()->addWidget(proxy);
 
     initializeHelix();
@@ -115,11 +118,14 @@ void TaskHelixParameters::assignProperties()
     propGrowth = &(helix->Growth);
     propPitch = &(helix->Pitch);
     propHeight = &(helix->Height);
+    propHeight2 = &(helix->Height2);
     propTurns = &(helix->Turns);
+    propTurns2 = &(helix->Turns2);
     propReferenceAxis = &(helix->ReferenceAxis);
     propLeftHanded = &(helix->LeftHanded);
     propReversed = &(helix->Reversed);
     propMode = &(helix->Mode);
+    propSideType = &(helix->SideType);
     propOutside = &(helix->Outside);
 }
 
@@ -127,17 +133,23 @@ void TaskHelixParameters::setValuesFromProperties()
 {
     double pitch = propPitch->getValue();
     double height = propHeight->getValue();
+    double height2 = propHeight2->getValue();
     double turns = propTurns->getValue();
+    double turns2 = propTurns2->getValue();
     double angle = propAngle->getValue();
     double growth = propGrowth->getValue();
     bool leftHanded = propLeftHanded->getValue();
     bool reversed = propReversed->getValue();
     int index = propMode->getValue();
+    int sideIndex = propSideType->getValue();
     bool outside = propOutside->getValue();
 
+    translateSidesList(sideIndex);
     ui->pitch->setValue(pitch);
     ui->height->setValue(height);
+    ui->height2->setValue(height2);
     ui->turns->setValue(turns);
+    ui->turns2->setValue(turns2);
     ui->coneAngle->setValue(angle);
     ui->coneAngle->setMinimum(propAngle->getMinimum());
     ui->coneAngle->setMaximum(propAngle->getMaximum());
@@ -153,7 +165,9 @@ void TaskHelixParameters::bindProperties()
     auto helix = getObject<PartDesign::Helix>();
     ui->pitch->bind(helix->Pitch);
     ui->height->bind(helix->Height);
+    ui->height2->bind(helix->Height2);
     ui->turns->bind(helix->Turns);
+    ui->turns2->bind(helix->Turns2);
     ui->coneAngle->bind(helix->Angle);
     ui->growth->bind(helix->Growth);
 }
@@ -167,8 +181,12 @@ void TaskHelixParameters::connectSlots()
             this, &TaskHelixParameters::onPitchChanged);
     connect(ui->height, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskHelixParameters::onHeightChanged);
+    connect(ui->height2, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskHelixParameters::onHeight2Changed);
     connect(ui->turns, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskHelixParameters::onTurnsChanged);
+    connect(ui->turns2, qOverload<double>(&QuantitySpinBox::valueChanged),
+            this, &TaskHelixParameters::onTurns2Changed);
     connect(ui->coneAngle, qOverload<double>(&QuantitySpinBox::valueChanged),
             this, &TaskHelixParameters::onAngleChanged);
     connect(ui->growth, qOverload<double>(&QuantitySpinBox::valueChanged),
@@ -183,6 +201,8 @@ void TaskHelixParameters::connectSlots()
             this, &TaskHelixParameters::onUpdateView);
     connect(ui->inputMode, qOverload<int>(&QComboBox::activated),
             this, &TaskHelixParameters::onModeChanged);
+    connect(ui->sidesMode, qOverload<int>(&QComboBox::activated),
+            this, &TaskHelixParameters::onSidesModeChanged);
     connect(ui->checkBoxOutside, &QCheckBox::toggled,
             this, &TaskHelixParameters::onOutsideChanged);
     // clang-format on
@@ -293,6 +313,15 @@ int TaskHelixParameters::addCurrentLink()
     return indexOfCurrent;
 }
 
+void TaskHelixParameters::translateSidesList(int index)
+{
+    ui->sidesMode->clear();
+    ui->sidesMode->addItem(tr("One sided"));
+    ui->sidesMode->addItem(tr("Two sided"));
+    ui->sidesMode->addItem(tr("Symmetric"));
+    ui->sidesMode->setCurrentIndex(index);
+}
+
 void TaskHelixParameters::addAxisToCombo(
     App::DocumentObject* linkObj,
     std::string linkSubname,
@@ -337,7 +366,9 @@ void TaskHelixParameters::adaptVisibilityToMode()
 {
     bool isPitchVisible = false;
     bool isHeightVisible = false;
+    bool isHeight2Visible = false;
     bool isTurnsVisible = false;
+    bool isTurns2Visible = false;
     bool isOutsideVisible = false;
     bool isAngleVisible = false;
     bool isGrowthVisible = false;
@@ -348,23 +379,29 @@ void TaskHelixParameters::adaptVisibilityToMode()
     }
 
     HelixMode mode = static_cast<HelixMode>(propMode->getValue());
+    const bool isTwoSided = static_cast<PartDesign::HelixSideMode>(propSideType->getValue())
+        == PartDesign::HelixSideMode::two_sides;
     if (mode == HelixMode::pitch_height_angle) {
         isPitchVisible = true;
         isHeightVisible = true;
+        isHeight2Visible = isTwoSided;
         isAngleVisible = true;
     }
     else if (mode == HelixMode::pitch_turns_angle) {
         isPitchVisible = true;
         isTurnsVisible = true;
+        isTurns2Visible = isTwoSided;
         isAngleVisible = true;
     }
     else if (mode == HelixMode::height_turns_angle) {
         isHeightVisible = true;
+        isHeight2Visible = isTwoSided;
         isTurnsVisible = true;
         isAngleVisible = true;
     }
     else if (mode == HelixMode::height_turns_growth) {
         isHeightVisible = true;
+        isHeight2Visible = isTwoSided;
         isTurnsVisible = true;
         isGrowthVisible = true;
     }
@@ -378,8 +415,14 @@ void TaskHelixParameters::adaptVisibilityToMode()
     ui->height->setVisible(isHeightVisible);
     ui->labelHeight->setVisible(isHeightVisible);
 
+    ui->height2->setVisible(isHeight2Visible);
+    ui->labelHeight2->setVisible(isHeight2Visible);
+
     ui->turns->setVisible(isTurnsVisible);
     ui->labelTurns->setVisible(isTurnsVisible);
+
+    ui->turns2->setVisible(isTurns2Visible);
+    ui->labelTurns2->setVisible(isTurns2Visible);
 
     ui->coneAngle->setVisible(isAngleVisible);
     ui->labelConeAngle->setVisible(isAngleVisible);
@@ -407,6 +450,10 @@ void TaskHelixParameters::assignToolTipsFromPropertyDocs()
     ui->inputMode->setToolTip(toolTip);
     ui->labelInputMode->setToolTip(toolTip);
 
+    toolTip = QApplication::translate(propCategory, helix->SideType.getDocumentation());
+    ui->sidesMode->setToolTip(toolTip);
+    ui->labelSideMode->setToolTip(toolTip);
+
     toolTip = QApplication::translate(propCategory, helix->Pitch.getDocumentation());
     ui->pitch->setToolTip(toolTip);
     ui->labelPitch->setToolTip(toolTip);
@@ -415,9 +462,17 @@ void TaskHelixParameters::assignToolTipsFromPropertyDocs()
     ui->height->setToolTip(toolTip);
     ui->labelHeight->setToolTip(toolTip);
 
+    toolTip = QApplication::translate(propCategory, helix->Height2.getDocumentation());
+    ui->height2->setToolTip(toolTip);
+    ui->labelHeight2->setToolTip(toolTip);
+
     toolTip = QApplication::translate(propCategory, helix->Turns.getDocumentation());
     ui->turns->setToolTip(toolTip);
     ui->labelTurns->setToolTip(toolTip);
+
+    toolTip = QApplication::translate(propCategory, helix->Turns2.getDocumentation());
+    ui->turns2->setToolTip(toolTip);
+    ui->labelTurns2->setToolTip(toolTip);
 
     toolTip = QApplication::translate(propCategory, helix->Angle.getDocumentation());
     ui->coneAngle->setToolTip(toolTip);
@@ -466,6 +521,19 @@ void TaskHelixParameters::onHeightChanged(double len)
         propHeight->setValue(len);
         recomputeFeature();
         updateUI();
+
+        setGizmoPositions();
+    }
+}
+
+void TaskHelixParameters::onHeight2Changed(double len)
+{
+    if (getObject()) {
+        propHeight2->setValue(len);
+        recomputeFeature();
+        updateUI();
+
+        setGizmoPositions();
     }
 }
 
@@ -473,6 +541,15 @@ void TaskHelixParameters::onTurnsChanged(double len)
 {
     if (getObject()) {
         propTurns->setValue(len);
+        recomputeFeature();
+        updateUI();
+    }
+}
+
+void TaskHelixParameters::onTurns2Changed(double len)
+{
+    if (getObject()) {
+        propTurns2->setValue(len);
         recomputeFeature();
         updateUI();
     }
@@ -569,12 +646,36 @@ void TaskHelixParameters::onModeChanged(int index)
 
     ui->pitch->setValue(propPitch->getValue());
     ui->height->setValue(propHeight->getValue());
+    ui->height2->setValue(propHeight2->getValue());
     ui->turns->setValue(propTurns->getValue());
+    ui->turns2->setValue(propTurns2->getValue());
     ui->coneAngle->setValue(propAngle->getValue());
     ui->growth->setValue(propGrowth->getValue());
 
     recomputeFeature();
     updateUI();
+
+    setGizmoPositions();
+}
+
+void TaskHelixParameters::onSidesModeChanged(int index)
+{
+    switch (static_cast<PartDesign::HelixSideMode>(index)) {
+        case PartDesign::HelixSideMode::one_side:
+            propSideType->setValue("One side");
+            break;
+        case PartDesign::HelixSideMode::two_sides:
+            propSideType->setValue("Two sides");
+            break;
+        case PartDesign::HelixSideMode::symmetric:
+            propSideType->setValue("Symmetric");
+            break;
+    }
+
+    recomputeFeature();
+    updateUI();
+
+    setGizmoPositions();
 }
 
 void TaskHelixParameters::onLeftHandedChanged(bool on)
@@ -634,8 +735,10 @@ void TaskHelixParameters::changeEvent(QEvent* e)
         // save current indexes
         int axis = ui->axis->currentIndex();
         int mode = ui->inputMode->currentIndex();
+        int sidesMode = ui->sidesMode->currentIndex();
         ui->retranslateUi(proxy);
         assignToolTipsFromPropertyDocs();
+        translateSidesList(sidesMode);
 
         // Axes added by the user cannot be restored
         fillAxisCombo(true);
@@ -724,10 +827,13 @@ void TaskHelixParameters::apply()  // NOLINT
     std::string axis = buildLinkSingleSubPythonStr(obj, sub);
     auto tobj = getObject();
     FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
+    FCMD_OBJ_CMD(tobj, "SideType = " << propSideType->getValue());
     FCMD_OBJ_CMD(tobj, "Mode = " << propMode->getValue());
     FCMD_OBJ_CMD(tobj, "Pitch = " << propPitch->getValue());
     FCMD_OBJ_CMD(tobj, "Height = " << propHeight->getValue());
+    FCMD_OBJ_CMD(tobj, "Height2 = " << propHeight2->getValue());
     FCMD_OBJ_CMD(tobj, "Turns = " << propTurns->getValue());
+    FCMD_OBJ_CMD(tobj, "Turns2 = " << propTurns2->getValue());
     FCMD_OBJ_CMD(tobj, "Angle = " << propAngle->getValue());
     FCMD_OBJ_CMD(tobj, "Growth = " << propGrowth->getValue());
     FCMD_OBJ_CMD(tobj, "LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
@@ -741,17 +847,19 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
     }
 
     heightGizmo = new Gui::LinearGizmo(ui->height);
+    heightGizmo2 = new Gui::LinearGizmo(ui->height2);
 
     connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
-        bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
-        heightGizmo->setVisibility(!isPitchTurnsAngle);
+        (void)index;
+        setGizmoPositions();
+    });
+    connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
+        setGizmoPositions();
     });
 
-    gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({heightGizmo, heightGizmo2}, vp);
 
     setGizmoPositions();
-
-    ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
     showDraggerHints();
 }
 
@@ -768,9 +876,22 @@ void TaskHelixParameters::setGizmoPositions()
     }
     gizmoContainer->visible = true;
     Part::TopoShape profileShape = helix->getProfileShape();
+    const auto mode = static_cast<HelixMode>(propMode->getValue());
+    const auto sideMode = static_cast<PartDesign::HelixSideMode>(propSideType->getValue());
+    const bool usesHeight = mode != HelixMode::pitch_turns_angle;
+    const bool usesHeight2 = sideMode == PartDesign::HelixSideMode::two_sides
+        && (mode == HelixMode::pitch_height_angle || mode == HelixMode::height_turns_angle
+            || mode == HelixMode::height_turns_growth);
+
+    heightGizmo->setVisibility(usesHeight);
+    heightGizmo2->setVisibility(usesHeight2);
+    heightGizmo->setMultFactor(sideMode == PartDesign::HelixSideMode::symmetric ? 0.5 : 1.0);
+    heightGizmo2->setMultFactor(1.0);
+
     double reversed = propReversed->getValue() ? -1.0 : 1.0;
     auto profileCentre = getMidPointFromProfile(profileShape);
     Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
+    Base::Vector3d axisDir2 = helix->Axis.getValue() * -reversed;
     Base::Vector3d basePos = helix->Base.getValue();
 
     // Project the centre point of the helix to a plane passing through the com of the profile
@@ -778,6 +899,7 @@ void TaskHelixParameters::setGizmoPositions()
     Base::Vector3d pos = basePos + axisDir.Dot(profileCentre - basePos) * axisDir;
 
     heightGizmo->Gizmo::setDraggerPlacement(pos, axisDir);
+    heightGizmo2->Gizmo::setDraggerPlacement(pos, axisDir2);
 }
 
 

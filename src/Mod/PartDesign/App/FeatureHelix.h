@@ -40,6 +40,13 @@ enum class HelixMode
     height_turns_growth
 };
 
+enum class HelixSideMode
+{
+    one_side,
+    two_sides,
+    symmetric
+};
+
 class PartDesignExport Helix: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Helix);
@@ -51,11 +58,14 @@ public:
     App::PropertyVector Axis;
     App::PropertyLength Pitch;
     App::PropertyLength Height;
+    App::PropertyLength Height2;
     App::PropertyFloatConstraint Turns;
+    App::PropertyFloatConstraint Turns2;
     App::PropertyBool LeftHanded;
     App::PropertyAngle Angle;
     App::PropertyDistance Growth;
     App::PropertyEnumeration Mode;
+    App::PropertyEnumeration SideType;
     App::PropertyBool Outside;
     App::PropertyBool HasBeenEdited;
     App::PropertyFloatConstraint Tolerance;
@@ -84,7 +94,14 @@ protected:
     void updateAxis();
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath(double breakAtTurn = 1.);
+    TopoDS_Shape generateHelixPath(
+        double turns,
+        double height,
+        double angle,
+        double growth,
+        bool reversed,
+        double breakAtTurn = 1.
+    );
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
@@ -107,6 +124,7 @@ protected:
 
 private:
     static const char* ModeEnums[];
+    static const char* SideTypesEnums[];
 
     // Sets the read-only status bit for properties depending on the input mode.
     void setReadWriteStatusForMode(HelixMode inputMode);
