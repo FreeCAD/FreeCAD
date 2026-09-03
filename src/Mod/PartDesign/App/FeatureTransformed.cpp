@@ -486,7 +486,7 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
     const std::vector<DocumentObject*>& originals
 )
 {
-    enum class Operation
+    enum class Operation : std::uint8_t
     {
         Add,
         Sub
@@ -497,8 +497,10 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         Operation operation;
     };
 
-    // create a separate shape, apply all the features onto it, then transform it and fuse
-    // it to the supportShape
+    // compute the difference solid between each Feature and the shape of its previous Feature,
+    // * for additive operations, we take (toolShape - previousShape) and use it to Fuse later.
+    // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut later.
+    // Then apply them in order to the shape from the Feature before this FeatureTransformed.
     std::vector<FeatureShape> shapes;
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
@@ -517,11 +519,6 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
         while (it != group.begin()) {
             --it;
-
-            // skip features that are selected by the current pattern
-            // if (std::ranges::find(originals, *it) != originals.end()) {
-            //     continue;
-            // }
 
             if (auto feature = freecad_cast<PartDesign::Feature*>(*it)) {
                 return feature;
@@ -552,38 +549,45 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         }
 
         auto prevFeature = getPreviousOriginal(original);
-        // if (!prevFeature) {
-        //     return new App::DocumentObjectExecReturn(
-        //         QT_TRANSLATE_NOOP("Exception", "Shape has no previous shape.")
-        //     );
-        // }
         auto prevShape = prevFeature != nullptr ? prevFeature->Shape.getShape() : NULL;
 
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
-            // TODO: transform the TopoShape directly instead of allocating a new one
-            addShape = addShape.makeElementTransform(trsf);
+            addShape.makeElementTransform(addShape, trsf);
             if (prevShape != NULL) {
-                addShape = addShape.makeElementCut(prevShape);
+                addShape.makeElementCut({ addShape, prevShape });
             }
 
             if (!addShape.isNull()) {
-                shapes.push_back({addShape, Operation::Add});
+                shapes.push_back({ addShape, Operation::Add });
             }
         }
 
         if (!subShape.isNull()) {
             if (!prevFeature) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive shape.")
-                );
+                // return new App::DocumentObjectExecReturn(
+                //     QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive shape.")
+                // );
+                continue;
+                // skip this feature if it is subtractive with nothing to subtract it from
             }
 
-            subShape = subShape.makeElementTransform(trsf);
-            subShape = subShape.makeElementCommon(prevShape);
+            subShape.makeElementTransform(subShape, trsf);
 
-            if (!subShape.isNull()) {
-                shapes.push_back({subShape, Operation::Sub});
+            std::vector<Part::TopoShape> subShapes;
+            if (subShape.shapeType() == TopAbs_COMPOUND) {
+                TopoShape::expandCompound(subShape, subShapes);
+            }
+            else {
+                subShapes.push_back(subShape);
+            }
+
+            for(auto s : subShapes) {
+                s.makeElementCommon({ s, prevShape });
+
+                if (!s.isNull()) {
+                    shapes.push_back({ s, Operation::Sub });
+                }
             }
         }
 
