@@ -148,7 +148,6 @@ void FeatureAddSub::updatePreviewShape()
 
         if (!tool.isEmpty()) {
             try {
-                // Compute removed volume preview (for display)
                 TopoShape common;
                 common.makeElementBoolean(
                     Part::OpCodes::Common,
@@ -157,7 +156,6 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
-                // does CUT change volume?
                 GProp_GProps propsBefore, propsAfter;
                 BRepGProp::VolumeProperties(base.getShape(), propsBefore);
 
@@ -169,7 +167,9 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
-                BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
+                const bool keepCommon = getBooleanOperation() == BooleanOperation::Common;
+                const TopoShape& result = keepCommon ? common : cut;
+                BRepGProp::VolumeProperties(result.getShape(), propsAfter);
 
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
 
@@ -179,7 +179,7 @@ void FeatureAddSub::updatePreviewShape()
                            "removed or a problem with the model.")
                     );
                 }
-                PreviewShape.setValue(common);
+                PreviewShape.setValue(keepCommon ? cut : common);
                 return;
             }
             catch (Standard_Failure& e) {
