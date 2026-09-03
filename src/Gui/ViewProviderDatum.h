@@ -52,15 +52,10 @@ public:
     std::vector<std::string> getDisplayModes() const override;
     void setDisplayMode(const char* ModeName) override;
 
-    /// @name Suppress ViewProviderGeometryObject's behaviour
-    ///@{
-    bool setEdit(int) override
-    {
-        return false;
-    }
-    void unsetEdit(int) override
-    {}
-    ///@}
+    /// Origin-owned axes/planes stay non-editable. Standalone Part datums
+    /// still accept Transform so the tree-view Transform command can run.
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     void setTemporaryScale(double factor);
     void resetTemporarySize();
