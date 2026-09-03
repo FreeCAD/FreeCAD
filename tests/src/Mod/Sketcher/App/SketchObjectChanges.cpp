@@ -321,7 +321,7 @@ TEST_F(SketchObjectTest, testSplitSolvesIfNoRecompute)
 
     // Assert
     EXPECT_EQ(result, 0);
-    EXPECT_TRUE(getObject()->getNoRecomputes());
+    EXPECT_TRUE(getObject()->noRecomputes);
     EXPECT_TRUE(solverUpdated);
 }
 
@@ -940,7 +940,7 @@ TEST_F(SketchObjectTest, testTrimSolvesIfNoRecompute)
 
     // Assert
     EXPECT_EQ(result, 0);
-    EXPECT_TRUE(getObject()->getNoRecomputes());
+    EXPECT_TRUE(getObject()->noRecomputes);
     EXPECT_TRUE(solverUpdated);
 }
 
