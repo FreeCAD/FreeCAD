@@ -35,7 +35,7 @@
       <item>
        <widget class="QLabel" name="transformationModeLabel">
         <property name="text">
-         <string>Transformation Mode</string>
+         <string>Transformation mode</string>
         </property>
        </widget>
       </item>
