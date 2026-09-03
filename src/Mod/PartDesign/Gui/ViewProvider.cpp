@@ -379,6 +379,10 @@ bool ViewProvider::showPreselectPreview(bool on)
     if (on && isEditing()) {
         return false;
     }
+    // a visible feature already shows itself and is highlighted normally
+    if (on && isShow()) {
+        return false;
+    }
     if (on) {
         // compute it first: a feature with no preview falls back to the whole object
         if (auto* preview = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
