@@ -1908,7 +1908,7 @@ bool LinkView::hasSubs() const
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-PROPERTY_SOURCE(Gui::ViewProviderLink, Gui::ViewProviderDragger)
+PROPERTY_SOURCE(Gui::ViewProviderLink, Gui::ViewProviderDocumentObject)
 
 static const char* _LinkIcon = "Link";
 // static const char *_LinkArrayIcon = "LinkArray";
