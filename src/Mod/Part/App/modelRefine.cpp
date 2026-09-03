@@ -253,27 +253,6 @@ void FaceAdjacencySplitter::recursiveFind(const TopoDS_Face& face, FaceVectorTyp
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-std::vector<FaceVectorType> faceEqualitySplitter(const FaceVectorType& faces, FaceTypedBase* object)
-{
-    std::vector<FaceVectorType> groups;
-    for (const auto& face : faces) {
-        auto it = std::ranges::find_if(groups, [&](auto& g) {
-            return object->isEqual(g.front(), face);
-        });
-        if (it != groups.end()) {
-            it->push_back(face);
-        }
-        else {
-            groups.push_back({face});
-        }
-    }
-    auto pred = ([](auto& g) { return g.size() < 2; });
-    groups.erase(std::remove_if(groups.begin(), groups.end(), pred), groups.end());
-    return groups;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 GeomAbs_SurfaceType FaceTypedBase::getFaceType(const TopoDS_Face& faceIn)
@@ -326,6 +305,25 @@ void FaceTypedBase::boundarySplit(
             boundariesOut.push_back(boundary);
         }
     }
+}
+
+std::vector<FaceVectorType> FaceTypedBase::splitEqual(const FaceVectorType& faces) const
+{
+    std::vector<FaceVectorType> groups;
+    for (const auto& face : faces) {
+        auto it = std::ranges::find_if(groups, [&, this](auto& g) {
+            return isEqual(g.front(), face);
+        });
+        if (it != groups.end()) {
+            it->push_back(face);
+        }
+        else {
+            groups.push_back({face});
+        }
+    }
+    auto pred = ([](auto& g) { return g.size() < 2; });
+    groups.erase(std::remove_if(groups.begin(), groups.end(), pred), groups.end());
+    return groups;
 }
 
 
@@ -1129,7 +1127,7 @@ bool FaceUniter::process()
 
     for (typeIt = typeObjects.begin(); typeIt != typeObjects.end(); ++typeIt) {
         ModelRefine::FaceVectorType typedFaces = splitter.getTypedFaceVector((*typeIt)->getType());
-        auto faceEqualityGroups = faceEqualitySplitter(typedFaces, *typeIt);
+        auto faceEqualityGroups = (*typeIt)->splitEqual(typedFaces);
         for (auto& faceEqualityGroup : faceEqualityGroups) {
             adjacencySplitter.split(faceEqualityGroup);
             //            std::cout << "      adjacency group count: " <<
