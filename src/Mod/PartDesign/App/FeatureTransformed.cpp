@@ -499,8 +499,8 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
     // compute the difference solid between each Feature and the shape of its previous Feature,
     // * for additive operations, we take (toolShape - previousShape) and use it to Fuse later.
-    // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut later.
-    // Then apply them in order to the shape from the Feature before this FeatureTransformed.
+    // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
+    // later. Then apply them in order to the shape from the Feature before this FeatureTransformed.
     std::vector<FeatureShape> shapes;
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
@@ -555,18 +555,19 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         if (!addShape.isNull()) {
             addShape.makeElementTransform(addShape, trsf);
             if (prevShape != NULL) {
-                addShape.makeElementCut({ addShape, prevShape });
+                addShape.makeElementCut({addShape, prevShape});
             }
 
             if (!addShape.isNull()) {
-                shapes.push_back({ addShape, Operation::Add });
+                shapes.push_back({addShape, Operation::Add});
             }
         }
 
         if (!subShape.isNull()) {
             if (!prevFeature) {
                 // return new App::DocumentObjectExecReturn(
-                //     QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive shape.")
+                //     QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive
+                //     shape.")
                 // );
                 continue;
                 // skip this feature if it is subtractive with nothing to subtract it from
@@ -582,11 +583,11 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
                 subShapes.push_back(subShape);
             }
 
-            for(auto s : subShapes) {
-                s.makeElementCommon({ s, prevShape });
+            for (auto s : subShapes) {
+                s.makeElementCommon({s, prevShape});
 
                 if (!s.isNull()) {
-                    shapes.push_back({ s, Operation::Sub });
+                    shapes.push_back({s, Operation::Sub});
                 }
             }
         }
