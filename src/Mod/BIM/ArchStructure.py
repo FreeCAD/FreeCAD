@@ -949,6 +949,26 @@ class _Structure(ArchComponent.Component):
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
+        if (
+            FreeCAD.ActiveDocument.getProgramVersion().split()[0] < "1.1"
+            and obj.Base is not None
+            and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+            and obj.Normal.Length == 0  # Automatic normal.
+            and obj.Length
+            == 0  # We should be dealing with columns, their obj.Length is normally 0.
+            # Can't compare distance of nodes with obj.Height as nodes may have beeen moved.
+            and len(obj.Nodes) == 2
+            and (obj.Nodes[1] - obj.Nodes[0]).Length > 1e-5
+        ):
+            obj.Normal = (obj.Nodes[1] - obj.Nodes[0]).normalize()
+            from draftutils.messages import _log
+
+            _log(
+                "v26.3, "
+                + obj.Name
+                + ", updated 'Normal' property based on 'Nodes' to prevent flipping"
+            )
+
         # set a flag to indicate onDocumentRestored() is run
 
     def execute(self, obj):
