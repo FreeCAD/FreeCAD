@@ -346,6 +346,25 @@ TopoDS_Shape DrawViewPart::centerScaleRotate(const DrawViewPart *dvp, TopoDS_Sha
 TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape& shape,
                                                               const gp_Ax2& viewAxis)
 {
+    // Create a hash of the shape and view parameters to determine is something has changed
+    std::size_t newViewHash = std::hash<std::string>{}(DU::shapeToString(shape));
+    Base::hash_combine(newViewHash, DU::formatVector(viewAxis.Location()));
+    Base::hash_combine(newViewHash, DU::formatVector(viewAxis.Direction()));
+    Base::hash_combine(newViewHash, DU::formatVector(viewAxis.XDirection()));
+    Base::hash_combine(newViewHash, Rotation.getValue());
+    Base::hash_combine(newViewHash, getScale());
+    Base::hash_combine(newViewHash, Perspective.getValue());
+    Base::hash_combine(newViewHash, Focus.getValue());
+    Base::hash_combine(newViewHash, IsoCount.getValue());
+    Base::hash_combine(newViewHash, CoarseView.getValue());
+    Base::hash_combine(newViewHash, ScrubCount.getValue());
+
+    // If the object is not different we just return the existing geometryObject to skip HLR
+    if (newViewHash == m_viewHash && geometryObject) {
+        return geometryObject;
+    }
+
+    m_viewHash = newViewHash;
     TechDraw::GeometryObjectPtr go(
         std::make_shared<TechDraw::GeometryObject>(getNameInDocument(), this));
     go->setIsoCount(IsoCount.getValue());
