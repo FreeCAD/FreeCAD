@@ -50,9 +50,7 @@ public:
     {
         None = 0,
         Mefisto = 1,
-#if defined(HAVE_NETGEN)
         Netgen = 2,
-#endif
         Standard = 3
     };
 
@@ -150,7 +148,6 @@ public:
     }
     //@}
 
-#if defined(HAVE_NETGEN)
     /** @name Netgen settings */
     //@{
     void setFineness(int s)
@@ -210,12 +207,14 @@ public:
         return allowquad;
     }
     //@}
-#endif
 
     Mesh::MeshObject* createMesh() const;
 
 private:
     Mesh::MeshObject* createStandard() const;
+    Mesh::MeshObject* createMefisto() const;
+    Mesh::MeshObject* createNetgenSMesh() const;
+    Mesh::MeshObject* createNetgenPython() const;
     Mesh::MeshObject* createFrom(SMESH_Mesh*) const;
 
 private:
@@ -230,7 +229,6 @@ private:
     bool relative {false};
     bool regular {false};
     bool segments {false};
-#if defined(HAVE_NETGEN)
     int fineness {5};
     double growthRate {0};
     double nbSegPerEdge {0};
@@ -238,7 +236,6 @@ private:
     bool secondOrder {false};
     bool optimize {true};
     bool allowquad {false};
-#endif
     std::vector<uint32_t> colors;
 
     static SMESH_Gen* _mesh_gen;
