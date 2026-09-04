@@ -41,7 +41,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement, FemGui::ViewProvi
 ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {
     sPixmap = "FEM_ConstraintDisplacement";
-    loadSymbol((resourceSymbolDir + "ConstraintDisplacement.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintDisplacement.iv");
     ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 
     // do not rotate symbol according to boundary normal

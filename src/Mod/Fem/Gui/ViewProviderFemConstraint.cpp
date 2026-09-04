@@ -54,7 +54,6 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     , pSymbol(nullptr)
     , pExtraSymbol(nullptr)
     , pExtraTrans(nullptr)
-    , ivFile(nullptr)
 {
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
@@ -94,14 +93,21 @@ void ViewProviderFemConstraint::attach(App::DocumentObject* pcObject)
     addDisplayMaskMode(sep, "Base");
 }
 
-std::string ViewProviderFemConstraint::resourceSymbolDir = App::Application::getResourceDir()
-    + "Mod/Fem/Resources/symbols/";
+std::filesystem::path ViewProviderFemConstraint::resourceSymbolDir
+    = Base::FileInfo::stringToPath(App::Application::getResourceDir())
+    / Base::FileInfo::stringToPath("Mod/Fem/Resources/symbols/").make_preferred();
 
-void ViewProviderFemConstraint::loadSymbol(const char* fileName)
+const std::filesystem::path& ViewProviderFemConstraint::getResourceSymbolDir()
 {
-    ivFile = fileName;
+    return resourceSymbolDir;
+}
+
+void ViewProviderFemConstraint::loadSymbol(const std::filesystem::path& ivFile)
+{
+    std::string ivStr = Base::FileInfo::pathToString(ivFile);
+    const char* fileName = ivStr.c_str();
     SoInput in;
-    if (!in.openFile(ivFile)) {
+    if (!in.openFile(fileName)) {
         std::stringstream str;
         str << "Error opening symbol file " << fileName;
         throw Base::ImportError(str.str());

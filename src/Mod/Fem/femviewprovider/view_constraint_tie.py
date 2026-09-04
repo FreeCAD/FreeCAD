@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for constraint tie object
 
+from os import path
+
 from femtaskpanels import task_constraint_tie
 from . import view_base_femconstraint
 
@@ -51,4 +53,4 @@ class VPConstraintTie(view_base_femconstraint.VPBaseFemConstraint):
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintTie.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintTie.iv"))

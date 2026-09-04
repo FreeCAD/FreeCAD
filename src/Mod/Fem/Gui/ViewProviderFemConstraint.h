@@ -77,10 +77,11 @@ public:
      * copies at points on the surface and an optional separator with a symbol
      * excluded from multiple copies.
      */
-    void loadSymbol(const char* fileName);
+    void loadSymbol(const std::filesystem::path& ivFile);
 
     static std::string gethideMeshShowPartStr();
     static std::string gethideMeshShowPartStr(const std::string showConstr);
+    static const std::filesystem::path& getResourceSymbolDir();
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -109,9 +110,8 @@ protected:
     SoSeparator* pExtraSymbol;
     SoTransform* pExtraTrans;
     SoMultipleCopy* pMultCopy;
-    const char* ivFile;
 
-    static std::string resourceSymbolDir;
+    static std::filesystem::path resourceSymbolDir;
 };
 
 

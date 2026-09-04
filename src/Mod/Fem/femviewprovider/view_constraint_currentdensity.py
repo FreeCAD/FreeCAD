@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 #  \brief view provider for the constraint current density object
 
 from pivy import coin
+from os import path
 
 from femtaskpanels import task_constraint_currentdensity
 from . import view_base_femconstraint
@@ -50,7 +51,7 @@ class VPConstraintCurrentDensity(view_base_femconstraint.VPBaseFemConstraint):
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintCurrentDensity.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintCurrentDensity.iv"))
 
     def updateData(self, obj, prop):
         if prop == "Mode":

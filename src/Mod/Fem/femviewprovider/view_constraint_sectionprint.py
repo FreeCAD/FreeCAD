@@ -29,6 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for constraint section print object
 
+from os import path
+
 from femtaskpanels import task_constraint_sectionprint
 from . import view_base_femconstraint
 
@@ -51,4 +53,4 @@ class VPConstraintSectionPrint(view_base_femconstraint.VPBaseFemConstraint):
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintSectionPrint.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintSectionPrint.iv"))

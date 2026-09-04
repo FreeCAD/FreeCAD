@@ -42,7 +42,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintForce, FemGui::ViewProviderFemC
 ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
 {
     sPixmap = "FEM_ConstraintForce";
-    loadSymbol((resourceSymbolDir + "ConstraintForce.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintForce.iv");
 }
 
 ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce() = default;
