@@ -160,6 +160,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
             continue;  // can't print this one
         }
 
+        QGSPage* ourScene = vpp->getQGSPage();
+        ourScene->setExportingPdf(true);
+
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width = A4Heightmm;  // default to A4 Landscape 297 x 210
         double height = A4Widthmm;
@@ -263,7 +266,6 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 
         postRenderCleanUp(ourScene, dPage, ourTemplate);
     }
-
     ourDoc->setModified(docModifiedState);
 }
 
