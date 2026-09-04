@@ -194,6 +194,21 @@ App::DocumentObjectExecReturn* Loft::execute()
             );
         }
 
+        const auto wholeObject = [](const std::vector<std::string>& subs) {
+            return subs.empty() || (subs.size() == 1 && subs.front().empty());
+        };
+        const auto& firstSection = multisections.front();
+        if (Profile.getValue() && Profile.getValue() == firstSection.first) {
+            const auto& profileSubs = Profile.getSubValues();
+            if (profileSubs == firstSection.second
+                || (wholeObject(profileSubs) && wholeObject(firstSection.second))) {
+                return new App::DocumentObjectExecReturn(
+                    "Segment " + Profile.getValue()->Label.getStrValue()
+                    + " cannot be used both as profile and first segment"
+                );
+            }
+        }
+
         std::vector<std::vector<TopoShape>> wiresections;
         wiresections.reserve(wires.size());
         for (auto& wire : wires) {

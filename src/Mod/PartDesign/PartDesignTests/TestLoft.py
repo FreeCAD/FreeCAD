@@ -58,6 +58,28 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
+    def testProfileReusedAsFirstSection(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        sketch_a = self.Doc.addObject("Sketcher::SketchObject", "SketchA")
+        body.addObject(sketch_a)
+        sketch_a.Label = "A"
+        sketch_a.addGeometry(Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10), False)
+        sketch_b = self.Doc.addObject("Sketcher::SketchObject", "SketchB")
+        body.addObject(sketch_b)
+        sketch_b.Label = "B"
+        sketch_b.Placement.Base.z = 20
+        sketch_b.addGeometry(Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 8), False)
+        loft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
+        body.addObject(loft)
+        loft.Profile = sketch_a
+        loft.Sections = [sketch_a, sketch_b]
+        self.Doc.recompute()
+        self.assertFalse(loft.isValid())
+        self.assertIn(
+            "Segment A cannot be used both as profile and first segment",
+            loft.getStatusString(),
+        )
+
     def testSimpleSubtractiveLoftCase(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
