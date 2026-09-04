@@ -128,9 +128,8 @@ QString primitiveTaskTitle(ViewProviderPrimitive* vp)
 
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(Gui::BitmapFactory().pixmap(primitiveTaskIconName(vp).c_str()), primitiveTaskTitle(vp), true, parent)
+  : TaskFeatureAddSubParameters(vp, parent, primitiveTaskIconName(vp), primitiveTaskTitle(vp))
   , ui(new Ui_DlgPrimitives)
-  , vp(vp)
 {
     vp->showPreview(true);
     vp->showPreviousFeature(true);
@@ -347,9 +346,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
 
-    Gui::Document* doc = vp->getDocument();
-    this->attachDocument(doc);
-
     //show the parts coordinate system axis for selection
     if(PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject())) {
         try {
@@ -471,8 +467,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
-    Gui::getMainWindow()->hideHints();
-
     // hide the parts coordinate system axis for selection
     try {
         auto obj = getObject();
@@ -493,34 +487,15 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
 void TaskBoxPrimitives::setupOperation(QGridLayout* grid)
 {
     auto primitive = getObject<PartDesign::FeaturePrimitive>();
-    bool hasOperation = isSubtractivePrimitive(primitive);
-    if (hasOperation) {
+    if (isSubtractivePrimitive(primitive)) {
         assert(grid);
         ui->operationLayout->removeWidget(ui->labelOperation);
         ui->operationLayout->removeWidget(ui->comboOperation);
         const int row = grid->rowCount();
         grid->addWidget(ui->labelOperation, row, 0);
         grid->addWidget(ui->comboOperation, row, grid->columnCount() - 1);
-
-        ui->comboOperation->setCurrentIndex(primitive->Operation.getValue());
-        ui->comboOperation->setDisabled(primitive->Operation.isReadOnly());
-        connect(ui->comboOperation, qOverload<int>(&QComboBox::activated), this, [this](int index) {
-            if (auto primitive = getObject<PartDesign::FeaturePrimitive>()) {
-                primitive->Operation.setValue(index);
-                primitive->recomputeFeature();
-                primitive->recomputePreview();
-            }
-        });
     }
-    ui->labelOperation->setVisible(hasOperation);
-    ui->comboOperation->setVisible(hasOperation);
-}
-
-void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
-{
-    if (this->vp == &Obj) {
-        this->vp = nullptr;
-    }
+    TaskFeatureAddSubParameters::setupOperation(ui->labelOperation, ui->comboOperation);
 }
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v)
@@ -1116,15 +1091,11 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
                 break;
         }
 
-        auto primitive = getObject<PartDesign::FeaturePrimitive>();
-        if (isSubtractivePrimitive(primitive) && !primitive->Operation.isReadOnly()) {
-            cmd += fmt::format("{}.Operation = '{}'\n", name, primitive->Operation.getValueAsString());
-        }
-
         // Execute the Python block
         // No need to open a transaction because this is already done in the command
         // class or when starting to edit a primitive.
         Gui::Command::runCommand(Gui::Command::Doc, cmd.c_str());
+        TaskFeatureAddSubParameters::apply();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {

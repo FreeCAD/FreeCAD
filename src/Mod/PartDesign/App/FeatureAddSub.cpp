@@ -167,6 +167,7 @@ void FeatureAddSub::updatePreviewShape()
                     Precision::Confusion()
                 );
 
+                // Check whether the selected operation removes material from the base.
                 const bool keepCommon = getBooleanOperation() == BooleanOperation::Common;
                 const TopoShape& result = keepCommon ? common : cut;
                 BRepGProp::VolumeProperties(result.getShape(), propsAfter);
@@ -179,6 +180,7 @@ void FeatureAddSub::updatePreviewShape()
                            "removed or a problem with the model.")
                     );
                 }
+                // Common keeps the overlap, so its removed-volume preview is outside the tool.
                 PreviewShape.setValue(keepCommon ? cut : common);
                 return;
             }

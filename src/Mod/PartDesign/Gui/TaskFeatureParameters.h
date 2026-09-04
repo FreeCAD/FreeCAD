@@ -32,9 +32,6 @@
 
 #include "ViewProvider.h"
 
-class QComboBox;
-class QLabel;
-
 namespace PartDesignGui
 {
 
@@ -61,7 +58,7 @@ private:
     );
 };
 
-/// Convenience class to collect common methods for all SketchBased features
+/// Common functionality for feature parameter panels
 class TaskFeatureParameters: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
 {
     Q_OBJECT
@@ -79,7 +76,8 @@ public:
     virtual void saveHistory()
     {}
     /// apply changes made in the parameters input to the model via commands
-    virtual void apply();
+    virtual void apply()
+    {}
 
     void recomputeFeature();
 
@@ -89,7 +87,6 @@ public:
     }
 
 protected:
-    void setupOperation(QLabel* label, QComboBox* combo);
     void showDraggerHints();
     void hideDraggerHints();
 
@@ -147,7 +144,6 @@ protected:
 
 private:
     bool blockUpdate;
-    bool hasOperation = false;
 };
 
 /// A common base for sketch based, dressup and other solid parameters dialogs
