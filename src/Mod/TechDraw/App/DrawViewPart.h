@@ -120,6 +120,9 @@ public:
     App::PropertyDistance Focus;
 
     App::PropertyBool CoarseView;
+    App::PropertyDistance CoarseDeflection;
+    App::PropertyFloat CoarseAngularDeflection;
+    
     App::PropertyBool SeamVisible;
     App::PropertyBool SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
