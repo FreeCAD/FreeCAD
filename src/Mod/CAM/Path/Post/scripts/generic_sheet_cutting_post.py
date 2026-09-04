@@ -335,7 +335,7 @@ class GenericSheetCutting(PostProcessor):
     def _inject_torch_control(self, postables):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
         props = self._machine.postprocessor_properties
-        if props.get("CUTTER_CONTROL") == "Z_Control":
+        if self.values["CUTTER_CONTROL"] == "Z_Control":
             for section_name, sublist in postables:
                 for item in sublist:
                     if hasattr(item, "Path") and item.Path:
@@ -388,7 +388,7 @@ class GenericSheetCutting(PostProcessor):
                                 new_commands.append(cmd)
                         # Replace Path with modified command list
                         item.Path = Path.Path(new_commands)
-        elif props.get("CUTTER_CONTROL") == "G0_Control":
+        elif self.values["CUTTER_CONTROL"] == "G0_Control":
             for section_name, sublist in postables:
                 for item in sublist:
                     if hasattr(item, "Path") and item.Path:
