@@ -46,6 +46,7 @@
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "AutoConstraintManager.h"
 #include "CommandConstraints.h"
 #include "DrawSketchHandler.h"
 #include "Utils.h"
@@ -633,7 +634,7 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
             }
         }
 
-        if (constr.Type != Sketcher::None) {
+        if (constr.Type != Sketcher::None && AutoConstraintManager::isConstraintActive(constr.Type)) {
             suggestedConstraints.push_back(constr);
         }
     }
@@ -650,6 +651,10 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
     AutoConstraint::TargetType type
 )
 {
+    if (!AutoConstraintManager::isConstraintActive(Sketcher::PointOnObject)) {
+        return false;
+    }
+
     if (type != AutoConstraint::VERTEX && type != AutoConstraint::VERTEX_NO_TANGENCY) {
         return false;
     }
@@ -978,7 +983,7 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         }
     }
 
-    if (constr.Type != Sketcher::None) {
+    if (constr.Type != Sketcher::None && AutoConstraintManager::isConstraintActive(constr.Type)) {
         suggestedConstraints.push_back(constr);
         return true;
     }
@@ -991,6 +996,10 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     const Base::Vector2d& Dir
 )
 {
+    if (!AutoConstraintManager::isConstraintActive(Sketcher::Tangent)) {
+        return false;
+    }
+
     using std::numbers::pi;
     // This function does not handle endpoint tangencies.
     SketchObject* obj = sketchgui->getSketchObject();
@@ -1296,6 +1305,10 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
     std::vector<std::unique_ptr<Sketcher::Constraint>>& autoConstraints
 )
 {
+    if (!AutoConstraintManager::isConstraintActive(ac.Type)) {
+        return true;
+    }
+
     int geoId2 = ac.GeoId;
     Sketcher::PointPos posId2 = ac.PosId;
 
@@ -1608,6 +1621,10 @@ void DrawSketchHandler::createAutoConstraints(
 
     // Iterate through constraints
     for (auto& cstr : autoConstrs) {
+        if (!AutoConstraintManager::isConstraintActive(cstr.Type)) {
+            continue;
+        }
+
         int geoId2 = cstr.GeoId;
 
         switch (cstr.Type) {
