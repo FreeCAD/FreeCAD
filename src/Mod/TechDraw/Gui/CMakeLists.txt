@@ -141,6 +141,8 @@ SET(TechDrawGui_SRCS
     TaskDimension.ui
     TaskDimension.cpp
     TaskDimension.h
+    DimensionQuickEdit.cpp
+    DimensionQuickEdit.h
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
