@@ -606,10 +606,6 @@ class GenericSheetCutting(PostProcessor):
         Path.Log.track("GenericSheetCutting.get_sanity_checks() called")
         squawks = []
 
-        # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_Generic_Sheet_Cutting_sanity_checks_integration)
-        Path.Log.track("Adding test squawk from GenericSheetCutting")
-        squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
-
         # Check pierce delay vs material thickness
         pierce_delay = self.values.get("PIERCE_DELAY", 1000)
         if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
