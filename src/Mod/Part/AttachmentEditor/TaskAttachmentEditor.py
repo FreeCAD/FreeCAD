@@ -395,6 +395,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if button == QtGui.QDialogButtonBox.Apply:
             if self.obj_is_attachable:
                 self.writeParameters()
+                self.obj.Document.recompute()
             if self.create_transaction:
                 self.obj.Document.commitTransaction()
                 self.obj.Document.openTransaction(
@@ -409,6 +410,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
     def accept(self):
         if self.obj_is_attachable:
             self.writeParameters()
+            self.obj.Document.recompute()
         if self.create_transaction:
             self.obj.Document.commitTransaction()
         self.cleanUp()
