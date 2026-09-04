@@ -2593,9 +2593,9 @@ static void buildDependencyList(const std::vector<DocumentObject*>& objectArray,
                 }
                 continue;
             }
-            // Add additional dependencies on specific properties unless it is
-            // an input property.  This to avoid over dependencies.
-            if (!outListSet.contains(objTo) && !objTo->isInputProperty(propNameTo)) {
+            
+            if (!outListSet.contains(objTo) && 
+               (!objTo->isInputProperty(propNameTo) || propFrom == "ExpressionEngine")) {
                 outListSet.insert(objTo);
                 outList.push_back(objTo);
             }
