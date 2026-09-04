@@ -25,7 +25,7 @@
 #include <SMESH_Mesh.hxx>
 
 
-#include <Mod/Fem/App/FemMeshProperty.h>
+#include <Mod/Fem/App/PropertyFemMesh.h>
 
 #include "PropertyFemMeshItem.h"
 
