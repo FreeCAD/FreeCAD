@@ -69,7 +69,7 @@ class Proxy(nonlinear.Proxy, equationbase.DeformationProxy):
             "App::PropertyBool",
             "CalculateStresses",
             "Deformation",
-            "Compute stress tensor and vanMises",
+            "Compute stress tensor and von Mises stress",
             locked=True,
         )
         obj.addProperty(
