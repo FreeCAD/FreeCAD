@@ -158,19 +158,63 @@ void StdCmdGroup::activated(int iMsg)
     doCommand(Doc, "group.Label = '%s'", label.toUtf8().data());
     doCommand(Doc, "App.activeDocument().Tip = group");
 
-    // try to add the group to any active object that supports grouping (has GroupExtension)
+    // try to add the group to object that supports grouping (has GroupExtension)
     if (auto* activeDoc = Gui::Application::Instance->activeDocument()) {
         if (auto* activeView = activeDoc->getActiveView()) {
-            // find the first active object with GroupExtension
+            std::vector<std::string> parNames;
             if (auto* activeObj = activeView->getActiveObjectWithExtension(
                     App::GroupExtension::getExtensionClassTypeId()
                 )) {
+                // use the first active object with GroupExtension
+                parNames.emplace_back(activeObj->getNameInDocument());
+            }
+            else {
+                // find the parrent Group
+                auto sels = Gui::Selection().getSelection();
+                if (sels.size() == 1) {
+                    App::DocumentObject* selObj = sels[0].pObject;
+                    if (selObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                        // Group object was selected
+                        parNames.emplace_back(selObj->getNameInDocument());
+                        if (selObj->getTypeId().getName() != "App::Part") {
+                            // if exists, need add Part from top level
+                            const std::vector<App::DocumentObject*> parents = selObj->getInList();
+                            for (App::DocumentObject* parObj : parents) {
+                                if (parObj->getTypeId().getName() == "App::Part") {
+                                    parNames.insert(parNames.begin(), parObj->getNameInDocument());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        // searching parent Group of selected object
+                        const std::vector<App::DocumentObject*> parents = selObj->getInList();
+                        for (App::DocumentObject* parObj : parents) {
+                            // if (parObj->getTypeId().getName() == "App::Part" && !parName.empty()) {
+                            //     parNames.insert(parNames.begin(), parObj->getNameInDocument());
+                            // }
+                            if (parObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                                parNames.emplace_back(parObj->getNameInDocument());
+                            }
+                        }
+                    }
+                }
+            }
+            if (parNames.size()) {
+                std::ostringstream strm;
+                strm << "[";
+                for (const auto& parName : parNames) {
+                    strm << "\"" << parName.c_str() << "\",";
+                }
+                strm << "]";
                 doCommand(
                     Doc,
-                    "active_obj = App.activeDocument().getObject('%s')\n"
-                    "if active_obj and active_obj.allowObject(group):\n"
-                    "    active_obj.Group += [group]",
-                    activeObj->getNameInDocument()
+                    "for name in %s:\n"
+                    "    par_obj = App.activeDocument().getObject(name)\n"
+                    "    if par_obj and par_obj.allowObject(group):\n"
+                    "        par_obj.Group += [group]",
+                    strm.str().c_str()
                 );
             }
         }
