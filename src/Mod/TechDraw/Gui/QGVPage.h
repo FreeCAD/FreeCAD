@@ -126,6 +126,8 @@ public:
 
     TechDraw::DrawView* getBalloonParent() { return m_balloonParent; }
 
+    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
+
     void zoomIn();
     void zoomOut();
 
@@ -151,7 +153,6 @@ protected:
 
     QColor getBackgroundColor();
 
-    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;
 

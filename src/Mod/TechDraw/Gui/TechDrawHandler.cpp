@@ -53,6 +53,11 @@ TechDrawHandler::TechDrawHandler() : Gui::ToolHandler(), viewPage(nullptr)
 TechDrawHandler::~TechDrawHandler()
 {}
 
+std::list<Gui::InputHint> TechDrawHandler::getToolHints() const
+{
+    return {};
+}
+
 void TechDrawHandler::activate(QGVPage* vp)
 {
     auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());

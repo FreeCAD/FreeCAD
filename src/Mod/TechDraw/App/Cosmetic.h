@@ -61,7 +61,8 @@ public:
 
     LineFormat format() const { return m_format; }
     void setFormat(LineFormat newFormat) { m_format = newFormat; }
-
+    void setPoints(const Base::Vector3d& start, const Base::Vector3d& end);
+    
     std::string toString() const override;
     void dump(const char* title) const;
 
