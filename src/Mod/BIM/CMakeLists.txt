@@ -63,6 +63,9 @@ SET(Arch_SRCS
     ArchSketchObject.py
     BimSelect.py
     BimStatus.py
+    BimBsdd.py
+    BimBsddClient.py
+    BimBsddContract.py
     TestArch.py
     TestArchGui.py
     ArchReport.py
@@ -269,6 +272,8 @@ SET(bimtests_SRCS
     bimtests/TestArchStairsGui.py
     bimtests/TestArchReport.py
     bimtests/TestArchReportGui.py
+    bimtests/TestBsdd.py
+    bimtests/TestBsddContract.py
 )
 
 set(bimtests_FIXTURES
