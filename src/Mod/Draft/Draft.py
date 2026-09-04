@@ -297,7 +297,11 @@ from draftmake.make_sketch import make_sketch, makeSketch
 
 # working plane proxy
 from draftobjects.wpproxy import WorkingPlaneProxy
-from draftmake.make_wpproxy import make_working_plane_proxy, make_workingplaneproxy, makeWorkingPlaneProxy
+from draftmake.make_wpproxy import (
+    make_working_plane_proxy,
+    make_workingplaneproxy,
+    makeWorkingPlaneProxy,
+)
 
 if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
