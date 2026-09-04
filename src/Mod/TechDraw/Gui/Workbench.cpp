@@ -132,7 +132,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_CommandAddOffsetVertex";
     *toolcenter << "Separator";
     *toolcenter << "TechDraw_CosmeticCircle";
-    *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionLineParallel";
@@ -362,6 +361,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
+    *extcenter << "TechDraw_ExtensionDrawCosmArc";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
@@ -460,6 +460,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
+    *extcenter << "TechDraw_ExtensionDrawCosmArc";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
