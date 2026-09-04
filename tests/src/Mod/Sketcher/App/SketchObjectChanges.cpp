@@ -380,10 +380,10 @@ TEST_F(SketchObjectTest, testTrimWithoutIntersection)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this line segment is trimmed, nothing should remain
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
     EXPECT_TRUE(getObject()->noRecomputes);
@@ -414,10 +414,10 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this line segment is trimmed, the curve should be "smaller"
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
@@ -458,10 +458,10 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this line segment is trimmed, there should be two "smaller" curves in its place
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
@@ -496,10 +496,10 @@ TEST_F(SketchObjectTest, testTrimCircleEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this circle is trimmed, the circle should be deleted.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId - 1);
     EXPECT_TRUE(getObject()->noRecomputes);
@@ -537,10 +537,10 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: Once this circle is trimmed, there should be one arc.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -578,10 +578,10 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
@@ -621,10 +621,10 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // There should be a "point-on-object" constraint on the intersecting curves
     int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
@@ -660,14 +660,14 @@ TEST_F(SketchObjectTest, testTrimEllipseEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this ellipse is trimmed, the ellipse should be deleted.
     // Only remaining: line segment
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
@@ -708,14 +708,14 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Once this ellipse is trimmed, there should be one arc and line segments.
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -753,10 +753,10 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // FIXME: This will fail because of deleted internal geometry
     // Once this periodicBSpline is trimmed, the periodicBSpline should be deleted, leaving only the
     // line segment.
@@ -797,14 +797,14 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: Two line segments and the B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
@@ -842,14 +842,14 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
     // FIXME: There should be a "point-on-object" constraint on the intersecting curves
@@ -890,7 +890,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
     // remove all internal geometry
     for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
         if (getObject()->getGeometry(i)->is<Part::GeomBSplineCurve>()) {
@@ -899,7 +899,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     }
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 3);
     // There should be a "point-on-object" constraint on the intersecting curves
@@ -947,10 +947,10 @@ TEST_F(SketchObjectTest, testTrimEffectOnConstruction)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
         auto* geom = getObject()->getGeometry(i);
         if (geom->is<Part::GeomArcOfCircle>()) {
@@ -996,10 +996,10 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 0);
     EXPECT_TRUE(getObject()->noRecomputes);
     EXPECT_TRUE(solverUpdated);
@@ -1041,10 +1041,10 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 0);
     EXPECT_TRUE(getObject()->noRecomputes);
     EXPECT_TRUE(solverUpdated);
@@ -1085,10 +1085,10 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     auto connection = getObject()->signalSolverUpdate.connect([&]() { solverUpdated = true; });
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    const auto result = getObject()->trim(geoId, trimPoint);
 
     // Assert
-    EXPECT_EQ(result, 0);
+    EXPECT_EQ(result, SketchSolveStatus::Success);
     // TODO: find tangent and confirm nature
     const auto& constraints = getObject()->Constraints.getValues();
     auto tangIt = std::ranges::find(

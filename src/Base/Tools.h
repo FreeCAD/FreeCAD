@@ -482,4 +482,26 @@ struct Overloads: Ts...
 template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
+
+#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
+[[deprecated("Replace with std::to_underlying() now that C++23 is required")]]
+#endif
+template<typename E>
+constexpr auto to_underlying(E e) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(e);
+}
+
+#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
+[[deprecated("Replace with std::unreachable() now that C++23 is required")]]
+#endif
+[[noreturn]] inline void unreachable()
+{
+#if defined(_MSC_VER) && !defined(__clang__)
+    __assume(false);
+#else
+    __builtin_unreachable();
+#endif
+}
+
 }  // namespace Base

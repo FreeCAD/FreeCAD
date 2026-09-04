@@ -618,17 +618,17 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 
 void SketchAnalysis::solveSketch(const char* errorText)
 {
-    int status {};
+    SketchSolveStatus status;
     int dofs {};
     solvesketch(status, dofs, true);
 
-    if (status == int(Solver::RedundantConstraints)) {
+    if (status == SketchSolveStatus::RedundantConstraints) {
         sketch->autoRemoveRedundants(DeleteOption::NoFlag);
 
         solvesketch(status, dofs, false);
     }
 
-    if (status) {
+    if (status != SketchSolveStatus::Success) {
         THROWMT(Base::RuntimeError, errorText);
     }
 }
@@ -832,7 +832,7 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
     radiusequalityConstraints.clear();
 }
 
-void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
+void SketchAnalysis::solvesketch(SketchSolveStatus& status, int& dofs, bool updategeo)
 {
     status = sketch->solve(updategeo);
 
@@ -844,14 +844,14 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
     }
 
     if (sketch->getLastHasRedundancies()) {
-        status = int(Solver::RedundantConstraints);
+        status = SketchSolveStatus::RedundantConstraints;
     }
 
     if (dofs < 0) {
-        status = int(Solver::OverConstrained);
+        status = SketchSolveStatus::Overconstrained;
     }
     else if (sketch->getLastHasConflicts()) {
-        status = int(Solver::ConflictingConstraints);
+        status = SketchSolveStatus::ConflictingConstraints;
     }
 }
 
