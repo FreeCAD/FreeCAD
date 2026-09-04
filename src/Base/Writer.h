@@ -242,6 +242,10 @@ public:
     {
         ZipStream.setLevel(level);
     }
+    void setStoreDate(bool store)
+    {
+        ZipStream.setStoreDate(store);
+    }
     void putNextEntry(const char* filename, const char* objName = nullptr) override;
 
     ZipWriter(const ZipWriter&) = delete;

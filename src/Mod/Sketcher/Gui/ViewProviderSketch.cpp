@@ -4544,13 +4544,47 @@ void ViewProviderSketch::unsetEdit(int ModNum)
             getSketchObject()->purgeTouched();
         }
         else {
-            App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
-            try {
-                // and update the sketch
-                // getSketchObject()->getDocument()->recompute();
-                Gui::Command::updateActive();
+            // Since SketchObjects aren't hashable in-place (yet), use dumpToStream to produce
+            // a hashable set of bytes.
+            const size_t hashBeforeEditing = std::hash<std::string_view>{}(sketchBackup.view());
+
+            // An edited but untouched sketch still sets a few properties as touched,
+            // untouch them temporarily for comparison to pre-editing sketch state.
+            auto *sketch = getSketchObject();
+            const bool constraintsTouched = sketch->Constraints.isTouched();
+            sketch->Constraints.purgeTouched();
+            const bool fullyConstainedTouched = sketch->FullyConstrained.isTouched();
+            sketch->FullyConstrained.purgeTouched();
+            const bool geometryTouched = sketch->Geometry.isTouched();
+            sketch->Geometry.purgeTouched();
+
+            sketchBackup.str("");
+            sketchBackup.clear();
+            getObject()->dumpToStream(sketchBackup, 0);
+            sketchBackup.seekg(0);
+            const size_t hashAfterEditing = std::hash<std::string_view>{}(sketchBackup.view());
+
+            if (constraintsTouched) {
+                sketch->Constraints.touch();
             }
-            catch (...) {
+            if (fullyConstainedTouched) {
+                sketch->FullyConstrained.touch();
+            }
+            if (geometryTouched) {
+                sketch->Geometry.touch();
+            }
+
+            if (hashAfterEditing == hashBeforeEditing) {
+                sketch->purgeTouched();
+            } else {
+                App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
+                try {
+                    // and update the sketch
+                    // getSketchObject()->getDocument()->recompute();
+                    Gui::Command::updateActive();
+                }
+                catch (...) {
+                }
             }
         }
     }
