@@ -26,6 +26,8 @@
 #pragma once
 
 #include <map>
+#include <set>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <memory>
@@ -72,6 +74,47 @@ enum PropertyType
     Prop_NoPersist   = 32,
     /// The property is a true input property.
     Prop_Input   = 64,
+};
+
+/**
+ * @brief Specifies whether a property alias is deprecated.
+ *
+ * Pass this to addPropertyAlias() or the ADD_PROPERTY_ALIAS /
+ * ADD_PROPERTY_DEPRECATED_ALIAS macros to control whether using the alias
+ * emits a developer warning.
+ */
+enum class PropertyAliasType {
+    /// The alias resolves silently with no warning.
+    Normal,
+    /// The alias resolves but emits a developer warning to encourage migration to the canonical name.
+    Deprecated,
+};
+
+/// Entry in the per-instance property alias map.
+struct PropertyAliasEntry {
+    std::string canonicalName;
+    std::string since;
+    PropertyAliasType type;
+};
+
+/**
+ * @brief Controls whether property alias resolution is applied in getPropertyByName().
+ */
+enum class PropertyLookupMode {
+    /// Resolve aliases when the canonical name is not found (default).
+    WithAliases,
+    /// Skip alias resolution; only canonical property names are matched.
+    WithoutAliases,
+};
+
+/**
+ * @brief Controls whether resolveAlias() emits a deprecation warning for a deprecated alias.
+ */
+enum class AliasWarningPolicy {
+    /// Emit the deprecation warning, if the alias is deprecated.
+    Emit,
+    /// Never emit the deprecation warning.
+    Suppress,
 };
 // clang-format on
 
@@ -196,6 +239,33 @@ struct AppExport PropertyData
    * @return The property specification if found; `nullptr` otherwise.
    */
   const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
+
+  /**
+   * @brief Register an alias for a static property name.
+   *
+   * @param[in] canonicalName The current name of the property.
+   * @param[in] alias The old or alternative name to also accept.
+   * @param[in] type Whether resolving through the alias warns.
+   * @param[in] since The FreeCAD version introducing the alias, e.g. "1.1".
+   */
+  void addAlias(const char* canonicalName, const char* alias, PropertyAliasType type,
+                const char* since);
+
+  /**
+   * @brief Find an alias by name, searching this class then its parents.
+   *
+   * @param[in] alias The alias name to look up.
+   * @return The alias entry if found; `nullptr` otherwise.
+   */
+  const PropertyAliasEntry* findAlias(const char* alias) const;
+
+  /**
+   * @brief Collect every alias visible on this class, including inherited ones.
+   *
+   * @param[out] map Alias name to entry. Entries declared on this class take
+   * precedence over identically named entries inherited from a parent.
+   */
+  void getAliasMap(std::map<std::string, PropertyAliasEntry>& map) const;
 
   /**
    * @name PropertyData accessors
@@ -327,9 +397,12 @@ public:
    * @brief Find a property by its name.
    *
    * @param[in] name The name of the property to find.
+   * @param[in] mode Whether to fall back to alias resolution when no property carries
+   * the given name. Pass PropertyLookupMode::WithoutAliases to match canonical names only.
    * @return The property if found or `nullptr` when not found.
    */
-  virtual Property *getPropertyByName(const char* name) const;
+  virtual Property *getPropertyByName(const char* name,
+                                      PropertyLookupMode mode = PropertyLookupMode::WithAliases) const;
 
   /**
    * @brief Get the name of a property.
@@ -528,13 +601,54 @@ public:
    *
    * @param[in] prop The property to rename.
    * @param[in] name The new name for the property.
+   * @param[in] policy How to handle a property locked with Property::LockDynamic.
    *
    * @return `true` if the property was renamed; `false` otherwise.
    * @throw Base::NameError If the new name is invalid or already exists.
    */
-  virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop, name);
+  virtual bool renameDynamicProperty(Property *prop, const char *name,
+                                     RenameLockedPolicy policy = RenameLockedPolicy::Throw) {
+      return dynamicProps.renameDynamicProperty(prop, name, policy);
   }
+
+  /**
+   * @brief Register an alias for a property name.
+   *
+   * After this call, getPropertyByName(alias) and Python attribute access via
+   * the alias name will transparently return the same property as
+   * getPropertyByName(canonicalName). This allows renaming properties in C++
+   * without breaking Python add-ons and macros that use the old name.
+   *
+   * @param[in] canonicalName The current, authoritative name of the property.
+   * @param[in] alias         The old or alternative name to also accept.
+   * @param[in] aliasType     Whether to emit a warning when the alias is used.
+   * @param[in] since         The FreeCAD version in which the alias was introduced.
+   */
+  void addPropertyAlias(const char* canonicalName, const char* alias,
+                        PropertyAliasType aliasType = PropertyAliasType::Normal,
+                        const char* since = "");
+
+  /**
+   * @brief Check whether this instance has ever registered a runtime alias.
+   *
+   * Exists so tests can confirm that resolving a class-level alias never populates the
+   * per-instance overlay.
+   *
+   * @return `true` if addPropertyAlias() has been called on this instance.
+   */
+  bool hasInstanceAliases() const {
+      return !_propertyAliases.empty();
+  }
+
+  /**
+   * @brief Get every property alias visible on this container.
+   *
+   * Merges aliases declared on the class (and its parents) with aliases registered on this
+   * instance. Instance entries take precedence.
+   *
+   * @return Alias name to its canonical name, introduction version, and deprecation status.
+   */
+  std::map<std::string, PropertyAliasEntry> getPropertyAliases() const;
 
   /**
    * @brief Remove a dynamic property.
@@ -688,6 +802,23 @@ protected:
   virtual const PropertyData& getPropertyData() const;
 
   /**
+   * @brief Resolve a name through the alias registries.
+   *
+   * Consults the per-instance overlay, then the class registry. Emits at most one
+   * deprecation warning per alias per container, unless suppressed.
+   *
+   * @param[in] name The alias name to resolve.
+   * @param[in] warning Whether to emit the deprecation warning for a deprecated alias.
+   * @return The property the alias refers to, or `nullptr` if the name is not an alias or
+   * the canonical property does not exist.
+   */
+  Property* resolveAlias(const char* name, AliasWarningPolicy warning) const;
+
+  /// Emit the deprecation warning for an alias, at most once per alias per container.
+  void warnDeprecatedAlias(const char* alias, const char* canonicalName,
+                           const char* since) const;
+
+  /**
    * @brief Handle a changed property name during restore.
    *
    * This method is called during restore to possibly fix reading of older
@@ -733,6 +864,11 @@ protected:
 
 private:
   std::string _propertyPrefix;
+  /// Alias names registered on this instance. Static aliases live in PropertyData instead, so
+  /// this stays empty for the vast majority of containers.
+  std::unordered_map<std::string, PropertyAliasEntry> _propertyAliases;
+  /// Alias names already warned about on this instance.
+  mutable std::set<std::string> _warnedAliases;
   static PropertyData propertyData;
 };
 
@@ -757,6 +893,25 @@ private:
 
 #define ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _ADD_PROPERTY_TYPE(#_prop_,_prop_,_defaultval_,_group_,_type_,_Docu_)
+
+/// Register a non-deprecated alias for a static property. The alias name resolves to the same
+/// property as the canonical name given by _prop_ (a bare C++ member name, stringified).
+/// _since_ is the FreeCAD version introducing the alias, e.g. "1.1".
+/// The `(void)&this->_prop_` reference forces the compiler to reject a misspelled _prop_, the
+/// same way _ADD_PROPERTY_TYPE does above.
+#define ADD_PROPERTY_ALIAS(_prop_, _alias_, _since_) \
+    do { \
+        (void)&this->_prop_; \
+        propertyData.addAlias(#_prop_, _alias_, App::PropertyAliasType::Normal, _since_); \
+    } while (0)
+
+/// Register a deprecated alias for a static property. Like ADD_PROPERTY_ALIAS but emits a
+/// developer warning when the alias is resolved, encouraging migration to the canonical name.
+#define ADD_PROPERTY_DEPRECATED_ALIAS(_prop_, _alias_, _since_) \
+    do { \
+        (void)&this->_prop_; \
+        propertyData.addAlias(#_prop_, _alias_, App::PropertyAliasType::Deprecated, _since_); \
+    } while (0)
 
 
 #define PROPERTY_HEADER(_class_) \

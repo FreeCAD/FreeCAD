@@ -130,8 +130,12 @@ std::string Extension::name() const
     return {};
 }
 
-Property* Extension::extensionGetPropertyByName(const char* name) const
+Property* Extension::extensionGetPropertyByName(const char* name, PropertyLookupMode mode) const
 {
+    // extensionGetPropertyData() only ever returns canonical, statically-declared properties, so
+    // there is no alias branch here to guard; the mode is only meaningful to overrides (e.g.
+    // LinkBaseExtension) that delegate to a container's own getPropertyByName().
+    (void)mode;
     return extensionGetPropertyData().getPropertyByName(this, name);
 }
 

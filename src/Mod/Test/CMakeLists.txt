@@ -12,6 +12,7 @@ SET(Test_SRCS
     Document.py
     GuiDocument.py
     Metadata.py
+    PropertyAlias.py
     StringHasher.py
     Menu.py
     Recompute.py

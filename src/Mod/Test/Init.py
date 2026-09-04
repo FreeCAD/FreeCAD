@@ -30,6 +30,7 @@ FreeCAD.__unit_test__ += [
     "UnitTests",
     "Document",
     "Metadata",
+    "PropertyAlias",
     "Recompute",
     "StringHasher",
     "UnicodeTests",

@@ -193,3 +193,49 @@ class PropertyContainer(Persistence):
             New property name.
         """
         ...
+
+    def addPropertyAlias(
+        self, property: str, alias: str, deprecated: bool = False, since: str = ""
+    ) -> None:
+        """
+        Register an alias for a property name.
+
+        After this call, getPropertyByName(alias) and Python attribute access via
+        the alias name will transparently return the same property as the canonical name.
+        This allows renaming a property without breaking add-ons and macros that still
+        use the old name.
+
+        If a dynamic property named `alias` exists and no property named `property`
+        does, it is renamed to `property` in place, preserving its value. This is how
+        documents saved under the old name are migrated, so the call is safe to make
+        unconditionally on every load.
+
+        property : str
+            The current, authoritative name of the property.
+        alias : str
+            The old or alternative name to also accept.
+        deprecated : bool
+            If True, a developer warning is emitted the first time the alias is resolved
+            on each object, encouraging migration to the canonical name.
+        since : str
+            The FreeCAD version in which the alias was introduced, e.g. "1.1". Included in
+            the deprecation warning.
+        """
+        ...
+
+    @no_args
+    @constmethod
+    def getPropertyAliases(self) -> dict[str, dict[str, object]]:
+        """
+        Get every property alias visible on this object.
+
+        Merges aliases declared by the C++ class with aliases registered at runtime on this
+        object. Aliases are deliberately absent from PropertiesList, so that deprecated names
+        do not appear in the property editor or in dir().
+
+        Returns a dict mapping each alias name to a dict with keys:
+            canonical  : str  -- the current name of the property
+            deprecated : bool -- whether using the alias emits a warning
+            since      : str  -- the FreeCAD version introducing the alias, may be empty
+        """
+        ...

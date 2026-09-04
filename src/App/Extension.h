@@ -206,7 +206,9 @@ public:
     /**
      * @copydoc PropertyContainer::getPropertyByName()
      */
-    virtual Property *extensionGetPropertyByName(const char* name) const;
+    virtual Property* extensionGetPropertyByName(
+        const char* name,
+        PropertyLookupMode mode = PropertyLookupMode::WithAliases) const;
 
     /**
      * @copydoc PropertyContainer::getPropertyName()
