@@ -91,7 +91,9 @@ void SolverGeometryExtension::notifyAttachment(Part::Geometry* geo)
         {Part::GeomEllipse::getClassTypeId(), 3},
         {Part::GeomArcOfHyperbola::getClassTypeId(), 5},
         {Part::GeomArcOfParabola::getClassTypeId(), 4},
-        {Part::GeomBSplineCurve::getClassTypeId(), 0}  // is dynamic
+        {Part::GeomBSplineCurve::getClassTypeId(), 0},  // is dynamic
+        {Part::GeomOffsetCurve::getClassTypeId(), 1},
+        {Part::GeomRestrictedCurve::getClassTypeId(), 2},
     };
 
     GeometryType = geo->getTypeId();
@@ -171,4 +173,16 @@ SolverGeometryExtension::BSpline& SolverGeometryExtension::getBSpline()
 {
     ensureType(Part::GeomBSplineCurve::getClassTypeId());
     return static_cast<BSpline&>(Edge);
+}
+
+SolverGeometryExtension::OffsetCurve& SolverGeometryExtension::getOffsetCurve()
+{
+    ensureType(Part::GeomOffsetCurve::getClassTypeId());
+    return static_cast<OffsetCurve&>(Edge);
+}
+
+SolverGeometryExtension::RestrictedCurve& SolverGeometryExtension::getRestrictedCurve()
+{
+    ensureType(Part::GeomRestrictedCurve::getClassTypeId());
+    return static_cast<RestrictedCurve&>(Edge);
 }

@@ -218,6 +218,46 @@ public:
     }
 };
 
+class SketchOffsetCurve: public SketchGeometryT<Part::GeomOffsetCurve>
+{
+public:
+    Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId) const override
+    {
+        auto offc = dynamic_cast<const GeomType*>(geo);
+        switch (PosId) {
+            case PointPos::start: {
+                return offc->getStartPoint();
+            }
+            case PointPos::end: {
+                return offc->getEndPoint();
+            }
+            default:
+                break;
+        }
+        return Base::Vector3d();
+    }
+};
+
+class SketchRestrictedCurve: public SketchGeometryT<Part::GeomRestrictedCurve>
+{
+public:
+    Base::Vector3d getPoint(const Part::Geometry* geo, PointPos PosId) const override
+    {
+        auto resc = dynamic_cast<const GeomType*>(geo);
+        switch (PosId) {
+            case PointPos::start: {
+                return resc->getStartPoint();
+            }
+            case PointPos::end: {
+                return resc->getEndPoint();
+            }
+            default:
+                break;
+        }
+        return Base::Vector3d();
+    }
+};
+
 }  // namespace Sketcher
 
 std::list<SketchGeometryPtr> SketchGeometryType::sketchGeoms;  // NOLINT
@@ -236,6 +276,8 @@ void SketchGeometryType::init()
         addType(std::make_shared<SketchArcOfHyperbola>());
         addType(std::make_shared<SketchArcOfParabola>());
         addType(std::make_shared<SketchBSplineCurve>());
+        addType(std::make_shared<SketchOffsetCurve>());
+        addType(std::make_shared<SketchRestrictedCurve>());
     }
 }
 
