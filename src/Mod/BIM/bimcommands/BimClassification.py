@@ -25,14 +25,28 @@
 """The BIM Classification command"""
 
 import os
+import re
 
 import FreeCAD
 import FreeCADGui
+from PySide import QtCore, QtGui
+
+try:
+    from PySide import QtWidgets
+except ImportError:
+    QtWidgets = QtGui
+
+import BimBsdd
+import BimBsddContract
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+BSDD_PROVIDER_MODE_KEY = "BimClassificationProvider"
+BSDD_DICTIONARY_META_KEY = "BIM_BsddActiveDictionaries"
+BSDD_DICTIONARY_META_PRESENT_KEY = "BIM_BsddActiveDictionariesPresent"
+BSDD_CONTRACT_ROLE = 33
 
 
 class BIM_Classification:
@@ -59,7 +73,6 @@ class BIM_Classification:
             return
 
         import Draft
-        from PySide import QtCore, QtGui
         from bimcommands import BimMaterial
 
         # init checks
@@ -91,6 +104,32 @@ class BIM_Classification:
         searchBox.setToolTip(translate("BIM", "Searches classes"))
         self.form.search = searchBox
         self.form.horizontalLayout_2.addWidget(searchBox)
+        self._bsdd_module = BimBsdd
+        self._bsdd_contract_module = BimBsddContract
+        self._bsdd_client = BimBsdd.get_bsdd_network_client()
+        self._bsdd_context_ifc_class = ""
+        self._bsdd_selected_concept = None
+        self._restored_bsdd_dictionary_uris = set()
+        self._has_saved_bsdd_dictionary_state = False
+        self._bsdd_dictionary_uris = []
+        self._bsdd_search_batch_id = 0
+        self._bsdd_dictionary_labels = {}
+        self._bsdd_dictionary_nodes = {}
+        self._bsdd_pending_requests = {}
+        self._bsdd_dictionary_candidates = {}
+        self._bsdd_dictionary_has_results = set()
+        self._bsdd_contract = None
+        self._bsdd_contract_detail_payload = None
+        self._bsdd_object_contracts = {}
+        self._search_timer = QtCore.QTimer(self.form)
+        self._search_timer.setSingleShot(True)
+        self._search_timer.setInterval(300)
+        self._selection_observer_installed = False
+        self._updating_bsdd_dictionaries = False
+        self._bsdd_signals_connected = False
+        self._setup_bsdd_ui(QtCore, QtGui, QtWidgets)
+        self._connect_bsdd_signals()
+        self._install_selection_observer()
 
         # set help line
         self.form.labelDownload.setText(
@@ -177,6 +216,8 @@ class BIM_Classification:
         )
 
         self.updateClasses()
+        self._refresh_bsdd_context()
+        self._request_bsdd_dictionaries()
 
         # select current classification
         if current:
@@ -194,6 +235,904 @@ class BIM_Classification:
 
         self.form.search.setFocus()
 
+    def _setup_bsdd_ui(self, QtCore, QtGui, QtWidgets):
+        try:
+            providerLayout = QtWidgets.QHBoxLayout()
+            providerLabel = QtWidgets.QLabel(translate("BIM", "Provider"))
+            self.form.comboProvider = QtWidgets.QComboBox(self.form.groupClasses)
+            self.form.comboProvider.addItem("Legacy")
+            self.form.comboProvider.addItem("bSDD")
+            providerLayout.addWidget(providerLabel)
+            providerLayout.addWidget(self.form.comboProvider, 1)
+            self.form.verticalLayout_3.insertLayout(0, providerLayout)
+
+            self.form.bsddPanel = QtWidgets.QWidget(self.form.groupClasses)
+            self.form.bsddPanelLayout = QtWidgets.QVBoxLayout(self.form.bsddPanel)
+            self.form.bsddPanelLayout.setContentsMargins(0, 0, 0, 0)
+
+            self.form.bsddContextLabel = QtWidgets.QLabel(self.form.bsddPanel)
+            self.form.bsddContextLabel.setWordWrap(True)
+            self.form.bsddPanelLayout.addWidget(self.form.bsddContextLabel)
+
+            self.form.bsddSearch = QtWidgets.QLineEdit(self.form.bsddPanel)
+            self.form.bsddSearch.setPlaceholderText(translate("BIM", "Search bSDD concepts..."))
+            self.form.bsddPanelLayout.addWidget(self.form.bsddSearch)
+
+            self.form.bsddDictionaryToggle = QtWidgets.QToolButton(self.form.bsddPanel)
+            self.form.bsddDictionaryToggle.setText(translate("BIM", "Active dictionaries"))
+            self.form.bsddDictionaryToggle.setCheckable(True)
+            self.form.bsddDictionaryToggle.setChecked(False)
+            self.form.bsddDictionaryToggle.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+            self.form.bsddDictionaryToggle.setArrowType(QtCore.Qt.RightArrow)
+            self.form.bsddPanelLayout.addWidget(self.form.bsddDictionaryToggle)
+
+            self.form.bsddDictionaryContainer = QtWidgets.QWidget(self.form.bsddPanel)
+            self.form.bsddDictionaryContainerLayout = QtWidgets.QVBoxLayout(
+                self.form.bsddDictionaryContainer
+            )
+            self.form.bsddDictionaryContainerLayout.setContentsMargins(0, 0, 0, 0)
+
+            self.form.bsddDictionaryList = QtWidgets.QListWidget(self.form.bsddDictionaryContainer)
+            self.form.bsddDictionaryList.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+            self.form.bsddDictionaryList.setMinimumHeight(110)
+            self.form.bsddDictionaryContainerLayout.addWidget(self.form.bsddDictionaryList)
+            self.form.bsddPanelLayout.addWidget(self.form.bsddDictionaryContainer)
+            self.form.bsddDictionaryContainer.setVisible(False)
+
+            self.form.bsddSplitter = QtWidgets.QSplitter(QtCore.Qt.Vertical, self.form.bsddPanel)
+            self.form.bsddResultsTree = QtWidgets.QTreeView(self.form.bsddSplitter)
+            self.form.bsddResultsTree.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.form.bsddResultsTree.setAlternatingRowColors(True)
+            self.form.bsddResultsTree.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+            self.form.bsddResultsTree.setUniformRowHeights(True)
+
+            self.form.bsddPropertyTable = QtWidgets.QTableWidget(self.form.bsddSplitter)
+            self.form.bsddPropertyTable.setColumnCount(2)
+            self.form.bsddPropertyTable.setHorizontalHeaderLabels(
+                [translate("BIM", "Property"), translate("BIM", "Value")]
+            )
+            self.form.bsddPropertyTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.form.bsddPropertyTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+            self.form.bsddPropertyTable.setWordWrap(True)
+            self.form.bsddPropertyTable.verticalHeader().setVisible(False)
+            self.form.bsddPropertyTable.horizontalHeader().setStretchLastSection(True)
+            self.form.bsddPanelLayout.addWidget(self.form.bsddSplitter, 1)
+
+            self.form.bsddResultsModel = QtGui.QStandardItemModel(self.form.bsddResultsTree)
+            self.form.bsddResultsModel.setHorizontalHeaderLabels(
+                [translate("BIM", "bSDD Concepts")]
+            )
+            self.form.bsddResultsTree.setModel(self.form.bsddResultsModel)
+            self.form.bsddResultsTree.header().setStretchLastSection(True)
+
+            insertIndex = self.form.verticalLayout_3.indexOf(self.form.treeClass)
+            if insertIndex < 0:
+                insertIndex = 3
+            self.form.verticalLayout_3.insertWidget(insertIndex, self.form.bsddPanel)
+            self.form.bsddPanel.hide()
+
+            provider = PARAMS.GetString(BSDD_PROVIDER_MODE_KEY, "Legacy")
+            self.form.comboProvider.setCurrentText(
+                provider if provider in ["Legacy", "bSDD"] else "Legacy"
+            )
+            (
+                self._has_saved_bsdd_dictionary_state,
+                self._restored_bsdd_dictionary_uris,
+            ) = self._load_bsdd_dictionary_state()
+            self._apply_provider_visibility()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_setup_bsdd_ui", err)
+            )
+
+    def _connect_bsdd_signals(self):
+        try:
+            if getattr(self, "_bsdd_signals_connected", False):
+                return
+            self.form.comboProvider.currentIndexChanged.connect(self._on_provider_changed)
+            self.form.bsddSearch.textChanged.connect(self._on_bsdd_search_text_changed)
+            self._search_timer.timeout.connect(self._perform_bsdd_search)
+            self.form.bsddDictionaryToggle.toggled.connect(self._on_bsdd_dictionary_toggle)
+            self.form.bsddDictionaryList.itemChanged.connect(self._on_bsdd_dictionary_item_changed)
+            self.form.bsddResultsTree.selectionModel().currentChanged.connect(
+                self._on_bsdd_result_changed
+            )
+            self._bsdd_client.dictionariesReady.connect(self._on_bsdd_dictionaries_ready)
+            self._bsdd_client.searchReady.connect(self._on_bsdd_search_ready)
+            self._bsdd_client.conceptReady.connect(self._on_bsdd_concept_ready)
+            self._bsdd_client.requestFailed.connect(self._on_bsdd_request_failed)
+            self._bsdd_signals_connected = True
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_connect_bsdd_signals", err)
+            )
+
+    def _disconnect_bsdd_signals(self):
+        try:
+            if not getattr(self, "_bsdd_signals_connected", False):
+                return
+            self._bsdd_client.dictionariesReady.disconnect(self._on_bsdd_dictionaries_ready)
+            self._bsdd_client.searchReady.disconnect(self._on_bsdd_search_ready)
+            self._bsdd_client.conceptReady.disconnect(self._on_bsdd_concept_ready)
+            self._bsdd_client.requestFailed.disconnect(self._on_bsdd_request_failed)
+        except (RuntimeError, TypeError):
+            return
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_disconnect_bsdd_signals", err)
+            )
+        finally:
+            self._bsdd_signals_connected = False
+
+    def _install_selection_observer(self):
+        try:
+            FreeCADGui.Selection.addObserver(self)
+            self._selection_observer_installed = True
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_install_selection_observer", err)
+            )
+
+    def _remove_selection_observer(self):
+        try:
+            if getattr(self, "_selection_observer_installed", False):
+                FreeCADGui.Selection.removeObserver(self)
+                self._selection_observer_installed = False
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_remove_selection_observer", err)
+            )
+
+    def _request_bsdd_dictionaries(self):
+        try:
+            self._bsdd_client.fetch_dictionaries()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_request_bsdd_dictionaries", err)
+            )
+
+    def _on_provider_changed(self, *_args):
+        try:
+            PARAMS.SetString(BSDD_PROVIDER_MODE_KEY, self.form.comboProvider.currentText())
+            self._apply_provider_visibility()
+            self._refresh_bsdd_context()
+            if self._is_bsdd_provider_active():
+                self._request_bsdd_dictionaries()
+                self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_provider_changed", err)
+            )
+
+    def _apply_provider_visibility(self):
+        try:
+            legacy_visible = not self._is_bsdd_provider_active()
+            self.form.comboSystem.setVisible(legacy_visible)
+            self.form.search.setVisible(legacy_visible)
+            self.form.treeClass.setVisible(legacy_visible)
+            self.form.buttonApply.setVisible(True)
+            self.form.buttonRename.setVisible(True)
+            self.form.checkPrefix.setVisible(True)
+            self.form.bsddPanel.setVisible(not legacy_visible)
+            self.form.labelDownload.setVisible(legacy_visible)
+            title = (
+                translate("BIM", "Available classification systems")
+                if legacy_visible
+                else translate("BIM", "buildingSMART Data Dictionary")
+            )
+            self.form.groupClasses.setTitle(title)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_apply_provider_visibility", err)
+            )
+
+    def _is_bsdd_provider_active(self):
+        try:
+            return (
+                hasattr(self.form, "comboProvider")
+                and self.form.comboProvider.currentText() == "bSDD"
+            )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_is_bsdd_provider_active", err)
+            )
+            return False
+
+    def _on_bsdd_search_text_changed(self, *_args):
+        try:
+            self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_text_changed", err)
+            )
+
+    def _schedule_bsdd_search(self):
+        try:
+            if not self._is_bsdd_provider_active():
+                return
+            if self._search_timer.isActive():
+                self._search_timer.stop()
+            self._search_timer.start()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_schedule_bsdd_search", err)
+            )
+
+    def _normalize_bsdd_context_query(self, related_ifc_entity):
+        try:
+            if not related_ifc_entity:
+                return ""
+            normalized = str(related_ifc_entity)
+            if normalized.startswith("Ifc") and len(normalized) > 3:
+                normalized = normalized[3:]
+            normalized = re.sub(r"(?<!^)(?=[A-Z])", " ", normalized).strip()
+            return normalized or str(related_ifc_entity)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_normalize_bsdd_context_query", err)
+            )
+            return related_ifc_entity or ""
+
+    def _set_bsdd_results_placeholder(self, message):
+        try:
+            self.form.bsddResultsModel.removeRows(0, self.form.bsddResultsModel.rowCount())
+            if message:
+                item = QtGui.QStandardItem(message)
+                item.setEditable(False)
+                item.setSelectable(False)
+                item.setData(None, QtCore.Qt.UserRole)
+                self.form.bsddResultsModel.appendRow(item)
+            self._populate_bsdd_properties(None)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_set_bsdd_results_placeholder", err)
+            )
+
+    def _get_bsdd_search_inputs(self):
+        try:
+            query_text = self.form.bsddSearch.text().strip()
+            active_dictionaries = self._get_active_bsdd_dictionaries()
+            related_ifc_entity = self._bsdd_context_ifc_class or ""
+            return query_text, active_dictionaries, related_ifc_entity
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_bsdd_search_inputs", err)
+            )
+            return "", [], ""
+
+    def _build_bsdd_search_candidates(self, query_text, active_dictionaries, related_ifc_entity):
+        try:
+            candidates = []
+            normalized_context_query = self._normalize_bsdd_context_query(related_ifc_entity)
+
+            if query_text:
+                candidates.append((query_text, ""))
+                return candidates
+
+            if related_ifc_entity:
+                fallback_pairs = [
+                    (normalized_context_query, related_ifc_entity),
+                    (normalized_context_query, ""),
+                    (related_ifc_entity, ""),
+                ]
+                for candidate_query, candidate_context in fallback_pairs:
+                    candidate_query = (candidate_query or "").strip()
+                    candidate = (candidate_query, candidate_context)
+                    if candidate_query and candidate not in candidates:
+                        candidates.append(candidate)
+            return candidates
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_build_bsdd_search_candidates", err)
+            )
+            return []
+
+    def _dispatch_bsdd_search_candidate(self, dictionary_uri):
+        try:
+            candidates = self._bsdd_dictionary_candidates.get(dictionary_uri, [])
+            if not candidates:
+                self._finalize_bsdd_dictionary_branch(dictionary_uri)
+                return
+            query_text, related_ifc_entity = candidates.pop(0)
+            search_key = self._bsdd_client._search_cache_key(
+                query_text, (dictionary_uri,), related_ifc_entity
+            )
+            self._bsdd_pending_requests[search_key] = (self._bsdd_search_batch_id, dictionary_uri)
+            returned_search_key = self._bsdd_client.search_concepts(
+                query_text,
+                active_dictionaries=[dictionary_uri],
+                related_ifc_entity=related_ifc_entity,
+            )
+            if returned_search_key != search_key:
+                self._bsdd_pending_requests.pop(search_key, None)
+                self._bsdd_pending_requests[returned_search_key] = (
+                    self._bsdd_search_batch_id,
+                    dictionary_uri,
+                )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_dispatch_bsdd_search_candidate", err)
+            )
+
+    def _initialize_bsdd_result_tree(self, active_dictionaries):
+        try:
+            self.form.bsddResultsModel.removeRows(0, self.form.bsddResultsModel.rowCount())
+            self._populate_bsdd_properties(None)
+            self._bsdd_dictionary_nodes = {}
+            for dictionary_uri in active_dictionaries:
+                label = self._bsdd_dictionary_labels.get(dictionary_uri, dictionary_uri)
+                dict_item = QtGui.QStandardItem(label)
+                dict_item.setEditable(False)
+                dict_item.setSelectable(False)
+                dict_item.setData(dictionary_uri, QtCore.Qt.UserRole)
+                loading_item = QtGui.QStandardItem(translate("BIM", "Searching..."))
+                loading_item.setEditable(False)
+                loading_item.setSelectable(False)
+                dict_item.appendRow(loading_item)
+                self.form.bsddResultsModel.appendRow(dict_item)
+                self._bsdd_dictionary_nodes[dictionary_uri] = dict_item
+            self.form.bsddResultsTree.expandAll()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_initialize_bsdd_result_tree", err)
+            )
+
+    def _clear_bsdd_dictionary_branch(self, dictionary_uri):
+        try:
+            node = self._bsdd_dictionary_nodes.get(dictionary_uri)
+            if node is not None:
+                node.removeRows(0, node.rowCount())
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_clear_bsdd_dictionary_branch", err)
+            )
+
+    def _append_bsdd_dictionary_results(self, dictionary_uri, concepts):
+        try:
+            node = self._bsdd_dictionary_nodes.get(dictionary_uri)
+            if node is None:
+                return
+            self._clear_bsdd_dictionary_branch(dictionary_uri)
+            for concept in concepts:
+                name = concept.get("name") or concept.get("referenceCode") or "<unnamed>"
+                concept_item = QtGui.QStandardItem(name)
+                concept_item.setEditable(False)
+                concept_item.setData(concept, QtCore.Qt.UserRole)
+                node.appendRow(concept_item)
+            self._bsdd_dictionary_has_results.add(dictionary_uri)
+            index = node.index()
+            if index.isValid():
+                self.form.bsddResultsTree.setExpanded(index, True)
+                if node.rowCount() and not self.form.bsddResultsTree.currentIndex().isValid():
+                    self.form.bsddResultsTree.setCurrentIndex(node.child(0).index())
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_append_bsdd_dictionary_results", err)
+            )
+
+    def _finalize_bsdd_dictionary_branch(self, dictionary_uri, message=None):
+        try:
+            node = self._bsdd_dictionary_nodes.get(dictionary_uri)
+            if node is None:
+                return
+            if dictionary_uri in self._bsdd_dictionary_has_results:
+                return
+            self._clear_bsdd_dictionary_branch(dictionary_uri)
+            placeholder = QtGui.QStandardItem(
+                message or translate("BIM", "No matches in this dictionary.")
+            )
+            placeholder.setEditable(False)
+            placeholder.setSelectable(False)
+            node.appendRow(placeholder)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_finalize_bsdd_dictionary_branch", err)
+            )
+
+    def _finalize_bsdd_search_batch_if_empty(self):
+        try:
+            if self._bsdd_dictionary_has_results:
+                return
+            if self._bsdd_pending_requests:
+                return
+            for dictionary_uri in self._bsdd_dictionary_nodes.keys():
+                self._finalize_bsdd_dictionary_branch(dictionary_uri)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format(
+                    "_finalize_bsdd_search_batch_if_empty", err
+                )
+            )
+
+    def _perform_bsdd_search(self):
+        try:
+            if not self._is_bsdd_provider_active():
+                return
+            self._refresh_bsdd_context()
+            query_text, active_dictionaries, related_ifc_entity = self._get_bsdd_search_inputs()
+            text_search_active = bool(query_text)
+            self._bsdd_search_batch_id += 1
+            self._bsdd_pending_requests = {}
+            self._bsdd_dictionary_candidates = {}
+            self._bsdd_dictionary_has_results = set()
+            if not active_dictionaries:
+                self._set_bsdd_results_placeholder(
+                    translate("BIM", "Select at least one bSDD dictionary to search.")
+                )
+                if hasattr(self.form, "bsddDictionaryToggle") and (
+                    not self.form.bsddDictionaryToggle.isChecked()
+                ):
+                    self.form.bsddDictionaryToggle.setChecked(True)
+                return
+            candidates = self._build_bsdd_search_candidates(
+                query_text, active_dictionaries, related_ifc_entity
+            )
+            if not candidates:
+                self._set_bsdd_results_placeholder(
+                    translate("BIM", "Select an IFC object or enter search text.")
+                )
+                return
+            self._initialize_bsdd_result_tree(active_dictionaries)
+            for dictionary_uri in active_dictionaries:
+                self._bsdd_dictionary_candidates[dictionary_uri] = list(candidates)
+                self._dispatch_bsdd_search_candidate(dictionary_uri)
+            if text_search_active:
+                FreeCAD.Console.PrintMessage(
+                    "bSDD text search across {} selected dictionaries for '{}'\n".format(
+                        len(active_dictionaries), query_text
+                    )
+                )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_perform_bsdd_search", err)
+            )
+
+    def _on_bsdd_dictionary_toggle(self, checked):
+        try:
+            self.form.bsddDictionaryContainer.setVisible(bool(checked))
+            self.form.bsddDictionaryToggle.setArrowType(
+                QtCore.Qt.DownArrow if checked else QtCore.Qt.RightArrow
+            )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_toggle", err)
+            )
+
+    def _get_active_bsdd_dictionaries(self):
+        active = []
+        try:
+            for row in range(self.form.bsddDictionaryList.count()):
+                item = self.form.bsddDictionaryList.item(row)
+                if item.checkState() == QtCore.Qt.Checked:
+                    uri = item.data(QtCore.Qt.UserRole)
+                    if uri:
+                        active.append(uri)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_active_bsdd_dictionaries", err)
+            )
+        return active
+
+    def _on_bsdd_dictionary_item_changed(self, *_args):
+        try:
+            if getattr(self, "_updating_bsdd_dictionaries", False):
+                return
+            self._save_bsdd_dictionary_state()
+            self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_item_changed", err)
+            )
+
+    def _on_bsdd_dictionaries_ready(self, payload):
+        try:
+            if isinstance(payload, dict):
+                dictionaries = payload.get("dictionaries") or payload.get("results") or []
+            else:
+                dictionaries = payload or []
+            self._updating_bsdd_dictionaries = True
+            self.form.bsddDictionaryList.blockSignals(True)
+            self.form.bsddDictionaryList.clear()
+            restored = set(self._restored_bsdd_dictionary_uris or [])
+            self._bsdd_dictionary_uris = []
+            for dictionary in dictionaries:
+                name = dictionary.get("name", "<unnamed>")
+                uri = dictionary.get("uri", "")
+                status = dictionary.get("status", "")
+                text = name if not status else "{} ({})".format(name, status)
+                self._bsdd_dictionary_labels[uri] = name
+                item = QtWidgets.QListWidgetItem(text)
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+                item.setData(QtCore.Qt.UserRole, uri)
+                item.setToolTip(uri)
+                is_checked = uri in restored if self._has_saved_bsdd_dictionary_state else False
+                item.setCheckState(QtCore.Qt.Checked if is_checked else QtCore.Qt.Unchecked)
+                self.form.bsddDictionaryList.addItem(item)
+                self._bsdd_dictionary_uris.append(uri)
+            self.form.bsddDictionaryList.blockSignals(False)
+            self._updating_bsdd_dictionaries = False
+            if self._has_saved_bsdd_dictionary_state:
+                self._save_bsdd_dictionary_state()
+            if self._is_bsdd_provider_active():
+                self._schedule_bsdd_search()
+        except Exception as err:
+            self._updating_bsdd_dictionaries = False
+            try:
+                self.form.bsddDictionaryList.blockSignals(False)
+            except Exception as block_err:
+                FreeCAD.Console.PrintWarning(
+                    "BIM bSDD UI warning in {}: {}\n".format(
+                        "_on_bsdd_dictionaries_ready.blockSignals", block_err
+                    )
+                )
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionaries_ready", err)
+            )
+
+    def _on_bsdd_search_ready(self, search_key, payload):
+        try:
+            if not self._is_bsdd_provider_active():
+                return
+            request_info = self._bsdd_pending_requests.pop(tuple(search_key), None)
+            if not request_info:
+                return
+            batch_id, dictionary_uri = request_info
+            if batch_id != self._bsdd_search_batch_id:
+                return
+            if isinstance(payload, dict):
+                classes = payload.get("classes") or payload.get("results") or []
+            else:
+                classes = payload or []
+            if (not classes) and self._bsdd_dictionary_candidates.get(dictionary_uri):
+                self._dispatch_bsdd_search_candidate(dictionary_uri)
+                return
+            if not classes:
+                self._finalize_bsdd_dictionary_branch(dictionary_uri)
+                self._finalize_bsdd_search_batch_if_empty()
+                return
+            self._append_bsdd_dictionary_results(dictionary_uri, classes)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_ready", err)
+            )
+
+    def _on_bsdd_result_changed(self, current, _previous):
+        try:
+            self._bsdd_selected_concept = None
+            self._bsdd_contract_detail_payload = None
+            self._bsdd_contract = None
+            concept = current.data(QtCore.Qt.UserRole)
+            if not concept:
+                self._populate_bsdd_properties(None)
+                return
+            self._bsdd_selected_concept = concept
+            self._update_bsdd_contract()
+            self._populate_bsdd_properties(concept)
+            concept_uri = concept.get("uri", "")
+            if concept_uri:
+                self._bsdd_client.fetch_concept(concept_uri)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_result_changed", err)
+            )
+
+    def _on_bsdd_concept_ready(self, concept_uri, payload):
+        try:
+            if not self._is_bsdd_provider_active():
+                return
+            current = self._get_selected_bsdd_concept()
+            if current and current.get("uri") == concept_uri:
+                self._bsdd_contract_detail_payload = payload
+                self._update_bsdd_contract()
+                self._populate_bsdd_properties(payload)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_concept_ready", err)
+            )
+
+    def _on_bsdd_request_failed(self, request_kind, message, cache_key):
+        try:
+            cache_key = tuple(cache_key) if isinstance(cache_key, (list, tuple)) else cache_key
+            request_info = self._bsdd_pending_requests.pop(cache_key, None)
+            if request_info:
+                batch_id, dictionary_uri = request_info
+                if batch_id == self._bsdd_search_batch_id:
+                    if self._bsdd_dictionary_candidates.get(dictionary_uri):
+                        self._dispatch_bsdd_search_candidate(dictionary_uri)
+                    else:
+                        self._finalize_bsdd_dictionary_branch(
+                            dictionary_uri,
+                            translate("BIM", "Request failed for this dictionary."),
+                        )
+                        self._finalize_bsdd_search_batch_if_empty()
+            FreeCAD.Console.PrintError(
+                "bSDD request failed [{}] {} ({})\n".format(request_kind, message, cache_key)
+            )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_request_failed", err)
+            )
+
+    def _populate_bsdd_properties(self, payload):
+        try:
+            self.form.bsddPropertyTable.setRowCount(0)
+            if not payload:
+                return
+            rows = []
+            for key in [
+                "name",
+                "referenceCode",
+                "dictionaryName",
+                "classType",
+                "uri",
+                "description",
+            ]:
+                value = payload.get(key)
+                if value:
+                    rows.append((key, value))
+            for relation_key in ["relatedIfcEntity", "relatedIfcEntities"]:
+                value = payload.get(relation_key)
+                if value:
+                    rows.append((relation_key, value))
+            for property_item in payload.get("classProperties", []):
+                label = property_item.get("name", "property")
+                pset = property_item.get("propertySet", "")
+                value = pset if pset else property_item.get("dataType", "")
+                rows.append((label, value))
+            self.form.bsddPropertyTable.setRowCount(len(rows))
+            for row, (key, value) in enumerate(rows):
+                self.form.bsddPropertyTable.setItem(row, 0, QtWidgets.QTableWidgetItem(str(key)))
+                self.form.bsddPropertyTable.setItem(row, 1, QtWidgets.QTableWidgetItem(str(value)))
+            self.form.bsddPropertyTable.resizeColumnsToContents()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_populate_bsdd_properties", err)
+            )
+
+    def _refresh_bsdd_context(self):
+        try:
+            self._bsdd_context_ifc_class = self._get_active_ifc_context()
+            context_text = self._bsdd_context_ifc_class or translate("BIM", "No IFC context")
+            if hasattr(self.form, "bsddContextLabel"):
+                self.form.bsddContextLabel.setText(
+                    translate("BIM", "Current IFC context: {}").format(context_text)
+                )
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_refresh_bsdd_context", err)
+            )
+
+    def _get_active_ifc_context(self):
+        try:
+            selection = FreeCADGui.Selection.getSelection()
+            if not selection:
+                return ""
+            obj = selection[0]
+            for attr_name in ["IfcClass", "IfcType", "IfcRole"]:
+                value = getattr(obj, attr_name, "")
+                if value and str(value).startswith("Ifc"):
+                    return str(value)
+            classification = getattr(obj, "Classification", "")
+            if classification:
+                for token in str(classification).split():
+                    if token.startswith("Ifc"):
+                        return token
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_active_ifc_context", err)
+            )
+        return ""
+
+    def _serialize_bsdd_dictionary_state(self):
+        try:
+            return "|".join(self._get_active_bsdd_dictionaries())
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_serialize_bsdd_dictionary_state", err)
+            )
+            return ""
+
+    def _save_bsdd_dictionary_state(self):
+        try:
+            if not FreeCAD.ActiveDocument:
+                return
+            meta = FreeCAD.ActiveDocument.Meta
+            meta[BSDD_DICTIONARY_META_KEY] = self._serialize_bsdd_dictionary_state()
+            meta[BSDD_DICTIONARY_META_PRESENT_KEY] = "1"
+            FreeCAD.ActiveDocument.Meta = meta
+            self._has_saved_bsdd_dictionary_state = True
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_save_bsdd_dictionary_state", err)
+            )
+
+    def _load_bsdd_dictionary_state(self):
+        try:
+            if not FreeCAD.ActiveDocument:
+                return False, set()
+            meta = FreeCAD.ActiveDocument.Meta
+            has_saved = BSDD_DICTIONARY_META_PRESENT_KEY in meta or BSDD_DICTIONARY_META_KEY in meta
+            value = meta.get(BSDD_DICTIONARY_META_KEY, "")
+            if not value:
+                return has_saved, set()
+            return has_saved, {entry for entry in value.split("|") if entry}
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_load_bsdd_dictionary_state", err)
+            )
+            return False, set()
+
+    def _get_selected_bsdd_concept(self):
+        try:
+            index = self.form.bsddResultsTree.currentIndex()
+            return index.data(QtCore.Qt.UserRole)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_selected_bsdd_concept", err)
+            )
+            return None
+
+    def _update_bsdd_contract(self):
+        try:
+            concept = self._bsdd_selected_concept
+            if not concept:
+                self._bsdd_contract = None
+                return
+            active_object = None
+            selection = FreeCADGui.Selection.getSelection()
+            if selection:
+                active_object = selection[0]
+            contract = self._bsdd_contract_module.build_canonical_contract(
+                concept, self._bsdd_contract_detail_payload, active_object
+            )
+            contract["legacy_string"] = (
+                self._bsdd_contract_module.build_legacy_classification_string(contract)
+            )
+            self._bsdd_contract = contract
+        except Exception as err:
+            self._bsdd_contract = None
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_update_bsdd_contract", err)
+            )
+
+    def _get_current_bsdd_contract(self):
+        try:
+            if not self._bsdd_contract:
+                self._update_bsdd_contract()
+            return self._bsdd_contract
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_current_bsdd_contract", err)
+            )
+            return None
+
+    def _store_bsdd_contract_for_item(self, tree_item, contract):
+        try:
+            tree_item.setData(0, QtCore.Qt.UserRole + BSDD_CONTRACT_ROLE, contract)
+            object_name = tree_item.toolTip(0)
+            if object_name and contract:
+                self._bsdd_object_contracts[object_name] = contract
+            elif object_name:
+                self._bsdd_object_contracts.pop(object_name, None)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_store_bsdd_contract_for_item", err)
+            )
+
+    def _get_stored_bsdd_contract_for_item(self, tree_item):
+        try:
+            contract = tree_item.data(0, QtCore.Qt.UserRole + BSDD_CONTRACT_ROLE)
+            if contract:
+                return contract
+            object_name = tree_item.toolTip(0)
+            if object_name:
+                return self._bsdd_object_contracts.get(object_name)
+            return None
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_stored_bsdd_contract_for_item", err)
+            )
+            return None
+
+    def _restore_bsdd_contract_for_item(self, tree_item, object_name):
+        try:
+            if not object_name:
+                return
+            contract = self._bsdd_object_contracts.get(object_name)
+            if contract:
+                self._store_bsdd_contract_for_item(tree_item, contract)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_restore_bsdd_contract_for_item", err)
+            )
+
+    def _apply_bsdd_contract_to_object(self, obj, contract):
+        try:
+            if not contract:
+                return False
+            from nativeifc import ifc_classification, ifc_tools
+
+            if self._bsdd_contract_module:
+                contract = self._bsdd_contract_module.refresh_contract_validation(contract, obj)
+            if not ifc_tools.get_ifcfile(obj) or not ifc_tools.get_ifc_element(obj):
+                return True
+            ifc_classification.apply_canonical_contract(obj, contract)
+            return True
+        except Exception as err:
+            FreeCAD.Console.PrintError(
+                "BIM bSDD semantic mapping error for {}: {}\n".format(obj.Label, err)
+            )
+            return False
+
+    def _get_selected_class_values(self):
+        try:
+            if self._is_bsdd_provider_active():
+                contract = self._get_current_bsdd_contract()
+                if not contract:
+                    return None, None, None
+                class_metadata = contract.get("class_metadata", {})
+                dictionary_metadata = contract.get("dictionary_metadata", {})
+                code = class_metadata.get("reference_code") or class_metadata.get("name")
+                label = class_metadata.get("name") or code
+                prefix = dictionary_metadata.get("name") or "bSDD"
+                return code, label, prefix
+            if len(self.form.treeClass.selectedItems()) != 1:
+                return None, None, None
+            item = self.form.treeClass.selectedItems()[0]
+            code = item.text(0)
+            label = item.toolTip(0) or item.text(0)
+            prefix = self.form.comboSystem.currentText()
+            return code, label, prefix
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_selected_class_values", err)
+            )
+            return None, None, None
+
+    def addSelection(self, document, object, element, position):
+        try:
+            del document, object, element, position
+            self._refresh_bsdd_context()
+            if self._is_bsdd_provider_active():
+                self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("addSelection", err)
+            )
+
+    def removeSelection(self, document, object, element, position=None):
+        try:
+            del document, object, element, position
+            self._refresh_bsdd_context()
+            if self._is_bsdd_provider_active():
+                self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("removeSelection", err)
+            )
+
+    def setSelection(self, document):
+        try:
+            del document
+            self._refresh_bsdd_context()
+            if self._is_bsdd_provider_active():
+                self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("setSelection", err)
+            )
+
+    def clearSelection(self, document):
+        try:
+            del document
+            self._refresh_bsdd_context()
+            if self._is_bsdd_provider_active():
+                self._schedule_bsdd_search()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("clearSelection", err)
+            )
+
     def updateObjects(self, idx=None):
         # store current state of tree into self.objectslist before redrawing
 
@@ -205,6 +1144,9 @@ class BIM_Classification:
                 elif child.toolTip(0) in self.matlist:
                     self.matlist[child.toolTip(0)] = child.text(1)
                 self.labellist[child.toolTip(0)] = child.text(0)
+                contract = self._get_stored_bsdd_contract_for_item(child)
+                if contract:
+                    self._bsdd_object_contracts[child.toolTip(0)] = contract
             for childrow in range(child.childCount()):
                 grandchild = child.child(childrow)
                 if grandchild.toolTip(0):
@@ -213,6 +1155,9 @@ class BIM_Classification:
                     elif grandchild.toolTip(0) in self.matlist:
                         self.matlist[grandchild.toolTip(0)] = grandchild.text(1)
                     self.labellist[grandchild.toolTip(0)] = grandchild.text(0)
+                    contract = self._get_stored_bsdd_contract_for_item(grandchild)
+                    if contract:
+                        self._bsdd_object_contracts[grandchild.toolTip(0)] = contract
 
         self.form.treeObjects.clear()
 
@@ -264,6 +1209,7 @@ class BIM_Classification:
                         it = QtGui.QTreeWidgetItem([self.labellist[name], d[name]])
                         it.setIcon(0, self.getIcon(obj))
                         it.setToolTip(0, name)
+                        self._restore_bsdd_contract_for_item(it, name)
                         mit.addChild(it)
             mit.sortChildren(0, QtCore.Qt.AscendingOrder)
         self.form.treeObjects.expandAll()
@@ -298,6 +1244,7 @@ class BIM_Classification:
                         it = QtGui.QTreeWidgetItem([self.labellist[name], self.objectslist[name]])
                         it.setIcon(0, self.getIcon(obj))
                         it.setToolTip(0, name)
+                        self._restore_bsdd_contract_for_item(it, name)
                         mit.addChild(it)
             mit.sortChildren(0, QtCore.Qt.AscendingOrder)
         self.form.treeObjects.expandAll()
@@ -344,6 +1291,7 @@ class BIM_Classification:
                 it = QtGui.QTreeWidgetItem([self.labellist[name], code])
                 it.setIcon(0, self.getIcon(obj))
                 it.setToolTip(0, name)
+                self._restore_bsdd_contract_for_item(it, name)
                 mit.addChild(it)
         # objects next
         for obj in rel:
@@ -352,6 +1300,7 @@ class BIM_Classification:
                 it = QtGui.QTreeWidgetItem([self.labellist[obj.Name], code])
                 it.setIcon(0, self.getIcon(obj))
                 it.setToolTip(0, name)
+                self._restore_bsdd_contract_for_item(it, obj.Name)
                 ok = False
                 for par in obj.InListRecursive:
                     if par.Name in done:
@@ -382,6 +1331,7 @@ class BIM_Classification:
                     it = QtGui.QTreeWidgetItem([self.labellist[name], code])
                     it.setIcon(0, self.getIcon(obj))
                     it.setToolTip(0, name)
+                    self._restore_bsdd_contract_for_item(it, name)
                     self.form.treeObjects.addTopLevelItem(it)
                     if obj in FreeCADGui.Selection.getSelection():
                         self.form.treeObjects.setCurrentItem(it)
@@ -543,20 +1493,35 @@ class BIM_Classification:
         return [item.ID, item.Name, [self.listize(it) for it in item.children]]
 
     def apply(self, item=None, col=None):
-        if self.form.treeObjects.selectedItems() and len(self.form.treeClass.selectedItems()) == 1:
-            c = self.form.treeClass.selectedItems()[0].text(0)
-            if self.form.checkPrefix.isChecked():
-                c = self.form.comboSystem.currentText() + " " + c
-            for m in self.form.treeObjects.selectedItems():
-                if m.toolTip(0):
-                    m.setText(1, c)
+        try:
+            del item, col
+            if self.form.treeObjects.selectedItems():
+                code, _label, prefix = self._get_selected_class_values()
+                if not code:
+                    return
+                if self.form.checkPrefix.isChecked() and prefix:
+                    code = prefix + " " + code
+                contract = (
+                    self._get_current_bsdd_contract() if self._is_bsdd_provider_active() else None
+                )
+                for m in self.form.treeObjects.selectedItems():
+                    if m.toolTip(0):
+                        m.setText(1, code)
+                        self._store_bsdd_contract_for_item(m, contract)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("apply", err))
 
     def rename(self):
-        if self.form.treeObjects.selectedItems() and len(self.form.treeClass.selectedItems()) == 1:
-            c = self.form.treeClass.selectedItems()[0].toolTip(0)
-            for m in self.form.treeObjects.selectedItems():
-                if m.toolTip(0):
-                    m.setText(0, c)
+        try:
+            if self.form.treeObjects.selectedItems():
+                _code, label, _prefix = self._get_selected_class_values()
+                if not label:
+                    return
+                for m in self.form.treeObjects.selectedItems():
+                    if m.toolTip(0):
+                        m.setText(0, label)
+        except Exception as err:
+            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("rename", err))
 
     def accept(self):
         if not self.isEditing:
@@ -571,6 +1536,13 @@ class BIM_Classification:
                     if item.toolTip(0):
                         obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
                         if obj:
+                            contract = self._get_stored_bsdd_contract_for_item(item)
+                            if contract:
+                                if not changed:
+                                    FreeCAD.ActiveDocument.openTransaction("Change standard codes")
+                                    changed = True
+                                if not self._apply_bsdd_contract_to_object(obj, contract):
+                                    continue
                             if hasattr(obj, "StandardCode"):
                                 if code != obj.StandardCode:
                                     if not changed:
@@ -602,15 +1574,27 @@ class BIM_Classification:
         else:
             # Close the form if user has pressed Enter and did not
             # select anything
-            if len(self.form.treeClass.selectedItems()) < 1:
+            code, _label, prefix = self._get_selected_class_values()
+            if not code:
                 return self.reject()
-
-            code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
             if ("StandardCode" in pl) or ("IfcClass" in pl):
                 FreeCAD.ActiveDocument.openTransaction("Change standard codes")
-                if self.form.checkPrefix.isChecked():
-                    code = self.form.comboSystem.currentText() + " " + code
+                if self._is_bsdd_provider_active():
+                    if not self._apply_bsdd_contract_to_object(
+                        self.isEditing, self._get_current_bsdd_contract()
+                    ):
+                        try:
+                            FreeCAD.ActiveDocument.abortTransaction()
+                        except Exception as err:
+                            FreeCAD.Console.PrintWarning(
+                                "BIM bSDD UI warning in {}: {}\n".format(
+                                    "accept.abortTransaction", err
+                                )
+                            )
+                        return self.reject()
+                if self.form.checkPrefix.isChecked() and prefix:
+                    code = prefix + " " + code
                 if "StandardCode" in pl:
                     self.isEditing.StandardCode = code
                 else:
@@ -631,21 +1615,36 @@ class BIM_Classification:
         return self.reject()
 
     def reject(self):
+        try:
+            if hasattr(self, "_search_timer") and self._search_timer.isActive():
+                self._search_timer.stop()
+            self._disconnect_bsdd_signals()
+            self._remove_selection_observer()
+        except Exception as err:
+            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("reject", err))
         self.form.hide()
         del self.form
         return True
 
     def onUpArrow(self):
-        if self.form:
-            i = self.form.treeClass.currentItem()
-            if self.form.treeClass.itemAbove(i):
-                self.form.treeClass.setCurrentItem(self.form.treeClass.itemAbove(i))
+        try:
+            if self.form and (not self._is_bsdd_provider_active()):
+                i = self.form.treeClass.currentItem()
+                if self.form.treeClass.itemAbove(i):
+                    self.form.treeClass.setCurrentItem(self.form.treeClass.itemAbove(i))
+        except Exception as err:
+            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("onUpArrow", err))
 
     def onDownArrow(self):
-        if self.form:
-            i = self.form.treeClass.currentItem()
-            if self.form.treeClass.itemBelow(i):
-                self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
+        try:
+            if self.form and (not self._is_bsdd_provider_active()):
+                i = self.form.treeClass.currentItem()
+                if self.form.treeClass.itemBelow(i):
+                    self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
+        except Exception as err:
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("onDownArrow", err)
+            )
 
     def onVisible(self, index):
         PARAMS.SetInt("BimClassificationVisibleState", getattr(index, "value", index))
