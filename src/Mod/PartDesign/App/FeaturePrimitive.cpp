@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             // as we use this for preview we can add it even if useless for subtractive
             AddSubShape.setValue(primitiveShape);
 
-            if (getAddSubType() == FeatureAddSub::Additive) {
+            if (getAddSubType() == FeatureAddSub::Type::Additive) {
                 Shape.setValue(getSolid(primitiveShape));
             }
             else {
@@ -111,22 +111,13 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         AddSubShape.setValue(primitiveShape);
 
         TopoShape boolOp(0);
-
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
-                break;
-            default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
-        }
         try {
-            boolOp.makeElementBoolean(maker, {base, primitiveShape}, nullptr, FuzzyTolerance.getValue());
+            boolOp.makeElementBoolean(
+                getBooleanMaker(),
+                {base, primitiveShape},
+                nullptr,
+                FuzzyTolerance.getValue()
+            );
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(

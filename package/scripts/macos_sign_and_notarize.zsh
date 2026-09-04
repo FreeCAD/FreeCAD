@@ -91,11 +91,38 @@ if ! command -v dmgbuild &> /dev/null; then
     exit 1
 fi
 
+# There are a number of reasons signing might fail (network flakiness on the part of GitHub or
+# Apple are the most common culprits). We just burned a bunch of time building this thing, let's
+# try a few times to sign before giving up...
+CODESIGN_MAX_ATTEMPTS="${CODESIGN_MAX_ATTEMPTS:-5}"
+
+codesign_with_retry() {
+    local target="$1"
+    local entitlements_file="$2"
+    local attempt=0
+    local out
+    while :; do
+        (( attempt++ ))
+        if out=$(/usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp \
+                    --entitlements "${entitlements_file}" "${target}" 2>&1); then
+            [[ -n "$out" ]] && print -r -- "$out"
+            return 0
+        fi
+        print -r -- "$out" >&2
+        if (( attempt >= CODESIGN_MAX_ATTEMPTS )); then
+            print -r -- "codesign failed ${attempt} times for ${target}, giving up" >&2
+            return 1
+        fi
+        print -r -- "codesign attempt ${attempt} failed for ${target}, retrying..." >&2
+        sleep $(( 2**attempt + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+    done
+}
+
 # A failure here is fatal: catch it as early as possible to hopefully be able to provide some kind
 # of useful diagnostic information.
 function run_codesign {
     echo "Signing $1"
-    if ! /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements entitlements.plist "$1"; then
+    if ! codesign_with_retry "$1" entitlements.plist; then
         print -r -- "❌ codesign failed for $1" >&2
         exit 1
     fi
@@ -105,7 +132,7 @@ function run_codesign_extension {
     local target="$1"
     local entitlements_file="$2"
     echo "Signing extension $target with entitlements $entitlements_file"
-    if ! /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements "$entitlements_file" "$target"; then
+    if ! codesign_with_retry "$target" "$entitlements_file"; then
         print -r -- "❌ codesign failed for extension $target" >&2
         exit 1
     fi
