@@ -1739,22 +1739,28 @@ void DrawViewDimension::updateSavedGeometry()
         return;
     }
     std::vector<TopoShape> newGeometry;
-    const std::vector<TopoShape> oldGeometry = SavedGeometry.getValues();
-    // need to clean up old saved geometry objects here?
+    // const std::vector<TopoShape> oldGeometry = SavedGeometry.getValues();
+    // need to clean up old saved geometry objects here? or does the property handle deletion?
 
     for (auto& entry : references) {
         if (entry.getSubName().empty()) {
-            // view only reference has no geometry.
+            // view only reference has no subelement. 3d references will be next.
             continue;
         }
         if (entry.hasGeometry()) {
             newGeometry.emplace_back(entry.asCanonicalTopoShape());
         }
         else {
-            // have to put something in the vector so SavedGeometry and references stay in sync.
-                newGeometry.emplace_back(Part::TopoShape());
+            // If we can't get a shape for a reference, we will just keep the existing
+            // SavedGeometry as the lesser evil.
+            Base::Console().error("Dimension reference to %s:%s has no geometry\n",
+                            entry.getObjectName(), entry.getSubName());
+            Base::Console().warning("SavedGeometry for %s was not updated\n",
+                                        Label.getValue());
+            return;
         }
     }
+
     if (!newGeometry.empty()) {
         SavedGeometry.setValues(newGeometry);
         saveFeatureBox();
