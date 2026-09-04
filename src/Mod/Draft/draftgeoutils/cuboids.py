@@ -30,6 +30,7 @@
 # \brief Provides various functions for cubic shapes (parallelepipeds).
 
 import math
+import sys
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
@@ -97,7 +98,7 @@ def getCubicDimensions(shape):
         return None
 
     # determine lowest face, which will be our base
-    z = [10, 1000000000000]
+    z = [10, sys.float_info.max]
     for i in range(len(shape.Faces)):
         if shape.Faces[i].CenterOfMass.z < z[1]:
             z = [i, shape.Faces[i].CenterOfMass.z]
