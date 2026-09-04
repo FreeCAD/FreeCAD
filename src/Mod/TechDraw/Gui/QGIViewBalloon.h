@@ -81,14 +81,14 @@ public:
 
     double getCenterX() const
     {
-        return mapToParent(m_labelText->boundingRect().center()).x();
+        return mapToParent(boundingRect().center()).x();
     }
     double getCenterY() const
     {
-        return mapToParent(m_labelText->boundingRect().center()).y();
+        return mapToParent(boundingRect().center()).y();
     }
 
-    void setFont(QFont font);
+    void setFont(const QFont& font);
     QFont getFont()
     {
         return m_labelText->font();
@@ -124,14 +124,17 @@ public:
     {
         verticalSep = sep;
     }
-    std::vector<int> getSeps() const
+    std::vector<double> getSeps() const
     {
         return seps;
     }
-    void setSeps(std::vector<int> newSeps)
+    void setSeps(std::vector<double> newSeps)
     {
         seps = newSeps;
     }
+
+    void buildCells(const QString& text, bool split, double shapeScale);
+
     QGCustomText* m_labelText;
 
 Q_SIGNALS:
@@ -152,7 +155,9 @@ private:
 
     QGIViewBalloon* parent;
     bool verticalSep;
-    std::vector<int> seps;
+    std::vector<double> seps;
+    std::vector<QGCustomText*> m_cellTexts;
+    QRectF m_customBoundingRect;
 
     QColor m_colNormal;
 
