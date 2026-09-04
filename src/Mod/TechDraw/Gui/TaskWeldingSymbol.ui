@@ -39,16 +39,16 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="leArrowTextC">
            <property name="toolTip">
-            <string>Text above arrow side symbol
-Angle, surface finish, root</string>
+           <!-- Text above arrow side symbol -->
+            <string>Angle, Surface Finish, Root</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLineEdit" name="leArrowTextL">
            <property name="toolTip">
-            <string>Text before arrow side symbol
-Preparation depth, (weld size)</string>
+           <!-- Text before arrow side symbol -->
+            <string>Preparation Depth, (Weld Size)</string>
            </property>
           </widget>
          </item>
@@ -89,8 +89,8 @@ Preparation depth, (weld size)</string>
          <item row="2" column="2">
           <widget class="QLineEdit" name="leArrowTextR">
            <property name="toolTip">
-            <string>Text after arrow side symbol
-Number of welds × length, (gap)</string>
+           <!-- Text after arrow side symbol -->
+            <string>Number of Welds × Length, (Gap)</string>
            </property>
           </widget>
          </item>
@@ -118,8 +118,8 @@ Number of welds × length, (gap)</string>
          <item row="0" column="0">
           <widget class="QLineEdit" name="leOtherTextL">
            <property name="toolTip">
-            <string>Text before other side symbol
-Preparation depth, (weld size)</string>
+           <!-- Text before other side symbol -->
+            <string>Preparation Depth, (Weld Size)</string>
            </property>
           </widget>
          </item>
@@ -160,16 +160,16 @@ Preparation depth, (weld size)</string>
          <item row="1" column="1">
           <widget class="QLineEdit" name="leOtherTextC">
            <property name="toolTip">
-            <string>Text below arrow side symbol
-Angle, surface finish, root</string>
+           <!-- Text below arrow side symbol -->
+            <string>Angle, Surface Finish, Root</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
           <widget class="QLineEdit" name="leOtherTextR">
            <property name="toolTip">
-            <string>Text after other side symbol
-Number of welds × length, (gap)</string>
+           <!-- Text after other side symbol -->
+            <string>Number of Welds × Length, (Gap)</string>
            </property>
           </widget>
          </item>
