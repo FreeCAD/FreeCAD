@@ -470,7 +470,7 @@ class BIM_Views:
         import WorkingPlane
 
         FreeCAD.ActiveDocument.openTransaction("Create WP Proxy")
-        obj = Draft.make_workingplaneproxy(WorkingPlane.get_working_plane().get_placement())
+        obj = Draft.make_working_plane_proxy(WorkingPlane.get_working_plane().get_placement())
         self.addToSelection(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

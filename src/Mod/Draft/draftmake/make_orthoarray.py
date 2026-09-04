@@ -54,9 +54,9 @@ def _make_ortho_array(
     function to be used by the different orthogonal arrays.
 
     - `make_ortho_array`
-    - `make_ortho_array2d`, no Z direction
+    - `make_ortho_array_2d`, no Z direction
     - `make_rect_array`, strictly rectangular
-    - `make_rect_array2d`, strictly rectangular, no Z direction
+    - `make_rect_array_2d`, strictly rectangular, no Z direction
 
     This function has no error checking, nor does it display messages.
     This should be handled by the subfunctions that use this one.
@@ -249,7 +249,7 @@ def make_ortho_array(
 
     See Also
     --------
-    make_ortho_array2d, make_rect_array, make_rect_array2d, make_polar_array,
+    make_ortho_array_2d, make_rect_array, make_rect_array_2d, make_polar_array,
     make_circular_array, make_path_array, make_point_array
     """
     _name = "make_ortho_array"
@@ -274,7 +274,7 @@ def make_ortho_array(
     return new_obj
 
 
-def make_ortho_array2d(
+def make_ortho_array_2d(
     base_object, v_x=App.Vector(10, 0, 0), v_y=App.Vector(0, 10, 0), n_x=2, n_y=2, use_link=True
 ):
     """Create a 2D orthogonal array from the given object.
@@ -317,10 +317,10 @@ def make_ortho_array2d(
 
     See Also
     --------
-    make_ortho_array, make_rect_array, make_rect_array2d, make_polar_array,
+    make_ortho_array, make_rect_array, make_rect_array_2d, make_polar_array,
     make_circular_array, make_path_array, make_point_array
     """
-    _name = "make_ortho_array2d"
+    _name = "make_ortho_array_2d"
 
     found, base_object = _find_object_in_doc(base_object, doc=App.activeDocument())
     if not found:
@@ -338,6 +338,16 @@ def make_ortho_array2d(
 
     new_obj = _make_ortho_array(base_object, v_x=v_x, v_y=v_y, n_x=n_x, n_y=n_y, use_link=use_link)
     return new_obj
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_ortho_array_2d()",
+)
+def make_ortho_array2d(*args, **kwarg):
+    """DEPRECATED. Use 'make_ortho_array_2d'."""
+    return make_ortho_array_2d(*args, **kwarg)
 
 
 def make_rect_array(base_object, d_x=10, d_y=10, d_z=10, n_x=2, n_y=2, n_z=1, use_link=True):
@@ -378,7 +388,7 @@ def make_rect_array(base_object, d_x=10, d_y=10, d_z=10, n_x=2, n_y=2, n_z=1, us
 
     See Also
     --------
-    make_ortho_array, make_ortho_array2d, make_rect_array2d, make_polar_array,
+    make_ortho_array, make_ortho_array_2d, make_rect_array_2d, make_polar_array,
     make_circular_array, make_path_array, make_point_array
     """
     _name = "make_rect_array"
@@ -410,7 +420,7 @@ def make_rect_array(base_object, d_x=10, d_y=10, d_z=10, n_x=2, n_y=2, n_z=1, us
     return new_obj
 
 
-def make_rect_array2d(base_object, d_x=10, d_y=10, n_x=2, n_y=2, use_link=True):
+def make_rect_array_2d(base_object, d_x=10, d_y=10, n_x=2, n_y=2, use_link=True):
     """Create a 2D rectangular array from the given object.
 
     This function wraps around `make_ortho_array`,
@@ -449,10 +459,10 @@ def make_rect_array2d(base_object, d_x=10, d_y=10, n_x=2, n_y=2, use_link=True):
 
     See Also
     --------
-    make_ortho_array, make_ortho_array2d, make_rect_array, make_polar_array,
+    make_ortho_array, make_ortho_array_2d, make_rect_array, make_polar_array,
     make_circular_array, make_path_array, make_point_array
     """
-    _name = "make_rect_array2d"
+    _name = "make_rect_array_2d"
 
     found, base_object = _find_object_in_doc(base_object, doc=App.activeDocument())
     if not found:
@@ -477,6 +487,16 @@ def make_rect_array2d(base_object, d_x=10, d_y=10, n_x=2, n_y=2, use_link=True):
         use_link=use_link,
     )
     return new_obj
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_rect_array_2d()",
+)
+def make_rect_array2d(*args, **kwarg):
+    """DEPRECATED. Use 'make_rect_array_2d'."""
+    return make_rect_array_2d(*args, **kwarg)
 
 
 ## @}

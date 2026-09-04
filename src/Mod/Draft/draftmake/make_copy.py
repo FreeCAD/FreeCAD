@@ -95,4 +95,14 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
     return newobj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_copy()",
+)
+def makeCopy(*args, **kwarg):
+    """DEPRECATED. Use 'make_copy'."""
+    return make_copy(*args, **kwarg)
+
+
 ## @}

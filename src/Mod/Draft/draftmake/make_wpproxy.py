@@ -38,7 +38,7 @@ if App.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
 
 
-def make_workingplaneproxy(placement):
+def make_working_plane_proxy(placement):
     """make_working_plane_proxy(placement)
 
     Creates a Working Plane proxy object in the current document.
@@ -62,11 +62,21 @@ def make_workingplaneproxy(placement):
 @deprecated(
     deprecated_in="26.3",
     removed_in="28.3",
-    replacement="Draft.make_workingplaneproxy()",
+    replacement="Draft.make_working_plane_proxy()",
+)
+def make_workingplaneproxy(*args, **kwarg):
+    """DEPRECATED. Use 'make_working_plane_proxy'."""
+    return make_working_plane_proxy(*args, **kwarg)
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_working_plane_proxy()",
 )
 def makeWorkingPlaneProxy(*args, **kwarg):
-    """DEPRECATED. Use 'make_workingplaneproxy'."""
-    return make_workingplaneproxy(*args, **kwarg)
+    """DEPRECATED. Use 'make_working_plane_proxy'."""
+    return make_working_plane_proxy(*args, **kwarg)
 
 
 ## @}
