@@ -71,8 +71,10 @@
 #endif
 
 static std::atomic_flag writing;
-static std::string resolvedCrashFilePath;    // Stored in UTF-8 (so on Windows, convert first)
+static std::string resolvedCrashFilePath;  // Stored in UTF-8 (so on Windows, convert first)
+#ifdef FC_HAVE_CPPTRACE
 static bool canCaptureSignalSafely = false;  // Determined during the prewarm phase
+#endif
 
 // Cygwin is a POSIX layer, so it uses the signal handlers rather than the Windows path.
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(FC_OS_CYGWIN)

@@ -52,7 +52,7 @@ namespace
 {
 bool isSubtractivePrimitive(PartDesign::FeaturePrimitive* primitive)
 {
-    return primitive->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return primitive->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 const char* primitiveTypeName(PartDesign::FeaturePrimitive::Type type)

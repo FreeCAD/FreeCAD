@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Vector import Vector
 from Conic import Conic
-from Point import Point
 from typing import overload
 
 @export(
@@ -47,6 +46,6 @@ class Circle(Conic):
     @overload
     def __init__(self, circle: "Circle", distance: float) -> None: ...
     @overload
-    def __init__(self, center: Point, normal: Vector, radius: float) -> None: ...
+    def __init__(self, center: Vector, normal: Vector, radius: float) -> None: ...
     @overload
-    def __init__(self, point1: Point, point2: Point, point3: Point) -> None: ...
+    def __init__(self, point1: Vector, point2: Vector, point3: Vector) -> None: ...

@@ -6,10 +6,7 @@ from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from DocumentSettings import DocumentSettings
-from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
-
-if TYPE_CHECKING:
-    from Part import Feature as _PartFeature
+from typing import Final, Literal, Sequence, overload
 
 
 class Document(PropertyContainer):
@@ -208,36 +205,14 @@ class Document(PropertyContainer):
         """
         ...
 
-    @overload
-    def addObject(
-        self,
-        type: Literal["Part::Feature"],
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
-    ) -> _PartFeature: ...
-
-    @overload
     def addObject(
         self,
         type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
+        name: str = ...,
+        objProxy: object | None = None,
+        viewProxy: object | None = None,
         attach: bool = False,
-        viewType: str = None,
-    ) -> DocumentObject: ...
-
-    def addObject(
-        self,
-        type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
+        viewType: str = ...,
     ) -> DocumentObject:
         """
         Add an object to document.

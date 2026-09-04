@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "freecad-typings"
+version = "{version}"
+description = "Type stubs for FreeCAD Python API"
+readme = "README.md"
+license = "LGPL-2.1-or-later"
+requires-python = ">=3.11"
+authors = [{{ name = "FreeCAD Developers", email = "contact@freecad.org" }}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Typing :: Typed",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://www.freecad.org/"
+Documentation = "https://wiki.freecad.org/Power_users_hub"
+Repository = "https://github.com/FreeCAD/FreeCAD"
+Issues = "https://github.com/FreeCAD/FreeCAD/issues"
+Changelog = "https://github.com/FreeCAD/FreeCAD/releases"
+Funding = "https://www.freecad.org/sponsor.php"
+Forum = "https://forum.freecad.org/"
+
+[tool.hatch.build.targets.sdist]
+ignore-vcs = true
+include = ["stubs/**", "pyproject.toml", "README.md"]
+
+[tool.hatch.build.targets.wheel]
+force-include = {{ "stubs" = "." }}

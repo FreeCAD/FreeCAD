@@ -41,7 +41,7 @@ Features:
 from typing import Any, Dict
 import copy
 
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessor, SCOPE_JOB, SCOPE_RUN
 
 import Constants
 import Path
@@ -101,6 +101,7 @@ class GenericSheetCutting(PostProcessor):
         return [
             {
                 "name": "pierce_delay",
+                "scope": SCOPE_JOB,
                 "type": "integer",
                 "label": translate("CAM", "Pierce Delay"),
                 "default": 1000,
@@ -113,6 +114,7 @@ class GenericSheetCutting(PostProcessor):
             },
             {
                 "name": "cooling_delay",
+                "scope": SCOPE_JOB,
                 "type": "integer",
                 "label": translate("CAM", "Cooling Delay"),
                 "default": 500,
@@ -125,6 +127,7 @@ class GenericSheetCutting(PostProcessor):
             },
             {
                 "name": "marking_delay",
+                "scope": SCOPE_JOB,
                 "type": "integer",
                 "label": translate("CAM", "Marking Delay"),
                 "default": 100,
@@ -150,10 +153,10 @@ class GenericSheetCutting(PostProcessor):
             },
             {
                 "name": "force_rapid_feeds",
+                "scope": SCOPE_RUN,
                 "type": "bool",
                 "label": translate("CAM", "Force Rapid Feeds"),
                 "default": False,
-                "runtime": True,
                 "help": translate(
                     "CAM",
                     "Force rapid-feed speeds for all feed specified commands. "
@@ -162,10 +165,10 @@ class GenericSheetCutting(PostProcessor):
             },
             {
                 "name": "mark_entry_only",
+                "scope": SCOPE_RUN,
                 "type": "bool",
                 "label": translate("CAM", "Mark Entry Points Only"),
                 "default": False,
-                "runtime": True,
                 "help": translate(
                     "CAM",
                     "Mark first entry points only (for drilling prep). "

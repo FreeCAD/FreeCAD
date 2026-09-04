@@ -24,12 +24,13 @@ class ViewProvider(ExtensionContainer):
         self,
         type: str,
         name: str,
-        group: str,
-        doc: str,
+        group: str = "",
+        doc: str = "",
         attr: int = 0,
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
+        enum_vals: list[str] | None = None,
     ) -> "ViewProvider":
         """
         Add a generic property.
@@ -37,17 +38,21 @@ class ViewProvider(ExtensionContainer):
         type : str
             Property type.
         name : str
-            Property name. Optional.
+            Property name.
         group : str
-            Property group. Optional.
+            Property group. Defaults to "".
+        doc : str
+            Property documentation. Defaults to "".
         attr : int
-            Property attributes.
+            Property attributes. Defaults to 0.
         read_only : bool
-            Read only property.
+            Whether the property is read-only. Defaults to False.
         hidden : bool
-            Hidden property.
+            Whether the property is hidden. Defaults to False.
         locked : bool
-            Locked property.
+            Whether the property is locked. Defaults to False.
+        enum_vals : list[str] | None
+            Initial values for an enumeration property. Defaults to None.
         """
         ...
 

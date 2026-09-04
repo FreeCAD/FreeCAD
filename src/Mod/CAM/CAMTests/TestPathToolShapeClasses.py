@@ -193,6 +193,34 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(ToolBitShape.get_subclass_by_name("slitting-saw"), ToolBitShapeSlittingSaw)
         self.assertIsNone(ToolBitShape.get_subclass_by_name("nonexistent"))
 
+    def test_resolve_asset_by_class_name(self):
+        """
+        Every concrete shape must be resolvable by its own class name alone,
+        with no filename or alias hint - this is the identifier ToolBit.
+        onDocumentRestored() falls back to using when ShapeID doesn't
+        resolve directly (e.g. for documents saved before ShapeID existed),
+        and what from_dict() may see from a template/.fctb dict that only
+        has a bare "shape-type". Regression test for the "ThreadMill" class
+        being stored as "thread-mill.fcstd": that mismatch meant this
+        lookup-by-class-name silently built an empty placeholder shape (no
+        geometry) instead of loading the real asset, which then crashed
+        with an AssertionError the first time something needed to build the
+        tool's 3D body (e.g. creating a Job from a template).
+        """
+        for shape_class in ToolBitShape.__subclasses__():
+            if shape_class.name.lower() in ("custom", "dummy"):
+                # Custom has no backing asset file by design; "dummy" is the
+                # DummyShape test fixture defined above, not a real shape.
+                continue
+            with self.subTest(shape_class=shape_class.name):
+                shape = ToolBitShape.resolve_asset(shape_class.name, assets=self.assets)
+                self.assertIsInstance(shape, shape_class)
+                self.assertIsNotNone(
+                    shape._data,
+                    f"resolving '{shape_class.name}' by class name alone produced a "
+                    "placeholder shape with no geometry data",
+                )
+
     # The following tests for default parameters and labels
     # should also not use mocks for FreeCAD document operations or Units.
     # They should rely on the actual FreeCAD environment and the
