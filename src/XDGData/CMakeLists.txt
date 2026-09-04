@@ -20,6 +20,12 @@ install(
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
 )
 
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/org.freecad.FreeCAD-${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}.desktop")
+    execute_process(
+        COMMAND python3 "${CMAKE_SOURCE_DIR}/src/Tools/sync_version.py"  --update
+    )
+endif()
+
 install(
     FILES org.freecad.FreeCAD.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
