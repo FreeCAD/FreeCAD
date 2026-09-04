@@ -1,0 +1,5 @@
+root = @CMAKE_SOURCE_DIR@
+txt = @CMAKE_BINARY_DIR@/coverage.txt
+print-summary = yes
+gcov-executable = @GCOV_EXECUTABLE@
+gcov-parallel = yes
