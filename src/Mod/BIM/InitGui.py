@@ -284,9 +284,9 @@ class BIMWorkbench(Workbench):
                 # default: Draft_ArrayTools (the main Array UI)
                 return (
                     "Draft_OrthoArray",
-                    "Draft_PathArray",
+                    "Draft_PathLinkArray",
                     "Draft_PolarArray",
-                    "Draft_PointArray",
+                    "Draft_PointLinkArray",
                 )
 
             def GetResources(self):
