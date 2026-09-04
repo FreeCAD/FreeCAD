@@ -46,6 +46,7 @@ public:
     App::PropertyVectorList   WayPoints;
     App::PropertyEnumeration  StartSymbol;
     App::PropertyEnumeration  EndSymbol;
+    App::PropertyEnumeration  Type;
 
     App::PropertyBool         Scalable;
     App::PropertyBool         AutoHorizontal;

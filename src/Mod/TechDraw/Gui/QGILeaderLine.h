@@ -73,7 +73,6 @@ public:
     void drawBorder() override;
     void updateView(bool update = false) override;
 
-    // leaders are not draggable
     void dragFinished() override { };
 
     virtual TechDraw::DrawLeaderLine* getLeaderFeature();
@@ -87,6 +86,7 @@ public:
     double getLineWidth();
 
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
@@ -114,7 +114,6 @@ protected:
     QPainterPath makeLeaderPath(std::vector<QPointF> qPoints);
     std::vector<QPointF> getWayPointsFromFeature();
     QPointF getAttachFromFeature();
-
     QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
     void saveState();
@@ -141,6 +140,10 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
 
     bool m_blockDraw;//prevent redraws while updating.
+
+    bool m_dragActive = false;
+    QPointF m_dragDelta = QPointF(0.0, 0.0);
+    int m_dragPointIndex = -1;
 };
 
 }// namespace TechDrawGui

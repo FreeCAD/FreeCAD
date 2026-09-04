@@ -30,6 +30,7 @@
 #include "MDIViewPage.h"
 
 class Ui_TaskRichAnno;
+class TechDrawLeaderLineHandler;
 
 namespace TechDraw
 {
@@ -95,6 +96,8 @@ protected Q_SLOTS:
     void onFrameColorChanged();
     void onFrameWidthChanged(double value);
     void onFrameStyleChanged(int index);
+    void onLeaderLineToggled(bool checked);
+    void onLeaderTypeChanged(int index);
     void onViewTransformed();
     void refocusAnnotation();
 
@@ -106,6 +109,10 @@ private:
     void enterPlacementMode();
     void createAndSetupAnnotation(const QPointF* scenePos = nullptr);
     void createAnnoIfNotAlready();
+    void startLeaderLinePlacement();
+    void stopLeaderLinePlacement();
+    void removeExistingLeaderLine();
+    void updateLeaderPoints();
 
     std::unique_ptr<Ui_TaskRichAnno> ui;
 
@@ -133,6 +140,8 @@ private:
 
     QPointer<MRichTextEdit> m_toolbar {nullptr};
     QPointer<QWidget> m_viewport {nullptr};
+
+    TechDrawLeaderLineHandler* m_leaderHandler {nullptr};
 
     int m_tid {0};
 };

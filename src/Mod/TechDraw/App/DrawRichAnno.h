@@ -45,6 +45,7 @@ public:
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
     App::PropertyBool         OriginCentered;
+    App::PropertyLink         LeaderLine;
 
     void Restore(Base::XMLReader& reader) override;
     short mustExecute() const override;

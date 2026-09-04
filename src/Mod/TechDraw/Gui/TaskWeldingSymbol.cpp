@@ -26,6 +26,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -36,9 +37,12 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "TaskWeldingSymbol.h"
+#include "ViewProviderPage.h"
 #include "ui_TaskWeldingSymbol.h"
 #include "PreferencesGui.h"
+#include "QGVPage.h"
 #include "SymbolChooser.h"
+#include "ViewProviderPage.h"
 
 
 using namespace Gui;
@@ -62,6 +66,49 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leadFeat) :
     ui->setupUi(this);
 
     setUiPrimary();
+
+    connect(ui->pbArrowSymbol, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onArrowSymbolCreateClicked);
+    connect(ui->pbOtherSymbol, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onOtherSymbolCreateClicked);
+    connect(ui->pbOtherErase, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onOtherEraseCreateClicked);
+    connect(ui->pbFlipSides, &QPushButton::clicked,
+            this, &TaskWeldingSymbol::onFlipSidesCreateClicked);
+    connect(ui->fcSymbolDir, &FileChooser::fileNameSelected,
+            this, &TaskWeldingSymbol::onDirectorySelected);
+}
+//ctor for creating leader and welding symbol
+TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawPage* page) :
+    ui(new Ui_TaskWeldingSymbol),
+    m_leadFeat(nullptr),
+    m_weldFeat(nullptr),
+    m_arrowFeat(nullptr),
+    m_otherFeat(nullptr),
+    m_btnOK(nullptr),
+    m_btnCancel(nullptr),
+    m_createMode(true),
+    m_otherDirty(false)
+{
+
+    ui->setupUi(this);
+    setUiPrimary();
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    if (!activeGui) {
+        return;
+    }
+    auto* vpp = static_cast<ViewProviderPage*>(activeGui->getViewProvider(page));
+
+    m_leaderHandler = new TechDrawLeaderLineHandler();
+    m_leaderHandler->kinkLength = 20.0; // Good length for Welding Symbol Leader???
+    m_leaderHandler->onFinished = [this]() {
+        m_leadFeat = m_leaderHandler->getLeaderLine();
+        m_leaderHandler = nullptr;
+    };
+
+    vpp->getQGVPage()->activateHandler(m_leaderHandler);
+    m_leaderHandler->attached = true;
 
     connect(ui->pbArrowSymbol, &QPushButton::clicked,
             this, &TaskWeldingSymbol::onArrowSymbolCreateClicked);
@@ -141,6 +188,9 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
 
 TaskWeldingSymbol::~TaskWeldingSymbol()
 {
+    if (m_leaderHandler) {
+        m_leaderHandler->onFinished = nullptr;
+    }
 }
 
 void TaskWeldingSymbol::updateTask()
@@ -607,6 +657,16 @@ TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld)
     : TaskDialog()
 {
     widget  = new TaskWeldingSymbol(weld);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
+                                             widget->windowTitle(), true, nullptr);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawPage* page)
+    : TaskDialog()
+{
+    widget  = new TaskWeldingSymbol(page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);

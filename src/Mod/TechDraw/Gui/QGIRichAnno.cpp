@@ -44,6 +44,7 @@
 #include <Gui/Control.h>
 
 #include <App/AutoTransaction.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -52,7 +53,9 @@
 #include "PreferencesGui.h"
 #include "QGCustomRect.h"
 #include "QGCustomText.h"
+#include "QGILeaderLine.h"
 #include "Rez.h"
+#include "ViewProviderLeader.h"
 #include "ViewProviderRichAnno.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
@@ -104,6 +107,7 @@ QGIRichAnno::QGIRichAnno() :
             this,
             &QGIRichAnno::onContentsChanged);
     connect(m_text, &QGCustomText::selectionChanged, this, &QGIRichAnno::selectionChanged);
+    connect(this, &QGIRichAnno::positionChanged, this, &QGIRichAnno::updateAttachedLeaderLine);
 }
 
 void QGIRichAnno::updateView(bool update)
@@ -641,6 +645,61 @@ QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant& valu
         Q_EMIT positionChanged();
     }
     return QGIView::itemChange(change, value);
+}
+
+void QGIRichAnno::updateAttachedLeaderLine()
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (!annoFeat) {
+        return;
+    }
+
+    auto leaderFeat = dynamic_cast<TechDraw::DrawLeaderLine*>(annoFeat->LeaderLine.getValue());
+    if (!leaderFeat) {
+        return;
+    }
+
+    auto leaderVP = dynamic_cast<ViewProviderLeader*>(getViewProvider(leaderFeat));
+    QGILeaderLine* leaderView =  dynamic_cast<QGILeaderLine*>(leaderVP->getQView());
+
+    QRectF annoRect = mapToScene(frameRect()).boundingRect();
+    QPointF attachScenePos = leaderView->mapToScene(QPointF(0.0, 0.0));
+    bool attachOnLeft = attachScenePos.x() < annoRect.center().x();
+
+    long leaderType = leaderFeat->Type.getValue();
+    std::vector<QPointF> richAnnoPoints;
+    
+    // Normal and Complex with kink
+    if (leaderType == 0 || leaderType == 3) {
+        QPointF kinkStart = attachOnLeft ? annoRect.bottomLeft() : annoRect.bottomRight();
+        QPointF kinkEnd = attachOnLeft ? annoRect.bottomRight() : annoRect.bottomLeft();
+        richAnnoPoints = {kinkStart, kinkEnd};
+    }
+    // Straight and Complex
+    else {
+        QPointF leftMid = annoRect.bottomLeft() + (annoRect.topLeft() - annoRect.bottomLeft()) / 2.0;
+        QPointF rightMid = annoRect.bottomRight() + (annoRect.topRight() - annoRect.bottomRight()) / 2.0;
+        richAnnoPoints = {attachOnLeft ? leftMid : rightMid};
+    }
+
+    std::vector<QPointF> localPoints;
+    for (auto& point : leaderFeat->getTransformedWayPoints()) {
+        localPoints.push_back(DU::toQPointF(Rez::guiX(point)));
+    }
+
+    // Turn the Rich Annotation points into local coordinates of the leader line
+    size_t startIndex = localPoints.size() - richAnnoPoints.size();
+    for (size_t i = 0; i < richAnnoPoints.size(); i++) {
+        localPoints[startIndex + i] = leaderView->mapFromScene(richAnnoPoints[i]);
+    }
+
+    std::vector<Base::Vector3d> wayPoints;
+    for (auto& point : localPoints) {
+        wayPoints.push_back(Rez::appX(DU::toVector3d(point - localPoints.front())));
+    }
+
+    leaderFeat->WayPoints.setValues(leaderFeat->makeCanonicalPointsInverted(wayPoints));
+    leaderFeat->recomputeFeature();
 }
 
 void QGIRichAnno::updateLayout()

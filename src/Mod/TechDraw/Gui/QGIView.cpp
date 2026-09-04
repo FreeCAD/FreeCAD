@@ -823,7 +823,8 @@ QRectF QGIView::frameRect() const
             child->type() != UserType::QGIVertex &&
             child->type() != UserType::QGICMark  &&
             child->type() != UserType::QGIViewDimension &&
-            child->type() != UserType::QGIViewBalloon) {
+            child->type() != UserType::QGIViewBalloon &&
+            child->type() != UserType::QGILeaderLine) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
         }

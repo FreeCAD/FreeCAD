@@ -107,23 +107,7 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
         return;
     }
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawView* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
-        if (!baseFeat) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("Cannot attach leader. No base view selected."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("You must select a base view for the line"));
-            return;
-    }
-
-    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(baseFeat,
-                                                                 page));
+    Gui::Control().showDialog(new TechDrawGui::TaskDlgLeaderLine(page));
     updateActive();
     Gui::Selection().clearSelection();
 }
@@ -1422,18 +1406,15 @@ void CmdTechDrawWeldSymbol::activated(int iMsg)
                                          getObjectsOfType(TechDraw::DrawWeldSymbol::getClassTypeId());
     TechDraw::DrawLeaderLine* leadFeat = nullptr;
     TechDraw::DrawWeldSymbol* weldFeat = nullptr;
-    if ( (leaders.size() != 1) &&
-         (welds.size() != 1) ) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one leader line or one weld symbol"));
-        return;
-    }
+
     if (!leaders.empty()) {
         leadFeat = static_cast<TechDraw::DrawLeaderLine*> (leaders.front());
         Gui::Control().showDialog(new TaskDlgWeldingSymbol(leadFeat));
     } else if (!welds.empty()) {
         weldFeat = static_cast<TechDraw::DrawWeldSymbol*> (welds.front());
         Gui::Control().showDialog(new TaskDlgWeldingSymbol(weldFeat));
+    } else {
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(page));
     }
     updateActive();
     Gui::Selection().clearSelection();
