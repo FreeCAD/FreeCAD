@@ -127,20 +127,6 @@ using BRepAdaptor_HCompCurve = BRepAdaptor_CompCurve;
 namespace Part
 {
 
-static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
-{
-    if (shape.isNull()) {
-        FC_THROWM(NullShapeException, "Null input shape");
-    }
-    if (shape.getShape().ShapeType() != TopAbs_COMPOUND) {
-        res.push_back(shape);
-        return;
-    }
-    for (auto& s : shape.getSubTopoShapes()) {
-        expandCompound(s, res);
-    }
-}
-
 void TopoShape::initCache(int reset) const
 {
     if (reset > 0 || !_cache || _cache->isTouched(_Shape)) {
@@ -4360,6 +4346,11 @@ TopoShape& TopoShape::makeElementCut(const std::vector<TopoShape>& shapes, const
     return makeElementBoolean(Part::OpCodes::Cut, shapes, op, tol);
 }
 
+TopoShape& TopoShape::makeElementCommon(const std::vector<TopoShape>& shapes, const char* op, double tol)
+{
+    return makeElementBoolean(Part::OpCodes::Common, shapes, op, tol);
+}
+
 TopoShape& TopoShape::makeElementXor(
     const std::vector<TopoShape>& shapes,
     const char* op,
@@ -6198,6 +6189,23 @@ TopoShape& TopoShape::makeElementBoolean(
                 }
             }
             else if (_shapes.size()) {
+                _shapes.push_back(s);
+            }
+        }
+    }
+    else if (strcmp(maker, Part::OpCodes::Common) == 0) {
+        for (const auto& s : shapes) {
+            if (s.isNull()) {
+                FC_THROWM(NullShapeException, "Null input shape");
+            }
+
+            // we need to expand compounds because for COMMON operations
+            // the inputs (compound(A, B), C)
+            // should be treated as A ∩ B ∩ C
+            if (s.shapeType() == TopAbs_COMPOUND) {
+                expandCompound(s, _shapes);
+            }
+            else {
                 _shapes.push_back(s);
             }
         }

@@ -46,7 +46,8 @@ public:
     enum class Mode
     {
         Features,
-        WholeShape
+        WholeShape,
+        FeatureResult
     };
 
     Transformed();
@@ -119,6 +120,45 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
+    enum class Operation : std::uint8_t
+    {
+        Add,
+        Sub
+    };
+    struct FeatureShape
+    {
+        std::string source;
+        Part::TopoShape shape;
+        Operation operation;
+    };
+
+    App::DocumentObjectExecReturn* executeFeatures(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+    App::DocumentObjectExecReturn* executeWholeBody(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+    App::DocumentObjectExecReturn* executeFeatureResult(
+        const std::vector<gp_Trsf>& transformations,
+        Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals
+    );
+
+    App::DocumentObjectExecReturn* computeFeatureShapes(
+        const Part::TopoShape& supportShape,
+        const std::vector<DocumentObject*>& originals,
+        std::vector<FeatureShape>& shapes
+    );
+
+    std::vector<TopoShape> getTransformedCompShape(
+        const std::vector<gp_Trsf>& transformations,
+        const Part::TopoShape& supportShape,
+        const Part::TopoShape& origShape
+    );
 };
 
 }  // namespace PartDesign
