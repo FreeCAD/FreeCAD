@@ -149,11 +149,11 @@ void PropertyRowHeights::Restore(Base::XMLReader& reader)
 
 PyObject* PropertyRowHeights::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new PropertyRowHeightsPy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new PropertyRowHeightsPy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 void PropertyRowHeights::clear()

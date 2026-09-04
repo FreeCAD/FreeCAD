@@ -314,7 +314,7 @@ void TaskMeasure::createObject(const App::MeasureType* measureType)
 
     if (measureType->isPython) {
         Base::PyGILStateLocker lock;
-        auto pyMeasureClass = measureType->pythonClass;
+        auto pyMeasureClass = Py::Object(measureType->pythonClass.get());
 
         // Create a MeasurePython instance
         // Note: writing addObject<Measure::MeasurePython>() is not yet supported because
@@ -327,7 +327,7 @@ void TaskMeasure::createObject(const App::MeasureType* measureType)
         // proxy
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(_mMeasureObject->getPyObject()));
-        PyObject* result = PyObject_CallObject(pyMeasureClass, args.ptr());
+        PyObject* result = PyObject_CallObject(pyMeasureClass.ptr(), args.ptr());
         Py_XDECREF(result);
     }
     else {

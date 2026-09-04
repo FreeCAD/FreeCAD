@@ -105,8 +105,9 @@ std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
 // ----------------------------------------------------------------------------
 
 SelectionGatePython::SelectionGatePython(const Py::Object& obj)
-    : gate(obj)
-{}
+{
+    gate.reset(obj);
+}
 
 SelectionGatePython::~SelectionGatePython() = default;
 
@@ -114,8 +115,9 @@ bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, co
 {
     Base::PyGILStateLocker lock;
     try {
-        if (this->gate.hasAttr(std::string("allow"))) {
-            Py::Callable method(this->gate.getAttr(std::string("allow")));
+        Py::Object gateObject(gate.get());
+        if (gateObject.hasAttr(std::string("allow"))) {
+            Py::Callable method(gateObject.getAttr(std::string("allow")));
             Py::Object pyDoc = Py::asObject(doc->getPyObject());
             Py::Object pyObj = Py::asObject(obj->getPyObject());
             Py::Object pySub = Py::None();
@@ -141,21 +143,17 @@ bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, co
 // ----------------------------------------------------------------------------
 
 SelectionFilterGatePython::SelectionFilterGatePython(SelectionFilterPy* obj)
-    : filter(obj)
 {
     Base::PyGILStateLocker lock;
-    Py_INCREF(filter);
+    Py_INCREF(obj);
+    filter.reset(static_cast<PyObject*>(obj));
 }
 
-SelectionFilterGatePython::~SelectionFilterGatePython()
-{
-    Base::PyGILStateLocker lock;
-    Py_DECREF(filter);
-}
+SelectionFilterGatePython::~SelectionFilterGatePython() = default;
 
 bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, const char* sub)
 {
-    return filter->filter.test(obj, sub);
+    return SelectionFilterPy::cast(filter.get())->filter.test(obj, sub);
 }
 
 // ----------------------------------------------------------------------------

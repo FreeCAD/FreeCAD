@@ -100,7 +100,7 @@ View3DInventor::View3DInventor(
     Qt::WindowFlags wflags
 )
     : MDIViewWithCamera(pcDocument, parent, wflags)
-    , _viewerPy(nullptr)
+    , _viewerPy()
 {
     stack = new QStackedWidget(this);
     // important for highlighting
@@ -184,8 +184,7 @@ View3DInventor::~View3DInventor()
     }
 
     if (_viewerPy) {
-        Base::PyGILStateLocker lock;
-        Py_DECREF(_viewerPy);
+        _viewerPy.reset();
     }
 
     // here is from time to time trouble!!!
@@ -223,11 +222,11 @@ View3DInventor* View3DInventor::clone()
 PyObject* View3DInventor::getPyObject()
 {
     if (!_viewerPy) {
-        _viewerPy = new View3DInventorPy(this);
+        _viewerPy.reset(new View3DInventorPy(this));
     }
 
-    Py_INCREF(_viewerPy);
-    return _viewerPy;
+    Py_INCREF(_viewerPy.get());
+    return _viewerPy.get();
 }
 
 void View3DInventor::applySettings()

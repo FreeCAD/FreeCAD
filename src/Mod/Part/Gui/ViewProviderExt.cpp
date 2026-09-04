@@ -299,10 +299,10 @@ ViewProviderPartExt::~ViewProviderPartExt()
 PyObject* ViewProviderPartExt::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderPartExtPy(this);
+        pyViewObject.reset(new ViewProviderPartExtPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)

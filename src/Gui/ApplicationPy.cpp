@@ -1118,7 +1118,8 @@ PyObject* ApplicationPy::sActivateWorkbench(PyObject* /*self*/, PyObject* args)
     requirePythonMainThread("FreeCADGui.activateWorkbench");
 
     // search for workbench handler from the dictionary
-    PyObject* pcWorkbench = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
+    PyObject* pcWorkbench
+        = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary.get(), psKey);
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
         return nullptr;
@@ -1200,13 +1201,17 @@ PyObject* ApplicationPy::sAddWorkbench(PyObject* /*self*/, PyObject* args)
 
         std::string item = name.as_std_string("ascii");
         PyObject* wb
-            = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, item.c_str());
+            = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary.get(), item.c_str());
         if (wb) {
             PyErr_Format(PyExc_KeyError, "'%s' already exists.", item.c_str());
             return nullptr;
         }
 
-        PyDict_SetItemString(Application::Instance->_pcWorkbenchDictionary, item.c_str(), object.ptr());
+        PyDict_SetItemString(
+            Application::Instance->_pcWorkbenchDictionary.get(),
+            item.c_str(),
+            object.ptr()
+        );
         Application::Instance->signalRefreshWorkbenches();
     }
     catch (const Py::Exception&) {
@@ -1223,14 +1228,14 @@ PyObject* ApplicationPy::sRemoveWorkbench(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    PyObject* wb = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
+    PyObject* wb = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary.get(), psKey);
     if (!wb) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
         return nullptr;
     }
 
     WorkbenchManager::instance()->removeWorkbench(psKey);
-    PyDict_DelItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
+    PyDict_DelItemString(Application::Instance->_pcWorkbenchDictionary.get(), psKey);
     Application::Instance->signalRefreshWorkbenches();
 
     Py_Return;
@@ -1244,7 +1249,8 @@ PyObject* ApplicationPy::sGetWorkbench(PyObject* /*self*/, PyObject* args)
     }
 
     // get the python workbench object from the dictionary
-    PyObject* pcWorkbench = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
+    PyObject* pcWorkbench
+        = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary.get(), psKey);
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", psKey);
         return nullptr;
@@ -1260,8 +1266,8 @@ PyObject* ApplicationPy::sListWorkbenches(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    Py_INCREF(Application::Instance->_pcWorkbenchDictionary);
-    return Application::Instance->_pcWorkbenchDictionary;
+    Py_INCREF(Application::Instance->_pcWorkbenchDictionary.get());
+    return Application::Instance->_pcWorkbenchDictionary.get();
 }
 
 PyObject* ApplicationPy::sActiveWorkbench(PyObject* /*self*/, PyObject* args)
@@ -1279,7 +1285,7 @@ PyObject* ApplicationPy::sActiveWorkbench(PyObject* /*self*/, PyObject* args)
     // get the python workbench object from the dictionary
     std::string key = actWb->name();
     PyObject* pcWorkbench
-        = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, key.c_str());
+        = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary.get(), key.c_str());
     if (!pcWorkbench) {
         PyErr_Format(PyExc_KeyError, "No such workbench '%s'", key.c_str());
         return nullptr;

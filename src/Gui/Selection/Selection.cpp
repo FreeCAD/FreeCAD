@@ -2267,7 +2267,10 @@ SelectionSingleton::SelectionSingleton()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-SelectionSingleton::~SelectionSingleton() = default;
+SelectionSingleton::~SelectionSingleton()
+{
+    rmvSelectionGate();
+}
 
 SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
@@ -2281,6 +2284,7 @@ SelectionSingleton& SelectionSingleton::instance()
 
 void SelectionSingleton::destruct()
 {
+    SelectionObserverPython::clearObservers();
     if (_pcSingleton) {
         delete _pcSingleton;
     }

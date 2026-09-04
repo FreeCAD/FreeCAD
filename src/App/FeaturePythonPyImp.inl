@@ -101,8 +101,9 @@ FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(Base::BaseClass *pcObject, PyType
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 {
-    Base::PyGILStateLocker lock;
-    Py_DECREF(dict_methods);
+    // This is a Python deallocator path. Python already owns the thread state,
+    // including during Py_Finalize(); do not reacquire the GIL here.
+    Py_XDECREF(dict_methods);
 }
 
 template<class FeaturePyT>

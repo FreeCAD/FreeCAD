@@ -937,6 +937,9 @@ void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
 #ifdef FC_USE_VTK_PYTHON
     auto extrPanel = new TaskPostExtraction(this);
     dlg->addTaskBox(extrPanel->windowIcon().pixmap(32), extrPanel);
+    QObject::connect(dlg, &Gui::TaskView::TaskDialog::aboutToBeDestroyed, extrPanel, [extrPanel]() {
+        extrPanel->clearPythonPanel();
+    });
 #endif
 }
 

@@ -34,6 +34,8 @@
 #include <App/Material.h>
 #include <App/TransactionalObject.h>
 #include <Base/BoundBox.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Vector3D.h>
 
 #include "TreeItemMode.h"
@@ -844,7 +846,7 @@ protected:
     SoSwitch* pcModeSwitch;
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
-    ViewProviderPy* pyViewObject {nullptr};
+    Base::NativePythonReference pyViewObject;
     bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;

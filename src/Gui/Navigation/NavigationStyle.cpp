@@ -418,9 +418,10 @@ NavigationStyle::~NavigationStyle()
     delete this->animator;
 
     if (!pythonObject.is(nullptr)) {
-        Base::PyGILStateLocker lock;
         Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(pythonObject.ptr());
-        obj->setInvalid();
+        // The wrapper may outlive this native style.  Do not touch its
+        // Python-owned attributes from a native destructor.
+        obj->setInvalidWithoutPython();
     }
 }
 

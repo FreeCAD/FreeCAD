@@ -155,11 +155,11 @@ void PropertyColumnWidths::Restore(Base::XMLReader& reader)
 
 PyObject* PropertyColumnWidths::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new PropertyColumnWidthsPy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new PropertyColumnWidthsPy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 void PropertyColumnWidths::clear()

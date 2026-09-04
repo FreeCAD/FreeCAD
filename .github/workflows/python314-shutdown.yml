@@ -1,0 +1,126 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+name: Python 3.14 shutdown regression
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/python314-shutdown.yml"
+      - "ci/pixi-python314/**"
+      - "src/App/**"
+      - "src/Base/**"
+      - "src/Gui/**"
+      - "tests/src/**"
+
+permissions:
+  contents: read
+
+jobs:
+  shutdown-tests:
+    name: Shutdown tests (Python 3.14)
+    runs-on: ubuntu-24.04
+    # This is deliberately non-blocking while the new toolchain is validated.
+    continue-on-error: true
+    timeout-minutes: 90
+    env:
+      PIXI_MANIFEST: ci/pixi-python314/pixi.toml
+      PYTHON314_ROOT: ${{ github.workspace }}/ci/pixi-python314/.pixi/envs/default
+      builddir: ${{ github.workspace }}/build/python314
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout source code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          submodules: true
+
+      - name: Install FreeCAD C++ dependencies
+        run: ./package/ubuntu/install-apt-packages.sh
+
+      - name: Install Pixi
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        with:
+          pixi-version: v0.70.2
+          cache: false
+
+      - name: Install Python 3.14 runtime
+        run: pixi install --manifest-path "$PIXI_MANIFEST" --frozen
+
+      - name: Configure CMake
+        run: |
+          pixi run --manifest-path "$PIXI_MANIFEST" cmake \
+            -S . \
+            -B "$builddir" \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_PREFIX_PATH="$PYTHON314_ROOT" \
+            -DPython3_ROOT_DIR="$PYTHON314_ROOT" \
+            -DPython3_EXECUTABLE="$PYTHON314_ROOT/bin/python" \
+            -DPython_EXECUTABLE="$PYTHON314_ROOT/bin/python" \
+            -DFREECAD_QT_VERSION=6 \
+            -DFREECAD_USE_EXTERNAL_PYCXX=ON \
+            -DFREECAD_USE_EXTERNAL_JSON=ON \
+            -DFREECAD_USE_EXTERNAL_COIN_PIVY=OFF \
+            -DFREECAD_CHECK_PIVY=OFF \
+            -DBUILD_GUI=ON \
+            -DBUILD_TEST=ON \
+            -DENABLE_DEVELOPER_TESTS=ON \
+            -DBUILD_ADDONMGR=OFF \
+            -DBUILD_ASSEMBLY=OFF \
+            -DBUILD_BIM=OFF \
+            -DBUILD_CAM=OFF \
+            -DBUILD_DRAFT=OFF \
+            -DBUILD_FEM=OFF \
+            -DBUILD_FLAT_MESH=OFF \
+            -DBUILD_HELP=OFF \
+            -DBUILD_IMPORT=OFF \
+            -DBUILD_INSPECTION=OFF \
+            -DBUILD_JTREADER=OFF \
+            -DBUILD_MATERIAL=OFF \
+            -DBUILD_MESH=OFF \
+            -DBUILD_MESH_PART=OFF \
+            -DBUILD_MEASURE=OFF \
+            -DBUILD_OPENSCAD=OFF \
+            -DBUILD_PART=OFF \
+            -DBUILD_PART_DESIGN=OFF \
+            -DBUILD_PLOT=OFF \
+            -DBUILD_POINTS=OFF \
+            -DBUILD_REVERSEENGINEERING=OFF \
+            -DBUILD_ROBOT=OFF \
+            -DBUILD_SHOW=OFF \
+            -DBUILD_SKETCHER=OFF \
+            -DBUILD_SPREADSHEET=OFF \
+            -DBUILD_START=OFF \
+            -DBUILD_SURFACE=OFF \
+            -DBUILD_TECHDRAW=OFF \
+            -DBUILD_TUX=OFF \
+            -DBUILD_WEB=OFF
+
+      - name: Build shutdown-test targets
+        run: |
+          pixi run --manifest-path "$PIXI_MANIFEST" cmake --build "$builddir" -j2 --target \
+            PythonReferenceShutdown \
+            PythonReferenceFinalizationRefusal \
+            TypePyLifetimeShutdown \
+            ParameterLifetimeShutdown \
+            ExtensionLifetimeShutdown \
+            FeaturePythonLifetimeShutdown \
+            ViewerLifetimeShutdown_Tests_run \
+            EditableDatumLabelLifetimeShutdown_Tests_run \
+            TaskDialogLifetimeShutdown_Tests_run \
+            MDIViewLifetimeShutdown_Tests_run \
+            PyResourceLifetimeShutdown \
+            GeneratedWrapperLifetimeShutdown
+
+      - name: Run shutdown tests
+        run: |
+          pixi run --manifest-path "$PIXI_MANIFEST" xvfb-run -a ctest \
+            --test-dir "$builddir" \
+            --output-on-failure \
+            -R 'PythonReferenceShutdown|PythonReferenceFinalizationRefusal|TypePyLifetimeShutdown|ParameterLifetimeShutdown|ExtensionLifetimeShutdown|FeaturePythonLifetimeShutdown|ViewerLifetimeShutdown_Tests_run|EditableDatumLabelLifetimeShutdown_Tests_run|TaskDialogLifetimeShutdown_Tests_run|MDIViewLifetimeShutdown_Tests_run|PyResourceLifetimeShutdown|GeneratedWrapperLifetimeShutdown'

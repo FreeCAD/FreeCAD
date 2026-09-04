@@ -382,26 +382,22 @@ struct PyObjectWrapper {
 public:
     using Pointer = std::shared_ptr<PyObjectWrapper>;
 
-    explicit PyObjectWrapper(PyObject *obj):pyobj(obj) {
-        Py::_XINCREF(pyobj);
+    explicit PyObjectWrapper(PyObject* obj)
+    {
+        pyobj.resetBorrowed(obj);
     }
-    ~PyObjectWrapper() {
-        if(pyobj) {
-            Base::PyGILStateLocker lock;
-            Py::_XDECREF(pyobj);
-        }
-    }
-    PyObjectWrapper(const PyObjectWrapper &) = delete;
-    PyObjectWrapper &operator=(const PyObjectWrapper &) = delete;
+    PyObjectWrapper(const PyObjectWrapper&) = delete;
+    PyObjectWrapper& operator=(const PyObjectWrapper&) = delete;
 
-    Py::Object get() const {
-        if(!pyobj)
+    Py::Object get() const
+    {
+        if (!pyobj)
             return Py::Object();
-        return Py::Object(const_cast<PyObject*>(pyobj));
+        return Py::Object(pyobj.get());
     }
 
 private:
-    PyObject *pyobj;
+    Base::NativePythonReference pyobj;
 };
 
 static inline PyObjectWrapper::Pointer pyObjectWrap(PyObject *obj) {
@@ -1241,31 +1237,18 @@ UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantit
 {
 }
 
-UnitExpression::~UnitExpression() {
-    if(cache) {
-        Base::PyGILStateLocker lock;
-        Py::_XDECREF(cache);
-    }
-}
+UnitExpression::~UnitExpression() = default;
 
 void UnitExpression::setQuantity(const Quantity &_quantity)
 {
     quantity = _quantity;
-    if(cache) {
-        Base::PyGILStateLocker lock;
-        Py::_XDECREF(cache);
-        cache = nullptr;
-    }
+    cache.reset();
 }
 
 void UnitExpression::setUnit(const Quantity &_quantity)
 {
     quantity = _quantity;
-    if(cache) {
-        Base::PyGILStateLocker lock;
-        Py::_XDECREF(cache);
-        cache = nullptr;
-    }
+    cache.reset();
 }
 
 ExpressionPtr UnitExpression::simplify() const
@@ -1284,9 +1267,9 @@ Expression *UnitExpression::_copy() const
 }
 
 Py::Object UnitExpression::_getPyValue() const {
-    if(!cache)
-        cache = Py::new_reference_to(pyFromQuantity(quantity));
-    return Py::Object(cache);
+    if (!cache)
+        cache.reset(pyFromQuantity(quantity));
+    return Py::Object(cache.get());
 }
 
 //
@@ -3103,47 +3086,42 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
 
 TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression)
 
-PyObjectExpression::~PyObjectExpression() {
-    if(pyObj) {
-        Base::PyGILStateLocker lock;
-        Py::_XDECREF(pyObj);
-    }
-}
+PyObjectExpression::~PyObjectExpression() = default;
 
 Py::Object PyObjectExpression::_getPyValue() const {
-    if(!pyObj)
+    if (!pyObj)
         return Py::Object();
-    return Py::Object(pyObj);
+    return Py::Object(pyObj.get());
 }
 
 void PyObjectExpression::setPyValue(Py::Object obj) {
-    Py::_XDECREF(pyObj);
-    pyObj = obj.ptr();
-    Py::_XINCREF(pyObj);
+    pyObj.reset(obj);
 }
 
 void PyObjectExpression::setPyValue(PyObject *obj, bool owned) {
-    if(pyObj == obj)
+    if (pyObj.get() == obj)
         return;
-    Py::_XDECREF(pyObj);
-    pyObj = obj;
-    if(!owned)
-        Py::_XINCREF(pyObj);
+    if (owned) {
+        pyObj.reset(obj);
+    }
+    else {
+        pyObj.resetBorrowed(obj);
+    }
 }
 
 void PyObjectExpression::_toString(std::ostream &ss, bool,int) const
 {
-    if(!pyObj)
+    if (!pyObj)
         ss << "None";
     else {
         Base::PyGILStateLocker lock;
-        ss << Py::Object(pyObj).as_string();
+        ss << Py::Object(pyObj.get()).as_string();
     }
 }
 
 Expression* PyObjectExpression::_copy() const
 {
-    return new PyObjectExpression(owner,pyObj,false);
+    return new PyObjectExpression(owner, pyObj.get(), false);
 }
 
 //
@@ -3158,12 +3136,7 @@ StringExpression::StringExpression(const DocumentObject *_owner, const std::stri
 {
 }
 
-StringExpression::~StringExpression() {
-    if(cache) {
-        Base::PyGILStateLocker lock;
-        Py::_XDECREF(cache);
-    }
-}
+StringExpression::~StringExpression() = default;
 
 ExpressionPtr StringExpression::simplify() const
 {
@@ -3299,17 +3272,17 @@ void ConstantExpression::_toString(std::ostream &ss, bool,int) const
 }
 
 Py::Object ConstantExpression::_getPyValue() const {
-    if(!cache) {
+    if (!cache) {
         if(strcmp(name,"None")==0)
-            cache = Py::new_reference_to(Py::None());
+            cache.reset(Py::None());
         else if(strcmp(name,"True")==0)
-            cache = Py::new_reference_to(Py::True());
+            cache.reset(Py::True());
         else if(strcmp(name, "False")==0)
-            cache = Py::new_reference_to(Py::False());
+            cache.reset(Py::False());
         else
             return NumberExpression::_getPyValue();
     }
-    return Py::Object(cache);
+    return Py::Object(cache.get());
 }
 
 bool ConstantExpression::isNumber() const {
@@ -3867,4 +3840,3 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
-

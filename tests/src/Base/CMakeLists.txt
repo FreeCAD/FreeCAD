@@ -21,6 +21,7 @@ add_executable(Base_tests_run
         Placement.cpp
         Persistence.cpp
         PyException.cpp
+        PythonReference.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
@@ -45,6 +46,34 @@ add_executable(Base_tests_run
         Writer.cpp
         XMLTools.cpp
 )
+
+add_executable(PythonReferenceShutdown PythonReferenceShutdown.cpp)
+target_link_libraries(PythonReferenceShutdown PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME PythonReferenceShutdown COMMAND PythonReferenceShutdown)
+
+add_executable(PythonReferenceFinalizationRefusal PythonReferenceFinalizationRefusal.cpp)
+target_link_libraries(PythonReferenceFinalizationRefusal PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME PythonReferenceFinalizationRefusal COMMAND PythonReferenceFinalizationRefusal)
+
+add_executable(TypePyLifetimeShutdown TypePyLifetimeShutdown.cpp)
+target_link_libraries(TypePyLifetimeShutdown PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME TypePyLifetimeShutdown COMMAND TypePyLifetimeShutdown)
+
+add_executable(ParameterLifetimeShutdown ParameterLifetimeShutdown.cpp)
+target_link_libraries(ParameterLifetimeShutdown PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME ParameterLifetimeShutdown COMMAND ParameterLifetimeShutdown)
 
 setup_qt_test(InventorBuilder)
 

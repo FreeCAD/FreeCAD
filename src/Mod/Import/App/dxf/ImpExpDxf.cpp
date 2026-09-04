@@ -106,6 +106,15 @@ Part::Ellipse* createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* do
 Part::Vertex* createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name);
 Part::Feature* createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name);
 
+PyObject* layerViewObject(PyObject* drawingLayer)
+{
+    if (!drawingLayer) {
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    return PyObject_GetAttrString(drawingLayer, "ViewObject");
+}
+
 }  // namespace
 
 namespace
@@ -1540,9 +1549,7 @@ ImpExpDxfRead::Layer::Layer(
     PyObject* drawingLayer
 )
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayerView(
-          drawingLayer == nullptr ? Py_None : PyObject_GetAttrString(drawingLayer, "ViewObject")
-      )
+    , DraftLayerView(layerViewObject(drawingLayer))
     , GroupContents(
           drawingLayer == nullptr ? nullptr
                                   : dynamic_cast<App::PropertyLinkListHidden*>(
@@ -1552,10 +1559,7 @@ ImpExpDxfRead::Layer::Layer(
                                     )
       )
 {}
-ImpExpDxfRead::Layer::~Layer()
-{
-    Py_XDECREF(DraftLayerView);
-}
+ImpExpDxfRead::Layer::~Layer() = default;
 
 void ImpExpDxfRead::Layer::FinishLayer() const
 {
@@ -1566,11 +1570,11 @@ void ImpExpDxfRead::Layer::FinishLayer() const
         // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
         GroupContents->setValue(Contents);
     }
-    if (DraftLayerView != Py_None && Hidden) {
+    if (DraftLayerView.get() != Py_None && Hidden) {
         // Hide the Hidden layers if possible (if GUI exists)
         // We do this now rather than when the layer is created so all objects
         // within the layers also become hidden.
-        PyObject_CallMethod(DraftLayerView, "hide", nullptr);
+        PyObject_CallMethod(DraftLayerView.get(), "hide", nullptr);
     }
 }
 
@@ -1608,12 +1612,16 @@ CDxfRead::Layer* ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t 
                 );
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
-        if (result->DraftLayerView != Py_None) {
+        if (result->DraftLayerView.get() != Py_None) {
             // Get the correct boolean value based on the user's preference.
             PyObject* overrideValue = m_preserveColors ? Py_True : Py_False;
-            PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", overrideValue);
             PyObject_SetAttrString(
-                result->DraftLayerView,
+                result->DraftLayerView.get(),
+                "OverrideLineColorChildren",
+                overrideValue
+            );
+            PyObject_SetAttrString(
+                result->DraftLayerView.get(),
                 "OverrideShapeAppearanceChildren",
                 overrideValue
             );
