@@ -567,10 +567,7 @@ private:
 
     /** If this item is a link/array element, set visParent and elementName to
      *  the object that owns isElementVisible/setElementVisible. */
-    bool getElementVisibilityParent(
-        App::DocumentObject*& visParent,
-        std::string& elementName
-    ) const;
+    bool getElementVisibilityParent(App::DocumentObject*& visParent, std::string& elementName) const;
 
     void setIconOverlays(int currentStatus, QPixmap& overlays) const;
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);

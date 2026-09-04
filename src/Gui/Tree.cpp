@@ -6468,8 +6468,7 @@ bool DocumentObjectItem::getElementVisibilityParent(
     ss << obj->getNameInDocument() << '.';
     App::DocumentObject* parent = nullptr;
     auto* resolved = topParent->resolve(ss.str().c_str(), &parent, &elementName);
-    if (!resolved || !resolved->isAttachedToDocument() || !parent
-        || !parent->isAttachedToDocument()) {
+    if (!resolved || !resolved->isAttachedToDocument() || !parent || !parent->isAttachedToDocument()) {
         return false;
     }
     if (parent->isElementVisible(elementName.c_str()) < 0) {
