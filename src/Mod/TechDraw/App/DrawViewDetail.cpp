@@ -51,8 +51,10 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawComplexSection.h"
+#include "DrawPage.h"
 #include "DrawUtil.h"
 #include "DrawViewDetail.h"
 #include "DrawViewSection.h"
@@ -128,12 +130,48 @@ void DrawViewDetail::onChanged(const App::Property* prop)
     }
 
     if (prop == &Reference) {
-        std::string lblText = "Detail " + std::string(Reference.getValue());
-        Label.setValue(lblText);
+        std::string captionText = makeCaption();
+        Caption.setValue(captionText);
     }
 
     DrawViewPart::onChanged(prop);
 }
+
+std::string DrawViewDetail::makeCaption() {
+
+    std::string caption = Caption.getValue();
+
+    if (caption.find("<REF>") == std::string::npos && !m_refAdded) {
+        caption = "DETAIL <REF>";
+        m_refAdded = true;
+    }
+
+    if (caption.find("<SCALE>") != std::string::npos || m_scaleAdded) {
+        return caption;
+    }
+
+    App::DocumentObject* baseObj = BaseView.getValue();
+    auto* baseView = dynamic_cast<TechDraw::DrawView*>(baseObj);
+    if (!baseView) {
+        return caption;
+    }
+
+    auto page = baseView->findParentPage();
+    if (!page) {
+        return caption;
+    }
+    double pageScale = page->Scale.getValue();
+
+    double relativeScale = Scale.getValue() / pageScale;
+
+    if (relativeScale == 1.0) {
+        return caption;
+    }
+
+    m_scaleAdded = true;
+    return caption + "\nSCALE <SCALE>";
+}
+
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {

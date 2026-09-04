@@ -124,7 +124,8 @@ public:
     void makeMark(Base::Vector3d pos, QColor color = Qt::red);
     void makeMark(QPointF pos, QColor color = Qt::red);
 
-
+    std::string getScaleString(std::string originalString);
+    std::string getRefString(std::string originalString);
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
     inline qreal getY() { return y() * -1; }
@@ -149,6 +150,8 @@ public:
     void setCurrentColor(QColor color)  {m_colCurrent = color; }
     QColor getSettingColor() { return m_colSetting; }
     void   setSettingColor(QColor color) { m_colSetting = color; }
+
+    QRectF getFrameRect() const { return m_frameRect; }
 
     virtual void setStack(int z);
     virtual void setStackFromVP();
@@ -216,6 +219,8 @@ private:
     bool m_innerView;                                                  //View is inside another View
     bool m_multiselectActivated;
     bool snapping;
+
+    QRectF m_frameRect;
 
     QPen m_pen;
     QBrush m_brush;

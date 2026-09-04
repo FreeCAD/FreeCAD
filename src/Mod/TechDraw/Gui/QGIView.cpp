@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -45,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -701,7 +703,16 @@ void QGIView::prepareCaption()
                                  Preferences::labelFontSizeMM());
     m_font.setPixelSize(fontSize);
     m_caption->setFont(m_font);
-    QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
+
+    if (m_caption->m_isEditing) {
+        return;
+    }
+
+    std::string captionText = getViewObject()->Caption.getValue();
+    captionText = getScaleString(captionText);
+    captionText = getRefString(captionText);
+
+    QString captionStr = QString::fromUtf8(captionText.c_str());
     m_caption->setPlainText(captionStr);
 }
 
@@ -727,21 +738,108 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
                           paddedContentArea.top(),
                           frameWidth,
                           frameHeight).adjusted(-padding, - padding, padding, padding);
+    
+    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 
-    double firstTextVerticalPos = outFrameRect.bottom();
+    double firstTextVerticalPos = outFrameRect.top() - labelRect.height();
+    outLabelPos = QPointF(outFrameRect.left(), firstTextVerticalPos);
+
     if (m_caption->toPlainText().isEmpty()) {
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos);
-    } else {
-        outCaptionPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
-                                firstTextVerticalPos);
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos + captionRect.height());
+        return;
     }
 
-    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
+    DrawView* view = getViewObject();
+
+    QPointF captionTopPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                              outFrameRect.top() - captionRect.height());
+    QPointF captionBottomPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                              outFrameRect.bottom());
+    QPointF captionLeftPos = QPointF(outFrameRect.left() - captionRect.width(),
+                              outFrameRect.center().y() - (captionRect.height() / 2));
+    QPointF captionRightPos = QPointF(outFrameRect.right(),
+                              outFrameRect.center().y() - (captionRect.height() / 2));
+
+    if (view->CaptionSnap.getValue() == 0) {
+        outCaptionPos = captionTopPos;
+    } else if (view->CaptionSnap.getValue() == 1) {
+        outCaptionPos = captionBottomPos;
+    } else if (view->CaptionSnap.getValue() == 2) {
+        outCaptionPos = captionLeftPos;
+    } else if (view->CaptionSnap.getValue() == 3) {
+        outCaptionPos = captionRightPos;
+    } else {
+        outCaptionPos = captionBottomPos;
+    }
 }
 
+
+std::string QGIView::getScaleString(std::string originalString) {
+    
+    auto removeDecimals = [](double scale) {
+        const int decimals = Base::UnitsApi::getDecimals();
+        std::ostringstream oss;
+        oss.precision(decimals);
+        oss << std::fixed << scale;
+        std::string result = oss.str();
+    
+        // Removes trailing zeros and removes the decimal point
+        if (result.find('.') != std::string::npos) {
+            while (result.back() == '0') {
+                result.pop_back();
+            }
+            if (result.back() == '.') {
+                result.pop_back();
+            }
+        }
+        return result;
+    };
+
+    auto view = getViewObject();
+    double viewScale = view->getScale();
+
+    auto page = view->findParentPage();
+    double pageScale = page->Scale.getValue();
+
+    double relativeScale = viewScale / pageScale;
+
+    while (originalString.find("<SCALE>") != std::string::npos) {
+        double num1, num2;
+
+        // turning a scale of 0.5 into 1:2 and a scale of 2 into 2:1 etc.
+        if (relativeScale < 1.0) {
+            num1 = 1.0;
+            num2 = 1.0 / relativeScale;
+        } else {
+            num1 = relativeScale;
+            num2 = 1.0;
+        }
+
+        std::string scaleString = removeDecimals(num1) + ":" + removeDecimals(num2);
+        size_t pos = originalString.find("<SCALE>");
+        originalString.replace(pos, std::string("<SCALE>").length(), scaleString);
+    }
+
+    return originalString;
+}
+
+std::string QGIView::getRefString(std::string originalString) {
+    auto view = getViewObject();
+
+    std::string refName;
+    if (auto* section = dynamic_cast<TechDraw::DrawViewSection*>(view)) {
+        refName = section->SectionSymbol.getValue();
+    } 
+    else if (auto* detail = dynamic_cast<TechDraw::DrawViewDetail*>(view)) {
+        refName = detail->Reference.getValue();
+    }
+
+    while (originalString.find("<REF>") != std::string::npos) {
+        size_t pos = originalString.find("<REF>");
+        originalString.replace(pos, std::string("<REF>").length(), refName);
+    }
+
+    return originalString;
+}
 
 void QGIView::drawBorder()
 {
@@ -765,13 +863,17 @@ void QGIView::drawBorder()
     QRectF captionRect = m_caption->boundingRect();
     QRectF labelRect = m_label->boundingRect();
 
-
-    QRectF finalFrameRect;
     QPointF finalCaptionPos, finalLabelPos, finalLockPos;
 
     layoutDecorations(contentArea, captionRect, labelRect,
-                      finalFrameRect, finalCaptionPos, finalLabelPos, finalLockPos);
+                      m_frameRect, finalCaptionPos, finalLabelPos, finalLockPos);
 
+    Base::Vector3d captionLocation = feat->CaptionLocation.getValue();
+
+    // CaptionSnap 4 is the NoSnap option, so we use the curent location
+    if (viewObj->CaptionSnap.getValue() == 4 || m_caption->m_isEditing) {
+        finalCaptionPos = QPointF(Rez::guiX(captionLocation.x), Rez::guiX(-captionLocation.y));
+    }
 
     m_caption->setPos(finalCaptionPos);
     m_label->setPos(finalLabelPos);
@@ -782,7 +884,7 @@ void QGIView::drawBorder()
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
     m_border->setPos(0., 0.);
-    m_border->setRect(finalFrameRect);
+    m_border->setRect(m_frameRect);
 
     prepareGeometryChange();
 }

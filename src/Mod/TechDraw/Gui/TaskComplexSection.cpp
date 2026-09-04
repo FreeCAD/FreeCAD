@@ -562,7 +562,9 @@ void TaskComplexSection::createComplexSection()
         // unique Labels
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
-        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
+        std::string sectionCaption = Base::Tools::escapeEncodeString("SECTION <REF> - <REF>");
+
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
@@ -570,6 +572,9 @@ void TaskComplexSection::createComplexSection()
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
                            sectionLabel.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Caption = '%s'",
+                           m_sectionName.c_str(),
+                           sectionCaption.c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
                            m_page->getNameInDocument(), m_sectionName.c_str());
 
@@ -650,7 +655,7 @@ void TaskComplexSection::updateComplexSection()
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
-        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel(qTemp));
+        std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
@@ -699,14 +704,14 @@ void TaskComplexSection::updateComplexSection()
     Gui::Command::commitCommand(tid);
 }
 
-std::string TaskComplexSection::makeSectionLabel(const QString& symbol)
+std::string TaskComplexSection::makeSectionLabel()
 {
     const std::string objectName{QT_TR_NOOP("ComplexSection")};
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
-    std::string temp = symbol.toStdString();
-    return ( uniqueLabel + " " + temp + " - " + temp );
+    return ( uniqueLabel );
 }
+
 
 void TaskComplexSection::failNoObject()
 {

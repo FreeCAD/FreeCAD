@@ -449,6 +449,10 @@ void TaskDetail::createDetail()
     }
     m_detailFeat = dvd;
     dvd->Source.setValues(getBaseFeat()->Source.getValues());
+    QString qRef = ui->leReference->text();
+    std::string ref = qRef.toStdString();
+    dvd->Reference.setValue(ref);
+    dvd->Caption.setValue(m_detailFeat->makeCaption());
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.BaseView = App.activeDocument().%s",
                             m_detailName.c_str(), m_baseName.c_str());
@@ -486,6 +490,8 @@ void TaskDetail::updateDetail()
         QString qRef = ui->leReference->text();
         std::string ref = qRef.toStdString();
         detailFeat->Reference.setValue(ref);
+
+        detailFeat->Caption.setValue(detailFeat->makeCaption());
 
         Gui::Command::updateActive();
         Gui::Command::commitCommand(tid);

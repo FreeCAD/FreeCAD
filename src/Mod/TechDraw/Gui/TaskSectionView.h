@@ -93,7 +93,7 @@ protected Q_SLOTS:
 
 private:
     double requiredRotation(double inputAngle);
-    std::string makeSectionLabel(QString symbol);
+    std::string makeSectionLabel();
     bool directionChanged() const { return m_directionChanged; }
     void directionChanged(bool newState) { m_directionChanged = newState; }
 

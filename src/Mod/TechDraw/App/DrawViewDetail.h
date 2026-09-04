@@ -73,6 +73,7 @@ public:
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
+    std::string makeCaption();
 
     void detailExec(TopoDS_Shape& s,
                     DrawViewPart* baseView,
@@ -110,6 +111,8 @@ protected:
     QFutureWatcher<void> m_detailWatcher;
     QFuture<void> m_detailFuture;
     bool m_waitingForDetail;
+    bool m_scaleAdded = false;
+    bool m_refAdded = false;
 
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;
