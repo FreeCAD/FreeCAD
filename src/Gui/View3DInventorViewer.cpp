@@ -1094,6 +1094,8 @@ void View3DInventorViewer::init()
     // Background stuff
     pcBackGround = new SoFCBackgroundGradient;
     pcBackGround->ref();
+    temporaryBackground = new SoFCBackgroundGradient;
+    temporaryBackground->ref();
 
     // Set up foreground, overlaid scenegraph.
     this->foregroundroot = new SoSeparator;
@@ -1354,6 +1356,8 @@ View3DInventorViewer::~View3DInventorViewer()
     this->decorationroot = nullptr;
     this->pcBackGround->unref();
     this->pcBackGround = nullptr;
+    this->temporaryBackground->unref();
+    this->temporaryBackground = nullptr;
 
     setSceneGraph(nullptr);
     this->viewerSceneRoot->unref();
@@ -1574,7 +1578,13 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
     }
 
     if (SoSeparator* back = pcProvider->getBackRoot()) {
-        backgroundroot->addChild(back);
+        const int overrideIndex = backgroundroot->findChild(temporaryBackground);
+        if (overrideIndex >= 0) {
+            backgroundroot->insertChild(back, overrideIndex);
+        }
+        else {
+            backgroundroot->addChild(back);
+        }
     }
 
     pcProvider->setOverrideMode(this->getOverrideMode());
@@ -2015,6 +2025,22 @@ void View3DInventorViewer::setGradientBackgroundColor(
 )
 {
     pcBackGround->setColorGradient(fromColor, toColor, midColor);
+}
+
+void View3DInventorViewer::setTemporaryBackgroundColor(const QColor& color)
+{
+    if (!color.isValid()) {
+        if (backgroundroot->findChild(temporaryBackground) != -1) {
+            backgroundroot->removeChild(temporaryBackground);
+        }
+        return;
+    }
+
+    const SbColor backgroundColor(color.redF(), color.greenF(), color.blueF());
+    temporaryBackground->setColorGradient(backgroundColor, backgroundColor);
+    if (backgroundroot->findChild(temporaryBackground) == -1) {
+        backgroundroot->addChild(temporaryBackground);
+    }
 }
 
 void View3DInventorViewer::setEnabledFPSCounter(bool on)

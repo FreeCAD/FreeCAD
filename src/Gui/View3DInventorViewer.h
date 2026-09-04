@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <QCursor>
+#include <QColor>
 #include <QImage>
 #include <QLabel>
 
@@ -550,6 +551,7 @@ public:
         const SbColor& toColor,
         const SbColor& midColor
     );
+    void setTemporaryBackgroundColor(const QColor& color);
     void setNavigationType(Base::Type);
 
     void setAxisLetterColor(const SbColor& color);
@@ -652,6 +654,7 @@ private:
     std::unique_ptr<RubberbandOverlay> rubberbandOverlayRenderer;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient* pcBackGround;
+    SoFCBackgroundGradient* temporaryBackground;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
     // Dedicated root for viewer-owned HUD/decorations that should not be

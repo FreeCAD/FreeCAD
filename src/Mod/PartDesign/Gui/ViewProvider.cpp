@@ -457,6 +457,12 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
 
 void ViewProvider::toggleVisibility()
 {
+    if (auto* document = getDocumentIfAttached()) {
+        if (document->toggleVisibleSpaceVisibility(this)) {
+            return;
+        }
+    }
+
     if (!PartDesign::Body::isSolidFeature(getObject())) {
         Gui::ViewProvider::toggleVisibility();
         return;
@@ -468,6 +474,45 @@ void ViewProvider::toggleVisibility()
         return;
     }
     Gui::ViewProvider::toggleVisibility();
+}
+
+Gui::ViewProvider::VisibleSpaceMode ViewProvider::getVisibleSpaceMode() const
+{
+    if (!getObject() || !PartDesign::Body::isSolidFeature(getObject())) {
+        return VisibleSpaceMode::Complement;
+    }
+
+    auto* document = getDocumentIfAttached();
+    if (!document) {
+        return VisibleSpaceMode::Complement;
+    }
+
+    auto* bodyViewProvider = const_cast<ViewProvider*>(this)->getBodyViewProvider();
+    auto* body = bodyViewProvider ? bodyViewProvider->getObject<PartDesign::Body>() : nullptr;
+    if (!body) {
+        return VisibleSpaceMode::Complement;
+    }
+
+    Gui::ViewProvider* lastFeatureViewProvider = nullptr;
+    bool hasVisibleFeature = false;
+    for (auto* feature : body->Group.getValues()) {
+        if (!PartDesign::Body::isSolidFeature(feature)) {
+            continue;
+        }
+
+        auto* featureViewProvider = document->getViewProvider(feature);
+        if (!featureViewProvider) {
+            continue;
+        }
+
+        lastFeatureViewProvider = featureViewProvider;
+        hasVisibleFeature = hasVisibleFeature || featureViewProvider->isVisibleInScene();
+    }
+
+    if (hasVisibleFeature) {
+        return VisibleSpaceMode::Hide;
+    }
+    return lastFeatureViewProvider == this ? VisibleSpaceMode::Show : VisibleSpaceMode::Hide;
 }
 
 namespace Gui
