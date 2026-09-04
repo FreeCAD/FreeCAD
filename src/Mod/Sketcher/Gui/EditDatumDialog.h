@@ -27,6 +27,8 @@
 #include <QObject>
 #include <memory>
 
+#include <App/AutoTransaction.h>
+
 
 namespace Sketcher
 {
@@ -57,9 +59,9 @@ private:
     Sketcher::SketchObject* sketch;
     Sketcher::Constraint* Constr;
     int ConstrNbr;
-    bool success;
+    bool success {false};
     std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
-    int transactionID;
+    App::AutoTransaction transaction;
 
 private Q_SLOTS:
     void accepted();

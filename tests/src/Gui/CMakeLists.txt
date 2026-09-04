@@ -20,6 +20,15 @@ add_executable(Gui_tests_run
 # Qt tests
 setup_qt_test(ObjectSelection)
 setup_qt_test(QuantitySpinBox)
+if(BUILD_SKETCHER)
+    setup_qt_test(SketcherEditDatumDialog)
+
+    target_sources(SketcherEditDatumDialog_Tests_run PRIVATE
+        ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+    )
+
+    target_link_libraries(SketcherEditDatumDialog_Tests_run Sketcher)
+endif()
 
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main
