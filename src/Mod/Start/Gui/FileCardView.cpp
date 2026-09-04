@@ -26,6 +26,9 @@
 #include <App/Application.h>
 #include "../App/DisplayedFilesModel.h"
 #include <algorithm>
+#include <QAction>
+#include <QContextMenuEvent>
+#include <QMenu>
 
 namespace StartGui
 {
@@ -84,6 +87,43 @@ QSize FileCardView::sizeHint() const
         (cardSize.width() + m_cardSpacing) * numCards + m_cardSpacing,
         cardSize.height() + 2 * m_cardSpacing
     };
+}
+
+void FileCardView::setAllowRemoval(bool allow)
+{
+    m_allowRemoval = allow;
+}
+
+bool FileCardView::allowsRemoval() const
+{
+    return m_allowRemoval;
+}
+
+void FileCardView::contextMenuEvent(QContextMenuEvent* event)
+{
+    if (!m_allowRemoval) {
+        QListView::contextMenuEvent(event);
+        return;
+    }
+
+    const QModelIndex index = indexAt(event->pos());
+    if (!index.isValid()) {
+        QListView::contextMenuEvent(event);
+        return;
+    }
+
+    const auto filePath
+        = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
+    if (filePath.isEmpty()) {
+        QListView::contextMenuEvent(event);
+        return;
+    }
+
+    QMenu menu(this);
+    QAction* removeAction = menu.addAction(tr("Remove from Recent Files"));
+    if (menu.exec(event->globalPos()) == removeAction) {
+        Q_EMIT fileRemovalRequested(filePath);
+    }
 }
 
 }  // namespace StartGui

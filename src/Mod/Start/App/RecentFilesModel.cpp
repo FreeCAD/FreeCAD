@@ -53,3 +53,39 @@ void RecentFilesModel::recentFileAdded(const QString& filename)
     Q_UNUSED(filename)
     loadRecentFiles();
 }
+
+void RecentFilesModel::removeFile(const QString& filename)
+{
+    auto numRows {static_cast<std::size_t>(_parameterGroup->GetInt("RecentFiles", 0))};
+
+    // Collect the entries that are being kept, in their current order, skipping the one
+    // being removed.
+    std::vector<std::string> keptPaths;
+    keptPaths.reserve(numRows);
+    for (std::size_t i = 0; i < numRows; ++i) {
+        auto entry = fmt::format("MRU{}", i);
+        auto path = _parameterGroup->GetASCII(entry.c_str(), "");
+        if (QString::fromStdString(path) != filename) {
+            keptPaths.push_back(path);
+        }
+    }
+
+    if (keptPaths.size() == numRows) {
+        // The requested file wasn't found in the list; nothing to do.
+        return;
+    }
+
+    // Rewrite the MRU entries so that they are contiguous again, then update the count.
+    for (std::size_t i = 0; i < numRows; ++i) {
+        auto entry = fmt::format("MRU{}", i);
+        if (i < keptPaths.size()) {
+            _parameterGroup->SetASCII(entry.c_str(), keptPaths[i].c_str());
+        }
+        else {
+            _parameterGroup->RemoveASCII(entry.c_str());
+        }
+    }
+    _parameterGroup->SetInt("RecentFiles", static_cast<long>(keptPaths.size()));
+
+    loadRecentFiles();
+}

@@ -191,6 +191,13 @@ StartView::StartView(QWidget* parent)
         configureExamplesListWidget(examplesListWidget);
     }
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
+    recentFilesListWidget->setAllowRemoval(true);
+    connect(
+        recentFilesListWidget,
+        &FileCardView::fileRemovalRequested,
+        this,
+        [this](const QString& filePath) { _recentFilesModel.removeFile(filePath); }
+    );
 
     QTimer::singleShot(2000, this, [this, recentFilesListWidget]() {
         auto updateFun = [this, recentFilesListWidget]() {

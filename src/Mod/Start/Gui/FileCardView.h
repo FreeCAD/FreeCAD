@@ -39,8 +39,23 @@ public:
 
     QSize sizeHint() const override;
 
+    /// Controls whether right-clicking a card offers a "Remove" context menu entry. Off by
+    /// default; intended for card views (such as Recent Files) where individual entries can
+    /// meaningfully be removed by the user, as opposed to e.g. the bundled Examples list.
+    void setAllowRemoval(bool allow);
+    bool allowsRemoval() const;
+
+Q_SIGNALS:
+    /// Emitted when the user selects "Remove" from a card's context menu. filePath is the full
+    /// path of the file backing that card, taken from the model's "path" role.
+    void fileRemovalRequested(const QString& filePath);
+
+protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
 private:
     int m_cardSpacing;
+    bool m_allowRemoval {false};
 };
 
 }  // namespace StartGui
