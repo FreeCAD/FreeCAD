@@ -209,6 +209,7 @@ SET(FreeCADBase_CPP_SRCS
     ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
+    OkLch.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     DualQuaternion.cpp
@@ -284,6 +285,7 @@ SET(FreeCADBase_HPP_SRCS
     ConsoleObserver.h
     Converter.h
     Color.h
+    OkLch.h
     CoordinateSystem.h
     DualNumber.h
     DualQuaternion.h
