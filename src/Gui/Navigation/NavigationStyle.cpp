@@ -2394,15 +2394,10 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
 
     SbVec3f dir = ev->getTranslation();
 
-    const float zoom = dir[2] * 0.0001;
-    dir[2] = 0.0;
-    float zoomFactor = 1.0 + zoom;
-    if (zoomFactor < 0.1F) {
-        zoomFactor = 0.1F;
-    }
-
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        static_cast<SoOrthographicCamera*>(camera)->scaleHeight(zoomFactor);
+        auto oCam = static_cast<SoOrthographicCamera*>(camera);
+        oCam->scaleHeight(1.0 + (dir[2] * 0.0001));
+        dir[2] = 0.0;  // don't move the cam for z translation.
     }
 
     // Use the active navigation rotation center mode for SpaceMouse rotations
@@ -2440,12 +2435,6 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     else {
         newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
         newPosition = center - (newDirection * camera->focalDistance.getValue());
-    }
-
-    if (camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-        const SbVec3f zoomPivot = useMotionRotationCenter ? motionRotationCenter : center;
-        newPosition = zoomPivot + (newPosition - zoomPivot) * zoomFactor;
-        camera->focalDistance.setValue(camera->focalDistance.getValue() * zoomFactor);
     }
 
     newRotation.multVec(dir, dir);
