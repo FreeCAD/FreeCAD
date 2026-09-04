@@ -22,7 +22,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 import re
-from typing import Iterable
+from typing import Mapping
 
 from .model import (
     ADD_METHOD_RE,
@@ -97,6 +97,13 @@ class ModuleState:
     variables: dict[str, str]
 
 
+@dataclass
+class SourceIndexEntry:
+    source: str
+    module_state: ModuleState
+    contexts: list[ContextEntry]
+
+
 def discover_contexts(source: str) -> list[ContextEntry]:
     contexts: list[ContextEntry] = []
     for match in BEHAVIOR_NAME_RE.finditer(source):
@@ -138,6 +145,11 @@ def module_state_for_source(
         module_vars[match.group("variable")] = match.group("module")
     for match in INIT_MODULE_RE.finditer(source):
         module_vars[match.group("variable")] = match.group("namespace")
+    resolve_module_relationships(source, module_vars)
+    return ModuleState(variables=module_vars)
+
+
+def resolve_module_relationships(source: str, module_vars: dict[str, str]) -> None:
     wrappers: dict[str, str] = {}
     for match in PY_OBJECT_WRAPPER_RE.finditer(source):
         source_module = module_vars.get(match.group("source"))
@@ -152,24 +164,32 @@ def module_state_for_source(
         child_module = module_vars.get(match.group("child"))
         if parent_module and child_module:
             module_vars[match.group("child")] = f"{parent_module}.{match.group('name')}"
-    return ModuleState(variables=module_vars)
+
+
+def build_source_index(root: Path, source_dir: Path) -> dict[Path, SourceIndexEntry]:
+    index: dict[Path, SourceIndexEntry] = {}
+    for path in iter_source_files(root, source_dir):
+        try:
+            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+        except OSError:
+            continue
+        index[path] = SourceIndexEntry(
+            source=source,
+            module_state=module_state_for_source(source),
+            contexts=discover_contexts(source),
+        )
+    return index
 
 
 def collect_module_definitions(
-    root: Path, files: Iterable[Path]
+    root: Path, source_index: Mapping[Path, SourceIndexEntry]
 ) -> tuple[dict[tuple[str, str], ModuleDef], dict[str, str], dict[tuple[str, str], str]]:
     module_defs: dict[tuple[str, str], ModuleDef] = {}
     aliases: dict[str, str] = {}
     table_modules: dict[tuple[str, str], str] = {}
 
-    file_data: dict[Path, str] = {}
-    for path in files:
-        try:
-            file_data[path] = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
-
-    for path, source in file_data.items():
+    for path, entry in source_index.items():
+        source = entry.source
         rel = path.relative_to(root).as_posix()
         for match in PYMETHOD_ALIAS_RE.finditer(source):
             table = normalize_expr(match.group("table"))
@@ -195,9 +215,10 @@ def collect_module_definitions(
             if table:
                 table_modules[(rel, table)] = name
 
-    for path, source in file_data.items():
+    for path, entry in source_index.items():
+        source = entry.source
         rel = path.relative_to(root).as_posix()
-        variable_modules = module_state_for_source(source).variables
+        variable_modules = dict(entry.module_state.variables)
         variable_tables: dict[str, str] = {}
 
         for match in PYMODULE_CREATE_RE.finditer(source):
@@ -209,7 +230,7 @@ def collect_module_definitions(
             if module_def.table:
                 variable_tables[variable] = module_def.table
 
-        variable_modules = module_state_for_source(source, variable_modules).variables
+        resolve_module_relationships(source, variable_modules)
 
         for match in PYMODULE_ADD_OBJECT_RE.finditer(source):
             public_name = variable_modules.get(match.group("child"))
@@ -266,17 +287,15 @@ def cpp_type_name(expression: str) -> str | None:
     return None
 
 
-def collect_type_registrations(root: Path, files: Iterable[Path]) -> dict[str, list[str]]:
+def collect_type_registrations(
+    root: Path, source_index: Mapping[Path, SourceIndexEntry]
+) -> dict[str, list[str]]:
     registrations: dict[str, list[str]] = defaultdict(list)
 
-    for path in files:
+    for path, entry in source_index.items():
         rel = path.relative_to(root).as_posix()
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
-
-        module_vars = module_state_for_source(source).variables
+        source = entry.source
+        module_vars = entry.module_state.variables
 
         for _, type_expr, module_var, export_name in add_type_calls(source):
             module_name = module_vars.get(normalize_expr(module_var))
@@ -379,9 +398,11 @@ def supported_sequence_contexts(source: str, contexts: list[ContextEntry]) -> se
     return supported
 
 
-def extract_pycxx_sequence_slots(root: Path, path: Path, source: str) -> list[BindingMethod]:
+def extract_pycxx_sequence_slots(
+    root: Path, path: Path, source: str, contexts: list[ContextEntry] | None = None
+) -> list[BindingMethod]:
     rel = path.relative_to(root).as_posix()
-    contexts = discover_contexts(source)
+    contexts = contexts if contexts is not None else discover_contexts(source)
     supported_contexts = supported_sequence_contexts(source, contexts)
     if not supported_contexts:
         return []
@@ -421,9 +442,11 @@ def extract_pycxx_sequence_slots(root: Path, path: Path, source: str) -> list[Bi
     return methods
 
 
-def extract_pycxx_methods(root: Path, path: Path, source: str) -> list[BindingMethod]:
+def extract_pycxx_methods(
+    root: Path, path: Path, source: str, contexts: list[ContextEntry] | None = None
+) -> list[BindingMethod]:
     rel = path.relative_to(root).as_posix()
-    contexts = discover_contexts(source)
+    contexts = contexts if contexts is not None else discover_contexts(source)
     methods: list[BindingMethod] = []
 
     for match in ADD_METHOD_RE.finditer(source):
@@ -545,18 +568,16 @@ def flags_to_method_kind(flags: str) -> MethodKind:
             return "varargs"
 
 
-def collect_methods(root: Path, source_dir: Path) -> list[BindingMethod]:
-    files = list(iter_source_files(root, source_dir))
-    _, _, table_modules = collect_module_definitions(root, files)
+def collect_methods(
+    root: Path, source_index: Mapping[Path, SourceIndexEntry]
+) -> list[BindingMethod]:
+    _, _, table_modules = collect_module_definitions(root, source_index)
 
     methods: list[BindingMethod] = []
-    for path in files:
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
-        methods.extend(extract_pycxx_methods(root, path, source))
-        methods.extend(extract_pycxx_sequence_slots(root, path, source))
+    for path, entry in source_index.items():
+        source = entry.source
+        methods.extend(extract_pycxx_methods(root, path, source, entry.contexts))
+        methods.extend(extract_pycxx_sequence_slots(root, path, source, entry.contexts))
         methods.extend(extract_pymethoddef_methods(root, path, source, table_modules))
 
     return sorted(methods, key=lambda method: (method.source, method.line, method.python_name))

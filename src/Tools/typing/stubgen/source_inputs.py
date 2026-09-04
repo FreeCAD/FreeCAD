@@ -24,6 +24,7 @@ from typing import TypeVar
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
+    build_source_index,
     collect_type_registrations,
     contextual_cpp_type_name,
     public_type_context_index,
@@ -43,7 +44,6 @@ from .parsing import (
     extract_balanced,
     iter_binding_pyi_files,
     iter_module_stub_pyi_files,
-    iter_source_files,
     iter_type_stub_pyi_files,
     parse_python_source,
 )
@@ -191,8 +191,8 @@ def collect_binding_classes(
     type_registrations: dict[str, list[str]] | None = None,
 ) -> list[BindingClass]:
     if type_registrations is None:
-        source_files = list(iter_source_files(root, source_dir))
-        type_registrations = collect_type_registrations(root, source_files)
+        source_index = build_source_index(root, source_dir)
+        type_registrations = collect_type_registrations(root, source_index)
 
     classes: list[BindingClass] = []
     for path in iter_binding_pyi_files(root, source_dir):
