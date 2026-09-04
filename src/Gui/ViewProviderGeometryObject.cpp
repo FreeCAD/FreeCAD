@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include <vector>
+
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -75,6 +77,8 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     Transparency.setConstraints(&intPercent);
 
     ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearance");
+    ADD_PROPERTY_TYPE(BaseShapeAppearance, (mat), osgroup, App::Prop_Hidden, "Base shape appearance");
+    ADD_PROPERTY_TYPE(FaceAppearanceOverrides, (), osgroup, App::Prop_Hidden, "Face appearance overrides");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
     ADD_PROPERTY_TYPE(
         Selectable,
@@ -154,6 +158,10 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         if (ShapeAppearance.getSize() == 1) {
             const App::Material& Mat = ShapeAppearance[0];
             setCoinAppearance(Mat);
+            BaseShapeAppearance.setValue(Mat);
+            if (!FaceAppearanceOverrides.getValues().empty()) {
+                FaceAppearanceOverrides.setValues({});
+            }
         }
     }
     else if (prop == &BoundingBox) {
@@ -187,13 +195,45 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
             if ((ShapeAppearance.getSize() == 1)
                 && (ShapeAppearance[0] == defaultMaterial || ShapeAppearance[0] == materialAppearance)
                 && (material != defaultMaterial)) {
-                ShapeAppearance.setValue(material);
+                setObjectAppearance(material, true);
                 materialAppearance = material;
             }
         }
     }
 
     ViewProviderDragger::updateData(prop);
+}
+
+void ViewProviderGeometryObject::setObjectAppearance(
+    const App::Material& material,
+    bool replaceFaceAppearances
+)
+{
+    BaseShapeAppearance.setValue(material);
+
+    const auto& appearances = ShapeAppearance.getValues();
+    const auto& overrides = FaceAppearanceOverrides.getValues();
+    if (replaceFaceAppearances || appearances.size() == 1) {
+        ShapeAppearance.setValue(material);
+        if (!FaceAppearanceOverrides.getValues().empty()) {
+            FaceAppearanceOverrides.setValues({});
+        }
+        return;
+    }
+
+    // Older documents do not record which face colors were explicitly assigned. Preserve every
+    // existing face appearance rather than risk overwriting imported or user-assigned colors.
+    if (appearances.size() != overrides.size()) {
+        return;
+    }
+
+    std::vector<App::Material> updatedAppearances = appearances;
+    for (std::size_t i = 0; i < updatedAppearances.size(); ++i) {
+        if (!overrides[i]) {
+            updatedAppearances[i] = material;
+        }
+    }
+    ShapeAppearance.setValues(updatedAppearances);
 }
 
 void ViewProviderGeometryObject::updateBoundingBox()

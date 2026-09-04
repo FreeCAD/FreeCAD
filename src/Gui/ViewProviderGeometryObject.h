@@ -62,8 +62,16 @@ public:
     // Display properties
     App::PropertyPercent Transparency;
     App::PropertyMaterialList ShapeAppearance;  // May be different from material
+    App::PropertyMaterial BaseShapeAppearance;
+    App::PropertyBoolList FaceAppearanceOverrides;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
+
+    /**
+     * Sets the object appearance while retaining explicit face appearances unless requested
+     * otherwise.
+     */
+    void setObjectAppearance(const App::Material& material, bool replaceFaceAppearances);
 
     /**
      * Attaches the document object to this view provider.

@@ -75,6 +75,7 @@ private:
 private:
     std::unique_ptr<Ui_DlgMaterialProperties> ui;
     App::Material customMaterial;
+    App::Material originalMaterial;
     App::Material defaultMaterial;
 };
 
