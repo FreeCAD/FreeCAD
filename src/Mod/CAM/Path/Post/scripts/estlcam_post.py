@@ -98,7 +98,7 @@ class Estlcam(PostProcessor):
     def convert_command_to_gcode(self, command: Path.Command):
         if command.Name in Constants.GCODE_UNITS_METRIC:
             return ""
-        if command.Name in ("M7", "M07"):
+        if command.Name in Constants.MCODE_COOLANT_MIST:
             self.coolant_End_Command = "M11"
             return "M10"
         if command.Name in ("M8", "M08"):
