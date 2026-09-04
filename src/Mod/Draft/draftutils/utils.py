@@ -350,16 +350,13 @@ def get_type(obj):
 getType = get_type
 
 
-def get_trimex_unsupported_reason(obj, subobjects=None):
+def get_trimex_unsupported_reason(obj):
     """Return a translated Trimex error message for unsupported objects.
 
     Parameters
     ----------
     obj : App::DocumentObject
         Object that Trimex should operate on.
-    subobjects : list, optional
-        Selected subobjects associated with `obj`.
-
     Returns
     -------
     str or None
@@ -380,15 +377,7 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
 
     shape = obj.Shape
     if shape.Faces:
-        if len(shape.Faces) == 1:
-            return None
-        if (
-            subobjects
-            and len(subobjects) == 1
-            and getattr(subobjects[0], "ShapeType", None) == "Face"
-        ):
-            return None
-        return translate("draft", "Only a single face can be extruded")
+        return translate("draft", "Trimex does not support this object type")
 
     if obj.isDerivedFrom("Sketcher::SketchObject"):
         return translate("draft", "Trimex does not support this object type")
