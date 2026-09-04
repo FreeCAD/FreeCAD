@@ -73,6 +73,7 @@ endif(BUILD_GUI)
 set(PartDesign_TestFixtures
     PartDesignTests/Fixtures/InvoluteGear_v0-20.FCStd
     PartDesignTests/Fixtures/InternalInvoluteGear_v0-20.FCStd
+    PartDesignTests/Fixtures/issue_32231_fillets.FCStd
 )
 
 set(PartDesign_GearScripts

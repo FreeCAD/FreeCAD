@@ -136,6 +136,8 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
 
     TopShape.setTransform(Base::Matrix4D());
+    // OCCT dress-up builders can leave transient data on reused topology.
+    TopShape = TopShape.makeElementCopy(nullptr, false);
 
     auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
                                         : getContinuousEdges(TopShape);

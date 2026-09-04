@@ -89,6 +89,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
     baseShape.setTransform(Base::Matrix4D());
+    // OCCT dress-up builders can leave transient data on reused topology.
+    baseShape = baseShape.makeElementCopy(nullptr, false);
 
     auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
                                         : getContinuousEdges(baseShape);
