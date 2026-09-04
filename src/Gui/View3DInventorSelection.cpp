@@ -104,6 +104,7 @@ View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
 
 View3DInventorSelection::~View3DInventorSelection()
 {
+    clearFeaturePreview();
     selectionRoot->unref();
     pcGroupOnTop->unref();
     pcGroupOnTopPreSel->unref();
@@ -121,10 +122,10 @@ void View3DInventorSelection::setHiddenPreviewDepthOverride(DepthOverride state)
 
 void View3DInventorSelection::clearFeaturePreview()
 {
-    if (previewedFeature) {
+    if (!previewedFeature.expired()) {
         previewedFeature->showPreselectPreview(false);
-        previewedFeature = nullptr;
     }
+    previewedFeature.reset();
 }
 
 void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
@@ -240,7 +241,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     }
     if (previewHidden) {
         // let a PartDesign feature drive its own preview instead of the generic copy
-        if (previewedFeature && previewedFeature != svp) {
+        if (!previewedFeature.expired() && *previewedFeature != svp) {
             clearFeaturePreview();
         }
         if (svp->showPreselectPreview(true)) {
