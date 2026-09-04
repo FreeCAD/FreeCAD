@@ -110,7 +110,7 @@ public:
      * @param[in] Obj The object to check.
      * @return true if the object is used in a transaction; otherwise false.
      */
-    bool hasObject(const TransactionalObject* Obj) const;
+    bool hasObject(const PropertyContainer* Obj) const;
 
     /**
      * @brief Record renaming a property.
@@ -119,7 +119,7 @@ public:
      * @param[in] pcProp The property with a new name.
      * @param[in] oldName The old name of the property.
      */
-    void renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName);
+    void renameProperty(PropertyContainer* Obj, const Property* pcProp, const char* oldName);
 
     /**
      * @brief Arrange moving a property.
@@ -143,7 +143,7 @@ public:
      * @param[in] pcProp The property to add or remove.
      * @param[in] add If true, add the property; otherwise, remove it.
      */
-    void addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add);
+    void addOrRemoveProperty(PropertyContainer* Obj, const Property* pcProp, bool add);
 
     /**
      * @brief Record adding a new object to the transaction.
@@ -165,20 +165,20 @@ public:
      * @param[in] Obj The object to change.
      * @param[in] Prop The property that is changed.
      */
-    void addObjectChange(const TransactionalObject* Obj, const Property* Prop);
+    void addObjectChange(const PropertyContainer* Obj, const Property* Prop);
 
 private:
-    void changeProperty(TransactionalObject* Obj,
+    void changeProperty(PropertyContainer* Obj,
                         std::function<void(TransactionObject* to)> changeFunc);
 
 private:
     int transID;
-    using Info = std::pair<const TransactionalObject*, TransactionObject*>;
+    using Info = std::pair<const PropertyContainer*, TransactionObject*>;
     bmi::multi_index_container<
         Info,
         bmi::indexed_by<
             bmi::sequenced<>,
-            bmi::hashed_unique<bmi::member<Info, const TransactionalObject*, &Info::first>>>>
+            bmi::hashed_unique<bmi::member<Info, const PropertyContainer*, &Info::first>>>>
         _Objects;
 };
 
@@ -205,7 +205,7 @@ public:
      * @param[in,out] doc The document to apply the transaction to.
      * @param[in,out] obj The object that is added in the transaction.
      */
-    virtual void applyNew(Document& doc, TransactionalObject* obj);
+    virtual void applyNew(Document& doc, PropertyContainer* obj);
 
     /**
      * @brief Apply the transaction that removes an object from the document.
@@ -213,7 +213,7 @@ public:
      * @param[in,out] doc The document to apply the transaction to.
      * @param[in,out] obj The object that is removed in the transaction.
      */
-    virtual void applyDel(Document& doc, TransactionalObject* obj);
+    virtual void applyDel(Document& doc, PropertyContainer* obj);
 
     /**
      * @brief Apply the transaction that changes an object in the document.
@@ -222,7 +222,7 @@ public:
      * @param[in,out] obj The object that is changed in the transaction.
      * @param[in] forward If true, apply the transaction; otherwise, undo it.
      */
-    virtual void applyChn(Document& doc, TransactionalObject* obj, bool forward);
+    virtual void applyChn(Document& doc, PropertyContainer* obj, bool forward);
 
     /**
      * @brief Set the property of the object that is affected by the transaction.
@@ -303,8 +303,8 @@ public:
 
     ~TransactionDocumentObject() override;
 
-    void applyNew(Document& Doc, TransactionalObject* pcObj) override;
-    void applyDel(Document& Doc, TransactionalObject* pcObj) override;
+    void applyNew(Document& Doc, PropertyContainer* pcObj) override;
+    void applyDel(Document& Doc, PropertyContainer* pcObj) override;
 };
 
 /**

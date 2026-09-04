@@ -2368,6 +2368,8 @@ void Application::initTypes()
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
             (DocumentObject::getClassTypeId());
+    new App::TransactionProducer<TransactionObject>
+            (Document::getClassTypeId());
 
     // register exception producer types
     // NOLINTBEGIN

@@ -1408,6 +1408,10 @@ public:
     static std::set<ObjectIdentifier> getPropertyUses(const App::Property* prop);
 
 protected:
+    void onDynamicPropertyAdded(const Property* prop) override;
+    void onDynamicPropertyRemoving(const Property* prop) override;
+    void onDynamicPropertyRenamed(const Property* prop, const char* oldName) override;
+
     /// Recompute only this object.
     virtual App::DocumentObjectExecReturn* recompute();
 

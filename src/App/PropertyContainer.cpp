@@ -78,7 +78,36 @@ App::Property* PropertyContainer::addDynamicProperty(
     bool hidden
 )
 {
-    return dynamicProps.addDynamicProperty(*this, type, name, group, doc, attr, ro, hidden);
+    auto* prop = dynamicProps.addDynamicProperty(*this, type, name, group, doc, attr, ro, hidden);
+    if (prop) {
+        onDynamicPropertyAdded(prop);
+    }
+    return prop;
+}
+
+bool PropertyContainer::renameDynamicProperty(Property* prop, const char* name)
+{
+    std::string oldName = prop ? prop->getName() : std::string();
+    bool renamed = dynamicProps.renameDynamicProperty(prop, name);
+    if (renamed) {
+        onDynamicPropertyRenamed(prop, oldName.c_str());
+    }
+    return renamed;
+}
+
+bool PropertyContainer::removeDynamicProperty(const char* name)
+{
+    auto* prop = getDynamicPropertyByName(name);
+    if (prop) {
+        if (prop->testStatus(Property::LockDynamic)) {
+            throw Base::RuntimeError("property is locked");
+        }
+        if (!prop->testStatus(Property::PropDynamic)) {
+            throw Base::RuntimeError("property is not dynamic");
+        }
+        onDynamicPropertyRemoving(prop);
+    }
+    return dynamicProps.removeDynamicProperty(name);
 }
 
 Property *PropertyContainer::getPropertyByName(const char* name) const
@@ -653,4 +682,3 @@ void PropertyData::visitProperties(OffsetBase offsetBase,
         visitor(reinterpret_cast<Property*>(spec.Offset + offset));
     };
 }
-

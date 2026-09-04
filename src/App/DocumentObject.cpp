@@ -837,8 +837,6 @@ bool DocumentObject::removeDynamicProperty(const char* name)
         clearOutListCache();
     }
 
-    _pDoc->addOrRemovePropertyOfObject(this, prop, false);
-
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<App::ObjectIdentifier> removeExpr;
 
@@ -857,8 +855,6 @@ bool DocumentObject::removeDynamicProperty(const char* name)
 
 bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
 {
-    std::string oldName = prop->getName();
-
     auto expressions = ExpressionEngine.getExpressions();
     std::vector<std::shared_ptr<Expression>> expressionsToMove;
     std::vector<App::ObjectIdentifier> idsWithExprsToRemove;
@@ -875,11 +871,6 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     }
 
     bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
-    if (renamed && _pDoc) {
-        _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
-    }
-
-
     App::ObjectIdentifier idNewProp(prop->getContainer(), std::string(name));
     for (auto& exprToMove : expressionsToMove) {
         ExpressionEngine.setValue(idNewProp, exprToMove);
@@ -1029,11 +1020,28 @@ App::Property* DocumentObject::addDynamicProperty(
     bool hidden
 )
 {
-    auto prop = TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
-    if (prop && _pDoc) {
+    return TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
+}
+
+void DocumentObject::onDynamicPropertyAdded(const Property* prop)
+{
+    if (_pDoc) {
         _pDoc->addOrRemovePropertyOfObject(this, prop, true);
     }
-    return prop;
+}
+
+void DocumentObject::onDynamicPropertyRemoving(const Property* prop)
+{
+    if (_pDoc) {
+        _pDoc->addOrRemovePropertyOfObject(this, prop, false);
+    }
+}
+
+void DocumentObject::onDynamicPropertyRenamed(const Property* prop, const char* oldName)
+{
+    if (_pDoc) {
+        _pDoc->renamePropertyOfObject(this, prop, oldName);
+    }
 }
 
 void DocumentObject::onBeforeChange(const Property* prop)

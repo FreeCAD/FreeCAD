@@ -70,7 +70,8 @@ Transaction::~Transaction()
             // to cause a memory leak. This usually is the case when the removal
             // of an object is not undone or when an addition is undone.
 
-            if (!It.first->isAttachedToDocument()) {
+            auto* transactionObject = freecad_cast<const TransactionalObject*>(It.first);
+            if (transactionObject && !transactionObject->isAttachedToDocument()) {
                 if (It.first->isDerivedFrom<DocumentObject>()) {
                     // #0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
@@ -132,7 +133,7 @@ bool Transaction::isEmpty() const
     return _Objects.empty();
 }
 
-bool Transaction::hasObject(const TransactionalObject* Obj) const
+bool Transaction::hasObject(const PropertyContainer* Obj) const
 {
 #if BOOST_VERSION < 107500
     return !!_Objects.get<1>().count(Obj);
@@ -141,7 +142,7 @@ bool Transaction::hasObject(const TransactionalObject* Obj) const
 #endif
 }
 
-void Transaction::changeProperty(TransactionalObject* Obj,
+void Transaction::changeProperty(PropertyContainer* Obj,
                                  std::function<void(TransactionObject* to)> changeFunc)
 {
     auto& index = _Objects.get<1>();
@@ -158,7 +159,7 @@ void Transaction::changeProperty(TransactionalObject* Obj,
     }
 }
 
-void Transaction::renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName)
+void Transaction::renameProperty(PropertyContainer* Obj, const Property* pcProp, const char* oldName)
 {
     changeProperty(Obj, [pcProp, oldName](TransactionObject* to) {
         to->renameProperty(pcProp, oldName);
@@ -173,7 +174,7 @@ void Transaction::arrangeMoveProperty(TransactionalObject* Obj, const Property* 
     });
 }
 
-void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
+void Transaction::addOrRemoveProperty(PropertyContainer* Obj, const Property* pcProp, bool add)
 {
     changeProperty(Obj, [pcProp, add](TransactionObject* to) {
         to->addOrRemoveProperty(pcProp, add);
@@ -190,13 +191,13 @@ void Transaction::apply(Document& Doc, bool forward)
     try {
         auto& index = _Objects.get<0>();
         for (auto& info : index) {
-            info.second->applyDel(Doc, const_cast<TransactionalObject*>(info.first));
+            info.second->applyDel(Doc, const_cast<PropertyContainer*>(info.first));
         }
         for (auto& info : index) {
-            info.second->applyNew(Doc, const_cast<TransactionalObject*>(info.first));
+            info.second->applyNew(Doc, const_cast<PropertyContainer*>(info.first));
         }
         for (auto& info : index) {
-            info.second->applyChn(Doc, const_cast<TransactionalObject*>(info.first), forward);
+            info.second->applyChn(Doc, const_cast<PropertyContainer*>(info.first), forward);
         }
     }
     catch (Base::Exception& e) {
@@ -262,7 +263,7 @@ void Transaction::addObjectDel(const TransactionalObject* Obj)
     }
 }
 
-void Transaction::addObjectChange(const TransactionalObject* Obj, const Property* Prop)
+void Transaction::addObjectChange(const PropertyContainer* Obj, const Property* Prop)
 {
     auto& index = _Objects.get<1>();
     auto pos = index.find(Obj);
@@ -304,13 +305,13 @@ TransactionObject::~TransactionObject()
     }
 }
 
-void TransactionObject::applyDel(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
+void TransactionObject::applyDel(Document& /*Doc*/, PropertyContainer* /*pcObj*/)
 {}
 
-void TransactionObject::applyNew(Document& /*Doc*/, TransactionalObject* /*pcObj*/)
+void TransactionObject::applyNew(Document& /*Doc*/, PropertyContainer* /*pcObj*/)
 {}
 
-void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, bool /* Forward */)
+void TransactionObject::applyChn(Document& /*Doc*/, PropertyContainer* pcObj, bool /* Forward */)
 {
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
@@ -541,7 +542,7 @@ TransactionDocumentObject::TransactionDocumentObject() = default;
  */
 TransactionDocumentObject::~TransactionDocumentObject() = default;
 
-void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcObj)
+void TransactionDocumentObject::applyDel(Document& Doc, PropertyContainer* pcObj)
 {
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
@@ -568,7 +569,7 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
     }
 }
 
-void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcObj)
+void TransactionDocumentObject::applyNew(Document& Doc, PropertyContainer* pcObj)
 {
     if (status == New) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);

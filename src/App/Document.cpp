@@ -281,11 +281,13 @@ Base::ScopeGuard Document::setDefiningTransaction()
     });
 }
 
-void Document::changePropertyOfObject(TransactionalObject* obj,
+void Document::changePropertyOfObject(PropertyContainer* obj,
                                       const Property* prop,
                                       const std::function<void()>& changeFunc)
 {
-    if (!prop || !obj || !obj->isAttachedToDocument()) {
+    auto* transactionObject = freecad_cast<TransactionalObject*>(obj);
+    if (!prop || !obj || (obj != this && (!transactionObject
+                                          || !transactionObject->isAttachedToDocument()))) {
         return;
     }
     if (!isPerformingTransaction() && !d->activeUndoTransaction) {
@@ -302,7 +304,7 @@ void Document::changePropertyOfObject(TransactionalObject* obj,
     }
 }
 
-void Document::renamePropertyOfObject(TransactionalObject* obj,
+void Document::renamePropertyOfObject(PropertyContainer* obj,
                                       const Property* prop, const char* oldName)
 {
     changePropertyOfObject(obj, prop, [this, obj, prop, oldName]() {
@@ -320,7 +322,7 @@ void Document::arrangeMovePropertyOfObject(TransactionalObject* obj,
     });
 }
 
-void Document::addOrRemovePropertyOfObject(TransactionalObject* obj,
+void Document::addOrRemovePropertyOfObject(PropertyContainer* obj,
                                            const Property* prop, const bool add)
 {
     changePropertyOfObject(obj, prop, [this, obj, prop, add]() {
@@ -852,10 +854,28 @@ unsigned int Document::getMaxUndoStackSize() const
 
 void Document::onBeforeChange(const Property* prop)
 {
+    changePropertyOfObject(this, prop, [this, prop]() {
+        d->activeUndoTransaction->addObjectChange(this, prop);
+    });
     if (prop == &Label) {
         oldLabel = Label.getValue();
     }
     signalBeforeChange(*this, *prop);
+}
+
+void Document::onDynamicPropertyAdded(const Property* prop)
+{
+    addOrRemovePropertyOfObject(this, prop, true);
+}
+
+void Document::onDynamicPropertyRemoving(const Property* prop)
+{
+    addOrRemovePropertyOfObject(this, prop, false);
+}
+
+void Document::onDynamicPropertyRenamed(const Property* prop, const char* oldName)
+{
+    renamePropertyOfObject(this, prop, oldName);
 }
 
 void Document::onChanged(const Property* prop)

@@ -1034,26 +1034,26 @@ public:
     bool isPerformingTransaction() const;
 
     /**
-     * @brief Register that a property of an object has changed in a transaction.
+     * @brief Register that a property of a container was added or removed.
      *
-     * @param[in] obj The object whose property has changed.
+     * @param[in] obj The container whose property has changed.
      * @param[in] prop The property that has changed.
      * @param[in] add If true, the property was added, if false it was removed.
      *
      * @warning This function is only for internal use.
      */
-    void addOrRemovePropertyOfObject(TransactionalObject* obj, const Property* prop, bool add);
+    void addOrRemovePropertyOfObject(PropertyContainer* obj, const Property* prop, bool add);
 
     /**
-     * @brief Register that a property of an object has been renamed in a transaction.
+     * @brief Register that a property of a container has been renamed in a transaction.
      *
-     * @param[in] obj The object whose property has changed.
+     * @param[in] obj The container whose property has changed.
      * @param[in] prop The property that has changed.
-     * @param[in] newName The new name of the property.
+     * @param[in] oldName The previous name of the property.
      *
      * @warning This function is only for internal use.
      */
-    void renamePropertyOfObject(TransactionalObject* obj, const Property* prop, const char* newName);
+    void renamePropertyOfObject(PropertyContainer* obj, const Property* prop, const char* oldName);
 
     /**
      * @brief Register in a transaction that a property move has been arranged.
@@ -1398,6 +1398,9 @@ protected:
 
     void onBeforeChange(const Property* prop) override;
     void onChanged(const Property* prop) override;
+    void onDynamicPropertyAdded(const Property* prop) override;
+    void onDynamicPropertyRemoving(const Property* prop) override;
+    void onDynamicPropertyRenamed(const Property* prop, const char* oldName) override;
 
     /**
      * @brief Notify the document that a property is about to be changed.
@@ -1468,7 +1471,7 @@ protected:
     void _abortTransaction();
 
 private:
-    void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
+    void changePropertyOfObject(PropertyContainer* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
     [[nodiscard]] Base::ScopeGuard setDefiningTransaction();
 

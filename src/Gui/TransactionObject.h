@@ -35,8 +35,8 @@ public:
     TransactionViewProvider();
     ~TransactionViewProvider() override;
 
-    void applyNew(App::Document& Doc, App::TransactionalObject* pcObj) override;
-    void applyDel(App::Document& Doc, App::TransactionalObject* pcObj) override;
+    void applyNew(App::Document& Doc, App::PropertyContainer* pcObj) override;
+    void applyDel(App::Document& Doc, App::PropertyContainer* pcObj) override;
 };
 
 }  // namespace Gui
