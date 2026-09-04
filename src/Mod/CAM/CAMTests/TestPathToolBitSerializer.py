@@ -18,10 +18,13 @@ from Path.Tool.shape import ToolBitShapeEndmill
 from typing import Mapping
 
 
-class _BaseToolBitSerializerTestCase(PathTestWithAssets):
-    """Base test case for ToolBit Serializers."""
+class _BaseToolBitSerializerTestCase:
+    """Base test case for ToolBit Serializers.
 
-    __test__ = False
+    Deliberately not a TestCase subclass: unittest would otherwise collect and
+    run it directly, where the abstract `serializer_class` attribute does not
+    exist. Concrete suites inherit from both this mixin and PathTestWithAssets.
+    """
 
     serializer_class: Type[AssetSerializer]
     test_tool_bit: ToolBit
@@ -54,7 +57,7 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
         self.assertEqual(len(dependencies), 0)
 
 
-class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
+class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = CamoticsToolBitSerializer
 
     def test_serialize(self):
@@ -93,7 +96,7 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
 
 
-class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
+class TestFCTBSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = FCTBSerializer
 
     def test_serialize(self):
@@ -173,7 +176,7 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(data["my_ext"], {"foo": 1})
 
 
-class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
+class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase, PathTestWithAssets):
     serializer_class = YamlToolBitSerializer
 
     def test_serialize(self):

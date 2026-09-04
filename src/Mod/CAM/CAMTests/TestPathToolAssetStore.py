@@ -13,10 +13,14 @@ from Path.Tool.assets import (
 )
 
 
-class BaseTestPathToolAssetStore(unittest.TestCase):
+class BaseTestPathToolAssetStore:
     """
     Base test suite for Path Tool Asset Stores assuming full versioning support.
     Store-agnostic tests without direct file system access.
+
+    Deliberately not a TestCase subclass: unittest would otherwise collect and
+    run it directly, where the abstract `store` attribute does not exist.
+    Concrete suites inherit from both this mixin and unittest.TestCase.
     """
 
     store: AssetStore
@@ -337,7 +341,7 @@ class BaseTestPathToolAssetStore(unittest.TestCase):
         asyncio.run(async_test())
 
 
-class TestPathToolFileStore(BaseTestPathToolAssetStore):
+class TestPathToolFileStore(BaseTestPathToolAssetStore, unittest.TestCase):
     """Test suite for FileStore with full versioning support."""
 
     def setUp(self):
@@ -379,7 +383,7 @@ class TestPathToolFileStore(BaseTestPathToolAssetStore):
         asyncio.run(async_test())
 
 
-class TestPathToolMemoryStore(BaseTestPathToolAssetStore):
+class TestPathToolMemoryStore(BaseTestPathToolAssetStore, unittest.TestCase):
     """Test suite for MemoryStore."""
 
     def setUp(self):
