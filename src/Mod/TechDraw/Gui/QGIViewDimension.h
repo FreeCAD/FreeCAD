@@ -91,6 +91,7 @@ public:
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
+    void setScreenScale(double scale);
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
@@ -220,6 +221,7 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
+    double m_scale = 1.0;
     QGIDatumLabel* areaLeaderPointLabel;
     bool isAreaLeaderPointDragged;
 

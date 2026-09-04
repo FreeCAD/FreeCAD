@@ -39,18 +39,20 @@ using namespace TechDrawGui;
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
     m_markFuzz = PreferencesGui::markFuzz();
-    m_size = 3.0;
     setThick(0.75);
     draw();
 }
 void QGICMark::draw()
 {
+    double size = m_size * m_scale;
     QPainterPath cmPath;
-    cmPath.moveTo(0.0, m_size);
-    cmPath.lineTo(0.0, -m_size);
-    cmPath.moveTo(m_size, 0.0);
-    cmPath.lineTo(-m_size, 0.0);
+    cmPath.moveTo(0.0, size);
+    cmPath.lineTo(0.0, -size);
+    cmPath.moveTo(size, 0.0);
+    cmPath.lineTo(-size, 0.0);
     setPath(cmPath);
+
+    setWidth(m_thickness * m_scale);
 }
 
 void QGICMark::setSize(float s)
@@ -61,7 +63,13 @@ void QGICMark::setSize(float s)
 
 void QGICMark::setThick(float t)
 {
-    m_pen.setWidthF(t);
+    m_thickness = t;
+    draw();
+}
+
+void QGICMark::setScreenScale(double scale)
+{
+    m_scale = scale;
     draw();
 }
 

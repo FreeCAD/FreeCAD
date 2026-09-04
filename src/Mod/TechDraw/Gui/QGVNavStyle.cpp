@@ -298,6 +298,7 @@ void QGVNavStyle::zoom(double factor)
 
     setAnchor();
     getViewer()->scale(factor, factor);
+    getViewer()->getScene()->updateScreenScale();
     m_zoomPending = false;
 }
 

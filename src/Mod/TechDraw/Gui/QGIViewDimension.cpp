@@ -933,7 +933,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
 
         arrow->setStyle(forcePoint ? ArrowType::DOT : static_cast<ArrowType>(vp->ArrowStyle.getValue()));
         auto arrowSize = vp->Arrowsize.getValue();
-        arrow->setSize(arrowSize);
+        arrow->setSize(arrowSize * m_scale);
         arrow->setFlipped(flipped);
 
         if (vp->ArrowStyle.getValue() != static_cast<int>(ArrowType::NONE)) {
@@ -2515,9 +2515,15 @@ void QGIViewDimension::setSvgPens()
 
 void QGIViewDimension::setPens()
 {
-    dimLines->setWidth(m_lineWidth);
-    aHead1->setWidth(m_lineWidth);
-    aHead2->setWidth(m_lineWidth);
+    dimLines->setWidth(m_lineWidth * m_scale);
+    aHead1->setWidth(m_lineWidth * m_scale);
+    aHead2->setWidth(m_lineWidth * m_scale);
+}
+
+void QGIViewDimension::setScreenScale(double scale)
+{
+    m_scale = scale;
+    draw();
 }
 
 double QGIViewDimension::toDeg(double angle) { return Base::toDegrees(angle); }

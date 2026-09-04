@@ -101,6 +101,8 @@ public:
     bool useOldCoords() const;
     Base::Vector3d getAttachPoint();
 
+    void setScreenScale(double scale);
+
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF tipDisplace,
@@ -141,6 +143,8 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
 
     bool m_blockDraw;//prevent redraws while updating.
+
+    double m_scale = 1.0;
 };
 
 }// namespace TechDrawGui

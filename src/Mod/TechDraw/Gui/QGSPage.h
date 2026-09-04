@@ -141,6 +141,7 @@ public:
     bool getExportingAny() const { return getExportingPdf() || getExportingSvg(); }
 
     virtual void refreshViews();
+    void updateScreenScale();
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);

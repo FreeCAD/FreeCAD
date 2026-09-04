@@ -46,9 +46,10 @@ public:
     void draw(void);
     float getSize() { return m_size; }
     void setSize(float s);
-    float getThick() { return m_pen.widthF(); }
+    float getThick() { return m_thickness; }
     void setThick(float t);
     void setPrettyNormal() override;
+    void setScreenScale(double scale) override;
 
     double getMarkFuzz(void) const;
 
@@ -56,7 +57,8 @@ protected:
     QColor getCMarkColor();
 
 private:
-    float m_size;
+    float m_size{3.0};
+    float m_thickness{0.0};
     double m_markFuzz;
 };
 

@@ -48,6 +48,7 @@ public:
 
     double getRadius() const { return m_radius; }
     virtual void setRadius(double r);
+    virtual void setScreenScale(double scale);
 
     Base::Vector2d toVector2d() const;
     Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
@@ -55,8 +56,11 @@ public:
 protected:
     bool multiselectEligible() override { return true; }
 
+    void makePoint();
+
     int projIndex;
     double m_radius;
+    double m_scale = 1.0;
 };
 
 }
