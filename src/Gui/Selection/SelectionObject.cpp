@@ -23,6 +23,9 @@
 
 
 #include <sstream>
+#include <ranges>
+#include <algorithm>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,6 +53,11 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     if (msg.pSubName) {
         SubNames.emplace_back(msg.pSubName);
         SelPoses.emplace_back(msg.x, msg.y, msg.z);
+
+        if (strlen(msg.pSubName) > 0) {
+            std::vector<std::string> subNameTokens = Base::Tools::splitSubName(msg.pSubName);
+            evaluateLinkParent(subNameTokens);
+        }
     }
 }
 
@@ -61,6 +69,24 @@ SelectionObject::SelectionObject(const App::DocumentObject* obj)
 }
 
 SelectionObject::~SelectionObject() = default;
+
+void SelectionObject::evaluateLinkParent(const std::vector<std::string>& candidates)
+{
+    auto* selObj = getObject();
+    if (!selObj) {
+        return;
+    }
+    const auto doc = selObj->getDocument();
+    auto it = std::ranges::find_if(candidates, [doc](const std::string& name) {
+        const App::DocumentObject* obj = doc->getObject(name.c_str());
+        return obj && obj->isLink();
+    });
+
+    if (it != candidates.end()) {
+        const std::string& name = *it;
+        LinkParentName = name;
+    }
+}
 
 const App::DocumentObject* SelectionObject::getObject() const
 {
