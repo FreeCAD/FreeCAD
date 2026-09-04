@@ -29,6 +29,7 @@
 #include <Gui/Language/Translator.h>
 
 #include "DlgSettingsFemCcxImp.h"
+#include "DlgSettingsFemCodeAsterImp.h"
 #include "DlgSettingsFemElmerImp.h"
 #include "DlgSettingsFemExportAbaqusImp.h"
 #include "DlgSettingsFemGeneralImp.h"
@@ -195,6 +196,7 @@ PyMOD_INIT_FUNC(FemGui)
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCodeAsterImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemElmerImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemMystranImp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
     new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp>(QT_TRANSLATE_NOOP("QObject", "FEM"));
