@@ -361,6 +361,17 @@ public:
      * \return The computed deflection value.
      */
     static Standard_Real getDeflection(const TopoDS_Shape& shape, double deviation);
+    /**
+     * \brief Corrects a face if the inner wires are in the same direction as the outer.
+     *
+     * This function corrects a face if the inner wires are in the same direction as
+     * the outer wire.
+     *
+     * \param[in] face.
+     *
+     * \return shape either the corrected or supplied face.
+     */
+    static TopoDS_Shape validateFace(const TopoDS_Face& face);
 };
 
 }  // namespace Part
