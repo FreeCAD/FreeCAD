@@ -24,6 +24,7 @@
 
 #include <map>
 #include <string>
+#include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 
 class SoDepthBuffer;
@@ -96,7 +97,7 @@ private:
     std::map<std::string, SoNode*> objectsOnTop;
     std::map<std::string, SoNode*> objectsOnTopPreSel;
     Gui::Document* guiDocument = nullptr;
-    ViewProviderDocumentObject* previewedFeature = nullptr;
+    ViewProviderWeakPtrT previewedFeature {nullptr};
     bool featurePreviewActive = false;
 };
 
