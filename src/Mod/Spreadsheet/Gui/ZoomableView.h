@@ -75,6 +75,7 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void wheelEvent(QWheelEvent* event) override;
+    bool viewportEvent(QEvent* event) override;
 
     static constexpr int zoom_step_mwheel {5}, zoom_step_kb {10};
 };
