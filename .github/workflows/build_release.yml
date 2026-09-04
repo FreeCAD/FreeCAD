@@ -236,6 +236,50 @@ jobs:
           cd package/rattler-build
           pixi install --frozen
 
+      - name: Check installed Python stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          stubs_dir="$(find package/rattler-build/.pixi/envs/default \
+              -type d -name python-stubs -print -quit)"
+          if [[ -z "${stubs_dir}" ]]; then
+            echo "Could not find the installed Python stubs directory" >&2
+            exit 1
+          fi
+          python3 - "${stubs_dir}" <<'PY'
+          import ast
+          from pathlib import Path
+          import sys
+
+          stub_files = list(Path(sys.argv[1]).rglob("*.pyi"))
+          if not stub_files:
+              raise SystemExit("The installed Python stubs directory is empty")
+          for path in stub_files:
+              ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+          PY
+
+      - name: Publish standalone Python stubs
+        # Stubs are platform-independent; use one job to avoid upload races.
+        if: matrix.target == 'linux-64'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+          stubs_dir="$(find package/rattler-build/.pixi/envs/default \
+              -type d -name python-stubs -print -quit)"
+          if [[ -z "${stubs_dir}" ]]; then
+            echo "Could not find the installed Python stubs directory" >&2
+            exit 1
+          fi
+
+          archive="FreeCAD-PythonStubs-${BUILD_TAG}.tar.gz"
+          tar -C "${stubs_dir}" -czf "${archive}" .
+          sha256sum "${archive}" > "${archive}-SHA256.txt"
+          gh release upload --clobber "${BUILD_TAG}" \
+              "${archive}" "${archive}-SHA256.txt"
+
       - name: Azure login for Windows build code signing
         id: azure_login
         if: runner.os == 'Windows'
