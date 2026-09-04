@@ -97,6 +97,7 @@
 #include "PartFeature.h"
 #include "PartPyCXX.h"
 #include "PyException.h"
+#include "ShapeListPy.h"
 #include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapePy.h"
@@ -142,7 +143,11 @@ PartExport void getPyShapes(PyObject* obj, std::vector<TopoShape>& shapes)
     if (!obj) {
         return;
     }
-    if (PyObject_TypeCheck(obj, &Part::TopoShapePy::Type)) {
+    if (PyObject_TypeCheck(obj, &Part::ShapeListPy::Type)) {
+        const auto values = static_cast<ShapeListPy*>(obj)->effectiveValues();
+        shapes.insert(shapes.end(), values.begin(), values.end());
+    }
+    else if (PyObject_TypeCheck(obj, &Part::TopoShapePy::Type)) {
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
     }
     else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) {

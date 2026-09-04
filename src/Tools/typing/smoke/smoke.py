@@ -148,8 +148,8 @@ def exercise(
     placement.Rotation = (0, 0, 0, 1)
     rotation.Axis = (0, 0, 1)
     matrix_values: tuple[float, ...] = matrix.A
-    assert_type(shape.CompSolids, list[Part.CompSolid])
-    assert_type(shape.Compounds, list[Part.Compound])
+    assert_type(shape.CompSolids, Part.ShapeList)
+    assert_type(shape.Compounds, Part.ShapeList)
     schema = Units.getSchema()
     schema_names = Units.listSchemas()
     schema_description = Units.listSchemas(schema)
