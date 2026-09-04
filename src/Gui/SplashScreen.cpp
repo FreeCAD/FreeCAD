@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <string_view>
+#include <fmt/format.h>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
@@ -337,7 +339,7 @@ void SplashScreen::setShowMessages(bool on)
 
 QPixmap SplashScreen::splashImage()
 {
-    constexpr std::string_view DEV = "dev";
+    constexpr std::string_view developmentSuffix = "dev";
     // search in the UserAppData dir as very first
     QPixmap splash_image;
     bool usingDefaultSplash = false;
@@ -455,7 +457,7 @@ QPixmap SplashScreen::splashImage()
                 versionLabel
             );
 
-            if (suffix == DEV && warningColor.isValid()) {
+            if (suffix == developmentSuffix && warningColor.isValid()) {
                 numberFont.setPixelSize(10);
                 numberFont.setHintingPreference(QFont::PreferVerticalHinting);
                 painter.setFont(numberFont);
@@ -511,7 +513,7 @@ QPixmap SplashScreen::splashImage()
             }
             painter.setFont(fontVer);
             painter.drawText(x + (l + 235), y - 7, versionText);
-            if (suffix == DEV && warningColor.isValid()) {
+            if (suffix == developmentSuffix && warningColor.isValid()) {
                 fontVer.setPointSizeF(14.0);
                 fontVer.setHintingPreference(QFont::PreferVerticalHinting);
                 painter.setFont(fontVer);
