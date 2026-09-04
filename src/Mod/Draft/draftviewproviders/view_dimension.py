@@ -241,7 +241,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.textcolor = coin.SoBaseColor()
         self.font = coin.SoFont()
         self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
+        self.text_scr = gui_utils.make_hidpi_text2()  # Screen orientation. Always faces the camera.
 
         # The text string needs to be initialized to something,
         # otherwise it may cause a crash of the system
@@ -825,7 +825,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         self.textcolor = coin.SoBaseColor()
         self.font = coin.SoFont()
         self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
+        self.text_scr = gui_utils.make_hidpi_text2()  # Screen orientation. Always faces the camera.
 
         # The text string needs to be initialized to something,
         # otherwise it may cause a crash of the system
