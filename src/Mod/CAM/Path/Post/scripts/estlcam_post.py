@@ -26,7 +26,6 @@ This post processor inherits from the base post processor class with the followi
 - Converts M7 to M10 for mist coolant on
 - Converts M9 to M11 when mist coolant is being used
 - Strips G21 commands
-
 """
 
 from typing import Any, Dict
