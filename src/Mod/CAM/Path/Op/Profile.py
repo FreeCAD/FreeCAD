@@ -29,7 +29,6 @@ import Path.Base.Drillable as Drillable
 import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -545,7 +544,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         shapeTups = []
 
         self.solids = [base.Shape for base in self.model]
-        self.tol = self.job.GeometryTolerance.Value
+        self.tol = self.job.GeometryTolerance.Value or 0.01
 
         bases = []
         edgeslist = []
@@ -580,14 +579,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             edgeslist.extend(bEs)
 
         for se in Part.getSortedClusters(edgeslist):
-            for base in bases:
-                if any(base.Shape.isInside(e.Vertexes[0].Point, self.tol, True) for e in se):
-                    shapeTups.extend(self._processWire(obj, base, se))
-                    break
+            wire = Part.Wire(Part.__sortEdges__(se))
+            if wire.isClosed():
+                shapeTups.extend(self._processClosedWire(obj, None, wire))
             else:
-                wire = Part.Wire(Part.__sortEdges__(se))
-                if wire.isClosed():
-                    shapeTups.extend(self._processWire(obj, None, se))
+                for base in bases:
+                    if any(base.Shape.isInside(e.Vertexes[0].Point, self.tol, True) for e in se):
+                        shapeTups.extend(self._processOpenWireNG(obj, base, wire))
+                        break
                 else:
                     Path.Log.warning("Skipped open wire without base solid model")
 
@@ -627,80 +626,58 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     self._addDebugObject("CutShapeEnv", shEnv)
                     shapeTups.append((shEnv, False, "pathProfile"))
 
-        return shapeTups
-
-    def _processWire(self, obj, base, edges):
-        """_processWires(obj, base, edges) ... returns envelope of edges forms the wire"""
+    def _processClosedWire(self, obj, base, wire):
+        """_processClosedWire(obj, base, edges) ... returns envelope of the closed wire"""
         Path.Log.track(base)
         shapeTups = []
-        wire = Part.Wire(Part.__sortEdges__(edges))
-        if wire.isClosed():
-            origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
-            f = flatWire.Wires[0]
-            if f:
-                shape = Part.Face(f)
-                shapeEnv = PathUtils.getEnvelope(shape, depthparams=self.depthparams)
-                if shapeEnv:
-                    shapeTups.append((shapeEnv, False, "pathProfile"))
-            else:
-                Path.Log.error(self.inaccessibleMsg)
-        else:  # open wire
-            if self.JOB.GeometryTolerance.Value == 0.0:
-                msg = self.JOB.Label + ".GeometryTolerance = 0.0. "
-                msg += "Please set to an acceptable value greater than zero."
-                Path.Log.error(msg)
-            else:
-                flattened = self._flattenWire(obj, wire, wire.BoundBox.Center.z)
-                if not flattened:
-                    Path.Log.error(self.inaccessibleMsg)
-                    return []
-                origWire, flatWire = flattened
-                diffDepth = self._getOpenProfileDiffDepth(base, edges)
-                # translate wire in Z to get correct cross-section with model
-                flatWire.translate(FreeCAD.Vector(0, 0, diffDepth))
-                self._addDebugObject("FlatWire", flatWire)
-
-                openWires = []
-                params = self.areaOpAreaParams(obj, False)
-                passOffsets = [
-                    self.ofstRadius + i * abs(params["Stepover"])
-                    for i in range(params["ExtraPass"] + 1)
-                ][::-1]
-                for po in passOffsets:
-                    cutWireObjs = False
-                    self.ofstRadius = po
-                    cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
-                    if cutShp:
-                        cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
-
-                    if cutWireObjs:
-                        for cW in cutWireObjs:
-                            openWires.append(cW)
-                    else:
-                        Path.Log.error(self.inaccessibleMsg)
-                shapeTups.append((openWires[0], openWires, "OpenEdge"))
+        origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+        if f := flatWire.Wires[0]:
+            shape = Part.Face(f)
+            if obj.ExtensionOffset:
+                ext = Path.Op.Util.getExtendedFaces(
+                    shape, obj.ExtensionOffset.Value, self.solids, self.tol
+                )
+                shape = Part.Compound(ext)
+            if shapeEnv := PathUtils.getEnvelope(shape, depthparams=self.depthparams):
+                shapeTups.append((shapeEnv, False, "pathProfile"))
+        if not shapeTups:
+            Path.Log.error(self.inaccessibleMsg)
 
         return shapeTups
 
-    def _getOpenProfileDiffDepth(self, base, edges):
-        """_getOpenProfileDiffDepth(base, edges)...
-        Returns extra depth with sign to get correct cross-section with model for open profile"""
-        tol = self.JOB.GeometryTolerance.Value
-        diffDepth = 2 * tol
-        offset = FreeCAD.Vector(0, 0, diffDepth)
-        edgeMiddlePoint = edges[0].discretize(3)[1]
-        edgeHash = edges[0].hashCode()
-        for face in base.Shape.Faces:
-            if Path.Geom.isHorizontal(face):
-                continue
-            if any(e.hashCode() == edgeHash for e in face.Edges):
-                if face.isInside(edgeMiddlePoint + offset, tol, True):
-                    return diffDepth
-                if face.isInside(edgeMiddlePoint - offset, tol, True):
-                    return -diffDepth
+    def _processOpenWire(self, obj, base, wire):
+        """_processOpenWire(obj, wire) ... returns envelope of edges forms the open wire"""
+        shapeTups = []
 
-        Path.Log.warning("Can not define depth for open edges.")
-        return 0
+        # remove horiontal faces for checks collisions
+        shape = Part.Compound([f for s in self.solids for f in s.Faces if Path.Geom.isVertical(f)])
+
+        goodWires = []
+        passOffsets = self.areaOpAreaParams(obj, False)["Offset"]
+        for po in passOffsets:
+            # put here offset open wire TODO
+            owire = Path.Op.Util.offsetWire(wire, base.Shape, po, forward=True, tolerance=self.tol)
+            rawWires = [owire]
+            while rawWires:
+                wire = rawWires.pop()
+                distData = wire.distToShape(shape)
+                dist = distData[0]
+                if dist > self.radius or Path.Geom.isRoughly(dist, self.radius, self.tol):
+                    goodWires.append(wire)
+                else:
+                    point = distData[1][0][1]
+                    circle = Part.makeCircle(self.radius, point)
+                    face = Part.makeFace(circle)
+                    cut = wire.cut(face)
+                    ws = [Part.Wire(se) for se in Part.sortEdges(cut.Edges)]
+                    rawWires.extend(ws)
+
+        if goodWires:
+            shapeTups.append((goodWires[0], goodWires, "OpenEdge"))
+        else:
+            Path.Log.error(self.inaccessibleMsg)
+
+        return shapeTups
 
     def _flattenWire(self, obj, wire, trgtDep):
         """_flattenWire(obj, wire)... Returns a flattened version of the wire"""
@@ -727,540 +704,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return (wire, srtWire)
 
-    # Open-edges methods
-    def _getCutAreaCrossSection(self, obj, base, origWire, flatWire):
-        Path.Log.debug("_getCutAreaCrossSection()")
-        tolerance = self.JOB.GeometryTolerance.Value
-        toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
-        minBfr = toolDiam * 1.25
-        bbBfr = (self.ofstRadius * 2) * 1.25
-        if bbBfr < minBfr:
-            bbBfr = minBfr
-        fwBB = flatWire.BoundBox
-        wBB = origWire.BoundBox
-        minArea = (self.ofstRadius - tolerance) ** 2 * math.pi
-
-        useWire = origWire.Wires[0]
-        numOrigEdges = len(useWire.Edges)
-        fdv = fwBB.ZMax
-        WIRE = flatWire.Wires[0]
-        numEdges = len(WIRE.Edges)
-
-        # Identify first/last edges and first/last vertex on wire
-        begE = WIRE.Edges[0]  # beginning edge
-        endE = WIRE.Edges[numEdges - 1]  # ending edge
-        blen = begE.Length
-        elen = endE.Length
-        Vb = begE.Vertexes[0]  # first vertex of wire
-        Ve = endE.Vertexes[1]  # last vertex of wire
-        pb = FreeCAD.Vector(Vb.X, Vb.Y, fdv)
-        pe = FreeCAD.Vector(Ve.X, Ve.Y, fdv)
-
-        # Obtain beginning point perpendicular points
-        if blen > 0.1:
-            bcp = begE.valueAt(begE.getParameterByLength(0.1))  # point returned 0.1 mm along edge
-        else:
-            bcp = FreeCAD.Vector(begE.Vertexes[1].X, begE.Vertexes[1].Y, fdv)
-        if elen > 0.1:
-            ecp = endE.valueAt(
-                endE.getParameterByLength(elen - 0.1)
-            )  # point returned 0.1 mm along edge
-        else:
-            ecp = FreeCAD.Vector(endE.Vertexes[1].X, endE.Vertexes[1].Y, fdv)
-
-        # Create intersection tags for determining which side of wire to cut
-        begInt, begExt, iTAG, eTAG = self._makeIntersectionTags(useWire, numOrigEdges, fdv)
-        if not begInt or not begExt:
-            return False
-        self.iTAG = iTAG
-        self.eTAG = eTAG
-
-        # Create extended wire boundbox, and extrude
-        extBndbox = self._makeExtendedBoundBox(wBB, bbBfr, fdv)
-        extBndboxEXT = extBndbox.extrude(FreeCAD.Vector(0, 0, 1))
-
-        # Cut model(selected edges) from extended edges boundbox
-        cutArea = extBndboxEXT.cut(base.Shape)
-        cutArea.tessellate(tolerance)
-        self._addDebugObject("CutArea", cutArea)
-
-        # Get top and bottom faces of cut area (CA), and combine faces when necessary
-        topFc = []
-        botFc = []
-        bbZMax = cutArea.BoundBox.ZMax
-        bbZMin = cutArea.BoundBox.ZMin
-        for f in range(0, len(cutArea.Faces)):
-            FcBB = cutArea.Faces[f].BoundBox
-            if abs(FcBB.ZMax - bbZMax) < tolerance and abs(FcBB.ZMin - bbZMax) < tolerance:
-                topFc.append(f)
-            if abs(FcBB.ZMax - bbZMin) < tolerance and abs(FcBB.ZMin - bbZMin) < tolerance:
-                botFc.append(f)
-        if len(topFc) == 0:
-            Path.Log.error("Failed to identify top faces of cut area.")
-            return False
-        topComp = Part.makeCompound([cutArea.Faces[f] for f in topFc])
-        topComp.translate(
-            FreeCAD.Vector(0, 0, fdv - topComp.BoundBox.ZMin)
-        )  # Translate face to final depth
-        if len(botFc) > 1:
-            # Path.Log.debug('len(botFc) > 1')
-            bndboxFace = Part.Face(extBndbox.Wires[0])
-            tmpFace = Part.Face(extBndbox.Wires[0])
-            for f in botFc:
-                Q = tmpFace.cut(cutArea.Faces[f])
-                tmpFace = Q
-            botComp = bndboxFace.cut(tmpFace)
-        else:
-            botComp = Part.makeCompound(
-                [cutArea.Faces[f] for f in botFc]
-            )  # Part.makeCompound([CA.Shape.Faces[f] for f in botFc])
-        botComp.translate(
-            FreeCAD.Vector(0, 0, fdv - botComp.BoundBox.ZMin)
-        )  # Translate face to final depth
-
-        # Make common of the two
-        comFC = topComp.common(botComp)
-
-        # Determine with which set of intersection tags the model intersects
-        cmnIntArea, cmnExtArea = self._checkTagIntersection(iTAG, eTAG, "QRY", comFC)
-        if cmnExtArea > cmnIntArea:
-            Path.Log.debug("Cutting on Ext side.")
-            self.cutSide = "E"
-            self.cutSideTags = eTAG
-            tagCOM = begExt.CenterOfMass
-        else:
-            Path.Log.debug("Cutting on Int side.")
-            self.cutSide = "I"
-            self.cutSideTags = iTAG
-            tagCOM = begInt.CenterOfMass
-
-        # Make two beginning style(oriented) 'L' shape stops
-        begStop = self._makeStop("BEG", bcp, pb, "BegStop")
-        altBegStop = self._makeStop("END", bcp, pb, "BegStop")
-
-        # Identify to which style 'L' stop the beginning intersection tag is closest,
-        # and create partner end 'L' stop geometry, and save for application later
-        lenBS_extETag = begStop.CenterOfMass.sub(tagCOM).Length
-        lenABS_extETag = altBegStop.CenterOfMass.sub(tagCOM).Length
-        if lenBS_extETag < lenABS_extETag:
-            endStop = self._makeStop("END", ecp, pe, "EndStop")
-            pathStops = Part.makeCompound([begStop, endStop])
-        else:
-            altEndStop = self._makeStop("BEG", ecp, pe, "EndStop")
-            pathStops = Part.makeCompound([altBegStop, altEndStop])
-        pathStops.translate(FreeCAD.Vector(0, 0, fdv - pathStops.BoundBox.ZMin))
-
-        # Identify closed wire in cross-section that corresponds to user-selected edge(s)
-        workShp = comFC
-        wire = origWire
-        WS = workShp.Wires
-        lenWS = len(WS)
-        wi = 0
-        if lenWS < 3:
-            # fcShp = workShp
-            pass
-        else:
-            wi = None
-            for wvt in wire.Vertexes:
-                for w in range(0, lenWS):
-                    twr = WS[w]
-                    for v in range(0, len(twr.Vertexes)):
-                        V = twr.Vertexes[v]
-                        if abs(V.X - wvt.X) < tolerance:
-                            if abs(V.Y - wvt.Y) < tolerance:
-                                # Same vertex found.  This wire to be used for offset
-                                wi = w
-                                break
-            # Efor
-
-            if wi is None:
-                Path.Log.error(
-                    "The cut area cross-section wire does not coincide with selected edge. Wires[] index is None."
-                )
-                return False
-            else:
-                Path.Log.debug("Cross-section Wires[] index is {}.".format(wi))
-
-            nWire = Part.Wire(Part.__sortEdges__(workShp.Wires[wi].Edges))
-            fcShp = Part.Face(nWire)
-            fcShp.translate(FreeCAD.Vector(0, 0, fdv - workShp.BoundBox.ZMin))
-        # Eif
-
-        # verify that wire chosen is not inside the physical model
-        if wi > 0:  # and isInterior is False:
-            Path.Log.debug("Multiple wires in cut area. First choice is not 0. Testing.")
-            testArea = fcShp.cut(base.Shape)
-
-            isReady = self._checkTagIntersection(iTAG, eTAG, self.cutSide, testArea)
-            Path.Log.debug("isReady {}.".format(isReady))
-
-            if isReady is False:
-                Path.Log.debug("Using wire index {}.".format(wi - 1))
-                pWire = Part.Wire(Part.__sortEdges__(workShp.Wires[wi - 1].Edges))
-                pfcShp = Part.Face(pWire)
-                pfcShp.translate(FreeCAD.Vector(0, 0, fdv - workShp.BoundBox.ZMin))
-                workShp = pfcShp.cut(fcShp)
-
-            if testArea.Area < minArea:
-                Path.Log.debug("offset area is less than minArea of {}.".format(minArea))
-                Path.Log.debug("Using wire index {}.".format(wi - 1))
-                pWire = Part.Wire(Part.__sortEdges__(workShp.Wires[wi - 1].Edges))
-                pfcShp = Part.Face(pWire)
-                pfcShp.translate(FreeCAD.Vector(0, 0, fdv - workShp.BoundBox.ZMin))
-                workShp = pfcShp.cut(fcShp)
-        # Eif
-
-        # Add path stops at ends of wire
-        cutShp = workShp.cut(pathStops)
-        self._addDebugObject("CutShape", cutShp)
-
-        return cutShp
-
-    def _checkTagIntersection(self, iTAG, eTAG, cutSide, tstObj):
-        Path.Log.debug("_checkTagIntersection()")
-        # Identify intersection of Common area and Interior Tags
-        intCmn = tstObj.common(iTAG)
-
-        # Identify intersection of Common area and Exterior Tags
-        extCmn = tstObj.common(eTAG)
-
-        # Calculate common intersection (solid model side, or the non-cut side) area with tags, to determine physical cut side
-        cmnIntArea = intCmn.Area
-        cmnExtArea = extCmn.Area
-        if cutSide == "QRY":
-            return (cmnIntArea, cmnExtArea)
-
-        if cmnExtArea > cmnIntArea:
-            Path.Log.debug("Cutting on Ext side.")
-            if cutSide == "E":
-                return True
-        else:
-            Path.Log.debug("Cutting on Int side.")
-            if cutSide == "I":
-                return True
-        return False
-
-    def _extractPathWire(self, obj, base, flatWire, cutShp):
-        Path.Log.debug("_extractPathWire()")
-
-        subLoops = []
-        rtnWIRES = []
-        osWrIdxs = []
-        subDistFactor = 1.0  # Raise to include sub wires at greater distance from original
-        fdv = flatWire.BoundBox.ZMax
-        wire = flatWire
-        lstVrtIdx = len(wire.Vertexes) - 1
-        lstVrt = wire.Vertexes[lstVrtIdx]
-        frstVrt = wire.Vertexes[0]
-        cent0 = FreeCAD.Vector(frstVrt.X, frstVrt.Y, fdv)
-        cent1 = FreeCAD.Vector(lstVrt.X, lstVrt.Y, fdv)
-
-        # Calculate offset shape, containing cut region
-        ofstShp = self._getOffsetArea(obj, cutShp, False)
-
-        # CHECK for ZERO area of offset shape
-        try:
-            if hasattr(ofstShp, "Area"):
-                osArea = ofstShp.Area
-                if osArea:  # Make LGTM parser happy
-                    pass
-            else:
-                Path.Log.error("No area to offset shape returned.")
-                return []
-        except Exception as ee:
-            Path.Log.error("No area to offset shape returned.\n{}".format(ee))
-            return []
-
-        self._addDebugObject("OffsetShape", ofstShp)
-
-        numOSWires = len(ofstShp.Wires)
-        for w in range(0, numOSWires):
-            osWrIdxs.append(w)
-
-        # Identify two vertexes for dividing offset loop
-        NEAR0 = self._findNearestVertex(ofstShp, cent0)
-        # min0i = 0
-        min0 = NEAR0[0][4]
-        for n in range(0, len(NEAR0)):
-            N = NEAR0[n]
-            if N[4] < min0:
-                min0 = N[4]
-                # min0i = n
-        w0, vi0, pnt0, _, _ = NEAR0[0]  # min0i
-        near0Shp = Part.makeLine(cent0, pnt0)
-        self._addDebugObject("Near0", near0Shp)
-
-        NEAR1 = self._findNearestVertex(ofstShp, cent1)
-        # min1i = 0
-        min1 = NEAR1[0][4]
-        for n in range(0, len(NEAR1)):
-            N = NEAR1[n]
-            if N[4] < min1:
-                min1 = N[4]
-                # min1i = n
-        w1, vi1, pnt1, _, _ = NEAR1[0]  # min1i
-        near1Shp = Part.makeLine(cent1, pnt1)
-        self._addDebugObject("Near1", near1Shp)
-
-        if w0 != w1:
-            Path.Log.warning(
-                "Offset wire endpoint indexes are not equal - w0, w1: {}, {}".format(w0, w1)
-            )
-
-        # Debugging
-        """
-        if self.isDebug:
-            Path.Log.debug('min0i is {}.'.format(min0i))
-            Path.Log.debug('min1i is {}.'.format(min1i))
-            Path.Log.debug('NEAR0[{}] is {}.'.format(w0, NEAR0[w0]))
-            Path.Log.debug('NEAR1[{}] is {}.'.format(w1, NEAR1[w1]))
-            Path.Log.debug('NEAR0 is {}.'.format(NEAR0))
-            Path.Log.debug('NEAR1 is {}.'.format(NEAR1))
-        """
-
-        mainWire = ofstShp.Wires[w0]
-
-        # Check for additional closed loops in offset wire by checking distance to iTAG or eTAG elements
-        if numOSWires > 1:
-            # check all wires for proximity(children) to intersection tags
-            tagsComList = []
-            for T in self.cutSideTags.Faces:
-                tcom = T.CenterOfMass
-                tv = FreeCAD.Vector(tcom.x, tcom.y, 0.0)
-                tagsComList.append(tv)
-            subDist = self.ofstRadius * subDistFactor
-            for w in osWrIdxs:
-                if w != w0:
-                    cutSub = False
-                    VTXS = ofstShp.Wires[w].Vertexes
-                    for V in VTXS:
-                        v = FreeCAD.Vector(V.X, V.Y, 0.0)
-                        for t in tagsComList:
-                            if t.sub(v).Length < subDist:
-                                cutSub = True
-                                break
-                        if cutSub is True:
-                            break
-                    if cutSub is True:
-                        sub = Part.Wire(Part.__sortEdges__(ofstShp.Wires[w].Edges))
-                        subLoops.append(sub)
-                # Eif
-
-        # Break offset loop into two wires - one of which is the desired profile path wire.
-        try:
-            edgeIdxs0, edgeIdxs1 = self._separateWireAtVertexes(
-                mainWire, mainWire.Vertexes[vi0], mainWire.Vertexes[vi1]
-            )
-        except Exception as ee:
-            Path.Log.error("Failed to identify offset edge.\n{}".format(ee))
-            return False
-        edgs0 = []
-        edgs1 = []
-        for e in edgeIdxs0:
-            edgs0.append(mainWire.Edges[e])
-        for e in edgeIdxs1:
-            edgs1.append(mainWire.Edges[e])
-        part0 = Part.Wire(Part.__sortEdges__(edgs0))
-        part1 = Part.Wire(Part.__sortEdges__(edgs1))
-
-        # Determine which part is nearest original edge(s) using middle points of wires
-        point = wire.Wires[0].discretize(3)[1]
-        distToPart0 = point.sub(part0.Wires[0].discretize(3)[1]).Length
-        distToPart1 = point.sub(part1.Wires[0].discretize(3)[1]).Length
-        if distToPart0 < distToPart1:
-            rtnWIRES.append(part0)
-        else:
-            rtnWIRES.append(part1)
-        rtnWIRES.extend(subLoops)
-
-        return rtnWIRES
-
-    def _getOffsetArea(self, obj, fcShape, isHole):
-        """Get an offset area for a shape. Wrapper around
-        PathUtils.getOffsetArea."""
-        Path.Log.debug("_getOffsetArea()")
-
-        JOB = PathUtils.findParentJob(obj)
-        tolerance = JOB.GeometryTolerance.Value
-        offset = self.ofstRadius
-
-        if isHole is False:
-            offset = 0 - offset
-
-        # Map JoinType string to AreaParams enum value
-        jointype_map = {
-            "Round": Path.ClipperJoinTypeRound,
-            "Square": Path.ClipperJoinTypeSquare,
-            "Miter": Path.ClipperJoinTypeMiter,
-        }
-        joinType = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
-
-        return PathUtils.getOffsetArea(
-            fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
-        )
-
-    def _findNearestVertex(self, shape, point):
-        Path.Log.debug("_findNearestVertex()")
-        PT = FreeCAD.Vector(point.x, point.y, 0.0)
-
-        def sortDist(tup):
-            return tup[4]
-
-        PNTS = []
-        for w in range(0, len(shape.Wires)):
-            WR = shape.Wires[w]
-            V = WR.Vertexes[0]
-            P = FreeCAD.Vector(V.X, V.Y, 0.0)
-            dist = P.sub(PT).Length
-            vi = 0
-            pnt = P
-            vrt = V
-            for v in range(0, len(WR.Vertexes)):
-                V = WR.Vertexes[v]
-                P = FreeCAD.Vector(V.X, V.Y, 0.0)
-                d = P.sub(PT).Length
-                if d < dist:
-                    dist = d
-                    vi = v
-                    pnt = P
-                    vrt = V
-            PNTS.append((w, vi, pnt, vrt, dist))
-        PNTS.sort(key=sortDist)
-        return PNTS
-
-    def _separateWireAtVertexes(self, wire, VV1, VV2):
-        Path.Log.debug("_separateWireAtVertexes()")
-        tolerance = self.JOB.GeometryTolerance.Value
-        grps = [[], []]
-        wireIdxs = [[], []]
-        V1 = FreeCAD.Vector(VV1.X, VV1.Y, VV1.Z)
-        V2 = FreeCAD.Vector(VV2.X, VV2.Y, VV2.Z)
-
-        edgeCount = len(wire.Edges)
-        FLGS = []
-        for e in range(0, edgeCount):
-            FLGS.append(0)
-
-        chk4 = False
-        for e in range(0, edgeCount):
-            v = 0
-            E = wire.Edges[e]
-            fv0 = FreeCAD.Vector(E.Vertexes[0].X, E.Vertexes[0].Y, E.Vertexes[0].Z)
-            fv1 = FreeCAD.Vector(E.Vertexes[1].X, E.Vertexes[1].Y, E.Vertexes[1].Z)
-
-            if fv0.sub(V1).Length < tolerance:
-                v = 1
-                if fv1.sub(V2).Length < tolerance:
-                    v += 3
-                    chk4 = True
-            elif fv1.sub(V1).Length < tolerance:
-                v = 1
-                if fv0.sub(V2).Length < tolerance:
-                    v += 3
-                    chk4 = True
-
-            if fv0.sub(V2).Length < tolerance:
-                v = 3
-                if fv1.sub(V1).Length < tolerance:
-                    v += 1
-                    chk4 = True
-            elif fv1.sub(V2).Length < tolerance:
-                v = 3
-                if fv0.sub(V1).Length < tolerance:
-                    v += 1
-                    chk4 = True
-            FLGS[e] += v
-        # Efor
-
-        # Path.Log.debug('_separateWireAtVertexes() FLGS: {}'.format(FLGS))
-
-        PRE = []
-        POST = []
-        IDXS = []
-        IDX1 = []
-        IDX2 = []
-        for e in range(0, edgeCount):
-            f = FLGS[e]
-            PRE.append(f)
-            POST.append(f)
-            IDXS.append(e)
-            IDX1.append(e)
-            IDX2.append(e)
-
-        PRE.extend(FLGS)
-        PRE.extend(POST)
-        lenFULL = len(PRE)
-        IDXS.extend(IDX1)
-        IDXS.extend(IDX2)
-
-        if chk4 is True:
-            # find beginning 1 edge
-            begIdx = None
-            for e in range(0, lenFULL):
-                f = PRE[e]
-                i = IDXS[e]
-                if f == 4:
-                    begIdx = e
-                    grps[0].append(f)
-                    wireIdxs[0].append(i)
-                    break
-            # find first 3 edge
-            for e in range(begIdx + 1, edgeCount + begIdx):
-                f = PRE[e]
-                i = IDXS[e]
-                grps[1].append(f)
-                wireIdxs[1].append(i)
-        else:
-            # find beginning 1 edge
-            begIdx = None
-            begFlg = False
-            for e in range(0, lenFULL):
-                f = PRE[e]
-                if f == 1:
-                    if not begFlg:
-                        begFlg = True
-                    else:
-                        begIdx = e
-                        break
-            # find first 3 edge and group all first wire edges
-            endIdx = None
-            for e in range(begIdx, edgeCount + begIdx):
-                f = PRE[e]
-                i = IDXS[e]
-                if f == 3:
-                    grps[0].append(f)
-                    wireIdxs[0].append(i)
-                    endIdx = e
-                    break
-                else:
-                    grps[0].append(f)
-                    wireIdxs[0].append(i)
-            # Collect remaining edges
-            for e in range(endIdx + 1, lenFULL):
-                f = PRE[e]
-                i = IDXS[e]
-                if f == 1:
-                    grps[1].append(f)
-                    wireIdxs[1].append(i)
-                    break
-                else:
-                    wireIdxs[1].append(i)
-                    grps[1].append(f)
-            # Efor
-        # Eif
-
-        # Debugging
-        """
-        if self.isDebug:
-            Path.Log.debug('grps[0]: {}'.format(grps[0]))
-            Path.Log.debug('grps[1]: {}'.format(grps[1]))
-            Path.Log.debug('wireIdxs[0]: {}'.format(wireIdxs[0]))
-            Path.Log.debug('wireIdxs[1]: {}'.format(wireIdxs[1]))
-            Path.Log.debug('PRE: {}'.format(PRE))
-            Path.Log.debug('IDXS: {}'.format(IDXS))
-        """
-        return (wireIdxs[0], wireIdxs[1])
-
     def _makeCrossSection(self, shape, sliceZ, zHghtTrgt=False):
         """_makeCrossSection(shape, sliceZ, zHghtTrgt=None)...
         Creates cross-section objectc from shape.  Translates cross-section to zHghtTrgt if available.
@@ -1278,193 +721,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             return comp
 
         return False
-
-    def _makeExtendedBoundBox(self, wBB, bbBfr, zDep):
-        Path.Log.debug("_makeExtendedBoundBox()")
-        p1 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMin - bbBfr, zDep)
-        p2 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMin - bbBfr, zDep)
-        p3 = FreeCAD.Vector(wBB.XMax + bbBfr, wBB.YMax + bbBfr, zDep)
-        p4 = FreeCAD.Vector(wBB.XMin - bbBfr, wBB.YMax + bbBfr, zDep)
-
-        L1 = Part.makeLine(p1, p2)
-        L2 = Part.makeLine(p2, p3)
-        L3 = Part.makeLine(p3, p4)
-        L4 = Part.makeLine(p4, p1)
-
-        return Part.Face(Part.Wire([L1, L2, L3, L4]))
-
-    def _makeIntersectionTags(self, useWire, numOrigEdges, fdv):
-        Path.Log.debug("_makeIntersectionTags()")
-        # Create circular probe tags around perimiter of wire
-        extTags = []
-        intTags = []
-        tagRad = self.radius / 2
-        tagCnt = 0
-        begInt = False
-        begExt = False
-        for e in range(0, numOrigEdges):
-            E = useWire.Edges[e]
-            LE = E.Length
-            if LE > (self.radius * 2):
-                nt = Path.Geom.ceil(LE / (tagRad * math.pi))
-                # (tagRad * 2 * math.pi) is circumference
-            else:
-                nt = 4  # desired + 1
-            mid = LE / nt
-            spc = self.radius / 10
-            for i in range(0, int(nt)):
-                if i == 0:
-                    if e == 0:
-                        if LE > 0.2:
-                            aspc = 0.1
-                        else:
-                            aspc = LE * 0.75
-                        cp1 = E.valueAt(E.getParameterByLength(0))
-                        cp2 = E.valueAt(E.getParameterByLength(aspc))
-                        intTObj, extTObj = self._makeOffsetCircleTag(
-                            cp1, cp2, tagRad, fdv, "BeginEdge[{}]_".format(e)
-                        )
-                        if intTObj and extTObj:
-                            begInt = intTObj
-                            begExt = extTObj
-                else:
-                    d = i * mid
-                    negTestLen = d - spc
-                    if negTestLen < 0:
-                        negTestLen = d - (LE * 0.25)
-                    posTestLen = d + spc
-                    if posTestLen > LE:
-                        posTestLen = d + (LE * 0.25)
-                    cp1 = E.valueAt(E.getParameterByLength(negTestLen))
-                    cp2 = E.valueAt(E.getParameterByLength(posTestLen))
-                    intTObj, extTObj = self._makeOffsetCircleTag(
-                        cp1, cp2, tagRad, fdv, "Edge[{}]_".format(e)
-                    )
-                    if intTObj and extTObj:
-                        tagCnt += nt
-                        intTags.append(intTObj)
-                        extTags.append(extTObj)
-        # tagArea = math.pi * tagRad**2 * tagCnt
-        iTAG = Part.makeCompound(intTags)
-        eTAG = Part.makeCompound(extTags)
-
-        return (begInt, begExt, iTAG, eTAG)
-
-    def _makeOffsetCircleTag(self, p1, p2, cutterRad, depth, lbl, reverse=False):
-        # Path.Log.debug('_makeOffsetCircleTag()')
-        pb = FreeCAD.Vector(p1.x, p1.y, 0.0)
-        pe = FreeCAD.Vector(p2.x, p2.y, 0.0)
-
-        toMid = pe.sub(pb).multiply(0.5)
-        lenToMid = toMid.Length
-        if lenToMid == 0.0:
-            # Probably a vertical line segment
-            return (False, False)
-
-        cutFactor = (
-            cutterRad / 2.1
-        ) / lenToMid  # = 2 is tangent to wire; > 2 allows tag to overlap wire; < 2 pulls tag away from wire
-        perpE = FreeCAD.Vector(-1 * toMid.y, toMid.x, 0.0).multiply(-1 * cutFactor)  # exterior tag
-        extPnt = pb.add(toMid.add(perpE))
-
-        # make exterior tag
-        eCntr = extPnt.add(FreeCAD.Vector(0, 0, depth))
-        ecw = Part.Wire(Part.makeCircle((cutterRad / 2), eCntr).Edges[0])
-        extTag = Part.Face(ecw)
-
-        # make interior tag
-        perpI = FreeCAD.Vector(-1 * toMid.y, toMid.x, 0.0).multiply(cutFactor)  # interior tag
-        intPnt = pb.add(toMid.add(perpI))
-        iCntr = intPnt.add(FreeCAD.Vector(0, 0, depth))
-        icw = Part.Wire(Part.makeCircle((cutterRad / 2), iCntr).Edges[0])
-        intTag = Part.Face(icw)
-
-        return (intTag, extTag)
-
-    def _makeStop(self, sType, pA, pB, lbl):
-        # Path.Log.debug('_makeStop()')
-        ofstRad = self.ofstRadius
-        extra = self.radius / 5.0
-        lng = 0.05
-        med = lng / 2.0
-        shrt = lng / 5.0
-
-        E = FreeCAD.Vector(pB.x, pB.y, 0)  # endpoint
-        C = FreeCAD.Vector(pA.x, pA.y, 0)  # checkpoint
-
-        if self.useComp is True or (self.useComp is False and self.offsetExtra != 0):
-            # 'L' stop shape and edge map
-            # --1--
-            # |   |
-            # 2   6
-            # |   |
-            # |   ----5----|
-            # |            4
-            # -----3-------|
-            # positive dist in _makePerp2DVector() is CCW rotation
-            p1 = E
-            if sType == "BEG":
-                p2 = self._makePerp2DVector(C, E, -1 * shrt)  # E1
-                p3 = self._makePerp2DVector(p1, p2, ofstRad + lng + extra)  # E2
-                p4 = self._makePerp2DVector(p2, p3, shrt + ofstRad + extra)  # E3
-                p5 = self._makePerp2DVector(p3, p4, lng + extra)  # E4
-                p6 = self._makePerp2DVector(p4, p5, ofstRad + extra)  # E5
-            elif sType == "END":
-                p2 = self._makePerp2DVector(C, E, shrt)  # E1
-                p3 = self._makePerp2DVector(p1, p2, -1 * (ofstRad + lng + extra))  # E2
-                p4 = self._makePerp2DVector(p2, p3, -1 * (shrt + ofstRad + extra))  # E3
-                p5 = self._makePerp2DVector(p3, p4, -1 * (lng + extra))  # E4
-                p6 = self._makePerp2DVector(p4, p5, -1 * (ofstRad + extra))  # E5
-            p7 = E  # E6
-            L1 = Part.makeLine(p1, p2)
-            L2 = Part.makeLine(p2, p3)
-            L3 = Part.makeLine(p3, p4)
-            L4 = Part.makeLine(p4, p5)
-            L5 = Part.makeLine(p5, p6)
-            L6 = Part.makeLine(p6, p7)
-            wire = Part.Wire([L1, L2, L3, L4, L5, L6])
-        else:
-            # 'L' stop shape and edge map
-            # :
-            # |----2-------|
-            # 3            1
-            # |-----4------|
-            # positive dist in _makePerp2DVector() is CCW rotation
-            p1 = E
-            if sType == "BEG":
-                p2 = self._makePerp2DVector(C, E, -1 * (shrt + abs(self.offsetExtra)))  # left, shrt
-                p3 = self._makePerp2DVector(p1, p2, shrt + abs(self.offsetExtra))
-                p4 = self._makePerp2DVector(p2, p3, (med + abs(self.offsetExtra)))  # FIRST POINT
-                p5 = self._makePerp2DVector(p3, p4, shrt + abs(self.offsetExtra))  # E1 SECOND
-            elif sType == "END":
-                p2 = self._makePerp2DVector(C, E, (shrt + abs(self.offsetExtra)))  # left, shrt
-                p3 = self._makePerp2DVector(p1, p2, -1 * (shrt + abs(self.offsetExtra)))
-                p4 = self._makePerp2DVector(
-                    p2, p3, -1 * (med + abs(self.offsetExtra))
-                )  # FIRST POINT
-                p5 = self._makePerp2DVector(
-                    p3, p4, -1 * (shrt + abs(self.offsetExtra))
-                )  # E1 SECOND
-            p6 = p1  # E4
-            L1 = Part.makeLine(p1, p2)
-            L2 = Part.makeLine(p2, p3)
-            L3 = Part.makeLine(p3, p4)
-            L4 = Part.makeLine(p4, p5)
-            L5 = Part.makeLine(p5, p6)
-            wire = Part.Wire([L1, L2, L3, L4, L5])
-        # Eif
-        face = Part.Face(wire)
-        self._addDebugObject(lbl, face)
-
-        return face
-
-    def _makePerp2DVector(self, v1, v2, dist):
-        p1 = FreeCAD.Vector(v1.x, v1.y, 0.0)
-        p2 = FreeCAD.Vector(v2.x, v2.y, 0.0)
-        toEnd = p2.sub(p1)
-        factor = dist / toEnd.Length
-        perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0).multiply(factor)
-        return p1.add(toEnd.add(perp))
 
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):
