@@ -134,9 +134,13 @@ public:
     virtual ~Constraint()
     {}
 
-    VEC_pD params()
+    VEC_pD params() const
     {
         return pvec;
+    }
+    VEC_pD origParams() const
+    {
+        return origpvec;
     }
 
     void redirectParams(const MAP_pD_pD& redirectionmap);

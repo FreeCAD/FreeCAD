@@ -25,6 +25,7 @@
 #pragma once
 
 #include <Eigen/QR>
+#include <vector>
 
 #include "../../SketcherGlobal.h"
 #include "SubSystem.h"
@@ -110,7 +111,6 @@ class SketcherExport System
 private:
     VEC_pD plist;        // list of the unknown parameters
     VEC_pD pdrivenlist;  // list of parameters of driven constraints
-    MAP_pD_I pIndex;
 
     VEC_pD pDependentParameters;  // list of dependent parameters by the system
 
@@ -133,7 +133,7 @@ private:
     std::vector<VEC_pD> plists;  // partitioned plist except equality constraints
     // partitioned clist except equality constraints
     std::vector<std::vector<Constraint*>> clists;
-    std::vector<MAP_pD_pD> reductionmaps;  // for simplification of equality constraints
+    MAP_pD_pD reductionMap;  // for simplification of equality constraints
 
     int dofs;
     std::set<Constraint*> redundant;
@@ -688,6 +688,55 @@ protected:
             return constraint->getTag() == tagID;
         });
     }
+
+public:
+    struct Components
+    {
+        std::vector<int> components;
+        size_t nParams;
+        int size;
+
+        int constraintComponent(size_t constraintIndex)
+        {
+            return components[constraintIndex + nParams];
+        }
+        int paramComponent(size_t paramIndex)
+        {
+            return components[paramIndex];
+        }
+    };
+
+    struct SubSystemDescription
+    {
+        std::vector<Constraint*> constraints;
+        std::vector<double*> params;
+    };
+
+    struct ReductionOutput
+    {
+        std::map<double*, double*> reductionMap;
+        std::vector<Constraint*> constraints;
+        std::vector<double*> params;
+    };
+    struct IsolateConstraintsOutput
+    {
+        std::vector<Constraint*> singleConstraints;  // Constraints that can be solved individually
+        std::vector<Constraint*> groupConstraints;   // Constraints that could not be isolated
+    };
+
+private:
+    static std::map<double*, int> buildParamToIndex(const std::vector<double*> params);
+    std::vector<Constraint*> solvableConstraints(const std::vector<Constraint*>& constraints);
+    ReductionOutput computeReductionMap(
+        const std::vector<double*>& params,
+        const std::vector<Constraint*>& constraints
+    );
+    std::vector<SubSystemDescription> partitionIntoSubSystems(
+        const std::vector<double*>& params,
+        std::vector<Constraint*> constraints,
+        const std::map<double*, double*>& reductionMap
+    );
+    IsolateConstraintsOutput isolateConstraints();
 };
 
 

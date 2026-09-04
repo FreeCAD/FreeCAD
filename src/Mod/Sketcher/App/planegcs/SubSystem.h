@@ -46,10 +46,10 @@ private:
                      //        JacobianMatrix jacobi;  // jacobi matrix of the residuals
     std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
     std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
-    void initialize(VEC_pD& params, MAP_pD_pD& reductionmap);  // called by the constructors
+    void initialize(const VEC_pD& params, const MAP_pD_pD& reductionmap);  // called by the constructors
 public:
-    SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params);
-    SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD& reductionmap);
+    SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params);
+    SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params, const MAP_pD_pD& reductionmap);
     ~SubSystem();
 
     int pSize()
