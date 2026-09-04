@@ -2601,8 +2601,20 @@ class PostProcessor:
             and not command.Name.startswith("T")
             and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
+            # Try to help them if it is Custom op
+            extra = ""
+            if (
+                self._operation
+                and getattr(self._operation, "source", None)
+                and getattr(self._operation.source, "Proxy")
+                and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
+            ):
+                extra = translate(
+                    "CAM",
+                    " (in the Custom op, uncheck Post Process Output, or put '!' in front of specific command)",
+                )
             raise CAMValueError(
-                f"Unsupported command: {command.Name}",
+                f"Unsupported command: {command.Name}{extra}",
                 job=self._job,
                 operation=self._operation,
                 command=command,
