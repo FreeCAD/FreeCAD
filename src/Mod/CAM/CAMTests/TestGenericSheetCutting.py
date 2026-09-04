@@ -32,9 +32,11 @@ import Constants
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
+
 def CompValue(val):
     # 5 significant digits should be precise enough (for sheet cutting)
     return round(val, 5)
+
 
 class TestGenericSheetCutting(PathTestUtils.PathTestBase):
     """Test the GenericSheetCutting postprocessor unique functionality."""
@@ -420,13 +422,13 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
         commands = [
             Path.Command("G0", {"Z": 10.0}),  # Start at clearance
-            Path.Command("G1", {"Z": 0.0, "F": 500}),       # First entry (should be marked)
+            Path.Command("G1", {"Z": 0.0, "F": 500}),  # First entry (should be marked)
             Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 1000}),  # Cut - remove
-            Path.Command("G0", {"Z": 10.0}),                # Retract - keep
-            Path.Command("G0", {"X": 20.0, "Y": 20.0}),    # Positioning
-            Path.Command("G1", {"Z": 0.0, "F": 500}),       # Second entry - remove
+            Path.Command("G0", {"Z": 10.0}),  # Retract - keep
+            Path.Command("G0", {"X": 20.0, "Y": 20.0}),  # Positioning
+            Path.Command("G1", {"Z": 0.0, "F": 500}),  # Second entry - remove
             Path.Command("G1", {"X": 30.0, "Y": 30.0, "F": 1000}),  # Cut - remove
-            Path.Command("G0", {"Z": 10.0}),                # Final retract - keep
+            Path.Command("G0", {"Z": 10.0}),  # Final retract - keep
         ]
 
         self.profile_op.Path = Path.Path(commands)
@@ -444,7 +446,8 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         result_cmds = self.profile_op.Path.Commands
         # First entry must be retained.
         z_moves = [
-            cmd for cmd in result_cmds
+            cmd
+            for cmd in result_cmds
             if cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
             and "Z" in cmd.Parameters
         ]
@@ -465,10 +468,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         self.assertEqual(CompValue(z_moves[2].Parameters["Z"]), 10.0)
 
         # A marking delay must have been inserted after the first entry.
-        g4_commands = [
-            cmd for cmd in result_cmds
-            if cmd.Name == "G4"
-        ]
+        g4_commands = [cmd for cmd in result_cmds if cmd.Name == "G4"]
 
         self.assertEqual(len(g4_commands), 1)
         self.assertEqual(
@@ -478,7 +478,8 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
         # No lateral cutting moves should remain.
         lateral_moves = [
-            cmd for cmd in result_cmds
+            cmd
+            for cmd in result_cmds
             if cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
             and "Z" not in cmd.Parameters
         ]
@@ -491,7 +492,8 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
         # Only one Z-down move should remain.
         z_down_moves = [
-            cmd for cmd in result_cmds
+            cmd
+            for cmd in result_cmds
             if (
                 cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
                 and "Z" in cmd.Parameters
@@ -789,7 +791,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             CompValue(10.0),
         )
 
-
     def test13_reset_cutter_state_already_at_clearance(self):
         """
         Test that _reset_cutter_state() does not emit an unnecessary Z move
@@ -821,7 +822,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             CompValue(self.post._last_z),
             CompValue(10.0),
         )
-
 
     def test14_reset_cutter_state_inactive_torch(self):
         """
@@ -860,7 +860,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             CompValue(10.0),
         )
 
-
     def test15_reset_cutter_state_no_previous_z(self):
         """
         Test that _reset_cutter_state() does not emit a clearance move when
@@ -884,7 +883,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         self.assertEqual(reset_commands, [])
         self.assertFalse(self.post._torch_active)
         self.assertIsNone(self.post._last_z)
-
 
     def test16_reset_cutter_state_zero_clearance(self):
         """
@@ -916,7 +914,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             CompValue(self.post._last_z),
             CompValue(2.0),
         )
-
 
     def test_actual_machine(self):
         """Our specific `postprocessor_properties` were seen"""
