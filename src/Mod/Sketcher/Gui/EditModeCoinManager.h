@@ -35,6 +35,7 @@
 #include "GeometryCreationMode.h"
 
 #include "EditModeCoinManagerParameters.h"
+#include "ScreenPickContext.h"
 
 
 class SbVec3f;
@@ -281,6 +282,7 @@ public:
     PreselectionResult detectPreselection(
         const SoPickedPointList& points,
         const SbVec2s& cursorPos,
+        const ScreenPickContext& pickContext,
         int hoveredPointIndex = PreselectionResult::InvalidPoint
     );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
@@ -331,13 +333,15 @@ public:
 private:
     PreselectionResult detectConstraintPreselection(
         const SoPickedPointList& points,
-        const SbVec2s& cursorPos
+        const SbVec2s& cursorPos,
+        const ScreenPickContext& pickContext
     );
     bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
     bool detectGeometryPreselection(
         const SoPickedPointList& points,
         const SbVec2s& cursorPos,
         int hoveredPointIndex,
+        const ScreenPickContext& pickContext,
         PreselectionResult& result
     );
     bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
@@ -349,7 +353,8 @@ private:
     PreselectionCandidates collectPreselectionCandidates(
         const SoPickedPointList& points,
         const SbVec2s& cursorPos,
-        int hoveredPointIndex
+        int hoveredPointIndex,
+        const ScreenPickContext& pickContext
     );
     PreselectionResult resolvePreselectionCandidates(const PreselectionCandidates& candidates) const;
 

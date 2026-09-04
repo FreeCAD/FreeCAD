@@ -124,6 +124,7 @@ SET(SketcherGui_SRCS
     EditModeCoinManagerParameters.cpp
     EditModeCoinManager.cpp
     EditModeCoinManager.h
+    ScreenPickContext.h
     EditModeGeometryCoinManager.cpp
     EditModeGeometryCoinManager.h
     EditModeConstraintCoinManager.cpp

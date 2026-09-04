@@ -28,6 +28,7 @@
 #include <Inventor/SbLine.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/details/SoPointDetail.h>
@@ -931,6 +932,36 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResul
 ) const
 {
     SoPickedPointList points = getPickedPointsOnRay(pos, viewer);
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return {};
+    }
+
+    auto* renderManager = viewer->getSoRenderManager();
+    auto* sceneGraph = renderManager->getSceneGraph();
+    auto* camera = renderManager->getCamera();
+    if (!sceneGraph || !camera) {
+        return {};
+    }
+
+    const auto& viewportRegion = renderManager->getViewportRegion();
+    SoSearchAction search;
+    search.setName("ConstraintGroup");
+    search.setInterest(SoSearchAction::FIRST);
+    search.setSearchingAll(TRUE);
+    search.apply(sceneGraph);
+
+    SbViewportRegion renderViewportRegion = viewportRegion;
+    const SbViewVolume renderViewVolume = camera->getViewVolume(
+        viewportRegion,
+        renderViewportRegion
+    );
+    const ScreenPickContext pickContext {
+        renderViewportRegion,
+        renderViewVolume,
+        std::max(0.0F, viewer->getPickRadius()),
+        search.isFound() ? search.getPath() : nullptr
+    };
+
     int hoveredPointIndex = EditModeCoinManager::PreselectionResult::InvalidPoint;
     if (viewProviderParameters.hasLastPreselectionResult
         && viewProviderParameters.lastPreselectionResult.Kind
@@ -938,7 +969,7 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResul
         hoveredPointIndex = viewProviderParameters.lastPreselectionResult.PointIndex;
     }
 
-    return editCoinManager->detectPreselection(points, pos, hoveredPointIndex);
+    return editCoinManager->detectPreselection(points, pos, pickContext, hoveredPointIndex);
 }
 
 void ViewProviderSketch::cachePreselectionResult(
