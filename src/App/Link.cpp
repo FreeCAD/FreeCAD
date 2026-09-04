@@ -54,6 +54,28 @@ namespace sp = std::placeholders;
 
 using CharRange = boost::iterator_range<const char*>;
 
+namespace
+{
+bool isCopyOnChangeGroupShared(const LinkBaseExtension& owner, const DocumentObject* group)
+{
+    if (!group || !group->isAttachedToDocument() || !group->getDocument()) {
+        return false;
+    }
+
+    auto ownerObject = owner.getContainer();
+    for (auto obj : group->getDocument()->getObjects()) {
+        if (!obj || obj == ownerObject || obj->isRemoving()) {
+            continue;
+        }
+        auto ext = obj->getExtensionByType<LinkBaseExtension>(true);
+        if (ext && ext->getLinkCopyOnChangeGroupValue() == group) {
+            return true;
+        }
+    }
+    return false;
+}
+}
+
 ////////////////////////////////////////////////////////////////////////
 
 /*[[[cog
@@ -560,6 +582,9 @@ void LinkBaseExtension::syncCopyOnChange()
     LinkGroup* copyOnChangeGroup = nullptr;
     if (auto prop = getLinkCopyOnChangeGroupProperty()) {
         copyOnChangeGroup = freecad_cast<LinkGroup*>(prop->getValue());
+        if (copyOnChangeGroup && isCopyOnChangeGroupShared(*this, copyOnChangeGroup)) {
+            copyOnChangeGroup = nullptr;
+        }
         if (!copyOnChangeGroup) {
             // Create the LinkGroup if not exist
             auto group = new LinkGroup;
@@ -903,6 +928,15 @@ void LinkBaseExtension::checkCopyOnChange(App::DocumentObject* parent, const App
         return;
     }
 
+    if ((getLinkCopyOnChangeValue() == CopyOnChangeOwned
+         || (getLinkCopyOnChangeValue() == CopyOnChangeTracking
+             && linked != getLinkCopyOnChangeSourceValue()))
+        && isCopyOnChangeGroupShared(*this, getLinkCopyOnChangeGroupValue())) {
+        if (auto copied = makeCopyOnChange()) {
+            linked = copied;
+        }
+    }
+
     if (getLinkCopyOnChangeValue() == CopyOnChangeOwned
         || (getLinkCopyOnChangeValue() == CopyOnChangeTracking
             && linked != getLinkCopyOnChangeSourceValue())) {
@@ -965,7 +999,8 @@ App::DocumentObject* LinkBaseExtension::makeCopyOnChange()
 
     if (auto prop = getLinkCopyOnChangeGroupProperty()) {
         if (auto obj = prop->getValue()) {
-            if (obj->isAttachedToDocument() && obj->getDocument()) {
+            if (obj->isAttachedToDocument() && obj->getDocument()
+                && !isCopyOnChangeGroupShared(*this, obj)) {
                 obj->getDocument()->removeObject(obj->getNameInDocument());
             }
         }
@@ -1642,7 +1677,8 @@ void LinkBaseExtension::onExtendedUnsetupObject()
     }
     detachElements();
     if (auto obj = getLinkCopyOnChangeGroupValue()) {
-        if (obj->isAttachedToDocument() && !obj->isRemoving()) {
+        if (obj->isAttachedToDocument() && !obj->isRemoving()
+            && !isCopyOnChangeGroupShared(*this, obj)) {
             obj->getDocument()->removeObject(obj->getNameInDocument());
         }
     }
