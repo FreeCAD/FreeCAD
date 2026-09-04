@@ -27,7 +27,6 @@ from FreeCAD import Vector
 from PySide import QtCore
 import Part
 import Path
-import Path.Main.Job as PathJob
 import math
 from numpy import linspace
 import tsp_solver
@@ -513,6 +512,8 @@ def findToolController(obj, proxy, name=None):
 
 def findParentJob(obj):
     """retrieves a parent job object for an operation or other Path object"""
+    import Path.Main.Job as PathJob
+
     Path.Log.track()
     if hasattr(obj, "Proxy") and isinstance(obj.Proxy, PathJob.ObjectJob):
         return obj
@@ -545,6 +546,8 @@ def findParentJob(obj):
 
 def GetJobs(jobname=None):
     """returns all jobs in the current document.  If name is given, returns that job"""
+    import Path.Main.Job as PathJob
+
     if jobname:
         return [job for job in PathJob.Instances() if job.Name == jobname]
     return PathJob.Instances()
