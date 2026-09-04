@@ -61,7 +61,7 @@ PyObject* SketchObjectPy::solve(PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    int ret = this->getSketchObjectPtr()->solve();
+    int ret = static_cast<int>(this->getSketchObjectPtr()->solve());
     return Py_BuildValue("i", ret);
 }
 

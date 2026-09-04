@@ -834,7 +834,7 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
 
 void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
 {
-    status = sketch->solve(updategeo);
+    status = static_cast<int>(sketch->solve(updategeo));
 
     if (updategeo) {
         dofs = sketch->setUpSketch();
