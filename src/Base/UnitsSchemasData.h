@@ -612,10 +612,150 @@ inline const UnitsSchemaSpec s6
 { 8, "FEM", "mm", false , false , QT_TRANSLATE_NOOP("UnitsApi", "FEM (mm, N, s)"), false,
     {
         { "Length", {
-            { 0             , "mm"           , 1.0               }}
+            { 0             , "mm"           , 1.0              }}
+        },
+        { "Area", {
+            { 0             , "mm^2"         , 1.0              }}
+        },
+        { "Volume", {
+            { 0             , "mm^3"         , 1.0              }}
         },
         { "Mass",   {
-            { 0             , "t"            , 1e3               }}
+            { 0             , "t"            , 1e3              }}
+        },
+        { "Inertia", {
+            { 0             , "t*mm^2"       , 1e3              }}
+        },
+        { "Density", {
+            { 0             , "kg/m^3"       , 1e-9             }}
+        },
+        { "Acceleration", {
+            { 0             , "mm/s^2"       , 1.0              }}
+        },
+        { "Pressure", {
+            { 10            , "kPa"          , 1.0              },
+            { 0             , "MPa"          , 1e3              }}
+        },
+        { "Stress", {
+            { 10            , "kPa"          , 1.0              },
+            { 0             , "MPa"          , 1e3              }}
+        },
+        { "Stiffness", {
+            { 0             , "N/mm"         , 1e3              }}
+        },
+        { "StiffnessDensity", {
+            { 0             , "MPa/mm"       , 1e3              }}
+        },
+        { "ThermalConductivity", {
+            { 0             , "mW/mm/K"      , 1e3              }}
+        },
+        { "ThermalExpansionCoefficient", {
+            { 0             , "\xC2\xB5m/m/K", 1e-6             }}
+        },
+        { "VolumetricThermalExpansionCoefficient", {
+            { 0             , "mm^3/m^3/K"   , 1e-9             }}
+        },
+        { "SpecificHeat", {
+            { 0             , "mJ/t/K"       , 1.0              }}
+        },
+        { "ThermalTransferCoefficient", {
+            { 0             , "mW/mm^2/K"    , 1e3              }}
+        },
+        { "Force", {
+            { 0             , "N"            , 1e3              }}
+        },
+        { "Power", {
+            { 0             , "mW"           , 1e3              }}
+        },
+        { "ElectricPotential", {
+            { 0             , "mV"           , 1e3              }}
+        },
+        { "ElectricCharge", {
+            { 0             , "C"            , 1.0              }}
+        },
+        { "SurfaceChargeDensity", {
+            { 0             , "C/mm^2"       , 1.0              }}
+        },
+        { "VolumeChargeDensity", {
+            { 0             , "C/mm^3"       , 1.0              }}
+        },
+        { "CurrentDensity", {
+            { 0             , "A/mm^2"       , 1.0              }}
+        },
+        { "MagneticFluxDensity", {
+            { 0             , "mT"           , 1e-3             }}
+        },
+        { "MagneticFieldStrength", {
+            { 0             , "A/mm"         , 1.0              }}
+        },
+        { "MagneticFlux", {
+            { 0             , "mJ/A"         , 1e3              }}
+        },
+        { "Magnetization", {
+            { 0             , "A/mm"         , 1.0              }}
+        },
+        { "ElectromagneticPotential", {
+            { 0             , "mJ/A/mm"      , 1e3              }}
+        },
+        { "ElectricalConductance", {
+            { 0             , "kS"           , 1e-3             }}
+        },
+        { "ElectricalResistance", {
+            { 0             , "Ohm"          , 1e6              }}
+        },
+        { "ElectricalConductivity", {
+            { 0             , "kS/mm"        , 1e-3             }}
+        },
+        { "ElectricalCapacitance", {
+            { 0             , "C/mV"         , 1e-3             }}
+        },
+        { "ElectricalInductance", {
+            { 0             , "mH"           , 1e3              }}
+        },
+        { "VacuumPermittivity", {
+            { 0             , "C/mV/mm"      , 1e-3             }}
+        },
+        { "Work", {
+            { 0             , "mJ"           , 1e3              }}
+        },
+        { "Moment", {
+            { 0             , "Nmm"          , 1e3              }}
+        },
+        { "SpecificEnergy", {
+            { 0             , "mJ/t"         , 1.0              }}
+        },
+        { "HeatFlux", {
+            { 0             , "mW/mm^2"      , 1e3              }}
+        },
+        { "Frequency", {
+            { 0             , "Hz"           , 1.0              }}
+        },
+        { "Velocity", {
+            { 0             , "mm/s"         , 1.0              }}
+        },
+        { "DynamicViscosity", {
+            { 0             , "MPa*s"        , 1e3              }}
+        },
+        { "KinematicViscosity", {
+            { 0             , "mm^2/s"       , 1.0              }}
+        },
+        { "VolumeFlowRate", {
+            { 0             , "mm^3/s"       , 1.0              }}
+        },
+        { "DissipationRate", {
+            { 0             , "mW/t"         , 1.0              }}
+        },
+        { "InverseLength", {
+            { 0             , "1/mm"         , 1.0              }}
+        },
+        { "InverseArea", {
+            { 0             , "1/mm^2"       , 1.0              }}
+        },
+        { "InverseVolume", {
+            { 0             , "1/mm^3"       , 1.0              }}
+        },
+        { "Angle", {
+            { 0             , "°"            , 1.0              }}
         }
     }
 };

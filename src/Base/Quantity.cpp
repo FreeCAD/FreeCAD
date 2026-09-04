@@ -481,6 +481,7 @@ const Quantity Quantity::MegaElectronVolt       ( 1.602176634e-7        , Unit::
 const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::Work                    );  // 1 cal = 4.1868 J
 const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Work                    );
 const Quantity Quantity::NewtonMeter            ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
+const Quantity Quantity::NewtonMilliMeter       ( 1e+3                  , Unit::Moment                  );
 
 const Quantity Quantity::KMH                    ( 1e+6 / 3600           , Unit::Velocity                );  // km/h
 const Quantity Quantity::MPH                    ( mi / 3600             , Unit::Velocity                );  // Mile/h

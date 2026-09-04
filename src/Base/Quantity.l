@@ -204,6 +204,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "mJ"            yylval = Quantity::MilliJoule;          return UNIT; // milli Joule
 "kJ"            yylval = Quantity::KiloJoule;           return UNIT; // kilo Joule
 "Nm"            yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
+"Nmm"           yylval = Quantity::NewtonMilliMeter;    return UNIT; // N*mm = milli Joule
 "VAs"           yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
 "CV"            yylval = Quantity::WattSecond;          return UNIT; //
 "Ws"            yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
