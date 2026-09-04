@@ -70,39 +70,13 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Mode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="modeComboBox">
-       <item>
-        <property name="text">
-         <string>Skin</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Pipe</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Recto verso</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Join type</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
       <widget class="QComboBox" name="joinComboBox">
        <item>
         <property name="text">
@@ -145,7 +119,6 @@
   <tabstop>buttonRefSel</tabstop>
   <tabstop>listWidgetReferences</tabstop>
   <tabstop>Value</tabstop>
-  <tabstop>modeComboBox</tabstop>
   <tabstop>joinComboBox</tabstop>
   <tabstop>checkIntersection</tabstop>
   <tabstop>checkReverse</tabstop>

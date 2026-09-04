@@ -59,12 +59,10 @@ public:
     double getValue() const;
     bool getReversed() const;
     bool getIntersection() const;
-    int getMode() const;
     int getJoinType() const;
 
 private Q_SLOTS:
     void onValueChanged(double angle);
-    void onModeChanged(int mode);
     void onJoinTypeChanged(int join);
     void onReversedChanged(bool on);
     void onIntersectionChanged(bool on);
