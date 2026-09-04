@@ -5,6 +5,8 @@ SET(Examples_Files
     EngineBlock.FCStd
     PartDesignExample.FCStd
     BIMExample.FCStd
+    BIMWallJoins.py
+    BIMWallJoins.FCStd
     FEMExample.FCStd
     AssemblyExample.FCStd
     ArchDetail.FCStd
