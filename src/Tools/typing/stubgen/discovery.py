@@ -139,12 +139,15 @@ def module_state_for_source(
     initial_variables: dict[str, str] | None = None,
 ) -> ModuleState:
     module_vars = dict(initial_variables or {})
-    for match in PYMODULE_IMPORT_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in INIT_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("namespace")
+    if "PyImport_ImportModule" in source:
+        for match in PYMODULE_IMPORT_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+    if "PyImport_AddModule" in source:
+        for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+    if "::initModule" in source:
+        for match in INIT_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("namespace")
     resolve_module_relationships(source, module_vars)
     return ModuleState(variables=module_vars)
 
