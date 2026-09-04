@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
+#include <QComboBox>
 #include <QCompleter>
 #include <QInputDialog>
 #include <QHeaderView>
@@ -67,6 +68,7 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     , binding(false)
     , checkDocument(false)
     , closingEditor(false)
+    , recomputing(false)
     , dragInProgress(false)
 {
     propertyModel = new PropertyModel(this);
@@ -287,7 +289,18 @@ void PropertyEditor::commitData(QWidget* editor)
     committing = false;
     if (delaybuild) {
         delaybuild = false;
-        propertyModel->buildUp(PropertyModel::PropertyList());
+        // commitData() can run while a FocusOut is being delivered to the editor, and
+        // buildUp() resets the model, destroying that editor in place. Defer the
+        // rebuild until control returns to the event loop.
+        QMetaObject::invokeMethod(
+            this,
+            [this]() {
+                // The model reset destroys every persistent editor.
+                releaseEditorFocus();
+                propertyModel->buildUp(PropertyModel::PropertyList());
+            },
+            Qt::QueuedConnection
+        );
     }
 }
 
@@ -325,6 +338,12 @@ void PropertyEditor::closeEditor()
     if (editingIndex.isValid()) {
         Base::StateLocker guard(closingEditor);
         bool hasFocus = activeEditor && activeEditor->hasFocus();
+
+        // closePersistentEditor() below destroys the editor; close an open combo
+        // drop-down first so Qt tears the popup down normally (see releaseEditorFocus()).
+        if (auto* combo = qobject_cast<QComboBox*>(activeEditor.data())) {
+            combo->hidePopup();
+        }
 #ifdef Q_OS_MACOS
         // Brute-force workaround for https://github.com/FreeCAD/FreeCAD/issues/14350
         int currentIndex = 0;
@@ -461,6 +480,36 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     }
 }
 
+void PropertyEditor::releaseEditorFocus()
+{
+    // Call before the persistent editor is destroyed by a row removal or model reset.
+    // Qt does not reliably clear QApplicationPrivate::focus_widget when a focused
+    // editor is torn down that way, leaving the global focus widget -- a raw pointer,
+    // unlike our QPointer -- dangling. Move the focus back to the tree while the
+    // editor is still alive.
+    if (!activeEditor) {
+        return;
+    }
+
+    // An enum property is edited with a QComboBox whose drop-down is auto-opened by
+    // PropertyItemDelegate. Destroying the combo with the popup still open skips Qt's
+    // closePopup() teardown and leaves queued mouse events aimed at the freed popup,
+    // so close it while the combo is alive.
+    if (auto* combo = qobject_cast<QComboBox*>(activeEditor.data())) {
+        combo->hidePopup();
+    }
+
+    for (QWidget* w = qApp->focusWidget(); w; w = w->parentWidget()) {
+        if (w == activeEditor) {
+            // setFocus() delivers a synchronous FocusOut that would otherwise cascade
+            // into a re-entrant closeEditor() while the model is mid row-removal.
+            Base::StateLocker guard(closingEditor);
+            setFocus();
+            break;
+        }
+    }
+}
+
 void PropertyEditor::closeTransaction()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -469,6 +518,10 @@ void PropertyEditor::closeTransaction()
     }
     if (doc->getBookedTransactionID() == transactionID) {
         if (autoupdate) {
+            // A recompute can delete objects, which re-enters buildUp() synchronously
+            // while the editor being closed is still receiving its FocusOut. Mark it
+            // so buildUp() defers the model reset.
+            Base::StateLocker guard(recomputing);
             recomputeDocument(doc);
         }
         doc->commitTransaction();
@@ -631,6 +684,8 @@ void PropertyEditor::rowsAboutToBeRemoved(const QModelIndex& parent, int start, 
 
     if (editingIndex.isValid()) {
         if (editingIndex.row() >= start && editingIndex.row() <= end) {
+            // QTreeView is about to destroy the persistent editor of this row.
+            releaseEditorFocus();
             closeTransaction();
         }
         else {
@@ -693,10 +748,27 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
         return;
     }
 
+    if (recomputing) {
+        // Re-entered from the recompute in closeTransaction(): resetting the model now
+        // would destroy an editor that is still mid event-dispatch, so defer.
+        QMetaObject::invokeMethod(
+            this,
+            [this, props = std::move(props), checkDoc = _checkDocument]() mutable {
+                buildUp(std::move(props), checkDoc);
+            },
+            Qt::QueuedConnection
+        );
+        return;
+    }
+
     // Do not close transaction here, because we are now doing incremental
     // update in PropertyModel::buildUp()
     //
     // closeTransaction();
+
+    // The model reset below destroys every persistent editor: close an open combo
+    // popup and move focus off the editor first. No-op when nothing is being edited.
+    releaseEditorFocus();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);

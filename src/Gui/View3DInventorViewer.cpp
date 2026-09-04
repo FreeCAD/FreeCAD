@@ -3746,8 +3746,11 @@ SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(
     SbVec2f pnt2d = getNormalizedPosition(pnt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
+    // Called from assembly drag handling inside a Coin event traversal, which cannot
+    // propagate C++ exceptions out to the callers' guards. Report degenerate cases
+    // with a fallback point instead of throwing, as getPointOnLine() does.
     if (!pCam) {
-        throw Base::RuntimeError("No camera node found");
+        return {};  // return invalid point
     }
 
     SbViewVolume vol = pCam->getViewVolume();
@@ -3769,7 +3772,9 @@ SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(
         return pt;  // Intersection point on the XY plane
     }
 
-    throw Base::RuntimeError("No intersection found");
+    // Pick ray parallel to the plane (viewed edge-on): fall back to the point on the
+    // ray closest to the plane origin, which is finite and close enough for one frame.
+    return line.getClosestPoint(planePosition);
 }
 
 SbVec3f projectPointOntoPlane(const SbVec3f& point, const SbPlane& plane)
