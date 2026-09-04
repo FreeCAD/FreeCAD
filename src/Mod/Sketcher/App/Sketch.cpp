@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <optional>
 
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRep_Builder.hxx>
@@ -455,8 +456,9 @@ void Sketch::buildSymmetryRedundancyMaps(const std::vector<Constraint*>& constra
                 lineDirectionConstraintMap[c->First] = c->Type;
             }
         }
-        else if (c->Type == Coincident && c->FirstPos != PointPos::none
-                 && c->SecondPos != PointPos::none) {
+        else if (
+            c->Type == Coincident && c->FirstPos != PointPos::none && c->SecondPos != PointPos::none
+        ) {
             // union-find: link the two coincident points
             std::pair<int, Sketcher::PointPos> p1 = {c->First, c->FirstPos};
             std::pair<int, Sketcher::PointPos> p2 = {c->Second, c->SecondPos};
@@ -4110,9 +4112,36 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2, do
     return -1;
 }
 
+namespace
+{
+// Returns the direction of a symmetry line: explicitly constrained lines carry a
+// Horizontal/Vertical constraint, while the horizontal and vertical sketch axes are
+// inherently direction-constrained.
+std::optional<Sketcher::ConstraintType> getSymmetryLineDirection(
+    int geoId,
+    const std::map<int, Sketcher::ConstraintType>& lineDirectionConstraintMap
+)
+{
+    if (geoId == GeoEnum::HAxis) {
+        return Sketcher::Horizontal;
+    }
+    if (geoId == GeoEnum::VAxis) {
+        return Sketcher::Vertical;
+    }
+    if (auto it = lineDirectionConstraintMap.find(geoId); it != lineDirectionConstraintMap.end()) {
+        return it->second;
+    }
+    return std::nullopt;
+}
+}  // namespace
+
 // symmetric points constraint
 int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3)
 {
+    // the original GeoId of the symmetry line, kept to detect the sketch axes, as checkGeoId
+    // below converts negative external-geometry indices to indices into Geoms
+    int originalGeoId3 = geoId3;
+
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
     geoId3 = checkGeoId(geoId3);
@@ -4177,23 +4206,22 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
 
     // Special handling for line endpoint symmetry when the direction of the segment between the
     // two points and the direction of the symmetry line are already constrained to transverse
-    // directions (e.g. a horizontal edge and a vertical symmetry line). In this configuration,
-    // the perpendicularity part of the symmetry constraint is inherently redundant, which makes
-    // the system rank-deficient and prevents the solver from converging. We detect this case and
-    // add only the midpoint-on-line part of the constraint, which is sufficient to enforce
-    // symmetry without causing redundancy.
+    // directions (e.g. a horizontal edge and a vertical symmetry line, or a horizontal edge and
+    // the vertical sketch axis). In this configuration, the perpendicularity part of the
+    // symmetry constraint is inherently redundant, which makes the system rank-deficient and
+    // prevents the solver from converging. We detect this case and add only the midpoint-on-line
+    // part of the constraint, which is sufficient to enforce symmetry without causing redundancy.
 
-    // Step 1: The symmetry line must itself have a constrained direction.
-    auto itSym = lineDirectionConstraintMap.find(geoId3);
-    if (itSym != lineDirectionConstraintMap.end()) {
+    // Step 1: The symmetry line must itself have a constrained direction, either explicitly or,
+    // for the sketch axes, inherently.
+    if (auto symDir = getSymmetryLineDirection(originalGeoId3, lineDirectionConstraintMap)) {
         // Step 2: The two points must be (coincident with) the endpoints of a line whose
         // constrained direction is transverse to the symmetry line's direction.
         auto rep1 = findCoincidenceRepresentative({geoId1, pos1});
         auto rep2 = findCoincidenceRepresentative({geoId2, pos2});
 
         for (const auto& [lineGeoId, lineDir] : lineDirectionConstraintMap) {
-            if (lineDir == itSym->second || lineGeoId < 0
-                || lineGeoId >= int(Geoms.size())  // NOLINT
+            if (lineDir == *symDir || lineGeoId < 0 || lineGeoId >= int(Geoms.size())  // NOLINT
                 || Geoms[lineGeoId].type != Line) {
                 continue;  // same direction (would conflict) or not a line segment
             }

@@ -985,6 +985,59 @@ class TestSketcherSolver(unittest.TestCase):
         edge_dir = sketch.Geometry[0].EndPoint - sketch.Geometry[0].StartPoint
         self.assertAlmostEqual(line_dir.x * edge_dir.x + line_dir.y * edge_dir.y, 0.0, delta=1e-6)
 
+    def testSymmetricLineCenteredOnVerticalAxis(self):
+        # A horizontal segment with its endpoints constrained symmetric about the built-in
+        # vertical axis should center the segment on the axis. The perpendicularity part of the
+        # symmetric constraint is inherently redundant with the horizontal constraint, which
+        # used to make the solver fail and flag the sketch as invalid (issue #22381).
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.LineSegment(vec(-40, 10), vec(20, 10)), False)
+        sketch.addConstraint(Sketcher.Constraint("Horizontal", 0))
+        self.Doc.recompute()
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 0, 2, -2))
+        self.Doc.recompute()
+
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.RedundantConstraints, [])
+        self.assertEqual(sketch.ConflictingConstraints, [])
+        mid_x = (sketch.Geometry[0].StartPoint.x + sketch.Geometry[0].EndPoint.x) / 2
+        self.assertAlmostEqual(mid_x, 0.0)
+
+    def testSymmetricLineCenteredOnHorizontalAxis(self):
+        # Same as testSymmetricLineCenteredOnVerticalAxis, with a vertical segment about the
+        # built-in horizontal axis.
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.LineSegment(vec(10, 40), vec(10, -5)), False)
+        sketch.addConstraint(Sketcher.Constraint("Vertical", 0))
+        self.Doc.recompute()
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 0, 2, -1))
+        self.Doc.recompute()
+
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.RedundantConstraints, [])
+        self.assertEqual(sketch.ConflictingConstraints, [])
+        mid_y = (sketch.Geometry[0].StartPoint.y + sketch.Geometry[0].EndPoint.y) / 2
+        self.assertAlmostEqual(mid_y, 0.0)
+
+    def testSymmetricAboutAxisStillEnforcedWhenSegmentUnconstrained(self):
+        # Without a direction constraint on the segment, the perpendicularity part of the
+        # symmetric constraint is not redundant: the full constraint must be added (2 DoF
+        # removed), not weakened to midpoint-on-line (1 DoF removed).
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.LineSegment(vec(-40, 10), vec(20, 10)), False)
+        self.Doc.recompute()
+        self.assertEqual(sketch.DoF, 4)
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 0, 2, -2))
+        self.Doc.recompute()
+
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.DoF, 2)
+        mid_x = (sketch.Geometry[0].StartPoint.x + sketch.Geometry[0].EndPoint.x) / 2
+        self.assertAlmostEqual(mid_x, 0.0)
+
     def testSymmetricBetweenParallelDirectionConstraintsIsNotAccepted(self):
         # Two corners of the left edge (vertical segment) symmetric about a vertical line is
         # geometrically impossible without collapsing the rectangle: the constraint must not be
