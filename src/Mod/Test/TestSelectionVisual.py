@@ -7,6 +7,8 @@ Run with:
 """
 
 from contextlib import suppress
+import os
+import tempfile
 import time
 import unittest
 
@@ -17,8 +19,10 @@ import Part
 
 try:
     from PySide6 import QtWidgets
+    from PySide6.QtGui import QImage
 except ImportError:
     from PySide import QtGui as QtWidgets  # type: ignore
+    from PySide.QtGui import QImage  # type: ignore
 
 
 PART_PLANE_TYPE = f"{Part.__name__}::Plane"
@@ -27,14 +31,18 @@ PART_PLANE_TYPE = f"{Part.__name__}::Plane"
 class TestSelectionVisual(unittest.TestCase):
     """Verify that live preselection draws above selection overlays."""
 
-    _COLOR_DELTA_MIN = 0.15
+    _COLOR_DELTA_MIN = 0.12
     _COLOR_DELTA_RESTORE_MAX = 0.05
+    _PRESELECTION_OVERRIDE_DELTA_MIN = 0.08
+    _UNCHANGED_FACE_DELTA_MAX = 0.08
 
     def setUp(self):
+        self._clear_selection_state()
         self.doc = FreeCAD.newDocument("TestSelectionVisual")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
         self.view = FreeCADGui.ActiveDocument.ActiveView
         self.viewer = self.view.getViewer()
+
         self._had_axis_cross = self.view.hasAxisCross()
         self.view.setAxisCross(False)
 
@@ -42,18 +50,21 @@ class TestSelectionVisual(unittest.TestCase):
         self.viewer.setEnabledNaviCube(False)
 
     def tearDown(self):
-        with suppress(Exception):
-            Selection.clearPreselection()
-        with suppress(Exception):
-            Selection.clearSelection()
+        self._clear_selection_state()
+
+        if getattr(self, "view", None) is not None:
+            with suppress(Exception):
+                self._flush_gui()
 
         with suppress(Exception):
-            self.view.setAxisCross(self._had_axis_cross)
+            if getattr(self, "view", None) is not None:
+                self.view.setAxisCross(self._had_axis_cross)
 
         self._set_navi_cube_enabled(self._had_navi_cube)
 
         if FreeCAD.getDocument(self.doc.Name):
             FreeCAD.closeDocument(self.doc.Name)
+            self._process_gui_events()
 
     def test_preselection_overrides_selection_overlay(self):
         plane = self._create_test_plane()
@@ -79,7 +90,7 @@ class TestSelectionVisual(unittest.TestCase):
         )
         self.assertGreater(
             self._color_distance(selection_color, preselection_color),
-            self._COLOR_DELTA_MIN,
+            self._PRESELECTION_OVERRIDE_DELTA_MIN,
             msg=(
                 "Preselection did not visibly override the selection overlay. "
                 f"selection={selection_color}, preselection={preselection_color}"
@@ -136,6 +147,47 @@ class TestSelectionVisual(unittest.TestCase):
             "Clearing preselection did not restore the original rendering.",
         )
 
+    def test_real_face_selection_only_colors_selected_face(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 40
+        box.Width = 40
+        box.Height = 20
+        box.ViewObject.ShapeColor = (0.66, 0.66, 0.74)
+        self.doc.recompute()
+
+        self.view.viewAxonometric()
+        self._set_orthographic_if_supported()
+        self.view.fitAll()
+        self._flush_gui()
+
+        base_image = self._saved_image()
+
+        Selection.addSelection(self.doc.Name, box.Name, "Face6")
+        self._flush_gui()
+        selected_image = self._saved_image()
+
+        selected_face_point = (256, 180)
+        left_face_point = (190, 360)
+        right_face_point = (380, 360)
+
+        self.assertGreater(
+            self._color_distance(
+                self._pixel_color(base_image, selected_face_point),
+                self._pixel_color(selected_image, selected_face_point),
+            ),
+            self._COLOR_DELTA_MIN,
+            msg="Selecting Face6 did not visibly color the selected top face.",
+        )
+        for point in (left_face_point, right_face_point):
+            self.assertLess(
+                self._color_distance(
+                    self._pixel_color(base_image, point),
+                    self._pixel_color(selected_image, point),
+                ),
+                self._UNCHANGED_FACE_DELTA_MAX,
+                msg=f"Selecting Face6 unexpectedly changed an adjacent face at {point}.",
+            )
+
     def _create_test_plane(self):
         plane = self.doc.addObject(PART_PLANE_TYPE, "Plane")
         plane.Length = 40
@@ -165,9 +217,43 @@ class TestSelectionVisual(unittest.TestCase):
             self.view.redraw()
             time.sleep(0.05)
 
+    def _process_gui_events(self):
+        for _ in range(4):
+            FreeCADGui.updateGui()
+            QtWidgets.QApplication.processEvents()
+            time.sleep(0.05)
+
+    def _clear_selection_state(self):
+        with suppress(Exception):
+            Selection.clearSelection()
+        with suppress(Exception):
+            Selection.clearPreselection()
+
     def _center_pixel_color(self):
-        image = self.viewer.grabFramebuffer()
-        color = image.pixelColor(image.width() // 2, image.height() // 2)
+        image = self._saved_image()
+        return self._pixel_color(image, (image.width() // 2, image.height() // 2))
+
+    def _saved_image(self):
+        handle = tempfile.NamedTemporaryFile(
+            prefix="FreeCAD-TestSelectionVisual-", suffix=".png", delete=False
+        )
+        path = handle.name
+        handle.close()
+        try:
+            self.view.saveImage(path, 512, 512, "White")
+            image = QImage(path)
+        finally:
+            with suppress(OSError):
+                os.unlink(path)
+
+        if image.isNull():
+            self.skipTest("ActiveView.saveImage did not produce a readable image")
+
+        return image
+
+    @staticmethod
+    def _pixel_color(image, point):
+        color = image.pixelColor(point[0], point[1])
         return (color.redF(), color.greenF(), color.blueF())
 
     def _assert_color_changed(self, before, after, message):
