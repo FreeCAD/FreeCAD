@@ -838,7 +838,7 @@ class Joint:
     def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
         assembly = self.getAssembly(joint)
-        isAssembly = assembly.Type == "Assembly"
+        isAssembly = assembly is not None and assembly.Type == "Assembly"
 
         if len(refs) >= 1:
             joint.Reference1 = refs[0]
@@ -928,7 +928,7 @@ class Joint:
         if not part1 or not part2:
             return False
 
-        isAssembly = assembly.Type == "Assembly"
+        isAssembly = assembly is not None and assembly.Type == "Assembly"
         if isAssembly:
             joint.Suppressed = True
             part1Connected = assembly.isPartConnected(part1)
@@ -1218,7 +1218,7 @@ class ViewProviderJoint:
         # Assuming Reference1 corresponds to the first part link
         if hasattr(self.app_obj, "Reference1"):
             part = UtilsAssembly.getMovingPart(self.app_obj.Reference1)
-            if part is not None and not assembly.isPartConnected(part):
+            if part is not None and assembly is not None and not assembly.isPartConnected(part):
                 overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
 
         return overlays
