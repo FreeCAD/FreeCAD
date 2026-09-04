@@ -159,9 +159,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         auto* profileVP = doc->getViewProvider(pipe->Profile.getValue());
         profileShow = profileVP->isShow();
         profileVP->setVisible(true);
-        ui->profileBaseEdit->setText(
-            make2DLabel(pipe->Profile.getValue(), pipe->Profile.getSubValues())
-        );
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->Profile.getValue()->Label.getValue()));
     }
     // the auxiliary spine
     if (pipe->AuxiliarySpine.getValue()) {
