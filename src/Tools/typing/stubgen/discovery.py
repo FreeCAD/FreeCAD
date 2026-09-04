@@ -51,7 +51,6 @@ from .model import (
     PublicTypeTarget,
     SUPPORT_SEQUENCE_RE,
 )
-from .naming import valid_identifier
 from .parsing import (
     add_type_calls,
     extract_balanced,
@@ -327,8 +326,6 @@ def public_type_target(public_name: str) -> PublicTypeTarget | None:
     if "." not in public_name:
         return None
     module_name, class_symbol = public_name.rsplit(".", 1)
-    if not valid_identifier(class_symbol):
-        return None
     return PublicTypeTarget(module_name=module_name, class_symbol=class_symbol)
 
 
@@ -640,12 +637,6 @@ def group_type_methods_by_public_module(
 
     for context_name, group in sorted(type_methods.items()):
         for target in public_type_targets_for_context(context_name, group, type_registrations):
-            if not valid_identifier(target.class_symbol):
-                continue
-            if target.variable_symbol and not valid_identifier(target.variable_symbol):
-                continue
-            if any(not valid_identifier(base_symbol) for base_symbol in target.base_symbols):
-                continue
             key = (
                 target.module_name,
                 target.class_symbol,
