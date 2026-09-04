@@ -2151,9 +2151,8 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         from draftguitools.gui_node_edit_session import NodeEditSession
         from draftguitools.gui_edit_arch_objects import ArchWallGuiTools
 
-        session = NodeEditSession([(obj, ArchWallGuiTools())])
-        session.start()
-        self._node_edit_session = session
+        self._node_edit_session = NodeEditSession([(obj, ArchWallGuiTools())])
+        self._node_edit_session.start()
 
     def _stop_node_edit_session(self):
         session = getattr(self, "_node_edit_session", None)

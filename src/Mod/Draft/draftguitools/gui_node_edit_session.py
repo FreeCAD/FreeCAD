@@ -67,6 +67,9 @@ _HOVER_COLOR = (1.0, 0.0, 0.0)
 class NodeEditSession:
     """Lightweight node-editing session that can run alongside a host task panel.
 
+    The host owns the edit transaction and must commit or abort the node edits
+    when its task panel is accepted or rejected.
+
     Parameters
     ----------
     targets : list of (obj, gui_tools)
@@ -107,35 +110,37 @@ class NodeEditSession:
         self._view = gui_utils.get_3d_view()
         if self._view is None:
             return
-        self._render_manager = self._view.getViewer().getSoRenderManager()
+        try:
+            self._render_manager = self._view.getViewer().getSoRenderManager()
 
-        # Initialize the working plane and prime the Snapper, mirroring what
-        # gui_base_original.Modifier.Activated does for every Draft command.
-        # Without this the Snapper has no working plane to project onto and
-        # snap() raises mid-call, leaving its internal "running" flag stuck.
-        self._wp = WorkingPlane.get_working_plane()
-        self._snapper = gui_snapper.get_snapper()
-        self._snapper.setTrackers()
+            # Initialize the working plane and prime the Snapper, mirroring what
+            # gui_base_original.Modifier.Activated does for every Draft command.
+            # Without this the Snapper has no working plane to project onto and
+            # snap() raises mid-call, leaving its internal "running" flag stuck.
+            self._wp = WorkingPlane.get_working_plane()
+            self._snapper = gui_snapper.get_snapper()
+            self._snapper.setTrackers()
 
-        self._format_objects()
-        for obj, tools in self._targets:
-            self._build_trackers(obj, tools)
+            self._format_objects()
+            for obj, tools in self._targets:
+                self._build_trackers(obj, tools)
 
-        self._cb_key_pressed = self._view.addEventCallbackPivy(
-            coin.SoKeyboardEvent.getClassTypeId(), self._on_key
-        )
-        self._cb_mouse_moved = self._view.addEventCallbackPivy(
-            coin.SoLocation2Event.getClassTypeId(), self._on_mouse_moved
-        )
-        self._cb_mouse_pressed = self._view.addEventCallbackPivy(
-            coin.SoMouseButtonEvent.getClassTypeId(), self._on_mouse_pressed
-        )
+            self._cb_key_pressed = self._view.addEventCallbackPivy(
+                coin.SoKeyboardEvent.getClassTypeId(), self._on_key
+            )
+            self._cb_mouse_moved = self._view.addEventCallbackPivy(
+                coin.SoLocation2Event.getClassTypeId(), self._on_mouse_moved
+            )
+            self._cb_mouse_pressed = self._view.addEventCallbackPivy(
+                coin.SoMouseButtonEvent.getClassTypeId(), self._on_mouse_pressed
+            )
+        except Exception:
+            self.stop()
+            raise
         self._running = True
 
     def stop(self):
-        """Tear down trackers and unregister viewport callbacks."""
-        if not self._running:
-            return
+        """Release resources even if startup did not finish; safe to call repeatedly."""
         self._cancel_drag()
         self._unregister_callbacks()
         self._remove_all_trackers()
@@ -295,9 +300,9 @@ class NodeEditSession:
         if not pts:
             return
         pts = [self._globalize(obj, p) for p in pts]
-        self._trackers[obj.Name] = [
-            trackers.editTracker(pos=pts[i], name=obj.Name, idx=i) for i in range(len(pts))
-        ]
+        self._trackers[obj.Name] = []
+        for i, point in enumerate(pts):
+            self._trackers[obj.Name].append(trackers.editTracker(pos=point, name=obj.Name, idx=i))
 
     def _rebuild_trackers(self, obj):
         if obj.Name in self._trackers:
@@ -322,14 +327,8 @@ class NodeEditSession:
         if tools is None:
             return
         v_local = self._localize(obj, v)
-        App.ActiveDocument.openTransaction("Edit node")
-        try:
-            tools.update_object_from_edit_points(obj, idx, v_local, 0)
-            obj.recompute()
-            App.ActiveDocument.commitTransaction()
-        except Exception:
-            App.ActiveDocument.abortTransaction()
-            raise
+        tools.update_object_from_edit_points(obj, idx, v_local, 0)
+        obj.recompute()
         self._rebuild_trackers(obj)
         try:
             gui_tool_utils.redraw_3d_view()
