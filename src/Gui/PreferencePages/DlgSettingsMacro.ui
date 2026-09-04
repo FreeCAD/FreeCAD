@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Macro</string>
   </property>
+  <property name="whatsThis">
+    <string>Customize_Toolbars</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">

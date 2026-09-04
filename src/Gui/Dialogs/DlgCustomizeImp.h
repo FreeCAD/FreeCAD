@@ -77,6 +77,7 @@ private:
     QGridLayout* customLayout;       /**< layout */
     QHBoxLayout* layout;             /** horizontal layout */
     static QList<QByteArray> _pages; /**< Name of all registered preference pages */
+    void onButtonHelpClicked();
     //@}
 };
 

@@ -95,8 +95,25 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
     // connections
     //
-    connect(buttonHelp, &QPushButton::clicked, getMainWindow(), &MainWindow::whatsThis);
+    connect(buttonHelp, &QPushButton::clicked, this, &DlgCustomizeImp::onButtonHelpClicked);
     connect(buttonClose, &QPushButton::clicked, this, &QDialog::close);
+}
+
+void DlgCustomizeImp::onButtonHelpClicked()
+{
+    // Fallback articleID
+    QString articleID = QStringLiteral("Interface_Customization");
+
+    // Collect the whatsThis articleID from the current tab
+    QWidget* activePage = tabWidget->currentWidget();
+    if (activePage) {
+        QString whatsThis = activePage->whatsThis();
+        if (whatsThis.length() > 0) {
+            articleID = whatsThis;
+        }
+    }
+
+    Gui::getMainWindow()->showDocumentation(articleID);
 }
 
 /**
