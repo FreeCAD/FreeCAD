@@ -25,6 +25,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
 #include <QMessageBox>
+#include <QPointer>
 
 
 class Ui_TaskCreateElementSet;
@@ -43,6 +44,7 @@ namespace Gui
 {
 class ViewProvider;
 class ViewVolumeProjection;
+class View3DInventorViewer;
 }  // namespace Gui
 
 namespace FemGui
@@ -72,6 +74,10 @@ protected:
     Fem::FemSetElementNodesObject* pcObject;
     static void DefineElementsCallback(void* ud, SoEventCallback* n);
     void DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool);
+    void removePolygonSelectionCallback();
+    void cancelPolygonSelection();
+
+    QPointer<Gui::View3DInventorViewer> selectionViewer;
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
