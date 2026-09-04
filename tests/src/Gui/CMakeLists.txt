@@ -20,6 +20,9 @@ add_executable(Gui_tests_run
 # Qt tests
 setup_qt_test(ObjectSelection)
 setup_qt_test(QuantitySpinBox)
+setup_qt_test(ThreadAffinity)
+# Bound the test itself so direct CTest invocations cannot hang indefinitely.
+set_tests_properties(ThreadAffinity_Tests_run PROPERTIES TIMEOUT 120)
 
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main

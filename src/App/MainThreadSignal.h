@@ -23,70 +23,189 @@
 #define APP_MAINTHREADSIGNAL_H
 
 #include <Base/Interpreter.h>
+#include <FCGlobal.h>
 #include <fastsignals/signal.h>
+#include <exception>
 #include <functional>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#include <variant>
 
 namespace App
 {
 
-// App owns these signal types because App::Document declares them. Gui installs
-// the actual main-thread hooks when a GUI application is available.
+// App owns this Qt-free dispatch abstraction because App emits synchronous
+// observer notifications that GUI code may consume. Gui installs the concrete
+// main-thread hooks when a GUI application is available.
 //
-// These signals are intended for document-scoped notifications that GUI code
-// may observe while recompute can run on a worker thread. Raw
-// App::DocumentObject signals intentionally remain plain fastsignals with
-// same-thread semantics.
-class MainThreadSignalConfig
+// MainThreadSignal is intended for App-owned observer notifications whose
+// subscribers require main-thread delivery while the mutation may originate
+// on a worker. Without installed hooks, emission remains synchronous on the
+// calling thread. Raw App::DocumentObject signals intentionally remain plain
+// fastsignals with same-thread semantics.
+class AppExport MainThreadSignalConfig
 {
 public:
     using IsMainThreadFn = bool (*)();  // true iff currently on GUI/main thread
-    using InvokeFn = void (*)(std::function<void()>&& fn, bool blocking);
+    using TaskFn = void (*)(void* context);
+    using InvokeSyncFn = bool (*)(TaskFn task, void* context);
 
-    static void setHooks(IsMainThreadFn isMainThread, InvokeFn invoke)
-    {
-        isMainThreadSlot() = isMainThread;
-        invokeSlot() = invoke;
-    }
+    // task/context are non-owning and remain valid only until InvokeSyncFn
+    // returns. A successful synchronous invocation executes task(context)
+    // exactly once and does not return until all task side effects are visible
+    // to the caller. False means that the task was not executed.
+    //
+    // Hooks are installed during GUI initialization and must remain unchanged
+    // while worker threads can emit a MainThreadSignal. Replacing or clearing
+    // them is only safe after all such emitters have stopped.
+    static void installHooks(IsMainThreadFn isMainThread, InvokeSyncFn invokeSync);
+    static void clearHooks();
+    static bool isMainThread();
+    static bool hasHooks();
 
-    static inline bool isMainThread()
+    // Blocking delivery is intentional: signal payloads can contain references
+    // whose lifetime is guaranteed only until the emitter returns.
+    template<typename Fn>
+    static std::invoke_result_t<Fn&> callOnMainThreadSync(Fn&& fn)
     {
-        auto* f = isMainThreadSlot();
-        return f ? f() : true;  // no hooks, treat current thread as "main"
-    }
+        using Callable = std::remove_reference_t<Fn>;
+        using Result = std::invoke_result_t<Fn&>;
 
-    static inline bool hasHooks()
-    {
-        return isMainThreadSlot() && invokeSlot();
-    }
+        static_assert(
+            !std::is_rvalue_reference_v<Result>,
+            "callOnMainThreadSync cannot safely return an rvalue reference"
+        );
 
-    static inline void invoke(std::function<void()>&& fn, bool blocking)
-    {
-        auto* f = invokeSlot();
-        if (f) {
-            f(std::move(fn), blocking);
+        if (isMainThread()) {
+            return std::invoke(fn);
+        }
+
+        // Invocation is synchronous, so both lvalue and temporary callables
+        // remain alive for the entire dispatch. Keep the callable and all
+        // result state on this stack frame.
+        auto invokeSyncWithGILReleased = [](TaskFn task, void* context) {
+            std::optional<Base::PyGILStateRelease> release;
+            if (Py_IsInitialized() && PyGILState_Check()) {
+                release.emplace();
+            }
+
+            return MainThreadSignalConfig::invokeSync(task, context);
+        };
+
+        auto validateInvocation = [](
+                                      bool invoked,
+                                      bool completed,
+                                      const std::exception_ptr& exception
+                                  ) {
+            if (!invoked) {
+                throw std::runtime_error("Failed to invoke callable on the main thread");
+            }
+            if (exception) {
+                std::rethrow_exception(exception);
+            }
+            if (!completed) {
+                throw std::logic_error(
+                    "Main-thread hook returned before the callable completed"
+                );
+            }
+        };
+
+        if constexpr (std::is_void_v<Result>) {
+            struct State
+            {
+                Callable* callable;
+                std::exception_ptr exception;
+                bool completed = false;
+            } state {std::addressof(fn), {}, false};
+
+            const bool invoked = invokeSyncWithGILReleased(
+                [](void* context) {
+                    auto& state = *static_cast<State*>(context);
+                    try {
+                        std::invoke(*state.callable);
+                    }
+                    catch (...) {
+                        state.exception = std::current_exception();
+                    }
+                    state.completed = true;
+                },
+                &state
+            );
+
+            validateInvocation(invoked, state.completed, state.exception);
+        }
+        else if constexpr (std::is_lvalue_reference_v<Result>) {
+            using Referent = std::remove_reference_t<Result>;
+
+            struct State
+            {
+                Callable* callable;
+                std::optional<std::reference_wrapper<Referent>> result;
+                std::exception_ptr exception;
+                bool completed = false;
+            } state {std::addressof(fn), {}, {}, false};
+
+            const bool invoked = invokeSyncWithGILReleased(
+                [](void* context) {
+                    auto& state = *static_cast<State*>(context);
+                    try {
+                        state.result = std::ref(std::invoke(*state.callable));
+                    }
+                    catch (...) {
+                        state.exception = std::current_exception();
+                    }
+                    state.completed = true;
+                },
+                &state
+            );
+
+            validateInvocation(invoked, state.completed, state.exception);
+            if (!state.result) {
+                throw std::logic_error("Main-thread callable completed without a result");
+            }
+
+            return state.result->get();
         }
         else {
-            fn();  // no hooks, run inline
+            using StoredResult = std::remove_cv_t<Result>;
+
+            struct State
+            {
+                Callable* callable;
+                std::optional<StoredResult> result;
+                std::exception_ptr exception;
+                bool completed = false;
+            } state {std::addressof(fn), {}, {}, false};
+
+            const bool invoked = invokeSyncWithGILReleased(
+                [](void* context) {
+                    auto& state = *static_cast<State*>(context);
+                    try {
+                        state.result.emplace(std::invoke(*state.callable));
+                    }
+                    catch (...) {
+                        state.exception = std::current_exception();
+                    }
+                    state.completed = true;
+                },
+                &state
+            );
+
+            validateInvocation(invoked, state.completed, state.exception);
+            if (!state.result) {
+                throw std::logic_error("Main-thread callable completed without a result");
+            }
+
+            // Supports both move-only and copy-only result types.
+            return std::move_if_noexcept(*state.result);
         }
     }
 
 private:
-    static IsMainThreadFn& isMainThreadSlot()
-    {
-        static IsMainThreadFn fn = nullptr;
-        return fn;
-    }
-    static InvokeFn& invokeSlot()
-    {
-        static InvokeFn fn = nullptr;
-        return fn;
-    }
+    static bool invokeSync(TaskFn task, void* context);
 };
 
 namespace detail
@@ -132,11 +251,10 @@ auto captureSignalArg(PDecl&& x)
     }
 }
 
-template<class T>
-using non_void_t = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
 }  // namespace detail
 
-// Wrapper that mirrors fastsignals::signal but executes slots on GUI thread.
+// Wrapper that mirrors fastsignals::signal and executes slots on the GUI thread
+// when hooks are installed; otherwise slots run on the calling thread.
 template<class Signature, template<class T> class Combiner = ::fastsignals::optional_last_value>
 class MainThreadSignal;
 
@@ -234,32 +352,20 @@ private:
             return self->sig_(std::forward<typename ::fastsignals::signal_arg_t<Arguments>>(args)...);
         }
 
-        Base::PyGILStateRelease release;
-
         auto caps = std::make_tuple(
             detail::captureSignalArg<typename ::fastsignals::signal_arg_t<Arguments>>(args)...
         );
 
-        if constexpr (std::is_void_v<result_type>) {
-            MainThreadSignalConfig::invoke(
-                [self, caps = std::move(caps)]() mutable {
-                    std::apply([self](auto&... c) { self->sig_(c.get()...); }, caps);
-                },
-                /*blocking=*/true
-            );
-        }
-        else {
-            std::optional<detail::non_void_t<result_type>> result;
-            MainThreadSignalConfig::invoke(
-                [self, caps = std::move(caps), &result]() mutable {
-                    result.emplace(
-                        std::apply([self](auto&... c) { return self->sig_(c.get()...); }, caps)
-                    );
-                },
-                /*blocking=*/true
-            );
-            return std::move(*result);
-        }
+        return MainThreadSignalConfig::callOnMainThreadSync(
+            [self, caps = std::move(caps)]() mutable -> result_type {
+                return std::apply(
+                    [self](auto&... captured) -> result_type {
+                        return self->sig_(captured.get()...);
+                    },
+                    caps
+                );
+            }
+        );
     }
 
     mutable base_sig sig_;

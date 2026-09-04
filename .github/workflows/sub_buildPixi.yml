@@ -228,6 +228,13 @@ jobs:
         reportFile: ${{ env.reportdir }}${{ env.reportfilename }}
         shellCmd: ${{ env.shellCmd }}
 
+    - name: Thread-affinity regression test on Windows
+      if: runner.os == 'Windows' && !inputs.skipBuild
+      timeout-minutes: 5
+      run: >-
+        pixi run ctest --test-dir "${{ env.builddir }}" -R
+        "^ThreadAffinity_Tests_run$" --output-on-failure --timeout 120
+
     - name: CMake Install
       if: "!inputs.skipBuild"
       run: |
