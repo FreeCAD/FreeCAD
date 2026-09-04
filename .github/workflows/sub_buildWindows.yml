@@ -54,6 +54,26 @@ on:
         required: false
         default: false
         type: boolean
+      runner:
+        required: false
+        type: string
+        default: "windows-2022"
+      cmakeArchitecture:
+        required: false
+        type: string
+        default: ""
+      libpackDownloadUrl:
+        required: false
+        type: string
+        default: "https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.5.3/LibPack-26.3.0-v3.5.3-x64-Release.7z"
+      libpackName:
+        required: false
+        type: string
+        default: "LibPack-26.3.0-v3.5.3-x64-Release"
+      cacheKey:
+        required: false
+        type: string
+        default: "Windows"
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -63,7 +83,7 @@ permissions:
 
 jobs:
   Build:
-    runs-on: windows-2022
+    runs-on: ${{ inputs.runner }}
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
@@ -78,7 +98,7 @@ jobs:
       CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros" # Can't get PCH to work on Windows
       ## Have to use C:\ because not enough space on workspace drive
       builddir: C:/FC/build/release/
-      cacheKey: Windows
+      cacheKey: ${{ inputs.cacheKey }}
       ccachebindir: C:/FC/ccache/
       config: release
       libpackdir: C:/FC/libpack/
@@ -124,6 +144,8 @@ jobs:
         uses: ./.github/workflows/actions/windows/getLibpack
         with:
           libpackdir: ${{ env.libpackdir }}
+          libpackdownloadurl: ${{ inputs.libpackDownloadUrl }}
+          libpackname: ${{ inputs.libpackName }}
 
       - name: Restore compiler cache
         id: cache-restore
@@ -154,6 +176,7 @@ jobs:
         run: >
           cmake -B"${{ env.builddir }}" .
           --preset ${{ env.config }}
+          ${{ inputs.cmakeArchitecture != '' && format('-A {0}', inputs.cmakeArchitecture) || '' }}
           -DCMAKE_VS_NO_COMPILE_BATCHING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DFREECAD_USE_PCH=OFF
