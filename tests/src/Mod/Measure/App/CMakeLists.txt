@@ -2,6 +2,7 @@
 
 add_executable(Measure_tests_run
         MeasureAngle.cpp
+        MeasureElementType.cpp
         MeasureDistance.cpp
         MeasurePosition.cpp
 )
