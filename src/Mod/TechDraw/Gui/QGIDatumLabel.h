@@ -103,6 +103,14 @@ protected:
 
     void snapPosition(QPointF& position);
 
+    // sub-handlers for snapping
+    void snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+    void snapRadialType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+    void snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim,
+                        QGIViewDimension* qgivd, bool& shouldSnap);
+
     bool getVerticalSep() const { return verticalSep; }
     void setVerticalSep(bool sep) { verticalSep = sep; }
     std::vector<int> getSeps() const { return seps; }
@@ -124,9 +132,13 @@ private:
     bool m_ctrl;
 
     DragState m_dragState;
+    std::optional<double> m_snappedNormalOffset;
     bool m_inhibitSnapOnPosChange{false};
 
 private:
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &vec3) { return {vec3.x, -vec3.y}; }
+    static inline Base::Vector2d to2D(const Base::Vector3d& v) { return {v.x, v.y}; }
+   
 };
 
 }  // namespace TechDrawGui
