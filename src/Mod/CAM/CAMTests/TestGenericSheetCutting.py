@@ -27,10 +27,14 @@ from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine
+import Constants
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
+def CompValue(val):
+    # 5 significant digits should be precise enough (for sheet cutting)
+    return round(val, 5)
 
 class TestGenericSheetCutting(PathTestUtils.PathTestBase):
     """Test the GenericSheetCutting postprocessor unique functionality."""
@@ -397,39 +401,40 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
     def test06_mark_entry_only_mode(self):
         """
-        Test mark entry only mode - only first entry point is marked.
-
+        Test mark entry only mode - only the first entry point is marked.
         INPUT:
         - Function: _inject_mark_entry_only()
         - Parameters: postables with multiple Z- movements
         - Input data: Path with multiple cutting passes, mark_entry_only=True
-
         EXPECTED OUTPUT:
-        - Only first Z- movement to cut height is processed with torch mark
-        - Subsequent Z- movements are skipped
-        - Z+ movements (retractions) are allowed through
-        - This enables marking entry points for drilling preparation
+        - First Z- movement to cut height is retained
+        - G4 marking delay is inserted after the first entry
+        - Lateral cutting moves are removed
+        - Subsequent Z- entry movements are removed
+        - Z+ retractions are retained
+        - Existing torch commands are removed
         """
-        # Set up operation heights
         self.profile_op.StartDepth = 2.0
         self.profile_op.FinalDepth = 0.0
         self.profile_op.ClearanceHeight = 10.0
 
-        # Create path with multiple cutting passes
         commands = [
             Path.Command("G0", {"Z": 10.0}),  # Start at clearance
-            Path.Command("G1", {"Z": 0.0, "F": 500}),  # First entry (should be marked)
-            Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 1000}),  # Cut
-            Path.Command("G0", {"Z": 10.0}),  # Retract
-            Path.Command("G0", {"X": 20.0, "Y": 20.0}),  # Move to next position
-            Path.Command("G1", {"Z": 0.0, "F": 500}),  # Second entry (should be skipped)
-            Path.Command("G1", {"X": 30.0, "Y": 30.0, "F": 1000}),  # Cut
-            Path.Command("G0", {"Z": 10.0}),  # Final retract
+            Path.Command("G1", {"Z": 0.0, "F": 500}),       # First entry (should be marked)
+            Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 1000}),  # Cut - remove
+            Path.Command("G0", {"Z": 10.0}),                # Retract - keep
+            Path.Command("G0", {"X": 20.0, "Y": 20.0}),    # Positioning
+            Path.Command("G1", {"Z": 0.0, "F": 500}),       # Second entry - remove
+            Path.Command("G1", {"X": 30.0, "Y": 30.0, "F": 1000}),  # Cut - remove
+            Path.Command("G0", {"Z": 10.0}),                # Final retract - keep
         ]
+
         self.profile_op.Path = Path.Path(commands)
 
-        # Enable mark entry only mode
-        self._set_postprocessor_properties(mark_entry_only=True)
+        self._set_postprocessor_properties(
+            mark_entry_only=True,
+            marking_delay=100,
+        )
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -437,17 +442,68 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
         # Verify the modified path
         result_cmds = self.profile_op.Path.Commands
-
-        # Should have torch mark sequence for first entry only
-        # The mark entry sequence includes: G1 Z(cut), G4, M5
-        g1_cut_moves = [
-            cmd
-            for cmd in result_cmds
-            if cmd.Name == "G1" and "Z" in cmd.Parameters and cmd.Parameters["Z"] <= 0.0
+        # First entry must be retained.
+        z_moves = [
+            cmd for cmd in result_cmds
+            if cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+            and "Z" in cmd.Parameters
         ]
 
-        # In mark mode, we should have exactly 1 G1 Z0 move (the marked entry)
-        self.assertEqual(len(g1_cut_moves), 1, "Should have exactly 1 cutting move in mark mode")
+        self.assertEqual(
+            len(z_moves),
+            3,
+            "Expected initial positioning, first entry, and two retractions",
+        )
+
+        self.assertEqual(z_moves[0].Name, "G0")
+        self.assertEqual(CompValue(z_moves[0].Parameters["Z"]), 10.0)
+
+        self.assertEqual(z_moves[1].Name, "G1")
+        self.assertEqual(CompValue(z_moves[1].Parameters["Z"]), 0.0)
+
+        self.assertEqual(z_moves[2].Name, "G0")
+        self.assertEqual(CompValue(z_moves[2].Parameters["Z"]), 10.0)
+
+        # A marking delay must have been inserted after the first entry.
+        g4_commands = [
+            cmd for cmd in result_cmds
+            if cmd.Name == "G4"
+        ]
+
+        self.assertEqual(len(g4_commands), 1)
+        self.assertEqual(
+            CompValue(g4_commands[0].Parameters["P"]),
+            0.1,
+        )
+
+        # No lateral cutting moves should remain.
+        lateral_moves = [
+            cmd for cmd in result_cmds
+            if cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+            and "Z" not in cmd.Parameters
+        ]
+
+        self.assertEqual(
+            lateral_moves,
+            [],
+            "Lateral cutting moves should be removed in mark-entry-only mode",
+        )
+
+        # Only one Z-down move should remain.
+        z_down_moves = [
+            cmd for cmd in result_cmds
+            if (
+                cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+                and "Z" in cmd.Parameters
+                and CompValue(cmd.Parameters["Z"]) <= 0.0
+            )
+        ]
+
+        self.assertEqual(
+            len(z_down_moves),
+            1,
+            "Only the first Z-down entry should remain",
+        )
 
     def test07_force_rapid_feeds(self):
         """
@@ -690,6 +746,177 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         self.assertAlmostEqual(
             m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
         )
+
+    def test12_reset_cutter_state_active_torch_and_clearance_move(self):
+        """
+        Test that _reset_cutter_state() extinguishes an active torch and
+        moves to the operation clearance height when required.
+
+        INPUT:
+        - Torch is active
+        - Last Z position differs from ClearanceHeight
+
+        EXPECTED OUTPUT:
+        - M5 is emitted
+        - G0 to ClearanceHeight is emitted
+        - Torch state is reset
+        - Last Z position is updated to ClearanceHeight
+        """
+        self.profile_op.ClearanceHeight = 10.0
+
+        self.post._torch_active = True
+        self.post._last_z = 2.0
+
+        reset_commands = self.post._reset_cutter_state(self.profile_op)
+
+        self.assertEqual(
+            [cmd.Name for cmd in reset_commands],
+            ["M5", "G0"],
+        )
+
+        self.assertEqual(
+            reset_commands[1].Parameters["Z"],
+            10.0,
+        )
+
+        self.assertFalse(
+            self.post._torch_active,
+            "Torch should be inactive after state reset",
+        )
+
+        self.assertEqual(
+            CompValue(self.post._last_z),
+            CompValue(10.0),
+        )
+
+
+    def test13_reset_cutter_state_already_at_clearance(self):
+        """
+        Test that _reset_cutter_state() does not emit an unnecessary Z move
+        when already at the clearance height.
+
+        INPUT:
+        - Torch is active
+        - Last Z position equals ClearanceHeight
+
+        EXPECTED OUTPUT:
+        - M5 is emitted
+        - No G0 Z move is emitted
+        - Torch state is reset
+        """
+        self.profile_op.ClearanceHeight = 10.0
+
+        self.post._torch_active = True
+        self.post._last_z = 10.0
+
+        reset_commands = self.post._reset_cutter_state(self.profile_op)
+
+        self.assertEqual(
+            [cmd.Name for cmd in reset_commands],
+            ["M5"],
+        )
+
+        self.assertFalse(self.post._torch_active)
+        self.assertEqual(
+            CompValue(self.post._last_z),
+            CompValue(10.0),
+        )
+
+
+    def test14_reset_cutter_state_inactive_torch(self):
+        """
+        Test that _reset_cutter_state() does not emit M5 when the torch is
+        already inactive.
+
+        INPUT:
+        - Torch is inactive
+        - Last Z position differs from ClearanceHeight
+
+        EXPECTED OUTPUT:
+        - No M5 is emitted
+        - G0 to ClearanceHeight is emitted
+        - Torch remains inactive
+        """
+        self.profile_op.ClearanceHeight = 10.0
+
+        self.post._torch_active = False
+        self.post._last_z = 2.0
+
+        reset_commands = self.post._reset_cutter_state(self.profile_op)
+
+        self.assertEqual(
+            [cmd.Name for cmd in reset_commands],
+            ["G0"],
+        )
+
+        self.assertEqual(
+            reset_commands[0].Parameters["Z"],
+            10.0,
+        )
+
+        self.assertFalse(self.post._torch_active)
+        self.assertEqual(
+            CompValue(self.post._last_z),
+            CompValue(10.0),
+        )
+
+
+    def test15_reset_cutter_state_no_previous_z(self):
+        """
+        Test that _reset_cutter_state() does not emit a clearance move when
+        there is no previous Z position to compare against.
+
+        INPUT:
+        - Torch is inactive
+        - Last Z position is None
+
+        EXPECTED OUTPUT:
+        - No reset commands are emitted
+        - Last Z remains None
+        """
+        self.profile_op.ClearanceHeight = 10.0
+
+        self.post._torch_active = False
+        self.post._last_z = None
+
+        reset_commands = self.post._reset_cutter_state(self.profile_op)
+
+        self.assertEqual(reset_commands, [])
+        self.assertFalse(self.post._torch_active)
+        self.assertIsNone(self.post._last_z)
+
+
+    def test16_reset_cutter_state_zero_clearance(self):
+        """
+        Test that _reset_cutter_state() does not emit a clearance move when
+        ClearanceHeight is zero.
+
+        INPUT:
+        - Last Z position differs from clearance
+        - ClearanceHeight is zero
+
+        EXPECTED OUTPUT:
+        - No G0 clearance move is emitted
+        - Torch is still extinguished if active
+        """
+        self.profile_op.ClearanceHeight = 0.0
+
+        self.post._torch_active = True
+        self.post._last_z = 2.0
+
+        reset_commands = self.post._reset_cutter_state(self.profile_op)
+
+        self.assertEqual(
+            [cmd.Name for cmd in reset_commands],
+            ["M5"],
+        )
+
+        self.assertFalse(self.post._torch_active)
+        self.assertEqual(
+            CompValue(self.post._last_z),
+            CompValue(2.0),
+        )
+
 
     def test_actual_machine(self):
         """Our specific `postprocessor_properties` were seen"""
