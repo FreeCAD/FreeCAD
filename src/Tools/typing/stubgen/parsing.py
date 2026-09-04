@@ -37,65 +37,26 @@ from .model import (
     ScannerState,
 )
 
+COMMENT_OR_LITERAL_RE = re.compile(
+    r'"(?:\\.|[^"\\])*(?:"|\Z)'
+    r"|'(?:\\.|[^'\\])*(?:'|\Z)"
+    r"|//[^\n]*"
+    r"|/\*.*?(?:\*/|\Z)",
+    re.DOTALL,
+)
+NON_NEWLINE_RE = re.compile(r"[^\n]")
+
 
 def strip_comments(source: str) -> str:
     """Return source with comments blanked while preserving string literals."""
 
-    out: list[str] = []
-    i = 0
-    state = ScannerState.CODE
-    while i < len(source):
-        char = source[i]
-        nxt = source[i + 1] if i + 1 < len(source) else ""
+    def blank_comment(match: re.Match[str]) -> str:
+        token = match.group()
+        if token.startswith(("//", "/*")):
+            return NON_NEWLINE_RE.sub(" ", token)
+        return token
 
-        match state:
-            case ScannerState.CODE:
-                if char == "/" and nxt == "/":
-                    out.extend("  ")
-                    i += 2
-                    state = ScannerState.LINE_COMMENT
-                    continue
-                if char == "/" and nxt == "*":
-                    out.extend("  ")
-                    i += 2
-                    state = ScannerState.BLOCK_COMMENT
-                    continue
-                out.append(char)
-                if char == '"':
-                    state = ScannerState.STRING
-                elif char == "'":
-                    state = ScannerState.CHAR
-                i += 1
-                continue
-            case ScannerState.LINE_COMMENT:
-                out.append("\n" if char == "\n" else " ")
-                if char == "\n":
-                    state = ScannerState.CODE
-                i += 1
-                continue
-            case ScannerState.BLOCK_COMMENT:
-                if char == "*" and nxt == "/":
-                    out.extend("  ")
-                    i += 2
-                    state = ScannerState.CODE
-                    continue
-                out.append("\n" if char == "\n" else " ")
-                i += 1
-                continue
-            case ScannerState.STRING | ScannerState.CHAR:
-                out.append(char)
-                if char == "\\":
-                    if i + 1 < len(source):
-                        out.append(source[i + 1])
-                        i += 2
-                        continue
-                elif (state is ScannerState.STRING and char == '"') or (
-                    state is ScannerState.CHAR and char == "'"
-                ):
-                    state = ScannerState.CODE
-        i += 1
-
-    return "".join(out)
+    return COMMENT_OR_LITERAL_RE.sub(blank_comment, source)
 
 
 def line_number(source: str, index: int) -> int:
