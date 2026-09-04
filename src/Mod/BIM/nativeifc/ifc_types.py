@@ -162,7 +162,7 @@ def edit_type(obj):
     typerel = getattr(element, "IsTypedBy", None)
     if obj.Type:
         # verify the type is compatible -ex IFcWall in IfcWallType
-        if obj.Type.Class != element.is_a() + "Type":
+        if obj.Type.Class != element.is_a().removesuffix("StandardCase") + "Type":
             t = translate("BIM", "Error: Incompatible type")
             FreeCAD.Console.PrintError(obj.Label + ": " + t + ": " + obj.Type.Class + "\n")
             obj.Type = None
