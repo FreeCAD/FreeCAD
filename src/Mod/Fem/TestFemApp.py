@@ -39,6 +39,7 @@ from femtest.app.test_solver_elmer import TestSolverElmer as FemTest13
 from femtest.app.test_solver_z88 import TestSolverZ88 as FemTest14
 from femtest.app.test_gmsh import TestGMSHTransfinite as FemTest15
 from femtest.app.test_gmsh import TestGMSHRefinements as FemTest16
+from femtest.app.test_security import TestPostDataObjectSecurity as FemTest17
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
@@ -56,3 +57,4 @@ False if FemTest13.__name__ else True
 False if FemTest14.__name__ else True
 False if FemTest15.__name__ else True
 False if FemTest16.__name__ else True
+False if FemTest17.__name__ else True

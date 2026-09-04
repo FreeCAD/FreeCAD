@@ -505,7 +505,21 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             try {
                 zipios::ConstEntryPointer entry = ZipReader.getNextEntry();
                 while (entry->isValid()) {
-                    Base::FileInfo entry_path(fo.filePath() + entry->getName());
+                    // The entry names come straight out of the stored file and are attacker
+                    // controlled, so they must never be joined to the extraction directory
+                    // unchecked.
+                    auto safeName = Base::FileInfo::safeArchiveEntryPath(entry->getName());
+                    if (!safeName) {
+                        Base::Console().error(
+                            "Skipped dataset entry '%s': the name escapes the extraction "
+                            "directory\n",
+                            entry->getName()
+                        );
+                        entry = ZipReader.getNextEntry();
+                        continue;
+                    }
+
+                    Base::FileInfo entry_path(fo.filePath() + "/" + *safeName);
                     if (entry->isDirectory()) {
                         // seems not to be called
                         entry_path.createDirectories();
