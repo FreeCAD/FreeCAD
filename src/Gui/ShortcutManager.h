@@ -67,6 +67,12 @@ public:
      */
     QString getShortcut(const char* cmd, const char* defaultAccel = nullptr);
 
+    /// Format a key sequence to a string correctly handling lowercase letters
+    static QString asString(
+        const QKeySequence& ks,
+        QKeySequence::SequenceFormat format = QKeySequence::PortableText
+    );
+
     /// Return actions having a given shortcut in order of decreasing priority
     std::vector<std::pair<QByteArray, QAction*>> getActionsByShortcut(const QKeySequence& shortcut);
 
