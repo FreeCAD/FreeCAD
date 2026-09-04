@@ -99,7 +99,7 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        pass
+        return self.setEdit(vobj)
 
     def setupContextMenu(self, vobj, menu):
         # Override the base class method to prevent adding the "Edit" action

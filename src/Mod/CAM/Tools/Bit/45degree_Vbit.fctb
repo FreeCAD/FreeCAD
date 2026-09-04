@@ -5,11 +5,12 @@
   "shape-type": "VBit",
   "parameter": {
     "CuttingEdgeAngle": "45.0000 \u00b0",
-    "Diameter": "10.0000 mm",
     "CuttingEdgeHeight": "1.0000 mm",
-    "TipDiameter": "0.1000 mm",
+    "Diameter": "10.0000 mm",
     "Length": "20.0000 mm",
-    "ShankDiameter": "5.0000 mm"
+    "ShankDiameter": "5.0000 mm",
+    "TipDiameter": "0.1000 mm",
+    "Units": "Metric"
   },
   "attribute": {}
 }
