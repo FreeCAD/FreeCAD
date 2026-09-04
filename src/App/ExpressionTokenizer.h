@@ -25,6 +25,7 @@
 #pragma once
 
 #include <QString>
+#include <QStringList>
 #include <FCGlobal.h>
 
 namespace App
@@ -33,7 +34,18 @@ namespace App
 class AppExport ExpressionTokenizer
 {
 public:
-    QString perform(const QString& text, int pos);
+    /** Extract the completion prefix from the expression text at cursor position pos,
+     * e.g. "1 + Sketch.Constr" yields "Sketch.Constr". Records the character range the
+     * accepted completion will replace, retrievable via getPrefixRange(); returns an
+     * empty string when there is nothing to complete at the position.
+     */
+    QString extractCompletionPrefix(const QString& text, int pos);
+
+    /** Split a completion prefix into completer path components, e.g. "Sketch." into
+     * ("Sketch", ""). Lexical only, so incomplete prefixes that ObjectIdentifier::parse()
+     * rejects still split; returns an empty list if the prefix is not a path.
+     */
+    QStringList splitCompletionPath(const QString& path) const;
 
     void getPrefixRange(int& start, int& end) const
     {
