@@ -714,13 +714,23 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Edit
     auto edit = new MenuItem(menuBar);
     edit->setCommand("&Edit");
+    auto create = new MenuItem;
+    create->setCommand("Create");
+    *create << "Std_Part"
+            << "Std_Group"
+            << "Std_VarSet"
+            << "Std_AnnotationLabel"
+            << "Part_Datums"
+            << "Std_LinkActions"
+            << "Separator"
+            << "Std_TextDocument";
+
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
-          << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
+          << "Std_Paste" << "Std_DuplicateSelection" << "Std_Delete" << "Separator"
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection"
-          << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
-          << "Separator" << "Std_Placement" << "Std_TransformManip" << "Std_Alignment"
-          << "Std_Edit" << "Std_Properties" << "Separator" << "Std_UserEditMode" << "Separator"
-          << "Std_DlgPreferences";
+          << "Std_SelectAll" << "Separator" << "Std_TransformManip" << "Std_Placement"
+          << "Std_Alignment" << "Std_SendToPythonConsole" << "Std_Properties" << "Separator"
+          << "Std_Edit" << "Std_UserEditMode" << "Separator" << "Std_DlgPreferences" << create;
 
     auto axoviews = new MenuItem;
     axoviews->setCommand("A&xonometric");
@@ -788,13 +798,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
     *tool << "Std_Measure"
           << "Std_MassProperties"
-          << "Std_AnnotationLabel"
           << "Std_UnitsCalculator"
           << "Std_ClarifySelection"
           << "Separator"
           << "Std_ViewLoadImage"
           << "Std_ViewScreenShot"
-          << "Std_TextDocument"
           << "Std_DemoMode"
           << "Separator"
           << "Std_SceneInspector"
