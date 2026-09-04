@@ -24,7 +24,11 @@
 
 #include <Gui/ToolHandler.h>
 
+#include <QKeyEvent>
+#include <QMouseEvent>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 
 namespace TechDrawGui
 {
