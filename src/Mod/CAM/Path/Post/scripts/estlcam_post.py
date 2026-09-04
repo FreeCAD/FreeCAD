@@ -96,7 +96,7 @@ class Estlcam(PostProcessor):
         values["POSTAMBLE"] = """M5"""
 
     def convert_command_to_gcode(self, command: Path.Command):
-        if command.Name == "G21":
+        if command.Name in Constants.GCODE_UNITS_METRIC:
             return ""
         if command.Name in ("M7", "M07"):
             self.coolant_End_Command = "M11"
