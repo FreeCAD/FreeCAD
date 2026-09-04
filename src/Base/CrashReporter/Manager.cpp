@@ -42,7 +42,11 @@ using namespace Base::CrashReporter;
 static std::string s_crashReportDirectory;
 static std::vector<ParsedCrashReport> s_reports;
 
-void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy policy)
+void Manager::scan(
+    const std::string& crashReportDirectory,
+    RetentionPolicy policy,
+    const std::string& osVersion
+)
 {
     FileInfo fileInfo {crashReportDirectory};
     if (!fileInfo.exists()) {
@@ -63,6 +67,9 @@ void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy poli
             // This is what we are looking for: read it
             try {
                 auto report = parse(contentItem.filePath());
+                if (!osVersion.empty()) {
+                    report.osVersion = osVersion;
+                }
                 archive(report);
                 report.stackFrames = trimLeadingPlumbingFrames(report.stackFrames);
                 s_reports.push_back(report);
@@ -202,12 +209,12 @@ void Manager::enforceRetention(RetentionPolicy policy)
     }
 }
 
-std::pair<std::string, std::string> Manager::archiveFile(
+std::pair<std::string, std::optional<std::string>> Manager::archiveFile(
     const std::string& fcrashPath,
-    const std::string& dumpPath
+    const std::optional<std::string>& dumpPath
 )
 {
-    std::pair<std::string, std::string> newPaths {fcrashPath, dumpPath};
+    std::pair<std::string, std::optional<std::string>> newPaths {fcrashPath, dumpPath};
     auto archivePath = getArchive();
     if (!archivePath.exists()) {
         if (!archivePath.createDirectories()) {
@@ -219,8 +226,8 @@ std::pair<std::string, std::string> Manager::archiveFile(
         fcrashInfo.renameFile((archiveBase + "/" + fcrashInfo.fileName()).c_str());
         newPaths.first = fcrashInfo.filePath();
     }
-    if (!dumpPath.empty()) {
-        if (FileInfo dmpInfo {dumpPath}; dmpInfo.exists()) {
+    if (dumpPath.has_value() && !dumpPath.value().empty()) {
+        if (FileInfo dmpInfo {dumpPath.value()}; dmpInfo.exists()) {
             dmpInfo.renameFile((archiveBase + "/" + dmpInfo.fileName()).c_str());
             newPaths.second = dmpInfo.filePath();
         }

@@ -283,3 +283,15 @@ def checkAbort() -> None:
     abort by pressing Esc.
     """
     ...
+
+def getLastCrashReport() -> CrashReport | None:
+    """If the last run of FreeCAD crashed, this will return the most recent crash report."""
+    ...
+
+def getCrashReports() -> list[CrashReport]:
+    """Get all "live" crash reports (retained according to the retention policy)."""
+    ...
+
+def clearCrashReports() -> None:
+    """Clear all existing crash reports. Safe to call while holding a crash report."""
+    ...
