@@ -44,6 +44,32 @@ def signedDistanceToLine(line, point):
     return (delta.x * (point.y - start.y) - delta.y * (point.x - start.x)) / delta.Length
 
 
+def createRectangleWithSpanningLine(sketch, line_x=20.0):
+    """Rectangle drawn with the diagonal rectangle tool and a vertical line spanning it.
+
+    The rectangle carries the autoconstraints the tool creates (coincidences, two horizontals,
+    two verticals) and the spanning line carries the autoconstraints created when drawing it
+    over the rectangle (vertical, endpoints on the top and bottom edges). The sketch has 5 DoF
+    when returned.
+    """
+    sketch.addGeometry(Part.LineSegment(vec(0, 40), vec(60, 40)), False)  # 0 top
+    sketch.addGeometry(Part.LineSegment(vec(60, 40), vec(60, 0)), False)  # 1 right
+    sketch.addGeometry(Part.LineSegment(vec(60, 0), vec(0, 0)), False)  # 2 bottom
+    sketch.addGeometry(Part.LineSegment(vec(0, 0), vec(0, 40)), False)  # 3 left
+    sketch.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+    sketch.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+    sketch.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+    sketch.addConstraint(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+    sketch.addConstraint(Sketcher.Constraint("Horizontal", 0))
+    sketch.addConstraint(Sketcher.Constraint("Horizontal", 2))
+    sketch.addConstraint(Sketcher.Constraint("Vertical", 1))
+    sketch.addConstraint(Sketcher.Constraint("Vertical", 3))
+    sketch.addGeometry(Part.LineSegment(vec(line_x, 40), vec(line_x, 0)), False)  # 4 spanning
+    sketch.addConstraint(Sketcher.Constraint("Vertical", 4))
+    sketch.addConstraint(Sketcher.Constraint("PointOnObject", 4, 1, 0))
+    sketch.addConstraint(Sketcher.Constraint("PointOnObject", 4, 2, 2))
+
+
 def makeDocumentLookLegacy(path):
     """Rewrite an FCStd in place so that its sketches look like they predate signed constraints.
 
@@ -889,6 +915,92 @@ class TestSketcherSolver(unittest.TestCase):
 
         after = signedDistanceToLine(sketch.Geometry[2], sketch.Geometry[3].Center)
         self.assertAlmostEqual(after, -before, delta=Precision.confusion())
+
+    def assertLineCentered(self, sketch):
+        # the constraint relation: the midpoint of the two corners lies on the symmetry line.
+        # Note the solver may move both the rectangle and the line towards each other, so the
+        # absolute position of the line is not asserted.
+        mid_x = (sketch.Geometry[0].StartPoint.x + sketch.Geometry[0].EndPoint.x) / 2
+        self.assertAlmostEqual(mid_x, sketch.Geometry[4].StartPoint.x)
+        self.assertAlmostEqual(mid_x, sketch.Geometry[4].EndPoint.x)
+
+    def testSymmetricLineCenteredInRectangle(self):
+        # Constraining two corners of a rectangle's top edge symmetric about a vertical line
+        # spanning the rectangle should center the line. The perpendicularity part of the
+        # symmetric constraint is inherently redundant with the horizontal and vertical
+        # direction constraints, which used to make the system rank-deficient, preventing the
+        # solver from converging and flagging the sketch as invalid (issue #22381).
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        createRectangleWithSpanningLine(sketch, line_x=20.0)
+        self.Doc.recompute()
+        self.assertEqual(sketch.DoF, 5)
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 0, 2, 4))
+        self.Doc.recompute()
+
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.RedundantConstraints, [])
+        self.assertEqual(sketch.ConflictingConstraints, [])
+        self.assertLineCentered(sketch)
+
+    def testSymmetricLineCenteredInRectangleMixedCorners(self):
+        # Same as testSymmetricLineCenteredInRectangle, but the corners are selected through
+        # the coincident endpoints of the left and right edges, as happens when the user clicks
+        # the other representation of a corner.
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        createRectangleWithSpanningLine(sketch, line_x=20.0)
+        self.Doc.recompute()
+        self.assertEqual(sketch.DoF, 5)
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 3, 2, 1, 1, 4))
+        self.Doc.recompute()
+
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.RedundantConstraints, [])
+        self.assertEqual(sketch.ConflictingConstraints, [])
+        self.assertLineCentered(sketch)
+
+    def testSymmetricStillEnforcesPerpendicularityWhenDirectionsUnconstrained(self):
+        # When the spanning line does not have a vertical constraint, the perpendicularity part
+        # of the symmetric constraint is not redundant and must still be enforced: the line
+        # between the two corners has to stay perpendicular to the symmetry line.
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        createRectangleWithSpanningLine(sketch, line_x=20.0)
+        sketch.delConstraint(8)  # drop the vertical constraint of the spanning line
+        self.Doc.recompute()
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 0, 2, 4))
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+        self.assertEqual(sketch.RedundantConstraints, [])
+        self.assertLineCentered(sketch)
+
+        # drag the line's top endpoint: the solver must restore a configuration where the line
+        # is perpendicular to the (horizontal) top edge. If the symmetric constraint was
+        # wrongly weakened, the line would stay tilted.
+        sketch.moveGeometry(4, 1, vec(25.0, 42.0))
+        self.Doc.recompute()
+        self.assertSuccessfulSolve(sketch)
+        line_dir = sketch.Geometry[4].EndPoint - sketch.Geometry[4].StartPoint
+        edge_dir = sketch.Geometry[0].EndPoint - sketch.Geometry[0].StartPoint
+        self.assertAlmostEqual(line_dir.x * edge_dir.x + line_dir.y * edge_dir.y, 0.0, delta=1e-6)
+
+    def testSymmetricBetweenParallelDirectionConstraintsIsNotAccepted(self):
+        # Two corners of the left edge (vertical segment) symmetric about a vertical line is
+        # geometrically impossible without collapsing the rectangle: the constraint must not be
+        # silently weakened into a midpoint-on-line and the sketch must not solve cleanly.
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        createRectangleWithSpanningLine(sketch, line_x=30.0)
+        self.Doc.recompute()
+
+        sketch.addConstraint(Sketcher.Constraint("Symmetric", 0, 1, 3, 1, 4))
+        self.Doc.recompute()
+
+        status = sketch.solve()
+        self.assertTrue(
+            status != 0 or len(sketch.ConflictingConstraints) > 0,
+            "impossible symmetry request must not solve cleanly",
+        )
 
     def testReversedExternalGeometryLeavesSketchInPlace(self):
         # A signed constraint records the side of a line relative to the line direction. Reversing

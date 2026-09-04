@@ -323,6 +323,7 @@ int Sketch::setUpSketch(
 #endif  // DEBUG_BLOCK_CONSTRAINT
 
     buildInternalAlignmentGeometryMap(ConstraintList);
+    buildSymmetryRedundancyMaps(ConstraintList);
 
     addGeometry(intGeoList, onlyBlockedGeometry, inGroupGeoIds);
     int extStart = Geoms.size();
@@ -441,6 +442,43 @@ void Sketch::buildInternalAlignmentGeometryMap(const std::vector<Constraint*>& c
             internalAlignmentGeometryMap[c->First] = c->Second;
         }
     }
+}
+
+void Sketch::buildSymmetryRedundancyMaps(const std::vector<Constraint*>& constraintList)
+{
+    lineDirectionConstraintMap.clear();
+    coincidenceRepresentativeMap.clear();
+
+    for (auto* c : constraintList) {
+        if (c->Type == Horizontal || c->Type == Vertical) {
+            if (c->Second == GeoEnum::GeoUndef) {  // direction of a single line
+                lineDirectionConstraintMap[c->First] = c->Type;
+            }
+        }
+        else if (c->Type == Coincident && c->FirstPos != PointPos::none
+                 && c->SecondPos != PointPos::none) {
+            // union-find: link the two coincident points
+            std::pair<int, Sketcher::PointPos> p1 = {c->First, c->FirstPos};
+            std::pair<int, Sketcher::PointPos> p2 = {c->Second, c->SecondPos};
+            auto rep1 = findCoincidenceRepresentative(p1);
+            auto rep2 = findCoincidenceRepresentative(p2);
+            if (rep1 != rep2) {
+                coincidenceRepresentativeMap[rep2] = rep1;
+            }
+        }
+    }
+}
+
+std::pair<int, Sketcher::PointPos> Sketch::findCoincidenceRepresentative(
+    std::pair<int, Sketcher::PointPos> point
+) const
+{
+    auto it = coincidenceRepresentativeMap.find(point);
+    while (it != coincidenceRepresentativeMap.end() && it->second != point) {
+        point = it->second;
+        it = coincidenceRepresentativeMap.find(point);
+    }
+    return point;
 }
 
 void Sketch::fixParametersAndDiagnose(std::vector<double*>& params_to_block)
@@ -4131,6 +4169,51 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
                 int tag = ++ConstraintsCounter;
                 // addConstraintMidpointOnLine is a GCS::System method, but we can call it from
                 // here.
+                GCSsys.addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tag);
+                return ConstraintsCounter;
+            }
+        }
+    }
+
+    // Special handling for line endpoint symmetry when the direction of the segment between the
+    // two points and the direction of the symmetry line are already constrained to transverse
+    // directions (e.g. a horizontal edge and a vertical symmetry line). In this configuration,
+    // the perpendicularity part of the symmetry constraint is inherently redundant, which makes
+    // the system rank-deficient and prevents the solver from converging. We detect this case and
+    // add only the midpoint-on-line part of the constraint, which is sufficient to enforce
+    // symmetry without causing redundancy.
+
+    // Step 1: The symmetry line must itself have a constrained direction.
+    auto itSym = lineDirectionConstraintMap.find(geoId3);
+    if (itSym != lineDirectionConstraintMap.end()) {
+        // Step 2: The two points must be (coincident with) the endpoints of a line whose
+        // constrained direction is transverse to the symmetry line's direction.
+        auto rep1 = findCoincidenceRepresentative({geoId1, pos1});
+        auto rep2 = findCoincidenceRepresentative({geoId2, pos2});
+
+        for (const auto& [lineGeoId, lineDir] : lineDirectionConstraintMap) {
+            if (lineDir == itSym->second || lineGeoId < 0
+                || lineGeoId >= int(Geoms.size())  // NOLINT
+                || Geoms[lineGeoId].type != Line) {
+                continue;  // same direction (would conflict) or not a line segment
+            }
+
+            // the endpoints of the line are resolved through the coincidence groups as well,
+            // since the representative of a coincident point group is order-dependent
+            auto lineStartRep = findCoincidenceRepresentative({lineGeoId, PointPos::start});
+            auto lineEndRep = findCoincidenceRepresentative({lineGeoId, PointPos::end});
+
+            if ((rep1 == lineStartRep && rep2 == lineEndRep)
+                || (rep1 == lineEndRep && rep2 == lineStartRep)) {
+                // The segment between the two points has a constrained direction transverse to
+                // the symmetry line's direction. Weaken the constraint by only adding the
+                // midpoint part.
+                int pointId1 = getPointId(geoId1, pos1);
+                int pointId2 = getPointId(geoId2, pos2);
+                GCS::Point& p1 = Points[pointId1];
+                GCS::Point& p2 = Points[pointId2];
+                GCS::Line& l = Lines[Geoms[geoId3].index];
+                int tag = ++ConstraintsCounter;
                 GCSsys.addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tag);
                 return ConstraintsCounter;
             }

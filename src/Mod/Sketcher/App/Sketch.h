@@ -623,6 +623,15 @@ private:
     // defines (ellipse, hyperbola, B-Spline)
     std::map<int, int> internalAlignmentGeometryMap;
 
+    // maps a geoid of a line to the direction constraint type (Horizontal or Vertical) applied
+    // to it, if any. Only the single geometry form of those constraints is considered.
+    std::map<int, Sketcher::ConstraintType> lineDirectionConstraintMap;
+
+    // maps a point (geoid, pos) to the representative point of its coincidence group. Used to
+    // resolve points that are coincident with the endpoints of a constrained line.
+    std::map<std::pair<int, Sketcher::PointPos>, std::pair<int, Sketcher::PointPos>>
+        coincidenceRepresentativeMap;
+
     std::vector<std::set<std::pair<int, Sketcher::PointPos>>> pDependencyGroups;
 
     // this map is intended to convert a parameter (double *) into a GeoId/PointPos and parameter
@@ -809,6 +818,12 @@ private:
     void clearTemporaryConstraints();
 
     void buildInternalAlignmentGeometryMap(const std::vector<Constraint*>& constraintList);
+
+    void buildSymmetryRedundancyMaps(const std::vector<Constraint*>& constraintList);
+
+    std::pair<int, Sketcher::PointPos> findCoincidenceRepresentative(
+        std::pair<int, Sketcher::PointPos> point
+    ) const;
 
     int internalSolve(std::string& solvername, int level = 0);
 
