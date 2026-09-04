@@ -45,6 +45,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QSet>
 #include <QSettings>
 #include <QSignalMapper>
 #include <QStatusBar>
@@ -1025,23 +1026,80 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         box.addButton(&checkBox, QMessageBox::ResetRole);
     }
 
-    // Show and honor S / D / C mnemonics on the standard buttons.
-    auto applyMnemonic = [](QAbstractButton* btn) {
-        if (!btn) {
+    // Keep mnemonics already present in Qt translations, then assign a unique
+    // unused letter to any standard button that still has none.
+    const auto mnemonicKey = [](const QString& text) -> QChar {
+        for (int i = 0; i + 1 < text.size(); ++i) {
+            if (text.at(i) != QLatin1Char('&')) {
+                continue;
+            }
+            if (text.at(i + 1) == QLatin1Char('&')) {
+                ++i;
+                continue;
+            }
+            return text.at(i + 1).toUpper();
+        }
+        return {};
+    };
+    const auto insertUnusedMnemonic = [&](QString& text, QSet<QChar>& used) {
+        if (!mnemonicKey(text).isNull()) {
             return;
         }
+        for (int i = 0; i < text.size(); ++i) {
+            if (text.at(i) == QLatin1Char('&')) {
+                if (i + 1 < text.size() && text.at(i + 1) == QLatin1Char('&')) {
+                    ++i;
+                }
+                continue;
+            }
+            const QChar ch = text.at(i);
+            if (!ch.isLetter()) {
+                continue;
+            }
+            const QChar key = ch.toUpper();
+            if (used.contains(key)) {
+                continue;
+            }
+            text.insert(i, QLatin1Char('&'));
+            used.insert(key);
+            return;
+        }
+    };
+
+    const QList<QAbstractButton*> buttons {
+        box.button(QMessageBox::Save),
+        box.button(QMessageBox::Discard),
+        box.button(QMessageBox::Cancel),
+    };
+    QSet<QChar> used;
+    if (addCheckbox) {
+        const QChar key = mnemonicKey(checkBox.text());
+        if (!key.isNull()) {
+            used.insert(key);
+        }
+    }
+    for (QAbstractButton* btn : buttons) {
+        if (!btn) {
+            continue;
+        }
+        const QChar key = mnemonicKey(btn->text());
+        if (!key.isNull()) {
+            used.insert(key);
+        }
+    }
+    for (QAbstractButton* btn : buttons) {
+        if (!btn) {
+            continue;
+        }
         QString text = btn->text();
-        if (!text.contains(QLatin1Char('&'))) {
-            text.prepend(QLatin1Char('&'));
+        insertUnusedMnemonic(text, used);
+        if (text != btn->text()) {
             btn->setText(text);
         }
         if (btn->shortcut().isEmpty()) {
-            btn->setShortcut(QKeySequence::mnemonic(text));
+            btn->setShortcut(QKeySequence::mnemonic(btn->text()));
         }
-    };
-    applyMnemonic(box.button(QMessageBox::Save));
-    applyMnemonic(box.button(QMessageBox::Discard));
-    applyMnemonic(box.button(QMessageBox::Cancel));
+    }
 
     int res = ConfirmSaveResult::Cancel;
     box.adjustSize();  // Silence warnings from Qt on Windows
