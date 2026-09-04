@@ -122,6 +122,7 @@ public:
     bool isEqual(const TopoDS_Face& faceOne, const TopoDS_Face& faceTwo) const override;
     GeomAbs_SurfaceType getType() const override;
     TopoDS_Face buildFace(const FaceVectorType& faces) const override;
+    std::vector<FaceVectorType> splitEqual(const FaceVectorType& faces) const override;
     friend FaceTypedBSpline& getBSplineObject();
 };
 FaceTypedBSpline& getBSplineObject();
