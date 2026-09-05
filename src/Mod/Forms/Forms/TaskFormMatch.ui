@@ -8,8 +8,10 @@
     <item><property name="text"><string>Tangent to adjacent faces (G1)</string></property></item>
     <item><property name="text"><string>Tangent to selected face (G1)</string></property></item>
     <item><property name="text"><string>Connected only (G0)</string></property></item>
+    <item><property name="text"><string>Curvature to adjacent faces (G2)</string></property></item>
+    <item><property name="text"><string>Curvature to selected face (G2)</string></property></item>
    </widget></item>
-   <item row="1" column="0" colspan="2"><widget class="QLabel" name="explanation"><property name="text"><string>Adjacent faces continue the model surfaces around the opening; selected face starts the form within the selected face plane.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+   <item row="1" column="0" colspan="2"><widget class="QLabel" name="explanation"><property name="text"><string>Adjacent faces continue the model surfaces around the opening; selected face follows the selected surface. G2 also matches curvature and requires sufficient control rows. Its tolerances are available in the Form's Match properties.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
    <item row="2" column="0" colspan="2"><widget class="QLabel" name="previewStatus"><property name="wordWrap"><bool>true</bool></property></widget></item>
    <item row="3" column="0" colspan="2"><layout class="QHBoxLayout" name="buttonLayout">
     <item><widget class="QPushButton" name="applyButton"><property name="text"><string>Apply</string></property></widget></item>

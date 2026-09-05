@@ -2,7 +2,7 @@
 
 import unittest
 
-from . import TestBlendExport, TestBlendImport, TestBRep, TestTopology
+from . import TestBlendExport, TestBlendImport, TestBRep, TestTopology, TestReview, TestCurvature
 
 
 def suite():
@@ -11,4 +11,6 @@ def suite():
     result.addTests(TestBlendImport.suite())
     result.addTests(TestTopology.suite())
     result.addTests(TestBRep.suite())
+    result.addTests(TestReview.suite())
+    result.addTests(TestCurvature.suite())
     return result

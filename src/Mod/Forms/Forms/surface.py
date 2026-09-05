@@ -25,10 +25,13 @@
 
 import math
 
+from .feature import reset_cage
+
 import FreeCAD as App
 import Part
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 from .cage import ControlCage
 
 
@@ -286,14 +289,7 @@ class FormSurfaceProxy(FormFeatureProxy):
             source_shape = obj.SourceFace[0].Shape
             if obj.CageMode == "Parametric":
                 vertices, faces = self._topology(obj)
-                obj.ControlPoints = [App.Vector(*point) for point in vertices]
-                obj.ControlFaces = [" ".join(str(index) for index in face) for face in faces]
-                obj.VertexSharpness = [0.0] * len(vertices)
-                obj.EdgeSharpness = []
-                obj.LocalEdgeInserts = []
-                obj.LocalControlPoints = []
-                obj.TMeshData = ""
-                obj.DissolvedEdges = []
+                reset_cage(obj, vertices, faces)
 
             cage = ControlCage.from_object(obj)
             replacement, _interior_points = _filled_face(

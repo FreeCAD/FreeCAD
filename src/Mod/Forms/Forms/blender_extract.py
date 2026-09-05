@@ -28,7 +28,6 @@ no FreeCAD imports so Blender installations can run it unchanged.
 """
 
 import json
-import math
 import sys
 import traceback
 
@@ -43,7 +42,7 @@ def _sharpness(crease):
     crease = max(0.0, float(crease))
     if crease >= 1.0 - 1.0e-6:
         return 10.0
-    return -math.log2(1.0 - crease) if crease else 0.0
+    return min(crease, 1.0) ** 2 * 10.0
 
 
 def _attribute_values(mesh, name, count):

@@ -185,33 +185,21 @@ def bind_edit_panel(session):
     panel = load_panel("TaskFormEdit.ui")
     form_type = str(session.obj.FormType)
     if form_type in ("Forms::Form", "Forms::Sphere", "Forms::Pipe"):
-        page, widgets, labels, table = _dynamic_primitive_page(panel, form_type)
+        _page, widgets, labels, table = _dynamic_primitive_page(panel, form_type)
         page_name = None
-        widget_names = label_names = {}
         header_name = None
     else:
         page_name, widget_names, label_names, header_name = _PAGES[form_type]
+        widgets = {name: getattr(panel, widget_name) for name, widget_name in widget_names.items()}
+        labels = {name: getattr(panel, label_name) for name, label_name in label_names.items()}
+        table = None
     for candidate_page, *_unused in _PAGES.values():
         getattr(panel, candidate_page).setVisible(
             page_name is not None and candidate_page == page_name
         )
-    session.parameter_widgets = (
-        widgets
-        if page_name is None
-        else {
-            name: getattr(panel, widget_name)
-            for name, widget_name in widget_names.items()
-        }
-    )
-    session.parameter_labels = (
-        labels
-        if page_name is None
-        else {
-            name: getattr(panel, label_name)
-            for name, label_name in label_names.items()
-        }
-    )
-    session.pipe_segment_table = table if page_name is None else None
+    session.parameter_widgets = widgets
+    session.parameter_labels = labels
+    session.pipe_segment_table = table
     session.segment_header = getattr(panel, header_name) if header_name else None
     session.symmetric = panel.symmetric
     session.symmetry_plane = panel.symmetryPlane
