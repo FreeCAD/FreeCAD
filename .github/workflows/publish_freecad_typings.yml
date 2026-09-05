@@ -1,0 +1,161 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2026 FreeCAD Contributors                               *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# Publish freecad-typings to PyPI via trusted publishing (OIDC).
+# Manual dispatch only. Stable releases (empty suffix) go to PyPI.
+# Pre-releases (dev, RC, etc.) go to TestPyPI with a run-number
+# suffix (e.g. 26.3.0.dev42) so each upload has a unique version.
+
+name: Publish freecad-typings
+
+on:
+  workflow_dispatch: ~
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      is_stable: ${{ steps.version.outputs.is_stable }}
+      version_override: ${{ steps.version.outputs.version_override }}
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+
+      - name: Determine release type
+        id: version
+        run: |
+          suffix=$(python3 -c "import json; print(json.load(open('version.json'))['version_suffix'])")
+          if [ -n "$suffix" ]; then
+            echo "is_stable=false" >> "$GITHUB_OUTPUT"
+            version_override=$(python3 -c "
+          import json
+          d = json.load(open('version.json'))
+          v = f\"{d['version_major']}.{d['version_minor']}.{d['version_patch']}\"
+          s = d['version_suffix'].lstrip('.')
+          if s.lower() == 'dev':
+              print(f'{v}.dev${{ github.run_number }}')
+          elif s:
+              print(f'{v}{s}')
+          else:
+              print(v)
+          ")
+            echo "version_override=${version_override}" >> "$GITHUB_OUTPUT"
+            echo "Pre-release (suffix='${suffix}') — will publish to TestPyPI as ${version_override}."
+          else
+            echo "is_stable=true" >> "$GITHUB_OUTPUT"
+            echo "Stable release — will publish to PyPI."
+          fi
+
+      - name: Generate stubs
+        run: |
+          args="--root . --out-dir src/Tools/typing/generated"
+          if [ -n "${{ steps.version.outputs.version_override }}" ]; then
+            args="$args --version-override ${{ steps.version.outputs.version_override }}"
+          fi
+          python3 src/Tools/typing/generate_stubs.py $args
+
+      - name: Build package
+        run: uv build
+        working-directory: src/Tools/typing/generated
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist
+          path: src/Tools/typing/generated/dist
+          retention-days: 1
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    if: needs.build.outputs.is_stable == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
+        with:
+          packages-dir: dist
+
+  publish_testpypi:
+    name: Publish to TestPyPI
+    needs: build
+    if: needs.build.outputs.is_stable == 'false'
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Download dist artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to TestPyPI
+        uses: pypa/gh-action-pypi-publish@a892a5a61159132606e93a2fa6f4358831b04d26 # v1.14.2
+        with:
+          packages-dir: dist
+          repository-url: https://test.pypi.org/legacy/
