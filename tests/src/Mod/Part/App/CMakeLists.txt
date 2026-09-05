@@ -17,6 +17,7 @@ add_executable(Part_tests_run
         FeaturePartCut.cpp
         FeaturePartFuse.cpp
         FeatureRevolution.cpp
+        FeatureSectionAnalysis.cpp
         FuzzyBoolean.cpp
         Geometry.cpp
         PartFeature.cpp
@@ -33,6 +34,7 @@ add_executable(Part_tests_run
         TopoShapeMapper.cpp
         TopoShapeMakeShape.cpp
         WireJoiner.cpp
+        SectionCap.cpp
 )
 
 set(PartTestData_Files
