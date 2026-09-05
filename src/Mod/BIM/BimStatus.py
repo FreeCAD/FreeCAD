@@ -36,32 +36,53 @@ translate = FreeCAD.Qt.translate
 # Status bar buttons
 
 
+def _get_nudge_tooltip():
+    "create nudge tooltip with correct shortcuts"
+
+    nudge_commands = [
+        "BIM_Nudge_Up",
+        "BIM_Nudge_Down",
+        "BIM_Nudge_Left",
+        "BIM_Nudge_Right",
+        "BIM_Nudge_RotateLeft",
+        "BIM_Nudge_RotateRight",
+        "BIM_Nudge_Extend",
+        "BIM_Nudge_Shrink",
+        "BIM_Nudge_Switch",
+    ]
+    shortcuts = []
+    for nudge_command in nudge_commands:
+        shortcut = FreeCADGui.CommandAction(nudge_command).getCommand().getShortcut()
+        shortcuts.append(shortcut if shortcut else "?")
+
+    #: BIM: tooltip for the status bar nudge widget, %1-%9 are keyboard shortcuts
+    tooltip = translate(
+        "BIM",
+        "The value of the nudge movement (rotation is always 45°).\n"
+        "Nudge shortcuts:\n"
+        "%1 to move up, %2 to move down.\n"
+        "%3 to move left, %4 to move right.\n"
+        "%5 to rotate left, %6 to rotate right.\n"
+        "%7 to extend height, %8 to shrink height.\n"
+        "%9 to switch between auto and manual mode.",
+    )
+    for index, shortcut in enumerate(shortcuts, start=1):
+        tooltip = tooltip.replace(f"%{index}", shortcut)
+    return tooltip
+
+
 def setStatusIcons(show=True):
     "shows or hides the BIM icons in the status bar"
 
     import FreeCADGui
     from PySide import QtCore, QtGui
+    from bimcommands import BimNudge
 
-    nudgeLabelsI = [
-        translate("BIM", "Custom…"),
-        '1/16"',
-        '1/8"',
-        '1/4"',
-        '1"',
-        '6"',
-        "1'",
-        translate("BIM", "Auto"),
-    ]
-    nudgeLabelsM = [
-        translate("BIM", "Custom…"),
-        "1 mm",
-        "5 mm",
-        "1 cm",
-        "5 cm",
-        "10 cm",
-        "50 cm",
-        translate("BIM", "Auto"),
-    ]
+    nudgeLabels = (
+        [translate("BIM", "Custom…")]
+        + BimNudge._NUDGE_DISTANCES_STRINGS
+        + [translate("BIM", "Auto")]
+    )
 
     def toggleBimViews(state):
         FreeCADGui.runCommand("BIM_Views")
@@ -71,16 +92,17 @@ def setStatusIcons(show=True):
 
     def setNudge(action):
         utext = action.text().replace("&", "")
-        if utext == nudgeLabelsM[0]:
+        if utext == nudgeLabels[0]:
             # load dialog
             form = FreeCADGui.PySideUic.loadUi(":/ui/dialogNudgeValue.ui")
             # center the dialog over FreeCAD window
             mw = FreeCADGui.getMainWindow()
             form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+            form.spinBox.setProperty("rawValue", BimNudge.BIM_Nudge().getNudgeValue("dist"))
             result = form.exec_()
             if not result:
                 return
-            utext = form.inputField.text()
+            utext = form.spinBox.text()
         action.parent().parent().parent().setText(utext)
 
     # main code
@@ -150,31 +172,20 @@ def setStatusIcons(show=True):
                     ifc_status.set_status_widget(statuswidget)
 
                 # nudge button
-                nudge = QtGui.QPushButton(nudgeLabelsM[-1])
+                nudge = QtGui.QPushButton(nudgeLabels[-1])
                 nudge.setIcon(QtGui.QIcon(":/icons/BIM_Nudge.svg"))
                 nudge.setFlat(True)
-                nudge.setToolTip(
-                    translate(
-                        "BIM",
-                        "The value of the nudge movement (rotation is always 45°)."
-                        "Alt+arrows to move\nAlt+, to rotate left"
-                        "Alt+. to rotate right\nAlt+PgUp to extend extrusion"
-                        "Alt+PgDown to shrink extrusion"
-                        "Alt+/ to switch between auto and manual mode",
-                    )
-                )
+                nudge.setToolTip(_get_nudge_tooltip())
                 statuswidget.addWidget(nudge)
                 statuswidget.nudge = nudge
                 menu = QtGui.QMenu(nudge)
                 gnudge = QtGui.QActionGroup(menu)
-                for u in nudgeLabelsM:
+                for u in nudgeLabels:
                     a = QtGui.QAction(gnudge)
                     a.setText(u)
                     menu.addAction(a)
                 nudge.setMenu(menu)
                 gnudge.triggered.connect(setNudge)
-                statuswidget.nudgeLabelsI = nudgeLabelsI
-                statuswidget.nudgeLabelsM = nudgeLabelsM
                 statuswidget.show()
 
         else:
