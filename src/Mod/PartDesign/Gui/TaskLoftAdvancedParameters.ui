@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskLoftAdvancedParameters</class>
+ <widget class="QWidget" name="PartDesignGui::TaskLoftAdvancedParameters">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>262</width>
+    <height>150</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayoutApproximation">
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelMaxDegree">
+     <property name="toolTip">
+      <string>Maximum polynomial degree of the generated B-Spline surface</string>
+     </property>
+     <property name="text">
+      <string>Maximum degree</string>
+     </property>
+     <property name="buddy">
+      <cstring>spinBoxMaxDegree</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="spinBoxMaxDegree">
+     <property name="toolTip">
+      <string>Maximum polynomial degree of the generated B-Spline surface</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelParametrization">
+     <property name="toolTip">
+      <string>Distribution of parameters between loft profiles</string>
+     </property>
+     <property name="text">
+      <string>Parametrization</string>
+     </property>
+     <property name="buddy">
+      <cstring>comboBoxParametrization</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboBoxParametrization">
+     <property name="toolTip">
+      <string>Select a parametrization for the loft surface:
+            Chord Length: parameters of points proportionate to distances between them
+            Centripetal: parameters of points proportionate to square roots of distances between them
+            Uniform: parameters of points distributed uniformly
+      </string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Chord length</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Centripetal</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Uniform</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelContinuity">
+     <property name="toolTip">
+      <string>Requested continuity of the generated B-Spline surface</string>
+     </property>
+     <property name="text">
+      <string>Continuity</string>
+     </property>
+     <property name="buddy">
+      <cstring>comboBoxContinuity</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="comboBoxContinuity">
+     <property name="toolTip">
+      <string>Requested continuity of the generated B-Spline surface</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>C0</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>C1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>C2</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="checkBoxCompatibility">
+     <property name="toolTip">
+      <string>Align profile origins, traversal directions, and edge counts before lofting</string>
+     </property>
+     <property name="text">
+      <string>Check profile compatibility</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>spinBoxMaxDegree</tabstop>
+  <tabstop>comboBoxParametrization</tabstop>
+  <tabstop>comboBoxContinuity</tabstop>
+  <tabstop>checkBoxCompatibility</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
