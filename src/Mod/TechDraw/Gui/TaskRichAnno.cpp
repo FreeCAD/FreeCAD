@@ -82,9 +82,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
-        m_inProgressLock = false;
-        return;
+        throw Base::RuntimeError("TaskRichAnno - Parent page not found");
     }
 
     //m_baseFeat can be null

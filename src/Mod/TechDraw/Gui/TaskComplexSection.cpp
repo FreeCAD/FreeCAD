@@ -101,7 +101,6 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_profileObject(nullptr),
     m_dirName("Aligned"),
     m_sectionName(m_section->getNameInDocument()),
-    m_savePageName(m_section->findParentPage()->getNameInDocument()),
     m_createMode(false),
     m_applyDeferred(0),
     m_angle(0.0),
@@ -111,6 +110,10 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 {
     m_doc = m_section->getDocument();
     m_page = m_section->findParentPage();
+    if (!m_page) {
+        throw Base::RuntimeError("TaskComplexSection - Parent page not found");
+    }
+    m_savePageName = m_page->getNameInDocument();
 
     m_baseView = dynamic_cast<TechDraw::DrawViewPart*>(m_section->BaseView.getValue());
     if (m_baseView) {

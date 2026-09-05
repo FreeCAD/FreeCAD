@@ -73,6 +73,9 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
     ui->setupUi(this);
 
     m_page = view->findParentPage();
+    if (!m_page) {
+        throw Base::RuntimeError("TaskProjGroup - Parent page not found");
+    }
     m_viewName = view->getNameInDocument();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
