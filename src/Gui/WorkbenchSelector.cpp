@@ -58,6 +58,11 @@ WorkbenchComboBox::WorkbenchComboBox(WorkbenchGroup* aGroup, QWidget* parent)
     connect(this, qOverload<int>(&WorkbenchComboBox::activated), aGroup, [aGroup](int index) {
         aGroup->actions()[index]->trigger();
     });
+
+    setEnabled(aGroup->action()->isEnabled());
+    connect(aGroup->action(), &QAction::changed, this, [this, aGroup]() {
+        this->setEnabled(aGroup->action()->isEnabled());
+    });
 }
 
 void WorkbenchComboBox::showPopup()
@@ -159,6 +164,11 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         connect(toolBar, &QToolBar::topLevelChanged, this, &WorkbenchTabWidget::updateLayout);
         connect(toolBar, &QToolBar::orientationChanged, this, &WorkbenchTabWidget::updateLayout);
     }
+
+    setEnabled(aGroup->action()->isEnabled());
+    connect(aGroup->action(), &QAction::changed, this, [this, aGroup]() {
+        this->setEnabled(aGroup->action()->isEnabled());
+    });
 }
 
 inline Qt::LayoutDirection WorkbenchTabWidget::direction() const
