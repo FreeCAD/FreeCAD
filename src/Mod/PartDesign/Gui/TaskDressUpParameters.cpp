@@ -120,12 +120,21 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
     std::vector<std::string> refs = pcDressUp->Base.getSubValues();
 
     if (const auto f = std::ranges::find(refs, subName); f != refs.end()) {
-        refs.erase(f);  // it's in the list. Remove it
+        refs.erase(f);  // it is in the list. Remove it
         removeItemFromListWidget(widget, msg.pSubName);
+        if (auto items = widget->findItems(QString::fromStdString(subName), Qt::MatchExactly);
+            !items.empty()) {
+            widget->setCurrentItem(items.front());
+            items.front()->setSelected(true);
+        }
     }
     else {
+        auto item = new QListWidgetItem(QString::fromStdString(msg.pSubName));
         refs.push_back(subName);  // not yet in the list so we add it
-        widget->addItem(QString::fromStdString(msg.pSubName));
+        widget->addItem(item);
+        widget->setCurrentItem(item);
+        item->setSelected(true);
+        widget->setFocus();
     }
 
     updateFeature(pcDressUp, refs);
@@ -334,6 +343,7 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
 
     deleteAction = new QAction(tr("Remove"), this);
     deleteAction->setShortcut(Gui::QtTools::deleteKeySequence());
+    deleteAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);

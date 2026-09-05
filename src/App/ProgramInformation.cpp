@@ -152,6 +152,26 @@ static std::string getModuleInfoString(const std::string& path)
     return str.str();
 }
 
+static std::string getModuleNameForSorting(const std::string& path)
+{
+    QFileInfo mod(QString::fromStdString(path));
+    std::string addonName = mod.isDir() ? QDir(mod.filePath()).dirName().toStdString()
+                                      : mod.fileName().toStdString();
+    try {
+        auto metadataFile = fs::path(path) / "package.xml";
+        if (std::filesystem::exists(metadataFile)) {
+            App::Metadata metadata(metadataFile);
+            if (!metadata.name().empty()) {
+                addonName = metadata.name();
+            }
+        }
+    }
+    catch (const Base::Exception&) {
+        // Keep directory/path name if package metadata cannot be read.
+    }
+
+    return addonName;
+}
 std::string ProgramInformation::getValueOrEmpty(
     const std::map<std::string, std::string>& map,
     const std::string& key)
@@ -350,7 +370,7 @@ void ProgramInformation::getVerboseAddOnsInfo(
 {
     // Add installed module information:
     const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
-    std::vector<std::string> addons;
+    std::vector<std::pair<std::string, std::string>> addons;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
             if (!fs::is_directory(mod)) {
@@ -359,7 +379,7 @@ void ProgramInformation::getVerboseAddOnsInfo(
             auto dirName = mod.path().string();
             auto moduleInfo = getModuleInfoString(dirName);
             if (!moduleInfo.empty()) {
-                addons.push_back(std::move(moduleInfo));
+                addons.push_back({getModuleNameForSorting(dirName), std::move(moduleInfo)});
             }
         }
     }
@@ -371,16 +391,27 @@ void ProgramInformation::getVerboseAddOnsInfo(
         for (const auto& mod : mods) {
             auto moduleInfo = getModuleInfoString(mod);
             if (!moduleInfo.empty()) {
-                addons.push_back(std::move(moduleInfo));
+                addons.push_back({getModuleNameForSorting(mod), std::move(moduleInfo)});
             }
         }
     }
 
-    std::sort(addons.begin(), addons.end());
+    std::sort(
+        addons.begin(),
+        addons.end(),
+        [](const std::pair<std::string, std::string>& lhs,
+           const std::pair<std::string, std::string>& rhs) {
+            auto lhsLower = QString::fromStdString(lhs.first).toLower().toStdString();
+            auto rhsLower = QString::fromStdString(rhs.first).toLower().toStdString();
+            if (lhsLower == rhsLower) {
+                return lhs.first < rhs.first;
+            }
+            return lhsLower < rhsLower;
+        });
     if (!addons.empty()) {
         str << "Installed mods:\n";
         for (const auto& addon : addons) {
-            str << addon;
+            str << addon.second;
         }
     }
 }
