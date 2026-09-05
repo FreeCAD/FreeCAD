@@ -4,12 +4,15 @@ configure_file(ThirdPartyLibraries.html.cmake
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/Gui/Fonts/URWGothic-LICENSE.OFL
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/URWGothic-LICENSE.OFL COPYONLY)
 
 # The CONTRIBUTORS file is now compiled into the FreeCAD GUI Qt resource file
 
 INSTALL(FILES
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html
     LICENSE.html
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/URWGothic-LICENSE.OFL
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
