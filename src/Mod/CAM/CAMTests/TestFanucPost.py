@@ -401,16 +401,26 @@ M30
         print(gcode)
         expected = "G0 X0.000 Y0.000"
         self.assertEqual(glines[19], expected)
-        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
+        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
         self.assertEqual(glines[21], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
+        expected = "G80"
         self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
+        expected = "G0 X20.000"
         self.assertEqual(glines[23], expected)
-        expected = "G83 Z0.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[24], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[25], expected)
+        expected = "G80"
+        self.assertEqual(glines[26], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[27], expected)
+        expected = "G98"
+        self.assertEqual(glines[28], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[29], expected)
 
     def test_drilling_peck_chipbreak(self):
         """
@@ -450,13 +460,23 @@ M30
         print(gcode)
         expected = "G0 X0.000 Y0.000"
         self.assertEqual(glines[19], expected)
-        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[20], expected)
-        expected = "G0 X20.000"
+        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
         self.assertEqual(glines[21], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
+        expected = "G80"
         self.assertEqual(glines[22], expected)
-        expected = "G0 X40.000"
+        expected = "G0 X20.000"
         self.assertEqual(glines[23], expected)
-        expected = "G73 Z0.000 Q2.000 R10.000"
+        expected = "G98"
         self.assertEqual(glines[24], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[25], expected)
+        expected = "G80"
+        self.assertEqual(glines[26], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[27], expected)
+        expected = "G98"
+        self.assertEqual(glines[28], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[29], expected)

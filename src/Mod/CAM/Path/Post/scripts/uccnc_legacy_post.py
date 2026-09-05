@@ -592,7 +592,9 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #    out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        # Some ops (e.g. Drilling) only annotate retract mode; make it literal.
+        path_to_process = PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj))
+        for c in path_to_process.Commands:
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name.strip()  # command M or G code or comment string
             commandlist.append(command)

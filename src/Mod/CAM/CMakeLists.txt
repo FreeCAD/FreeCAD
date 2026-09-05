@@ -576,6 +576,7 @@ SET(Tests_SRCS
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestLegacyPostRetractMode.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
