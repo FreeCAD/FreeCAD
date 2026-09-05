@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include <QString>
+#include <QTabBar>
 #include <QTimer>
 
 
@@ -92,7 +93,20 @@ public:
         );
         bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
         if (showOnStartup) {
+            auto mainWindow = Gui::getMainWindow();
+            auto activeView = mainWindow->activeWindow();
             Gui::Application::Instance->commandManager().runCommandByName("Start_Start");
+            auto startView = mainWindow->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+            if (startView && mainWindow->activeWindow() == startView) {
+                if (auto tabBar = mainWindow->getMdiArea()->findChild<QTabBar*>(
+                        QStringLiteral("mdiAreaTabBar")
+                    )) {
+                    tabBar->moveTab(tabBar->currentIndex(), 0);
+                }
+            }
+            if (activeView) {
+                mainWindow->setActiveWindow(activeView);
+            }
             QTimer::singleShot(100, [this] { EnsureLaunched(); });
         }
     }
