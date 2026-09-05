@@ -121,10 +121,13 @@ class QuantityPropertyEditorWidget(BasePropertyEditorWidget):
 
     def updateWidget(self):
         value: FreeCAD.Units.Quantity = self._obj.getPropertyByName(self._prop_name)
-        # Block signals temporarily to prevent feedback loops
+        # Block signals temporarily to prevent feedback loops. A value
+        # at_tool_precision rejects would otherwise leave them blocked for good.
         self._editor_widget.blockSignals(True)
-        self._editor_widget.setProperty("value", at_tool_precision(value))
-        self._editor_widget.blockSignals(False)
+        try:
+            self._editor_widget.setProperty("value", at_tool_precision(value))
+        finally:
+            self._editor_widget.blockSignals(False)
         self._editor_widget.setEnabled(not self._is_read_only)
 
     def updateProperty(self):
