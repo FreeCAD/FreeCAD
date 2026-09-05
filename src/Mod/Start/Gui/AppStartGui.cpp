@@ -21,7 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <QString>
 #include <QTimer>
 
 
@@ -77,8 +76,24 @@ public:
             return;
         }
 
-        // QTimers don't fire until the event loop starts, which is our signal that the GUI is up
-        QTimer::singleShot(100, [this] { Launch(); });
+        // Create Start before startup documents so the opened document remains active.
+        connectStartOpenDocument = App::GetApplication().signalStartOpenDocument.connect([this] {
+            LaunchOnce();
+        });
+
+        // Retain the delayed launch for startup without a document.
+        QTimer::singleShot(100, [this] { LaunchOnce(); });
+    }
+
+    void LaunchOnce()
+    {
+        if (launchRequested) {
+            return;
+        }
+
+        launchRequested = true;
+        connectStartOpenDocument.disconnect();
+        Launch();
     }
 
     void Launch()
@@ -107,11 +122,15 @@ public:
         // was called to early. This polls the views to make sure the view was created, and if it
         // was not, re-calls the command.
         auto mw = Gui::getMainWindow();
-        auto existingView = mw->findChild<StartGui::StartView*>(QLatin1String("StartView"));
+        auto existingView = mw->findChild<StartGui::StartView*>();
         if (!existingView) {
             Launch();
         }
     }
+
+private:
+    bool launchRequested {false};
+    fastsignals::connection connectStartOpenDocument;
 };
 
 PyObject* initModule()
