@@ -455,8 +455,6 @@ bool TaskDlgChamferParameters::accept()
         getViewObject()->showPreviousFeature(false);
     }
 
-    parameter->apply();
-
     return TaskDlgDressUpParameters::accept();
 }
 

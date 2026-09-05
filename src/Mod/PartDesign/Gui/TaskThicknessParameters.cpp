@@ -335,8 +335,6 @@ bool TaskDlgThicknessParameters::accept()
         getViewObject()->showPreviousFeature(false);
     }
 
-    parameter->apply();
-
     auto draftparameter = dynamic_cast<TaskThicknessParameters*>(parameter);
 
     FCMD_OBJ_CMD(obj, "Value = " << draftparameter->getValue());
