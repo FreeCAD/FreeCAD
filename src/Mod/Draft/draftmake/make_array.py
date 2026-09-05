@@ -34,12 +34,12 @@ This includes orthogonal arrays, polar arrays, and circular arrays.
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftutils.messages import _wrn, _err
-from draftutils.translate import translate
 from draftobjects.array import Array
+from draftutils import gui_utils
+from draftutils import utils
+from draftutils.messages import _err
+from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
@@ -140,16 +140,15 @@ def make_array(base_object, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, u
     return new_obj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_array()",
+)
 def makeArray(
     baseobject, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, name="Array", use_link=False
 ):
-    """Create an Array. DEPRECATED. Use 'make_array'."""
-    _wrn(
-        "Do not use this function directly; instead, use "
-        "'make_ortho_array', 'make_polar_array', "
-        "or 'make_circular_array'."
-    )
-
+    """DEPRECATED. Use 'make_array'."""
     return make_array(baseobject, arg1, arg2, arg3, arg4, arg5, arg6, use_link)
 
 

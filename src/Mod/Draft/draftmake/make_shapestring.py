@@ -31,16 +31,16 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.shapestring import ShapeString
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 
-def make_shapestring(String, FontFile, Size=100, Tracking=0):
-    """ShapeString(Text,FontFile,[Height],[Track])
+def make_shape_string(string, fontfile, size=100, tracking=0):
+    """make_shape_string(string, fontfile, [size], [tracking])
 
     Turns a text string into a Compound Shape
 
@@ -56,10 +56,10 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
 
     obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "ShapeString")
     ShapeString(obj)
-    obj.String = String
-    obj.FontFile = FontFile
-    obj.Size = Size
-    obj.Tracking = Tracking
+    obj.String = string
+    obj.FontFile = fontfile
+    obj.Size = size
+    obj.Tracking = tracking
 
     if App.GuiUp:
         ViewProviderShapeString(obj.ViewObject)
@@ -72,6 +72,24 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
     return obj
 
 
-makeShapeString = make_shapestring
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shape_string()",
+)
+def make_shapestring(String, FontFile, Size=100, Tracking=0):
+    """DEPRECATED. Use 'make_shape_string'."""
+    return make_shape_string(String, FontFile, size=Size, tracking=Tracking)
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shape_string()",
+)
+def makeShapeString(String, FontFile, Size=100, Tracking=0):
+    """DEPRECATED. Use 'make_shape_string'."""
+    return make_shape_string(String, FontFile, size=Size, tracking=Tracking)
+
 
 ## @}

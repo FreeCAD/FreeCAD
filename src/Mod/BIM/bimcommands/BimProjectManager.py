@@ -310,7 +310,7 @@ class BIM_ProjectManager:
             # Outline
             if buildingWidth and buildingLength:
                 if not outline:
-                    outline = Draft.makeRectangle(buildingLength, buildingWidth, face=False)
+                    outline = Draft.make_rectangle(buildingLength, buildingWidth, face=False)
                     outline.Label = translate("BIM", "Building Outline")
                     outline.ViewObject.DrawStyle = "Dashed"
                     grp.addObject(outline)

@@ -444,7 +444,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         direction = Vector(0, 0, 1)
         _msg("  Projection 2D view")
         _msg("  direction={}".format(direction))
-        obj = Draft.make_shape2dview(prism, direction)
+        obj = Draft.make_shape_2d_view(prism, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_draft_to_sketch(self):

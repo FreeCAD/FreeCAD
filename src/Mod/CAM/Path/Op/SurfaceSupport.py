@@ -1071,7 +1071,7 @@ def getProjectedFace(tempGroup, wire):
     F.purgeTouched()
     tempGroup.addObject(F)
     try:
-        prj = Draft.makeShape2DView(F, FreeCAD.Vector(0, 0, 1))
+        prj = Draft.make_shape_2d_view(F, FreeCAD.Vector(0, 0, 1))
         prj.recompute()
         prj.purgeTouched()
         tempGroup.addObject(prj)
