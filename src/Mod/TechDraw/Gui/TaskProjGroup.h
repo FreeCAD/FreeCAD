@@ -23,10 +23,13 @@
 
 #pragma once
 
+#include <vector>
+
 #include <QString>
 #include <QDialog>
 
 #include <Base/Vector3D.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -37,6 +40,7 @@ namespace Gui {
 
 namespace TechDraw {
 class DrawView;
+class DrawViewPart;
 class DrawProjGroup;
 class DrawPage;
 }
@@ -47,7 +51,7 @@ class MDIViewPage;
 class Ui_TaskProjGroup;
 class ViewProviderDrawingView;
 
-class TaskProjGroup : public QWidget
+class TaskProjGroup : public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -84,11 +88,18 @@ protected:
     void updateUi();
     void connectWidgets();
     void initializeUi();
+    void updateDisplayStyleUi();
+    std::vector<TechDraw::DrawViewPart*> displayStyleTargets(
+        bool* hasSelectedTargets = nullptr) const;
+    QString displayStyleTargetDescription(
+        const std::vector<TechDraw::DrawViewPart*>& targets,
+        bool hasSelectedTargets) const;
 
     void turnViewToProjGroup();
     void turnProjGroupToView();
 
     QString formatVector(Base::Vector3d vec);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 protected Q_SLOTS:
     void viewToggled(bool toggle);
@@ -104,6 +115,7 @@ protected Q_SLOTS:
     /// Updates item spacing
     void spacingChanged();
     void scaleManuallyChanged(int unused);
+    void displayStyleChanged(int style);
 
 
 private:

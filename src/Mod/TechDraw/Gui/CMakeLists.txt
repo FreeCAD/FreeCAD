@@ -17,6 +17,7 @@ set(TechDrawGui_XML_SRCS
 
 set(TechDrawGui_LIBS
     TechDraw
+    Part
     FreeCADGui
 )
 
