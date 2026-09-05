@@ -321,6 +321,9 @@ class PostProcessorFactory:
         # Iterate all the paths to find the module
         for path in paths:
             module_path = os.path.join(path, f"{module_name}.py")
+            if not os.path.isfile(module_path):
+                continue
+
             spec = importlib.util.spec_from_file_location(module_name, module_path)
 
             if spec and spec.loader:
@@ -329,39 +332,40 @@ class PostProcessorFactory:
                     spec.loader.exec_module(module)
                     Path.Log.debug(f"found module {module_name} at {module_path}")
 
-                except (FileNotFoundError, ImportError, ModuleNotFoundError) as e:
+                except ModuleNotFoundError as e:
+                    # skips if module actually doesn't exist
+                    # throws if some error in executing it
                     Path.Log.debug(f"Failed to load {module_path}: {e}")
-                    continue  # with other paths
+                    if f"'{module_name}'" not in str(e):
+                        raise
+                    continue
 
                 try:
                     PostClass = getattr(module, class_name)
+                except AttributeError as e:
+                    # Return an instance of WrapperPost if no valid class is found
+                    Path.Log.debug(f"Post processor {postname} is a script")
+                    return WrapperPost(job, module_path, module_name)
+
+                try:
                     Path.Log.debug(f"Found class {class_name} in module {module_name}")
                     return PostClass(job)
-                except AttributeError as e:
-                    if f"has no attribute '{class_name}'" in str(e):
-                        # Return an instance of WrapperPost if no valid class is found
-                        Path.Log.debug(f"Post processor {postname} is a script")
-                        return WrapperPost(job, module_path, module_name)
-                    raise e
                 except Exception as e:
                     # Log any other exception during instantiation
                     Path.Log.debug(f"Error instantiating {class_name}: {e}")
                     # If job is None (filtering context), try to return the class itself
                     # so the machine editor can check its schema methods
                     if job is None:
-                        try:
-                            PostClass = getattr(module, class_name)
-                            Path.Log.debug(
-                                f"Returning uninstantiated class {class_name} for schema inspection"
-                            )
-                            # Return a mock instance that can be used for schema inspection
-                            return PostClass.__new__(PostClass)
-                        except:
-                            pass  # try other paths
+
+                        Path.Log.debug(
+                            f"Returning uninstantiated class {class_name} for schema inspection"
+                        )
+                        # Return a mock instance that can be used for schema inspection
+                        return PostClass.__new__(PostClass)
                     raise
 
         Path.Log.warning(
-            f"Post processor '{postname}' not found in any search path. "
+            f"Post processor '{postname}' found not in any search path. "
             f"Searched for '{module_name}.py' in {len(paths)} paths."
         )
         return CAMError(
@@ -3054,7 +3058,7 @@ class WrapperPost(PostProcessor):
             self.script_module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(self.script_module)
         except Exception as e:
-            raise ImportError(f"Failed to load script: {e}")
+            raise ImportError(f"Failed to load script as module '{self.module_name}': {e}")
 
         if not hasattr(self.script_module, "export"):
             raise AttributeError("The script does not have an 'export' function.")
