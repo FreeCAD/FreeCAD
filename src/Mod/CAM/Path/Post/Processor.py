@@ -619,17 +619,6 @@ class PostProcessor:
                 ),
             },
             {
-                "name": "output_units",
-                "scope": SCOPE_MACHINE,
-                "type": "str",
-                "label": translate("CAM", "Unit-command in output"),
-                "default": OutputUnits.METRIC,
-                "help": translate(
-                    "CAM",
-                    "Unit-command in output",
-                ),
-            },
-            {
                 "name": "axis_precision",
                 "scope": SCOPE_MACHINE,
                 "type": "int",
