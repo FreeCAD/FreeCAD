@@ -380,6 +380,16 @@ public:
      * @return          true if the deletion is approved by the view provider.
      */
     virtual bool onDelete(const std::vector<std::string>& subNames);
+    /** Allow a view provider to redirect deletion of a selected subobject path.
+     *
+     * The delete command calls this for each object in the selected path. The
+     * view provider belongs to the resolved object, while \a context is the
+     * corresponding object in the selection's document (for example, a Link).
+     *
+     * @return the object that should be deleted, or nullptr to use the normal
+     *         selection resolution.
+     */
+    virtual App::DocumentObject* getDeleteTarget(App::DocumentObject* context) const;
     /** Called before deletion
      *
      * Unlike onDelete(), this function is guaranteed to be called before

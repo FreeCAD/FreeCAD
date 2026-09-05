@@ -1562,6 +1562,93 @@ bool StdCmdSelectAll::isActive()
 //===========================================================================
 // Std_Delete
 //===========================================================================
+namespace
+{
+
+App::DocumentObject* findDeleteTarget(App::DocumentObject* root, const char* subName)
+{
+    if (!root) {
+        return nullptr;
+    }
+
+    for (auto* context : root->getSubObjectList(subName)) {
+        auto* obj = context ? context->getLinkedObject(true) : nullptr;
+        auto* vp = obj ? Application::Instance->getViewProvider(obj) : nullptr;
+        if (vp) {
+            if (auto* target = vp->getDeleteTarget(context)) {
+                return target;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+std::vector<SelectionObject> getDeleteSelection()
+{
+    auto selections = Selection().getSelectionEx(
+        nullptr,
+        App::DocumentObject::getClassTypeId(),
+        ResolveMode::NoResolve
+    );
+    std::vector<std::pair<App::DocumentObject*, std::vector<std::string>>> redirected;
+
+    auto redirect = [&redirected](App::DocumentObject* root, const char* selectedSubName) {
+        App::ElementNamePair elementName;
+        auto* obj = root;
+        std::string subName;
+        if (selectedSubName && selectedSubName[0]) {
+            obj = App::GeoFeature::resolveElement(root, selectedSubName, elementName);
+            subName = elementName.oldName;
+        }
+        if (!subName.empty()) {
+            if (auto* target = findDeleteTarget(root, selectedSubName)) {
+                obj = target;
+                subName.clear();
+            }
+        }
+        if (!obj) {
+            return;
+        }
+
+        auto existing = std::ranges::find(redirected, obj, [](const auto& item) {
+            return item.first;
+        });
+        if (existing == redirected.end()) {
+            existing = redirected.insert(redirected.end(), {obj, {}});
+        }
+        if (!subName.empty()
+            && std::ranges::find(existing->second, subName) == existing->second.end()) {
+            existing->second.push_back(subName);
+        }
+    };
+
+    for (auto& selection : selections) {
+        auto* root = selection.getObject();
+        if (!root) {
+            continue;
+        }
+
+        if (selection.getSubNames().empty()) {
+            redirect(root, nullptr);
+        }
+        else {
+            for (const auto& subName : selection.getSubNames()) {
+                redirect(root, subName.c_str());
+            }
+        }
+    }
+
+    std::vector<SelectionObject> result;
+    result.reserve(redirected.size());
+    for (auto& [obj, subNames] : redirected) {
+        result.emplace_back(obj, std::move(subNames));
+    }
+    return result;
+}
+
+}  // namespace
+
 DEF_STD_CMD_A(StdCmdDelete)
 
 StdCmdDelete::StdCmdDelete()
@@ -1647,7 +1734,7 @@ void StdCmdDelete::activated(int iMsg)
         if (!deletedSelectionOfEditDocument) {
             std::set<QString> affectedLabels;
             bool more = false;
-            auto sels = Selection().getSelectionEx();
+            auto sels = getDeleteSelection();
             bool autoDeletion = true;
             bool forceDeletion = false;
             for (auto& sel : sels) {
