@@ -1831,7 +1831,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                                                           StartOffset.getValue(),
                                                           invObjLoc
                                                       );
-        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset);
+        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset, true);
 
         if (method == "Dimension") {
             length = Depth.getValue();
