@@ -81,7 +81,7 @@ endif()
 
 target_compile_warn_error(ReverseEngineeringGui)
 
-SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
+SET_BIN_DIR(ReverseEngineeringGui)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
 
 fc_copy_sources(ReverseEngineeringGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering" ${ReverseEngineeringGuiIcon_SVG})

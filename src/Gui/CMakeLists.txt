@@ -1523,7 +1523,7 @@ endif()
 
 target_compile_warn_error(FreeCADGui)
 
-SET_BIN_DIR(FreeCADGui FreeCADGui)
+SET_BIN_DIR(FreeCADGui)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui

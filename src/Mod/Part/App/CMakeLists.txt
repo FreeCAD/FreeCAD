@@ -647,7 +647,7 @@ endif()
 
 target_compile_warn_error(Part)
 
-SET_BIN_DIR(Part Part /Mod/Part)
+SET_BIN_DIR(Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)
 
 INSTALL(TARGETS Part DESTINATION ${CMAKE_INSTALL_LIBDIR})

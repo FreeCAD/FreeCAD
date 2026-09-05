@@ -13,8 +13,6 @@ from sync_version import (
     VersionInfo,
     replace_in_toml_section,
     sync_workspace_pixi_toml,
-    sync_rattler_build_pixi_toml,
-    sync_recipe_yaml,
     sync_fedora_spec,
     run,
 )
@@ -150,34 +148,6 @@ description = "pixi instructions for FreeCAD"
 cmake = "*"
 """
 
-RATTLER_PIXI_TOML = """\
-[workspace]
-channels = ["https://prefix.dev/conda-forge"]
-platforms = ["linux-64"]
-
-[package]
-name = "freecad"
-version = "1.1.0dev"
-homepage = "https://freecad.org"
-repository = "https://github.com/FreeCAD/FreeCAD"
-description = "FreeCAD"
-
-[feature.freecad.dependencies]
-freecad = { path = "." }
-"""
-
-RECIPE_YAML = """\
-context:
-  version: "1.1.0dev"
-
-package:
-  name: freecad
-  version: "${{ version }}"
-
-source:
-  path: ../..
-"""
-
 FEDORA_SPEC = """\
 Name:           freecad
 Epoch:          1
@@ -211,74 +181,6 @@ class TestSyncWorkspacePixiToml(unittest.TestCase):
             result, changed = sync_workspace_pixi_toml(filepath, version)
             self.assertIn('version = "1.2.0"', result)
             self.assertNotIn("RC1", result)
-
-
-class TestSyncRattlerBuildPixiToml(unittest.TestCase):
-    def test_updates_version_name_description(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "pixi.toml", RATTLER_PIXI_TOML)
-            version = make_version()
-            result, changed = sync_rattler_build_pixi_toml(filepath, version)
-            self.assertTrue(changed)
-            self.assertIn('version = "1.2.0dev"', result)
-            self.assertIn('name = "freecad"', result)
-            self.assertIn('description = "FreeCAD"', result)
-
-    def test_updates_with_different_name(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "pixi.toml", RATTLER_PIXI_TOML)
-            version = make_version(name="MyCAD")
-            result, changed = sync_rattler_build_pixi_toml(filepath, version)
-            self.assertTrue(changed)
-            self.assertIn('name = "mycad"', result)
-            self.assertIn('description = "MyCAD"', result)
-
-    def test_release_version_no_suffix(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "pixi.toml", RATTLER_PIXI_TOML)
-            version = make_version(suffix="")
-            result, changed = sync_rattler_build_pixi_toml(filepath, version)
-            self.assertIn('version = "1.2.0"', result)
-
-    def test_does_not_modify_workspace_section(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "pixi.toml", RATTLER_PIXI_TOML)
-            version = make_version()
-            result, changed = sync_rattler_build_pixi_toml(filepath, version)
-            workspace_section = result.split("[package]")[0]
-            self.assertIn("conda-forge", workspace_section)
-
-
-class TestSyncRecipeYaml(unittest.TestCase):
-    def test_updates_version_and_name(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "recipe.yaml", RECIPE_YAML)
-            version = make_version()
-            result, changed = sync_recipe_yaml(filepath, version)
-            self.assertTrue(changed)
-            self.assertIn('version: "1.2.0dev"', result)
-            self.assertIn("name: freecad", result)
-
-    def test_preserves_version_template_reference(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "recipe.yaml", RECIPE_YAML)
-            version = make_version()
-            result, changed = sync_recipe_yaml(filepath, version)
-            self.assertIn('version: "${{ version }}"', result)
-
-    def test_updates_with_different_name(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "recipe.yaml", RECIPE_YAML)
-            version = make_version(name="MyCAD")
-            result, changed = sync_recipe_yaml(filepath, version)
-            self.assertIn("name: mycad", result)
-
-    def test_release_version(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "recipe.yaml", RECIPE_YAML)
-            version = make_version(suffix="")
-            result, changed = sync_recipe_yaml(filepath, version)
-            self.assertIn('version: "1.2.0"', result)
 
 
 class TestSyncFedoraSpec(unittest.TestCase):
@@ -340,8 +242,6 @@ class TestRun(unittest.TestCase):
             encoding="utf-8",
         )
         write_temp_file(root, "pixi.toml", WORKSPACE_PIXI_TOML)
-        write_temp_file(root, "package/rattler-build/pixi.toml", RATTLER_PIXI_TOML)
-        write_temp_file(root, "package/rattler-build/recipe.yaml", RECIPE_YAML)
         write_temp_file(root, "package/fedora/freecad.spec", FEDORA_SPEC)
         return root
 

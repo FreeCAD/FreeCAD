@@ -391,7 +391,7 @@ endif()
 
 target_compile_warn_error(FreeCADBase)
 
-SET_BIN_DIR(FreeCADBase FreeCADBase)
+SET_BIN_DIR(FreeCADBase)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase

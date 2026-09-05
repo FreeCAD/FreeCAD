@@ -178,7 +178,7 @@ endif()
 target_compile_warn_error(MeshGui)
 
 
-SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
+SET_BIN_DIR(MeshGui)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})

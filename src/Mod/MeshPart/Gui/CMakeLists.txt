@@ -89,7 +89,7 @@ endif()
 
 target_compile_warn_error(MeshPartGui)
 
-SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
+SET_BIN_DIR(MeshPartGui)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)
 
 fc_target_copy_resource_flat(MeshPartGui

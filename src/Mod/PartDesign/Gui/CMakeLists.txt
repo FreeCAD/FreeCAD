@@ -267,7 +267,7 @@ target_include_directories(
 target_link_libraries(PartDesignGui ${PartDesignGui_LIBS})
 target_compile_warn_error(PartDesignGui)
 
-SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
+SET_BIN_DIR(PartDesignGui)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})
