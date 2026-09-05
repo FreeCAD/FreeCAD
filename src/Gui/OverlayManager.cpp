@@ -2091,13 +2091,8 @@ void OverlayManager::Private::interceptEvent(QWidget* widget, QEvent* ev)
         case QEvent::MouseMove:
         case QEvent::MouseButtonDblClick: {
             auto me = static_cast<QMouseEvent*>(ev);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QPointF screenPos = me->screenPos();
-            QPoint point = me->globalPos();
-#else
             QPointF screenPos = me->globalPosition();
             QPoint point = screenPos.toPoint();
-#endif
             lastIntercept = getChildAt(widget, point);
             QMouseEvent mouseEvent(
                 ev->type(),

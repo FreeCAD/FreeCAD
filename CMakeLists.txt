@@ -12,7 +12,7 @@ endif()
 # all versions of Shiboken2. This policy must be kept at OLD until Shiboken2 is no longer
 # supported
 if(POLICY CMP0148)
-    cmake_policy(SET CMP0148 OLD)
+    cmake_policy(SET CMP0148 NEW)
 endif()
 
 # The exec_program command was deprecated in cMake 3.0, and policy CMP0153 was added in cMake
@@ -95,6 +95,10 @@ SetupYamlCpp()
 SetupZipIos()
 SetupClipper2()
 find_package(fmt REQUIRED)
+
+find_package(Qt6 REQUIRED COMPONENTS Core)
+set(FREECAD_QT_MAJOR_VERSION 6)
+
 find_package(ICU REQUIRED COMPONENTS uc i18n)
 find_package(cpptrace QUIET)
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)

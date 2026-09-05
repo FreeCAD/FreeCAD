@@ -397,10 +397,6 @@
                     "type": "BOOL",
                     "value": "OFF"
                 },
-                "FREECAD_QT_VERSION": {
-                    "type": "STRING",
-                    "value": "6"
-                },
                 "OpenGL_GL_PREFERENCE": {
                     "type": "STRING",
                     "value": "GLVND"

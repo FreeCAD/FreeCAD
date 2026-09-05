@@ -622,15 +622,9 @@ void ActionGroup::onHovered(QAction* act)
     // events are processed.
     QMenu* foundMenu = nullptr;
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     // Use associatedObjects() which includes non-widget associated objects.
     const auto associatedObjects = act->associatedObjects();
     for (QObject* obj : associatedObjects) {
-#else
-    // Use associatedWidgets() for Qt < 6.0 (associatedObjects() requires Qt 6.0+).
-    const auto associatedWidgets = act->associatedWidgets();
-    for (QWidget* obj : associatedWidgets) {
-#endif
         if (auto* menu = qobject_cast<QMenu*>(obj)) {
             if (menu->isVisible()) {
                 foundMenu = menu;

@@ -50,11 +50,7 @@ namespace {
 
 QPointF getLocalPosition(const QMouseEvent* event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
   return event->position();
-#else
-  return event->localPos();
-#endif
 }
 
 }
@@ -79,11 +75,7 @@ public:
   void trackPointerPosition(QMouseEvent * event)
   {
     assert(this->windowsize[1] != -1);
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
     this->globalmousepos = event->globalPosition().toPoint();
-#else
-    this->globalmousepos = event->globalPos();
-#endif
 
     SbVec2s mousepos = InputDevice::toDevicePixelPosition(
         getLocalPosition(event),
