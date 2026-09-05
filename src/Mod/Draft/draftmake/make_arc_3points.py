@@ -38,6 +38,7 @@ from draftmake import make_circle
 from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 
 def make_arc_3_points(points, placement=None, face=False, support=None, primitive=False):
