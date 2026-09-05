@@ -62,6 +62,7 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     handleLineFaceNameNo(ui->lineFaceName);
     handleLineFaceNameNo(ui->lineFaceName2);
     ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
@@ -1382,6 +1383,7 @@ void TaskExtrudeParameters::saveHistory()
 
 void TaskExtrudeParameters::applyParameters()
 {
+    TaskSketchBasedParameters::apply();
     auto obj = getObject();
 
     QString facename = QStringLiteral("None");

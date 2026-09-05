@@ -80,6 +80,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(
 {
     // we need a separate container widget to add all controls to
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
@@ -930,6 +931,7 @@ void TaskRevolutionParameters::changeEvent(QEvent* event)
 
 void TaskRevolutionParameters::apply()
 {
+    TaskSketchBasedParameters::apply();
     // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Revolution changed"));
     ui->startOffsetEdit->apply();
     ui->revolveAngle->apply();

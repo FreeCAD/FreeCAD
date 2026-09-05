@@ -105,6 +105,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     // Enable multi-selection in edges list
     ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -209,6 +210,14 @@ TaskPipeParameters::~TaskPipeParameters()
     catch (const Py::Exception&) {
         Base::PyException e;  // extract the Python error text
         e.reportException();
+    }
+}
+
+void TaskPipeParameters::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
     }
 }
 
@@ -591,6 +600,7 @@ bool TaskPipeParameters::accept()
     }
 
     try {
+        TaskSketchBasedParameters::apply();
         setVisibilityOfSpineAndProfile();
 
         App::DocumentObject* spine = pipe->Spine.getValue();
