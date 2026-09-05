@@ -227,6 +227,7 @@ ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
 
 # G0 moves which can be replaced by G1 with No-Engagement Feed
 ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
+
 # When de-dup'ing, do not look back at this or previous commands in the stream
 # True|absent|False
 ANNOT_MODAL_BARRIER = "modal_barrier"
@@ -235,3 +236,6 @@ ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
 
 # Pass through string in annotation as command without any changes
 ANNOT_AS_IS = "as-is"
+
+# This tlo g-code was added due to option `output_tool_length_offset`
+ANNOT_ADDED_TLO = "tool_length_offset"

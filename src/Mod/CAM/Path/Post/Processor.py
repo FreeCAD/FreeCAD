@@ -434,6 +434,19 @@ class PostProcessor:
                 ),
             },
             {
+                "name": "ignored_commands",
+                "scope": SCOPE_MACHINE,
+                "type": "text",
+                "label": translate("CAM", "Ignore G-code Commands"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "List of G-code commands, "
+                    "tolerated but ignored by this post-processor (one per line). "
+                    "Commands in this list will be filtered out.",
+                ),
+            },
+            {
                 "name": "drill_cycles_to_translate",
                 "scope": SCOPE_MACHINE,
                 "type": "text",
@@ -1566,6 +1579,14 @@ class PostProcessor:
                             item.path = Path.Path(filtered_commands)
             return postables
 
+    def _expand_tool_length_offset_post_command(self, item, command):
+        """override in a PP if your TLO is different.
+        return a list of Path.Commands
+        """
+        tool_num = command.Parameters["T"]
+        Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
+        return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
+
     def _expand_tool_length_offset(self, postables):
         """Inject or remove G43 tool length offset commands.
 
@@ -1591,9 +1612,7 @@ class PostProcessor:
             # add
             else:
                 if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
-                    tool_num = cmd.Parameters["T"]
-                    Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
-                    return 1, [Path.Command("G43", {"H": tool_num}, {"tool_length_offset": True})]
+                    return 1, self._expand_tool_length_offset_post_command(item, cmd)
                 else:
                     return None, None
 
@@ -2589,6 +2608,11 @@ class PostProcessor:
         # Pass through G-code as-is
         if "as-is" in command.Annotations:
             return command.Annotations[Constants.ANNOT_AS_IS]
+
+        # "ignored" commands need not be in "SUPPORTED_COMMANDS"
+        if command.Name != "" and command.Name in self.values["IGNORED_COMMANDS"]:
+            Path.Log.debug(f"ignored {command}")
+            return None
 
         # Validate command is supported
         supported = self.values.get(
