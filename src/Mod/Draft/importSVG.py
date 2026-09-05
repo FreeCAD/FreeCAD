@@ -1013,6 +1013,9 @@ class svgHandler(xml.sax.ContentHandler):
                 sh = transformCopyShape(sh, self.transform)
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
+            if sh.Faces:
+                # transformCopyShape results in a B-spline face, we want a planar face:
+                return Part.makeFace(sh.Wires, "Part::FaceMakerBullseye")
             return sh
         elif Draft.getType(sh) in ["Dimension", "LinearDimension"]:
             pts = []
