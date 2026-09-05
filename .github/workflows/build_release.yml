@@ -161,6 +161,7 @@ jobs:
         with:
           pixi-version: v0.68.1
           cache: false
+          locked: true
 
       - name: Install the Apple certificate and provisioning profile
         id: macos_get_cert
