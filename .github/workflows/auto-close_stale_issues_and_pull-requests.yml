@@ -121,7 +121,7 @@ jobs:
           days-before-issue-close: -1
           days-before-pr-stale: 120
           days-before-pr-close: 60
-          operations-per-run: 30  # max num of ops per run
+          operations-per-run: 150  # max num of ops per run
           stale-pr-label: 'Status: Stale'
           close-pr-label: 'Status: Auto-closing'
           exempt-pr-labels: 'Needs backport,Priority: High,Priority: Critical,no-auto-close'
