@@ -137,6 +137,7 @@ jobs:
       with:
         pixi-version: v0.68.1
         cache: false
+        locked: true
 
     - name: Restore Compiler Cache
       id: cache-restore
