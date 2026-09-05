@@ -337,6 +337,12 @@ namespace SketcherGui
 class ViewProviderSketchCommandConstraintsAttorney
 {
 public:
+    static std::vector<std::string> getSelectionContextMenuCommands(
+        const ViewProviderSketch& viewProvider)
+    {
+        return viewProvider.getSelectionContextMenuCommands();
+    }
+
     static void moveConstraint(ViewProviderSketch& viewProvider,
                                int constraintIndex,
                                const Base::Vector2d& position)
@@ -1348,9 +1354,69 @@ protected:
     virtual void applyConstraint(std::vector<SelIdPair>&, int)
     {}
     void activated(int /*iMsg*/) override;
+    bool isActive() override;
+};
+
+bool CmdSketcherConstraint::isActive()
+{
+    auto* document = getActiveGuiDocument();
+    if (!isCommandActive(document)) {
+        return false;
+    }
+
+    static constexpr std::array<std::string_view, 10> contextFilteredCommands {
+        "Sketcher_ConstrainCoincidentUnified",
+        "Sketcher_ConstrainHorVer",
+        "Sketcher_ConstrainHorizontal",
+        "Sketcher_ConstrainVertical",
+        "Sketcher_ConstrainParallel",
+        "Sketcher_ConstrainPerpendicular",
+        "Sketcher_ConstrainTangent",
+        "Sketcher_ConstrainEqual",
+        "Sketcher_ConstrainSymmetric",
+        "Sketcher_ConstrainBlock",
+    };
+    const std::string_view commandName {getName()};
+
+    if (std::find(contextFilteredCommands.cbegin(), contextFilteredCommands.cend(), commandName)
+        == contextFilteredCommands.cend()) {
+        return true;
+    }
+
+    auto* sketchView = document
+        ? freecad_cast<SketcherGui::ViewProviderSketch*>(document->getInEdit())
+        : nullptr;
+    if (!sketchView) {
+        return true;
+    }
+
+    // Keep toolbar availability aligned with the existing context-menu suggestions.
+    const auto contextCommands =
+        SketcherGui::ViewProviderSketchCommandConstraintsAttorney::
+            getSelectionContextMenuCommands(*sketchView);
+    const auto isContextCommand = [&contextCommands](std::string_view candidate) {
+        return std::any_of(contextCommands.cbegin(), contextCommands.cend(),
+                           [candidate](const std::string& command) {
+                               return command == candidate;
+                           });
+    };
+
+    return std::none_of(contextFilteredCommands.cbegin(),
+                        contextFilteredCommands.cend(),
+                        isContextCommand)
+        || isContextCommand(commandName);
+}
+
+class CmdSketcherSelectionAwareConstraintGroup: public Gui::GroupCommand
+{
+public:
+    using Gui::GroupCommand::GroupCommand;
+
     bool isActive() override
     {
-        return isCommandActive(getActiveGuiDocument());
+        return std::any_of(cmds.cbegin(), cmds.cend(), [](const auto& entry) {
+            return entry.first && entry.first->isActive();
+        });
     }
 };
 
@@ -2109,11 +2175,11 @@ public:
 
 // Comp for constrain tools =============================================
 
-class CmdSketcherCompConstrainTools : public Gui::GroupCommand
+class CmdSketcherCompConstrainTools: public CmdSketcherSelectionAwareConstraintGroup
 {
 public:
     CmdSketcherCompConstrainTools()
-        : GroupCommand("Sketcher_CompConstrainTools")
+        : CmdSketcherSelectionAwareConstraintGroup("Sketcher_CompConstrainTools")
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
@@ -4082,11 +4148,11 @@ bool CmdSketcherDimension::isActive(void)
 
 // Comp for horizontal/vertical =============================================
 
-class CmdSketcherCompHorizontalVertical : public Gui::GroupCommand
+class CmdSketcherCompHorizontalVertical: public CmdSketcherSelectionAwareConstraintGroup
 {
 public:
     CmdSketcherCompHorizontalVertical()
-        : GroupCommand("Sketcher_CompHorVer")
+        : CmdSketcherSelectionAwareConstraintGroup("Sketcher_CompHorVer")
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
@@ -4107,11 +4173,6 @@ public:
     const char* className() const override
     {
         return "CmdSketcherCompHorizontalVertical";
-    }
-
-    bool isActive() override
-    {
-        return isCommandActive(getActiveGuiDocument());
     }
 };
 
