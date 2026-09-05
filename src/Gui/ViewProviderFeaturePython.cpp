@@ -272,6 +272,31 @@ ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::useNewSelecti
     return Accepted;
 }
 
+ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::allowBoxElementSelection() const
+{
+    FC_PY_CALL_CHECK(allowBoxElementSelection);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args;
+        if (!has__object__) {
+            args = Py::Tuple(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+        }
+        Py::Boolean ok(Base::pyCall(py_allowBoxElementSelection.ptr(), args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e;
+        e.reportException();
+    }
+    return Rejected;
+}
+
 void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes)
 {
     this->selectionObserver.handleSelectionChanged(changes);

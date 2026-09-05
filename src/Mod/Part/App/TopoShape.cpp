@@ -183,6 +183,7 @@
 #include "ProgressIndicator.h"
 #include "Tools.h"
 #include "TopoShape.h"
+#include "TopoShapeOpCode.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeEdgePy.h"
@@ -3384,11 +3385,15 @@ TopoDS_Shape TopoShape::removeShape(const std::vector<TopoDS_Shape>& s) const
 
 void TopoShape::sewShape(double tolerance)
 {
+    const TopoShape source(*this);
     BRepBuilderAPI_Sewing sew(tolerance);
-    sew.Load(this->_Shape);
+    sew.Load(source.getShape());
     sew.Perform();
 
-    this->_Shape = sew.SewedShape();
+    // Sewing can reorder or replace faces and edges. Rebuild both the shape
+    // cache and its element map from OCCT history, not the old indexed names.
+    *this = TopoShape(Tag, Hasher)
+                .makeShapeWithElementMap(sew.SewedShape(), MapperSewing(sew), {source}, OpCodes::Sewing);
 }
 
 bool TopoShape::fix()

@@ -281,6 +281,18 @@ void Gui::applyBoxSelection(
         return;
     }
 
+    // A gate that explicitly exposes geometry types is asking for subelement
+    // selection. Honor that for ordinary box selection as well as the
+    // dedicated Box Element Selection command; otherwise an object-only box
+    // selection can produce no result when the gate rejects whole objects.
+    if (!selectElement) {
+        const auto* gate = Gui::Selection().getSelectionGate(doc);
+        const std::vector<const char*> geometryTypes {"Vertex", "Edge", "Face"};
+        if (gate && !gate->getGatedTypes(geometryTypes).empty()) {
+            selectElement = true;
+        }
+    }
+
     SelectionMode selectionMode = CENTER;
     std::vector<SbVec2f> glPolygon = viewer->getGLPolygon(picked);
 
