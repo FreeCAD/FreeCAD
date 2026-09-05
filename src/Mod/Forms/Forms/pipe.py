@@ -23,13 +23,23 @@
 
 """Path-driven Forms pipe primitive and wire-network segmentation."""
 
-import json
 import math
+
+from .feature import reset_cage
+from .pipe_parameters import (
+    decode_segment_overrides,
+    encode_segment_overrides,
+    set_segment_diameter,
+    decode_segment_sample_overrides,
+    encode_segment_sample_overrides,
+    set_segment_samples,
+)
 
 import FreeCAD as App
 import Part
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 from .brep import ConversionError, cage_to_solid
 from .cage import ControlCage
 from .elementmap import map_form_shape
@@ -73,8 +83,8 @@ def _split_path_edges(shape, tolerance=1.0e-7):
     return result
 
 
-def path_segments(shape, include_edges=False):
-    """Return maximal ordered edge chains between endpoints and T-junctions."""
+def path_segments(shape, include_edges=False) -> tuple[list, dict] | tuple[list, dict, list]:
+    """Return maximal edge chains and adjacency; include_edges adds source-edge records."""
     edge_records = _split_path_edges(shape)
     if not edge_records:
         raise ValueError("The pipe path contains no edges")
@@ -130,74 +140,6 @@ def segment_key(segment, edge_records=None):
         f"{edge_records[index][1] + 1}.{edge_records[index][2]}"
         for index, _forward in segment
     )
-
-
-def decode_segment_overrides(values):
-    result = {}
-    for value in values or ():
-        try:
-            record = json.loads(str(value))
-            key = str(record["segment"])
-            diameter = float(record["diameter"])
-            if diameter > 0.0 and math.isfinite(diameter):
-                result[key] = diameter
-        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
-            continue
-    return result
-
-
-def encode_segment_overrides(values):
-    return [
-        json.dumps({"segment": key, "diameter": float(diameter)}, sort_keys=True)
-        for key, diameter in sorted(values.items())
-        if float(diameter) > 0.0 and math.isfinite(float(diameter))
-    ]
-
-
-def set_segment_diameter(obj, key, diameter):
-    """Set one path-segment override; zero removes the override."""
-    overrides = decode_segment_overrides(obj.SegmentDiameters)
-    diameter = float(diameter)
-    if diameter > 0.0:
-        overrides[str(key)] = diameter
-    else:
-        overrides.pop(str(key), None)
-    obj.SegmentDiameters = encode_segment_overrides(overrides)
-    obj.touch()
-
-
-def decode_segment_sample_overrides(values):
-    result = {}
-    for value in values or ():
-        try:
-            record = json.loads(str(value))
-            key = str(record["segment"])
-            samples = int(record["samples"])
-            if samples > 0:
-                result[key] = samples
-        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
-            continue
-    return result
-
-
-def encode_segment_sample_overrides(values):
-    return [
-        json.dumps({"segment": key, "samples": int(samples)}, sort_keys=True)
-        for key, samples in sorted(values.items())
-        if int(samples) > 0
-    ]
-
-
-def set_segment_samples(obj, key, samples):
-    """Set one segment's longitudinal intervals per source edge; zero uses global."""
-    overrides = decode_segment_sample_overrides(obj.SegmentSamples)
-    samples = int(samples)
-    if samples > 0:
-        overrides[str(key)] = samples
-    else:
-        overrides.pop(str(key), None)
-    obj.SegmentSamples = encode_segment_sample_overrides(overrides)
-    obj.touch()
 
 
 def _sample_edge(edge, forward, interval_count):
@@ -335,8 +277,12 @@ def swept_segment_cage(
     open_start=False,
     open_end=False,
     include_boundaries=False,
-):
-    """Deform a closed all-quad cylinder cage along an ordered 3D polyline."""
+) -> tuple[list, list] | tuple[list, list, list[int] | None, list[int] | None]:
+    """Deform a cylinder cage along a polyline.
+
+    Return vertices and faces. With include_boundaries, also return the start
+    and end loops (None for each end without an opening).
+    """
     diameter = float(diameter)
     if diameter <= 0.0 or not math.isfinite(diameter):
         raise ValueError("Pipe diameter must be finite and positive")
@@ -1081,6 +1027,12 @@ def _cage_components(cage, include_maps=False):
 def update_pipe_shape(obj):
     """Evaluate every closed path-segment cage and preserve their patch faces."""
     try:
+        if obj.CageMode == "Editable":
+            from .cage import update_object_shape
+            update_object_shape(obj)
+            if not obj.Shape.isNull() and len(obj.Shape.Solids) > 1:
+                obj.Shape = map_form_shape(obj, fused_pipe_shape(obj.Shape))
+            return
         cage = ControlCage.from_object(obj)
         shapes = []
         debug = bool(getattr(obj, "DebugGeometry", False))
@@ -1140,6 +1092,8 @@ def update_pipe_shape(obj):
         obj.MaximumDeviation = maximum_deviation
         obj.ConversionLevel = conversion_level
         obj.ConversionStatus = App.Qt.translate("Forms_Conversion", "Valid pipe")
+        if maximum_deviation > obj.BRepTolerance.Value:
+            obj.ConversionStatus += "; requested deviation was not reached"
     except (ConversionError, Part.OCCError, ValueError, RuntimeError) as error:
         obj.Shape = Part.Shape()
         obj.MaximumDeviation = 0.0
@@ -1177,6 +1131,7 @@ def fused_pipe_shape(shape, debug=False):
     try:
         result = result.removeSplitter()
     except (Part.OCCError, RuntimeError):
+        # Splitter removal is optional; retain the fused shape if refinement fails.
         pass
     if len(result.Solids) == 1:
         return result.Solids[0]
@@ -1270,14 +1225,7 @@ class FormPipeProxy(FormFeatureProxy):
         if obj.CageMode == "Parametric":
             try:
                 vertices, faces = self._topology(obj)
-                obj.ControlPoints = [App.Vector(*point) for point in vertices]
-                obj.ControlFaces = [" ".join(str(index) for index in face) for face in faces]
-                obj.VertexSharpness = [0.0] * len(vertices)
-                obj.EdgeSharpness = []
-                obj.LocalEdgeInserts = []
-                obj.LocalControlPoints = []
-                obj.TMeshData = ""
-                obj.DissolvedEdges = []
+                reset_cage(obj, vertices, faces)
             except (Part.OCCError, RuntimeError, ValueError) as error:
                 obj.Shape = Part.Shape()
                 obj.ConversionStatus = App.Qt.translate(
@@ -1308,3 +1256,23 @@ def create_pipe(document=None, path_object=None, name="FormPipe"):
         ViewProviderFormPipe(obj.ViewObject)
     obj.recompute()
     return obj
+
+
+# Keep the historical scripting imports available after separating implementation modules.
+__all__ = [
+    "FormPipeProxy",
+    "ViewProviderFormPipe",
+    "create_pipe",
+    "decode_segment_overrides",
+    "decode_segment_sample_overrides",
+    "encode_segment_overrides",
+    "encode_segment_sample_overrides",
+    "fused_pipe_shape",
+    "path_segments",
+    "pipe_control_cage",
+    "segment_key",
+    "set_segment_diameter",
+    "set_segment_samples",
+    "swept_segment_cage",
+    "update_pipe_shape",
+]

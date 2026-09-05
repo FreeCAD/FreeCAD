@@ -7,14 +7,24 @@ the generated surface or solid is an output used by downstream workbenches.
 ## Architecture
 
 - Commands, feature proxies, and view providers stay in Python. Task-panel
-  layouts are Qt Designer `.ui` files, with Python limited to binding controls
-  and implementing behavior.
+  layouts generally use Qt Designer `.ui` files; the Sphere/Pipe parameter
+  panels also construct controls in Python.
 - `Forms/edit.py` owns the editor session, selection, draggers, and cleanup;
-  `Forms/edit_tools.py` owns the individual topology-tool panels and previews.
-- Every primitive shares one feature-proxy lifecycle for common persistence,
-  restore migration, parameter locking, and BRep recompute behavior.
+  `Forms/tool_*.py` controllers own each tool's controls, state and previews.
+  `Forms/edit_tools.py` preserves the historical session API through forwarding
+  descriptors. Controllers hold weak session references. Deferred callbacks
+  have an explicit cancellable owner in `Forms/callbacks.py`.
+- `Forms/feature.py` owns common feature persistence and parameter locking;
+  `Forms/viewprovider.py` owns shared presentation. Historical imports from
+  `box.py` remain aliases for saved-document compatibility.
+- `Forms/model.py` reads the editable model, `Forms/capabilities.py` checks
+  operation support, and `Forms/matching.py` applies support constraints without
+  depending on Part Design.
+- `Forms/edit_journal.py` owns cancellation snapshots, including created/deleted
+  objects and inbound links. `Forms/preview.py` owns temporary motion geometry.
 - Cage topology is persisted independently of the generated `Part::TopoShape`.
-- Interactive previews must not convert the cage to BRep after every mouse move.
+- Smooth BRep updates remain the default during dragging. The optional mesh
+  preview avoids conversion on every mouse move for large models or slow computers.
 - A native `App` object should be added only if persistence, recompute performance,
   or a dedicated property type cannot be served reliably by `FeaturePython`.
 - Native document objects belong in `App`; native view providers belong in `Gui`.
@@ -31,15 +41,35 @@ or open Form remains visible beside the base and reports why it has not yet
 combined.
 
 The **Match** edit tool associates one complete Form opening with an external
-face or closed wire. It projects the boundary controls back to that support on
-every recompute and offers Connected (G0) or Tangent (G1) continuity where the
-support supplies a surface or planar wire. Standalone Forms and their support
+face or closed wire. It updates the boundary association on every recompute and
+offers Connected (G0), Tangent (G1), and Curvature (G2) modes where the support
+supplies a surface or planar wire. Standalone Forms and their support
 remain separate objects. The Form stores the support as an associative
 `PropertyLinkSub` plus normalized boundary coordinates, so changing the linked
 face's position or size recomputes the matched opening. For a Part Design Form,
 closing edit mode also caps the matched opening and combines it with the
 preceding Body feature using the selected operation. This provides editable
 material beyond one fixed face boundary.
+
+G2 adjusts the boundary and two nearby control rows using analytic derivatives
+of the fitted B-spline patches. It checks the resulting sewn CAD faces for
+position, tangent-plane angle, and the full curvature tensor, including samples
+between the solver's constraint points. Smooth openings use a quadratic outer
+evaluation ring to permit nonzero transverse curvature; this ring is not part of
+the editable cage or output shape. Pinned corners retain their original rules.
+The preview reports the measured errors and disables Apply if the tolerances
+cannot be reached. The Form's **Match** properties expose the tolerances
+(defaults: 0.001 mm, 0.1 degrees, and 0.01 relative curvature error) and results.
+For a flat support, curvature error is scaled by inverse opening diagonal.
+These are sampled numerical checks, not a certified continuous error bound.
+
+G2 currently requires one connected quad cage with one opening, no local T-mesh
+edits or dissolved edges, and refinement of at least 3. It uses NumPy, with a
+bounded solver of at most 256 nearby controls and 64 boundary vertices. Coarse
+openings and curved supports at pinned corners may not have enough freedom to
+meet the requested curvature; add control resolution or change the tolerances.
+Boundary-based Form Surface features use a different evaluator and are not yet
+supported by G2. Existing G0/G1 modes keep their existing evaluation rules.
 
 The Box, Cylinder, Quadball, Sphere, Pipe, Face, Torus, and hollow Tube primitives establish that contract. They
 store unique point and quad lists, offer segment counts, and preview through a
@@ -58,16 +88,17 @@ side may contain any number of T-points, and atomic edges carry knot intervals.
 The implementation lives in `Forms/tmesh.py`; topology edits return a new,
 validated mesh so document transactions never observe a partial edit.
 
-The evaluator direction is Dyadic T-mesh Subdivision (Kovacs, Bisceglio and
-Zorin, ACM TOG 2015, DOI 10.1145/2766972).  It extends Catmull-Clark to local
-T-junctions, agrees with analysis-suitable T-splines on regular regions, and
-supports extraordinary vertices needed by closed Forms.  A Python reference
-evaluator comes first for conformance tests; once its masks and BRep patch
-mapping are stable, only the numerical evaluator moves to a localized native
-Forms target.  UI, persistence, topology commands, transactions, and selection
-mapping remain Python.
+The current evaluator is nested **uniform Catmull-Clark refinement with
+hierarchical control overrides**. It is not a locally adaptive Dyadic T-mesh
+Subdivision implementation. Logical editing is local, but evaluation cost grows
+with the deepest level across the whole base cage. Seeding, fitting and motion
+preview enforce a 250,000-sample-face budget before refinement; fitted root
+grids are limited to 129 samples per side. An edit exceeding these limits is
+rejected before its properties are written. Adaptive evaluation remains future
+work, rather than a claimed capability of the current Python implementation.
 
-`TMeshData` persists that mesh; `LocalControlPoints` is its editable FreeCAD
+`TMeshData` version 3 persists that mesh and evaluator parameter locations
+independently of selectable leaf boundaries (versions 1 and 2 still load); `LocalControlPoints` is its editable FreeCAD
 vector view, while old `LocalEdgeInserts` documents migrate when next edited.
 Controls are evaluated on nested uniform Catmull-Clark levels. One fitted root
 surface is retained per original cage face, and every logical leaf is an exact
@@ -98,7 +129,49 @@ current selection; changing or clearing that selection restores its normal
 center.
 Each modeling action creates its own undo step. Accepting the task keeps those
 actions; cancelling restores the primitive and cage to their state when the
-editor opened.
+editor opened, removes objects created by Unweld, and restores objects deleted
+by Weld with their incoming links. When mesh preview is enabled, point motion displays a sampled Coin mesh;
+release fits and sews the BRep. Whole-object rigid motion uses placement only.
+
+## Preferences
+
+Activate Forms, then open **Edit > Preferences > Forms > General**.
+Both editing options are disabled by default:
+
+- **Greedy selection** adds or removes elements without holding Ctrl. Empty-space
+  clicks clear the selection in either selection mode.
+- **Use mesh preview while dragging** trades smooth live BRep display for a faster
+  faceted preview. Releasing the drag rebuilds the smooth CAD shape.
+
+Changes apply to the current editing session when preferences are applied.
+
+## Supported combinations and numerical guarantees
+
+- Full edge-loop insertion, Erase and Fill, Fill Hole, and Thicken
+  require a base cage without local refinement or dissolved edges. The Python
+  API enforces this before mutation, as do interactive callers.
+- Bridge supports local subdivision and insertion. It incorporates hierarchical
+  displacements into a regular cage at the existing refinement level before
+  joining the boundaries. This can expose additional control edges; deleted
+  leaves stay deleted, and crease weights are carried through refinement.
+  Different baked boundary densities are joined with a quad transition strip.
+- Local Insert Edge/Subdivide/Delete/Dissolve preserve stable evaluator controls.
+  Editable Pipe uses the same evaluator as other Forms.
+- Creases on newly inserted local edges are rejected: a smooth root patch cannot
+  represent a sharp internal trim seam. Existing base-edge creases remain
+  supported. Previously stored unsupported seam values can be uncreased.
+- Semi-sharp weights decay by one per subdivision; 10 is infinite sharpness.
+  Junctions use uniform OpenSubdiv parent/child rule transitions. Blender edge
+  and vertex weights map as `sharpness = 10 * weight**2` (inverse square root).
+- `MaximumDeviation` is a sampled fit check, not a certified continuous bound.
+  A valid OCCT shape does not certify G1 continuity between patches. Match
+  constrains controls in the Form's coordinate system, including parent
+  placements. G0/G1 curved-support surface continuity requires separate
+  assessment; G2 performs the explicit sampled seam checks described above.
+- `Forms::Surface` uses boundary-constrained OCCT filling/UV partitioning, which
+  differs from ordinary subdivision. Its profile-replacement controls should
+  not be interpreted as a general NURBS or periodic/holed-surface editor.
+- Forms is a mandatory build dependency of Part Design in this tree.
 
 ## Tool outline
 

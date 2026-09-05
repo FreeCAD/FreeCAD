@@ -25,7 +25,8 @@
 
 import FreeCAD as App
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 
 
 class FormProxy(FormFeatureProxy):

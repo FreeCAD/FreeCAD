@@ -258,3 +258,11 @@ def import_file(filename, document, executable=None):
                 document.removeObject(obj.Name)
         raise
     return created, list(payload.get("rejected") or ())
+
+
+# Keep the historical scripting imports available after separating implementation modules.
+__all__ = [
+    "BlendImportError",
+    "find_blender_executable",
+    "import_file",
+]

@@ -29,6 +29,7 @@ import Part
 from PySide import QtCore
 
 from Forms.feedback import MODELING_ERRORS, report_modeling_error
+from Forms.topology import connected_edge_component
 from Forms.operations import (
     bridge_boundaries,
     delete_faces,
@@ -93,7 +94,8 @@ def _selected_boundary_edges():
     if mapper is None:
         return result
     for obj, elements in _selected_control_elements("Edge").items():
-        boundary_edges = set(mapper.cage.boundary_edges)
+        counts = mapper.mesh.edge_counts() if mapper.mesh is not None else mapper.cage.edge_counts()
+        boundary_edges = {edge for edge, count in counts.items() if count == 1}
         for vertices in elements:
             if len(vertices) != 2:
                 continue
@@ -606,7 +608,7 @@ class CommandBridge:
             "CmdType": "ForEdit",
             "MenuText": App.Qt.translate("Forms_Bridge", "Bridge"),
             "ToolTip": App.Qt.translate(
-                "Forms_Bridge", "Bridges two selected equal-sized boundary loops"
+                "Forms_Bridge", "Bridges two selected boundary loops"
             ),
         }
 
@@ -618,18 +620,16 @@ class CommandBridge:
         mapper = _active_mapper()
         if mapper is None:
             return False
-        loops = mapper.cage.boundary_loops()
-        touched = sum(
-            bool(
-                set(edges).intersection(
-                    {
-                        tuple(sorted((loop[index], loop[(index + 1) % len(loop)])))
-                        for index in range(len(loop))
-                    }
-                )
-            )
-            for loop in loops
-        )
+        counts = mapper.mesh.edge_counts() if mapper.mesh is not None else mapper.cage.edge_counts()
+        boundary = {edge for edge, count in counts.items() if count == 1}
+        remaining = set(edges)
+        touched = 0
+        while remaining:
+            loop = connected_edge_component(boundary, next(iter(remaining)))
+            remaining.difference_update(loop)
+            touched += 1
+            if touched > 2:
+                return False
         return touched == 2
 
     def Activated(self):

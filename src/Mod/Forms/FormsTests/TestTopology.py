@@ -20,6 +20,7 @@ from Forms.topology import (
     catmull_clark_limit_points,
     catmull_clark_patch_grids,
     catmull_clark_step,
+    catmull_clark_step_details,
     connected_edge_component,
     cylinder_control_cage,
     face_control_cage,
@@ -649,6 +650,24 @@ class DyadicTMeshTest(unittest.TestCase):
         self.assertEqual(restored.next_vertex_id, mesh.next_vertex_id)
         self.assertEqual(restored.next_face_id, mesh.next_face_id)
 
+    def test_edge_loop_continues_along_split_sides_but_not_t_branches(self):
+        from Forms.topology import face_control_cage, cage_edge_loop
+        vertices, faces = face_control_cage(30, 30, 3, 3)
+        mesh = DyadicTMesh.from_quad_cage(vertices, faces)
+        for edge in cage_edges(faces):
+            self.assertEqual(mesh.edge_loop(edge), cage_edge_loop(faces, edge))
+        side = mesh.faces[4].sides[1]
+        original = set(mesh.edge_loop(side))
+        inserted, new_vertices, _faces = mesh.insert_edge(4, mesh.faces[4].sides[0])
+        middle = next(vertex for vertex in new_vertices
+                      if tuple(sorted((side[0], vertex))) in inserted.atomic_edges())
+        pieces = {tuple(sorted((side[0], middle))), tuple(sorted((middle, side[-1])))}
+        expected = original.difference({tuple(sorted(side))}).union(pieces)
+        for piece in pieces:
+            self.assertEqual(set(inserted.edge_loop(piece)), expected)
+        branch = tuple(sorted(new_vertices))
+        self.assertEqual(inserted.edge_loop(branch), [branch])
+
     def test_non_dyadic_insert_is_rejected(self):
         vertices, faces = box_control_cage(10, 10, 10)
         mesh = DyadicTMesh.from_quad_cage(vertices, faces)
@@ -752,15 +771,16 @@ class CatmullClarkTest(unittest.TestCase):
         limit_points = catmull_clark_limit_points(vertices, faces, sharp_edges)
         self.assertEqual(limit_points, vertices)
 
-    def test_fractional_vertex_sharpness_blends_smooth_and_corner_limits(self):
+    def test_fractional_vertex_sharpness_decays_before_evaluating_limit(self):
         vertices, faces = box_control_cage(12, 12, 12)
-        smooth = catmull_clark_limit_points(vertices, faces)[0]
-        vertex_values = [0.0] * len(vertices)
-        vertex_values[0] = 0.5
-        blended = catmull_clark_limit_points(vertices, faces, vertex_sharpness=vertex_values)[0]
-        expected = tuple((smooth[axis] + vertices[0][axis]) / 2.0 for axis in range(3))
-        for actual, target in zip(blended, expected):
-            self.assertAlmostEqual(actual, target)
+        values = [0.5] + [0.0] * (len(vertices) - 1)
+        before = catmull_clark_limit_points(vertices, faces, vertex_sharpness=values)
+        vv, ff, old, _, _, ee, cc = catmull_clark_step_details(
+            vertices, faces, vertex_sharpness=values)
+        after = catmull_clark_limit_points(vv, ff, ee, cc)
+        for index, point in enumerate(before):
+            for actual, expected in zip(point, after[old[index]]):
+                self.assertAlmostEqual(actual, expected)
 
     def test_patch_grids_share_limit_samples(self):
         vertices, faces = box_control_cage(10, 20, 30)

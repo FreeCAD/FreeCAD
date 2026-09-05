@@ -28,7 +28,8 @@ import math
 import FreeCAD as App
 import Part
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 from .topology import (
     cylinder_control_cage,
     face_control_cage,
@@ -169,6 +170,7 @@ class FormFaceProxy(FormFeatureProxy):
         profile_topology = list(obj.ProfileControlFaces)
         if (
             obj.CageMode == "Parametric"
+            or bool(getattr(obj, "MatchBoundary", ()))
             or profile.isNull()
             or list(obj.ControlFaces) != profile_topology
             or bool(str(getattr(obj, "TMeshData", "") or ""))
@@ -532,6 +534,7 @@ def _segmented_profile_shape(profile, control_points, encoded_faces):
         try:
             candidate_wires.append(Part.Wire(patch_edges))
         except (Part.OCCError, RuntimeError):
+            # Try sorting the edges below if their original order cannot form a wire.
             pass
         try:
             groups = Part.sortEdges(patch_edges)
@@ -540,6 +543,7 @@ def _segmented_profile_shape(profile, control_points, encoded_faces):
                 if not any(sorted_wire.isSame(wire) for wire in candidate_wires):
                     candidate_wires.append(sorted_wire)
         except (Part.OCCError, RuntimeError):
+            # Keep any original wire candidate if OCC cannot sort the edges.
             pass
 
         patch = None

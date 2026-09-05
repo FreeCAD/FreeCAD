@@ -100,7 +100,8 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.assertEqual(len(original.Edges), 24)
         for index, face in enumerate(faces):
             mapped = [
-                value for name, value in shape.ElementMap.items()
+                value
+                for name, value in shape.ElementMap.items()
                 if name.split(";", 1)[0] == f"SewFace{index}" and value.startswith("Face")
             ]
             self.assertEqual(len(mapped), 1)
