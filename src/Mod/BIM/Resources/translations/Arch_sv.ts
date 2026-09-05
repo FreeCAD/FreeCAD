@@ -6259,7 +6259,7 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../bimcommands/BimSpace.py" line="74"/>
       <location filename="../../bimcommands/BimRoof.py" line="97"/>
       <source>%1 select a base object</source>
-      <translation type="unfinished">%1 select a base object</translation>
+      <translation>%1 välj ett basobjekt</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -11579,7 +11579,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="65"/>
       <source>%1 select a planar object</source>
-      <translation type="unfinished">%1 select a planar object</translation>
+      <translation>%1 välj ett plant objekt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="81"/>
@@ -11685,7 +11685,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Save Visibility of Objects</source>
-      <translation type="unfinished">Save Visibility of Objects</translation>
+      <translation>Spara objektens synlighet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
@@ -11695,7 +11695,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="147"/>
       <source>Saves the current camera view to the selected items</source>
-      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+      <translation>Sparar den aktuella kameravyn för de valda objekten</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="148"/>
@@ -11731,7 +11731,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
-      <translation type="unfinished">Sets the selected item as the current working plane</translation>
+      <translation>Anger det valda objektet som aktuellt arbetsplan</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>

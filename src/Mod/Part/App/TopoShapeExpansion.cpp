@@ -39,6 +39,7 @@
 #endif
 
 #include <Base/Profiler.h>
+#include <BRepAlgoAPI_Defeaturing.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -5263,6 +5264,58 @@ TopoShape& TopoShape::makeElementChamfer(
     return makeElementShape(mkChamfer, shape, op);
 }
 
+TopoShape& TopoShape::makeElementDefeaturing(
+    const TopoShape& shape,
+    const std::vector<TopoShape>& faces,
+    const char* op,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    if (!op) {
+        op = Part::OpCodes::Defeaturing;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (faces.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+
+    BRepAlgoAPI_Defeaturing mkDefeaturing;
+    mkDefeaturing.SetRunParallel(true);
+    mkDefeaturing.SetToFillHistory(true);
+    mkDefeaturing.SetShape(shape.getShape());
+    for (const auto& face : faces) {
+        if (face.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        const auto& faceShape = face.getShape();
+        if (faceShape.ShapeType() != TopAbs_FACE) {
+            FC_THROWM(Base::CADKernelError, "defeaturing input shape is not a face");
+        }
+        if (!shape.findShape(faceShape)) {
+            FC_THROWM(Base::CADKernelError, "defeaturing face does not belong to the shape");
+        }
+        mkDefeaturing.AddFaceToRemove(faceShape);
+    }
+
+#if OCC_VERSION_HEX >= 0x070600
+    mkDefeaturing.Build(std::make_unique<Part::ProgressIndicator>()->Start());
+#else
+    mkDefeaturing.Build();
+#endif
+    if (!mkDefeaturing.IsDone()) {
+        Standard_SStream ss;
+        mkDefeaturing.DumpErrors(ss);
+        throw Base::RuntimeError(ss.str().c_str());
+    }
+    if (mkDefeaturing.Shape().IsNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    return makeElementShape(mkDefeaturing, shape, op, elementMapPolicy);
+}
+
 TopoShape& TopoShape::makeElementGeneralFuse(
     const std::vector<TopoShape>& _shapes,
     std::vector<std::vector<TopoShape>>& modifies,
@@ -7184,7 +7237,7 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
     }
-    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0 || strcmp(maker, Part::OpCodes::Common) == 0) {
         for (unsigned i = 1; i < shapes.size(); ++i) {
             auto& s = shapes[i];
             if (s.isNull()) {
@@ -7194,7 +7247,12 @@ TopoShape& TopoShape::makeElementBoolean(
                 if (_shapes.empty()) {
                     _shapes.insert(_shapes.end(), shapes.begin(), shapes.begin() + i);
                 }
+                const auto sizeBeforeExpansion = _shapes.size();
                 expandCompound(s, _shapes);
+                if (strcmp(maker, Part::OpCodes::Common) == 0
+                    && _shapes.size() == sizeBeforeExpansion) {
+                    _shapes.push_back(s);
+                }
             }
             else if (_shapes.size()) {
                 _shapes.push_back(s);

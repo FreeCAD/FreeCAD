@@ -513,11 +513,13 @@ PyObject* TopoShapePy::dumpToString(PyObject* args) const
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
+#if OCC_VERSION_HEX < 0x080000
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+#endif
 }
 
 PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
@@ -540,10 +542,12 @@ PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
+#if OCC_VERSION_HEX < 0x080000
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+#endif
 }
 
 PyObject* TopoShapePy::importBrep(PyObject* args)
@@ -630,10 +634,12 @@ PyObject* TopoShapePy::importBrepFromString(PyObject* args)
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
+#if OCC_VERSION_HEX < 0x080000
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+#endif
 
     Py_Return;
 }
@@ -2628,16 +2634,15 @@ PyObject* TopoShapePy::defeaturing(PyObject* args) const
 
     try {
         Py::Sequence list(l);
-        std::vector<TopoDS_Shape> shapes;
+        std::vector<TopoShape> shapes;
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::TopoShape sh(*it);
-            shapes.push_back(sh.extensionObject()->getTopoShapePtr()->getShape());
+            shapes.push_back(*sh.extensionObject()->getTopoShapePtr());
         }
         PyTypeObject* type = this->GetType();
         PyObject* inst = type->tp_new(type, const_cast<TopoShapePy*>(this), nullptr);
-        static_cast<TopoShapePy*>(inst)->getTopoShapePtr()->setShape(
-            this->getTopoShapePtr()->defeaturing(shapes)
-        );
+        *static_cast<TopoShapePy*>(inst)->getTopoShapePtr()
+            = this->getTopoShapePtr()->makeElementDefeaturing(shapes);
         return inst;
     }
     catch (const Standard_Failure& e) {

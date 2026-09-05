@@ -20,6 +20,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -1439,7 +1440,30 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementBooleanCutV1)
+TEST_F(TopoShapeExpansionTest, makeElementBooleanCommonWithCompoundToolV1)
+{
+    // Arrange
+    TopoShape base {BRepPrimAPI_MakeCylinder(1.0, 2.0).Shape(), 1L};
+    auto toolMaker
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(1.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 1.2, 1.0);
+    TopoShape tool {toolMaker.Shape(), 2L};
+    TopoShape overlap {3L};
+    overlap.makeElementBoolean(Part::OpCodes::Common, {base, tool});
+    TopoShape remainder {4L};
+    remainder.makeElementBoolean(Part::OpCodes::Cut, {tool, base});
+    TopoShape compound {5L};
+    compound.makeElementCompound({overlap, remainder});
+
+    // Act
+    TopoShape result {6L};
+    result.makeElementBoolean(Part::OpCodes::Common, {base, compound});
+
+    // Assert
+    EXPECT_FALSE(result.isEmpty());
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), getVolume(overlap.getShape()));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();

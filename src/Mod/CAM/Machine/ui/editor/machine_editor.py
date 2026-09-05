@@ -38,7 +38,12 @@ from Machine.models.machine import (
     WrapStrategy,
 )
 from Path.Main.Gui.Editor import CodeEditor
-from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Processor import (
+    PostProcessorFactory,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    properties_in_scope,
+)
 from Machine.ui.editor.postprocessor_properties import PostProcessorPropertyManager
 from Machine.ui.editor.output_options_layout import build_output_options
 import re
@@ -387,7 +392,7 @@ class MachineEditorDialog(QtGui.QDialog):
         ("-Z", [0, 0, -1]),
     ]
 
-    def __init__(self, machine_filename: Optional[str] = None, parent=None):
+    def __init__(self, machine_filename: Optional[str] = None, parent=None, machine=None):
         super().__init__(parent)
         self.setMinimumSize(700, 900)
         self.resize(700, 900)
@@ -399,7 +404,10 @@ class MachineEditorDialog(QtGui.QDialog):
         self.filename = machine_filename
         self.machine = None  # Store the Machine object
 
-        if machine_filename:
+        if machine is not None:
+            # An in-memory machine not yet saved to disk (e.g. an import)
+            self.machine = machine
+        elif machine_filename:
             self.machine = MachineFactory.load_configuration(machine_filename)
         else:
             self.machine = Machine(name="New Machine")
@@ -424,6 +432,11 @@ class MachineEditorDialog(QtGui.QDialog):
         self.machine_tab = QtGui.QWidget()
         self.tabs.addTab(self.machine_tab, translate("CAM_MachineEditor", "Machine"))
         self.setup_machine_tab()
+
+        # Toolheads tab
+        self.toolheads_tab = QtGui.QWidget()
+        self.tabs.addTab(self.toolheads_tab, translate("CAM_MachineEditor", "Toolheads"))
+        self.setup_toolheads_tab()
 
         # Postprocessor tab
         self.postprocessor_tab = QtGui.QWidget()
@@ -895,8 +908,8 @@ class MachineEditorDialog(QtGui.QDialog):
         """Set up the machine configuration tab with form fields.
 
         Creates input fields for machine name, manufacturer, description,
-        units, type, toolhead count, axes configuration, and toolheads.
-        Connects change handlers for dynamic updates.
+        units, type, kinematics, and axes configuration. Connects change
+        handlers for dynamic updates.
         """
         layout = QtGui.QFormLayout(self.machine_tab)
 
@@ -1030,9 +1043,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.axes_group.setVisible(False)  # Initially hidden, shown when axes are configured
         layout.addRow(self.axes_group)
 
-        # Toolheads group
-        self.toolheads_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Toolheads"))
-        toolheads_layout = QtGui.QVBoxLayout(self.toolheads_group)
+    def setup_toolheads_tab(self):
+        """Set up the toolheads tab.
+
+        Holds the "Add Toolhead" button bar and the tabbed interface with one
+        tab per toolhead, populated by update_toolheads().
+        """
+        layout = QtGui.QVBoxLayout(self.toolheads_tab)
 
         # Button bar for toolhead actions
         button_bar = QtGui.QHBoxLayout()
@@ -1042,14 +1059,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.add_toolhead_button.clicked.connect(self._add_toolhead)
         self.add_toolhead_button.setEnabled(True)
         button_bar.addWidget(self.add_toolhead_button)
-        toolheads_layout.addLayout(button_bar)
+        layout.addLayout(button_bar)
 
         self.toolheads_tabs = QtGui.QTabWidget()
         self.toolheads_tabs.setTabsClosable(True)
         self.toolheads_tabs.tabCloseRequested.connect(self._remove_toolhead)
 
-        toolheads_layout.addWidget(self.toolheads_tabs)
-        layout.addRow(self.toolheads_group)
+        layout.addWidget(self.toolheads_tabs)
 
     def update_axes(self):
         """Update the axes configuration UI based on machine type and units.
@@ -2100,12 +2116,12 @@ class MachineEditorDialog(QtGui.QDialog):
                 self.post_properties_group.setVisible(False)
                 return
 
-            # Create widgets for each property in the schema
-            # Skip runtime-only properties — they are shown in the post-processing
-            # dialog, not persisted in the machine configuration.
-            for prop in schema:
-                if prop.get("runtime", False):
-                    continue
+            # Create widgets for each property in the schema.  The machine
+            # editor owns the "machine" and "job" scopes: "machine" properties
+            # are only editable here, "job" properties get their default here
+            # and can be overridden per run in the post-processing dialog.
+            # "run" and "internal" properties never appear in this editor.
+            for prop in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB):
                 prop_name = prop.get("name")
                 prop_label = prop.get("label", prop_name)
                 prop_default = prop.get("default")

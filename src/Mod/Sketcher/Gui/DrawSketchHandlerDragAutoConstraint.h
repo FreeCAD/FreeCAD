@@ -24,15 +24,13 @@
 
 #pragma once
 
-#include <cstddef>
-#include <memory>
 #include <vector>
+
+#include <QTimer>
 
 #include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "DrawSketchHandler.h"
-
-class QObject;
 
 namespace Part
 {
@@ -46,7 +44,6 @@ class DrawSketchHandlerDragAutoConstraint final: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerDragAutoConstraint();
-    ~DrawSketchHandlerDragAutoConstraint() override;
 
     void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
     {}
@@ -88,14 +85,14 @@ private:
         const AutoConstraint& constraint
     ) const;
     void removeInvalidConstraints(const Sketcher::GeoElementId& dragged);
+    void onDwellTimerTimeout();
     void updateSuggestions();
 
 private:
     std::vector<AutoConstraint> suggestedConstraints;
     std::vector<Sketcher::GeoElementId> draggedElements;
     Base::Vector2d startPos {0.0, 0.0};
-    std::unique_ptr<QObject> dwellTimerContext;
-    std::size_t dwellTimerGeneration {0};
+    QTimer dwellTimer;
 };
 
 }  // namespace SketcherGui

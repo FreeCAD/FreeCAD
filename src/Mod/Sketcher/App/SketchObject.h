@@ -62,7 +62,6 @@ ENABLE_BITMASK_OPERATORS(Sketcher::DeleteOption)
 
 namespace Sketcher
 {
-
 class SketchAnalysis;
 
 struct ExternalToAdd
@@ -98,17 +97,17 @@ public:
      0 refers to sketch axes and external geometry.  posId is a PointPos enum, documented in
      Constraint.h.
     */
-    Part ::PropertyGeometryList Geometry;
+    Part::PropertyGeometryList Geometry;
     Sketcher::PropertyConstraintList Constraints;
-    App ::PropertyLinkSubList ExternalGeometry;
+    App::PropertyLinkSubList ExternalGeometry;
     App::PropertyIntegerList ExternalTypes;
-    App ::PropertyLinkListHidden Exports;
-    Part ::PropertyGeometryList ExternalGeo;
-    App ::PropertyBool FullyConstrained;
-    App ::PropertyPrecision ArcFitTolerance;
-    Part ::PropertyPartShape InternalShape;
-    App ::PropertyPrecision InternalTolerance;
-    App ::PropertyBool MakeInternals;
+    App::PropertyLinkListHidden Exports;
+    Part::PropertyGeometryList ExternalGeo;
+    App::PropertyBool FullyConstrained;
+    App::PropertyPrecision ArcFitTolerance;
+    Part::PropertyPartShape InternalShape;
+    App::PropertyPrecision InternalTolerance;
+    App::PropertyBool MakeInternals;
     // Internal-face pipeline: 1 = legacy FaceMakerRing (<= 1.1), 2 = FaceMakerBuildFace.
     // Kept so old documents' internal-face names stay stable and references resolve.
     App::PropertyInteger _InternalFaceVersion;
@@ -493,7 +492,8 @@ public:
         const int oldId,
         const std::vector<int>& newIds,
         const Constraint* con,
-        std::vector<Constraint*>& newConstraints
+        std::vector<Constraint*>& newConstraints,
+        const bool assumeTangency = false
     ) const;
     // Explicitly giving `newGeos` for cases where they are not yet added
     bool deriveConstraintsForPieces(
@@ -501,7 +501,8 @@ public:
         const std::vector<int>& newIds,
         const std::vector<const Part::Geometry*>& newGeo,
         const Constraint* con,
-        std::vector<Constraint*>& newConstraints
+        std::vector<Constraint*>& newConstraints,
+        const bool assumeTangency = false
     ) const;
 
     /// split a curve
@@ -668,13 +669,19 @@ public:
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
     ) const;
+    void getDirectlyCoincidentPoints(
+        const int GeoId1,
+        const int GeoId2,
+        std::vector<int>& GeoIds3,
+        std::vector<PointPos>& PosIds3
+    ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
     // Returns true if the sketch has 1 or more block constraint
     bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
-    void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
+    void getConstraintIndices(int GeoId, std::vector<int>& constraintList) const;
 
     /// generates a warning message about constraint conflicts and appends it to the given message
     static void appendConflictMsg(const std::vector<int>& conflicting, std::string& msg);
@@ -1062,19 +1069,6 @@ protected:
 
     void updateGeoHistory();
     void generateId(const Part::Geometry* geo);
-
-    /*!
-     \brief Transfer constraints on lines being filleted.
-
-     Since filleting moves the endpoints of the input geometry, existing constraints may no longer
-     be sensible. If fillet() was called with preserveCorner=false, the constraints are simply
-     deleted. But if the lines are coincident and preserveCorner=true, we can preserve most
-     constraints on the old end points by moving them to the preserved corner, or transforming
-     distance constraints on straight lines into point-to-point distance constraints.
-
-     \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
-     */
-    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
 
     // refactoring functions
     // check whether constraint may be changed driving status

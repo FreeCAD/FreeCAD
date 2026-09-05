@@ -66,6 +66,7 @@ DressUp::DressUp()
     );
 
     AddSubShape.setStatus(App::Property::Output, true);
+    Operation.setStatus(App::Property::Hidden, true);
 }
 
 short DressUp::mustExecute() const
@@ -332,7 +333,7 @@ void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShap
             if (base) {
                 baseShape = base->getBaseTopoShape(true);
                 baseShape.move(base->getLocation().Inverted());
-                if (base->getAddSubType() == Additive) {
+                if (base->getAddSubType() == Type::Additive) {
                     if (!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID)) {
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
                     }

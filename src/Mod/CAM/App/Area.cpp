@@ -3784,7 +3784,6 @@ std::list<TopoDS_Shape> Area::sortWires(
         auto best_it = shape_list.begin();
         for (auto it = best_it; it != shape_list.end(); ++it) {
             double d;
-            gp_Pnt pt;
             if (it->myPlanar && current_it == shape_list.end()) {
                 d = it->myPln.SquareDistance(pstart);
             }
@@ -3877,10 +3876,30 @@ static inline void addParameter(
     bool relative = false
 )
 {
-    double d = next - last;
-    if (verbose || fabs(d) > Precision::Confusion()) {
-        cmd.Parameters[name] = relative ? d : next;
+    // This function needs to correctly handle NANs passed in for last and/or next. A NAN in next
+    // indicates that this coordinate does not change in the current move and we don't add the parameter.
+
+    if (std::isnan(next)) {
+        return;
     }
+
+    // A NAN in last indicates that the previous position is unknown, i.e. it is the first move for
+    // that coordinate. We can not calculate a relative parameter without a valid previous position
+    // and throw an exception if this is requested.
+
+    if (std::isnan(last) && relative) {
+        throw std::invalid_argument("trying to add relative parameter with unknown last value");
+    }
+
+    // If last is NAN here, then so are d and fabs(d). The comparison will therefore always return
+    // false and the parameter will be added, which is what we want in this case.
+
+    double d = next - last;
+    if (!verbose && fabs(d) <= Precision::Confusion()) {
+        return;
+    }
+
+    cmd.Parameters[name] = relative ? d : next;
 }
 
 static inline void addGCode(
@@ -4076,25 +4095,19 @@ void Area::toPath(
         (pstart.*setter)(resume_height);
     }
 
-    gp_Pnt plast, p;
+    gp_Pnt plast = {NAN, NAN, NAN};
+    gp_Pnt p = {NAN, NAN, NAN};
     // initial vertical rapid pull up to retraction (or start Z height if higher)
     (p.*setter)(std::max(retraction, (pstart.*getter)()));
     addGCode(false, path, plast, p, "G0");
     plast = p;
-    p = pstart;
 
     // rapid horizontal move to start point
-    gp_Pnt tmpPlast = plast;
-    (tmpPlast.*setter)((p.*getter)());
-    if (_pstart && p.IsEqual(tmpPlast, Precision::Confusion())) {
-        plast.SetCoord(10.0, 10.0, 10.0);
-        (plast.*setter)(retraction);
-    }
+    p = pstart;
     (p.*setter)(retraction);
     addGCode(false, path, plast, p, "G0");
-
-
     plast = p;
+
     bool first = true;
     bool arcWarned = false;
     double cur_f = 0.0;            // current feed rate

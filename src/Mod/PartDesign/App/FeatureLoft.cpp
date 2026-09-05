@@ -346,23 +346,15 @@ App::DocumentObjectExecReturn* Loft::execute()
         }
 
         result.Tag = -getID();
-        TopoShape boolOp = makeTopoShape();
 
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
-                break;
-            default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
-        }
+        TopoShape boolOp = makeTopoShape();
         try {
-            boolOp.makeElementBoolean(maker, {base, result}, nullptr, FuzzyTolerance.getValue());
+            boolOp.makeElementBoolean(
+                getBooleanMaker(),
+                {base, result},
+                nullptr,
+                FuzzyTolerance.getValue()
+            );
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
@@ -405,13 +397,13 @@ App::DocumentObjectExecReturn* Loft::execute()
 PROPERTY_SOURCE(PartDesign::AdditiveLoft, PartDesign::Loft)
 AdditiveLoft::AdditiveLoft()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractiveLoft, PartDesign::Loft)
 SubtractiveLoft::SubtractiveLoft()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

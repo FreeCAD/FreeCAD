@@ -92,10 +92,8 @@ public:
     }
 
 private:
-    using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
-    using method_keyword_handler = PyObject* (*)(PyObject * _self,
-                                                 PyObject* _args,
-                                                 PyObject* _keywords);
+    using method_varargs_handler = PyObject* (*)(PyObject* _self, PyObject* _args);
+    using method_keyword_handler = PyObject* (*)(PyObject* _self, PyObject* _args, PyObject* _keywords);
     static method_varargs_handler pycxx_handler;
     static method_keyword_handler pycxx_keyword_handler;
     static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);

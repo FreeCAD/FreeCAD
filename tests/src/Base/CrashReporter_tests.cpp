@@ -18,7 +18,22 @@
 # include <windows.h>
 # include <cstdlib>  // IWYU pragma: keep
 # include <Base/CrashReporter/WindowsCrashReporter.h>
+#else
+# include <csignal>
+# include <sys/resource.h>
 #endif
+
+/// Whether this is a fault code that carries a faulting data address, on the platform this test
+/// binary was built for. These are the only codes for which the Writer can populate one. POSIX
+/// has two: an unmapped access is reported as SIGBUS rather than SIGSEGV on some platforms.
+constexpr bool isAddressCarryingFaultCode(std::uint32_t code)
+{
+#ifdef FC_OS_WIN32
+    return code == EXCEPTION_ACCESS_VIOLATION;
+#else
+    return code == SIGSEGV || code == SIGBUS;
+#endif
+}
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
@@ -396,9 +411,14 @@ std::string findSoleFcrashIn(const std::string& path)
 #else
 # define FC_NOINLINE __attribute__((noinline))
 #endif
+// The target is loaded through a volatile pointer so that the compiler cannot see a literal null.
+// Given one, GCC at -O2 proves the store is unreachable UB and deletes the call to this function,
+// leaving the release build with nothing to crash on.
+static int* volatile deliberateNullTarget = nullptr;
+
 extern "C" FC_NOINLINE void crashReporterFaultSite()
 {
-    volatile int* p = nullptr;
+    volatile int* p = deliberateNullTarget;
     *p = 13;
     std::atomic_signal_fence(std::memory_order_seq_cst);  // defeat tail-call/reorder
 }
@@ -425,6 +445,11 @@ static void installAndCrash(const std::string& crashDir)
 {
 #ifdef _MSC_VER
     SetErrorMode(SEM_NOGPFAULTERRORBOX | SEM_FAILCRITICALERRORS);
+#else
+    // These tests crash on purpose, several times per run on three platforms. Without this the
+    // build directory (and /cores on macOS) collects dumps nobody asked for.
+    const rlimit noCoreDumps {0, 0};
+    setrlimit(RLIMIT_CORE, &noCoreDumps);
 #endif
     Base::CrashReporter::Writer::prewarm();
     Base::CrashReporter::Writer::install(crashDir);
@@ -432,6 +457,60 @@ static void installAndCrash(const std::string& crashDir)
     Base::CrashReporter::WindowsCrashReporter::install(crashDir);
 #endif
     crashReporterFaultSite();
+}
+
+// Windows needs --gtest_catch_exceptions=0, because gtest's own SEH handler would otherwise eat
+// the fault before SetUnhandledExceptionFilter sees it. That flag cannot be assumed in CI, so the
+// assertion test runs automatically on POSIX only;
+#ifdef _MSC_VER
+# define FC_REAL_CAPTURE_TEST DISABLED_realCrashCapturesUsableFrames
+#else
+# define FC_REAL_CAPTURE_TEST realCrashCapturesUsableFrames
+#endif
+
+TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
+{
+    const std::string crashDir = resolveCrashDir(tempDir);
+    EXPECT_DEATH(installAndCrash(crashDir), "");  // NOLINT
+
+    const auto path = findSoleFcrashIn(crashDir);
+    ASSERT_FALSE(path.empty());
+    const auto report = Base::CrashReporter::parse(path);
+
+    // The point of the whole exercise: a real crash has to produce a real stack.
+    ASSERT_GT(report.stackFrames.size(), 0U);
+
+    // Every frame must carry a genuine instruction address.
+    for (const auto& frame : report.stackFrames) {
+        EXPECT_NE(frame.rawAddress, 0U);
+    }
+
+    // At least one frame must be attributed to a module. Not all of them: an unattributable frame
+    // is legitimate and is recorded with NoString
+    EXPECT_TRUE(std::ranges::any_of(report.stackFrames, [](const auto& frame) {
+        return !frame.modulePath.empty();
+    }));
+
+    // A symbol is a function name. When a frame resolves from a symbol table rather than from
+    // debug information the symbolicator appends "+ <offset>", which would put a byte offset into
+    // the key consumers group crashes by, so the Reader trims it.
+    for (const auto& frame : report.stackFrames) {
+        const auto plus = frame.symbol.rfind(" + ");
+        const bool endsWithOffset = plus != std::string::npos
+            && frame.symbol.find_first_not_of("0123456789", plus + 3) == std::string::npos;
+        EXPECT_FALSE(endsWithOffset) << "symbol still carries an offset: " << frame.symbol;
+    }
+
+    // `file` is a source file. A frame with no debug information has none, and must not fall back
+    // to naming the object it resolved against.
+    for (const auto& frame : report.stackFrames) {
+        if (!frame.file.empty()) {
+            EXPECT_NE(frame.file, frame.modulePath);
+        }
+    }
+
+    EXPECT_TRUE(isAddressCarryingFaultCode(report.code)) << "unexpected fault code: " << report.code;
+    EXPECT_FALSE(report.partialWrite);
 }
 
 // This test is always disabled in CI runs: to run it, use a direct manual call:

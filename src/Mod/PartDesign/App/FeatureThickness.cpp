@@ -82,19 +82,18 @@ App::DocumentObjectExecReturn* Thickness::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    // Set transform to identity so occ will perform this operation
+    // in local coordinates
+    TopShape.setTransform(Base::Matrix4D());
+    this->positionByBaseFeature();
+
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
 
     // If the base has no sub elements listed just return a copy of the base.
     if (subStrings.empty()) {
-        // We must set the placement of the feature in case it's empty.
-        this->positionByBaseFeature();
         this->Shape.setValue(TopShape);
         return App::DocumentObject::StdReturn;
     }
-
-    /* If the feature was ever empty, then Placement was set by positionByBaseFeature.  However,
-     * makeThickSolid apparently requires the placement to be empty, so we have to clear it */
-    this->Placement.setValue(Base::Placement());
 
     std::map<int, std::vector<TopoShape>> closeFaces;
     for (const auto& it : subStrings) {

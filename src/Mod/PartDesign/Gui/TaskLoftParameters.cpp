@@ -51,7 +51,7 @@ namespace
 bool isSubtractiveLoft(ViewProviderLoft* view)
 {
     auto* loft = view->getObject<PartDesign::Loft>();
-    return loft->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return loft->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 std::string loftTaskIconName(ViewProviderLoft* view)

@@ -30,6 +30,7 @@ import importlib.util
 import json
 import os
 import sys
+import itertools
 from typing import Any, Dict, List, Optional, Tuple, Union
 import datetime
 from contextlib import contextmanager
@@ -45,6 +46,8 @@ import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
+from Path.Post.UtilsParse import format_command_line
+from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits
 
@@ -214,6 +217,89 @@ Values = Dict[str, Any]
 Visible = Dict[str, bool]
 
 
+# ---------------------------------------------------------------------------
+# Property scope
+# ---------------------------------------------------------------------------
+#
+# Every entry in a postprocessor property schema declares a *scope*: the tier
+# at which the property may be edited.  The scopes correspond one-to-one with
+# the merge tiers in build_configuration_bundle().
+#
+SCOPE_MACHINE = "machine"
+"""Edited in the machine editor only; suppressed in the post-processing dialog.
+Persisted in the .fcm machine file.  Use for properties that describe the
+machine or controller itself and must not vary between runs."""
+
+SCOPE_JOB = "job"
+"""Edited in the machine editor (which sets the default) and overridable per
+run on the post-processing dialog's Options tab.  Persisted in the .fcm file;
+per-run changes go through Job.PostProcessorPropertyOverrides."""
+
+SCOPE_RUN = "run"
+"""Edited only on the post-processing dialog's Overview tab.  Never shown in
+the machine editor and never written back to the .fcm file - the value applies
+to a single export."""
+
+SCOPE_INTERNAL = "internal"
+"""Never presented in any UI.  Use for schema entries that exist so the
+postprocessor can read them from the configuration bundle but which are
+derived rather than user-set."""
+
+VALID_SCOPES = (SCOPE_MACHINE, SCOPE_JOB, SCOPE_RUN, SCOPE_INTERNAL)
+
+#: Scope assumed when a schema entry declares none.  Matches the historical
+#: behaviour of postprocessor-specific properties without a "runtime" key.
+DEFAULT_SCOPE = SCOPE_JOB
+
+
+def property_scope(prop: Dict[str, Any]) -> str:
+    """Return the scope of a property schema entry.
+
+    Reads the "scope" key.  For backwards compatibility with schemas written
+    against the older API, a truthy "runtime" key is accepted as an alias for
+    SCOPE_RUN.  Entries declaring neither get DEFAULT_SCOPE.
+
+    An unrecognised scope is logged and treated as DEFAULT_SCOPE so that a
+    typo in a third-party postprocessor degrades to a visible property rather
+    than silently hiding it.
+
+    Args:
+        prop: A single property schema dictionary.
+
+    Returns:
+        One of VALID_SCOPES.
+    """
+    scope = prop.get("scope")
+    if scope is None:
+        # Deprecated: "runtime": True is the old spelling of scope "run".
+        if prop.get("runtime", False):
+            return SCOPE_RUN
+        return DEFAULT_SCOPE
+    if scope not in VALID_SCOPES:
+        Path.Log.warning(
+            f"Unknown property scope {scope!r} for property "
+            f"{prop.get('name', '?')!r}; treating as {DEFAULT_SCOPE!r}"
+        )
+        return DEFAULT_SCOPE
+    return scope
+
+
+def properties_in_scope(schema, *scopes) -> List[Dict[str, Any]]:
+    """Filter a property schema down to the entries in the given scopes.
+
+    Args:
+        schema: A property schema (list of dicts), or None.
+        *scopes: One or more scope constants to keep.
+
+    Returns:
+        The matching schema entries, in schema order.
+    """
+    if not schema:
+        return []
+    wanted = set(scopes)
+    return [prop for prop in schema if property_scope(prop) in wanted]
+
+
 class PostProcessorFactory:
     """Factory class for creating post processors."""
 
@@ -313,6 +399,7 @@ class PostProcessor:
         return [  # FIXME: this list does not match _merge_machine_config(), nor machine_editor.py
             {
                 "name": "file_extension",
+                "scope": SCOPE_MACHINE,
                 "type": "string",
                 "label": translate("CAM", "File Extension"),
                 "default": "nc",
@@ -324,6 +411,7 @@ class PostProcessor:
             },
             {
                 "name": "supports_tool_radius_compensation",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Tool Radius Compensation (G41/G42)"),
                 "default": False,
@@ -335,6 +423,7 @@ class PostProcessor:
             },
             {
                 "name": "supported_commands",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Supported G-code Commands"),
                 "default": "\n".join(all_supported_commands),
@@ -346,6 +435,7 @@ class PostProcessor:
             },
             {
                 "name": "drill_cycles_to_translate",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Drill Cycles to Translate"),
                 "default": "\n".join(Constants.GCODE_MOVE_DRILL),
@@ -358,6 +448,7 @@ class PostProcessor:
             },
             {
                 "name": "preamble",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Preamble"),
                 "default": "",
@@ -367,6 +458,7 @@ class PostProcessor:
             },
             {
                 "name": "postamble",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Postamble"),
                 "default": "",
@@ -374,6 +466,7 @@ class PostProcessor:
             },
             {
                 "name": "safetyblock",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Safety Block"),
                 "default": "",
@@ -384,6 +477,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_job",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Job"),
                 "default": "",
@@ -391,6 +485,7 @@ class PostProcessor:
             },
             {
                 "name": "post_job",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Job"),
                 "default": "",
@@ -398,6 +493,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_fixture_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Fixture"),
                 "default": "",
@@ -405,6 +501,7 @@ class PostProcessor:
             },
             {
                 "name": "post_fixture_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Fixture"),
                 "default": "",
@@ -412,6 +509,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_operation",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Operation"),
                 "default": "",
@@ -419,6 +517,7 @@ class PostProcessor:
             },
             {
                 "name": "post_operation",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Operation"),
                 "default": "",
@@ -426,6 +525,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_tool_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Tool Change"),
                 "default": "",
@@ -433,6 +533,7 @@ class PostProcessor:
             },
             {
                 "name": "post_tool_change",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Tool Change"),
                 "default": "",
@@ -440,6 +541,7 @@ class PostProcessor:
             },
             {
                 "name": "tool_return",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Tool Return after tool changes"),
                 "default": "",
@@ -447,6 +549,7 @@ class PostProcessor:
             },
             {
                 "name": "pre_rotary_move",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Pre-Rotary Move"),
                 "default": "",
@@ -454,6 +557,7 @@ class PostProcessor:
             },
             {
                 "name": "post_rotary_move",
+                "scope": SCOPE_MACHINE,
                 "type": "text",
                 "label": translate("CAM", "Post-Rotary Move"),
                 "default": "",
@@ -461,6 +565,7 @@ class PostProcessor:
             },
             {
                 "name": "show_dialog",
+                "scope": SCOPE_RUN,
                 "type": "bool",
                 "label": translate("CAM", "Show Pre-processing Dialogs"),
                 "default": True,
@@ -472,6 +577,7 @@ class PostProcessor:
             },
             {
                 "name": "parameter_order",
+                "scope": SCOPE_MACHINE,
                 "type": "text",  # one line
                 "label": translate("CAM", "Generated Parameter Order for GCode"),
                 "default": "XYZABCFSIJTQRPH",  # FIXME: only list `supported`
@@ -479,6 +585,7 @@ class PostProcessor:
             },
             {
                 "name": "output_tool_length_offset",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "TLO after tool-change"),
                 "default": True,
@@ -489,6 +596,7 @@ class PostProcessor:
             },
             {
                 "name": "tool_change",
+                "scope": SCOPE_JOB,
                 "type": "bool",
                 "label": translate("CAM", "Allow tool-change"),
                 "default": True,
@@ -499,6 +607,7 @@ class PostProcessor:
             },
             {
                 "name": "output_units",
+                "scope": SCOPE_MACHINE,
                 "type": "str",
                 "label": translate("CAM", "Unit-command in output"),
                 "default": OutputUnits.METRIC,
@@ -509,6 +618,7 @@ class PostProcessor:
             },
             {
                 "name": "axis_precision",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Axis precision in output"),
                 "default": 2,  # degrees
@@ -519,6 +629,7 @@ class PostProcessor:
             },
             {
                 "name": "feed_precision",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Feedrate precision in output"),
                 "default": 3,
@@ -529,6 +640,7 @@ class PostProcessor:
             },
             {
                 "name": "spindle_decimals",
+                "scope": SCOPE_MACHINE,
                 "type": "int",
                 "label": translate("CAM", "Spindle-speed precision in output"),
                 "default": 1,  # rpm
@@ -539,6 +651,7 @@ class PostProcessor:
             },
             {
                 "name": "f_for_rapid_moves",
+                "scope": SCOPE_MACHINE,
                 "type": "bool",
                 "label": translate("CAM", "Output F parameter for G0 (rapid)"),
                 "default": False,
@@ -563,7 +676,16 @@ class PostProcessor:
         - type: str - Property type: 'bool', 'int', 'float', 'str', 'text', 'choice', 'file'
         - label: str - Human-readable label for the UI
         - default: Any - Default value for the property
-        - runtime: Bool - True means only appears on the post-process Overview tab, written to .postprocessor_properties
+        - scope: str - Where the property may be edited.  One of:
+            SCOPE_MACHINE  ("machine")  machine editor only; suppressed in the
+                                        post-processing dialog
+            SCOPE_JOB      ("job")      machine editor sets the default; the
+                                        dialog's Options tab overrides it per run
+            SCOPE_RUN      ("run")      dialog Overview tab only; never shown in
+                                        the machine editor, never persisted
+            SCOPE_INTERNAL ("internal") never presented in any UI
+          Omitting the key means SCOPE_JOB.  The deprecated "runtime": True is
+          still honoured as an alias for SCOPE_RUN.
         - help: str - Help text describing the property
         - Additional type-specific keys:
           - For 'int'/'float': min, max, decimals (float only)
@@ -620,11 +742,11 @@ class PostProcessor:
             # Validate all jobs have the same machine (if Machine attribute exists)
             if hasattr(self._jobs[0], "Machine"):
                 machine_name = self._jobs[0].Machine
-                for job in self._jobs[1:]:
-                    if hasattr(job, "Machine") and job.Machine != machine_name:
+                for my_job in self._jobs[1:]:
+                    if hasattr(my_job, "Machine") and my_job.Machine != machine_name:
                         raise CAMAttributeError(
-                            f"All jobs must have the same machine '{machine_name}' (as in <{self._jobs[0].Label}>), saw '{job.Machine}'",
-                            job=job,
+                            f"All jobs must have the same machine '{machine_name}' (as in <{self._jobs[0].Label}>), saw '{my_job.Machine}'",
+                            job=my_job,
                         )
         else:
             self._jobs = [job]
@@ -1072,6 +1194,57 @@ class PostProcessor:
                                     gcodeheader.add_fixture(fixture_name)
 
         return gcodeheader
+
+    def _add_line_numbers(self, postables):
+        """Add N word if we are line-numbering
+        Subclasses are expected to render N as line-number (if present)
+            the default _convert_move() will do that
+        Numbering does not know about the subclass inserting/removing commands/lines,
+            so is NOT the physical line-number.
+
+        Subclasses can override to customize.
+        """
+        if not self.values["OUTPUT_LINE_NUMBERS"]:
+            return
+
+        Path.Log.track("Line numbering")
+
+        start = self.values["LINE_NUMBER_START"]
+        increment = self.values["LINE_INCREMENT"]
+
+        for section_name, sublist in postables:
+            # per section
+            line_number = itertools.count(start, increment)
+
+            for item in sublist:
+
+                # count 'str' lines, because it might be gcode/commands
+                if item.item_type == "str":
+                    str_lines = item.data["str"].count("\n")
+                    if item.data["str"] != "" and not item.data["str"].endswith("\n"):
+                        # count last line
+                        str_lines += 1
+                    for _ in range(0, str_lines):
+                        next(line_number)
+
+                # number Path.Command's
+                elif item.Path:
+                    new_commands = []
+                    for command in item.Path.Commands:
+
+                        # don't count comments
+                        if command.Name.startswith("("):
+                            new_commands.append(command)
+                            continue
+
+                        # Have to remake, because we change Parameters
+                        # _convert_move() does the LINE_NUMBER_PREFIX
+                        new_params = {"N": next(line_number)}
+                        new_params.update(command.Parameters)
+                        new_commands.append(
+                            Path.Command(command.Name, new_params, command.Annotations)
+                        )
+                    item.path = Path.Path(new_commands)
 
     def _expand_canned_cycles(self, postables):
         """Terminate canned drill cycles in postable paths.
@@ -1740,14 +1913,14 @@ class PostProcessor:
         args["data"].update(extra_data)
         return Postable(label=label, **args)
 
-    def _edit_command_list(self, postables: list[Postable], edit_fn):
+    def _edit_command_list(self, postables: list[Postable], edit_fn, all_postables=False):
         """in place edit commands in each item.Path in postables
         edit_fn(section_name, item, command, section_state) is called for each item
             section_state is a dict for you, you have to initialize your sub-state:
                 # e.g.
                 # section_state is reset to {} for each section
                 if "myfnname" not in section_state:
-                section_state["myfnname"] = { mystate:x }
+                    section_state["myfnname"] = { mystate:x }
              return: ( editflag, [items] )
                 editflag:
                 -1  insert before
@@ -1755,6 +1928,11 @@ class PostProcessor:
                  1  insert after
                 None    no action
             eliding None commands in the list
+        If all_postables==False, edit_fn() only gets called for a postable with .path (each .Path.Commands)
+        If all_postables==True, it's called like this (once per postable):
+            # Treat `item` as readonly, no edits allowed
+            _,_ = edit_fn(section_name, item, None, section_state)
+            # this let's you see other postables go by, and check their annotations and type
         """
         for section_name, sublist in postables:
             section_state = {}
@@ -1796,6 +1974,10 @@ class PostProcessor:
                             )
                     if new_commands:
                         item.path = Path.Path(new_commands)
+
+                elif all_postables:
+                    # let edit_fn() see it, but no edits
+                    edit_fn(section_name, item, None, section_state)
 
     def _edit_item_list(self, postables: list[Postable], edit_fn):
         """in place edit items in postables
@@ -1894,51 +2076,64 @@ class PostProcessor:
             new_sections.append((section_name, new_sublist))
         return new_sections
 
-    def _optimize_gcode(self, gcode_lines) -> str:
-        """Apply G-code optimizations and produce a final string.
-        Starting at self._optimize_start line (to skip prefix material)
-
-        Separates header comments from body, applies deduplication,
-        redundant-axis suppression, inefficient-move filtering, and
-        line numbering to the body only, then reassembles with the
-        configured line ending.
+    def _optimize_duplicates_doubles(self, postables):
+        """Remove the .Name if duplicate
+        Remove a .Parameter if duplicate
         """
-        from Path.Post.GcodeProcessingUtils import (
-            deduplicate_repeated_commands,
-            suppress_redundant_axes_words,
-            filter_inefficient_moves,
-            insert_line_numbers,
-        )
 
-        if not gcode_lines:
-            return ""
+        def edit(section_name, item, cmd, section_state):
 
-        num_header_lines = self._optimize_start
-        if num_header_lines is None:
-            # not a user-level CAM error
-            raise AttributeError(
-                "Internal: expected self._optimize_start, set by an item w/ {optimizable:True}"
-            )
+            # "previous" crosses postables, but not sections
+            if "previous" not in section_state:
+                section_state["previous"] = None
 
-        header_part = gcode_lines[:num_header_lines]
-        body_part = gcode_lines[num_header_lines:]
+            # A non-path.command postable: is a dedup barrier
+            if cmd is None:
+                section_state["previous"] = None
+                return None, None  # no-edit, result not used
 
-        if body_part:
-            if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
-                body_part = deduplicate_repeated_commands(body_part)
-            if not self.values["OUTPUT_DOUBLES"]:
-                body_part = suppress_redundant_axes_words(body_part)
+            else:
 
-        if body_part and self.values["FILTER_INEFFICIENT_MOVES"]:
-            body_part = filter_inefficient_moves(body_part)
+                # Modal Axis always runs on the original command, so "previous"
+                # accumulates the axis state under the command's real name.
+                # Deriving it from a name-stripped command instead makes every
+                # other duplicate compare unequal and re-emit its gcode word.
+                next_previous, axis_command = modal_axis(cmd, section_state["previous"])
+                new_command = axis_command if not self.values["OUTPUT_DOUBLES"] else cmd
 
-        if body_part and self.values["OUTPUT_LINE_NUMBERS"]:
-            start = self.values["LINE_NUMBER_START"]
-            increment = self.values["LINE_INCREMENT"]
-            body_part = insert_line_numbers(body_part, start=start, increment=increment)
+                # Modal GCode
+                if not self.values["OUTPUT_DUPLICATE_COMMANDS"] and new_command is not None:
+                    _, new_command = modal_gcode(new_command, section_state["previous"])
 
-        final_lines = header_part + body_part
-        return final_lines
+                section_state["previous"] = next_previous
+
+                # we always replace, even if we didn't edit the command
+                # can elide when new_command is None
+                return 0, [new_command]
+
+        self._edit_command_list(postables, edit, all_postables=True)
+
+    def _optimize_g0(self, postables):
+        """Collapse g0 chains, conservatively"""
+
+        def edit(section_name, item, section_state):
+            if not item.path:
+                return None, None
+
+            # "previous" crosses postables, but not sections
+            if "previous" not in section_state:
+                section_state["previous"] = None
+
+            # A non-path.command postable: is a dedup barrier
+            if cmd is None:
+                section_state["previous"] = None
+                return None, None  # no-edit, not used
+
+            else:
+                item.Path = Path.Path(list(collapse_g0(item.path.Commands)))
+                return None, None  # updated item.Path, in place
+
+        self._edit_item_list(self, postables, edit)
 
     def _expand_trailing_lines(self, postables) -> None:
         """Append post_job and postamble lines, to each section."""
@@ -1996,12 +2191,9 @@ class PostProcessor:
 
                     self._operation = None  # operation `item` is over
 
-                # ===== STAGE 4: G-CODE OPTIMIZATION =====
-                gcode_string = self._optimize_gcode(gcode_lines)
-
-                if gcode_string:
+                if gcode_lines:
                     # one place for end-of-line_chars
-                    gcode_string = "\n".join(gcode_string)
+                    gcode_string = "\n".join(gcode_lines)
                     line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
                     if line_ending != "\n":
                         gcode_string = gcode_string.replace("\n", line_ending)
@@ -2046,8 +2238,8 @@ class PostProcessor:
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
         postables = self._expand_pre_item(postables)
 
-        self._expand_translate_drill_cycles(postables)
         self._expand_canned_cycles(postables)
+        self._expand_translate_drill_cycles(postables)
         self._expand_split_arcs(postables)
         self._expand_spindle_wait(postables)
         self._expand_coolant_delay(postables)
@@ -2061,8 +2253,15 @@ class PostProcessor:
         self._expand_tool_change(postables)
         self._expand_rotary_move(postables)
 
-        # must be last
+        # must be last expansion
         self._expand_bcnc_postamble(postables)
+
+        # must be after all expansions
+        self._optimize_duplicates_doubles(postables)
+
+        # Add line-numbers to all Path.Command's (if option is on)
+        # must be last
+        self._add_line_numbers(postables)
 
         Path.Log.debug(postables)
 
@@ -2335,8 +2534,6 @@ class PostProcessor:
         Returns:
             dict: Squawk dictionary compatible with CAMSanity
         """
-        from datetime import datetime
-
         # Map to same icons used by CAMSanity
         icon_map = {
             "TIP": "Sanity_Bulb",
@@ -2346,7 +2543,7 @@ class PostProcessor:
         }
 
         return {
-            "Date": datetime.now().strftime("%c"),
+            "Date": datetime.datetime.now().strftime("%c"),
             "Operator": self.__class__.__name__,
             "Note": note,
             "squawkType": squawk_type,
@@ -2389,6 +2586,10 @@ class PostProcessor:
                 return super()._convert_drill_cycle(command)
         """
 
+        # Pass through G-code as-is
+        if "as-is" in command.Annotations:
+            return command.Annotations[Constants.ANNOT_AS_IS]
+
         # Validate command is supported
         supported = self.values.get(
             "SUPPORTED_COMMANDS",
@@ -2400,8 +2601,20 @@ class PostProcessor:
             and not command.Name.startswith("T")
             and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
+            # Try to help them if it is Custom op
+            extra = ""
+            if (
+                self._operation
+                and getattr(self._operation, "source", None)
+                and getattr(self._operation.source, "Proxy")
+                and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
+            ):
+                extra = translate(
+                    "CAM",
+                    " (in the Custom op, uncheck Post Process Output, or put '!' in front of specific command)",
+                )
             raise CAMValueError(
-                f"Unsupported command: {command.Name}",
+                f"Unsupported command: {command.Name}{extra}",
                 job=self._job,
                 operation=self._operation,
                 command=command,
@@ -2532,7 +2745,7 @@ class PostProcessor:
         else:
             return f"{block_delete_string}{comment_symbol} {comment_text}"  # FIXME: no extra space
 
-    def format_parameter(self, param_name, value):
+    def format_parameter(self, param_name, value, command_name=None):
 
         def _convert_axis_param(value):
             # Apply unit conversion based on machine units setting
@@ -2570,6 +2783,14 @@ class PostProcessor:
             """Format integer parameter."""
             return str(int(value))
 
+        def format_p_param(value):
+            """Format P according to what it means for this command."""
+            if command_name in Constants.GCODE_P_IS_DWELL:
+                # A dwell keeps the axis precision but must not be unit converted
+                precision = self.values["AXIS_PRECISION"]
+                return f"{value:.{precision}f}"
+            return format_axis_param(value)
+
         # Parameter type mappings
         param_formatters = {
             # Axis parameters
@@ -2591,8 +2812,8 @@ class PostProcessor:
             # Feed and spindle
             "F": format_feed_param,
             "S": format_spindle_param,
-            # P parameter - use axis formatting to support decimal values (e.g., G4 P2.5)
-            "P": format_axis_param,
+            # P is a dwell on G4 and the canned cycles, a distance on G5/G64
+            "P": format_p_param,
             # Integer parameters
             "D": format_int_param,
             "H": format_int_param,
@@ -2611,7 +2832,6 @@ class PostProcessor:
 
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Extract command components
         command_name = command.Name
@@ -2623,7 +2843,17 @@ class PostProcessor:
 
         # Build command line
         command_line = []
-        command_line.append(command_name)
+
+        # line numbers as prefix
+        if params.get("N", None) is not None:
+            prefix = self.values["LINE_NUMBER_PREFIX"]
+            command_line.append(f"{prefix}{ int(params['N']):d}")
+
+        # A modal-stripped command has no name. Appending it anyway leaves an
+        # empty leading element, which format_command_line renders as a leading
+        # separator: "G1 X1.0 Y2.0" followed by " X3.0 Y4.0".
+        if command_name:
+            command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
         parameter_order = self.values.get(
@@ -2631,6 +2861,18 @@ class PostProcessor:
             # FIXME: dry
             ["X", "Y", "Z", "A", "B", "C", "F", "I", "J", "K", "R", "Q", "P", "S", "T"],
         )
+
+        # Suppress commands where all parameters were removed by duplicate suppression
+        # or parameter_order exclusion (e.g., Z suppression for wire EDM).
+        # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
+        if (
+            command_name
+            in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC + Constants.GCODE_DWELL
+        ):
+            non_N_params = {**params}
+            non_N_params.pop("N", None)
+            if len(non_N_params) == 0:
+                return None
 
         for parameter in parameter_order:
             if parameter in params:
@@ -2650,13 +2892,12 @@ class PostProcessor:
                 ):
                     continue  # no F for G0, or the F is 0.0 which should be skipped too
 
-                formatted_value = self.format_parameter(parameter, current_value)
+                formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
 
-        # Suppress commands where all parameters were removed by duplicate suppression
-        # or parameter_order exclusion (e.g., Z suppression for wire EDM).
-        # A bare move (G0, G1, G2, G3) or dwell (G4) with no parameters is meaningless.
-        if params and len(command_line) == 1:
+        # Nothing left to emit, e.g. a modal command whose parameters were all
+        # suppressed as duplicates.
+        if not command_line:
             return None
 
         # Format the command line

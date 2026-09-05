@@ -22,10 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <numbers>
+#include <optional>
+#include <ranges>
+#include <utility>
+#include <BRepAdaptor_Surface.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pln.hxx>
-#include <utility>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
@@ -33,9 +40,11 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Translation.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureRevolved.h"
@@ -66,19 +75,100 @@ bool isLegacyTwoAngles(const std::string& method)
     return method == "?TwoAngles" || method == "TwoAngles";
 }
 
+bool getProfileOrbit(const TopoShape& profileShape, const gp_Ax1& axis, gp_Pnt& center, gp_Vec& radial)
+{
+    Base::Vector3d profileCenter;
+    if (!profileShape.getCenterOfGravity(profileCenter)) {
+        return false;
+    }
+
+    const gp_Pnt profilePoint = Base::convertTo<gp_Pnt>(profileCenter);
+    const gp_Vec axisVector(axis.Direction());
+    const double parameter = gp_Vec(axis.Location(), profilePoint).Dot(axisVector);
+    center = axis.Location();
+    center.Translate(axisVector * parameter);
+    radial = gp_Vec(center, profilePoint);
+    return radial.Magnitude() > Precision::Confusion();
+}
+
+std::optional<double> getPlanarStartReferenceAngle(
+    const TopoShape& profileShape,
+    const TopoShape& referenceShape,
+    const gp_Ax1& axis
+)
+{
+    TopoShape referenceFace = referenceShape;
+    if (referenceFace.shapeType(true) != TopAbs_FACE) {
+        referenceFace = referenceFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    BRepAdaptor_Surface surface(TopoDS::Face(referenceFace.getShape()));
+    if (surface.GetType() != GeomAbs_Plane) {
+        return std::nullopt;
+    }
+
+    gp_Pnt orbitCenter;
+    gp_Vec radial;
+    if (!getProfileOrbit(profileShape, axis, orbitCenter, radial)) {
+        return std::nullopt;
+    }
+
+    const gp_Pln plane = surface.Plane();
+    const gp_Vec normal(plane.Axis().Direction());
+    const gp_Vec tangent = gp_Vec(axis.Direction()).Crossed(radial);
+    const double cosineCoefficient = radial.Dot(normal);
+    const double sineCoefficient = tangent.Dot(normal);
+    const double constant = gp_Vec(plane.Location(), orbitCenter).Dot(normal);
+    const double amplitude = std::hypot(cosineCoefficient, sineCoefficient);
+
+    if (amplitude <= Precision::Confusion()) {
+        if (std::fabs(constant) <= Precision::Confusion()) {
+            return 0.0;
+        }
+        return std::nullopt;
+    }
+
+    const double solution = -constant / amplitude;
+    if (solution < -1.0 - Precision::Confusion() || solution > 1.0 + Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    const double phase = std::atan2(sineCoefficient, cosineCoefficient);
+    const double delta = std::acos(std::clamp(solution, -1.0, 1.0));
+    return std::min(normalizeAngleRadians(phase + delta), normalizeAngleRadians(phase - delta));
+}
+
 }  // namespace
 
 Revolved::Revolved()
 {
+    ADD_PROPERTY_TYPE(StartType, (0L), "Start", App::Prop_None, "How to define the revolution start");
+    StartType.setEnums(StartTypesEnums);
+    ADD_PROPERTY_TYPE(
+        StartOffset,
+        (0.0),
+        "Start",
+        App::Prop_None,
+        "Angular offset from the profile or selected start reference"
+    );
+    ADD_PROPERTY_TYPE(
+        StartReference,
+        (nullptr),
+        "Start",
+        App::Prop_None,
+        "Face, plane or sketch used as the start reference"
+    );
     Angle.setConstraints(&floatAngle);
     Angle2.setConstraints(&floatAngle);
+    StartOffset.setConstraints(&floatAngle);
 }
 
 short Revolved::mustExecute() const
 {
     if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
         || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched() || UpToFace.isTouched()
-        || UpToFace2.isTouched() || Angle.isTouched() || Angle2.isTouched()) {
+        || UpToFace2.isTouched() || Angle.isTouched() || Angle2.isTouched() || StartType.isTouched()
+        || StartOffset.isTouched() || StartReference.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -209,9 +299,8 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
         );
     }
 
-    const Base::Vector3d b = Base.getValue();
-    gp_Dir dir(v.x, v.y, v.z);
-    gp_Pnt pnt(b.x, b.y, b.z);
+    gp_Dir dir = Base::convertTo<gp_Dir>(v);
+    gp_Pnt pnt = Base::convertTo<gp_Pnt>(Base.getValue());
     positionByPrevious();
     auto invObjLoc = getLocation().Inverted();
     pnt.Transform(invObjLoc.Transformation());
@@ -221,6 +310,19 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     if (Reversed.getValue()) {
         dir.Reverse();
     }
+
+    const gp_Ax1 revolutionAxis(pnt, dir);
+    const char* startType = StartType.getValueAsString();
+    const double startAngle = std::strcmp(startType, "Profile plane") == 0 ? 0.0
+        : std::strcmp(startType, "Offset") == 0 ? Base::toRadians(StartOffset.getValue())
+                                                : getStartReferenceAngle(
+                                                      sketchshape,
+                                                      StartReference,
+                                                      revolutionAxis,
+                                                      Base::toRadians(StartOffset.getValue()),
+                                                      invObjLoc
+                                                  );
+    sketchshape = rotateProfileToStart(sketchshape, revolutionAxis, startAngle);
 
     // Check distance between sketchshape and axis - to avoid failures and crashes
     TopExp_Explorer xp;
@@ -635,6 +737,98 @@ bool Revolved::suggestReversed()
     return suggestReversedAngle(angle);
 }
 
+double Revolved::getStartOffset() const
+{
+    const char* startType = StartType.getValueAsString();
+    if (std::strcmp(startType, "Profile plane") == 0) {
+        return 0.0;
+    }
+    if (std::strcmp(startType, "Offset") == 0) {
+        return StartOffset.getValue();
+    }
+
+    const Base::Vector3d axisBase = Base.getValue();
+    const Base::Vector3d axisDirection = Axis.getValue();
+    gp_Ax1 axis(Base::convertTo<gp_Pnt>(axisBase), Base::convertTo<gp_Dir>(axisDirection));
+    if (Reversed.getValue()) {
+        axis.Reverse();
+    }
+
+    TopLoc_Location identity;
+    return Base::toDegrees(getStartReferenceAngle(
+        getTopoShapeVerifiedFace(),
+        StartReference,
+        axis,
+        Base::toRadians(StartOffset.getValue()),
+        identity
+    ));
+}
+
+double Revolved::getStartReferenceAngle(
+    const TopoShape& profileShape,
+    const App::PropertyLinkSub& reference,
+    const gp_Ax1& axis,
+    double offset,
+    const TopLoc_Location& invObjLoc
+) const
+{
+    if (!reference.getValue()) {
+        return 0.0;
+    }
+
+    TopoShape referenceShape;
+    const auto& subValues = reference.getSubValues();
+    if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
+        if (!subValues.empty()) {
+            const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
+                | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
+            referenceShape = Part::Feature::getTopoShape(
+                reference.getValue(),
+                options,
+                subValues.front().c_str()
+            );
+        }
+        if (!referenceShape.hasSubShape(TopAbs_FACE)) {
+            referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+        }
+    }
+    else {
+        getUpToFaceFromLinkSub(referenceShape, reference);
+    }
+    referenceShape.move(invObjLoc);
+
+    if (const auto angle = getPlanarStartReferenceAngle(profileShape, referenceShape, axis)) {
+        return *angle + offset;
+    }
+
+    gp_Pnt orbitCenter;
+    gp_Vec radial;
+    if (!getProfileOrbit(profileShape, axis, orbitCenter, radial)) {
+        throw Base::ValueError("Revolved: Cannot determine the profile path around the axis");
+    }
+
+    const auto faces = Part::findAllFacesCutBy(referenceShape, profileShape, axis);
+    if (faces.empty()) {
+        throw Base::ValueError("Revolved: Start reference does not intersect the profile path");
+    }
+
+    const auto nearest = std::ranges::min_element(faces, {}, &Part::cutTopoShapeFaces::distsq);
+    return nearest->distsq / radial.Magnitude() + offset;
+}
+
+TopoShape Revolved::rotateProfileToStart(const TopoShape& profileShape, const gp_Ax1& axis, double angle)
+{
+    if (std::fabs(angle) < Precision::Angular()) {
+        return profileShape;
+    }
+
+    TopoShape result = profileShape.makeElementCopy();
+    gp_Trsf transform;
+    transform.SetRotation(axis, angle);
+    result.move(transform);
+    return result;
+}
+
 void Revolved::updateAxis()
 {
     App::DocumentObject* pcReferenceAxis = ReferenceAxis.getValue();
@@ -768,6 +962,10 @@ void Revolved::updateProperties()
     Reversed.setReadOnly(isSymmetricAngleLike);
     UpToFace.setReadOnly(!isUpToFaceEnabled);
     UpToFace2.setReadOnly(!isUpToFace2Enabled);
+
+    const bool isStartOffsetEnabled = std::strcmp(StartType.getValueAsString(), "Profile plane") != 0;
+    StartOffset.setReadOnly(!isStartOffsetEnabled);
+    StartReference.setReadOnly(std::strcmp(StartType.getValueAsString(), "Reference") != 0);
 }
 
 void Revolved::onDocumentRestored()
