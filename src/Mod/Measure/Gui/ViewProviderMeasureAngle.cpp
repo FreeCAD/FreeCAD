@@ -59,6 +59,7 @@
 #include <Inventor/nodes/SoScale.h>
 
 #include <Precision.hxx>
+#include <Standard_Failure.hxx>
 #include <Geom_Curve.hxx>
 #include <Geom_Line.hxx>
 #include <gp_Vec.hxx>
@@ -159,10 +160,13 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec point1 = loc1;
         gp_Vec midPointProjection = newPoint2 - point1;
         double distance = midPointProjection.Magnitude();
-        midPointProjection.Normalize();
-        midPointProjection *= distance / 2.0;
-
-        gp_Vec origin = point1 + midPointProjection;
+        gp_Vec origin = point1;
+        // Coaxial faces report the same location, leaving no direction to halve.
+        if (distance >= Precision::Confusion()) {
+            midPointProjection.Normalize();
+            midPointProjection *= distance / 2.0;
+            origin = point1 + midPointProjection;
+        }
 
         // yaxis should be the same as vector1, but doing this to eliminate any potential slop from
         // using precision::angular. If lines are colinear and we have no plane, we can't establish
@@ -582,6 +586,13 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
         return;
     }
+    catch (const Standard_Failure& e) {
+        Base::Console().error(
+            "Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
+            e.GetMessageString()
+        );
+        return;
+    }
 
     // imaginary origin case
     if (obj->isImgOrigin()) {
@@ -647,6 +658,13 @@ void ViewProviderMeasureAngle::positionAnno([[maybe_unused]] const Measure::Meas
         }
         catch (const Base::Exception& e) {
             Base::Console().error("Error in ViewProviderMeasureAngle::positionAnno: %s\n", e.what());
+            return;
+        }
+        catch (const Standard_Failure& e) {
+            Base::Console().error(
+                "Error in ViewProviderMeasureAngle::positionAnno: %s\n",
+                e.GetMessageString()
+            );
             return;
         }
         SbVec3f localLoc1;
