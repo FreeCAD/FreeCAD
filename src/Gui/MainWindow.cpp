@@ -1887,6 +1887,8 @@ void MainWindow::delayedStartup()
         return;
     }
 
+    Q_EMIT guiInitialized();
+
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
