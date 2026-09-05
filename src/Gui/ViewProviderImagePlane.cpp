@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <sstream>
 #include <QAction>
 #include <QFileInfo>
 #include <QImage>
+#include <QImageReader>
 #include <QMenu>
 #include <QString>
 #include <QSvgRenderer>
@@ -36,7 +36,6 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
-
 
 #include <App/Document.h>
 #include <App/ImagePlane.h>
@@ -234,8 +233,13 @@ void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 
 QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
 {
+    int limit = QImageReader::allocationLimit();
+    QImageReader::setAllocationLimit(0);
+
     QImage img;
     img.load(QString::fromUtf8(fileName));
+
+    QImageReader::setAllocationLimit(limit);
     return img;
 }
 
