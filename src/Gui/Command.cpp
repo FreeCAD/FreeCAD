@@ -1030,7 +1030,10 @@ const char* Command::endCmdHelp()
 void Command::applyCommandData(const char* context, Action* action)
 {
     action->setText(QCoreApplication::translate(context, getMenuText()));
-    action->setToolTip(QCoreApplication::translate(context, getToolTipText()));
+    action->setToolTip(
+        QCoreApplication::translate(context, getToolTipText()),
+        QCoreApplication::translate(context, getMenuText())
+    );
     action->setWhatsThis(QCoreApplication::translate(context, getWhatsThis()));
     if (sStatusTip) {
         action->setStatusTip(QCoreApplication::translate(context, getStatusTip()));
