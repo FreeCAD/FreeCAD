@@ -389,6 +389,7 @@ def select(op):
     opsel["Slot"] = slotselect
     opsel["RotarySurface"] = surfaceselect
     opsel["Surface"] = surfaceselect
+    opsel["PlanarSurface"] = surfaceselect
     opsel["Waterline"] = surfaceselect
     opsel["Adaptive"] = adaptiveselect
     opsel["Vcarve"] = vcarveselect
