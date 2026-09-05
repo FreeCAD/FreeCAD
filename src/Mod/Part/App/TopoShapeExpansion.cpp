@@ -2308,8 +2308,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                              ),
                              {}}
                         );
-
-                        continue;
                     }
 
                     // Use copies here, because if we store a reference to `modified`, then call the
