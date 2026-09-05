@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
 # SPDX-FileNotice: Part of the FreeCAD project.
@@ -28,18 +27,21 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = ""
 
 import FreeCAD
-from PySide import QtCore
 import Path
 import Path.Op.Base as PathOp
 
-import Path.Base.Generator.spiral_facing as spiral_facing
-import Path.Base.Generator.facing_common as facing_common
-import Path.Base.Generator.zigzag_facing as zigzag_facing
-import Path.Base.Generator.directional_facing as directional_facing
-import Path.Base.Generator.bidirectional_facing as bidirectional_facing
-import Path.Base.Generator.linking as linking
-import PathScripts.PathUtils as PathUtils
-import Path.Base.FeedRate as FeedRate
+from Path.Base import FeedRate
+from Path.Base.Generator import (
+    bidirectional_facing,
+    directional_facing,
+    facing_common,
+    linking,
+    spiral_facing,
+    zigzag_facing,
+)
+
+from PathScripts import PathUtils
+from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -84,7 +86,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
     def initOpProperties(self, obj, warn=False):
         """initOpProperties(obj) ... create operation specific properties"""
         Path.Log.track()
-        self.addNewProps = list()
+        self.addNewProps = []
 
         for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
@@ -108,14 +110,21 @@ class ObjectMillFacing(PathOp.ObjectOp):
     def onChanged(self, obj, prop):
         """onChanged(obj, prop) ... Called when a property changes"""
         if prop == "StepOver" and hasattr(obj, "StepOver"):
-            # Validate StepOver is between 0 and 100 percent
-            if obj.StepOver < 0:
-                obj.StepOver = 0
+            # Validate StepOver is between 1 and 100 percent
+            if obj.StepOver < 1:
+                obj.StepOver = 1
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
+        if prop == "ClearingPattern":
+            self.opUpdateEditorModes(obj)
+
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def opUpdateEditorModes(self, obj):
+        mode = 2 if obj.ClearingPattern == "Spiral" else 0
+        obj.setEditorMode("PassExtension", mode)
 
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""
@@ -223,7 +232,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -326,14 +335,17 @@ class ObjectMillFacing(PathOp.ObjectOp):
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        # offset with intersection joins
-        boundary_wires = [w.makeOffset2D(obj.StockExtension.Value, 2) for w in boundary_wires]
-
         # Convert boundary to a rectangular polygon aligned to the cut angle.
         # Stock faces may have curved edges (e.g. cylindrical stock) and all
         # facing strategies assume a rectangular boundary.
         cut_angle = getattr(obj.Angle, "Value", obj.Angle)
         boundary_wire = facing_common.get_angled_polygon(boundary_wires, cut_angle)
+
+        # offset with intersection joins
+        offsetVal = obj.StockExtension.Value
+        if offsetVal < 0:
+            offsetVal = max(offsetVal, -0.5 * min(e.Length for e in boundary_wire.Edges))
+        boundary_wire = boundary_wire.makeOffset2D(offsetVal, 2)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -461,7 +473,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     # Now append the base commands, skipping the generator's initial positioning move
                     for i, cmd in enumerate(base_commands):
                         # Skip the first move if it only positions at the start point
-                        if i == first_move_idx:
+                        if i <= first_move_idx:
                             # If this first move has only XY(Z) to the start point, skip it because we preambled it
                             pass
                         else:
