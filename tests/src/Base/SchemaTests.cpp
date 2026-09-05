@@ -653,7 +653,7 @@ TEST_F(SchemaTest, round_trip_test)
         Unit::Work,
         Unit::Power,
         Unit::Moment,
-        Unit::Inertia,
+        Unit::MassMomentOfInertia,
         Unit::SpecificEnergy,
         Unit::ThermalConductivity,
         Unit::ThermalExpansionCoefficient,
@@ -824,7 +824,7 @@ TEST_F(SchemaTest, sweep_internal)
          "1000 m^2",
          "1 km^2",
          /* default */ "1e+06 km^2"},
-        // Inertia
+        // MassMomentOfInertia
         {"1 kg*mm^2", "10 kg*mm^2", "100 kg*mm^2"},
         // Volume
         {"1 mm^3",
@@ -1252,7 +1252,7 @@ TEST_F(SchemaTest, sweep_mks)
          "100 mF",
          "1 F",
          /* default */ "1e+06 F"},
-        // Inertia
+        // MassMomentOfInertia
         {"1 kg*m^2", "10 kg*m^2", "100 kg*m^2"},
     });
 }
@@ -1298,7 +1298,7 @@ TEST_F(SchemaTest, sweep_imperial)
          "100 psi",
          "1 ksi",
          /* default */ "1e+06 psi"},
-        // Inertia
+        // MassMomentOfInertia
         {"1 lb*in^2", "10 lb*in^2", "100 lb*in^2"},
     });
 }
