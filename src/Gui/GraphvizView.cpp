@@ -46,105 +46,25 @@
 #include "FileDialog.h"
 #include "MainWindow.h"
 
-
+#define USER_PREF "User parameter:BaseApp/Preferences/"
 using namespace Gui;
 namespace sp = std::placeholders;
+enum class GraphvizView::ProcessType : uint8_t
+{
+    None,
+    View,
+    Export,
+};
+enum class GraphvizView::PathType : uint8_t
+{
+    Stored,     // Read from properties
+    AppPath,    // The dir containing the running executable
+    Default,    // Read via PATH environmnet variable
+    Selection,  // Select path with file dialog
+};
 
 namespace Gui
 {
-
-/**
- * @brief The GraphvizWorker class
- *
- * Implements a QThread class that does the actual conversion from dot to
- * svg. All critical communication is done using queued signals.
- *
- */
-
-class GraphvizWorker: public QThread
-{
-    Q_OBJECT
-public:
-    explicit GraphvizWorker(QObject* parent = nullptr)
-        : QThread(parent)
-    {}
-
-    ~GraphvizWorker() override
-    {
-        dotProc.moveToThread(this);
-        unflattenProc.moveToThread(this);
-    }
-
-    void setData(const QByteArray& data)
-    {
-        str = data;
-    }
-
-    void startThread()
-    {
-        // This doesn't actually run a thread but calls the function
-        // directly in the main thread.
-        // This is needed because embedding a QProcess into a QThread
-        // causes some problems with Qt5.
-        run();
-        // Can't use the finished() signal of QThread
-        Q_EMIT emitFinished();
-    }
-
-    void run() override
-    {
-        QByteArray preprocessed = str;
-
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/DependencyGraph"
-        );
-        if (hGrp->GetBool("Unflatten", true)) {
-            // Write data to unflatten process
-            unflattenProc.write(str);
-            unflattenProc.closeWriteChannel();
-            // no error handling: unflatten is optional
-            unflattenProc.waitForFinished();
-            QByteArray unflatPreproc = unflattenProc.readAll();
-            if (!unflatPreproc.isEmpty()) {
-                preprocessed = unflatPreproc;
-            }
-        }
-        else {
-            unflattenProc.closeWriteChannel();
-            unflattenProc.waitForFinished();
-        }
-
-        dotProc.write(preprocessed);
-        dotProc.closeWriteChannel();
-        if (!dotProc.waitForFinished()) {
-            Q_EMIT error();
-            quit();
-        }
-
-        // Emit result; it will get queued for processing in the main thread
-        Q_EMIT svgFileRead(dotProc.readAll());
-    }
-
-    QProcess* dotProcess()
-    {
-        return &dotProc;
-    }
-
-    QProcess* unflattenProcess()
-    {
-        return &unflattenProc;
-    }
-
-Q_SIGNALS:
-    void svgFileRead(const QByteArray& data);
-    void error();
-    void emitFinished();
-
-private:
-    QProcess dotProc, unflattenProc;
-    QByteArray str, flatStr;
-};
-
 // Simple wrapper around QGraphicsView to make panning possible
 class GraphvizGraphicsView final: public QGraphicsView
 {
@@ -233,7 +153,6 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::GraphvizView, Gui::MDIView)  // NOLINT
 GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
     : MDIView(nullptr, parent)
     , doc(_doc)
-    , nPending(0)
 {
     // Create scene
     scene = new QGraphicsScene();
@@ -250,163 +169,213 @@ GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
     zoomer->set_modifiers(Qt::NoModifier);
     view->show();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "View");
     bool on = hGrp->GetBool("InvertZoom", true);
     zoomer->set_zoom_inverted(on);
-
-    // Set central widget to view
     setCentralWidget(view);
 
-    // Create worker thread
-    thread = new GraphvizWorker(this);
-    connect(thread, &GraphvizWorker::emitFinished, this, &GraphvizView::done);
-    connect(thread, &GraphvizWorker::finished, this, &GraphvizView::done);
-    connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
-    connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
+    dotProc = new QProcess(this);
+    unflattenProc = new QProcess(this);
+    connect(dotProc, &QProcess::started, this, &GraphvizView::convertDotStarted);
+    connect(dotProc, &QProcess::errorOccurred, this, &GraphvizView::convertDotError);
+    connect(dotProc, &QProcess::finished, this, &GraphvizView::convertDotFinished);
+    connect(unflattenProc, &QProcess::started, this, &GraphvizView::convertUnflattenStarted);
+    connect(unflattenProc, &QProcess::errorOccurred, this, &GraphvizView::convertUnflattenError);
+    connect(unflattenProc, &QProcess::finished, this, &GraphvizView::convertUnflattenFinished);
 
     // NOLINTBEGIN
     //  Connect signal from document
-    recomputeConnection = _doc.signalRecomputed.connect(
-        std::bind(&GraphvizView::updateSvgItem, this, sp::_1)
-    );
-    undoConnection = _doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
-    redoConnection = _doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    recomputeConnection = _doc.signalRecomputed.connect(std::bind(&GraphvizView::updateSvgItem, this));
+    undoConnection = _doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this));
+    redoConnection = _doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this));
     // NOLINTEND
 
-    updateSvgItem(_doc);
+    updateSvgItem();
 }
 
 GraphvizView::~GraphvizView()
 {
+    unflattenProc->disconnect();
+    dotProc->disconnect();
     delete scene;
     delete view;
 }
 
-void GraphvizView::updateSvgItem(const App::Document& doc)
+QString GraphvizView::getDirPath()
 {
-    nPending++;
+    if (pathType == PathType::Stored) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
+        if (auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str()); !path.isEmpty()) {
+            return path;
+        }
+        pathType = PathType::AppPath;
+    }
+    if (pathType == PathType::AppPath) {
+        return QCoreApplication::applicationDirPath();
+    }
+    if (pathType == PathType::Default) {
+        return "";  // Empty, non-null, string
+    }
+    auto msg = QStringLiteral(
+                   "<html><head/><body>%1 "
+                   "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2</a>"
+                   "<p>%3</p></body></html>"
+    )
+                   .arg(
+                       tr("Graphviz couldn't be found on your system."),
+                       tr("Read more about it here."),
+                       tr("Do you want to specify its installation path if it's already installed?")
+                   );
+    using MB = QMessageBox;
+    if (MB::warning(Gui::getMainWindow(), tr("Graphviz not found"), msg, MB::Yes, MB::No) == MB::Yes) {
+        return QFileDialog::getExistingDirectory(Gui::getMainWindow(), tr("Graphviz installation path"));
+    }
+    return QString();  // Null string
+}
 
-    // Skip if thread is working now
-    if (nPending > 1) {
+QString joinPath(const QString& path, const QString& file)
+{
+    return path.isEmpty() ? file : QDir(path).filePath(file);
+}
+
+void GraphvizView::convert(ProcessType type, const QString& exportType, const QString& exportPath)
+{
+    using enum ProcessType;
+    pendingMask |= 1 << (int)type;
+    pendingExportType = exportType;
+    pendingExportPath = exportPath;
+    if (running != None) {
         return;
     }
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Paths"
-    );
-    QProcess* dotProc = thread->dotProcess();
-    QProcess* flatProc = thread->unflattenProcess();
-    QStringList args, flatArgs;
-    // TODO: Make -Granksep flag value variable depending on number of edges,
-    // the downside is that the value affects all subgraphs
-    args << QLatin1String("-Granksep=2") << QLatin1String("-Tsvg");
-    if (!App::GetApplication().isFineGrainedRecomputeEnabled()) {
-        args << QLatin1String("-Gsplines=ortho") << QLatin1String("-Goutputorder=edgesfirst");
-    }
-    flatArgs << QLatin1String("-c2 -l2");
-    auto dot = QStringLiteral("dot");
-    auto unflatten = QStringLiteral("unflatten");
-    auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
-    bool pathChanged = false;
-    QDir dir;
-    if (!path.isEmpty()) {
-        dir = QDir(path);
-        dot = dir.filePath(QStringLiteral("dot"));
-        unflatten = dir.filePath(QStringLiteral("unflatten"));
-    }
-    dotProc->setEnvironment(QProcess::systemEnvironment());
-    flatProc->setEnvironment(QProcess::systemEnvironment());
-    do {
-        flatProc->start(unflatten, flatArgs);
-        bool value = flatProc->waitForStarted();
-        Q_UNUSED(value);  // quieten code analyzer
-        dotProc->start(dot, args);
-        if (!dotProc->waitForStarted()) {
-            int ret = QMessageBox::warning(
-                Gui::getMainWindow(),
-                tr("Graphviz not found"),
-                QStringLiteral(
-                    "<html><head/><body>%1 "
-                    "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2"
-                    "</a><p>%3</p></body></html>"
-                )
-                    .arg(
-                        tr("Graphviz couldn't be found on your system."),
-                        tr("Read more about it here."),
-                        tr("Do you want to specify its installation path if it's already installed?")
-                    ),
-                QMessageBox::Yes,
-                QMessageBox::No
-            );
-            if (ret == QMessageBox::No) {
-                disconnectSignals();
-                return;
-            }
-            path = QFileDialog::getExistingDirectory(
-                Gui::getMainWindow(),
-                tr("Graphviz installation path")
-            );
-            if (path.isEmpty()) {
-                disconnectSignals();
-                return;
-            }
-            else {
-                dir = QDir(path);
-                dot = dir.filePath(QStringLiteral("dot"));
-                unflatten = dir.filePath(QStringLiteral("unflatten"));
-                pathChanged = true;
+    for (int t = (int)Export; running == None && t >= (int)View; t--) {
+        if ((pendingMask & (1 << t)) != 0) {
+            pendingMask ^= (1 << t);
+            running = (ProcessType)t;
+            if (running == ProcessType::Export) {
+                runningExportType = pendingExportType;
+                runningExportPath = pendingExportPath;
             }
         }
-        else {
-            if (pathChanged) {
-                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
-            }
-            break;
-        }
-    } while (true);
+    }
+    if (running == None) {
+        return;
+    }
 
     // Create graph in dot format
     std::stringstream stream;
     doc.exportGraphviz(stream);
-    graphCode = stream.str();
+    graphCode = QByteArray::fromStdString(stream.str());
 
-    // Update worker thread, and start it
-    thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
-    thread->startThread();
+    convertDotStart();
 }
-
-void GraphvizView::svgFileRead(const QByteArray& data)
+void GraphvizView::convertDotStart()
 {
-    // Update renderer with new SVG file, and give message if something went wrong
-    if (!data.isEmpty() && renderer->load(data)) {
-        svgItem->setSharedRenderer(renderer);
+    QStringList dotArgs;
+    if (running == ProcessType::Export) {
+        dotArgs << QStringLiteral("-T%1").arg(runningExportType);
     }
     else {
-        QMessageBox::warning(
-            getMainWindow(),
-            tr("Graphviz failed"),
-            tr("Graphviz failed to create an image file")
-        );
-        disconnectSignals();
+        // TODO: Make -Granksep flag value variable depending on number of edges,
+        // the downside is that the value affects all subgraphs
+        dotArgs << QLatin1String("-Granksep=2") << QLatin1String("-Tsvg");
+        if (!App::GetApplication().isFineGrainedRecomputeEnabled()) {
+            dotArgs << QLatin1String("-Gsplines=ortho") << QLatin1String("-Goutputorder=edgesfirst");
+        }
+    }
+    if (path.isNull()) {
+        path = getDirPath();
+        if (path.isNull()) {
+            disconnectSignals();
+            return;
+        }
+    }
+    dotProc->setEnvironment(QProcess::systemEnvironment());
+    dotProc->start(joinPath(path, QStringLiteral("dot")), dotArgs);
+}
+void GraphvizView::convertDotStarted()
+{
+    if (pathType == PathType::Selection) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
+        hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+    }
+    auto depGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "DependencyGraph");
+    if (depGrp->GetBool("Unflatten", true)) {
+        convertUnflattenStart();
+    }
+    else {
+        convertDotWrite();
     }
 }
-
-void GraphvizView::error()
+void GraphvizView::convertDotError()
 {
-    // If the worker fails for some reason, stop giving it more data later
+    if (dotProc->error() == QProcess::FailedToStart) {
+        path = QString();
+        pathType = (PathType)((int)pathType + 1);
+        convertDotStart();
+        return;
+    }
     disconnectSignals();
 }
-
-void GraphvizView::done()
+void GraphvizView::convertUnflattenStart()
 {
-    nPending--;
-    if (nPending > 0) {
-        nPending = 0;
-        updateSvgItem(doc);
-        thread->startThread();
+    unflattenProc->setEnvironment(QProcess::systemEnvironment());
+    unflattenProc->start(joinPath(path, QStringLiteral("unflatten")), {QLatin1String("-c2 -l2")});
+}
+void GraphvizView::convertUnflattenStarted()
+{
+    unflattenProc->write(graphCode);
+    unflattenProc->closeWriteChannel();
+}
+void GraphvizView::convertUnflattenError()
+{
+    // no error handling: unflatten is optional
+    if (dotProc->error() == QProcess::FailedToStart) {
+        convertDotWrite();
     }
+}
+void GraphvizView::convertUnflattenFinished()
+{
+    auto unflattened = unflattenProc->readAll();
+    if (!unflattened.isEmpty()) {
+        graphCode = unflattened;
+    }
+    convertDotWrite();
+}
+void GraphvizView::convertDotWrite()
+{
+    dotProc->write(graphCode);
+    dotProc->closeWriteChannel();
+}
+void GraphvizView::convertDotFinished()
+{
+    auto data = dotProc->readAll();
+    if (running == ProcessType::View) {
+        if (!data.isEmpty() && renderer->load(data)) {
+            svgItem->setSharedRenderer(renderer);
+            running = ProcessType::None;
+        }
+    }
+    else if (running == ProcessType::Export) {
+        if (!data.isEmpty()) {
+            if (QFile file(runningExportPath); file.open(QFile::WriteOnly)) {
+                file.write(data);
+                file.close();
+                running = ProcessType::None;
+            }
+        }
+    }
+    if (running != ProcessType::None) {
+        auto win = getMainWindow();
+        QMessageBox::warning(win, tr("Graphviz failed"), tr("Graphviz failed to create an image file"));
+        disconnectSignals();
+        running = ProcessType::None;
+    }
+    convert(ProcessType::None);
+}
+
+void GraphvizView::updateSvgItem()
+{
+    convert(ProcessType::View);
 }
 
 void GraphvizView::disconnectSignals()
@@ -416,129 +385,40 @@ void GraphvizView::disconnectSignals()
     redoConnection.disconnect();
 }
 
-#include <QObject>
-#include <QGraphicsView>
-
-QByteArray GraphvizView::exportGraph(const QString& format)
-{
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Paths"
-    );
-    QProcess dotProc, flatProc;
-    QStringList args, flatArgs;
-    args << QStringLiteral("-T%1").arg(format);
-    flatArgs << QLatin1String("-c2 -l2");
-
-#ifdef FC_OS_LINUX
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
-#else
-    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
-#endif
-
-#ifdef FC_OS_WIN32
-    QString exe = QStringLiteral("\"%1/dot\"").arg(path);
-    QString unflatten = QStringLiteral("\"%1/unflatten\"").arg(path);
-#else
-    QString exe = QStringLiteral("%1/dot").arg(path);
-    QString unflatten = QStringLiteral("%1/unflatten").arg(path);
-#endif
-
-    dotProc.setEnvironment(QProcess::systemEnvironment());
-    dotProc.start(exe, args);
-    if (!dotProc.waitForStarted()) {
-        return {};
-    }
-
-    ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/DependencyGraph"
-    );
-    if (depGrp->GetBool("Unflatten", true)) {
-        flatProc.setEnvironment(QProcess::systemEnvironment());
-        flatProc.start(unflatten, flatArgs);
-        if (!flatProc.waitForStarted()) {
-            return {};
-        }
-        flatProc.write(graphCode.c_str(), graphCode.size());
-        flatProc.closeWriteChannel();
-        if (!flatProc.waitForFinished()) {
-            return {};
-        }
-
-        dotProc.write(flatProc.readAll());
-    }
-    else {
-        dotProc.write(graphCode.c_str(), graphCode.size());
-    }
-
-    dotProc.closeWriteChannel();
-    if (!dotProc.waitForFinished()) {
-        return {};
-    }
-
-    return dotProc.readAll();
-}
-
 bool GraphvizView::onMsg(const char* pMsg)
 {
     if (strcmp("Save", pMsg) == 0 || strcmp("SaveAs", pMsg) == 0) {
-        QList<QPair<FileDialog::Filter, QString>> formatMap;
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("Graphviz"), {"*.gv"}},
-            QStringLiteral("gv")
-        );
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("PNG"), {"*.png"}},
-            QStringLiteral("png")
-        );
-        formatMap << qMakePair(FileDialog::Filter {tr("Bitmap"), {"*.bmp"}}, QStringLiteral("bmp"));
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("GIF"), {"*.gif"}},
-            QStringLiteral("gif")
-        );
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("JPG"), {"*.jpg"}},
-            QStringLiteral("jpg")
-        );
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("SVG"), {"*.svg"}},
-            QStringLiteral("svg")
-        );
-        formatMap << qMakePair(
-            FileDialog::Filter {QStringLiteral("PDF"), {"*.pdf"}},
-            QStringLiteral("pdf")
-        );
+        QList<QPair<FileDialog::Filter, QString>> formatMap {
+            {{QStringLiteral("Graphviz"), {"*.gv"}}, QStringLiteral("gv")},
+            {{QStringLiteral("PNG"), {"*.png"}}, QStringLiteral("png")},
+            {{tr("Bitmap"), {"*.bmp"}}, QStringLiteral("bmp")},
+            {{QStringLiteral("GIF"), {"*.gif"}}, QStringLiteral("gif")},
+            {{QStringLiteral("JPG"), {"*.jpg"}}, QStringLiteral("jpg")},
+            {{QStringLiteral("SVG"), {"*.svg"}}, QStringLiteral("svg")},
+            {{QStringLiteral("PDF"), {"*.pdf"}}, QStringLiteral("pdf")},
+        };
 
         FileDialog::FilterList filterList;
         for (const auto& it : std::as_const(formatMap)) {
             filterList.append(it.first);
         }
 
-        qsizetype selectedFilterIndex = -1;
-        QString fn = Gui::FileDialog::getSaveFileName(
-            this,
-            tr("Export Graph"),
-            QString(),
-            filterList,
-            &selectedFilterIndex
-        );
+        qsizetype selectedIdx = -1;
+        auto fn = FileDialog::getSaveFileName(this, tr("Export Graph"), "", filterList, &selectedIdx);
         if (!fn.isEmpty()) {
-            const auto& format = formatMap[selectedFilterIndex].second;
-            QByteArray buffer;
-            if (format == QStringLiteral("gv")) {
+            if (formatMap[selectedIdx].second == QStringLiteral("gv")) {
                 std::stringstream str;
                 doc.exportGraphviz(str);
-                buffer = QByteArray::fromStdString(str.str());
+                auto buffer = QByteArray::fromStdString(str.str());
+                if (!buffer.isEmpty()) {
+                    if (QFile file(fn); file.open(QFile::WriteOnly)) {
+                        file.write(buffer);
+                        file.close();
+                    }
+                }
             }
             else {
-                buffer = exportGraph(format);
-            }
-            if (buffer.isEmpty()) {
-                return true;
-            }
-            QFile file(fn);
-            if (file.open(QFile::WriteOnly)) {
-                file.write(buffer);
-                file.close();
+                convert(ProcessType::Export, formatMap[selectedIdx].second, fn);
             }
         }
         return true;
@@ -561,25 +441,8 @@ bool GraphvizView::onMsg(const char* pMsg)
 
 bool GraphvizView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp("Save", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SaveAs", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("Print", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("PrintPreview", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("PrintPdf", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
-        return true;
-    }
-    return false;
+    std::array msgs {"Save", "SaveAs", "Print", "PrintPreview", "PrintPdf", "AllowsOverlayOnHover"};
+    return std::ranges::any_of(msgs, [&](auto s) { return strcmp(s, pMsg) == 0; });
 }
 
 void GraphvizView::print(QPrinter* printer)
@@ -587,9 +450,6 @@ void GraphvizView::print(QPrinter* printer)
     QPainter p(printer);
     QRect rect = printer->pageLayout().paintRectPixels(printer->resolution());
     view->scene()->render(&p, rect);
-    // QByteArray buffer = exportGraph(QStringLiteral("svg"));
-    // QSvgRenderer svg(buffer);
-    // svg.render(&p, rect);
     p.end();
 }
 
@@ -606,22 +466,10 @@ void GraphvizView::print()
 
 void GraphvizView::printPdf()
 {
-    QString fn = Gui::FileDialog::getSaveFileName(
-        this,
-        tr("Export graph"),
-        QString(),
-        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
-    );
+    FileDialog::FilterList filterList {{QStringLiteral("PDF"), {"*.pdf"}}};
+    auto fn = FileDialog::getSaveFileName(this, tr("Export graph"), "", filterList);
     if (!fn.isEmpty()) {
-        QByteArray buffer = exportGraph("pdf");
-        if (buffer.isEmpty()) {
-            return;
-        }
-        QFile file(fn);
-        if (file.open(QFile::WriteOnly)) {
-            file.write(buffer);
-            file.close();
-        }
+        convert(ProcessType::Export, "pdf", fn);
     }
 }
 
@@ -635,6 +483,3 @@ void GraphvizView::printPreview()
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&GraphvizView::print));
     dlg.exec();
 }
-
-#include "moc_GraphvizView.cpp"
-#include "moc_GraphvizView-internal.cpp"

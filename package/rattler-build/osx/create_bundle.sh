@@ -26,6 +26,8 @@ cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
 cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
 rm -rf ${conda_env}/bin_tmp
 
+${conda_env}/bin/dot -c
+
 sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
 
 # copy resources
