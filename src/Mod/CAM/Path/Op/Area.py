@@ -204,12 +204,10 @@ class ObjectOp(PathOp.ObjectOp):
 
     def getMiddlePointLongestEdge(self, shape):
         """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""
-        candidate = shape.Edges[0]
-        for edge in shape.Edges:
-            if edge.Length > candidate.Length:
-                candidate = edge
-
-        return candidate.discretize(3)[1]
+        longest = max(shape.Edges, key=lambda edge: edge.Length, default=None)
+        if longest is None:
+            return None
+        return longest.discretize(3)[1]
 
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
@@ -275,7 +273,9 @@ class ObjectOp(PathOp.ObjectOp):
             and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
             and getattr(obj, "UseLongestEdge", False)
         ):
-            pathParams["start"] = self.getMiddlePointLongestEdge(shapelist[0])
+            mid_longest = self.getMiddlePointLongestEdge(shapelist[0])
+            if mid_longest is not None:
+                pathParams["start"] = mid_longest
         elif self.endVector is not None:
             if self.endVector[:2] != (0, 0):
                 pathParams["start"] = self.endVector
