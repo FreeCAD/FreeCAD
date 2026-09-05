@@ -385,6 +385,7 @@ SET(PathPythonOp_SRCS
     Path/Op/__init__.py
     Path/Op/Adaptive.py
     Path/Op/Area.py
+    Path/Op/Array.py
     Path/Op/Base.py
     Path/Op/CircularHoleBase.py
     Path/Op/Custom.py
@@ -583,6 +584,7 @@ SET(Tests_SRCS
     CAMTests/TestMassoG3Post.py
     CAMTests/TestMarlinPost.py
     CAMTests/TestOpenSBPPost.py
+    CAMTests/TestPathArrayOp.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
