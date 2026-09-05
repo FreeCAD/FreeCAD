@@ -230,9 +230,9 @@ void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GraphvizView, Gui::MDIView)  // NOLINT
 
-GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
-    : MDIView(nullptr, parent)
-    , doc(_doc)
+GraphvizView::GraphvizView(Gui::Document* _doc, QWidget* parent)
+    : MDIView(_doc, parent)
+    , doc(*_doc->getDocument())
     , nPending(0)
 {
     // Create scene
@@ -268,14 +268,14 @@ GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
 
     // NOLINTBEGIN
     //  Connect signal from document
-    recomputeConnection = _doc.signalRecomputed.connect(
+    recomputeConnection = doc.signalRecomputed.connect(
         std::bind(&GraphvizView::updateSvgItem, this, sp::_1)
     );
-    undoConnection = _doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
-    redoConnection = _doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    undoConnection = doc.signalUndo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
+    redoConnection = doc.signalRedo.connect(std::bind(&GraphvizView::updateSvgItem, this, sp::_1));
     // NOLINTEND
 
-    updateSvgItem(_doc);
+    updateSvgItem(doc);
 }
 
 GraphvizView::~GraphvizView()
