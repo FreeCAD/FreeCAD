@@ -39,7 +39,6 @@
 
 
 #include "TaskSectionView.h"
-#include "TaskComplexSection.h"
 #include "ViewProviderViewSection.h"
 #include "QGIView.h"
 
@@ -116,6 +115,10 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->FileHatchPattern)   ||
         prop == &(getViewObject()->CutSurfaceDisplay)    ||
+        prop == &(getViewObject()->SectionCutOnly) ||
+        prop == &(getViewObject()->ShowOutsidePartialBoundaries) ||
+        prop == &(getViewObject()->ConnectionLine)    ||
+        prop == &(getViewObject()->LockRelativePositionToSource) ||
         prop == &(getViewObject()->NameGeomPattern)    ||
         prop == &(getViewObject()->HatchScale)  ||
         prop == &(getViewObject()->HatchRotation) ) {
@@ -145,11 +148,6 @@ bool ViewProviderViewSection::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    auto dcs = dynamic_cast<TechDraw::DrawComplexSection*>(getViewObject());
-    if (dcs) {
-        Gui::Control().showDialog(new TaskDlgComplexSection(dcs));
-        return true;
-    }
     Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
     return true;
 }
@@ -175,6 +173,19 @@ bool ViewProviderViewSection::canDelete(App::DocumentObject *obj) const
     // that its base view cannot be deleted is handled in its the onDelete() function
     Q_UNUSED(obj)
     return true;
+}
+
+std::vector<App::DocumentObject*> ViewProviderViewSection::claimChildren() const
+{
+    std::vector<App::DocumentObject*> children =
+        ViewProviderViewPart::claimChildren();
+    auto* section = dynamic_cast<TechDraw::DrawComplexSection*>(pcObject);
+    App::DocumentObject* profile =
+        section ? section->getGeneratedProfile() : nullptr;
+    if (profile) {
+        children.push_back(profile);
+    }
+    return children;
 }
 
 TechDraw::DrawViewSection* ViewProviderViewSection::getViewObject() const

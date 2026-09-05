@@ -24,6 +24,9 @@
 //https://github.com/tcalmant/demo-ipopo-qt/blob/master/pc/details/compass.py
 
 #include <QtGui>
+#include <QtMath>
+
+#include <cmath>
 
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -36,10 +39,13 @@ using namespace TechDrawGui;
 using CardinalMap = std::map<int, std::string>;
 
 CompassDialWidget::CompassDialWidget(QWidget* parent) : QWidget(parent),
+    m_lastSelectedAngle(0.0),
     m_markInterval(15),
     m_defaultSize(75),
     m_defaultMargin(10),
-    m_designRadius(64)
+    m_designRadius(64),
+    m_dragging(false),
+    m_hasSelectedAngle(false)
 {
     setObjectName(QStringLiteral("Compass"));
     m_rect = QRect(0, 0, m_defaultSize, m_defaultSize);
@@ -71,6 +77,62 @@ void CompassDialWidget::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     drawWidget(painter);
     QWidget::paintEvent(event);
+}
+
+void CompassDialWidget::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() != Qt::LeftButton || !selectAngleAt(event->pos(), true)) {
+        QWidget::mousePressEvent(event);
+        return;
+    }
+
+    m_dragging = true;
+    event->accept();
+}
+
+void CompassDialWidget::mouseMoveEvent(QMouseEvent* event)
+{
+    if (!m_dragging || !(event->buttons() & Qt::LeftButton)) {
+        QWidget::mouseMoveEvent(event);
+        return;
+    }
+
+    selectAngleAt(event->pos(), false);
+    event->accept();
+}
+
+void CompassDialWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() != Qt::LeftButton || !m_dragging) {
+        QWidget::mouseReleaseEvent(event);
+        return;
+    }
+
+    selectAngleAt(event->pos(), false);
+    m_dragging = false;
+    event->accept();
+}
+
+bool CompassDialWidget::selectAngleAt(const QPoint& position, bool requireInsideDial)
+{
+    const QPointF center(width() / 2.0, height() / 2.0);
+    const QPointF offset = QPointF(position) - center;
+    const double distance = std::hypot(offset.x(), offset.y());
+    const double radius = std::min(width(), height()) / 2.0;
+    if (distance <= 0.0 || (requireInsideDial && distance > radius)) {
+        return false;
+    }
+
+    double angle = qRadiansToDegrees(std::atan2(-offset.y(), offset.x()));
+    angle = std::fmod(std::round(angle / 5.0) * 5.0 + 360.0, 360.0);
+    if (m_hasSelectedAngle && qFuzzyCompare(angle + 1.0, m_lastSelectedAngle + 1.0)) {
+        return true;
+    }
+
+    m_lastSelectedAngle = angle;
+    m_hasSelectedAngle = true;
+    Q_EMIT angleSelected(angle);
+    return true;
 }
 
 void CompassDialWidget::drawWidget(QPainter& painter)
@@ -246,6 +308,7 @@ void CompassDialWidget::drawNeedle(QPainter& painter)
 //convert a conventional angle to a Qt angle and set the dial accordingly
 void CompassDialWidget::setAngle(double newAngle)
 {
+    m_lastSelectedAngle = std::fmod(newAngle + 360.0, 360.0);
     m_angle = fmod(360.0 - newAngle, 360.0);
     repaint();
 }

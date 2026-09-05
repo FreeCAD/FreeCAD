@@ -44,6 +44,22 @@
 
 using namespace TechDraw;
 
+namespace
+{
+
+std::string alphabeticIdentifier(long index)
+{
+    std::string result;
+    for (index = std::max(index, 1L); index > 0; index /= 26) {
+        --index;
+        result.insert(result.begin(),
+                      static_cast<char>('A' + index % 26));
+    }
+    return result;
+}
+
+}  // namespace
+
 //===========================================================================
 // DrawPage
 //===========================================================================
@@ -80,6 +96,9 @@ DrawPage::DrawPage(void)
 
     ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
                       "Auto-numbering for Balloons");
+    ADD_PROPERTY_TYPE(NextViewIdentifierIndex, (1), group,
+                      (App::PropertyType)(App::Prop_None),
+                      "Shared auto-identification for named views");
 
     Scale.setConstraints(&scaleRange);
 }
@@ -461,6 +480,15 @@ int DrawPage::getNextBalloonIndex(void)
     int newValue = result + 1;
     NextBalloonIndex.setValue(newValue);
     return result;
+}
+
+std::string DrawPage::getNextViewIdentifier(bool advance)
+{
+    const long index = std::max(NextViewIdentifierIndex.getValue(), 1L);
+    if (advance && index < std::numeric_limits<long>::max()) {
+        NextViewIdentifierIndex.setValue(index + 1);
+    }
+    return alphabeticIdentifier(index);
 }
 
 void DrawPage::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,

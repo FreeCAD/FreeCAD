@@ -157,6 +157,7 @@ public:
     const std::vector<TechDraw::FacePtr> getFaceGeometry() const;
 
     bool hasGeometry() const;
+    virtual bool allowsEmptyGeometry() const { return false; }
     TechDraw::GeometryObjectPtr getGeometryObject() const { return geometryObject; }
 
     TechDraw::VertexPtr getVertex(std::string vertexName) const;
@@ -181,6 +182,7 @@ public:
     double getBoxX() const;
     double getBoxY() const;
     QRectF getRect() const override;
+    std::pair<double, double> getBoundsAlongVector(Base::Vector3d alignmentVector);
     double getSizeAlongVector(Base::Vector3d alignmentVector);
 
     // ancillary projection routines

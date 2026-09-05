@@ -62,6 +62,7 @@ public:
     void updateGraphic();
     void getParameters();
     bool canDelete(App::DocumentObject* obj) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
 
     TechDraw::DrawViewSection* getViewObject() const override;
 };

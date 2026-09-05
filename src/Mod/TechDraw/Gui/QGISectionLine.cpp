@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 # include <QGraphicsScene>
+# include <QGraphicsSceneMouseEvent>
 # include <QPainter>
 # include <QPainterPath>
 # include <QStyleOptionGraphicsItem>
@@ -53,6 +54,7 @@ QGISectionLine::QGISectionLine() :
     m_symbol(""),
     m_line(new QGraphicsPathItem()),
     m_extend(new QGraphicsPathItem()),
+    m_arrowBases(new QGraphicsPathItem()),
     m_arrow1(new QGIArrow()),
     m_arrow2(new QGIArrow()),
     m_symbol1(new QGCustomText()),
@@ -66,6 +68,7 @@ QGISectionLine::QGISectionLine() :
 
     addToGroup(m_line);
     addToGroup(m_extend);
+    addToGroup(m_arrowBases);
     addToGroup(m_arrow1);
     addToGroup(m_arrow2);
 
@@ -138,6 +141,23 @@ void QGISectionLine::makeArrows()
     } else {
         makeArrowsISO();
     }
+    makeArrowBases();
+}
+
+void QGISectionLine::makeArrowBases()
+{
+    QPainterPath path;
+    const double baseLength = Rez::guiX(m_arrowSize * 1.35);
+    auto addBase = [&](QGIArrow* arrow, const Base::Vector3d& direction) {
+        QPointF screenDirection(direction.x, -direction.y);
+        screenDirection = normalizeQPointF(screenDirection);
+        const QPointF tip = arrow->pos();
+        path.moveTo(tip);
+        path.lineTo(tip - screenDirection * baseLength);
+    };
+    addBase(m_arrow1, m_arrowDir1);
+    addBase(m_arrow2, m_arrowDir2);
+    m_arrowBases->setPath(path);
 }
 
 //make Euro (ISO) Arrows
@@ -443,6 +463,64 @@ void QGISectionLine::setPath(const QPainterPath &path)
     m_line->setPath(path);
 }
 
+QPointF QGISectionLine::lineCenter() const
+{
+    const QPainterPath path = m_line->path();
+    if (!path.isEmpty()) {
+        // A half section appends its perpendicular leader as a second
+        // subpath.  Placement belongs to the cutting line, not to that
+        // display-only leader.
+        QPainterPath cuttingPath;
+        for (int index = 0; index < path.elementCount(); ++index) {
+            const auto element = path.elementAt(index);
+            if (index > 0 && element.isMoveTo()) {
+                // Half sections append their perpendicular leader as a
+                // second subpath beginning at the construction center.
+                return QPointF(element.x, element.y);
+            }
+            if (index == 0) {
+                cuttingPath.moveTo(element.x, element.y);
+            }
+            else {
+                cuttingPath.lineTo(element.x, element.y);
+            }
+        }
+        if (!cuttingPath.isEmpty()) {
+            return cuttingPath.pointAtPercent(0.5);
+        }
+    }
+    return (m_start + m_end) / 2.0;
+}
+
+QPointF QGISectionLine::lineDirection() const
+{
+    const QPainterPath path = m_line->path();
+    if (!path.isEmpty()) {
+        const auto first = path.elementAt(0);
+        QPointF start(first.x, first.y);
+        QPointF end = start;
+        for (int index = 1; index < path.elementCount(); ++index) {
+            const auto element = path.elementAt(index);
+            if (element.isMoveTo()) {
+                break;
+            }
+            end = QPointF(element.x, element.y);
+        }
+        const QLineF cuttingLine(start, end);
+        if (cuttingLine.length() > 1.0e-6) {
+            return cuttingLine.unitVector().p2()
+                - cuttingLine.unitVector().p1();
+        }
+    }
+
+    const QLineF cuttingLine(m_start, m_end);
+    if (cuttingLine.length() > 1.0e-6) {
+        return cuttingLine.unitVector().p2()
+            - cuttingLine.unitVector().p1();
+    }
+    return {};
+}
+
 void QGISectionLine::setChangePoints(const TechDraw::ChangePointVector& changePointData)
 {
     m_changePointData = changePointData;
@@ -481,6 +559,42 @@ void QGISectionLine::setSectionColor(QColor c)
     setColor(c);
 }
 
+void QGISectionLine::setArrowColor(QColor color)
+{
+    m_arrowColor = color;
+    update();
+}
+
+void QGISectionLine::setArrowClickCallback(std::function<void()> callback)
+{
+    m_arrowClickCallback = std::move(callback);
+    const bool clickable = static_cast<bool>(m_arrowClickCallback);
+    m_arrow1->setCursor(clickable ? Qt::PointingHandCursor : Qt::ArrowCursor);
+    m_arrow2->setCursor(clickable ? Qt::PointingHandCursor : Qt::ArrowCursor);
+    const QString tooltip = clickable
+        ? QObject::tr("Reverse the section direction") : QString();
+    m_arrow1->setToolTip(tooltip);
+    m_arrow2->setToolTip(tooltip);
+}
+
+void QGISectionLine::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto hitsArrow = [event](QGIArrow* arrow) {
+        const QPointF arrowPoint = arrow->mapFromParent(event->pos());
+        const double margin = Rez::guiX(1.5);
+        return arrow->boundingRect()
+            .adjusted(-margin, -margin, margin, margin)
+            .contains(arrowPoint);
+    };
+    if (event->button() == Qt::LeftButton && m_arrowClickCallback
+        && (hitsArrow(m_arrow1) || hitsArrow(m_arrow2))) {
+        m_arrowClickCallback();
+        event->accept();
+        return;
+    }
+    QGIDecoration::mousePressEvent(event);
+}
+
 QColor QGISectionLine::getSectionColor()
 {
     return getColor();
@@ -499,12 +613,20 @@ void QGISectionLine::setTools()
     m_line->setPen(m_pen);
     m_extend->setPen(m_pen);
 
+    const QColor arrowColor = m_arrowColor.isValid()
+        ? m_arrowColor : m_pen.color();
+    QPen arrowBasePen(m_pen);
+    arrowBasePen.setColor(arrowColor);
+    arrowBasePen.setStyle(Qt::SolidLine);
+    arrowBasePen.setCapStyle(Qt::FlatCap);
+    m_arrowBases->setPen(arrowBasePen);
     QColor currentColor = m_pen.color();
-    m_arrow1->setNormalColor(currentColor);
-    m_arrow1->setFillColor(currentColor);
+
+    m_arrow1->setNormalColor(arrowColor);
+    m_arrow1->setFillColor(arrowColor);
     m_arrow1->setPrettyNormal();
-    m_arrow2->setNormalColor(currentColor);
-    m_arrow2->setFillColor(currentColor);
+    m_arrow2->setNormalColor(arrowColor);
+    m_arrow2->setFillColor(arrowColor);
     m_arrow2->setPrettyNormal();
 
     m_symbol1->setDefaultTextColor(currentColor);

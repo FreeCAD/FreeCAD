@@ -29,6 +29,7 @@
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <set>
 
 #include "QGIView.h"
 #include "QGIUserTypes.h"
@@ -86,6 +87,8 @@ public:
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
+    void setSectionLineVisible(TechDraw::DrawViewSection* viewSection, bool visible);
+    bool hasSectionLine(TechDraw::DrawViewSection* viewSection) const;
     virtual void drawCenterLines(bool b);
     virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
@@ -136,6 +139,7 @@ protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
+    void drawViewDecorations();
     QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -149,18 +153,22 @@ protected:
     void removeDecorations();
     bool prefFaceEdges();
     Base::Color prefBreaklineColor();
+    QPainterPath partialSectionClipPath() const;
+    void applyPartialSectionClip();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
     bool showCenterMarks() const;
     bool showVertices() const;
+    QPen centerLinePen(double width);
 
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;
     TechDraw::LineGenerator* m_dashedLineGenerator;
     QMetaObject::Connection m_selectionChangedConnection;
+    std::set<std::string> m_hiddenSectionLines;
 
 };
 

@@ -24,10 +24,12 @@
 # include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
+# include <QLineF>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
 # include <QTransform>
 
+#include <algorithm>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -58,6 +60,7 @@
 #include "QGCustomLabel.h"
 #include "QGICaption.h"
 #include "QGIEdge.h"
+#include "QGISectionLine.h"
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
 #include "QGIUserTypes.h"
@@ -166,6 +169,12 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    if ((change == ItemPositionHasChanged
+         || change == ItemScenePositionHasChanged)
+        && scene()) {
+        Q_EMIT positionChanged();
+    }
+
     if(change == ItemPositionChange && scene()) {
         QPointF newPos = value.toPointF();            //position within parent!
         TechDraw::DrawView* viewObj = getViewObject();
@@ -184,12 +193,14 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             }
         }
         else {
-            // For general views we check if we need to snap to a position
             if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
                 if (!m_inhibitSnapOnPosChange) {
                     snapPosition(newPos);
                 }
                 m_inhibitSnapOnPosChange = false;
+            }
+            else {
+                clearSectionSnap();
             }
         }
 
@@ -267,6 +278,9 @@ void QGIView::dragFinished()
 
         snapping = false;
     }
+    // Allow dependent graphics items to persist their corresponding move in
+    // the same transaction as this view.
+    Q_EMIT positionChangeFinished();
     if (ownTransaction) {
         viewObj->getDocument()->commitTransaction();
     }
@@ -375,16 +389,14 @@ void QGIView::snapPosition(QPointF& newPosition)
 }
 
 
-//! snap this section view to its base view.  The section should be positioned on
-//! line from the base view along the section normal direction, ie the same direction
-//! as the arrows on the section line.
-// Note: positions are in Qt inverted Y coordinates. They need to be converted before
-// doing math on them, then converted back on return.
-// Note: section views are never inside a ProjectionGroup, so their position is
-// always in scene coordinates.
+//! Snap the section-origin datum to the corresponding point on the rendered
+//! cutting line or either axis through it. ItemPositionChange supplies a
+//! position in the parent item's coordinates, while the cutting line and snap
+//! axes are in scene coordinates.
 void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
                               QPointF& newPosition)
 {
+    m_snapped = false;
     auto* baseView = sectionView->getBaseDVP();
     if (!baseView) {
         return;
@@ -398,62 +410,176 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
         return;
     }
 
-    Base::Vector3d arrowDirection = sectionView->SectionNormal.getValue() * -1;
-    auto arrowDirectionOnBase = baseView->projectPoint(arrowDirection, false);
+    const Base::Vector3d arrowDirection =
+        sectionView->SectionNormal.getValue() * -1;
+    auto arrowDirectionOnBase =
+        baseView->projectPoint(arrowDirection, false);
     if (arrowDirectionOnBase.Length() < Precision::Confusion()) {
         return;
     }
     arrowDirectionOnBase.Normalize();
-    double baseSize = Rez::guiX(baseView->getSizeAlongVector(arrowDirectionOnBase));
-    double snapDist = baseSize * getScale() * Preferences::SnapLimitFactor();
-
-    // find the scene position of the SO on the base view
-    auto baseX = baseView->X.getValue();
-    auto baseY = baseView->Y.getValue();
-    Base::Vector3d baseScenePos{baseX, baseY, 0};       // paper space position
-    if (DrawView::isProjGroupItem(baseView)) {
-        baseScenePos = projItemPagePos(baseView);
-    }
-    auto sectionOrg3d      = sectionView->SectionOrigin.getValue();
-    auto shapeCenter3d     = baseView->getCurrentCentroid();
-    auto baseShapeCenter   = baseView->projectPoint(shapeCenter3d, false);
-    auto baseSectionOrg    = baseView->projectPoint(sectionOrg3d, false);
-    auto baseSOOffset      = (baseSectionOrg - baseShapeCenter) * baseView->getScale();
-    auto baseSOScenePos    = baseScenePos + baseSOOffset;
-
-    // find the SO offset from origin on the rotated & scaled sectionView
-    auto sectionCutCenter     = sectionView->projectPoint(sectionView->getCutCentroid(), false);
-    auto sectionSectionOrg    = sectionView->projectPoint(sectionOrg3d, false);
-    auto sectionSOOffset      = (sectionSectionOrg - sectionCutCenter) * sectionView->getScale();
-    auto sectionRotationDeg = sectionView->Rotation.getValue();
-    sectionSOOffset.RotateZ(Base::toRadians(sectionRotationDeg));
-
-            // from here on, we work with scene units (1/10 mm)
-    sectionSOOffset = Rez::guiX(sectionSOOffset);
-    baseSOScenePos  = Rez::guiX(baseSOScenePos);
-
-            // check our alignment
-    auto newSOPosition = DU::invertY(DU::toVector3d(newPosition)) + sectionSOOffset;
-
-    Base::Vector3d actualAlignmentVector = newSOPosition - baseSOScenePos;
-    actualAlignmentVector.Normalize();
-
-    // if we are not on the correct side of the section line, we should not try to snap
-    auto dot = arrowDirectionOnBase.Dot(actualAlignmentVector);
-    if (dot <= 0) {
+    QPointF viewDirection(arrowDirectionOnBase.x,
+                          -arrowDirectionOnBase.y);
+    viewDirection = QTransform()
+                        .rotate(-baseView->Rotation.getValue())
+                        .map(viewDirection);
+    QLineF viewDirectionLine(QPointF(), viewDirection);
+    if (viewDirectionLine.length() <= 1.0e-6) {
         return;
     }
+    viewDirection = viewDirectionLine.unitVector().p2()
+        - viewDirectionLine.unitVector().p1();
+    QPointF lineDirection(-viewDirection.y(), viewDirection.x());
 
-    auto pointOnArrowLine = newSOPosition.Perpendicular(baseSOScenePos, arrowDirectionOnBase);
-    auto errorVector = pointOnArrowLine - newSOPosition;
-    if (errorVector.Length() < snapDist) {
-        // get the position point corresponding to our SO alignment
-        auto netPosition = pointOnArrowLine - sectionSOOffset;
-        netPosition = DU::invertY(netPosition);
-        newPosition = DU::toQPointF(netPosition);
+    const Base::Vector3d sectionOrigin = sectionView->SectionOrigin.getValue();
+    const Base::Vector3d baseShapeCenter = baseView->getCurrentCentroid();
+    const Base::Vector3d baseSectionOrigin =
+        baseView->projectPoint(sectionOrigin, false);
+    const Base::Vector3d baseProjectedCenter =
+        baseView->projectPoint(baseShapeCenter, false);
+    const Base::Vector3d baseOffset =
+        (baseSectionOrigin - baseProjectedCenter) * baseView->getScale();
+    const QPointF calculatedBaseAnchor = qgiv->mapToScene(
+        QPointF(Rez::guiX(baseOffset.x), -Rez::guiX(baseOffset.y)));
+    QPointF baseAnchor = calculatedBaseAnchor;
+    QPointF lineCenterAnchor = calculatedBaseAnchor;
+
+    const QString sectionName = QString::fromUtf8(
+        sectionView->getNameInDocument());
+    for (QGraphicsItem* child : qgiv->childItems()) {
+        auto* sectionLine = dynamic_cast<QGISectionLine*>(child);
+        if (!sectionLine || child->data(10).toString() != sectionName) {
+            continue;
+        }
+        const QPointF lineCenter = sectionLine->mapToScene(
+            sectionLine->lineCenter());
+        lineCenterAnchor = lineCenter;
+        const QPointF localDirection = sectionLine->lineDirection();
+        if (!localDirection.isNull()) {
+            const QPointF directionEnd = sectionLine->mapToScene(
+                sectionLine->lineCenter() + localDirection);
+            const QLineF renderedDirection(lineCenter, directionEnd);
+            if (renderedDirection.length() > 1.0e-6) {
+                lineDirection = renderedDirection.unitVector().p2()
+                    - renderedDirection.unitVector().p1();
+                viewDirection = QPointF(-lineDirection.y(),
+                                        lineDirection.x());
+                baseAnchor = lineCenter + lineDirection
+                    * QPointF::dotProduct(
+                        calculatedBaseAnchor - lineCenter, lineDirection);
+            }
+        }
+        break;
     }
 
-    return;
+    const Base::Vector3d cutCenter = sectionView->projectPoint(
+        sectionView->getCutCentroid(), false);
+    Base::Vector3d sectionAnchorOffset =
+        (sectionView->projectPoint(sectionOrigin, false) - cutCenter)
+        * sectionView->getScale();
+    sectionAnchorOffset.RotateZ(
+        Base::toRadians(sectionView->Rotation.getValue()));
+    const QPointF sectionAnchorLocal(
+        Rez::guiX(sectionAnchorOffset.x),
+        -Rez::guiX(sectionAnchorOffset.y));
+    const QPointF sectionAnchorSceneOffset =
+        mapToScene(sectionAnchorLocal) - mapToScene(QPointF());
+    const QRectF visibleGeometry = frameRect();
+    // An empty section still has decorations (notably its caption), so its
+    // frame rectangle is not a geometry datum.  Snap its section origin;
+    // otherwise the caption displaces the apparent center and both-axis snap.
+    const QPointF visibleCenterSceneOffset =
+        sectionView->hasGeometry() && !visibleGeometry.isEmpty()
+        ? mapToScene(visibleGeometry.center()) - mapToScene(QPointF())
+        : sectionAnchorSceneOffset;
+    const QPointF proposedOrigin = parentItem()
+        ? parentItem()->mapToScene(newPosition)
+        : newPosition;
+    const QPointF proposedAnchor = proposedOrigin + sectionAnchorSceneOffset;
+    const QPointF proposedVisibleCenter =
+        proposedOrigin + visibleCenterSceneOffset;
+
+    const qreal baseExtent = std::max(qgiv->frameRect().width(),
+                                      qgiv->frameRect().height());
+    const qreal snapDistance = std::clamp(
+        baseExtent * Preferences::SnapLimitFactor(),
+        Rez::guiX(1.5), Rez::guiX(5.0));
+    const QPointF onSectionLine = lineCenterAnchor + lineDirection
+        * QPointF::dotProduct(
+            proposedVisibleCenter - lineCenterAnchor, lineDirection);
+    const QPointF onViewDirection = baseAnchor + viewDirection
+        * QPointF::dotProduct(
+            proposedAnchor - baseAnchor, viewDirection);
+    const qreal sectionLineError =
+        QLineF(proposedVisibleCenter, onSectionLine).length();
+    const qreal viewDirectionError =
+        QLineF(proposedAnchor, onViewDirection).length();
+    const qreal centerError =
+        std::max(sectionLineError, viewDirectionError);
+
+    SectionSnapTarget target = SectionSnapTarget::None;
+    QPointF snappedAnchor;
+    if ((m_sectionSnapTarget == SectionSnapTarget::Center
+         && centerError <= snapDistance * 1.35)
+        || centerError <= snapDistance * 0.75) {
+        target = SectionSnapTarget::Center;
+    }
+    else if (m_sectionSnapTarget == SectionSnapTarget::SectionLine
+             && sectionLineError <= snapDistance * 1.35) {
+        target = SectionSnapTarget::SectionLine;
+        snappedAnchor = onSectionLine;
+    }
+    else if (m_sectionSnapTarget == SectionSnapTarget::ViewDirection
+             && viewDirectionError <= snapDistance * 1.35) {
+        target = SectionSnapTarget::ViewDirection;
+        snappedAnchor = onViewDirection;
+    }
+    else if (std::min(sectionLineError, viewDirectionError)
+             <= snapDistance) {
+        if (sectionLineError <= viewDirectionError) {
+            target = SectionSnapTarget::SectionLine;
+            snappedAnchor = onSectionLine;
+        }
+        else {
+            target = SectionSnapTarget::ViewDirection;
+            snappedAnchor = onViewDirection;
+        }
+    }
+
+    m_sectionSnapTarget = target;
+    m_snapped = target != SectionSnapTarget::None;
+    if (m_snapped) {
+        QPointF snappedOrigin;
+        if (target == SectionSnapTarget::Center) {
+            // Satisfy both independent constraints at once: move the visible
+            // midpoint onto the cutting line, and the section-origin datum
+            // onto the perpendicular view-direction guide.
+            snappedOrigin = proposedOrigin
+                + (onSectionLine - proposedVisibleCenter)
+                + (onViewDirection - proposedAnchor);
+        }
+        else {
+            const QPointF targetOffset =
+                target == SectionSnapTarget::ViewDirection
+                ? sectionAnchorSceneOffset : visibleCenterSceneOffset;
+            snappedOrigin = snappedAnchor - targetOffset;
+        }
+        newPosition = parentItem()
+            ? parentItem()->mapFromScene(snappedOrigin)
+            : snappedOrigin;
+    }
+}
+
+void QGIView::clearSectionSnap()
+{
+    m_snapped = false;
+    m_sectionSnapTarget = SectionSnapTarget::None;
+}
+
+void QGIView::setPositionWithoutSnapping(const QPointF& position)
+{
+    m_inhibitSnapOnPosChange = true;
+    setPos(position);
 }
 
 Base::Vector3d  QGIView::projItemPagePos(DrawViewPart* item)
@@ -515,6 +641,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     }
 
     dragFinished();
+    clearSectionSnap();
     QGraphicsItemGroup::mouseReleaseEvent(event);
 
     event->setModifiers(originalModifiers);
@@ -823,7 +950,8 @@ QRectF QGIView::frameRect() const
             child->type() != UserType::QGIVertex &&
             child->type() != UserType::QGICMark  &&
             child->type() != UserType::QGIViewDimension &&
-            child->type() != UserType::QGIViewBalloon) {
+            child->type() != UserType::QGIViewBalloon &&
+            child->type() != UserType::QGISectionConnector) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
         }
@@ -849,6 +977,7 @@ QRectF QGIView::customChildrenBoundingRect() const
             child->type() != UserType::QGCustomBorder &&
             child->type() != UserType::QGCustomLabel &&
             child->type() != UserType::QGICaption &&
+            child->type() != UserType::QGISectionConnector &&
             // we treat vertices as part of the boundingRect to allow loose vertices outside of the
             // area defined by the edges as in frameRect()
             // child->type() != UserType::QGIVertex &&
@@ -1121,13 +1250,19 @@ bool QGIView::isViewSelected() const
     return false;
 }
 
+void QGIView::setFrameForcedVisible(bool visible)
+{
+    m_frameForcedVisible = visible;
+    updateFrameVisibility();
+}
+
 bool QGIView::shouldShowFrame() const
 {
     if (isExporting()) {
         return false;
     }
 
-    if (isViewSelected()) {
+    if (isViewSelected() || m_frameForcedVisible) {
         return true;
     }
 

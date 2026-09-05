@@ -398,7 +398,7 @@ void DrawViewPart::onHlrFinished()
         throw Base::RuntimeError("DrawViewPart has lost its geometry object");
     }
 
-    if (!hasGeometry()) {
+    if (!hasGeometry() && !allowsEmptyGeometry()) {
         Base::Console().error("TechDraw did not retrieve any geometry for %s/%s\n",
                               getNameInDocument(), Label.getValue());
     }
@@ -1018,25 +1018,32 @@ TopoDS_Shape DrawViewPart::getEdgeCompound() const
     return TopoDS_Shape();
 }
 
-// returns the (unscaled) size of the visible lines along the alignment vector.
+// returns the (unscaled) bounds of the visible lines along the alignment vector.
 // alignment vector is already projected onto our CS, so only has X,Y components
 // used in calculating the length of a section line
-double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
+std::pair<double, double>
+DrawViewPart::getBoundsAlongVector(Base::Vector3d alignmentVector)
 {
-    //    Base::Console().message("DVP::GetSizeAlongVector(%s)\n", DrawUtil::formatVector(alignmentVector).c_str());
     double alignmentAngle = atan2(alignmentVector.y, alignmentVector.x) * -1.0;
     gp_Ax2 OXYZ;//shape has already been projected and we will rotate around Z
     if (getEdgeCompound().IsNull()) {
-        return 1.0;
+        return {-0.5, 0.5};
     }
-    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(getEdgeCompound(), OXYZ, Base::toDegrees(alignmentAngle));
+    TopoDS_Shape rotatedShape = ShapeUtils::rotateShape(
+        getEdgeCompound(), OXYZ, Base::toDegrees(alignmentAngle));
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
     BRepBndLib::AddOptimal(rotatedShape, shapeBox);
     double xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMin = 0, zMax = 0;
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-    double shapeWidth((xMax - xMin) / getScale());
-    return shapeWidth;
+    return {xMin / getScale(), xMax / getScale()};
+}
+
+// returns the (unscaled) size of the visible lines along the alignment vector.
+double DrawViewPart::getSizeAlongVector(Base::Vector3d alignmentVector)
+{
+    const auto bounds = getBoundsAlongVector(alignmentVector);
+    return bounds.second - bounds.first;
 }
 
 //used to project a pt (ex SectionOrigin) onto paper plane
