@@ -43,7 +43,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/Material.h>
 
 #include "Widgets.h"

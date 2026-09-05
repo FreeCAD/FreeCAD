@@ -29,7 +29,7 @@
 
 #include <boost/math/special_functions/round.hpp>
 
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/PropertyUnits.h>
 
 #include "SpinBox.h"

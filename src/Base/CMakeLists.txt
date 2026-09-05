@@ -183,11 +183,14 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemasSpecs.h
     Quantity.h
     Quantity.cpp
+    QuantityUnits.inc
+    QuantityParser.cpp
+    QuantityParser.h
     QuantityPyImp.cpp
-    Quantity.l
-    Quantity.y
     Unit.h
     Unit.cpp
+    UnitRegistry.h
+    UnitRegistry.cpp
     UnitPyImp.cpp
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})

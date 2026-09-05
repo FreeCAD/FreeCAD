@@ -72,7 +72,7 @@
 #include <App/Document.h>
 #include <App/ElementNamingUtils.h>
 #include <App/Expression.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>

@@ -22,12 +22,7 @@
  ***************************************************************************/
 
 
-#ifdef __GNUC__
-# include <unistd.h>
-#endif
-
 #include <algorithm>
-#include <sstream>
 #include <string_view>
 #include <unordered_set>
 
@@ -38,20 +33,12 @@
 #include <Base/Tools.h>
 #include "Selection.h"
 #include "SelectionFilter.h"
+#include "SelectionFilterParser.h"
 #include "SelectionFilterPy.h"
 #include "SelectionObject.h"
 
 
 using namespace Gui;
-
-// suppress annoying warnings from generated source files
-#ifdef _MSC_VER
-# pragma warning(disable : 4003)
-# pragma warning(disable : 4018)
-# pragma warning(disable : 4065)
-# pragma warning(disable : 4335)  // disable MAC file format warning on VC
-#endif
-
 
 SelectionFilterGate::SelectionFilterGate(const char* filter)
 {
@@ -268,135 +255,8 @@ void SelectionFilter::addError(const char* e)
     Errors += '\n';
 }
 
-// === Parser & Scanner stuff ===============================================
-
-// include the Scanner and the Parser for the filter language
-
-SelectionFilter* ActFilter = nullptr;
-Node_Block* TopBlock = nullptr;
-
-// error func
-void yyerror(const char* errorinfo)
-{
-    ActFilter->addError(errorinfo);
-}
-
-
-// for VC9 (isatty and fileno not supported anymore)
-#ifdef _MSC_VER
-int isatty(int i)
-{
-    return _isatty(i);
-}
-int fileno(FILE* stream)
-{
-    return _fileno(stream);
-}
-#endif
-
-namespace SelectionParser
-{
-
-/*!
- * \brief The StringFactory class
- * Helper class to record the created strings used by the parser.
- */
-class StringFactory
-{
-    std::list<std::unique_ptr<std::string>> data;
-    std::size_t max_elements = 20;
-
-public:
-    static StringFactory* instance()
-    {
-        static auto inst = new StringFactory();
-        return inst;
-    }
-    std::string* make(const std::string& str)
-    {
-        data.push_back(std::make_unique<std::string>(str));
-        return data.back().get();
-    }
-    static std::string* New(const std::string& str)
-    {
-        return StringFactory::instance()->make(str);
-    }
-    void clear()
-    {
-        if (data.size() > max_elements) {
-            data.clear();
-        }
-    }
-};
-
-// show the parser the lexer method
-#define yylex SelectionFilterlex
-int SelectionFilterlex();
-
-// Parser, defined in SelectionFilter.y
-#include "SelectionFilter.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in SelectionFilter.l
-# if defined(__clang__)
-#  pragma clang diagnostic push
-#  pragma clang diagnostic ignored "-Wsign-compare"
-#  pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-# elif defined(__GNUC__)
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wsign-compare"
-# endif
-# include "SelectionFilter.lex.cpp"
-# if defined(__clang__)
-#  pragma clang diagnostic pop
-# elif defined(__GNUC__)
-#  pragma GCC diagnostic pop
-# endif
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
-
-class StringBufferCleaner
-{
-public:
-    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
-        : my_string_buffer {buffer}
-    {}
-    ~StringBufferCleaner()
-    {
-        // free the scan buffer
-        yy_delete_buffer(my_string_buffer);
-    }
-
-    StringBufferCleaner(const StringBufferCleaner&) = delete;
-    StringBufferCleaner(StringBufferCleaner&&) = delete;
-    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
-    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
-
-private:
-    YY_BUFFER_STATE my_string_buffer;
-};
-
-}  // namespace SelectionParser
-
 bool SelectionFilter::parse()
 {
-    Errors = "";
-    SelectionParser::YY_BUFFER_STATE my_string_buffer = SelectionParser::SelectionFilter_scan_string(
-        Filter.c_str()
-    );
-    SelectionParser::StringBufferCleaner cleaner(my_string_buffer);
-    // be aware that this parser is not reentrant! Don't use with Threats!!!
-    assert(!ActFilter);
-    ActFilter = this;
-    /*int my_parse_result =*/SelectionParser::yyparse();
-    ActFilter = nullptr;
-    Ast.reset(TopBlock);
-    TopBlock = nullptr;
-    SelectionParser::StringFactory::instance()->clear();
-
-    if (Errors.empty()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    Ast = parseSelectionFilter(Filter, Errors);
+    return Errors.empty();
 }

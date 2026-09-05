@@ -1,0 +1,162 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include <Base/Quantity.h>
+#include <Base/UnitRegistry.h>
+
+#include <gtest/gtest.h>
+
+#include <array>
+#include <string_view>
+
+using Base::Quantity;
+
+TEST(UnitRegistry, DefinesEveryNamedCppUnit)
+{
+#define QUANTITY_UNIT(name, symbol) \
+    ASSERT_EQ(Base::UnitRegistry::lookup(symbol), Quantity::name) << #name << " (" << symbol << ")";
+#include <Base/QuantityUnits.inc>
+#undef QUANTITY_UNIT
+}
+
+TEST(UnitRegistry, PreservesEveryHistoricalSymbol)
+{
+    static const std::array<std::string_view, 131> historicalSymbols {{
+        "nm",
+        "um",
+        "\xC2\xB5m",
+        "mm",
+        "cm",
+        "dm",
+        "m",
+        "km",
+        "l",
+        "ml",
+        "Hz",
+        "kHz",
+        "MHz",
+        "GHz",
+        "THz",
+        "ug",
+        "\xC2\xB5g",
+        "mg",
+        "g",
+        "kg",
+        "t",
+        "s",
+        "min",
+        "h",
+        "A",
+        "nA",
+        "uA",
+        "\xC2\xB5"
+        "A",
+        "mA",
+        "kA",
+        "MA",
+        "K",
+        "mK",
+        "\xC2\xB5K",
+        "uK",
+        "mol",
+        "nmol",
+        "umol",
+        "\xC2\xB5mol",
+        "mmol",
+        "cd",
+        "in",
+        "\"",
+        "ft",
+        "'",
+        "thou",
+        "mil",
+        "yd",
+        "mi",
+        "mph",
+        "sqft",
+        "cft",
+        "lb",
+        "lbm",
+        "oz",
+        "st",
+        "cwt",
+        "lbf",
+        "N",
+        "mN",
+        "kN",
+        "MN",
+        "Pa",
+        "kPa",
+        "MPa",
+        "GPa",
+        "bar",
+        "mbar",
+        "Torr",
+        "mTorr",
+        "uTorr",
+        "\xC2\xB5Torr",
+        "psi",
+        "ksi",
+        "Mpsi",
+        "W",
+        "nW",
+        "uW",
+        "\xC2\xB5W",
+        "mW",
+        "kW",
+        "VA",
+        "V",
+        "kV",
+        "mV",
+        "MS",
+        "kS",
+        "S",
+        "mS",
+        "\xC2\xB5S",
+        "uS",
+        "Ohm",
+        "kOhm",
+        "MOhm",
+        "C",
+        "T",
+        "mT",
+        "G",
+        "Wb",
+        "F",
+        "mF",
+        "\xC2\xB5"
+        "F",
+        "uF",
+        "nF",
+        "pF",
+        "H",
+        "mH",
+        "\xC2\xB5H",
+        "uH",
+        "nH",
+        "J",
+        "mJ",
+        "kJ",
+        "Nm",
+        "VAs",
+        "CV",
+        "Ws",
+        "kWh",
+        "eV",
+        "keV",
+        "MeV",
+        "cal",
+        "kcal",
+        "\xC2\xB0",
+        "deg",
+        "rad",
+        "gon",
+        "M",
+        "\xE2\x80\xB2",
+        "AS",
+        "\xE2\x80\xB3",
+    }};
+
+    for (const auto symbol : historicalSymbols) {
+        EXPECT_TRUE(Base::UnitRegistry::lookup(symbol).has_value()) << symbol;
+    }
+}

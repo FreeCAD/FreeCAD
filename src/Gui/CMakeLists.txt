@@ -1309,10 +1309,10 @@ SET(Selection_SRCS
     Selection/Selection.cpp
     Selection/SelectionFilter.h
     Selection/SelectionFilter.cpp
+    Selection/SelectionFilterParser.h
+    Selection/SelectionFilterParser.cpp
     Selection/SelectionFilterPy.h
     Selection/SelectionFilterPy.cpp
-    Selection/SelectionFilter.y
-    Selection/SelectionFilter.l
     Selection/SelectionObserverPython.cpp
     Selection/SelectionObserverPython.h
 )
