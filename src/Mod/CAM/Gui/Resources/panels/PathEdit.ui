@@ -293,7 +293,8 @@
                </property>
                <property name="icon">
                 <iconset resource="../../../../Material/Gui/Resources/Material.qrc">
-                 <normaloff>:/icons/MaterialWorkbench.svg</normaloff>:/icons/MaterialWorkbench.svg</iconset>
+                 <normaloff>:/icons/MaterialWorkbench.svg</normaloff>:/icons/MaterialWorkbench.svg
+                </iconset>
                </property>
               </widget>
              </item>
@@ -350,7 +351,8 @@
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/model.svg</normaloff>:/icons/model.svg</iconset>
+               <normaloff>:/icons/model.svg</normaloff>:/icons/model.svg
+              </iconset>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -370,7 +372,8 @@
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/stock.svg</normaloff>:/icons/stock.svg</iconset>
+               <normaloff>:/icons/stock.svg</normaloff>:/icons/stock.svg
+              </iconset>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -409,7 +412,8 @@
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/move-to-origin.svg</normaloff>:/icons/move-to-origin.svg</iconset>
+               <normaloff>:/icons/move-to-origin.svg</normaloff>:/icons/move-to-origin.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -432,7 +436,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/set-origin.svg</normaloff>:/icons/set-origin.svg</iconset>
+               <normaloff>:/icons/set-origin.svg</normaloff>:/icons/set-origin.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -452,7 +457,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/center-in-stock.svg</normaloff>:/icons/center-in-stock.svg</iconset>
+               <normaloff>:/icons/center-in-stock.svg</normaloff>:/icons/center-in-stock.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -472,7 +478,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/xy-in-stock.svg</normaloff>:/icons/xy-in-stock.svg</iconset>
+               <normaloff>:/icons/xy-in-stock.svg</normaloff>:/icons/xy-in-stock.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -492,7 +499,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/origin-x.svg</normaloff>:/icons/origin-x.svg</iconset>
+               <normaloff>:/icons/origin-x.svg</normaloff>:/icons/origin-x.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -512,7 +520,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/origin-y.svg</normaloff>:/icons/origin-y.svg</iconset>
+               <normaloff>:/icons/origin-y.svg</normaloff>:/icons/origin-y.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -532,7 +541,8 @@ from the model or the stock.</string>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/origin-z.svg</normaloff>:/icons/origin-z.svg</iconset>
+               <normaloff>:/icons/origin-z.svg</normaloff>:/icons/origin-z.svg
+              </iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -662,94 +672,96 @@ positioned independently of the model.</string>
                     <number>6</number>
                    </property>
                    <item>
-                   <spacer name="modelMoveZTopSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                   </spacer>
+                    <spacer name="modelMoveZTopSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                    <item>
-                   <widget class="QPushButton" name="modelMoveZUp">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>40</width>
-                      <height>28</height>
-                     </size>
-                    </property>
-                    <property name="toolTip">
-                     <string>Moves the selection along the +Z axis by the step distance</string>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../Path.qrc">
-                      <normaloff>:/icons/arrow-up-z.svg</normaloff>:/icons/arrow-up-z.svg</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>18</width>
-                      <height>18</height>
-                     </size>
-                    </property>
-                   </widget>
+                    <widget class="QPushButton" name="modelMoveZUp">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>40</width>
+                       <height>28</height>
+                      </size>
+                     </property>
+                     <property name="toolTip">
+                      <string>Moves the selection along the +Z axis by the step distance</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../Path.qrc">
+                       <normaloff>:/icons/arrow-up-z.svg</normaloff>:/icons/arrow-up-z.svg
+                      </iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>18</width>
+                       <height>18</height>
+                      </size>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                   <widget class="QPushButton" name="modelMoveZDown">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>40</width>
-                      <height>28</height>
-                     </size>
-                    </property>
-                    <property name="toolTip">
-                     <string>Moves the selection along the -Z axis by the step distance</string>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../Path.qrc">
-                      <normaloff>:/icons/arrow-down-z.svg</normaloff>:/icons/arrow-down-z.svg</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>18</width>
-                      <height>18</height>
-                     </size>
-                    </property>
-                   </widget>
+                    <widget class="QPushButton" name="modelMoveZDown">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>40</width>
+                       <height>28</height>
+                      </size>
+                     </property>
+                     <property name="toolTip">
+                      <string>Moves the selection along the -Z axis by the step distance</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../Path.qrc">
+                       <normaloff>:/icons/arrow-down-z.svg</normaloff>:/icons/arrow-down-z.svg
+                      </iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>18</width>
+                       <height>18</height>
+                      </size>
+                     </property>
+                    </widget>
                    </item>
                    <item>
-                   <spacer name="modelMoveZBottomSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                   </spacer>
+                    <spacer name="modelMoveZBottomSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </item>
@@ -775,7 +787,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-up-y.svg</normaloff>:/icons/arrow-up-y.svg</iconset>
+                     <normaloff>:/icons/arrow-up-y.svg</normaloff>:/icons/arrow-up-y.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -807,7 +820,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-left-x.svg</normaloff>:/icons/arrow-left-x.svg</iconset>
+                     <normaloff>:/icons/arrow-left-x.svg</normaloff>:/icons/arrow-left-x.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -852,7 +866,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-right-x.svg</normaloff>:/icons/arrow-right-x.svg</iconset>
+                     <normaloff>:/icons/arrow-right-x.svg</normaloff>:/icons/arrow-right-x.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -884,7 +899,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-down-y.svg</normaloff>:/icons/arrow-down-y.svg</iconset>
+                     <normaloff>:/icons/arrow-down-y.svg</normaloff>:/icons/arrow-down-y.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -913,25 +929,9 @@ positioned independently of the model.</string>
                 </layout>
                </item>
                <item>
-                <widget class="Line" name="modelTransformLine">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="frameShape">
-                  <enum>QFrame::HLine</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Sunken</enum>
-                 </property>
-                 <property name="lineWidth">
-                  <number>1</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLabel" name="modelRotateLabel">
                  <property name="text">
-                 <string>Rotate</string>
+                  <string>Rotate</string>
                  </property>
                 </widget>
                </item>
@@ -968,7 +968,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
+                     <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -1062,7 +1063,8 @@ positioned independently of the model.</string>
                    </property>
                    <property name="icon">
                     <iconset resource="../Path.qrc">
-                     <normaloff>:/icons/arrow-cw.svg</normaloff>:/icons/arrow-cw.svg</iconset>
+                     <normaloff>:/icons/arrow-cw.svg</normaloff>:/icons/arrow-cw.svg
+                    </iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -1798,7 +1800,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
               </property>
               <property name="icon">
                <iconset theme="object-flip-horizontal">
-                <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
+                <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup
+               </iconset>
               </property>
              </column>
              <column>
@@ -1810,7 +1813,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
               </property>
               <property name="icon">
                <iconset theme="object-flip-vertical">
-                <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</iconset>
+                <normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup</normaloff>../../../../../../../../../../../../../../../../../../../../.designer/backup
+               </iconset>
               </property>
              </column>
              <column>
@@ -2038,7 +2042,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">
-             <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
+             <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg
+            </iconset>
            </property>
           </widget>
          </item>
@@ -2049,7 +2054,8 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">
-             <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
+             <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg
+            </iconset>
            </property>
           </widget>
          </item>
