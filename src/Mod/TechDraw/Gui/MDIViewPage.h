@@ -42,6 +42,7 @@ namespace TechDraw {
 class DrawPage;
 class DrawTemplate;
 class DrawView;
+class DrawViewPart;
 }
 
 namespace TechDrawGui
@@ -75,6 +76,7 @@ public:
 
     bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
+    bool containsViewProvider(const Gui::ViewProvider* viewProvider) const override;
     void onRelabel(Gui::Document* pDoc) override;
 
     void print() override;
@@ -99,7 +101,7 @@ public:
     void setDocumentName(const std::string&);
 
     PyObject* getPyObject() override;
-    TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
+    TechDraw::DrawPage* getPage() const { return m_vpPage->getDrawPage(); }
     ViewProviderPage* getViewProviderPage() const {return m_vpPage;}
 
     void setTabText(std::string tabText);
@@ -109,6 +111,8 @@ public:
 
     void setScene(QGSPage* scene, QGVPage* view);
     void fixSceneDependencies();
+    bool editSketch(App::DocumentObject* sketch, TechDraw::DrawView* owner);
+    Q_INVOKABLE bool editSketchByName(const QString& sketchName);
 
     void setDimensionsSelectability(bool val);
     void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }

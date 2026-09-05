@@ -90,6 +90,8 @@ public:
     int getOrientation() const;
     bool isUnsetting() { return nowUnsetting; }
     void requestPaint();
+    static bool isSketch(const App::DocumentObject* obj);
+    std::vector<App::DocumentObject*> getSketches() const;
     std::vector<App::DocumentObject*> getViews() const;
     std::vector<App::DocumentObject*> getAllViews() const;
 

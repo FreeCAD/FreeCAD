@@ -26,7 +26,9 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
+#include "DrawGuiUtil.h"
 #include "ViewProviderPageExtension.h"
 #include "ViewProviderPage.h"
 
@@ -52,8 +54,13 @@ bool ViewProviderPageExtension::extensionCanDragObject(App::DocumentObject* docO
     return true;
 }
 
-//we don't take any action on drags.  everything is handling in drop
-void ViewProviderPageExtension::extensionDragObject(App::DocumentObject* obj) { (void)obj; }
+// Most TechDraw objects are handled entirely by their drop target. Sketches
+// are model objects, though, so dragging one out of a page must release the
+// TechDraw links before the new parent claims it.
+void ViewProviderPageExtension::extensionDragObject(App::DocumentObject* obj)
+{
+    DrawGuiUtil::detachSketchFromTechDraw(obj);
+}
 
 //we handle our own drops
 bool ViewProviderPageExtension::extensionCanDropObjects() const { return true; }
@@ -68,6 +75,9 @@ bool ViewProviderPageExtension::extensionCanDropObject(App::DocumentObject* obj)
 
     //only DrawView objects can live on pages (except special case Template)
     if (obj->isDerivedFrom<TechDraw::DrawView>()) {
+        return true;
+    }
+    if (TechDraw::DrawPage::isSketch(obj)) {
         return true;
     }
     if (obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
@@ -96,6 +106,9 @@ bool ViewProviderPageExtension::extensionCanDropObjectEx(App::DocumentObject* ob
     if (obj->isDerivedFrom<TechDraw::DrawView>()) {
         return true;
     }
+    if (TechDraw::DrawPage::isSketch(obj)) {
+        return true;
+    }
     if (obj->isDerivedFrom<TechDraw::DrawTemplate>()) {
         //don't let another extension try to drop templates
         return true;
@@ -118,11 +131,22 @@ void ViewProviderPageExtension::extensionDropObject(App::DocumentObject* obj)
         dropObject(obj);
         return;
     }
+    if (TechDraw::DrawPage::isSketch(obj)) {
+        dropObject(obj);
+    }
 }
 
 //this code used to live in ViewProviderPage
 void ViewProviderPageExtension::dropObject(App::DocumentObject* obj)
 {
+    if (TechDraw::DrawPage::isSketch(obj)) {
+        DrawGuiUtil::detachSketchFromTechDraw(obj);
+        auto* page = getViewProviderPage()->getDrawPage();
+        page->addView(obj, false);
+        page->Views.touch();
+        return;
+    }
+
     auto dvp = freecad_cast<TechDraw::DrawViewPart*>(obj);
     if (dvp && DrawView::isProjGroupItem(dvp)) {
         //DPGI can not be dropped onto the Page if it belongs to DPG

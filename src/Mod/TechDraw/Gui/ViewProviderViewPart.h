@@ -80,6 +80,8 @@ public:
     int prefHighlightStyle();
 
     std::vector<App::DocumentObject*> claimChildren() const override;
+    bool canDropObject(App::DocumentObject* obj) const override;
+    void dropObject(App::DocumentObject* obj) override;
     void fixSceneDependencies() override;
 
     TechDraw::DrawViewPart* getViewObject() const override;

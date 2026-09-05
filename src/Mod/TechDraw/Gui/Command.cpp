@@ -73,6 +73,7 @@
 #include "TaskComplexSection.h"
 #include "TaskDetail.h"
 #include "TaskProjGroup.h"
+#include "TaskNewSketch.h"
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
@@ -259,6 +260,42 @@ bool CmdTechDrawRedrawPage::isActive()
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, false);
     return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_NewSketch
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewSketch)
+
+CmdTechDrawNewSketch::CmdTechDrawNewSketch()
+    : Command("TechDraw_NewSketch")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("New Sketch");
+    sToolTipText = QT_TR_NOOP("Creates a sketch on the current page or one of its views");
+    sWhatsThis = "TechDraw_NewSketch";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_NewSketch";
+}
+
+void CmdTechDrawNewSketch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (Gui::Control().activeDialog()) {
+        return;
+    }
+
+    auto* page = DrawGuiUtil::findPage(this);
+    if (page) {
+        Gui::Control().showDialog(new TaskDlgNewSketch(page));
+    }
+}
+
+bool CmdTechDrawNewSketch::isActive()
+{
+    return hasActiveDocument() && DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
@@ -2022,6 +2059,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawClipGroup());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroupAdd());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroupRemove());
+    rcCmdMgr.addCommand(new CmdTechDrawNewSketch());
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());

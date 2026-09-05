@@ -67,6 +67,7 @@ class QGIViewBalloon;
 class QGITile;
 class QGILeaderLine;
 class QGIRichAnno;
+class QGISketch;
 
 class TechDrawGuiExport QGSPage: public QGraphicsScene
 {
@@ -78,6 +79,8 @@ public:
 
     bool addView(const App::DocumentObject* obj);
     bool attachView(App::DocumentObject* obj);
+    bool attachSketch(App::DocumentObject* obj);
+    void updateSketch(App::DocumentObject* obj);
     QGIView* addViewDimension(TechDraw::DrawViewDimension* dimFeat);
     QGIView* addViewBalloon(TechDraw::DrawViewBalloon* balloonFeat);
     QGIView* addProjectionGroup(TechDraw::DrawProjGroup* projGroupFeat);
@@ -118,6 +121,10 @@ public:
     void addItemToParent(QGIView* item, QGIView* parent);
 
     std::vector<QGIView*> getViews() const;
+    std::vector<QGISketch*> getSketches() const;
+    QGISketch* findSketchForDocObj(App::DocumentObject* obj) const;
+    TechDraw::DrawView* findSketchOwner(App::DocumentObject* obj) const;
+    void syncSketches();
 
     int removeQView(QGIView* view);
     int removeQViewByName(const char* name);
@@ -133,6 +140,10 @@ public:
 
     TechDraw::DrawPage* getDrawPage();
 
+protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+
+public:
     void setExportingSvg(bool enable);
     bool getExportingSvg() const { return m_exportingSvg; }
 

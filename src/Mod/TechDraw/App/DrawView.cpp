@@ -103,8 +103,36 @@ DrawView::DrawView():
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
+    ADD_PROPERTY_TYPE(Sketches, (nullptr), group, App::Prop_None,
+                      "Sketch geometry drawn relative to this view");
+    // Sketch membership is a presentation relationship. Keeping it out of
+    // the dependency DAG also permits a sketch to reference projected edges
+    // of its owning view without creating a cycle.
+    Sketches.setScope(App::LinkScope::Hidden);
 
     setScaleAttribute();
+}
+
+int DrawView::addSketch(App::DocumentObject* sketch)
+{
+    if (!DrawPage::isSketch(sketch)) {
+        return -1;
+    }
+
+    auto sketches = Sketches.getValues();
+    if (std::find(sketches.begin(), sketches.end(), sketch) == sketches.end()) {
+        sketches.push_back(sketch);
+        Sketches.setValues(sketches);
+    }
+    return Sketches.getSize();
+}
+
+int DrawView::removeSketch(App::DocumentObject* sketch)
+{
+    auto sketches = Sketches.getValues();
+    std::erase(sketches, sketch);
+    Sketches.setValues(sketches);
+    return Sketches.getSize();
 }
 
 

@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cmath>
 #include <limits>
 
 #include <Inventor/nodes/SoCamera.h>
@@ -188,6 +189,10 @@ void GridExtensionP::getClosestGridPoint(double& x, double& y) const
 bool GridExtensionP::checkCameraZoomChange(const Gui::View3DInventorViewer* viewer)
 {
     float newCamMaxDimension = viewer->getMaxDimension();
+    if (!std::isfinite(newCamMaxDimension)
+        || newCamMaxDimension <= std::numeric_limits<float>::epsilon()) {
+        return false;
+    }
     if (fabs(newCamMaxDimension - camMaxDimension) > 0) {  // ie if user zoomed.
         camMaxDimension = newCamMaxDimension;
         return true;
@@ -233,7 +238,8 @@ void GridExtensionP::computeGridSize(const Gui::View3DInventorViewer* viewer)
         return;
     }
 
-    int numberOfLines = static_cast<int>(std::max(pixelWidth, pixelHeight)) / GridSizePixelThreshold;
+    int numberOfLines
+        = std::max(1, static_cast<int>(std::max(pixelWidth, pixelHeight)) / GridSizePixelThreshold);
 
     // If number of subdivision is 1, grid auto spacing can't work as it uses it as a factor
     // In such case, we apply a default factor of 10
@@ -317,6 +323,21 @@ void GridExtensionP::createGridPart(
 {
     float gridZ = getViewOrientationFactor() * GRID_Z_OFFSET;
 
+    const float gridDimension = 1.5F * camMaxDimension;
+    const double verticalLineCount = gridDimension / computedGridValue;
+    if (!std::isfinite(gridDimension) || !std::isfinite(computedGridValue) || computedGridValue <= 0.0
+        || !std::isfinite(verticalLineCount) || verticalLineCount > 1000.0) {
+        if (!isTooManySegmentsNotified) {
+            Base::Console().warning(
+                "The grid dimensions are invalid or too dense, so the grid is being disabled. "
+                "Consider zooming in or changing the grid configuration\n"
+            );
+            isTooManySegmentsNotified = true;
+        }
+        Gui::coinRemoveAllChildren(GridRoot);
+        return;
+    }
+
     auto* parent = new Gui::SoSkipBoundingGroup();
     parent->mode = Gui::SoSkipBoundingGroup::EXCLUDE_BBOX;
 
@@ -341,9 +362,8 @@ void GridExtensionP::createGridPart(
     vts = new SoVertexProperty;
     grid->vertexProperty = vts;
 
-    float gridDimension = 1.5 * camMaxDimension;
-    int vlines = static_cast<int>(gridDimension / computedGridValue);  // total number of vertical lines
-    int nlines = 2 * vlines;                                           // total number of lines
+    int vlines = static_cast<int>(verticalLineCount);  // total number of vertical lines
+    int nlines = 2 * vlines;                           // total number of lines
 
     if (nlines > 2000) {
         if (!isTooManySegmentsNotified) {
