@@ -103,6 +103,15 @@ enum SpecialTag
     DefaultTemporaryConstraint = -1
 };
 
+// Optional per-run instrumentation for a System. Set with
+// System::setStats() to collect statistics during a solve/diagnose.
+class SketcherExport SystemStats
+{
+public:
+    // Sum of the size of every reduced Jacobian built during diagnose().
+    int cumulativeDiagnoseMatrixSize = 0;
+};
+
 class SketcherExport System
 {
     // This is the main class. It holds all constraints and information
@@ -137,6 +146,7 @@ private:
 
     int dofs;
     std::set<Constraint*> redundant;
+    std::set<Constraint*> conflicting;
     VEC_I conflictingTags, redundantTags, partiallyRedundantTags;
 
     bool hasUnknowns;   // if plist is filled with the unknown parameters
@@ -145,16 +155,30 @@ private:
 
     bool emptyDiagnoseMatrix;  // false only if there is at least one driving constraint.
 
+    SystemStats* stats = nullptr;  // optional instrumentation, see setStats()
+
     int solve_BFGS(SubSystem* subsys, bool isFine = true, bool isRedundantsolving = false);
     int solve_LM(SubSystem* subsys, bool isRedundantsolving = false);
     int solve_DL(SubSystem* subsys, bool isRedundantsolving = false);
 
     void makeReducedJacobian(
+        const VEC_pD& plist,
+        const VEC_pD& pdrivenlist,
+        const std::vector<Constraint*>& clist,
         Eigen::MatrixXd& J,
         std::map<int, int>& jacobianconstraintmap,
-        GCS::VEC_pD& pdiagnoselist,
-        std::map<int, int>& tagmultiplicity
+        GCS::VEC_pD& pdiagnoselist
     );
+
+    int diagnoseComponent(
+        Algorithm alg,
+        const VEC_pD& plist,
+        const VEC_pD& pdrivenlist,
+        const std::vector<Constraint*>& clist,
+        const std::map<int, int>& tagmultiplicity
+    );
+
+    int computeComponents(const std::vector<Constraint*>& clist, VEC_I& components);
 
     void makeDenseQRDecomposition(
         const Eigen::MatrixXd& J,
@@ -190,6 +214,7 @@ private:
     template<typename T>
     void identifyConflictingRedundantConstraints(
         Algorithm alg,
+        const std::vector<Constraint*>& clist,
         const T& qrJT,
         const std::map<int, int>& jacobianconstraintmap,
         const std::map<int, int>& tagmultiplicity,
@@ -633,6 +658,7 @@ public:
     }
 
     int diagnose(Algorithm alg = DogLeg);
+
     int dofsNumber() const
     {
         return hasDiagnosis ? dofs : -1;
@@ -687,6 +713,11 @@ protected:
         return std::count_if(clist.begin(), clist.end(), [tagID](Constraint* constraint) {
             return constraint->getTag() == tagID;
         });
+    }
+
+    void _setStats(SystemStats* stats)
+    {
+        this->stats = stats;
     }
 };
 
