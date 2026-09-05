@@ -28,8 +28,8 @@ requirements:
     - gtest
     - ninja
     - noqt5
-    - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - python>=3.14,<3.15
+    - qt6-main
     - swig>=4.3,<4.4
 
     - if: linux and x86_64
@@ -60,7 +60,7 @@ requirements:
         - pixman-cos7-x86_64
         - sed
         - sysroot_linux-64
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor  ## FIXME: was ==0.1.5 for #26726; qt6-main >=6.11 needs >=0.1.6
         - xorg-x11-server-common-cos7-x86_64
         - xorg-x11-server-xvfb-cos7-x86_64
         - xorg-xproto
@@ -93,7 +93,7 @@ requirements:
         - pixman-cos7-aarch64
         - sed
         - sysroot_linux-aarch64
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor  ## FIXME: was ==0.1.5 for #26726; qt6-main >=6.11 needs >=0.1.6
         - xorg-x11-server-common-cos7-aarch64
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
@@ -107,22 +107,27 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - eigen >=3.3,<5
+    - eigen
     - fmt >=12.1,<12.2
     - freetype
-    - hdf5
+    ## hdf5 <2.2: host and run are solved separately, so host is free to pick a
+    ## newer hdf5 than the run closure can use. gmsh (run) needs libmed, whose
+    ## newest builds cap at hdf5 <2.2; without this bound host selects hdf5 2.2
+    ## and its run_export makes every gmsh candidate unsatisfiable. Drop when
+    ## libmed is rebuilt against hdf5 2.2.
+    - hdf5<2.2
     - lark
     - libboost-devel
     - matplotlib-base
     - noqt5
-    - numpy>=1.26,<2
-    - occt>=7.8,<7.9
+    - numpy
+    - occt>=8.0,<8.1
     - pcl
     - ply
     - pybind11
     - pyside6
-    - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - python>=3.14,<3.15
+    - qt6-main
     - six
     - smesh
     - vtk
@@ -160,8 +165,8 @@ requirements:
     - matplotlib-base
     - nine
     - noqt5
-    - numpy>=1.26,<2
-    - occt>=7.8,<7.9
+    - numpy
+    - occt>=8.0,<8.1
     - olefile
     - opencamlib
     - pandas
@@ -169,10 +174,9 @@ requirements:
     - ply
     - pycollada
     - pyside6
-    - python>=3.11,<3.12
-    - pythonocc-core
+    - python>=3.14,<3.15
     - pyyaml
-    - qt6-main>=6.8,<6.9
+    - qt6-main
     - requests
     - scipy
     - sympy
@@ -184,4 +188,4 @@ requirements:
       then:
         - libspnav
         - qt6-wayland
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor  ## FIXME: was ==0.1.5 for #26726; qt6-main >=6.11 needs >=0.1.6

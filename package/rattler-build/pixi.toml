@@ -23,7 +23,7 @@ freecad = { path = "." }
 ucrt = "==10.0.20348.0"
 
 [feature.package.dependencies]
-python = ">=3.11,<3.12"
+python = ">=3.14,<3.15"
 
 [feature.package.tasks]
 create_bundle = 'bash -c "cd $(bash scripts/get_os.bash) && bash create_bundle.sh"'
@@ -31,12 +31,16 @@ create_bundle = 'bash -c "cd $(bash scripts/get_os.bash) && bash create_bundle.s
 ## Linux (x86-64)
 [feature.package.target.linux-64.dependencies]
 coreutils = "*"
-xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+## FIXME: was ==0.1.5 for https://github.com/FreeCAD/FreeCAD/issues/26726;
+## qt6-main >=6.11 requires xcb-util-cursor >=0.1.6, so the pin is unsatisfiable.
+xcb-util-cursor = "*"
 
 ## Linux (aarch64)
 [feature.package.target.linux-aarch64.dependencies]
 coreutils = "*"
-xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+## FIXME: was ==0.1.5 for https://github.com/FreeCAD/FreeCAD/issues/26726;
+## qt6-main >=6.11 requires xcb-util-cursor >=0.1.6, so the pin is unsatisfiable.
+xcb-util-cursor = "*"
 
 ## macOS (Intel)
 [feature.package.target.osx-64.dependencies]
