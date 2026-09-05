@@ -765,16 +765,11 @@ class PostProcessDialog:
     # ------------------------------------------------------------------
     # Operations helpers
     # ------------------------------------------------------------------
-
-    def _get_operations(self):
-        ops = getattr(self.job, "Operations", None)
-        if ops and hasattr(ops, "Group"):
-            return ops.Group
-        return []
-
     def _get_active_operations(self):
+        from PathScripts.PathUtils import getOperations
+
         """Return only active operations, matching what the tree widget displays."""
-        return [op for op in self._get_operations() if getattr(op, "Active", True)]
+        return [op for op in getOperations(self.job) if getattr(op, "Active", True)]
 
     def _on_ops_changed(self, _item, _col=None):
         self._update_ops_tab_label()

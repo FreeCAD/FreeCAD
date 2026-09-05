@@ -195,9 +195,7 @@ class _ToggleOperation:
         if len(selection) == 1:
             # allows to toggle all operations in Job
             sel = selection[0]
-            if hasattr(sel, "Group") and sel.Name.startswith("Job"):
-                return True
-            if hasattr(sel, "Group") and sel.Name.startswith("Operations"):
+            if hasattr(sel, "Group"):
                 return True
 
         for sel in selection:
@@ -209,32 +207,18 @@ class _ToggleOperation:
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelection()
-        if (len(selection) == 1 and hasattr(selection[0], "Group")) and (
-            selection[0].Name.startswith("Job") or selection[0].Name.startswith("Operations")
-        ):
-            sel = selection[0]
-            # process all Operations in Job
-            if sel.Name.startswith("Job"):
-                selection = sel.Operations.Group
-            elif sel.Name.startswith("Operations"):
-                selection = sel.Group
+        operations = []
+        for sel in selection:
+            if hasattr(sel, "Group"):
+                operations.extend(PathUtils.getOperations(selection[0]))
+            elif hasattr(sel, "Path"):
+                operations.append(sel)
 
-            states = [Path.Dressup.Utils.baseOp(sel).Active for sel in selection]
-            if all(states) or not any(states):
-                # all operations in one state (active or inactive) - toggle state
-                for sel in selection:
-                    baseOp = Path.Dressup.Utils.baseOp(sel)
-                    baseOp.Active = not baseOp.Active
-            else:
-                # operations in different states - set Active state
-                for sel in selection:
-                    baseOp = Path.Dressup.Utils.baseOp(sel)
-                    baseOp.Active = True
-
-        else:
-            for sel in selection:
-                baseOp = Path.Dressup.Utils.baseOp(sel)
-                baseOp.Active = not baseOp.Active
+        states = [Path.Dressup.Utils.baseOp(op).Active for op in operations]
+        setTrue = not all(states) and any(states)  # some operations not Active
+        for op in operations:
+            baseOp = Path.Dressup.Utils.baseOp(op)
+            baseOp.Active = True if setTrue else not baseOp.Active
 
         FreeCAD.ActiveDocument.recompute()
 

@@ -50,6 +50,7 @@ from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits
+from PathScripts.PathUtils import getOperations
 
 translate = FreeCAD.Qt.translate
 
@@ -798,9 +799,7 @@ class PostProcessor:
             self._operations = job["operations"]
         if not self._operations:
             # get all operations from 'Operations' group
-            self._operations = (
-                getattr(self._job.Operations, "Group", []) if self._job is not None else []
-            )
+            self._operations = getOperations(self._job)
 
     @classmethod
     def exists(cls, processor):
