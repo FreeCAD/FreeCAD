@@ -75,6 +75,9 @@ class DocumentObject(ExtensionContainer):
     NoTouch: bool = False
     """Enable/disable no touch on any property change"""
 
+    ToponamingAlgorithm: Final[str] = ""
+    """Topological Naming Algorithm used by the Object."""
+
     def addProperty(
         self,
         type: str,
@@ -334,9 +337,9 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str, /) -> str:
+    def getCorrectElementMapVersion(self) -> str:
         """
-        return element map version of a given geometry property
+        return correct element map version of the document.
         """
         ...
 

@@ -322,7 +322,7 @@ App::DocumentObjectExecReturn* Draft::execute()
     try {
         std::vector<TopoShape> faces = getFaces(baseShape);
 
-        TopoShape shape({}, getDocument()->getStringHasher());
+        TopoShape shape = makeTopoShape();
         shape.makeElementDraft(baseShape, faces, pullDirection, angle, neutralPlane, reversed);
 
         if (shape.isNull()) {

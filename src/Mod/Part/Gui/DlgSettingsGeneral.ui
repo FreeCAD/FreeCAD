@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>PartGui::DlgSettingsGeneral</class>
  <widget class="QWidget" name="PartGui::DlgSettingsGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>541</width>
+    <height>823</height>
+   </rect>
+  </property>
   <property name="minimumSize">
    <size>
     <width>400</width>
@@ -18,31 +26,6 @@
       <string>Model Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Automatically check model after boolean operation</string>
-        </property>
-        <property name="toolTip">
-         <string>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CheckModel</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Part/Boolean</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
         <property name="sizePolicy">
@@ -51,17 +34,42 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Automatically refine model after boolean operation</string>
-        </property>
         <property name="toolTip">
          <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</string>
+        </property>
+        <property name="text">
+         <string>Automatically refine model after boolean operation</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RefineModel</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Part/Boolean</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</string>
+        </property>
+        <property name="text">
+         <string>Automatically check model after boolean operation</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CheckModel</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Part/Boolean</cstring>
@@ -76,11 +84,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Automatically refine model after applying operations</string>
-        </property>
         <property name="toolTip">
          <string>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</string>
+        </property>
+        <property name="text">
+         <string>Automatically refine model after applying operations</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -93,6 +101,49 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <layout class="QHBoxLayout" name="selectedHistoryAlgorithmLayout">
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="selectedHistoryAlgorithmLabel">
+          <property name="text">
+           <string>Topological Naming Version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="selectedHistoryAlgorithmEnum">
+          <property name="toolTip">
+           <string>Sets the topological naming algorithm version used across FreeCAD</string>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HistoryAlgorithm</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Part/General</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>V1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>V2</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
         <property name="sizePolicy">
@@ -101,11 +152,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Allow multiple solids in Part Design bodies by default</string>
-        </property>
         <property name="toolTip">
          <string>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</string>
+        </property>
+        <property name="text">
+         <string>Allow multiple solids in Part Design bodies by default</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -192,6 +243,9 @@
           </property>
           <property name="toolTip">
            <string>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>9</number>
           </property>
           <property name="currentIndex">
            <number>1</number>
@@ -288,11 +342,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Show final result by default when editing features</string>
-        </property>
         <property name="toolTip">
          <string>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</string>
+        </property>
+        <property name="text">
+         <string>Show final result by default when editing features</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFinal</cstring>
@@ -310,11 +364,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Show transparent preview overlay by default when editing features</string>
-        </property>
         <property name="toolTip">
          <string>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</string>
+        </property>
+        <property name="text">
+         <string>Show transparent preview overlay by default when editing features</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -335,11 +389,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Highlight the profile used to create features</string>
-        </property>
         <property name="toolTip">
          <string>Visually highlights the source sketch or geometry used to generate the feature currently being edited</string>
+        </property>
+        <property name="text">
+         <string>Highlight the profile used to create features</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -379,11 +433,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Show interactive draggers when editing features</string>
-        </property>
         <property name="toolTip">
          <string>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</string>
+        </property>
+        <property name="text">
+         <string>Show interactive draggers when editing features</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -404,11 +458,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="text">
-         <string>Disable recompute while dragging</string>
-        </property>
         <property name="toolTip">
          <string>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</string>
+        </property>
+        <property name="text">
+         <string>Disable recompute while dragging</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DelayedGizmoUpdate</cstring>

@@ -60,6 +60,7 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
     TopoShape res(ts);
     res.Tag = parent.Tag;
     res.Hasher = parent.Hasher;
+    res.setHistoryAlgorithm(parent.getHistoryAlgorithm());
 
     if (!parent.getShape().Location().IsIdentity()) {
         res.setShape(TopoShape::moved(res._Shape, parent.getShape().Location()), false);

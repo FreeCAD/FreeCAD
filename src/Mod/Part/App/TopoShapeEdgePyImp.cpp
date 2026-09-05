@@ -63,6 +63,7 @@
 #include <GCPnts_UniformDeflection.hxx>
 #include <TColStd_HArray1OfReal.hxx>
 
+#include <App/Document.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Vector3D.h>
@@ -120,6 +121,11 @@ PyObject* TopoShapeEdgePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  //
 // constructor method
 int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Edge
         getTopoShapePtr()->setShape(TopoDS_Edge());
@@ -745,13 +751,14 @@ PyObject* TopoShapeEdgePy::countNodes(PyObject* args) const
 
 PyObject* TopoShapeEdgePy::split(PyObject* args) const
 {
+    TopoShape* thisShape = this->getTopoShapePtr();
     PyObject* float_or_list;
     if (!PyArg_ParseTuple(args, "O", &float_or_list)) {
         return nullptr;
     }
 
     try {
-        BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
+        BRepAdaptor_Curve adapt(TopoDS::Edge(thisShape->getShape()));
         Standard_Real f = adapt.FirstParameter();
         Standard_Real l = adapt.LastParameter();
 
@@ -794,7 +801,7 @@ PyObject* TopoShapeEdgePy::split(PyObject* args) const
 
         BRepBuilderAPI_MakeWire mkWire;
         Handle(Geom_Curve) c = adapt.Curve().Curve();
-        const TopoDS_Edge& edge = TopoDS::Edge(this->getTopoShapePtr()->getShape());
+        const TopoDS_Edge& edge = TopoDS::Edge(thisShape->getShape());
         BRep_Builder builder;
         TopoDS_Edge e;
         std::vector<Standard_Real>::iterator end = par.end() - 1;
@@ -806,7 +813,7 @@ PyObject* TopoShapeEdgePy::split(PyObject* args) const
             mkWire.Add(e);
         }
 
-        return new TopoShapeWirePy(new TopoShape(mkWire.Shape()));
+        return new TopoShapeWirePy(new TopoShape(thisShape->getHistoryAlgorithm(), mkWire.Shape()));
     }
     catch (Standard_Failure& e) {
 
@@ -847,7 +854,7 @@ PyObject* TopoShapeEdgePy::firstVertex(PyObject* args) const
     }
     auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::FirstVertex(e, Base::asBoolean(orient));
-    return new TopoShapeVertexPy(new TopoShape(v));
+    return new TopoShapeVertexPy(new TopoShape(getTopoShapePtr()->getHistoryAlgorithm(), v));
 }
 
 PyObject* TopoShapeEdgePy::lastVertex(PyObject* args) const
@@ -858,7 +865,7 @@ PyObject* TopoShapeEdgePy::lastVertex(PyObject* args) const
     }
     auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::LastVertex(e, Base::asBoolean(orient));
-    return new TopoShapeVertexPy(new TopoShape(v));
+    return new TopoShapeVertexPy(new TopoShape(getTopoShapePtr()->getHistoryAlgorithm(), v));
 }
 
 // ====== Attributes ======================================================================

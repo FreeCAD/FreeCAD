@@ -283,3 +283,22 @@ def checkAbort() -> None:
     abort by pressing Esc.
     """
     ...
+
+def getDecodedMappedName(name: str, /) -> list[dict]:
+    """Returns the decoding of `name` in the form of a dictionary."""
+    ...
+
+def makeEncodedSection(
+    *,
+    referenceIDs: list[str] = [],
+    linkedNames: list[str] = [],
+    iterationTag: str = "0",
+    opCode: str = "MKR",
+    index: str = "0",
+    elementType: str = "E",
+    duplicateCount: str = "0",
+    mapperFlags: list[str] = [],
+    connectedElements: list[str] = [],
+) -> str:
+    """Returns an encoded mapped section generated with the input arguments."""
+    ...

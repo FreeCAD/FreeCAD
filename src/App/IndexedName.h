@@ -397,4 +397,24 @@ private:
     int index;
 };
 
+// qHash was removed, so i'm using a string hasher here. It might be faster if we reimported qHash.
+class AppExport IndexedNameHasher {
+    public:
+        std::size_t operator()(const IndexedName& name) const {
+            return stringHasher(name.toString());
+        };
+
+        std::size_t operator()(const std::vector<IndexedName>& names) const {
+            std::size_t seed = names.size();
+
+            for (const IndexedName& name : names) {
+                seed ^= stringHasher(name.toString()) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
+
+            return seed;
+        };
+    private:
+        std::hash<std::string> stringHasher { };
+};
+
 }  // namespace Data

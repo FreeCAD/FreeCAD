@@ -88,6 +88,8 @@ public:
     static PyObject *sGetActiveTransaction   (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction (PyObject *self,PyObject *args);
     static PyObject *sCheckAbort             (PyObject *self,PyObject *args);
+    static PyObject *sGetDecodedMappedName   (PyObject *self,PyObject *args);
+    static PyObject *sMakeEncodedSection     (PyObject *self,PyObject *args, PyObject* keywds);
     // clang-format on
 };
 

@@ -110,7 +110,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
 
-        TopoShape res(0);
+        TopoShape res = makeTopoShape();
         this->Shape.setValue(res.makeElementShape(mkChamfer, baseTopoShape, Part::OpCodes::Chamfer));
         return Part::FilletBase::execute();
     }

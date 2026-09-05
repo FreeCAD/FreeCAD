@@ -19,9 +19,6 @@ class GeoFeature(DocumentObject):
     to any particular property name.
     """
 
-    ElementMapVersion: Final[str] = ""
-    """Element map version"""
-
     def getPaths(self) -> Any:
         """
         Returns all possible paths to the root of the document.

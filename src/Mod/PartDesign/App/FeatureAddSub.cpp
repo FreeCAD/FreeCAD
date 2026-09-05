@@ -149,7 +149,7 @@ void FeatureAddSub::updatePreviewShape()
         if (!tool.isEmpty()) {
             try {
                 // Compute removed volume preview (for display)
-                TopoShape common;
+                TopoShape common = makeTopoShape(false);
                 common.makeElementBoolean(
                     Part::OpCodes::Common,
                     {base, tool},
@@ -161,7 +161,7 @@ void FeatureAddSub::updatePreviewShape()
                 GProp_GProps propsBefore, propsAfter;
                 BRepGProp::VolumeProperties(base.getShape(), propsBefore);
 
-                TopoShape cut;
+                TopoShape cut = makeTopoShape(false);
                 cut.makeElementBoolean(
                     Part::OpCodes::Cut,
                     {base, tool},

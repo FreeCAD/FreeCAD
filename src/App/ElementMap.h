@@ -30,6 +30,7 @@
 #include "Application.h"
 #include "MappedElement.h"
 #include "StringHasher.h"
+#include "ElementNamingUtils.h"
 
 #include <cstring>
 #include <deque>
@@ -306,6 +307,20 @@ public:
      */
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
+    const App::HistoryAlgorithm& getHistoryAlgorithm() const {
+        if (historyAlgorithmRef == nullptr) {
+            return App::getDefaultHistoryAlgorithm();
+        } else {
+            return *historyAlgorithmRef;
+        }
+    }
+
+    void syncHistoryAlgorithm(const App::HistoryAlgorithm* geoDataHistoryAlgorithmRef) {
+        historyAlgorithmRef = geoDataHistoryAlgorithmRef;
+    }
+
+    /// Retag method, only used with V2 element maps.
+    void retagElementMap(long newTag);
 
 private:
     /** Serialize this map
@@ -400,6 +415,9 @@ private:
     std::map<const char*, IndexedElements, CStringComp> indexedNames;
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
+
+    const App::HistoryAlgorithm* historyAlgorithmRef = nullptr;
+
 
     struct ChildMapInfo
     {

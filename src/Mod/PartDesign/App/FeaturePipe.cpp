@@ -183,15 +183,14 @@ App::DocumentObjectExecReturn* Pipe::execute()
     // cannot be used directly as front face. We would need a method to translate
     // the front shape to match the shell starting position somehow...
     std::vector<TopoShape> wires;
-    Part::TopoShape profilePoint;
+    Part::TopoShape profilePoint = makeTopoShape(false);
 
     // if the Base property has a valid shape, fuse the pipe into it
-    Part::TopoShape base;
+    Part::TopoShape base = makeTopoShape();
     try {
         base = getBaseTopoShape();
     }
     catch (const Base::Exception&) {
-        base = Part::TopoShape(getID(), this->getDocument()->getStringHasher());
     }
 
     auto hasher = getDocument()->getStringHasher();
@@ -219,13 +218,13 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         std::vector<std::string> subedge = Spine.getSubValues();
-        Part::TopoShape path;
+        Part::TopoShape path = makeTopoShape(false);
         const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getShape();
         buildPipePath(shape, subedge, path);
         path.move(invObjLoc);
 
         // auxiliary
-        Part::TopoShape auxpath;
+        Part::TopoShape auxpath = makeTopoShape(false);
         if (Mode.getValue() == 3) {
             App::DocumentObject* auxspine = AuxiliarySpine.getValue();
             if (!(auxspine && auxspine->isDerivedFrom<Part::Feature>())) {
@@ -385,7 +384,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 );
             }
 
-            Part::TopoShape shell = Part::TopoShape(0, this->getDocument()->getStringHasher());
+            Part::TopoShape shell = makeTopoShape();
             shell.makeElementShape(mkPS, wires, Part::OpCodes::PipeShell);
             shells.push_back(shell);
 
@@ -395,7 +394,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 mkPS.Simulate(2, sim);
 
                 if (wires.front().shapeType() != TopAbs_VERTEX) {
-                    TopoShape front(sim.First());
+                    TopoShape front = makeTopoShape(sim.First());
                     if (front.countSubShapes(TopAbs_EDGE)
                         == wires.front().countSubShapes(TopAbs_EDGE)) {
                         front = wires.front();
@@ -408,7 +407,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 }
 
                 if (wires.back().shapeType() != TopAbs_VERTEX) {
-                    TopoShape back(sim.Last());
+                    TopoShape back = makeTopoShape(sim.Last());
                     if (back.countSubShapes(TopAbs_EDGE) == wires.back().countSubShapes(TopAbs_EDGE)) {
                         back = wires.back();
                         back.setShape(sim.Last(), false);
@@ -421,7 +420,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             }
         }
 
-        Part::TopoShape result(0, getDocument()->getStringHasher());
+        Part::TopoShape result = makeTopoShape();
 
         if (!frontwires.empty() || !backwires.empty()) {
             BRepBuilderAPI_Sewing sewer;
@@ -489,7 +488,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
         else {
             // shells are already closed - add them directly
-            Part::TopoShape partCompound = TopoShape(0, getDocument()->getStringHasher());
+            Part::TopoShape partCompound = makeTopoShape();
             partCompound.makeElementCompound(shells);
 
             result.makeElementSolid(partCompound);
@@ -548,7 +547,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        Part::TopoShape boolOp(0, getDocument()->getStringHasher());
+        Part::TopoShape boolOp = makeTopoShape(base.Tag);
 
         result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
         //                        from the post-boolean pipe

@@ -67,6 +67,9 @@ class TopoShape(ComplexGeoData):
     Volume: Final[float] = 0.0
     """Total volume of the solids of the shape."""
 
+    HistoryAlgorithm: Final[str] = ""
+    """Topological naming history algorithm used by the shape."""
+
     @constmethod
     def dumps(self) -> str:
         """

@@ -336,7 +336,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     }
 
     // Generate the revolution tool first; PartDesign applies the final base operation below.
-    TopoShape result(0, getDocument()->getStringHasher());
+    TopoShape result = makeTopoShape(false);
     TopoShape supportface = tryGetSupportShape();
 
     supportface.move(invObjLoc);
@@ -700,7 +700,7 @@ TopoShape Revolved::getRevolutionUpToFace(
 
 TopoShape Revolved::tryGetBaseShape() const
 {
-    TopoShape base;
+    TopoShape base = makeTopoShape(false);
     try {
         base = getBaseTopoShape();
     }
@@ -713,7 +713,7 @@ TopoShape Revolved::tryGetBaseShape() const
 
 TopoShape Revolved::tryGetSupportShape() const
 {
-    TopoShape supportface(0);
+    TopoShape supportface = makeTopoShape(false);
     try {
         supportface = getSupportFace();
     }

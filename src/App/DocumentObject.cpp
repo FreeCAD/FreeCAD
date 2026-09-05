@@ -1839,22 +1839,26 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
     return touched;
 }
 
-std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
+std::string DocumentObject::getCorrectElementMapVersion() const
 {
-    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
-    if (!prop) {
-        return std::string();
+    if (isAttachedToDocument()) {
+        App::Document* document = getDocument();
+        
+        if (document) {
+            return document->getCorrectElementMapVersion();
+        }
     }
-    return prop->getElementMapVersion(restored);
+
+    return "";
 }
 
-bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
+const App::HistoryAlgorithm& DocumentObject::getSelectedHistoryAlgorithm() const
 {
-    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
-    if (!prop) {
-        return false;
+    if (isAttachedToDocument()) {
+        return getDocument()->getSelectedHistoryAlgorithm();
     }
-    return prop->checkElementMapVersion(ver);
+
+    return App::getDefaultHistoryAlgorithm();
 }
 
 const std::string& DocumentObject::hiddenMarker()
