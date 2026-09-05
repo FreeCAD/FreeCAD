@@ -121,6 +121,6 @@ def generate(
         cmd = "G84"
 
     finalcmd = Path.Command(cmd, cmdParams)
-    finalcmd.addAnnotations({"rigid": str(rigid)})
+    finalcmd.addAnnotations({"operation": "tapping", "rigid": str(rigid)})
 
     return [finalcmd]
