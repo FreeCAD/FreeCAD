@@ -1141,13 +1141,22 @@ private:
                 Base::Vector3d refPnt1, refPnt2;
                 getFilletData(refPnt1, refPnt2, radius, newGeo, prevGeo, newGeoPos, prevGeoPos);
 
-                obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
+                bool filletOk = obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true)
+                    >= 0;
 
                 if (!obj->noRecomputes) {
                     // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
                     // need the solve even when AutoRecompute is on or the fillet won't appear.
                     // See https://github.com/FreeCAD/FreeCAD/issues/30625
                     obj->solve();
+                }
+
+                // A fillet trims both lines at the corner and adds an arc between them,
+                // appending a surviving continuation for the end away from the corner.
+                // When the trimmed line was construction it becomes a scrap, so geoEltIds.back()
+                // still points at the old id. Re-point it at the appended continuation line.
+                if (filletOk && obj->getGeometryFacade(geoId1)->getConstruction()) {
+                    geoEltIds.back().GeoId = obj->getHighestCurveIndex() - 1;
                 }
 
                 if (isConstructionMode()) {
