@@ -3394,9 +3394,8 @@ void TopoShape::sewShape(double tolerance)
 
     // Sewing can reorder or replace faces and edges. Rebuild both the shape
     // cache and its element map from OCCT history, not the old indexed names.
-    *this = TopoShape(Tag, Hasher).makeShapeWithElementMap(
-        sew.SewedShape(), MapperSewing(sew), {source}, OpCodes::Sewing
-    );
+    *this = TopoShape(Tag, Hasher)
+                .makeShapeWithElementMap(sew.SewedShape(), MapperSewing(sew), {source}, OpCodes::Sewing);
 }
 
 bool TopoShape::fix()

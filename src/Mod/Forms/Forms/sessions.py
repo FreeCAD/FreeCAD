@@ -21,49 +21,35 @@
 #                                                                           *
 # **************************************************************************/
 
-"""Generic editable Forms feature backed directly by a control cage."""
+"""Registry and lifecycle access for the active Forms editor."""
 
-import FreeCAD as App
+import FreeCADGui as Gui
 
-from .feature import FormFeatureProxy
-from .viewprovider import ViewProviderForm as ViewProviderFormBox
-
-
-class FormProxy(FormFeatureProxy):
-    """A generic Form whose editable control cage defines its geometry."""
-
-    Type = "Forms::Form"
-    ParameterNames = ()
-
-    def __init__(self, obj):
-        self._add_common_properties(obj)
-        self._finish_initialization(obj)
-        obj.CageMode = "Editable"
-
-    def _topology(self, _obj):
-        raise RuntimeError("An editable Form does not have parametric primitive topology")
-
-    def onDocumentRestored(self, obj):
-        # Development builds briefly used this name. Normalize saved objects.
-        if getattr(obj, "FormType", "") == "Forms::Imported":
-            obj.FormType = self.Type
-        super().onDocumentRestored(obj)
+_active_session = None
 
 
-class ViewProviderForm(ViewProviderFormBox):
-    """Use the normal Forms presentation for a generic editable cage."""
+def active_form_session(obj=None):
+    """Return the live Forms task session, optionally restricted to *obj*."""
+    session = _active_session
+    if session is None or session.cleaned:
+        return None
+    return session if obj is None or session.obj == obj else None
 
-    IconName = "Forms_Workbench.svg"
+
+def finish_active_form_session():
+    """Accept and close the live Forms editor, irrespective of active document."""
+    session = active_form_session()
+    if session is None:
+        return False
+    if session.document_edit:
+        gui_document = Gui.getDocument(session.obj.Document.Name)
+        gui_document.resetEdit()
+    else:
+        session.accept()
+    return True
 
 
-def create_form(document=None, name="Form"):
-    """Create an empty generic editable Form in *document*."""
-    document = document or App.ActiveDocument
-    if document is None:
-        raise RuntimeError("A document is required to create a Form")
-    obj = document.addObject("Part::FeaturePython", name)
-    obj.Label = App.Qt.translate("Forms", "Form")
-    FormProxy(obj)
-    if App.GuiUp:
-        ViewProviderForm(obj.ViewObject)
-    return obj
+def set_active_form_session(session):
+    """Register an editor, or clear the current registration with None."""
+    global _active_session
+    _active_session = session
