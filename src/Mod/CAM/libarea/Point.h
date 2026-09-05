@@ -32,7 +32,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 #include <cmath>
-#include "kurve/geometry.h"
 
 namespace heeks
 {
@@ -119,13 +118,6 @@ public:
             return;
         }
         Rotate(cos(angle), sin(angle));
-    }
-    void Transform(const geoff_geometry::Matrix& m)
-    {
-        geoff_geometry::Point p(x, y);
-        p = p.Transform(m);
-        x = p.x;
-        y = p.y;
     }
 };
 

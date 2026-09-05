@@ -23,7 +23,11 @@ import FreeCAD
 import Part
 import Path.Op.Pocket as PathPocket
 import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
+import Constants as CAMConstants
 from CAMTests.PathTestUtils import PathTestBase
+
+import math
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -59,6 +63,79 @@ def countOffsetLoops(commands, pocket_depth):
     return plunge_count
 
 
+def getLoopDirection(commands, pocket_depth, loop_index=0):
+    """Determine if a specific offset loop is clockwise or counter-clockwise.
+
+    Uses the shoelace formula to calculate signed area from XY moves.
+    Positive area = CCW, negative area = CW.
+
+    Args:
+        commands: List of G-code commands
+        pocket_depth: The Z height where cutting occurs
+        loop_index: Which loop to check (0 = first loop)
+
+    Returns:
+        "CCW" or "CW", or None if loop not found
+    """
+    # Find the loop by counting plunges
+    current_loop = -1
+    prev_z = None
+    loop_points = []
+    current_pos = FreeCAD.Vector(0, 0, 0)
+    in_target_loop = False
+
+    for cmd in commands:
+        params = cmd.Parameters
+
+        # Update current position
+        if "X" in params:
+            current_pos.x = params["X"]
+        if "Y" in params:
+            current_pos.y = params["Y"]
+        if "Z" in params:
+            current_z = params["Z"]
+            current_pos.z = current_z
+
+            # Check for plunge (start of new loop)
+            if cmd.Name == "G1" and abs(current_z - pocket_depth) < 0.01:
+                if prev_z is not None and prev_z > pocket_depth + 0.5:
+                    current_loop += 1
+                    if current_loop == loop_index:
+                        in_target_loop = True
+                        loop_points = [FreeCAD.Vector(current_pos.x, current_pos.y, 0)]
+                    elif current_loop > loop_index:
+                        # We've passed the target loop, stop collecting
+                        break
+
+            # Check for retract (end of loop)
+            if (
+                prev_z is not None
+                and abs(prev_z - pocket_depth) < 0.01
+                and current_z > pocket_depth + 0.5
+            ):
+                if in_target_loop:
+                    break
+
+            prev_z = current_z
+
+        # Collect points for the target loop (only G1 moves at cutting depth)
+        if in_target_loop and cmd.Name in ("G1", "G2", "G3"):
+            if abs(current_pos.z - pocket_depth) < 0.01:
+                loop_points.append(FreeCAD.Vector(current_pos.x, current_pos.y, 0))
+
+    if len(loop_points) < 3:
+        return None
+
+    # Calculate signed area using shoelace formula
+    signed_area = 0.0
+    for i in range(len(loop_points) - 1):
+        p1 = loop_points[i]
+        p2 = loop_points[i + 1]
+        signed_area += (p2.x - p1.x) * (p2.y + p1.y)
+
+    return "CW" if signed_area > 0 else "CCW"
+
+
 class TestPathPocket(PathTestBase):
     """Unit tests for the Pocket operation."""
 
@@ -77,7 +154,9 @@ class TestPathPocket(PathTestBase):
         """
         FreeCAD.closeDocument(self.doc.Name)
 
-    def createPocketOperation(self, part_obj, pocket_bottom_z, label, tool_diameter, **kwargs):
+    def createPocketOperation(
+        self, part_obj, pocket_bottom_z, label, tool_diameter, job=None, **kwargs
+    ):
         """Create a pocket operation with the given parameters.
 
         Args:
@@ -85,23 +164,26 @@ class TestPathPocket(PathTestBase):
             pocket_bottom_z: Z height of the pocket bottom
             label: Label for the pocket operation (job name will be "Job_<label>")
             tool_diameter: Diameter of the cutting tool
+            job: Optional existing job to add the operation to. If None, a new job is created.
             **kwargs: Properties to set on the pocket operation
                      (e.g., StepOver=10, ClearingPattern="Offset", StartAt="Edge")
 
         Returns:
             The created pocket operation object
         """
-        # Create job for this operation
-        job_name = "Job_{}".format(label)
-        job = PathJob.Create(job_name, [part_obj])
-        if FreeCAD.GuiUp:
-            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+        if job is None:
+            job = PathJob.Create("Job_{}".format(label), [part_obj])
+            if FreeCAD.GuiUp:
+                job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
         # Instantiate a Pocket operation
         pocket = PathPocket.Create(label, parentJob=job)
 
-        # Set tool diameter
-        pocket.ToolController.Tool.Diameter = tool_diameter
+        # Create a dedicated tool controller for this operation and set its diameter
+        tc = PathToolController.Create(name="TC: {}mm Endmill".format(tool_diameter))
+        job.Proxy.addToolController(tc)
+        tc.Tool.Diameter = tool_diameter
+        pocket.ToolController = tc
 
         # Find all faces within tolerance of pocket bottom Z
         tolerance = 0.1
@@ -123,6 +205,7 @@ class TestPathPocket(PathTestBase):
         # Set any properties from kwargs
         for key, value in kwargs.items():
             if hasattr(pocket, key):
+                pocket.setExpression(key, None)
                 setattr(pocket, key, value)
             else:
                 FreeCAD.Console.PrintWarning(
@@ -184,6 +267,10 @@ class TestPathPocket(PathTestBase):
         # Count offset loops using two different methods
         # Actual: Count plunge moves from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
+
+        # Check that first offset loop is counterclockwise
+        first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
+        self.assertEqual(first_loop_direction, "CCW")
 
         # Expected: Calculate from geometry and stepover
         # Each offset loop moves inward by stepover distance on each side
@@ -257,6 +344,10 @@ class TestPathPocket(PathTestBase):
 
         # Count offset loops from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
+
+        # Check that offset loops are clockwise (climb cutting for this pocket)
+        first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
+        self.assertEqual(first_loop_direction, "CCW")
 
         # Without ForceMaxStepOver, pocket should generate more loops than base-calculated max
         # to ensure full area coverage
@@ -475,6 +566,177 @@ class TestPathPocket(PathTestBase):
             expected_num_y_lines + 1,
             f"Grid pocket should have at most {expected_num_y_lines + 1} Y-direction lines, got {actual_num_y_lines}",
         )
+
+    def test_pocket_square_zigzag(self):
+        """test_pocket_square_zigzag() Verify pocket operation with ZigZag clearing pattern."""
+
+        pocket_width = 50.0
+        pocket_height = 33.0
+        box_margin = 10.0
+        outer_box_width = pocket_width + box_margin
+        outer_box_height_xy = pocket_height + box_margin
+        outer_box_height_z = 20.0
+        pocket_depth_amount = 1.0
+        pocket_bottom_z = outer_box_height_z - pocket_depth_amount
+
+        tool_diameter = 5.0
+        stepover_percent = 50
+
+        outer = Part.makeBox(outer_box_width, outer_box_height_xy, outer_box_height_z)
+        pocket_offset_x = (outer_box_width - pocket_width) / 2.0
+        pocket_offset_y = (outer_box_height_xy - pocket_height) / 2.0
+        inner = Part.makeBox(
+            pocket_width,
+            pocket_height,
+            pocket_depth_amount,
+            FreeCAD.Vector(pocket_offset_x, pocket_offset_y, pocket_bottom_z),
+        )
+        pocket_solid = outer.cut(inner)
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "ZigZagPocketPart")
+        part_obj.Shape = pocket_solid
+
+        pocket = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_square_zigzag",
+            tool_diameter,
+            StepOver=stepover_percent,
+            ClearingPattern="ZigZagOffset",
+            StartAt="Edge",
+            Angle=0,
+        )
+
+        stepover_distance = tool_diameter * (stepover_percent / 100.0)
+        effective_height = pocket_height - tool_diameter
+        expected_num_horizontal_lines = int(math.ceil(effective_height / stepover_distance)) + 1
+        expected_num_vertical_lines = expected_num_horizontal_lines - 1
+
+        # Collect G1 moves at cutting depth
+        cutting_moves = []
+        for cmd in pocket.Path.Commands:
+            params = cmd.Parameters
+            if cmd.Name == "G1" and "Z" in params and abs(params["Z"] - pocket_bottom_z) < 0.01:
+                cutting_moves.append(params)
+
+        actual_num_horizontal_lines = 0
+        actual_num_vertical_lines = 0
+        actual_num_diagonal = 0
+        last_direction = None
+        pos = {"X": 0.0, "Y": 0.0}
+        for curr in cutting_moves:
+            x = curr.get("X", pos["X"])
+            y = curr.get("Y", pos["Y"])
+            dx = abs(x - pos["X"])
+            dy = abs(y - pos["Y"])
+            pos["X"] = x
+            pos["Y"] = y
+            if dy < 0.01 and dx > 0.01:
+                direction = "horizontal"
+            elif dx < 0.01 and dy > 0.01:
+                direction = "vertical"
+            else:
+                direction = "diagonal"
+
+            if last_direction is not None and direction != last_direction:
+                if direction == "horizontal":
+                    actual_num_horizontal_lines += 1
+                if direction == "vertical":
+                    actual_num_vertical_lines += 1
+                if direction == "diagonal":
+                    actual_num_diagonal += 1
+            last_direction = direction
+
+        self.assertEqual(actual_num_diagonal, 0)
+        self.assertGreaterEqual(actual_num_horizontal_lines, expected_num_horizontal_lines - 1)
+        self.assertLessEqual(actual_num_horizontal_lines, expected_num_horizontal_lines + 1)
+        self.assertGreaterEqual(actual_num_vertical_lines, expected_num_vertical_lines - 1)
+        self.assertLessEqual(actual_num_vertical_lines, expected_num_vertical_lines + 1)
+
+    def test_pocket_rest_machining(self):
+        """test_pocket_rest_machining() Verify pocket rest machining clears remaining material after large tool pass."""
+
+        pocket_width = 50.0
+        pocket_height = 33.0
+        box_margin = 10.0
+        outer_box_width = pocket_width + box_margin
+        outer_box_height_xy = pocket_height + box_margin
+        outer_box_height_z = 20.0
+        pocket_depth_amount = 1.0
+        pocket_bottom_z = outer_box_height_z - pocket_depth_amount
+        large_tool_diameter = 5.0
+        small_tool_diameter = 1.0
+
+        outer = Part.makeBox(outer_box_width, outer_box_height_xy, outer_box_height_z)
+        pocket_offset_x = (outer_box_width - pocket_width) / 2.0
+        pocket_offset_y = (outer_box_height_xy - pocket_height) / 2.0
+        inner = Part.makeBox(
+            pocket_width,
+            pocket_height,
+            pocket_depth_amount,
+            FreeCAD.Vector(pocket_offset_x, pocket_offset_y, pocket_bottom_z),
+        )
+        pocket_solid = outer.cut(inner)
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "RestMachiningPocketPart")
+        part_obj.Shape = pocket_solid
+
+        job = PathJob.Create("Job_pocket_rest", [part_obj])
+        if FreeCAD.GuiUp:
+            job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
+
+        pocket_large = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_rest_large",
+            tool_diameter=large_tool_diameter,
+            job=job,
+            StepOver=50,
+            ClearingPattern="ZigZagOffset",
+            StartAt="Edge",
+            Angle=0,
+        )
+
+        pocket_small = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_rest_small",
+            tool_diameter=small_tool_diameter,
+            job=job,
+            StepOver=50,
+            StepDown=5,
+            ClearingPattern="ZigZagOffset",
+            StartAt="Edge",
+            Angle=0,
+            UseRestMachining=True,
+        )
+
+        margin = large_tool_diameter + small_tool_diameter
+
+        pocket_left = pocket_offset_x
+        pocket_right = pocket_offset_x + pocket_width
+        pocket_front = pocket_offset_y
+        pocket_back = pocket_offset_y + pocket_height
+
+        pos = {"X": 0.0, "Y": 0.0}
+        for cmd in pocket_small.Path.Commands:
+            params = cmd.Parameters
+            pos["X"] = params.get("X", pos["X"])
+            pos["Y"] = params.get("Y", pos["Y"])
+
+            if cmd.Name not in CAMConstants.GCODE_MOVE_MILL:
+                continue
+            if "Z" not in params or abs(params["Z"] - pocket_bottom_z) > 0.01:
+                continue
+
+            near_edge = (
+                pos["X"] - pocket_left < margin
+                or pocket_right - pos["X"] < margin
+                or pos["Y"] - pocket_front < margin
+                or pocket_back - pos["Y"] < margin
+            )
+
+            self.assertTrue(near_edge)
 
 
 def _addViewProvider(pocketOp):

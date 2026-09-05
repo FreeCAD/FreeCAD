@@ -28,6 +28,8 @@
 #include <limits>
 #include <optional>
 
+using namespace std;
+
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/index/rtree.hpp>
@@ -148,7 +150,6 @@ CAreaConfig::CAreaConfig(const CAreaParams& p, bool noFitArcs)
 
     PARAM_FOREACH(AREA_CONF_SAVE_AND_APPLY, AREA_PARAMS_CAREA);
 
-    // Arc fitting is lossy. We shall reduce the number of unnecessary fit
     if (noFitArcs) {
         CArea::set_fit_arcs(false);
     }
@@ -455,7 +456,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 }
                 ccurve.append(CVertex(type, Point(p.X(), p.Y()), Point(center.X(), center.Y())));
                 if (to_edges) {
-                    ccurve.UnFitArcs();
+                    ccurve.Discretize();
                     CCurve c;
                     c.append(ccurve.m_vertices.front());
                     auto it = ccurve.m_vertices.begin();
@@ -694,21 +695,26 @@ std::shared_ptr<Area> Area::getClearedArea(
     Base::BoundBox3d bbox
 )
 {
+    // Note: these estimates for precision loss are old, based on previous-generation clipper 1 and
+    // heuristic arc fitting. I am unsure what would be a better estimate now so I am leaving it as
+    // is, but it is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
+    // applies at all any more, and arc precision is much improved by the new fitting process) so it
+    // should be ok. The old/original comment on precision follows:
+    //
     // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Oversize cleared areas by buffer to smooth out imprecision
+    //
+    // 2.3 in generation of gcode (specified in obsolete-and-deleted documentation of
+    // CCurve::CheckForArc (libarea/Curve.cpp)), 1 in gcode arc to segment, 1 in Thicken() cleared
+    // area, 2 in getRestArea (offset in and back out).
+    //
+    // Oversize cleared areas by an appropriately sized buffer to smooth out imprecision
     // in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = {};
     const double buffer = params.Accuracy * 3;
     params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     params.SubjectFill = Clipper2Lib::FillRule::NonZero;
-    params.ClipFill = Clipper2Lib::FillRule::NonZero;
 
-    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all
-    // off those arcs will be converted back to segments again for clipper differencing in
-    // getRestArea anyway
-    CAreaConfig conf(params, /*no_fit_arcs*/ true);
+    CAreaConfig conf(params);
 
     ClearedAreaSegmentVisitor visitor(zmax, diameter / 2 + buffer, bbox);
     PathSegmentWalker walker(*path);
@@ -732,16 +738,13 @@ std::shared_ptr<Area> Area::getClearedArea(
 
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter)
 {
+    // See the comment at the start of getClearedArea() -- the calculations/buffer specified here
+    // must match that computation
     build();
-    // Precision losses in arc/segment conversions (multiples of Accuracy):
-    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
-    // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
-    // target area offset in and back out Cleared area representations are oversized by buffer to
-    // smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = myParams;
-    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     const double buffer = myParams.Accuracy * 3;
-    const double roundPrecision = params.Accuracy;
+    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    CAreaConfig conf(params);
 
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&params);
@@ -767,46 +770,18 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
-    clearable.OffsetWithClipper(
-        -diameter / 2,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
-    clearable.OffsetWithClipper(
-        diameter / 2,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
+    clearable.Offset(-diameter / 2);
+    clearable.Offset(diameter / 2);
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
-    remaining.Clip(
-        toClipperOp(Area::OperationDifference),
-        *(clearedAreasInPlane.myArea),
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    remaining.Clip(Clipper2Lib::ClipType::Difference, *(clearedAreasInPlane.myArea), myParams.SubjectFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.OffsetWithClipper(
-        diameter + buffer,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
-    restCArea.Clip(
-        toClipperOp(Area::OperationIntersection),
-        clearable,
-        myParams.SubjectFill,
-        myParams.ClipFill
-    );
+    restCArea.Offset(diameter + buffer);
+    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
         return {};
@@ -1709,7 +1684,6 @@ int Area::project(
     area.myParams.Offset = 0.0;
     area.myParams.PocketMode = 0;
     area.myParams.Explode = false;
-    area.myParams.FitArcs = false;
     area.myParams.Reorient = false;
     area.myParams.Outline = true;
     area.myParams.Fill = TopExp_Explorer(shape_in, TopAbs_FACE).More() ? FillFace : FillNone;
@@ -2141,7 +2115,7 @@ void Area::build()
                         myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
                     }
                     else {
-                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                        myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
                         areaClip.m_curves.clear();
                     }
                 }
@@ -2165,7 +2139,7 @@ void Area::build()
                 myArea->m_curves.splice(myArea->m_curves.end(), areaClip.m_curves);
             }
             else {
-                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill, myParams.ClipFill);
+                myArea->Clip(toClipperOp(op), areaClip, myParams.SubjectFill);
             }
         }
         myArea->m_curves.splice(myArea->m_curves.end(), myAreaOpen->m_curves);
@@ -2222,14 +2196,6 @@ TopoDS_Shape Area::toShape(CArea& area, short fill, int reorient)
             break;
         default:
             bFill = false;
-    }
-    if (myParams.FitArcs) {
-        if (&area == myArea.get()) {
-            CArea copy(area);
-            copy.FitArcs();
-            return toShape(copy, bFill, &trsf, reorient);
-        }
-        area.FitArcs();
     }
     return toShape(area, bFill, &trsf, reorient);
 }
@@ -2326,12 +2292,8 @@ TopoDS_Shape Area::getShape(int index)
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    short fill = myParams.Thicken ? FillFace : FillNone;
     for (shared_ptr<CArea> area : areas) {
-        if (myParams.Thicken) {
-            area->Thicken(myParams.ToolRadius);
-        }
-        const TopoDS_Shape& shape = toShape(*area, fill);
+        const TopoDS_Shape& shape = toShape(*area, FillNone);
         if (shape.IsNull()) {
             continue;
         }
@@ -2360,26 +2322,15 @@ TopoDS_Shape Area::makeOffset(
     std::list<shared_ptr<CArea>> areas;
     makeOffset(areas, PARAM_FIELDS(PARAM_FARG, AREA_PARAMS_OFFSET), from_center);
     if (areas.empty()) {
-        if (myParams.Thicken && myParams.ToolRadius > Precision::Confusion()) {
-            CArea area(*myArea);
-            area.Thicken(myParams.ToolRadius);
-            return toShape(area, FillFace, reorient);
-        }
         return TopoDS_Shape();
     }
     BRep_Builder builder;
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
 
-    bool thicken = myParams.Thicken && myParams.ToolRadius > Precision::Confusion();
-
     for (shared_ptr<CArea> area : areas) {
         short fill;
-        if (thicken) {
-            area->Thicken(myParams.ToolRadius);
-            fill = FillFace;
-        }
-        else if (areas.size() == 1) {
+        if (areas.size() == 1) {
             fill = myParams.Fill;
         }
         else {
@@ -2400,43 +2351,8 @@ TopoDS_Shape Area::makeOffset(
 std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
-    CArea areaOpen;
-
-#ifdef AREA_OFFSET_ALGO
-    switch (myParams.Algo) {
-        case Area::Algolibarea:
-            // Separate closed and open curves for libarea
-            for (const CCurve& c : myArea->m_curves) {
-                if (c.IsClosed()) {
-                    area->append(c);
-                }
-                else {
-                    areaOpen.append(c);
-                }
-            }
-            // libarea somehow fails offset without Reorder, but ClipperOffset
-            // works okay. Don't know why
-            area->Reorder();
-            area->Offset(-offset);
-            if (areaOpen.m_curves.size()) {
-                areaOpen.Thicken(offset);
-                area->Clip(Clipper2Lib::ClipType::Union, areaOpen, myParams.SubjectFill, myParams.ClipFill);
-            }
-            break;
-        case Area::AlgoClipperOffset:
-#endif
-            *area = *myArea;
-            area->OffsetWithClipper(
-                offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
-#ifdef AREA_OFFSET_ALGO
-            break;
-    }
-#endif
+    *area = *myArea;
+    area->Offset(offset);
 
     return area;
 }
@@ -2474,8 +2390,6 @@ void Area::makeOffset(
     bool check_gaps = !myParams.ForceMaxStepover && abs(stepover) > tool_radius;
     const double gap_tolerance = myParams.Accuracy;
     double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
-    auto jt = myParams.JoinType;
-    auto et = myParams.EndType;
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         double prevOffset = offset - stepover;
@@ -2485,13 +2399,7 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
-            curr_offset_opposite.OffsetWithClipper(
-                -sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            curr_offset_opposite.Offset(-sign_stepover * tool_radius);
             CArea gap = *previous_area_offset;
             gap.Subtract(curr_offset_opposite);
             bool has_gap = !gap.m_curves.empty();
@@ -2508,13 +2416,7 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
-                    test_offset_opposite.OffsetWithClipper(
-                        -sign_stepover * tool_radius,
-                        jt,
-                        et,
-                        myParams.MiterLimit,
-                        myParams.RoundPrecision
-                    );
+                    test_offset_opposite.Offset(-sign_stepover * tool_radius);
                     gap = *previous_area_offset;
                     gap.Subtract(test_offset_opposite);
 
@@ -2534,13 +2436,7 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
-            previous_area_offset->OffsetWithClipper(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius);
             if (previous_area_offset->m_curves.empty()) {
                 // Done after this pass; do another binary search to determine the minimum offset
                 // required to be done
@@ -2572,13 +2468,7 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
-            previous_area_offset->OffsetWithClipper(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius);
         }
 
         if (area->m_curves.empty()) {
@@ -2728,14 +2618,8 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 }
             }
             auto area = *myArea;
-            area.OffsetWithClipper(
-                -tool_radius - extra_offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
-            out.Clip(toClipperOp(OperationIntersection), area, myParams.SubjectFill, myParams.ClipFill);
+            area.Offset(-tool_radius - extra_offset);
+            out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill);
             done = true;
             break;
         }
@@ -2752,13 +2636,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
         in.MakePocketToolpath(out.m_curves, params);
     }
 
-    if (myParams.Thicken) {
-        out.Thicken(tool_radius);
-        return toShape(out, FillFace);
-    }
-    else {
-        return toShape(out, FillNone);
-    }
+    return toShape(out, FillNone);
 }
 
 static inline bool IsLeft(const gp_Pnt& a, const gp_Pnt& b, const gp_Pnt& c)

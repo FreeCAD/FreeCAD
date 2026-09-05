@@ -198,12 +198,12 @@ class MoveArc(Instruction):
         s1 = Path.Geom.getAngle(end - center)
 
         if self.isCW():
-            while s0 < s1:
+            while s0 <= s1:
                 s0 = s0 + 2 * math.pi
             return s0 - s1
 
         # CCW
-        while s1 < s0:
+        while s1 <= s0:
             s1 = s1 + 2 * math.pi
         return s1 - s0
 
