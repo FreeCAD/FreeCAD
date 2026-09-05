@@ -21,7 +21,21 @@
 ################################################################################
 
 """
-Generic Postprocessor for plasma, laser, and waterjet cutters that require a pierce delay
+This is a postprocessor file for the CAM workbench.
+It is used to take a pseudo-gcode fragment from a CAM object
+and output 'real' GCode suitable for a plasma, laser or waterjet cutters.
+
+Features:
+- Three modes for deciding how to add M3 commands to a file:
+    Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.
+    G0_Control: Torch ignites (M3) on change from G0 to G1 and extinguishes (M5) on G1 to G0
+    Spindle_Control: Any M3/M5 commands are output as-is.
+- Pierce delay after torch ignition
+- Cooling delay after torch extinguishment
+- Mark entry points only mode
+- Force rapid feeds for dry runs
+- Material-aware sanity checks
+- The ability to Strip F and Z Parameters for machines that do not support them
 """
 
 from typing import Any, Dict
@@ -42,7 +56,7 @@ if DEBUG:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-Path.Log.debug("generic_plasma_post.py module loaded")
+Path.Log.debug("Generic_Sheet_Cutting_post.py module loaded")
 
 # Define some types that are used throughout this file.
 Values = Dict[str, Any]
@@ -52,21 +66,21 @@ POST_TYPE = "machine"
 
 # Round value to within precision (for the purposes of float comparisons)
 def CompValue(val):
-    # 5 significant digits should be precise enough (for plasma)
+    # 5 significant digits should be precise enough (for sheet cutting)
     return round(val, 5)
 
 
-class GenericPlasma(PostProcessor):
+class GenericSheetCutting(PostProcessor):
     """
-    The GenericPlasma post processor class.
+    The GenericSheetCutting post processor class.
     """
 
     @classmethod
     def get_common_property_schema(cls):
-        Path.Log.debug("GenericPlasma.get_common_property_schema() called")
+        Path.Log.debug("GenericSheetCutting.get_common_property_schema() called")
         common_props = copy.deepcopy(super().get_common_property_schema())
 
-        # Override defaults for GenericPlasma
+        # Override defaults for GenericSheetCutting
         for prop in common_props:
             if prop["name"] == "file_extension":
                 prop["default"] = "nc"
@@ -83,7 +97,7 @@ class GenericPlasma(PostProcessor):
 
     @classmethod
     def get_property_schema(cls):
-        """Return schema for plasma-specific configurable properties."""
+        """Return schema for sheet cutting-specific configurable properties."""
         return [
             {
                 "name": "pierce_delay",
@@ -125,15 +139,16 @@ class GenericPlasma(PostProcessor):
                 ),
             },
             {
-                "name": "torch_zaxis_control",
-                "scope": SCOPE_JOB,
-                "type": "bool",
-                "label": translate("CAM", "Torch Z-Axis Control"),
-                "default": True,
+                "name": "cutter_control",
+                "type": "choice",
+                "label": translate("CAM", "Control Method For Cutter"),
+                "choices": ["Z_Control", "Spindle_Control", "G0_Control"],
+                "default": "Z_Control",
                 "help": translate(
                     "CAM",
-                    "Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement. "
-                    "When disabled, any M3/M5 commands are output as-is.",
+                    "Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.\n"
+                    "G0_Control: Torch ignites (M3) on change from G0 to G1 and extinguishes (M5) on G1 to G0.\n"
+                    "Spindle_Control: Any M3/M5 commands are output as-is.",
                 ),
             },
             {
@@ -160,12 +175,30 @@ class GenericPlasma(PostProcessor):
                     "Skips cutting moves and only marks where the torch would pierce.",
                 ),
             },
+            {
+                "name": "STRIP_Z",
+                "type": "bool",
+                "label": translate("CAM", "Strip Z Parameters"),
+                "default": False,
+                "help": translate(
+                    "CAM", "Skips Z parameters from output should the machine not support them"
+                ),
+            },
+            {
+                "name": "STRIP_F",
+                "type": "bool",
+                "label": translate("CAM", "Strip F Parameters"),
+                "default": False,
+                "help": translate(
+                    "CAM", "Skips F parameters from output should the machine not support them"
+                ),
+            },
         ]
 
     def __init__(
         self,
         job,
-        tooltip=translate("CAM", "Generic Plasma post processor"),
+        tooltip=translate("CAM", "Generic Sheet Cutting post processor"),
         tooltipargs=[],
         units="Metric",
     ) -> None:
@@ -175,18 +208,18 @@ class GenericPlasma(PostProcessor):
             tooltipargs=tooltipargs,
             units=units,
         )
-        Path.Log.debug("Generic Plasma post processor initialized.")
+        Path.Log.debug("Generic Generic Sheet Cutting post processor initialized.")
 
         # Torch commands
         self.TorchIgniteCommand = Path.Command("M3")
         self.TorchExtinguishCommand = Path.Command("M5")
 
-        # State tracking for plasma-specific features
+        # State tracking for Sheet Cutting-specific features
         self._torch_active = False
         self._last_z = None  # Track last Z position for direction detection
 
-    def _reset_plasma_state(self, item):
-        """Reset plasma-specific state tracking for each operation."""
+    def _reset_cutter_state(self, item):
+        """Reset sheet cutting-specific state tracking for each operation."""
         reset_commands = []
         clearance_height = self._get_operation_height(item, "ClearanceHeight", 0)
 
@@ -260,8 +293,8 @@ class GenericPlasma(PostProcessor):
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
                     # Reset state for each operation
-                    new_commands = self._reset_plasma_state(item)
-
+                    self._clear_cutter_state()
+                    new_commands = []
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch on commands, inject G4 pause
@@ -271,6 +304,11 @@ class GenericPlasma(PostProcessor):
                             new_commands.append(pause_cmd)
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
+
+    def _clear_cutter_state(self):
+        """Reset state tracking without emitting commands."""
+        self._torch_active = False
+        self._last_z = None
 
     def _inject_cooling_delay(self, postables):
         """Inject cooling delay after torch extinguish command."""
@@ -285,8 +323,8 @@ class GenericPlasma(PostProcessor):
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
                     # Reset state for each operation
-                    new_commands = self._reset_plasma_state(item)
-
+                    self._clear_cutter_state()
+                    new_commands = []
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch off command, inject G4 pause
@@ -299,59 +337,109 @@ class GenericPlasma(PostProcessor):
 
     def _inject_torch_control(self, postables):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
-        if not self.values["TORCH_ZAXIS_CONTROL"]:
-            return
+        props = self._machine.postprocessor_properties
+        if self.values["CUTTER_CONTROL"] == "Z_Control":
+            for section_name, sublist in postables:
+                for item in sublist:
+                    if hasattr(item, "Path") and item.Path:
+                        # Get operation heights from the path object
+                        pierce_height = self._get_operation_height(item, "StartDepth", 0)
+                        cut_height = self._get_operation_height(item, "FinalDepth", 0)
+                        # Reset state for each operation
+                        new_commands = self._reset_cutter_state(item)
 
-        for section_name, sublist in postables:
-            for item in sublist:
-                if hasattr(item, "Path") and item.Path:
-                    # Get operation heights from the path object
-                    pierce_height = self._get_operation_height(item, "StartDepth", 0)
-                    cut_height = self._get_operation_height(item, "FinalDepth", 0)
-
-                    # Reset state for each operation
-                    new_commands = self._reset_plasma_state(item)
-
-                    for cmd in item.Path.Commands:
-                        # Only track Z movements for this injection
-                        if "Z" not in cmd.Parameters:
-                            new_commands.append(cmd)
-                            continue
-
-                        # Handle torch control based on Z movement
-                        # Torch ignites AT pierce_height but is TRIGGERED by a move to cut_height
-                        if not self._torch_active and CompValue(cmd.Parameters["Z"]) <= CompValue(
-                            cut_height
-                        ):
-                            if self.values["MARK_ENTRY_ONLY"]:
-                                new_commands.append(cmd)
-                                new_commands.append(self.TorchIgniteCommand)
-                                self._torch_active = True
+                        for cmd in item.Path.Commands:
+                            # Only track Z movements for this injection
+                            if "Z" not in cmd.Parameters:
+                                # we are tracking spindle on manually
+                                if cmd.Name not in Constants.MCODE_SPINDLE_ON:
+                                    new_commands.append(cmd)
                                 continue
+
+                            # Handle torch control based on Z movement
+                            # Torch ignites AT pierce_height but is TRIGGERED by a move to cut_height
+                            if not self._torch_active and CompValue(
+                                cmd.Parameters["Z"]
+                            ) <= CompValue(cut_height):
+                                if self.values["MARK_ENTRY_ONLY"]:
+                                    new_commands.append(cmd)
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
+                                    continue
+                                else:
+                                    # Move to pierce height first if not already there
+                                    if self._last_z is None or CompValue(self._last_z) > CompValue(
+                                        pierce_height
+                                    ):
+                                        move_cmd = Path.Command("G0", {"Z": pierce_height})
+                                        new_commands.append(move_cmd)
+
+                                    # Insert torch ignition command before Z- move
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
+                            elif self._torch_active and CompValue(cmd.Parameters["Z"]) > CompValue(
+                                cut_height
+                            ):
+                                # Insert torch extinguish command before Z+ move
+                                new_commands.append(self.TorchExtinguishCommand)
+                                self._torch_active = False
+
+                            # Update last Z position
+                            self._last_z = cmd.Parameters["Z"]
+                            # we are tracking spindle on manually
+                            if cmd.Name not in Constants.MCODE_SPINDLE_ON:
+                                new_commands.append(cmd)
+                        # Replace Path with modified command list
+                        item.Path = Path.Path(new_commands)
+        elif self.values["CUTTER_CONTROL"] == "G0_Control":
+            for section_name, sublist in postables:
+                for item in sublist:
+                    if hasattr(item, "Path") and item.Path:
+                        # Reset state for each operation
+                        new_commands = self._reset_cutter_state(item)
+                        prev_command = ""  # Constants.GCODE_MOVE[0]
+                        for cmd in item.Path.Commands:
+                            # track G0 - G1 commands to turn torch on
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE
+                                and prev_command in Constants.GCODE_MOVE_RAPID
+                                and not self._torch_active
+                            ):
+                                if self.values["MARK_ENTRY_ONLY"]:
+                                    new_commands.append(cmd)
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
+                                    prev_command = cmd.Name
+                                    continue
+                                else:
+                                    new_commands.append(self.TorchIgniteCommand)
+                                    self._torch_active = True
+
+                            # track G1 - G0 commands to turn torch off
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE_RAPID
+                                and prev_command in Constants.GCODE_MOVE
+                                and self._torch_active
+                            ):
+                                new_commands.append(self.TorchExtinguishCommand)
+                                self._torch_active = False
+
+                            # we are tracking spindle on manually
+                            if cmd.Name not in Constants.MCODE_SPINDLE_ON:
+                                new_commands.append(cmd)
+
+                            # Only track G0 - G1 or G1 - G0 changes
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE_RAPID
+                                or cmd.Name in Constants.GCODE_MOVE
+                            ):
+                                prev_command = cmd.Name
                             else:
-                                # Move to pierce height first if not already there
-                                if self._last_z is None or CompValue(self._last_z) > CompValue(
-                                    pierce_height
-                                ):
-                                    move_cmd = Path.Command("G0", {"Z": pierce_height})
-                                    new_commands.append(move_cmd)
-
-                                # Insert torch ignition command before Z- move
-                                new_commands.append(self.TorchIgniteCommand)
-                                self._torch_active = True
-                        elif self._torch_active and CompValue(cmd.Parameters["Z"]) > CompValue(
-                            cut_height
-                        ):
-                            # Insert torch extinguish command before Z+ move
-                            new_commands.append(self.TorchExtinguishCommand)
-                            self._torch_active = False
-
-                        # Update last Z position
-                        self._last_z = cmd.Parameters["Z"]
-
-                        new_commands.append(cmd)
-                    # Replace Path with modified command list
-                    item.Path = Path.Path(new_commands)
+                                continue
+                        # Replace Path with modified command list
+                        item.Path = Path.Path(new_commands)
+        else:
+            return
 
     def _get_operation_height(self, item, height_type, default):
         """Get operation height (StartDepth/FinalDepth) from path object."""
@@ -373,7 +461,7 @@ class GenericPlasma(PostProcessor):
                     if value is not None:
                         return float(value)
         except (AttributeError, TypeError, ValueError) as e:
-            Path.Log.debug(f"GenericPlasma: Could not get {height_type}: {e}")
+            Path.Log.debug(f"GenericSheetCutting: Could not get {height_type}: {e}")
         return default
 
     def _inject_mark_entry_only(self, postables):
@@ -393,7 +481,7 @@ class GenericPlasma(PostProcessor):
                     cut_height = self._get_operation_height(item, "FinalDepth", 0)
 
                     # Reset state for each operation
-                    new_commands = self._reset_plasma_state(item)
+                    new_commands = self._reset_cutter_state(item)
                     marked = False  # True once the first entry has been marked
                     in_cut = False  # True while descending/at cut height
 
@@ -420,10 +508,12 @@ class GenericPlasma(PostProcessor):
                             in_cut = True
 
                         # Skip remaining movement commands [while at cut height] until Z+ (retraction)
-                        elif (
-                            cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
-                            and "Z" in cmd.Parameters
-                        ):
+                        elif cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC:
+                            if "Z" not in cmd.Parameters:
+                                # Lateral cut move: drop it once the entry is marked
+                                if not marked or not in_cut:
+                                    new_commands.append(cmd)
+                                continue
                             # Only keep movements that are ascending (retraction)
                             if self._last_z is not None and CompValue(
                                 cmd.Parameters["Z"]
@@ -453,7 +543,7 @@ class GenericPlasma(PostProcessor):
 
     def _force_rapid_feeds(self, postables):
         """Replace all feed rates with rapid speeds for dry runs."""
-        if not self.values["FORCE_RAPID_FEEDS"]:
+        if not self.values["FORCE_RAPID_FEEDS"] and not self.values["STRIP_F"]:
             return
 
         for section_name, sublist in postables:
@@ -475,31 +565,52 @@ class GenericPlasma(PostProcessor):
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
 
+    def _strip_z_parameterts(self, postables):
+        """Remove all Z parameters for machines that do not support them."""
+        if not self.values["STRIP_Z"]:
+            return
+
+        for section_name, sublist in postables:
+            for item in sublist:
+                if hasattr(item, "Path") and item.Path:
+                    new_commands = []
+                    for cmd in item.Path.Commands:
+                        new_cmd = cmd
+                        # Remove Z parameter from all movement commands
+                        if (
+                            cmd.Name in Constants.GCODE_MOVE + Constants.GCODE_MOVE_RAPID
+                            and "Z" in cmd.Parameters
+                        ):
+                            # Create new command without Z parameter
+                            new_params = dict(cmd.Parameters)
+                            del new_params["Z"]
+                            new_cmd = Path.Command(cmd.Name, new_params)
+                        new_commands.append(new_cmd)
+                    # Replace Path with modified command list
+                    item.Path = Path.Path(new_commands)
+
     def _expand_postprocessor_commands(self, postables):
-        """Apply plasma-specific transformations to postables.
+        """Apply sheet cutting-specific transformations to postables.
 
         This hook is called by the parent's export2() between Stage 1 (ordering)
         and Stage 2 (command expansion), ensuring transformations are applied to
         the actual postables that get converted to G-code.
         """
-        Path.Log.debug("GenericPlasma: Applying plasma-specific transformations")
+        Path.Log.debug("GenericSheetCutting: Applying sheet cutting-specific transformations")
         self._inject_mark_entry_only(postables)
         self._inject_torch_control(postables)
         self._inject_pierce_delay(postables)
         self._inject_cooling_delay(postables)
         self._force_rapid_feeds(postables)
+        self._strip_z_parameterts(postables)
 
     def get_sanity_checks(self, job):
-        """Plasma cutter specific sanity checks."""
-        Path.Log.track("GenericPlasma.get_sanity_checks() called")
+        """Sheet cutter specific sanity checks."""
+        Path.Log.track("GenericSheetCutting.get_sanity_checks() called")
         squawks = []
 
-        # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_generic_plasma_sanity_checks_integration)
-        Path.Log.track("Adding test squawk from GenericPlasma")
-        squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
-
         # Check pierce delay vs material thickness
-        pierce_delay = self.values.get("pierce_delay", 1000)
+        pierce_delay = self.values.get("PIERCE_DELAY", 1000)
         if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
             thickness_mm = job.Stock.Thickness
             # Recommended pierce delay: ~70ms per mm of thickness, minimum 500ms
@@ -522,7 +633,7 @@ class GenericPlasma(PostProcessor):
                     )
 
         # Check cooling delay for thick materials
-        cooling_delay = self.values.get("cooling_delay", 500)
+        cooling_delay = self.values.get("COOLING_DELAY", 500)
         if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
             thickness_mm = job.Stock.Thickness
             if thickness_mm > 10.0 and cooling_delay < 1000:  # Thick materials need more cooling
@@ -534,7 +645,7 @@ class GenericPlasma(PostProcessor):
                 )
 
         # Check for rapid moves with torch enabled
-        if self.values.get("torch_zaxis_control", True):
+        if self.values.get("CUTTER_CONTROL", "Z_CONTROL") == "Z_Control":
             for op in getattr(job.Operations, "Group", []):
                 if hasattr(op, "HoriFeed") and op.HoriFeed > 3000:  # High feed rates
                     squawks.append(
@@ -545,7 +656,7 @@ class GenericPlasma(PostProcessor):
                     )
 
         # Check marking delay vs pierce delay
-        marking_delay = self.values.get("marking_delay", 100)
+        marking_delay = self.values.get("MARKING_DELAY", 100)
         if marking_delay >= pierce_delay:
             squawks.append(
                 self._create_squawk(
@@ -554,7 +665,7 @@ class GenericPlasma(PostProcessor):
                 )
             )
 
-        Path.Log.track(f"GenericPlasma.get_sanity_checks() returning {len(squawks)} squawks")
+        Path.Log.track(f"GenericSheetCutting.get_sanity_checks() returning {len(squawks)} squawks")
         return squawks
 
     @property
@@ -562,20 +673,24 @@ class GenericPlasma(PostProcessor):
         tooltip: str = """
         This is a postprocessor file for the CAM workbench.
         It is used to take a pseudo-gcode fragment from a CAM object
-        and output 'real' GCode suitable for a plasma cutter.
+        and output 'real' GCode suitable for a plasma, laser or waterjet cutters.
 
         Features:
-        - Torch Z-axis control (M3/M5 based on Z movement)
+        - Three modes for deciding how to add M3 commands to a file:
+            Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.
+            G0_Control: Torch ignites (M3) on change from G0 to G1 and extinguishes (M5) on G1 to G0
+            Spindle_Control: Any M3/M5 commands are output as-is.
         - Pierce delay after torch ignition
         - Cooling delay after torch extinguishment
         - Mark entry points only mode
         - Force rapid feeds for dry runs
         - Material-aware sanity checks
+        - The ability to Strip F and Z Parameters for machines that do not support them
         """
         return tooltip
 
 
 # Class aliases for PostProcessorFactory
-# The factory looks for a class with title-cased postname (e.g., "Generic_Plasma")
-Generic_Plasma = GenericPlasma
-Genericplasma = GenericPlasma  # Fallback for different title() behavior
+# The factory looks for a class with title-cased postname (e.g., "Generic_Sheet_Cutting")
+Generic_Sheet_Cutting = GenericSheetCutting
+Genericsheetcutting = GenericSheetCutting  # Fallback for different title() behavior

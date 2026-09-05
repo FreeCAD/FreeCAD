@@ -815,27 +815,27 @@ class TestCAMSanity(PathTestBase):
         ]
         self.assertEqual(len(postprocessor_squawks), 0)
 
-    def test323_generic_plasma_sanity_checks_integration(self):
-        """GenericPlasma postprocessor sanity checks: verify get_sanity_checks is called.
+    def test323_generic_sheet_cutting_sanity_checks_integration(self):
+        """GenericSheetCutting postprocessor sanity checks: verify get_sanity_checks is called.
 
-        Given: A job with a machine whose postprocessor_file_name is "generic_plasma".
+        Given: A job with a machine whose postprocessor_file_name is "generic_sheet_cutting".
         When: CAMSanity.validate_job() is called.
-        Then: GenericPlasma get_sanity_checks() method is called and test squawk appears.
+        Then: GenericSheetCutting get_sanity_checks() method is called and test squawk appears.
         """
         # Create a mock job with a machine name
-        mock_job = self._make_mock_job(machine_name="plasma")
+        mock_job = self._make_mock_job(machine_name="sheet_cutting")
 
-        # Add stock with thickness for plasma-specific checks
+        # Add stock with thickness for sheet cutting -specific checks
         mock_stock = MagicMock()
         mock_stock.Thickness = 10.0  # 10mm thick material
         mock_job.Stock = mock_stock
 
         # Mock the machine so it returns the correct postprocessor file name
         mock_machine = MagicMock()
-        mock_machine.postprocessor_file_name = "generic_plasma"
+        mock_machine.postprocessor_file_name = "generic_sheet_cutting"
 
         with patch("Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine):
-            # Call validate_job - this should load the real GenericPlasma postprocessor
+            # Call validate_job - this should load the real GenericSheetCutting postprocessor
             all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
 
         # Verify we got squawks
@@ -843,9 +843,11 @@ class TestCAMSanity(PathTestBase):
         self.assertIsInstance(critical_squawks, list)
         self.assertGreater(len(all_squawks), 0, "Should have some squawks")
 
-        # Look for the test squawk from GenericPlasma.get_sanity_checks
+        # Look for the test squawk from GenericSheetCutting.get_sanity_checks
         test_squawks = [s for s in all_squawks if s["Note"] == "This is a test warning message"]
-        self.assertGreater(len(test_squawks), 0, "Test squawk from GenericPlasma should be present")
+        self.assertGreater(
+            len(test_squawks), 0, "Test squawk from GenericSheetCutting should be present"
+        )
 
         # Verify the test squawk is classified as WARNING (critical)
         test_critical = [
