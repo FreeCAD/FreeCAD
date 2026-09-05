@@ -848,7 +848,18 @@ class Machine:
         tool_change="manual",
     ):
         """Add a toolhead to the configuration"""
-        self.toolheads.append(Toolhead(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
+        # Keyword arguments: Toolhead takes toolhead_type as its second
+        # positional field, so a positional call here shifts every value.
+        self.toolheads.append(
+            Toolhead(
+                name=name,
+                id=id,
+                max_power_kw=max_power_kw,
+                max_rpm=max_rpm,
+                min_rpm=min_rpm,
+                tool_change=tool_change,
+            )
+        )
         return self
 
     def save(self, filepath):

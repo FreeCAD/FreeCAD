@@ -49,7 +49,7 @@ from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
 from Path.Post.UtilsParse import format_command_line
 from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Base.MachineState import MachineState
-from Machine.models.machine import MachineFactory, OutputUnits
+from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
 
 translate = FreeCAD.Qt.translate
 
@@ -967,6 +967,51 @@ class PostProcessor:
             " "
         ):
             self.values[option.upper()] = getattr(self._machine.processing, option)
+
+        # Toolhead limits
+        self._merge_toolhead_limits()
+
+    def _merge_toolhead_limits(self):
+        """Merge the machine's spindle speed limits into the values dict.
+
+        The limits live on Toolhead in the machine model, so every
+        machine-based postprocessor gets them without redeclaring them in its
+        own property schema.
+
+        The model has no notion of an active toolhead, so the limits are only
+        merged when the machine defines exactly one.  Machines with several
+        toolheads leave them unset, and the checks that read them are skipped
+        rather than guessing which toolhead a job uses.
+
+        A limit of 0 in the model means "not specified".  It is stored here as
+        None so consumers can tell it apart from a real limit of zero.
+        """
+        self.values["MIN_SPINDLE_SPEED"] = None
+        self.values["MAX_SPINDLE_SPEED"] = None
+
+        toolheads = getattr(self._machine, "toolheads", None) or []
+        if len(toolheads) != 1:
+            Path.Log.debug(
+                f"Machine has {len(toolheads)} toolheads; spindle speed limits not merged"
+            )
+            return
+
+        toolhead = toolheads[0]
+        if toolhead.toolhead_type is not ToolheadType.ROTARY:
+            # On laser, plasma and waterjet heads S is power, not rpm.
+            Path.Log.debug(
+                f"Toolhead is {toolhead.toolhead_type.value}; spindle speed limits not merged"
+            )
+            return
+
+        for key, attribute in (
+            ("MIN_SPINDLE_SPEED", "min_rpm"),
+            ("MAX_SPINDLE_SPEED", "max_rpm"),
+        ):
+            limit = getattr(toolhead, attribute, 0)
+            if isinstance(limit, (int, float)) and limit > 0:
+                self.values[key] = float(limit)
+                Path.Log.debug(f"Set {key} to: {self.values[key]}")
 
     def _apply_schema_defaults(self):
         """Populate postprocessor_properties with schema defaults for missing keys.
@@ -2513,12 +2558,17 @@ class PostProcessor:
 
     def get_sanity_checks(self, job):
         """
-        Hook for postprocessor-specific sanity checks.
+        Run the sanity checks for this postprocessor.
 
-        This method allows postprocessors to define custom validation rules
-        specific to their machine capabilities, configuration requirements,
-        or operational constraints. These checks are integrated into the
-        CAM_QuickValidation system and displayed alongside generic checks.
+        The checks themselves live in the methods returned by
+        sanity_check_methods().  A postprocessor that needs to change one
+        check should override that check, and one that needs to add or drop a
+        check should override sanity_check_methods(); overriding this method
+        is rarely necessary.  A subclass that does override it should call
+        super() so the machine-level checks still run.
+
+        A failing check is logged and skipped so that one broken check does
+        not suppress the rest of the report.
 
         Args:
             job: FreeCAD CAM job object to validate
@@ -2526,21 +2576,106 @@ class PostProcessor:
         Returns:
             list: List of squawk dictionaries following the same format as CAMSanity
                   Each squawk should have: Date, Operator, Note, squawkType, squawkIcon
-
-        Example:
-            def get_sanity_checks(self, job):
-                squawks = []
-
-                # Check plasma cutter specific settings
-                if self.values['PIERCE_DELAY'] < 300:
-                    squawks.append(self._create_squawk(
-                        "WARNING",
-                        "Pierce delay may be too short for material piercing"
-                    ))
-
-                return squawks
         """
-        return []  # Default implementation: no custom checks
+        squawks = []
+        for check in self.sanity_check_methods():
+            try:
+                squawks.extend(check(job))
+            except Exception as e:
+                Path.Log.warning(f"Sanity check {check.__name__} failed: {e}")
+        return squawks
+
+    def sanity_check_methods(self):
+        """
+        The checks run by get_sanity_checks(), in report order.
+
+        Each takes the job and returns a list of squawks.
+
+        Returns:
+            list: List of bound methods.
+        """
+        return [self._sanity_spindle_speed]
+
+    def _sanity_spindle_speed(self, job):
+        """
+        Squawk for commanded spindle speeds outside the machine's range.
+
+        The limits come from the machine's toolhead by way of
+        _merge_toolhead_limits().  When neither limit is known the check does
+        nothing, so a machine that has not specified them is not squawked at.
+
+        Args:
+            job: FreeCAD CAM job object to validate
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        min_speed = self.values.get("MIN_SPINDLE_SPEED")
+        max_speed = self.values.get("MAX_SPINDLE_SPEED")
+        if min_speed is None and max_speed is None:
+            return []
+
+        squawks = []
+        for label, speed in self._commanded_spindle_speeds(job):
+            if speed == 0:
+                # Zero is "spindle not running".  CAMSanity already squawks
+                # about tool controllers with no spindle speed.
+                continue
+            if min_speed is not None and speed < min_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, below the machine minimum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{min_speed:g}"),
+                    )
+                )
+            elif max_speed is not None and speed > max_speed:
+                squawks.append(
+                    self._create_squawk(
+                        "WARNING",
+                        translate(
+                            "CAM_Post",
+                            "'{}' commands spindle speed {} rpm, above the machine maximum of {} rpm",
+                        ).format(label, f"{speed:g}", f"{max_speed:g}"),
+                    )
+                )
+        return squawks
+
+    def _commanded_spindle_speeds(self, job):
+        """
+        The distinct spindle speeds commanded by a job.
+
+        Speeds are read from the commands rather than from
+        ToolController.SpindleSpeed so that anything rewriting the spindle
+        command is accounted for.  Tool controllers are the usual source, but
+        operations are scanned too in case a generator emits its own M3/M4.
+
+        Args:
+            job: FreeCAD CAM job object to scan
+
+        Returns:
+            list: List of (label, speed) tuples, without duplicates.
+        """
+        sources = list(getattr(getattr(job, "Tools", None), "Group", None) or [])
+        sources += list(getattr(getattr(job, "Operations", None), "Group", None) or [])
+
+        seen = []
+        for source in sources:
+            path = getattr(source, "Path", None)
+            if not path:
+                continue
+            for command in path.Commands:
+                if command.Name not in Constants.MCODE_SPINDLE_ON:
+                    continue
+                speed = command.Parameters.get("S")
+                if speed is None:
+                    continue
+                entry = (getattr(source, "Label", ""), float(speed))
+                if entry not in seen:
+                    seen.append(entry)
+        return seen
 
     def _create_squawk(self, squawk_type, note):
         """
