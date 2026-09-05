@@ -252,7 +252,8 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
         page = doc.addObject("TechDraw::DrawPage")
         template = doc.addObject("TechDraw::DrawSVGTemplate")
         template.Template = (
-            App.getResourceDir() + "Mod/TechDraw/Templates/ISO/A3_Landscape_blank.svg"
+            App.getResourceDir()
+            + "Mod/TechDraw/Templates/Blank/A3/landscape/A3_blank_landscape.svg"
         )
         page.Template = template
         view = doc.addObject("TechDraw::DrawViewDraft")
