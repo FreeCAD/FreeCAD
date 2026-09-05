@@ -1092,27 +1092,10 @@ class _Wall(ArchComponent.Component):
                     # in some corner case != getSortedClusters()
                     elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                         self.basewires = []
-                        skGeom = obj.Base.GeometryFacadeList
-                        skGeomEdges = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
-                        # Get ArchSketch edges to construct ArchWall
-                        # No need to test obj.ArchSketchData ...
-                        for ig, geom in enumerate(skGeom):
-                            # Construction mode edges should be ignored if
-                            # ArchSketchEdges, otherwise, ArchSketchEdges data
-                            # needs to take out those in Construction before
-                            # using as parameters.
-                            if (not obj.ArchSketchEdges and not geom.Construction) or str(
-                                ig
-                            ) in obj.ArchSketchEdges:
-                                # support Line, Arc, Circle, Ellipse for Sketch
-                                # as Base at the moment
-                                if isinstance(
-                                    geom.Geometry,
-                                    (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
-                                ):
-                                    skGeomEdgesI = geom.Geometry.toShape()
-                                    skGeomEdges.append(skGeomEdgesI)
+                        skGeomEdges = ArchSketchObject.getSketchDefiningEdges(
+                            obj.Base, obj.ArchSketchEdges
+                        )
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
