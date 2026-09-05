@@ -26,6 +26,7 @@
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
 namespace Image
@@ -43,6 +44,10 @@ public:
     App::PropertyFileIncluded ImageFile;
     App::PropertyLength XSize;
     App::PropertyLength YSize;
+    App::PropertyFloatConstraint CropLeft;
+    App::PropertyFloatConstraint CropRight;
+    App::PropertyFloatConstraint CropTop;
+    App::PropertyFloatConstraint CropBottom;
 
     int getXSizeInPixel();
     int getYSizeInPixel();

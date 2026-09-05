@@ -304,6 +304,176 @@
      </layout>
     </widget>
    </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxCrop">
+     <property name="title">
+      <string>Crop Image</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_Crop">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelCropLeft">
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="spinBoxCropLeft">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="singleStep">
+         <double>1.0</double>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelCropRight">
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="spinBoxCropRight">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="singleStep">
+         <double>1.0</double>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelCropTop">
+        <property name="text">
+         <string>Top</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="spinBoxCropTop">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="singleStep">
+         <double>1.0</double>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelCropBottom">
+        <property name="text">
+         <string>Bottom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="spinBoxCropBottom">
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="singleStep">
+         <double>1.0</double>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <spacer name="verticalSpacerCrop">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>12</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="cropPreviewLayout">
+        <item>
+         <widget class="QLabel" name="labelCropPreview">
+          <property name="text">
+           <string>Preview transparency</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSlider" name="sliderCropPreview">
+          <property name="value">
+           <number>80</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBoxCropPreview">
+          <property name="value">
+           <number>80</number>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="suffix">
+           <string>%</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CropPreviewTransparency</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View/ImagePlane</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButtonResetCrop">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -311,6 +481,11 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
