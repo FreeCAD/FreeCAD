@@ -27,10 +27,12 @@
 
 
 #include "TaskMeasure.h"
+#include "MeasureSnapManager.h"
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Measure/App/MeasureSnap.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -390,6 +392,11 @@ void TaskMeasure::tryUpdate()
     }
 
 
+    // Auto is not gated: the type is still moving while elements are picked.
+    App::MeasureType* chosen = explicitMode ? getMeasureType() : nullptr;
+    const bool snaps = !chosen || Measure::MeasureSnap::typeUsesSnapping(chosen->identifier);
+    mSnapManager.setEnabled(snaps);
+
     if (!measureType) {
         QSignalBlocker unitSwitchBlocker(unitSwitch);
         unitSwitch->clear();
@@ -652,6 +659,10 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         && msg.Type != Gui::SelectionChanges::SetSelection
         && msg.Type != Gui::SelectionChanges::ClrSelection) {
 
+        if (msg.Type == Gui::SelectionChanges::RmvPreselect
+            || msg.Type == Gui::SelectionChanges::SetPreselect) {
+            mSnapManager.onPreselect(msg);
+        }
         return;
     }
 
