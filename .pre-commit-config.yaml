@@ -67,7 +67,6 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
-    -   id: mixed-line-ending
 -   repo: https://github.com/psf/black-pre-commit-mirror
     rev: 4160603246a6b365d4a2af661c6d71b0a0f50478  # frozen: 26.5.1
     hooks:
@@ -75,7 +74,7 @@ repos:
             args: ['--line-length', '100']
             exclude: ^src/Tools/typing/generated/
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 34b241d706d24e4ccb69e38f9f0fa190b5f486ec  # frozen: v23.1.0
+    rev: dd18dad857d6133e90bbe478f4f2f22ec0030269  # frozen: v22.1.5
     hooks:
         -   id: clang-format
 -   repo: local
