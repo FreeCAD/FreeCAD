@@ -90,12 +90,6 @@ SET(SpreadsheetGuiIcon_SVG
     Resources/icons/SpreadsheetWorkbench.svg
 )
 
-set(SpreadsheetGui_MOC_HDRS
-    DlgSettingsImp.h
-)
-
-SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
-
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Spreadsheet.qrc

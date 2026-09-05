@@ -220,7 +220,7 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinuxX11.cpp
         )
-        SET(FreeCADGui_SDK_MOC_HDRS
+        list(APPEND FreeCADGui_connexion_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinuxX11.h
         )
@@ -229,7 +229,7 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
             3Dconnexion/GuiAbstractNativeEvent.cpp
             3Dconnexion/GuiNativeEventLinux.cpp
         )
-        SET(FreeCADGui_SDK_MOC_HDRS
+        list(APPEND FreeCADGui_connexion_HDRS
             3Dconnexion/GuiAbstractNativeEvent.h
             3Dconnexion/GuiNativeEventLinux.h
         )
@@ -237,9 +237,6 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
     list(APPEND FreeCADGui_connexion_SRCS
         ${FreeCADGui_SDK_SRCS}
-    )
-    list(APPEND FreeCADGui_connexion_HDRS
-        ${FreeCADGui_SDK_MOC_HDRS}
     )
 
     add_definitions(-DSPNAV_FOUND)
@@ -381,15 +378,12 @@ if(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
         3Dconnexion/GuiNativeEventWin32.cpp
     )
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-    SET(FreeCADGui_SDK_MOC_HDRS
-      3Dconnexion/GuiAbstractNativeEvent.h
-      3Dconnexion/GuiNativeEventWin32.h
-    )
     list(APPEND FreeCADGui_connexion_SRCS
         ${FreeCADGui_SDK_SRCS}
     )
     list(APPEND FreeCADGui_connexion_HDRS
-        ${FreeCADGui_SDK_MOC_HDRS}
+        3Dconnexion/GuiAbstractNativeEvent.h
+        3Dconnexion/GuiNativeEventWin32.h
     )
 endif(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
 
@@ -399,15 +393,12 @@ if(FREECAD_USE_3DCONNEXION_LEGACY AND APPLE)
         3Dconnexion/GuiNativeEventMac.cpp
     )
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-    SET(FreeCADGui_SDK_MOC_HDRS
-      3Dconnexion/GuiAbstractNativeEvent.h
-      3Dconnexion/GuiNativeEventMac.h
-    )
     list(APPEND FreeCADGui_connexion_SRCS
         ${FreeCADGui_SDK_SRCS}
     )
     list(APPEND FreeCADGui_connexion_HDRS
-        ${FreeCADGui_SDK_MOC_HDRS}
+        3Dconnexion/GuiAbstractNativeEvent.h
+        3Dconnexion/GuiNativeEventMac.h
     )
 endif(FREECAD_USE_3DCONNEXION_LEGACY AND APPLE)
 
@@ -421,14 +412,11 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
         ${NAVLIB_STUB_DIR}/navlib_stub.c
     )
     SOURCE_GROUP("3Dconnexion Navlib" FILES ${FreeCADGui_SDK_SRCS})
-    SET(FreeCADGui_SDK_MOC_HDRS
-        3Dconnexion/navlib/NavlibInterface.h
-    )
     list(APPEND FreeCADGui_connexion_SRCS
         ${FreeCADGui_SDK_SRCS}
     )
     list(APPEND FreeCADGui_connexion_HDRS
-        ${FreeCADGui_SDK_MOC_HDRS}
+        3Dconnexion/navlib/NavlibInterface.h
     )
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
@@ -880,15 +868,6 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/taskheader_p.h
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
-set(qsint_MOC_HDRS
-    QSint/actionpanel/actionlabel.h
-    QSint/actionpanel/actiongroup.h
-    QSint/actionpanel/actionpanel.h
-    QSint/actionpanel/taskheader_p.h
-)
-
-qt_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
-SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
@@ -965,23 +944,9 @@ SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
 FILE(GLOB_RECURSE Quarter_H_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.h)
 
-SET(Quarter_MOC_HDR
-    Quarter/SignalThread.h
-    Quarter/InteractionMode.h
-    Quarter/SensorManager.h
-    Quarter/ContextMenu.h
-    Quarter/eventhandlers/FocusHandler.h
-    Quarter/eventhandlers/DragDropHandler.h
-    Quarter/eventhandlers/EventFilter.h
-    Quarter/QuarterWidget.h
-)
-
-qt_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
-
 SET(Quarter_SRCS
     ${Quarter_CPP_SRC}
     ${Quarter_H_SRC}
-    ${Quarter_MOC_SRCS}
 )
 SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 
@@ -1420,7 +1385,6 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_Pyi_SRCS}
-    ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
     ${Command_SRCS}
