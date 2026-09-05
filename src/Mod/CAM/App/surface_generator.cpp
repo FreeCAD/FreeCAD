@@ -85,7 +85,7 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
 
     // 1️⃣ Tessellation
     auto tess_start = std::chrono::high_resolution_clock::now();
-    BRepMesh_IncrementalMesh(topo_shape, linear_deflection, false, angular_deflection);
+    BRepMesh_IncrementalMesh(topo_shape, linear_deflection, false, angular_deflection, true);
     auto tess_end = std::chrono::high_resolution_clock::now();
 
     if (!timer_callback.is_none()) {

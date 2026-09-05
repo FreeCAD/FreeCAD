@@ -228,7 +228,13 @@ Mesh::MeshObject* Mesher::createStandard() const
 {
     if (!shape.IsNull()) {
         BRepTools::Clean(shape);
-        BRepMesh_IncrementalMesh aMesh(shape, deflection, relative, angularDeflection);
+        BRepMesh_IncrementalMesh aMesh(
+            shape,
+            deflection,
+            relative,
+            angularDeflection,
+            /*isInParallel*/ Standard_True
+        );
     }
 
     std::vector<Part::TopoShape::Domain> domains;
