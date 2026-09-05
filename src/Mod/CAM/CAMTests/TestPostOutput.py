@@ -439,7 +439,7 @@ class TestExport2Integration(unittest.TestCase):
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54"]
 
-        cls.job.Machine = "Millstone"
+        cls.job.Machine = "linuxcnc"
 
         from Path.Tool.toolbit import ToolBit
 
@@ -1160,6 +1160,60 @@ class TestExport2Integration(unittest.TestCase):
             self.assertGreaterEqual(
                 g1_count, 4, f"Should have at least 4 G1 commands, found {g1_count}"
             )
+
+    def test080_translate_no_engagement(self):
+        """
+        Test that _expand_translate_rapids converts G0 to G1
+        when TRANSLATE_NO_ENGAGEMENT_FEED && ANNOT_NO_ENGAGEMENT_FEED
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+
+        # Do G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = True
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),  # not translated
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 100.0},  # should replace F
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "500"},
+                ),  # translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y10.000 F30000.000
+G1 X20.000 Y10.000 F6000.000
+"""
+
+            self.assertEqual(expected, interested)
+
+        # Don't G0->G1
+        machine.postprocessor_properties["translate_no_engagement_feed"] = False
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                # not translated, and F is dropped ("f_for_rapid_moves")
+                Path.Command(
+                    "G0",
+                    {"X": 10.0, "Y": 10.0, "F": 500.0},
+                    {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"},
+                ),  # not translated
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "F": 100.0}),
+            ]
+        ):
+            results = self._run_export2(machine)[0][1]
+            _, interested = results.split("(preoperation)\n")
+            interested, _ = interested.split("(postoperation)")
+            expected = """G0 X0.000 Y0.000 Z5.000
+G0 X10.000 Y10.000
+G1 X20.000 Y10.000 F6000.000
+"""
+            self.assertEqual(interested, expected)
 
     # ===== 090-099: _expand_xy_before_z tests =====
 

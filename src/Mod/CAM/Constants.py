@@ -226,11 +226,14 @@ NOT_PARAMETER_MODAL = {
 ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
 
 # G0 moves which can be replaced by G1 with No-Engagement Feed
+# using the float-value of the annotation as the F parameter
+# when Machine Postprocessor Option TRANSLATE_NO_ENGAGEMENT_FEED is true
 ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
 
 # When de-dup'ing, do not look back at this or previous commands in the stream
 # True|absent|False
 ANNOT_MODAL_BARRIER = "modal_barrier"
+
 # Don't optimize this G0 into next/previous ones, the motion is salient
 ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
 

@@ -673,6 +673,19 @@ class PostProcessor:
                     "Whether to output the F parameter for G0 (rapid moves)",
                 ),
             },
+            {
+                "name": "translate_no_engagement_feed",
+                "scope": SCOPE_MACHINE,
+                "type": "bool",
+                "label": translate(
+                    "CAM", "Output non-engaging moves at the no-engagement feed rate"
+                ),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    'Certain G0\'s become G1 for operations that have "No-Engagement Feedrate"',
+                ),
+            },
         ]
 
     @classmethod
@@ -1356,14 +1369,15 @@ class PostProcessor:
                     item.path = Path.Path(new_commands)
 
     def _expand_translate_rapids(self, postables):
-        """Replace G0 rapid moves with G1 linear moves.
-
-        When machine processing.translate_rapid_moves is True, replaces
-        G0/G00 commands with G1 using the tool controller rapid rate.
+        """Replace G0 rapid moves with G1 linear moves for TRANSLATE_RAPID_MOVES.
+        Replace G0 with G1 if ANNOT_NO_ENGAGEMENT_FEED and TRANSLATE_NO_ENGAGEMENT_FEED.
 
         Subclasses can override to customize rapid move translation.
         """
-        if not self.values["TRANSLATE_RAPID_MOVES"]:
+        if (
+            not self.values["TRANSLATE_RAPID_MOVES"]
+            and not self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+        ):
             return
 
         for section_name, sublist in postables:
@@ -1372,8 +1386,47 @@ class PostProcessor:
                     new_commands = []
                     Path.Log.debug(f"Translating rapid moves for {item.label}")
                     for cmd in item.path.Commands:
-                        if cmd.Name in Constants.GCODE_MOVE_RAPID:
+
+                        # Modify to G1?
+                        if (
+                            self.values["TRANSLATE_RAPID_MOVES"]
+                            and cmd.Name in Constants.GCODE_MOVE_RAPID
+                        ):
                             cmd.Name = "G1"
+
+                        # G0->G1 for non-engagement-feed
+                        elif (
+                            self.values["TRANSLATE_NO_ENGAGEMENT_FEED"]
+                            and (
+                                feed_str := cmd.Annotations.get(
+                                    Constants.ANNOT_NO_ENGAGEMENT_FEED, None
+                                )
+                            )
+                            is not None
+                        ):
+                            if not isinstance(feed_str, str):
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be a string convertable to a float, saw {feed_str.__class__.__name__} '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+
+                            cmd.Name = "G1"
+                            try:
+                                feed = float(feed_str)
+                            except:
+                                # any conversion error
+                                raise CAMAttributeError(
+                                    f"Expected ANNOT_NO_ENGAGEMENT_FEED to be convertable to a float, saw '{feed_str}'",
+                                    job=self._job,
+                                    operation=self._operation,
+                                    command=cmd,
+                                    pp=self.values["MACHINE_NAME"],
+                                )
+                            cmd.Parameters = {**cmd.Parameters, **{"F": feed}}
+
                         new_commands.append(cmd)
                     item.path = Path.Path(new_commands)
 
