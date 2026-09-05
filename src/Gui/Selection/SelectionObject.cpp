@@ -25,6 +25,7 @@
 #include <sstream>
 
 #include <App/Application.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Selection/SelectionObjectPy.h>
@@ -92,6 +93,14 @@ bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
 
 std::string SelectionObject::getAsPropertyLinkSubString() const
 {
+    // Keep the LCS in the reference so its placement and dependency are preserved.
+    if (const auto* datum = dynamic_cast<const App::DatumElement*>(getObject())) {
+        if (auto* lcs = datum->getLCS(); lcs && !lcs->isOrigin() && lcs->hasObject(datum)) {
+            return "(" + Gui::Command::getObjectCmd(lcs) + ",['" + datum->getNameInDocument()
+                + ".'])";
+        }
+    }
+
     std::ostringstream str;
     str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";
     for (const auto& it : SubNames) {
