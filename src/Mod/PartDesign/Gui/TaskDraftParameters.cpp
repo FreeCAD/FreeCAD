@@ -401,8 +401,6 @@ bool TaskDlgDraftParameters::accept()
         getViewObject()->showPreviousFeature(false);
     }
 
-    parameter->apply();
-
     std::vector<std::string> strings;
     App::DocumentObject* obj = nullptr;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
