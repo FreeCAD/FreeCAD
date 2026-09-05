@@ -232,6 +232,7 @@ public:
 protected:
     void handleChangedPropertyType(Base::XMLReader& reader, const char* typeName, App::Property* propss) override;
     void Restore(Base::XMLReader& reader) override;
+    void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
     std::string getPrefixForDimType() const;
