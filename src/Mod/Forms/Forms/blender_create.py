@@ -34,7 +34,7 @@ import bpy
 def _crease(sharpness):
     """Convert OpenSubdiv semi-sharpness to Blender's normalized crease."""
     sharpness = max(0.0, float(sharpness))
-    return min(1.0, 1.0 - math.pow(2.0, -sharpness)) if sharpness else 0.0
+    return math.sqrt(min(sharpness, 10.0) / 10.0)
 
 
 def _material(name, color):

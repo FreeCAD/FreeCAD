@@ -71,14 +71,7 @@ def canonical_subelement_name(name):
     return matches[-1] if matches else ""
 
 
-def _object_tmesh(obj, cage):
-    mesh = HierarchicalTMesh.decode(str(obj.TMeshData))
-    base_count = len(cage.vertices)
-    for offset, point in enumerate(getattr(obj, "LocalControlPoints", ())):
-        vertex_id = base_count + offset
-        if vertex_id in mesh.vertices:
-            mesh.set_vertex(vertex_id, (point.x, point.y, point.z))
-    return mesh
+from .model import object_tmesh as _object_tmesh
 
 
 class ControlCage:
@@ -1048,7 +1041,7 @@ def update_object_shape(obj):
         # Match is part of conversion: a deleted or invalid support must produce
         # a normal failed-conversion state instead of escaping Feature::execute
         # and leaving a stale shape in the document.
-        from .additive import apply_match_constraints
+        from .matching import apply_match_constraints
 
         apply_match_constraints(obj)
         cage = ControlCage.from_object(obj)

@@ -59,30 +59,7 @@ def _validate_topology(vertices, faces):
 
 
 def _largest_covariance_axis(points):
-    """Return the centroid and principal least-squares line direction."""
-    center = tuple(sum(point[axis] for point in points) / len(points) for axis in range(3))
-    covariance = [[0.0] * 3 for _axis in range(3)]
-    for point in points:
-        delta = tuple(point[axis] - center[axis] for axis in range(3))
-        for row in range(3):
-            for column in range(3):
-                covariance[row][column] += delta[row] * delta[column]
-    axis = max(range(3), key=lambda index: covariance[index][index])
-    direction = [1.0 if index == axis else 0.0 for index in range(3)]
-    for _iteration in range(32):
-        candidate = [
-            sum(covariance[row][column] * direction[column] for column in range(3))
-            for row in range(3)
-        ]
-        magnitude = math.sqrt(sum(value * value for value in candidate))
-        if magnitude <= 1.0e-12:
-            raise ValueError("Straighten requires distinct control points")
-        candidate = [value / magnitude for value in candidate]
-        if sum((candidate[index] - direction[index]) ** 2 for index in range(3)) <= 1.0e-24:
-            direction = candidate
-            break
-        direction = candidate
-    return center, tuple(direction)
+    return _covariance_axis(points, largest=True)
 
 
 def straighten_points(vertices, selected_indices, line=None):
@@ -229,7 +206,7 @@ def cage_face_selection_range(faces, start, end):
     return _all_shortest_range(adjacency, int(start), int(end))
 
 
-def _smallest_covariance_axis(points):
+def _covariance_axis(points, largest=False):
     """Return the least-variance axis of 3D points using Jacobi rotations."""
     center = tuple(sum(point[axis] for point in points) / len(points) for axis in range(3))
     covariance = [[0.0] * 3 for _ in range(3)]
@@ -241,7 +218,7 @@ def _smallest_covariance_axis(points):
     vectors = [[1.0 if row == column else 0.0 for column in range(3)] for row in range(3)]
     for _iteration in range(24):
         p, q = max(((0, 1), (0, 2), (1, 2)), key=lambda pair: abs(covariance[pair[0]][pair[1]]))
-        if abs(covariance[p][q]) <= 1.0e-14:
+        if abs(covariance[p][q]) <= max(abs(covariance[i][i]) for i in range(3)) * 1.0e-14:
             break
         angle = 0.5 * math.atan2(2.0 * covariance[p][q], covariance[q][q] - covariance[p][p])
         cosine, sine = math.cos(angle), math.sin(angle)
@@ -261,10 +238,14 @@ def _smallest_covariance_axis(points):
             second = vectors[row][q]
             vectors[row][p] = cosine * first - sine * second
             vectors[row][q] = sine * first + cosine * second
-    axis = min(range(3), key=lambda index: covariance[index][index])
+    axis = (max if largest else min)(range(3), key=lambda index: covariance[index][index])
     normal = tuple(vectors[row][axis] for row in range(3))
     magnitude = math.sqrt(sum(value * value for value in normal))
     return center, tuple(value / magnitude for value in normal)
+
+
+def _smallest_covariance_axis(points):
+    return _covariance_axis(points)
 
 
 def flatten_points(vertices, selected_indices, plane=None):
@@ -1031,34 +1012,40 @@ def _catmull_clark_step_details(vertices, faces, edge_sharpness=None, vertex_sha
                     / valence
                     for axis in range(3)
                 )
-        sharp_edges = sorted(
-            (
-                (edge_sharpness.get(edge, 0.0), edge)
-                for edge in incident_edges
-                if edge_sharpness.get(edge, 0.0) > 0.0
-            ),
-            reverse=True,
-        )
-        sharp_weight = min(max(0.0, float(vertex_sharpness[vertex_index])), 1.0)
-        sharp_target = point
-        if len(sharp_edges) >= 3:
-            sharp_weight = max(sharp_weight, min(sharp_edges[2][0], 1.0))
-        elif len(sharp_edges) >= 2:
-            neighbors = [
-                edge[0] if edge[1] == vertex_index else edge[1] for _value, edge in sharp_edges[:2]
-            ]
-            sharp_target = tuple(
-                0.75 * point[axis]
-                + 0.125 * vertices[neighbors[0]][axis]
-                + 0.125 * vertices[neighbors[1]][axis]
-                for axis in range(3)
-            )
-            sharp_weight = max(sharp_weight, min(sharp_edges[1][0], 1.0))
-        if sharp_weight:
-            updated = tuple(
-                updated[axis] * (1.0 - sharp_weight) + sharp_target[axis] * sharp_weight
-                for axis in range(3)
-            )
+        sharp_edges = [
+            (10.0 if len(edge_faces[edge]) == 1 else edge_sharpness.get(edge, 0.0), edge)
+            for edge in incident_edges
+        ]
+        sharp_edges = [(value, edge) for value, edge in sharp_edges if value > 0.0]
+        corner = max(0.0, float(vertex_sharpness[vertex_index]))
+        parent_rule = 3 if corner > 0.0 else min(len(sharp_edges), 3)
+        child_edges = [(value, edge) for value, edge in sharp_edges if value > 1.0]
+        child_rule = 3 if corner > 1.0 else min(len(child_edges), 3)
+
+        def rule_point(rule, creases):
+            if rule < 2:
+                return updated
+            if rule == 3:
+                return point
+            neighbors = [edge[0] if edge[1] == vertex_index else edge[1]
+                         for _value, edge in creases]
+            return tuple(.75 * point[axis] + .125 * sum(vertices[n][axis] for n in neighbors)
+                         for axis in range(3))
+
+        if parent_rule >= 2:
+            parent_target = rule_point(parent_rule, sharp_edges)
+            if parent_rule == child_rule:
+                updated = parent_target
+            else:
+                # Uniform OpenSubdiv transitions blend the parent and child
+                # rules by the mean of all sharpness values decaying this step.
+                decayed = [value for value, _edge in sharp_edges if value <= 1.0]
+                if 0.0 < corner <= 1.0:
+                    decayed.append(corner)
+                weight = sum(decayed) / len(decayed)
+                child_target = rule_point(child_rule, child_edges)
+                updated = tuple(weight * parent_target[axis] + (1.0 - weight) * child_target[axis]
+                                for axis in range(3))
         original_indices[vertex_index] = len(new_vertices)
         new_vertices.append(updated)
 
@@ -1106,7 +1093,7 @@ def _catmull_clark_step_details(vertices, faces, edge_sharpness=None, vertex_sha
 
     new_edge_sharpness = {}
     for edge, value in edge_sharpness.items():
-        child_value = max(value - 1.0, 0.0)
+        child_value = 10.0 if value >= 10.0 else max(value - 1.0, 0.0)
         if not child_value or edge not in edge_indices:
             continue
         midpoint = edge_indices[edge]
@@ -1114,7 +1101,7 @@ def _catmull_clark_step_details(vertices, faces, edge_sharpness=None, vertex_sha
         new_edge_sharpness[tuple(sorted((midpoint, original_indices[edge[1]])))] = child_value
     new_vertex_sharpness = [0.0] * len(new_vertices)
     for old_index, new_index in original_indices.items():
-        new_vertex_sharpness[new_index] = max(vertex_sharpness[old_index] - 1.0, 0.0)
+        new_vertex_sharpness[new_index] = (10.0 if vertex_sharpness[old_index] >= 10.0 else max(vertex_sharpness[old_index] - 1.0, 0.0))
 
     return (
         new_vertices,
@@ -1138,6 +1125,46 @@ def catmull_clark(vertices, faces, levels=1):
     for _level in range(levels):
         result_vertices, result_faces = catmull_clark_step(result_vertices, result_faces)
     return result_vertices, result_faces
+
+
+def _finite_corner_limit(vertices, faces, vertex_index, edges, sharpness):
+    """Refine only the vertex's incident face fan through finite sharpness.
+
+    Each child face incident to the vertex uses its updated vertex, two radial
+    edge points and the parent face point. These depend only on the current
+    fan, so retaining that fan keeps work linear in sharpness, not exponential.
+    """
+    current_faces = [tuple(face) for face in faces]
+    used = sorted({v for face in current_faces for v in face})
+    remap = {v: i for i, v in enumerate(used)}
+    current_vertices = [vertices[i] for i in used]
+    current_faces = [tuple(remap[i] for i in face) for face in current_faces]
+    center = remap[vertex_index]
+    current_edges = {tuple(sorted((remap[a], remap[b]))): value
+                     for (a, b), value in edges.items()
+                     if vertex_index in (a, b) and a in remap and b in remap}
+    current_corners = [0.] * len(used)
+    current_corners[center] = sharpness
+    dart_steps = 48 if sum(v >= 10. for v in current_edges.values()) == 1 else 0
+    while (dart_steps or 0. < current_corners[center] < 10.
+           or any(0. < v < 10. for v in current_edges.values())):
+        dart_steps = max(0, dart_steps - 1)
+        vv, ff, old, _, _, ee, cc = _catmull_clark_step_details(
+            current_vertices, current_faces, current_edges, current_corners)
+        center = old[center]
+        fan = [face for face in ff if center in face]
+        used = sorted({v for face in fan for v in face})
+        remap = {v: i for i, v in enumerate(used)}
+        current_vertices = [vv[i] for i in used]
+        current_faces = [tuple(remap[i] for i in face) for face in fan]
+        current_edges = {tuple(sorted((remap[a], remap[b]))): value
+                         for (a, b), value in ee.items() if center in (a, b)}
+        current_corners = [cc[i] for i in used]
+        center = remap[center]
+    if sum(v >= 10. for v in current_edges.values()) == 1:
+        return current_vertices[center]
+    return catmull_clark_limit_points(
+        current_vertices, current_faces, current_edges, current_corners)[center]
 
 
 def catmull_clark_limit_points(vertices, faces, edge_sharpness=None, vertex_sharpness=None):
@@ -1227,18 +1254,23 @@ def catmull_clark_limit_points(vertices, faces, edge_sharpness=None, vertex_shar
                 for axis in range(3)
             )
         sharp_neighbors = sorted(
-            (
-                (edge_sharpness.get(tuple(sorted((vertex_index, neighbor))), 0.0), neighbor)
-                for neighbor in vertex_neighbors[vertex_index]
-                if edge_sharpness.get(tuple(sorted((vertex_index, neighbor))), 0.0) > 0.0
-            ),
-            reverse=True,
-        )
+            ((10.0 if neighbor in boundary_neighbors else
+              edge_sharpness.get(tuple(sorted((vertex_index, neighbor))), 0.0), neighbor)
+             for neighbor in vertex_neighbors[vertex_index]), reverse=True)
+        sharp_neighbors = [(value, neighbor) for value, neighbor in sharp_neighbors if value > 0.0]
+        if (len(sharp_neighbors) == 1
+                or 0.0 < vertex_sharpness[vertex_index] < 10.0
+                or any(0.0 < value < 10.0 for value, _neighbor in sharp_neighbors)):
+            result.append(_finite_corner_limit(
+                vertices, [faces[i] for i in vertex_faces[vertex_index]], vertex_index,
+                {tuple(sorted((vertex_index, neighbor))): value
+                 for value, neighbor in sharp_neighbors}, vertex_sharpness[vertex_index]))
+            continue
         weight = min(max(0.0, vertex_sharpness[vertex_index]), 1.0)
         sharp_limit = point
         if len(sharp_neighbors) >= 3:
             weight = max(weight, min(sharp_neighbors[2][0], 1.0))
-        elif len(sharp_neighbors) >= 2:
+        elif len(sharp_neighbors) >= 2 and vertex_sharpness[vertex_index] < 10.0:
             sharp_limit = tuple(
                 (
                     4.0 * point[axis]

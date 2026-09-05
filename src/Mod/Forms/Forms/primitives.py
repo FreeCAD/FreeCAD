@@ -28,7 +28,8 @@ import math
 import FreeCAD as App
 import Part
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 from .topology import (
     cylinder_control_cage,
     face_control_cage,

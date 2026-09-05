@@ -24,11 +24,14 @@
 """Application-side topology operations for Forms control cages."""
 
 import math
-from types import SimpleNamespace
 
 import FreeCAD as App
 
 from .cage import ControlCage
+from .capabilities import require_base_topology, validate_local_creases
+from .limits import check_sampling
+from .numerics import DenseLU
+from .model import object_tmesh as _object_tmesh, form_preview_object as _form_preview_object
 from .placement import global_placement
 from .brep import (
     ConversionError,
@@ -85,6 +88,7 @@ def set_edge_crease(obj, edges, sharpness):
     if not selected or not selected.issubset(valid):
         raise ValueError("Crease requires valid control edges")
     value = max(0.0, min(float(sharpness), 10.0))
+    validate_local_creases(obj, selected, value)
     edge_values = dict(cage.edge_sharpness)
     for edge in selected:
         if value:
@@ -116,44 +120,6 @@ def flatten_control_points(obj, indices, plane=None):
     """Flatten selected base or hierarchical controls to a chosen plane."""
     _write_all_points(obj, flatten_points(_all_points(obj), indices, plane))
     return obj
-
-
-def _form_preview_object(obj, points):
-    """Build an unowned Form data object from replacement control points."""
-    import FreeCAD as App
-    import Part
-
-    base_count = len(obj.ControlPoints)
-
-    preview = SimpleNamespace()
-    preview.ControlPoints = [App.Vector(*point) for point in points[:base_count]]
-    preview.LocalControlPoints = [App.Vector(*point) for point in points[base_count:]]
-    for name in (
-        "ControlFaces",
-        "VertexSharpness",
-        "EdgeSharpness",
-        "LocalEdgeInserts",
-        "MatchBoundary",
-        "MatchParameters",
-        "MatchCornerVertices",
-        "MatchCornerEdges",
-    ):
-        setattr(preview, name, list(getattr(obj, name, ())))
-    for name in (
-        "TMeshData",
-        "MatchContinuity",
-        "MatchTangentMode",
-        "ConversionStatus",
-    ):
-        setattr(preview, name, str(getattr(obj, name, "") or ""))
-    preview.MatchSupport = getattr(obj, "MatchSupport", None)
-    preview.FormType = str(getattr(obj, "FormType", ""))
-    preview.BRepTolerance = obj.BRepTolerance
-    preview.MaxRefinement = int(obj.MaxRefinement)
-    preview.Shape = Part.Shape()
-    preview.MaximumDeviation = 0.0
-    preview.ConversionLevel = max(int(getattr(obj, "ConversionLevel", 1)), 1)
-    return preview
 
 
 def _preview_form_from_points(obj, points):
@@ -202,11 +168,12 @@ def _surface_straightened_controls(obj, indices, line=None):
         moved = control_surface_points(preview)
         for row, surface_index in enumerate(indices):
             response[row][column] = moved[surface_index].x - surface[surface_index].x
+    factor = DenseLU(response)
     for axis in range(3):
         right_hand_side = [
             target[index][axis] - surface_tuples[index][axis] for index in indices
         ]
-        solution = _solve_linear_system(response, right_hand_side)
+        solution = factor.solve(right_hand_side)
         for index, delta in zip(indices, solution):
             value = list(points[index])
             value[axis] += delta
@@ -215,34 +182,7 @@ def _surface_straightened_controls(obj, indices, line=None):
 
 
 def _solve_linear_system(matrix, values):
-    """Solve a small dense system with partial pivoting and mild regularization."""
-    size = len(values)
-    augmented = [
-        [float(value) for value in row] + [float(values[index])]
-        for index, row in enumerate(matrix)
-    ]
-    scale = max((abs(value) for row in matrix for value in row), default=1.0)
-    regularization = max(scale, 1.0) * 1.0e-10
-    for index in range(size):
-        augmented[index][index] += regularization
-    for column in range(size):
-        pivot = max(range(column, size), key=lambda row: abs(augmented[row][column]))
-        if abs(augmented[pivot][column]) <= regularization * 0.1:
-            raise ValueError("Surface-point Straighten cannot resolve these controls")
-        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
-        divisor = augmented[column][column]
-        augmented[column] = [value / divisor for value in augmented[column]]
-        for row in range(size):
-            if row == column:
-                continue
-            factor = augmented[row][column]
-            if factor == 0.0:
-                continue
-            augmented[row] = [
-                augmented[row][index] - factor * augmented[column][index]
-                for index in range(size + 1)
-            ]
-    return [augmented[index][-1] for index in range(size)]
+    return DenseLU(matrix).solve(values)
 
 
 def preview_straighten_surface_points(obj, indices, line=None):
@@ -547,38 +487,6 @@ def insert_point_edges(obj, points):
     return obj, tuple(occurrence_ids)
 
 
-def _object_tmesh(obj, cage=None):
-    """Read the authoritative mesh, migrating legacy insertion records once."""
-    cage = cage or ControlCage.from_object(obj)
-    encoded = str(getattr(obj, "TMeshData", "") or "")
-    if encoded:
-        mesh = HierarchicalTMesh.decode(encoded)
-        # The vector list remains a convenient FreeCAD property for editing.
-        base_count = len(cage.vertices)
-        for vertex_id, point in enumerate(cage.vertices):
-            if vertex_id in mesh.vertices:
-                mesh.set_vertex(vertex_id, point)
-        for offset, point in enumerate(getattr(obj, "LocalControlPoints", ())):
-            vertex_id = base_count + offset
-            if vertex_id in mesh.vertices:
-                mesh.set_vertex(vertex_id, (point.x, point.y, point.z))
-        return mesh
-
-    mesh = HierarchicalTMesh.from_quad_cage(cage.vertices, cage.faces)
-    records = [LocalEdgeInsert.decode(value) for value in getattr(obj, "LocalEdgeInserts", ())]
-    local_points = [(point.x, point.y, point.z) for point in getattr(obj, "LocalControlPoints", ())]
-    face_lookup = {tuple(face): index for index, face in enumerate(cage.faces)}
-    for record in records:
-        face_id = face_lookup.get(tuple(record.face))
-        if face_id is None or face_id not in mesh.faces:
-            raise ValueError("A legacy Insert Edge face no longer exists")
-        mesh, _new_ids, children = mesh.insert_edge(face_id, record.edge, record.position)
-        seam = mesh.faces[children[0]].sides[2]
-        for vertex_id, local_index in zip(seam, record.points):
-            if local_index >= len(local_points):
-                raise ValueError("A legacy Insert Edge endpoint is missing")
-            mesh.set_vertex(vertex_id, local_points[local_index])
-    return mesh
 
 
 def _seed_tmesh_edit(cage, old_mesh, new_mesh, vertex_ids):
@@ -597,6 +505,8 @@ def _seed_tmesh_edit(cage, old_mesh, new_mesh, vertex_ids):
 
 def _write_object_tmesh(obj, cage, mesh):
     """Persist the authoritative mesh and its editable FreeCAD vector view."""
+    depth = max(mesh.vertex_levels.values(), default=0)
+    check_sampling(len(cage.faces), max(2, depth + 1) + 1, root_grid=True)
     obj.TMeshData = mesh.encode()
     base_count = len(cage.vertices)
     obj.LocalControlPoints = [
@@ -719,6 +629,7 @@ def dissolve_edges(obj, edges):
 
 def erase_and_fill(obj, face_indices):
     """Erase selected control faces and minimally rebuild their boundary."""
+    require_base_topology(obj, "Erase and fill")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
     cage = ControlCage.from_object(obj)
@@ -736,6 +647,7 @@ def erase_and_fill(obj, face_indices):
 
 def fill_holes(obj, boundary_edges, mode="automatic"):
     """Fill the boundary loops containing *boundary_edges* on a Forms object."""
+    require_base_topology(obj, "Fill holes")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
     cage = ControlCage.from_object(obj)
@@ -751,6 +663,7 @@ def fill_holes(obj, boundary_edges, mode="automatic"):
 
 def bridge_boundaries(obj, boundary_edges):
     """Bridge two equal-sized control-cage boundary loops."""
+    require_base_topology(obj, "Bridge boundaries")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
     cage = ControlCage.from_object(obj).bridge_boundaries(boundary_edges)
@@ -872,6 +785,7 @@ def weld_boundaries(obj, first_edge, other, second_edge):
 
 def thicken_surface(obj, distance, sharp=True):
     """Turn an open Form surface into a closed, editable thickened cage."""
+    require_base_topology(obj, "Thicken surface")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
     if getattr(obj, "LocalEdgeInserts", ()) or str(getattr(obj, "TMeshData", "") or ""):
@@ -885,6 +799,7 @@ def thicken_surface(obj, distance, sharp=True):
 
 def insert_edge_loop(obj, edge, position=0.5, mode="simple"):
     """Insert an edge loop through the quad ring containing *edge*."""
+    require_base_topology(obj, "Insert edge loop")
     if not getattr(obj, "FormType", "").startswith("Forms::"):
         raise TypeError("The object is not a Forms object")
     cage, inserted_edges = ControlCage.from_object(obj).insert_edge_ring(edge, position, mode)

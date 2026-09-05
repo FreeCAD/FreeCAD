@@ -38,6 +38,11 @@ from .cage import (
     control_surface_points,
 )
 from .edit_tools import FormEditToolsMixin
+from .edit_journal import EditJournal
+from .callbacks import DeferredCallbacks, weak_callback
+from .capabilities import validate_local_creases, require_base_topology
+from .preview import MotionPreview
+from .preferences import preferences
 from .feedback import MODELING_ERRORS, report_modeling_error
 from .interaction import FormKeyFilter, FormSelectionGate
 from .symmetry import control_pairs, reflected
@@ -138,6 +143,7 @@ class FormEditSession(FormEditToolsMixin):
 
     def __init__(self, obj, document_edit=False, creation_transaction=False):
         self.obj = obj
+        self.deferred_callbacks = DeferredCallbacks()
         self.document_edit = document_edit
         self.creation_transaction = creation_transaction
         self.view_object = obj.ViewObject
@@ -155,6 +161,10 @@ class FormEditSession(FormEditToolsMixin):
         self.dragger_switch = None
         self.dragger_callbacks = []
         self.last_added_edge = None
+        self.selection_mouse_press = None
+        self.last_edge_click_position = None
+        self.pending_edge_loop = None
+        self.selection_enabled_field = None
         self.range_selection_anchors = {}
         self.range_selection_generation = 0
         self.dimension_gizmos = {}
@@ -200,107 +210,22 @@ class FormEditSession(FormEditToolsMixin):
         self.pending_form_placement = None
         self.pending_control_points = None
         self.whole_form_motion_preview = False
+        self.motion_preview = None
+        self.use_mesh_preview = preferences().GetBool("MeshPreview", False)
+        self.selection_mouse_callback = None
+        self.empty_selection_press = None
         self.alt_extrude_face_indices = set()
         self.alt_extrude_boundary_edges = set()
         self.extruded_top_faces = set()
         self.extruded_outer_edges = set()
         self.active_tool = None
-        self.surface_tool_callback = None
-        self.surface_tool_mouse_callback = None
-        self.surface_tool_cursor_icon = None
-        self.pivot_tool_callback = None
-        self.pivot_tool_mouse_callback = None
-        self.pivot_snap_point = None
-        self.pivot_previous_selection_filter = None
-        self.pivot_selection_snapshot = None
-        self.pivot_pick_pending = False
-        self.surface_hover_face = None
-        self.surface_cursor_position = None
-        self.insert_orientation = 0
-        self.insert_whole_loop = None
-        self.insert_point_chain = []
-        self.insert_point_hover = None
-        self.unweld_segment_edges = None
-        self.unweld_hover_edge = None
-        self.unweld_separate_forms = None
-        self.surface_preview_switch = None
-        self.surface_preview_coordinates = None
-        self.surface_preview_lines = None
-        self.surface_preview_key = None
-        self.surface_tool_cache_mapper = None
-        self.surface_tool_control_points = None
-        self.surface_tool_shape_faces = {}
-        self.surface_tool_hover_faces = {}
         self.tool_handler_panel = None
         self.tool_handler_layout = None
         self.tool_handler_widget = None
-        self.subdivide_u = None
-        self.subdivide_v = None
         self.surface_tangent = None
-        self.match_inputs = None
-        self.match_mode = None
-        self.match_apply_button = None
-        self.match_cancel_button = None
-        self.match_preview_status = None
-        self.match_preview_root = None
-        self.match_preview_switch = None
-        self.match_preview_shape = Part.Shape()
-        self.match_visibility_before = []
-        self.flatten_indices = []
-        self.flatten_mode = None
-        self.flatten_reference = None
-        self.flatten_reference_button = None
-        self.flatten_reference_name = None
-        self.flatten_reference_widget = None
-        self.flatten_reference_selecting = False
-        self.flatten_apply_button = None
-        self.flatten_cancel_button = None
-        self.flatten_preview_status = None
-        self.flatten_preview_root = None
-        self.flatten_preview_switch = None
-        self.flatten_preview_shape = Part.Shape()
-        self.flatten_visibility_before = []
-        self.weld_other = None
-        self.weld_other_button = None
-        self.weld_other_name = None
-        self.weld_selecting_other = False
-        self.weld_first_edge = None
-        self.weld_second_edge = None
-        self.weld_first_name = None
-        self.weld_second_name = None
-        self.weld_apply_button = None
-        self.weld_cancel_button = None
-        self.weld_status = None
-        self.straighten_indices = []
-        self.straighten_mode = None
-        self.straighten_type = None
-        self.straighten_range = None
-        self.straighten_references = []
-        self.straighten_reference_button = None
-        self.straighten_reference_name = None
-        self.straighten_reference_widget = None
-        self.straighten_reference_selecting = False
-        self.straighten_apply_button = None
-        self.straighten_cancel_button = None
-        self.straighten_preview_status = None
-        self.straighten_preview_root = None
-        self.straighten_preview_switch = None
-        self.straighten_preview_shape = Part.Shape()
-        self.straighten_visibility_before = []
-        self.subdivide_last_counts = {"u": 2, "v": 2}
-        self.thicken_original_cage = None
-        self.thicken_original_mode = None
-        self.thicken_transaction_open = False
-        self.thicken_distance = None
-        self.thicken_apply_button = None
-        self.thicken_cancel_button = None
         self.dragger_transaction_open = False
         self.dimension_transaction_open = False
         self.tool_previous_selection_enabled = None
-        self.thicken_update_timer = QtCore.QTimer()
-        self.thicken_update_timer.setSingleShot(True)
-        self.thicken_update_timer.setInterval(300)
-        self.thicken_update_timer.timeout.connect(self._apply_thicken_preview)
         self.symmetry_pairs = []
         self.symmetry_plane_points = []
         self.symmetry_center = 0.0
@@ -905,12 +830,83 @@ class FormEditSession(FormEditToolsMixin):
             self.cleanup()
             raise
 
+    def apply_preferences(self):
+        self.use_mesh_preview = preferences().GetBool("MeshPreview", False)
+        Gui.Selection.setSelectionStyle(int(preferences().GetBool("GreedySelection", False)))
+        if not self.use_mesh_preview and self.motion_preview is not None:
+            self._close_motion_preview()
+            self.obj.recompute()
+
+    def _selection_mouse_event(self, callback):
+        """Handle repeated edge clicks before native hierarchy selection."""
+        event = callback.getEvent()
+        pending = self.pending_edge_loop
+        if (pending is not None and event.getButton() == coin.SoMouseButtonEvent.BUTTON1
+                and event.getState() == coin.SoButtonEvent.UP):
+            self.pending_edge_loop = None
+            self.selection_enabled_field.setValue(True)
+            callback.setHandled()
+            self.last_added_edge = None
+            self.selection_sync_generation += 1
+            self._later(0, lambda edge=pending: self._select_edge_loop(edge))
+            return
+        if self.cleaned or self.has_active_tool():
+            self.empty_selection_press = None
+            return
+        if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+            return
+        coordinates = event.getPosition()
+        position = (int(coordinates[0]), int(coordinates[1]))
+        empty = callback.getPickedPoint() is None
+        modified = event.wasCtrlDown() or event.wasShiftDown()
+        if event.getState() == coin.SoButtonEvent.DOWN:
+            self.selection_mouse_press = position
+            self.empty_selection_press = position if empty and not modified else None
+            previous = self.last_added_edge
+            if (previous is not None and not empty and not event.wasShiftDown()
+                    and self.last_edge_click_position is not None
+                    and self.selection_enabled_field.getValue()):
+                document, object_name, subelement, _canonical, added_at = previous
+                interval = QtWidgets.QApplication.instance().doubleClickInterval() / 1000.0
+                distance = QtWidgets.QApplication.styleHints().mouseDoubleClickDistance()
+                same_position = all(abs(a - b) <= distance
+                                    for a, b in zip(position, self.last_edge_click_position))
+                if (time.monotonic() - added_at <= interval and same_position
+                        and object_name == self.obj.Name and document == self.obj.Document.Name):
+                    # Use the first native selection as the double-click target.
+                    # getObjectInfo performs a separate ray pick and can return
+                    # a face where native selection prefers an edge, especially
+                    # around edited/open geometry and selection filters.
+                    callback.setHandled()
+                    # UnifiedSelection processes releases before its child
+                    # event callbacks. Suspend it from this press until our
+                    # release callback, which restores normal selection.
+                    self.pending_edge_loop = subelement
+                    self.selection_enabled_field.setValue(False)
+                    return
+        else:
+            start, self.empty_selection_press = self.empty_selection_press, None
+            if (start is not None and empty and not modified
+                    and sum((a - b) ** 2 for a, b in zip(start, position)) <= 9):
+                self.last_added_edge = None
+                self._later(0, self._clear_editor_selection)
+
+    def _later(self, delay, callback):
+        self.deferred_callbacks.later(delay, callback)
+
     def _start(self):
         if self.document_edit:
             # Match Sketcher's cancel semantics without wrapping the whole edit
             # session in one transaction: each modeling action remains
             # independently undoable, while Cancel can restore this baseline.
-            self.edit_backup = self.obj.dumpContent(0)
+            self.edit_backup = EditJournal(self.obj)
+        self.apply_preferences()
+        selection_search = coin.SoSearchAction()
+        selection_search.setType(coin.SoType.fromName("SoFCUnifiedSelection"))
+        selection_search.apply(self.view.getSceneGraph())
+        self.selection_enabled_field = selection_search.getPath().getTail().getField("selectionEnabled")
+        self.selection_mouse_callback = self.view.addEventCallbackPivy(
+            coin.SoMouseButtonEvent.getClassTypeId(), weak_callback(self._selection_mouse_event))
         self._enable_profile_edit_shape()
         self.view_object.DisplayMode = "Flat Lines"
         self._increase_pick_radius()
@@ -936,7 +932,7 @@ class FormEditSession(FormEditToolsMixin):
         self._update_dimension_gizmos()
         Gui.Control.showDialog(self)
         set_forms_toolbar_mode(True)
-        QtCore.QTimer.singleShot(0, self._hide_tool_handler)
+        self._later(0, self._hide_tool_handler)
         self.view.redraw()
 
     def _enable_profile_edit_shape(self):
@@ -964,11 +960,11 @@ class FormEditSession(FormEditToolsMixin):
 
     def slotUndoDocument(self, document):
         if not self.cleaned and document == self.obj.Document:
-            QtCore.QTimer.singleShot(0, self._refresh_after_history_change)
+            self._later(0, self._refresh_after_history_change)
 
     def slotRedoDocument(self, document):
         if not self.cleaned and document == self.obj.Document:
-            QtCore.QTimer.singleShot(0, self._refresh_after_history_change)
+            self._later(0, self._refresh_after_history_change)
 
     def _refresh_after_history_change(self):
         """Resynchronize the editor after an undo or redo made in edit mode."""
@@ -1230,12 +1226,12 @@ class FormEditSession(FormEditToolsMixin):
         self.dragger_scale_node = self.dragger.getPart("scaleNode", True)
         self.dragger_scale_node.scaleFactor.disconnect()
         self.dragger.autoScaleResult.disconnect()
-        self.camera_sensor = coin.SoFieldSensor(self._camera_changed, None)
+        self.camera_sensor = coin.SoFieldSensor(weak_callback(self._camera_changed), None)
         if self.camera.getTypeId().isDerivedFrom(coin.SoOrthographicCamera.getClassTypeId()):
             self.camera_sensor.attach(self.camera.height)
         else:
             self.camera_sensor.attach(self.camera.position)
-        self.camera_orientation_sensor = coin.SoFieldSensor(self._camera_orientation_changed, None)
+        self.camera_orientation_sensor = coin.SoFieldSensor(weak_callback(self._camera_orientation_changed), None)
         self.camera_orientation_sensor.attach(self.camera.orientation)
         self._update_dragger_scale()
 
@@ -1630,9 +1626,8 @@ class FormEditSession(FormEditToolsMixin):
             ),
         )
 
-    @staticmethod
-    def _defer_shift_range(callback):
-        QtCore.QTimer.singleShot(0, callback)
+    def _defer_shift_range(self, callback):
+        self._later(0, callback)
 
     def _apply_shift_range(self, vertices, edges, faces, generation):
         """Replace a Shift-click selection outside the observer callback."""
@@ -1672,6 +1667,7 @@ class FormEditSession(FormEditToolsMixin):
                 kind, stable_id, _mapper = target
                 self.range_selection_anchors[kind] = stable_id
         if form_subelement is not None and canonical.startswith("Edge"):
+            self.last_edge_click_position = self.selection_mouse_press
             self.last_added_edge = (
                 document,
                 self.obj.Name,
@@ -1717,7 +1713,7 @@ class FormEditSession(FormEditToolsMixin):
                 self.selection_sync_generation += 1
                 if self.dragger_switch is not None:
                     self.dragger_switch.whichChild = coin.SO_SWITCH_NONE
-                QtCore.QTimer.singleShot(
+                self._later(
                     0,
                     lambda edge=previous_subelement: self._select_edge_loop(edge),
                 )
@@ -1755,7 +1751,7 @@ class FormEditSession(FormEditToolsMixin):
                 self._clear_surface_preview()
                 self.view.redraw()
                 return
-            QtCore.QTimer.singleShot(
+            self._later(
                 0,
                 lambda expected=edge: (
                     self._update_unweld_preview(expected)
@@ -1780,7 +1776,7 @@ class FormEditSession(FormEditToolsMixin):
         # Selection observers can run before the Selection singleton has
         # published its new SelectionObject. Defer one event-loop turn so
         # _hovered_insert_point() reads the exact preselected edge and pick.
-        QtCore.QTimer.singleShot(
+        self._later(
             0,
             lambda expected=tuple(position): (
                 (
@@ -1804,28 +1800,7 @@ class FormEditSession(FormEditToolsMixin):
         ):
             self.range_selection_generation += 1
             self.range_selection_anchors = {}
-        if not self.suppress_selection_observer and self.last_added_edge is not None:
-            (
-                _previous_document,
-                _previous_object,
-                previous_subelement,
-                previous_edge,
-                added_at,
-            ) = self.last_added_edge
-            elapsed = time.monotonic() - added_at
-            interval = QtWidgets.QApplication.instance().doubleClickInterval() / 1000.0
-            self.last_added_edge = None
-            matches = elapsed <= interval
-            if matches:
-                self.selection_sync_generation += 1
-                if self.dragger_switch is not None:
-                    self.dragger_switch.whichChild = coin.SO_SWITCH_NONE
-                QtCore.QTimer.singleShot(
-                    0,
-                    lambda edge=previous_subelement: self._select_edge_loop(edge),
-                )
-                return
-        elif not self.suppress_selection_observer:
+        if not self.suppress_selection_observer:
             self.last_added_edge = None
         self._queue_selection_sync()
 
@@ -1838,7 +1813,7 @@ class FormEditSession(FormEditToolsMixin):
         # event can make that same click begin a drag unexpectedly.
         if self.dragger_switch is not None:
             self.dragger_switch.whichChild = coin.SO_SWITCH_NONE
-        QtCore.QTimer.singleShot(0, lambda: self._deferred_selection_sync(generation))
+        self._later(0, lambda: self._deferred_selection_sync(generation))
 
     def _arm_dragger_reveal_deadline(self):
         """Start one dragger delay at the first click of a click sequence."""
@@ -1882,7 +1857,10 @@ class FormEditSession(FormEditToolsMixin):
         cage = mapper.cage
         edge_counts = mapper.mesh.edge_counts() if mapper.mesh is not None else cage.edge_counts()
         boundary_edges = {edge for edge, count in edge_counts.items() if count == 1}
-        if mapper.mesh is None:
+        if selected_edge in boundary_edges and (mapper.mesh is not None or
+                str(self.obj.FormType) not in ("Forms::Face", "Forms::Surface")):
+            loop_edges = set(connected_edge_component(boundary_edges, selected_edge))
+        elif mapper.mesh is None:
             # The regular quad-cage walker also handles open edge chains. On
             # an open Face it follows one segmented side and stops at its
             # corners, instead of treating the entire perimeter as one loop.
@@ -1890,7 +1868,7 @@ class FormEditSession(FormEditToolsMixin):
         elif selected_edge in boundary_edges:
             loop_edges = set(connected_edge_component(boundary_edges, selected_edge))
         else:
-            loop_edges = {selected_edge}
+            loop_edges = set(mapper.mesh.edge_loop(selected_edge))
         if loop_edges:
             self._restore_control_selection(set(), loop_edges, defer_dragger=True)
 
@@ -1898,7 +1876,7 @@ class FormEditSession(FormEditToolsMixin):
         if self.cleaned or generation != self.selection_sync_generation:
             return
         if QtWidgets.QApplication.mouseButtons():
-            QtCore.QTimer.singleShot(20, lambda: self._deferred_selection_sync(generation))
+            self._later(20, lambda: self._deferred_selection_sync(generation))
             return
         if self._whole_additive_feature_is_selected():
             self.select_whole_form()
@@ -2280,6 +2258,7 @@ class FormEditSession(FormEditToolsMixin):
                 self.obj.CageMode = "Editable"
                 self._set_parametric_state(False)
             value = max(0.0, min(float(value), 10.0))
+            validate_local_creases(self.obj, edges, value)
             vertex_values, edge_values = self._sharpness_data()
             for index in vertices:
                 vertex_values[index] = value
@@ -2368,7 +2347,7 @@ class FormEditSession(FormEditToolsMixin):
                 0,
                 int((self.dragger_reveal_deadline - time.monotonic()) * 1000.0),
             )
-            QtCore.QTimer.singleShot(
+            self._later(
                 delay,
                 lambda current=generation: self._reveal_selection_dragger(current),
             )
@@ -2485,6 +2464,7 @@ class FormEditSession(FormEditToolsMixin):
     def _begin_alt_extrusion(self):
         if not self.alt_extrude_face_indices and not self.alt_extrude_boundary_edges:
             return False
+        require_base_topology(self.obj, "Extrude")
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         keep_creases = bool(modifiers & QtCore.Qt.ControlModifier)
         cage = ControlCage.from_object(self.obj)
@@ -2558,7 +2538,19 @@ class FormEditSession(FormEditToolsMixin):
                 App.Rotation(*quaternion).multVec(local)
             )
         self._enforce_symmetry(points, set(self.selected))
-        self._set_control_points(points, recompute=True)
+        if not self.use_mesh_preview:
+            self._set_control_points(points, recompute=True)
+            return
+        self._set_control_points(points)
+        if self.motion_preview is None:
+            self.motion_preview = MotionPreview(self.view_object)
+        self.motion_preview.update(self.obj)
+        self.view.redraw()
+
+    def _close_motion_preview(self):
+        if getattr(self, "motion_preview", None) is not None:
+            preview, self.motion_preview = self.motion_preview, None
+            preview.close()
 
     def dragger_finished(self, dragger):
         try:
@@ -2602,6 +2594,8 @@ class FormEditSession(FormEditToolsMixin):
             self._finish_action(self.dragger_transaction_open, commit=False)
             self.dragger_transaction_open = False
             raise
+        finally:
+            self._close_motion_preview()
         self._finish_action(self.dragger_transaction_open)
         self.dragger_transaction_open = False
 
@@ -2697,6 +2691,18 @@ class FormEditSession(FormEditToolsMixin):
                 action()
             except Exception as error:
                 App.Console.PrintWarning(f"Forms cleanup ({description}): {error}\n")
+
+        if self.pending_edge_loop is not None:
+            safely(lambda: self.selection_enabled_field.setValue(True), "pending edge selection")
+            self.pending_edge_loop = None
+        if self.selection_mouse_callback is not None:
+            safely(lambda: self.view.removeEventCallbackPivy(
+                coin.SoMouseButtonEvent.getClassTypeId(), self.selection_mouse_callback),
+                "background selection callback")
+            self.selection_mouse_callback = None
+        safely(lambda: Gui.Selection.setSelectionStyle(0), "selection style")
+        safely(self.deferred_callbacks.close, "deferred callbacks")
+        safely(self._close_motion_preview, "motion preview")
 
         if self.whole_form_motion_preview:
             safely(
@@ -2795,23 +2801,9 @@ class FormEditSession(FormEditToolsMixin):
 
         if self.editing_cancelled and self.edit_backup is not None:
 
-            def restore_cancelled_edit():
-                document = self.obj.Document
-                transaction = document.getBookedTransactionID() == 0
-                if transaction:
-                    document.openTransaction(App.Qt.translate("Forms_Edit", "Cancel form editing"))
-                try:
-                    self.obj.restoreContent(self.edit_backup)
-                    self.obj.purgeTouched()
-                    document.recompute()
-                except Exception:
-                    if transaction and document.getBookedTransactionID() != 0:
-                        document.abortTransaction()
-                    raise
-                if transaction and document.getBookedTransactionID() != 0:
-                    document.commitTransaction()
-
-            safely(restore_cancelled_edit, "cancelled edit restoration")
+            safely(self.edit_backup.restore, 'cancelled edit restoration')
+        if self.edit_backup is not None:
+            self.edit_backup.clear()
         self.edit_backup = None
         if self.profile_edit_shape_owned:
             proxy = getattr(self.obj, "Proxy", None)

@@ -34,6 +34,7 @@ import json
 import math
 
 from .topology import validate_manifold_boundary
+from .limits import check_topology
 
 
 def _edge(first, second):
@@ -45,7 +46,7 @@ def _parameter_level(*points):
     for level in range(31):
         scale = 1 << level
         if all(
-            math.isclose(value * scale, round(value * scale), abs_tol=1.0e-10)
+            math.isclose(value * scale, round(value * scale), rel_tol=0.0, abs_tol=1.0e-10)
             for point in points
             for value in point
         ):
@@ -114,7 +115,7 @@ class HierarchicalTMesh:
     exposed rather than defining a second incompatible surface basis.
     """
 
-    VERSION = 2
+    VERSION = 3
 
     def __init__(
         self,
@@ -124,6 +125,7 @@ class HierarchicalTMesh:
         vertex_levels=None,
         next_vertex_id=None,
         next_face_id=None,
+        control_locations=None,
     ):
         self.vertices = {
             int(vertex_id): tuple(float(value) for value in point)
@@ -151,6 +153,12 @@ class HierarchicalTMesh:
         self.next_face_id = int(
             next_face_id if next_face_id is not None else (max(self.faces, default=-1) + 1)
         )
+        # Evaluator controls survive deletion/dissolution of their selectable
+        # edges. Keep their root coordinates independently of leaf boundaries.
+        self.control_locations = {
+            int(vertex): [tuple(location) for location in locations]
+            for vertex, locations in (control_locations or {}).items()
+        }
         self.validate()
 
     @classmethod
@@ -168,6 +176,7 @@ class HierarchicalTMesh:
             self.vertex_levels,
             self.next_vertex_id,
             self.next_face_id,
+            self.parameter_locations(),
         )
 
     def atomic_edges(self):
@@ -191,12 +200,51 @@ class HierarchicalTMesh:
         counts = self.edge_counts()
         return bool(counts) and all(count == 2 for count in counts.values())
 
+    def edge_loop(self, start_edge):
+        """Follow an edge chain through regular vertices and split face sides."""
+        start_edge = _edge(*start_edge)
+        edge_faces, vertex_edges, continuations = {}, {}, {}
+        for face_id, face in self.faces.items():
+            for side in face.sides:
+                for first, second in zip(side, side[1:]):
+                    edge = _edge(first, second)
+                    edge_faces.setdefault(edge, set()).add(face_id)
+                    vertex_edges.setdefault(first, set()).add(edge)
+                    vertex_edges.setdefault(second, set()).add(edge)
+                # At a T-junction the two pieces of a coarse face side
+                # continue each other; the terminating branch does not.
+                for first, vertex, last in zip(side, side[1:], side[2:]):
+                    incoming, outgoing = _edge(first, vertex), _edge(vertex, last)
+                    continuations.setdefault((vertex, incoming), set()).add(outgoing)
+                    continuations.setdefault((vertex, outgoing), set()).add(incoming)
+        if start_edge not in edge_faces:
+            return []
+        result = {start_edge}
+        for vertex in start_edge:
+            incoming = start_edge
+            while True:
+                candidates = continuations.get((vertex, incoming))
+                if candidates is None:
+                    candidates = {edge for edge in vertex_edges[vertex]
+                                  if edge != incoming
+                                  and edge_faces[edge].isdisjoint(edge_faces[incoming])}
+                if len(candidates) != 1:
+                    break
+                outgoing = next(iter(candidates))
+                if outgoing in result:
+                    break
+                result.add(outgoing)
+                vertex = outgoing[0] if outgoing[1] == vertex else outgoing[1]
+                incoming = outgoing
+        return sorted(result)
+
     def _side_interval(self, side):
         return sum(
             self.edge_intervals[_edge(first, second)] for first, second in zip(side, side[1:])
         )
 
     def validate(self):
+        check_topology(len(self.faces))
         if not self.vertices or not self.faces:
             raise ValueError("A T-mesh requires vertices and faces")
         for vertex_id, point in self.vertices.items():
@@ -206,6 +254,15 @@ class HierarchicalTMesh:
                 raise ValueError("T-mesh vertices require non-negative refinement levels")
         if set(self.vertex_levels) != set(self.vertices):
             raise ValueError("Every T-mesh vertex requires one refinement level")
+        for vertex, locations in self.control_locations.items():
+            if vertex not in self.vertices or any(
+                len(location) != 3
+                or not all(math.isfinite(v) for v in location)
+                or location[0] < 0 or int(location[0]) != location[0]
+                or not all(0.0 <= v <= 1.0 for v in location[1:])
+                for location in locations
+            ):
+                raise ValueError("Invalid persistent evaluator control location")
         for face_id, face in self.faces.items():
             if face_id != face.id or len(face.sides) != 4:
                 raise ValueError("A T-mesh face requires a stable ID and four sides")
@@ -254,7 +311,8 @@ class HierarchicalTMesh:
 
     def parameter_locations(self):
         """Map each control ID to all ``(root, u, v)`` refinement locations."""
-        result = {vertex_id: [] for vertex_id in self.vertices}
+        result = {vertex_id: list(self.control_locations.get(vertex_id, ()))
+                  for vertex_id in self.vertices}
         for face in self.faces.values():
             for side_index, side in enumerate(face.sides):
                 first = face.parameters[side_index]
@@ -513,6 +571,9 @@ class HierarchicalTMesh:
         v_levels = int(v_levels)
         if not selected or min(u_levels, v_levels) < 0 or not (u_levels or v_levels):
             raise ValueError("Subdivide requires faces and at least one axis level")
+        if max(u_levels, v_levels) > 16:
+            raise ValueError("Subdivision exceeds the supported depth")
+        check_topology(len(result.faces) + len(selected) * (2 ** (u_levels + v_levels) - 1))
 
         def refine_axis(face_ids, divide_axis):
             descendants = []
@@ -629,6 +690,7 @@ class HierarchicalTMesh:
             "vertex_levels": [
                 [vertex_id, self.vertex_levels[vertex_id]] for vertex_id in sorted(self.vertices)
             ],
+            "control_locations": self.parameter_locations(),
             "faces": [
                 {
                     "id": face_id,
@@ -650,7 +712,7 @@ class HierarchicalTMesh:
     def decode(cls, value):
         data = json.loads(str(value))
         version = int(data.get("version", -1))
-        if version not in (1, cls.VERSION):
+        if version not in (1, 2, cls.VERSION):
             raise ValueError("Unsupported T-mesh data version")
         vertices = {
             int(item[0]): tuple(float(component) for component in item[1:])
@@ -675,6 +737,7 @@ class HierarchicalTMesh:
             vertex_levels=vertex_levels,
             next_vertex_id=data["next_vertex_id"],
             next_face_id=data["next_face_id"],
+            control_locations=data.get("control_locations"),
         )
 
 

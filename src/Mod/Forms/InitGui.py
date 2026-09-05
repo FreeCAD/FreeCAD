@@ -43,10 +43,16 @@ class FormsWorkbench(Gui.Workbench):
     def Initialize(self):
         icon_path = os.path.join(App.getResourceDir(), "Mod", "Forms", "Resources", "icons")
         Gui.addIconPath(icon_path)
+        # Preference groups look up icons by their normalized group name.
+        with open(os.path.join(icon_path, "Forms_Workbench.svg"), encoding="utf-8") as icon:
+            Gui.addIcon("preferences-forms", icon.read(), "SVG")
 
         import CommandPrimitives  # noqa: F401
         import CommandEdit  # noqa: F401
         import CommandTopology  # noqa: F401
+
+        from Forms.preferences import PreferencesPage
+        Gui.addPreferencePage(PreferencesPage, "Forms")
 
         translate = App.Qt.translate
         create_commands = [
@@ -100,7 +106,15 @@ class FormsWorkbench(Gui.Workbench):
         from Forms.edit import active_form_session
         from Forms.toolbar import set_forms_toolbar_mode
 
-        set_forms_toolbar_mode(active_form_session() is not None)
+        session = active_form_session()
+        if session is not None:
+            session.apply_preferences()
+        else:
+            Gui.Selection.setSelectionStyle(0)
+        set_forms_toolbar_mode(session is not None)
+
+    def Deactivated(self):
+        Gui.Selection.setSelectionStyle(0)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"

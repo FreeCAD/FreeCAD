@@ -36,6 +36,9 @@ from .topology import (
     catmull_clark_step_details,
 )
 from .tmesh import HierarchicalTMesh
+from .limits import check_sampling
+from .numerics import DenseLU
+from functools import lru_cache
 
 
 class ConversionError(RuntimeError):
@@ -188,29 +191,15 @@ def _basis(index, degree, parameter, knots, control_count):
     return value
 
 
+@lru_cache(maxsize=16)
+def _interpolation_factor(count, degree):
+    parameters, knots = _clamped_interpolation_knots(count, degree)
+    return DenseLU([[_basis(column, degree, p, knots, count)
+                     for column in range(count)] for p in parameters])
+
+
 def _solve(matrix, values):
-    """Solve a small dense system with three-coordinate right-hand sides."""
-    count = len(matrix)
-    augmented = [
-        list(matrix[row]) + [float(component) for component in values[row]] for row in range(count)
-    ]
-    for column in range(count):
-        pivot = max(range(column, count), key=lambda row: abs(augmented[row][column]))
-        if abs(augmented[pivot][column]) < 1.0e-14:
-            raise ConversionError("The B-spline interpolation system is singular")
-        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
-        divisor = augmented[column][column]
-        augmented[column] = [value / divisor for value in augmented[column]]
-        for row in range(count):
-            if row == column:
-                continue
-            factor = augmented[row][column]
-            if factor:
-                augmented[row] = [
-                    augmented[row][item] - factor * augmented[column][item]
-                    for item in range(count + 3)
-                ]
-    return [tuple(row[count : count + 3]) for row in augmented]
+    return DenseLU(matrix).solve_points(values)
 
 
 def _make_surface(grid):
@@ -222,23 +211,17 @@ def _make_surface(grid):
     v_degree = min(3, v_count - 1)
     u_parameters, u_full_knots = _clamped_interpolation_knots(u_count, u_degree)
     v_parameters, v_full_knots = _clamped_interpolation_knots(v_count, v_degree)
-    u_matrix = [
-        [_basis(column, u_degree, parameter, u_full_knots, u_count) for column in range(u_count)]
-        for parameter in u_parameters
-    ]
-    v_matrix = [
-        [_basis(column, v_degree, parameter, v_full_knots, v_count) for column in range(v_count)]
-        for parameter in v_parameters
-    ]
+    u_factor = _interpolation_factor(u_count, u_degree)
+    v_factor = _interpolation_factor(v_count, v_degree)
 
     temporary = [[None] * v_count for _index in range(u_count)]
     for v_index in range(v_count):
-        solved = _solve(u_matrix, [grid[u_index][v_index] for u_index in range(u_count)])
+        solved = u_factor.solve_points([grid[u_index][v_index] for u_index in range(u_count)])
         for u_index, point in enumerate(solved):
             temporary[u_index][v_index] = point
     poles = []
     for u_index in range(u_count):
-        poles.append(_solve(v_matrix, temporary[u_index]))
+        poles.append(v_factor.solve_points(temporary[u_index]))
 
     def compressed_knots(full_knots):
         unique = []
@@ -329,6 +312,7 @@ def _tmesh_refinement(
         max(mesh.vertex_levels.values(), default=0),
         max((face.level for face in mesh.faces.values()), default=0),
     )
+    check_sampling(len(faces), max(2, maximum_level + 1) + 1, root_grid=True)
     for level in range(1, maximum_level + 1):
         details = catmull_clark_step_details(
             current_vertices, current_faces, current_edges, current_corners
@@ -463,19 +447,42 @@ def _shape_from_tmesh_surfaces(surfaces, mesh, closed, tolerance):
         return faces[0]
     compound = Part.makeCompound(faces)
     compound.sewShape(max(float(tolerance), 1.0e-7))
-    if len(compound.Shells) != 1:
-        raise ConversionError("T-mesh trims did not produce one shell")
-    shell = compound.Shells[0]
-    if closed:
-        if not shell.isClosed():
+    # Compare against logical connectivity: multiple intentional components are
+    # valid, while accidental gaps between neighboring trims remain errors.
+    adjacency = {face_id: set() for face_id in mesh.faces}
+    owners = {}
+    for face_id, leaf in mesh.faces.items():
+        for side in leaf.sides:
+            for first, second in zip(side, side[1:]):
+                edge = tuple(sorted((first, second)))
+                if edge in owners:
+                    other = owners[edge]
+                    adjacency[face_id].add(other)
+                    adjacency[other].add(face_id)
+                else:
+                    owners[edge] = face_id
+    unseen = set(adjacency)
+    component_count = 0
+    while unseen:
+        pending = [unseen.pop()]
+        component_count += 1
+        while pending:
+            neighbors = adjacency[pending.pop()] & unseen
+            unseen.difference_update(neighbors)
+            pending.extend(neighbors)
+    shells = compound.Shells
+    if (len(shells) != component_count
+            or sum(len(shell.Faces) for shell in shells) != len(faces)):
+        raise ConversionError("T-mesh trims did not preserve logical shell connectivity")
+    shapes = []
+    for shell in shells:
+        if closed and not shell.isClosed():
             raise ConversionError("T-mesh trims opened the solid")
-        solid = Part.makeSolid(shell)
-        if solid.isNull() or not solid.isValid():
-            raise ConversionError("OCCT rejected the trimmed T-mesh solid")
-        return solid
-    if shell.isNull() or not shell.isValid() or shell.isClosed():
-        raise ConversionError("OCCT rejected the trimmed T-mesh surface")
-    return shell.Faces[0] if len(shell.Faces) == 1 else shell
+        shape = Part.makeSolid(shell) if shell.isClosed() else shell
+        if shape.isNull() or not shape.isValid():
+            raise ConversionError("OCCT rejected the trimmed T-mesh component")
+        shapes.append(shape.Faces[0] if not shell.isClosed() and len(shape.Faces) == 1 else shape)
+    return shapes[0] if len(shapes) == 1 else Part.makeCompound(shapes)
 
 
 def tmesh_cage_to_shape(
@@ -506,7 +513,16 @@ def tmesh_cage_to_shape(
     surfaces = []
     deviation = math.inf
     level = max(2, base_level + 1)
+    if not math.isfinite(tolerance) or tolerance <= 0 or maximum < 2:
+        raise ConversionError("Positive tolerance and refinement of at least two are required")
     for level in range(max(2, base_level + 1), maximum + base_level + 1):
+        try:
+            check_sampling(len(faces), level + 1, root_grid=True)
+        except ValueError:
+            if surfaces:
+                level -= 1
+                break
+            raise
         fit = catmull_clark_patch_grids(
             fine_vertices, fine_faces, level - base_level, fine_edges, fine_corners
         )
@@ -540,6 +556,7 @@ def _hierarchical_refinement(
     vertex_sharpness=None,
 ):
     """Build the hidden evaluation level and apply persistent local controls."""
+    check_sampling(len(faces), 3, root_grid=True)
     details = catmull_clark_step_details(vertices, faces, edge_sharpness, vertex_sharpness)
     (
         fine_vertices,
@@ -670,6 +687,7 @@ def hierarchical_cage_to_shape(
     deviation = math.inf
     level = 2
     for level in range(2, int(max_refinement) + 1):
+        check_sampling(len(faces), level + 1, root_grid=True)
         fine_fit = catmull_clark_patch_grids(
             fine_vertices, fine_faces, level - 1, fine_edges, fine_corners
         )
@@ -1278,23 +1296,11 @@ def apply_local_edge_inserts(
     return shell.Faces[0] if len(shell.Faces) == 1 else shell
 
 
-def cage_to_solid(
-    vertices,
-    faces,
-    tolerance=0.05,
-    max_refinement=3,
-    edge_sharpness=None,
-    vertex_sharpness=None,
-    dissolved_edges=None,
+def _cage_to_shape(
+    vertices, faces, tolerance=0.05, max_refinement=3, edge_sharpness=None,
+    vertex_sharpness=None, dissolved_edges=None, *, closed,
 ):
-    """Return ``(solid, deviation, level)`` for a closed quad cage.
-
-    One B-spline patch is fitted to each original cage face. The fit is checked
-    against Catmull-Clark limit points sampled at the next refinement level.
-    Refinement stops when the requested tolerance is reached or the configured
-    cap is exhausted. A result above tolerance is reported instead of silently
-    presenting an uncertified solid.
-    """
+    """Fit and validate shared patch grids, then assemble the requested shape."""
     vertices = [tuple(float(component) for component in point) for point in vertices]
     faces = [tuple(int(index) for index in face) for face in faces]
     (
@@ -1310,19 +1316,19 @@ def cage_to_solid(
         edge_sharpness,
         vertex_sharpness,
         dissolved_edges,
-        True,
+        closed,
     )
-    _validate_closed_quad_cage(vertices, faces)
+    (_validate_closed_quad_cage if closed else _validate_open_quad_cage)(vertices, faces)
     tolerance = float(tolerance)
     max_refinement = int(max_refinement)
-    if tolerance <= 0.0:
+    if not math.isfinite(tolerance) or tolerance <= 0.0:
         raise ConversionError("BRep tolerance must be positive")
     if max_refinement < 2:
         raise ConversionError("Maximum refinement must be at least two")
-    if len(faces) * (4 ** (max_refinement + 1)) > 250_000:
-        raise ConversionError(
-            "The cage/refinement combination exceeds the 250000-face sampling limit"
-        )
+    try:
+        check_sampling(len(faces), max_refinement + 1)
+    except ValueError as error:
+        raise ConversionError(str(error)) from error
 
     surfaces = []
     deviation = math.inf
@@ -1342,66 +1348,23 @@ def cage_to_solid(
             break
 
     face_ids = ["_".join(str(index) for index in group) for group, _coords in layouts]
-    solid = _solid_from_surfaces(surfaces, tolerance, face_ids)
-    return solid, deviation, level + level_offset
+    assemble = _solid_from_surfaces if closed else _open_shape_from_surfaces
+    return assemble(surfaces, tolerance, face_ids), deviation, level + level_offset
+
+
+def cage_to_solid(
+    vertices, faces, tolerance=0.05, max_refinement=3, edge_sharpness=None,
+    vertex_sharpness=None, dissolved_edges=None,
+):
+    """Return (solid, sampled deviation, level) for a closed manifold cage."""
+    return _cage_to_shape(vertices, faces, tolerance, max_refinement,
+                          edge_sharpness, vertex_sharpness, dissolved_edges, closed=True)
 
 
 def cage_to_surface(
-    vertices,
-    faces,
-    tolerance=0.05,
-    max_refinement=3,
-    edge_sharpness=None,
-    vertex_sharpness=None,
-    dissolved_edges=None,
+    vertices, faces, tolerance=0.05, max_refinement=3, edge_sharpness=None,
+    vertex_sharpness=None, dissolved_edges=None,
 ):
-    """Return ``(shape, deviation, level)`` for an open manifold quad cage."""
-    vertices = [tuple(float(component) for component in point) for point in vertices]
-    faces = [tuple(int(index) for index in face) for face in faces]
-    (
-        vertices,
-        faces,
-        edge_sharpness,
-        vertex_sharpness,
-        dissolved_edges,
-        level_offset,
-    ) = _prepare_polygon_cage(
-        vertices,
-        faces,
-        edge_sharpness,
-        vertex_sharpness,
-        dissolved_edges,
-        False,
-    )
-    _validate_open_quad_cage(vertices, faces)
-    tolerance = float(tolerance)
-    max_refinement = int(max_refinement)
-    if tolerance <= 0.0:
-        raise ConversionError("BRep tolerance must be positive")
-    if max_refinement < 2:
-        raise ConversionError("Maximum refinement must be at least two")
-    if len(faces) * (4 ** (max_refinement + 1)) > 250_000:
-        raise ConversionError(
-            "The cage/refinement combination exceeds the 250000-face sampling limit"
-        )
-
-    surfaces = []
-    deviation = math.inf
-    level = 2
-    layouts = _dissolved_patch_layouts(faces, dissolved_edges)
-    for level in range(2, max_refinement + 1):
-        fit_grids = catmull_clark_patch_grids(
-            vertices, faces, level, edge_sharpness, vertex_sharpness
-        )
-        surfaces = _make_dissolved_surfaces(fit_grids, layouts)
-        validation_grids = catmull_clark_patch_grids(
-            vertices, faces, level + 1, edge_sharpness, vertex_sharpness
-        )
-        validation_grids = _compose_dissolved_grids(validation_grids, layouts)
-        deviation = _maximum_sample_deviation(surfaces, validation_grids, tolerance)
-        if deviation <= tolerance:
-            break
-
-    face_ids = ["_".join(str(index) for index in group) for group, _coords in layouts]
-    shape = _open_shape_from_surfaces(surfaces, tolerance, face_ids)
-    return shape, deviation, level + level_offset
+    """Return (shape, sampled deviation, level) for an open manifold cage."""
+    return _cage_to_shape(vertices, faces, tolerance, max_refinement,
+                          edge_sharpness, vertex_sharpness, dissolved_edges, closed=False)

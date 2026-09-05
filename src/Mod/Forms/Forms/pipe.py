@@ -26,10 +26,13 @@
 import json
 import math
 
+from .feature import reset_cage
+
 import FreeCAD as App
 import Part
 
-from .box import FormFeatureProxy, ViewProviderFormBox
+from .feature import FormFeatureProxy
+from .viewprovider import ViewProviderForm as ViewProviderFormBox
 from .brep import ConversionError, cage_to_solid
 from .cage import ControlCage
 from .elementmap import map_form_shape
@@ -1081,6 +1084,12 @@ def _cage_components(cage, include_maps=False):
 def update_pipe_shape(obj):
     """Evaluate every closed path-segment cage and preserve their patch faces."""
     try:
+        if obj.CageMode == "Editable":
+            from .cage import update_object_shape
+            update_object_shape(obj)
+            if not obj.Shape.isNull() and len(obj.Shape.Solids) > 1:
+                obj.Shape = map_form_shape(obj, fused_pipe_shape(obj.Shape))
+            return
         cage = ControlCage.from_object(obj)
         shapes = []
         debug = bool(getattr(obj, "DebugGeometry", False))
@@ -1140,6 +1149,8 @@ def update_pipe_shape(obj):
         obj.MaximumDeviation = maximum_deviation
         obj.ConversionLevel = conversion_level
         obj.ConversionStatus = App.Qt.translate("Forms_Conversion", "Valid pipe")
+        if maximum_deviation > obj.BRepTolerance.Value:
+            obj.ConversionStatus += "; requested deviation was not reached"
     except (ConversionError, Part.OCCError, ValueError, RuntimeError) as error:
         obj.Shape = Part.Shape()
         obj.MaximumDeviation = 0.0
@@ -1270,14 +1281,7 @@ class FormPipeProxy(FormFeatureProxy):
         if obj.CageMode == "Parametric":
             try:
                 vertices, faces = self._topology(obj)
-                obj.ControlPoints = [App.Vector(*point) for point in vertices]
-                obj.ControlFaces = [" ".join(str(index) for index in face) for face in faces]
-                obj.VertexSharpness = [0.0] * len(vertices)
-                obj.EdgeSharpness = []
-                obj.LocalEdgeInserts = []
-                obj.LocalControlPoints = []
-                obj.TMeshData = ""
-                obj.DissolvedEdges = []
+                reset_cage(obj, vertices, faces)
             except (Part.OCCError, RuntimeError, ValueError) as error:
                 obj.Shape = Part.Shape()
                 obj.ConversionStatus = App.Qt.translate(

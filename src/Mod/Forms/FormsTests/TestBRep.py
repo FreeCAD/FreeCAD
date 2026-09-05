@@ -1642,7 +1642,7 @@ class BRepConversionTest(unittest.TestCase):
             )
         )
 
-    def test_local_tmesh_edges_can_be_creased_and_uncreased(self):
+    def test_local_tmesh_crease_is_rejected_and_legacy_value_can_be_cleared(self):
         document = App.newDocument("FormsTestLocalCrease")
         obj = create_box(document)
         document.recompute()
@@ -1655,10 +1655,10 @@ class BRepConversionTest(unittest.TestCase):
         local_edge = next(
             edge for edge in mesh.atomic_edges() if all(index >= base_count for index in edge)
         )
-        set_edge_crease(obj, {local_edge}, 10.0)
-        document.recompute()
-        self.assertEqual(ControlCage.from_object(obj).edge_sharpness[local_edge], 10.0)
-        self.assertTrue(obj.Shape.isValid())
+        with self.assertRaisesRegex(ValueError, "not supported"):
+            set_edge_crease(obj, {local_edge}, 10.0)
+        self.assertNotIn(local_edge, ControlCage.from_object(obj).edge_sharpness)
+        obj.EdgeSharpness = [f"{local_edge[0]} {local_edge[1]} 10"]
 
         set_edge_crease(obj, {local_edge}, 0.0)
         document.recompute()
