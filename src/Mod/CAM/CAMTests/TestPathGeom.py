@@ -621,6 +621,7 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command("G1", {"Y": 1}))
         commands.append(Path.Command("G0", {"X": 0}))
         commands.append(Path.Command("G1", {"Y": 0}))
+        commands.append(Path.Command("G1", {"Y": 0}))  # test zero length move
 
         wire, rapid, rapid_indexes = Path.Geom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
