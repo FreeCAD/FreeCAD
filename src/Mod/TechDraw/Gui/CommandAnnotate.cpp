@@ -774,6 +774,8 @@ void execCenterLine(Gui::Command* cmd)
                                                         edgeNames.front(),
                                                         true));
     }
+
+    Gui::Selection().clearSelection();
 }
 
 //===========================================================================

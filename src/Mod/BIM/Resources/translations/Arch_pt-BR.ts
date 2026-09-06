@@ -12518,7 +12518,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Nova página</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
@@ -13782,7 +13782,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="14"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Criar link</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLink.py" line="18"/>

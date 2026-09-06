@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>Alle</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation>Knoten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="866"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>Kante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="865"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="867"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="868"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>Kurve</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="869"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>Kreis</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="870"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>Konisch</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="871"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>Ellipse</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="872"/>
+      <location filename="../../AttacherTexts.cpp" line="874"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>Parabel</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="873"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>Hyperbel</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="875"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>Ebene</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="876"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>Kugel</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="877"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>Umdrehung</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="878"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>Zylinder</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="879"/>
+      <location filename="../../AttacherTexts.cpp" line="881"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>Torus</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="880"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>Kegel</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="882"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>Objekt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="883"/>
+      <location filename="../../AttacherTexts.cpp" line="885"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>Festkörper</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="884"/>
+      <location filename="../../AttacherTexts.cpp" line="886"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>Kantenzug</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="749"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Deaktiviert</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="748"/>
+      <location filename="../../AttacherTexts.cpp" line="750"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Befestigen ist deaktiviert. Punkt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="758"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Ursprung des Objekts</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="757"/>
+      <location filename="../../AttacherTexts.cpp" line="759"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkt ist auf Position der Objektpositionierung gesetzt. Dies funktioniert für Objekte mit Positionierung oder Ellipse-/Parabel-/Hyperbelkanten.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="766"/>
+      <location filename="../../AttacherTexts.cpp" line="768"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Brennpunkt 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="767"/>
+      <location filename="../../AttacherTexts.cpp" line="769"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Brennpunkt der Ellipse, Parabel, Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="777"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Brennpunkt 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="776"/>
+      <location filename="../../AttacherTexts.cpp" line="778"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Zweiter Brennpunkt der Ellipse und der Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="786"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Auf Kante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="787"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Punkt wird auf Kante gesetzt, MapPathParametr steuert wo. Zusätzlich kann der Kotenpunkt für eine Projektion verknüpft werden.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="796"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Zentrum der Krümmung</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="795"/>
+      <location filename="../../AttacherTexts.cpp" line="797"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Mitte des Schmiegekreises einer Kante. Optionale Knoten-Verknüpfung legt fest wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="804"/>
+      <location filename="../../AttacherTexts.cpp" line="806"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Schwerpunkt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="805"/>
+      <location filename="../../AttacherTexts.cpp" line="807"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Mittelpunkt der Masse aller Referenzen (gleiche Dichten werden angenommen).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="813"/>
+      <location filename="../../AttacherTexts.cpp" line="815"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Schnittpunkt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="814"/>
+      <location filename="../../AttacherTexts.cpp" line="816"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Nicht implementiert</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="818"/>
+      <location filename="../../AttacherTexts.cpp" line="820"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Knoten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="819"/>
+      <location filename="../../AttacherTexts.cpp" line="821"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Bezugspunkt mit einem anderen Knotenpunkt zusammenlegen.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="827"/>
+      <location filename="../../AttacherTexts.cpp" line="829"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Näherungspunkt 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="828"/>
+      <location filename="../../AttacherTexts.cpp" line="830"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Zeigen auf die erste Referenz, die der zweiten Referenz am nächsten liegt.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="836"/>
+      <location filename="../../AttacherTexts.cpp" line="838"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Näherungspunkt 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="837"/>
+      <location filename="../../AttacherTexts.cpp" line="839"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Zeigen auf die zweite Referenz, die der ersten Referenz am nächsten liegt.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="559"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Deaktiviert</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="558"/>
+      <location filename="../../AttacherTexts.cpp" line="560"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="568"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>X des Objektes</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="567"/>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="569"/>
+      <location filename="../../AttacherTexts.cpp" line="589"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Die Linie ist entlang der lokalen X-Achse des Objekts ausgerichtet. Funktioniert an Objekten mit Placements und Ellipsen / Parabel / Hyperbolenkanten.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="578"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Y des Objektes</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="579"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Die Linie ist entlang der lokalen Y-Achse des Objekts ausgerichtet. Funktioniert an Objekten mit Placements und Ellipsen / Parabel / Hyperbolenkanten.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="588"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Z-Koordinate des Objekts</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="598"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Krümmungsachse</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="597"/>
+      <location filename="../../AttacherTexts.cpp" line="599"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linie, die eine Achse des Schmiegekreises der gekrümmten Kante ist. Optionaler Vertex definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="606"/>
+      <location filename="../../AttacherTexts.cpp" line="608"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="607"/>
+      <location filename="../../AttacherTexts.cpp" line="609"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Leitgerade für Ellipse, Parabel, Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="617"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="616"/>
+      <location filename="../../AttacherTexts.cpp" line="618"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Zweite Leitgerade für Ellipse und Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="626"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asymptote1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="625"/>
+      <location filename="../../AttacherTexts.cpp" line="627"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Asymptote einer Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="629"/>
+      <location filename="../../AttacherTexts.cpp" line="631"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asymptote2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="630"/>
+      <location filename="../../AttacherTexts.cpp" line="632"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Zweite Asymptote der Hyperbel.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="636"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangente</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="635"/>
+      <location filename="../../AttacherTexts.cpp" line="637"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linie tangential zu einer Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="645"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Normal zur Kante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
+      <location filename="../../AttacherTexts.cpp" line="646"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Ausrichten des N-Vektors des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="655"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Binormale</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="654"/>
+      <location filename="../../AttacherTexts.cpp" line="656"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Ausrichten auf B-Vektor des Frenet-Serret-Koordinatensystems der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="663"/>
+      <location filename="../../AttacherTexts.cpp" line="665"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangential zur Oberfläche (U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="664"/>
-      <location filename="../../AttacherTexts.cpp" line="673"/>
+      <location filename="../../AttacherTexts.cpp" line="666"/>
+      <location filename="../../AttacherTexts.cpp" line="675"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tangential zur Oberfläche, entlang der U-Parameter. Vertex-Verbindung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="672"/>
+      <location filename="../../AttacherTexts.cpp" line="674"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangential zur Oberfläche (V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="681"/>
+      <location filename="../../AttacherTexts.cpp" line="683"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Durch zwei Punkte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="682"/>
+      <location filename="../../AttacherTexts.cpp" line="684"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linie, die durch zwei Knoten verläuft.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="690"/>
+      <location filename="../../AttacherTexts.cpp" line="692"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Schnittkante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="691"/>
+      <location filename="../../AttacherTexts.cpp" line="693"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Schnittkante zweier Flächen.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="695"/>
+      <location filename="../../AttacherTexts.cpp" line="697"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Näherungslinie</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="696"/>
+      <location filename="../../AttacherTexts.cpp" line="698"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linie, die den kürzesten Abstand zwischen den Formen spannt.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="704"/>
+      <location filename="../../AttacherTexts.cpp" line="706"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>1. Hauptachse</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="705"/>
+      <location filename="../../AttacherTexts.cpp" line="707"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Die Linie folgt der ersten Hauptachse der Trägheit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="713"/>
+      <location filename="../../AttacherTexts.cpp" line="715"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>2. Hauptachse</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="714"/>
+      <location filename="../../AttacherTexts.cpp" line="716"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Die Linie folgt der zweiten Hauptachse der Trägheit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="722"/>
+      <location filename="../../AttacherTexts.cpp" line="724"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>3. Hauptachse</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="723"/>
+      <location filename="../../AttacherTexts.cpp" line="725"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Die Linie folgt der dritten Hauptachse der Trägheit.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="731"/>
+      <location filename="../../AttacherTexts.cpp" line="733"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Senkrecht zur Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="732"/>
+      <location filename="../../AttacherTexts.cpp" line="734"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linie senkrecht zur Oberfläche an einem Punkt, der durch einen Knoten bestimmt ist.</translation>
@@ -507,219 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Deaktiviert</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="308"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Ursprung versetzen</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="318"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ursprung ist ausgerichtet um auf Scheitelpunkt zu passen. Die Orientierung wird durch die Placement-Eigenschaft gesteuert.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY des Objektes</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="327"/>
+      <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene ist auf XY lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XZ des Objektes</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="336"/>
+      <location filename="../../AttacherTexts.cpp" line="337"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene ist auf XZ lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>YZ des Objekts</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="345"/>
+      <location filename="../../AttacherTexts.cpp" line="346"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene ist auf YZ lokaler Ebene des verknüpften Objekts ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY parallel zur Ebene</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="355"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>X'Y'-Ebene verläuft parallel zur Ebene (XY-Ebene des Objekts) und durch den Knoten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Mittlere Ebene zwischen den Flächen</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="364"/>
-      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <location filename="../../AttacherTexts.cpp" line="365"/>
+      <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Der Ursprung der Ebene liegt auf halbem Weg zwischen den Mittelpunkten zweier ebener Flächen, und ihre Ausrichtung halbiert deren Winkel.</translation>
+      <translation>Der Ursprung der Ebene liegt mittig zwischen zwei ebenen Flächen und ihre Ausrichtung halbiert den Winkel zwischen diesen. Bei nicht parallelen Flächen enthält die Ebene deren Schnittgerade.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="373"/>
+      <location filename="../../AttacherTexts.cpp" line="375"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Ebene Fläche</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="374"/>
+      <location filename="../../AttacherTexts.cpp" line="376"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Die Ebene ist ausgerichtet, um die ebene Fläche zu decken.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="382"/>
+      <location filename="../../AttacherTexts.cpp" line="384"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Tangente zur Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="383"/>
+      <location filename="../../AttacherTexts.cpp" line="385"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Die Ebene ist tangential zur Oberfläche am Scheitelpunkt gemacht.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
+      <location filename="../../AttacherTexts.cpp" line="393"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normal zur Kante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="392"/>
+      <location filename="../../AttacherTexts.cpp" line="394"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene liegt tangential zur Kante. Optionaler Vertex-Link definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="402"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="401"/>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="403"/>
+      <location filename="../../AttacherTexts.cpp" line="413"/>
+      <location filename="../../AttacherTexts.cpp" line="423"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="412"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="422"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="432"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Konzentrisch</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="433"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ausrichten zur Ebene zum Schmiegekreis einer Kante. Der Ursprung ist auf den Krümmungspunkt ausgerichtet. Optionale Vertex-Link definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="442"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Drehungs-Abschnitt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="441"/>
+      <location filename="../../AttacherTexts.cpp" line="443"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene ist senkrecht zur Kante und Y-Achse stimmt mit Achse des Krümmungskreises überein. Optional verknüpfter Knotenpunkt definiert Position.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="452"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Ebene durch 3 Punkte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="451"/>
+      <location filename="../../AttacherTexts.cpp" line="453"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Die Ebene an drei Knotenpunkten ausrichten.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="459"/>
+      <location filename="../../AttacherTexts.cpp" line="461"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normale zu 3 Punkten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="462"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Die Ebene wird durch die ersten zwei Ecken gehen und senkrecht zur Ebene, die durch drei Knoten geht.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="469"/>
+      <location filename="../../AttacherTexts.cpp" line="471"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Zusammenfalten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="472"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Spezialmodus zum Falten von Polyedern. 4 Kanten in dieser Reihenfolge auswählen: Faltbare Kante, Faltlinie, andere Faltlinie, andere faltbare Kante. Die Ebene wird auf die Faltung der ersten Kante ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="482"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Trägheit 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="483"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ebene, die auf der zweiten und dritten Hauptachse der Trägheit konstruiert ist (geht durch den Mittelpunkt der Masse).</translation>
@@ -800,93 +800,93 @@
       <translation>Die X'Y'-Ebene verläuft parallel zur Ebene (XY-Ebene des Objekts) und durch den Knotenpunkt.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY auf Ebene</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="122"/>
+      <location filename="../../AttacherTexts.cpp" line="123"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die X'Y'-Ebene wird so ausgerichtet, dass sie mit der ebenen Fläche übereinstimmt.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY tangential zur Oberfläche</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="131"/>
+      <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die X'Y'-Ebene wird am Knotenpunkt tangential zur Oberfläche ausgerichtet.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Z tangential zur Kante</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
+      <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die Z'-Achse wird tangential zur Kante ausgerichtet. Ein optionaler verknüpfter Knotenpunkt legt fest an welcher Stelle.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="150"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="150"/>
-      <location filename="../../AttacherTexts.cpp" line="160"/>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="151"/>
+      <location filename="../../AttacherTexts.cpp" line="161"/>
+      <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ausrichten zum Frenet-Serret-Koordinatensystem der gekrümmten Kante. Optionale Vertex-Verknüpfung definiert wo.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Konzentrisch</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Drehungs-Abschnitt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Y-Achse an Achse des Krümmungskreises einer Kante ausrichten. Optional verknüpfter Scheitelpunkt definiert Position.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="218"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Zusammenfalten</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="181"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die XY-Ebene an den oszillierenden Kreis einer Kante ausrichten. Die optionale Scheitelpunktverbindung definiert, wo.</translation>
@@ -899,182 +899,182 @@
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
-      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Der Ursprung der Ebene liegt auf halbem Weg zwischen den Mittelpunkten zweier ebener Flächen, und ihre Ausrichtung halbiert deren Winkel.</translation>
+      <translation>Der Ursprung der Ebene liegt mittig zwischen zwei ebenen Flächen und ihre Ausrichtung halbiert den Winkel zwischen diesen. Bei nicht parallelen Flächen enthält die Ebene deren Schnittgerade.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY-Ebene durch 3 Punkte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="200"/>
+      <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die XY-Ebene so ausrichten, dass sie durch drei Eckpunkte verläuft.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XZ-Ebene durch 3 Punkte</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Die XZ-Ebene so ausrichten, dass sie durch drei Punkte verläuft; die X-Achse verläuft durch die ersten beiden Punkte.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="220"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Spezialmodus zum Falten von Polyedern. Wähle vier Kanten in der folgenden Reihenfolge aus: faltbare Kante, Faltlinie, andere Faltlinie, andere faltbare Kante. Die XY-Ebene wird so ausgerichtet, dass die erste Kante gefaltet wird.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Inertial-Koordinatensystem</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Inertial-Koordinatensystem, das aus Hauptträgheitsachsen und Schwerpunkt abgeleitet wird.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="241"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Z'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="512"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Y'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="271"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der X'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und Z'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="289"/>
-      <location filename="../../AttacherTexts.cpp" line="540"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
+      <location filename="../../AttacherTexts.cpp" line="542"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="290"/>
+      <location filename="../../AttacherTexts.cpp" line="291"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ursprung und ersten Vertex übereinander legen. Ausrichten der Y'- und X'-Achse in Richtung Vertex/entlang einer Linie.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="492"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="493"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die Normale und die horizontale Achse der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="502"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="503"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die Normale und die vertikale Achse der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="513"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die horizontale und die vertikale Achse der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="522"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="523"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die horizontale Achse und die Normale der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="530"/>
+      <location filename="../../AttacherTexts.cpp" line="532"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Ausrichten O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="531"/>
+      <location filename="../../AttacherTexts.cpp" line="533"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die vertikale Achse und die Normale der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="541"/>
+      <location filename="../../AttacherTexts.cpp" line="543"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Legt den Ursprung und den ersten Knoten übereinander. Richtet die vertikale und die horizontale Achse der Ebene jeweils in Richtung eines Knotens oder entlang einer Linie aus.</translation>
@@ -3396,79 +3396,79 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
-      <location filename="../../DlgPrimitives.cpp" line="298"/>
+      <location filename="../../DlgPrimitives.cpp" line="301"/>
       <source>Plane</source>
       <translation>Ebene</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="45"/>
-      <location filename="../../DlgPrimitives.cpp" line="392"/>
+      <location filename="../../DlgPrimitives.cpp" line="395"/>
       <source>Box</source>
       <translation>Quader</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="54"/>
-      <location filename="../../DlgPrimitives.cpp" line="509"/>
+      <location filename="../../DlgPrimitives.cpp" line="512"/>
       <source>Cylinder</source>
       <translation>Zylinder</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="63"/>
-      <location filename="../../DlgPrimitives.cpp" line="628"/>
+      <location filename="../../DlgPrimitives.cpp" line="631"/>
       <source>Cone</source>
       <translation>Kegel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="72"/>
-      <location filename="../../DlgPrimitives.cpp" line="742"/>
+      <location filename="../../DlgPrimitives.cpp" line="745"/>
       <source>Sphere</source>
       <translation>Kugel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="81"/>
-      <location filename="../../DlgPrimitives.cpp" line="876"/>
+      <location filename="../../DlgPrimitives.cpp" line="879"/>
       <source>Ellipsoid</source>
       <translation>Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="90"/>
-      <location filename="../../DlgPrimitives.cpp" line="1010"/>
+      <location filename="../../DlgPrimitives.cpp" line="1013"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="99"/>
-      <location filename="../../DlgPrimitives.cpp" line="1131"/>
+      <location filename="../../DlgPrimitives.cpp" line="1134"/>
       <source>Prism</source>
       <translation>Prisma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="108"/>
-      <location filename="../../DlgPrimitives.cpp" line="1324"/>
+      <location filename="../../DlgPrimitives.cpp" line="1327"/>
       <source>Wedge</source>
       <translation>Keil</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="117"/>
-      <location filename="../../DlgPrimitives.cpp" line="1471"/>
+      <location filename="../../DlgPrimitives.cpp" line="1474"/>
       <source>Helix</source>
       <translation>Wendel</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="126"/>
-      <location filename="../../DlgPrimitives.cpp" line="1579"/>
+      <location filename="../../DlgPrimitives.cpp" line="1582"/>
       <source>Spiral</source>
       <translation>Spirale</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="135"/>
-      <location filename="../../DlgPrimitives.cpp" line="1678"/>
+      <location filename="../../DlgPrimitives.cpp" line="1681"/>
       <source>Circle</source>
       <translation>Kreis</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="144"/>
-      <location filename="../../DlgPrimitives.cpp" line="1787"/>
+      <location filename="../../DlgPrimitives.cpp" line="1790"/>
       <source>Ellipse</source>
       <translation>Ellipse</translation>
     </message>
@@ -3479,13 +3479,13 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="162"/>
-      <location filename="../../DlgPrimitives.cpp" line="1983"/>
+      <location filename="../../DlgPrimitives.cpp" line="1986"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="171"/>
-      <location filename="../../DlgPrimitives.cpp" line="1875"/>
+      <location filename="../../DlgPrimitives.cpp" line="1878"/>
       <source>Regular polygon</source>
       <translation>Regelmäßiges Vieleck</translation>
     </message>
@@ -4062,25 +4062,25 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <translation>Endpunkt</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2102"/>
+      <location filename="../../DlgPrimitives.cpp" line="2105"/>
       <source>Vertex</source>
       <translation>Knoten</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2297"/>
-      <location filename="../../DlgPrimitives.cpp" line="2308"/>
-      <location filename="../../DlgPrimitives.cpp" line="2325"/>
-      <location filename="../../DlgPrimitives.cpp" line="2332"/>
+      <location filename="../../DlgPrimitives.cpp" line="2300"/>
+      <location filename="../../DlgPrimitives.cpp" line="2311"/>
+      <location filename="../../DlgPrimitives.cpp" line="2328"/>
+      <location filename="../../DlgPrimitives.cpp" line="2335"/>
       <source>Create %1</source>
       <translation>Erstelle %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2298"/>
+      <location filename="../../DlgPrimitives.cpp" line="2301"/>
       <source>No active document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2651"/>
+      <location filename="../../DlgPrimitives.cpp" line="2654"/>
       <source>C&amp;reate</source>
       <translation>E&amp;rstellen</translation>
     </message>

@@ -944,7 +944,14 @@ void QGIView::removeChild(QGIView* child)
 void QGIView::hideFrame()
 {
     m_border->hide();
-    m_label->hide();
+
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
+    if (vp && vp->KeepLabel.getValue()) {
+        m_label->show();
+    }
+    else {
+        m_label->hide();
+    }
 }
 
 void QGIView::addArbitraryItem(QGraphicsItem* qgi)
@@ -1078,6 +1085,7 @@ void QGIView::makeMark(QPointF pos, QColor color)
 
 void QGIView::updateFrameVisibility()
 {
+    ViewProviderDrawingView* vp = freecad_cast<ViewProviderDrawingView*>(getViewProvider(getViewObject()));
     if (shouldShowFrame()) {
         m_border->show();
         m_label->show();
@@ -1086,7 +1094,11 @@ void QGIView::updateFrameVisibility()
         }
     } else {
         m_border->hide();
-        m_label->hide();
+        if (vp && vp->KeepLabel.getValue()) {
+            m_label->show();
+        } else {
+            m_label->hide();
+        }
         if (m_lock) {
              m_lock->hide();
         }

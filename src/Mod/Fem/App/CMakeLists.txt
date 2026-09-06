@@ -234,9 +234,7 @@ if (MSVC)
     target_compile_options(Fem PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Fem)
-endif()
+target_compile_warn_error(Fem)
 
 find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)

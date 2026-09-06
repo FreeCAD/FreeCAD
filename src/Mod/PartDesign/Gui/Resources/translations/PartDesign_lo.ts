@@ -1744,14 +1744,14 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1495"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
       <source>No face selected</source>
       <translation>ບໍ່ມີໜ້າພຽງທີ່ຖືກເລືອກ</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
       <source>Face</source>
       <translation>ໜ້າພຽງ</translation>
     </message>
@@ -1771,7 +1771,7 @@ If zero, it is equal to Radius2</source>
       <translation>ເລືອກໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="796"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
       <source>Select reference…</source>
       <translation>ເລືອກບ່ອນອ້າງອີງ...</translation>
     </message>
@@ -1783,7 +1783,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
       <source>No start reference selected</source>
       <translation>ບໍ່ໄດ້ເລືອກຈຸດອ້າງອີງເລີ່ມຕົ້ນ</translation>
     </message>
@@ -1793,60 +1793,60 @@ If zero, it is equal to Radius2</source>
       <translation>ໄລຍະເຍື້ອງຈາກຮູບຮ່າງ ຫຼື ຈຸດອ້າງອີງເລີ່ມຕົ້ນທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
       <source>Sketch normal</source>
       <translation>ແນວຕັ້ງສາກຮູບແຕ້ມ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="792"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
       <source>Face normal</source>
       <translation>ແນວຕັ້ງສາກໜ້າວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="800"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="803"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
       <source>Custom direction</source>
       <translation>ທິດທາງກຳນົດເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1190"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Cancel</source>
       <translation>ຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
       <source>Select face, plane...</source>
       <translation>ເລືອກໜ້າ, ແຜ່ນພຽງ...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>Pick Reference</source>
       <translation>ເລືອກຈຸດອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1206"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a shape in the model</source>
       <translation>ຄລິກໃສ່ຮູບຊົງໃນແບບຈຳລອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1482"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
       <source>One sided</source>
       <translation>ຂ້າງດຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
       <source>Two sided</source>
       <translation>ສອງຂ້າງ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
       <source>Symmetric</source>
       <translation>ສົມມາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1490"/>
-      <source>Click on a face in the model</source>
-      <translation>ຄລິກໃສ່ໜ້າວັດຖຸໃນແບບຈຳລອງ</translation>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <source>Face selection active</source>
+      <translation type="unfinished">Face selection active</translation>
     </message>
   </context>
   <context>
@@ -2135,133 +2135,164 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="57"/>
+      <location filename="../../TaskHoleParameters.cpp" line="59"/>
       <source>Counterbore</source>
       <translation>ຮູເຈາະຝັງຫົວສະກູຊົງກະບອກ (Counterbore)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
       <source>Countersink</source>
       <translation>ຮູເຈາະຝັງຫົວສະກູຊົງຈວຍ (Countersink)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="59"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Counterdrill</source>
       <translation>ຮູເຈາະຝັງຫົວແບບປະສົມ (Counterdrill)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="63"/>
+      <location filename="../../TaskHoleParameters.cpp" line="65"/>
       <source>Hole Parameters</source>
       <translation>ພາລາມິເຕີຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>ISO metric regular</source>
       <translation>ມາດຕະຖານ ISO ເມຕຣິກ ທົ່ວໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ISO metric fine</source>
       <translation>ມາດຕະຖານ ISO ເມຕຣິກ ລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>UTS coarse</source>
       <translation>UTS ຫຍາບ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>UTS fine</source>
       <translation>UTS ລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>UTS extra fine</source>
       <translation>UTS ລະອຽດພິເສດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="78"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ANSI pipes</source>
       <translation>ທໍ່ມາດຕະຖານ ANSI</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="79"/>
+      <location filename="../../TaskHoleParameters.cpp" line="81"/>
       <source>ISO/BSP pipes</source>
       <translation>ທໍ່ມາດຕະຖານ ISO/BSP</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="80"/>
+      <location filename="../../TaskHoleParameters.cpp" line="82"/>
       <source>BSW whitworth</source>
       <translation>BSW ວິດເວີດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="81"/>
+      <location filename="../../TaskHoleParameters.cpp" line="83"/>
       <source>BSF whitworth fine</source>
       <translation>BSF ວິດເວີດ ລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="82"/>
+      <location filename="../../TaskHoleParameters.cpp" line="84"/>
       <source>ISO tyre valves</source>
       <translation>ວາວຢາງລົດ ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="712"/>
+      <location filename="../../TaskHoleParameters.cpp" line="202"/>
+      <source>Offset from the profile or selected start reference</source>
+      <translation>ໄລຍະເຍື້ອງຈາກຮູບຮ່າງ ຫຼື ຈຸດອ້າງອີງເລີ່ມຕົ້ນທີ່ເລືອກ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="701"/>
+      <source>Cancel</source>
+      <translation>ຍົກເລີກ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="702"/>
+      <source>Select face, plane...</source>
+      <translation>ເລືອກໜ້າ, ແຜ່ນພຽງ...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
+      <source>Pick Reference</source>
+      <translation>ເລືອກຈຸດອ້າງອີງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <source>No start reference selected</source>
+      <translation>ບໍ່ໄດ້ເລືອກຈຸດອ້າງອີງເລີ່ມຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="771"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>ປານກາງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="716"/>
+      <location filename="../../TaskHoleParameters.cpp" line="775"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>ລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="720"/>
+      <location filename="../../TaskHoleParameters.cpp" line="779"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>ຫຍາບ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="726"/>
+      <location filename="../../TaskHoleParameters.cpp" line="785"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>ປົກກະຕິ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="730"/>
+      <location filename="../../TaskHoleParameters.cpp" line="789"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>ປິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="734"/>
+      <location filename="../../TaskHoleParameters.cpp" line="793"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>ຫຼວມ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="738"/>
+      <location filename="../../TaskHoleParameters.cpp" line="797"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>ປົກກະຕິ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="739"/>
+      <location filename="../../TaskHoleParameters.cpp" line="798"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>ປິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="740"/>
+      <location filename="../../TaskHoleParameters.cpp" line="799"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>ກວ້າງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
+      <source>Face</source>
+      <translation>ໜ້າພຽງ</translation>
     </message>
   </context>
   <context>
@@ -2916,109 +2947,142 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
       <source>Base X-axis</source>
       <translation>ແກນ X ພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <source>Mode</source>
+      <translation>ໂໝດ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
       <source>Base Y-axis</source>
       <translation>ແກນ Y ພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
       <source>Base Z-axis</source>
       <translation>ແກນ Z ພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <source>Horizontal sketch axis</source>
       <translation>ແກນຮູບຮ່າງແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="70"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
       <source>Vertical sketch axis</source>
       <translation>ແກນຮູບຮ່າງແນວຕັ້ງ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="154"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Side 1</source>
+      <translation>ເບື້ອງທີ 1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <source>Select Face</source>
+      <translation>ເລືອກໜ້າວັດຖຸ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <source>Side 2</source>
+      <translation>ເບື້ອງທີ 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
       <source>Symmetric to plane</source>
       <translation type="unfinished">Symmetric to plane</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="161"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
       <source>Reversed</source>
       <translation>ປີ້ນກັບ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="120"/>
-      <source>2nd angle</source>
-      <translation>ມຸມທີ 2</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="42"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
       <source>Axis</source>
       <translation>ແກນ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
       <source>Select reference…</source>
       <translation>ເລືອກບ່ອນອ້າງອີງ...</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Angle</source>
       <translation>ມຸມ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="149"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="459"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
       <source>Face</source>
       <translation>ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="192"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
       <source>Recompute on change</source>
       <translation>ຄິດໄລ່ໃໝ່ເມື່ອມີການປ່ຽນແປງ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
       <source>To last</source>
       <translation>ໄປຫາອັນສຸດທ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Through all</source>
       <translation>ທະລຸທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
       <source>To first</source>
       <translation>ໄປຫາອັນທຳອິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
       <source>Up to face</source>
       <translation>ຈົນເຖິງໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="184"/>
-      <source>Two angles</source>
-      <translation>ສອງມຸມ</translation>
+      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <source>One sided</source>
+      <translation>ຂ້າງດຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <source>Two sided</source>
+      <translation>ສອງຂ້າງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <source>Symmetric</source>
+      <translation>ສົມມາດ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <source>Face selection active</source>
+      <translation type="unfinished">Face selection active</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
       <source>No face selected</source>
       <translation>ບໍ່ມີໜ້າພຽງທີ່ຖືກເລືອກ</translation>
     </message>
@@ -3614,18 +3678,18 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Vertical sketch axis</source>
       <translation>ແກນຮູບຮ່າງແນວຕັ້ງ</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
       <source>Horizontal sketch axis</source>
       <translation>ແກນຮູບຮ່າງແນວນອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="211"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>Construction line %1</source>
       <translation>ເສັ້ນສ້າງ %1</translation>
     </message>
@@ -4059,145 +4123,145 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
   <context>
     <name>TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="824"/>
+      <location filename="../../TaskHoleParameters.ui" line="919"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
       <translation>ອັບເດດການປ່ຽນແປງຂອງກ້ຽວແບບສົດໆ. ໝາຍເຫດວ່າການຄິດໄລ່ອາດຈະໃຊ້ເວລາໄລຍະໜຶ່ງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1019"/>
+      <location filename="../../TaskHoleParameters.ui" line="1114"/>
       <source>Thread Depth</source>
       <translation>ຄວາມເລິກຂອງກ້ຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1072"/>
+      <location filename="../../TaskHoleParameters.ui" line="1167"/>
       <source>Customize thread clearance</source>
       <translation>ປັບແຕ່ງໄລຍະຫ່າງຂອງກ້ຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="699"/>
+      <location filename="../../TaskHoleParameters.ui" line="794"/>
       <source>Clearance</source>
       <translation>ໄລຍະຫ່າງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="65"/>
+      <location filename="../../TaskHoleParameters.ui" line="219"/>
       <source>Head type</source>
       <translation>ປະເພດຫົວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <location filename="../../TaskHoleParameters.ui" line="248"/>
       <source>Depth type</source>
       <translation>ປະເພດຄວາມເລິກ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="245"/>
+      <location filename="../../TaskHoleParameters.ui" line="340"/>
       <source>Head diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງຂອງຫົວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="293"/>
+      <location filename="../../TaskHoleParameters.ui" line="388"/>
       <source>Head depth</source>
       <translation>ຄວາມເລິກຂອງຫົວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="668"/>
+      <location filename="../../TaskHoleParameters.ui" line="763"/>
       <source>Clearance / Passthrough</source>
       <translation>ໄລຍະຫ່າງ / ຊ່ອງຜ່ານ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="686"/>
+      <location filename="../../TaskHoleParameters.ui" line="781"/>
       <source>Hole type</source>
       <translation>ປະເພດຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="828"/>
+      <location filename="../../TaskHoleParameters.ui" line="923"/>
       <source>Update thread view</source>
       <translation>ອັບເດດມຸມເບິ່ງກ້ຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1078"/>
+      <location filename="../../TaskHoleParameters.ui" line="1173"/>
       <source>Custom Clearance</source>
       <translation>ໄລຍະຫ່າງທີ່ປັບແຕ່ງເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1091"/>
+      <location filename="../../TaskHoleParameters.ui" line="1186"/>
       <source>Custom Thread clearance value</source>
       <translation>ຄ່າໄລຍະຫ່າງຂອງກ້ຽວທີ່ປັບແຕ່ງເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="881"/>
+      <location filename="../../TaskHoleParameters.ui" line="976"/>
       <source>Direction</source>
       <translation>ທິດທາງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="49"/>
+      <location filename="../../TaskHoleParameters.ui" line="193"/>
       <source>Size</source>
       <translation>ຂະໜາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="712"/>
+      <location filename="../../TaskHoleParameters.ui" line="807"/>
       <source>Hole clearance
 Only available for holes without thread</source>
       <translation>ໄລຍະຫ່າງຂອງຮູ. ໃຊ້ໄດ້ສະເພາະຮູທີ່ບໍ່ມີກ້ຽວເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="88"/>
-      <location filename="../../TaskHoleParameters.ui" line="717"/>
+      <location filename="../../TaskHoleParameters.ui" line="170"/>
+      <location filename="../../TaskHoleParameters.ui" line="812"/>
       <source>Standard</source>
       <translation>ມາດຕະຖານ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="673"/>
+      <location filename="../../TaskHoleParameters.ui" line="768"/>
       <source>Tap drill</source>
       <translation>ດອກສະຫວ່ານເຈາະກ້ຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="678"/>
+      <location filename="../../TaskHoleParameters.ui" line="773"/>
       <source>Threaded</source>
       <translation>ມີກຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="722"/>
+      <location filename="../../TaskHoleParameters.ui" line="817"/>
       <source>Close</source>
       <translation>ປິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="727"/>
+      <location filename="../../TaskHoleParameters.ui" line="822"/>
       <source>Wide</source>
       <translation>ກວ້າງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="805"/>
+      <location filename="../../TaskHoleParameters.ui" line="900"/>
       <source>Whether the hole gets a modelled thread</source>
       <translation>ກຳນົດວ່າຮູຈະມີການສ້າງຮູບແບບກຽວຫຼືບໍ່</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="808"/>
+      <location filename="../../TaskHoleParameters.ui" line="903"/>
       <source>Model Thread</source>
       <translation>ສ້າງຮູບແບບກຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="861"/>
+      <location filename="../../TaskHoleParameters.ui" line="956"/>
       <source>Class</source>
       <translation>ຊັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="848"/>
+      <location filename="../../TaskHoleParameters.ui" line="943"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>ຊັ້ນຄວາມຄາດເຄື່ອນສຳລັບຮູມີກຽວຕາມລັກສະນະຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="552"/>
+      <location filename="../../TaskHoleParameters.ui" line="647"/>
       <source>Diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="574"/>
+      <location filename="../../TaskHoleParameters.ui" line="669"/>
       <source>Hole diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <location filename="../../TaskHoleParameters.ui" line="602"/>
       <source>Depth</source>
       <translation>ຄວາມເລິກ</translation>
     </message>
@@ -4207,124 +4271,161 @@ Only available for holes without thread</source>
       <translation>ພາລາມິເຕີຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="95"/>
+      <location filename="../../TaskHoleParameters.ui" line="38"/>
+      <source>Profile and Placement</source>
+      <translation type="unfinished">Profile and Placement</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="52"/>
       <source>Base profile types</source>
       <translation>ປະເພດຂອງໂປຣຟາຍພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="126"/>
+      <location filename="../../TaskHoleParameters.ui" line="60"/>
       <source>Circles and arcs</source>
       <translation>ວົງມົນ ແລະ ເສັ້ນໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Points, circles and arcs</source>
       <translation>ຈຸດ, ວົງມົນ ແລະ ເສັ້ນໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="136"/>
+      <location filename="../../TaskHoleParameters.ui" line="70"/>
       <source>Points</source>
       <translation>ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="170"/>
-      <location filename="../../TaskHoleParameters.ui" line="989"/>
+      <location filename="../../TaskHoleParameters.ui" line="78"/>
+      <source>Start</source>
+      <translation>ເລີ່ມຕົ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="86"/>
+      <source>Profile plane</source>
+      <translation>ແຜ່ນພຽງຮູບຮ່າງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="91"/>
+      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <source>Offset</source>
+      <translation>ໄລຍະຫ່າງ (Offset)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="96"/>
+      <location filename="../../TaskHoleParameters.ui" line="104"/>
+      <source>Reference</source>
+      <translation>ການອ້າງອີງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="121"/>
+      <source>Pick Reference</source>
+      <translation>ເລືອກຈຸດອ້າງອີງ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <source>Hole</source>
+      <translation>ຮູ (Hole)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="265"/>
+      <location filename="../../TaskHoleParameters.ui" line="1084"/>
       <source>Dimension</source>
       <translation>ຂະໜາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="175"/>
+      <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Through all</source>
       <translation>ທະລຸທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="197"/>
+      <location filename="../../TaskHoleParameters.ui" line="292"/>
       <source>Custom head values</source>
       <translation>ກຳນົດຄ່າຫົວເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="367"/>
+      <location filename="../../TaskHoleParameters.ui" line="462"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>ມຸມເຈາະ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="403"/>
+      <location filename="../../TaskHoleParameters.ui" line="498"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>ລວມເຂົ້າໃນຄວາມເລິກ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="610"/>
+      <location filename="../../TaskHoleParameters.ui" line="705"/>
       <source>Switch direction</source>
       <translation>ສະຫຼັບທິດທາງ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="773"/>
+      <location filename="../../TaskHoleParameters.ui" line="868"/>
       <source>Thread</source>
       <translation>ກຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="905"/>
+      <location filename="../../TaskHoleParameters.ui" line="1000"/>
       <source>&amp;Right hand</source>
       <translation>&amp;ເບື້ອງຂວາ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="921"/>
+      <location filename="../../TaskHoleParameters.ui" line="1016"/>
       <source>&amp;Left hand</source>
       <translation>&amp;ເບື້ອງຊ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="970"/>
+      <location filename="../../TaskHoleParameters.ui" line="1065"/>
       <source>Thread Depth Type</source>
       <translation>ປະເພດຄວາມເລິກຂອງກຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="984"/>
+      <location filename="../../TaskHoleParameters.ui" line="1079"/>
       <source>Hole depth</source>
       <translation>ຄວາມເລິກຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="994"/>
+      <location filename="../../TaskHoleParameters.ui" line="1089"/>
       <source>Tapped (DIN76)</source>
       <translation>ເຮັດກຽວ (DIN76)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="118"/>
+      <location filename="../../TaskHoleParameters.ui" line="232"/>
       <source>Cut type for screw heads</source>
       <translation>ປະເພດການຕັດສຳລັບຫົວສະກູ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="191"/>
+      <location filename="../../TaskHoleParameters.ui" line="286"/>
       <source>Check to override the values predefined by the 'Type'</source>
       <translation>ເລືອກເພື່ອປ່ຽນຄ່າທີ່ກຳນົດໄວ້ລ່ວງໜ້າໂດຍ 'ປະເພດ'</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="306"/>
+      <location filename="../../TaskHoleParameters.ui" line="401"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
       <translation>ສຳລັບຮູຝັງຫົວ, ນີ້ແມ່ນຄວາມເລິກຂອງ
 ສ່ວນເທິງສະກູທີ່ຢູ່ລຸ່ມໜ້າຜິວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="462"/>
+      <location filename="../../TaskHoleParameters.ui" line="557"/>
       <source>Countersink angle</source>
       <translation>ມຸມຂອງຮູຝັງຫົວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="399"/>
+      <location filename="../../TaskHoleParameters.ui" line="494"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
       <translation>ຂະໜາດຂອງປາຍເຈາະຈະຖືກນໍາມາຄິດໄລ່
 ລວມເຂົ້າໃນຄວາມເລິກຂອງຮູຕັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="626"/>
+      <location filename="../../TaskHoleParameters.ui" line="721"/>
       <source>Tapered</source>
       <translation>ຮຽວ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="639"/>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Taper angle for the hole
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
@@ -4335,7 +4436,7 @@ over 90: larger hole radius at the bottom</source>
 ສູງກວ່າ 90: ລັດສະໝີຮູໃຫຍ່ກວ່າຢູ່ທາງພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="607"/>
+      <location filename="../../TaskHoleParameters.ui" line="702"/>
       <source>Reverses the hole direction</source>
       <translation>ກັບຄືນທິດທາງຂອງຮູ</translation>
     </message>
@@ -4620,8 +4721,8 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>ຜົນໄດ້ຮັບມີຂອງແຂງຫຼາຍອັນ: ເປີດໃຊ້ 'Allow Compound' ໃນບອດີ້ທີ່ກຳລັງໃຊ້ງານ.</translation>
     </message>
@@ -4715,7 +4816,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>ການລົບລ່ຽມບໍ່ສຳເລັດ. ຂອບທີ່ເລືອກອາດມີເລຂາຄະນິດທີ່ບໍ່ສາມາດລົບລ່ຽມພ້ອມກັນໄດ້. ລອງລົບລ່ຽມເທື່ອລະຂອບ ຫຼື ໃຊ້ລັດສະໝີທີ່ນ້ອຍລົງ.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1739"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1783"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4737,22 +4838,27 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Creating a face from sketch failed</source>
       <translation>ການສ້າງໜ້າພຽງຈາກແຜນຮ່າງບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="152"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>ແກນການໝຸນຕັດກັບແຜນຮ່າງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <source>No revolution geometry was generated</source>
+      <translation type="unfinished">No revolution geometry was generated</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
       <source>Could not revolve the sketch!</source>
       <translation>ບໍ່ສາມາດໝຸນແຜນຮ່າງໄດ້!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="69"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ບໍ່ສາມາດສ້າງໜ້າພຽງຈາກແຜນຮ່າງ.
@@ -4804,7 +4910,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
       <source>Error: Result is not a solid</source>
       <translation>ຂໍ້ຜິດພາດ: ຜົນໄດ້ຮັບບໍ່ແມ່ນຂອງແຂງ</translation>
     </message>
@@ -4834,83 +4940,83 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ຂໍ້ຜິດພາດ: ບໍ່ສາມາດສ້າງໜ້າພຽງຈາກແຜນຮ່າງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1233"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1268"/>
       <source>Thread type is invalid</source>
       <translation>ປະເພດກຽວບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1752"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
       <source>Hole error: Diameter too small</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ເສັ້ນຜ່ານສູນກາງນ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1847"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ການກຳນົດຄວາມຍາວທີ່ບໍ່ຮອງຮັບ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1795"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1853"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ຄວາມເລິກຂອງຮູບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1821"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1879"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ມຸມຮຽວບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1845"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1903"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ເສັ້ນຜ່ານສູນກາງການຕັດຮູນ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1850"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ຄວາມເລິກການຕັດຮູຕ້ອງນ້ອຍກວ່າຄວາມເລິກຂອງຮູ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1857"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ຄວາມເລິກການຕັດຮູຕ້ອງໃຫຍ່ກວ່າ ຫຼື ເທົ່າກັບສູນ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1887"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1945"/>
       <source>Hole error: Invalid countersink</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ຮູຝັງຫົວບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1923"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1981"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ມຸມປາຍເຈາະບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1940"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1998"/>
       <source>Hole error: Invalid drill point</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ປາຍເຈາະບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1977"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2035"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ບໍ່ສາມາດໝຸນແຜນຮ່າງໄດ້</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1984"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2042"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ຮູບຮ່າງທີ່ໄດ້ຮັບແມ່ນຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2007"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>ຂໍ້ຜິດພາດຂອງຮູ: ການຊອກຫາແກນບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>ການປະຕິບັດການບູນລີນບໍ່ສຳເລັດທີ່ຂອບໂປຣຟາຍ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>ການປະຕິບັດການບູນລີນສ້າງສິ່ງທີ່ບໍ່ແມ່ນຂອງແຂງທີ່ຂອບໂປຣຟາຍ</translation>
     </message>
@@ -4920,24 +5026,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>ການປະຕິບັດການບູນລີນບໍ່ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>ບໍ່ສາມາດສ້າງໜ້າພຽງຈາກແຜນຮ່າງ.
 ບໍ່ອະນຸຍາດໃຫ້ມີສ່ວນປະກອບໃນແຜນຮ່າງທີ່ຕັດກັນເອງ ຫຼື ມີຫຼາຍໜ້າພຽງ ສຳລັບການສ້າງຮູຈົນເຖິງໜ້າພຽງໃດໜຶ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
       <source>Thread type out of range</source>
       <translation>ປະເພດກຽວນອກຂອບເຂດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
       <source>Thread size out of range</source>
       <translation>ຂະໜາດກຽວນອກຂອບເຂດ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
       <source>Error: Thread could not be built</source>
       <translation>ຂໍ້ຜິດພາດ: ບໍ່ສາມາດສ້າງກຽວໄດ້</translation>
     </message>
@@ -5175,22 +5281,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>delta x2 ຂອງຮູບລິ້ວເປັນຄ່າລົບ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="96"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
       <source>Angle of revolution too large</source>
       <translation>ມຸມການໝຸນໃຫຍ່ເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="103"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
       <source>Angle of revolution too small</source>
       <translation>ມຸມການໝຸນນ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="110"/>
-      <source>Angles of revolution nullify each other</source>
-      <translation>ມຸມການໝຸນຫັກລ້າງກັນເອງ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="126"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
       <source>Reference axis is invalid</source>
       <translation>ແກນອ້າງອີງບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -5433,7 +5535,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
       <source>Revolution Parameters</source>
       <translation>ພາລາມິເຕີການໝຸນ</translation>
     </message>
@@ -5441,7 +5543,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
       <source>Groove Parameters</source>
       <translation>ພາລາມິເຕີການເຊາະຮ່ອງ</translation>
     </message>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>340</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,23 +17,114 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="sidesLabel">
+      <widget class="QLabel" name="labelStart">
        <property name="text">
-        <string>Mode</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
+      <widget class="QComboBox" name="startMode">
+       <item>
+        <property name="text">
+         <string>Profile plane</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Reference</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="0" rowspan="2">
+      <widget class="QLabel" name="labelStartReference">
+       <property name="text">
+        <string>Reference</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineStartReference">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="buttonStartReference">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Pick Reference</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelStartOffset">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::PrefQuantitySpinBox" name="startOffsetEdit" native="true">
+       <property name="keyboardTracking" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">deg</string>
+       </property>
+       <property name="minimum">
+        <double>-360.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>360.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>10.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="sidesLabel">
+       <property name="text">
+        <string>Direction</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
       <widget class="QComboBox" name="sidesMode"/>
      </item>
-     <item row="1" column="0">
+     <item row="5" column="0">
       <widget class="QLabel" name="textLabel1">
        <property name="text">
         <string>Axis</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="5" column="1">
       <widget class="QComboBox" name="axis">
        <item>
         <property name="text">
@@ -67,7 +158,7 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="0" colspan="2">
+     <item row="6" column="0" colspan="2">
       <layout class="QHBoxLayout" name="side1HeaderLayout">
        <property name="leftMargin">
         <number>0</number>
@@ -97,14 +188,14 @@
        </item>
       </layout>
      </item>
-     <item row="3" column="0">
+     <item row="7" column="0">
       <widget class="QLabel" name="textLabelMode">
        <property name="text">
         <string>Type</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="7" column="1">
       <widget class="QComboBox" name="changeMode">
        <item>
         <property name="text">
@@ -113,14 +204,14 @@
        </item>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="8" column="0">
       <widget class="QLabel" name="labelAngle">
        <property name="text">
         <string>Angle</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="8" column="1">
       <widget class="Gui::QuantitySpinBox" name="revolveAngle">
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -142,7 +233,7 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0" colspan="2">
+     <item row="9" column="0" colspan="2">
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
         <widget class="QToolButton" name="buttonFace">
@@ -169,7 +260,7 @@
        </item>
       </layout>
      </item>
-     <item row="6" column="0" colspan="2">
+     <item row="10" column="0" colspan="2">
       <layout class="QHBoxLayout" name="side2HeaderLayout">
        <property name="leftMargin">
         <number>0</number>
@@ -199,24 +290,24 @@
        </item>
       </layout>
      </item>
-     <item row="7" column="0">
+     <item row="11" column="0">
       <widget class="QLabel" name="typeLabel2">
        <property name="text">
         <string>Type</string>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="11" column="1">
       <widget class="QComboBox" name="changeMode2"/>
      </item>
-     <item row="8" column="0">
+     <item row="12" column="0">
       <widget class="QLabel" name="labelAngle2">
        <property name="text">
         <string>Angle</string>
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="12" column="1">
       <widget class="Gui::QuantitySpinBox" name="revolveAngle2">
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -238,7 +329,7 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="0" colspan="2">
+     <item row="13" column="0" colspan="2">
       <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
         <widget class="QToolButton" name="buttonFace2">
@@ -309,8 +400,17 @@
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>startMode</tabstop>
+  <tabstop>lineStartReference</tabstop>
+  <tabstop>buttonStartReference</tabstop>
+  <tabstop>startOffsetEdit</tabstop>
   <tabstop>sidesMode</tabstop>
   <tabstop>axis</tabstop>
   <tabstop>changeMode</tabstop>

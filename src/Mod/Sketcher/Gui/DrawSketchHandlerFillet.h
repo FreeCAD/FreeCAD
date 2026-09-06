@@ -80,6 +80,14 @@ public:
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
+                // TODO: This could return true for any curve as long as
+                // int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim,
+                // bool createCorner, bool chamfer) evaluates two correct points that can be bound
+                // by an arc created using GeomArcOfCircle* createFilletGeometry(const Geometry*
+                // geo1, const Geometry* geo2, const Base::Vector3d& refPnt1, const Base::Vector3d&
+                // refPnt2, double radius, int& pos1, int& pos2, bool& reverse, Base::Vector3d&
+                // cornerPoint) See int SketchObject::fillet(int GeoId, PointPos PosId, double
+                // radius, bool trim, bool createCorner, bool chamfer)
             }
         }
         return false;
@@ -166,8 +174,7 @@ private:
             int GeoId;
             PointPos PosId = PointPos::none;
             obj->getGeoVertexIndex(vtId, GeoId, PosId);
-            const Part::Geometry* geom = obj->getGeometry(GeoId);
-            if (isLineSegment(*geom) && (PosId == PointPos::start || PosId == PointPos::end)) {
+            if (PosId == PointPos::start || PosId == PointPos::end) {
 
                 // guess fillet radius
                 double radius = -1;
@@ -234,9 +241,8 @@ private:
                 }
 
                 tryAutoRecomputeIfNotSolve(obj);
-            }
-        }
-
+            }  // end if curve endpoint
+        }  // end if vertex
         else {
             Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
             Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
@@ -255,6 +261,7 @@ private:
                 auto* line2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
                 radius = Part::suggestFilletRadius(line1, line2, refPnt1, refPnt2);
+
                 if (radius < 0) {
                     return;
                 }

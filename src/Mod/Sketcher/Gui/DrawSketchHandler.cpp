@@ -90,6 +90,14 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::
     vp.setConstraintSelectability(enabled);
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(
+    ViewProviderSketch& vp,
+    bool hollow
+)
+{
+    vp.setOriginPointMarker(hollow);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(
     ViewProviderSketch& vp,
     const Base::Vector2d& Pos,
@@ -398,6 +406,7 @@ void DrawSketchHandler::setSketchGui(ViewProviderSketch* vp)
 void DrawSketchHandler::deactivate()
 {
     Gui::ToolHandler::deactivate();
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, false);
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
 
     // clear temporary Curve and Markers from the scenograph
@@ -413,6 +422,7 @@ void DrawSketchHandler::deactivate()
 
 void DrawSketchHandler::preActivated()
 {
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, true);
     this->signalToolChanged();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }

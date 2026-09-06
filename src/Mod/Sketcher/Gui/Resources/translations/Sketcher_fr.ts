@@ -2534,7 +2534,7 @@ en tenir compte.</translation>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="177"/>
       <source>Insert Length</source>
-      <translation>Insérer une longueur</translation>
+      <translation>Insérer une dimension</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="179"/>
@@ -3431,7 +3431,7 @@ caractères utilisés par Sketcher.</translation>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
       <source>Show directional autoconstraint helpers</source>
-      <translation>Afficher les lignes auxiliaires pour les autoconstraintes directionnelles</translation>
+      <translation>Afficher les assistants pour les autoconstraintes directionnelles</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
@@ -5659,12 +5659,12 @@ la géométrie décalée.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="703"/>
       <source>Information layer</source>
-      <translation>Calque d'information</translation>
+      <translation>Calque des informations</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
       <source>Color of arc and line helpers and also bspline polygon, comb...</source>
-      <translation>Couleur des lignes auxiliaires des arcs et des lignes, ainsi que des polygones des B-splines, des peignes...</translation>
+      <translation>Couleur des assistants des arcs et des lignes, ainsi que des polygones des B-splines, des peignes...</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
@@ -5679,7 +5679,7 @@ la géométrie décalée.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Grid and inactive helpers</source>
-      <translation>Grille et lignes auxiliaires inactives</translation>
+      <translation>Grille et assistants des lignes inactives</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
@@ -5689,7 +5689,7 @@ la géométrie décalée.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="810"/>
       <source>Sketcher axes</source>
-      <translation>Axes de l'esquisse</translation>
+      <translation>Axes de Sketcher</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="817"/>
@@ -5805,7 +5805,7 @@ la géométrie décalée.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="1006"/>
       <source>Constraint symbols</source>
-      <translation>Symboles des contraintes</translation>
+      <translation>Contraintes pilotantes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="1013"/>
@@ -7359,7 +7359,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="405"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation>Affiche/masque la visibilité des cercles auxiliaires pour les arcs.</translation>
+      <translation>Affiche/masque la visibilité des cercles assistants pour les arcs.</translation>
     </message>
   </context>
   <context>
@@ -8083,28 +8083,28 @@ sélectionnée.</translation>
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="218"/>
       <source>Polygon Parameters</source>
       <translation>Paramètres du polygone</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="289"/>
       <source>%1 pick polygon center</source>
       <translation>%1 Sélectionner un centre du polygone</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="290"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="297"/>
       <source>%1/%2 increase/decrease number of sides</source>
       <translation>%1/%2 augmente/diminue le nombre de côtés</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="295"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 Sélectionner une rotation et une taille</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="296"/>
       <source>%1 confirm</source>
       <translation>%1 Confirmer</translation>
     </message>
@@ -8432,7 +8432,7 @@ sélectionnée.</translation>
       <translation>Degré</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
       <source>Sides</source>
       <translation>Côtés</translation>
     </message>

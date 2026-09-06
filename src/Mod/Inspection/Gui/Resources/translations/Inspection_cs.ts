@@ -71,7 +71,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="83"/>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation>Parametry</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="103"/>

@@ -70,9 +70,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(Assembly ${Assembly_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Assembly)
-endif()
+target_compile_warn_error(Assembly)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Assembly PRIVATE

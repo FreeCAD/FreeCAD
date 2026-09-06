@@ -76,9 +76,7 @@ target_include_directories(
 
 target_link_directories(Surface PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(Surface ${Surface_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Surface)
-endif()
+target_compile_warn_error(Surface)
 
 SET_BIN_DIR(Surface Surface /Mod/Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)

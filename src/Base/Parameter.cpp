@@ -612,11 +612,13 @@ const char* ParameterGrp::GetAttribute(
 
     const char* T = TypeName(Type);
     if (!T) {
+        Value = Default;
         return Default;
     }
 
     DOMElement* pcElem = FindElement(_pGroupNode, T, Name);
     if (!pcElem) {
+        Value = Default;
         return Default;
     }
 
@@ -659,6 +661,9 @@ std::vector<std::pair<std::string, std::string>> ParameterGrp::GetAttributeMap(
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
             if (Type == ParamType::FCGroup) {
                 res.emplace_back(Name, std::string());
+            }
+            else if (Type == ParamType::FCText) {
+                res.emplace_back(Name, GetASCII(Name.c_str()));
             }
             else {
                 res.emplace_back(
@@ -2048,10 +2053,10 @@ void ParameterManager::CreateDocument()
     rootElem->appendChild(_pGroupNode);
 }
 
-void ParameterManager::CheckDocument() const
+bool ParameterManager::CheckDocument() const
 {
     if (!_pDocument) {
-        return;
+        return false;
     }
 
     try {
@@ -2086,7 +2091,7 @@ void ParameterManager::CheckDocument() const
         Grammar* grammar = parser.loadGrammar(xsdFile, Grammar::SchemaGrammarType, true);
         if (!grammar) {
             Base::Console().error("Grammar file cannot be loaded.\n");
-            return;
+            return false;
         }
 
         parser.setExternalNoNamespaceSchemaLocation("Parameter.xsd");
@@ -2107,12 +2112,18 @@ void ParameterManager::CheckDocument() const
                 "Unexpected XML structure detected: %zu errors\n",
                 parser.getErrorCount()
             );
+            return false;
         }
     }
     catch (XMLException& e) {
-        std::cerr << "An error occurred while checking document. Msg is:" << std::endl
-                  << StrX(e.getMessage()) << std::endl;
+        Base::Console().error(
+            "An error occurred while checking document:%s\n",
+            StrX(e.getMessage()).c_str()
+        );
+        return false;
     }
+
+    return true;
 }
 
 

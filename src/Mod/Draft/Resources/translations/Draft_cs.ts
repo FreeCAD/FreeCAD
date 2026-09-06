@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation type="unfinished">Layers Manager</translation>
+      <translation>Správce vrstev</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Přepnout viditelnost</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -171,17 +171,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style Name</source>
-      <translation type="unfinished">Style Name</translation>
+      <translation>Název stylu</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation type="unfinished">The name of the style. Existing style names can be edited.</translation>
+      <translation>Název stylu. Existující názvy stylů lze upravovat.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new…</source>
-      <translation type="unfinished">Add new…</translation>
+      <translation>Přidat nový...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -1043,7 +1043,7 @@ bude rovina přesunuta do středu pohledu.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
       <source>Shape</source>
-      <translation>Útvar</translation>
+      <translation>Tvar</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="80"/>
@@ -1607,29 +1607,29 @@ jedné sekundy, aby se předešlo náhodné modifikaci vložené hodnoty.</trans
     <message>
       <location filename="../ui/preferences-draft.ui" line="116"/>
       <source>Show working plane orientation</source>
-      <translation type="unfinished">Show working plane orientation</translation>
+      <translation>Zobrazit orientaci pracovní roviny</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command Options</source>
-      <translation type="unfinished">Command Options</translation>
+      <translation>Možnosti příkazů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="155"/>
       <source>If checked, instructions are displayed in the Report View when using Draft commands</source>
-      <translation type="unfinished">If checked, instructions are displayed in the Report View when using Draft commands</translation>
+      <translation>Pokud je zaškrtnuto, instrukce se zobrazí v Report View při použití příkazů Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="158"/>
       <source>Show prompts in the Report View</source>
-      <translation type="unfinished">Show prompts in the Report View</translation>
+      <translation>Zobrazit podněty v zobrazení hlášení</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
       <source>If checked, Length input, instead of the X coordinate, will have the initial focus.
 This allows indicating a direction and then type a distance.</source>
-      <translation type="unfinished">If checked, Length input, instead of the X coordinate, will have the initial focus.
-This allows indicating a direction and then type a distance.</translation>
+      <translation>Pokud je zaškrtnuto, vstup na délku místo souřadnice X bude mít počáteční fokus. 
+To umožňuje naznačit směr a poté zadat vzdálenost.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="175"/>
@@ -1644,7 +1644,7 @@ This allows indicating a direction and then type a distance.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="296"/>
       <source>Maximum number of editable objects</source>
-      <translation type="unfinished">Maximum number of editable objects</translation>
+      <translation>Maximální počet editovatelných objektů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
@@ -1674,7 +1674,7 @@ This allows indicating a direction and then type a distance.</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="20"/>
       <source>SVG Patterns</source>
-      <translation type="unfinished">SVG Patterns</translation>
+      <translation>SVG vzory</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
@@ -1701,7 +1701,7 @@ vzorů, které mají být přidány do standardních vzorů</translation>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="92"/>
       <source>Drawing View Line Definitions</source>
-      <translation type="unfinished">Drawing View Line Definitions</translation>
+      <translation>Definice čar výkresového pohledu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
@@ -1750,17 +1750,17 @@ vzorů, které mají být přidány do standardních vzorů</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="205"/>
       <source>Lines and Arrows</source>
-      <translation type="unfinished">Lines and Arrows</translation>
+      <translation>Čáry a šipky</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Typ startovací šipky</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
       <source>The default symbol displayed at the start of dimension lines</source>
-      <translation type="unfinished">The default symbol displayed at the start of dimension lines</translation>
+      <translation>Výchozí symbol zobrazený na začátku dimenzionálních čar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="314"/>
@@ -1771,7 +1771,7 @@ vzorů, které mají být přidány do standardních vzorů</translation>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Velikost šípky na začátku</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
@@ -2037,77 +2037,77 @@ pro lineární kóty.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
       <source>Use default style from Part/PartDesign</source>
-      <translation type="unfinished">Use default style from Part/PartDesign</translation>
+      <translation>Použít výchozí styl z Part/PartDesign</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="65"/>
       <source>Use original SVG style</source>
-      <translation type="unfinished">Use original SVG style</translation>
+      <translation>Použít původní SVG styl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="77"/>
       <source>If checked, no unit conversion will occur.
 One unit in the SVG file will be interpreted as one millimeter.</source>
-      <translation type="unfinished">If checked, no unit conversion will occur.
-One unit in the SVG file will be interpreted as one millimeter.</translation>
+      <translation>Je-li toto políčko zaškrtnuto, nedojde k žádnému převodu jednotek.
+Jedna jednotka v souboru SVG bude interpretována jako jeden milimetr.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="81"/>
       <source>Disable unit scaling</source>
-      <translation type="unfinished">Disable unit scaling</translation>
+      <translation>Vypnout škálování jednotek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="101"/>
       <source>Add wires for invalid faces</source>
-      <translation type="unfinished">Add wires for invalid faces</translation>
+      <translation>Přidat čáry pro neplatné plochy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>Method for importing SVG object colors</source>
-      <translation type="unfinished">Method for importing SVG object colors</translation>
+      <translation>Metoda importu barev SVG objektů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="97"/>
       <source>If face generation results in a degenerated face,
 a raw wire from the original shape is added</source>
-      <translation type="unfinished">If face generation results in a degenerated face,
-a raw wire from the original shape is added</translation>
+      <translation>Pokud při generování plochy vznikne degenerovaná plocha,
+přidá se surová drátová síť z původního tvaru</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
       <source>Check to cut shapes according to the even/odd SVG fill rule</source>
-      <translation type="unfinished">Check to cut shapes according to the even/odd SVG fill rule</translation>
+      <translation>Zkontroluje, zda se tvary ořezávají podle pravidla vyplňování SVG pro sudé/liché tvary</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Apply cuts</source>
-      <translation type="unfinished">Apply cuts</translation>
+      <translation>Aplikovat řezy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
       <source>Coordinate precision (crucial for detecting closed paths)</source>
-      <translation type="unfinished">Coordinate precision (crucial for detecting closed paths)</translation>
+      <translation>Přesnost souřadnic (klíčová pro detekci uzavřených cest)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="166"/>
       <source>The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
 	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</source>
-      <translation type="unfinished">The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
-	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</translation>
+      <translation>Počet desetinných míst používaných při interních operacích se souřadnicemi (například 3 = 0,001).
+	Optimální hodnota závisí na absolutní velikosti importu. Typické hodnoty se pohybují v rozmezí 1 až 5.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="190"/>
       <source>Maximum deviation for approximation of complex curves</source>
-      <translation type="unfinished">Maximum deviation for approximation of complex curves</translation>
+      <translation>Maximální odchylka při aproximaci složitých křivek</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="210"/>
       <source>Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
 Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
 Set to zero to disable approximation.</source>
-      <translation type="unfinished">Maximum deviation for the approximation of ellipses, hyperbolas, parabolas, and
-Bézier and B-spline curves to arcs and lines. Can be useful for the CAM Workbench.
-Set to zero to disable approximation.</translation>
+      <translation>Maximální odchylka pro aproximaci elips, hyperbol, parabol, a Bézierovy a B-drážkové
+křivky na oblouky a čáry. Mohou být užitečné pro CAM Workbench. 
+Nastavte na nulu pro deaktivaci aproximace.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="256"/>
@@ -2137,12 +2137,12 @@ Set to zero to disable approximation.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="296"/>
       <source>Convert white line color to black</source>
-      <translation type="unfinished">Convert white line color to black</translation>
+      <translation>Změnit barvu bílé čáry na černou</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="316"/>
       <source>Maximum segment length for discretized arcs</source>
-      <translation type="unfinished">Maximum segment length for discretized arcs</translation>
+      <translation>Maximální délka segmentu pro členěné oblouky</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="336"/>
@@ -2162,12 +2162,12 @@ Tato hodnota je maximální délka segmentu.</translation>
       <location filename="../ui/preferences-oca.ui" line="26"/>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import Options</source>
-      <translation type="unfinished">Import Options</translation>
+      <translation>Možnosti importu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Imports the areas (3D faces) too</source>
-      <translation type="unfinished">Imports the areas (3D faces) too</translation>
+      <translation>Načte také plochy (3D plochy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -2192,7 +2192,7 @@ Tato hodnota je maximální délka segmentu.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
+      <translation>Všechny objekty obsahující plochy budou exportovány jako 3D sítě z více ploch</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="633"/>
@@ -2233,52 +2233,52 @@ Tato hodnota je maximální délka segmentu.</translation>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>If checked, this preferences dialog will be shown each time you import or export
 a DXF file.</source>
-      <translation type="unfinished">If checked, this preferences dialog will be shown each time you import or export
-a DXF file.</translation>
+      <translation>Pokud bude tato možnost zaškrtnuta, zobrazí se toto dialogové okno s nastavením pokaždé,
+když budete importovat nebo exportovat soubor DXF.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="30"/>
       <source>Show the importer dialog when importing a file</source>
-      <translation type="unfinished">Show the importer dialog when importing a file</translation>
+      <translation>Při importu souboru zobrazit dialogové okno pro import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="46"/>
       <source>Use the legacy Python importer. This importer is more feature-complete but slower and requires an external library.</source>
-      <translation type="unfinished">Use the legacy Python importer. This importer is more feature-complete but slower and requires an external library.</translation>
+      <translation>Použije starší importér pro Python. Tento importér nabízí více funkcí, je však pomalejší a vyžaduje externí knihovnu.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="49"/>
       <source>Use legacy importer</source>
-      <translation type="unfinished">Use legacy importer</translation>
+      <translation>Použít starší importér</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="62"/>
       <source>Use the legacy Python exporter. This exporter is more feature-complete but slower and requires an external library.</source>
-      <translation type="unfinished">Use the legacy Python exporter. This exporter is more feature-complete but slower and requires an external library.</translation>
+      <translation>Použije starší exportér pro Python. Tento exportér nabízí více funkcí, je však pomalejší a vyžaduje externí knihovnu.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="65"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>Použít starší exportér</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="81"/>
       <source>Automatic Update (Legacy Only)</source>
-      <translation type="unfinished">Automatic Update (Legacy Only)</translation>
+      <translation>Automatická aktualizace (pouze starší verze)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="87"/>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation type="unfinished">If checked, FreeCAD is allowed to download and update the Python libraries
-required by the legacy importer. This can also be done manually by installing
-the 'dxf_library' addon from the Addon Manager.</translation>
+      <translation>Je-li zaškrtnuto, FreeCAD může stahovat a aktualizovat knihovny Pythonu,
+které vyžaduje importér starších formátů. To lze provést i ručně instalací
+doplňku „dxf_library“ ze Správce doplňků.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="108"/>
       <source>Import As</source>
-      <translation type="unfinished">Import As</translation>
+      <translation>Importovat jako</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="117"/>
@@ -2286,15 +2286,15 @@ the 'dxf_library' addon from the Addon Manager.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench. </translation>
+      <translation>Vytváří plně parametrické Draft objekty. Definice bloků se importují jako opětovně
+použitelné objekty (Part Compounds) a instance se stávají objekty `App::Link`,
+přičemž se zachovává struktura bloku. Ideální pro plnou integraci s pracovním
+prostředím Draft.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="123"/>
       <source>Editable Draft objects (highest fidelity, slowest)</source>
-      <translation type="unfinished">Editable Draft objects (highest fidelity, slowest)</translation>
+      <translation>Upravitelné objekty typu Draft (nejvyšší věrnost, nejpomalejší)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="132"/>
@@ -2474,7 +2474,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <location filename="../ui/preferences-svg.ui" line="242"/>
       <location filename="../ui/preferences-dxf.ui" line="504"/>
       <source>Export Options</source>
-      <translation type="unfinished">Export Options</translation>
+      <translation>Možnosti exportu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="541"/>
@@ -2710,7 +2710,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../ui/preferences-draft.ui" line="270"/>
       <source> seconds</source>
-      <translation>sekundy</translation>
+      <translation> sekundy</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="311"/>
@@ -2761,12 +2761,12 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG Conversion</source>
-      <translation type="unfinished">DWG Conversion</translation>
+      <translation>Převod na DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Conversion method</source>
-      <translation type="unfinished">Conversion method</translation>
+      <translation>Metoda převodu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
@@ -2796,7 +2796,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>Note: DXF options apply to DWG files as well.</source>
-      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
+      <translation>Poznámka: Možnosti formátu DXF platí i pro soubory DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3001,7 +3001,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="683"/>
       <source>Recenter</source>
-      <translation type="unfinished">Recenter</translation>
+      <translation>Znovu vystřednění</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="696"/>
@@ -3011,17 +3011,17 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="715"/>
       <source>UI Options</source>
-      <translation type="unfinished">UI Options</translation>
+      <translation>UI možnosti</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="721"/>
       <source>If checked, the Draft Snap toolbar will only be visible during commands</source>
-      <translation type="unfinished">If checked, the Draft Snap toolbar will only be visible during commands</translation>
+      <translation>Je-li tato možnost zaškrtnuta, panel nástrojů Draft Snap bude viditelný pouze během provádění příkazů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="724"/>
       <source>Only show the Draft Snap toolbar during commands</source>
-      <translation type="unfinished">Only show the Draft Snap toolbar during commands</translation>
+      <translation>Zobrazit panel nástrojů Draft Snap pouze během zadávání příkazů</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="740"/>
@@ -3105,12 +3105,12 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
       <location filename="../../draftmake/make_sketch.py" line="124"/>
       <location filename="../../draftmake/make_sketch.py" line="140"/>
       <source>All shapes must be coplanar</source>
-      <translation type="unfinished">All shapes must be coplanar</translation>
+      <translation>Všechny tvary musí ležet v jedné rovině</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="995"/>
       <source>Selected shapes must define a plane</source>
-      <translation type="unfinished">Selected shapes must define a plane</translation>
+      <translation>Vybrané tvary musí definovat rovinu</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1081"/>
@@ -3143,7 +3143,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../../WorkingPlane.py" line="1336"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Aktuální funkční rovina: Auto</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1852"/>
@@ -3198,7 +3198,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../../DraftGui.py" line="700"/>
       <source>X coordinate of the point</source>
-      <translation type="unfinished">X coordinate of the point</translation>
+      <translation>X souřadnice bodu</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="701"/>
@@ -3250,7 +3250,7 @@ pokud odpovídají osám X, Y, nebo Z globální souřadnicové soustavy</transl
     <message>
       <location filename="../../DraftGui.py" line="1076"/>
       <source>Label Type</source>
-      <translation type="unfinished">Label Type</translation>
+      <translation>Typ štítku</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1126"/>
@@ -3314,7 +3314,7 @@ Zrušte zaškrtnutí pro použití souřadnicového systému pracovní roviny</t
     <message>
       <location filename="../../DraftGui.py" line="2082"/>
       <source>Modify Objects</source>
-      <translation type="unfinished">Modify Objects</translation>
+      <translation>Upravit objekty</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2240"/>
@@ -3349,7 +3349,7 @@ Zrušte zaškrtnutí pro použití souřadnicového systému pracovní roviny</t
     <message>
       <location filename="../../DraftGui.py" line="707"/>
       <source>Enter a point with given coordinates</source>
-      <translation type="unfinished">Enter a point with given coordinates</translation>
+      <translation>Zadat bod s danými souřadnicemi</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="736"/>
@@ -3700,7 +3700,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="639"/>
       <source>Wires:</source>
-      <translation>dráty:</translation>
+      <translation>Dráty:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="640"/>
@@ -3836,7 +3836,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="333"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 výběr dalšího bodu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="386"/>
@@ -4127,13 +4127,13 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 výběr prvního bodu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 výběr druhého bodu</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="666"/>
@@ -4160,7 +4160,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
       <location filename="../../draftguitools/gui_edit.py" line="387"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>%1 dokončení</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="298"/>
@@ -5956,7 +5956,7 @@ existujících objektů ve všech otevřených dokumentech?</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="57"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Přepnout mřížku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="63"/>
@@ -6300,7 +6300,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="207"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Upravit měřítko</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="105"/>
@@ -8152,7 +8152,7 @@ za kótovací čárou</translation>
     <message>
       <location filename="../../draftviewproviders/view_rectangle.py" line="46"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation type="unfinished">Defines a texture image (overrides hatch patterns)</translation>
+      <translation>Definuje obrázek textury (přepisuje vzory šrafování)</translation>
     </message>
   </context>
   <context>
@@ -8180,12 +8180,12 @@ za kótovací čárou</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Styly anotací</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="86"/>
       <source>Opens an editor to manage or create annotation styles</source>
-      <translation type="unfinished">Opens an editor to manage or create annotation styles</translation>
+      <translation>Otevírá editor pro správu nebo vytváření stylů anotací</translation>
     </message>
   </context>
   <context>
@@ -8198,7 +8198,7 @@ za kótovací čárou</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="524"/>
       <source>Creates a circular arc from 3 points</source>
-      <translation type="unfinished">Creates a circular arc from 3 points</translation>
+      <translation>Vytváří kruhový oblouk ze tří bodů</translation>
     </message>
   </context>
   <context>
@@ -8318,7 +8318,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="64"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Přepnout mřížku</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="67"/>
@@ -8904,12 +8904,12 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="14"/>
       <source>DXF Import</source>
-      <translation type="unfinished">DXF Import</translation>
+      <translation>DXF Import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="20"/>
       <source>Import As</source>
-      <translation type="unfinished">Import As</translation>
+      <translation>Importovat jako</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="26"/>
@@ -8974,7 +8974,7 @@ shape. Best for viewing very large files with maximum performance.</translation>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="100"/>
       <source>File summary</source>
-      <translation type="unfinished">File summary</translation>
+      <translation>Shrnutí souboru</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
@@ -8984,7 +8984,7 @@ shape. Best for viewing very large files with maximum performance.</translation>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Toto dialogové okno již nezobrazovat</translation>
     </message>
   </context>
   <context>
@@ -8992,7 +8992,7 @@ shape. Best for viewing very large files with maximum performance.</translation>
     <message>
       <location filename="../../Init.py" line="35"/>
       <source>Flattened SVG</source>
-      <translation type="unfinished">Flattened SVG</translation>
+      <translation>Zploštělé SVG</translation>
     </message>
   </context>
 </TS>

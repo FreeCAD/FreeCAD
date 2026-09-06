@@ -59,6 +59,7 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
@@ -75,6 +76,7 @@
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
+#include "TaskSpreadsheetView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "CommandHelpers.h"
@@ -1758,55 +1760,74 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
+    auto* document = page->getDocument();
+    const std::string pageName = page->getNameInDocument();
 
     const std::vector<App::DocumentObject*> spreads =
         getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
-    if (spreads.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one spreadsheet object"));
+    auto* spreadsheet = spreads.empty()
+        ? nullptr
+        : static_cast<Spreadsheet::Sheet*>(spreads.front());
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Spreadsheet View"));
+
+    std::string spreadsheetName;
+    if (spreadsheet) {
+        spreadsheetName = spreadsheet->getNameInDocument();
+    }
+    else {
+        spreadsheetName = document->getUniqueObjectName("Spreadsheet");
+        doCommand(Doc,
+                  "App.getDocument('%s').addObject('Spreadsheet::Sheet', '%s')",
+                  document->getName(),
+                  spreadsheetName.c_str());
+    }
+
+    const std::string viewName = document->getUniqueObjectName("Sheet");
+    doCommand(Doc,
+              "App.getDocument('%s').addObject('TechDraw::DrawViewSpreadsheet', '%s')",
+              document->getName(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
+              document->getName(),
+              viewName.c_str(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.Source = App.getDocument('%s').%s",
+              document->getName(),
+              viewName.c_str(),
+              document->getName(),
+              spreadsheetName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.addView(App.getDocument('%s').%s)",
+              document->getName(),
+              pageName.c_str(),
+              document->getName(),
+              viewName.c_str());
+    doCommand(Doc,
+              "App.getDocument('%s').%s.ViewObject.ClaimSheetAsChild = %s",
+              document->getName(),
+              viewName.c_str(),
+              spreadsheet ? "False" : "True");
+    updateActive();
+
+    auto* view = dynamic_cast<TechDraw::DrawViewSpreadsheet*>(document->getObject(viewName.c_str()));
+    if (!view) {
+        abortCommand();
         return;
     }
-    std::string SpreadName = spreads.front()->getNameInDocument();
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create spreadsheet view"));
-    std::string FeatName = getUniqueObjectName("Sheet");
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewSpreadsheet', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewSpreadsheet', 'Sheet', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.Source = App.activeDocument().%s", FeatName.c_str(),
-              SpreadName.c_str());
-
-    // look for an owner view in the selection
-    auto baseView = CommandHelpers::firstViewInSelection(this);
-    if (baseView) {
-        auto baseName = baseView->getNameInDocument();
-        doCommand(Doc, "App.activeDocument().%s.Owner = App.activeDocument().%s",
-                  FeatName.c_str(), baseName);
-    }
-
-    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
-              FeatName.c_str());
-    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
-        PageName.c_str(), FeatName.c_str(), PageName.c_str());
-    updateActive();
-    commitCommand();
+    Gui::Control().showDialog(new TaskDlgSpreadsheetView(page, view, true), document);
+    doCommand(Gui,
+              "Gui.getDocument('%s').setEdit('%s')",
+              document->getName(),
+              viewName.c_str());
 }
 
 bool CmdTechDrawSpreadsheetView::isActive()
 {
-    //need a Page and a SpreadSheet::Sheet
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveSheet = false;
-    if (havePage) {
-        auto spreadSheetType(Spreadsheet::Sheet::getClassTypeId());
-        auto selSheets = getDocument()->getObjectsOfType(spreadSheetType);
-        if (!selSheets.empty()) {
-            haveSheet = true;
-        }
-    }
-    return (havePage && haveSheet);
+    return DrawGuiUtil::needPage(this);
 }
 
 

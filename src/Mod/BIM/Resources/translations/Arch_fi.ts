@@ -1057,17 +1057,17 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="662"/>
       <source>Add New Group</source>
-      <translation type="unfinished">Add New Group</translation>
+      <translation>Lisää uusi ryhmä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="676"/>
       <source>Delete a selected group</source>
-      <translation type="unfinished">Delete a selected group</translation>
+      <translation>Poista valittu ryhmä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="714"/>
       <source>Accept the values of this form</source>
-      <translation type="unfinished">Accept the values of this form</translation>
+      <translation>Hyväksy tämän lomakkeen arvot</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="352"/>
@@ -1077,7 +1077,7 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
       <source>This dialog assists in creating and configuring a new BIM project in FreeCAD</source>
-      <translation type="unfinished">This dialog assists in creating and configuring a new BIM project in FreeCAD</translation>
+      <translation>Tämä valintaikkuna avustaa uuden BIM-projektin luomisessa ja määrittämisessä FreeCADissä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="359"/>
@@ -1102,7 +1102,7 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="407"/>
       <source>The primary function of this building</source>
-      <translation type="unfinished">The primary function of this building</translation>
+      <translation>Tämän rakennuksen ensisijainen tehtävä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="417"/>
@@ -1117,7 +1117,7 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="523"/>
       <source>The color of axes</source>
-      <translation type="unfinished">The color of axes</translation>
+      <translation>Runkolinjojen väri</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="537"/>
@@ -1127,17 +1127,17 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="549"/>
       <source>Add a human figure to the document</source>
-      <translation type="unfinished">Add a human figure to the document</translation>
+      <translation>Lisää dokumenttiin henkilöhahmo</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="552"/>
       <source>Add Human Figure</source>
-      <translation type="unfinished">Add Human Figure</translation>
+      <translation>Lisää ihmisfiguuri</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="561"/>
       <source>A human figure will be added to the document, which helps give a sense of scale</source>
-      <translation type="unfinished">A human figure will be added to the document, which helps give a sense of scale</translation>
+      <translation>Asiakirjaan lisätään ihmishahmo, joka auttaa ymmärtämään mittasuhteita</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="574"/>
@@ -1147,12 +1147,12 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="580"/>
       <source>BIM projects are typically organized into levels that represent the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, the default levels can be set here.</source>
-      <translation type="unfinished">BIM projects are typically organized into levels that represent the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, the default levels can be set here.</translation>
+      <translation>BIM-projektit on tyypillisesti organisoitu tasoille, jotka edustavat rakennuksen eri kerrroksia. Vaikka FreeCADin tasojen käyttäminen ei ole pakollista, tässä voidaan asettaa oletustasot.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="592"/>
       <source>The number of levels to create</source>
-      <translation type="unfinished">The number of levels to create</translation>
+      <translation>Luotavien tasojen määrä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="605"/>
@@ -1162,7 +1162,7 @@ tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</transl
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="612"/>
       <source>The vertical distance between each level</source>
-      <translation type="unfinished">The vertical distance between each level</translation>
+      <translation>Tasojen välinen etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="625"/>

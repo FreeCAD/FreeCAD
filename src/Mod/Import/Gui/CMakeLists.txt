@@ -45,10 +45,7 @@ if (MSVC)
     target_compile_options(ImportGui PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(ImportGui)
-endif()
-
+target_compile_warn_error(ImportGui)
 
 SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
 SET_PYTHON_PREFIX_SUFFIX(ImportGui)

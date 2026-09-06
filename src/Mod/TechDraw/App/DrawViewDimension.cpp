@@ -1363,12 +1363,28 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
         || geometry1.ShapeType() != TopAbs_EDGE) {
         throw Base::RuntimeError("Geometry for dimension reference is null.");
     }
-    TopoDS_Edge edge0 = TopoDS::Edge(geometry0);
-    BRepAdaptor_Curve adapt0(edge0);
-    TopoDS_Edge edge1 = TopoDS::Edge(geometry1);
-    BRepAdaptor_Curve adapt1(edge1);
 
-    if (adapt0.GetType() != GeomAbs_Line || adapt1.GetType() != GeomAbs_Line) {
+    auto isLinear = [](const TopoDS_Edge& edge) {
+        BRepAdaptor_Curve adapt(edge);
+        if (adapt.GetType() == GeomAbs_Line) {
+            return true;
+        }
+        if (adapt.GetType() == GeomAbs_BezierCurve) {
+            Handle(Geom_BezierCurve) curve = adapt.Bezier();
+            return curve->Degree() == 1;
+        }
+        if (adapt.GetType() == GeomAbs_BSplineCurve) {
+            Handle(Geom_BSplineCurve) curve = adapt.BSpline();
+            return curve->Degree() == 1;
+        }
+
+        return false;
+    };
+
+    TopoDS_Edge edge0 = TopoDS::Edge(geometry0);
+    TopoDS_Edge edge1 = TopoDS::Edge(geometry1);
+
+    if (!isLinear(edge0) || !isLinear(edge1)) {
         throw Base::RuntimeError("Geometry for angle dimension must be lines.");
     }
     gp_Pnt gStart0 = BRep_Tool::Pnt(TopExp::FirstVertex(edge0));

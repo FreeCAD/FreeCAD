@@ -2209,12 +2209,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ເພີ່ມເມັດຈຸດສີ່ສ່ວນ (Quadrant)</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <location filename="../../TaskRichAnno.cpp" line="111"/>
       <source>Edit Annotation</source>
       <translation>ແກ້ໄຂຄຳອະທິບາຍປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../TaskRichAnno.cpp" line="152"/>
       <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>ສ້າງຄຳອະທິບາຍປະກອບ</translation>
@@ -2438,7 +2438,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ສ້າງຮູບພາບ</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="511"/>
+      <location filename="../../QGIViewBalloon.cpp" line="525"/>
       <source>Drag Balloon</source>
       <translation>ລາກບານລູນ (Balloon)</translation>
     </message>
@@ -3797,27 +3797,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ຟັງຊັນນີ້ຕ້ອງການໜ້າ.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="841"/>
       <source>Export Page as PDF</source>
       <translation>ສົ່ງອອກໜ້າເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="760"/>
       <source>Export page as SVG</source>
       <translation>ສົ່ງອອກໜ້າເປັນ SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="561"/>
+      <location filename="../../MDIViewPage.cpp" line="783"/>
       <source>Export page as DXF</source>
       <translation>ສົ່ງອອກໜ້າເປັນ DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="602"/>
+      <location filename="../../MDIViewPage.cpp" line="824"/>
       <source>Unable to Write File</source>
       <translation>ບໍ່ສາມາດຂຽນໄຟລ໌ໄດ້</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="603"/>
+      <location filename="../../MDIViewPage.cpp" line="825"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCAD ບໍ່ສາມາດເປີດໄຟລ໌ %1 ເພື່ອຂຽນໄດ້. ໄຟລ໌ອາດຈະຖືກເປີດຢູ່ໃນໂປຣແກຣມອື່ນ.</translation>
     </message>
@@ -3849,7 +3849,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ແກ້ໄຂເສັ້ນຊີ້ບອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="376"/>
+      <location filename="../../TaskRichAnno.cpp" line="379"/>
       <source>Rich text editor</source>
       <translation>ເຄື່ອງມືແກ້ໄຂຂໍ້ຄວາມແບບ Rich Text</translation>
     </message>
@@ -4270,17 +4270,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ແກ້ໄຂເສັ້ນສູນກາງ</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="117"/>
+      <location filename="../../TaskRichAnno.cpp" line="116"/>
       <source>Rich Text Editor</source>
       <translation>ເຄື່ອງມືແກ້ໄຂຂໍ້ຄວາມແບບ Rich Text</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="156"/>
+      <location filename="../../TaskRichAnno.cpp" line="155"/>
       <source>Rich Text Creator</source>
       <translation>ເຄື່ອງມືສ້າງຂໍ້ຄວາມແບບ Rich Text</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="374"/>
+      <location filename="../../TaskRichAnno.cpp" line="377"/>
       <source>Rich text creator</source>
       <translation>ເຄື່ອງມືສ້າງຂໍ້ຄວາມແບບ Rich Text</translation>
     </message>
@@ -6287,66 +6287,66 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
-      <source>Toggle &amp;Keep Updated</source>
-      <translation>ສະຫຼັບການຮັກສາການອັບເດດ (&amp;K)</translation>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <source>&amp;Keep Updated</source>
+      <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
-      <source>Toggle &amp;Frames</source>
-      <translation>ສະຫຼັບຂອບ (&amp;F)</translation>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <source>Show &amp;Frames</source>
+      <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
-      <source>Toggle &amp;Grid</source>
-      <translation>ສະຫຼັບເສັ້ນຕາຕະລາງ (&amp;G)</translation>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <source>Show &amp;Grid</source>
+      <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>&amp;Export SVG</source>
       <translation>ສົ່ງອອກ SVG (&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="113"/>
       <source>Export DXF</source>
       <translation>ສົ່ງອອກ DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="117"/>
       <source>Export PDF</source>
       <translation>ສົ່ງອອກເປັນ PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="121"/>
       <source>Print All Pages</source>
       <translation>ພິມທຸກໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="428"/>
+      <location filename="../../MDIViewPage.cpp" line="445"/>
       <source>Different orientation</source>
       <translation>ການວາງແນວທີ່ຕ່າງກັນ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="446"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>ເຄື່ອງພິມໃຊ້ການວາງແນວທີ່ຕ່າງຈາກແບບແຕ້ມ.
 ທ່ານຕ້ອງການສືບຕໍ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="438"/>
+      <location filename="../../MDIViewPage.cpp" line="455"/>
       <source>Different paper size</source>
       <translation>ຂະໜາດເຈ້ຍທີ່ຕ່າງກັນ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="439"/>
+      <location filename="../../MDIViewPage.cpp" line="456"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>ເຄື່ອງພິມໃຊ້ຂະໜາດເຈ້ຍທີ່ຕ່າງຈາກແບບແຕ້ມ.
 ທ່ານຕ້ອງການສືບຕໍ່ຫຼືບໍ່?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1161"/>
+      <location filename="../../MDIViewPage.cpp" line="1404"/>
       <source>Selected:</source>
       <translation>ທີ່ເລືອກ:</translation>
     </message>
@@ -8426,7 +8426,7 @@ using the given X/Y spacings</source>
       <translation>ເສັ້ນປະສະຫຼັບສອງຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../TaskRichAnno.cpp" line="661"/>
+      <location filename="../../TaskRichAnno.cpp" line="674"/>
       <source>RichTextAnnotation</source>
       <translation>ຄຳບັນຍາຍ Rich Text</translation>
     </message>

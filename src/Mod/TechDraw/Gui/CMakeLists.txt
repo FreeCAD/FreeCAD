@@ -59,6 +59,7 @@ set(TechDrawGui_UIC_SRCS
     TaskRestoreLines.ui
     TaskRichAnno.ui
     TaskSectionView.ui
+    TaskSpreadsheetView.ui
     TaskWeldingSymbol.ui
     TaskSurfaceFinishSymbols.ui
     SymbolChooser.ui
@@ -135,6 +136,9 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    TaskSpreadsheetView.ui
+    TaskSpreadsheetView.cpp
+    TaskSpreadsheetView.h
     TaskBalloon.ui
     TaskBalloon.cpp
     TaskBalloon.h
@@ -414,6 +418,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
     TaskLinkDim.ui
     TaskSectionView.ui
+    TaskSpreadsheetView.ui
     TaskGeomHatch.ui
     TaskHatch.ui
     TaskLeaderLine.ui
@@ -491,9 +496,7 @@ if (MSVC)
     target_compile_definitions(TechDrawGui PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDrawGui)
-endif()
+target_compile_warn_error(TechDrawGui)
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")

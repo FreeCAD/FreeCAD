@@ -58,7 +58,7 @@ namespace
 bool isSubtractiveHelix(PartDesignGui::ViewProviderHelix* view)
 {
     auto* helix = view->getObject<PartDesign::Helix>();
-    return helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+    return helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive;
 }
 
 std::string helixTaskIconName(PartDesignGui::ViewProviderHelix* view)
@@ -343,7 +343,7 @@ void TaskHelixParameters::adaptVisibilityToMode()
     bool isGrowthVisible = false;
 
     auto helix = getObject<PartDesign::Helix>();
-    if (helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+    if (helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive) {
         isOutsideVisible = true;
     }
 
@@ -676,9 +676,9 @@ bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
         "User parameter:BaseApp/Preferences/Mod/PartDesign"
     );
     if ((hGrp->GetBool("SubractiveHelixPreview", true)
-         && helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
+         && helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Subtractive)
         || (hGrp->GetBool("AdditiveHelixPreview", false)
-            && helix->getAddSubType() == PartDesign::FeatureAddSub::Additive)) {
+            && helix->getAddSubType() == PartDesign::FeatureAddSub::Type::Additive)) {
         return true;
     }
 

@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <optional>
 #include <ranges>
 #include <Bnd_Box.hxx>
@@ -46,6 +47,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <GProp_GProps.hxx>
+#include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <Standard_Version.hxx>
 #include <TopExp.hxx>
@@ -62,9 +64,11 @@
 #include <App/Datums.h>
 #include <Base/Converter.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Tools.h>
 
+#include "Body.h"
 #include "FeatureSketchBased.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -74,6 +78,13 @@
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
 using namespace PartDesign;
+
+double PartDesign::normalizeAngleRadians(double angle)
+{
+    constexpr double fullRotation = 2.0 * std::numbers::pi;
+    angle = Base::fmod(angle, fullRotation);
+    return fullRotation - angle < Precision::Angular() ? 0.0 : angle;
+}
 
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
 
@@ -302,7 +313,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                             openshape.makeElementCompound(
                                 openwires,
                                 nullptr,
-                                TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                             );
                             if (wires.empty()) {
                                 shape = TopoShape();
@@ -311,7 +322,7 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                                 shape.makeElementCompound(
                                     wires,
                                     nullptr,
-                                    TopoShape ::SingleShapeCompoundCreationPolicy::returnShape
+                                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape
                                 );
                             }
                         }
@@ -703,6 +714,11 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
     if (spt) {
+        // Attaching to a Body positions the profile but must not import its complete tip shape.
+        // Feature supports remain implicit bases for compatibility with legacy files.
+        if (spt->isDerivedFrom<PartDesign::Body>()) {
+            return Feature::getBaseObject(silent);
+        }
         if (spt->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(spt);
         }

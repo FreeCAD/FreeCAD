@@ -62,8 +62,10 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
         void setRectangle(QRectF rect);
         void setLine(QPointF from, QPointF to);
         void setLineColor(QColor color);
-        void hideLine() { m_line->hide(); }
+        void hideLine();
         void showLine() { m_line->show(); }
+        void setShortText(bool newState) { m_isShortText = newState;}
+        bool isShortText() const { return m_isShortText; }
 
     protected:
         /// Need this to properly handle mouse release
@@ -82,5 +84,8 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
 
         QGraphicsRectItem* m_rect;
         QGraphicsPathItem* m_line;
+
+        bool m_isShortText;
 };
 }   // namespace TechDrawGui
+
