@@ -2384,16 +2384,16 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             = incomingShapeElementMappedNames.front().first;
 
                         // Since indexed names can have multiple MappedNames assigned to them,
-                        // we want to make sure we include as many as three of them in the new ElementMap for
-                        // reliability sake.
-                        for (
-                            size_t incomingMappedNameIdx = 0;
-                            (incomingMappedNameIdx < incomingShapeElementMappedNames.size() && incomingMappedNameIdx < 3);
-                            incomingMappedNameIdx++
-                        )
-                        {
+                        // we want to make sure we include as many as three of them in the new
+                        // ElementMap for reliability sake.
+                        for (size_t incomingMappedNameIdx = 0;
+                             (incomingMappedNameIdx < incomingShapeElementMappedNames.size()
+                              && incomingMappedNameIdx < 3);
+                             incomingMappedNameIdx++) {
                             std::vector<Data::MappedName> newConnectedElementNames;
-                            Data::MappedName newName {incomingShapeElementMappedNames[incomingMappedNameIdx].first};
+                            Data::MappedName newName {
+                                incomingShapeElementMappedNames[incomingMappedNameIdx].first
+                            };
 
                             if (connectedElementMap.find(modifiedShape) != connectedElementMap.end()) {
                                 newConnectedElementNames = connectedElementMap[modifiedShape];
