@@ -286,8 +286,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     while pitch > 1:
         pitch = pitch - 1
     Path.Log.debug(
-        "  pitch = %g %g (%.2f, %.2f, %.2f) -> %.2f"
-        % (pitch, math.atan2(xy(d).Length, d.z), d.x, d.y, d.z, xy(d).Length)
+        f"  pitch = {pitch:g} {math.atan2(xy(d).Length, d.z):g} ({d.x:.2f}, {d.y:.2f}, {d.x:.2f}) -> {xy(d).Length:.2f}"
     )
     speed = vSpeed + pitch * (hSpeed - vSpeed)
     if speed > hSpeed and speed > vSpeed:
@@ -858,10 +857,10 @@ def combineHorizontalFaces(faces, keepOrder=False):
 
     If keepOrder is True, returns shapes with original order
     """
-    horizontal = list()
+    horizontal = []
     offset = 10.0
     topFace = None
-    innerFaces = list()
+    innerFaces = []
 
     # Verify all incoming faces are at Z=0.0
     for f in faces:
@@ -881,7 +880,7 @@ def combineHorizontalFaces(faces, keepOrder=False):
     afbb = allFaces.BoundBox
     bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
     bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = list()
+    extrudedFaces = []
     for f in faces:
         extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
 
@@ -928,8 +927,7 @@ def combineHorizontalFaces(faces, keepOrder=False):
             innerComp = Part.makeCompound(inner)
             outerComp = Part.makeCompound(outer)
             cut = outerComp.cut(innerComp)
-            for f in cut.Faces:
-                horizontal.append(f)
+            horizontal = cut.Faces
         else:
             horizontal = outer
 
