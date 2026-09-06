@@ -599,8 +599,10 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
                     plc.setPosition(pos);
                 }
-                else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane
-                         || dragMode == DragMode::TranslationOnPlaneAndRotationOnPlane) {
+                else if (
+                    dragMode == DragMode::TranslationOnAxisAndRotationOnePlane
+                    || dragMode == DragMode::TranslationOnPlaneAndRotationOnPlane
+                ) {
                     Base::Vector3d delta = newPos - initialPosition;
                     Base::Vector3d pos = plc.getPosition() + delta;
                     plc.setPosition(pos);
@@ -1059,10 +1061,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         else if (jointType == JointType::Distance) {
             // Planar distances leave slide + spin about the plane normal (ASMTPlanarJoint).
             DistanceType distanceType = getDistanceType(movingJoint);
-            if (distanceType == DistanceType::PlanePlane
-                || distanceType == DistanceType::PlaneTorus
-                || distanceType == DistanceType::TorusTorus
-                || distanceType == DistanceType::Other) {
+            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::PlaneTorus
+                || distanceType == DistanceType::TorusTorus || distanceType == DistanceType::Other) {
                 return DragMode::TranslationOnPlaneAndRotationOnPlane;
             }
         }
