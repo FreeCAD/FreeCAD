@@ -358,9 +358,10 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape
     Base::hash_combine(newViewHash, IsoCount.getValue());
     Base::hash_combine(newViewHash, CoarseView.getValue());
     Base::hash_combine(newViewHash, ScrubCount.getValue());
+    m_hlrBlocked = false;
 
-    // If the object is not different we just return the existing geometryObject to skip HLR
     if (newViewHash == m_viewHash && geometryObject) {
+        m_hlrBlocked = true;
         return geometryObject;
     }
 
@@ -428,6 +429,10 @@ void DrawViewPart::onHlrFinished()
     waitingForHlr(false);
     QObject::disconnect(connectHlrWatcher);
     showProgressMessage(getNameInDocument(), "has finished finding hidden lines");
+
+    if (m_hlrBlocked) {
+        return;
+    }
 
     postHlrTasks();//application level tasks that depend on HLR/GO being complete
 
