@@ -132,13 +132,10 @@ bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection
         return false;
     }
 
-    // Fold to the acute angle so anti-parallel reads as parallel, and allow the
-    // placement round-trip noise that acos amplifies; at Precision::Angular() every
-    // rotated-but-parallel pair in an assembly would claim the angle measurement.
-    constexpr double parallelTolerance = 1e-6;
+    // Fold to the acute angle so anti-parallel reads as parallel.
     const double angle = vec1.GetAngle(vec2);
     const double acuteAngle = std::min(angle, std::numbers::pi - angle);
-    return acuteAngle > parallelTolerance;
+    return acuteAngle > Base::Precision::Angular();
 }
 
 

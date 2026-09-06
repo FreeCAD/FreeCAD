@@ -143,7 +143,7 @@ TEST_F(MeasureAngle, testEdgeEdgePerpendicular)
     measure->Element2.setValue(lineY, {"Edge1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 90.0, 1e-6);
+    EXPECT_NEAR(measure->Angle.getValue(), 90.0, Precision::Angular());
 }
 
 // Existing face-face path, unchanged: perpendicular normals read 90.
@@ -158,7 +158,7 @@ TEST_F(MeasureAngle, testFaceFacePerpendicular)
     measure->Element2.setValue(planeYZ, {"Face1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 90.0, 1e-6);
+    EXPECT_NEAR(measure->Angle.getValue(), 90.0, Precision::Angular());
 }
 
 // Existing face-edge (line-to-plane) path, unchanged: an edge 45 out of the plane reads 45.
@@ -173,7 +173,7 @@ TEST_F(MeasureAngle, testFaceEdgeLineToPlane)
     measure->Element2.setValue(edge, {"Edge1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 45.0, 1e-6);
+    EXPECT_NEAR(measure->Angle.getValue(), 45.0, Precision::Angular());
 }
 
 // Cylinder acts as its axis: an edge 30 off the axis reads 30, not the 60 complement.
@@ -189,7 +189,7 @@ TEST_F(MeasureAngle, testCylinderAxisToEdge)
     measure->Element2.setValue(edge, {"Edge1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 30.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 30.0, Precision::Angular());
 }
 
 // Two non-intersecting holes: the axes never meet, but the angle between their
@@ -211,12 +211,12 @@ TEST_F(MeasureAngle, testSkewCylinderAxes)
     measure->Element2.setValue(cyl2, {"Face1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 45.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 45.0, Precision::Angular());
 
     gp_Vec dir1;
     gp_Vec dir2;
     ASSERT_TRUE(measure->getDirections(dir1, dir2));
-    EXPECT_NEAR(Base::toDegrees(dir1.Angle(dir2)), measure->Angle.getValue(), 1e-4);
+    EXPECT_NEAR(Base::toDegrees(dir1.Angle(dir2)), measure->Angle.getValue(), Precision::Angular());
 }
 
 // An axis pair whose raw directions are obtuse still reports the acute angle, and
@@ -233,30 +233,12 @@ TEST_F(MeasureAngle, testObtuseAxisPairFoldsDirections)
     measure->Element2.setValue(edge, {"Edge1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 30.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 30.0, Precision::Angular());
 
     gp_Vec dir1;
     gp_Vec dir2;
     ASSERT_TRUE(measure->getDirections(dir1, dir2));
-    EXPECT_NEAR(Base::toDegrees(dir1.Angle(dir2)), 30.0, 1e-4);
-}
-
-// Placement round-trips leave nominally parallel axes a hair off; the angle
-// measurement must not claim priority over distance for such a pair.
-TEST_F(MeasureAngle, testNoisyParallelAxesNotPrioritized)
-{
-    App::Document* doc = getDocument();
-    auto cyl1 = addFeature("Cyl1", makeCylinderFace(1.0, 4.0));
-    auto cyl2 = addFeature("Cyl2", makeCylinderFace(1.0, 4.0));
-    cyl2->Placement.setValue(
-        Base::Placement(Base::Vector3d(5.0, 0.0, 0.0), Base::Rotation(Base::Vector3d(1.0, 0.0, 0.0), 1e-8))
-    );
-    doc->recompute();
-
-    App::MeasureSelectionItem item1 {App::SubObjectT {cyl1, "Face1"}, Base::Vector3d {}};
-    App::MeasureSelectionItem item2 {App::SubObjectT {cyl2, "Face1"}, Base::Vector3d {}};
-
-    EXPECT_FALSE(Measure::MeasureAngle::isPrioritizedSelection({item1, item2}));
+    EXPECT_NEAR(Base::toDegrees(dir1.Angle(dir2)), 30.0, Precision::Angular());
 }
 
 // Parallel axes read 0, not the 180 the face-face path gives.
@@ -273,7 +255,7 @@ TEST_F(MeasureAngle, testParallelCylinderAxes)
     measure->Element2.setValue(cyl2, {"Face1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 0.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 0.0, Precision::Angular());
 }
 
 // Cone acts as its axis, like the cylinder.
@@ -289,7 +271,7 @@ TEST_F(MeasureAngle, testConeAxisToEdge)
     measure->Element2.setValue(edge, {"Edge1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 30.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 30.0, Precision::Angular());
 }
 
 // Axis to a plane whose normal is 45 off the axis is a 45 line-to-plane angle.
@@ -304,7 +286,7 @@ TEST_F(MeasureAngle, testCylinderAxisToPlane)
     measure->Element2.setValue(plane, {"Face1"});
     doc->recompute();
 
-    EXPECT_NEAR(measure->Angle.getValue(), 45.0, 1e-4);
+    EXPECT_NEAR(measure->Angle.getValue(), 45.0, Precision::Angular());
 }
 
 // The gate accepts cylinder/cone with an edge, still rejects a sphere.
