@@ -22,6 +22,7 @@
 
 
 #include <FCConfig.h>
+#include <qapplication.h>
 
 #ifdef FC_OS_WIN32
 # include <Windows.h>
@@ -40,7 +41,7 @@
 #include <QFileOpenEvent>
 #include <QSessionManager>
 #include <QTimer>
-
+#include <QStyleHints>
 
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -51,6 +52,7 @@
 #include <Base/Exception.h>
 
 #include "GuiApplication.h"
+#include "Gui/PreferencePackManager.h"
 #include "Application.h"
 #include "MainWindow.h"
 #include "SpaceballEvent.h"
@@ -203,6 +205,34 @@ bool GUIApplication::event(QEvent* ev)
             Application::Instance->open(fn, "FreeCAD");
             return true;
         }
+    }
+    else if (ev->type() == QEvent::ThemeChange) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow"
+        );
+
+        std::string currentTheme = hGrp->GetASCII("ThemeSetting", "");
+        std::string currentLightTheme = hGrp->GetASCII("LightThemeSetting", "");
+        std::string currentDarkTheme = hGrp->GetASCII("DarkThemeSetting", "");
+
+        if (currentTheme == "Use system theme") {
+            const auto scheme = QGuiApplication::styleHints()->colorScheme();
+            currentTheme = scheme == Qt::ColorScheme::Dark ? currentDarkTheme : currentLightTheme;
+
+            hGrp->SetASCII("Theme", currentTheme);
+
+            Application::Instance->prefPackManager()->rescan();
+            auto packs = Application::Instance->prefPackManager()->preferencePacks();
+
+            for (const auto& pack : packs) {
+                if (pack.first == currentTheme) {
+                    Application::Instance->prefPackManager()->apply(pack.first);
+                    break;
+                }
+            }
+        }
+
+        return true;
     }
 
     return GUIApplicationNativeEventAware::event(ev);
