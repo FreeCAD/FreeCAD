@@ -531,6 +531,11 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
+        else if (dragMode == DragMode::TranslationOnPlaneAndRotationOnPlane) {
+            SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+            newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
+            newPosRot = newPos;
+        }
         else {
             SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
@@ -594,7 +599,8 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
                     plc.setPosition(pos);
                 }
-                else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
+                else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane
+                         || dragMode == DragMode::TranslationOnPlaneAndRotationOnPlane) {
                     Base::Vector3d delta = newPos - initialPosition;
                     Base::Vector3d pos = plc.getPosition() + delta;
                     plc.setPosition(pos);
@@ -1051,10 +1057,13 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::Ball;
         }
         else if (jointType == JointType::Distance) {
-            //  depends on the type of distance. For example plane-plane:
+            // Planar distances leave slide + spin about the plane normal (ASMTPlanarJoint).
             DistanceType distanceType = getDistanceType(movingJoint);
-            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::Other) {
-                return DragMode::TranslationOnPlane;
+            if (distanceType == DistanceType::PlanePlane
+                || distanceType == DistanceType::PlaneTorus
+                || distanceType == DistanceType::TorusTorus
+                || distanceType == DistanceType::Other) {
+                return DragMode::TranslationOnPlaneAndRotationOnPlane;
             }
         }
     }
@@ -1131,6 +1140,11 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     else if (dragMode == DragMode::TranslationOnPlane) {
         vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
         initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+    }
+    else if (dragMode == DragMode::TranslationOnPlaneAndRotationOnPlane) {
+        vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
+        initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+        initialPositionRot = initialPosition;
     }
     else {
         vec = viewer->getPointOnFocalPlane(cursorPos);
