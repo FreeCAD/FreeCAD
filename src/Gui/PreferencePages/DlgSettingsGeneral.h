@@ -25,6 +25,7 @@
 
 #include <Gui/PropertyPage.h>
 #include <memory>
+#include <qt6/QtWidgets/qcombobox.h>
 #include <string>
 
 class QTabWidget;
@@ -55,7 +56,7 @@ public:
     void resetSettingsToDefaults() override;
 
     void saveThemes();
-    void loadThemes();
+    void loadThemes(QComboBox* comboBox);
 
     static void attachObserver();
 
