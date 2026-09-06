@@ -1037,10 +1037,8 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
         else if (jointType == JointType::Distance) {
             // Planar distances leave slide + spin about the plane normal (ASMTPlanarJoint).
             DistanceType distanceType = getDistanceType(movingJoint);
-            if (distanceType == DistanceType::PlanePlane
-                || distanceType == DistanceType::PlaneTorus
-                || distanceType == DistanceType::TorusTorus
-                || distanceType == DistanceType::Other) {
+            if (distanceType == DistanceType::PlanePlane || distanceType == DistanceType::PlaneTorus
+                || distanceType == DistanceType::TorusTorus || distanceType == DistanceType::Other) {
                 return DragMode::TranslationOnPlaneAndRotationOnPlane;
             }
         }
