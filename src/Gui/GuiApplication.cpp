@@ -206,6 +206,7 @@ bool GUIApplication::event(QEvent* ev)
             return true;
         }
     }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     else if (ev->type() == QEvent::ThemeChange) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/MainWindow"
@@ -234,6 +235,7 @@ bool GUIApplication::event(QEvent* ev)
 
         return true;
     }
+#endif
 
     return GUIApplicationNativeEventAware::event(ev);
 }
