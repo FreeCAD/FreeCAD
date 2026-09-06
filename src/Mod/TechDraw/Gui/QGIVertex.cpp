@@ -54,13 +54,13 @@ void QGIVertex::setRadius(double r)
 
 void QGIVertex::setScreenScale(double scale)
 {
-    m_scale = scale;
+    ScreenScalable::setScreenScale(scale);
     makePoint();
 }
 
 void QGIVertex::makePoint()
 {
-    double r = m_radius * m_scale;
+    double r = m_radius * m_screenScale;
     QPainterPath p;
     p.addEllipse(-r/2.0, -r/2.0, r, r);
     setPath(p);

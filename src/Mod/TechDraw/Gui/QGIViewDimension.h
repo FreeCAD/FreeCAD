@@ -37,6 +37,7 @@
 #include "QGIView.h"
 #include "QGIUserTypes.h"
 #include "Rez.h"
+#include "ScreenScalable.h"
 
 
 namespace TechDraw {
@@ -60,7 +61,7 @@ class ViewProviderDimension;
 enum class DragState;
 
 
-class TechDrawGuiExport QGIViewDimension : public QGIView
+class TechDrawGuiExport QGIViewDimension : public QGIView, public ScreenScalable
 {
     Q_OBJECT
 
@@ -91,7 +92,7 @@ public:
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
-    void setScreenScale(double scale);
+    void setScreenScale(double scale) override;
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
@@ -221,7 +222,6 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
-    double m_scale = 1.0;
     QGIDatumLabel* areaLeaderPointLabel;
     bool isAreaLeaderPointDragged;
 

@@ -26,6 +26,7 @@
 
 #include "QGIPrimPath.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 namespace Base {
 class Vector2d;
@@ -34,7 +35,7 @@ class Vector2d;
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIVertex : public QGIPrimPath
+class TechDrawGuiExport QGIVertex : public QGIPrimPath, public ScreenScalable
 {
 public:
     explicit QGIVertex(int index);
@@ -48,7 +49,7 @@ public:
 
     double getRadius() const { return m_radius; }
     virtual void setRadius(double r);
-    virtual void setScreenScale(double scale);
+    void setScreenScale(double scale) override;
 
     Base::Vector2d toVector2d() const;
     Base::Vector2d vector2dBetweenPoints(const QGIVertex* p2) const;
@@ -60,7 +61,6 @@ protected:
 
     int projIndex;
     double m_radius;
-    double m_scale = 1.0;
 };
 
 }

@@ -84,6 +84,7 @@
 #include "QGIWeldSymbol.h"
 #include "QGSPage.h"
 #include "Rez.h"
+#include "ScreenScalable.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
@@ -869,27 +870,10 @@ void QGSPage::updateScreenScale()
     scale = std::clamp(scale, Precision::Confusion(), 1.0);
 
     const QList<QGraphicsItem*> allItems = items();
-    
+
     for (auto* item : allItems) {
-        switch (item->type()) {
-            case QGIEdge::Type:
-                static_cast<QGIEdge*>(item)->setScreenScale(scale);
-                break;
-            case QGIVertex::Type:
-            case QGICMark::Type:
-                static_cast<QGIVertex*>(item)->setScreenScale(scale);
-                break;
-            case QGIViewDimension::Type:
-                static_cast<QGIViewDimension*>(item)->setScreenScale(scale);
-                break;
-            case QGIViewBalloon::Type:
-                static_cast<QGIViewBalloon*>(item)->setScreenScale(scale);
-                break;
-            case QGILeaderLine::Type:
-                static_cast<QGILeaderLine*>(item)->setScreenScale(scale);
-                break;
-            default:
-                break;
+        if (auto* scalable = dynamic_cast<ScreenScalable*>(item)) {
+            scalable->setScreenScale(scale);
         }
     }
 }

@@ -44,7 +44,7 @@ QGICMark::QGICMark(int index) : QGIVertex(index)
 }
 void QGICMark::draw()
 {
-    double size = m_size * m_scale;
+    double size = m_size * m_screenScale;
     QPainterPath cmPath;
     cmPath.moveTo(0.0, size);
     cmPath.lineTo(0.0, -size);
@@ -52,7 +52,7 @@ void QGICMark::draw()
     cmPath.lineTo(-size, 0.0);
     setPath(cmPath);
 
-    setWidth(m_thickness * m_scale);
+    setWidth(m_thickness * m_screenScale);
 }
 
 void QGICMark::setSize(float s)
@@ -69,7 +69,7 @@ void QGICMark::setThick(float t)
 
 void QGICMark::setScreenScale(double scale)
 {
-    m_scale = scale;
+    ScreenScalable::setScreenScale(scale);
     draw();
 }
 

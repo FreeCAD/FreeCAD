@@ -27,11 +27,12 @@
 
 #include "QGIPrimPath.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIEdge : public QGIPrimPath
+class TechDrawGuiExport QGIEdge : public QGIPrimPath, public ScreenScalable
 {
 public:
     explicit QGIEdge(int index);
@@ -54,7 +55,7 @@ public:
     void setLinePen(const QPen& isoPen);
 
     void setWidth(double width) override;
-    void setScreenScale(double scale);
+    void setScreenScale(double scale) override;
 
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}
@@ -75,7 +76,6 @@ private:
     bool isSmoothEdge;
 
     double m_width = 1.0;
-    double m_scale = 1.0;
 
     TechDraw::SourceType m_source{TechDraw::SourceType::GEOMETRY};
 };

@@ -116,12 +116,12 @@ void QGIEdge::setLinePen(const QPen& linePen)
 void QGIEdge::setWidth(double width)
 {
     m_width = width;
-    QGIPrimPath::setWidth(m_width * m_scale);
+    QGIPrimPath::setWidth(m_width * m_screenScale);
 }
 
 void QGIEdge::setScreenScale(double scale)
 {
-    m_scale = scale;
-    QGIPrimPath::setWidth(m_width * m_scale);
+    ScreenScalable::setScreenScale(scale);
+    QGIPrimPath::setWidth(m_width * m_screenScale);
 }
 

@@ -34,6 +34,7 @@
 
 #include "QGIView.h"
 #include "QGIUserTypes.h"
+#include "ScreenScalable.h"
 
 
 namespace TechDraw
@@ -51,7 +52,7 @@ class QGEPath;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGILeaderLine: public QGIView
+class TechDrawGuiExport QGILeaderLine: public QGIView, public ScreenScalable
 {
     Q_OBJECT
 
@@ -101,7 +102,7 @@ public:
     bool useOldCoords() const;
     Base::Vector3d getAttachPoint();
 
-    void setScreenScale(double scale);
+    void setScreenScale(double scale) override;
 
 
 public Q_SLOTS:
@@ -143,8 +144,6 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
 
     bool m_blockDraw;//prevent redraws while updating.
-
-    double m_scale = 1.0;
 };
 
 }// namespace TechDrawGui
