@@ -30,7 +30,6 @@
 
 #include "Base/Console.h"
 #include "ElementNamingUtils.h"
-#include "IndexedName.h"
 #include "StringHasher.h"
 
 #include <boost/algorithm/string/predicate.hpp>
