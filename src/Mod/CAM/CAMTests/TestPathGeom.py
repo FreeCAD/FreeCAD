@@ -228,36 +228,36 @@ class TestPathGeom(PathTestBase):
         self.assertFalse(Path.Geom.isHorizontal(yzPlane))
 
         # cylinders
-        xCylinder = [
+        xCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        yCylinder = [
+        )
+        yCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        zCylinder = [
+        )
+        zCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 0, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        xyCylinder = [
+        )
+        xyCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 1, 0)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        xzCylinder = [
+        )
+        xzCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(1, 0, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
-        yzCylinder = [
+        )
+        yzCylinder = next(
             f
             for f in Part.makeCylinder(1, 1, Vector(), Vector(0, 1, 1)).Faces
             if isinstance(f.Surface, Part.Cylinder)
-        ][0]
+        )
 
         self.assertTrue(Path.Geom.isHorizontal(xCylinder))
         self.assertTrue(Path.Geom.isHorizontal(yCylinder))
@@ -619,8 +619,9 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command("G1", {"Y": 1}))
         commands.append(Path.Command("G0", {"X": 0}))
         commands.append(Path.Command("G1", {"Y": 0}))
+        commands.append(Path.Command("G1", {"Y": 0}))  # test zero length move
 
-        wire, rapid, rapid_indexes = Path.Geom.wireForPath(Path.Path(commands))
+        wire, rapid, _ = Path.Geom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0, 0, 0), Vector(1, 0, 0))
         self.assertLine(wire.Edges[1], Vector(1, 0, 0), Vector(1, 1, 0))
@@ -747,7 +748,7 @@ class TestPathGeom(PathTestBase):
         self.assertCoincide(s, tail.valueAt(tail.FirstParameter), 0.005)
         i = arc.valueAt(arc.LastParameter)
         j = tail.valueAt(tail.LastParameter)
-        print("(%.2f, %.2f, %.2f) vs. (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z, j.x, j.y, j.z))
+        print(f"({i.x:.2f}, {i.y:.2f}, {i.z:.2f}) vs. ({j.x:.2f}, {j.y:.2f}, {j.z:.2f})")
         self.assertCoincide(arc.valueAt(arc.LastParameter), tail.valueAt(tail.LastParameter), 0.005)
 
         # make sure the radii match
