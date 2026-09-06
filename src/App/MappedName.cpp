@@ -30,6 +30,7 @@
 
 #include "Base/Console.h"
 #include "ElementNamingUtils.h"
+#include "IndexedName.h"
 #include "StringHasher.h"
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -43,6 +44,52 @@ FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
 
 namespace Data
 {
+
+int MappedName::compare(const MappedName& other) const
+{
+    ZoneScoped;
+
+    const char* thisArray = data.constData();
+    const char* otherArray = other.data.constData();
+
+    int thisArraySize = data.size();
+    int otherArraySize = other.data.size();
+    int minimumArraySize = std::min(thisArraySize, otherArraySize);
+    int comparisonValue = std::memcmp(thisArray, otherArray, minimumArraySize);
+
+    if (comparisonValue != 0) {
+        return comparisonValue;
+    }
+
+    thisArray += minimumArraySize;
+    thisArraySize -= minimumArraySize;
+
+    if (!thisArraySize) {
+        thisArray = postfix.constData();
+        thisArraySize = postfix.size();
+    }
+
+    otherArray += minimumArraySize;
+    otherArraySize -= minimumArraySize;
+
+    if (!otherArraySize) {
+        otherArray = other.postfix.constData();
+        otherArraySize = other.postfix.size();
+    }
+
+    minimumArraySize = std::min(thisArraySize, otherArraySize);
+    comparisonValue = std::memcmp(thisArray, otherArray, minimumArraySize);
+
+    if (comparisonValue != 0) {
+        return comparisonValue;
+    } else if (thisArraySize < otherArraySize) {
+        return -1;
+    } else if (thisArraySize > otherArraySize) {
+        return 1;
+    }
+
+    return 0;
+}
 
 void MappedName::append(const MappedName& other, int startPosition, int size)
 {

@@ -2384,13 +2384,16 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             = incomingShapeElementMappedNames.front().first;
 
                         // Since indexed names can have multiple MappedNames assigned to them,
-                        // we want to make sure we include all of them in the new ElementMap for
+                        // we want to make sure we include as many as three of them in the new ElementMap for
                         // reliability sake.
-                        for (const auto& incomingShapeMappedName : incomingShapeElementMappedNames) {
-                            std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
-                                = getElementMappedNames(element);
+                        for (
+                            size_t incomingMappedNameIdx = 0;
+                            (incomingMappedNameIdx < incomingShapeElementMappedNames.size() && incomingMappedNameIdx < 3);
+                            incomingMappedNameIdx++
+                        )
+                        {
                             std::vector<Data::MappedName> newConnectedElementNames;
-                            Data::MappedName newName {incomingShapeMappedName.first};
+                            Data::MappedName newName {incomingShapeElementMappedNames[incomingMappedNameIdx].first};
 
                             if (connectedElementMap.find(modifiedShape) != connectedElementMap.end()) {
                                 newConnectedElementNames = connectedElementMap[modifiedShape];
@@ -2401,8 +2404,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 int index = 0;
 
                                 if (newConnectedElementNames.empty()) {
-                                    index = emptyConnectedElementsIndex;
-                                    emptyConnectedElementsIndex++;
+                                    index = emptyConnectedElementsIndex++;
                                 }
 
                                 newName.append(Data::NAME_SECTION_DELIMINATOR);
@@ -2422,18 +2424,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 );
                             }
 
-                            bool skipMap = false;
-
-                            for (const auto& mappedNameInfo : mappedNames) {
-                                if (mappedNameInfo.first == newName) {
-                                    skipMap = true;
-                                    break;
-                                }
-                            }
-
-                            if (!skipMap) {
-                                ensureElementMap()->setElementName(element, newName, masterTag);
-                            }
+                            ensureElementMap()->setElementName(element, newName, masterTag);
                         }
                     }
 

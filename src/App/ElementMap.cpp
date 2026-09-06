@@ -514,7 +514,7 @@ MappedName ElementMap::addName(MappedName& name,
 {
     ZoneScoped;
 
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1 && FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);  // NOLINT
         }
@@ -577,10 +577,14 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         return {};
     }
 
-    for (int i = 0, count = name.size(); i < count; ++i) {
-        char check = name[i];
-        if (check == '.' || (std::isspace((int)check) != 0)) {
-            FC_THROWM(Base::RuntimeError, "Illegal character in mapped name: " << name);  // NOLINT
+    for (const QByteArray& nameArray : {name.dataBytes(), name.postfixBytes()}) {
+        int count = nameArray.size();
+
+        for (int i = 0; i < count; ++i) {
+            char check = nameArray[i];
+            if (check == '.' || std::isspace((int)check)) {
+                FC_THROWM(Base::RuntimeError, "Illegal character in mapped name: " << name);  // NOLINT
+            }
         }
     }
     for (const char* readChar = element.getType(); *readChar != 0; ++readChar) {
@@ -643,7 +647,8 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             const std::string& nameString,
             std::string* beforeDuplicateCount,
             std::string* afterDuplicateCount,
-            std::string* duplicateCount)
+            std::string* duplicateCount
+        )
         {
             *beforeDuplicateCount = nameString;
 
