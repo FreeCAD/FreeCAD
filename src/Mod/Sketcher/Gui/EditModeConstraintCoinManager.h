@@ -40,6 +40,7 @@
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "EditModeCoinManagerParameters.h"
+#include "ScreenPickContext.h"
 
 
 class SbVec3f;
@@ -159,10 +160,12 @@ public:
 
     ConstraintPreselectionResult detectPreselectionConstr(
         const SoPickedPoint* Point,
-        const SbVec2s& cursorScreenPos
+        const SbVec2s& cursorScreenPos,
+        const ScreenPickContext& pickContext
     );
     ConstraintPreselectionResult detectPreselectionConstr(
         const SbVec2s& cursorScreenPos,
+        const ScreenPickContext& pickContext,
         Base::Vector3d* pickedPoint = nullptr
     );
 
@@ -193,6 +196,8 @@ private:
         SoSeparator* sep,
         SoImage* iconNode,
         int iconIndex,
+        const SoPath* iconPath,
+        const ScreenPickContext& pickContext,
         SbVec2f& iconScreenCenter,
         SbVec3s& iconSize,
         QString& constrIdsStr,
@@ -202,8 +207,12 @@ private:
         SoSeparator* sep,
         SoImage* iconNode,
         int iconIndex,
+        const SoPath* iconPath,
         const SbVec2s& cursorScreenPos,
-        Base::Vector3d* pickedPoint = nullptr
+        const ScreenPickContext& pickContext,
+        Base::Vector3d* pickedPoint = nullptr,
+        float* distanceToBoundsSquared = nullptr,
+        float* distanceToCenterSquared = nullptr
     ) const;
 
     /** @name Protected helpers for drawing constraint icons*/

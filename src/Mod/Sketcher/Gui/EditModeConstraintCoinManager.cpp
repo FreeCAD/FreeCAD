@@ -25,6 +25,7 @@
 #include <FCConfig.h>
 
 #include <QPainter>
+#include <QPointF>
 #include <QRegularExpression>
 #include <Bnd_Box.hxx>
 #include <algorithm>
@@ -37,6 +38,8 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -60,6 +63,8 @@
 #include <Gui/SoDatumLabel.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
@@ -76,6 +81,23 @@
 using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+namespace
+{
+float distanceSquaredToRect(const QPointF& point, const QRectF& rect)
+{
+    const float left = static_cast<float>(rect.left());
+    const float top = static_cast<float>(rect.top());
+    const float right = left + static_cast<float>(rect.width());
+    const float bottom = top + static_cast<float>(rect.height());
+
+    const float pointX = static_cast<float>(point.x());
+    const float pointY = static_cast<float>(point.y());
+    const float dx = std::max({left - pointX, 0.0F, pointX - right});
+    const float dy = std::max({top - pointY, 0.0F, pointY - bottom});
+    return dx * dx + dy * dy;
+}
+}  // namespace
 
 //**************************** EditModeConstraintCoinManager class ******************************
 
@@ -2185,7 +2207,8 @@ QString EditModeConstraintCoinManager::getPresentationString(
 
 EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SoPickedPoint* Point,
-    const SbVec2s& cursorScreenPos
+    const SbVec2s& cursorScreenPos,
+    const ScreenPickContext& pickContext
 )
 {
     ConstraintPreselectionResult result;
@@ -2202,7 +2225,14 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
 
     for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
         if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
-            return detectPreselectionIcon(sep, static_cast<SoImage*>(tail), childIdx, cursorScreenPos);
+            return detectPreselectionIcon(
+                sep,
+                static_cast<SoImage*>(tail),
+                childIdx,
+                path,
+                cursorScreenPos,
+                pickContext
+            );
         }
     }
 
@@ -2226,10 +2256,51 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
 
 EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SbVec2s& cursorScreenPos,
+    const ScreenPickContext& pickContext,
     Base::Vector3d* pickedPoint
 )
 {
-    ConstraintPreselectionResult result;
+    struct IconCandidate
+    {
+        ConstraintPreselectionResult result;
+        float distanceToBoundsSquared = std::numeric_limits<float>::max();
+        float distanceToCenterSquared = std::numeric_limits<float>::max();
+        int constraintIndex = std::numeric_limits<int>::max();
+    };
+
+    std::vector<IconCandidate> candidates;
+
+    auto collectCandidate = [&](SoSeparator* sep, SoImage* iconNode, int iconIndex) {
+        if (!pickContext.constraintGroupPath) {
+            return;
+        }
+
+        SoPath* iconPath = pickContext.constraintGroupPath->copy();
+        iconPath->ref();
+        iconPath->append(sep);
+        iconPath->append(iconNode);
+
+        float distanceToBoundsSquared = std::numeric_limits<float>::max();
+        float distanceToCenterSquared = std::numeric_limits<float>::max();
+        auto result = detectPreselectionIcon(
+            sep,
+            iconNode,
+            iconIndex,
+            iconPath,
+            cursorScreenPos,
+            pickContext,
+            nullptr,
+            &distanceToBoundsSquared,
+            &distanceToCenterSquared
+        );
+        iconPath->unref();
+        if (result.hasHit()) {
+            const int constraintIndex = *result.ConstrIndices.begin();
+            candidates.push_back(
+                {result, distanceToBoundsSquared, distanceToCenterSquared, constraintIndex}
+            );
+        }
+    };
 
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
         auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
@@ -2241,10 +2312,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (result.hasHit()) {
-                    return result;
-                }
+                collectCandidate(sep, iconNode, iconIndex);
             }
         }
 
@@ -2252,15 +2320,31 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (result.hasHit()) {
-                    return result;
-                }
+                collectCandidate(sep, iconNode, iconIndex);
             }
         }
     }
 
-    return result;
+    if (candidates.empty()) {
+        ConstraintPreselectionResult noHit;
+        return noHit;
+    }
+
+    const auto closest
+        = std::ranges::min_element(candidates, [](const IconCandidate& lhs, const IconCandidate& rhs) {
+              if (lhs.distanceToBoundsSquared != rhs.distanceToBoundsSquared) {
+                  return lhs.distanceToBoundsSquared < rhs.distanceToBoundsSquared;
+              }
+              if (lhs.distanceToCenterSquared != rhs.distanceToCenterSquared) {
+                  return lhs.distanceToCenterSquared < rhs.distanceToCenterSquared;
+              }
+              return lhs.constraintIndex < rhs.constraintIndex;
+          });
+
+    if (pickedPoint) {
+        *pickedPoint = closest->result.PickedPoint;
+    }
+    return closest->result;
 }
 
 std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
@@ -2277,6 +2361,8 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
+    const SoPath* iconPath,
+    const ScreenPickContext& pickContext,
     SbVec2f& iconScreenCenter,
     SbVec3s& iconSize,
     QString& constrIdsStr,
@@ -2298,34 +2384,32 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         return false;
     }
 
-    auto* firstTransNode = dynamic_cast<SoZoomTranslation*>(
-        sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
-    );
-    if (!firstTransNode) {
+    if (!iconPath) {
         return false;
     }
 
-    SbVec3f absPos = firstTransNode->abPos.getValue();
-    SbVec3f trans = firstTransNode->translation.getValue();
-    float scaleFactor = firstTransNode->getScaleFactor();
+    // Use the current Coin transformation chain instead of reconstructing the
+    // icon position from the last action that traversed each SoZoomTranslation.
+    const auto& viewportRegion = pickContext.renderViewportRegion;
+    const auto& viewVolume = pickContext.renderViewVolume;
+    SoPath* path = iconPath->copy();
+    path->ref();
 
-    if (iconIndex == static_cast<int>(ConstraintNodePosition::SecondIconIndex)
-        && static_cast<int>(ConstraintNodePosition::SecondTranslationIndex) < sep->getNumChildren()) {
-        auto* secondTransNode = dynamic_cast<SoZoomTranslation*>(
-            sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex))
-        );
-        if (secondTransNode) {
-            absPos += secondTransNode->abPos.getValue();
-            trans += secondTransNode->translation.getValue();
-            scaleFactor = secondTransNode->getScaleFactor();
-        }
-    }
+    SoGetMatrixAction matrixAction(viewportRegion);
+    SoViewVolumeElement::set(matrixAction.getState(), iconNode, viewVolume);
+    SoViewportRegionElement::set(matrixAction.getState(), viewportRegion);
+    matrixAction.apply(path);
 
-    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
-    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+    SbVec3f iconWorldPos;
+    matrixAction.getMatrix().multVecMatrix(SbVec3f(0.f, 0.f, 0.f), iconWorldPos);
+    path->unref();
 
+    iconScreenCenter = pickContext.projectRenderPointToViewport(iconWorldPos);
     if (pickedPoint) {
-        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        const Base::Vector3d worldPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider)
+            .inverse()
+            .multVec(worldPoint, *pickedPoint);
     }
 
     return true;
@@ -2335,8 +2419,12 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
+    const SoPath* iconPath,
     const SbVec2s& cursorScreenPos,
-    Base::Vector3d* pickedPoint
+    const ScreenPickContext& pickContext,
+    Base::Vector3d* pickedPoint,
+    float* distanceToBoundsSquared,
+    float* distanceToCenterSquared
 ) const
 {
     ConstraintPreselectionResult result;
@@ -2346,26 +2434,49 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     Base::Vector3d hitPoint;
     Base::Vector3d* resultPoint = pickedPoint ? pickedPoint : &hitPoint;
 
-    if (
-        !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
-    ) {
+    if (!resolveIconScreenGeometry(
+            sep,
+            iconNode,
+            iconIndex,
+            iconPath,
+            pickContext,
+            iconScreenCenter,
+            iconSize,
+            constrIdsStr,
+            resultPoint
+        )) {
         return result;
     }
 
-    int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
-    int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
-    const QMargins iconHitPadding(
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx
+    const QPointF iconPoint(
+        static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0] + iconSize[0] / 2.0F,
+        iconScreenCenter[1] - static_cast<float>(cursorScreenPos[1]) + iconSize[1] / 2.0F
     );
+    const QRectF iconBoundsForDistance(0.0, 0.0, iconSize[0], iconSize[1]);
+    const float iconDistanceToBoundsSquared = distanceSquaredToRect(iconPoint, iconBoundsForDistance);
+    const float selectionRadiusPx = pickContext.selectionRadiusPx;
+    const float selectionRadiusSquared = selectionRadiusPx * selectionRadiusPx;
+
+    const float dx = static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0];
+    const float dy = static_cast<float>(cursorScreenPos[1]) - iconScreenCenter[1];
+    if (distanceToBoundsSquared) {
+        *distanceToBoundsSquared = iconDistanceToBoundsSquared;
+    }
+    if (distanceToCenterSquared) {
+        *distanceToCenterSquared = dx * dx + dy * dy;
+    }
 
     if (combinedConstrBoxes.count(constrIdsStr)) {
+        float closestBoxDistanceSquared = std::numeric_limits<float>::max();
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
-            if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+            const float boxDistanceSquared = distanceSquaredToRect(iconPoint, boxInfo.first);
+            closestBoxDistanceSquared = std::min(closestBoxDistanceSquared, boxDistanceSquared);
+            if (boxDistanceSquared <= selectionRadiusSquared) {
                 result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
+        }
+        if (distanceToBoundsSquared) {
+            *distanceToBoundsSquared = closestBoxDistanceSquared;
         }
         if (!result.ConstrIndices.empty()) {
             result.Kind = ConstraintPreselectionResult::HitKind::Icon;
@@ -2374,8 +2485,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
         return result;
     }
 
-    QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
-    if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+    if (iconDistanceToBoundsSquared <= selectionRadiusSquared) {
         result.Kind = ConstraintPreselectionResult::HitKind::Icon;
         result.ConstrIndices = parseConstraintIds(constrIdsStr);
         result.PickedPoint = *resultPoint;
