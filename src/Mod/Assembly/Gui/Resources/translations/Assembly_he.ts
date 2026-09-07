@@ -1066,7 +1066,6 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
         <numerusform>%n Degrees of Freedom</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>

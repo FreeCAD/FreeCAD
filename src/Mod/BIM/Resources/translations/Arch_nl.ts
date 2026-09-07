@@ -366,7 +366,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/ArchSchedule.ui" line="226"/>
       <source>Exports results to a CSV or Markdown file. For CSV export in LibreOffice: maintain a live link by right-clicking the Sheets tab bar → New Sheet → From File → Link. In LibreOffice v6.x and later: use Sheet → Insert Sheet… → From File → Browse…</source>
-      <translation type="unfinished">Exports results to a CSV or Markdown file. For CSV export in LibreOffice: maintain a live link by right-clicking the Sheets tab bar → New Sheet → From File → Link. In LibreOffice v6.x and later: use Sheet → Insert Sheet… → From File → Browse…</translation>
+      <translation>Exporteert resultaten naar een CSV- of Markdown-bestand. Om te exporteren naar CSV in LibreOffice: behoud een live-koppeling door met de rechtermuisknop op de tabbalk van de bladen te klikken → Nieuw blad → Uit bestand → Koppeling. In LibreOffice v6.x en nieuwer: gebruik Blad → Blad invoegen… → Uit bestand → Bladeren…</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="229"/>
@@ -381,12 +381,12 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BIM server URL</source>
-      <translation type="unfinished">BIM server URL</translation>
+      <translation>BIM server-URL</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email)</source>
-      <translation type="unfinished">Login (email)</translation>
+      <translation>Inloggen (e-mail)</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -396,7 +396,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Stay logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Stay logged in across FreeCAD sessions</translation>
+      <translation>Ingelogd blijven tussen FreeCAD-sessies door</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="14"/>
@@ -415,34 +415,34 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="14"/>
       <source>IFC Properties Manager</source>
-      <translation type="unfinished">IFC Properties Manager</translation>
+      <translation>IFC-eigenschappenbeheer</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>Alleen geselecteerde objecten</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>Only visible BIM objects</source>
-      <translation type="unfinished">Only visible BIM objects</translation>
+      <translation>Alleen zichtbare BIM-objecten</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="20"/>
       <source>Display and manage IFC properties common to all selected BIM objects</source>
-      <translation type="unfinished">Display and manage IFC properties common to all selected BIM objects</translation>
+      <translation>Gemeenschappelijke IFC-eigenschappen van geselecteerde BIM-objecten tonen en beheren</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
       <source>Search for a property or property set</source>
-      <translation type="unfinished">Search for a property or property set</translation>
+      <translation>Zoek naar een eigenschap of eigenschappenset</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
       <source>Only show matches</source>
-      <translation type="unfinished">Only show matches</translation>
+      <translation>Alleen overeenkomsten tonen</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
@@ -454,33 +454,33 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation type="unfinished">List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</translation>
+      <translation>Lijst met IFC-eigenschappen voor de geselecteerde objecten. Dubbelklik om aan te passen. Slepen en neerzetten om te ordenen.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="170"/>
       <source>IFC Properties</source>
-      <translation type="unfinished">IFC Properties</translation>
+      <translation>IFC Eigenschappen</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
-      <translation type="unfinished">Delete Selected Property/Property Set</translation>
+      <translation>Geselecteerde eigenschap/eigenschappenset verwijderen</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="14"/>
       <source>IFC Properties Editor</source>
-      <translation type="unfinished">IFC Properties Editor</translation>
+      <translation>IFC-eigenschappenbewerker</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="22"/>
       <source>IFC UUID</source>
-      <translation type="unfinished">IFC UUID</translation>
+      <translation>IFC UUID</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation type="unfinished">List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</translation>
+      <translation>Lijst met IFC-eigenschappen voor dit object. Dubbelklik om aan te passen. Slepen en neerzetten om te ordenen.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="76"/>
@@ -490,13 +490,13 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="83"/>
       <source>Force export of full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export of full FreeCAD parametric data</translation>
+      <translation>Volledige parametrische FreeCAD-data geforceerd exporteren</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Sorteren op</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="58"/>
@@ -508,7 +508,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="56"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>IFC-type</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="65"/>
@@ -519,42 +519,42 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Modelstructuur</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="101"/>
       <source>Change type</source>
-      <translation type="unfinished">Change type</translation>
+      <translation>Wijzig model</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="108"/>
       <source>Change material</source>
-      <translation type="unfinished">Change material</translation>
+      <translation>Wijzig materiaal</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC Document</source>
-      <translation type="unfinished">Single IFC Document</translation>
+      <translation>Enkel IFC-document</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</source>
-      <translation type="unfinished">Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</translation>
+      <translation>Dit document converteren naar een IFC-document? 'Ja' activeert het automatisch aanmaken van IFC-objecten. 'Nee' staat een mix van IFC- en niet-IFC-elementen toe in het bestand.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation type="unfinished">Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</translation>
+      <translation>Voegt een standaard gebouwstructuur toe, IfcSite, IfcBuilding en IfcBuildingStorey. Je kunt de structuur later ook handmatig aanmaken.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>Maak ook een standaardstructuur aan</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
       <source>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</source>
-      <translation type="unfinished">Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</translation>
+      <translation>Voorkomt verdere meldingen bij het aanmaken van nieuwe FreeCAD-documenten. Nieuwe documenten worden niet automatisch geconverteerd naar IFC, maar conversie blijft later mogelijk via Utils → Create IFC Project.</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
@@ -570,7 +570,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In dit venster kun je het IFC-type en het materiaal van elk BIM-object in dit document wijzigen. Dubbelklik op het IFC-type om het aan te passen, of gebruik het dropdown-menu onder de lijst.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
@@ -580,7 +580,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De gecontroleerde hoeveelheden worden geëxporteerd naar IFC. Hoeveelheden die zijn gemarkeerd met een waarschuwingsteken geven een waarde van nul aan die u wellicht moet controleren. Als u op een kolomkop klikt, wordt dit toegepast op alle geselecteerde items. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Waarschuwing&lt;/span&gt;: De horizontale oppervlakte is de oppervlakte die wordt verkregen wanneer het object op het grondvlak (X,Y) wordt geprojecteerd, maar de verticale oppervlakte is de som van alle oppervlakten van de vlakken die verticaal zijn (loodrecht op het grondvlak), dus bij een muur worden beide vlakken meegeteld. &lt;/p&gt;&lt;p&gt;De waarden voor lengte, breedte en hoogte kunnen hier worden gewijzigd, maar let op: dit kan de geometrie veranderen!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="49"/>
@@ -595,42 +595,42 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Hoe het IFC-bestand in eerste instantie wordt geïmporteerd: slechts één object, alleen de projectstructuur of alle afzonderlijke objecten.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Alleen hoofdobject (standaard)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Projectstructuur (niveaus)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Alle individuele IFC-objecten</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Eerste import</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC Import Options</source>
-      <translation type="unfinished">IFC Import Options</translation>
+      <translation>IFC-importopties</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Vergrendeld (alleen IFC-objecten)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Ontgrendeld (niet-IFC-objecten toegestaan)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
@@ -640,67 +640,67 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Weergavetype</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>Het type object dat wordt aangemaakt bij het importeren. Polygoonmodel is sneller, maar Vormen zijn nauwkeuriger. Je kunt hier op elk moment tussen wisselen door met de rechtermuisknop op de objectenstructuur te klikken</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Vorm laden (langzamer)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Alleen 3D-weergave laden, geen vorm (standaard)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Geen 3D-weergave</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</source>
-      <translation type="unfinished">Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</translation>
+      <translation>Laadt IFC-typen die aan de objecten zijn gekoppeld vooraf in. Je kunt deze instelling ook uitgeschakeld laten en later dubbelklikken op het object om de typen te laden.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>Laadt alle materialen uit het bestand vooraf in. Het wordt aangeraden om dit vinkje uit te laten staan en materialen pas later te laden wanneer dat nodig is</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="159"/>
       <source>If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Als dit vinkje uit staat, worden deze instellingen de volgende keer automatisch toegepast. Je kunt dit later weer aanpassen via het menu Bewerken -&gt; Voorkeuren -&gt; BIM -&gt; Native IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>Als dit vinkje aan staat, wordt de werkbank die is ingesteld bij de Start-voorkeuren geladen na het importeren</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</source>
-      <translation type="unfinished">Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</translation>
+      <translation>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Wisselen van werkbank na importeren</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Types vooraf laden</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>Laad de eigenschappen-instelling van alle objecten vooraf. Het wordt aangeraden dit vakje niet aan te vinken en de eigenschappen-instelling pas later te laden, wanneer dat nodig is</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
@@ -1412,22 +1412,22 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IfcReal</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IfcLengthMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IfcAreaMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1437,22 +1437,22 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
       <source>Default Structure</source>
-      <translation type="unfinished">Default Structure</translation>
+      <translation>Standaard structuur</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="20"/>
       <source>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. The structure can be added manually later.</source>
-      <translation type="unfinished">Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. The structure can be added manually later.</translation>
+      <translation>Standaardstructuur aanmaken (IfcProject, IfcSite, IfcBuilding, IfcBuildingStorey)? "Nee" maakt alleen een IfcProject aan. Je kunt de structuur later handmatig toevoegen.</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved. They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved. They will automatically be saved now.</translation>
+      <translation>Een of meer IFC-documenten in dit FreeCAD-document zijn gewijzigd, maar nog niet opgeslagen. Ze worden nu automatisch opgeslagen.</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="30"/>
@@ -1478,7 +1478,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
       <source>To Report Panel</source>
-      <translation type="unfinished">To Report Panel</translation>
+      <translation>Naar rapportpaneel</translation>
     </message>
   </context>
   <context>
@@ -1689,7 +1689,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogClasses.ui" line="14"/>
       <source>Class Manager</source>
-      <translation type="unfinished">Class Manager</translation>
+      <translation>Klassenbeheer</translation>
     </message>
     <message>
       <location filename="../ui/dialogClasses.ui" line="25"/>
@@ -1848,7 +1848,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogLibrary.ui" line="242"/>
       <source>Save thumbnails</source>
-      <translation type="unfinished">Save thumbnails</translation>
+      <translation>Miniaturen opslaan</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="252"/>
@@ -1858,7 +1858,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>
       <source>IFC Preflight</source>
-      <translation type="unfinished">IFC Preflight</translation>
+      <translation>IFC-controle vooraf</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="46"/>
@@ -1868,7 +1868,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Alle zichtbare objecten</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="63"/>
@@ -1878,7 +1878,7 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="82"/>
       <source>Is IFC4 support enabled?</source>
-      <translation type="unfinished">Is IFC4 support enabled?</translation>
+      <translation>Is IFC4-ondersteuning ingeschakeld?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="92"/>
@@ -1903,22 +1903,22 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="118"/>
       <source>Are all storeys part of a building?</source>
-      <translation type="unfinished">Are all storeys part of a building?</translation>
+      <translation>Maken alle verdiepingen deel uit van een gebouw?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="131"/>
       <source>Are all BIM objects part of a level?</source>
-      <translation type="unfinished">Are all BIM objects part of a level?</translation>
+      <translation>Maken alle BIM-objecten deel uit van een niveau?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="151"/>
       <source>Are all buildings part of a site?</source>
-      <translation type="unfinished">Are all buildings part of a site?</translation>
+      <translation>Maken alle gebouwen deel uit van een terrein?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="171"/>
       <source>Is there at least one site, one building and one level in the model?</source>
-      <translation type="unfinished">Is there at least one site, one building and one level in the model?</translation>
+      <translation>Bevat het model ten minste één terrein, één gebouw en één niveau?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
@@ -1928,12 +1928,12 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="207"/>
       <source>Are all BIM objects solid and valid?</source>
-      <translation type="unfinished">Are all BIM objects solid and valid?</translation>
+      <translation>Zijn alle BIM-objecten massief en geldig?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="220"/>
       <source>Are all BIM objects of a defined IFC type?</source>
-      <translation type="unfinished">Are all BIM objects of a defined IFC type?</translation>
+      <translation>Zijn alle BIM-objecten voorzien van een gedefinieerd IFC-type?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="240"/>
@@ -1943,152 +1943,152 @@ Gebruik de naam van het IFC-project om alle IFC-entiteiten van dat project te ve
     <message>
       <location filename="../ui/dialogPreflight.ui" line="249"/>
       <source>Do all BIM objects and materials have a standard classification code defined?</source>
-      <translation type="unfinished">Do all BIM objects and materials have a standard classification code defined?</translation>
+      <translation>Zijn alle BIM-objecten en materialen voorzien van een standaard classificatiecode?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="276"/>
       <source>Do all common IFC types have the corresponding Property Set?</source>
-      <translation type="unfinished">Do all common IFC types have the corresponding Property Set?</translation>
+      <translation>Zijn alle veelvoorkomende IFC-typen voorzien van de bijbehorende Property Set?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="289"/>
       <source>Do all geometric BIM objects have explicit dimensions set?</source>
-      <translation type="unfinished">Do all geometric BIM objects have explicit dimensions set?</translation>
+      <translation>Zijn voor alle geometrische BIM-objecten expliciete afmetingen ingesteld?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The following test will check the model or the selected object(s) and their children for conformity to IFC standards.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Important&lt;/span&gt;: None of the failed tests below will prevent exporting IFC files, nor do these tests guarantee that the IFC files meets some specific quality or standard requirement. They are there to assess which elements are included or excluded from the exported file. Choose which item is of importance manually. Hovering the mouse over each description will show more information.&lt;/p&gt;&lt;p&gt;After a test is run, clicking the corresponding button will show more information to help fix the problems.&lt;/p&gt;&lt;p&gt;The &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;official IFC website&lt;/span&gt;&lt;/a&gt; contains a lot of useful information about IFC standards.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De volgende test controleert het model of de geselecteerde object(en) en hun subelementen op conformiteit met de IFC-normen.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Belangrijk&lt;/span&gt;: Geen van de onderstaande mislukte testen verhindert het exporteren van IFC-bestanden, en deze testen garanderen evenmin dat de IFC-bestanden voldoen aan een specifieke kwaliteits- of normvereiste. Ze zijn bedoeld om te beoordelen welke elementen wel of niet in het geëxporteerde bestand worden opgenomen. Bepaal handmatig welke onderdelen belangrijk zijn. Beweeg de muis over een beschrijving voor meer informatie.&lt;/p&gt;&lt;p&gt;Nadat een test is uitgevoerd, toont een klik op de bijbehorende knop meer informatie om de problemen op te lossen.&lt;/p&gt;&lt;p&gt;De &lt;a href="http://www.buildingsmart-tech.org/specifications"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;officiële IFC-website&lt;/span&gt;&lt;/a&gt; bevat veel nuttige informatie over IFC-normen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="30"/>
       <source>Warning, this may take a large amount of time!</source>
-      <translation type="unfinished">Warning, this may take a large amount of time!</translation>
+      <translation>Let op: dit kan erg lang duren!</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="33"/>
       <source>Run All Tests</source>
-      <translation type="unfinished">Run All Tests</translation>
+      <translation>Alle tests uitvoeren</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work On</source>
-      <translation type="unfinished">Work On</translation>
+      <translation>Bewerken</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
       <source>IFC Export</source>
-      <translation type="unfinished">IFC Export</translation>
+      <translation>IFC Exporteren</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled. This test will check if IFC4 support is available in the installed version of IfcOpenShell. If not, FreeCAD will only export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De IFC-export in FreeCAD wordt uitgevoerd door een open-sourcebibliotheek van een derde partij, genaamd IfcOpenShell. Om naar de nieuwere IFC4-standaard te kunnen exporteren, moet IfcOpenShell zijn gecompileerd met ingeschakelde IFC4-ondersteuning. Deze test controleert of IFC4-ondersteuning beschikbaar is in de geïnstalleerde versie van IfcOpenShell. Zo niet, dan exporteert FreeCAD IFC-bestanden alleen in de oudere IFC2x3-standaard. Houd er rekening mee dat sommige applicaties nog steeds onvolledige of geen IFC4-ondersteuning hebben, dus in sommige gevallen werkt IFC2x3 wellicht nog steeds beter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
       <source>Project Structure</source>
-      <translation type="unfinished">Project Structure</translation>
+      <translation>Project Structuur</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuildingStorey (levels) elements are required to be inside an IfcBuilding element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuilding will be created for all level objects (BuildingPart objects with their IFC role set as Building Storey) found that are not inside a Building. However, it is best to manually create that building, to have more control over its name and properties. This test is here to help find those levels without buildings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle IfcBuildingStorey-elementen (verdiepingen) moeten zich binnen een IfcBuilding-element bevinden. Dit is een verplichte eis van de IFC-standaard. Bij het exporteren van het FreeCAD-model naar IFC wordt er standaard een IfcBuilding aangemaakt voor alle verdiepingobjecten (BuildingPart-objecten waarvan de IFC-rol is ingesteld op Building Storey) die worden aangetroffen en die zich niet binnen een Building bevinden. Het is echter het beste om dat gebouw handmatig aan te maken, zodat je meer controle hebt over de naam en eigenschappen ervan. Deze test is bedoeld om die verdiepingen zonder gebouwen op te sporen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose the model) are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best to check that all elements are correctly located inside a level to have more control over it. This test is here to help find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle elementen die zijn afgeleid van IfcProduct (dat wil zeggen: alle BIM-elementen waaruit het model bestaat) moeten zich binnen een IfcBuildingStorey-element (verdieping) bevinden. Dit is een verplichte eis van de IFC-standaard. Bij het exporteren van het FreeCAD-model naar IFC wordt er standaard een IfcBuildingStorey-element aangemaakt voor alle gevonden BIM-objecten die zich nog niet in een dergelijk element bevinden. Het is echter raadzaam om te controleren of alle elementen correct in een verdieping zijn geplaatst, zodat je er meer controle over hebt. Deze test is bedoeld om die BIM-objecten zonder verdieping op te sporen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting the FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best to manually create that site to have more control over its name and properties. This test is here to help find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Alle IfcBuilding-elementen moeten zich binnen een IfcSite-element bevinden. Dit is een verplichte vereiste van de IFC-standaard. Bij het exporteren van het FreeCAD-model naar IFC wordt er standaard een IfcSite aangemaakt voor alle gevonden Building-objecten die zich niet binnen een Site bevinden. Het is echter aan te raden om die site handmatig aan te maken, zodat je meer controle hebt over de naam en eigenschappen ervan. Deze test is bedoeld om die gebouwen zonder site op te sporen. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test did not pass, the exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to manually create these projects to gain more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De IFC-standaard vereist ten minste één locatie, één gebouw en één niveau of bouwverdieping per project. Deze test zorgt ervoor dat er ten minste een object van elk van deze 3 typen in het model aanwezig is. &lt;/p&gt;&lt;p&gt;Let op: aangezien dit een verplichte vereiste is, voegt FreeCAD automatisch een standaardlocatie, een standaardgebouw en/of een standaardverdieping toe als een van deze ontbreekt. Dus zelfs als deze test niet geslaagd is, voldoet het geëxporteerde IFC-bestand aan de vereisten.&lt;/p&gt;&lt;p&gt;Het is echter altijd beter om deze objecten handmatig aan te maken, zodat je meer controle hebt over de naamgeving en eigenschappen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hoewel het geen vereiste is dat IFC-objecten een volledig zuivere en solide geometrie hebben, is het wel beter als dat het geval is. Dit verkleint de kans op problemen met andere toepassingen. In de praktijk hebben alle objecten solide vormen. &lt;/p&gt;&lt;p&gt;FreeCAD beschikt over talrijke hulpmiddelen om de kwaliteit van de geometrie te controleren, en de meeste parametrische objecten, waaronder BIM-objecten, waarschuwen de gebruiker doorgaans wanneer hun geometrie op een bepaald moment onzuiver of niet-solide wordt. Deze test controleert de soliditeit van de geometrie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as it may be desirable for some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Het IFC-formaat biedt een gedefinieerd type voor de meeste objecten waaruit een gebouw bestaat, zoals muren, kolommen, deuren of wastafels. Het ondersteunt echter ook ongedefinieerde objecten, waaraan het generieke type `BuildingElementProxy` wordt toegekend. Deze test controleert of alle objecten een gedefinieerd type hebben. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Let op: het is niet per se een probleem als deze test mislukt, aangezien het voor sommige objecten wenselijk kan zijn om geen gedefinieerd type te hebben. In sommige gevallen kan dit zelfs betere resultaten opleveren, omdat sommige applicaties, zoals Revit, ongewenste extra beperkingen of transformaties kunnen toevoegen aan bepaalde bekende typen, zoals constructie-elementen (balken of kolommen). Door ze als BuildingElementProxies te exporteren, wordt dit voorkomen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even a custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classificatiesystemen, zoals UniClass of MasterFormat, of zelfs een op maat gemaakt systeem, vormen in sommige gevallen een belangrijk onderdeel van een bouwproject. Deze test zorgt ervoor dat alle BIM-objecten en materialen in het model correct zijn voorzien van hun standaardcode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. For example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of the IFC file consequently. It is recommended to add standard property sets only if they are in use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De IFC-standaard biedt standaard, vooraf gedefinieerde eigenschappenverzamelingen voor veel objecttypen. De eigenschappenverzameling Pset_WallCommon bevat bijvoorbeeld eigenschappen waarvan de IFC-standaard vindt dat alle muren deze zouden moeten hebben. Deze test controleert of alle BIM-objecten de juiste eigenschappenverzameling hebben, indien beschikbaar. &lt;/p&gt;&lt;p&gt;Let wel: dit is geenszins een formele vereiste, en deze eigenschappen zullen de omvang van het IFC-bestand dienovereenkomstig vergroten. Het wordt aanbevolen om standaard eigenschappenreeksen alleen toe te voegen als ze daadwerkelijk worden gebruikt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="286"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that do not process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that do not process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC-objecten hebben een geometrische weergave, die de vorm van het object bepaalt, maar kunnen ook bepaalde afmetingen, zoals hoogte, breedte of oppervlakte, expliciet vermelden. Dit is erg handig voor BIM-toepassingen die de geometrie niet verwerken, zoals spreadsheets. Die toepassingen kunnen nog steeds hoeveelheden uit IFC-objecten halen en schatten zonder dat ze de geometrie hoeven te analyseren. &lt;/p&gt;&lt;p&gt;Dit biedt ook ruimte voor fouten (of zelfs fraude), aangezien er geen garantie is dat die expliciet opgegeven afmetingen overeenkomen met wat er in de geometrie zit.&lt;/p&gt;&lt;p&gt;Deze test spoort alle BIM-objecten op die beschikbare afmetingseigenschappen hebben, zoals breedte of hoogte – bijvoorbeeld muren en constructies – maar waarbij dergelijke eigenschappen niet zijn gemarkeerd voor expliciete export naar IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="299"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to the model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too), but its surface style will take the same name and properties as the material, thus giving more consistency to the file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hoewel er geen vereiste is dat IFC-objecten een gedefinieerd materiaal moeten hebben, is dit in de praktijk een belangrijke informatielaag die aan het model moet worden toegevoegd. Deze test spoort BIM-objecten op waarvoor geen materiaal is gedefinieerd.&lt;/p&gt;&lt;p&gt;Als een BIM-object zonder materiaal wordt geëxporteerd, krijgt het niettemin een IfcSurfaceStyle toegewezen, die wordt gegenereerd op basis van de kleur van het object. Sommige BIM-toepassingen negeren materialen en houden alleen rekening met de oppervlaktestijl van een object. Aan dat object wordt dan geen IfcMaterial toegekend.&lt;/p&gt;&lt;p&gt;Als voor een BIM-object een materiaal is gedefinieerd, wordt er nog steeds een oppervlaktestijl aangemaakt (en ook een IfcMaterial), maar deze oppervlaktestijl krijgt dezelfde naam en eigenschappen als het materiaal, wat het bestand consistenter maakt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
       <source>Do all BIM objects have a material?</source>
-      <translation type="unfinished">Do all BIM objects have a material?</translation>
+      <translation>Zijn alle BIM-objecten voorzien van een materiaal?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="319"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zelfs als aan een BIM-object een standaardeigenschappenreeks voor zijn type is toegekend, is er geen garantie dat deze eigenschappenreeks nog steeds alle eigenschappen bevat – of uitsluitend die eigenschappen bevat – die de IFC-standaard voor die reeks heeft gedefinieerd. Deze eigenschappen kunnen namelijk zijn gewijzigd nadat de eigenschappenreeks is toegevoegd. &lt;/p&gt;&lt;p&gt;Deze test controleert of alle standaard eigenschappenreeksen die in het model worden aangetroffen, alle en uitsluitend de eigenschappen bevatten die in de standaarddefinitie zijn gespecificeerd.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="322"/>
       <source>Do all standard Property Set contain the correct properties?</source>
-      <translation type="unfinished">Do all standard Property Set contain the correct properties?</translation>
+      <translation>Bevatten alle standaard eigenschap-instellingen de juiste eigenschappen?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="349"/>
       <source>Optional/Compatibility</source>
-      <translation type="unfinished">Optional/Compatibility</translation>
+      <translation>Optioneel/Compatibiliteit</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="362"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De geometrie van IFC-objecten kan op tal van manieren worden gedefinieerd, bijvoorbeeld als extrusies, subtracties, rotaties of zelfs gefacetteerde objecten.&lt;/p&gt;&lt;p&gt;Extrusies van vlakke vormen, het meest elementaire en gangbare type, bieden echter vaak voordelen ten opzichte van andere typen in andere BIM-toepassingen. &lt;/p&gt;&lt;p&gt;Deze test spoort alle objecten op die niet als extrusie of als gedeelde extrusie (kloon) naar IFC kunnen worden geëxporteerd.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="365"/>
       <source>Are all object exportable as extrusions?</source>
-      <translation type="unfinished">Are all object exportable as extrusions?</translation>
+      <translation>Kunnen alle objecten als extrusie worden geëxporteerd?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways, but some simpler BIM applications might have difficulties with walls that are not of the most simple type. That is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Muren, kolommen en balken kunnen in FreeCAD op allerlei manieren worden geconstrueerd, maar sommige eenvoudigere BIM-toepassingen kunnen moeite hebben met muren die niet van het meest eenvoudige type zijn. Dat wil zeggen: een enkel, recht stuk muur (wat overeenkomt met het type IfcWallStandardCase) of balken en kolommen die niet zijn gebaseerd op een rechte extrusie van een plat profiel (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;Deze test spoort elke muur op die niet aan zo’n standaardgeval voldoet. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opmerking&lt;/span&gt;: Op dit moment worden BIM-objecten die voldoen aan de vereisten voor een standaardgeval nog steeds geëxporteerd als IfcWall, IfcBeam en IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit will not import these correctly. If using the IFC file in Revit, it is recommended to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bij het exporteren van een model naar IFC zullen alle BIM-objecten die een extrusie zijn van een rechthoekig profiel, een IfcRectangleProfileDef-entiteit als extrusieprofiel gebruiken. Revit importeert deze echter niet correct. Als u het IFC-bestand in Revit gebruikt, wordt aanbevolen dit gedrag uit te schakelen door de optie aan te vinken in het menu &lt;span style=" font-weight:600;"&gt;Bewerken -&amp;gt; Voorkeuren -&amp;gt; BIM -&amp;gt; Native IFC -&amp;gt; IfcRectangularProfileDef uitschakelen&lt;/span&gt;. &lt;/p&gt;&lt;p&gt;Wanneer die optie is aangevinkt, worden alle extrusieprofielen geëxporteerd als generieke IfcArbitraryProfileDef-entiteiten, ongeacht of ze rechthoekig zijn of niet. Deze bevatten iets minder informatie, maar worden wel correct geopend in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="378"/>
       <source>Are all walls, beams and columns based on a single line or profile (standard case)?</source>
-      <translation type="unfinished">Are all walls, beams and columns based on a single line or profile (standard case)?</translation>
+      <translation>Zijn alle wanden, balken en kolommen gebaseerd op een enkele lijn of profiel (standaardgeval)?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="395"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit verwijdert alle objecten die lijnen bevatten die smaller zijn dan 1/32 inch (0,8 mm). Deze test spoort alle objecten op die lijnen bevatten die smaller zijn dan die waarde.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="398"/>
@@ -2211,7 +2211,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Deuren en Ramen</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="20"/>
@@ -2274,32 +2274,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Eerste import</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Hoe het IFC-bestand in eerste instantie wordt geïmporteerd: slechts één object, alleen de projectstructuur of alle afzonderlijke objecten.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Alleen hoofdobject (standaard)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Projectstructuur (niveaus)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Alle individuele IFC-objecten</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Weergavetype</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
@@ -2309,7 +2309,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Alleen 3D-weergave laden, geen vorm (standaard)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
@@ -2324,7 +2324,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Geen 3D-weergave</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2354,7 +2354,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Types vooraf laden</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2518,7 +2518,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</source>
-      <translation type="unfinished">When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</translation>
+      <translation>Als je twee vergelijkbare wanden met elkaar verbindt, worden de onderliggende schetsen samengevoegd en de wanden gecombineerd tot één object</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2578,32 +2578,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation type="unfinished">Join base sketches of walls if possible</translation>
+      <translation>Basisschetsen van wanden samenvoegen indien mogelijk</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
       <source>Remove external geometry of base sketches if needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+      <translation>Externe geometrie van basisschetsen verwijderen indien nodig</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Als deze optie is aangevinkt, zal een BIM-object met een materiaal de kleur van het materiaal overnemen. Dit kan per object worden overschreven.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</translation>
+      <translation>Als deze optie is aangevinkt en een object wordt een aftrekking of optelling van een BIM-object, dan krijgt het de Schets-constructiekleur.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to True, which means they will move when their host object is moved</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to True, which means they will move when their host object is moved</translation>
+      <translation>Standaard is de eigenschap "Verplaatsen met host" van nieuwe objecten ingesteld op Waar. Dit betekent dat ze meebewegen wanneer hun host-object wordt verplaatst</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
       <source>Do not compute areas for objects with more than</source>
-      <translation type="unfinished">Do not compute areas for objects with more than</translation>
+      <translation>Bereken geen oppervlakten voor objecten met meer dan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="279"/>
@@ -2670,16 +2670,14 @@ op projecties van verborgen voorwerpen.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
       <source>The URL of a BIM server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a BIM server instance (www.bimserver.org) to connect to.</translation>
+      <translation>De URL van de BIMserver-instantie (www.bimserver.org) waarmee je verbinding wilt maken.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="544"/>
       <source>If this is selected, the "Open BIM Server in browser"
 button will open the BIM Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BIM Server in browser"
-button will open the BIM Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Indien geselecteerd, opent de knop "Open BIM Server in browser" de BIM Server-interface in een externe browser in plaats van de FreeCAD web werkbank</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="521"/>
@@ -2689,14 +2687,13 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>2D Rendering</source>
-      <translation type="unfinished">2D Rendering</translation>
+      <translation>2D Rendering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a footprint display mode</translation>
+      <translation>Schaalfactor voor patronen die worden gebruikt door objecten met een voetafdruk-weergavemodus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
@@ -2746,22 +2743,22 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>Muurkleur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="63"/>
       <source>Structure color</source>
-      <translation type="unfinished">Structure color</translation>
+      <translation>Structuurkleur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="87"/>
       <source>Rebar color</source>
-      <translation type="unfinished">Rebar color</translation>
+      <translation>Wapeningkleur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="111"/>
       <source>Window glass transparency</source>
-      <translation type="unfinished">Window glass transparency</translation>
+      <translation>Transparantie van vensterglas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="124"/>
@@ -2772,27 +2769,27 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="143"/>
       <source>Window glass color</source>
-      <translation type="unfinished">Window glass color</translation>
+      <translation>Kleur vensterglas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="167"/>
       <source>Panel color</source>
-      <translation type="unfinished">Panel color</translation>
+      <translation>Paneelkleur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="191"/>
       <source>Helper color (grids, axes, etc.)</source>
-      <translation type="unfinished">Helper color (grids, axes, etc.)</translation>
+      <translation>Kleur hulpelementen (rasters, assen, etc.)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="215"/>
       <source>Space transparency</source>
-      <translation type="unfinished">Space transparency</translation>
+      <translation>Transparantie ruimte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="241"/>
       <source>Space line style</source>
-      <translation type="unfinished">Space line style</translation>
+      <translation>Lijnstijl ruimte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="258"/>
@@ -2817,7 +2814,7 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="281"/>
       <source>Space line color</source>
-      <translation type="unfinished">Space line color</translation>
+      <translation>Lijnkleur ruimte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="308"/>
@@ -2827,67 +2824,67 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="541"/>
       <source>When clicking a view or level in the BIM Views Manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM Views Manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>Wanneer je op een weergave of niveau klikt in de BIM-weergavenbeheerder, schakelt dit de achtergrond naar een egale kleur bij het activeren van een 2D-weergave, en naar een verloopkleur bij het activeren van een niveau</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="379"/>
       <source>Pipe diameter</source>
-      <translation type="unfinished">Pipe diameter</translation>
+      <translation>Buisdiameter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="482"/>
       <source>Rebar diameter</source>
-      <translation type="unfinished">Rebar diameter</translation>
+      <translation>Wapeningsdiameter</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="544"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>Achtergronden wisselen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
       <source>Rebar offset</source>
-      <translation type="unfinished">Rebar offset</translation>
+      <translation>Wapeningsafwijking</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="321"/>
       <source>Wall baseline</source>
-      <translation type="unfinished">Wall baseline</translation>
+      <translation>Basislijn muur</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="335"/>
       <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
+      <translation>Geen basislijn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="340"/>
       <source>Draft line</source>
-      <translation type="unfinished">Draft line</translation>
+      <translation>Conceptlijn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="345"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Schets</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="353"/>
       <source>Stair length</source>
-      <translation type="unfinished">Stair length</translation>
+      <translation>Traplengte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="534"/>
       <source>Stair width</source>
-      <translation type="unfinished">Stair width</translation>
+      <translation>Trapbreedte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="489"/>
       <source>Stair height</source>
-      <translation type="unfinished">Stair height</translation>
+      <translation>Traphoogte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="462"/>
       <source>Number of stair steps</source>
-      <translation type="unfinished">Number of stair steps</translation>
+      <translation>Aantal traptreden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2897,84 +2894,84 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D Import</source>
-      <translation type="unfinished">SH3D Import</translation>
+      <translation>SH3D importeren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="48"/>
       <source>DEBUG: keep the construction geometries in the active document. Useful when debugging a failed import</source>
-      <translation type="unfinished">DEBUG: keep the construction geometries in the active document. Useful when debugging a failed import</translation>
+      <translation>Behoudt de constructiegeometrie in het actieve document. Dit is nuttig bij het opsporen van fouten van een mislukte import</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="51"/>
       <source>Debug geometry</source>
-      <translation type="unfinished">Debug geometry</translation>
+      <translation>Foutopsporing geometrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="73"/>
       <source>Merge imported element with existing FreeCAD object</source>
-      <translation type="unfinished">Merge imported element with existing FreeCAD object</translation>
+      <translation>Voeg geïmporteerd element samen met bestaand FreeCAD-object</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>Of de deuren en ramen van het model moeten worden geïmporteerd</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="93"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Deuren en Ramen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="109"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>Of het meubilair van het model moet worden geïmporteerd</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="112"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Meubels</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="128"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>Of er een Arch::Inrichting-object moet worden aangemaakt voor elk meubelstuk in het model (OPMERKING: dit kan de snelheid van het importproces negatief beïnvloeden)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="131"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>Arch::Equipment aanmaken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="144"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>Of de verschillende Arch::Muur-objecten met elkaar moeten worden verbonden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="147"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>Arch::Muur-objecten verbinden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="160"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>Of de verlichting van het model moet worden geïmporteerd. Let op dat u ook het meubilair van
+                    het model moet importeren.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="164"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>Verlichting (vereist Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="177"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>Of de camera's van het model moeten worden geïmporteerd</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="180"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>Camera's (vereist Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="193"/>
@@ -3609,7 +3606,7 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC Export</source>
-      <translation type="unfinished">IFC Export</translation>
+      <translation>IFC Exporteren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
@@ -3802,7 +3799,7 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
       <source>Preset</source>
       <translation>Voorinstelling</translation>
@@ -3849,17 +3846,17 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="448"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>Parameters van de structuur</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="497"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Wissel Lengte/Hoogte</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="499"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Wissel Lengte/Breedte</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1070"/>
@@ -3901,7 +3898,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="153"/>
       <source>Select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Selecteer eerst het basisobject en daarna de randen voor de extrusiepaths</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="206"/>
@@ -4413,12 +4410,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Geen raam gevonden. Kan niet doorgaan.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation type="unfinished">Auto include in host object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation type="unfinished">Sill height</translation>
     </message>
@@ -4441,7 +4438,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation type="unfinished">Window Options</translation>
     </message>
@@ -6327,17 +6324,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="550"/>
       <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
+      <translation>Geen basislijn</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="551"/>
       <source>Draft line</source>
-      <translation type="unfinished">Draft line</translation>
+      <translation>Conceptlijn</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="552"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Schets</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1893"/>
@@ -10787,7 +10784,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>IFC-type</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
@@ -13489,7 +13486,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="77"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>IFC-type</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="86"/>
@@ -13499,7 +13496,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="91"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Modelstructuur</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="120"/>

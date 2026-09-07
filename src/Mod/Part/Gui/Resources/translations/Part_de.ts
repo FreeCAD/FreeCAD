@@ -3078,7 +3078,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1039"/>
       <source>No shape selected</source>
-      <translation>Keine Form gewählt</translation>
+      <translation>Keine Form ausgewählt</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1097"/>
@@ -7767,7 +7767,17 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Für die Vorschau ist ein Part-basierter Ansichts-Provider erforderlich; für %1 wurde keiner gefunden.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>unbekanntes Objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Fehler beim Rendern der Vorschau: %1. Dies deutet normalerweise auf einen Fehler mit dem Modell hin.</translation>
     </message>

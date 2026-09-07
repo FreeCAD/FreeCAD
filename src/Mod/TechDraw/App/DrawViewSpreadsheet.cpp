@@ -340,15 +340,15 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     result << "    <text style=\"" << textstyle << "\" x=\""
                            << coloffset + TextSize.getValue() / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     result << "    <text text-anchor=\"middle\" style=\"" << textstyle << "\" x=\""
                            << coloffset + cellwidth / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)
                     result << "    <text text-anchor=\"end\" style=\"" << textstyle << "\" x=\""
                            << coloffset + (cellwidth - TextSize.getValue() / 2) << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                 if ((alignment & Spreadsheet::Cell::ALIGNMENT_LEFT)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER)
                     || (alignment & Spreadsheet::Cell::ALIGNMENT_RIGHT)) {
@@ -363,7 +363,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                     // Spreadsheet::Cell::ALIGNMENT_LEFT
                     result << "    <text style=\"" << textstyle << "\" x=\""
                            << coloffset + TextSize.getValue() / 2 << "\" y=\""
-                           << rowoffset + 0.75 * cellheight << "\" font-family=\"";
+                           << rowoffset + TextBaselineHeightRatio * cellheight << "\" font-family=\"";
                     result << Font.getValue() << "\""
                            << " font-size=\"" << TextSize.getValue() << "\""
                            << " fill=\"" << fcolor << "\">" << celltext << "</text>" << std::endl;

@@ -46,13 +46,21 @@ jobs:
 
       - name: Score open PRs and update project
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The CI token needs write access to FreeCAD's organization project #40.
+          # The repository-scoped GITHUB_TOKEN cannot update organization projects.
+          GH_TOKEN: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
+          SKIP_LABELS: ${{ github.event.inputs.skip_labels }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Set GH_TOKEN_FOR_CI_RUNNERS to a token with PR read and organization Projects write access."
+            exit 1
+          fi
+
           args=(--project 40)
-          if [ -n "${{ github.event.inputs.skip_labels }}" ]; then
-            IFS=',' read -ra labels <<< "${{ github.event.inputs.skip_labels }}"
+          if [ -n "$SKIP_LABELS" ]; then
+            IFS=',' read -ra labels <<< "$SKIP_LABELS"
             for label in "${labels[@]}"; do
               label="${label#"${label%%[![:space:]]*}"}"  # ltrim
               label="${label%"${label##*[![:space:]]}"}"  # rtrim

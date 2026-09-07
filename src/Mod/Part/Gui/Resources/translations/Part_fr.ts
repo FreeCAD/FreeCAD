@@ -7810,7 +7810,17 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>L'aperçu nécessite un fournisseur d'affichage basé sur des pièces. Rien n'a été trouvé pour %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>objet inconnu</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>L'affichage de l'aperçu a échoué : %1. Cela indique généralement une erreur au niveau du modèle.</translation>
     </message>

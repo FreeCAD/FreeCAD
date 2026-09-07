@@ -2264,14 +2264,34 @@ Navštivte https://openscad.org/ a nainstalujte ho.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1701"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="475"/>
       <source>Leave Info Mode</source>
       <translation>Opustit informační režim</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1770"/>
+      <location filename="../../ViewProvider.cpp" line="1745"/>
+      <source>Mesh: %1</source>
+      <translation>Síť: %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1748"/>
       <source>Index: %1</source>
       <translation>Index: %1</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1751"/>
+      <source>Points: &lt;%1, %2, %3&gt;</source>
+      <translation>Body: &lt;%1, %2, %3&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1758"/>
+      <source>Neighbours: &lt;%1, %2, %3&gt;</source>
+      <translation>Sousedí: &lt;%1, %2, %3&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="1764"/>
+      <source>Triangle:</source>
+      <translation>Trojúhelník:</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1798"/>
@@ -2294,7 +2314,7 @@ Navštivte https://openscad.org/ a nainstalujte ho.</translation>
       <translation>Vyčistit vybrané plochy</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="532"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="472"/>
       <source>Annotation</source>
       <translation>Poznámka</translation>
     </message>

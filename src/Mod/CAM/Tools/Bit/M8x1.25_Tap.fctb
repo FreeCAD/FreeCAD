@@ -10,7 +10,8 @@
     "Length": "79 mm",
     "Pitch": "1.25 mm",
     "ShankDiameter": "8 mm",
-    "TipAngle": "90.000 \u00b0"
+    "TipAngle": "90.000 \u00b0",
+    "Units": "Metric"
   },
   "attribute": {}
 }

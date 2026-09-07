@@ -481,7 +481,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
     // if we do not have a recompute after the geometry creation, the sketch must be solved to
     // update the DoF of the solver
-    if (!noRecomputes) {
+    if (noRecomputes) {
         solve();
     }
 
@@ -1121,7 +1121,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketc
         }
     }
 
-    if (!noRecomputes) {
+    if (noRecomputes) {
         solve();
     }
 
@@ -1258,7 +1258,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     replaceGeometries({GeoId}, newGeos);
     addConstraints(newConstraints);
 
-    if (!noRecomputes) {
+    if (noRecomputes) {
         solve();
     }
 
