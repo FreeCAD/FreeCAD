@@ -651,7 +651,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="273"/>
       <source>Base</source>
-      <translation>Basis</translation>
+      <translation>Base</translation>
     </message>
     <message>
       <location filename="../../TaskRobotControl.ui" line="278"/>

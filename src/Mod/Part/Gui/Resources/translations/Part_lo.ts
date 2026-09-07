@@ -588,7 +588,7 @@
       <location filename="../../AttacherTexts.cpp" line="365"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>ຈຸດກຳເນີດຂອງແຜ່ນພຽງຢູ່ເຄິ່ງກາງລະຫວ່າງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ. ສຳລັບໜ້າທີ່ບໍ່ຂະໜານກັນ ແຜ່ນພຽງຈະປະກອບມີເສັ້ນຕັດກັນຂອງພວກມັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="375"/>
@@ -901,7 +901,7 @@
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between two planar faces and its orientation equally bisects their angle. For non-parallel faces the plane contains their intersection line.</translation>
+      <translation>ຈຸດກຳເນີດຂອງແຜ່ນພຽງຢູ່ເຄິ່ງກາງລະຫວ່າງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ. ສຳລັບໜ້າທີ່ບໍ່ຂະໜານກັນ ແຜ່ນພຽງຈະປະກອບມີເສັ້ນຕັດກັນຂອງພວກມັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="200"/>
@@ -7736,7 +7736,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>ການເບິ່ງຕົວຢ່າງຕ້ອງການຕົວສະໜອງການເບິ່ງແບບອີງໃສ່ຊິ້ນສ່ວນ; ບໍ່ພົບສຳລັບ %1.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>ວັດຖຸທີ່ບໍ່ຮູ້ຈັກ</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>ການສະແດງຕົວຢ່າງລົ້ມເຫຼວ: %1. ສິ່ງນີ້ມັກຈະບົ່ງບອກເຖິງຂໍ້ຜິດພາດຂອງໂມເດວ.</translation>
     </message>
