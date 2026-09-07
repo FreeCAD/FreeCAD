@@ -160,8 +160,9 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         size2 = angle;
     }
     try {
-        TopoShape shape(0);
+        TopoShape shape = makeTopoShape();
         Part::SignalException sig;
+
         shape.makeElementChamfer(
             TopShape,
             edges,

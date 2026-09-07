@@ -54,6 +54,7 @@
 #include <Precision.hxx>
 #include <Standard_Failure.hxx>
 
+#include <App/Document.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
@@ -114,7 +115,13 @@ PyObject* GeometryCurvePy::toShape(PyObject* args) const
             }
             BRepBuilderAPI_MakeEdge mkBuilder(c, u, v);
             TopoDS_Shape sh = mkBuilder.Shape();
-            return new TopoShapeEdgePy(new TopoShape(sh));
+            App::HistoryAlgorithm historyAlgorithm = App::getDefaultHistoryAlgorithm();
+
+            if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+                historyAlgorithm = activeDocument->getSelectedHistoryAlgorithm();
+            }
+
+            return new TopoShapeEdgePy(new TopoShape(historyAlgorithm, sh));
         }
     }
     catch (Standard_Failure& e) {

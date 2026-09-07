@@ -413,8 +413,8 @@ App::DocumentObjectExecReturn* Transformed::execute()
             // few originals and many transformations
             for (auto original : originals) {
                 // Extract the original shape and determine whether to cut or to fuse
-                Part::TopoShape fuseShape;
-                Part::TopoShape cutShape;
+                Part::TopoShape fuseShape = makeTopoShape(false);
+                Part::TopoShape cutShape = makeTopoShape(false);
 
                 auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
                 if (!feature) {

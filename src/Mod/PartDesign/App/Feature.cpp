@@ -166,7 +166,7 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    TopoShape res(getID());
+    TopoShape res = makeTopoShape(false);
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
     std::vector<TopoShape> generated;
@@ -197,7 +197,7 @@ short Feature::mustExecute() const
 TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
-        throw Part::NullShapeException("Null shape");
+        throw Part::NullShapeException("Null shape 1");
     }
 
     // If single solid rule is not enforced  we simply return the shape as is
@@ -244,26 +244,63 @@ bool Feature::relinkToMatchingSubelements(
     std::vector<std::string> newSubs;
     newSubs.reserve(oldSubs.size());
 
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = oldFeature->getSelectedHistoryAlgorithm();
+
     for (const auto& sub : oldSubs) {
         if (sub.empty()) {
             newSubs.emplace_back();
             continue;
         }
 
-        auto oldSubShape = oldShape.getSubTopoShape(sub.c_str(), true);
+        Data::MappedElement subMappedElement = oldShape.getElementName(sub.c_str());
+
+        if (!subMappedElement.index) {
+            return false;
+        }
+
+        std::pair<TopAbs_ShapeEnum, int> subDecodedIndexedName = Part::TopoShape::shapeTypeAndIndex(
+            subMappedElement.index
+        );
+        if (subDecodedIndexedName.second <= 0) {
+            return false;
+        }
+
+        auto oldSubShape = oldShape.getSubTopoShape(
+            subDecodedIndexedName.first,
+            subDecodedIndexedName.second,
+            true
+        );
+
         if (oldSubShape.isNull()) {
             return false;
         }
 
         std::vector<std::string> names;
-        auto matches = newShape.findSubShapesWithSharedVertex(
-            oldSubShape,
-            &names,
-            Data::SearchOption::CheckGeometry
-        );
-        if (matches.size() != 1 || names.size() != 1) {
+
+        if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+            auto matches = newShape.findSubShapesWithSharedVertex(
+                oldSubShape,
+                &names,
+                Data::SearchOption::CheckGeometry
+            );
+
+            if (matches.size() != 1) {
+                return false;
+            }
+        }
+        else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+            std::vector<Data::MappedElement> foundNames
+                = findSimilarNames(subMappedElement.name, newShape);
+
+            if (foundNames.size()) {
+                names.push_back(foundNames.front().name.toString());
+            }
+        }
+
+        if (names.size() != 1) {
             return false;
         }
+
         newSubs.push_back(names.front());
     }
 
@@ -359,7 +396,7 @@ TopoShape Feature::fixSolids(const TopoShape& solids)
         bb.Add(comp, fix.Solid());
     }
 
-    TopoShape fixShape(comp);
+    TopoShape fixShape = makeTopoShape(comp);
     return fixShape;
 }
 
@@ -458,7 +495,7 @@ const TopoDS_Shape& Feature::getBaseShape() const
 
 Part::TopoShape Feature::getBaseTopoShape(bool silent) const
 {
-    Part::TopoShape result;
+    Part::TopoShape result = makeTopoShape(false);
 
     const Part::Feature* BaseObject = getBaseObject(silent);
     if (!BaseObject) {
@@ -611,7 +648,7 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
     }
 
-    return TopoShape(obj->getID(), nullptr, builder.Shape());
+    return Feature::makeTopoShape(obj, builder.Shape(), 0, false);
 }
 
 Body* Feature::getFeatureBody() const

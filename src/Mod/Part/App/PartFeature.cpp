@@ -59,6 +59,7 @@
 #include <TopoDS.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <Base/Profiler.h>
 
 
 #include <App/Application.h>
@@ -177,6 +178,200 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
         return App::GeoFeature::getElementName(name, type);
     }
     return getExportElementName(prop->getShape(), name);
+}
+
+// This is the name matching algorithms used for the V2 algorithm.
+bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements)
+{
+    ZoneScoped;
+
+    if (!name1 || !name2) {
+        return false;
+    }
+
+    Data::DecodedMappedName decodedName1 = name1.getDecodedMappedName();
+    Data::DecodedMappedName decodedName2 = name2.getDecodedMappedName();
+
+    if (decodedName1.size() && decodedName2.size()) {
+        std::vector<std::pair<Data::DecodedMappedSection, std::vector<Data::DecodedMappedSection>>>
+            pairedCheckSections = {};
+
+        pairedCheckSections.push_back({decodedName1.front(), {decodedName2.front()}});
+
+        decodedName1.erase(decodedName1.begin());
+        decodedName2.erase(decodedName2.begin());
+
+        std::vector<Data::DecodedMappedSection> entry;
+
+        // This loop pairs sections together for checking later.
+        for (const Data::DecodedMappedSection& name1Section : decodedName1) {
+            entry.clear();
+
+            for (const Data::DecodedMappedSection& name2Section : decodedName2) {
+                if ((name1Section.iterationTag != Data::EMPTY_VALUE
+                     && name2Section.iterationTag == name1Section.iterationTag)
+                    && (name1Section.opCode != Data::EMPTY_VALUE
+                        && name2Section.opCode == name1Section.opCode)) {
+                    entry.push_back(name2Section);
+                }
+            }
+
+            if (entry.size()) {
+                pairedCheckSections.push_back({name1Section, entry});
+            }
+        }
+
+        if (pairedCheckSections.size()) {
+            for (const auto& checkSections : pairedCheckSections) {
+                const Data::DecodedMappedSection& mainCheckSection = checkSections.first;
+                bool pass = false;
+
+                for (const Data::DecodedMappedSection& loopCheckSection : checkSections.second) {
+                    // first we need to check reference IDs
+                    int refIDInterference = 0;
+                    size_t linkedNameInterference = 0;
+                    size_t connectedNameInterference = 0;
+
+                    for (const std::string& name1ListID : mainCheckSection.referenceIDs) {
+                        for (const std::string& name2ListID : loopCheckSection.referenceIDs) {
+                            if (name1ListID == name2ListID) {
+                                refIDInterference++;
+                            }
+                        }
+                    }
+
+                    for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
+                        Data::MappedName name1LinkedMappedName {name1LinkedName};
+                        Data::MappedName name2LinkedMappedName;
+
+                        for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
+                            name2LinkedMappedName = name2LinkedName;
+
+                            if ((name1LinkedName == name2LinkedName)
+                                || (name1LinkedName != Data::EMPTY_VALUE
+                                    && name2LinkedName != Data::EMPTY_VALUE
+                                    && doNamesMatch(name1LinkedMappedName, name2LinkedMappedName))) {
+                                linkedNameInterference++;
+                            }
+                        }
+                    }
+
+                    for (const std::string& name1ConnectedName : mainCheckSection.connectedElements) {
+                        Data::MappedName name1ConnectedMappedName {name1ConnectedName};
+                        Data::MappedName name2ConnectedMappedName;
+
+                        for (const std::string& name2ConnectedName :
+                             loopCheckSection.connectedElements) {
+                            name2ConnectedMappedName = name2ConnectedName;
+
+                            if (
+                                (name1ConnectedName == name2ConnectedName)
+                                || (name1ConnectedName != Data::EMPTY_VALUE
+                                    && name2ConnectedName != Data::EMPTY_VALUE
+                                    && doNamesMatch(name1ConnectedMappedName, name2ConnectedMappedName))
+                            ) {
+                                connectedNameInterference++;
+                            }
+                        }
+                    }
+
+                    bool linkedNamePass = false;
+                    bool connectedElementPass = false;
+
+                    if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_LOWER)) {
+                        if (mainCheckSection.hasMapperFlag(Data::MAPPER_FLAG_NON_DUPLICATE)
+                            && linkedNameInterference >= 1) {
+                            linkedNamePass = true;
+                        }
+                        else if (linkedNameInterference >= 2) {
+                            linkedNamePass = true;
+                        }
+                    }
+
+                    if (linkedNameInterference == mainCheckSection.linkedNames.size()
+                        && linkedNameInterference == loopCheckSection.linkedNames.size()) {
+                        linkedNamePass = true;
+                    }
+
+                    if (connectedNameInterference >= 1
+                        || (connectedNameInterference == mainCheckSection.connectedElements.size()
+                            && connectedNameInterference
+                                == loopCheckSection.connectedElements.size())) {
+                        connectedElementPass = true;
+                    }
+
+                    if (linkedNamePass && connectedElementPass
+                        && (refIDInterference >= 2
+                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs
+                            || (refIDInterference == 1 && mainCheckSection.elementType == 'V'))) {
+                        Data::DecodedMappedSection modifiedFirstSection {mainCheckSection};
+                        Data::DecodedMappedSection modifiedSecondSection {loopCheckSection};
+
+                        // remove the reference ID and linked names lists to make a direct equality
+                        // check much easier.
+                        modifiedFirstSection.referenceIDs.clear();
+                        modifiedFirstSection.linkedNames.clear();
+                        modifiedFirstSection.connectedElements.clear();
+
+                        modifiedSecondSection.referenceIDs.clear();
+                        modifiedSecondSection.linkedNames.clear();
+                        modifiedSecondSection.connectedElements.clear();
+
+                        if (modifiedFirstSection == modifiedSecondSection) {
+                            pass = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!pass) {
+                    return false;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+
+    if (logMatchedElements) {
+        Base::Console().log(
+            "Name match resolved name %s as equivelent to %s\n",
+            name1.toString(),
+            name2.toString()
+        );
+    }
+
+    return true;
+}
+
+// This is the name matching algorithms used for the V2 algorithm.
+std::vector<Data::MappedElement> Feature::findSimilarNames(
+    Data::MappedName& searchName,
+    const TopoShape& searchShape
+)
+{
+    ZoneScoped;
+    std::vector<Data::MappedElement> ret {};
+
+    if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
+            if (loopNamePair.name == searchName
+                || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
+                ret.push_back(loopNamePair);
+            }
+        }
+    }
+
+    return ret;
+}
+
+std::vector<Data::MappedElement> Feature::findSimilarNames(Data::MappedName& searchName)
+{
+    return findSimilarNames(searchName, Shape.getShape());
 }
 
 App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* name) const
@@ -356,9 +551,16 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* 
                         searchShape = shapes.front();  // After the break, so we stopped at
                                                        // innermost container
                     }
-                    auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
-                    if (!newMapped.name.empty()) {
-                        mapped = newMapped;
+                    if (ancestors.size() > 1 && boost::starts_with(postfix, Data::POSTFIX_INDEX)) {
+                        std::istringstream iss(postfix.c_str() + strlen(Data::POSTFIX_INDEX));
+                        int idx;
+                        if (iss >> idx && idx >= 0 && idx < (int)ancestors.size()) {
+                            ancestors.resize(1, ancestors[idx]);
+                        }
+                    }
+                    if (ancestors.size() == 1) {
+                        idxName.setIndex(ancestors.front());
+                        mapped.index = idxName;
                     }
                 }
                 for (auto& name : names) {
@@ -952,11 +1154,11 @@ static TopoShape _getTopoShape(
 )
 
 {
-    TopoShape shape;
-
     if (!obj) {
-        return shape;
+        return {};
     }
+
+    TopoShape shape = Feature::makeTopoShape(obj);
 
     PyObject* pyobj = nullptr;
     Base::Matrix4D mat;
@@ -1054,7 +1256,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Plane>()) {
                 static TopoDS_Shape _shape;
@@ -1067,7 +1269,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Point>()) {
                 static TopoDS_Shape _shape;
@@ -1075,7 +1277,7 @@ static TopoShape _getTopoShape(
                     BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
                     _shape = builder.Shape();
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
@@ -1089,7 +1291,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                     }
                     else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
                         static TopoDS_Shape _shape;
@@ -1098,7 +1300,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                     }
                 }
                 if (shape.isNull()) {
@@ -1108,7 +1310,7 @@ static TopoShape _getTopoShape(
                         _shape = builder.Shape();
                         _shape.Infinite(Standard_True);
                     }
-                    shape = TopoShape(tag, hasher, _shape);
+                    shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                 }
             }
 
@@ -1175,7 +1377,7 @@ static TopoShape _getTopoShape(
         // Acceleration for link array. Unlike non-array link, a link array does
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
-        TopoShape baseShape;
+        TopoShape baseShape = Feature::makeTopoShape(obj);
         Base::Matrix4D baseMat;
         std::string op;
         if (link && link->getElementCountValue()) {
@@ -1271,6 +1473,7 @@ static TopoShape _getTopoShape(
         }
         shape.Tag = tag;
         shape.Hasher = hasher;
+        shape.setHistoryAlgorithm(obj->getSelectedHistoryAlgorithm());
         shape.makeElementCompound(shapes);
     }
 
@@ -1971,6 +2174,53 @@ void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, c
         return;
     }
     replacementName = oldLink;
+}
+
+TopoShape Feature::makeTopoShape(
+    const App::DocumentObject* documentObject,
+    const TopoDS_Shape& newShape,
+    long tag,
+    bool useHasher
+)
+{
+    ZoneScoped;
+
+    if (!documentObject || !documentObject->isAttachedToDocument()) {
+        return App::getDefaultHistoryAlgorithm();
+    }
+
+    const App::HistoryAlgorithm& selectedVersion = documentObject->getSelectedHistoryAlgorithm();
+    TopoShape newTopoShape {newShape};
+
+    if (selectedVersion == App::HistoryAlgorithm::V1) {
+        if (useHasher) {
+            newTopoShape.Hasher = documentObject->getDocument()->getStringHasher();
+        }
+
+        newTopoShape.Tag = tag;
+    }
+    else if (selectedVersion == App::HistoryAlgorithm::V2) {
+        newTopoShape.Tag = tag == 0 ? documentObject->getID() : tag;
+    }
+
+    newTopoShape.setHistoryAlgorithm(selectedVersion);
+
+    return newTopoShape;
+}
+
+TopoShape Feature::makeTopoShape(bool useHasher) const
+{
+    return makeTopoShape(this, TopoDS_Shape(), 0, useHasher);
+}
+
+TopoShape Feature::makeTopoShape(long tag, bool useHasher) const
+{
+    return makeTopoShape(this, TopoDS_Shape(), tag, useHasher);
+}
+
+TopoShape Feature::makeTopoShape(const TopoDS_Shape& newShape, long tag, bool useHasher) const
+{
+    return makeTopoShape(this, newShape, tag, useHasher);
 }
 
 // ---------------------------------------------------------

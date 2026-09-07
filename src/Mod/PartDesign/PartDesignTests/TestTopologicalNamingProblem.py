@@ -114,7 +114,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertTrue(self.Pad.isValid())
         self.assertTrue(self.Pad1.isValid())
 
-        if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if self.Body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             self.assertFalse(self.Pad2.isValid())  # TNP problem is present without ElementMaps
         else:
             self.assertTrue(self.Pad2.isValid())  # TNP problem is not present with ElementMaps
@@ -128,7 +128,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
         # Act
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         reverseMap = sketch.Shape.ElementReverseMap
         reverseFaces = [name for name in reverseMap.keys() if name.startswith("Face")]
@@ -182,7 +182,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad.Length = 1
         # Act
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         reverseMap = pad.Shape.ElementReverseMap
         faces = [name for name in reverseMap.keys() if name.startswith("Face")]
@@ -199,7 +199,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(box.Shape.childShapes()), 0)
@@ -216,7 +216,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         cylinder = self.Doc.addObject("PartDesign::AdditiveCylinder", "Cylinder")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(cylinder.Shape.childShapes()), 0)
@@ -241,7 +241,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         sphere = self.Doc.addObject("PartDesign::AdditiveSphere", "Sphere")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(sphere.Shape.childShapes()), 0)
@@ -266,7 +266,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         cone = self.Doc.addObject("PartDesign::AdditiveCone", "Cone")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(cone.Shape.childShapes()), 0)
@@ -291,7 +291,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         ellipsoid = self.Doc.addObject("PartDesign::AdditiveEllipsoid", "Ellipsoid")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(ellipsoid.Shape.childShapes()), 0)
@@ -316,7 +316,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         torus = self.Doc.addObject("PartDesign::AdditiveTorus", "Torus")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(torus.Shape.childShapes()), 0)
@@ -341,7 +341,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         prism = self.Doc.addObject("PartDesign::AdditivePrism", "Prism")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(prism.Shape.childShapes()), 0)
@@ -366,7 +366,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # Arrange
         body = self.Doc.addObject("PartDesign::Body", "Body")
         wedge = self.Doc.addObject("PartDesign::AdditiveWedge", "Wedge")
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act / Assert
         self.assertEqual(len(wedge.Shape.childShapes()), 0)
@@ -397,7 +397,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subbox = self.Doc.addObject("PartDesign::SubtractiveBox", "Box")
@@ -416,7 +416,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subcylinder = self.Doc.addObject("PartDesign::SubtractiveCylinder", "Cylinder")
@@ -435,7 +435,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subsphere = self.Doc.addObject("PartDesign::SubtractiveSphere", "Sphere")
@@ -454,7 +454,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subcone = self.Doc.addObject("PartDesign::SubtractiveCone", "Cone")
@@ -473,7 +473,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subellipsoid = self.Doc.addObject("PartDesign::SubtractiveEllipsoid", "Ellipsoid")
@@ -492,7 +492,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subtorus = self.Doc.addObject("PartDesign::SubtractiveTorus", "Torus")
@@ -511,7 +511,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subprism = self.Doc.addObject("PartDesign::SubtractivePrism", "Prism")
@@ -530,7 +530,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         box.Width = 20
         box.Height = 20
         body.addObject(box)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         subwedge = self.Doc.addObject("PartDesign::SubtractiveWedge", "Wedge")
@@ -546,7 +546,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject("PartDesign::Body", "Body")
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         pad = self.Doc.addObject("PartDesign::Pad", "Pad")
@@ -725,7 +725,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch2 = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         TestSketcherApp.CreateRectangleSketch(sketch2, (0, 0), (2, 2))
         sketch2.Placement.move(App.Vector(0, 0, 3))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         loft = self.Doc.addObject("PartDesign::AdditiveLoft", "Loft")
@@ -760,7 +760,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             App.Vector(0, 0, 0), App.Rotation(App.Vector(1.00, 0.00, 0.00), 90.00)
         )
         # Need to set sketch2 placement?
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         pipe = self.Doc.addObject("PartDesign::AdditivePipe", "Pipe")
@@ -791,7 +791,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject("PartDesign::Body", "Body")
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         helix = self.Doc.addObject("PartDesign::AdditiveHelix", "Helix")
@@ -830,7 +830,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch.AttachmentSupport = (box, "Face6")
         sketch.MapMode = "FlatFace"
         TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (1, 1))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
@@ -866,7 +866,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch.AttachmentSupport = (box, "Face6")
         sketch.MapMode = "FlatFace"
         TestSketcherApp.CreateCircleSketch(sketch, (5, 5), 1)
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         hole = self.Doc.addObject("PartDesign::Hole", "Hole")
@@ -902,7 +902,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         groove.Reversed = 0
         groove.Base = App.Vector(0, 0, 0)
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Assert
         revMap = groove.Shape.ElementReverseMap  # body.Shape.childShapes()[0].ElementReverseMap
@@ -920,7 +920,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         sketch2 = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         TestSketcherApp.CreateRectangleSketch(sketch2, (1, 1), (2, 2))
         sketch2.Placement.move(App.Vector(0, 0, 3))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         loft = self.Doc.addObject("PartDesign::SubtractiveLoft", "SubLoft")
@@ -928,7 +928,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         loft.Sections = [sketch2]
         body.addObject(loft)
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Assert
         revMap = loft.Shape.ElementReverseMap  # body.Shape.childShapes()[0].ElementReverseMap
@@ -950,7 +950,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
             App.Vector(0, 0, 0), App.Rotation(App.Vector(1.00, 0.00, 0.00), 90.00)
         )
         # Need to set sketch2 placement?
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         pipe = self.Doc.addObject("PartDesign::SubtractivePipe", "SubPipe")
@@ -980,7 +980,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body.addObject(box)
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         TestSketcherApp.CreateRectangleSketch(sketch, (5, 5), (1, 1))
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Act
         helix = self.Doc.addObject("PartDesign::SubtractiveHelix", "SubHelix")
@@ -1144,7 +1144,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad.Profile = sketch
         body.addObject(pad)
         self.Doc.recompute()
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Assert
         self.assertEqual(sketch.Shape.ElementMapSize, 12)
@@ -1162,7 +1162,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad = self.Doc.addObject("PartDesign::Pad", "Pad")
         pad.Profile = plane
         self.Doc.recompute()
-        if pad.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if pad.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         # Assert
         self.assertEqual(plane.Shape.ElementMapSize, 0)
@@ -1273,7 +1273,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         del constraintList
         doc.recompute()
         # Assert
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         self.assertEqual(body.Shape.BoundBox.XMin, 0)
         self.assertEqual(body.Shape.BoundBox.YMin, 0)
@@ -1359,7 +1359,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         area2 = pad.Shape.Area
 
         # Assert
-        if body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         self.assertEqual(body.Shape.BoundBox.XMin, 0)
         self.assertEqual(body.Shape.BoundBox.YMin, 0)
@@ -1539,7 +1539,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         doc.recompute()
         # Assert
-        if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if self.Body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         self.assertEqual(self.Body.Shape.BoundBox.XMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.YMin, 0)
@@ -1714,7 +1714,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
 
         doc.recompute()
         # Assert
-        if self.Body.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if self.Body.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         self.assertEqual(self.Body.Shape.BoundBox.XMin, 0)
         self.assertEqual(self.Body.Shape.BoundBox.YMin, 0)
@@ -2429,7 +2429,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         App.Gui.Selection.addSelection("", extrude.Name, "Face2")
         # Assert
         self.assertEqual(len(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames), 1)
-        if extrude.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if extrude.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             self.assertEqual(App.Gui.Selection.getSelectionEx("", 0)[0].SubElementNames[0], "Face2")
         else:
             self.assertEqual(
@@ -2449,7 +2449,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad.Length = 1
         # Act
         self.Doc.recompute()
-        if pad.Shape.ElementMapVersion == "":  # Should be '4' as of Mar 2023.
+        if pad.Shape.ElementMapVersion == "":  # Should be '5' as of Dec 2025.
             return
         map = pad.Shape.ElementMap
         # Assert

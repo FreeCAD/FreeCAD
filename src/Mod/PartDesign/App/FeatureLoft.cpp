@@ -121,16 +121,19 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
             }
         }
     }
-    auto compound = TopoShape(0).makeElementCompound(
-        shapes,
-        "",
-        TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-    );
+    auto compound = Feature::makeTopoShape(obj, TopoDS_Shape(), 0, false)
+                        .makeElementCompound(
+                            shapes,
+                            "",
+                            TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+                        );
     auto wires = compound.getSubTopoShapes(TopAbs_WIRE);
     auto edges = compound.getSubTopoShapes(TopAbs_EDGE, TopAbs_WIRE);  // get free edges and make
                                                                        // wires from it
     if (!edges.empty()) {
-        auto extra = TopoShape(0).makeElementWires(edges).getSubTopoShapes(TopAbs_WIRE);
+        auto extra = Feature::makeTopoShape(obj, TopoDS_Shape(), 0, false)
+                         .makeElementWires(edges)
+                         .getSubTopoShapes(TopAbs_WIRE);
         wires.insert(wires.end(), extra.begin(), extra.end());
     }
     const char* msg
@@ -214,7 +217,7 @@ App::DocumentObjectExecReturn* Loft::execute()
             closed = false;
         }
 
-        TopoShape result(0, hasher);
+        TopoShape result = makeTopoShape();
         std::vector<TopoShape> shapes;
 
         // build all shells
@@ -223,12 +226,14 @@ App::DocumentObjectExecReturn* Loft::execute()
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
-            shells.push_back(TopoShape(0, hasher).makeElementLoft(
-                sectionWires,
-                Part::IsSolid::notSolid,
-                Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
-            ));
+            shells.push_back(
+                makeTopoShape().makeElementLoft(
+                    sectionWires,
+                    Part::IsSolid::notSolid,
+                    Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
+                    closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
+                )
+            );
         }
 
         // build the top and bottom face, sew the shell and build the final solid
@@ -257,7 +262,7 @@ App::DocumentObjectExecReturn* Loft::execute()
             };
             for (size_t i = 0; i < std::size(faceMaker); i++) {
                 try {
-                    back = TopoShape(0).makeElementFace(backwires, nullptr, faceMaker[i]);
+                    back = makeTopoShape(false).makeElementFace(backwires, nullptr, faceMaker[i]);
                     break;
                 }
                 catch (...) {
@@ -341,7 +346,8 @@ App::DocumentObjectExecReturn* Loft::execute()
         }
 
         result.Tag = -getID();
-        TopoShape boolOp(0, getDocument()->getStringHasher());
+
+        TopoShape boolOp = makeTopoShape();
         try {
             boolOp.makeElementBoolean(
                 getBooleanMaker(),

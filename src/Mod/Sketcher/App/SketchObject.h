@@ -934,6 +934,8 @@ public:
 
     App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
+    std::vector<Data::MappedElement> findSimilarNames(Data::MappedName& searchName) override;
+
     bool isPerformingInternalTransaction() const
     {
         return internaltransaction;

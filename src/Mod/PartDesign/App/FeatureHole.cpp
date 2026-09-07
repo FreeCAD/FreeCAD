@@ -53,6 +53,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Converter.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
@@ -2066,7 +2067,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             );
         }
 
-        TopoShape result(0);
+        TopoShape result = makeTopoShape(false);
 
         // set the subtractive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(compound);
@@ -2251,7 +2252,7 @@ TopoShape Hole::findHoles(
     const TopoDS_Shape& protoHole
 ) const
 {
-    TopoShape result(0);
+    TopoShape result = makeTopoShape(false);
     _holeLocations.clear();
 
     auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
@@ -2259,14 +2260,19 @@ TopoShape Hole::findHoles(
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), gp_Pnt(loc.X(), loc.Y(), loc.Z()));
 
-        Part::ShapeMapper mapper;
-        mapper.populate(
-            Part::MappingStatus::Modified,
-            baseshape,
-            TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE)
-        );
+        Part::MappingStatus status = Part::MappingStatus::Modified;
 
-        TopoShape hole(-getID());
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            // we want to use generated here, because when an element is modified, it is usually
+            // split apart into similar elements which is not happening here. what is happening is
+            // an edge is creating a face, which is only possible with generated.
+            status = Part::MappingStatus::Generated;
+        }
+
+        Part::ShapeMapper mapper;
+        mapper.populate(status, baseshape, makeTopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+
+        TopoShape hole = makeTopoShape(-getID());
         hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
 
         // transform and generate element map.
@@ -2312,7 +2318,7 @@ TopoShape Hole::findHoles(
             addHole(profileVertex, BRep_Tool::Pnt(vertex));
         }
     }
-    return TopoShape().makeElementCompound(holes);
+    return makeTopoShape(false).makeElementCompound(holes);
 }
 
 std::vector<gp_Pnt> Hole::getHoleLocations() const

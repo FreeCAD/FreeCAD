@@ -24,6 +24,7 @@
 
 #include <algorithm>
 
+#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
@@ -43,6 +44,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
 #include <Base/ProgramVersion.h>
@@ -50,12 +52,14 @@
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Profiler.h>
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/WireJoiner.h>
 
 #include <memory>
+#include <unordered_map>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
@@ -115,7 +119,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
     ADD_PROPERTY(InternalShape,
-                 (Part::TopoShape()));
+                 (makeTopoShape()));
     ADD_PROPERTY_TYPE(MakeInternals,
                       (false),
                       "Internal Geometry",
@@ -264,31 +268,66 @@ static bool inline checkSmallEdge(const Part::TopoShape &s) {
 // clang-format on
 void SketchObject::buildShape()
 {
+    ZoneScoped;
     // We use the following instead to map element names
 
+    std::unordered_map<gp_Pnt, std::vector<std::string>> vertexHistoryMap;
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    auto addVertex = [&vertices](auto vertex, auto name) {
+    const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
+
+    auto addVertex = [&vertices, &selectedHistoryVersion](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
             vertex.resetElementMap(std::make_shared<Data::ElementMap>());
         }
-        vertex.setElementName(
-            Data::IndexedName::fromConst("Vertex", 1),
-            Data::MappedName::fromRawData(name.c_str()),
-            0L
-        );
+
+        Data::MappedName builtName = Data::MappedName();
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+            builtName = name;
+        }
+        else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            builtName = Data::MappedName::makeEncodedSection(
+                {name},
+                {},
+                tag,
+                Part::OpCodes::Sketch,
+                0,
+                'V',
+                0,
+                {Data::MAPPER_FLAG_SOURCE}
+            );
+        }
+
+        vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1), builtName, 0L);
         vertices.push_back(vertex);
         vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     };
 
-    auto addEdge = [this, &shapes](auto geo, auto indexedName) {
-        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
-        if (checkSmallEdge(shapes.back())) {
-            FC_WARN("Edge too small: " << indexedName);
-        }
-    };
+    auto addEdge =
+        [this, &shapes, &vertexHistoryMap, &selectedHistoryVersion](auto geo, auto indexedName) {
+            std::string edgeName = convertSubName(indexedName, false);
+            Part::TopoShape edgeShape {getEdge(geo, edgeName.c_str())};
+            shapes.push_back(edgeShape);
+            if (checkSmallEdge(shapes.back())) {
+                FC_WARN("Edge too small: " << indexedName);
+            }
+
+            if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+                TopTools_IndexedMapOfShape vertexMap;
+                TopExp::MapShapes(edgeShape.getShape(), TopAbs_VERTEX, vertexMap);
+
+                std::string vertexNamePrefix {edgeName + 'v'};
+
+                for (int vertexIdx = 1; vertexIdx <= vertexMap.Extent(); vertexIdx++) {
+                    vertexHistoryMap[BRep_Tool::Pnt(TopoDS::Vertex(vertexMap(vertexIdx)))].push_back(
+                        vertexNamePrefix + std::to_string(vertexIdx)
+                    );
+                }
+            }
+        };
 
     // get the geometry after running the solver
     auto geometries = solvedSketch.extractGeometry();
@@ -300,8 +339,9 @@ void SketchObject::buildShape()
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false)
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
+                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false),
+                getID()
             );
         }
         else {
@@ -325,8 +365,9 @@ void SketchObject::buildShape()
 
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(indexedName, false)
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
+                convertSubName(indexedName, false),
+                getID()
             );
         }
         else {
@@ -337,11 +378,11 @@ void SketchObject::buildShape()
     internalElementMap.clear();
 
     if (shapes.empty() && vertices.empty()) {
-        InternalShape.setValue(Part::TopoShape());
-        Shape.setValue(Part::TopoShape());
+        InternalShape.setValue(makeTopoShape());
+        Shape.setValue(makeTopoShape());
         return;
     }
-    Part::TopoShape result(0, getDocument()->getStringHasher());
+    Part::TopoShape result = makeTopoShape();
     if (vertices.empty()) {
         // Notice here we supply op code Part::OpCodes::Sketch to makeElementWires().
         result.makeElementWires(shapes, Part::OpCodes::Sketch);
@@ -354,7 +395,7 @@ void SketchObject::buildShape()
             // SketchObject::getElementName() relies on this op code to
             // differentiate geometries that are exposed with those in edit
             // mode.
-            auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
+            auto wires = makeTopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
             for (const auto& wire : wires.getSubTopoShapes(TopAbs_WIRE)) {
                 results.push_back(wire);
             }
@@ -363,6 +404,47 @@ void SketchObject::buildShape()
         result.makeElementCompound(results);
     }
     result.Tag = getID();
+
+    TopTools_IndexedMapOfShape resultVertexMap;
+    TopExp::MapShapes(result.getShape(), TopAbs_VERTEX, resultVertexMap);
+
+    for (int vertexIdx = 1; vertexIdx <= resultVertexMap.Extent(); vertexIdx++) {
+        std::vector<std::string> referenceIDs;
+        gp_Pnt mainVertexPoint = BRep_Tool::Pnt(TopoDS::Vertex(resultVertexMap(vertexIdx)));
+
+        for (const auto& vertexHistoryEntry : vertexHistoryMap) {
+            if (vertexHistoryEntry.second.size()
+                && vertexHistoryEntry.first.IsEqual(mainVertexPoint, Precision::Confusion())) {
+                referenceIDs.insert(
+                    referenceIDs.end(),
+                    vertexHistoryEntry.second.begin(),
+                    vertexHistoryEntry.second.end()
+                );
+            }
+        }
+
+        if (referenceIDs.size()) {
+            result.setElementName(
+                Data::IndexedName::fromConst("Vertex", vertexIdx),
+                Data::MappedName(
+                    Data::MappedName::makeEncodedSection(
+                        referenceIDs,
+                        {},
+                        result.Tag,
+                        Part::OpCodes::Sketch,
+                        0,
+                        'V',
+                        0,
+                        {Data::MAPPER_FLAG_SOURCE}
+                    )
+                ),
+                0L,
+                nullptr,
+                true
+            );
+        }
+    }
+
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
     // Must set Shape property after InternalShape so that
     // GeoFeature::updateElementReference() can run properly on change of Shape
@@ -405,14 +487,14 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
 
 Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const {
     if (!MakeInternals.getValue())
-        return Part::TopoShape();
+        return makeTopoShape();
 
     try {
         // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
         // faces differently, breaking references from downstream features.
         const bool legacy = _InternalFaceVersion.getValue() < 2;
 
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
+        Part::TopoShape result = makeTopoShape(getID());
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
@@ -442,7 +524,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         }
 
         // Append open wires (edges not part of any closed face)
-        Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
+        Part::TopoShape openWires = makeTopoShape(getID());
         joiner.getOpenWires(openWires, "SKF");
 
         if (openWires.isNull()) {
@@ -457,7 +539,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
     } catch (Standard_Failure &e) {
         FC_WARN("Failed to make face for sketch: " << e.GetMessageString());
     }
-    return Part::TopoShape();
+    return makeTopoShape();
 }
 
 static const char *hasSketchMarker(const char *name) {
@@ -1755,7 +1837,7 @@ App::DocumentObject *SketchObject::getSubObject(
     }
 
     // pyObj exists from here
-    Part::TopoShape shape;
+    Part::TopoShape shape = makeTopoShape();
     std::string name = convertSubName(indexedName,false);
     if (geo) {
         shape = getEdge(geo,name.c_str());
@@ -1892,26 +1974,73 @@ const char *SketchObject::convertInternalName(const char *name)
     return nullptr;
 }
 
+std::vector<Data::MappedElement> SketchObject::findSimilarNames(Data::MappedName &searchName)
+{
+    std::vector<Data::MappedElement> ret;
+
+    ret = Part::Feature::findSimilarNames(searchName, Shape.getShape());
+
+    if (ret.empty()) {
+        const Part::TopoShape &internalShape = InternalShape.getShape();
+
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            for (Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
+                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
+                    std::string loopNameIndexString = internalPrefix();
+                    loopNameIndexString += loopNamePair.index.toString();
+
+                    Data::IndexedName loopNameIndex = Data::IndexedName(
+                        loopNameIndexString.c_str()
+                    );
+
+                    ret.emplace_back(loopNamePair.name, loopNameIndex);
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 App::ElementNamePair SketchObject::getElementName(
         const char *name, ElementNameType type) const
 {
     App::ElementNamePair ret;
     if(!name) return ret;
 
-    if(hasSketchMarker(name))
+    const char *mapped = Data::isMappedElement(name);
+    const char* indexedSubname = mapped;
+    bool isInternalElement = false;
+
+    if (mapped) {
+        const char* dot = strchr(mapped, '.');
+
+        if (dot) {
+            indexedSubname = dot + 1;
+
+            if (indexedSubname == strstr(indexedSubname, internalPrefix().c_str())) {
+                isInternalElement = true;
+            }
+        }
+    }
+
+    if(hasSketchMarker(name) && !isInternalElement)
         return Part2DObject::getElementName(name,type);
 
-    const char *mapped = Data::isMappedElement(name);
-    Data::IndexedName index = checkSubName(name);
+    Data::IndexedName index = isInternalElement ? Data::IndexedName(indexedSubname, {"InternalFace", "InternalEdge", "InternalVertex"}, false) : checkSubName(name);
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (mapped)
-            mappedElement = InternalShape.getShape().getElementName(name);
-        else if (type == ElementNameType::Export)
-            ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
-        else
-            mappedElement = InternalShape.getShape().getElementName(realName);
+        const Part::TopoShape internalShape = InternalShape.getShape();
+        if (mapped) {
+            mappedElement = internalShape.getElementName(name);
+        }
+        else if (type == ElementNameType::Export) {
+            ret.newName = getExportElementName(internalShape, realName).newName;
+        }
+        else {
+            mappedElement = internalShape.getElementName(realName);
+        }
 
         if (mapped || type != ElementNameType::Export) {
             if (mappedElement.index) {
@@ -1928,7 +2057,7 @@ App::ElementNamePair SketchObject::getElementName(
 
         if (ret.newName.size()) {
             if (auto dot = strrchr(ret.newName.c_str(), '.'))
-                ret.newName.resize(dot+1-ret.newName.c_str());
+                ret.newName.resize(dot + 1 - ret.newName.c_str());
             else
                 ret.newName += ".";
             ret.newName += ret.oldName;
@@ -1955,6 +2084,7 @@ App::ElementNamePair SketchObject::getElementName(
     return ret;
 }
 
+
 Data::IndexedName SketchObject::checkSubName(const char *subname) const
 {
     static std::vector<const char *> types = {
@@ -1967,8 +2097,6 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const
         "H_Axis",
         "V_Axis",
         "Constraint",
-
-        // other feature from LS3 not related to TNP
         "InternalEdge",
         "InternalFace",
         "InternalVertex",

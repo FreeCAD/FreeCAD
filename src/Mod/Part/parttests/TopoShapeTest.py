@@ -179,7 +179,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         compound2 = self.doc.Compound.Shape
         # Assert elementMap
         # This flag indicates that ElementMaps are supported under the current C++ build:
-        if compound1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             # 52 is 2 cubes of 26 each: 6 Faces, 12 Edges, 8 Vertexes
             # Todo: This should contain something as soon as the Python interface
             #  for Part.Compound TNP exists
@@ -201,7 +201,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         common1 = self.doc.Common.Shape
         # Assert elementMap
-        if common1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if common1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertKeysInMap(
                 common1.ElementReverseMap,
                 [
@@ -245,7 +245,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         cut1 = self.doc.Cut.Shape
         # Assert elementMap
-        if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if cut1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertKeysInMap(
                 cut1.ElementReverseMap,
                 [
@@ -290,11 +290,11 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         fuse1 = self.doc.Fuse.Shape
         # Assert elementMap
-        if fuse1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
-            self.assertEqual(fuse1.ElementMapSize, 58)
+        if fuse1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
+            self.assertEqual(fuse1.ElementMapSize, 69)
             self.doc.Fuse.Refine = True
             self.doc.recompute()
-            self.assertEqual(fuse1.ElementMapSize, 58)
+            self.assertEqual(fuse1.ElementMapSize, 69)
         # Shape is an extruded L, with 8 Faces, 12 Vertexes, 18 Edges
         # Assert Shape
         self.assertBounds(fuse1, App.BoundBox(0, 0, 0, 2, 2, 2))
@@ -305,7 +305,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         compound1 = Part.makeCompound([self.doc.Box1.Shape, self.doc.Box2.Shape])
         # Assert elementMap
-        if compound1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound1.ElementMapSize, 52)
         # Assert Shape
         self.assertBounds(compound1, App.BoundBox(0, 0, 0, 2, 2, 2))
@@ -314,7 +314,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         shell1 = Part.makeShell(self.doc.Box1.Shape.Faces)
         # Assert elementMap
-        if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if shell1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(shell1.ElementMapSize, 26)
         # Assert Shape
         self.assertBounds(shell1, App.BoundBox(0, 0, 0, 1, 2, 2))
@@ -323,7 +323,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         face1 = Part.makeFace(self.doc.Box1.Shape.Faces[0], "Part::FaceMakerCheese")
         # Assert elementMap
-        if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if face1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(face1.ElementMapSize, 10)
         # Assert Shape
         self.assertBounds(face1, App.BoundBox(0, 0, 0, 0, 2, 2))
@@ -331,7 +331,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     def testAppPartmakeFilledFace(self):
         face1 = Part.makeFilledFace(self.doc.Box1.Shape.Faces[3].Edges)
         # Assert elementMap
-        if face1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if face1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(face1.ElementMapSize, 9)
         # Assert Shape
         self.assertBounds(face1, App.BoundBox(-0.05, 2, -0.1, 1.05, 2, 2.1))
@@ -340,7 +340,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         solid1 = Part.makeSolid(self.doc.Box1.Shape.Shells[0])
         # Assert elementMap
-        if solid1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if solid1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(solid1.ElementMapSize, 26)
         # Assert Shape
         self.assertBounds(solid1, App.BoundBox(0, 0, 0, 1, 2, 2))
@@ -349,7 +349,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         surface1 = Part.makeRuledSurface(*self.doc.Box1.Shape.Edges[3:5])
         # Assert elementMap
-        if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if surface1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(surface1.ElementMapSize, 9)
         # Assert Shape
         self.assertBounds(surface1, App.BoundBox(0, 0, 0, 1, 2, 2))
@@ -361,7 +361,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         shell1 = Part.makeShellFromWires([wire1, wire2])
         # Assert elementMap
-        if shell1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if shell1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(shell1.ElementMapSize, 24)
         # Assert Shape
         self.assertBounds(shell1, App.BoundBox(0, 0, 0, 1, 2, 2))
@@ -378,7 +378,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         Part.show(surface1, "Sweep")
         self.doc.recompute()
         # Assert elementMap
-        if surface1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if surface1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(surface1.ElementMapSize, 6)
             self.assertBounds(surface1, App.BoundBox(-5, -5, 0, 5, 5, 10), precision=2)
         else:
@@ -399,7 +399,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         solid1 = Part.makeLoft(self.doc.Box1.Shape.Wires[0:2])
         # Assert elementMap
-        if solid1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if solid1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(solid1.ElementMapSize, 24)
         # Assert Shape
         self.assertBounds(solid1, App.BoundBox(0, 0, 0, 1, 2, 2))
@@ -414,7 +414,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Assert elementMap
         self.assertEqual(len(solids1), 2)
         self.assertEqual(len(solids1[0]), 1)
-        if solids1[0][0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if solids1[0][0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(solids1[0][0].ElementMapSize, 9)
             self.assertEqual(solids1[1][0].ElementMapSize, 9)
         # Assert Shape
@@ -434,7 +434,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         new_toposhape = Part.Shape(compound)
         new_empty_toposhape = Part.Shape()
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(new_toposhape.ElementMapSize, 52)
 
@@ -450,7 +450,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         compound_copy = compound.copy()
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_copy.ElementMapSize, 52)
 
@@ -466,7 +466,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         compound_cleaned = compound.cleaned()
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_cleaned.ElementMapSize, 52)
 
@@ -482,7 +482,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         compound_plain = compound.copy(noElementMap=True)
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_plain.ElementMapSize, 0)
 
@@ -494,7 +494,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             noElementMap=True,
         )
         # Assert elementMap
-        if face.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if face.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(face.ElementMapSize, 0)
 
     def testTopoShapeReplaceShape(self):
@@ -511,7 +511,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             [(App.activeDocument().Box2.Shape, App.activeDocument().Box1.Shape)]
         )
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_replaced.ElementMapSize, 52)
 
@@ -527,7 +527,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         compound_removed = compound.removeShape([App.ActiveDocument.Box2.Shape])
         # Assert elementMap
-        if compound.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compound.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compound.ElementMapSize, 52)
             self.assertEqual(compound_removed.ElementMapSize, 52)
 
@@ -538,7 +538,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         extrude = face.extrude(App.Vector(2, 0, 0))
         self.doc.recompute()
         # Assert elementMap
-        if extrude.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if extrude.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(extrude.ElementMapSize, 26)
 
     def testTopoShapeRevolve(self):
@@ -548,7 +548,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         face.revolve(App.Vector(), App.Vector(1, 0, 0), 45)
         self.doc.recompute()
         # Assert elementMap
-        if face.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if face.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(face.ElementMapSize, 9)
 
     def testTopoShapeFuse(self):
@@ -556,7 +556,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         fused = self.doc.Box1.Shape.fuse(self.doc.Box2.Shape)
         self.doc.recompute()
         # Assert elementMap
-        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fused.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fused.ElementMapSize, 58)
 
     def testTopoShapeFuseWithoutElementMap(self):
@@ -564,7 +564,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         fused = self.doc.Box1.Shape.fuse(self.doc.Box2.Shape, noElementMap=True)
         self.doc.recompute()
         # Assert elementMap
-        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fused.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fused.ElementMapSize, 0)
 
     def testTopoShapeMultiFuse(self):
@@ -572,7 +572,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         fused = self.doc.Box1.Shape.multiFuse([self.doc.Box2.Shape])
         self.doc.recompute()
         # Assert elementMap
-        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fused.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fused.ElementMapSize, 58)
 
     def testTopoShapeMultiFuseWithoutElementMap(self):
@@ -580,7 +580,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         fused = self.doc.Box1.Shape.multiFuse([self.doc.Box2.Shape], noElementMap=True)
         self.doc.recompute()
         # Assert elementMap
-        if fused.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fused.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fused.ElementMapSize, 0)
 
     def testTopoShapeCommon(self):
@@ -588,7 +588,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         common = self.doc.Box1.Shape.common(self.doc.Box2.Shape)
         self.doc.recompute()
         # Assert elementMap
-        if common.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if common.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(common.ElementMapSize, 26)
 
     def testTopoShapeSection(self):
@@ -596,7 +596,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         section = self.doc.Box1.Shape.Faces[0].section(self.doc.Box2.Shape.Faces[3])
         self.doc.recompute()
         # Assert elementMap
-        if section.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if section.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(section.ElementMapSize, 3)
 
     def testTopoShapeSlice(self):
@@ -605,7 +605,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         # Assert elementMap
         self.assertEqual(len(slice), 1)
-        if slice[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if slice[0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(slice[0].ElementMapSize, 8)
 
     def testTopoShapeSlices(self):
@@ -613,7 +613,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         slices = self.doc.Box1.Shape.Faces[0].slices(App.Vector(10, 10, 0), [1, 2])
         self.doc.recompute()
         # Assert elementMap
-        if slices.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if slices.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(slices.ElementMapSize, 6)
 
     def testTopoShapeCut(self):
@@ -621,7 +621,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         cut = self.doc.Box1.Shape.cut(self.doc.Box2.Shape)
         self.doc.recompute()
         # Assert elementMap
-        if cut.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if cut.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(cut.ElementMapSize, 26)
 
     def testTopoShapeGeneralFuse(self):
@@ -630,7 +630,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         # Assert elementMap
         self.assertEqual(len(fuse), 2)
-        if fuse[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fuse[0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fuse[0].ElementMapSize, 60)
 
     def testTopoShapeChildShapes(self):
@@ -639,7 +639,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         self.doc.recompute()
         # Assert elementMap
         self.assertEqual(len(childShapes), 1)
-        if childShapes[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if childShapes[0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(childShapes[0].ElementMapSize, 26)
 
     def testTopoShapeMirror(self):
@@ -647,7 +647,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         mirror = self.doc.Box1.Shape.mirror(App.Vector(), App.Vector(1, 0, 0))
         self.doc.recompute()
         # Assert elementMap
-        if mirror.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if mirror.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(mirror.ElementMapSize, 26)
 
     def testTopoShapeMirrorWithPlacement(self):
@@ -725,7 +725,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         scale = self.doc.Box1.Shape.scaled(2)
         self.doc.recompute()
         # Assert elementMap
-        if scale.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if scale.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(scale.ElementMapSize, 26)
 
     def testTopoShapeMakeFillet(self):
@@ -733,7 +733,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         fillet = self.doc.Box1.Shape.makeFillet(0.1, self.doc.Box1.Shape.Faces[0].Edges)
         self.doc.recompute()
         # Assert elementMap
-        if fillet.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fillet.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(fillet.ElementMapSize, 42)
 
     def testTopoShapeMakeChamfer(self):
@@ -741,7 +741,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         chamfer = self.doc.Box1.Shape.makeChamfer(0.1, self.doc.Box1.Shape.Faces[0].Edges)
         self.doc.recompute()
         # Assert elementMap
-        if chamfer.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if chamfer.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(chamfer.ElementMapSize, 42)
 
     def testTopoShapeMakeThickness(self):
@@ -749,7 +749,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         thickness = self.doc.Box1.Shape.makeThickness(self.doc.Box1.Shape.Faces[0:2], 0.1, 0.0001)
         self.doc.recompute()
         # Assert elementMap
-        if thickness.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if thickness.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(thickness.ElementMapSize, 74)
 
     def testTopoShapeMakeOffsetShape(self):
@@ -757,7 +757,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         offset = self.doc.Box1.Shape.Faces[0].makeOffset(1)
         self.doc.recompute()
         # Assert elementMap
-        if offset.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if offset.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(offset.ElementMapSize, 17)
 
     def testTopoShapeOffset2D(self):
@@ -765,7 +765,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         offset = self.doc.Box1.Shape.Faces[0].makeOffset2D(1)
         self.doc.recompute()
         # Assert elementMap
-        if offset.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if offset.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(offset.ElementMapSize, 17)
 
     def testTopoShapeRemoveSplitter(self):
@@ -774,7 +774,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         removed = fused.removeSplitter()
         self.doc.recompute()
         # Assert elementMap
-        if removed.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if removed.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(removed.ElementMapSize, 38)
 
     def testTopoShapeCompSolid(self):
@@ -783,7 +783,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         box1ts = self.doc.Box1.Shape
         compSolid.add(box1ts.Solids[0])
         # Assert elementMap
-        if compSolid.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if compSolid.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(compSolid.ElementMapSize, 78)
 
     def testTopoShapeFaceOffset(self):
@@ -792,7 +792,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         offset = box_toposhape.Faces[0].makeOffset(2.0)
         # Assert elementMap
-        if box_toposhape.Faces[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if box_toposhape.Faces[0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(
                 box_toposhape.Faces[0].ElementMapSize, 9
             )  # 1 Face, 4 Edges, 4 Vertexes
@@ -805,7 +805,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
     #     # Act
     #     evolved = box_toposhape.Faces[0].makeEvolved(self.doc.Box1.Shape.Wires[1])  # 2,3,4,5 bad
     #     # Assert elementMap
-    #     if box_toposhape.Faces[0].ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+    #     if box_toposhape.Faces[0].ElementMapVersion != "":  # Should be '5' as of Dec 2025.
     #         self.assertEqual(box_toposhape.Faces[0].ElementMapSize, 9)  # 1 Face, 4 Edges, 4 Vertexes
     #         self.assertEqual(evolved.ElementMapSize, 0)  # Todo: This can't be correct.
 
@@ -839,7 +839,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         box.mapSubElement(box.Faces[0])
         # Assert elementMaps created
-        if box.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if box.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertEqual(box.ElementMapSize, 9)  # 1 Face, 4 Edges, 4 Vertexes
             self.assertEqual(box.Faces[0].ElementMapSize, 9)
 
@@ -850,7 +850,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Act
         self.doc.recompute()
         fuse1 = self.doc.Fuse.Shape
-        if fuse1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if fuse1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             history1 = fuse1.getElementHistory(fuse1.ElementReverseMap["Vertex1"])
             # Assert
             self.assertEqual(len(history1), 3)  # Just the Fuse operation
@@ -909,7 +909,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             "Vertex1",
             "Vertex2",
         ]
-        if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if cut1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
         self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
         # Assert Volume
@@ -974,7 +974,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             "Vertex15",
             "Vertex16",
         ]
-        if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
+        if cut1.ElementMapVersion != "":  # Should be '5' as of Dec 2025.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
         self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
 

@@ -570,20 +570,26 @@ TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
     EXPECT_EQ(6, elementMap.size());
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWires)
+TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesWiresV1)
 {
     // Arrange
     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge();
     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge();
     auto edge3 = BRepBuilderAPI_MakeEdge(gp_Pnt(3.0, 0.0, 0.0), gp_Pnt(2.0, 1.0, 0.0)).Edge();
     auto edge4 = BRepBuilderAPI_MakeEdge(gp_Pnt(2.0, 1.0, 0.0), gp_Pnt(2.0, 2.0, 0.0)).Edge();
-    std::vector<TopoShape> shapes {TopoShape(edge1, 1L), TopoShape(edge2, 2L)};
-    std::vector<TopoShape> shapes2 {TopoShape(edge3, 4L), TopoShape(edge4, 4L)};
+    std::vector<TopoShape> shapes {
+        TopoShape(App::HistoryAlgorithm::V1, edge1, 1L),
+        TopoShape(App::HistoryAlgorithm::V1, edge2, 2L)
+    };
+    std::vector<TopoShape> shapes2 {
+        TopoShape(App::HistoryAlgorithm::V1, edge3, 4L),
+        TopoShape(App::HistoryAlgorithm::V1, edge4, 4L)
+    };
     //    std::vector<TopoShape> shapes {edge1, edge2};
     // Act
-    auto& wire1 = (new TopoShape {})->makeElementWires(shapes);
-    auto& wire2 = (new TopoShape {})->makeElementWires(shapes2);
-    auto& topoShape = (new TopoShape {})->makeElementWires({wire1, wire2});
+    auto& wire1 = (new TopoShape {App::HistoryAlgorithm::V1})->makeElementWires(shapes);
+    auto& wire2 = (new TopoShape {App::HistoryAlgorithm::V1})->makeElementWires(shapes2);
+    auto& topoShape = (new TopoShape {App::HistoryAlgorithm::V1})->makeElementWires({wire1, wire2});
     auto elements = elementMap((topoShape));
     Base::BoundBox3d bb = topoShape.getBoundBox();
     // Assert shape is correct
@@ -613,7 +619,7 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
     // Arrange
     const float Len = 3, Wid = 2, Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
-    TopoShape topoShape {face1};
+    TopoShape topoShape {App::HistoryAlgorithm::V1, face1};
     double area = getArea(face1);
     double area1 = getArea(topoShape.getShape());
     // Act
@@ -1434,7 +1440,7 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementBooleanCommonWithCompoundTool)
+TEST_F(TopoShapeExpansionTest, makeElementBooleanCommonWithCompoundToolV1)
 {
     // Arrange
     TopoShape base {BRepPrimAPI_MakeCylinder(1.0, 2.0).Shape(), 1L};
@@ -1464,8 +1470,8 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
     auto tr {gp_Trsf()};
     tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
     cube2.Move(TopLoc_Location(tr));
-    TopoShape topoShape1 {cube1, 1L};
-    TopoShape topoShape2 {cube2, 2L};
+    TopoShape topoShape1 {App::HistoryAlgorithm::V1, cube1, 1L};
+    TopoShape topoShape2 {App::HistoryAlgorithm::V1, cube2, 2L};
     // Act
     TopoShape& result = topoShape1.makeElementBoolean(Part::OpCodes::Cut, {topoShape1, topoShape2});
     auto elements = elementMap(result);
@@ -1519,15 +1525,15 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
     ));
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementBooleanFuse)
+TEST_F(TopoShapeExpansionTest, makeElementBooleanFuseV1)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
     auto tr {gp_Trsf()};
     tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
     cube2.Move(TopLoc_Location(tr));
-    TopoShape topoShape1 {cube1, 1L};
-    TopoShape topoShape2 {cube2, 2L};
+    TopoShape topoShape1 {App::HistoryAlgorithm::V1, cube1, 1L};
+    TopoShape topoShape2 {App::HistoryAlgorithm::V1, cube2, 2L};
     // Act
     TopoShape& result = topoShape1.makeElementBoolean(Part::OpCodes::Fuse, {topoShape1, topoShape2});
     auto elements = elementMap(result);
@@ -1711,14 +1717,14 @@ TEST_F(TopoShapeExpansionTest, linearizeFace)
     EXPECT_EQ(surface2.GetType(), GeomAbs_Plane);
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdgesV1)
 {
     // Arrange
     auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 8.0)).Edge();
     auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(2.5, 0.0, 0.0), gp_Pnt(2.5, 0.0, 8.0)).Edge();
-    TopoShape edge1ts {edge1, 2L};
-    TopoShape edge2ts {edge2, 3L};
-    TopoShape topoShape {1L};
+    TopoShape edge1ts {App::HistoryAlgorithm::V1, edge1, 2L};
+    TopoShape edge2ts {App::HistoryAlgorithm::V1, edge2, 3L};
+    TopoShape topoShape {App::HistoryAlgorithm::V1, 1L};
     // Act
     topoShape.makeElementRuledSurface({edge1ts, edge2ts}, 0);  // TODO: orientation as enum?
     auto elements = elementMap(topoShape);
@@ -1745,11 +1751,11 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceEdges)
     ));
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
+TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWiresV1)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
-    TopoShape cube1TS {cube1, 1L};
+    TopoShape cube1TS {App::HistoryAlgorithm::V1, cube1, 1L};
     std::vector<TopoShape> subWires = cube1TS.getSubTopoShapes(TopAbs_WIRE);
     // Act
     auto surface = cube1TS.makeElementRuledSurface(
@@ -1794,7 +1800,7 @@ TEST_F(TopoShapeExpansionTest, makeElementRuledSurfaceWires)
         }));
 }
 
-TEST_F(TopoShapeExpansionTest, makeElementLoft)
+TEST_F(TopoShapeExpansionTest, makeElementLoftV1)
 {
     // Loft must have either all open or all closed sections to work, we'll do two closed.
     // Arrange
@@ -1805,18 +1811,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 10.0));
     auto wire2 = wire1;  // Shallow copy
     wire2.Move(TopLoc_Location(transform));
-    TopoShape wire1ts {wire1, 1L};  // One of these shapes should have a tag or else we won't get an
-                                    // Element Map
-    TopoShape wire2ts {wire2, 2L};  // If you change either tag or eliminate one it changes the
-                                    // resulting name.
+    TopoShape wire1ts {App::HistoryAlgorithm::V1, wire1, 1L};  // One of these shapes should have a
+                                                               // tag or else we won't get an
+                                                               // Element Map
+    TopoShape wire2ts {App::HistoryAlgorithm::V1, wire2, 2L};  // If you change either tag or
+                                                               // eliminate one it changes the
+                                                               // resulting name.
     std::vector<TopoShape> shapes = {wire1ts, wire2ts};
     // Act
-    auto& topoShape = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
-    auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
-    auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
-    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
+    auto& topoShape = (new TopoShape(App::HistoryAlgorithm::V1))
+                          ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
+    auto& topoShape2 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
+    auto& topoShape3 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
+    auto& topoShape4 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
     auto& topoShape5
-        = (new TopoShape())
+        = (new TopoShape(App::HistoryAlgorithm::V1))
               ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled, IsClosed::closed);
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
@@ -1956,8 +1968,8 @@ TEST_F(TopoShapeExpansionTest, makeElementGeneralFuse)
     auto tr {gp_Trsf()};
     tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
     cube2.Move(TopLoc_Location(tr));
-    TopoShape topoShape1 {cube1, 1L};
-    TopoShape topoShape2 {cube2, 2L};
+    TopoShape topoShape1 {App::HistoryAlgorithm::V1, cube1, 1L};
+    TopoShape topoShape2 {App::HistoryAlgorithm::V1, cube2, 2L};
     // Act
     std::vector<std::vector<TopoShape>> modified {{}};
     TopoShape& result = topoShape1.makeElementGeneralFuse({topoShape1, topoShape2}, modified);
@@ -3199,15 +3211,15 @@ TEST_F(TopoShapeExpansionTest, makeElementEvolve)
     EXPECT_EQ(spine.getElementMap().size(), 0);
 }
 
-TEST_F(TopoShapeExpansionTest, traceElement)
+TEST_F(TopoShapeExpansionTest, traceElementV1)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
     auto tr {gp_Trsf()};
     tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
     cube2.Move(TopLoc_Location(tr));
-    TopoShape topoShape1 {cube1, 1L};
-    TopoShape topoShape2 {cube2, 2L};
+    TopoShape topoShape1 {App::HistoryAlgorithm::V1, cube1, 1L};
+    TopoShape topoShape2 {App::HistoryAlgorithm::V1, cube2, 2L};
     // Act
     TopoShape& result = topoShape1.makeElementCut(
         {topoShape1, topoShape2}
@@ -3288,11 +3300,11 @@ TEST_F(TopoShapeExpansionTest, makeElementOffset)
     auto tr {gp_Trsf()};
     tr.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
     cube2.Move(TopLoc_Location(tr));
-    TopoShape topoShape1 {cube1, 1L};
-    TopoShape topoShape2 {cube2, 2L};
+    TopoShape topoShape1 {App::HistoryAlgorithm::V1, cube1, 1L};
+    TopoShape topoShape2 {App::HistoryAlgorithm::V1, cube2, 2L};
     // Act
     //    TopoShape topoShape3 {6L};
-    TopoShape result {3L};
+    TopoShape result {App::HistoryAlgorithm::V1, 3L};
     //    topoShape1.makeElementFuse({topoShape2,topoShape2});  // op, tolerance
     result.makeElementOffset(topoShape1, 0.25, 1e-07);
     auto elements = elementMap(result);
@@ -3419,7 +3431,7 @@ TEST_F(TopoShapeExpansionTest, makeElementOffsetFace)
     const float Len = 3, Wid = 2, Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     // Act
-    TopoShape result {face1, 1L};
+    TopoShape result {App::HistoryAlgorithm::V1, face1, 1L};
     result.makeElementOffsetFace(result, 0.25, 0);
     auto elements = elementMap(result);
     Base::BoundBox3d bb = result.getBoundBox();

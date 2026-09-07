@@ -338,7 +338,7 @@ App::DocumentObjectExecReturn* Helix::execute()
     }
     catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        base = TopoShape();
+        base = makeTopoShape(false);
     }
 
     // update Axis from ReferenceAxis
@@ -428,7 +428,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        Part::TopoShape boolOp(0, getDocument()->getStringHasher());
+        Part::TopoShape boolOp = makeTopoShape(false);
         boolOp.makeElementBoolean(getBooleanMaker(), {base, result});
 
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {

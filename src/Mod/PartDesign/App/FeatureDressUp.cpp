@@ -53,6 +53,7 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base, (nullptr));
+
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(
@@ -250,7 +251,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
         }
         auto& sub = subs[i++];
         auto& ref = sub.newName.size() ? sub.newName : val;
-        TopoShape subshape;
+        TopoShape subshape = makeTopoShape(false);
         try {
             subshape = shape.getSubTopoShape(ref.c_str());
         }
@@ -364,7 +365,7 @@ void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShap
             // Make a compound to contain both additive and subtractive shape,
             // bceause a dressing (e.g. a fillet) can either be additive or
             // subtractive. And the dressup feature can contain mixture of both.
-            AddSubShape.setValue(Part::TopoShape().makeElementCompound(shapes));
+            AddSubShape.setValue(makeTopoShape(false).makeElementCompound(shapes));
         }
         catch (Standard_Failure& e) {
             FC_THROWM(
@@ -430,7 +431,7 @@ void DressUp::updatePreviewShape()
         builder.Add(comp, shape.getSubShape(TopAbs_FACE, faceId));
     }
 
-    Part::TopoShape preview(comp);
+    Part::TopoShape preview = makeTopoShape(comp);
     preview.mapSubElement(shape);
 
     PreviewShape.setValue(preview);

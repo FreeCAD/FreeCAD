@@ -41,7 +41,7 @@
 #include <gp_Pnt.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
-
+#include <App/Document.h>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
@@ -76,6 +76,10 @@ PyObject* TopoShapeSolidPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 // constructor method
 int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Solid
         getTopoShapePtr()->setShape(TopoDS_Solid());

@@ -274,26 +274,69 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape, Data::ComplexGeoData)
 
 
-TopoShape::~TopoShape() = default;
-
-TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& shape)
-    : _Shape(*this, shape)
+TopoShape::~TopoShape()
 {
-    Tag = tag;
-    Hasher = hasher;
+    if (elementMap(false)) {
+        elementMap(false)->syncHistoryAlgorithm(nullptr);
+    }
 }
 
-TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher)
+TopoShape::TopoShape(
+    long tag,
+    App::StringHasherRef hasher,
+    const TopoDS_Shape& shape,
+    const App::HistoryAlgorithm& historyAlgorithm
+)
     : _Shape(*this, shape)
 {
     Tag = tag;
     Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(long tag, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(
+    const TopoDS_Shape& shape,
+    long tag,
+    App::StringHasherRef hasher,
+    const App::HistoryAlgorithm& historyAlgorithm
+)
+    : _Shape(*this, shape)
+{
+    Tag = tag;
+    Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
     : _Shape(*this)
 {
     *this = shape;
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape, long tag)
+    : _Shape(*this, shape)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, long tag)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
@@ -2901,7 +2944,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
             TopoDS_Iterator it(_Shape);
             for (; it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
+                    TopoShape(getHistoryAlgorithm(), it.Value())
+                        .makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                 );
                 forceOutputCompound = true;
             }
@@ -2914,7 +2958,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 if (it.Value().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(it.Value())
+                        TopoShape(getHistoryAlgorithm(), it.Value())
                             .makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                     );
                     forceOutputCompound = true;
@@ -4049,7 +4093,7 @@ void TopoShape::getFacesFromSubElement(
 
         // get the meshes of all faces and then merge them
         std::vector<Domain> domains;
-        TopoShape(shape).getDomains(domains);
+        TopoShape(getHistoryAlgorithm(), shape).getDomains(domains);
         getFacesFromDomains(domains, points, faces);
 
         (void)pointNormals;  // leave this empty

@@ -112,7 +112,8 @@ struct ShapeHasher
 enum class MappingStatus
 {
     Generated,
-    Modified
+    Modified,
+    Projected
 };
 
 /** Shape mapper for user defined shape mapping
@@ -226,6 +227,15 @@ struct PartExport ShapeMapper: TopoShape::Mapper
         return _res;
     }
 
+    const std::vector<TopoDS_Shape>& projected(const TopoDS_Shape& s) const override
+    {
+        auto iter = _projected.find(s);
+        if (iter != _projected.end()) {
+            return iter->second.shapes;
+        }
+        return _res;
+    }
+
     std::vector<TopoShape> shapes;
     std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> shapeSet;
 
@@ -239,6 +249,8 @@ struct PartExport ShapeMapper: TopoShape::Mapper
     std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _generatedShapes;
     ShapeMap _modified;
     std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _modifiedShapes;
+    ShapeMap _projected;
+    std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _projectedShapes;
 };
 
 /** Generic shape mapper from a given source to an output shape
