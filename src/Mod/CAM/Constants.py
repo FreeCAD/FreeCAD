@@ -239,3 +239,6 @@ ANNOT_AS_IS = "as-is"
 
 # This tlo g-code was added due to option `output_tool_length_offset`
 ANNOT_ADDED_TLO = "tool_length_offset"
+
+# Moves from linking generator
+ANNOT_LINKING = {"type": "linking"}
