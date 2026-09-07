@@ -72,6 +72,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Parallel.h>
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
@@ -1118,21 +1119,47 @@ void ViewProviderPartExt::setupCoinGeometry(
     TopLoc_Location aLoc;
     shape.Location(aLoc);
 
+    // Per face tessellation data. It is collected once here and reused by the fill
+    // passes below, which also gives every face the offsets of the buffer slice it owns.
+    struct FaceTessellation
+    {
+        Handle(Poly_Triangulation) mesh;
+        TopLoc_Location location;
+        int nodeOffset {0};
+        int triaOffset {0};
+    };
+
     // count triangles and nodes in the mesh
     TopTools_IndexedMapOfShape faceMap;
     TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
-    for (int i = 1; i <= faceMap.Extent(); i++) {
-        Handle(Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
 
-        if (mesh.IsNull()) {
-            mesh = Part::Tools::triangulationOfFace(TopoDS::Face(faceMap(i)));
+    std::vector<FaceTessellation> faceTess(faceMap.Extent());
+    std::set<const Poly_Triangulation*> distinctMeshes;
+    bool sharedMesh = false;
+
+    for (int i = 1; i <= faceMap.Extent(); i++) {
+        FaceTessellation& tess = faceTess[i - 1];
+        const TopoDS_Face& actFace = TopoDS::Face(faceMap(i));
+        tess.mesh = BRep_Tool::Triangulation(actFace, tess.location);
+
+        if (tess.mesh.IsNull()) {
+            tess.mesh = Part::Tools::triangulationOfFace(actFace);
         }
 
+        tess.nodeOffset = numNodes;
+        tess.triaOffset = numTriangles;
+
         // Note: we must also count empty faces
-        if (!mesh.IsNull()) {
-            numTriangles += mesh->NbTriangles();
-            numNodes += mesh->NbNodes();
-            numNorms += mesh->NbNodes();
+        if (!tess.mesh.IsNull()) {
+            numTriangles += tess.mesh->NbTriangles();
+            numNodes += tess.mesh->NbNodes();
+            numNorms += tess.mesh->NbNodes();
+
+            // Faces sharing a TShape share their triangulation, and deriving the
+            // normals from UV writes back into it, so those must not run concurrently.
+            if (!distinctMeshes.insert(tess.mesh.get()).second) {
+                sharedMesh = true;
+            }
         }
 
         TopExp_Explorer xp;
@@ -1141,6 +1168,25 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
         numFaces++;
     }
+
+    // number of nodes contributed by the faces, the free edges are appended behind those
+    const int faceNodeTotal = numNodes;
+
+    static const ParameterGrp::handle hTess = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+
+    // Spreading the conversion over threads only pays off once there is a real amount
+    // of geometry, and it has to be skipped when faces share a triangulation.
+    constexpr int parallelTriangleThreshold = 20000;
+    const bool singleThreaded = hTess->GetBool("TessellationSingleThreaded", false)
+        || numTriangles < parallelTriangleThreshold || (normalsFromUV && sharedMesh);
+    const unsigned int threadLimit = singleThreaded ? 1U : 0U;
+
+    // Shapes made of very many small faces would otherwise spend more time claiming
+    // faces than converting them, so hand them out in blocks.
+    const std::size_t faceGrainSize
+        = Base::balancedGrainSize(static_cast<std::size_t>(faceMap.Extent()), threadLimit);
 
     // get an indexed map of edges
     TopTools_IndexedMapOfShape edgeMap;
@@ -1199,118 +1245,148 @@ void ViewProviderPartExt::setupCoinGeometry(
         norms[i] = SbVec3f(0.0, 0.0, 0.0);
     }
 
-    int ii = 0, faceNodeOffset = 0, faceTriaOffset = 0;
-    for (int i = 1; i <= faceMap.Extent(); i++, ii++) {
-        TopLoc_Location aLoc;
-        const TopoDS_Face& actFace = TopoDS::Face(faceMap(i));
-        // get the mesh of the shape
-        Handle(Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace, aLoc);
-        if (mesh.IsNull()) {
-            mesh = Part::Tools::triangulationOfFace(actFace);
-        }
-        if (mesh.IsNull()) {
-            parts[ii] = 0;
-            continue;
-        }
+    // Convert the triangles of every face into the Coin buffers. Each face writes only
+    // to the slice of verts/norms/index that its own offsets point at, so the faces can
+    // be converted concurrently without any locking.
+    Base::parallelFor(
+        0,
+        faceMap.Extent(),
+        [&](int faceIndex) {
+            const FaceTessellation& tess = faceTess[faceIndex];
+            if (tess.mesh.IsNull()) {
+                parts[faceIndex] = 0;
+                return;
+            }
 
-        // getting the transformation of the shape/face
-        gp_Trsf myTransf;
-        Standard_Boolean identity = true;
-        if (!aLoc.IsIdentity()) {
-            identity = false;
-            myTransf = aLoc.Transformation();
-        }
+            const TopoDS_Face& actFace = TopoDS::Face(faceMap(faceIndex + 1));
+            const Handle(Poly_Triangulation) & mesh = tess.mesh;
+            const int faceNodeOffset = tess.nodeOffset;
+            const int faceTriaOffset = tess.triaOffset;
 
-        // getting size of node and triangle array of this face
-        int nbNodesInFace = mesh->NbNodes();
-        int nbTriInFace = mesh->NbTriangles();
-        // check orientation
-        TopAbs_Orientation orient = actFace.Orientation();
+            // getting the transformation of the shape/face
+            gp_Trsf myTransf;
+            Standard_Boolean identity = true;
+            if (!tess.location.IsIdentity()) {
+                identity = false;
+                myTransf = tess.location.Transformation();
+            }
+
+            // getting size of the triangle array of this face
+            int nbTriInFace = mesh->NbTriangles();
+            // check orientation
+            TopAbs_Orientation orient = actFace.Orientation();
 
         // cycling through the poly mesh
 #if OCC_VERSION_HEX < 0x070600
-        const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
-        const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
-        TColgp_Array1OfDir Normals(Nodes.Lower(), Nodes.Upper());
+            const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
+            const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
+            TColgp_Array1OfDir Normals(Nodes.Lower(), Nodes.Upper());
 #else
-        int numNodes = mesh->NbNodes();
-        TColgp_Array1OfDir Normals(1, numNodes);
+            TColgp_Array1OfDir Normals(1, mesh->NbNodes());
 #endif
-        if (normalsFromUV) {
-            Part::Tools::getPointNormals(actFace, mesh, Normals);
-        }
-
-        for (int g = 1; g <= nbTriInFace; g++) {
-            // Get the triangle
-            Standard_Integer N1, N2, N3;
-#if OCC_VERSION_HEX < 0x070600
-            Triangles(g).Get(N1, N2, N3);
-#else
-            mesh->Triangle(g).Get(N1, N2, N3);
-#endif
-
-            // change orientation of the triangle if the face is reversed
-            if (orient != TopAbs_FORWARD) {
-                Standard_Integer tmp = N1;
-                N1 = N2;
-                N2 = tmp;
+            if (normalsFromUV) {
+                Part::Tools::getPointNormals(actFace, mesh, Normals);
             }
+
+            for (int g = 1; g <= nbTriInFace; g++) {
+                // Get the triangle
+                Standard_Integer N1, N2, N3;
+#if OCC_VERSION_HEX < 0x070600
+                Triangles(g).Get(N1, N2, N3);
+#else
+                mesh->Triangle(g).Get(N1, N2, N3);
+#endif
+
+                // change orientation of the triangle if the face is reversed
+                if (orient != TopAbs_FORWARD) {
+                    Standard_Integer tmp = N1;
+                    N1 = N2;
+                    N2 = tmp;
+                }
 
             // get the 3 points of this triangle
 #if OCC_VERSION_HEX < 0x070600
-            gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
+                gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 #else
-            gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
+                gp_Pnt V1(mesh->Node(N1)), V2(mesh->Node(N2)), V3(mesh->Node(N3));
 #endif
 
-            // get the 3 normals of this triangle
-            gp_Vec NV1, NV2, NV3;
-            if (normalsFromUV) {
-                NV1.SetXYZ(Normals(N1).XYZ());
-                NV2.SetXYZ(Normals(N2).XYZ());
-                NV3.SetXYZ(Normals(N3).XYZ());
-            }
-            else {
-                gp_Vec v1 = Base::convertTo<gp_Vec>(V1);
-                gp_Vec v2 = Base::convertTo<gp_Vec>(V2);
-                gp_Vec v3 = Base::convertTo<gp_Vec>(V3);
-
-                gp_Vec normal = (v2 - v1) ^ (v3 - v1);
-                NV1 = normal;
-                NV2 = normal;
-                NV3 = normal;
-            }
-
-            // transform the vertices and normals to the place of the face
-            if (!identity) {
-                V1.Transform(myTransf);
-                V2.Transform(myTransf);
-                V3.Transform(myTransf);
+                // get the 3 normals of this triangle
+                gp_Vec NV1, NV2, NV3;
                 if (normalsFromUV) {
-                    NV1.Transform(myTransf);
-                    NV2.Transform(myTransf);
-                    NV3.Transform(myTransf);
+                    NV1.SetXYZ(Normals(N1).XYZ());
+                    NV2.SetXYZ(Normals(N2).XYZ());
+                    NV3.SetXYZ(Normals(N3).XYZ());
                 }
+                else {
+                    gp_Vec v1 = Base::convertTo<gp_Vec>(V1);
+                    gp_Vec v2 = Base::convertTo<gp_Vec>(V2);
+                    gp_Vec v3 = Base::convertTo<gp_Vec>(V3);
+
+                    gp_Vec normal = (v2 - v1) ^ (v3 - v1);
+                    NV1 = normal;
+                    NV2 = normal;
+                    NV3 = normal;
+                }
+
+                // transform the vertices and normals to the place of the face
+                if (!identity) {
+                    V1.Transform(myTransf);
+                    V2.Transform(myTransf);
+                    V3.Transform(myTransf);
+                    if (normalsFromUV) {
+                        NV1.Transform(myTransf);
+                        NV2.Transform(myTransf);
+                        NV3.Transform(myTransf);
+                    }
+                }
+
+                // add the normals for all points of this triangle
+                norms[faceNodeOffset + N1 - 1] += Base::convertTo<SbVec3f>(NV1);
+                norms[faceNodeOffset + N2 - 1] += Base::convertTo<SbVec3f>(NV2);
+                norms[faceNodeOffset + N3 - 1] += Base::convertTo<SbVec3f>(NV3);
+
+                // set the vertices
+                verts[faceNodeOffset + N1 - 1] = Base::convertTo<SbVec3f>(V1);
+                verts[faceNodeOffset + N2 - 1] = Base::convertTo<SbVec3f>(V2);
+                verts[faceNodeOffset + N3 - 1] = Base::convertTo<SbVec3f>(V3);
+
+                // set the index vector with the 3 point indexes and the end delimiter
+                index[faceTriaOffset * 4 + 4 * (g - 1)] = faceNodeOffset + N1 - 1;
+                index[faceTriaOffset * 4 + 4 * (g - 1) + 1] = faceNodeOffset + N2 - 1;
+                index[faceTriaOffset * 4 + 4 * (g - 1) + 2] = faceNodeOffset + N3 - 1;
+                index[faceTriaOffset * 4 + 4 * (g - 1) + 3] = SO_END_FACE_INDEX;
             }
 
-            // add the normals for all points of this triangle
-            norms[faceNodeOffset + N1 - 1] += Base::convertTo<SbVec3f>(NV1);
-            norms[faceNodeOffset + N2 - 1] += Base::convertTo<SbVec3f>(NV2);
-            norms[faceNodeOffset + N3 - 1] += Base::convertTo<SbVec3f>(NV3);
+            parts[faceIndex] = nbTriInFace;  // new part
+        },
+        faceGrainSize,
+        threadLimit
+    );
 
-            // set the vertices
-            verts[faceNodeOffset + N1 - 1] = Base::convertTo<SbVec3f>(V1);
-            verts[faceNodeOffset + N2 - 1] = Base::convertTo<SbVec3f>(V2);
-            verts[faceNodeOffset + N3 - 1] = Base::convertTo<SbVec3f>(V3);
-
-            // set the index vector with the 3 point indexes and the end delimiter
-            index[faceTriaOffset * 4 + 4 * (g - 1)] = faceNodeOffset + N1 - 1;
-            index[faceTriaOffset * 4 + 4 * (g - 1) + 1] = faceNodeOffset + N2 - 1;
-            index[faceTriaOffset * 4 + 4 * (g - 1) + 2] = faceNodeOffset + N3 - 1;
-            index[faceTriaOffset * 4 + 4 * (g - 1) + 3] = SO_END_FACE_INDEX;
+    // The edge bookkeeping depends on the order the faces are visited in, so it stays
+    // serial. It only rewrites vertices inside the owning face's slice, which the pass
+    // above has already filled in.
+    for (int faceIndex = 0; faceIndex < faceMap.Extent(); faceIndex++) {
+        const FaceTessellation& tess = faceTess[faceIndex];
+        if (tess.mesh.IsNull()) {
+            continue;
         }
 
-        parts[ii] = nbTriInFace;  // new part
+        const TopoDS_Face& actFace = TopoDS::Face(faceMap(faceIndex + 1));
+        const Handle(Poly_Triangulation) & mesh = tess.mesh;
+        const int faceNodeOffset = tess.nodeOffset;
+
+        gp_Trsf myTransf;
+        Standard_Boolean identity = true;
+        if (!tess.location.IsIdentity()) {
+            identity = false;
+            myTransf = tess.location.Transformation();
+        }
+
+#if OCC_VERSION_HEX < 0x070600
+        const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
+#endif
 
         // handling the edges lying on this face
         TopExp_Explorer Exp;
@@ -1324,7 +1400,7 @@ void ViewProviderPartExt::setupCoinGeometry(
 
                 // this holds the indices of the edge's triangulation to the current polygon
                 Handle(Poly_PolygonOnTriangulation)
-                    aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
+                    aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, tess.location);
                 if (aPoly.IsNull()) {
                     continue;  // polygon does not exist
                 }
@@ -1358,11 +1434,9 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
 
         edgeVector.push_back(-1);
-
-        // counting up the per Face offsets
-        faceNodeOffset += nbNodesInFace;
-        faceTriaOffset += nbTriInFace;
     }
+
+    int faceNodeOffset = faceNodeTotal;
 
     // handling of the free edges
     for (int i = 1; i <= edgeMap.Extent(); i++) {
@@ -1409,9 +1483,13 @@ void ViewProviderPartExt::setupCoinGeometry(
     }
 
     // normalize all normals
-    for (int i = 0; i < numNorms; i++) {
-        norms[i].normalize();
-    }
+    Base::parallelFor(
+        0,
+        numNorms,
+        [norms](int i) { norms[i].normalize(); },
+        /*grainSize*/ 4096,
+        threadLimit
+    );
 
     // lineSetMap only holds entries for edges that actually produced a polyline
     // (an edge whose Poly_PolygonOnTriangulation is null is skipped above, and the
