@@ -56,6 +56,7 @@ using enum Gui::InputHint::UserInput;
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <array>
+#include <Standard_Failure.hxx>
 
 using namespace MeasureGui;
 
@@ -128,6 +129,49 @@ QString preferredUnitForMeasureType(const App::MeasureType* measureType)
     std::string unitString;
     Base::UnitsApi::schemaTranslate(Base::Quantity(1.0, unit), factor, unitString);
     return QString::fromStdString(unitString);
+}
+
+constexpr std::array snapModeDisplayLabels {
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Auto"),
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "None"),
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Vertex"),
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Center"),
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Midpoint"),
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Axis")};
+
+void populateSnapCombo(QComboBox* combo)
+{
+    static_assert(snapModeDisplayLabels.size()
+                      == static_cast<std::size_t>(Measure::MeasureSnapMode::Axis) + 1,
+                  "Snap mode display labels must track Measure::MeasureSnapMode");
+    for (std::size_t i = 0; i < snapModeDisplayLabels.size(); ++i) {
+        combo->addItem(
+            QCoreApplication::translate("Measure::MeasureSnapMode", snapModeDisplayLabels[i]),
+            QVariant(static_cast<int>(i)));
+    }
+}
+
+constexpr auto snapModeContext = "Measure::MeasureSnapMode";
+constexpr auto snapSlot1FallbackSource = QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "First");
+constexpr auto snapSlot2FallbackSource = QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Second");
+
+QString snapSlot1FallbackText()
+{
+    return QCoreApplication::translate(snapModeContext, snapSlot1FallbackSource);
+}
+
+QString snapSlot2FallbackText()
+{
+    return QCoreApplication::translate(snapModeContext, snapSlot2FallbackSource);
+}
+
+QString slotLabel(const App::MeasureSelection& selection, std::size_t slot, const QString& fallback)
+{
+    if (slot >= selection.size()) {
+        return fallback;
+    }
+    const std::string name = selection[slot].object.getOldElementName();
+    return name.empty() ? fallback : QString::fromStdString(name);
 }
 
 }  // namespace
@@ -207,6 +251,28 @@ TaskMeasure::TaskMeasure()
     // Connect dropdown's change signal to our onModeChange slot
     connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
+    snap1Label = new QLabel(snapSlot1FallbackText());
+    snap2Label = new QLabel(snapSlot2FallbackText());
+    snap1Switch = new QComboBox();
+    snap2Switch = new QComboBox();
+    snap1Label->setBuddy(snap1Switch);
+    snap2Label->setBuddy(snap2Switch);
+
+    int slot = 0;
+    for (auto* combo : {snap1Switch, snap2Switch}) {
+        // populate before connect: the first addItem emits currentIndexChanged
+        populateSnapCombo(combo);
+        connect(
+            combo,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            [this, slot](int) {
+                applySnapMode(slot);
+            }
+        );
+        ++slot;
+    }
+
     unitSwitch = new QComboBox();
     unitSwitch->addItem(QLatin1String("-"));
     connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
@@ -231,6 +297,8 @@ TaskMeasure::TaskMeasure()
     settingsLayout->addWidget(mSettings);
     formLayout->addRow(QLatin1String(), settingsLayout);
     formLayout->addRow(tr("Mode"), modeSwitch);
+    formLayout->addRow(snap1Label, snap1Switch);
+    formLayout->addRow(snap2Label, snap2Switch);
 
     auto* deltaLayout = new QHBoxLayout();
     deltaLayout->setContentsMargins(0, 0, 0, 0);
@@ -368,6 +436,8 @@ void TaskMeasure::tryUpdate()
         if (!App::MeasureManager::hasMeasureHandler(mod.c_str())) {
             Base::Console().message("No measure handler available for geometry of module: %s\n", mod);
             clearSelection();
+            mPickedCount = 0;
+            updateSnapPreviewMode();
             return;
         }
     }
@@ -383,6 +453,9 @@ void TaskMeasure::tryUpdate()
         App::MeasureSelectionItem item = {sub, Base::Vector3d(s.x, s.y, s.z)};
         selection.push_back(item);
     }
+
+    mPickedCount = selection.size();
+    updateSnapPreviewMode();
 
     // Get valid measure type
     App::MeasureType* measureType = nullptr;
@@ -408,6 +481,7 @@ void TaskMeasure::tryUpdate()
         }
         removeObject();
         enableAnnotateButton(false);
+        refreshSnapRows(selection);
         return;
     }
 
@@ -430,12 +504,15 @@ void TaskMeasure::tryUpdate()
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
+        applySnapModesToObject();
+
         syncDisplayUnit();
         refreshResult();
 
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
+    refreshSnapRows(selection);
     _mMeasureObject->purgeTouched();
 }
 
@@ -727,6 +804,75 @@ void TaskMeasure::setDeltaPossible(bool possible)
 {
     showDelta->setVisible(possible);
     showDeltaLabel->setVisible(possible);
+}
+
+void TaskMeasure::setSnapPossible(bool possible)
+{
+    snap1Label->setVisible(possible);
+    snap1Switch->setVisible(possible);
+    snap2Label->setVisible(possible);
+    snap2Switch->setVisible(possible);
+    if (!possible) {
+        mSnapManager.setPreviewMode(Measure::MeasureSnapMode::Auto);
+    }
+}
+
+void TaskMeasure::refreshSnapRows(const App::MeasureSelection& selection)
+{
+    const bool isDistance = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject) != nullptr;
+    setSnapPossible(mPickedCount < 2 || isDistance);
+    snap1Label->setText(slotLabel(selection, 0, snapSlot1FallbackText()));
+    snap2Label->setText(slotLabel(selection, 1, snapSlot2FallbackText()));
+}
+
+void TaskMeasure::updateSnapPreviewMode()
+{
+    const QComboBox* source = (mPickedCount == 1) ? snap2Switch : snap1Switch;
+    const long mode = source->currentData().toInt();
+    mSnapManager.setPreviewMode(Measure::MeasureSnap::snapModeFromIndex(mode));
+}
+
+void TaskMeasure::applySnapMode(int slot)
+{
+    updateSnapPreviewMode();
+
+    auto* dist = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject);
+    if (!dist) {
+        return;
+    }
+    const QComboBox* combo = (slot == 0) ? snap1Switch : snap2Switch;
+    App::PropertyEnumeration& prop = (slot == 0) ? dist->Snap1 : dist->Snap2;
+    const long mode = combo->currentData().toInt();
+    if (prop.getValue() == mode) {
+        return;
+    }
+    try {
+        prop.setValue(mode);
+        dist->purgeTouched();
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().error("Measure: %s\n", e.GetMessageString());
+    }
+    refreshResult();
+}
+
+void TaskMeasure::applySnapModesToObject()
+{
+    auto* dist = dynamic_cast<Measure::MeasureDistance*>(_mMeasureObject);
+    if (!dist) {
+        return;
+    }
+    const long mode1 = snap1Switch->currentData().toInt();
+    if (dist->Snap1.getValue() != mode1) {
+        dist->Snap1.setValue(mode1);
+    }
+    const long mode2 = snap2Switch->currentData().toInt();
+    if (dist->Snap2.getValue() != mode2) {
+        dist->Snap2.setValue(mode2);
+    }
 }
 
 void TaskMeasure::onModeChanged(int index)

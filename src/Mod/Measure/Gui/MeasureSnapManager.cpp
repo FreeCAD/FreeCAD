@@ -65,6 +65,11 @@ void MeasureSnapManager::setEnabled(bool enabled)
     }
 }
 
+void MeasureSnapManager::setPreviewMode(Measure::MeasureSnapMode mode)
+{
+    mPreviewMode = mode;
+}
+
 void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
 {
     if (!mEnabled) {
@@ -85,9 +90,8 @@ void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
         }
         const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(msg.Object);
         const int flags = Measure::MeasureSnap::getAvailableSnapTypes(shape);
-        // Mode is fixed to Auto until the panel exposes a snap-mode control.
         const Measure::MeasureSnapMode type
-            = Measure::MeasureSnap::pickPreviewType(flags, Measure::MeasureSnapMode::Auto);
+            = Measure::MeasureSnap::pickPreviewType(flags, mPreviewMode);
         mIndicator.show(guiDoc, Measure::MeasureSnap::previewPoints(shape, type), type);
     }
     catch (const Base::Exception& e) {
