@@ -148,7 +148,8 @@ public:
     bool isSnapping() const { return snapping; }
     void snapPosition(QPointF& position);
     void snapSectionView(const TechDraw::DrawViewSection* sectionView,
-                         QPointF& newPosition);
+                         QPointF& newPosition, bool initialPlacement = false);
+    void autoPositionSectionView(TechDraw::DrawViewSection* sectionView);
     Base::Vector3d projItemPagePos(TechDraw::DrawViewPart* item);
     void alignTo(QGraphicsItem*, const QString &alignment);
 
