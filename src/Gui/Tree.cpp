@@ -1395,6 +1395,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
 void TreeWidget::hideEvent(QHideEvent* ev)
 {
+    clearKeyboardDragPending();
     QTreeWidget::hideEvent(ev);
 }
 
@@ -1944,6 +1945,11 @@ bool isTreeViewDragging()
 
 void TreeWidget::keyPressEvent(QKeyEvent* event)
 {
+    if (event->key() == Qt::Key_Escape && keyboardDragPending) {
+        clearKeyboardDragPending();
+        event->accept();
+        return;
+    }
     if (event->matches(QKeySequence::Find)) {
         event->accept();
         onSearchObjects();
@@ -2014,6 +2020,18 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
+    if (keyboardDragPending && event->button() == Qt::LeftButton) {
+        clearKeyboardDragPending();
+        if (state() == NoState && !selectedItems().empty()) {
+            setState(DraggingState);
+            startDrag(model()->supportedDragActions());
+            setState(NoState);
+            stopAutoScroll();
+            event->accept();
+            return;
+        }
+    }
+
     expandIndicatorPressed = false;
     visibilityIconPressed = false;
     if (isVisibilityIconEnabled()) {
@@ -2186,12 +2204,29 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
     }
 }
 
+void TreeWidget::clearKeyboardDragPending()
+{
+    if (!keyboardDragPending) {
+        return;
+    }
+    keyboardDragPending = false;
+    viewport()->unsetCursor();
+}
+
 void TreeWidget::startDragging()
 {
     if (state() != NoState) {
         return;
     }
     if (selectedItems().empty()) {
+        return;
+    }
+
+    // Native DnD (macOS/Windows) needs a real mouse-down. Arm on T,D and start on next LMB.
+    if (!(QApplication::mouseButtons() & Qt::LeftButton)) {
+        keyboardDragPending = true;
+        viewport()->setCursor(Qt::ClosedHandCursor);
+        setFocus(Qt::ShortcutFocusReason);
         return;
     }
 

@@ -3464,14 +3464,11 @@ StdTreeDrag::StdTreeDrag()
 
 void StdTreeDrag::activated(int)
 {
-    if (Gui::Selection().hasSelection()) {
-        const auto trees = getMainWindow()->findChildren<TreeWidget*>();
-        for (auto tree : trees) {
-            if (tree->isVisible()) {
-                tree->startDragging();
-                break;
-            }
-        }
+    if (!Gui::Selection().hasSelection()) {
+        return;
+    }
+    if (auto* tree = TreeWidget::getTreeForSelection()) {
+        tree->startDragging();
     }
 }
 
