@@ -1315,17 +1315,14 @@ void NumberExpression::negate()
     setQuantity(-getQuantity());
 }
 
-void NumberExpression::_toString(std::ostream &ss, bool,int) const
+void NumberExpression::_toString(std::ostream &ss, bool persistent, int) const
 {
-    // Restore the old implementation because using digits10 + 2 causes
-    // undesired side-effects:
-    // https://forum.freecad.org/viewtopic.php?f=3&t=44057&p=375882#p375882
-    // See also:
-    // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
-    // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
-    // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    // Keep the displayed form compact, but preserve the exact value when
+    // serializing expressions so parsing it restores the same double.
     boost::io::ios_flags_saver ifs(ss);
-    ss << std::setprecision(std::numeric_limits<double>::digits10) << getValue();
+    const int precision = persistent ? std::numeric_limits<double>::max_digits10
+                                     : std::numeric_limits<double>::digits10;
+    ss << std::setprecision(precision) << getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
