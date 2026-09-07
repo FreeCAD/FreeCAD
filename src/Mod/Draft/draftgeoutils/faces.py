@@ -156,6 +156,7 @@ def _make_segment_face(edge1, edge2):
         if not face.isValid():
             continue
 
+        face.fix(1e-7, 0, 1)
         return face
 
     _err("DraftGeomUtils: unable to bind wires")
