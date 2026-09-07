@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>&amp;New Spreadsheet</source>
       <translation>&amp;Nyt regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Creates a new spreadsheet</source>
       <translation>Opretter et nyt regneark</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>Align &amp;Bottom</source>
       <translation type="unfinished">Align &amp;Bottom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Aligns cell contents to the bottom</source>
       <translation type="unfinished">Aligns cell contents to the bottom</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Align Horizontal &amp;Center</source>
       <translation type="unfinished">Align Horizontal &amp;Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Align &amp;Left</source>
       <translation type="unfinished">Align &amp;Left</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Aligns cell contents to the left</source>
       <translation type="unfinished">Aligns cell contents to the left</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Align &amp;Right</source>
       <translation type="unfinished">Align &amp;Right</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Aligns cell contents to the right</source>
       <translation type="unfinished">Aligns cell contents to the right</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="464"/>
       <source>Align &amp;Top</source>
       <translation type="unfinished">Align &amp;Top</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="465"/>
       <source>Aligns cell contents to the top</source>
       <translation type="unfinished">Aligns cell contents to the top</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="579"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="580"/>
       <source>Align &amp;Vertical Center</source>
       <translation type="unfinished">Align &amp;Vertical Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="581"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation type="unfinished">Aligns cell contents to the vertical center</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>&amp;Export Spreadsheet</source>
       <translation type="unfinished">&amp;Export Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>&amp;Import Spreadsheet</source>
       <translation type="unfinished">&amp;Import Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Imports a CSV file into a new spreadsheet</source>
       <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="895"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="896"/>
       <source>Set Alias</source>
       <translation type="unfinished">Set Alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="897"/>
       <source>Sets an alias for the selected cell</source>
       <translation type="unfinished">Sets an alias for the selected cell</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="123"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="123"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>Sp&amp;lit Cell</source>
       <translation type="unfinished">Sp&amp;lit Cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="125"/>
       <source>Splits a previously merged cell</source>
       <translation type="unfinished">Splits a previously merged cell</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>&amp;Bold Text</source>
       <translation>&amp;Fed Tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Sets the text in the selected cells bold</source>
       <translation type="unfinished">Sets the text in the selected cells bold</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>&amp;Italic Text</source>
       <translation>&amp;Kursiv Tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>Sætter teksten i de markerede celler kursiv</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Spreadsheet</source>
       <translation>Regneark</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="810"/>
       <source>&amp;Underline Text</source>
       <translation>&amp;Understreg Tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="811"/>
       <source>Underlines the text in the selected cells</source>
       <translation type="unfinished">Underlines the text in the selected cells</translation>
     </message>
@@ -292,62 +292,62 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Merge cells</source>
       <translation>Flet celler</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="145"/>
       <source>Sp&amp;lit cell</source>
       <translation type="unfinished">Sp&amp;lit cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Left-align cell</source>
       <translation>Venstrejuster celle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Center cell</source>
       <translation>Centrer celle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Right-align cell</source>
       <translation>Højrejuster celle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Top-align cell</source>
       <translation type="unfinished">Top-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Bottom-align cell</source>
       <translation type="unfinished">Bottom-align cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source>Vertically center cells</source>
       <translation type="unfinished">Vertically center cells</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="668"/>
+      <location filename="../../Command.cpp" line="678"/>
       <source>Set bold text</source>
       <translation>Sæt fed tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="753"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Set italic text</source>
       <translation>Sæt kursiv tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="838"/>
+      <location filename="../../Command.cpp" line="850"/>
       <source>Set underline text</source>
       <translation>Understreg tekst</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="968"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Create Spreadsheet</source>
       <translation>Opret regneark</translation>
     </message>
@@ -742,7 +742,7 @@ switch the design configuration. The property will be created if not exist.</tra
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Import file</source>
       <translation>Importer fil</translation>
     </message>

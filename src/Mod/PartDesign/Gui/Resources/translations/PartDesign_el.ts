@@ -133,17 +133,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignAdditiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1699"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Additive Helix</source>
       <translation>Δημιουργία Ελικοειδούς Σχήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1701"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
       <translation>Αυτό το εργαλείο παίρνει ένα σχήμα που σχεδιάσατε (π. χ. έναν κύκλο) και το "τραβάει" ακολουθώντας μια ελικοειδή διαδρομή γύρω από έναν άξονα, ώστε να δημιουργήσει έναν όγκο και να τον ενώσει με το υπόλοιπο αντικείμενο</translation>
     </message>
@@ -162,8 +162,8 @@ so that self intersection is avoided.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1603"/>
-      <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation>Αυτό το εργαλείο παίρνει ένα σχήμα που σχεδιάσατε (π. χ. έναν κύκλο) και το «τραβάει» ακολουθώντας μια διαδρομή που έχετε ορίσει, ώστε να δημιουργήσει έναν όγκο (όπως έναν σωλήνα) και να τον ενώσει με το υπόλοιπο αντικείμενο</translation>
+      <source>Lofts the selected sketch or profile through one or more sections and adds it to the body</source>
+      <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and adds it to the body</translation>
     </message>
   </context>
   <context>
@@ -205,17 +205,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="2622"/>
+      <location filename="../../Command.cpp" line="2621"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2623"/>
+      <location filename="../../Command.cpp" line="2622"/>
       <source>Boolean Operation</source>
       <translation>Πράξη Άλγεβρας Boole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2624"/>
+      <location filename="../../Command.cpp" line="2623"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
       <translation>Εφαρμόζει λογικές πράξεις boolean με τα επιλεγμένα αντικείμενα και το ενεργό σώμα</translation>
     </message>
@@ -242,17 +242,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2028"/>
       <source>Chamfer</source>
       <translation>Λοξότμηση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2030"/>
+      <location filename="../../Command.cpp" line="2029"/>
       <source>Applies a chamfer to the selected edges or faces</source>
       <translation>Εφαρμόζει μια λοξότμηση στις επιλεγμένες ακμές ή επιφάνειες</translation>
     </message>
@@ -278,17 +278,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignDraft</name>
     <message>
-      <location filename="../../Command.cpp" line="2057"/>
+      <location filename="../../Command.cpp" line="2056"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2058"/>
+      <location filename="../../Command.cpp" line="2057"/>
       <source>Draft</source>
       <translation>Προσχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2059"/>
+      <location filename="../../Command.cpp" line="2058"/>
       <source>Applies a draft to the selected faces</source>
       <translation>Εφαρμόζει μια γωνία κλίσης στις επιλεγμένες επιφάνειες (για διευκόλυνση εξαγωγής από καλούπι)</translation>
     </message>
@@ -314,17 +314,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="2000"/>
+      <location filename="../../Command.cpp" line="1999"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2001"/>
+      <location filename="../../Command.cpp" line="2000"/>
       <source>Fillet</source>
       <translation>Στρογγύλεμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2002"/>
+      <location filename="../../Command.cpp" line="2001"/>
       <source>Applies a fillet to the selected edges or faces</source>
       <translation>Εφαρμόζει στρογγυλοποίηση στις επιλεγμένες ακμές ή επιφάνειες</translation>
     </message>
@@ -386,17 +386,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2312"/>
+      <location filename="../../Command.cpp" line="2311"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2313"/>
+      <location filename="../../Command.cpp" line="2312"/>
       <source>Linear Pattern</source>
       <translation>Γραμμική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2314"/>
+      <location filename="../../Command.cpp" line="2313"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
       <translation>Δημιουργεί αντίγραφα των επιλεγμένων στοιχείων ή του ενεργού σώματος σε γραμμική διάταξη</translation>
     </message>
@@ -422,17 +422,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMirrored</name>
     <message>
-      <location filename="../../Command.cpp" line="2255"/>
+      <location filename="../../Command.cpp" line="2254"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2256"/>
+      <location filename="../../Command.cpp" line="2255"/>
       <source>Mirror</source>
       <translation>Κατοπτρισμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
+      <location filename="../../Command.cpp" line="2256"/>
       <source>Mirrors the selected features or active body</source>
       <translation>Δημιουργεί ένα συμμετρικό είδωλο (κατοπτρισμό) των επιλεγμένων εργασιών ή του ενεργού σώματος</translation>
     </message>
@@ -494,17 +494,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="2491"/>
+      <location filename="../../Command.cpp" line="2490"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2492"/>
+      <location filename="../../Command.cpp" line="2491"/>
       <source>Multi-Transform</source>
       <translation>Πολλαπλός-Μετασχηματισμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2493"/>
+      <location filename="../../Command.cpp" line="2492"/>
       <source>Applies multiple transformations to the selected features or active body</source>
       <translation>Εφαρμόζει πολλούς συνδυαστικούς μετασχηματισμούς (όπως επαναλήψεις, καθρεπτισμούς ή αλλαγή μεγέθους) στα επιλεγμένα στοιχεία ή στο ενεργό σώμα</translation>
     </message>
@@ -602,17 +602,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-      <location filename="../../Command.cpp" line="2386"/>
+      <location filename="../../Command.cpp" line="2385"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="2386"/>
       <source>Polar Pattern</source>
       <translation>Κυκλική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2388"/>
+      <location filename="../../Command.cpp" line="2387"/>
       <source>Duplicates the selected features or the active body in a circular pattern</source>
       <translation>Δημιουργεί αντίγραφα των επιλεγμένων στοιχείων ή του ενεργού σώματος σε κυκλική διάταξη</translation>
     </message>
@@ -638,17 +638,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignScaled</name>
     <message>
-      <location filename="../../Command.cpp" line="2448"/>
+      <location filename="../../Command.cpp" line="2447"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2448"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2449"/>
       <source>Scales the selected features or the active body</source>
       <translation>Αλλάζει το μέγεθος (κλιμακώνει) των επιλεγμένων στοιχείων ή του ενεργού σώματος</translation>
     </message>
@@ -692,17 +692,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignSubtractiveHelix</name>
     <message>
-      <location filename="../../Command.cpp" line="1784"/>
+      <location filename="../../Command.cpp" line="1783"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1785"/>
+      <location filename="../../Command.cpp" line="1784"/>
       <source>Subtractive Helix</source>
       <translation>Αφαιρετική Έλικα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1786"/>
+      <location filename="../../Command.cpp" line="1785"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
       <translation>Σαρώνει το επιλεγμένο σκαρίφημα ή προφίλ κατά μήκος μιας έλικας και το αφαιρεί από το σώμα</translation>
     </message>
@@ -720,9 +720,9 @@ so that self intersection is avoided.</source>
       <translation>Αφαιρετική Μετάβαση (Loft)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1653"/>
-      <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation>Αυτό το εργαλείο παίρνει ένα σχήμα (π. χ. έναν κύκλο) και το «σέρνει» κατά μήκος μιας διαδρομής για να «σκάψει» μια εσοχή μέσα στο αντικείμενό σας.</translation>
+      <location filename="../../Command.cpp" line="1654"/>
+      <source>Lofts the selected sketch or profile through one or more sections and removes it from the body</source>
+      <translation type="unfinished">Lofts the selected sketch or profile through one or more sections and removes it from the body</translation>
     </message>
   </context>
   <context>
@@ -746,17 +746,17 @@ so that self intersection is avoided.</source>
   <context>
     <name>CmdPartDesignThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2127"/>
+      <location filename="../../Command.cpp" line="2126"/>
       <source>PartDesign</source>
       <translation>ΣχεδίασηΕξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2128"/>
+      <location filename="../../Command.cpp" line="2127"/>
       <source>Thickness</source>
       <translation>Πάχος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="2128"/>
       <source>Applies thickness and removes the selected faces</source>
       <translation>Δημιουργεί τοιχώματα στο αντικείμενο και αφαιρεί τις επιλεγμένες επιφάνειες για να μείνει κούφιο</translation>
     </message>
@@ -905,7 +905,7 @@ so that self intersection is avoided.</source>
       <translation>Δημιουργία Αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2546"/>
+      <location filename="../../Command.cpp" line="2545"/>
       <source>Convert to Multi-Transform feature</source>
       <translation>Μετατροπή σε λειτουργία Πολλαπλού Μετασχηματισμού</translation>
     </message>
@@ -926,7 +926,7 @@ so that self intersection is avoided.</source>
       <translation>Νέο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2643"/>
+      <location filename="../../Command.cpp" line="2642"/>
       <source>Create Boolean</source>
       <translation>Δημιουργία Σύνθετης Πράξης (Boolean)</translation>
     </message>
@@ -1390,7 +1390,7 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::NoDependentsSelection</name>
     <message>
-      <location filename="../../ReferenceSelection.cpp" line="287"/>
+      <location filename="../../ReferenceSelection.cpp" line="290"/>
       <source>Selecting this will cause circular dependency.</source>
       <translation>Αυτή η επιλογή θα προκαλέσει κυκλική εξάρτηση.</translation>
     </message>
@@ -1423,12 +1423,12 @@ If zero, it is equal to Radius2</source>
       <translation>Τομή</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="53"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="97"/>
       <source>Boolean Parameters</source>
       <translation>Παράμετροι Boolean</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="84"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="128"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
@@ -1638,17 +1638,17 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>The body list cannot be empty</source>
       <translation>Η λίστα σωμάτων δεν δύναται να είναι κενή</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="386"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="437"/>
       <source>Empty Body List</source>
       <translation type="unfinished">Empty Body List</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="407"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="458"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Σφάλμα Boolean: Αποδοχή: Πρόβλημα στα αντικείμενα που προσπαθείτε να ενώσετε/αφαιρέσετε</translation>
     </message>
@@ -1744,14 +1744,13 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1478"/>
       <source>No face selected</source>
       <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1242"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
@@ -1761,29 +1760,29 @@ If zero, it is equal to Radius2</source>
       <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="418"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="400"/>
       <source>Preview</source>
       <translation>Προεπισκόπηση</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="422"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="404"/>
       <source>Select Faces</source>
       <translation>Επιλογή Επιφανειών</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="779"/>
       <source>Select reference…</source>
       <translation>Επιλογή αναφοράς…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="666"/>
       <source>No shape selected</source>
       <translation>Δεν έχει επιλεχθεί κανένα σχήμα</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="225"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1179"/>
       <source>No start reference selected</source>
       <translation type="unfinished">No start reference selected</translation>
     </message>
@@ -1793,58 +1792,58 @@ If zero, it is equal to Radius2</source>
       <translation type="unfinished">Offset from the profile or selected start reference</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="772"/>
       <source>Sketch normal</source>
       <translation>Κανονικό σκαρίφημα</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="775"/>
       <source>Face normal</source>
       <translation>Κανονικό πρόσωπο</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="783"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="786"/>
       <source>Custom direction</source>
       <translation>Προσαρμοσμένη κατεύθυνση</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1173"/>
       <source>Cancel</source>
       <translation>Ακύρωση</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1174"/>
       <source>Select face, plane...</source>
       <translation type="unfinished">Select face, plane...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1178"/>
       <source>Pick Reference</source>
       <translation type="unfinished">Pick Reference</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1189"/>
       <source>Click on a shape in the model</source>
       <translation>Κάντε κλικ σε ένα σχήμα στο μοντέλο</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1465"/>
       <source>One sided</source>
       <translation>Μονόπλευρη</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1466"/>
       <source>Two sided</source>
       <translation>Αμφίπλευρη</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1467"/>
       <source>Symmetric</source>
       <translation>Συμμετρική</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1473"/>
       <source>Face selection active</source>
       <translation type="unfinished">Face selection active</translation>
     </message>
@@ -2231,7 +2230,7 @@ If zero, it is equal to Radius2</source>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="708"/>
-      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1126"/>
       <source>No start reference selected</source>
       <translation type="unfinished">No start reference selected</translation>
     </message>
@@ -2288,11 +2287,6 @@ If zero, it is equal to Radius2</source>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Ευρεία</translation>
-    </message>
-    <message>
-      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
-      <source>Face</source>
-      <translation>Επιφάνεια</translation>
     </message>
   </context>
   <context>
@@ -2948,142 +2942,192 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="194"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="296"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="131"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="306"/>
       <source>Base X-axis</source>
       <translation>Βασικός άξονας X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
-      <source>Mode</source>
-      <translation>Λειτουργία</translation>
+      <source>Start</source>
+      <translation>Εκκίνηση</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="30"/>
+      <source>Profile plane</source>
+      <translation type="unfinished">Profile plane</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="35"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Offset</source>
+      <translation>Μετατόπιση (Offset)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="48"/>
+      <source>Reference</source>
+      <translation>Αναφορά</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="77"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="488"/>
+      <source>Pick Reference</source>
+      <translation type="unfinished">Pick Reference</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="113"/>
+      <source>Direction</source>
+      <translation>Κατεύθυνση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="136"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="307"/>
       <source>Base Y-axis</source>
       <translation>Βασικός άξονας Υ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="141"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="308"/>
       <source>Base Z-axis</source>
       <translation>Βασικός άξονας Ζ</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="146"/>
       <source>Horizontal sketch axis</source>
       <translation>Οριζόντιος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="151"/>
       <source>Vertical sketch axis</source>
       <translation>Κάθετος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="178"/>
       <source>Side 1</source>
       <translation>Πλευρά 1</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="247"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="343"/>
       <source>Select Face</source>
       <translation>Επιλέξτε Επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="280"/>
       <source>Side 2</source>
       <translation>Πλευρά 2</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="367"/>
       <source>Symmetric to plane</source>
       <translation>Συμμετρικό ως προς την επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="374"/>
       <source>Reversed</source>
       <translation>Ανεστραμμένο</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="123"/>
       <source>Axis</source>
       <translation>Άξονας</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="316"/>
       <source>Select reference…</source>
       <translation>Επιλέξτε αναφορά…</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
-      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="210"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="306"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="251"/>
       <source>Angle</source>
       <translation>Γωνία</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="621"/>
       <source>Face</source>
       <translation>Επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="388"/>
       <source>Recompute on change</source>
       <translation>Επανυπολογισμός κατά την αλλαγή</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="489"/>
+      <source>No start reference selected</source>
+      <translation type="unfinished">No start reference selected</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="140"/>
+      <source>Angular offset from the profile or selected start reference</source>
+      <translation type="unfinished">Angular offset from the profile or selected start reference</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="253"/>
       <source>To last</source>
       <translation>Έως το τελευταίο</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Through all</source>
       <translation>Μέσω όλων</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="258"/>
       <source>To first</source>
       <translation>Στο πρώτο</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>Up to face</source>
       <translation>Μέχρι την επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="266"/>
       <source>One sided</source>
       <translation>Μονόπλευρη</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="267"/>
       <source>Two sided</source>
       <translation>Αμφίπλευρη</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="268"/>
       <source>Symmetric</source>
       <translation>Συμμετρική</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="497"/>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="498"/>
+      <source>Select face, plane...</source>
+      <translation type="unfinished">Select face, plane...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="642"/>
       <source>Face selection active</source>
       <translation type="unfinished">Face selection active</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="239"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="647"/>
       <source>No face selected</source>
       <translation>Δεν επιλέχθηκε καμία επιφάνεια</translation>
     </message>
@@ -3132,9 +3176,10 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="127"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="242"/>
       <source>Face</source>
-      <translation>Όψη</translation>
+      <translation>Επιφάνεια</translation>
     </message>
   </context>
   <context>
@@ -3445,7 +3490,7 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2233"/>
+      <location filename="../../Command.cpp" line="2232"/>
       <source>Select only one feature in an active body.</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
@@ -3459,29 +3504,29 @@ measured along the specified direction</source>
       <translation>Κλείσιμο αυτού του διαλόγου?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
-      <location filename="../../Command.cpp" line="1896"/>
+      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1895"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1862"/>
+      <location filename="../../Command.cpp" line="1861"/>
       <source>Select an edge, face, or body from a single body.</source>
       <translation>Επιλέξτε μια ακμή, μια επιφάνεια ή ένα σώμα (body) από ένα μεμονωμένο σώμα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
-      <location filename="../../Command.cpp" line="2232"/>
+      <location filename="../../Command.cpp" line="1868"/>
+      <location filename="../../Command.cpp" line="2231"/>
       <source>Selection is not in the active body</source>
       <translation>Η επιλογή δεν βρίσκεται μέσα στο ενεργό σώμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1897"/>
+      <location filename="../../Command.cpp" line="1896"/>
       <source>Shape of the selected part is empty</source>
       <translation>Το σχήμα του επιλεγμένου εξαρτήματος είναι κενό</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>Select an edge, face, or body from an active body.</source>
       <translation>Επιλέξτε μια ακμή, μια επιφάνεια ή ένα σώμα από ένα ενεργό σώμα.</translation>
     </message>
@@ -3491,12 +3536,12 @@ measured along the specified direction</source>
       <translation>Για να χρησιμοποιήσετε στοιχεία από άλλο αντικείμενο, δοκιμάστε να τα εισάγετε πρώτα με μια "Σύνδεση σχήματος" ή ως "Βασικό χαρακτηριστικό"</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1883"/>
+      <location filename="../../Command.cpp" line="1882"/>
       <source>Wrong object type</source>
       <translation>Λάθος τύπος αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>%1 works only on parts.</source>
       <translation>Το %1 λειτουργεί μόνο σε εξαρτήματα.</translation>
     </message>
@@ -3684,23 +3729,23 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="292"/>
       <source>Vertical sketch axis</source>
       <translation>Κάθετος άξονας σκίτσου</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="293"/>
       <source>Horizontal sketch axis</source>
       <translation>Οριζόντιος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="295"/>
       <source>Construction line %1</source>
       <translation>Γραμμή κατασκευής %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="96"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="97"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
@@ -3845,7 +3890,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>Χειροκίνητη Μεταφορά</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="350"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="351"/>
       <source>Edit Boolean</source>
       <translation>Επεξεργασία Boolean</translation>
     </message>
@@ -4731,7 +4776,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureHole.cpp" line="2149"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="535"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Το αποτέλεσμα έχει πολλαπλά στερεά: ενεργοποιήστε την επιλογή 'Να επιτρέπονται τα Σύνθετα' (Allow Compound) στο ενεργό Σώμα.</translation>
     </message>
@@ -4846,27 +4891,27 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="298"/>
       <source>Creating a face from sketch failed</source>
       <translation>Η δημιουργία επιφάνειας από αυτό το σχέδιο απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="333"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Ο άξονας περιστροφής τέμνει το σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="494"/>
       <source>No revolution geometry was generated</source>
       <translation type="unfinished">No revolution geometry was generated</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="520"/>
       <source>Could not revolve the sketch!</source>
       <translation>Αδυναμία περιστροφής του σχεδίου!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Αδυναμία δημιουργίας επιφάνειας από το σχέδιο.
@@ -5289,18 +5334,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>η μεταβολή του Χ2 (ΔΧ2) της σφήνας είναι αρνητική</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="246"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="261"/>
       <source>Angle of revolution too large</source>
       <translation>Η γωνία περιστροφής είναι πολύ μεγάλη</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="254"/>
       <source>Angle of revolution too small</source>
       <translation>Γωνία περιστροφής πολύ μικρή</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="292"/>
       <source>Reference axis is invalid</source>
       <translation>Ο άξονας αναφοράς δεν είναι έγκυρος</translation>
     </message>
@@ -5423,12 +5468,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2690"/>
+      <location filename="../../Command.cpp" line="2689"/>
       <source>Create Datum</source>
       <translation>Δημιουργία Στοιχείου Αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2691"/>
+      <location filename="../../Command.cpp" line="2690"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Δημιουργεί ένα στοιχείο αναφοράς ή ένα τοπικό σύστημα συντεταγμένων
 (είναι βοηθητικά αντικείμενα όπως επίπεδα, γραμμές ή σημεία που δεν αποτελούν μέρος του τελικού αντικειμένου, αλλά τα χρησιμοποιούμε ως «βάση» ή «οδηγό» για να τοποθετήσουμε με ακρίβεια άλλα σχήματα ή σκαριφήματα)</translation>
@@ -5437,12 +5482,12 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>CmdPartDesignCompSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="2725"/>
+      <location filename="../../Command.cpp" line="2724"/>
       <source>Create Datum</source>
       <translation>Δημιουργία Στοιχείου Αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2726"/>
+      <location filename="../../Command.cpp" line="2725"/>
       <source>Creates a datum object or local coordinate system</source>
       <translation>Δημιουργεί ένα στοιχείο αναφοράς ή ένα τοπικό σύστημα συντεταγμένων
 (είναι βοηθητικά αντικείμενα όπως επίπεδα, γραμμές ή σημεία που δεν αποτελούν μέρος του τελικού αντικειμένου, αλλά τα χρησιμοποιούμε ως «βάση» ή «οδηγό» για να τοποθετήσουμε με ακρίβεια άλλα σχήματα ή σκαριφήματα)</translation>
@@ -5545,7 +5590,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1096"/>
       <source>Revolution Parameters</source>
       <translation>Παράμετροι Περιστροφής</translation>
     </message>
@@ -5553,7 +5598,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="1106"/>
       <source>Groove Parameters</source>
       <translation>Παράμετροι Αυλάκωσης</translation>
     </message>
@@ -5685,6 +5730,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../TaskPatternParameters.cpp" line="355"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Μη έγκυρη επιλογή. Επιλέξτε μια ακμή, μια επίπεδη επιφάνεια ή μια γραμμή αναφοράς.</translation>
+    </message>
+  </context>
+  <context>
+    <name>BooleanToolSelection</name>
+    <message>
+      <location filename="../../TaskBooleanParameters.cpp" line="83"/>
+      <source>The result Body cannot be used as a Boolean tool.</source>
+      <translation type="unfinished">The result Body cannot be used as a Boolean tool.</translation>
     </message>
   </context>
   <context>

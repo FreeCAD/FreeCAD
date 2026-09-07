@@ -855,7 +855,7 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2267"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <source>Delete all constraints</source>
       <translation>Usuń wszystkie wiązania</translation>
     </message>
@@ -870,7 +870,7 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Przełącz wiązania na inną przestrzeń wirtualną</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1728"/>
       <source>Update constraint's virtual space</source>
       <translation>Aktualizuj wiązania przestrzeni wirtualnej</translation>
     </message>
@@ -880,12 +880,12 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Zamień nazwy wiązań</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1250"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
       <source>Delete constraints</source>
       <translation>Usuń wiązania</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1378"/>
       <source>Rename sketch constraint</source>
       <translation>Zmień nazwę wiązania szkicu</translation>
     </message>
@@ -912,7 +912,7 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1659"/>
       <location filename="../../CommandConstraints.cpp" line="11287"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1345"/>
       <source>Modify sketch constraints</source>
       <translation>Modyfikuj wiązania szkicu</translation>
     </message>
@@ -1017,54 +1017,54 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2850"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Żądasz niezmienności w wielokrotności węzłów.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2842"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3020"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Indeks geometrii krzywej złożonej (GeoID) jest poza zakresem.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2859"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3036"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Podany indeks geometrii krzywej złożonej (GeoId) nie jest łukiem krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2871"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indeks węzłów jest poza wiązaniem. Zauważ, że zgodnie z zapisem OCC, pierwszy węzeł ma indeks 1, a nie zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Wielokrotność nie może być zwiększona poza stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2898"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Wielokrotność nie może zostać zmniejszona poniżej zera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2914"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC nie jest w stanie zmniejszyć wielokrotności w ramach maksymalnej tolerancji.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Węzeł nie może mieć zerowej krotności.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3049"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Krotność węzłów nie może być większa niż stopień krzywej złożonej.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3059"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Węzła nie można wstawić poza zakresem parametrów krzywej złożonej.</translation>
     </message>
@@ -3212,62 +3212,62 @@ To ustawienie dotyczy tylko paska narzędzi. Niezależnie od wyboru, wszystkie n
 "Promień": Narzędzie zastosuje promień zarówno do łuków, jak i okręgów.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Single tool</source>
       <translation>Narzędzia zintegrowane</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Separated tools</source>
       <translation>Narzędzia oddzielnie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="228"/>
       <source>Both</source>
       <translation>Obydwa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="248"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Auto</source>
       <translation>Automatyczny</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Diameter</source>
       <translation>Średnica</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="251"/>
       <source>Radius</source>
       <translation>Promień</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="261"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Always</source>
       <translation>Zawsze</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>Never</source>
       <translation>Nigdy</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="264"/>
       <source>When no scale feature is visible</source>
       <translation>Gdy żadna funkcja skalowania nie jest widoczna</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="271"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>None</source>
       <translation>Brak</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Dimensions only</source>
       <translation>Tylko wymiary</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="274"/>
       <source>Position and dimensions</source>
       <translation>Pozycja i wymiary</translation>
     </message>
@@ -3566,17 +3566,17 @@ jeśli istnieją</translation>
       <translation>Uwaga: te ustawienia są domyślnie stosowane do nowych szkiców. Ta akcja jest zapamiętane dla każdego szkicu indywidualnie jako właściwość w zakładce widoku.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="583"/>
+      <location filename="../../SketcherSettings.cpp" line="584"/>
       <source>Unexpected C++ exception</source>
       <translation>Nieoczekiwany wyjątek C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="586"/>
+      <location filename="../../SketcherSettings.cpp" line="587"/>
       <source>Sketcher</source>
       <translation>Szkicownik</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="610"/>
+      <location filename="../../SketcherSettings.cpp" line="611"/>
       <source>Glyphs not present:</source>
       <translation>Brakujące glify:</translation>
     </message>
@@ -3758,43 +3758,43 @@ Wiązania zostały wymienione w Widoku raportu (menu Widok → Panele → Widok 
       <translation>Wiązania</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="969"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="977"/>
       <source>Auto constraints</source>
       <translation>Wiązania automatyczne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="970"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="978"/>
       <source>Auto remove redundant constraints</source>
       <translation>Automatycznie usuwaj nadmiarowe wiązania</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="971"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="979"/>
       <source>Display only filtered constraints</source>
       <translation>Wyświetl wyłącznie wiązania według filtrów</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="972"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="980"/>
       <source>Extended information (in widget)</source>
       <translation>Informacje rozszerzone (w widżecie)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="973"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="981"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>Ukryj wyrównanie wewnętrzne (w widżecie)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Brak możliwości śledzenia:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
       <source>Impossible to update visibility:</source>
       <translation>Aktualizacja widoczności niemożliwa:</translation>
     </message>
@@ -3822,7 +3822,7 @@ Wiązania zostały wymienione w Widoku raportu (menu Widok → Panele → Widok 
       <translation>Ustawienia</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
       <source>Construction</source>
       <translation>Konstrukcja</translation>
     </message>
@@ -3832,104 +3832,104 @@ Wiązania zostały wymienione w Widoku raportu (menu Widok → Panele → Widok 
       <translation>Elementy</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2190"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2191"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2103"/>
       <source>Internal</source>
       <translation>Wewnętrzne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2062"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2193"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2194"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2068"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
       <source>Line</source>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
       <source>Group</source>
       <translation>Grupa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2063"/>
       <source>Text</source>
       <translation>Tekst</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2066"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
-      <source>Arc</source>
-      <translation>Łuk</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2069"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
-      <source>Circle</source>
-      <translation>Okrąg</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="2072"/>
       <location filename="../../TaskSketcherElements.cpp" line="2202"/>
       <location filename="../../TaskSketcherElements.cpp" line="2203"/>
+      <source>Arc</source>
+      <translation>Łuk</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <source>Circle</source>
+      <translation>Okrąg</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2212"/>
       <source>Elliptical Arc</source>
       <translation>Łuk eliptyczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2207"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2213"/>
       <source>Elliptical arc</source>
       <translation>Łuk eliptyczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
       <source>Hyperbolic Arc</source>
       <translation>Łuk hiperboliczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
       <source>Hyperbolic arc</source>
       <translation>Łuk hiperboliczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2214"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
       <source>Parabolic Arc</source>
       <translation>Łuk paraboliczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2215"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2221"/>
       <source>Parabolic arc</source>
       <translation>Łuk paraboliczny</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2218"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2090"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2223"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
       <source>B-spline</source>
       <translation>Krzywa złożona</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2219"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2093"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2225"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2226"/>
       <source>Other</source>
       <translation>Inne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2262"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2268"/>
       <source>Extended information</source>
       <translation>Informacje rozszerzone</translation>
     </message>
@@ -4142,112 +4142,112 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4168"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4192"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Szkic jest nieprawidłowy i nie może być edytowany.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Następujące wiązanie jest częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4382"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Następujące wiązania są częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4125"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4140"/>
       <source>Edit Sketch</source>
       <translation>Edycja szkicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4154"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Invalid Sketch</source>
       <translation>Nieprawidłowy szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Open the sketch validation tool?</source>
       <translation>Otworzyć narzędzie weryfikacji szkicu?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4382"/>
       <source>Remove the following constraint:</source>
       <translation>Usuń następujące wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4368"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4383"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Usuń co najmniej jedno z następujących wiązań:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4375"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Usuń następujące niepoprawne wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Usuń następujące niepoprawne wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4448"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4463"/>
       <source>Empty sketch</source>
       <translation>Pusty szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4468"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4459"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
       <source>Malformed constraints:</source>
       <translation>Uszkodzone ograniczenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4467"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4482"/>
       <source>Redundant constraints:</source>
       <translation>Wiązania nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
       <source>Partially redundant:</source>
       <translation>Częściowo nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4486"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4503"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -4257,7 +4257,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -4750,7 +4750,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4446"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
@@ -5182,7 +5182,7 @@ Krzywe złożone i punkty nie są jeszcze obsługiwane.</translation>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
       <location filename="../../EditDatumDialog.cpp" line="339"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1388"/>
       <source>Value Error</source>
       <translation>Błąd wartości</translation>
     </message>

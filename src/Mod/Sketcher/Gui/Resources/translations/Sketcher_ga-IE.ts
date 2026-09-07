@@ -854,7 +854,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2267"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1240"/>
       <source>Delete all constraints</source>
       <translation>Scrios na srianta uile</translation>
     </message>
@@ -869,7 +869,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Scoránaigh srianta chuig an spás fíorúil eile</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1728"/>
       <source>Update constraint's virtual space</source>
       <translation>Nuashonraigh spás fíorúil an tsrianta</translation>
     </message>
@@ -879,12 +879,12 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Malartaigh ainmneacha srianta</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1250"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1258"/>
       <source>Delete constraints</source>
       <translation>Scrios srianta</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1378"/>
       <source>Rename sketch constraint</source>
       <translation>Athainmnigh srian sceitse</translation>
     </message>
@@ -911,7 +911,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="1659"/>
       <location filename="../../CommandConstraints.cpp" line="11287"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1345"/>
       <source>Modify sketch constraints</source>
       <translation>Modhnaigh srianta sceitse</translation>
     </message>
@@ -1016,54 +1016,54 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2850"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Níl tú ag iarraidh aon athrú ar iolracht snaidhmeanna.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2842"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3020"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Tá Innéacs Geoiméadrachta B-spline (GeoID) lasmuigh de theorainneacha.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2859"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3036"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Ní splíne-B é an tInnéacs Geoiméadrachta (GeoId) a chuirtear ar fáil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2871"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Tá innéacs an snaidhme lasmuigh de theorainneacha. Tabhair faoi deara, de réir nótaíocht OCC, go bhfuil innéacs 1 ag an gcéad snaidhm agus ní nialas.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2887"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Ní féidir an iolracht a mhéadú thar chéim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2898"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Ní féidir an iolracht a laghdú thar náid.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2914"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>Ní féidir le OCC an iolracht a laghdú laistigh den lamháltas uasta.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3027"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Ní féidir iolracht nialasach a bheith ag snaidhm.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3049"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Ní féidir le hiolracht snaidhmeanna a bheith níos airde ná céim an B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3059"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Ní féidir snaidhm a chur isteach lasmuigh de raon paraiméadar B-spline.</translation>
     </message>
@@ -3198,62 +3198,62 @@ Ní bhaineann an socrú seo ach leis an mbarra uirlisí. Cibé ceann a roghnaío
 'Ga': Cuirfidh an uirlis ga i bhfeidhm ar stuaiceanna agus ciorcail araon.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Single tool</source>
       <translation>Uirlis aonair</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Separated tools</source>
       <translation>Uirlisí scartha</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="228"/>
       <source>Both</source>
       <translation>An dá</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="248"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Auto</source>
       <translation>Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Diameter</source>
       <translation>Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="251"/>
       <source>Radius</source>
       <translation>Ga</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="261"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Always</source>
       <translation>I gcónaí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>Never</source>
       <translation>Choíche</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="264"/>
       <source>When no scale feature is visible</source>
       <translation>Nuair nach bhfuil aon ghné scála le feiceáil</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="271"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Dimensions only</source>
       <translation>Toisí amháin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="274"/>
       <source>Position and dimensions</source>
       <translation>Suíomh agus toisí</translation>
     </message>
@@ -3550,17 +3550,17 @@ Réamhshocraithe go: %N = %V
       <translation>Tabhair faoi deara: is socruithe réamhshocraithe iad seo a chuirtear i bhfeidhm ar sceitsí nua. Cuimhnítear ar an iompraíocht do gach sceitse ina haonar mar airíonna ar an táb Amharc.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="583"/>
+      <location filename="../../SketcherSettings.cpp" line="584"/>
       <source>Unexpected C++ exception</source>
       <translation>Eisceacht C++ gan choinne</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="586"/>
+      <location filename="../../SketcherSettings.cpp" line="587"/>
       <source>Sketcher</source>
       <translation>Sceitseálaí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="610"/>
+      <location filename="../../SketcherSettings.cpp" line="611"/>
       <source>Glyphs not present:</source>
       <translation>Glifí nach bhfuil i láthair:</translation>
     </message>
@@ -3737,43 +3737,43 @@ Mar sin féin, níor aimsíodh aon srianta a nascann leis na críochphointí.</t
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="969"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="977"/>
       <source>Auto constraints</source>
       <translation>Srianta uathoibríocha</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="970"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="978"/>
       <source>Auto remove redundant constraints</source>
       <translation>Bain srianta iomarcacha go huathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="971"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="979"/>
       <source>Display only filtered constraints</source>
       <translation>Taispeáin srianta scagtha amháin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="972"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="980"/>
       <source>Extended information (in widget)</source>
       <translation>Faisnéis bhreise (sa ghiuirléid)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="973"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="981"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>Folaigh ailíniú inmheánach (sa ghiuirléid)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1740"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Ní féidir rianú infheictheachta a nuashonrú:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1769"/>
       <source>Impossible to update visibility:</source>
       <translation>Dodhéanta infheictheacht a nuashonrú:</translation>
     </message>
@@ -3801,7 +3801,7 @@ Mar sin féin, níor aimsíodh aon srianta a nascann leis na críochphointí.</t
       <translation>Socruithe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
       <source>Construction</source>
       <translation>Tógáil</translation>
     </message>
@@ -3811,104 +3811,104 @@ Mar sin féin, níor aimsíodh aon srianta a nascann leis na críochphointí.</t
       <translation>Eilimintí</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2190"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2191"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
       <source>Point</source>
       <translation>Pointe</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2103"/>
       <source>Internal</source>
       <translation>Inmheánach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2062"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2193"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2194"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2068"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
       <source>Line</source>
       <translation>Líne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
       <source>Group</source>
       <translation>Grúpa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2063"/>
       <source>Text</source>
       <translation>Téacs</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2066"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
-      <source>Arc</source>
-      <translation>Arc</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2069"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
-      <source>Circle</source>
-      <translation>Ciorcal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="2072"/>
       <location filename="../../TaskSketcherElements.cpp" line="2202"/>
       <location filename="../../TaskSketcherElements.cpp" line="2203"/>
+      <source>Arc</source>
+      <translation>Arc</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <source>Circle</source>
+      <translation>Ciorcal</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
       <source>Ellipse</source>
       <translation>Éilips</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2212"/>
       <source>Elliptical Arc</source>
       <translation>Arc Eilipteach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2207"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2213"/>
       <source>Elliptical arc</source>
       <translation>Stua eilipteach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2216"/>
       <source>Hyperbolic Arc</source>
       <translation>Stua Hipearbólach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
       <source>Hyperbolic arc</source>
       <translation>Stua hipearbólach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2214"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
       <source>Parabolic Arc</source>
       <translation>Stór Parabólach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2215"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2221"/>
       <source>Parabolic arc</source>
       <translation>Stua parabólach</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2218"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2090"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2223"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2224"/>
       <source>B-spline</source>
       <translation>B-splíne</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2219"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2093"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2225"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2226"/>
       <source>Other</source>
       <translation>Eile</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2262"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2268"/>
       <source>Extended information</source>
       <translation>Faisnéis bhreise</translation>
     </message>
@@ -4119,112 +4119,112 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4168"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4192"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Tá an sceitse neamhbhailí agus ní féidir é a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4396"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Tá an srian seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4382"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4397"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tá na srianta seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4125"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4140"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4154"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Invalid Sketch</source>
       <translation>Sceitse Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Open the sketch validation tool?</source>
       <translation>An uirlis bailíochtaithe sceitse a oscailt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4382"/>
       <source>Remove the following constraint:</source>
       <translation>Bain an srian seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4368"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4383"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Bain ceann amháin ar a laghad de na srianta seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Bain an srian iomarcach seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4375"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4390"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Bain na srianta iomarcacha seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4403"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Bain an srian mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4404"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Bain na srianta mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4448"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4463"/>
       <source>Empty sketch</source>
       <translation>Sceitse folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4453"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4468"/>
       <source>Over-constrained:</source>
       <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4459"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4474"/>
       <source>Malformed constraints:</source>
       <translation>Srianta mífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4467"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4482"/>
       <source>Redundant constraints:</source>
       <translation>Srianta iomarcacha:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4473"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
       <source>Partially redundant:</source>
       <translation>Go páirteach iomarcach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4480"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4495"/>
       <source>Solver failed to converge</source>
       <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4486"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4501"/>
       <source>Under-constrained:</source>
       <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4488"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4503"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Céim Saoirse</numerusform>
@@ -4235,7 +4235,7 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4492"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4507"/>
       <source>Fully constrained</source>
       <translation>Srianta go hiomlán</translation>
     </message>
@@ -4726,7 +4726,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4431"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4446"/>
       <source>and %1 more</source>
       <translation>agus %1 eile</translation>
     </message>
@@ -5156,7 +5156,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
       <location filename="../../EditDatumDialog.cpp" line="339"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1388"/>
       <source>Value Error</source>
       <translation>Earráid Luach</translation>
     </message>

@@ -3103,9 +3103,9 @@ ako odgovaraju osi X, Y ili Z globalnog koordinatnog sustava</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Copy</source>
       <translation>Kopiraj</translation>
     </message>
@@ -3452,7 +3452,7 @@ Nije dostupno ako je omogućena postavka 'Koristi primitive komponenata'.</trans
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1031"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="291"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>Rotiraj</translation>
     </message>
@@ -3658,7 +3658,7 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <location filename="../../draftmake/make_layer.py" line="56"/>
       <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
+      <location filename="../../draftutils/utils.py" line="1143"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
@@ -3748,17 +3748,17 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <translation>Objekti imaju različite položaje. Udaljenost između dvije osnovne točke:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="967"/>
+      <location filename="../../draftutils/utils.py" line="969"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s nije moguće izmijeniti jer je postavljeno samo za čitanje</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1182"/>
+      <location filename="../../draftutils/utils.py" line="1184"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Zastarijela funkcija u {}. Molimo koristite '{}'.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1188"/>
+      <location filename="../../draftutils/utils.py" line="1190"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Zastarijela funkcija. Molimo koristite '{}'.</translation>
     </message>
@@ -3773,12 +3773,12 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <translation>ne postoji u jednom od objekata</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="958"/>
+      <location filename="../../draftutils/utils.py" line="960"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s dijeli bazu s %d drugim objektima. Molimo provjerite želite li ovo izmijeniti.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1104"/>
+      <location filename="../../draftutils/utils.py" line="1106"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Pogrešan unos: nepoznat dokument {}</translation>
     </message>
@@ -3943,7 +3943,7 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="171"/>
-      <location filename="../../draftguitools/gui_move.py" line="241"/>
+      <location filename="../../draftguitools/gui_move.py" line="244"/>
       <source>Pick end point</source>
       <translation>Odaberite krajnju točku</translation>
     </message>
@@ -3955,17 +3955,17 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
       <translation>Nema valjanih izabranih pod elemenata</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
       <source>Move</source>
       <translation>Pomicanje</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="252"/>
+      <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
       <translation>%1 odaberi početnu točku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="256"/>
+      <location filename="../../draftguitools/gui_move.py" line="259"/>
       <source>%1 pick end point</source>
       <translation>%1 odaberi krajnju točku</translation>
     </message>
@@ -4333,54 +4333,54 @@ ili pokušajte spremiti u nižu DWG verziju.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="314"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
       <source>Base angle</source>
       <translation>Kut odredišta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="196"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
       <source>The base angle to start the rotation from</source>
       <translation>Osnovni kut od kojeg želite započeti rotaciju</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="336"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="339"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>Količina rotacije koju želite izvesti.
 Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="354"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
       <translation>%1 odaberite središte rotacije</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
       <translation>%1 odaberite osnovni kut</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="358"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
       <translation>%1 odaberite kut rotacije</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="323"/>
       <source>Pick base angle</source>
       <translation>Odaberite kut odredišta</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="209"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="330"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="333"/>
       <source>Rotation</source>
       <translation>Rotacija</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="221"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="344"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="347"/>
       <source>Pick rotation angle</source>
       <translation>Odaberite kut rotacije</translation>
     </message>
@@ -4809,37 +4809,37 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <translation>Odaberite točku odredišta</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="167"/>
+      <location filename="../../draftguitools/gui_scale.py" line="170"/>
       <source>Pick reference distance from base point</source>
       <translation>Odaberite referencu udaljenost od odredišne točke</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="215"/>
+      <location filename="../../draftguitools/gui_scale.py" line="218"/>
       <source>Zero scale factor not allowed</source>
       <translation>Nulti faktor skaliranja nije dopušten</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="228"/>
+      <location filename="../../draftguitools/gui_scale.py" line="231"/>
       <source>Scale</source>
       <translation>Skaliraj</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="268"/>
+      <location filename="../../draftguitools/gui_scale.py" line="271"/>
       <source>Pick new distance from base point</source>
       <translation>Odaberite novu udaljenost od odredišne točke</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="293"/>
+      <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
       <translation>%1 odaberite osnovnu točku</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="295"/>
+      <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
       <translation>%1 odaberite referentnu udaljenost</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="297"/>
+      <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
       <translation>%1 odaberite novu udaljenost</translation>
     </message>
@@ -6150,7 +6150,7 @@ Da biste omogućili FreeCAD-u preuzimanje ovih biblioteka, odgovorite s Da.</tra
       <translation>Točka je identična prethodnoj točki</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation>Spremi prikaz kamere</translation>
     </message>
@@ -6331,12 +6331,12 @@ Da biste omogućili FreeCAD-u preuzimanje ovih biblioteka, odgovorite s Da.</tra
       <translation>_B-krivulja.napraviGeometriju: zatvoreno s istom prvom/zadnjom točkom. Geometrija se ne ažurira.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="111"/>
       <source>Writing camera position</source>
       <translation>Zapiši položaj kamere</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="129"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Zapiši stanje objekata prikazan/skriven</translation>
     </message>

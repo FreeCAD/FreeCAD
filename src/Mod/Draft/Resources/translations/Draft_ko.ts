@@ -3081,9 +3081,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
@@ -3429,7 +3429,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1031"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="291"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>회전</translation>
     </message>
@@ -3635,7 +3635,7 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
       <location filename="../../draftmake/make_layer.py" line="56"/>
       <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
+      <location filename="../../draftutils/utils.py" line="1143"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
@@ -3725,17 +3725,17 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
       <translation>객체의 배치가 다릅니다. 두 기본 점 사이의 거리:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="967"/>
+      <location filename="../../draftutils/utils.py" line="969"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s의 배치가 읽기 전용이므로 수정할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1182"/>
+      <location filename="../../draftutils/utils.py" line="1184"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>이 함수는 {}에서 더 이상 사용되지 않습니다. '{}'을(를) 사용하십시오.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1188"/>
+      <location filename="../../draftutils/utils.py" line="1190"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>이 함수는 더 이상 사용되지 않습니다. '{}'을(를) 사용하십시오.</translation>
     </message>
@@ -3750,12 +3750,12 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
       <translation>객체 중 하나에 존재하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="958"/>
+      <location filename="../../draftutils/utils.py" line="960"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s이(가) %d개의 다른 객체와 기본을 공유합니다. 수정하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1104"/>
+      <location filename="../../draftutils/utils.py" line="1106"/>
       <source>Wrong input: unknown document {}</source>
       <translation>잘못된 입력: 알 수 없는 문서 {}</translation>
     </message>
@@ -3920,7 +3920,7 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="171"/>
-      <location filename="../../draftguitools/gui_move.py" line="241"/>
+      <location filename="../../draftguitools/gui_move.py" line="244"/>
       <source>Pick end point</source>
       <translation>끝 점 선택</translation>
     </message>
@@ -3932,17 +3932,17 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
       <translation>유효한 하위요소가 선택되지 않았습니다</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
       <source>Move</source>
       <translation>이동</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="252"/>
+      <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
       <translation type="unfinished">%1 pick start point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="256"/>
+      <location filename="../../draftguitools/gui_move.py" line="259"/>
       <source>%1 pick end point</source>
       <translation>%1 끝점 선택</translation>
     </message>
@@ -4310,54 +4310,54 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="314"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
       <source>Base angle</source>
       <translation>기본 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="196"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
       <source>The base angle to start the rotation from</source>
       <translation>회전을 시작할 기본 각도</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="336"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="339"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>수행할 회전량입니다.
 최종 각도는 기본 각도에 이 값을 더한 값이 됩니다.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="354"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
       <translation type="unfinished">%1 pick rotation center</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
       <translation type="unfinished">%1 pick base angle</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="358"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
       <translation type="unfinished">%1 pick rotation angle</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="323"/>
       <source>Pick base angle</source>
       <translation>기본 각도 고르기</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="209"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="330"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="333"/>
       <source>Rotation</source>
       <translation>회전</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="221"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="344"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="347"/>
       <source>Pick rotation angle</source>
       <translation>회전 각도 고르기</translation>
     </message>
@@ -4784,37 +4784,37 @@ The final angle will be the base angle plus this amount.</source>
       <translation>기본 점 고르기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="167"/>
+      <location filename="../../draftguitools/gui_scale.py" line="170"/>
       <source>Pick reference distance from base point</source>
       <translation>기본 점에서의 참조 거리 고르기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="215"/>
+      <location filename="../../draftguitools/gui_scale.py" line="218"/>
       <source>Zero scale factor not allowed</source>
       <translation>스케일 계수 0은 허용되지 않음</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="228"/>
+      <location filename="../../draftguitools/gui_scale.py" line="231"/>
       <source>Scale</source>
       <translation>배율</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="268"/>
+      <location filename="../../draftguitools/gui_scale.py" line="271"/>
       <source>Pick new distance from base point</source>
       <translation>기본 점에서의 새 거리 고르기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="293"/>
+      <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
       <translation type="unfinished">%1 pick base point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="295"/>
+      <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
       <translation type="unfinished">%1 pick reference distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="297"/>
+      <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
       <translation type="unfinished">%1 pick new distance</translation>
     </message>
@@ -6123,7 +6123,7 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
       <translation type="unfinished">Point identical to previous point</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation type="unfinished">Save Camera View</translation>
     </message>
@@ -6304,12 +6304,12 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
       <translation>_BSpline.createGeometry: 첫 번째/마지막 점이 동일하여 닫혔습니다. 형상이 업데이트되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="111"/>
       <source>Writing camera position</source>
       <translation>카메라 위치 기록 중</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="129"/>
       <source>Writing objects shown/hidden state</source>
       <translation>객체 표시/숨김 상태 기록 중</translation>
     </message>

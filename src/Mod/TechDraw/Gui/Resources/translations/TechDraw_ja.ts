@@ -4,17 +4,17 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="789"/>
+      <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="792"/>
       <source>Centerline Between 2 Lines</source>
       <translation>2線間の中心線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
+      <location filename="../../CommandAnnotate.cpp" line="793"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>選択した2線間に中心線を追加</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="864"/>
+      <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="867"/>
       <source>Centerline Between 2 Points</source>
       <translation>2点間の中心線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="866"/>
+      <location filename="../../CommandAnnotate.cpp" line="868"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>選択した2点間に中心線を追加</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="977"/>
+      <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="980"/>
       <source>Cosmetic Line Through 2 Points</source>
       <translation>2点を通過する表示用の線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
+      <location filename="../../CommandAnnotate.cpp" line="981"/>
       <source>Adds a cosmetic line that passes through 2 selected points</source>
       <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1128"/>
+      <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1131"/>
       <source>Remove Cosmetic Object</source>
       <translation>表示用オブジェクトを削除</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1130"/>
+      <location filename="../../CommandAnnotate.cpp" line="1132"/>
       <source>Removes the selected cosmetic object from the page</source>
       <translation>選択した表示用オブジェクトをページから削除</translation>
     </message>
@@ -311,17 +311,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1246"/>
+      <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1249"/>
       <source>Edit Line Appearance</source>
       <translation>線の外観を編集</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <location filename="../../CommandAnnotate.cpp" line="1250"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
       <translation>選択した線を編集するための &apos;線装飾&apos; ダイアログを開く</translation>
     </message>
@@ -1719,17 +1719,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1988"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1929"/>
+      <location filename="../../Command.cpp" line="1989"/>
       <source>Project Shape</source>
       <translation>形状を投影</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1930"/>
+      <location filename="../../Command.cpp" line="1990"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation>現在のカメラ角度から、3Dビューで選択したオブジェクトの投影ジオメトリーを作成</translation>
     </message>
@@ -1873,17 +1873,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1328"/>
+      <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1331"/>
       <source>Toggle Edge Visibility</source>
       <translation>エッジの表示/非表示を切り替え</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1330"/>
+      <location filename="../../CommandAnnotate.cpp" line="1332"/>
       <source>Toggles the visibility of the selected edges</source>
       <translation>選択したエッジの表示を切り替え</translation>
     </message>
@@ -2019,17 +2019,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1457"/>
+      <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1458"/>
+      <location filename="../../CommandAnnotate.cpp" line="1460"/>
       <source>Surface Finish Symbol</source>
       <translation>表面仕上げ記号</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1459"/>
+      <location filename="../../CommandAnnotate.cpp" line="1461"/>
       <source>Adds a surface finish symbol in the selected view</source>
       <translation>選択したビューに表面仕上げ記号を追加</translation>
     </message>
@@ -2111,17 +2111,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1393"/>
+      <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1394"/>
+      <location filename="../../CommandAnnotate.cpp" line="1396"/>
       <source>Weld Symbol</source>
       <translation>溶接記号</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1395"/>
+      <location filename="../../CommandAnnotate.cpp" line="1397"/>
       <source>Adds welding information to the selected leader line</source>
       <translation>選択した引き出し線に溶接情報を追加</translation>
     </message>
@@ -2157,7 +2157,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../Command.cpp" line="1907"/>
-      <location filename="../../PagePrinter.cpp" line="444"/>
+      <location filename="../../PagePrinter.cpp" line="476"/>
       <source>Save page to DXF</source>
       <translation>ページをDXFファイルに保存</translation>
     </message>
@@ -3078,25 +3078,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="725"/>
       <location filename="../../CommandAnnotate.cpp" line="752"/>
       <location filename="../../CommandAnnotate.cpp" line="762"/>
-      <location filename="../../CommandAnnotate.cpp" line="839"/>
-      <location filename="../../CommandAnnotate.cpp" line="848"/>
-      <location filename="../../CommandAnnotate.cpp" line="905"/>
-      <location filename="../../CommandAnnotate.cpp" line="912"/>
-      <location filename="../../CommandAnnotate.cpp" line="939"/>
-      <location filename="../../CommandAnnotate.cpp" line="951"/>
-      <location filename="../../CommandAnnotate.cpp" line="961"/>
-      <location filename="../../CommandAnnotate.cpp" line="1044"/>
-      <location filename="../../CommandAnnotate.cpp" line="1052"/>
-      <location filename="../../CommandAnnotate.cpp" line="1072"/>
-      <location filename="../../CommandAnnotate.cpp" line="1108"/>
-      <location filename="../../CommandAnnotate.cpp" line="1154"/>
-      <location filename="../../CommandAnnotate.cpp" line="1162"/>
-      <location filename="../../CommandAnnotate.cpp" line="1209"/>
-      <location filename="../../CommandAnnotate.cpp" line="1272"/>
-      <location filename="../../CommandAnnotate.cpp" line="1292"/>
-      <location filename="../../CommandAnnotate.cpp" line="1354"/>
-      <location filename="../../CommandAnnotate.cpp" line="1361"/>
-      <location filename="../../CommandAnnotate.cpp" line="1425"/>
+      <location filename="../../CommandAnnotate.cpp" line="841"/>
+      <location filename="../../CommandAnnotate.cpp" line="850"/>
+      <location filename="../../CommandAnnotate.cpp" line="907"/>
+      <location filename="../../CommandAnnotate.cpp" line="914"/>
+      <location filename="../../CommandAnnotate.cpp" line="941"/>
+      <location filename="../../CommandAnnotate.cpp" line="953"/>
+      <location filename="../../CommandAnnotate.cpp" line="963"/>
+      <location filename="../../CommandAnnotate.cpp" line="1046"/>
+      <location filename="../../CommandAnnotate.cpp" line="1054"/>
+      <location filename="../../CommandAnnotate.cpp" line="1074"/>
+      <location filename="../../CommandAnnotate.cpp" line="1110"/>
+      <location filename="../../CommandAnnotate.cpp" line="1156"/>
+      <location filename="../../CommandAnnotate.cpp" line="1164"/>
+      <location filename="../../CommandAnnotate.cpp" line="1211"/>
+      <location filename="../../CommandAnnotate.cpp" line="1274"/>
+      <location filename="../../CommandAnnotate.cpp" line="1294"/>
+      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1427"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
@@ -3161,12 +3161,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Save DXF file</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2151"/>
       <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
       <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2094"/>
+      <location filename="../../Command.cpp" line="2156"/>
       <source>Direction is close to standard</source>
       <translation type="unfinished">Direction is close to standard</translation>
     </message>
@@ -3225,13 +3225,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="499"/>
       <location filename="../../CommandAnnotate.cpp" line="588"/>
       <location filename="../../CommandAnnotate.cpp" line="692"/>
-      <location filename="../../CommandAnnotate.cpp" line="803"/>
-      <location filename="../../CommandAnnotate.cpp" line="878"/>
-      <location filename="../../CommandAnnotate.cpp" line="991"/>
-      <location filename="../../CommandAnnotate.cpp" line="1141"/>
-      <location filename="../../CommandAnnotate.cpp" line="1260"/>
-      <location filename="../../CommandAnnotate.cpp" line="1341"/>
-      <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../CommandAnnotate.cpp" line="805"/>
+      <location filename="../../CommandAnnotate.cpp" line="880"/>
+      <location filename="../../CommandAnnotate.cpp" line="993"/>
+      <location filename="../../CommandAnnotate.cpp" line="1143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1262"/>
+      <location filename="../../CommandAnnotate.cpp" line="1343"/>
+      <location filename="../../CommandAnnotate.cpp" line="1409"/>
       <source>Task in progress</source>
       <translation>進行中のタスク</translation>
     </message>
@@ -3254,13 +3254,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="500"/>
       <location filename="../../CommandAnnotate.cpp" line="589"/>
       <location filename="../../CommandAnnotate.cpp" line="693"/>
-      <location filename="../../CommandAnnotate.cpp" line="804"/>
-      <location filename="../../CommandAnnotate.cpp" line="879"/>
-      <location filename="../../CommandAnnotate.cpp" line="992"/>
-      <location filename="../../CommandAnnotate.cpp" line="1142"/>
-      <location filename="../../CommandAnnotate.cpp" line="1261"/>
-      <location filename="../../CommandAnnotate.cpp" line="1342"/>
-      <location filename="../../CommandAnnotate.cpp" line="1408"/>
+      <location filename="../../CommandAnnotate.cpp" line="806"/>
+      <location filename="../../CommandAnnotate.cpp" line="881"/>
+      <location filename="../../CommandAnnotate.cpp" line="994"/>
+      <location filename="../../CommandAnnotate.cpp" line="1144"/>
+      <location filename="../../CommandAnnotate.cpp" line="1263"/>
+      <location filename="../../CommandAnnotate.cpp" line="1344"/>
+      <location filename="../../CommandAnnotate.cpp" line="1410"/>
       <source>Close active task dialog and try again</source>
       <translation>アクティブなタスクダイアログを閉じて、もう一度やり直してください</translation>
     </message>
@@ -3599,7 +3599,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="945"/>
       <location filename="../../CommandExtensionPack.cpp" line="981"/>
       <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
+      <location filename="../../CommandAnnotate.cpp" line="1023"/>
       <source>Wrong Selection</source>
       <translation>間違った選択</translation>
     </message>
@@ -3617,14 +3617,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
+      <location filename="../../CommandAnnotate.cpp" line="908"/>
+      <location filename="../../CommandAnnotate.cpp" line="1047"/>
       <source>You must select a base view for the line</source>
       <translation>線のためのベースビューを選択する必要があります。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
+      <location filename="../../CommandAnnotate.cpp" line="915"/>
       <source>No base view in selection</source>
       <translation>ベースビューが選択されていません。</translation>
     </message>
@@ -3640,88 +3640,88 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
+      <location filename="../../CommandAnnotate.cpp" line="954"/>
       <source>Selection is not a centerline</source>
       <translation>選択対象が中心線ではありません。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
+      <location filename="../../CommandAnnotate.cpp" line="842"/>
       <source>Selection is not a Centerline</source>
       <translation>選択対象が中心線ではありません。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
+      <location filename="../../CommandAnnotate.cpp" line="851"/>
       <source>Selection not understood</source>
       <translation>選択対象が理解できません</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
+      <location filename="../../CommandAnnotate.cpp" line="942"/>
       <source>You must select 2 vertices or an existing centerline</source>
       <translation>2頂点または既存の中心線を選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
+      <location filename="../../CommandAnnotate.cpp" line="964"/>
       <source>Select 2 vertices or 1 centerline</source>
       <translation>2頂点または1本の中心線が必要です。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
+      <location filename="../../CommandAnnotate.cpp" line="1055"/>
       <source>Not enough points in the selection</source>
       <translation>選択点が足りません。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
+      <location filename="../../CommandAnnotate.cpp" line="1075"/>
       <source>Selection is not a cosmetic line</source>
       <translation>選択対象が表示用の線ではありません。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
+      <location filename="../../CommandAnnotate.cpp" line="1111"/>
       <source>You must select 2 vertices</source>
       <translation>2頂点を選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1155"/>
-      <location filename="../../CommandAnnotate.cpp" line="1355"/>
+      <location filename="../../CommandAnnotate.cpp" line="1157"/>
+      <location filename="../../CommandAnnotate.cpp" line="1357"/>
       <source>Nothing selected</source>
       <translation>何も選択されていません</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1163"/>
+      <location filename="../../CommandAnnotate.cpp" line="1165"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>選択されているオブジェクトの少なくとも1つがパートビューではありません</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1210"/>
+      <location filename="../../CommandAnnotate.cpp" line="1212"/>
       <source>Unknown object type in selection</source>
       <translation>選択されているのは不明なオブジェクトタイプです</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1273"/>
+      <location filename="../../CommandAnnotate.cpp" line="1275"/>
       <source>You must select a view and/or lines</source>
       <translation>ビューおよび/または線を選択する必要があります。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1293"/>
+      <location filename="../../CommandAnnotate.cpp" line="1295"/>
       <source>No view in selection</source>
       <translation>ビューが選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1362"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
       <source>No part views in this selection</source>
       <translation>パートビューが選択されていません</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1426"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <source>Select exactly one leader line or one weld symbol</source>
       <translation>引き出し線または溶接記号を1つだけ選択して下さい。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1485"/>
+      <location filename="../../CommandAnnotate.cpp" line="1487"/>
       <source>SurfaceFinishSymbols</source>
       <translation>表面仕上げ記号</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1488"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>選択されたオブジェクトは部品ビューでも引き出し線でもありません</translation>
     </message>
@@ -3797,27 +3797,27 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>この機能にはページが必要です。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="841"/>
+      <location filename="../../MDIViewPage.cpp" line="838"/>
       <source>Export Page as PDF</source>
       <translation>ページをPDFとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="760"/>
+      <location filename="../../MDIViewPage.cpp" line="757"/>
       <source>Export page as SVG</source>
       <translation>ページをSVGとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="783"/>
+      <location filename="../../MDIViewPage.cpp" line="780"/>
       <source>Export page as DXF</source>
       <translation>ページをDXFとしてエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="824"/>
+      <location filename="../../MDIViewPage.cpp" line="821"/>
       <source>Unable to Write File</source>
       <translation>ファイルを書き込めません</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="825"/>
+      <location filename="../../MDIViewPage.cpp" line="822"/>
       <source>FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</source>
       <translation>FreeCADは書き込み用ファイル %1 を開けませんでいた。別のプログラムがファイルを開いている可能性があります。</translation>
     </message>
@@ -4094,7 +4094,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2146"/>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandAnnotate.cpp" line="1024"/>
       <source>Selection is empty</source>
       <translation>選択されていません</translation>
     </message>
@@ -4235,7 +4235,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>パラメーターエラー</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="279"/>
+      <location filename="../../PagePrinter.cpp" line="285"/>
       <source>Document Name:</source>
       <translation>ドキュメント名</translation>
     </message>
@@ -4285,7 +4285,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>リッチテキストクリエイター</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="55"/>
+      <location filename="../../TemplateTextField.cpp" line="56"/>
       <source>Updates the text</source>
       <translation type="unfinished">Updates the text</translation>
     </message>
@@ -4309,19 +4309,19 @@ it has a weld symbol that would become broken.</source>
       <translation>溶接記号が破損するため、この引出線を削除できません。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="403"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>詳細オブジェクトを削除する前に開いているダイアログを閉じてください。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="418"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>壊れてしまう依存ビューがあるため、このビューを削除できません。</translation>
     </message>
     <message>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
@@ -5206,32 +5206,32 @@ for using drawings as a 1:1 cutting guide.
       <translation>色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="592"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="545"/>
       <source>Grid color</source>
       <translation>グリッドの色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="604"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="557"/>
       <source>Hidden line</source>
       <translation>かくれ線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="616"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="569"/>
       <source>Normal</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="508"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
       <source>Normal line color</source>
       <translation>法線の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="481"/>
       <source>Hidden line color</source>
       <translation>かくれ線の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="248"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="228"/>
       <source>Preselected</source>
       <translation>事前選択</translation>
     </message>
@@ -5241,7 +5241,7 @@ for using drawings as a 1:1 cutting guide.
       <translation>事前選択の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="623"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="576"/>
       <source>Section face color</source>
       <translation>切断線の色</translation>
     </message>
@@ -5251,12 +5251,12 @@ for using drawings as a 1:1 cutting guide.
       <translation>選択</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="441"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="421"/>
       <source>Selected item color</source>
       <translation>選択アイテムの色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
       <source>Section line color</source>
       <translation>切断線の色</translation>
     </message>
@@ -5286,47 +5286,47 @@ for using drawings as a 1:1 cutting guide.
       <translation>切断面</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="240"/>
       <source>Leader line</source>
       <translation>引き出し線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="260"/>
       <source>Color of dimension lines and text</source>
       <translation>寸法線とテキストの色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="300"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="280"/>
       <source>Use a light color for dark text and dark color for light text</source>
       <translation>暗いテキストには明るい色、明るいテキストには暗い色を使用</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="392"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="372"/>
       <source>Detail highlight</source>
       <translation>詳細の注目位置</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="404"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="384"/>
       <source>Hatch</source>
       <translation>ハッチング</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="643"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="596"/>
       <source>Template underline</source>
       <translation>テンプレートの下線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="327"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="307"/>
       <source>Hatch image color</source>
       <translation>ハッチング画像の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="565"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="518"/>
       <source>Dimension</source>
       <translation>寸法</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="367"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="347"/>
       <source>Geometric hatch pattern color</source>
       <translation>幾何ハッチングパターンの色</translation>
     </message>
@@ -5336,27 +5336,27 @@ for using drawings as a 1:1 cutting guide.
       <translation>中心線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="267"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="247"/>
       <source>Monochrome text color</source>
       <translation>モノクロテキストの色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="411"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="391"/>
       <source>Page color</source>
       <translation>ページの色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="418"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="398"/>
       <source>Section line</source>
       <translation>切断線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="405"/>
       <source>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</source>
       <translation>暗い色の背景に明るい色のテキストと線を使用し、ページの色を暗い色に設定します。このオプションでは透明または明るい色の面が推奨されます。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="428"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="408"/>
       <source>Light on dark</source>
       <translation>暗色上には明色</translation>
     </message>
@@ -5371,27 +5371,27 @@ for using drawings as a 1:1 cutting guide.
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="495"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="634"/>
       <source>Transparent faces</source>
       <translation>透明な面</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="572"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="525"/>
       <source>Color of vertices in views</source>
       <translation>ビュー内の頂点の色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="461"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="441"/>
       <source>Default color for leader lines</source>
       <translation>引き出し線のデフォルト色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="492"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="631"/>
       <source>Object faces will be transparent</source>
       <translation>オブジェクトの面は透明になります。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="223"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="647"/>
       <source>Face color (if not transparent)</source>
       <translation>面の色（透明でない場合）</translation>
     </message>
@@ -5401,7 +5401,17 @@ for using drawings as a 1:1 cutting guide.
       <translation>モノクロ</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawColors.ui" line="678"/>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="672"/>
+      <source>Break line</source>
+      <translation type="unfinished">Break line</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="679"/>
+      <source>Break line color for broken views</source>
+      <translation type="unfinished">Break line color for broken views</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawColors.ui" line="710"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意:&lt;/span&gt; &lt;span style=&quot; font-style:italic;&quot;&gt;斜体&lt;/span&gt;表記の項目は新しいオブジェクトでのデフォルト値です。既存のオブジェクトには影響しません。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6290,64 +6300,64 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="100"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>&amp;Keep Updated</source>
       <translation type="unfinished">&amp;Keep Updated</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Show &amp;Frames</source>
       <translation type="unfinished">Show &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="106"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Show &amp;Grid</source>
       <translation type="unfinished">Show &amp;Grid</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="109"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;SVGファイルにエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="113"/>
+      <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Export DXF</source>
       <translation>DXFファイルにエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="117"/>
+      <location filename="../../MDIViewPage.cpp" line="116"/>
       <source>Export PDF</source>
       <translation>PDFファイルにエクスポート</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="121"/>
+      <location filename="../../MDIViewPage.cpp" line="120"/>
       <source>Print All Pages</source>
       <translation>すべてのページを印刷</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="445"/>
+      <location filename="../../MDIViewPage.cpp" line="442"/>
       <source>Different orientation</source>
       <translation>異なる向き</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="446"/>
+      <location filename="../../MDIViewPage.cpp" line="443"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="455"/>
+      <location filename="../../MDIViewPage.cpp" line="452"/>
       <source>Different paper size</source>
       <translation>別の用紙サイズ</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="456"/>
+      <location filename="../../MDIViewPage.cpp" line="453"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>プリンターは図面とは異なるサイズの用紙に印刷します。このまま印刷しますか？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1404"/>
+      <location filename="../../MDIViewPage.cpp" line="1401"/>
       <source>Selected:</source>
       <translation>選択済み</translation>
     </message>
@@ -10286,7 +10296,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="454"/>
+      <location filename="../../TaskLineDecor.cpp" line="456"/>
       <source>Restore Invisible Lines</source>
       <translation>非表示の線を元に戻す</translation>
     </message>
@@ -10325,6 +10335,37 @@ there is an open task dialog.</source>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation type="unfinished">Toggles the grid on the active page</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportPagePDF</name>
+    <message>
+      <location filename="../../Command.cpp" line="1926"/>
+      <source>File</source>
+      <translation>ファイル</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1927"/>
+      <source>Export Page as PDF</source>
+      <translation>ページをPDFとしてエクスポート</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1928"/>
+      <source>Exports the current page as a PDF</source>
+      <translation type="unfinished">Exports the current page as a PDF</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExportGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="1956"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1957"/>
+      <source>Print All Pages</source>
+      <translation>すべてのページを印刷</translation>
     </message>
   </context>
   <context>
