@@ -3546,7 +3546,15 @@ bool ViewProviderSketch::selectAll()
 
 bool ViewProviderSketch::doubleClicked()
 {
-    Gui::Application::Instance->activeDocument()->setEdit(this);
+    Gui::Document* document = Gui::Application::Instance->activeDocument();
+    if (document) {
+        if (document->getInEdit() == this && isInEditMode()) {
+            Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ViewSketch");
+        }
+        else {
+            document->setEdit(this);
+        }
+    }
     return true;
 }
 
