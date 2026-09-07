@@ -1284,7 +1284,7 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Position initiale</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>

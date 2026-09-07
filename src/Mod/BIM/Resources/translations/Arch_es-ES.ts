@@ -3801,7 +3801,7 @@ La plantilla predeterminada se encuentra en:
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
       <source>Preset</source>
       <translation>Preconfiguración</translation>
@@ -4394,7 +4394,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="171"/>
       <source>%1 pick point on host</source>
-      <translation type="unfinished">%1 pick point on host</translation>
+      <translation>%1 elige el punto en el host</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="263"/>
@@ -4412,12 +4412,12 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>No se ha encontrado ninguna ventana. No se puede continuar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>Auto incluir en el objeto anfitrión</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>Altura de antepecho</translation>
     </message>
@@ -4440,7 +4440,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation>Opciones de Ventana</translation>
     </message>
@@ -6244,7 +6244,7 @@ Creación de Edificio cancelada.</translation>
       <location filename="../../bimcommands/BimSpace.py" line="74"/>
       <location filename="../../bimcommands/BimRoof.py" line="97"/>
       <source>%1 select a base object</source>
-      <translation type="unfinished">%1 select a base object</translation>
+      <translation>%1 seleccione un objeto base</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -6600,17 +6600,17 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Guardar vista de cámara</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1218"/>
       <source>Active working plane set to Top</source>
-      <translation type="unfinished">Active working plane set to Top</translation>
+      <translation>Establecer plano de trabajo en Superior</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1223"/>
       <source>Active working plane set to {self.Object.Label}</source>
-      <translation type="unfinished">Active working plane set to {self.Object.Label}</translation>
+      <translation>Plano de trabajo establecido en {self.Object.Label}</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7314,7 +7314,7 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="57"/>
       <source>Create Sketch</source>
-      <translation type="unfinished">Create Sketch</translation>
+      <translation>Crear croquis</translation>
     </message>
   </context>
   <context>
@@ -11563,7 +11563,7 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="65"/>
       <source>%1 select a planar object</source>
-      <translation type="unfinished">%1 select a planar object</translation>
+      <translation>%1 seleccione un objeto plano</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="81"/>
@@ -11664,12 +11664,12 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Guardar vista de cámara</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Save Visibility of Objects</source>
-      <translation type="unfinished">Save Visibility of Objects</translation>
+      <translation>Guardar visibilidad de objetos</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
@@ -11679,7 +11679,7 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="147"/>
       <source>Saves the current camera view to the selected items</source>
-      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+      <translation>Guarda la vista actual de la cámara para los elementos seleccionados</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="148"/>
@@ -11715,7 +11715,7 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
-      <translation type="unfinished">Sets the selected item as the current working plane</translation>
+      <translation>Establece el elemento seleccionado como el plano de trabajo actual</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -12667,7 +12667,7 @@ Por favor, compruebe su instalación de FreeCAD o proporcione una plantilla pers
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="54"/>
       <source>IFC File Diff</source>
-      <translation type="unfinished">IFC File Diff</translation>
+      <translation>Diferencias del archivo IFC</translation>
     </message>
   </context>
   <context>

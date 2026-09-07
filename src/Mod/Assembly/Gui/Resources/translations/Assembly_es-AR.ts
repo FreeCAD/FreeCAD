@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1420"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>Actualizar posiciones almacenadas</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1859"/>
@@ -500,7 +500,7 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1093"/>
       <source>Pillow (PIL) is not installed. It is required for video export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for video export.</translation>
+      <translation>Pillow (PIL) no está instalado. Se requiere para la exportación GIF.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
@@ -525,12 +525,12 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1186"/>
       <source>PyAv is not installed. It is required for video export.</source>
-      <translation type="unfinished">PyAv is not installed. It is required for video export.</translation>
+      <translation>PyAv no está instalado. Se requiere para la exportación de vídeo.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Formato desconocido de exportación de vídeo</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="169"/>
@@ -570,7 +570,7 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>Traslación Radial</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -585,17 +585,17 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>Ángulo de la vista explosionada</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>Distancia de la vista explosionada</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>Modificar colocación</translation>
     </message>
   </context>
   <context>
@@ -720,7 +720,7 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../JointObject.py" line="1284"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Lista de referencias a componentes que se agruparán</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1443"/>
@@ -791,22 +791,22 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation type="unfinished">List of components captured in this snapshot.</translation>
+      <translation>Lista de componentes capturados en esta instantánea.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
       <source>List of corresponding placements for the components.</source>
-      <translation type="unfinished">List of corresponding placements for the components.</translation>
+      <translation>Lista de colocaciones correspondientes a los componentes.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="135"/>
       <source>List of visibility states for the components.</source>
-      <translation type="unfinished">List of visibility states for the components.</translation>
+      <translation>Lista de estados de visibilidad para los componentes.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation type="unfinished">If true, applying the snapshot will solve the assembly after restoring the placements.</translation>
+      <translation>Si es verdadero, la aplicación de la instantánea resolverá el ensamblaje después de restaurar las colocaciones.</translation>
     </message>
   </context>
   <context>
@@ -1639,17 +1639,17 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
       <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+      <translation>Elija al menos 2 componentes para crear un grupo rígido</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="536"/>
       <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
+      <translation>Crear un grupo rígido</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+      <translation>Crea un grupo rígido que permanentemente bloquea entre sí los componentes seleccionados</translation>
     </message>
   </context>
   <context>
@@ -1657,22 +1657,22 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation type="unfinished">Snapshot</translation>
+      <translation>Instantánea</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
       <source>Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</source>
-      <translation type="unfinished">Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.</translation>
+      <translation>Captura el estado del ensamblaje actual (colocaciones y visibilidad). Se restaura el estado al hacer doble clic al objeto de la instantánea.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation type="unfinished">Create Snapshot</translation>
+      <translation>Crear instantánea</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
-      <translation type="unfinished">Restore Snapshot</translation>
+      <translation>Restaurar instantánea</translation>
     </message>
   </context>
   <context>

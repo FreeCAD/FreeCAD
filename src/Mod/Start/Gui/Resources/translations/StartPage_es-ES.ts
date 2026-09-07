@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Open File</source>
       <translation>Abrir archivo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Assembly</source>
       <translation>Ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>2D Draft</source>
       <translation>Dibujo 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>Creates a 2D Draft document</source>
       <translation>Crea un documento borrador en 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="244"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arquitectura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Empty File</source>
       <translation>Archivo vacío</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Crear un nuevo archivo de FreeCAD vacío</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Abre un archivo CAD existente o un modelo 3D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="231"/>
       <source>Parametric Body</source>
       <translation>Cuerpo paramétrico</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Crea un cuerpo con el banco de trabajo Diseño de piezas</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Creates an assembly project</source>
       <translation>Crear un proyecto de ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>Creates an architectural project</source>
       <translation>Crea un proyecto arquitectónico</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="529"/>
       <source>New File</source>
       <translation>Archivo nuevo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Ejemplos</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Archivos recientes</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>Abrir configuración de primer inicio</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>No volver a mostrar esta página de inicio (empezar con la pantalla en blanco)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>
@@ -261,7 +261,7 @@ Se pueden añadir múltiples carpetas usando ";;" para separar las rutas.</trans
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>

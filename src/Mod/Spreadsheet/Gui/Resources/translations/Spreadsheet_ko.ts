@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="955"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="956"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>&amp;New Spreadsheet</source>
       <translation>새 스프레드시트(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="957"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Creates a new spreadsheet</source>
       <translation>새 스프레드시트를 생성합니다</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="515"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>Align &amp;Bottom</source>
       <translation>아래쪽 정렬(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="516"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Aligns cell contents to the bottom</source>
       <translation>셀 내용을 아래쪽으로 정렬합니다</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="347"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="348"/>
       <source>Align Horizontal &amp;Center</source>
       <translation>가로 가운데 정렬(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
+      <location filename="../../Command.cpp" line="349"/>
       <source>Aligns cell contents to the horizontal center</source>
       <translation>셀 내용을 가로 가운데로 정렬합니다</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="286"/>
+      <location filename="../../Command.cpp" line="289"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="287"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Align &amp;Left</source>
       <translation>왼쪽 정렬(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Aligns cell contents to the left</source>
       <translation>셀 내용을 왼쪽으로 정렬합니다</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Align &amp;Right</source>
       <translation>오른쪽 정렬(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Aligns cell contents to the right</source>
       <translation>셀 내용을 오른쪽으로 정렬합니다</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="464"/>
       <source>Align &amp;Top</source>
       <translation>위쪽 정렬(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="465"/>
       <source>Aligns cell contents to the top</source>
       <translation>셀 내용을 위쪽으로 정렬합니다</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="579"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="580"/>
       <source>Align &amp;Vertical Center</source>
       <translation>세로 가운데 정렬(&amp;V)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
+      <location filename="../../Command.cpp" line="581"/>
       <source>Aligns cell contents to the vertical center</source>
       <translation>셀 내용을 세로 가운데로 정렬합니다</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="243"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="244"/>
       <source>&amp;Export Spreadsheet</source>
       <translation>스프레드시트 내보내기(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="245"/>
       <source>Exports the spreadsheet to a CSV file</source>
       <translation>스프레드시트를 CSV 파일로 내보냅니다</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="187"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>&amp;Import Spreadsheet</source>
       <translation>스프레드시트 가져오기(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Imports a CSV file into a new spreadsheet</source>
       <translation>CSV 파일을 새 스프레드시트로 가져옵니다</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="883"/>
+      <location filename="../../Command.cpp" line="895"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="896"/>
       <source>Set Alias</source>
       <translation>별칭 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="897"/>
       <source>Sets an alias for the selected cell</source>
       <translation>선택한 셀에 별칭을 설정합니다</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="123"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="123"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>Sp&amp;lit Cell</source>
       <translation>셀 분할(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="125"/>
       <source>Splits a previously merged cell</source>
       <translation>이전에 병합된 셀을 분할합니다</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="629"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>&amp;Bold Text</source>
       <translation>굵은 텍스트(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="630"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Sets the text in the selected cells bold</source>
       <translation>선택한 셀의 텍스트를 굵게 설정합니다</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="724"/>
       <source>&amp;Italic Text</source>
       <translation>기울임꼴 텍스트(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>Sets the text in the selected cells italic</source>
       <translation>선택한 셀의 텍스트를 기울임꼴로 설정합니다</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="798"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Spreadsheet</source>
       <translation>스프레드시트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="810"/>
       <source>&amp;Underline Text</source>
       <translation>밑줄 텍스트(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="811"/>
       <source>Underlines the text in the selected cells</source>
       <translation>선택한 셀의 텍스트에 밑줄을 적용합니다</translation>
     </message>
@@ -292,62 +292,62 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Merge cells</source>
       <translation>셀 합치기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="145"/>
       <source>Sp&amp;lit cell</source>
       <translation>셀 분할(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="308"/>
+      <location filename="../../Command.cpp" line="312"/>
       <source>Left-align cell</source>
       <translation>셀 왼쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="370"/>
       <source>Center cell</source>
       <translation>셀 가운데 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Right-align cell</source>
       <translation>셀 오른쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Top-align cell</source>
       <translation>셀 위쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Bottom-align cell</source>
       <translation>셀 아래쪽 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="602"/>
       <source>Vertically center cells</source>
       <translation>셀 세로 가운데 정렬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="668"/>
+      <location filename="../../Command.cpp" line="678"/>
       <source>Set bold text</source>
       <translation>굵은 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="753"/>
+      <location filename="../../Command.cpp" line="764"/>
       <source>Set italic text</source>
       <translation>기울임꼴 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="838"/>
+      <location filename="../../Command.cpp" line="850"/>
       <source>Set underline text</source>
       <translation>밑줄 텍스트 설정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="968"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Create Spreadsheet</source>
       <translation>스프레드시트 만들기</translation>
     </message>
@@ -740,7 +740,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="205"/>
       <source>Import file</source>
       <translation>파일 가져오기</translation>
     </message>

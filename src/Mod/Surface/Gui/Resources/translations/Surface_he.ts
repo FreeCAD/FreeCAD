@@ -473,7 +473,6 @@ This command only works with a mesh object.</source>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
       </translation>
     </message>
     <message>
@@ -527,7 +526,6 @@ This command only works with a mesh object.</source>
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation>
-        <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>

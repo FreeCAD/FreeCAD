@@ -144,6 +144,8 @@ class OpenSBPPost(PostProcessor):
             elif prop["name"] == "supported_commands":
                 # actually, we could allow reducing this list, but not expanding it
                 prop["default"] = "\n".join(cls.GCodeSupported)
+            elif prop["name"] == "ignored_commands":
+                prop["default"] = "\n".join(cls.GCodeSuppressed)
             elif prop["name"] == "drill_cycles_to_translate":
                 prop["default"] = "\n".join(
                     Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
@@ -181,19 +183,6 @@ class OpenSBPPost(PostProcessor):
                     "CAM",
                     "Enable if machine has automatic spindle speed control. "
                     "If disabled, spindle commands will prompt for manual adjustment.",
-                ),
-            },
-            # FIXME: should be a general option
-            {
-                "name": "suppressed_commands",
-                "scope": SCOPE_MACHINE,
-                "type": "text",
-                "label": translate("CAM", "Suppressed (tolerated) G-code Commands"),
-                "default": "\n".join(cls.GCodeSuppressed),
-                "help": translate(
-                    "CAM",
-                    "List of G-code commands tolerated but suppressed by this post-processor (one per line). "
-                    "Commands this list will be filtered out",
                 ),
             },
         ]
@@ -265,11 +254,6 @@ class OpenSBPPost(PostProcessor):
         super()._convert_start_section(section_name, sublist)
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
-
-        # FIXME: should be in Processor class
-        if command.Name in self.values["SUPPRESSED_COMMANDS"].split("\n"):
-            Path.Log.debug(f"opensbp suppressed {command}")
-            return None
 
         # FIXME: optional blockdelete emulation w/"if somevariable"
         if command.Annotations.get("blockdelete", False):
