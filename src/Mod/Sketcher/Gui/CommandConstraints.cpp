@@ -4155,6 +4155,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
 {
     // get the selection
     std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx();
+    ReleaseHandler(cmd->getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -4562,6 +4563,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -4848,6 +4850,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -5181,6 +5184,7 @@ void CmdSketcherConstrainCoincidentUnified::onActivated(CoincicenceType type)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -5685,6 +5689,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6336,6 +6341,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6637,6 +6643,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -6933,6 +6940,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -7106,6 +7114,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -7962,6 +7971,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -8796,6 +8806,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -9159,6 +9170,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -9477,6 +9489,7 @@ void CmdSketcherConstrainRadiam::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10022,6 +10035,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     // TODO: comprehensive messages, like in CmdSketcherConstrainTangent
     //  get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10496,6 +10510,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -10755,6 +10770,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -11204,6 +11220,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
@@ -11403,6 +11420,7 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    ReleaseHandler(getActiveGuiDocument());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1
