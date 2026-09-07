@@ -478,9 +478,8 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         // being appended after the result value.
         std::string userLabel(obj->Label.getValue());
         auto colonPos = userLabel.find(':');
-        std::string name = colonPos != std::string::npos
-            ? userLabel.substr(0, colonPos)
-            : obj->getNameInDocument();
+        std::string name = colonPos != std::string::npos ? userLabel.substr(0, colonPos)
+                                                         : obj->getNameInDocument();
         obj->Label.setValue((name + ": ") + obj->getResultString());
     }
 
