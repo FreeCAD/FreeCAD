@@ -81,6 +81,16 @@ bool ImageView::loadFile(const QString& fileName)
         return false;
     }
 
+    // Same premultiplied-alpha correction as in ViewProviderImagePlane.
+    if (image.hasAlphaChannel()) {
+        QImage opaque(image.size(), QImage::Format_RGB32);
+        opaque.fill(Qt::white);
+        QPainter painter(&opaque);
+        painter.drawImage(0, 0, image);
+        painter.end();
+        image = opaque;
+    }
+
     setImage(image);
     setWindowFilePath(fileName);
 
