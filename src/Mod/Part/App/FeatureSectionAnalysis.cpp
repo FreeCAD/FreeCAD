@@ -266,8 +266,12 @@ void SectionAnalysis::forEachSourcePart(
     const std::function<void(App::DocumentObject*, const TopoDS_Shape&)>& visit
 )
 {
-    App::DocumentObject* root = nullptr;
-    std::function<void(const std::string&)> descend = [&](const std::string& sub) {
+    // The pair a step is addressed by: a base object and a subname path below it.
+    // Not one accumulated path from the original source, because a container is
+    // free to resolve only its own first level - an Arch BuildingPart hands back
+    // itself for anything deeper - and the walk then spins on that object.
+    std::function<void(App::DocumentObject*, const std::string&)> descend =
+        [&](App::DocumentObject* root, const std::string& sub) {
         App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
         // The root must be effectively visible (its containers too); nested
         // objects only need their own flag, their path is already checked.
@@ -307,7 +311,20 @@ void SectionAnalysis::forEachSourcePart(
             }
         }
         for (const auto& child : obj->getSubObjects()) {
-            descend(sub + child);
+            // Resolved one hop, from obj. A container that only understands its
+            // own first level still answers this correctly.
+            App::DocumentObject* next = obj->getSubObject(child.c_str());
+            if (!next) {
+                continue;
+            }
+            // Keep the longer path while it still names the same object: that is
+            // what carries a GeoFeatureGroup's placement down to its children.
+            if (root->getSubObject((sub + child).c_str()) == next) {
+                descend(root, sub + child);
+            }
+            else {
+                descend(next, {});
+            }
         }
     };
 
@@ -315,8 +332,7 @@ void SectionAnalysis::forEachSourcePart(
         if (!src || src == exclude) {
             continue;
         }
-        root = src;
-        descend({});
+        descend(src, {});
     }
 }
 

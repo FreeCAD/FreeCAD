@@ -23,6 +23,9 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+#include <cmath>
+
 #include <QFileInfo>
 #include <QPointer>
 #include <QString>
@@ -2623,12 +2626,14 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // Center the offset on the combined bounding box along the normal. Emitting
     // the resolved number keeps the recorded macro reproducing this exact plane.
     Bnd_Box bbox;
+    double modelDiagonal = 0.0;
     if (Part::SectionAnalysis::sourceBoundingBox(sources, bbox)) {
         double xmin, ymin, zmin, xmax, ymax, zmax;
         bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
         const double offset = (xmin + xmax) / 2 * nx + (ymin + ymax) / 2 * ny
             + (zmin + zmax) / 2 * nz;
         doCommand(Doc, "App.getDocument('%s').ActiveObject.PlaneOffset = %.12g", docName.c_str(), offset);
+        modelDiagonal = std::hypot(std::hypot(xmax - xmin, ymax - ymin), zmax - zmin);
     }
 
     // Don't commitCommand() here - leave the transaction open.
@@ -2648,6 +2653,15 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 vp->ShapeAppearance.setValues(
                     {PartGui::ViewProviderSectionAnalysis::paletteColor(count - 1)}
                 );
+
+                // Hatch spacing follows the model. To keep it more realistic
+                constexpr double hatchLinesAcrossModel = 120.0;
+                if (modelDiagonal > 0.0) {
+                    vp->HatchSpacing.setValue(std::max(
+                        modelDiagonal / hatchLinesAcrossModel,
+                        PartGui::ViewProviderSectionAnalysis::minHatchSpacing
+                    ));
+                }
 
                 // If the sources come from multiple parts, enable per-solid colors
                 const bool severalParts
