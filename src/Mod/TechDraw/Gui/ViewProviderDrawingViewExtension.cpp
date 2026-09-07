@@ -23,6 +23,7 @@
 
 #include <App/Document.h>
 
+#include "DrawGuiUtil.h"
 #include "ViewProviderDrawingViewExtension.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
@@ -49,9 +50,14 @@ bool ViewProviderDrawingViewExtension::extensionCanDragObject(App::DocumentObjec
     return true;
 }
 
-//the default drag will remove the object from the document until it is dropped and re-added, so we claim
-//to do the dragging.
-void ViewProviderDrawingViewExtension::extensionDragObject(App::DocumentObject* obj) { (void)obj; }
+// The default drag will remove the object from the document until it is
+// dropped and re-added, so TechDraw claims the operation. Sketches are the
+// exception: they must be detached from both their view and page before the
+// drop target claims them.
+void ViewProviderDrawingViewExtension::extensionDragObject(App::DocumentObject* obj)
+{
+    DrawGuiUtil::detachSketchFromTechDraw(obj);
+}
 
 //we don't support dropping of new children of Views (Dimensions, Balloons, Hatches, etc) now, but we don't want another
 //extension to try to drop on us and cause problems

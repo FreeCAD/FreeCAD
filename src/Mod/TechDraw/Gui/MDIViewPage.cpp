@@ -73,6 +73,7 @@
 #include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
+#include "QGISketch.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
 #include "QGIViewDimension.h"
@@ -82,6 +83,7 @@
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
 #include "PreferencesGui.h"
+#include "TechDrawSketchEditView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -156,6 +158,50 @@ void MDIViewPage::setScene(QGSPage* scene, QGVPage* viewWidget)
     m_scene = scene;
     setCentralWidget(viewWidget);//this makes viewWidget a Qt child of MDIViewPage
     QObject::connect(scene, &QGSPage::selectionChanged, this, &MDIViewPage::sceneSelectionChanged);
+}
+
+bool MDIViewPage::editSketch(App::DocumentObject* sketch, TechDraw::DrawView* owner)
+{
+    if (!sketch || !TechDraw::DrawPage::isSketch(sketch) || !getGuiDocument()) {
+        return false;
+    }
+
+    auto* editView = new TechDrawSketchEditView(getGuiDocument(), this, sketch, owner);
+    if (!editView->startSketchEdit()) {
+        if (auto* subWindow = qobject_cast<QMdiSubWindow*>(editView->parentWidget())) {
+            subWindow->close();
+        }
+        else {
+            editView->deleteLater();
+        }
+        return false;
+    }
+    return true;
+}
+
+bool MDIViewPage::editSketchByName(const QString& sketchName)
+{
+    if (!getAppDocument() || !m_scene) {
+        return false;
+    }
+
+    const QByteArray objectName = sketchName.toUtf8();
+    App::DocumentObject* sketch = getAppDocument()->getObject(objectName.constData());
+    if (!sketch || !m_scene->findSketchForDocObj(sketch)) {
+        return false;
+    }
+
+    return editSketch(sketch, m_scene->findSketchOwner(sketch));
+}
+
+bool MDIViewPage::containsViewProvider(const Gui::ViewProvider* viewProvider) const
+{
+    auto* documentViewProvider =
+        freecad_cast<const Gui::ViewProviderDocumentObject*>(viewProvider);
+    App::DocumentObject* object =
+        documentViewProvider ? documentViewProvider->getObject() : nullptr;
+    return viewProvider == m_vpPage
+        || (object && getPage() && getPage()->hasObject(object));
 }
 
 void MDIViewPage::setDocumentObject(const std::string& name)
@@ -949,6 +995,9 @@ void MDIViewPage::clearSceneSelection()
             item->updateView();
         }
     }
+    for (auto* sketch : m_scene->getSketches()) {
+        sketch->setGroupSelection(false);
+    }
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
@@ -959,6 +1008,9 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, bool isSelected,
     if (view) {
         view->setGroupSelection(isSelected, subNames);
         view->updateView();
+    }
+    else if (auto* sketch = m_scene->findSketchForDocObj(obj)) {
+        sketch->setGroupSelection(isSelected);
     }
 }
 
@@ -976,7 +1028,8 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::vector<Gui::SelectionObject> selObjs = Gui::Selection().getSelectionEx(msg.pDocName);
             for (auto &so : selObjs) {
                 App::DocumentObject *docObj = so.getObject();
-                if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
+                if (docObj->isDerivedFrom<TechDraw::DrawView>()
+                    || TechDraw::DrawPage::isSketch(docObj)) {
                     selectQGIView(docObj, true, so.getSubNames());
                 }
             }
@@ -984,7 +1037,8 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection || msg.Type == Gui::SelectionChanges::RmvSelection) {
         App::DocumentObject *docObj = msg.Object.getSubObject();
-        if (docObj->isDerivedFrom<TechDraw::DrawView>()) {
+        if (docObj->isDerivedFrom<TechDraw::DrawView>()
+            || TechDraw::DrawPage::isSketch(docObj)) {
             bool isSelected = msg.Type != Gui::SelectionChanges::RmvSelection;
             selectQGIView(docObj, isSelected, std::vector(1, std::string(msg.pSubName ? msg.pSubName : "")));
         }
@@ -1109,6 +1163,15 @@ void MDIViewPage::setTreeToSceneSelect()
     Gui::Selection().clearSelection();
 
     for (auto* scene : m_orderedSceneSelection) {
+        if (auto* sketchItem = dynamic_cast<QGISketch*>(scene)) {
+            auto* sketch = sketchItem->getSketchObject();
+            if (sketch && !sketch->isRemoving()) {
+                Gui::Selection().addSelection(sketch->getDocument()->getName(),
+                                              sketch->getNameInDocument());
+            }
+            continue;
+        }
+
         auto* itemView = dynamic_cast<QGIView*>(scene);
         if (!itemView) {
             auto* parent = dynamic_cast<QGIView*>(scene->parentItem());
@@ -1178,6 +1241,16 @@ std::string MDIViewPage::getSceneSubName(QGraphicsItem* scene)
 // adds scene to core selection if it's not in already.
 void MDIViewPage::addSceneItemToTreeSel(QGraphicsItem* sn, [[maybe_unused]]std::vector<Gui::SelectionObject> treeSel)
 {
+    if (auto* sketchItem = dynamic_cast<QGISketch*>(sn)) {
+        auto* sketch = sketchItem->getSketchObject();
+        if (sketch && !sketch->isRemoving() && !Gui::Selection().isSelected(sketch)) {
+            Gui::Selection().addSelection(sketch->getDocument()->getName(),
+                                          sketch->getNameInDocument());
+            showStatusMsg(sketch->getDocument()->getName(), sketch->getNameInDocument(), "");
+        }
+        return;
+    }
+
     auto* itemView = dynamic_cast<QGIView*>(sn);
     if (!itemView) {
         auto* parent = dynamic_cast<QGIView*>(sn->parentItem());
@@ -1237,6 +1310,16 @@ void MDIViewPage::removeUnselectedTreeSelection(QList<QGraphicsItem*> sceneSelec
     if (treeSelection.getSubNames().empty()) {
         bool matchFound{false};
         for (auto& sceneItem : sceneSelectedItems) {
+            if (auto* sketchItem = dynamic_cast<QGISketch*>(sceneItem)) {
+                auto* sketch = sketchItem->getSketchObject();
+                if (sketch && selDocName == sketch->getDocument()->getName()
+                    && selObj == sketch) {
+                    matchFound = true;
+                    break;
+                }
+                continue;
+            }
+
             auto* itemView = dynamic_cast<QGIView*>(sceneItem);
             if (!itemView) {
                 continue;

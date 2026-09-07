@@ -21,6 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
+# include <algorithm>
+
 # include <QAction>
 # include <QList>
 # include <QMdiArea>
@@ -29,6 +31,8 @@
 # include <QMessageBox>
 # include <QPointer>
 # include <QTextStream>
+
+#include <Inventor/nodes/SoGroup.h>
 
 #include <fastsignals/signal.h>
 #include <fastsignals/connection.h>
@@ -49,6 +53,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -75,8 +80,10 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderPage, Gui::ViewProviderDocumentObject)
 
 ViewProviderPage::ViewProviderPage()
     : m_mdiView(nullptr),  m_graphicsView(nullptr), m_graphicsScene(nullptr),
-      m_frameToggle(false)
+      m_frameToggle(false),
+      m_hiddenChildren(new SoGroup)
 {
+    m_hiddenChildren->ref();
     initExtension(this);
 
     sPixmap = "TechDraw_TreePage";
@@ -112,6 +119,8 @@ ViewProviderPage::~ViewProviderPage()
 {
     removeMDIView();//if the MDIViewPage is still in MainWindow, remove it.
     m_graphicsScene->deleteLater();
+    m_hiddenChildren->unref();
+    m_hiddenChildren = nullptr;
 }
 
 void ViewProviderPage::attach(App::DocumentObject* pcFeat)
@@ -124,6 +133,22 @@ void ViewProviderPage::attach(App::DocumentObject* pcFeat)
     auto* feature = dynamic_cast<TechDraw::DrawPage*>(pcFeat);
     if (feature) {
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
+        if (auto* document = feature->getDocument()) {
+            connectChangedObject = document->signalChangedObject.connect(
+                [this](const App::DocumentObject& object, const App::Property&) {
+                    auto* page = getDrawPage();
+                    auto* changed = const_cast<App::DocumentObject*>(&object);
+                    if (page && page->hasObject(changed) && DrawPage::isSketch(changed)) {
+                        m_graphicsScene->updateSketch(changed);
+                    }
+                    else if (page && changed->isDerivedFrom<DrawViewPart>()) {
+                        const auto pageViews = page->getAllViews();
+                        if (std::find(pageViews.begin(), pageViews.end(), changed) != pageViews.end()) {
+                            m_graphicsScene->syncSketches();
+                        }
+                    }
+                });
+        }
         if (feature->isAttachedToDocument()) {
             // it could happen that feature is not completely in the document yet and getNameInDocument returns
             // nullptr, so we only update m_myName if we got a valid string.
@@ -419,6 +444,24 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
             }
             auto* featView = dynamic_cast<TechDraw::DrawView*>(obj);
 
+            if (DrawPage::isSketch(obj)) {
+                bool attachedToView = false;
+                for (auto* viewObj : getDrawPage()->getAllViews()) {
+                    auto* view = freecad_cast<DrawView*>(viewObj);
+                    if (!view) {
+                        continue;
+                    }
+                    const auto sketches = view->Sketches.getValues();
+                    if (std::find(sketches.begin(), sketches.end(), obj) != sketches.end()) {
+                        attachedToView = true;
+                        break;
+                    }
+                }
+                if (attachedToView) {
+                    continue;
+                }
+            }
+
             // If the child view appoints a parent, skip it
             if (featView && featView->claimParent()) {
                 continue;
@@ -439,6 +482,17 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren() const
     catch (...) {
         return {};
     }
+}
+
+std::vector<App::DocumentObject*> ViewProviderPage::claimChildren3D() const
+{
+    auto* page = getDrawPage();
+    return page ? page->getSketches() : std::vector<App::DocumentObject*>{};
+}
+
+SoGroup* ViewProviderPage::getChildRoot() const
+{
+    return m_hiddenChildren;
 }
 
 bool ViewProviderPage::isShow() const { return Visibility.getValue(); }

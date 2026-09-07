@@ -22,6 +22,7 @@
 
 
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 
 #include "DrawPage.h"
@@ -48,30 +49,26 @@ std::string DrawPagePy::representation() const
 
 PyObject* DrawPagePy::addView(PyObject* args)
 {
-    PyObject *pcDocObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
+    PyObject* objectPy;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &objectPy)) {
         return nullptr;
     }
 
-    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
-    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
-    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
-    int rc = page->addView(view);
+    auto* object = static_cast<App::DocumentObjectPy*>(objectPy)->getDocumentObjectPtr();
+    int rc = getDrawPagePtr()->addView(object);
 
     return PyLong_FromLong(rc);
 }
 
 PyObject* DrawPagePy::removeView(PyObject* args)
 {
-    PyObject *pcDocObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::DrawViewPy::Type), &pcDocObj)) {
+    PyObject* objectPy;
+    if (!PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &objectPy)) {
         return nullptr;
     }
 
-    DrawPage* page = getDrawPagePtr();                         //get DrawPage for pyPage
-    DrawViewPy* pyView = static_cast<TechDraw::DrawViewPy*>(pcDocObj);
-    DrawView* view = pyView->getDrawViewPtr();                 //get DrawView for pyView
-    int rc = page->removeView(view);
+    auto* object = static_cast<App::DocumentObjectPy*>(objectPy)->getDocumentObjectPtr();
+    int rc = getDrawPagePtr()->removeView(object);
 
     return PyLong_FromLong(rc);
 }

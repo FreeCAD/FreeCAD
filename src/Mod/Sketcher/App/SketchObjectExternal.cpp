@@ -748,6 +748,14 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
     );
     auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/ true);
+    if (shape.isNull()) {
+        shape = Part::Feature::getTopoShape(
+            Obj,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+                | Part::ShapeOption::NeedSubElement,
+            SubName
+        );
+    }
     TopAbs_ShapeEnum shapeType = TopAbs_SHAPE;
     if (shape.shapeType(/*silent*/ true) != TopAbs_FACE) {
         if (shape.hasSubShape(TopAbs_FACE)) {
@@ -866,6 +874,74 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
 
     solverNeedsUpdate = true;
     return ExternalGeometry.getValues().size() - 1;
+}
+
+int SketchObject::addExternals(App::DocumentObject* Obj, const std::vector<std::string>& SubNames)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    if (!Obj || !isExternalAllowed(Obj->getDocument(), Obj)) {
+        return -1;
+    }
+
+    std::vector<long> types = ExternalTypes.getValues();
+    std::vector<DocumentObject*> objects = ExternalGeometry.getValues();
+    std::vector<std::string> subElements = ExternalGeometry.getSubValues();
+    types.resize(objects.size(), static_cast<long>(ExtType::Projection));
+    if (objects.size() != subElements.size()) {
+        Base::Console().error(
+            "Internal error: counts of objects and subelements in external "
+            "geometry links do not match\n"
+        );
+        return -1;
+    }
+
+    const auto originalObjects = objects;
+    const auto originalSubElements = subElements;
+    const auto originalTypes = types;
+    int changed = 0;
+    for (const auto& subName : SubNames) {
+        bool alreadyLinked = false;
+        for (std::size_t index = 0; index < objects.size(); ++index) {
+            if (objects[index] != Obj || subElements[index] != subName) {
+                continue;
+            }
+            alreadyLinked = true;
+            if (types[index] == static_cast<long>(ExtType::Intersection)) {
+                types[index] = static_cast<long>(ExtType::Both);
+                ++changed;
+            }
+            break;
+        }
+        if (alreadyLinked) {
+            continue;
+        }
+
+        objects.push_back(Obj);
+        subElements.push_back(subName);
+        types.push_back(static_cast<long>(ExtType::Projection));
+        ++changed;
+    }
+
+    if (changed == 0) {
+        return 0;
+    }
+
+    ExternalGeometry.setValues(objects, subElements);
+    ExternalTypes.setValues(types);
+    try {
+        rebuildExternalGeometry();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().error("%s\n", e.what());
+        ExternalGeometry.setValues(originalObjects, originalSubElements);
+        ExternalTypes.setValues(originalTypes);
+        return -1;
+    }
+
+    acceptGeometry();
+    solverNeedsUpdate = true;
+    return changed;
 }
 // clang-format off
 
@@ -2544,8 +2620,18 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 refSubShape = v;
             }
             else {
-                throw Base::TypeError(
-                    "Datum feature type is not yet supported as external geometry for a sketch");
+                auto shape = Part::Feature::getTopoShape(
+                    resolvedObj,
+                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+                        | Part::ShapeOption::NeedSubElement,
+                    SubElement.c_str()
+                );
+                refSubShape = shape.getShape();
+                if (refSubShape.IsNull()) {
+                    throw Base::TypeError(
+                        "Object does not provide geometry usable as external sketch geometry"
+                    );
+                }
             }
 
             if (projection && !refSubShape.IsNull()) {

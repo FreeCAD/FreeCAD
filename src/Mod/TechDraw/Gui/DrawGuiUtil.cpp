@@ -22,7 +22,9 @@
  ***************************************************************************/
 
 
-# include <sstream>
+#include <algorithm>
+#include <set>
+#include <sstream>
 
 #include <QBitmap>
 #include <QColor>
@@ -41,6 +43,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ElementNamingUtils.h>
 #include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -59,6 +62,8 @@
 #include <Gui/PrefWidgets.h>
 #include <Inventor/SbVec3f.h>
 
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/BalloonPropEnum.h>
 #include <Mod/TechDraw/App/LineNameEnum.h>
@@ -83,6 +88,72 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
+
+void DrawGuiUtil::detachSketchFromTechDraw(App::DocumentObject* sketch)
+{
+    if (!DrawPage::isSketch(sketch) || !sketch->getDocument()) {
+        return;
+    }
+
+    std::vector<DrawView*> owners;
+    std::vector<DrawPage*> pages;
+    for (auto* object : sketch->getDocument()->getObjects()) {
+        if (auto* view = freecad_cast<DrawView*>(object)) {
+            const auto sketches = view->Sketches.getValues();
+            if (std::find(sketches.begin(), sketches.end(), sketch) != sketches.end()) {
+                owners.push_back(view);
+            }
+        }
+        else if (auto* page = freecad_cast<DrawPage*>(object)) {
+            const auto pageObjects = page->Views.getValues();
+            if (std::find(pageObjects.begin(), pageObjects.end(), sketch) != pageObjects.end()) {
+                pages.push_back(page);
+            }
+        }
+    }
+
+    // External geometry generated for an owning view is meaningful only while
+    // the sketch remains attached to that view.
+    if (auto* sketchObject = freecad_cast<Sketcher::SketchObject*>(sketch)) {
+        const auto linkedObjects = sketchObject->ExternalGeometry.getValues();
+        const auto linkedSubElements = sketchObject->ExternalGeometry.getSubValues(false);
+        std::set<std::string> ownerReferences;
+        const std::size_t linkCount = std::min(linkedObjects.size(), linkedSubElements.size());
+        for (std::size_t index = 0; index < linkCount; ++index) {
+            auto* linkedObject = linkedObjects[index];
+            if (std::find(owners.begin(), owners.end(), linkedObject) == owners.end()) {
+                continue;
+            }
+            ownerReferences.insert(
+                std::string(linkedObject->getNameInDocument()) + '.'
+                + Data::newElementName(linkedSubElements[index].c_str())
+            );
+        }
+
+        std::vector<int> externalIds;
+        const auto& externalGeometry = sketchObject->getExternalGeometry();
+        // ExternalGeo slots 0 and 1 are the sketch axes. delExternal(0)
+        // addresses slot 2, and removes the complete expanded reference group.
+        for (std::size_t index = 2; index < externalGeometry.size(); ++index) {
+            const auto facade = Sketcher::ExternalGeometryFacade::getFacade(
+                externalGeometry[index]
+            );
+            if (facade && ownerReferences.erase(facade->getRef()) != 0) {
+                externalIds.push_back(static_cast<int>(index) - 2);
+            }
+        }
+        if (!externalIds.empty()) {
+            sketchObject->delExternal(externalIds);
+        }
+    }
+
+    for (auto* owner : owners) {
+        owner->removeSketch(sketch);
+    }
+    for (auto* page : pages) {
+        page->removeView(sketch);
+    }
+}
 
 void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {

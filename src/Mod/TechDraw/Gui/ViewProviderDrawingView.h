@@ -66,6 +66,7 @@ public:
     void show() override;
     bool isShow() const override;
 
+    bool canDropObject(App::DocumentObject* docObj) const override;
     void dropObject(App::DocumentObject* docObj) override;
 
     void onChanged(const App::Property *prop) override;

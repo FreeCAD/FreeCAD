@@ -61,6 +61,7 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <sstream>
+#include <cstring>
 
 
 #include <App/Document.h>
@@ -70,6 +71,8 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/PartPyCXX.h>
+#include <Mod/Part/App/TopoShape.h>
 
 #include "Cosmetic.h"
 #include "CenterLine.h"
@@ -850,6 +853,50 @@ TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
         return nullptr;
     }
     return geoms.at(iEdge);
+}
+
+App::DocumentObject* DrawViewPart::getSubObject(const char* subname,
+                                                PyObject** pyObj,
+                                                Base::Matrix4D* mat,
+                                                bool transform,
+                                                int depth) const
+{
+    while (subname && *subname == '.') {
+        ++subname;
+    }
+
+    if (!subname || std::strncmp(subname, "Edge", 4) != 0 || !subname[4]) {
+        return DrawView::getSubObject(subname, pyObj, mat, transform, depth);
+    }
+
+    try {
+        const auto edge = getEdge(subname);
+        if (!edge) {
+            return nullptr;
+        }
+        if (pyObj) {
+            // GeometryObject stores projected edges in the same inverted-Y
+            // coordinate system used by the Qt page. Sketcher uses a
+            // conventional right-handed XY plane, so convert the edge before
+            // removing the view's presentation rotation and scale.
+            TopoDS_Shape localEdge = ShapeUtils::fromQt(edge->getOCCEdge());
+            const gp_Ax2 localAxes;
+            if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+                localEdge =
+                    ShapeUtils::rotateShape(localEdge, localAxes, -Rotation.getValue());
+            }
+            const double viewScale = getScale();
+            if (!DrawUtil::fpCompare(viewScale, 1.0) && viewScale > Precision::Confusion()) {
+                localEdge = ShapeUtils::scaleShape(localEdge, 1.0 / viewScale);
+            }
+            Part::TopoShape shape(localEdge, getID(), getDocument()->getStringHasher());
+            *pyObj = Py::new_reference_to(Part::shape2pyshape(shape));
+        }
+        return const_cast<DrawViewPart*>(this);
+    }
+    catch (const Base::Exception&) {
+        return nullptr;
+    }
 }
 
 

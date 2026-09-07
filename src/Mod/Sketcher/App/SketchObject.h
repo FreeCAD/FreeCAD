@@ -249,6 +249,8 @@ public:
         bool defining = false,
         bool intersection = false
     );
+    /// add several projected external geometry references with a single rebuild
+    int addExternals(App::DocumentObject* Obj, const std::vector<std::string>& SubNames);
     /** delete external
      *  ExtGeoId >= 0 with 0 corresponding to the first user defined
      *  external geometry
