@@ -51,23 +51,22 @@ void ensureValidWall(const Part::TopoShape& wall, const char* message)
 /** Build a wall centered on the retained shell of a solid.
  *
  * The closing faces are removed by the ordinary skin-thickness operation.
- * Two exact one-sided walls are built at +offset and -offset and regular-fused
- * across their shared source shell. Consequently, offset is the distance on
- * each side and the total wall thickness is twice its absolute value.
+ * Two exact one-sided walls are built at half the requested thickness in
+ * each direction and regular-fused across their shared source shell.
  */
 Part::TopoShape makeRectoVersoThickness(
     const Part::TopoShape& solid,
     const std::vector<Part::TopoShape>& closingFaces,
-    double offset,
+    double thickness,
     double tolerance,
     bool intersection,
     Part::JoinType join,
     long tag
 )
 {
-    const double distance = std::abs(offset);
+    const double distance = std::abs(thickness) / 2.0;
     if (distance <= tolerance) {
-        throw Base::CADKernelError("Recto-verso thickness must exceed the modeling tolerance");
+        throw Base::CADKernelError("Recto-verso half-thickness must exceed the modeling tolerance");
     }
 
     // Signed offsets are only meaningful for consistently oriented solids.

@@ -216,17 +216,17 @@ class TestThickness(unittest.TestCase):
         self.assertLess(second.cut(first).Volume, tolerance)
 
     def testPlanarOpenShellIsCenteredOnRetainedFaces(self):
-        # A 40 x 30 x 10 box opened at the top.  Value=2 means two
-        # millimetres on each side of the retained shell, not two total.
+        # A 40 x 30 x 10 box opened at the top.  Value=2 means one
+        # millimetre on each side of the retained shell, two total.
         result = self.makeThickness(Part.makeBox(40, 30, 10), ["Face6"])
         self.assertValidSolid(result)
-        self.assertAlmostEqual(result.Volume, 10464.0, delta=1e-7)
+        self.assertAlmostEqual(result.Volume, 5208.0, delta=1e-7)
         bounds = result.BoundBox
-        self.assertAlmostEqual(bounds.XMin, -2.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.XMax, 42.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMin, -2.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMax, 32.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.ZMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMin, -1.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 41.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -1.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 31.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -1.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
 
     def testReversedDoesNotChangeRectoVersoResult(self):
@@ -255,11 +255,11 @@ class TestThickness(unittest.TestCase):
         )
         result = self.makeThickness(cylinder, ["Face" + str(topFace + 1)])
         self.assertValidSolid(result)
-        self.assertAlmostEqual(result.Volume, 3216.0 * 3.141592653589793, delta=1e-6)
+        self.assertAlmostEqual(result.Volume, 1602.0 * 3.141592653589793, delta=1e-6)
         bounds = result.BoundBox
-        self.assertAlmostEqual(bounds.XMin, -22.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.XMax, 22.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.ZMin, -2.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMin, -21.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 21.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -1.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
 
     def testArcJoinProducesValidCenteredCurvedWall(self):
@@ -287,12 +287,12 @@ class TestThickness(unittest.TestCase):
         # Removing the two opposite caps leaves only the four side faces.
         result = self.makeThickness(Part.makeBox(40, 30, 10), ["Face5", "Face6"])
         self.assertValidSolid(result)
-        self.assertAlmostEqual(result.Volume, 5600.0, delta=1e-7)
+        self.assertAlmostEqual(result.Volume, 2800.0, delta=1e-7)
         bounds = result.BoundBox
-        self.assertAlmostEqual(bounds.XMin, -2.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.XMax, 42.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMin, -2.0, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMax, 32.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMin, -1.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 41.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -1.0, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 31.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMin, 0.0, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMax, 10.0, delta=1e-7)
 
@@ -322,9 +322,9 @@ class TestThickness(unittest.TestCase):
         )
         self.assertValidSolid(result)
         bounds = result.BoundBox
-        self.assertAlmostEqual(bounds.XMin, -1.25, delta=1e-7)
-        self.assertAlmostEqual(bounds.XMax, 37.25, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMin, -1.25, delta=1e-7)
-        self.assertAlmostEqual(bounds.YMax, 29.25, delta=1e-7)
-        self.assertAlmostEqual(bounds.ZMin, -1.25, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMin, -0.625, delta=1e-7)
+        self.assertAlmostEqual(bounds.XMax, 36.625, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMin, -0.625, delta=1e-7)
+        self.assertAlmostEqual(bounds.YMax, 28.625, delta=1e-7)
+        self.assertAlmostEqual(bounds.ZMin, -0.625, delta=1e-7)
         self.assertAlmostEqual(bounds.ZMax, 14.0, delta=1e-7)

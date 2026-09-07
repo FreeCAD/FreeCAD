@@ -26,6 +26,7 @@
 #include <QAction>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QStandardItemModel>
 
 #include <BRepOffset_Mode.hxx>
 
@@ -62,6 +63,11 @@ void TaskThicknessParameters::addContainerWidget()
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    // Keep the mode indices aligned with BRepOffset_Mode while hiding Pipe.
+    auto modeView = qobject_cast<QListView*>(ui->modeComboBox->view());
+    modeView->setRowHidden(BRepOffset_Pipe, true);
+    auto modeModel = qobject_cast<QStandardItemModel*>(ui->modeComboBox->model());
+    modeModel->item(BRepOffset_Pipe)->setEnabled(false);
     this->groupLayout()->addWidget(proxy);
 }
 
@@ -210,8 +216,7 @@ void TaskThicknessParameters::updateModeControls(int mode)
         isRectoVerso ? tr("Recto verso applies the thickness equally to both sides") : QString()
     );
     ui->Value->setToolTip(
-        isRectoVerso ? tr("Distance applied to each side; total wall thickness is twice this value")
-                     : QString()
+        isRectoVerso ? tr("Total wall thickness; half is applied to each side") : QString()
     );
 }
 
