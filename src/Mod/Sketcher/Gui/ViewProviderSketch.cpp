@@ -76,6 +76,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -3852,6 +3853,10 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
         ViewProvider2DObject::updateData(prop);
     }
 
+    if (prop == &getSketchObject()->ExternalGeo) {
+        signalChangeIcon();
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -5018,9 +5023,31 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
+bool ViewProviderSketch::hasMissingExternalGeometry() const
+{
+    const auto& externalGeometry = getSketchObject()->ExternalGeo.getValues();
+    return std::ranges::any_of(externalGeometry, [](const Part::Geometry* geometry) {
+        return ExternalGeometryFacade::getFacade(geometry)->testFlag(
+            ExternalGeometryExtension::Missing);
+    });
+}
+
+QString ViewProviderSketch::getToolTip() const
+{
+    return hasMissingExternalGeometry()
+        ? tr("Missing external geometry. Check the sketch's external references.")
+        : QString();
+}
+
 QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
+
+    if (hasMissingExternalGeometry()) {
+        static QPixmap warning(Gui::BitmapFactory().pixmapFromSvg("Warning", QSize(10, 10)));
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(
+            mergedicon, warning, Gui::BitmapFactoryInst::TopRight);
+    }
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
