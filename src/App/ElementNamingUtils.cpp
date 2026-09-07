@@ -13,7 +13,7 @@ const App::HistoryAlgorithm& App::getDefaultHistoryAlgorithm() {
 }
 
 
-App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
+App::HistoryAlgorithm App::getHistoryAlgorithm(const int& fromUnderlying) {
     if (fromUnderlying == 0) {
         return App::HistoryAlgorithm::V1;
     } else if (fromUnderlying == 1) {
@@ -23,7 +23,7 @@ App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
     }
 }
 
-App::HistoryAlgorithm App::getHistoryAlgorithm(std::string fromString) {
+App::HistoryAlgorithm App::getHistoryAlgorithm(const std::string& fromString) {
     if (fromString == "V1") {
         return App::HistoryAlgorithm::V1;
     } else if (fromString == "V2") {
@@ -42,23 +42,6 @@ int App::getHistoryAlgorithm(const App::HistoryAlgorithm& fromHistoryAlgorithm) 
 
     return 1;
 };
-
-const int& App::getSelectedUnderlyingHistoryAlgorithm() {
-    static int underlyingHistoryAlgorithm = -1;
-
-    if (underlyingHistoryAlgorithm == -1) {
-        ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Part/General"
-        );
-
-        underlyingHistoryAlgorithm = grp->GetInt(
-            "HistoryAlgorithm",
-            static_cast<int>(getDefaultHistoryAlgorithm())
-        );
-    }
-
-    return underlyingHistoryAlgorithm;
-}
 
 const char* Data::isMappedElement(const char* name)
 {
