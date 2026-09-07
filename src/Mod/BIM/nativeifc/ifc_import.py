@@ -24,6 +24,7 @@
 
 import os
 import time
+from datetime import datetime
 
 import FreeCAD
 
@@ -32,6 +33,7 @@ from . import ifc_psets
 from . import ifc_materials
 from . import ifc_layers
 from . import ifc_status
+from . import ifc_summary
 from . import ifc_types
 
 if FreeCAD.GuiUp:
@@ -40,6 +42,9 @@ if FreeCAD.GuiUp:
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
+
+
+translate = FreeCAD.Qt.translate
 
 
 def open(filename):
@@ -75,7 +80,7 @@ def insert(
 
     from PySide import QtCore  # lazy loading
 
-    strategy, shapemode, switchwb = get_options(strategy, shapemode, switchwb, silent)
+    strategy, shapemode, switchwb = get_options(filename, strategy, shapemode, switchwb, silent)
     if strategy is None:
         print("Aborted.")
         return
@@ -122,15 +127,154 @@ def insert(
     return document
 
 
-def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
-    """Shows a dialog to get import options
+if FreeCAD.GuiUp:
+    from PySide import QtCore
 
-    shapemode: 0 = full shape
-               1 = coin only
-               2 = no representation
-    strategy:  0 = only root object
-               1 = only bbuilding structure,
-               2 = all children
+    _SUMMARY_WORKERS = set()
+
+    class _IfcSummaryWorker(QtCore.QThread):
+        """Background worker generating IFC summary."""
+
+        summary_metadata = QtCore.Signal(str, int, str, float)
+        summary_update = QtCore.Signal(str, object)
+        summary_failed = QtCore.Signal(str)
+
+        def __init__(self, filename):
+            super().__init__()
+            self.filename = filename
+
+        def run(self):
+            try:
+                ifc_summary.get_summary(
+                    self.filename,
+                    metadata=self.summary_metadata.emit,
+                    update=self.summary_update.emit,
+                    cancelled=self.isInterruptionRequested,
+                )
+            except InterruptedError:
+                return
+            except Exception as error:
+                if not self.isInterruptionRequested():
+                    self.summary_failed.emit(f"{type(error).__name__}: {error}")
+
+    class _IfcSummaryReceiver(QtCore.QObject):
+        """IFC summary receiver to update dialog."""
+
+        def __init__(self, dialog):
+            super().__init__(dialog)
+            self.dialog = dialog
+
+        @QtCore.Slot(str, int, str, float)
+        def metadata(self, filename, file_size, created, modified):
+            _summary_metadata(self.dialog, filename, file_size, created, modified)
+
+        @QtCore.Slot(str, object)
+        def update(self, name, value):
+            _summary_update(self.dialog, name, value)
+
+        @QtCore.Slot(str)
+        def failed(self, message):
+            _summary_failed(self.dialog, message)
+
+
+def _summary_metadata(dialog, filename, file_size, created, modified):
+    """IFC summary metadata on dialog."""
+
+    dialog.summaryFile.setText(filename or "—")
+    dialog.summarySize.setText(f"{file_size / (1024 * 1024):.1f} MB" if file_size else "—")
+    dialog.summaryCreated.setText(created.replace("T", " ") if created else "—")
+    dialog.summaryModified.setText(
+        datetime.fromtimestamp(modified).strftime("%Y-%m-%d %H:%M:%S") if modified else "—"
+    )
+
+
+def _summary_update(dialog, name, value):
+    """IFC summary fields displayed on dialog as they become available."""
+
+    labels = {
+        "schema": dialog.summarySchema,
+        "projects": dialog.summaryProjects,
+        "sites": dialog.summarySites,
+        "buildings": dialog.summaryBuildings,
+        "storeys": dialog.summaryStoreys,
+        "products": dialog.summaryProducts,
+        "types": dialog.summaryTypes,
+        "property_sets": dialog.summaryPropertySets,
+        "materials": dialog.summaryMaterials,
+        "layers": dialog.summaryLayers,
+    }
+
+    label = labels.get(name)
+
+    if label is None:
+        return
+
+    if name == "schema":
+        label.setText(str(value) if value else "—")
+    else:
+        label.setText(f"{int(value):,}")
+
+
+def _summary_failed(dialog, message):
+    """Non-blocking IFC summary failure."""
+
+    dialog.groupSummary.setTitle(translate("BIM", "IFC file content summary — Unable to read"))
+    dialog.groupSummary.setToolTip(message)
+
+    # Keep already available file metadata visible.
+    # Clear only incomplete content values.
+    for name in (
+        "summarySchema",
+        "summaryProjects",
+        "summarySites",
+        "summaryBuildings",
+        "summaryStoreys",
+        "summaryProducts",
+        "summaryTypes",
+        "summaryPropertySets",
+        "summaryMaterials",
+        "summaryLayers",
+    ):
+        getattr(dialog, name).setText("—")
+
+    FreeCAD.Console.PrintError(f"BIM IFC import summary failure: {message}\n")
+
+
+def _summary_finished(dialog):
+    """Mark summary as ready."""
+
+    if not getattr(dialog, "summary_worker", None):
+        return
+
+    dialog.groupSummary.setTitle(translate("BIM", "IFC file content summary"))
+
+
+def get_options(filename=None, strategy=None, shapemode=None, switchwb=None, silent=False):
+    """Show a dialog to get IFC import options.
+
+    Parameters
+    ----------
+    filename : str, optional
+        IFC file path used to display file content summary.
+    strategy : int, optional
+        Import strategy.
+            0 = only root object
+            1 = only building structure
+            2 = all children
+    shapemode : int, optional
+        Shape loading mode.
+            0 = full shape
+            1 = coin only
+            2 = no representation
+    switchwb : bool, optional
+        Whether to switch to BIM workbench after import.
+    silent : bool, optional
+        Skip the dialog.
+
+    Returns
+    -------
+    tuple
+        Import strategy, shape mode, and workbench switch setting.
     """
 
     psets = PARAMS.GetBool("LoadPsets", False)
@@ -149,6 +293,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     ask = PARAMS.GetBool("AskAgain", True)
     if ask and FreeCAD.GuiUp:
         import FreeCADGui
+        from PySide import QtCore, QtGui
 
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogImport.ui")
         dlg.checkSwitchWB.hide()  # TODO see what to do with this...
@@ -162,10 +307,53 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         dlg.checkLoadLayers.setChecked(layers)
         dlg.comboSingleDoc.setCurrentIndex(1 - int(singledoc))
 
-        from PySide import QtCore, QtGui
+        if filename:
+            dlg.groupSummary.setTitle(
+                translate("BIM", "IFC file content summary — Reading IFC file…")
+            )
+
+            summary_worker = _IfcSummaryWorker(filename)
+            summary_receiver = _IfcSummaryReceiver(dlg)
+
+            summary_worker.summary_metadata.connect(summary_receiver.metadata)
+            summary_worker.summary_update.connect(summary_receiver.update)
+            summary_worker.summary_failed.connect(summary_receiver.failed)
+
+            summary_worker.finished.connect(lambda: _summary_finished(dlg))
+
+            def _cleanup_worker():
+                _SUMMARY_WORKERS.discard(summary_worker)
+
+                if getattr(dlg, "summary_worker", None) is summary_worker:
+                    dlg.summary_worker = None
+
+                summary_worker.deleteLater()
+
+            summary_worker.finished.connect(_cleanup_worker)
+
+            _SUMMARY_WORKERS.add(summary_worker)
+
+            # Keep explicit references for dialog lifetime.
+            dlg.summary_worker = summary_worker
+            dlg.summary_receiver = summary_receiver
+
+            summary_worker.start()
+
+        else:
+            dlg.groupSummary.setTitle(
+                translate("BIM", "IFC file content summary — No IFC file selected")
+            )
+
+        def stop_summary_worker():
+            worker = getattr(dlg, "summary_worker", None)
+
+            if worker is not None and worker.isRunning():
+                worker.requestInterruption()
+                dlg.summary_worker = None
 
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.ArrowCursor)
         result = dlg.exec_()
+        stop_summary_worker()
         QtGui.QApplication.restoreOverrideCursor()
 
         if not result:
