@@ -735,13 +735,27 @@ void SectionAnalysisWidget::applyAngles()
         n = n / len;
     }
 
-    // Keep the plane passing through the same geometric point as it tilts
+    // Keep the plane passing through the same geometric point as it tilts.
+    //
+    // Pivot on the geometry, not on the plane's closest approach to the world
+    // origin: a building 20 m away swings out of the model on a small tilt.
+    // Same anchor the handles orbit, so the plane turns about what they show.
     Base::Vector3d oldN = feature->PlaneNormal.getValue();
-    double oldD = feature->PlaneOffset.getValue();
-    double oldLen = oldN.Length();
-    Base::Vector3d oldPlanePoint = (oldLen > minUnitMagnitude) ? (oldN / oldLen) * oldD
-                                                               : Base::Vector3d(0, 0, 0);
-    double newOffset = oldPlanePoint.x * n.x + oldPlanePoint.y * n.y + oldPlanePoint.z * n.z;
+    const double oldD = feature->PlaneOffset.getValue();
+    const double oldLen = oldN.Length();
+
+    Base::Vector3d pivot(0, 0, 0);
+    if (oldLen > minUnitMagnitude) {
+        const Base::Vector3d unitOld = oldN / oldLen;
+
+        Base::Vector3d hint = unitOld * oldD;
+        double diagonal = 0.0;
+        if (viewProvider) {
+            viewProvider->sourceBounds(hint, diagonal);
+        }
+        pivot = Part::SectionAnalysis::draggerAnchor(unitOld, oldD, hint);
+    }
+    const double newOffset = pivot * n;
 
     feature->PlaneNormal.setValue(n);
     feature->PlaneOffset.setValue(newOffset);

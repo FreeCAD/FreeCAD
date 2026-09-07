@@ -335,6 +335,46 @@ TEST(SectionCapFill, testTheFillStaysOnTheLoopsOwnPlane)
     }
 }
 
+TEST(SectionCapFill, testAnOpenChainIsFilledAsIfItWereClosed)
+{
+    // Arrange - three sides of a square, the fourth never chained. This is what
+    // a body with an open or non manifold mesh slices to.
+    const std::vector<Base::Vector3d> open = {
+        Base::Vector3d(0, 0, 0),
+        Base::Vector3d(10, 0, 0),
+        Base::Vector3d(10, 10, 0),
+        Base::Vector3d(0, 10, 0),
+    };
+
+    // Act
+    const auto soup = fillLoops({open}, U, V);
+
+    // Assert - the sweep joins the last point back to the first and fills the
+    // whole square, inventing the side that was missing. Callers must therefore
+    // hand fillLoops closed loops only; ViewProviderSectionAnalysis filters on
+    // isClosed before calling, or the invented edge floods empty space.
+    EXPECT_NEAR(soupArea(soup), 100.0, 1e-3);
+    EXPECT_FALSE(Part::SectionCap::isClosed(open, 1e-3));
+}
+
+TEST(SectionCapFill, testClosureIsSpeltByRepeatingTheFirstPoint)
+{
+    // The two functions read a loop differently, which is why only a caller that
+    // knows where its loops came from can filter: fillLoops closes every loop
+    // implicitly by wrapping the last point to the first, while isClosed asks for
+    // the repeat to be there. chainLoops always writes it - it pushes the point
+    // that met the start before stopping - so its output is safe to test.
+    std::vector<Base::Vector3d> repeated = square(0, 0, 10);
+    repeated.push_back(repeated.front());
+
+    EXPECT_TRUE(Part::SectionCap::isClosed(repeated, 1e-3));
+    EXPECT_FALSE(Part::SectionCap::isClosed(square(0, 0, 10), 1e-3));
+
+    // Both still fill to the same square, the wrap making up the difference
+    EXPECT_NEAR(soupArea(fillLoops({repeated}, U, V)), 100.0, 1e-3);
+    EXPECT_NEAR(soupArea(fillLoops({square(0, 0, 10)}, U, V)), 100.0, 1e-3);
+}
+
 TEST(SectionCapFill, testEveryTriangleIndexIsInRange)
 {
     const auto soup = fillLoops({square(0, 0, 10), square(3, 3, 4)}, U, V);

@@ -824,7 +824,19 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             ? partColor(body.source, index)
             : appearance.front();
 
-        const auto fill = Part::SectionCap::fillLoops(loops, u, v);
+        // Closed loops only. 
+        // Open loops are the edges of a cut that does not close on itself, and
+        // so cannot be filled. The fill is the only thing that makes a section
+        // read as a solid shape rather than a wireframe. If that makes sense..
+        std::vector<std::vector<Base::Vector3d>> closedLoops;
+        closedLoops.reserve(loops.size());
+        for (const auto& loop : loops) {
+            if (Part::SectionCap::isClosed(loop, chainTolerance)) {
+                closedLoops.push_back(loop);
+            }
+        }
+
+        const auto fill = Part::SectionCap::fillLoops(closedLoops, u, v);
         if (!fill.indices.empty()) {
             std::vector<SbVec3f> fillPoints;
             fillPoints.reserve(fill.points.size());

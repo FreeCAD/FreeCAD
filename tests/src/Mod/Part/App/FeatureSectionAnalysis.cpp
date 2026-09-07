@@ -13,6 +13,7 @@
 #include <limits>
 
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/Part.h>
 #include <src/App/InitApplication.h>
 #include <src/TempDirectory.h>
@@ -358,6 +359,74 @@ TEST_F(FeatureSectionAnalysisTest, testHiddenContainerHidesItsContents)
 }
 
 // --- invariants the per-body colouring depends on ------------------------
+
+TEST_F(FeatureSectionAnalysisTest, testSectionsThroughNestedContainers)
+{
+    // Arrange - two levels of grouping. One level is not enough: a container is
+    // free to resolve only its own first step, so a path assembled from the
+    // outermost object stops advancing and the walk revisits the same object
+    // instead of reaching what is inside. Arch nests Site > BuildingPart > Wall
+    // and hit exactly this; plain groups reproduce it without needing Arch.
+    auto* outer = _doc->addObject<App::DocumentObjectGroup>();
+    auto* inner = _doc->addObject<App::DocumentObjectGroup>();
+    outer->addObject(inner);
+    inner->addObject(_boxes[0]);
+    _section->Source.setValues({outer});
+
+    // Act
+    auto* result = _section->execute();
+
+    // Assert - the box two levels down is found and cut
+    EXPECT_EQ(result, App::DocumentObject::StdReturn);
+    ASSERT_EQ(_section->SourceParts.getValues().size(), 1U);
+    EXPECT_EQ(_section->SourceParts.getValues().front(), _boxes[0]);
+    EXPECT_FALSE(faces(_section).empty());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testNestedContainersReachEverySource)
+{
+    // Arrange - two boxes in separate groups under one outer group. Box 0 spans
+    // y 0..2 and box 2 spans y 3..5, so a walk that stalls on the first branch
+    // is caught by the count rather than by luck.
+    auto* outer = _doc->addObject<App::DocumentObjectGroup>();
+    auto* left = _doc->addObject<App::DocumentObjectGroup>();
+    auto* right = _doc->addObject<App::DocumentObjectGroup>();
+    outer->addObject(left);
+    outer->addObject(right);
+    left->addObject(_boxes[0]);
+    right->addObject(_boxes[2]);
+    _section->Source.setValues({outer});
+    // Both boxes straddle z = 1.5, the plane the fixture cuts on
+    _section->PlaneNormal.setValue(Base::Vector3d(0, 0, 1));
+    _section->PlaneOffset.setValue(1.5);
+
+    // Act
+    _section->execute();
+
+    // Assert
+    const auto& parts = _section->SourceParts.getValues();
+    ASSERT_EQ(parts.size(), 2U);
+    EXPECT_NE(std::find(parts.begin(), parts.end(), _boxes[0]), parts.end());
+    EXPECT_NE(std::find(parts.begin(), parts.end(), _boxes[2]), parts.end());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAHiddenNestedContainerHidesItsContents)
+{
+    // Arrange - the box stays visible, the group two levels up does not
+    auto* outer = _doc->addObject<App::DocumentObjectGroup>();
+    auto* inner = _doc->addObject<App::DocumentObjectGroup>();
+    outer->addObject(inner);
+    inner->addObject(_boxes[0]);
+    inner->Visibility.setValue(false);
+    _section->Source.setValues({outer});
+
+    // Act
+    _section->execute();
+
+    // Assert - nothing to cut, and no crash walking past the hidden branch
+    EXPECT_TRUE(_section->SourceParts.getValues().empty());
+    EXPECT_TRUE(_section->Shape.getShape().getShape().IsNull());
+}
 
 TEST_F(FeatureSectionAnalysisTest, testMappingHasExactlyOneEntryPerFace)
 {
