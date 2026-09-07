@@ -219,6 +219,12 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         //  delConstraintsToExternal();
     }
 
+    auto solverPreferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
+    int defaultSolver = solverPreferences->GetInt("DefaultSolver", GCS::DogLeg);
+    solvedSketch.defaultSolver = defaultSolver >= GCS::BFGS && defaultSolver <= GCS::DogLeg
+        ? static_cast<GCS::Algorithm>(defaultSolver) : GCS::DogLeg;
+
     // This includes a regular solve including full geometry update, except when an error
     // ensues
     std::string msg;
