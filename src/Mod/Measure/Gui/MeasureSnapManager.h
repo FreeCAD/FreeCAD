@@ -50,10 +50,13 @@ public:
     // Disabling hides a marker left over from the previous measurement type.
     void setEnabled(bool enabled);
 
+    void setPreviewMode(Measure::MeasureSnapMode mode);
+
 private:
     MeasureSnapIndicator mIndicator;
     fastsignals::connection mDeleteDocConn;
     bool mEnabled = true;
+    Measure::MeasureSnapMode mPreviewMode = Measure::MeasureSnapMode::Auto;
 };
 
 }  // namespace MeasureGui

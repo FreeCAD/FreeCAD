@@ -774,9 +774,26 @@ TEST_F(MeasureSnap, testBoundedAxisEdgeVoidBoxReturnsNull)
 // past the last mode and the -1 of an out-of-range reload fall back to Auto.
 TEST_F(MeasureSnap, testSnapModeFromIndexClampsOutOfRange)
 {
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(0), Measure::MeasureSnapMode::Auto);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(1), Measure::MeasureSnapMode::None);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(2), Measure::MeasureSnapMode::Vertex);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(3), Measure::MeasureSnapMode::Center);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(4), Measure::MeasureSnapMode::Midpoint);
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(5), Measure::MeasureSnapMode::Axis);
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(6), Measure::MeasureSnapMode::Auto);
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(-1), Measure::MeasureSnapMode::Auto);
+}
+
+TEST_F(MeasureSnap, testSnapModeEnumsCountMatchesEnum)
+{
+    const char** enums = Measure::MeasureSnap::snapModeEnums();
+    std::size_t count = 0;
+    while (enums[count] != nullptr) {
+        ++count;
+    }
+    const auto expected = static_cast<std::size_t>(Measure::MeasureSnapMode::Axis) + 1;
+    EXPECT_EQ(count, expected);
+    EXPECT_EQ(enums[expected], nullptr);
 }
 
 // Auto prefers Center, then Midpoint, Vertex, then Axis; an explicit mode needs its own flag.
