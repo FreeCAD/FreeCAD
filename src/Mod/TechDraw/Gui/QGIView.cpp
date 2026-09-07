@@ -52,6 +52,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "QGIView.h"
+#include "ViewPlacement.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGCustomBorder.h"
@@ -394,7 +395,7 @@ void QGIView::snapPosition(QPointF& newPosition)
 //! position in the parent item's coordinates, while the cutting line and snap
 //! axes are in scene coordinates.
 void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
-                              QPointF& newPosition)
+                              QPointF& newPosition, bool initialPlacement)
 {
     m_snapped = false;
     auto* baseView = sectionView->getBaseDVP();
@@ -484,6 +485,42 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
         -Rez::guiX(sectionAnchorOffset.y));
     const QPointF sectionAnchorSceneOffset =
         mapToScene(sectionAnchorLocal) - mapToScene(QPointF());
+    if (initialPlacement) {
+        auto* page = sectionView->findParentPage();
+        auto* pageScene = dynamic_cast<QGSPage*>(scene());
+        if (!page || !pageScene) {
+            return;
+        }
+
+        // Translate the actual rendered bounds, including the caption, along
+        // the same datum used by interactive view-direction snapping.
+        const QPointF origin = baseAnchor - sectionAnchorSceneOffset;
+        const QRectF bounds = mapRectToScene(boundingRect()).translated(
+            origin - mapToScene(QPointF()));
+        const double gap = Rez::guiX(5.0);
+        const QRectF paper(0.0, -Rez::guiX(page->getPageHeight()),
+                           Rez::guiX(page->getPageWidth()),
+                           Rez::guiX(page->getPageHeight()));
+        std::vector<QRectF> obstacles;
+        for (auto* view : pageScene->getViews()) {
+            if (view != this && view->isVisible()
+                && !view->isAncestorOf(this)) {
+                obstacles.push_back(view->mapRectToScene(view->boundingRect())
+                                        .adjusted(-gap, -gap, gap, gap));
+            }
+        }
+
+        const auto movement = findAlignedViewPlacement(
+            bounds, viewDirection, paper, obstacles);
+        if (!movement) {
+            // Keep the page's original placement when neither aligned side fits.
+            return;
+        }
+        const QPointF placement = origin + *movement;
+        newPosition = parentItem() ? parentItem()->mapFromScene(placement) : placement;
+        m_snapped = true;
+        return;
+    }
     const QRectF visibleGeometry = frameRect();
     // An empty section still has decorations (notably its caption), so its
     // frame rectangle is not a geometry datum.  Snap its section origin;
@@ -568,6 +605,24 @@ void QGIView::snapSectionView(const TechDraw::DrawViewSection* sectionView,
             ? parentItem()->mapFromScene(snappedOrigin)
             : snappedOrigin;
     }
+}
+
+void QGIView::autoPositionSectionView(TechDraw::DrawViewSection* sectionView)
+{
+    QPointF position = pos();
+    snapSectionView(sectionView, position, true);
+    if (!m_snapped) {
+        return;
+    }
+    setPositionWithoutSnapping(position);
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %.12g",
+                            sectionView->getNameInDocument(), Rez::appX(position.x()));
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %.12g",
+                            sectionView->getNameInDocument(), Rez::appX(-position.y()));
+    Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.LockRelativePositionToSource = True",
+                            sectionView->getNameInDocument());
+    clearSectionSnap();
 }
 
 void QGIView::clearSectionSnap()

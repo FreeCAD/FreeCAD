@@ -35,6 +35,7 @@
 #include <QIcon>
 #include <QSignalBlocker>
 #include <QTimer>
+#include <QEventLoop>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <algorithm>
@@ -3660,6 +3661,7 @@ bool TaskSectionView::apply(bool forceUpdate)
         Base::Console().error((msg + "\n").c_str());
         return false;
     }
+    const bool needsInitialPlacement = !m_section;
     convertSectionToComplex();
     if (!m_section) {
         m_section = createSectionView();
@@ -3676,6 +3678,29 @@ bool TaskSectionView::apply(bool forceUpdate)
         return false;
     }
     m_section->recomputeFeature();
+    if (needsInitialPlacement) {
+        // The cut and projection run asynchronously. Wait for their actual
+        // bounds before placing the view, within the creation transaction.
+        QEventLoop loop;
+        QTimer timer;
+        connect(&timer, &QTimer::timeout, &loop, [&]() {
+            if (!m_section->waitingForResult()) {
+                loop.quit();
+            }
+        });
+        if (m_section->waitingForResult()) {
+            timer.start(20);
+            loop.exec(QEventLoop::ExcludeUserInputEvents);
+        }
+        auto* provider = freecad_cast<ViewProviderViewPart*>(
+            Gui::Application::Instance->getViewProvider(m_section));
+        auto* item = provider ? provider->getQView() : nullptr;
+        if (item) {
+            item->setVisible(true);
+            item->updateView(true);
+            item->autoPositionSectionView(m_section);
+        }
+    }
     if (isBaseValid()) {
         m_base->requestPaint();
     }
