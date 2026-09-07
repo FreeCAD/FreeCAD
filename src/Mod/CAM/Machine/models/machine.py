@@ -389,6 +389,7 @@ class ToolheadType(Enum):
     LASER = "laser"  # Laser cutting/engraving
     WATERJET = "waterjet"  # Waterjet cutting
     PLASMA = "plasma"  # Plasma cutting
+    WIRE_EDM = "wire_edm"  # Wire electrical discharge machining
 
 
 @dataclass
@@ -475,6 +476,20 @@ class ToolheadCapabilities:
                 has_probing=False,
                 has_auto_focus=False,
             ),
+            ToolheadType.WIRE_EDM: cls(
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=True,
+                uses_coolant=False,
+                uses_assist_gas=False,
+                uses_water=True,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
+            ),
         }
         return capabilities.get(toolhead_type, capabilities[ToolheadType.ROTARY])
 
@@ -543,6 +558,10 @@ class Toolhead:
     def is_plasma(self) -> bool:
         """Check if this is a plasma toolhead."""
         return self.toolhead_type == ToolheadType.PLASMA
+
+    def is_wire_edm(self) -> bool:
+        """Check if this is a wire EDM toolhead."""
+        return self.toolhead_type == ToolheadType.WIRE_EDM
 
     def can_use_coolant(self) -> bool:
         """Check if this toolhead can use coolant."""
