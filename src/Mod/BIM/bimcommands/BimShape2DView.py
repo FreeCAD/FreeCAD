@@ -40,6 +40,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d["Pixmap"] = "Arch_BuildingPart_Tree"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section View")
         d["Accel"] = "V, V"
+        d["ToolTip"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Creates a 2d projection of the selected objects on the XY-plane. The initial projection direction is the opposite of the current active view direction")
         return d
 
     def proceed(self):
@@ -110,8 +111,9 @@ class BIM_Shape2DCut(BIM_Shape2DView):
     def GetResources(self):
         d = super().GetResources()
         d["Pixmap"] = "Arch_View_Cut"
-        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section Cut")
+        d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DCut", "Section Cut")
         d["Accel"] = "V, C"
+        d["ToolTip"] = QT_TRANSLATE_NOOP("BIM_Shape2DCut", "Creates a 2d projection of the selected objects on the XY-plane. The initial projection direction is the opposite of the current active view direction")
         return d
 
     def proceed(self):
