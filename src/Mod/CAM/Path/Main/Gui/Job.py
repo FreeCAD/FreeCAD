@@ -807,6 +807,15 @@ class StockFromExistingEdit(StockEdit):
             if stockBaseName == solid.Name:
                 index = i
 
+        if self.force and self.IsStock(obj) and obj.Model.Group:  # set placement while refresh
+            for model in obj.Model.Group:
+                objects = getattr(model, "Objects", None)
+                if objects and objects[0] == obj.Stock.Objects[0]:
+                    obj.Stock.Placement = model.Placement
+                    break
+            else:
+                obj.Stock.Placement = obj.Model.Group[0].Placement
+
         self.form.stockExisting.setCurrentIndex(index)
         self.form.stockExisting.blockSignals(False)
 
