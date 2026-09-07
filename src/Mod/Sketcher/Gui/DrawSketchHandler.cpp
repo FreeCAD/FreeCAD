@@ -407,7 +407,8 @@ void DrawSketchHandler::deactivate()
 {
     // Some tools (bspline for instance) may get exited while a transaction is still opened.
     // Exiting should abort any opened transaction.
-    // The following recompute is needed else we have acces violation because preselection still referenced the removed bspline points.
+    // The following recompute is needed else we have acces violation because preselection still
+    // referenced the removed bspline points.
     abortCommand();
     tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
 
