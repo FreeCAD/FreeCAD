@@ -24,6 +24,8 @@
 
 
 #include <QAction>
+#include <QComboBox>
+#include <QSpinBox>
 
 
 #include <App/Application.h>
@@ -36,6 +38,7 @@
 #include <Mod/PartDesign/App/FeatureLoft.h>
 
 #include "ui_TaskLoftParameters.h"
+#include "ui_TaskLoftAdvancedParameters.h"
 #include "TaskLoftParameters.h"
 #include "TaskSketchBasedParameters.h"
 
@@ -64,6 +67,13 @@ QString loftTaskTitle(ViewProviderLoft* view)
     return isSubtractiveLoft(view) ? TaskLoftParameters::tr("Subtractive Loft Parameters")
                                    : TaskLoftParameters::tr("Additive Loft Parameters");
 }
+
+QString loftAdvancedTaskTitle(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view)
+        ? TaskLoftAdvancedParameters::tr("Subtractive Loft Advanced Parameters")
+        : TaskLoftAdvancedParameters::tr("Additive Loft Advanced Parameters");
+}
 }  // namespace
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
@@ -82,12 +92,16 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onRefButtonAdd);
     connect(ui->buttonRefRemove, &QToolButton::toggled,
             this, &TaskLoftParameters::onRefButtonRemove);
-    connect(ui->checkBoxRuled, &QCheckBox::toggled,
-            this, &TaskLoftParameters::onRuled);
+    connect(ui->comboBoxMode, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftParameters::onModeChanged);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
+    connect(ui->checkBoxAdaptive, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onAdaptive);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskLoftParameters::onUpdateView);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskLoftParameters::updateViewChanged);
     // clang-format on
 
     // Create context menu
@@ -138,8 +152,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     // get options
-    ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
+    const int mode = loft->LoftType.getValue();
+    ui->comboBoxMode->setCurrentIndex(mode);
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
+    ui->checkBoxAdaptive->setChecked(loft->Adaptive.getValue());
 
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : childs) {
@@ -151,6 +167,65 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
 TaskLoftParameters::~TaskLoftParameters() = default;
 
+TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
+    ViewProviderLoft* LoftView,
+    bool /*newObj*/,
+    QWidget* parent
+)
+    : TaskSketchBasedParameters(
+          LoftView,
+          parent,
+          loftTaskIconName(LoftView),
+          loftAdvancedTaskTitle(LoftView)
+      )
+    , ui(new Ui_TaskLoftAdvancedParameters)
+{
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+
+    // clang-format off
+    connect(ui->spinBoxMaxDegree, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskLoftAdvancedParameters::onMaxDegreeChanged);
+    connect(ui->comboBoxParametrization, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftAdvancedParameters::onParametrizationChanged);
+    connect(ui->comboBoxContinuity, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftAdvancedParameters::onContinuityChanged);
+    connect(ui->checkBoxCompatibility, &QCheckBox::toggled,
+            this, &TaskLoftAdvancedParameters::onCheckCompatibility);
+    // clang-format on
+
+    groupLayout()->addWidget(proxy);
+
+    const auto children = proxy->findChildren<QWidget*>();
+    for (QWidget* child : children) {
+        child->blockSignals(true);
+    }
+
+    auto* loft = LoftView->getObject<PartDesign::Loft>();
+    const auto* degreeConstraints = loft->MaxDegree.getConstraints();
+    ui->spinBoxMaxDegree->setRange(degreeConstraints->LowerBound, degreeConstraints->UpperBound);
+    ui->spinBoxMaxDegree->setSingleStep(degreeConstraints->StepSize);
+    ui->spinBoxMaxDegree->setValue(loft->MaxDegree.getValue());
+    ui->comboBoxParametrization->setCurrentIndex(loft->Parametrization.getValue());
+    ui->comboBoxContinuity->setCurrentIndex(loft->Continuity.getValue());
+    ui->checkBoxCompatibility->setChecked(loft->CheckCompatibility.getValue());
+    updateAlgorithmOptions(loft->LoftType.getValue());
+
+    for (QWidget* child : children) {
+        child->blockSignals(false);
+    }
+
+    // if (!isSubtractiveLoft(LoftView)) {
+    hideGroupBox();
+    // }
+}
+
+TaskLoftAdvancedParameters::~TaskLoftAdvancedParameters() = default;
+
+void TaskLoftAdvancedParameters::onSelectionChanged(const Gui::SelectionChanges&)
+{}
+
 void TaskLoftParameters::updateUI()
 {
     // we must assure the changed loft is kept visible on section changes,
@@ -160,6 +235,25 @@ void TaskLoftParameters::updateUI()
         auto view = getViewObject();
         view->makeTemporaryVisible(!loft->Sections.getValues().empty());
     }
+}
+
+void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
+{
+    // Ruled lofts bypass approximation; only the standard solver accepts parametrization.
+    const bool usesApproximation = mode != 1;
+    const bool usesParametrization = mode == 0;
+    ui->spinBoxMaxDegree->setEnabled(usesApproximation);
+    ui->labelMaxDegree->setEnabled(usesApproximation);
+    ui->comboBoxContinuity->setEnabled(usesApproximation);
+    ui->labelContinuity->setEnabled(usesApproximation);
+    ui->comboBoxParametrization->setEnabled(usesParametrization);
+    ui->labelParametrization->setEnabled(usesParametrization);
+    ui->checkBoxCompatibility->setEnabled(true);
+}
+
+void TaskLoftAdvancedParameters::setUpdateView(bool enabled)
+{
+    onUpdateView(enabled);
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -351,10 +445,51 @@ void TaskLoftParameters::onClosed(bool val)
     }
 }
 
-void TaskLoftParameters::onRuled(bool val)
+void TaskLoftParameters::onAdaptive(bool enabled)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
-        loft->Ruled.setValue(val);
+        loft->Adaptive.setValue(enabled);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onModeChanged(int index)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->LoftType.setValue(index);
+        Q_EMIT algorithmChanged(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftAdvancedParameters::onMaxDegreeChanged(int value)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->MaxDegree.setValue(value);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftAdvancedParameters::onParametrizationChanged(int index)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Parametrization.setValue(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftAdvancedParameters::onContinuityChanged(int index)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Continuity.setValue(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftAdvancedParameters::onCheckCompatibility(bool enabled)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->CheckCompatibility.setValue(enabled);
         recomputeFeature();
     }
 }
@@ -402,8 +537,23 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
 {
     assert(LoftView);
     parameter = new TaskLoftParameters(LoftView, newObj);
+    advanced = new TaskLoftAdvancedParameters(LoftView, newObj);
+
+    connect(
+        parameter,
+        &TaskLoftParameters::algorithmChanged,
+        advanced,
+        &TaskLoftAdvancedParameters::updateAlgorithmOptions
+    );
+    connect(
+        parameter,
+        &TaskLoftParameters::updateViewChanged,
+        advanced,
+        &TaskLoftAdvancedParameters::setUpdateView
+    );
 
     Content.push_back(parameter);
+    Content.push_back(advanced);
     Content.push_back(preview);
 }
 

@@ -22,8 +22,9 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <cmath>
+#include <array>
 #include <limits>
+#include <optional>
 #include <sstream>
 
 #ifndef _Standard_Version_HeaderFile
@@ -42,6 +43,8 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill.hxx>
+#include <BRepFill_CompatibleWires.hxx>
+#include <BRepFill_ThruSectionErrorStatus.hxx>
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
@@ -80,6 +83,8 @@
 #include <ShapeConstruct_Curve.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
@@ -4514,16 +4519,469 @@ TopoShape& TopoShape::makeElementShape(
     return *this;
 }
 
+namespace
+{
+// Identifies the smallest range of profiles that reproduces a loft failure.
+enum class LoftFailureScope
+{
+    none,              // The failing profile range could not be determined.
+    profilePair,       // Two profiles fail when lofted together.
+    profilePrefix,     // Where the failure first appears.
+    completeSequence,  // Only the complete profile sequence causes the failure (subsections may
+                       // succeed).
+};
+
+// Captures an OCCT loft failure, its profile range, and any verified recovery suggestion.
+struct LoftFailure
+{
+    BRepFill_ThruSectionErrorStatus status {BRepFill_ThruSectionErrorStatus_NotDone};
+    LoftFailureScope scope {LoftFailureScope::none};
+    std::size_t firstProfile {0};   // First profile in the failing range
+    std::size_t secondProfile {0};  // Last profile in the failing range
+    std::optional<LoftParametrization> suggestedParametrization;
+    bool suggestVariational {false};
+};
+
+// Groups the OCCT settings needed to build or probe a loft.
+struct LoftOptions
+{
+    IsSolid isSolid;
+    Smoothing smoothing;
+    IsClosed isClosed;
+    Standard_Integer maxDegree;
+    LoftParametrization parametrization;
+    LoftContinuity continuity;
+    bool checkCompatibility;
+};
+
+// Configure the BRepOffsetAPI_ThruSections generator based on the loft options.
+// BRepOffsetAPI_ThruSections API:
+// https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html
+void configureThruSections(BRepOffsetAPI_ThruSections& generator, const LoftOptions& options)
+{
+    // Max order of interpolation that OCCT will be allowed to use
+    generator.SetMaxDegree(options.maxDegree);
+
+    // Set smoothing (solver) type: bspline (default), variational, or ruled
+    generator.SetSmoothing(options.smoothing == Smoothing::variational);
+
+    // Set parametrization type: chord length, centripetal, or uniform
+    // This is a function of the profiles and the relative spacing between them
+    // Chord length is the default, centripedal when a high ratio of different spacings is present
+    switch (options.parametrization) {
+        case LoftParametrization::chordLength:
+            generator.SetParType(Approx_ChordLength);
+            break;
+        case LoftParametrization::centripetal:
+            generator.SetParType(Approx_Centripetal);
+            break;
+        case LoftParametrization::uniform:
+            generator.SetParType(Approx_IsoParametric);
+            break;
+    }
+    switch (options.continuity) {
+        case LoftContinuity::C0:
+            generator.SetContinuity(GeomAbs_C0);
+            break;
+        case LoftContinuity::C1:
+            generator.SetContinuity(GeomAbs_C1);
+            break;
+        case LoftContinuity::C2:
+            generator.SetContinuity(GeomAbs_C2);
+            break;
+    }
+    // Sets/unsets the option to compute origin and orientation on wires
+    // to avoid twisted results and update wires to have same number of
+    // edges
+    generator.CheckCompatibility(options.checkCompatibility);
+}
+
+// Test whether a shape is a punctual profile, i.e. it is a vertex or has no edges.
+// Punctual profiles can be used at the start or end of a loft.
+bool isPunctualProfile(const TopoDS_Shape& profile)
+{
+    if (profile.ShapeType() == TopAbs_VERTEX) {
+        return true;
+    }
+    bool hasEdges = false;
+    for (TopExp_Explorer explorer(profile, TopAbs_EDGE); explorer.More(); explorer.Next()) {
+        hasEdges = true;
+        if (!BRep_Tool::Degenerated(TopoDS::Edge(explorer.Current()))) {
+            return false;
+        }
+    }
+    return hasEdges;
+}
+
+// Test whether a profile is closed
+bool isClosedProfile(const TopoDS_Wire& wire)
+{
+    return BRep_Tool::IsClosed(wire);
+}
+
+// Check the profiles for compatibility with the loft operation
+// and provide (actionable) user feedback if any issues are found
+void preflightLoftProfiles(const std::vector<TopoShape>& profiles, bool checkCompatibility)
+{
+    // Check punctual profiles, ensure they appear as first or last profile
+    // provide user feedback
+    std::optional<std::pair<std::size_t, bool>> firstTopology;
+    for (std::size_t profileIndex = 0; profileIndex < profiles.size(); ++profileIndex) {
+        const auto& profile = profiles[profileIndex].getShape();
+        const bool punctual = isPunctualProfile(profile);
+        if (punctual && profileIndex > 0 && profileIndex + 1 < profiles.size()) {
+            std::ostringstream message;
+            message << "Loft profile " << profileIndex + 1
+                    << " is punctual; punctual profiles are only supported as the first or last "
+                       "profile";
+            FC_THROWM(Base::CADKernelError, message.str().c_str());
+        }
+
+        // validate profile curves
+        std::size_t edgeIndex = 0;
+        for (TopExp_Explorer explorer(profile, TopAbs_EDGE); explorer.More(); explorer.Next()) {
+            ++edgeIndex;
+            const auto& edge = TopoDS::Edge(explorer.Current());
+            if (BRep_Tool::Degenerated(edge)) {
+                continue;
+            }
+            Standard_Real first = 0.0;
+            Standard_Real last = 0.0;
+            if (BRep_Tool::Curve(edge, first, last).IsNull()) {
+                std::ostringstream message;
+                message << "Loft profile " << profileIndex + 1 << ", edge " << edgeIndex
+                        << " has no 3D curve";
+                FC_THROWM(Base::CADKernelError, message.str().c_str());
+            }
+        }
+
+        // ensure profile is a valid brep
+        if (!BRepCheck_Analyzer(profile).IsValid()) {
+            std::ostringstream message;
+            message << "Loft profile " << profileIndex + 1 << " is not a valid BRep shape";
+            FC_THROWM(Base::CADKernelError, message.str().c_str());
+        }
+
+        // punctual profiles can be the first profile
+        if (!checkCompatibility || punctual) {
+            continue;
+        }
+
+        const bool closed = isClosedProfile(TopoDS::Wire(profile));
+        if (!firstTopology) {
+            firstTopology = std::pair {profileIndex, closed};
+        }
+        else if (firstTopology->second != closed) {
+            std::ostringstream message;
+            message << "Loft profiles " << firstTopology->first + 1 << " and " << profileIndex + 1
+                    << " have different topology; profiles must be either all open or all closed";
+            FC_THROWM(Base::CADKernelError, message.str().c_str());
+        }
+    }
+}
+
+
+// Tests whether OCCT can establish compatible edge correspondence for a profile range.
+// A null result means the range contains a punctual profile, which this wire-only check cannot test.
+std::optional<BRepFill_ThruSectionErrorStatus> probeProfileCompatibility(
+    const std::vector<TopoShape>& profiles,
+    std::size_t profileCount,
+    std::size_t firstProfile = 0
+)
+{
+    NCollection_Sequence<TopoDS_Shape> sections;
+    for (std::size_t i = firstProfile; i < firstProfile + profileCount; ++i) {
+        const auto& profile = profiles[i].getShape();
+        if (profile.ShapeType() != TopAbs_WIRE) {
+            return std::nullopt;
+        }
+        sections.Append(profile);
+    }
+
+    // Perform compatibility on a temporary sequence
+    try {
+        BRepFill_CompatibleWires compatibility(sections);
+        compatibility.Perform();
+        return compatibility.IsDone() ? BRepFill_ThruSectionErrorStatus_Done
+                                      : compatibility.GetStatus();
+    }
+    catch (const Standard_Failure&) {
+        // OCCT may throw without setting a more specific status.
+        return BRepFill_ThruSectionErrorStatus_NotDone;
+    }
+}
+
+
+// Probe/test a range of profiles to determine if they can be lofted together.
+BRepFill_ThruSectionErrorStatus probeLoftRange(
+    const std::vector<TopoShape>& profiles,
+    std::size_t profileCount,
+    const LoftOptions& options,
+    std::size_t firstProfile = 0,
+    bool closeProfileSequence = false
+)
+{
+    BRepOffsetAPI_ThruSections generator(
+        options.isSolid == IsSolid::solid,
+        options.smoothing == Smoothing::ruled
+    );
+    configureThruSections(generator, options);
+    generator.SetMutableInput(false);
+    for (std::size_t i = firstProfile; i < firstProfile + profileCount; ++i) {
+        const auto& profile = profiles[i].getShape();
+        if (profile.ShapeType() == TopAbs_VERTEX) {
+            generator.AddVertex(TopoDS::Vertex(profile));
+        }
+        else {
+            generator.AddWire(TopoDS::Wire(profile));
+        }
+    }
+    if (closeProfileSequence && options.isClosed == IsClosed::closed
+        && profiles[firstProfile + profileCount - 1].getShape().ShapeType() != TopAbs_VERTEX) {
+        const auto& first = profiles[firstProfile].getShape();
+        if (first.ShapeType() == TopAbs_VERTEX) {
+            generator.AddVertex(TopoDS::Vertex(first));
+        }
+        else {
+            generator.AddWire(TopoDS::Wire(first));
+        }
+    }
+    try {
+        generator.Build();
+        if (!generator.IsDone() || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+            return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
+                ? BRepFill_ThruSectionErrorStatus_NotDone
+                : generator.GetStatus();
+        }
+        const auto& result = generator.Shape();
+        if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
+            return BRepFill_ThruSectionErrorStatus_Failed;
+        }
+        return BRepFill_ThruSectionErrorStatus_Done;
+    }
+    catch (const Standard_Failure&) {
+        return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
+            ? BRepFill_ThruSectionErrorStatus_NotDone
+            : generator.GetStatus();
+    }
+}
+
+// Suggest an alternative parametrization for a loft failure, if possible.
+void suggestLoftAlternative(
+    LoftFailure& failure,
+    const std::vector<TopoShape>& profiles,
+    const LoftOptions& options
+)
+{
+    if (options.smoothing != Smoothing::bspline) {
+        return;
+    }
+
+    // Test each standard parametrization in order, then try the variational solver.
+    constexpr std::array candidates {
+        LoftParametrization::chordLength,
+        LoftParametrization::centripetal,
+        LoftParametrization::uniform,
+    };
+
+    for (const auto candidate : candidates) {
+        if (candidate == options.parametrization) {
+            continue;
+        }
+        auto retryOptions = options;
+        retryOptions.parametrization = candidate;
+        if (probeLoftRange(profiles, profiles.size(), retryOptions, 0, true)
+            == BRepFill_ThruSectionErrorStatus_Done) {
+            failure.suggestedParametrization = candidate;
+            return;
+        }
+    }
+
+    auto retryOptions = options;
+    retryOptions.smoothing = Smoothing::variational;
+    if (probeLoftRange(profiles, profiles.size(), retryOptions, 0, true)
+        == BRepFill_ThruSectionErrorStatus_Done) {
+        failure.suggestVariational = true;
+    }
+}
+
+// Convert a loft parametrization to a human-readable name.
+const char* loftParametrizationName(LoftParametrization parametrization)
+{
+    switch (parametrization) {
+        case LoftParametrization::chordLength:
+            return "Chord length";
+        case LoftParametrization::centripetal:
+            return "Centripetal";
+        case LoftParametrization::uniform:
+            return "Uniform";
+    }
+    return "Unknown";
+}
+
+// Probe pairs and prefixes to report the smallest profile range that reproduces the failure.
+LoftFailure diagnoseLoftFailure(
+    BRepFill_ThruSectionErrorStatus status,
+    const std::vector<TopoShape>& profiles,
+    const LoftOptions& options
+)
+{
+    LoftFailure failure;
+    failure.status = status;
+    if (profiles.size() < 2) {
+        return failure;
+    }
+
+    if (status == BRepFill_ThruSectionErrorStatus_ProfilesInconsistent && options.checkCompatibility) {
+        for (std::size_t i = 0; i + 1 < profiles.size(); ++i) {
+            const auto pairStatus = probeProfileCompatibility(profiles, 2, i);
+            if (pairStatus && *pairStatus != BRepFill_ThruSectionErrorStatus_Done) {
+                failure.scope = LoftFailureScope::profilePair;
+                failure.firstProfile = i;
+                failure.secondProfile = i + 1;
+                return failure;
+            }
+        }
+        if (options.isClosed == IsClosed::closed) {
+            std::vector<TopoShape> closingPair {profiles.back(), profiles.front()};
+            const auto pairStatus = probeProfileCompatibility(closingPair, 2);
+            if (pairStatus && *pairStatus != BRepFill_ThruSectionErrorStatus_Done) {
+                failure.scope = LoftFailureScope::profilePair;
+                failure.firstProfile = profiles.size() - 1;
+                failure.secondProfile = 0;
+                return failure;
+            }
+        }
+        for (std::size_t count = 2; count < profiles.size(); ++count) {
+            const auto prefixStatus = probeProfileCompatibility(profiles, count);
+            if (prefixStatus && *prefixStatus != BRepFill_ThruSectionErrorStatus_Done) {
+                failure.scope = LoftFailureScope::profilePrefix;
+                failure.secondProfile = count - 1;
+                return failure;
+            }
+        }
+        failure.scope = LoftFailureScope::completeSequence;
+        failure.secondProfile = profiles.size() - 1;
+        return failure;
+    }
+
+    if (status == BRepFill_ThruSectionErrorStatus_Done
+        || status == BRepFill_ThruSectionErrorStatus_NotDone
+        || status == BRepFill_ThruSectionErrorStatus_Failed) {
+        suggestLoftAlternative(failure, profiles, options);
+        for (std::size_t i = 0; i + 1 < profiles.size(); ++i) {
+            if (probeLoftRange(profiles, 2, options, i) != BRepFill_ThruSectionErrorStatus_Done) {
+                failure.scope = LoftFailureScope::profilePair;
+                failure.firstProfile = i;
+                failure.secondProfile = i + 1;
+                return failure;
+            }
+        }
+        if (options.isClosed == IsClosed::closed) {
+            std::vector<TopoShape> closingPair {profiles.back(), profiles.front()};
+            if (probeLoftRange(closingPair, 2, options) != BRepFill_ThruSectionErrorStatus_Done) {
+                failure.scope = LoftFailureScope::profilePair;
+                failure.firstProfile = profiles.size() - 1;
+                failure.secondProfile = 0;
+                return failure;
+            }
+        }
+        if (options.isClosed == IsClosed::notClosed) {
+            for (std::size_t count = 2; count < profiles.size(); ++count) {
+                if (probeLoftRange(profiles, count, options) != BRepFill_ThruSectionErrorStatus_Done) {
+                    failure.scope = LoftFailureScope::profilePrefix;
+                    failure.secondProfile = count - 1;
+                    return failure;
+                }
+            }
+        }
+        failure.scope = LoftFailureScope::completeSequence;
+        failure.secondProfile = profiles.size() - 1;
+    }
+    return failure;
+}
+
+[[noreturn]] void throwThruSectionsError(const LoftFailure& failure)
+{
+    // these are all of the possible OCCT BRepFill_ThruSectionErrorStatus values
+    std::ostringstream message;
+    switch (failure.status) {
+        case BRepFill_ThruSectionErrorStatus_Done:
+            message << "Loft generation did not complete although OCCT reported success";
+            break;
+        case BRepFill_ThruSectionErrorStatus_NotDone:
+            message << "OCCT did not complete the loft operation";
+            break;
+        case BRepFill_ThruSectionErrorStatus_NotSameTopology:
+            message << "Loft profiles must be either all open or all closed";
+            break;
+        case BRepFill_ThruSectionErrorStatus_ProfilesInconsistent:
+            message << "OCCT could not establish consistent edge correspondence between the loft "
+                       "profiles";
+            break;
+        case BRepFill_ThruSectionErrorStatus_WrongUsage:
+            message << "Punctual loft profiles are only supported as the first or last profile";
+            break;
+        case BRepFill_ThruSectionErrorStatus_Null3DCurve:
+            message << "A loft profile contains an edge without a 3D curve";
+            break;
+        case BRepFill_ThruSectionErrorStatus_Failed:
+            message << "OCCT failed to construct the loft";
+            break;
+    }
+    // the failure scope indicates which profiles were involved in the failure
+    // and attempts to provide a human-readable description of what went wrong
+    switch (failure.scope) {
+        case LoftFailureScope::none:
+            break;
+        case LoftFailureScope::profilePair:
+            message << " between profiles " << failure.firstProfile + 1 << " and "
+                    << failure.secondProfile + 1;
+            break;
+        case LoftFailureScope::profilePrefix:
+            message << "; the failure first appears in profiles 1 through "
+                    << failure.secondProfile + 1;
+            break;
+        case LoftFailureScope::completeSequence:
+            message << "; the failure occurs when trying the complete sequence of "
+                    << failure.secondProfile + 1
+                    << " profiles (may succeed for subsets of profiles)";
+            break;
+    }
+    // a failure triggers "dry-runs" of the lofting algorithm
+    // with different parameterizations and the variational solver
+    // to determine if there is a combination that succeeds
+    // if so, that is communicated to the user
+    if (failure.suggestedParametrization) {
+        message << "; try " << loftParametrizationName(*failure.suggestedParametrization)
+                << " parameterization, which succeeds for these profiles";
+    }
+    else if (failure.suggestVariational) {
+        message << "; standard B-spline lofting failed with all available parameterizations; try "
+                   "Variational B-Spline, whose variational solver succeeds for these profiles";
+    }
+    if (message.tellp() == 0) {
+        message << "OCCT returned an unknown loft error status";
+    }
+    FC_THROWM(Base::CADKernelError, message.str().c_str());
+}
+}  // namespace
+
 
 TopoShape& TopoShape::makeElementLoft(
     const std::vector<TopoShape>& shapes,
     IsSolid isSolid,
-    IsRuled isRuled,
+    Smoothing smoothing,
     IsClosed isClosed,
     Standard_Integer maxDegree,
-    const char* op
+    const char* op,
+    LoftParametrization parametrization,
+    LoftContinuity continuity,
+    bool checkCompatibility,
+    bool adaptive
 )
 {
+    // Note: checkProfiles basically checks for coincident profiles, which are not allowed.
     auto checkProfiles = [](const TopoShape& sh1, const TopoShape& sh2) {
         // The same TShape is used but the locations might be different
         // even if they result into the same transformation matrix.
@@ -4571,74 +5029,157 @@ TopoShape& TopoShape::makeElementLoft(
         op = Part::OpCodes::Loft;
     }
 
-    // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
-    BRepOffsetAPI_ThruSections aGenerator(isSolid == IsSolid::solid, isRuled == IsRuled::ruled);
-    aGenerator.SetMaxDegree(maxDegree);
+    const LoftOptions options {
+        isSolid,
+        smoothing,
+        isClosed,
+        maxDegree,
+        parametrization,
+        continuity,
+        checkCompatibility,
+    };
 
+    // ensure we have at least two profiles to loft
     auto profiles = prepareProfiles(shapes);
     if (shapes.size() < 2) {
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
     }
 
-    int i = 0;
-    for (auto& sh : profiles) {
-        if (i > 0) {
-            if (!checkProfiles(sh, profiles[i - 1])) {
-                FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
+    // check that the profiles are compatible/valid
+    preflightLoftProfiles(profiles, checkCompatibility);
+
+    for (std::size_t i = 1; i < profiles.size(); ++i) {
+        if (!checkProfiles(profiles[i], profiles[i - 1])) {
+            FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
+        }
+    }
+
+    // For closed lofts, we can't create the closure with a vertex as the last profile
+    bool closeProfileSequence = isClosed == IsClosed::closed;
+    if (closeProfileSequence && profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
+        Base::Console().message(
+            "TopoShape::makeLoft: can't close Loft with Vertex as last "
+            "profile. 'Closed' ignored.\n"
+        );
+        closeProfileSequence = false;
+    }
+
+    // Creates OCCT generator for one selected or adaptive loft attempt.
+    auto makeGenerator = [&](const LoftOptions& attemptOptions) {
+        auto generator = std::make_unique<BRepOffsetAPI_ThruSections>(
+            attemptOptions.isSolid == IsSolid::solid,
+            attemptOptions.smoothing == Smoothing::ruled
+        );
+        configureThruSections(*generator, attemptOptions);
+
+        // Adaptive retries need to prevent modification of the input profile sequence.
+        if (adaptive) {
+            generator->SetMutableInput(false);
+        }
+
+        // OCCT accepts vertices only as punctual sections; all prepared curve profiles are wires.
+        for (const auto& profile : profiles) {
+            const auto& shape = profile.getShape();
+            if (shape.ShapeType() == TopAbs_VERTEX) {
+                generator->AddVertex(TopoDS::Vertex(shape));
+            }
+            else {
+                generator->AddWire(TopoDS::Wire(shape));
             }
         }
-        const auto& shape = sh.getShape();
-        if (shape.ShapeType() == TopAbs_VERTEX) {
-            aGenerator.AddVertex(TopoDS::Vertex(shape));
-        }
-        else {
-            aGenerator.AddWire(TopoDS::Wire(shape));
-        }
-        i++;
-    }
-    // close loft by duplicating initial profile as last profile.  not perfect.
-    if (isClosed == IsClosed::closed) {
-        /* can only close loft in certain combinations of Vertex/Wire(Edge):
-            - V1-W1-W2-W3-V2  ==> V1-W1-W2-W3-V2-V1  invalid closed
-            - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
-            - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
-            - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-        if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
-            Base::Console().message(
-                "TopoShape::makeLoft: can't close Loft with Vertex as last "
-                "profile. 'Closed' ignored.\n"
-            );
-        }
-        else {
-            // repeat Add logic above for first profile
-            const TopoDS_Shape& firstProfile = profiles.front().getShape();
+        if (closeProfileSequence) {
+            const auto& firstProfile = profiles.front().getShape();
             if (firstProfile.ShapeType() == TopAbs_VERTEX) {
-                aGenerator.AddVertex(TopoDS::Vertex(firstProfile));
+                generator->AddVertex(TopoDS::Vertex(firstProfile));
             }
-            else if (firstProfile.ShapeType() == TopAbs_EDGE) {
-                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(firstProfile)).Wire());
-            }
-            else if (firstProfile.ShapeType() == TopAbs_WIRE) {
-                aGenerator.AddWire(TopoDS::Wire(firstProfile));
+            else {
+                generator->AddWire(TopoDS::Wire(firstProfile));
             }
         }
+        return generator;
+    };
+
+    auto buildGenerator = [](BRepOffsetAPI_ThruSections& generator) {
+        try {
+#if OCC_VERSION_HEX >= 0x070600
+            generator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
+#else
+            generator.Build();
+#endif
+            if (!generator.IsDone() || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+                return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
+                    ? BRepFill_ThruSectionErrorStatus_NotDone
+                    : generator.GetStatus();
+            }
+            const auto& result = generator.Shape();
+            return result.IsNull() || !BRepCheck_Analyzer(result).IsValid()
+                ? BRepFill_ThruSectionErrorStatus_Failed
+                : BRepFill_ThruSectionErrorStatus_Done;
+        }
+        catch (const Standard_Failure&) {
+            return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
+                ? BRepFill_ThruSectionErrorStatus_NotDone
+                : generator.GetStatus();
+        }
+    };
+
+    std::vector<LoftOptions> attempts {options};
+    auto addAttempt = [&](Smoothing attemptSmoothing, LoftParametrization attemptParametrization) {
+        const auto duplicate = std::ranges::find_if(attempts, [&](const LoftOptions& attempt) {
+            return attempt.smoothing == attemptSmoothing
+                && attempt.parametrization == attemptParametrization;
+        });
+        if (duplicate == attempts.end()) {
+            auto attempt = options;
+            attempt.smoothing = attemptSmoothing;
+            attempt.parametrization = attemptParametrization;
+            attempts.push_back(attempt);
+        }
+    };
+
+    // the fallback options available for adaptive loft attempts
+    if (adaptive) {
+        addAttempt(Smoothing::bspline, LoftParametrization::chordLength);
+        addAttempt(Smoothing::bspline, LoftParametrization::centripetal);
+        addAttempt(Smoothing::bspline, LoftParametrization::uniform);
+        addAttempt(Smoothing::variational, LoftParametrization::chordLength);
     }
 
-    Standard_Boolean anIsCheck = Standard_True;
-    aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
-                                               // #edges, orientation, "origin" to match.
+    BRepFill_ThruSectionErrorStatus initialStatus = BRepFill_ThruSectionErrorStatus_NotDone;
+    for (std::size_t attemptIndex = 0; attemptIndex < attempts.size(); ++attemptIndex) {
+        const auto& attempt = attempts[attemptIndex];
+        auto generator = makeGenerator(attempt);
+        const auto status = buildGenerator(*generator);
+        if (attemptIndex == 0) {
+            initialStatus = status;
+        }
+        if (status != BRepFill_ThruSectionErrorStatus_Done) {
+            continue;
+        }
 
-#if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    aGenerator.Build();
-#endif
-    return makeShapeWithElementMap(
-        aGenerator.Shape(),
-        MapperThruSections(aGenerator, profiles),
-        shapes,
-        op
-    );
+        if (attemptIndex > 0) {
+            if (attempt.smoothing == Smoothing::variational) {
+                Base::Console().message(
+                    "Loft created using adaptive fallback: Variational B-Spline.\n"
+                );
+            }
+            else {
+                Base::Console().message(
+                    "Loft created using adaptive fallback: %s parameterization.\n",
+                    loftParametrizationName(attempt.parametrization)
+                );
+            }
+        }
+
+        return makeShapeWithElementMap(
+            generator->Shape(),
+            MapperThruSections(*generator, profiles),
+            shapes,
+            op
+        );
+    }
+
+    throwThruSectionsError(diagnoseLoftFailure(initialStatus, profiles, options));
 }
 
 TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec, const char* op)

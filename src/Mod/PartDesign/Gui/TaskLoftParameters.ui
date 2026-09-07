@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>293</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,47 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QCheckBox" name="checkBoxRuled">
-     <property name="text">
-      <string>Ruled surface</string>
+    <widget class="QComboBox" name="comboBoxMode">
+     <property name="toolTip">
+      <string>Select the loft surface algorithm:
+- Standard B-Spline approximates a smooth surface through the profiles.
+- Ruled Surface joins adjacent profiles with straight-line surfaces.
+- Variational B-Spline uses an alternative solver that can succeed for some profiles.</string>
      </property>
+     <item>
+      <property name="text">
+       <string>Standard B-Spline</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ruled Surface</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Variational B-Spline</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxClosed">
+     <property name="toolTip">
+      <string>Attempt to close the loft surface by joining the start and end profiles</string>
+     </property>
      <property name="text">
       <string>Closed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxAdaptive">
+     <property name="toolTip">
+      <string>Allow FreeCAD to try different settings to build the loft if the selected settings fail.</string>
+     </property>
+     <property name="text">
+      <string>Adaptive</string>
      </property>
     </widget>
    </item>
@@ -127,8 +158,9 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>checkBoxRuled</tabstop>
+  <tabstop>comboBoxMode</tabstop>
   <tabstop>checkBoxClosed</tabstop>
+  <tabstop>checkBoxAdaptive</tabstop>
   <tabstop>buttonProfileBase</tabstop>
   <tabstop>profileBaseEdit</tabstop>
   <tabstop>buttonRefAdd</tabstop>

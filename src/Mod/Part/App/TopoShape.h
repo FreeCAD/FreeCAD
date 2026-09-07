@@ -155,10 +155,25 @@ enum class IsSolid
     solid
 };
 
-enum class IsRuled
+enum class Smoothing
 {
-    notRuled,
-    ruled
+    bspline,
+    ruled,
+    variational
+};
+
+enum class LoftParametrization
+{
+    chordLength,
+    centripetal,
+    uniform
+};
+
+enum class LoftContinuity
+{
+    C0,
+    C1,
+    C2
 };
 
 enum class IsClosed
@@ -1816,14 +1831,16 @@ public:
      *                 type, but only wires are used. The first and last
      *                 section may be vertex.
      * @param isSolid: whether to make a solid
-     * @param isRuled: if isRuled then the faces generated between the edges of
-     *                 two consecutive section wires are ruled surfaces. If
-     *                 notRuled, then they are smoothed out by approximation
+     * @param smoothing: the loft surface generation algorithm
      * @param isClosed: If isClosed, then the first section is duplicated to close
      *                  the loft as the last section
      * @param maxDegree: define the maximal U degree of the result surface
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
+     * @param parametrization: parametrization used by standard B-Spline approximation
+     * @param continuity: requested B-Spline continuity (C0, C1, C2)
+     * @param checkCompatibility: whether to align profile origins, orientation, and edges
+     * @param adaptive: retry failed selected settings with deterministic alternatives
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
@@ -1833,10 +1850,14 @@ public:
     TopoShape& makeElementLoft(
         const std::vector<TopoShape>& sources,
         IsSolid isSolid,
-        IsRuled isRuled,
+        Smoothing smoothing = Smoothing::bspline,
         IsClosed isClosed = IsClosed::notClosed,
         Standard_Integer maxDegree = 5,
-        const char* op = nullptr
+        const char* op = nullptr,
+        LoftParametrization parametrization = LoftParametrization::chordLength,
+        LoftContinuity continuity = LoftContinuity::C2,
+        bool checkCompatibility = true,
+        bool adaptive = false
     );
 
     /** Make a ruled surface

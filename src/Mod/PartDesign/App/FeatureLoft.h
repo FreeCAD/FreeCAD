@@ -36,10 +36,17 @@ class PartDesignExport Loft: public ProfileBased
 
 public:
     Loft();
-
+    // Loft controls mirror the corresponding BRepOffsetAPI_ThruSections configuration.
+    // See: https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html
     App::PropertyLinkSubList Sections;
+    App::PropertyEnumeration LoftType;
     App::PropertyBool Ruled;
     App::PropertyBool Closed;
+    App::PropertyIntegerConstraint MaxDegree;
+    App::PropertyEnumeration Parametrization;
+    App::PropertyEnumeration Continuity;
+    App::PropertyBool CheckCompatibility;
+    App::PropertyBool Adaptive;
 
     /** @name methods override feature */
     //@{
@@ -60,6 +67,9 @@ public:
     );
 
 protected:
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
+
     // handle changed property
     void handleChangedPropertyType(
         Base::XMLReader& reader,
@@ -68,6 +78,12 @@ protected:
     ) override;
 
 private:
+    static App::PropertyIntegerConstraint::Constraints Degrees;
+    static const char* LoftTypeEnums[];
+    static const char* ParametrizationEnums[];
+    static const char* ContinuityEnums[];
+    bool synchronizingLoftType = true;
+
     // static const char* TypeEnums[];
     // static const char* SideEnums[];
 };
