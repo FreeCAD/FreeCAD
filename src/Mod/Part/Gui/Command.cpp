@@ -2657,10 +2657,12 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 // Hatch spacing follows the model. To keep it more realistic
                 constexpr double hatchLinesAcrossModel = 120.0;
                 if (modelDiagonal > 0.0) {
-                    vp->HatchSpacing.setValue(std::max(
-                        modelDiagonal / hatchLinesAcrossModel,
-                        PartGui::ViewProviderSectionAnalysis::minHatchSpacing
-                    ));
+                    vp->HatchSpacing.setValue(
+                        std::max(
+                            modelDiagonal / hatchLinesAcrossModel,
+                            PartGui::ViewProviderSectionAnalysis::minHatchSpacing
+                        )
+                    );
                 }
 
                 // If the sources come from multiple parts, enable per-solid colors

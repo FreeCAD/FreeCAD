@@ -272,61 +272,61 @@ void SectionAnalysis::forEachSourcePart(
     // itself for anything deeper - and the walk then spins on that object.
     std::function<void(App::DocumentObject*, const std::string&)> descend =
         [&](App::DocumentObject* root, const std::string& sub) {
-        App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
-        // The root must be effectively visible (its containers too); nested
-        // objects only need their own flag, their path is already checked.
-        if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
-            return;
-        }
-        // Containers are descended into, never taken whole. getShape() on an
-        // App::Part hands back a compound of everything inside it, which is not
-        // null - so asking first and descending only on failure meant the
-        // recursion stopped at the first container it met. A whole assembly then
-        // arrived as one part, with one colour and one hatch angle for the lot.
-        //
-        // Tested before the shape is fetched rather than after, which also
-        // avoids building that compound just to throw it away.
-        // Carrying a group extension is not enough to make something a
-        // container. A PartDesign Body owns an Origin, so it inherits
-        // GeoFeatureGroupExtension through OriginGroupExtension - but it is a
-        // Part::Feature with a shape of its own, and it is one part, not a bag
-        // of them. Descending into it finds sketches and datums, no shape comes
-        // back, and the Body is simply not sectioned.
-        //
-        // So being a shape-bearing feature wins: those terminate the recursion.
-        // App::Part and plain groups are not features, and still get descended.
-        const bool isContainer = !obj->isDerivedFrom(Feature::getClassTypeId())
-            && (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
-                || obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()));
-
-        if (!isContainer) {
-            TopoDS_Shape shape = Feature::getShape(
-                root,
-                ShapeOption::ResolveLink | ShapeOption::Transform,
-                sub.empty() ? nullptr : sub.c_str()
-            );
-            if (!shape.IsNull()) {
-                visit(obj, shape);
+            App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
+            // The root must be effectively visible (its containers too); nested
+            // objects only need their own flag, their path is already checked.
+            if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
                 return;
             }
-        }
-        for (const auto& child : obj->getSubObjects()) {
-            // Resolved one hop, from obj. A container that only understands its
-            // own first level still answers this correctly.
-            App::DocumentObject* next = obj->getSubObject(child.c_str());
-            if (!next) {
-                continue;
+            // Containers are descended into, never taken whole. getShape() on an
+            // App::Part hands back a compound of everything inside it, which is not
+            // null - so asking first and descending only on failure meant the
+            // recursion stopped at the first container it met. A whole assembly then
+            // arrived as one part, with one colour and one hatch angle for the lot.
+            //
+            // Tested before the shape is fetched rather than after, which also
+            // avoids building that compound just to throw it away.
+            // Carrying a group extension is not enough to make something a
+            // container. A PartDesign Body owns an Origin, so it inherits
+            // GeoFeatureGroupExtension through OriginGroupExtension - but it is a
+            // Part::Feature with a shape of its own, and it is one part, not a bag
+            // of them. Descending into it finds sketches and datums, no shape comes
+            // back, and the Body is simply not sectioned.
+            //
+            // So being a shape-bearing feature wins: those terminate the recursion.
+            // App::Part and plain groups are not features, and still get descended.
+            const bool isContainer = !obj->isDerivedFrom(Feature::getClassTypeId())
+                && (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
+                    || obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()));
+
+            if (!isContainer) {
+                TopoDS_Shape shape = Feature::getShape(
+                    root,
+                    ShapeOption::ResolveLink | ShapeOption::Transform,
+                    sub.empty() ? nullptr : sub.c_str()
+                );
+                if (!shape.IsNull()) {
+                    visit(obj, shape);
+                    return;
+                }
             }
-            // Keep the longer path while it still names the same object: that is
-            // what carries a GeoFeatureGroup's placement down to its children.
-            if (root->getSubObject((sub + child).c_str()) == next) {
-                descend(root, sub + child);
+            for (const auto& child : obj->getSubObjects()) {
+                // Resolved one hop, from obj. A container that only understands its
+                // own first level still answers this correctly.
+                App::DocumentObject* next = obj->getSubObject(child.c_str());
+                if (!next) {
+                    continue;
+                }
+                // Keep the longer path while it still names the same object: that is
+                // what carries a GeoFeatureGroup's placement down to its children.
+                if (root->getSubObject((sub + child).c_str()) == next) {
+                    descend(root, sub + child);
+                }
+                else {
+                    descend(next, {});
+                }
             }
-            else {
-                descend(next, {});
-            }
-        }
-    };
+        };
 
     for (App::DocumentObject* src : sources) {
         if (!src || src == exclude) {

@@ -824,7 +824,7 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             ? partColor(body.source, index)
             : appearance.front();
 
-        // Closed loops only. 
+        // Closed loops only.
         // Open loops are the edges of a cut that does not close on itself, and
         // so cannot be filled. The fill is the only thing that makes a section
         // read as a solid shape rather than a wireframe. If that makes sense..
