@@ -40,6 +40,10 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Fem/**/*']
 
+"Mod: Inspection":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Inspection/**/*']
+
 "Mod: Mesh":
 - changed-files:
   - any-glob-to-any-file: ['src/Mod/Mesh/**/*']
@@ -95,6 +99,30 @@
 "Mod: Test":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Test/**/*']
+
+"Mod: Import":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Import/**/*']
+
+"Mod: Points":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Points/**/*']
+
+"Mod: Robot":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Robot/**/*']
+
+"Mod: Show":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Show/**/*']
+
+"Mod: Web":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Web/**/*']
+
+"Mod: Help":
+- changed-files:
+  - any-glob-to-any-file:  ['src/Mod/Help/**/*']
 
 # 'Packaging' related labels
 
