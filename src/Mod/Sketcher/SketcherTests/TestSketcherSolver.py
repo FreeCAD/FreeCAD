@@ -393,6 +393,28 @@ class TestSketcherSolver(unittest.TestCase):
         self.Doc2.recompute()
         self.assertTrue(len(values) == 0)
         FreeCAD.closeDocument("Issue3245")
+        
+    def testPointGeometryExtension(self):
+        """Reading point geometry must preserve extensions and return a copy (#15545)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.Point(vec(1, 2)))
+        geometry = sketch.Geometry
+        geometry[0].setExtension(Part.GeometryStringExtension("point-uuid", "uuid"))
+        tag = geometry[0].Tag
+        sketch.Geometry = geometry
+        self.Doc.recompute()
+
+        point = sketch.Geometry[0]
+        self.assertTrue(point.hasExtensionOfName("uuid"))
+        self.assertEqual(point.getExtensionOfName("uuid").Value, "point-uuid")
+        self.assertEqual(point.Tag, tag)
+        self.assertEqual((point.X, point.Y, point.Z), (1, 2, 0))
+
+        point.X = 10
+        point.deleteExtensionOfName("uuid")
+        unchanged = sketch.Geometry[0]
+        self.assertEqual(unchanged.X, 1)
+        self.assertEqual(unchanged.getExtensionOfName("uuid").Value, "point-uuid")
 
     def testBlockConstraintEllipse(self):
         self.Doc3 = FreeCAD.newDocument("BlockConstraintTests")
