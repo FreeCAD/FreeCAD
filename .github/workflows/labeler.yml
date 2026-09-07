@@ -34,10 +34,21 @@ jobs:
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
+          const pr = context.payload.pull_request;
+          const typeLabels = new Set(['Type: Bug', 'Type: Feature', 'Type: Other']);
+          const existing = pr.labels
+            .map(label => label.name)
+            .filter(name => typeLabels.has(name));
+
+          if (existing.length > 0) {
+            core.info(`Pull request is already typed (${existing.join(', ')}); skipping triage label.`);
+            return;
+          }
+
           await github.rest.issues.addLabels({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            issue_number: context.payload.pull_request.number,
+            issue_number: pr.number,
             labels: ['Status: Needs triage']
           });
 
@@ -138,6 +149,45 @@ jobs:
           }
 
           core.info(`Applied ${targetLabel} based on linked issue types: ${[...linkedIssueTypes].join(', ')}`);
+
+    - name: 'Assign "tbd" milestone'
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      with:
+        script: |
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const pr = context.payload.pull_request;
+          const milestoneTitle = 'tbd';
+
+          if (pr.milestone) {
+            core.info(`Pull request already has milestone "${pr.milestone.title}", leaving it untouched.`);
+            return;
+          }
+
+          const milestones = await github.paginate(github.rest.issues.listMilestones, {
+            owner,
+            repo,
+            state: 'open',
+            per_page: 100
+          });
+
+          const milestone = milestones.find(
+            item => item.title.toLowerCase() === milestoneTitle.toLowerCase()
+          );
+
+          if (!milestone) {
+            core.warning(`No open milestone named "${milestoneTitle}" found; skipping.`);
+            return;
+          }
+
+          await github.rest.issues.update({
+            owner,
+            repo,
+            issue_number: pr.number,
+            milestone: milestone.number
+          });
+
+          core.info(`Assigned milestone "${milestone.title}" (#${milestone.number}).`);
 
     - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
       with:

@@ -104,10 +104,6 @@
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Import/**/*']
 
-"Mod: Points":
-- changed-files:
-  - any-glob-to-any-file:  ['src/Mod/Points/**/*']
-
 "Mod: Robot":
 - changed-files:
   - any-glob-to-any-file:  ['src/Mod/Robot/**/*']
