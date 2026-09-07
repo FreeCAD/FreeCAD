@@ -1395,10 +1395,10 @@ struct DelayedModifiedEntry
         std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> newIncomingElementMappedNames,
         Data::IndexedName newModifiedElementIndexedName,
         TopoDS_Shape newModifiedElement
-    ) : incomingElementMappedNames(newIncomingElementMappedNames),
-        modifiedElementIndexedName(newModifiedElementIndexedName),
-        modifiedElement(newModifiedElement)
-    { };
+    )
+        : incomingElementMappedNames(newIncomingElementMappedNames)
+        , modifiedElementIndexedName(newModifiedElementIndexedName)
+        , modifiedElement(newModifiedElement) {};
 };
 
 struct NamingMapValue
@@ -2356,17 +2356,17 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             // we want to make sure we include as many as three of them in the new
                             // ElementMap for reliability sake.
                             for (size_t incomingMappedNameIdx = 0;
-                                (incomingMappedNameIdx < incomingShapeElementMappedNames.size()
-                                && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
-                                incomingMappedNameIdx++)
-                            {
+                                 (incomingMappedNameIdx < incomingShapeElementMappedNames.size()
+                                  && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
+                                 incomingMappedNameIdx++) {
                                 ensureElementMap()->setElementName(
                                     element,
                                     incomingShapeElementMappedNames[incomingMappedNameIdx].first,
                                     masterTag
                                 );
                             }
-                        } else {
+                        }
+                        else {
                             modifiedNamingMap.add(
                                 modifiedShape,
                                 element,
@@ -2481,7 +2481,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 continue;
             }
 
-            const auto& incomingElementMappedNames = modifiedShapeEntry.second.front().incomingElementMappedNames;
+            const auto& incomingElementMappedNames
+                = modifiedShapeEntry.second.front().incomingElementMappedNames;
 
             auto lowerMapTypeEntry = lowerMapTypes.find(
                 modifiedShapeEntry.first.front().newElementName.getType()
@@ -2490,11 +2491,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             if (lowerMapTypeEntry != lowerMapTypes.end()) {
                 for (const Part::NamingMapKey& elementKey : modifiedShapeEntry.first) {
                     TopTools_IndexedMapOfShape lowerMap;
-                    TopExp::MapShapes(
-                        elementKey.newElementShape,
-                        lowerMapTypeEntry->second,
-                        lowerMap
-                    );
+                    TopExp::MapShapes(elementKey.newElementShape, lowerMapTypeEntry->second, lowerMap);
 
                     std::vector<const Data::MappedName*> connectedElements;
 
@@ -2502,17 +2499,21 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
                         auto modifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
 
-                        // check to see if the lower element was directly included in one of the incoming shapes
+                        // check to see if the lower element was directly included in one of the
+                        // incoming shapes
                         if (modifiedShapeMapIterator != includedModifiedNameMap.end()) {
-                            auto connectedElementsIterator = connectedElements.find(&modifiedShapeMapIterator->second);
+                            auto connectedElementsIterator = connectedElements.find(
+                                &modifiedShapeMapIterator->second
+                            );
 
                             if (connectedElementsIterator == connectedElements.end()) {
                                 connectedElements.push_back(&modifiedShapeMapIterator->second);
 
-                                auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
-                                    &modifiedShapeMapIterator->second,
-                                    0
-                                );
+                                auto allConnectedElementIterator
+                                    = allModifiedConnectedElementNames.try_emplace(
+                                        &modifiedShapeMapIterator->second,
+                                        0
+                                    );
 
                                 if (!allConnectedElementIterator.second) {
                                     allConnectedElementIterator.first->second += 1;
@@ -2534,10 +2535,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     for (const Data::MappedName* name : modifiedConnectedElementEntry.second) {
                         auto allConnectedElementIterator = allModifiedConnectedElementNames.find(name);
-                        
+
                         if (allConnectedElementIterator != allModifiedConnectedElementNames.end()
-                            && allConnectedElementIterator->second == 0)
-                        {
+                            && allConnectedElementIterator->second == 0) {
                             filteredConnectedElements.push_back(*name);
                         }
                     }
@@ -2550,10 +2550,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     // we want to make sure we include as many as three of them in the new
                     // ElementMap for reliability sake.
                     for (size_t incomingMappedNameIdx = 0;
-                        (incomingMappedNameIdx < incomingElementMappedNames.size()
-                        && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
-                        incomingMappedNameIdx++)
-                    {
+                         (incomingMappedNameIdx < incomingElementMappedNames.size()
+                          && incomingMappedNameIdx < MAXIMUM_REMAPPED_INCOMING_NAMES);
+                         incomingMappedNameIdx++) {
                         Data::MappedName newName {
                             incomingElementMappedNames[incomingMappedNameIdx].first
                         };
