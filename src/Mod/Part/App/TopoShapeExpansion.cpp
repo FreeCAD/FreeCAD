@@ -26,6 +26,7 @@
 #include <cctype>
 #include <limits>
 #include <sstream>
+#include <unordered_set>
 #include <vector>
 
 #ifndef _Standard_Version_HeaderFile
@@ -942,7 +943,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     }
 }
 
-void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher)
+void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher, IncludedNameMap* nameMap)
 {
     if (!canMapElement(other)) {
         return;
@@ -959,6 +960,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
     const App::HistoryAlgorithm& historyVersion = getHistoryAlgorithm();
+    size_t shapeHash = std::hash<TopoDS_Shape>{}(getShape());
 
     auto checkHasher = [this](const TopoShape& other) {
         if (Hasher) {
@@ -1005,6 +1007,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
         }
         for (int k = 1; k <= count; ++k) {
             int i, idx;
+            const TopoDS_Shape& currentShape = shapeMap.find(_Shape, k);
             if (forward) {
                 i = k;
                 idx = shapeMap.find(_Shape, otherMap.find(other._Shape, k));
@@ -1014,7 +1017,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
             }
             else {
                 idx = k;
-                i = otherMap.find(other._Shape, shapeMap.find(_Shape, k));
+                i = otherMap.find(other._Shape, currentShape);
                 if (!i) {
                     continue;
                 }
@@ -1041,37 +1044,43 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
             }
 
-            for (auto& v : mappedNames) {
-                auto& name = v.first;
-                auto& sids = v.second;
-                if (sids.size()) {
-                    if (!Hasher) {
-                        Hasher = sids[0].getHasher();
-                    }
-                    else if (!sids[0].isFromSameHasher(Hasher)) {
-                        if (!warned) {
-                            warned = true;
-                            FC_WARN("hasher mismatch");
+            if (mappedNames.size()) {
+                for (auto& v : mappedNames) {
+                    auto& name = v.first;
+                    auto& sids = v.second;
+                    if (sids.size()) {
+                        if (!Hasher) {
+                            Hasher = sids[0].getHasher();
                         }
-                        sids.clear();
+                        else if (!sids[0].isFromSameHasher(Hasher)) {
+                            if (!warned) {
+                                warned = true;
+                                FC_WARN("hasher mismatch");
+                            }
+                            sids.clear();
+                        }
                     }
-                }
-                ss.str("");
+                    ss.str("");
 
-                if (historyVersion == App::HistoryAlgorithm::V1) {
-                    ensureElementMap()
-                        ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                    if (historyVersion == App::HistoryAlgorithm::V1) {
+                        ensureElementMap()
+                            ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                    }
+                    ensureElementMap()->setElementName(element, name, Tag, &sids);
                 }
-                ensureElementMap()->setElementName(element, name, Tag, &sids);
+
+                if (nameMap) {
+                    (*nameMap)[currentShape] = {shapeHash, mappedNames.front().first};
+                }
             }
         }
     }
 }
 
-void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op) const
+void TopoShape::mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op, IncludedNameMap* nameMap) const
 {
     for (auto& shape : shapes) {
-        shape.mapSubElement(*this, op);
+        shape.mapSubElement(*this, op, false, nameMap);
     }
 }
 
@@ -1128,7 +1137,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
     setMappedChildElements(children);
 }
 
-void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op)
+void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op, IncludedNameMap* nameMap)
 {
     if (shapes.empty()) {
         return;
@@ -1178,7 +1187,7 @@ void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* 
     }
 
     for (auto& shape : shapes) {
-        mapSubElement(shape, op);
+        mapSubElement(shape, op, false, nameMap);
     }
 }
 
@@ -1685,7 +1694,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     ShapeInfo vertexInfo(_Shape, TopAbs_VERTEX, _cache->getAncestry(TopAbs_VERTEX));
     ShapeInfo edgeInfo(_Shape, TopAbs_EDGE, _cache->getAncestry(TopAbs_EDGE));
     ShapeInfo faceInfo(_Shape, TopAbs_FACE, _cache->getAncestry(TopAbs_FACE));
-    mapSubElement(shapes);  // Intentionally leave the op off here
 
     std::array<ShapeInfo*, 3> infos = {&vertexInfo, &edgeInfo, &faceInfo};
 
@@ -1702,6 +1710,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        mapSubElement(shapes);  // Intentionally leave the op off here
+
         std::ostringstream ss;
         std::string postfix;
         Data::MappedName newName;
@@ -2238,6 +2248,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
         constexpr int MAXIMUM_REMAPPED_INCOMING_NAMES = 3;
 
+        std::hash<TopoDS_Shape> shapeHasher;
+        IncludedNameMap includedModifiedNameMap;
+        mapSubElement(shapes, nullptr, &includedModifiedNameMap);  // Intentionally leave the op off here
+
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a
         // little bit copypasted.
         NamingMap generatedNamingMap;
@@ -2266,25 +2280,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedProjectedLinkedNames;
         std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes;
-        std::unordered_map<TopoDS_Shape, Data::MappedName, ShapeHasher, ShapeHasher> includedModifiedNameMap;
-
-        // add names found with mapSubElement.
-        for (auto& info : infos) {
-            TopoShapeCache::Ancestry& infoAncestry = info->cache;
-
-            for (int i = 1; i <= infoAncestry.count(); i++) {
-                TopoDS_Shape foundSubShape = info->find(i);
-
-                if (!foundSubShape.IsNull()) {
-                    Data::IndexedName foundIdxName {info->shapetype, i};
-                    Data::MappedName foundMappedName = getMappedName(foundIdxName);
-
-                    if (foundMappedName) {
-                        includedModifiedNameMap[foundSubShape] = foundMappedName;
-                    }
-                }
-            }
-        }
 
         // These loops generate names with the Modified and Generated methods of the Maker class.
         // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
@@ -2292,6 +2287,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             std::string stringSubshapeType {info->shapetype};
 
             for (const auto& incomingShape : shapes) {
+                size_t incomingShapeHash = shapeHasher(incomingShape.getShape());
+
                 if (!canMapElement(incomingShape)) {
                     continue;
                 }
@@ -2328,6 +2325,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(incomingShapeElement);
                     std::vector<TopoDS_Shape> projectedShapes = mapper.projected(incomingShapeElement);
 
+                    size_t modifiedShapesSize = modifiedShapes.size();
+
                     for (size_t modifiedI = 0; modifiedI < modifiedShapesSize; modifiedI++) {
                         auto& modifiedShape = modifiedShapes[modifiedI];
 
@@ -2349,7 +2348,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             = Data::IndexedName::fromConst(newInfo.shapetype, modifiedShapeIndex);
 
                         includedModifiedNameMap[modifiedShape]
-                            = incomingShapeElementMappedNames.front().first;
+                            = {incomingShapeHash, incomingShapeElementMappedNames.front().first};
 
                         if (modifiedShapesSize == 1) {
                             // Since indexed names can have multiple MappedNames assigned to them,
@@ -2481,13 +2480,20 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 continue;
             }
 
-            const auto& incomingElementMappedNames = modifiedShapeEntry.second.front().incomingElementMappedNames;
+            const NamingMapValue& mapValue = modifiedShapeEntry.second.front();
+            const auto& incomingElementMappedNames = mapValue.incomingElementMappedNames;
 
             auto lowerMapTypeEntry = lowerMapTypes.find(
                 modifiedShapeEntry.first.front().newElementName.getType()
             );
 
-            if (lowerMapTypeEntry != lowerMapTypes.end()) {
+            auto upperMapTypeEntry = upperMapTypes.find(
+                modifiedShapeEntry.first.front().newElementName.getType()
+            );
+
+            if (lowerMapTypeEntry != lowerMapTypes.end() && upperMapTypeEntry != upperMapTypes.end()) {
+                ShapeInfo* upperMap = infoMap[upperMapTypeEntry->second];
+
                 for (const Part::NamingMapKey& elementKey : modifiedShapeEntry.first) {
                     TopTools_IndexedMapOfShape lowerMap;
                     TopExp::MapShapes(
@@ -2496,27 +2502,43 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         lowerMap
                     );
 
+                    std::unordered_set<Data::MappedName, Data::MappedNameHasher> connectedElementsSet;
                     std::vector<const Data::MappedName*> connectedElements;
 
                     for (int lowerIdx = 1; lowerIdx <= lowerMap.Extent(); lowerIdx++) {
+                        const Data::MappedName* foundName = nullptr;
                         const TopoDS_Shape& lowerShape = lowerMap(lowerIdx);
-                        auto modifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
+                        auto lowerModifiedShapeMapIterator = includedModifiedNameMap.find(lowerShape);
 
                         // check to see if the lower element was directly included in one of the incoming shapes
-                        if (modifiedShapeMapIterator != includedModifiedNameMap.end()) {
-                            auto connectedElementsIterator = connectedElements.find(&modifiedShapeMapIterator->second);
+                        if (lowerModifiedShapeMapIterator != includedModifiedNameMap.end()) {
+                            foundName = &lowerModifiedShapeMapIterator->second.second;
+                        } else if (upperMap != nullptr) {
+                            const std::vector<int> ancestors = findAncestors(lowerShape, upperMapTypeEntry->second);
 
-                            if (connectedElementsIterator == connectedElements.end()) {
-                                connectedElements.push_back(&modifiedShapeMapIterator->second);
+                            for (const int& ancestorIdx : ancestors) {
+                                const TopoDS_Shape& ancestor = upperMap->find(ancestorIdx);
+                                auto upperModifiedShapeMapIterator = includedModifiedNameMap.find(ancestor);
 
-                                auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
-                                    &modifiedShapeMapIterator->second,
-                                    0
-                                );
-
-                                if (!allConnectedElementIterator.second) {
-                                    allConnectedElementIterator.first->second += 1;
+                                if (upperModifiedShapeMapIterator != includedModifiedNameMap.end()
+                                    && upperModifiedShapeMapIterator->second.first != mapValue.incomingElementShapeHash)
+                                {
+                                    foundName = &upperModifiedShapeMapIterator->second.second;
                                 }
+                            }
+                        }
+
+                        if (foundName != nullptr && connectedElementsSet.count(*foundName) == 0) {
+                            connectedElementsSet.insert(*foundName);
+                            connectedElements.push_back(foundName);
+
+                            auto allConnectedElementIterator = allModifiedConnectedElementNames.try_emplace(
+                                foundName,
+                                0
+                            );
+
+                            if (!allConnectedElementIterator.second) {
+                                allConnectedElementIterator.first->second += 1;
                             }
                         }
                     }
@@ -2693,7 +2715,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         auto namedModifiedIterator = includedModifiedNameMap.find(foundSubshape);
 
                         if (namedModifiedIterator != includedModifiedNameMap.end()) {
-                            std::string foundModifiedName = namedModifiedIterator->second.toString();
+                            std::string foundModifiedName = namedModifiedIterator->second.second.toString();
 
                             generatedConnectedElementMap[elementShape].push_back(foundModifiedName);
                             allGeneratedConnectedElementNames.insert(foundModifiedName);
