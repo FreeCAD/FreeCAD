@@ -713,6 +713,18 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
         }
     }
 
+    // Only propose constraints that are not already active in the sketch.
+    for (const auto* constraint : sketch->Constraints.getValues()) {
+        if (!constraint->isActive) {
+            continue;
+        }
+        std::erase_if(verthorizConstraints, [constraint](const ConstraintIds& id) {
+            return constraint->Type == id.Type && constraint->First == id.First
+                && constraint->FirstPos == id.FirstPos && constraint->Second == id.Second
+                && constraint->SecondPos == id.SecondPos;
+        });
+    }
+
     return int(verthorizConstraints.size());
 }
 

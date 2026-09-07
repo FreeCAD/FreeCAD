@@ -454,6 +454,41 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         FreeCAD.closeDocument(self.Doc3.Name)
 
+    def testMissingVerticalHorizontalConstraints(self):
+        """Validation must not duplicate existing constraints (issue #21396)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(
+            [
+                Part.LineSegment(vec(0, 0), vec(10, 0)),
+                Part.LineSegment(vec(20, 0), vec(20, 10)),
+            ]
+        )
+        sketch.addConstraint(
+            [
+                Sketcher.Constraint("Horizontal", 0),
+                Sketcher.Constraint("Vertical", 1),
+            ]
+        )
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+
+        sketch.delConstraint(1)
+        sketch.delConstraint(0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 2)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+
+        sketch.setActive(0, False)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 1)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 3)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+
     def testThreeLinesWithCoincidences_1(self):
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         CreateThreeLinesWithCommonPoint(sketch)
