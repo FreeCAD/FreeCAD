@@ -48,7 +48,7 @@ jobs:
         env:
           # The CI token needs write access to FreeCAD's organization project #40.
           # The repository-scoped GITHUB_TOKEN cannot update organization projects.
-          GH_TOKEN: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
+          GH_TOKEN: ${{ secrets.PR_TRIAGE_PROJECT_TOKEN }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
           SKIP_LABELS: ${{ github.event.inputs.skip_labels }}
