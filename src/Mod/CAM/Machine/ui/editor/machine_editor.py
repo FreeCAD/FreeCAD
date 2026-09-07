@@ -1534,7 +1534,7 @@ class MachineEditorDialog(QtGui.QDialog):
             # Toolhead type selection
             type_combo = QtGui.QComboBox()
             for toolhead_type in ToolheadType:
-                type_combo.addItem(toolhead_type.value.title(), toolhead_type)
+                type_combo.addItem(toolhead_type.display_name, toolhead_type)
 
             if toolhead:
                 index = type_combo.findData(toolhead.toolhead_type)
