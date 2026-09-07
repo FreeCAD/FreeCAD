@@ -393,7 +393,7 @@ class TestSketcherSolver(unittest.TestCase):
         self.Doc2.recompute()
         self.assertTrue(len(values) == 0)
         FreeCAD.closeDocument("Issue3245")
-        
+
     def testPointGeometryExtension(self):
         """Reading point geometry must preserve extensions and return a copy (#15545)."""
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
