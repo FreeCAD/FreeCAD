@@ -249,15 +249,9 @@ void ProgramInformation::getBuildInformation(
     const auto buildDate = getValueOrEmpty(mConfig, "BuildRevisionDate");
     str << "Build date: " << buildDate << "\n";
 
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
+    const auto buildType = getValueOrEmpty(mConfig, "BuildType");
+    str << "Build type: " << (buildType.empty() ? "Unknown" : buildType) << '\n';
+
     const auto buildRevisionBranch = getValueOrEmpty(mConfig, "BuildRevisionBranch");
     if (!buildRevisionBranch.empty()) {
         str << "Branch: " << buildRevisionBranch << '\n';
