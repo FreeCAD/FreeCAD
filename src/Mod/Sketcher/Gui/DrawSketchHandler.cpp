@@ -610,7 +610,13 @@ void DrawSketchHandler::seekPreselectionAutoConstraint(
         constr.GeoId = preSel.geoId;
         constr.PosId = preSel.posId;
         if (type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) {
-            if (preSel.posId == PointPos::none) {
+            const Part::Geometry* target = sketchgui->getSketchObject()->getGeometry(preSel.geoId);
+            const bool isLineMidpoint = preSel.posId == PointPos::mid && target
+                && target->is<Part::GeomLineSegment>();
+            if (isLineMidpoint) {
+                constr.Type = Sketcher::Symmetric;
+            }
+            else if (preSel.posId == PointPos::none) {
                 bool lineCenter = isLineCenterAutoConstraint(preSel.geoId, Pos);
                 constr.Type = lineCenter ? Sketcher::Symmetric : Sketcher::PointOnObject;
             }

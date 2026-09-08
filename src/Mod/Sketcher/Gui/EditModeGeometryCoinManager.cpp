@@ -373,6 +373,27 @@ void EditModeGeometryCoinManager::updateGeometryColor(
         auto preselectcross = ViewProviderSketchCoinAttorney::getPreselectCross(viewProvider);
         auto preselectcurve = ViewProviderSketchCoinAttorney::getPreselectCurve(viewProvider);
 
+        // NONE keeps virtual midpoints pickable by screen-space detection without rendering them.
+        const int visiblePointMarker = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
+            "CIRCLE_FILLED",
+            drawingParameters.markerSize
+        );
+        auto& markerIndex = editModeScenegraphNodes.PointSet[l]->markerIndex;
+        markerIndex.setNum(PtNum);
+        auto* markers = markerIndex.startEditing();
+        for (int i = 0; i < PtNum; ++i) {
+            const int geoId = coinMapping.getPointGeoId(i, l);
+            const Sketcher::PointPos posId = coinMapping.getPointPosId(i, l);
+            const auto* geom = geolistfacade.getGeometryFacadeFromGeoId(geoId);
+            const bool isLineMidpoint = posId == Sketcher::PointPos::mid && geom
+                && geom->getGeometry()->is<Part::GeomLineSegment>();
+            const int vertexId = coinMapping.getPointVertexId(i, l);
+            const bool showLineMidpoint = preselectpoint == vertexId
+                || ViewProviderSketchCoinAttorney::isPointSelected(viewProvider, vertexId);
+            markers[i] = isLineMidpoint && !showLineMidpoint ? SoMarkerSet::NONE : visiblePointMarker;
+        }
+        markerIndex.finishEditing();
+
         auto raisePoint = [](SbVec3f& point, float height) {
             float x, y, z;
             point.getValue(x, y, z);

@@ -81,6 +81,7 @@ private:
     {
         InsertSingle,
         InsertStartEnd,
+        InsertLineStartEndMid,
         InsertStartEndMid,
         InsertMidOnly
     };
@@ -177,9 +178,6 @@ private:
 
     // temporal counters, one per layer
     std::vector<int> pointCounter;
-
-    // temporal global vertex counter
-    int vertexCounter = 0;
 
     // Parameters
     DrawingParameters& drawingParameters;
