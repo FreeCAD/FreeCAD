@@ -79,7 +79,7 @@
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyPy.h"
 
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 
 
 using namespace Assembly;

@@ -28,7 +28,7 @@
 #include "Insets.h"
 #include "ParameterManager.h"
 
-#include <Utilities.h>
+#include <Conversion/Qt.h>
 #include <Base/OkLch.h>
 #include <Base/Tools.h>
 

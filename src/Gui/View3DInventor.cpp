@@ -78,7 +78,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
 
-#include "Utilities.h"
+#include "Conversion/Coin.h"
 
 using namespace Gui;
 

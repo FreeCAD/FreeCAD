@@ -63,7 +63,7 @@
 #include "SoFCSelection.h"
 #include "Tools.h"
 #include "TranslateManip.h"
-#include "Utilities.h"
+#include "Conversion/Coin.h"
 #include "ViewParams.h"
 #include "Window.h"
 

@@ -25,7 +25,7 @@
 #include <gtest/gtest.h>
 
 #include <Gui/Application.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Qt.h>
 #include <Gui/StyleParameters/Gradient.h>
 #include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/ParameterManager.h>

@@ -72,6 +72,7 @@
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 // #include <Gui/Inventor/SoFCSwitch.h>
+#include <Gui/Conversion/Coin.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>

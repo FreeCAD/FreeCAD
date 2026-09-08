@@ -1412,6 +1412,9 @@ SET(FreeCADGui_SRCS
     StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
+    Conversion/Coin.h
+    Conversion/Qt.h
+    Conversion/StyleParameters.h
     StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h

@@ -49,7 +49,7 @@
 #include "TaskTransform.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDragger.h"
-#include "Utilities.h"
+#include "Conversion/Coin.h"
 #include "ViewParams.h"
 #include "ViewProviderLink.h"
 

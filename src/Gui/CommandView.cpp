@@ -89,7 +89,7 @@
 #include "Tools.h"
 #include "Tree.h"
 #include "TreeParams.h"
-#include "Utilities.h"
+
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"

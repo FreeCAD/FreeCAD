@@ -25,7 +25,8 @@
 #include <gtest/gtest.h>
 
 #include <Base/OkLch.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Qt.h>
+#include <Gui/Conversion/StyleParameters.h>
 
 #include <Gui/StyleParameters/Corners.h>
 #include <Gui/StyleParameters/Gradient.h>

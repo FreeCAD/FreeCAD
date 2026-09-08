@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 
+#include "Base/Converter.h"
 #include "Utilities.h"
 
 

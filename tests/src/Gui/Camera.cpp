@@ -11,7 +11,7 @@
 #include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Camera.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 
 #include <src/App/InitApplication.h>
 
