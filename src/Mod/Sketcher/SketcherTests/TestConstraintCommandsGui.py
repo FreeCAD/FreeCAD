@@ -59,9 +59,7 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
         self.doc.undo()
 
     def click_world(self, point):
-        pos = self.viewport_to_qpoint(
-            self.view, self.viewport, self.view.getPointOnScreen(point)
-        )
+        pos = self.viewport_to_qpoint(self.view, self.viewport, self.view.getPointOnScreen(point))
         self.move(self.viewport, pos)
         self.click(self.viewport, pos)
 
@@ -159,10 +157,16 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
         self.doc.recompute()
         for command in ("Radius", "Diameter", "Radiam"):
             for edge, kind, value in (
-                ("Edge2", "Radius" if command == "Radius" else "Diameter",
-                 10 if command == "Radius" else 20),
-                ("Edge3", "Diameter" if command == "Diameter" else "Radius",
-                 20 if command == "Diameter" else 10),
+                (
+                    "Edge2",
+                    "Radius" if command == "Radius" else "Diameter",
+                    10 if command == "Radius" else 20,
+                ),
+                (
+                    "Edge3",
+                    "Diameter" if command == "Diameter" else "Radius",
+                    20 if command == "Diameter" else 10,
+                ),
             ):
                 for reference in (False, True):
                     with self.subTest(command=command, edge=edge, reference=reference):
@@ -186,9 +190,7 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                                 Gui.runCommand("Sketcher_ToggleDrivingConstraint")
 
     def test_radial_dimensions_from_continuous_picking(self):
-        self.sketch.addGeometry(
-            Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), 10), False
-        )
+        self.sketch.addGeometry(Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), 10), False)
         self.doc.recompute()
         self.view.fitAll()
         self.flush_gui(150)
@@ -201,8 +203,9 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                 self.assertEqual(self.sketch.ConstraintCount, 1)
                 expected = "Radius" if command == "Radius" else "Diameter"
                 self.assertEqual(self.sketch.Constraints[0].Type, expected)
-                self.assertAlmostEqual(self.sketch.Constraints[0].Value,
-                                       10 if command == "Radius" else 20)
+                self.assertAlmostEqual(
+                    self.sketch.Constraints[0].Value, 10 if command == "Radius" else 20
+                )
                 self.assertTrue(self.sketch.getDriving(0))
                 self.assertEqual(self.sketch.solve(), 0)
                 self.doc.undo()
@@ -223,8 +226,12 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                             self.select(*edges)
                             Gui.runCommand("Sketcher_Constrain" + command)
                             expected = [
-                                "Diameter" if command == "Diameter" or
-                                (command == "Radiam" and edge == "Edge2") else "Radius"
+                                (
+                                    "Diameter"
+                                    if command == "Diameter"
+                                    or (command == "Radiam" and edge == "Edge2")
+                                    else "Radius"
+                                )
                                 for edge in edges
                             ]
                             if not reference:
@@ -267,11 +274,15 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
         self.sketch.addGeometry(spline, False)
         self.sketch.exposeInternalGeometry(1)
         self.doc.recompute()
-        pole = next(index for index, geo in enumerate(self.sketch.Geometry)
-                    if isinstance(geo, Part.Circle))
+        pole = next(
+            index for index, geo in enumerate(self.sketch.Geometry) if isinstance(geo, Part.Circle)
+        )
         # Exposing a non-rational spline fixes its first weight automatically.
-        weight = next(index for index, constraint in enumerate(self.sketch.Constraints)
-                      if constraint.Type == "Weight" and constraint.First == pole)
+        weight = next(
+            index
+            for index, constraint in enumerate(self.sketch.Constraints)
+            if constraint.Type == "Weight" and constraint.First == pole
+        )
         self.sketch.delConstraint(weight)
         count = self.sketch.ConstraintCount
         for command in ("Radius", "Radiam"):
@@ -328,7 +339,9 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
         Gui.runCommand("Sketcher_BSplineConvertToNURBS")
         self.assertIsInstance(self.sketch.Geometry[0], Part.BSplineCurve)
         self.assertEqual(self.sketch.Geometry[1].Content, geometry[1])
-        self.assertEqual([c.Content for c in self.sketch.Constraints[:len(constraints)]], constraints)
+        self.assertEqual(
+            [c.Content for c in self.sketch.Constraints[: len(constraints)]], constraints
+        )
         self.assertEqual(self.sketch.solve(), 0)
         self.doc.undo()
         self.assertEqual([g.Content for g in self.sketch.Geometry], geometry)
@@ -336,10 +349,25 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
 
     def test_switching_continuous_commands_preserves_sketch(self):
         for name in (
-            "Horizontal", "Vertical", "HorVer", "Lock", "Block", "Coincident",
-            "PointOnObject", "Distance", "DistanceX", "DistanceY", "Parallel",
-            "Perpendicular", "Tangent", "Radius", "Diameter", "Radiam", "Angle",
-            "Equal", "Symmetric",
+            "Horizontal",
+            "Vertical",
+            "HorVer",
+            "Lock",
+            "Block",
+            "Coincident",
+            "PointOnObject",
+            "Distance",
+            "DistanceX",
+            "DistanceY",
+            "Parallel",
+            "Perpendicular",
+            "Tangent",
+            "Radius",
+            "Diameter",
+            "Radiam",
+            "Angle",
+            "Equal",
+            "Symmetric",
         ):
             with self.subTest(command=name):
                 Gui.Selection.clearSelection()
@@ -348,4 +376,3 @@ class TestConstraintCommandsGui(SketcherGuiTestCase):
                 self.assertEqual(self.sketch.ConstraintCount, 0)
                 self.assertIsNotNone(Gui.activeDocument().getInEdit())
                 self.assertEqual(self.viewport.cursor().shape(), QtCore.Qt.BitmapCursor)
-

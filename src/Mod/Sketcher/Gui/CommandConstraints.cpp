@@ -4348,7 +4348,7 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
                 "addConstraint(Sketcher.Constraint('%s',%d))",
                 typeToApply,
                 CrvId);
-            
+
             finishTransactionAndUpdate(cmd, Obj);
         }
 
@@ -6516,7 +6516,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
                               ids[i],
                               ids[i + 1]);
     }
-    
+
     finishTransactionAndUpdate(this, Obj);
 }
 
