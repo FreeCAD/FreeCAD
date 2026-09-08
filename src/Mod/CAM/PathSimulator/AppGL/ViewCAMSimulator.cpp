@@ -53,6 +53,8 @@ using namespace Gui;
 namespace CAMSimulator
 {
 
+TYPESYSTEM_SOURCE_ABSTRACT(CAMSimulator::ViewCAMSimulator, Gui::MDIViewWithCamera)
+
 static QPointer<ViewCAMSimulator> viewCAMSimulator;
 
 ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)

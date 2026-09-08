@@ -74,6 +74,7 @@ compiler-rt = ">=18.1.8,<22"
 [target.linux-64.dependencies]
 clang = "*"
 clangxx = "*"
+cpptrace = { version = "1.0.4.*", build = "libunwind_*" }
 kernel-headers_linux-64 = "*"
 libdrm-cos7-x86_64 = "*"
 libopengl-devel = "*"
@@ -111,6 +112,7 @@ xorg-xproto = "*"
 [target.linux-aarch64.dependencies]
 clang = "*"
 clangxx = "*"
+cpptrace = { version = "1.0.4.*", build = "libunwind_*" }
 kernel-headers_linux-aarch64 = "*"
 libdrm-cos7-aarch64 = "*"
 libglvnd-cos7-aarch64 = "*"
@@ -150,13 +152,16 @@ xorg-xproto = "*"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]
+cpptrace = "*"
 sed = "*"
 
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
+cpptrace = "*"
 sed = "*"
 
 [target.win-64.dependencies]
+cpptrace = "*"
 pthreads-win32 = "*"
 
 [pypi-dependencies]

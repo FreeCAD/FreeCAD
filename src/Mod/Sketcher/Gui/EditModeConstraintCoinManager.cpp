@@ -2207,10 +2207,13 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     }
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
-    if (dynamic_cast<SoDatumLabel*>(tail)) {
+    if (auto* datumLabel = dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.Kind = datumLabel->classifySelectionPoint(Point->getObjectPoint())
+                        == SoDatumLabel::SelectionPart::Annotation
+                    ? ConstraintPreselectionResult::HitKind::DatumAnnotation
+                    : ConstraintPreselectionResult::HitKind::DatumPresentation;
                 result.ConstrIndices.insert(i);
                 result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
@@ -2865,7 +2868,15 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
-    int labelWidth = qfm.boundingRect(labels.join(joinStr)).width();
+    // Measure the right edge at the same positions used to draw each label.
+    // Bounding-box widths omit the left bearing, and advances are rounded per label.
+    int labelWidth = 0;
+    int labelOffset = 0;
+    for (auto it = labels.begin(); it != labels.end(); ++it) {
+        const QString text = (it + 1 == labels.end()) ? *it : *it + joinStr;
+        labelWidth = std::max(labelWidth, labelOffset + qfm.boundingRect(text).right() + 1);
+        labelOffset += Gui::QtTools::horizontalAdvance(qfm, text);
+    }
     // See Qt docs on qRect::bottom() for explanation of the +1
     int pxBelowBase = qfm.boundingRect(labels.join(joinStr)).bottom() + 1;
 

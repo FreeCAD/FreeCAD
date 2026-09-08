@@ -7,6 +7,7 @@ add_executable(Base_tests_run
         Color.cpp
         Console.cpp
         CoordinateSystem.cpp
+        CrashReporter_tests.cpp
         DualNumber.cpp
         DualQuaternion.cpp
         Exception.cpp
@@ -42,6 +43,7 @@ add_executable(Base_tests_run
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp
+        XMLParser.cpp
         XMLTools.cpp
 )
 
@@ -53,3 +55,9 @@ target_link_libraries(Base_tests_run PRIVATE
     ${Python3_LIBRARIES}
     ICU::uc ICU::i18n
 )
+
+# CrashReporter_tests decides what the Reader inside FreeCADBase is capable of from this define,
+# so the two targets have to agree on it. FreeCADBase sets it PRIVATE, which does not propagate.
+if(cpptrace_FOUND)
+    target_compile_definitions(Base_tests_run PRIVATE FC_HAVE_CPPTRACE)
+endif()

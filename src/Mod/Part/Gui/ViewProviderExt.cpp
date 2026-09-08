@@ -579,8 +579,17 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
         }
         else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex() + 1;
-            str << "Edge" << edge;
+            // The line index is NOT the edge index: the line set omits edges that
+            // produced no polyline, which shifts every later line index down.
+            // SoBrepEdgeSet stores the topological edge in partIndex; fall back to
+            // translating the line index for details built elsewhere.
+            int edge = line_detail->getPartIndex();
+            if (edge < 1 && lineset) {
+                edge = lineset->edgeIndexFromLine(line_detail->getLineIndex());
+            }
+            if (edge >= 1) {
+                str << "Edge" << edge;
+            }
         }
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
@@ -606,8 +615,16 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         return detail;
     }
     else if (element == "Edge") {
+        // Inverse of the mapping used in getElement(). An edge that produced no
+        // polyline has nothing to highlight, so report no detail rather than
+        // guessing a line index that belongs to a different edge.
+        const int line = lineset ? lineset->lineIndexFromEdge(index) : index - 1;
+        if (line == SoBrepEdgeSet::InvalidLine) {
+            return nullptr;
+        }
         SoLineDetail* detail = new SoLineDetail();
-        detail->setLineIndex(index - 1);
+        detail->setLineIndex(line);
+        detail->setPartIndex(index);
         return detail;
     }
     else if (element == "Vertex") {
@@ -1049,6 +1066,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         faceset->coordIndex.setNum(0);
         faceset->partIndex.setNum(0);
         lineset->coordIndex.setNum(0);
+        lineset->setEdgeMapping({});
         nodeset->startIndex.setValue(0);
         return;
     }
@@ -1395,11 +1413,21 @@ void ViewProviderPartExt::setupCoinGeometry(
         norms[i].normalize();
     }
 
+    // lineSetMap only holds entries for edges that actually produced a polyline
+    // (an edge whose Poly_PolygonOnTriangulation is null is skipped above, and the
+    // free-edge pass only rescues edges belonging to no face). The emitted polyline
+    // order therefore has gaps with respect to the topological edge numbering, so
+    // record the real edge index of each polyline rather than inferring it from the
+    // line index later - see ViewProviderPartExt::getElement().
     std::vector<int32_t> lineSetCoords;
+    std::vector<int> lineToEdge;
+    lineToEdge.reserve(lineSetMap.size());
     for (const auto& it : lineSetMap) {
         lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
         lineSetCoords.push_back(-1);
+        lineToEdge.push_back(it.first);
     }
+    lineset->setEdgeMapping(std::move(lineToEdge));
 
     // preset the index vector size
     numLines = lineSetCoords.size();

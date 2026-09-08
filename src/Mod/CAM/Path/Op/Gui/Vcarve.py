@@ -59,16 +59,12 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         added = False
         shapes = self.obj.BaseShapes
         for sel in selection:
-            job = PathUtils.findParentJob(self.obj)
-            base = job.Proxy.resourceClone(job, sel.Object)
-            if not base:
-                Path.Log.notice(
-                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
-                    % (sel.Object.Label, job.Label)
-                )
-                continue
+            base = sel.Object
             if base in shapes:
-                Path.Log.notice("Base shape %s already in the list".format(sel.Object.Label))
+                Path.Log.notice(
+                    (translate("CAM", "Base shape %s already in the list") + "\n")
+                    % (sel.Object.Label)
+                )
                 continue
             if base.isDerivedFrom("Part::Part2DObject"):
                 if sel.HasSubObjects:

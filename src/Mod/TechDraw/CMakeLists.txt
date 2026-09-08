@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+disable_occt8_deprecation_warnings()
 
 add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=1)
 

@@ -43,6 +43,8 @@ class CAMSettings;
 
 class ViewCAMSimulator: public Gui::MDIViewWithCamera
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     ViewCAMSimulator(
         Gui::Document* pcDocument,

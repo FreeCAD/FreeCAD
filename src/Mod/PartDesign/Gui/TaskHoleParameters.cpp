@@ -27,6 +27,8 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS.hxx>
 
+#include <cstring>
+
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/Tools.h>
@@ -194,6 +196,12 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->BaseProfileType->setCurrentIndex(
         PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue())
     );
+    ui->StartType->setCurrentIndex(pcHole->StartType.getValue());
+    ui->StartOffset->setValue(pcHole->StartOffset.getValue());
+    ui->StartOffset->bind(pcHole->StartOffset);
+    ui->StartOffset->setToolTip(tr("Offset from the profile or selected start reference"));
+    updateStartReferenceName();
+    updateStartUI();
 
     setCutDiagram();
 
@@ -236,7 +244,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::drillForDepthChanged);
     connect(ui->Tapered, &QCheckBox::clicked,
             this, &TaskHoleParameters::taperedChanged);
-    connect(ui->Reversed, &QCheckBox::clicked,
+    connect(ui->Reversed, &QCheckBox::toggled,
             this, &TaskHoleParameters::reversedChanged);
     connect(ui->ModelThread, &QCheckBox::clicked,
             this, &TaskHoleParameters::modelThreadChanged);
@@ -254,6 +262,12 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthChanged);
     connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::baseProfileTypeChanged);
+    connect(ui->StartType, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskHoleParameters::startTypeChanged);
+    connect(ui->StartOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::startOffsetChanged);
+    connect(ui->buttonStartReference, &QPushButton::toggled,
+            this, &TaskHoleParameters::selectStartReference);
     // clang-format on
 
     ui->Diameter->bind(pcHole->Diameter);
@@ -652,6 +666,51 @@ void TaskHoleParameters::reversedChanged()
     }
 }
 
+void TaskHoleParameters::startTypeChanged(int index)
+{
+    auto hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    const auto type = static_cast<StartTypeIndex>(index);
+    hole->StartType.setValue(index);
+    if (type == Reference && !hole->StartReference.getValue()) {
+        ui->buttonStartReference->setChecked(true);
+    }
+    else if (type != Reference) {
+        exitSelectionMode();
+    }
+    updateStartUI();
+    recomputeFeature();
+    setGizmoPositions();
+}
+
+void TaskHoleParameters::startOffsetChanged(double value)
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->StartOffset.setValue(value);
+        recomputeFeature();
+        setGizmoPositions();
+    }
+}
+
+void TaskHoleParameters::selectStartReference(bool checked)
+{
+    if (checked) {
+        ui->buttonStartReference->setText(tr("Cancel"));
+        ui->lineStartReference->setPlaceholderText(tr("Select face, plane..."));
+        selectingStartReference = true;
+        onSelectReference(AllowSelection::FACE);
+    }
+    else {
+        ui->buttonStartReference->setText(tr("Pick Reference"));
+        ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
+        selectingStartReference = false;
+        exitSelectionMode();
+    }
+}
+
 void TaskHoleParameters::taperedAngleChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
@@ -994,6 +1053,16 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
             PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue())
         );
     }
+    else if (&Prop == &hole->StartType) {
+        updateComboBox(ui->StartType, hole->StartType.getValue());
+        updateStartUI();
+    }
+    else if (&Prop == &hole->StartOffset) {
+        updateSpinBox(ui->StartOffset, hole->StartOffset.getValue());
+    }
+    else if (&Prop == &hole->StartReference) {
+        updateStartReferenceName();
+    }
 }
 
 void TaskHoleParameters::updateHoleTypeCombo()
@@ -1020,7 +1089,53 @@ void TaskHoleParameters::updateHoleTypeCombo()
 
 void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    Q_UNUSED(msg)
+    if (selectingStartReference && msg.Type == Gui::SelectionChanges::AddSelection) {
+        selectedStartReference(msg);
+    }
+}
+
+void TaskHoleParameters::selectedStartReference(const Gui::SelectionChanges& msg)
+{
+    auto hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+
+    onAddSelection(msg, hole->StartReference);
+    updateStartReferenceName();
+    ui->buttonStartReference->setChecked(false);
+    setGizmoPositions();
+}
+
+void TaskHoleParameters::updateStartUI()
+{
+    const auto type = static_cast<StartTypeIndex>(ui->StartType->currentIndex());
+    const bool hasOffset = type != ProfilePlane;
+    const bool hasReference = type == Reference;
+
+    ui->labelStartOffset->setVisible(hasOffset);
+    ui->StartOffset->setVisible(hasOffset);
+    ui->labelStartReference->setVisible(hasReference);
+    ui->lineStartReference->setVisible(hasReference);
+    ui->buttonStartReference->setVisible(hasReference);
+}
+
+void TaskHoleParameters::updateStartReferenceName()
+{
+    auto hole = getObject<PartDesign::Hole>();
+    updateReferenceName(ui->lineStartReference, hole->StartReference, tr("No start reference selected"));
+}
+
+QString TaskHoleParameters::getStartReference() const
+{
+    QVariant featureName = ui->lineStartReference->property("FeatureName");
+    if (featureName.isValid()) {
+        return getFaceReference(
+            featureName.toString(),
+            ui->lineStartReference->property("FaceName").toString()
+        );
+    }
+    return QStringLiteral("None");
 }
 
 bool TaskHoleParameters::getThreaded() const
@@ -1184,6 +1299,7 @@ void TaskHoleParameters::apply()
     ui->Depth->apply();
     ui->DrillPointAngle->apply();
     ui->TaperedAngle->apply();
+    ui->StartOffset->apply();
 
     if (!hole->Threaded.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Threaded = " << (getThreaded() ? 1 : 0));
@@ -1242,6 +1358,9 @@ void TaskHoleParameters::apply()
     if (!hole->BaseProfileType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
     }
+    FCMD_OBJ_CMD(hole, "StartOffset = " << ui->StartOffset->value().getValue());
+    FCMD_OBJ_CMD(hole, "StartType = " << ui->StartType->currentIndex());
+    FCMD_OBJ_CMD(hole, "StartReference = " << getStartReference().toUtf8().data());
 }
 
 void TaskHoleParameters::updateHoleCutLimits(PartDesign::Hole* hole)
@@ -1258,8 +1377,15 @@ void TaskHoleParameters::setupGizmos(ViewProviderHole* vp)
     }
 
     holeDepthGizmo = new LinearGizmo(ui->Depth);
+    holeDepthGizmo->setClickCallback([this] {
+        if (ui->Reversed->isEnabled()) {
+            ui->Reversed->setChecked(!ui->Reversed->isChecked());
+        }
+    });
+    startOffsetGizmo = new LinearGizmo(ui->StartOffset);
+    startOffsetGizmo->setDraggerStyle(LinearDraggerStyle::Sphere);
 
-    gizmoContainer = GizmoContainer::create({holeDepthGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({holeDepthGizmo, startOffsetGizmo}, vp);
 
     setGizmoPositions();
     showDraggerHints();
@@ -1330,6 +1456,7 @@ void TaskHoleParameters::setGizmoPositions()
     );
     Base::Vector3d dir = hole->guessNormalDirection(profileShape);
     dir *= hole->Reversed.getValue() ? -1 : 1;
+    Base::Vector3d holeDirection = -dir;
     std::vector<Base::Vector3d> holePositions
         = getHolePositionFromShape(profileShape, hole->BaseProfileType.getValue());
 
@@ -1338,6 +1465,19 @@ void TaskHoleParameters::setGizmoPositions()
         return;
     }
     gizmoContainer->visible = true;
+
+    const bool hasStartOffset = std::strcmp(hole->StartType.getValueAsString(), "Profile plane") != 0;
+    try {
+        const double effectiveStartOffset = hole->getStartOffset();
+        startOffsetGizmo->Gizmo::setDraggerPlacement(
+            holePositions[0] + holeDirection * (effectiveStartOffset - hole->StartOffset.getValue()),
+            holeDirection
+        );
+        holePositions[0] += holeDirection * effectiveStartOffset;
+    }
+    catch (const Base::Exception&) {
+    }
+    startOffsetGizmo->setVisibility(hasStartOffset);
 
     holeDepthGizmo->Gizmo::setDraggerPlacement(
         holePositions[0] - ui->HoleCutDepth->value().getValue() * dir,

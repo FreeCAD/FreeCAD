@@ -140,6 +140,15 @@ QVariant DisplayedFilesModel::data(const QModelIndex& index, int role) const
     return {};
 }
 
+static std::size_t indexOfFile(const std::vector<FileStats>& fileInfoCache, const std::string& filePath)
+{
+    auto it = std::ranges::find_if(fileInfoCache, [filePath](const FileStats& row) {
+        auto pathIt = row.find(DisplayedFilesModelRoles::path);
+        return pathIt != row.end() && pathIt->second == filePath;
+    });
+    return std::distance(fileInfoCache.begin(), it);
+}
+
 void DisplayedFilesModel::addFile(const QString& filePath)
 {
     const QFileInfo qfi(filePath);
@@ -158,14 +167,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
 
     const auto lowercaseExtension = qfi.suffix().toLower();
     if (lowercaseExtension == QLatin1String("fcstd")) {
-        const auto runner = new FcstdInfoSource(filePath);
-        connect(
-            runner->signals(),
-            &FcstdInfoSource::Signals::infoAvailable,
-            this,
-            &DisplayedFilesModel::processNewFcstdInfo
-        );
-        QThreadPool::globalInstance()->start(runner);
+        updateFcstdInfo(filePath);
         return;
     }
     const QStringList ignoredExtensions {
@@ -186,6 +188,53 @@ void DisplayedFilesModel::addFile(const QString& filePath)
         &ThumbnailSource::Signals::thumbnailAvailable,
         this,
         &DisplayedFilesModel::processNewThumbnail
+    );
+    QThreadPool::globalInstance()->start(runner);
+}
+
+void DisplayedFilesModel::modifiedFile(const QString& filePath)
+{
+    const QFileInfo qfi(filePath);
+    if (!qfi.isReadable()) {
+        return;
+    }
+    if (!freecadCanOpen(qfi.suffix())) {
+        return;
+    }
+
+    const std::string path = filePath.toStdString();
+    QVector<int> changedRoles;
+    std::size_t index;
+    {
+        QMutexLocker locker(&_mutex);
+        index = indexOfFile(_fileInfoCache, path);
+        if (index == _fileInfoCache.size()) {
+            return;
+        }
+
+        auto& info = _fileInfoCache[index];
+        for (const auto& stat : getCommonFileInfo(path)) {
+            info.insert_or_assign(stat.first, stat.second);
+            changedRoles.append(static_cast<int>(stat.first));
+        }
+    }
+
+    const QModelIndex modelIndex = createIndex(index, 0);
+    Q_EMIT(dataChanged(modelIndex, modelIndex, changedRoles));
+
+    if (qfi.suffix().toLower() == QLatin1String("fcstd")) {
+        updateFcstdInfo(filePath);
+    }
+}
+
+void DisplayedFilesModel::updateFcstdInfo(const QString& filePath)
+{
+    const auto runner = new FcstdInfoSource(filePath);
+    connect(
+        runner->signals(),
+        &FcstdInfoSource::Signals::infoAvailable,
+        this,
+        &DisplayedFilesModel::processNewFcstdInfo
     );
     QThreadPool::globalInstance()->start(runner);
 }
@@ -213,15 +262,6 @@ QHash<int, QByteArray> DisplayedFilesModel::roleNames() const
     return nameMap;
 }
 
-static std::size_t indexOfFile(const std::vector<FileStats>& fileInfoCache, const std::string& filePath)
-{
-    auto it = std::ranges::find_if(fileInfoCache, [filePath](const FileStats& row) {
-        auto pathIt = row.find(DisplayedFilesModelRoles::path);
-        return pathIt != row.end() && pathIt->second == filePath;
-    });
-    return std::distance(fileInfoCache.begin(), it);
-}
-
 void DisplayedFilesModel::processNewFcstdInfo(
     const QString& filePath,
     const FileStats& stats,
@@ -237,8 +277,8 @@ void DisplayedFilesModel::processNewFcstdInfo(
 
     QVector<int> changedRoles;
     auto& info = _fileInfoCache[index];
-    for (auto stat : stats) {
-        info.insert(stat);
+    for (const auto& stat : stats) {
+        info.insert_or_assign(stat.first, stat.second);
         changedRoles.append(static_cast<int>(stat.first));
     }
 

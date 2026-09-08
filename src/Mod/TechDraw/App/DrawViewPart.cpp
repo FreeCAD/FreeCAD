@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -1515,8 +1517,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(ProjDir
     gp_Dir gYDir = anchorCS.YDirection();
     gp_Ax1 gUpAxis(gOrg, gYDir);
     gp_Ax2 newCS;
-    gp_Dir gNewDir;
-    gp_Dir gNewXDir;
 
     double angle = std::numbers::pi / 2.0;//90*
 

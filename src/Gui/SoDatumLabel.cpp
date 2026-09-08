@@ -1299,6 +1299,16 @@ void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
     point[2] = z;
 }
 
+SoDatumLabel::SelectionPart SoDatumLabel::classifySelectionPoint(const SbVec3f& objectPoint) const
+{
+    // Geometry lies on one of two known Z layers. Coin returns an intersection point rather
+    // than the stored vertex value, so classify it by the nearest layer without an epsilon.
+    constexpr float selectionBoundary = (ZCONSTR + ZARROW_TEXT_OFFSET) * 0.5F;
+
+    return objectPoint[2] > selectionBoundary ? SelectionPart::Annotation
+                                              : SelectionPart::Presentation;
+}
+
 void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
 {
     if (!points || numPoints <= 0 || !m_LineVertexProperty || !m_LineSet

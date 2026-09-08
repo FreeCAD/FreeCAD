@@ -75,7 +75,7 @@ repos:
             args: ['--line-length', '100']
             exclude: ^src/Tools/typing/generated/
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: dd18dad857d6133e90bbe478f4f2f22ec0030269  # frozen: v22.1.5
+    rev: 34b241d706d24e4ccb69e38f9f0fa190b5f486ec  # frozen: v23.1.0
     hooks:
         -   id: clang-format
 -   repo: local

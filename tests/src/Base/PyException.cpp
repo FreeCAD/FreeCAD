@@ -108,10 +108,11 @@ TEST_F(PyExceptionTest, nonExceptionTypeMapsToRuntimError)  // NOLINT
         FAIL() << "expected a Py::RuntimeError";
     }
     catch (Py::RuntimeError& e) {
-        // This should have gotten demangled to yield something to do with a "float" (the exact
-        // message is platform-dependent)
-        EXPECT_THAT(e.errorValue().as_string(), HasSubstr("float"));
+        const Py::Object value = e.errorValue();
+        e.clear();
+        EXPECT_THAT(value.as_string(), HasSubstr("float"));
     }
+
     catch (...) {
         FAIL() << "expected Py::RuntimeError, got something else";
     }

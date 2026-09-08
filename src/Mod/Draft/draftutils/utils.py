@@ -873,6 +873,8 @@ def _modifiers_process_subselection(sels, copy):
             if copy and "Vertex" in sub:
                 continue
             obj = sel.Object.getSubObject(sub, 1)
+            if get_type(obj) != "Wire":
+                continue
             pla = sel.Object.getSubObject(sub, 3)
             if "Vertex" in sub:
                 vert_idx = int(sub.rpartition("Vertex")[2]) - 1

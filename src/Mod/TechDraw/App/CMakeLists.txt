@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(TechDrawLIBS
     Measure
     Part
@@ -292,9 +294,7 @@ if (MSVC)
     target_compile_options(TechDraw PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(TechDraw)
-endif()
+target_compile_warn_error(TechDraw)
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD
