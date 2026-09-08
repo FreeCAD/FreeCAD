@@ -47,6 +47,7 @@
 #include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
 #include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
+#include <Gui/GuiApplication.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
@@ -459,13 +460,12 @@ void DlgSettingsGeneral::saveThemes()
 
     std::string newTheme = newThemeSetting;
 
-// Check if using system theme
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#if SYSTEM_THEMING_SUPPORTED
+    // Check if using system theme
     if (newThemeSetting == "Use system theme") {
-        const auto scheme = QGuiApplication::styleHints()->colorScheme();
-        newTheme = scheme == Qt::ColorScheme::Dark ? newDarkThemeSetting : newLightThemeSetting;
+        newTheme = GUIApplication::isSystemInDarkMode() ? newDarkThemeSetting : newLightThemeSetting;
     }
-#endif  // QT_VERSION >= 6.5
+#endif  // SYSTEM_THEMING_SUPPORTED
 
     hGrp->SetASCII("Theme", newTheme);
 
@@ -527,11 +527,11 @@ void DlgSettingsGeneral::loadThemes(QComboBox* comboBox)
             comboBox->addItem(QString::fromStdString(pack.first));
         }
     }
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#if SYSTEM_THEMING_SUPPORTED
     if (comboBox == ui->themesCombobox) {
         ui->themesCombobox->addItem("Use system theme");
     }
-#endif
+#endif  // SYSTEM_THEMING_SUPPORTED
 
     if (currentTheme.isEmpty()) {
         if (!currentStyleSheet.isEmpty() && !similarTheme.isEmpty()) {  // a user upgrading from
@@ -885,13 +885,13 @@ void DlgSettingsGeneral::onThemeChanged(int index)
 
     std::string selectedTheme = ui->themesCombobox->currentText().toStdString();
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#if SYSTEM_THEMING_SUPPORTED
     bool systemThemeSelected = (selectedTheme == "Use system theme");
     ui->lightThemeLabel->setVisible(systemThemeSelected);
     ui->lightThemeCombobox->setVisible(systemThemeSelected);
     ui->darkThemeLabel->setVisible(systemThemeSelected);
     ui->darkThemeCombobox->setVisible(systemThemeSelected);
-#endif
+#endif  // SYSTEM_THEMING_SUPPORTED
 
     themeChanged = true;
 }
