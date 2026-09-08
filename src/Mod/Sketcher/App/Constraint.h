@@ -269,6 +269,23 @@ public:
     void setFont(const std::string& font);
     bool getIsTextHeight() const;
     void setIsTextHeight(bool val);
+    /// Typographic reference of a Text constraint, as a Part::TextReference value
+    int getTextReference() const;
+    void setTextReference(int reference);
+    /// Whether the text carries construction lines for its typographic levels
+    bool getTextGuideLines() const;
+    void setTextGuideLines(bool guideLines);
+    /// Whether the text carries a construction line at every letter boundary
+    bool getTextLetterLines() const;
+    void setTextLetterLines(bool letterLines);
+    /// Whether the text carries construction lines along the edges of every letter
+    bool getTextLetterEdges() const;
+    void setTextLetterEdges(bool letterEdges);
+    /// Number of trailing elements of a Text constraint that are guide lines
+    int getTextGuideCount() const;
+    void setTextGuideCount(int count);
+    /// True if the element at this index is a guide line rather than glyph geometry
+    bool isTextGuideElement(size_t index) const;
 
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Deprecated, use getElement/setElement instead

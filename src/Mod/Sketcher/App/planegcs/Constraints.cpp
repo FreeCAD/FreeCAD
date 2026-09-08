@@ -214,6 +214,51 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 
 
 // --------------------------------------------------------
+// LinearCombination
+ConstraintLinearCombination::ConstraintLinearCombination(
+    const std::vector<double*>& givenpvec,
+    const std::vector<double>& givenfactors,
+    double givenconstant
+)
+    : factors(givenfactors)
+    , constant(givenconstant)
+{
+    pvec = givenpvec;
+
+    assert(factors.size() == pvec.size());
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintLinearCombination::getTypeId()
+{
+    return LinearCombination;
+}
+
+double ConstraintLinearCombination::error()
+{
+    double result = constant;
+    for (size_t i = 0; i < pvec.size(); ++i) {
+        result += factors[i] * *pvec[i];
+    }
+
+    return scale * result;
+}
+
+double ConstraintLinearCombination::grad(double* param)
+{
+    double deriv = 0.;
+    for (size_t i = 0; i < pvec.size(); ++i) {
+        if (param == pvec[i]) {
+            deriv += factors[i];
+        }
+    }
+
+    return scale * deriv;
+}
+
+
+// --------------------------------------------------------
 // Center of Gravity
 ConstraintCenterOfGravity::ConstraintCenterOfGravity(
     const std::vector<double*>& givenpvec,

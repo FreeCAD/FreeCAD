@@ -747,3 +747,167 @@ void Constraint::setIsTextHeight(bool isHeight)
     j["isTextHeight"] = isHeight;
     MetaData = j.dump();
 }
+
+int Constraint::getTextReference() const
+{
+    if (MetaData.empty()) {
+        return 0;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("textReference")) {
+            return j["textReference"].get<int>();
+        }
+    }
+    catch (...) {
+    }
+    // Bounding box, so texts saved before this option was added do not move
+    return 0;
+}
+
+void Constraint::setTextReference(int reference)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["textReference"] = reference;
+    MetaData = j.dump();
+}
+
+bool Constraint::getTextGuideLines() const
+{
+    if (MetaData.empty()) {
+        return false;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("textGuides")) {
+            return j["textGuides"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return false;
+}
+
+void Constraint::setTextGuideLines(bool guideLines)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["textGuides"] = guideLines;
+    MetaData = j.dump();
+}
+
+bool Constraint::getTextLetterLines() const
+{
+    if (MetaData.empty()) {
+        return false;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("textLetterLines")) {
+            return j["textLetterLines"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return false;
+}
+
+void Constraint::setTextLetterLines(bool letterLines)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["textLetterLines"] = letterLines;
+    MetaData = j.dump();
+}
+
+bool Constraint::getTextLetterEdges() const
+{
+    if (MetaData.empty()) {
+        return false;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("textLetterEdges")) {
+            return j["textLetterEdges"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return false;
+}
+
+void Constraint::setTextLetterEdges(bool letterEdges)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["textLetterEdges"] = letterEdges;
+    MetaData = j.dump();
+}
+
+int Constraint::getTextGuideCount() const
+{
+    if (MetaData.empty()) {
+        return 0;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("textGuideCount")) {
+            return j["textGuideCount"].get<int>();
+        }
+    }
+    catch (...) {
+    }
+    return 0;
+}
+
+void Constraint::setTextGuideCount(int count)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["textGuideCount"] = count;
+    MetaData = j.dump();
+}
+
+bool Constraint::isTextGuideElement(size_t index) const
+{
+    if (Type != Text || index == 0) {
+        return false;
+    }
+    int count = getTextGuideCount();
+    if (count <= 0) {
+        return false;
+    }
+    // The guides are appended after the glyphs, so they are the trailing elements.
+    return index + static_cast<size_t>(count) >= elements.size();
+}

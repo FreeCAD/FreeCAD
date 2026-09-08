@@ -410,12 +410,22 @@ class SketchObject(Part2DObject):
         ...
 
     def setTextAndFont(
-        self, constraint: int, text: str, font: str, isheight: bool, isConstruction: bool
+        self,
+        constraint: int,
+        text: str,
+        font: str,
+        isheight: bool,
+        isConstruction: bool,
+        reference: int = 0,
+        guideLines: bool = False,
+        letterLines: bool = False,
+        letterEdges: bool = False,
     ) -> None:
         """
         Set the text and font of a Text constraint.
 
-        setTextAndFont(constraint: int, text: str, font: str, isHeight: bool, isConstruction: bool)
+        setTextAndFont(constraint, text, font, isHeight, isConstruction, reference,
+                       guideLines, letterLines, letterEdges)
 
             Args:
                 constraint: The index of the Text constraint.
@@ -423,6 +433,15 @@ class SketchObject(Part2DObject):
                 font: The full path to the font file (.ttf, .otf, etc.).
                 isHeight: Is the line handle of the group the height of the text.
                 isConstruction: Are text geometry construction of not.
+                reference: Typographic line the handle refers to. 0 bounding box,
+                    1 cap height, 2 x-height, 3 ascender, 4 em. Every value but 0
+                    anchors the text on the start of its baseline.
+                guideLines: Add construction lines for the descender, baseline,
+                    x-height, cap height and ascender of the text.
+                letterLines: Add a construction line at every letter boundary,
+                    running from the descender to the ascender.
+                letterEdges: Add construction lines along the left and the right
+                    edge of the ink of every letter.
         """
         ...
 

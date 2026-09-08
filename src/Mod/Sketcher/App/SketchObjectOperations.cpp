@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <set>
 #include <tuple>
 
 #include <App/Expression.h>
@@ -145,6 +146,28 @@ int SketchObject::delGeometries(InputIt first, InputIt last, DeleteOptions optio
     // Proceed with non-negative GeoIds
     if (sGeoIds.empty()) {
         return 0; // No positive GeoIds to delete
+    }
+
+    // A guide line only exists as a reference of the text it belongs to, so it goes away with
+    // that text but not on its own. Managed operations regenerate the text and are exempt.
+    if (!managedoperation) {
+        std::set<int> requested(sGeoIds.begin(), sGeoIds.end());
+        auto isOrphanGuide = [this, &requested](int geoId) {
+            return isGroupReference(geoId)
+                && requested.count(getGroupHandleIfInGroup(geoId)) == 0;
+        };
+
+        auto orphans = std::remove_if(sGeoIds.begin(), sGeoIds.end(), isOrphanGuide);
+        if (orphans != sGeoIds.end()) {
+            sGeoIds.erase(orphans, sGeoIds.end());
+            Base::Console().warning(
+                "Text guide lines cannot be deleted on their own. Delete the text itself, or "
+                "clear the guide lines option in its edit dialog.\n"
+            );
+            if (sGeoIds.empty()) {
+                return 0;
+            }
+        }
     }
 
     // if a GeoId has internal geometry, it must delete internal geometries too

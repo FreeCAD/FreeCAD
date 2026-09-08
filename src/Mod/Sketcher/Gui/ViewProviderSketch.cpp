@@ -2749,8 +2749,11 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         selection.SelCurvSet.insert(GeoId);
 
                         // Check if this is in a group.
-                        // If so we cancel this addition and select the group instead
-                        int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
+                        // If so we cancel this addition and select the group instead.
+                        // Guide lines are references, they are selected on their own.
+                        int handleId = getSketchObject()->isGroupReference(GeoId)
+                            ? GeoId
+                            : getSketchObject()->getGroupHandleIfInGroup(GeoId);
                         if (handleId != GeoId) {
                             // Remove the selected edge
                             Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
@@ -2951,9 +2954,12 @@ bool ViewProviderSketch::detectAndShowPreselection(
         else if (result.Kind == EditModeCoinManager::PreselectionResult::HitKind::Edge
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
 
-            // If the picked edge is part of a text/group, treat the handle as the preselected item
+            // If the picked edge is part of a text/group, treat the handle as the preselected
+            // item. Guide lines are references, they are preselected on their own.
             int geoIndex = result.GeoIndex;
-            int handleId = getSketchObject()->getGroupHandleIfInGroup(geoIndex);
+            int handleId = getSketchObject()->isGroupReference(geoIndex)
+                ? geoIndex
+                : getSketchObject()->getGroupHandleIfInGroup(geoIndex);
             if (handleId != geoIndex) {
                 if (handleId == preselection.PreselectCurve) {
                     if (result.hasPickedPoint()) {

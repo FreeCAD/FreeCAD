@@ -769,18 +769,29 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
     char* fontStr;
     PyObject* isHeightObj = Py_True;
     PyObject* isConstrObj = Py_False;  // Default to null (parameter not provided)
+    int reference = 0;                 // Part::TextReference::BoundingBox
+    PyObject* guidesObj = Py_False;
+    PyObject* lettersObj = Py_False;
+    PyObject* letterEdgesObj = Py_False;
 
-    // "iss|O!O!" (int, str, str, | bool, bool)
+    // "iss|O!O!iO!O!O!" (int, str, str, | bool, bool, int, bool, bool, bool)
     if (!PyArg_ParseTuple(
             args,
-            "iss|O!O!",
+            "iss|O!O!iO!O!O!",
             &constrIndex,
             &textStr,
             &fontStr,
             &PyBool_Type,
             &isHeightObj,
             &PyBool_Type,
-            &isConstrObj
+            &isConstrObj,
+            &reference,
+            &PyBool_Type,
+            &guidesObj,
+            &PyBool_Type,
+            &lettersObj,
+            &PyBool_Type,
+            &letterEdgesObj
         )) {
         return nullptr;
     }
@@ -794,7 +805,11 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* /*kwd*/)
         text,
         font,
         Base::asBoolean(isHeightObj),
-        Base::asBoolean(isConstrObj)
+        Base::asBoolean(isConstrObj),
+        reference,
+        Base::asBoolean(guidesObj),
+        Base::asBoolean(lettersObj),
+        Base::asBoolean(letterEdgesObj)
     );
 
     // Handle errors returned from the C++ function

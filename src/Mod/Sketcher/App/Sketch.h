@@ -674,8 +674,27 @@ private:
     // Key: GeoId of the frame line.
     // Value: it's initial position.
     std::map<int, GroupLineState> preSolveGroupStates;
+
+    /// The guide lines of a text and the handle they are derived from. Unlike the other members
+    /// of a group these take part in the solve: each end point is tied to the handle by linear
+    /// constraints, so they follow it with no degree of freedom of their own and other geometry
+    /// can be constrained to them.
+    struct GroupReferenceSet
+    {
+        int frameGeoId;
+        std::vector<int> referenceGeoIds;
+    };
+    std::vector<GroupReferenceSet> groupReferenceSets;
+
     void captureGroupStates();
     void applyGroupTransformations();
+    void addGroupReferenceConstraints();
+    void addGroupReferenceTie(
+        const GCS::Line& frame,
+        const GCS::Point& point,
+        double alpha,
+        double beta
+    );
     GroupLineState getGroupLineState(int geoId) const;
 
 public:

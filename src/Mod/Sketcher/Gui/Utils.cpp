@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
@@ -1012,6 +1013,18 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
         }
     }
     return -1;
+}
+
+QStringList SketcherGui::textReferenceNames()
+{
+    const char* context = "SketcherGui::TextReference";
+    return {
+        QCoreApplication::translate(context, "Bounding box"),
+        QCoreApplication::translate(context, "Cap height"),
+        QCoreApplication::translate(context, "x-height"),
+        QCoreApplication::translate(context, "Ascender"),
+        QCoreApplication::translate(context, "Em (point size)")
+    };
 }
 
 QMap<QString, QString> SketcherGui::findAvailableFontFiles()

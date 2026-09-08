@@ -85,6 +85,7 @@ enum ConstraintType
     AngleViaPointAndTwoParams = 34,
     AngleViaTwoPoints = 35,
     ArcLength = 36,
+    LinearCombination = 37,
 };
 
 enum InternalAlignmentType
@@ -311,6 +312,30 @@ public:
 private:
     std::vector<double> factors;
     size_t numpoles;
+};
+
+// LinearCombination
+class ConstraintLinearCombination: public Constraint
+{
+public:
+    /// Constrains the parameters to satisfy `sum(factors[i] * pvec[i]) + constant = 0`. The
+    /// factors are given once and stay constant, unlike ConstraintWeightedLinearCombination
+    /// where the weights are parameters themselves, so this constraint is linear.
+    ///
+    /// It is used to derive geometry from other geometry. A point expressed in the frame of a
+    /// line, for example, follows that line through four of these.
+    ConstraintLinearCombination(
+        const std::vector<double*>& givenpvec,
+        const std::vector<double>& givenfactors,
+        double givenconstant = 0.0
+    );
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+
+private:
+    std::vector<double> factors;
+    double constant;
 };
 
 // Slope at knot

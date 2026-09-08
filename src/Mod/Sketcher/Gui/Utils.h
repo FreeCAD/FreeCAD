@@ -31,6 +31,7 @@
 #include <QListWidget>
 #include <QMap>
 #include <QString>
+#include <QStringList>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
@@ -236,6 +237,9 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 }
 
 QMap<QString, QString> findAvailableFontFiles();
+
+/// User visible names of the typographic references, ordered as Part::TextReference
+QStringList textReferenceNames();
 
 }  // namespace SketcherGui
 

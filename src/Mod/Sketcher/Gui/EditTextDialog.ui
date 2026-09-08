@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>100</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,17 @@
      <item row="1" column="1">
       <widget class="QComboBox" name="comboBox_font"/>
      </item>
-     <item row="2" column="0" colspan="2">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_reference">
+       <property name="text">
+        <string>Reference</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="comboBox_reference"/>
+     </item>
+     <item row="3" column="0" colspan="2">
       <layout class="QHBoxLayout" name="layoutType">
        <item>
         <widget class="QRadioButton" name="radioButton_height">
@@ -54,6 +64,36 @@
        </item>
      </layout>
     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QCheckBox" name="checkBox_guides">
+       <property name="text">
+        <string>Guide lines</string>
+       </property>
+       <property name="toolTip">
+        <string>Adds construction lines for the descender, baseline, x-height, cap height and ascender of the text</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="2">
+      <widget class="QCheckBox" name="checkBox_letters">
+       <property name="text">
+        <string>Letter lines</string>
+       </property>
+       <property name="toolTip">
+        <string>Adds a construction line at every letter boundary, so that a single letter can be referred to</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="2">
+      <widget class="QCheckBox" name="checkBox_letterEdges">
+       <property name="text">
+        <string>Letter edges</string>
+       </property>
+       <property name="toolTip">
+        <string>Adds construction lines touching the left and the right edge of every letter, leaving out the space a font keeps around it</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

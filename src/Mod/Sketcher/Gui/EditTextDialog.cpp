@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCheckBox>
 # include <QComboBox>
 # include <QLineEdit>
 # include <QMessageBox>
@@ -57,6 +58,17 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
 
     ui->radioButton_height->setChecked(constraint->getIsTextHeight());
     ui->radioButton_width->setChecked(!constraint->getIsTextHeight());
+
+    // Initialize the typographic reference the handle refers to
+    ui->comboBox_reference->addItems(textReferenceNames());
+    int reference = constraint->getTextReference();
+    if (reference >= 0 && reference < ui->comboBox_reference->count()) {
+        ui->comboBox_reference->setCurrentIndex(reference);
+    }
+
+    ui->checkBox_guides->setChecked(constraint->getTextGuideLines());
+    ui->checkBox_letters->setChecked(constraint->getTextLetterLines());
+    ui->checkBox_letterEdges->setChecked(constraint->getTextLetterEdges());
 
     // Initialize Font
     populateFontList();
@@ -100,12 +112,20 @@ void EditTextDialog::on_buttonBox_accepted()
     QString selectedFontName = ui->comboBox_font->currentText();
     std::string newFontPath = fontPathMap.value(selectedFontName).toStdString();
     bool newIsHeight = ui->radioButton_height->isChecked();
+    int newReference = ui->comboBox_reference->currentIndex();
+    bool newGuideLines = ui->checkBox_guides->isChecked();
+    bool newLetterLines = ui->checkBox_letters->isChecked();
+    bool newLetterEdges = ui->checkBox_letterEdges->isChecked();
 
     const Sketcher::Constraint* constraint = sketch->Constraints[constrIndex];
 
     // Check if anything changed
     if (newText == constraint->getText() && selectedFontName.toStdString() == constraint->getFont()
-        && newIsHeight == constraint->getIsTextHeight()) {
+        && newIsHeight == constraint->getIsTextHeight()
+        && newReference == constraint->getTextReference()
+        && newGuideLines == constraint->getTextGuideLines()
+        && newLetterLines == constraint->getTextLetterLines()
+        && newLetterEdges == constraint->getTextLetterEdges()) {
         return;  // Nothing to do
     }
 
@@ -124,17 +144,21 @@ void EditTextDialog::on_buttonBox_accepted()
             );
         }
 
-        // Send the updated 5-parameter call to Python
+        // Send the updated 9-parameter call to Python
         std::string escText = escapeForPython(newText);
         std::string escFont = escapeForPython(newFontPath);
         Gui::cmdAppObjectArgs(
             sketch,
-            "setTextAndFont(%i, '%s', '%s', %s, %s)",
+            "setTextAndFont(%i, '%s', '%s', %s, %s, %i, %s, %s, %s)",
             constrIndex,
             escText.c_str(),
             escFont.c_str(),
             newIsHeight ? "True" : "False",
-            isConstruction ? "True" : "False"
+            isConstruction ? "True" : "False",
+            newReference,
+            newGuideLines ? "True" : "False",
+            newLetterLines ? "True" : "False",
+            newLetterEdges ? "True" : "False"
         );
 
         sketchView->getDocument()->commitCommand();

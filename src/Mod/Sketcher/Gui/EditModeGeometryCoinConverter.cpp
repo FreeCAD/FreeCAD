@@ -175,7 +175,10 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
         auto* obj = viewProvider.getSketchObject();
-        bool isGroupMember = GeoId >= 0 && obj->isInGroup(GeoId, false);
+        // References are drawn like ordinary geometry, points included, so that they can be
+        // picked and constrained.
+        bool isGroupMember =
+            GeoId >= 0 && obj->isInGroup(GeoId, false) && !obj->isGroupReference(GeoId);
 
         if (type == Part::GeomPoint::getClassTypeId()) {  // add a point
             convert<

@@ -1424,6 +1424,48 @@ PartExport std::unique_ptr<GeomCurve> makeFromTrimmedCurve(
 PartExport std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&, bool silent = false);
 
 /**
+ * @brief Typographic line a text is anchored on and sized from.
+ *
+ * BoundingBox is the historical behaviour: the ink bounding box of the glyphs is used, so both
+ * position and size depend on which characters the string happens to contain. The other values
+ * anchor the text on the pen origin of the baseline and take the size from a font metric.
+ */
+enum class TextReference
+{
+    BoundingBox,
+    CapHeight,
+    XHeight,
+    Ascender,
+    EmBox
+};
+
+/**
+ * @brief Typographic metrics of a shaped text run.
+ *
+ * Values are expressed in the same units as the shapes returned by makeTextWires and are measured
+ * from the baseline, so the descender is negative.
+ */
+struct TextMetrics
+{
+    double ascender {0.0};
+    double descender {0.0};
+    double capHeight {0.0};
+    double xHeight {0.0};
+    double emSize {0.0};
+    double advance {0.0};
+    /// The distinct levels a guide line can sit on, from the descender upwards. Computed with
+    /// the rest of the metrics so that redrawing only has to place them.
+    std::vector<double> guideLevels;
+    /// Pen position at each glyph boundary, from the start of the run to its advance. One more
+    /// entry than there are glyphs, so consecutive entries bracket a single glyph.
+    std::vector<double> glyphOffsets;
+    /// Left and right edge of the ink of every glyph that has any, as consecutive pairs. Unlike
+    /// glyphOffsets these touch the letter, the side bearings being left out.
+    std::vector<double> glyphInkBounds;
+    bool isValid {false};
+};
+
+/**
  * @brief Creates a series of edges representing a text string.
  *
  * This function generates geometric edges for a given text string using a specified font file.
@@ -1437,19 +1479,35 @@ PartExport std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve
  * @param plainText The string to be rendered.
  * @param fontFile The absolute path to the TTF, OTF, etc., font file.
  * @param tracking Additional spacing between characters.
+ * @param reference Typographic line the placement and the size are taken from.
+ * @param metrics Metrics of the run, required by every reference but BoundingBox.
+ * @param guideLines When given, receives a line segment for each typographic level of the run
+ * (descender, baseline, x-height, cap height, ascender), placed like the text itself.
+ * @param typographicLines Emits a line for each typographic level into guideLines.
+ * @param letterLines Emits a line into guideLines at every glyph boundary, running from the
+ * descender to the ascender, so that a single letter of the run can be referred to.
+ * @param letterEdgeLines Emits a line into guideLines along the left and the right edge of the
+ * ink of every letter.
  */
 PartExport void transformAndConvertToGeometry(
     std::vector<std::unique_ptr<Part::Geometry>>& geos,
     const std::vector<TopoDS_Shape>& baseShapes,
     const Base::Vector3d& p1,
     const Base::Vector3d& p2,
-    bool height
+    bool height,
+    TextReference reference = TextReference::BoundingBox,
+    const TextMetrics* metrics = nullptr,
+    std::vector<std::unique_ptr<Part::Geometry>>* guideLines = nullptr,
+    bool typographicLines = true,
+    bool letterLines = false,
+    bool letterEdgeLines = false
 );
 
 PartExport std::vector<TopoDS_Shape> makeTextWires(
     std::string& text,
     std::string& fontFile,
     double height = 1.0,
-    double tracking = 0.0
+    double tracking = 0.0,
+    TextMetrics* metrics = nullptr
 );
 }  // namespace Part

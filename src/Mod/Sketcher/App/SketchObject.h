@@ -153,6 +153,11 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    /** Returns true if geoId is a reference of a group, that is a typographic guide line of a
+     * Text. Such geometry belongs to the group, but the solver derives it from the handle of
+     * that group, so other elements can be constrained to it.
+     */
+    bool isGroupReference(int geoId) const;
     std::set<int> getGroupGeometries(int handleGeoId) const;
     /*!
      \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
@@ -357,7 +362,11 @@ public:
         std::string& newText,
         std::string& newFont,
         bool isHeight,
-        bool isConstruction = false
+        bool isConstruction = false,
+        int textReference = 0,
+        bool guideLines = false,
+        bool letterLines = false,
+        bool letterEdges = false
     );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);

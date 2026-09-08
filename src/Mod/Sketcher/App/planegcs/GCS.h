@@ -504,6 +504,13 @@ public:
     );
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
+    int addConstraintLinearCombination(
+        const std::vector<double*>& params,
+        const std::vector<double>& factors,
+        double constant = 0.0,
+        int tagId = 0,
+        bool driving = true
+    );
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(

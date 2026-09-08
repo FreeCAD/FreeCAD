@@ -1567,9 +1567,12 @@ void TaskSketcherElements::updateVisibility()
     const auto& constraints = sketchView->getSketchObject()->Constraints.getValues();
     for (const auto* c : constraints) {
         if (c->Type == Sketcher::Group || c->Type == Sketcher::Text) {
-            // Member geometries start from index 1.
-            for (int j = 1; c->hasElement(j); ++j) {
-                groupedGeoIds.insert(c->getGeoId(j));
+            // Member geometries start from index 1. Guide lines are references and are listed
+            // like ordinary elements.
+            for (size_t j = 1; c->hasElement(j); ++j) {
+                if (!c->isTextGuideElement(j)) {
+                    groupedGeoIds.insert(c->getGeoId(j));
+                }
             }
         }
     }
@@ -2006,9 +2009,12 @@ void TaskSketcherElements::slotElementsChanged()
             if (c->hasElement(0)) {
                 handleIdToType[c->getGeoId(0)] = c->Type;
             }
-            // Elements from index 1 onwards are the members.
-            for (int j = 1; c->hasElement(j); ++j) {
-                groupedGeoIds.insert(c->getGeoId(j));
+            // Elements from index 1 onwards are the members. Guide lines are references and
+            // are listed like ordinary elements.
+            for (size_t j = 1; c->hasElement(j); ++j) {
+                if (!c->isTextGuideElement(j)) {
+                    groupedGeoIds.insert(c->getGeoId(j));
+                }
             }
         }
     }

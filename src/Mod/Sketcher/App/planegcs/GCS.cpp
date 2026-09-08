@@ -918,6 +918,20 @@ int System::addConstraintArcLength(Arc& a, double* distance, int tagId, bool dri
     return addConstraint(constr);
 }
 
+int System::addConstraintLinearCombination(
+    const std::vector<double*>& params,
+    const std::vector<double>& factors,
+    double constant,
+    int tagId,
+    bool driving
+)
+{
+    Constraint* constr = new ConstraintLinearCombination(params, factors, constant);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 
 // derived constraints
 

@@ -261,14 +261,31 @@ int Sketch::setUpSketch(
 
     clear();
 
-    // The geometries that are in groups are going to be ignored by the solver.
+    // The geometries that are in groups are going to be ignored by the solver. The guide lines
+    // of a text are the exception: they are derived geometry, tied to the handle of their group
+    // by addGroupReferenceConstraints() so that other elements can be constrained to them.
     std::set<int> inGroupGeoIds;
+    groupReferenceSets.clear();
     for (const auto& c : ConstraintList) {
-        if (c->Type == Group || c->Type == Text) {
-            // Start from index 1, as 0 is the frame.
-            for (int i = 1; c->hasElement(i); ++i) {
+        if (c->Type != Group && c->Type != Text) {
+            continue;
+        }
+
+        GroupReferenceSet referenceSet;
+        referenceSet.frameGeoId = c->getGeoId(0);
+
+        // Start from index 1, as 0 is the frame.
+        for (size_t i = 1; c->hasElement(i); ++i) {
+            if (c->isTextGuideElement(i)) {
+                referenceSet.referenceGeoIds.push_back(c->getGeoId(i));
+            }
+            else {
                 inGroupGeoIds.insert(c->getGeoId(i));
             }
+        }
+
+        if (!referenceSet.referenceGeoIds.empty()) {
+            groupReferenceSets.push_back(std::move(referenceSet));
         }
     }
 
@@ -324,6 +341,8 @@ int Sketch::setUpSketch(
     buildInternalAlignmentGeometryMap(ConstraintList);
 
     addGeometry(intGeoList, onlyBlockedGeometry, inGroupGeoIds);
+
+    addGroupReferenceConstraints();
     int extStart = Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd = Geoms.size() - 1;
@@ -5733,6 +5752,84 @@ Sketch::GroupLineState Sketch::getGroupLineState(int geoId) const
     return state;
 }
 
+void Sketch::addGroupReferenceTie(
+    const GCS::Line& frame,
+    const GCS::Point& point,
+    double alpha,
+    double beta
+)
+{
+    // With S and E the ends of the frame and d = E - S, the point is held at
+    // S + alpha * d + beta * rot90(d), where rot90(d) = (-d.y, d.x). Written out per coordinate
+    // both equations are linear in the frame and in the point, with constant coefficients.
+
+    // P.x + (alpha - 1) * S.x - beta * S.y - alpha * E.x + beta * E.y = 0
+    GCSsys.addConstraintLinearCombination(
+        {point.x, frame.p1.x, frame.p1.y, frame.p2.x, frame.p2.y},
+        {1.0, alpha - 1.0, -beta, -alpha, beta}
+    );
+
+    // P.y + (alpha - 1) * S.y + beta * S.x - alpha * E.y - beta * E.x = 0
+    // The tag stays 0: these are internal, they are not a constraint of the sketch and must not
+    // show up as one in the diagnosis.
+    GCSsys.addConstraintLinearCombination(
+        {point.y, frame.p1.y, frame.p1.x, frame.p2.y, frame.p2.x},
+        {1.0, alpha - 1.0, beta, -alpha, -beta}
+    );
+}
+
+void Sketch::addGroupReferenceConstraints()
+{
+    for (const auto& referenceSet : groupReferenceSets) {
+        if (referenceSet.frameGeoId < 0
+            || referenceSet.frameGeoId >= static_cast<int>(Geoms.size())) {
+            continue;
+        }
+
+        const GeoDef& frameDef = Geoms[referenceSet.frameGeoId];
+        if (frameDef.type != Line || frameDef.index < 0) {
+            continue;
+        }
+
+        const GCS::Line& frame = Lines[frameDef.index];
+        double startX = *frame.p1.x;
+        double startY = *frame.p1.y;
+        double dirX = *frame.p2.x - startX;
+        double dirY = *frame.p2.y - startY;
+        double lengthSquared = dirX * dirX + dirY * dirY;
+
+        // Without a direction there is no frame to express the references in. Leave them where
+        // the text generated them.
+        if (lengthSquared < Precision::Confusion() * Precision::Confusion()) {
+            continue;
+        }
+
+        for (int geoId : referenceSet.referenceGeoIds) {
+            if (geoId < 0 || geoId >= static_cast<int>(Geoms.size())) {
+                continue;
+            }
+
+            const GeoDef& def = Geoms[geoId];
+            if (def.type != Line || def.index < 0) {
+                continue;
+            }
+
+            const GCS::Line& reference = Lines[def.index];
+            for (const GCS::Point& point : {reference.p1, reference.p2}) {
+                // The coefficients come from the current configuration. They remain valid
+                // under any similarity of the frame, so the guide follows it when the text is
+                // moved, rotated or resized.
+                double relX = *point.x - startX;
+                double relY = *point.y - startY;
+                double alpha = (relX * dirX + relY * dirY) / lengthSquared;
+                double beta = (relY * dirX - relX * dirY) / lengthSquared;
+
+                addGroupReferenceTie(frame, point, alpha, beta);
+            }
+        }
+    }
+}
+
 void Sketch::captureGroupStates()
 {
     preSolveGroupStates.clear();
@@ -5815,7 +5912,13 @@ void Sketch::applyGroupTransformations()
         Base::Matrix4D transform = T2 * R * S * T1;
 
         // --- Loop through grouped elements and apply the transform ---
-        for (int i = 1; c->hasElement(i); ++i) {
+        for (size_t i = 1; c->hasElement(i); ++i) {
+            if (c->isTextGuideElement(i)) {
+                // The solver has already placed these, transforming them here would move them
+                // a second time.
+                continue;
+            }
+
             int groupedGeoId = c->getGeoId(i);
             if (groupedGeoId == GeoEnum::GeoUndef) {
                 continue;

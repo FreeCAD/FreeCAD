@@ -67,8 +67,8 @@ using DSHTextController = DrawSketchDefaultWidgetController<
     /*PAutoConstraintSize =*/2,
     /*OnViewParametersT =*/OnViewParameters<4, 4>,  // NOLINT
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
-    /*WidgetComboboxesT =*/WidgetComboboxes<2, 2>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<3, 3>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<3, 3>,  // NOLINT
     /*WidgetLineEditsT =*/WidgetLineEdits<1, 1>,    // NOLINT
     ConstructionMethods::TextConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
@@ -92,7 +92,11 @@ public:
         , font("")
         , cachedTextName("")
         , cachedFontName("")
-        , cachedBaseShapes({}) {};
+        , cachedBaseShapes({})
+        , reference(Part::TextReference::BoundingBox)
+        , guideLines(false)
+        , letterLines(false)
+        , letterEdges(false) {};
     ~DrawSketchHandlerText() override = default;
 
 private:
@@ -145,6 +149,10 @@ private:
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
             const char* heightBoolStr = isHeight ? "True" : "False";
+            int referenceInt = static_cast<int>(reference);
+            const char* guidesBoolStr = guideLines ? "True" : "False";
+            const char* lettersBoolStr = letterLines ? "True" : "False";
+            const char* edgesBoolStr = letterEdges ? "True" : "False";
 
             // Add the 'Text' Constraint (Empty)
             // We initialize the constraint containing ONLY the handle (element 0).
@@ -152,11 +160,16 @@ private:
             // associated with Python serialization.
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
-                "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s))",
+                "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s, %d, %s, 0, "
+                "%s, %s))",
                 handleId,
                 escText.c_str(),
                 escFontPath.c_str(),
-                heightBoolStr
+                heightBoolStr,
+                referenceInt,
+                guidesBoolStr,
+                lettersBoolStr,
+                edgesBoolStr
             );
 
             // Generate Text Geometry by calling setTextAndFont on the new constraint.
@@ -165,12 +178,16 @@ private:
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
                 "setTextAndFont(len(App.ActiveDocument.getObject('%s').Constraints)-1, '%s', '%s', "
-                "%s, %s)",
+                "%s, %s, %d, %s, %s, %s)",
                 getSketchObject()->getNameInDocument(),
                 escText.c_str(),
                 escFontPath.c_str(),
                 heightBoolStr,
-                constrBoolStr
+                constrBoolStr,
+                referenceInt,
+                guidesBoolStr,
+                lettersBoolStr,
+                edgesBoolStr
             );
 
             commitCommand();
@@ -275,6 +292,11 @@ private:
     std::string cachedTextName;
     std::string cachedFontName;
     std::vector<TopoDS_Shape> cachedBaseShapes;
+    Part::TextMetrics cachedMetrics;
+    Part::TextReference reference;
+    bool guideLines;
+    bool letterLines;
+    bool letterEdges;
 
     void createShape(bool onlyeditoutline) override
     {
@@ -293,20 +315,28 @@ private:
                 cachedTextName = text;
                 cachedFontName = font;
                 // This is the one-time slow operation to get the template shapes.
-                cachedBaseShapes = Part::makeTextWires(text, font);
+                cachedBaseShapes = Part::makeTextWires(text, font, 1.0, 0.0, &cachedMetrics);
             }
             else {
                 cachedBaseShapes.clear();
+                cachedMetrics = Part::TextMetrics();
             }
         }
 
         // 2. Call the generic helper to transform and create the final geometry.
+        std::vector<std::unique_ptr<Part::Geometry>> guideGeos;
         transformAndConvertToGeometry(
             ShapeGeometry,
             cachedBaseShapes,
             toVector3d(startPoint),
             toVector3d(endPoint),
-            constructionMethod() == ConstructionMethod::Height
+            constructionMethod() == ConstructionMethod::Height,
+            reference,
+            &cachedMetrics,
+            (guideLines || letterLines || letterEdges) ? &guideGeos : nullptr,
+            guideLines,
+            letterLines,
+            letterEdges
         );
 
         // 3. Set construction mode on the newly created geometry
@@ -314,6 +344,12 @@ private:
             for (auto& geo : ShapeGeometry) {
                 Sketcher::GeometryFacade::setConstruction(geo.get(), true);
             }
+        }
+
+        // 4. Guide lines are references, so they are construction whatever the text is.
+        for (auto& geo : guideGeos) {
+            Sketcher::GeometryFacade::setConstruction(geo.get(), true);
+            ShapeGeometry.push_back(std::move(geo));
         }
     }
 
@@ -332,6 +368,9 @@ private:
     using HintTable = std::vector<HintEntry>;
 
     static Gui::InputHint switchModeHint();
+    static Gui::InputHint guideLinesHint();
+    static Gui::InputHint letterLinesHint();
+    static Gui::InputHint letterEdgesHint();
     static HintTable getTextHintTable();
     static std::list<Gui::InputHint> lookupTextHints(int method, int state);
 };
@@ -372,6 +411,51 @@ void DSHTextController::configureToolWidget()
         toolWidget->setComboboxLabel(
             WCombobox::SecondCombo,
             QApplication::translate("TaskSketcherTool_Text", "Font")
+        );
+
+        toolWidget->setComboboxLabel(
+            WCombobox::ThirdCombo,
+            QApplication::translate("TaskSketcherTool_Text", "Reference")
+        );
+        toolWidget->setComboboxElements(WCombobox::ThirdCombo, textReferenceNames());
+
+        toolWidget->setCheckboxLabel(
+            WCheckbox::FirstBox,
+            QApplication::translate("TaskSketcherTool_Text", "Guide lines (U)")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_Text",
+                "Adds construction lines for the descender, baseline, x-height, cap height and "
+                "ascender of the text"
+            )
+        );
+
+        toolWidget->setCheckboxLabel(
+            WCheckbox::SecondBox,
+            QApplication::translate("TaskSketcherTool_Text", "Letter lines (J)")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_Text",
+                "Adds a construction line at every letter boundary, so that a single letter can "
+                "be referred to"
+            )
+        );
+
+        toolWidget->setCheckboxLabel(
+            WCheckbox::ThirdBox,
+            QApplication::translate("TaskSketcherTool_Text", "Letter edges (R)")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::ThirdBox,
+            QApplication::translate(
+                "TaskSketcherTool_Text",
+                "Adds construction lines touching the left and the right edge of every letter, "
+                "leaving out the space a font keeps around it"
+            )
         );
 
         // 1. Scan for font files and store the map
@@ -425,6 +509,24 @@ void DSHTextController::configureToolWidget()
         SketcherToolDefaultWidget::LineEdit::FirstEdit,
         QString::fromStdString(handler->text)
     );
+
+    syncCheckboxToHandler(WCheckbox::FirstBox, handler->guideLines);
+    syncCheckboxToHandler(WCheckbox::SecondBox, handler->letterLines);
+    syncCheckboxToHandler(WCheckbox::ThirdBox, handler->letterEdges);
+}
+
+template<>
+void DSHTextController::adaptDrawingToCheckboxChange(int checkboxindex, bool value)
+{
+    if (checkboxindex == WCheckbox::FirstBox) {
+        handler->guideLines = value;
+    }
+    else if (checkboxindex == WCheckbox::SecondBox) {
+        handler->letterLines = value;
+    }
+    else if (checkboxindex == WCheckbox::ThirdBox) {
+        handler->letterEdges = value;
+    }
 }
 
 template<>
@@ -450,6 +552,11 @@ void DSHTextController::adaptDrawingToComboboxChange(int comboboxindex, int valu
             handler->font = handler->fontPathMap.value(fontName).toStdString();
         }
         // The redraw is handled by the controller's finishControlsChanged()
+    }
+    else if (comboboxindex == WCombobox::ThirdCombo) {
+        if (value >= 0 && value <= static_cast<int>(Part::TextReference::EmBox)) {
+            handler->reference = static_cast<Part::TextReference>(value);
+        }
     }
 }
 
@@ -725,27 +832,57 @@ Gui::InputHint DrawSketchHandlerText::switchModeHint()
     return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
 }
 
+Gui::InputHint DrawSketchHandlerText::guideLinesHint()
+{
+    return {QObject::tr("%1 toggle guide lines"), {Gui::InputHint::UserInput::KeyU}};
+}
+
+Gui::InputHint DrawSketchHandlerText::letterLinesHint()
+{
+    return {QObject::tr("%1 toggle letter lines"), {Gui::InputHint::UserInput::KeyJ}};
+}
+
+Gui::InputHint DrawSketchHandlerText::letterEdgesHint()
+{
+    return {QObject::tr("%1 toggle letter edges"), {Gui::InputHint::UserInput::KeyR}};
+}
+
 DrawSketchHandlerText::HintTable DrawSketchHandlerText::getTextHintTable()
 {
     const auto switchHint = switchModeHint();
+    const auto guidesHint = guideLinesHint();
+    const auto lettersHint = letterLinesHint();
+    const auto edgesHint = letterEdgesHint();
     return {
         // Structure: {constructionMethod, state, {hints...}}
         {static_cast<int>(ConstructionMethod::Height),
          0,
          {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+          switchHint,
+          guidesHint,
+          lettersHint,
+          edgesHint}},
         {static_cast<int>(ConstructionMethod::Height),
          1,
          {{QObject::tr("%1 pick top-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+          switchHint,
+          guidesHint,
+          lettersHint,
+          edgesHint}},
         {static_cast<int>(ConstructionMethod::Width),
          0,
          {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+          switchHint,
+          guidesHint,
+          lettersHint,
+          edgesHint}},
         {static_cast<int>(ConstructionMethod::Width),
          1,
          {{QObject::tr("%1 pick bottom-right point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}}
+          switchHint,
+          guidesHint,
+          lettersHint,
+          edgesHint}}
     };
 }
 

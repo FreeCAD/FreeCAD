@@ -474,7 +474,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                 bool preselected = (preselectcurve == GeoId);
 
                 auto* obj = viewProvider.getSketchObject();
-                bool isGroupMember = GeoId >= 0 && obj->isInGroup(GeoId, false);
+                bool isGroupMember =
+                    GeoId >= 0 && obj->isInGroup(GeoId, false) && !obj->isGroupReference(GeoId);
                 if (isGroupMember) {
                     // We use the same color as group handle.
                     GeoId = obj->getGroupHandleIfInGroup(GeoId);

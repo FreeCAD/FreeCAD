@@ -341,9 +341,11 @@ bool SketchObject::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) 
         return true;
     }
 
-    // If the constraint is not deactivated, it could still constraint something in a group
+    // If the constraint is not deactivated, it could still constraint something in a group.
+    // Guide lines are derived geometry the solver knows about, so constraining to them is fine.
     for (int j = 0; cstr->hasElement(j); ++j) {
-        if (isInGroup(cstr->getGeoId(j), false)) {
+        int geoId = cstr->getGeoId(j);
+        if (isInGroup(geoId, false) && !isGroupReference(geoId)) {
             return false;
         }
     }

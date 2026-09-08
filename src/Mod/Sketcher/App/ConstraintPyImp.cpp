@@ -158,16 +158,26 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    // Attempt to parse (string, list, string, string, bool) for 'Text'
+    // Attempt to parse (string, list, string, string, bool, int, bool, int, bool) for 'Text'
+    int text_reference = 0;
+    PyObject* py_guide_lines = nullptr;
+    int text_guide_count = 0;
+    PyObject* py_letter_lines = nullptr;
+    PyObject* py_letter_edges = nullptr;
     if (PyArg_ParseTuple(
             args,
-            "sO!ss|O",
+            "sO!ss|OiOiOO",
             &ConstraintType,
             &PyList_Type,
             &py_elements_list,
             &text_str,
             &font_str,
-            &py_is_height
+            &py_is_height,
+            &text_reference,
+            &py_guide_lines,
+            &text_guide_count,
+            &py_letter_lines,
+            &py_letter_edges
         )) {
 
         if (strcmp(ConstraintType, "Text") == 0) {
@@ -189,6 +199,18 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else {
                 constraint->setIsTextHeight(true);
             }
+
+            constraint->setTextReference(text_reference);
+            constraint->setTextGuideLines(
+                py_guide_lines && PyBool_Check(py_guide_lines) && py_guide_lines == Py_True
+            );
+            constraint->setTextLetterLines(
+                py_letter_lines && PyBool_Check(py_letter_lines) && py_letter_lines == Py_True
+            );
+            constraint->setTextLetterEdges(
+                py_letter_edges && PyBool_Check(py_letter_edges) && py_letter_edges == Py_True
+            );
+            constraint->setTextGuideCount(text_guide_count);
 
             return 0;  // Success!
         }

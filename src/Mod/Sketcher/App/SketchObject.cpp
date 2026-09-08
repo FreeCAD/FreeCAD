@@ -692,7 +692,11 @@ SketchSolveStatus SketchObject::setTextAndFont(
     std::string& newText,
     std::string& newFont,
     bool isHeight,
-    bool isConstruction
+    bool isConstruction,
+    int textReference,
+    bool guideLines,
+    bool letterLines,
+    bool letterEdges
 )
 {
     // no need to check input data validity as this is an sketchobject managed operation.
@@ -716,6 +720,11 @@ SketchSolveStatus SketchObject::setTextAndFont(
     const std::string oldText = constr->getText();
     const std::string oldFont = constr->getFont();
     const bool oldIsHeight = constr->getIsTextHeight();
+    const int oldReference = constr->getTextReference();
+    const bool oldGuideLines = constr->getTextGuideLines();
+    const bool oldLetterLines = constr->getTextLetterLines();
+    const bool oldLetterEdges = constr->getTextLetterEdges();
+    const int oldGuideCount = constr->getTextGuideCount();
     int handleGeoId = constr->getGeoId(0);
     int firstTextGeoId = constr->getGeoId(1);
     bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
@@ -746,21 +755,34 @@ SketchSolveStatus SketchObject::setTextAndFont(
         return SketchSolveStatus::SolverError;
     }
 
+    auto reference = Part::TextReference::BoundingBox;
+    if (textReference > 0 && textReference <= static_cast<int>(Part::TextReference::EmBox)) {
+        reference = static_cast<Part::TextReference>(textReference);
+    }
+
     // Generate text geos based on new text/font :
     std::vector<std::unique_ptr<Part::Geometry>> newGeos;
-    std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont);
+    std::vector<std::unique_ptr<Part::Geometry>> guideGeos;
+    Part::TextMetrics metrics;
+    std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont, 1.0, 0.0, &metrics);
     Part::transformAndConvertToGeometry(
         newGeos,
         shapes,
         line->getStartPoint(),
         line->getEndPoint(),
-        isHeight
+        isHeight,
+        reference,
+        &metrics,
+        (guideLines || letterLines || letterEdges) ? &guideGeos : nullptr,
+        guideLines,
+        letterLines,
+        letterEdges
     );
 
     // Add the geometries to sketch
     int lastGeoid = getHighestCurveIndex();
     std::vector<Part::Geometry*> newGeosRawPtrs;
-    newGeosRawPtrs.reserve(newGeos.size());
+    newGeosRawPtrs.reserve(newGeos.size() + guideGeos.size());
 
     // Populate the raw pointer vector and release ownership from the unique_ptrs.
     for (auto& geo_ptr : newGeos) {
@@ -773,6 +795,17 @@ SketchSolveStatus SketchObject::setTextAndFont(
         geo_ptr.release();
     }
     newGeos.clear();
+
+    // Guides go after the glyphs so that element 1 of the constraint stays the first glyph.
+    // They are references rather than profile, so they are always construction.
+    const int guideCount = static_cast<int>(guideGeos.size());
+    for (auto& geo_ptr : guideGeos) {
+        Sketcher::GeometryFacade::setConstruction(geo_ptr.get(), true);
+        newGeosRawPtrs.push_back(geo_ptr.get());
+        geo_ptr.release();
+    }
+    guideGeos.clear();
+
     addGeometry(newGeosRawPtrs);
 
     int newLastGeoid = getHighestCurveIndex();
@@ -791,6 +824,11 @@ SketchSolveStatus SketchObject::setTextAndFont(
     constr->setText(newText);
     constr->setFont(newFont);
     constr->setIsTextHeight(isHeight);
+    constr->setTextReference(static_cast<int>(reference));
+    constr->setTextGuideLines(guideLines);
+    constr->setTextLetterLines(letterLines);
+    constr->setTextLetterEdges(letterEdges);
+    constr->setTextGuideCount(guideCount);
 
     if (hasExistingText) {
         addConstraint(constr);
@@ -802,6 +840,11 @@ SketchSolveStatus SketchObject::setTextAndFont(
         constr->setText(oldText);
         constr->setFont(oldFont);
         constr->setIsTextHeight(oldIsHeight);
+        constr->setTextReference(oldReference);
+        constr->setTextGuideLines(oldGuideLines);
+        constr->setTextLetterLines(oldLetterLines);
+        constr->setTextLetterEdges(oldLetterEdges);
+        constr->setTextGuideCount(oldGuideCount);
     }
 
     return status;
@@ -860,6 +903,25 @@ bool SketchObject::isGroupHandle(int geoId) const
     for (const auto& constr : vals) {
         if (constr->Type == Group || constr->Type == Text) {
             if (constr->getGeoId(0) == geoId) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketchObject::isGroupReference(int geoId) const
+{
+    if (geoId < 0) {
+        return false;
+    }
+
+    for (const auto& constr : Constraints.getValues()) {
+        if (constr->Type != Text || constr->getTextGuideCount() <= 0) {
+            continue;
+        }
+        for (size_t i = 1; constr->hasElement(i); ++i) {
+            if (constr->isTextGuideElement(i) && constr->getGeoId(i) == geoId) {
                 return true;
             }
         }

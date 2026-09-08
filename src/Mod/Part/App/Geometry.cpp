@@ -131,6 +131,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #include FT_OUTLINE_H
+#include FT_TRUETYPE_TABLES_H
 
 #include <hb.h>
 
@@ -7483,6 +7484,22 @@ int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, v
 }
 
 
+double referenceHeight(const TextMetrics& metrics, TextReference reference)
+{
+    switch (reference) {
+        case TextReference::CapHeight:
+            return metrics.capHeight;
+        case TextReference::XHeight:
+            return metrics.xHeight;
+        case TextReference::Ascender:
+            return metrics.ascender;
+        case TextReference::EmBox:
+            return metrics.emSize;
+        default:
+            return 0.0;
+    }
+}
+
 }  // end anonymous namespace
 
 /**
@@ -7497,13 +7514,25 @@ int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, v
  * @param p2                The end point, which defines the size and orientation.
  * @param height            If true, the distance p1-p2 defines the height.
  *                          If false, it defines the width.
+ * @param reference         Typographic line the placement and the size are taken from.
+ * @param metrics           Metrics of the run, required by every reference but BoundingBox.
+ * @param guideLines        When given, receives the guide lines of the run.
+ * @param typographicLines  Emits a line per typographic level.
+ * @param letterLines       Emits a line at every glyph boundary.
+ * @param letterEdgeLines   Emits a line along both edges of the ink of every letter.
  */
 void transformAndConvertToGeometry(
     std::vector<std::unique_ptr<Part::Geometry>>& geos,
     const std::vector<TopoDS_Shape>& baseShapes,
     const Base::Vector3d& p1,
     const Base::Vector3d& p2,
-    bool height
+    bool height,
+    TextReference reference,
+    const TextMetrics* metrics,
+    std::vector<std::unique_ptr<Part::Geometry>>* guideLines,
+    bool typographicLines,
+    bool letterLines,
+    bool letterEdgeLines
 )
 {
     if (baseShapes.empty()) {
@@ -7516,28 +7545,44 @@ void transformAndConvertToGeometry(
         return;
     }
 
-    // 1. Calculate the bounding box of the base shapes
-    Bnd_Box bndBox;
-    for (const auto& shape : baseShapes) {
-        if (!shape.IsNull()) {
-            BRepBndLib::Add(shape, bndBox);
+    const bool useMetrics = reference != TextReference::BoundingBox && metrics && metrics->isValid;
+
+    double baseWidth = 0.0;
+    double baseHeight = 0.0;
+    // Translation bringing the reference point of the base shapes onto the origin.
+    gp_Vec initialTranslationVec(0.0, 0.0, 0.0);
+
+    if (useMetrics) {
+        // 1. Anchor on the pen origin of the baseline and take the size from a font metric.
+        // Neither depends on which glyphs the string happens to contain. The shapes are already
+        // built on that origin, so there is nothing to translate.
+        baseWidth = metrics->advance;
+        baseHeight = referenceHeight(*metrics, reference);
+    }
+    else {
+        // 1. Calculate the bounding box of the base shapes
+        Bnd_Box bndBox;
+        for (const auto& shape : baseShapes) {
+            if (!shape.IsNull()) {
+                BRepBndLib::Add(shape, bndBox);
+            }
         }
+
+        if (bndBox.IsVoid()) {
+            Base::Console().warning(
+                "transformAndConvertToGeometry: Could not determine bounds of generated geometry.\n"
+            );
+            return;
+        }
+
+        Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+        bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+        baseWidth = xmax - xmin;
+        baseHeight = ymax - ymin;
+
+        // This transform will move the geometry's bottom-left corner to the origin (0,0,0)
+        initialTranslationVec.SetCoord(-xmin, -ymin, 0.0);
     }
-
-    if (bndBox.IsVoid()) {
-        Base::Console().warning(
-            "transformAndConvertToGeometry: Could not determine bounds of generated geometry.\n"
-        );
-        return;
-    }
-
-    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
-    bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-    double baseWidth = xmax - xmin;
-    double baseHeight = ymax - ymin;
-
-    // This transform will move the geometry's bottom-left corner to the origin (0,0,0)
-    gp_Vec initialTranslationVec(-xmin, -ymin, 0.0);
 
     // 2. Determine scale and rotation
     double angle;
@@ -7569,7 +7614,66 @@ void transformAndConvertToGeometry(
     finalTranslate.SetTranslation(gp_Vec(p1.x, p1.y, 0.0));
     gp_Trsf finalTrsf = finalTranslate * rotateTrsf * scaleTrsf * initialTranslate;
 
-    // 4. Apply transformation and convert to Sketcher geometry
+    // 4. Emit the guide lines, spanning the run at the typographic levels. The levels come from
+    // the metrics and are already deduplicated, so all that is left here is to place them. This
+    // runs on every mouse move while dragging, which is why it avoids building an OCC transform.
+    if (guideLines && metrics && metrics->isValid && metrics->advance > Precision::Confusion()) {
+        // The same output carries both kinds of line, so an empty set of levels means only the
+        // letter lines were asked for.
+        static const std::vector<double> noLevels;
+        const std::vector<double>& levels = typographicLines ? metrics->guideLevels : noLevels;
+
+        // Scaled base axes, equivalent to finalTrsf applied to (0, 0), (1, 0) and (0, 1).
+        Base::Vector3d dirX(std::cos(angle) * scale, std::sin(angle) * scale, 0.0);
+        Base::Vector3d dirY(-dirX.y, dirX.x, 0.0);
+        Base::Vector3d origin = Base::Vector3d(p1.x, p1.y, 0.0)
+            + dirX * initialTranslationVec.X() + dirY * initialTranslationVec.Y();
+        Base::Vector3d run = dirX * metrics->advance;
+
+        guideLines->reserve(guideLines->size() + metrics->guideLevels.size());
+        for (double level : levels) {
+            Base::Vector3d start = origin + dirY * level;
+            auto segment = std::make_unique<Part::GeomLineSegment>();
+            segment->setPoints(start, start + run);
+            guideLines->push_back(std::move(segment));
+        }
+
+        // Lines across the text, so that a single letter can be referred to rather than the
+        // whole run. They span the full body of the text, from descender to ascender.
+        if ((letterLines || letterEdgeLines) && metrics->descender < metrics->ascender) {
+            Base::Vector3d bottom = dirY * metrics->descender;
+            Base::Vector3d top = dirY * metrics->ascender;
+
+            auto emitAt = [&](const std::vector<double>& positions) {
+                double previous = 0.0;
+                for (std::size_t i = 0; i < positions.size(); ++i) {
+                    // A glyph that does not advance the pen, a combining mark for instance, or
+                    // one whose ink starts where the previous ended, would put a second line on
+                    // top of the one before it.
+                    if (i > 0 && std::fabs(positions[i] - previous) < Precision::Confusion()) {
+                        continue;
+                    }
+                    previous = positions[i];
+
+                    Base::Vector3d at = origin + dirX * positions[i];
+                    auto segment = std::make_unique<Part::GeomLineSegment>();
+                    segment->setPoints(at + bottom, at + top);
+                    guideLines->push_back(std::move(segment));
+                }
+            };
+
+            // Where the pen stands between the letters, side bearings included.
+            if (letterLines) {
+                emitAt(metrics->glyphOffsets);
+            }
+            // Where the ink of each letter actually begins and ends.
+            if (letterEdgeLines) {
+                emitAt(metrics->glyphInkBounds);
+            }
+        }
+    }
+
+    // 5. Apply transformation and convert to Sketcher geometry
     for (const auto& shape : baseShapes) {
         BRepBuilderAPI_Transform performer(shape, finalTrsf, true);
         if (!performer.IsDone()) {
@@ -7629,7 +7733,8 @@ std::vector<TopoDS_Shape> makeTextWires(
     std::string& text,
     std::string& fontFile,
     double height,
-    double tracking
+    double tracking,
+    TextMetrics* metrics
 )
 {
     if (text.empty()) {
@@ -7689,6 +7794,62 @@ std::vector<TopoDS_Shape> makeTextWires(
     FT_Outline_Funcs ftCallbacks = {move_cb, line_cb, quad_cb, cubic_cb, 0, 0};
     FT_UInt ftLoadFlags = FT_LOAD_NO_SCALE | FT_LOAD_NO_BITMAP;
 
+    // Typographic metrics of the face, in font design units. They let the caller place and scale
+    // the text on a reference line rather than on its ink bounding box.
+    double ascender = 0.0;
+    double descender = 0.0;
+    double capHeight = 0.0;
+    double xHeight = 0.0;
+    if (metrics) {
+        metrics->glyphOffsets.clear();
+        metrics->glyphInkBounds.clear();
+
+        auto* os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(ftFace, FT_SFNT_OS2));
+        if (os2 && os2->version != 0xFFFFU) {
+            ascender = static_cast<double>(os2->sTypoAscender);
+            descender = static_cast<double>(os2->sTypoDescender);
+            if (os2->version >= 2) {
+                capHeight = static_cast<double>(os2->sCapHeight);
+                xHeight = static_cast<double>(os2->sxHeight);
+            }
+        }
+
+        // Not every face has an OS/2 table, and the entries in it are often left empty. Measure
+        // a representative glyph before falling back to the usual proportions.
+        auto glyphTop = [&ftFace, ftLoadFlags](FT_ULong charCode) -> double {
+            FT_UInt index = FT_Get_Char_Index(ftFace, charCode);
+            if (index == 0 || FT_Load_Glyph(ftFace, index, ftLoadFlags) != 0) {
+                return 0.0;
+            }
+            return static_cast<double>(ftFace->glyph->metrics.horiBearingY);
+        };
+
+        if (ascender <= 0.0) {
+            ascender = static_cast<double>(ftFace->ascender);
+        }
+        if (descender >= 0.0) {
+            descender = static_cast<double>(ftFace->descender);
+        }
+        if (capHeight <= 0.0) {
+            capHeight = glyphTop('H');
+        }
+        if (xHeight <= 0.0) {
+            xHeight = glyphTop('x');
+        }
+        if (ascender <= 0.0) {
+            ascender = 0.8 * unitsPerEM;
+        }
+        if (descender >= 0.0) {
+            descender = -0.2 * unitsPerEM;
+        }
+        if (capHeight <= 0.0) {
+            capHeight = 0.7 * unitsPerEM;
+        }
+        if (xHeight <= 0.0) {
+            xHeight = 0.5 * unitsPerEM;
+        }
+    }
+
     // Use HarfBuzz for text shaping. Positions are in font design units (upem),
     // matching our FT_LOAD_NO_SCALE outline decomposition.
     auto* hbBlob = hb_blob_create(
@@ -7719,10 +7880,26 @@ std::vector<TopoDS_Shape> makeTextWires(
         double xOffset = glyphPositions[i].x_offset;
         double xAdvance = glyphPositions[i].x_advance;
 
+        if (metrics) {
+            // Where the pen stands before this glyph is drawn. Whitespace counts, so the
+            // boundaries of a word can be referred to as well.
+            metrics->glyphOffsets.push_back(penPos * scaleFactor + currentTracking);
+        }
+
         if (FT_Load_Glyph(ftFace, glyphIndex, ftLoadFlags) != 0) {
             penPos += xAdvance;
             currentTracking += tracking;
             continue;
+        }
+
+        if (metrics && ftFace->glyph->metrics.width > 0) {
+            // The ink of this glyph, taken from the face rather than from the wires: the same
+            // numbers, without walking the outline a second time.
+            double placement = (penPos + xOffset) * scaleFactor + currentTracking;
+            double bearing = static_cast<double>(ftFace->glyph->metrics.horiBearingX) * scaleFactor;
+            double inkWidth = static_cast<double>(ftFace->glyph->metrics.width) * scaleFactor;
+            metrics->glyphInkBounds.push_back(placement + bearing);
+            metrics->glyphInkBounds.push_back(placement + bearing + inkWidth);
         }
 
         if (ftFace->glyph->format == FT_GLYPH_FORMAT_OUTLINE
@@ -7751,6 +7928,42 @@ std::vector<TopoDS_Shape> makeTextWires(
 
         penPos += xAdvance;
         currentTracking += tracking;
+    }
+
+    if (metrics) {
+        metrics->ascender = ascender * scaleFactor;
+        metrics->descender = descender * scaleFactor;
+        metrics->capHeight = capHeight * scaleFactor;
+        metrics->xHeight = xHeight * scaleFactor;
+        metrics->emSize = unitsPerEM * scaleFactor;
+        metrics->advance = penPos * scaleFactor
+            + (glyphCount > 0 ? static_cast<double>(glyphCount - 1) * tracking : 0.0);
+
+        // Close the last glyph off, so that consecutive offsets always bracket one glyph.
+        metrics->glyphOffsets.push_back(metrics->advance);
+
+        // Some fonts give the same value to two of these levels. Drop the duplicates here so
+        // that the guide lines never come out coincident.
+        metrics->guideLevels.clear();
+        metrics->guideLevels.reserve(5);
+        for (double level : {metrics->descender,
+                             0.0,  // baseline
+                             metrics->xHeight,
+                             metrics->capHeight,
+                             metrics->ascender}) {
+            bool duplicate = false;
+            for (double done : metrics->guideLevels) {
+                if (std::fabs(done - level) < Precision::Confusion()) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) {
+                metrics->guideLevels.push_back(level);
+            }
+        }
+
+        metrics->isValid = true;
     }
 
     hb_buffer_destroy(hbBuf);
