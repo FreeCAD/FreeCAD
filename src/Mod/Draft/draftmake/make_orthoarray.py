@@ -31,11 +31,11 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftmake.make_array as make_array
-
-from draftutils.messages import _wrn, _err
+from draftmake import make_array
+from draftutils import utils
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
+from freecad.deprecation import deprecated
 
 
 def _make_ortho_array(
