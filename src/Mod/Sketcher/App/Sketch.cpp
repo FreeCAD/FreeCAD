@@ -5752,12 +5752,7 @@ Sketch::GroupLineState Sketch::getGroupLineState(int geoId) const
     return state;
 }
 
-void Sketch::addGroupReferenceTie(
-    const GCS::Line& frame,
-    const GCS::Point& point,
-    double alpha,
-    double beta
-)
+void Sketch::addGroupReferenceTie(const GCS::Line& frame, const GCS::Point& point, double alpha, double beta)
 {
     // With S and E the ends of the frame and d = E - S, the point is held at
     // S + alpha * d + beta * rot90(d), where rot90(d) = (-d.y, d.x). Written out per coordinate
@@ -5781,8 +5776,7 @@ void Sketch::addGroupReferenceTie(
 void Sketch::addGroupReferenceConstraints()
 {
     for (const auto& referenceSet : groupReferenceSets) {
-        if (referenceSet.frameGeoId < 0
-            || referenceSet.frameGeoId >= static_cast<int>(Geoms.size())) {
+        if (referenceSet.frameGeoId < 0 || referenceSet.frameGeoId >= static_cast<int>(Geoms.size())) {
             continue;
         }
 

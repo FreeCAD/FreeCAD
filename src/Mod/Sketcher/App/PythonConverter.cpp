@@ -630,13 +630,11 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                     res += ", " + std::to_string(constraint->getTextReference());
                 }
                 if (hasGuides) {
-                    res += std::string(", ")
-                        + (constraint->getTextGuideLines() ? "True" : "False") + ", "
-                        + std::to_string(constraint->getTextGuideCount());
+                    res += std::string(", ") + (constraint->getTextGuideLines() ? "True" : "False")
+                        + ", " + std::to_string(constraint->getTextGuideCount());
                 }
                 if (constraint->getTextLetterLines() || constraint->getTextLetterEdges()) {
-                    res += std::string(", ")
-                        + (constraint->getTextLetterLines() ? "True" : "False");
+                    res += std::string(", ") + (constraint->getTextLetterLines() ? "True" : "False");
                 }
                 if (constraint->getTextLetterEdges()) {
                     res += ", True";

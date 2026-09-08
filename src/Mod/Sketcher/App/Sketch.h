@@ -689,12 +689,7 @@ private:
     void captureGroupStates();
     void applyGroupTransformations();
     void addGroupReferenceConstraints();
-    void addGroupReferenceTie(
-        const GCS::Line& frame,
-        const GCS::Point& point,
-        double alpha,
-        double beta
-    );
+    void addGroupReferenceTie(const GCS::Line& frame, const GCS::Point& point, double alpha, double beta);
     GroupLineState getGroupLineState(int geoId) const;
 
 public:

@@ -7626,8 +7626,8 @@ void transformAndConvertToGeometry(
         // Scaled base axes, equivalent to finalTrsf applied to (0, 0), (1, 0) and (0, 1).
         Base::Vector3d dirX(std::cos(angle) * scale, std::sin(angle) * scale, 0.0);
         Base::Vector3d dirY(-dirX.y, dirX.x, 0.0);
-        Base::Vector3d origin = Base::Vector3d(p1.x, p1.y, 0.0)
-            + dirX * initialTranslationVec.X() + dirY * initialTranslationVec.Y();
+        Base::Vector3d origin = Base::Vector3d(p1.x, p1.y, 0.0) + dirX * initialTranslationVec.X()
+            + dirY * initialTranslationVec.Y();
         Base::Vector3d run = dirX * metrics->advance;
 
         guideLines->reserve(guideLines->size() + metrics->guideLevels.size());
@@ -7946,11 +7946,12 @@ std::vector<TopoDS_Shape> makeTextWires(
         // that the guide lines never come out coincident.
         metrics->guideLevels.clear();
         metrics->guideLevels.reserve(5);
-        for (double level : {metrics->descender,
-                             0.0,  // baseline
-                             metrics->xHeight,
-                             metrics->capHeight,
-                             metrics->ascender}) {
+        for (double level :
+             {metrics->descender,
+              0.0,  // baseline
+              metrics->xHeight,
+              metrics->capHeight,
+              metrics->ascender}) {
             bool duplicate = false;
             for (double done : metrics->guideLevels) {
                 if (std::fabs(done - level) < Precision::Confusion()) {
