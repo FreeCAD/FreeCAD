@@ -178,12 +178,12 @@ void Constraint::Save(Writer& writer) const
     // Save elements
     {
         // Ensure backwards compatibility with old versions
-        writer.Stream() << "First=\"" << getElement(0).GeoId << "\" "
-                        << "FirstPos=\"" << getElement(0).posIdAsInt() << "\" "
-                        << "Second=\"" << getElement(1).GeoId << "\" "
-                        << "SecondPos=\"" << getElement(1).posIdAsInt() << "\" "
-                        << "Third=\"" << getElement(2).GeoId << "\" "
-                        << "ThirdPos=\"" << getElement(2).posIdAsInt() << "\" ";
+        writer.Stream() << "First=\"" << getGeoId(0) << "\" "
+                        << "FirstPos=\"" << getPosIdAsInt(0) << "\" "
+                        << "Second=\"" << getGeoId(1) << "\" "
+                        << "SecondPos=\"" << getPosIdAsInt(1) << "\" "
+                        << "Third=\"" << getGeoId(2) << "\" "
+                        << "ThirdPos=\"" << getPosIdAsInt(2) << "\" ";
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
         auto elements = std::views::iota(size_t {0}, this->elements.size())
             | std::views::transform([&](size_t i) { return getElement(i); });

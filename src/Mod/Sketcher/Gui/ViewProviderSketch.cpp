@@ -4845,8 +4845,6 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
         Gui::Selection().clearSelection();
         resetPreselectPoint();
 
-        const auto& constraints = getSketchObject()->Constraints.getValues();
-
         std::set<int> delInternalGeometries, delExternalGeometries, delCoincidents, delConstraints;
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
@@ -4856,17 +4854,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 if (GeoId >= 0) {
                     delInternalGeometries.insert(GeoId);
 
-                    // Handle group deletion
-                    for (const auto* c : constraints) {
-                        if ((c->Type == Sketcher::Text || c->Type == Sketcher::Group)
-                            && c->hasElement(0) && c->getGeoId(0) == GeoId) {
-                            // This is a group handle. Add all members to the delete list.
-                            for (int j = 1; c->hasElement(j); ++j) {
-                                delInternalGeometries.insert(c->getGeoId(j));
-                            }
-                            break; // A geo can only be a handle for one constraint.
-                        }
-                    }
+                    const auto members = getSketchObject()->getGroupGeometries(GeoId);
+                    delInternalGeometries.insert(members.begin(), members.end());
                 }
                 else
                     delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
