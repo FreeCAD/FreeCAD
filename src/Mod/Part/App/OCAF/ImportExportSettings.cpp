@@ -272,16 +272,6 @@ bool ImportExportSettings::getExpandCompound() const
     return pGroup->GetBool("ExpandCompound", false);
 }
 
-void ImportExportSettings::setShowProgress(bool on)
-{
-    pGroup->SetBool("ShowProgress", on);
-}
-
-bool ImportExportSettings::getShowProgress() const
-{
-    return pGroup->GetBool("ShowProgress", true);
-}
-
 void ImportExportSettings::setImportMode(ImportExportSettings::ImportMode mode)
 {
     pGroup->SetInt("ImportMode", static_cast<long>(mode));

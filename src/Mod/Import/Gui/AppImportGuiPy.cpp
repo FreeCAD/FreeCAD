@@ -173,7 +173,6 @@ private:
             options.setItem("useBaseName", Py::Boolean(stepSettings.useBaseName));
             options.setItem("importHidden", Py::Boolean(stepSettings.importHidden));
             options.setItem("reduceObjects", Py::Boolean(stepSettings.reduceObjects));
-            options.setItem("showProgress", Py::Boolean(stepSettings.showProgress));
             options.setItem("expandCompound", Py::Boolean(stepSettings.expandCompound));
             options.setItem("mode", Py::Long(stepSettings.mode));
             options.setItem("codePage", Py::Long(stepSettings.codePage));

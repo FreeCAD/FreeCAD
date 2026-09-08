@@ -103,7 +103,6 @@ ImportOCAFOptions ImportOCAF2::customImportOptions()
     defaultOptions.useBaseName = settings.getUseBaseName();
     defaultOptions.importHidden = settings.getImportHiddenObject();
     defaultOptions.reduceObjects = settings.getReduceObjects();
-    defaultOptions.showProgress = settings.getShowProgress();
     defaultOptions.expandCompound = settings.getExpandCompound();
     defaultOptions.mode = static_cast<int>(settings.getImportMode());
 

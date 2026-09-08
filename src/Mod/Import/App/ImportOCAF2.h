@@ -70,7 +70,7 @@ struct ImportExport ImportOCAFOptions
     bool useBaseName = true;
     bool importHidden = true;
     bool reduceObjects = false;
-    bool showProgress = false;
+    bool showProgress = true;
     bool expandCompound = false;
     int mode = 0;
 };
