@@ -1648,7 +1648,9 @@ class ObjectSurface(PathOp.ObjectOp):
             return None
 
         model_faces = surface_common._filter_vertical(model_shape.Faces)
-        optimized_shape = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
+        optimized_shape = (
+            model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
+        )
 
         return base_objs, model_shape, model_faces, optimized_shape
 
@@ -1776,7 +1778,10 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 # Create a boundary from model_shape
                 bb_face = surface_common.create_boundary_face(
-                    model_shape.Faces, offset, avoids=False, compound=optimized_shape if optimize_stl else False
+                    model_shape.Faces,
+                    offset,
+                    avoids=False,
+                    compound=optimized_shape if optimize_stl else False,
                 )
 
         # Avoid Faces processing

@@ -216,9 +216,7 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def create_boundary_face(
-    faces, offset=0.0, tolerance=0.005, avoids=False, compound=None
-):
+def create_boundary_face(faces, offset=0.0, tolerance=0.005, avoids=False, compound=None):
     """
     Creates a flat 2D boundary face from 3D faces using Path.Area's HLR
     projection (Outline mode) as primary method, falling back to

@@ -681,7 +681,13 @@ def zlevel_hybrid_stack(
         # than the tool's corner radius below the model's top
         if not all_prev_comp:
             all_prev_comp = _first_pass_mask(
-                shape, wpc, model_top, z_target, tool_params, tol, critical_heights,
+                shape,
+                wpc,
+                model_top,
+                z_target,
+                tool_params,
+                tol,
+                critical_heights,
             )
 
         # Determine the Slice Height (Model Footprint)
@@ -843,7 +849,7 @@ def _first_pass_mask(shape, wpc, model_top, z_target, tool_params, tol, critical
         Path.Log.warning(
             f"Failed to identify the top features of the model for the first "
             f"roughing pass ({e}). Inspect the generated tool path, or try a smaller step-down."
-            )
+        )
         return None
 
 
@@ -1171,7 +1177,7 @@ def zlevel_hybrid_to_gcode(
     tool_diam = radius * 2
     vert_rapid = feed_params.get("horizRapid", 0.0)
     min_path_length = tool_diam
-    min_adaptive_area = math.pi * (radius ** 2)
+    min_adaptive_area = math.pi * (radius**2)
 
     # Extract heights
     safe_hght = height_params.get("safe_hght", 3.0)
