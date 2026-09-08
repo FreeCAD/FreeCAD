@@ -90,6 +90,14 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::
     vp.setConstraintSelectability(enabled);
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(
+    ViewProviderSketch& vp,
+    bool hollow
+)
+{
+    vp.setOriginPointMarker(hollow);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(
     ViewProviderSketch& vp,
     const Base::Vector2d& Pos,
@@ -397,7 +405,15 @@ void DrawSketchHandler::setSketchGui(ViewProviderSketch* vp)
 
 void DrawSketchHandler::deactivate()
 {
+    // Some tools (bspline for instance) may get exited while a transaction is still opened.
+    // Exiting should abort any opened transaction.
+    // The following recompute is needed else we have acces violation because preselection still
+    // referenced the removed bspline points.
+    abortCommand();
+    tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
+
     Gui::ToolHandler::deactivate();
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, false);
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
 
     // clear temporary Curve and Markers from the scenograph
@@ -413,6 +429,7 @@ void DrawSketchHandler::deactivate()
 
 void DrawSketchHandler::preActivated()
 {
+    ViewProviderSketchDrawSketchHandlerAttorney::setOriginPointMarker(*sketchgui, true);
     this->signalToolChanged();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }

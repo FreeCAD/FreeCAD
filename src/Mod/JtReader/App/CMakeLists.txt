@@ -62,9 +62,7 @@ if (MSVC)
     target_compile_options(JtReader PRIVATE /wd4251 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(JtReader)
-endif()
+target_compile_warn_error(JtReader)
 
 fc_target_copy_resource_flat(JtReader
     ${CMAKE_CURRENT_SOURCE_DIR}

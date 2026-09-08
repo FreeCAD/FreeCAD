@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -476,6 +478,15 @@ void QGVPage::mousePressEvent(QMouseEvent* event)
         toolHandler->mousePressEvent(event);
     }
     else {
+        if (event->button() == Qt::RightButton && m_parentMDI) {
+            if (QGraphicsItem* item = itemAt(event->pos())) {
+                m_parentMDI->selectOnRightPress(item);
+            }
+            m_navStyle->handleMousePressEvent(event);
+            // do not call base class because it would clear the 
+            // selection on right click
+            return;
+        }
         m_navStyle->handleMousePressEvent(event);
     }
     QGraphicsView::mousePressEvent(event);

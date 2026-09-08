@@ -1033,8 +1033,6 @@ class _RoofTaskPanel:
         self.updating = False
 
     def _update_value(self, row, prop, str_val):
-        # Workaround for Building US unit system bug (Version 1.1, 2025):
-        str_val = str_val.replace("+", "--")
         val_list = getattr(self.obj, prop)
         val_list[row] = Units.Quantity(str_val).Value
         setattr(self.obj, prop, val_list)

@@ -1,102 +1,45 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2015 Yorik van Havre yorik@uncreated.net
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
 import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
+from Path.Base.Util import toolControllerForOp
 from Path.Main.Gui.Editor import CodeEditor
 
 translate = FreeCAD.Qt.translate
 
 
-class GCodeHighlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        def convertcolor(c):
-            return QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
-
-        super(GCodeHighlighter, self).__init__(parent)
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        colors = []
-        c = p.GetUnsigned("Number")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtCore.Qt.red)
-        c = p.GetUnsigned("Keyword")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtGui.QColor(0, 170, 0))
-        c = p.GetUnsigned("Define name")
-        if c:
-            colors.append(convertcolor(c))
-        else:
-            colors.append(QtGui.QColor(160, 160, 164))
-
-        self.highlightingRules = []
-        numberFormat = QtGui.QTextCharFormat()
-        numberFormat.setForeground(colors[0])
-        self.highlightingRules.append((QtCore.QRegularExpression("[\\-0-9\\.]"), numberFormat))
-        keywordFormat = QtGui.QTextCharFormat()
-        keywordFormat.setForeground(colors[1])
-        keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
-        self.highlightingRules.extend(
-            [(QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns]
-        )
-        speedFormat = QtGui.QTextCharFormat()
-        speedFormat.setFontWeight(QtGui.QFont.Bold)
-        speedFormat.setForeground(colors[2])
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
-
-    def highlightBlock(self, text):
-
-        for pattern, fmt in self.highlightingRules:
-            expression = QtCore.QRegularExpression(pattern)
-            index = expression.match(text)
-            while index.hasMatch():
-                length = index.capturedLength()
-                self.setFormat(index.capturedStart(), length, fmt)
-                index = expression.match(text, index.capturedStart() + length)
-
-
 class GCodeEditorDialog(QtGui.QDialog):
     tool = None
 
-    def __init__(self, PathObj, parent=FreeCADGui.getMainWindow()):
-        self.PathObj = PathObj
-        if hasattr(PathObj, "ToolController"):
-            self.tool = PathObj.ToolController.Tool
-        else:
-            self.tool = None
+    def __init__(self, PathObj, parent=None, readOnly=True, toolVisibility=None):
+        self.commands = PathUtils.getPathWithPlacement(PathObj).Commands
+        self.tool = getattr(toolControllerForOp(PathObj), "Tool", None)
+        self.toolInitVisibility = getattr(self.tool, "Visibility", False)  # keep tool visibility
 
-        QtGui.QDialog.__init__(self, parent)
+        QtGui.QDialog.__init__(self, parent or FreeCADGui.getMainWindow())
         self.setWindowTitle(translate("CAM", "CAM Inspect"))
         layout = QtGui.QVBoxLayout(self)
 
@@ -114,15 +57,12 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.selectionobj.ViewObject.LineWidth = 4
         self.selectionobj.ViewObject.NormalColor = highlightcolor
 
-        # self.editor = QtGui.QTextEdit()  # without lines enumeration
-        self.editor = CodeEditor()  # with lines enumeration
-        font = QtGui.QFont()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        font.setFamily(p.GetString("Font", "Courier"))
-        font.setFixedPitch(True)
-        font.setPointSize(p.GetInt("FontSize", 10))
-        self.editor.setFont(font)
-        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
+        self.editor = CodeEditor()
+        if readOnly:
+            self.editor.setTextInteractionFlags(
+                QtGui.Qt.TextInteractionFlag.TextSelectableByMouse
+                | QtGui.Qt.TextInteractionFlag.TextSelectableByKeyboard
+            )  #  make a QPlainTextEdit read-only while keeping the text cursor visible
         layout.addWidget(self.editor)
 
         # Note
@@ -137,17 +77,37 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setWordWrap(True)
         layout.addWidget(lab)
 
-        # OK and Cancel buttons
+        bottomFrame = QtGui.QFrame()
+        bottomFrame.setLayout(QtGui.QHBoxLayout())
+        layout.addWidget(bottomFrame)
+
+        self.chkTool = QtGui.QCheckBox("Show tool")
+        if self.tool is not None:
+            self.chkTool.setText(translate("CAM_Inspect", "Show tool: %s") % self.tool.Label)
+            self.chkTool.setToolTip(
+                translate(
+                    "CAM_Inspect",
+                    "Show tool shape\nG-code under the cursor defines tool shape placement",
+                )
+            )
+            if toolVisibility is not None:
+                self.chkTool.setChecked(toolVisibility)
+            else:
+                self.chkTool.setChecked(self.tool.Visibility)
+            bottomFrame.layout().addWidget(self.chkTool)
+
         self.buttons = QtGui.QDialogButtonBox(
             QtGui.QDialogButtonBox.Close,
             QtCore.Qt.Horizontal,
             self,
-        )
-
-        layout.addWidget(self.buttons)
+        )  # add Close button
         self.buttons.rejected.connect(self.reject)
-        self.editor.selectionChanged.connect(self.highlightpath)
+        bottomFrame.layout().addWidget(self.buttons)
+
+        self.editor.cursorPositionChanged.connect(self.highlightpath)
+        self.editor.cursorPositionChanged.connect(self.toolPlacement)
         self.finished.connect(self.cleanup)
+        self.chkTool.checkStateChanged.connect(self.toolVisibility)
 
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         Xpos = int(prefs.GetString("inspecteditorX", "0"))
@@ -158,14 +118,18 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.resize(width, height)
 
     def cleanup(self):
+        """Prepare for exit from Inspect"""
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         prefs.SetString("inspecteditorX", str(self.x()))
         prefs.SetString("inspecteditorY", str(self.y()))
         prefs.SetString("inspecteditorW", str(self.width()))
         prefs.SetString("inspecteditorH", str(self.height()))
         FreeCAD.ActiveDocument.removeObject(self.selectionobj.Name)
+        if self.tool:
+            self.tool.Visibility = self.toolInitVisibility  # restore tool visibility
 
     def highlightpath(self):
+        """Set highlighted path"""
         cursor = self.editor.textCursor()
         sp = cursor.selectionStart()
         ep = cursor.selectionEnd()
@@ -174,81 +138,50 @@ class GCodeEditorDialog(QtGui.QDialog):
         cursor.setPosition(ep)
         endrow = cursor.blockNumber()
 
-        commands = PathUtils.getPathWithPlacement(self.PathObj).Commands
-
         # Derive the starting position for the first selected command
-        prevX = prevY = prevZ = None
-        prevcommands = commands[:startrow]
-        prevcommands.reverse()
-        for c in prevcommands:
-            if prevX is None:
-                if c.Parameters.get("X") is not None:
-                    prevX = c.Parameters.get("X")
-            if prevY is None:
-                if c.Parameters.get("Y") is not None:
-                    prevY = c.Parameters.get("Y")
-            if prevZ is None:
-                if c.Parameters.get("Z") is not None:
-                    prevZ = c.Parameters.get("Z")
-            if prevX is not None and prevY is not None and prevZ is not None:
-                break
-        if prevX is None:
-            prevX = 0.0
-        if prevY is None:
-            prevY = 0.0
-        if prevZ is None:
-            prevZ = 0.0
+        x, y, z = self.getPosition(self.commands[max(0, startrow - 1) :: -1])
+        firstrapid = Path.Command("G0", {"X": x, "Y": y, "Z": z})
+        selectionCommands = [firstrapid] + self.commands[startrow : endrow + 1]
+        self.selectionobj.Path = Path.Path()
+        if len(selectionCommands) > 1:
+            self.selectionobj.Path = Path.Path(selectionCommands)
+        self.selectionobj.ViewObject.StartIndex = 1  # hide first rapid move
 
-        # Build a new path with selection
-        p = Path.Path()
-        firstrapid = Path.Command("G0", {"X": prevX, "Y": prevY, "Z": prevZ})
+    def toolPlacement(self):
+        """Set tool placement"""
+        if self.tool is not None and self.tool.Visibility:
+            line_number = self.editor.textCursor().blockNumber()
+            self.tool.Placement.Base = self.getPosition(self.commands[line_number::-1])
 
-        selectionpath = [firstrapid] + commands[startrow : endrow + 1]
-        p.Commands = selectionpath
-        self.selectionobj.Path = p
-
+    def toolVisibility(self):
+        """Update tool visibility"""
         if self.tool is not None:
-            self.tool.Placement.Base.x = prevX
-            self.tool.Placement.Base.y = prevY
-            self.tool.Placement.Base.z = prevZ
+            self.tool.Visibility = self.chkTool.isChecked()
+
+    def getPosition(self, commands):
+        """Define position from commands list"""
+        x = y = z = None
+        for cmd in commands:
+            x = cmd.x if x is None and cmd.x is not None else x
+            y = cmd.y if y is None and cmd.y is not None else y
+            z = cmd.z if z is None and cmd.z is not None else z
+            if x is not None and y is not None and z is not None:
+                break
+
+        x = 0 if x is None else x
+        y = 0 if y is None else y
+        z = 0 if z is None else z
+
+        return x, y, z
 
 
 def show(obj):
     "show(obj): shows the G-code data of the given Path object in a dialog"
 
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 256 Ko
-    defaultMHS = 256 * 1024
-    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
-
-    if hasattr(obj, "Path"):
-        if obj.Path:
-            dia = GCodeEditorDialog(obj)
-            dia.editor.setPlainText(obj.Path.toGCode())
-            gcodeSize = len(dia.editor.toPlainText())
-            if gcodeSize <= mhs:
-                # because of poor performance, syntax highlighting is
-                # limited to mhs octets (default 256 KB).
-                # It seems than the response time curve has an inflexion near 500 KB
-                # beyond 500 KB, the response time increases exponentially.
-                dia.highlighter = GCodeHighlighter(dia.editor.document())
-            else:
-                FreeCAD.Console.PrintMessage(
-                    translate(
-                        "Path",
-                        "GCode size too big ({} o), disabling syntax highlighter.".format(
-                            gcodeSize
-                        ),
-                    )
-                )
-            result = dia.exec_()
-            # exec_() returns 0 or 1 depending on the button pressed (Ok or Cancel)
-            if result:
-                p = Path.Path(dia.editor.toPlainText())
-                FreeCAD.ActiveDocument.openTransaction("Edit Path")
-                obj.Path = p
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+    if getattr(obj, "Path", None):
+        dia = GCodeEditorDialog(obj)
+        dia.editor.setPlainText(obj.Path.toGCode())
+        dia.exec_()
 
 
 class CommandPathInspect:

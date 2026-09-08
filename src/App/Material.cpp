@@ -330,7 +330,8 @@ App::Material Material::getDefaultAppearance()
         color.setPackedRGB(packed);
     };
     auto intRandom = [](int min, int max) -> int {
-        static std::mt19937 generator;
+        static std::random_device rd;
+        static std::mt19937 generator(rd());
         std::uniform_int_distribution<int> distribution(min, max);
         return distribution(generator);
     };

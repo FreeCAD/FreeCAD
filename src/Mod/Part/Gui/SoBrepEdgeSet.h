@@ -55,6 +55,29 @@ public:
         viewProvider = vp;
     }
 
+    /*! Returned by lineIndexFromEdge() for an edge that has no rendered line. */
+    static constexpr int InvalidLine = -1;
+
+    /*! Record which topological edge each rendered polyline belongs to.
+     *
+     *  The line set contains a polyline only for edges that actually produced one -
+     *  an edge whose Poly_PolygonOnTriangulation is null is skipped - so a Coin line
+     *  index does not generally correspond to edge index + 1. lineToEdgeIn holds the
+     *  1-based topological edge index of each emitted polyline, in render order.
+     *  Called by ViewProviderPartExt::setupCoinGeometry().
+     */
+    void setEdgeMapping(std::vector<int> lineToEdgeIn);
+
+    /*! 1-based topological edge index of a rendered line.
+     *  Falls back to line + 1 when no mapping has been built yet.
+     */
+    int edgeIndexFromLine(int line) const;
+
+    /*! Rendered line index of a 1-based topological edge, or InvalidLine when that
+     *  edge has no rendered line. Falls back to edge - 1 when no mapping exists yet.
+     */
+    int lineIndexFromEdge(int edge) const;
+
     SoMFInt32 highlightCoordIndex;
     SoMFInt32 selectionCoordIndex;
     SoSFColor highlightColor;
@@ -84,6 +107,14 @@ private:
 
 
 private:
+    //! Rendered line index -> 1-based topological edge index.
+    std::vector<int> lineToEdge;
+    //! 1-based topological edge index -> rendered line index, InvalidLine if none.
+    std::vector<int> edgeToLine;
+    //! Whether setEdgeMapping() has run. An empty mapping is meaningful - it means
+    //! nothing is rendered - and must be distinguished from "not built yet".
+    bool hasEdgeMapping {false};
+
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;

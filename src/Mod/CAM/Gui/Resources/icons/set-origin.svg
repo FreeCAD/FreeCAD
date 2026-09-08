@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg390"
+   sodipodi:docname="set_origin.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs394" />
+  <sodipodi:namedview
+     id="namedview392"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="14.359375"
+     inkscape:cx="31.059848"
+     inkscape:cy="32"
+     inkscape:window-width="1872"
+     inkscape:window-height="1163"
+     inkscape:window-x="1728"
+     inkscape:window-y="1050"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg390" />
+  <g
+     fill="none"
+     stroke="#111111"
+     stroke-width="4"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="g386">
+    <path
+       id="circle376"
+       d="M 46,32 A 14,14 0 0 1 32,46 14,14 0 0 1 18,32 14,14 0 0 1 32,18 14,14 0 0 1 46,32 Z" />
+    <path
+       d="M 32,6 V 22"
+       id="path378"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="M 32,42 V 58"
+       id="path380"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="M 6,32 H 22"
+       id="path382"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="M 42,32 H 58"
+       id="path384"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <path
+     id="circle388"
+     style="fill:#111111"
+     d="m 37,32 a 5,5 0 0 1 -5,5 5,5 0 0 1 -5,-5 5,5 0 0 1 5,-5 5,5 0 0 1 5,5 z" />
+</svg>
