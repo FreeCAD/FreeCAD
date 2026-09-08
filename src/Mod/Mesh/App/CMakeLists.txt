@@ -96,7 +96,7 @@ SET(Core_SRCS
     Core/TrimByPlane.cpp
     Core/TrimByPlane.h
     Core/tritritest.h
-    Core/Utilities.h
+    Conversion/Wm4.h
     Core/Visitor.cpp
     Core/Visitor.h
     Core/CylinderFit.cpp

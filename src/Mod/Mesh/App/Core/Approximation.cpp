@@ -46,7 +46,7 @@
 #include "CylinderFit.h"
 #include "Elements.h"
 #include "SphereFit.h"
-#include "Utilities.h"
+#include <Mod/Mesh/App/Conversion/Wm4.h>
 
 
 using namespace MeshCore;
