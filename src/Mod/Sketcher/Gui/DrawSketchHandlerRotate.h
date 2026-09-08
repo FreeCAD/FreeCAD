@@ -426,6 +426,15 @@ private:
                     int secondIndexi = firstCurveCreated + secondIndex + static_cast<int>(size * i);
                     int thirdIndexi = firstCurveCreated + thirdIndex + static_cast<int>(size * i);
 
+                    if (cstr->Type == Group || cstr->Type == Text) {
+                        auto group = copyTransformedGroup(*cstr, listOfGeoIds,
+                                                          firstCurveCreated + static_cast<int>(size * i));
+                        if (group) {
+                            ShapeConstraints.push_back(std::move(group));
+                        }
+                        continue;
+                    }
+
                     auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
                     newConstr->First = firstIndexi;
 

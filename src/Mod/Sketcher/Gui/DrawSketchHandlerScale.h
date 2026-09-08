@@ -498,6 +498,14 @@ private:
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
             int cstrIndex = 0;
             for (auto cstr : vals) {
+                if (cstr->Type == Group || cstr->Type == Text) {
+                    auto group = copyTransformedGroup(*cstr, listOfGeoIds, firstCurveCreated);
+                    if (group) {
+                        ShapeConstraints.push_back(std::move(group));
+                        cstrIndex++;
+                    }
+                    continue;
+                }
                 if (skipConstraint(cstr)) {
                     continue;
                 }

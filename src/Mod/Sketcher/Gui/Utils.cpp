@@ -53,6 +53,24 @@ bool Sketcher::isCircle(const Part::Geometry& geom)
     return geom.is<Part::GeomCircle>();
 }
 
+std::unique_ptr<Sketcher::Constraint> SketcherGui::copyTransformedGroup(
+    const Sketcher::Constraint& constraint, const std::vector<int>& geometry, int firstGeometry)
+{
+    auto result = std::unique_ptr<Sketcher::Constraint>(constraint.copy());
+    for (int index = 0; constraint.hasElement(index); ++index) {
+        const int geoId = constraint.getGeoId(index);
+        if (geoId == Sketcher::GeoEnum::GeoUndef) {
+            continue;
+        }
+        auto member = std::ranges::find(geometry, geoId);
+        if (member == geometry.end()) {
+            return nullptr;
+        }
+        result->setGeoId(index, firstGeometry + static_cast<int>(member - geometry.begin()));
+    }
+    return result;
+}
+
 bool Sketcher::isArcOfCircle(const Part::Geometry& geom)
 {
     return geom.is<Part::GeomArcOfCircle>();
