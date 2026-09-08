@@ -30,10 +30,8 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
-#include <BRepGProp.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <gp_Trsf.hxx>
-#include <GProp_GProps.hxx>
 #include <Precision.hxx>
 #include <Poly_Array1OfTriangle.hxx>
 #include <Poly_Polygon3D.hxx>
@@ -1170,13 +1168,16 @@ void ViewProviderPartExt::setupCoinGeometry(
     // make the 3D view unusably slow when rendering, orbiting or pre-selecting objects.
     //
     // To keep the GUI responsive the tessellation is limited by a facet budget that is
-    // shared among all visible Part objects (see getFacetBudget()). The expected number
-    // of triangles is estimated beforehand from the surface area (triangle count
-    // ~ area / deflection^2), so that the very expensive fine mesh is never even
-    // attempted when it would exceed the budget. If after meshing the budget is still
-    // exceeded, both the linear and the angular deflection are scaled by the same factor
-    // and the shape is re-meshed (a few iterations at most). Set MaxFacetsForDisplay to
-    // 0 to disable the limit.
+    // shared among all visible Part objects (see getFacetBudget()). To avoid ever
+    // starting an extremely expensive fine mesh, the shape is first meshed once at a
+    // coarse "probe" deflection, which is cheap for any shape (at most a few thousand
+    // triangles). The facet count of the probe mesh is then used to compute the
+    // deflection that will hit the budget: for meshes of the same shape the triangle
+    // count grows roughly quadratically with the inverse deflection, so the deflection
+    // of the final mesh follows directly from the measured count. If after meshing the
+    // budget is still exceeded, both the linear and the angular deflection are scaled
+    // by the same factor and the shape is re-meshed (at most a few iterations). Set
+    // MaxFacetsForDisplay to 0 to disable the limit.
     const int maxFacets = getFacetBudget();
 
     // Limit the number of warning messages so that opening an assembly with hundreds of
@@ -1184,31 +1185,26 @@ void ViewProviderPartExt::setupCoinGeometry(
     static int budgetWarningCount = 0;
     const bool doWarn = maxFacets > 0 && budgetWarningCount < 10;
 
+    // Coarse deflection used for the probe mesh. A deflection of the bounding box
+    // diagonal / 100 keeps the probe at a few thousand triangles even for very large
+    // shapes. The angular deflection is scaled by the same factor, otherwise the probe
+    // of shapes with fine features (threads, ball screw grooves) would still discretize
+    // their high-pole-count curves at the requested angular tolerance and remain
+    // expensive.
+    double probeDeflection = deflection;
     if (maxFacets > 0) {
-        // Estimate the number of triangles the requested deflection would produce from
-        // the overall surface area and scale the deflection accordingly beforehand.
-        // This avoids starting an extremely expensive meshing of pathological geometry.
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(shape, props);
-        const double area = props.Mass();
-        if (area > Precision::Confusion() && deflection > Precision::Confusion()) {
-            const double estTriangles = area / (deflection * deflection);
-            if (estTriangles > maxFacets) {
-                const double scale = std::sqrt(estTriangles / maxFacets);
-                meshParams.Deflection *= scale;
-                meshParams.Angle *= scale;
-                if (doWarn) {
-                    budgetWarningCount++;
-                    FC_WARN(
-                        "Part tessellation estimated at "
-                        << static_cast<long>(estTriangles)
-                        << " triangles, which exceeds the facet budget of " << maxFacets
-                        << ". Increasing linear deflection to " << meshParams.Deflection
-                        << " and angular deflection to " << meshParams.Angle << " rad."
-                        << (budgetWarningCount == 10 ? " Further messages suppressed." : "")
-                    );
-                }
-            }
+        const Bnd_Box bounds = Part::Tools::getBounds(shape);
+        double xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+        const double diag = std::sqrt(
+            (xMax - xMin) * (xMax - xMin) + (yMax - yMin) * (yMax - yMin)
+            + (zMax - zMin) * (zMax - zMin)
+        );
+        probeDeflection = std::max(deflection, diag / 100.0);
+        if (probeDeflection > deflection) {
+            const double probeScale = probeDeflection / deflection;
+            meshParams.Deflection = probeDeflection;
+            meshParams.Angle *= probeScale;
         }
     }
 
@@ -1242,6 +1238,48 @@ void ViewProviderPartExt::setupCoinGeometry(
             if (!mesh.IsNull()) {
                 count += mesh->NbTriangles();
             }
+        }
+
+        if (attempt == 0) {
+            // The first mesh is the probe. Predict the triangle count at the requested
+            // deflection from the measured count.
+            const double growth = (probeDeflection / deflection) * (probeDeflection / deflection);
+            const double predicted = static_cast<double>(count) * growth;
+            if (predicted > maxFacets) {
+                // The requested deflection would exceed the budget. Mesh directly at a
+                // deflection derived from the measured count, so that the expensive fine
+                // mesh is never attempted. This target is never finer than the requested
+                // deflection: target <= deflection would imply predicted <= maxFacets.
+                const double target = std::max(
+                    deflection,
+                    probeDeflection * std::sqrt(static_cast<double>(count) / maxFacets)
+                );
+                const double scale = target / meshParams.Deflection;
+                meshParams.Deflection = target;
+                meshParams.Angle *= scale;
+                if (doWarn) {
+                    budgetWarningCount++;
+                    FC_WARN(
+                        "Part tessellation probe of "
+                        << count << " triangles predicts " << static_cast<long>(predicted)
+                        << " at the requested deflection, which exceeds the facet budget of "
+                        << maxFacets << ". Increasing linear deflection to " << target
+                        << " and angular deflection to " << meshParams.Angle << " rad."
+                        << (budgetWarningCount == 10 ? " Further messages suppressed." : "")
+                    );
+                }
+                continue;
+            }
+            if (probeDeflection > deflection) {
+                // The probe predicts the requested deflection fits the budget; mesh
+                // again at the requested deflection.
+                meshParams.Deflection = deflection;
+                meshParams.Angle = AngDeflectionRads;
+                continue;
+            }
+            // The probe was already meshed at the requested deflection and fits the
+            // budget.
+            break;
         }
 
         if (count <= maxFacets || attempt == 3) {
