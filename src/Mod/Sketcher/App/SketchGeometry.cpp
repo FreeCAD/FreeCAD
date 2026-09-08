@@ -69,6 +69,9 @@ public:
             case PointPos::end: {
                 return lineSeg->getEndPoint();
             }
+            case PointPos::mid: {
+                return (lineSeg->getStartPoint() + lineSeg->getEndPoint()) / 2;
+            }
             default:
                 break;
         }

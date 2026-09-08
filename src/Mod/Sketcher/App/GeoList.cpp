@@ -185,6 +185,9 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
         else if (pos == PointPos::end) {
             return lineSeg->getEndPoint();
         }
+        else if (pos == PointPos::mid) {
+            return (lineSeg->getStartPoint() + lineSeg->getEndPoint()) / 2;
+        }
     }
     else if (geo->is<Part::GeomCircle>()) {
         const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);

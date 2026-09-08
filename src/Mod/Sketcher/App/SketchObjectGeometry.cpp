@@ -1476,6 +1476,7 @@ void SketchObject::rebuildVertexIndex()
     VertexId2PosId.resize(0);
     int imax = getHighestCurveIndex();
     int i = 0;
+    std::vector<int> lineGeoIds;
     const std::vector<Part::Geometry*> geometry = getCompleteGeometry();
     if (geometry.size() <= 2)
         return;
@@ -1491,6 +1492,7 @@ void SketchObject::rebuildVertexIndex()
             VertexId2PosId.push_back(PointPos::start);
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(PointPos::end);
+            lineGeoIds.push_back(i);
         }
         else if ((*it)->is<Part::GeomCircle>()) {
             VertexId2GeoId.push_back(i);
@@ -1538,6 +1540,12 @@ void SketchObject::rebuildVertexIndex()
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(PointPos::end);
         }
+    }
+
+    // Append virtual line midpoints so existing VertexN indices keep their historic values.
+    for (const int geoId : lineGeoIds) {
+        VertexId2GeoId.push_back(geoId);
+        VertexId2PosId.push_back(PointPos::mid);
     }
 }
 
