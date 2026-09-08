@@ -476,6 +476,22 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     connect(_animator, &QAbstractAnimation::stateChanged, this, &OverlayTabWidget::onAnimationStateChanged);
 }
 
+OverlayTabWidget::~OverlayTabWidget()
+{
+    // Member and child QObjects can emit signals while they are torn down,
+    // after the OverlayTabWidget portion of this object has been destroyed.
+    // Disconnect first so those signals cannot invoke our slots during base
+    // class destruction.
+    QObject::disconnect(&timer, nullptr, this, nullptr);
+    QObject::disconnect(&repaintTimer, nullptr, this, nullptr);
+    timer.stop();
+    repaintTimer.stop();
+    if (_animator) {
+        QObject::disconnect(_animator, nullptr, this, nullptr);
+        _animator->stop();
+    }
+}
+
 void OverlayTabWidget::refreshIcons()
 {
     auto curStyleSheet = App::GetApplication()
