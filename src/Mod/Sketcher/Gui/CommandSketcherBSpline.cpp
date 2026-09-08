@@ -24,6 +24,7 @@
 
 #include <Inventor/SbString.h>
 #include <QApplication>
+#include <set>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -139,42 +140,77 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
-
-    std::vector<int> GeoIdList;
+    // Internal indices can change when conversion removes a conic's auxiliary geometry.
+    std::vector<std::pair<int, long>> selectedGeometry;
 
     for (const auto& subName : SubNames) {
-        // only handle edges
+        int GeoId;
         if (subName.size() > 4 && subName.substr(0, 4) == "Edge") {
-            int GeoId = std::atoi(subName.substr(4, 4000).c_str()) - 1;
-            GeoIdList.push_back(GeoId);
+            GeoId = std::atoi(subName.substr(4, 4000).c_str()) - 1;
         }
         else if (subName.size() > 12 && subName.substr(0, 12) == "ExternalEdge") {
-            int GeoId = -(std::atoi(subName.substr(12, 4000).c_str()) + 2);
-            GeoIdList.push_back(GeoId);
+            GeoId = -(std::atoi(subName.substr(12, 4000).c_str()) + 2);
+        }
+        else {
+            continue;
+        }
+        const auto* geometry = Obj->getGeometry(GeoId);
+        if (!geometry || geometry->is<Part::GeomBSplineCurve>()) {
+            continue;
+        }
+        long id = 0;
+        if (GeoId >= 0) {
+            Obj->getGeometryId(GeoId, id);
+        }
+        selectedGeometry.emplace_back(GeoId, id);
+    }
+
+    if (selectedGeometry.empty()) {
+        return;
+    }
+
+    // A box selection can include both a conic and its axes. Convert only the parent.
+    std::set<int> selectedIds;
+    for (const auto& [geoId, id] : selectedGeometry) {
+        selectedIds.insert(geoId);
+    }
+    std::set<int> auxiliaryIds;
+    for (const auto* constraint : Obj->Constraints.getValues()) {
+        if (constraint->Type == InternalAlignment && selectedIds.contains(constraint->Second)) {
+            auxiliaryIds.insert(constraint->First);
         }
     }
+    std::erase_if(selectedGeometry, [&auxiliaryIds](const auto& entry) {
+        return auxiliaryIds.contains(entry.first);
+    });
 
-    // for creating the poles and knots
-    for (auto GeoId : GeoIdList) {
-        Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-    }
-    for (auto GeoId : GeoIdList) {
-        Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
-    }
+    auto findGeometry = [Obj](long id) -> int {
+        for (int index = 0; index <= Obj->getHighestCurveIndex(); ++index) {
+            long currentId = 0;
+            Obj->getGeometryId(index, currentId);
+            if (currentId == id) {
+                return index;
+            }
+        }
+        return GeoEnum::GeoUndef;
+    };
 
-    if (GeoIdList.empty()) {
-        abortCommand();
-
-        Gui::TranslatedUserWarning(
-            Obj,
-            QObject::tr("Wrong selection"),
-            QObject::tr("None of the selected elements is an edge.")
-        );
+    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
+    for (const auto& [originalGeoId, id] : selectedGeometry) {
+        int GeoId = originalGeoId < 0 ? originalGeoId : findGeometry(id);
+        if (GeoId == GeoEnum::GeoUndef) {
+            continue; // An auxiliary element removed by an earlier conversion.
+        }
+        int previousSize = Obj->Geometry.getSize();
+        Gui::cmdAppObjectArgs(Obj, "convertToNURBS(%d)", GeoId);
+        GeoId = originalGeoId < 0 ? previousSize : findGeometry(id);
+        const auto* converted = Obj->getGeometry(GeoId);
+        if (converted && converted->is<Part::GeomBSplineCurve>()) {
+            Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
+        }
     }
-    else {
-        commitCommand();
-    }
+    commitCommand();
+    getSelection().clearSelection();
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
