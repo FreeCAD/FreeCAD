@@ -241,3 +241,16 @@ class TestPathDrilling(PathTestUtils.PathTestBase):
         self.assertTrue(hasattr(operation, "PeckRetract"))
         self.assertFalse(hasattr(operation, "RetractHeight"))
         self.assertRoughly(12.0, operation.PeckRetract.Value)
+
+    def test08_peck_retract_below_final_depth_falls_back_to_safe_height(self):
+        """An R at or below the hole bottom makes the post-processor's cycle expander
+        drop the hole from the output entirely (DrillCycleExpander returns [] when R is
+        under the drill depth), so the holes vanish with no warning anywhere. The
+        operation must catch that and fall back to SafeHeight."""
+        operation = self._twoHolePeckOp(-1.0)  # below FinalDepth (0.0)
+
+        cycles = [c for c in operation.Path.Commands if c.Name == "G83"]
+        self.assertEqual(2, len(cycles))
+        for cycle in cycles:
+            self.assertRoughly(operation.SafeHeight.Value, cycle.Parameters["R"])
+            self.assertNotEqual(-1.0, cycle.Parameters["R"])

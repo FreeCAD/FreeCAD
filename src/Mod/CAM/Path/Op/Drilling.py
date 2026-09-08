@@ -195,20 +195,20 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "G99: Between holes, retract only to Peck Retract"
-                    "\n (or the operation Retract Height if not pecking)"
+                    "\n(or the operation Retract Height if not pecking)"
                     "\ninstead of fully retracting like G98."
-                    "\nOnly applies when Peck Retract is at or above Retract Height;"
-                    "\notherwise, linking rules apply.",
+                    "\nWith Clearance Height or Retract Height collision avoidance, a Peck Retract"
+                    "\nbelow Retract Height is overridden by a climb to Retract Height.",
                 ),
             )
 
         self.updateStrategyVisibility(obj)
 
     def opOnChanged(self, obj, prop):
-        """opOnChanged(obj, prop) ... react to Strategy/PeckEnabled changes to update
-        property visibility."""
+        """opOnChanged(obj, prop) ... react to Strategy/PeckEnabled/FeedRetractEnabled
+        changes to update property visibility."""
         super().opOnChanged(obj, prop)
-        if prop in ("Strategy", "PeckEnabled"):
+        if prop in ("Strategy", "PeckEnabled", "FeedRetractEnabled"):
             self.updateStrategyVisibility(obj)
 
     def updateStrategyVisibility(self, obj):
@@ -225,7 +225,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             return
 
         drillingMode = 0 if obj.Strategy == "Drilling" else 2  # 0=visible, 2=hidden
-        peckMode = 0 if drillingMode == 0 and getattr(obj, "PeckEnabled", False) else 2
+        # FeedRetract (G85) and pecking are mutually exclusive in the task panel, which
+        # greys the peck fields whenever Feed retract is ticked -- match that here.
+        pecking = getattr(obj, "PeckEnabled", False) and not getattr(
+            obj, "FeedRetractEnabled", False
+        )
+        peckMode = 0 if drillingMode == 0 and pecking else 2
 
         modes = {
             "PeckEnabled": drillingMode,
@@ -322,7 +327,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "How far past Final Depth to extend the cut,"
-                "to fully clear the drill/tap tip's cone at the target depth",
+                " to fully clear the drill/tap tip's cone at the target depth",
             ),
         )
         obj.addProperty(
@@ -334,8 +339,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "G99: Between holes, retract only to Peck Retract"
                 "\n(or the operation Retract Height if not pecking)"
                 "\ninstead of fully retracting like G98."
-                "\nOnly applies when Peck Retract is at or above Retract Height;"
-                "\notherwise, linking rules apply.",
+                "\nWith Clearance Height or Retract Height collision avoidance, a Peck Retract"
+                "\nbelow Retract Height is overridden by a climb to Retract Height.",
             ),
         )
         obj.addProperty(
@@ -405,6 +410,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 f"Using ClearanceHeight instead."
             )
             safe_height = obj.ClearanceHeight.Value
+
+        # PeckRetract (R) only applies to peck cycles; a non-peck cycle just retracts
+        # to SafeHeight like it did before PeckRetract existed. An R at or below the
+        # hole bottom makes the post-processor's cycle expander drop the hole from the
+        # output entirely (DrillCycleExpander returns [] when R is under the drill
+        # depth), so catch it here instead of losing holes silently.
+        peck_retract = obj.PeckRetract.Value if obj.PeckEnabled else safe_height
+        if obj.PeckEnabled and peck_retract <= obj.FinalDepth.Value:
+            Path.Log.warning(
+                f"PeckRetract ({peck_retract}) is at or below FinalDepth "
+                f"({obj.FinalDepth.Value}). Using SafeHeight instead."
+            )
+            peck_retract = safe_height
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -522,10 +540,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
             chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
-
-            # PeckRetract (R) only applies to peck cycles; a non-peck cycle just
-            # retracts to SafeHeight like it did before PeckRetract existed.
-            peck_retract = obj.PeckRetract.Value if obj.PeckEnabled else safe_height
 
             # Save Z position before canned cycle for G98 retract
             z_before_cycle = machinestate.Z
