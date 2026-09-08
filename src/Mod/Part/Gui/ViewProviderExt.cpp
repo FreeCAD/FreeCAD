@@ -84,6 +84,7 @@
 #include <Gui/Conversion/Coin.h>
 
 #include <Mod/Part/App/ShapeMapHasher.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderExt.h"

@@ -37,6 +37,7 @@
 
 #include "BSplineCurveBiArcs.h"
 #include "Geometry.h"
+#include "Conversion/OCC.h"
 #include "Tools.h"
 
 

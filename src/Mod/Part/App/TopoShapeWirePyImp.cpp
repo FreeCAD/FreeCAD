@@ -53,7 +53,7 @@
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.cpp>
 #include "OCCError.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 
 using namespace Part;

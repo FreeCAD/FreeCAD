@@ -37,7 +37,6 @@
 #include <Gui/Application.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 #include "ViewProviderTransformed.h"

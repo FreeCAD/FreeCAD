@@ -37,7 +37,6 @@
 #include <XCAFDoc_VisMaterialTool.hxx>
 
 #include "ReaderGltf.h"
-#include "Tools.h"
 #include <Base/Exception.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Tools.h>

@@ -37,7 +37,6 @@
 #include <Mod/PartDesign/App/FeatureFillet.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Geometry.h>
-#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskFilletParameters.h"

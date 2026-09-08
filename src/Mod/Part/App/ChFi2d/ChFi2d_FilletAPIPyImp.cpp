@@ -36,7 +36,7 @@
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeWirePy.h"
 #include "PlanePy.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 
 using namespace Part;

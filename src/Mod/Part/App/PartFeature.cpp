@@ -82,7 +82,7 @@
 #include "PartFeaturePy.h"
 #include "PartPyCXX.h"
 #include "TopoShapePy.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 using namespace Part;
 namespace sp = std::placeholders;

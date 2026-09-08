@@ -48,7 +48,7 @@
 
 #include "OCCError.h"
 #include "PartPyCXX.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"

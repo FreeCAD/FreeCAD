@@ -89,6 +89,7 @@
 #include "Geometry2d.h"
 #include "OCCError.h"
 #include "PartPyCXX.h"
+#include "Conversion/OCC.h"
 #include "Tools.h"
 
 

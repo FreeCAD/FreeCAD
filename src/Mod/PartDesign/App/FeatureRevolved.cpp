@@ -44,7 +44,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Translation.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureRevolved.h"

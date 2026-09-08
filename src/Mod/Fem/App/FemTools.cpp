@@ -46,9 +46,8 @@
 
 #include <App/Application.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
-
 #include "FemTools.h"
+#include <Mod/Part/App/Tools.h>
 
 
 Base::Vector3d Fem::Tools::getDirectionFromShape(const TopoDS_Shape& shape)

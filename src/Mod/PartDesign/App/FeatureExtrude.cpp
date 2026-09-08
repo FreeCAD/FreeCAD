@@ -46,7 +46,7 @@
 #include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
 #include <Mod/Part/App/PartFeature.h>
 

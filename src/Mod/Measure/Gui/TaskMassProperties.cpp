@@ -73,7 +73,7 @@
 #include <App/PropertyUnits.h>
 
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRep_Builder.hxx>

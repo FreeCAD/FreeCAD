@@ -69,6 +69,7 @@
 
 #include "Attacher.h"
 #include "AttachExtension.h"
+#include "Conversion/OCC.h"
 #include "Tools.h"
 
 #include <Geometry.h>

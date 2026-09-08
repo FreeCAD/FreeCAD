@@ -42,7 +42,7 @@
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 #include <Mod/Part/App/GizmoHelper.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"

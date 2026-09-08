@@ -35,9 +35,6 @@
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
 
-#include <Mod/Part/App/Tools.h>
-
-
 using namespace PartDesign;
 
 namespace PartDesign

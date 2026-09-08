@@ -36,8 +36,6 @@
 #include "Geometry.h"
 #include "PartFeature.h"
 #include "Services.h"
-#include "Tools.h"
-
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()
     : attacher(std::make_unique<Attacher::AttachEngine3D>())
 {

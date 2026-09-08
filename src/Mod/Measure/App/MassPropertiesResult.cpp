@@ -26,6 +26,7 @@
 #include <App/Datums.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/Tools.h>
 #include <Base/BaseClass.h>
 #include <Base/Matrix.h>

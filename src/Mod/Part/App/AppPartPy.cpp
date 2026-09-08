@@ -97,7 +97,6 @@
 #include "PartFeature.h"
 #include "PartPyCXX.h"
 #include "PyException.h"
-#include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
@@ -107,6 +106,7 @@
 #include "TopoShapeWirePy.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeMapper.h"
+#include "Tools.h"
 
 #ifdef FCUseFreeType
 # include "FT2FC.h"
