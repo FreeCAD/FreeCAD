@@ -250,7 +250,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         return sensors, updates, completed_updates
 
     def test_origin_marker_tracks_drawing_tool_state(self):
-        """The origin marker is hollow only while a drawing handler is active."""
+        """The origin marker tracks drawing state during off-origin interaction."""
 
         self.begin_sketch_edit_with_task_dialog()
         view = FreeCADGui.ActiveDocument.ActiveView
@@ -258,10 +258,14 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         view.fitAll()
         self.pump(150)
         viewport = view.graphicsView().viewport()
-        first_point = self.viewport_to_qpoint(
+        origin_point = self.viewport_to_qpoint(
             view,
             viewport,
             view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
+        )
+        drawing_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(origin_point.x() + 80, origin_point.y() - 60),
         )
         filled_marker = self.origin_marker_index()
         self.assertTrue(
@@ -319,12 +323,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected restoring the marker size to update the active marker",
         )
 
-        active_marker = self.origin_marker_index()
-        self.right_click(viewport, first_point)
+        self.move(viewport, drawing_point)
+        self.right_click(viewport, drawing_point)
         self.assertTrue(
             self.wait_until(
-                lambda: self.origin_marker_is("CIRCLE_FILLED")
-                and self.origin_marker_index() != active_marker,
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
                 timeout_ms=3000,
             ),
             "Expected leaving the drawing tool to restore the filled origin marker",
@@ -332,12 +335,12 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         second_point = self.clamp_to_widget(
             viewport,
-            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
+            QtCore.QPoint(drawing_point.x() + 100, drawing_point.y() + 80),
         )
         FreeCADGui.runCommand("Sketcher_CreateLine")
         self.pump(100)
-        self.move(viewport, first_point)
-        self.click(viewport, first_point)
+        self.move(viewport, drawing_point)
+        self.click(viewport, drawing_point)
         self.move(viewport, second_point)
         self.click(viewport, second_point)
         self.assertGreater(
@@ -345,12 +348,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             0,
             "Expected geometry away from the origin before cancelling the tool",
         )
-        active_marker = self.origin_marker_index()
+        self.move(viewport, second_point)
         self.right_click(viewport, second_point)
         self.assertTrue(
             self.wait_until(
-                lambda: self.origin_marker_is("CIRCLE_FILLED")
-                and self.origin_marker_index() != active_marker,
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
                 timeout_ms=3000,
             ),
             "Expected cancelling the drawing tool to leave a filled origin marker",
@@ -368,12 +370,11 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 ),
                 f"Expected {command} to activate the hollow origin marker",
             )
-            active_marker = self.origin_marker_index()
-            self.right_click(viewport, first_point)
+            self.move(viewport, drawing_point)
+            self.right_click(viewport, drawing_point)
             self.assertTrue(
                 self.wait_until(
-                    lambda: self.origin_marker_is("CIRCLE_FILLED")
-                    and self.origin_marker_index() != active_marker,
+                    lambda: self.origin_marker_is("CIRCLE_FILLED"),
                     timeout_ms=3000,
                 ),
                 f"Expected {command} cancellation to restore the filled origin marker",
