@@ -218,9 +218,7 @@ def _summary_update(dialog, name, value):
 def _summary_failed(dialog, message):
     """Non-blocking IFC summary failure."""
 
-    dialog.groupSummary.setTitle(
-        translate("BIM", "IFC File Content Summary (unable to read file)")
-    )
+    dialog.groupSummary.setTitle(translate("BIM", "IFC File Content Summary (unable to read file)"))
     dialog.groupSummary.setToolTip(message)
 
     # Keep already available file metadata visible.
@@ -310,9 +308,7 @@ def get_options(filename=None, strategy=None, shapemode=None, switchwb=None, sil
         dlg.comboSingleDoc.setCurrentIndex(1 - int(singledoc))
 
         if filename:
-            dlg.groupSummary.setTitle(
-                translate("BIM", "IFC File Content Summary (reading file…)")
-            )
+            dlg.groupSummary.setTitle(translate("BIM", "IFC File Content Summary (reading file…)"))
 
             summary_worker = _IfcSummaryWorker(filename)
             summary_receiver = _IfcSummaryReceiver(dlg)
