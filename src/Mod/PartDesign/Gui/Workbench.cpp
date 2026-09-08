@@ -259,8 +259,9 @@ void Workbench::activated()
     ));
 
     const char* NoSel[] = {"PartDesign_Body", nullptr};
+        std::string translatedStartPart = qApp->translate("Workbench", "Start Part").toUtf8().constData();
     Watcher.push_back(
-        new Gui::TaskView::TaskWatcherCommandsEmptySelection(NoSel, "Start Part", "Part_Box_Parametric")
+        new Gui::TaskView::TaskWatcherCommandsEmptySelection(NoSel, translatedStartPart.c_str(), "Part_Box_Parametric")
     );
 
     const char* Faces[] = {
