@@ -315,11 +315,16 @@ public:
         return variant;
     }
 
-    static std::vector<App::ObjectIdentifier> retrieveSubPaths(const App::Property* prop)
+    std::vector<App::ObjectIdentifier> retrieveSubPaths(const App::Property* prop) const
     {
         std::vector<App::ObjectIdentifier> result;
         if (prop) {
-            prop->getPaths(result);
+            if (prop == contextProperty) {
+                result = contextPaths;
+            }
+            else {
+                prop->getPaths(result);
+            }
             // A path containing only the property itself is not a child completion.
             auto res = std::remove_if(
                 result.begin(),
@@ -783,6 +788,43 @@ public:
         return 1;
     }
 
+    void setPathContext(const App::DocumentObject* obj, const QString& prefix)
+    {
+        // Reuse the advertised members while only the final search token changes.
+        const QString parentPrefix = prefix.left(prefix.lastIndexOf(QLatin1Char('.')) + 1);
+        if (parentPrefix == contextPrefix) {
+            return;
+        }
+
+        const App::Property* property = nullptr;
+        std::vector<App::ObjectIdentifier> paths;
+        if (obj && !parentPrefix.isEmpty()) {
+            try {
+                const auto ident = App::ObjectIdentifier::parse(
+                    obj,
+                    (parentPrefix + QLatin1String("_self")).toStdString()
+                );
+                const std::string subPath = ident.getSubPathStr();
+                if (subPath.size() > 6 && boost::ends_with(subPath, "._self")) {
+                    property = ident.getProperty();
+                    if (property) {
+                        property->getPathsForCompletion(paths, subPath.substr(0, subPath.size() - 6));
+                    }
+                }
+            }
+            catch (const Base::Exception&) {
+                property = nullptr;
+                paths.clear();
+            }
+        }
+
+        beginResetModel();
+        contextPrefix = parentPrefix;
+        contextProperty = property;
+        contextPaths = std::move(paths);
+        endResetModel();
+    }
+
     void setFuzzyMode(bool enabled)
     {
         if (fuzzyMode == enabled) {
@@ -906,6 +948,9 @@ private:
         beginResetModel();
         dirty = true;
         namedPropsCache.clear();
+        contextPrefix.clear();
+        contextProperty = nullptr;
+        contextPaths.clear();
         inList.clear();
         fuzzyCandidates.clear();
         fuzzyCandidatesInitialized = false;
@@ -1016,6 +1061,9 @@ private:
     QList<Candidate> fuzzyCandidates;
     QList<Match> fuzzyMatches;
     QString fuzzyFilter;
+    QString contextPrefix;
+    const App::Property* contextProperty = nullptr;
+    std::vector<App::ObjectIdentifier> contextPaths;
     bool noProperty;
     bool checkInList = true;
     bool dirty = true;
@@ -1093,6 +1141,10 @@ void ExpressionCompleter::updateCompletionModel(const QString& completionPrefix)
     const bool hasPathSeparator = containsSeparator && splitPath(completionPrefix).size() > 1;
     const bool useFuzzyModel = !noProperty && !hasPathSeparator
         && filterMode() != Qt::MatchStartsWith && !completionPrefix.isEmpty();
+    m->setPathContext(
+        currentObj.getObject(),
+        hasPathSeparator && !noProperty ? completionPrefix : QString()
+    );
     if (useFuzzyModel) {
         QString searchText = completionPrefix;
         if (searchText.startsWith(QLatin1String("<<"))) {
