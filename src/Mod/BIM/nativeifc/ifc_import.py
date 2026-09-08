@@ -218,7 +218,9 @@ def _summary_update(dialog, name, value):
 def _summary_failed(dialog, message):
     """Non-blocking IFC summary failure."""
 
-    dialog.groupSummary.setTitle(translate("BIM", "IFC file content summary — Unable to read"))
+    dialog.groupSummary.setTitle(
+        translate("BIM", "IFC File Content Summary (unable to read file)")
+    )
     dialog.groupSummary.setToolTip(message)
 
     # Keep already available file metadata visible.
@@ -246,7 +248,7 @@ def _summary_finished(dialog):
     if not getattr(dialog, "summary_worker", None):
         return
 
-    dialog.groupSummary.setTitle(translate("BIM", "IFC file content summary"))
+    dialog.groupSummary.setTitle(translate("BIM", "IFC File Content Summary"))
 
 
 def get_options(filename=None, strategy=None, shapemode=None, switchwb=None, silent=False):
@@ -309,7 +311,7 @@ def get_options(filename=None, strategy=None, shapemode=None, switchwb=None, sil
 
         if filename:
             dlg.groupSummary.setTitle(
-                translate("BIM", "IFC file content summary — Reading IFC file…")
+                translate("BIM", "IFC File Content Summary (reading file…)")
             )
 
             summary_worker = _IfcSummaryWorker(filename)
@@ -341,7 +343,7 @@ def get_options(filename=None, strategy=None, shapemode=None, switchwb=None, sil
 
         else:
             dlg.groupSummary.setTitle(
-                translate("BIM", "IFC file content summary — No IFC file selected")
+                translate("BIM", "IFC File Content Summary (no file selected)")
             )
 
         def stop_summary_worker():

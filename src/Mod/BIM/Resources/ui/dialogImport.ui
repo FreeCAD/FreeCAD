@@ -17,13 +17,13 @@
    <item>
     <widget class="QGroupBox" name="groupSummary">
      <property name="title">
-      <string>IFC file content summary</string>
+      <string>IFC File Content Summary</string>
      </property>
      <layout class="QFormLayout" name="summaryLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="labelSummaryFile">
         <property name="text">
-         <string>File:</string>
+         <string>File</string>
         </property>
        </widget>
       </item>
@@ -40,7 +40,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="labelSummarySize">
         <property name="text">
-         <string>Size:</string>
+         <string>Size</string>
         </property>
        </widget>
       </item>
@@ -57,7 +57,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="labelSummaryCreated">
         <property name="text">
-         <string>Created:</string>
+         <string>Created</string>
         </property>
        </widget>
       </item>
@@ -74,7 +74,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="labelSummaryModified">
         <property name="text">
-         <string>Modified:</string>
+         <string>Modified</string>
         </property>
        </widget>
       </item>
@@ -91,7 +91,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="labelSummarySchema">
         <property name="text">
-         <string>Schema:</string>
+         <string>Schema</string>
         </property>
        </widget>
       </item>
@@ -108,7 +108,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="labelSummaryProjects">
         <property name="text">
-         <string>Projects:</string>
+         <string>Projects</string>
         </property>
        </widget>
       </item>
@@ -125,7 +125,7 @@
       <item row="6" column="0">
        <widget class="QLabel" name="labelSummarySites">
         <property name="text">
-         <string>Sites:</string>
+         <string>Sites</string>
         </property>
        </widget>
       </item>
@@ -142,7 +142,7 @@
       <item row="7" column="0">
        <widget class="QLabel" name="labelSummaryBuildings">
         <property name="text">
-         <string>Buildings:</string>
+         <string>Buildings</string>
         </property>
        </widget>
       </item>
@@ -159,7 +159,7 @@
       <item row="8" column="0">
        <widget class="QLabel" name="labelSummaryStoreys">
         <property name="text">
-         <string>Storeys:</string>
+         <string>Storeys</string>
         </property>
        </widget>
       </item>
@@ -176,7 +176,7 @@
       <item row="9" column="0">
        <widget class="QLabel" name="labelSummaryProducts">
         <property name="text">
-         <string>Products:</string>
+         <string>Products</string>
         </property>
        </widget>
       </item>
@@ -193,7 +193,7 @@
       <item row="10" column="0">
        <widget class="QLabel" name="labelSummaryTypes">
         <property name="text">
-         <string>Types:</string>
+         <string>Types</string>
         </property>
        </widget>
       </item>
@@ -210,7 +210,7 @@
       <item row="11" column="0">
        <widget class="QLabel" name="labelSummaryPropertySets">
         <property name="text">
-         <string>Property sets:</string>
+         <string>Property sets</string>
         </property>
        </widget>
       </item>
@@ -227,7 +227,7 @@
       <item row="12" column="0">
        <widget class="QLabel" name="labelSummaryMaterials">
         <property name="text">
-         <string>Materials:</string>
+         <string>Materials</string>
         </property>
        </widget>
       </item>
@@ -244,7 +244,7 @@
       <item row="13" column="0">
        <widget class="QLabel" name="labelSummaryLayers">
         <property name="text">
-         <string>Layers:</string>
+         <string>Layers</string>
         </property>
        </widget>
       </item>
