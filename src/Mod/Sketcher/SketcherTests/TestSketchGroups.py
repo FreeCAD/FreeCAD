@@ -34,9 +34,11 @@ class TestSketchGroups(unittest.TestCase):
         self.handles = [self.line(x) for x in (10, 20, 30)]
         self.circle = s.addGeometry(Part.Circle(App.Vector(12, 4, 0), App.Vector(0, 0, 1), 2))
         self.other = s.addGeometry(Part.LineSegment(App.Vector(23, 2, 0), App.Vector(27, 5, 0)))
-        groups = [self.group(self.handles[0], [self.circle]),
-                  self.group(self.handles[1], [self.handles[0], self.other]),
-                  self.group(self.handles[2], [self.handles[1]])]
+        groups = [
+            self.group(self.handles[0], [self.circle]),
+            self.group(self.handles[1], [self.handles[0], self.other]),
+            self.group(self.handles[2], [self.handles[1]]),
+        ]
         s.addConstraint(list(reversed(groups)) if reverse else groups)
         self.assertEqual(s.solve(), 0)
         root = self.handles[2]
@@ -65,12 +67,16 @@ class TestSketchGroups(unittest.TestCase):
             for _ in range(3):
                 self.assertEqual(s.solve(), 0)
                 for geo in self.handles[:2] + [self.other]:
-                    self.assertVector(s.Geometry[geo].StartPoint,
-                                      target - 2 * (before[geo].StartPoint - origin))
-                    self.assertVector(s.Geometry[geo].EndPoint,
-                                      target - 2 * (before[geo].EndPoint - origin))
-                self.assertVector(s.Geometry[self.circle].Center,
-                                  target - 2 * (before[self.circle].Center - origin))
+                    self.assertVector(
+                        s.Geometry[geo].StartPoint, target - 2 * (before[geo].StartPoint - origin)
+                    )
+                    self.assertVector(
+                        s.Geometry[geo].EndPoint, target - 2 * (before[geo].EndPoint - origin)
+                    )
+                self.assertVector(
+                    s.Geometry[self.circle].Center,
+                    target - 2 * (before[self.circle].Center - origin),
+                )
                 self.assertAlmostEqual(s.Geometry[self.circle].Radius, 4)
 
     def testUngroupOuterPreservesInner(self):
@@ -147,8 +153,9 @@ class TestSketchGroups(unittest.TestCase):
         self.doc.recompute()
         s.setDatum(self.angle, math.pi)
         delta = before - origin
-        self.assertVector(s.Geometry[self.circle].Center,
-                          origin + 1.5 * App.Vector(-delta.y, delta.x, 0))
+        self.assertVector(
+            s.Geometry[self.circle].Center, origin + 1.5 * App.Vector(-delta.y, delta.x, 0)
+        )
         self.assertAlmostEqual(s.Geometry[self.circle].Radius, 3)
 
     def testChildDimensionsAreDormant(self):
