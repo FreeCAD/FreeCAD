@@ -40,14 +40,18 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
                     s.addGeometry(Part.Circle(App.Vector(12, 14, 0), App.Vector(0, 0, 1), 2))
                     s.addGeometry(Part.Point(App.Vector(16, 18, 0)))
                     for x in (10, 20):
-                        s.addGeometry(Part.LineSegment(App.Vector(x, 10, 0), App.Vector(x, 20, 0)), True)
+                        s.addGeometry(
+                            Part.LineSegment(App.Vector(x, 10, 0), App.Vector(x, 20, 0)), True
+                        )
                     s.addConstraint(Sketcher.Constraint("Group", [2, 0, 0, 0, 1, 0]))
                     s.addConstraint(Sketcher.Constraint("Group", [3, 0, 2, 0]))
                     self.doc.recompute()
                     Gui.activeDocument().setEdit(s.Name)
                     view = Gui.activeDocument().activeView()
-                    view.setCamera('#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 '
-                                   'orientation 0 0 1 0 focalDistance 100 height 100 }')
+                    view.setCamera(
+                        "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
+                        "orientation 0 0 1 0 focalDistance 100 height 100 }"
+                    )
                     self.flush_gui(150)
                     viewport = view.graphicsView().viewport()
                     # Selecting a leaf must transform its entire outer group, including points.
@@ -61,23 +65,28 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
                     elif command == "Scale":
                         points.append((40, 0))
                     for index, (x, y) in enumerate(points):
-                        pos = self.viewport_to_qpoint(view, viewport,
-                                                     view.getPointOnScreen(App.Vector(x, y, 0)))
+                        pos = self.viewport_to_qpoint(
+                            view, viewport, view.getPointOnScreen(App.Vector(x, y, 0))
+                        )
                         self.move(viewport, pos)
                         self.click(viewport, pos)
                         if index == 0 and pattern:
                             self.key_click(viewport, QtCore.Qt.Key_U, "u")
                     self.assertEqual(s.GeometryCount, 8 if pattern else 4)
-                    self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 4 if pattern else 2)
+                    self.assertEqual(
+                        sum(c.Type == "Group" for c in s.Constraints), 4 if pattern else 2
+                    )
                     self.assertEqual(s.solve(), 0)
                     first = 4 if pattern else 0
-                    root, circle, point, child = s.Geometry[first:first + 4]
+                    root, circle, point, child = s.Geometry[first : first + 4]
                     # Derive the transformation from the outer handle: every member must
                     # follow it exactly, independently of mouse pixel rounding or snapping.
                     y_axis = (root.EndPoint - root.StartPoint) / 10
                     x_axis = App.Vector(y_axis.y, -y_axis.x, 0)
+
                     def transformed_point(x, y):
                         return root.StartPoint + x_axis * (x - 20) + y_axis * (y - 10)
+
                     for actual, expected in (
                         (circle.Center, transformed_point(12, 14)),
                         (point.toShape().Point, transformed_point(16, 18)),
@@ -154,8 +163,10 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
         for command in ("Rotate", "Translate", "Scale"):
             select([root])
             view = Gui.activeDocument().activeView()
-            view.setCamera('#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 '
-                           'orientation 0 0 1 0 focalDistance 100 height 100 }')
+            view.setCamera(
+                "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
+                "orientation 0 0 1 0 focalDistance 100 height 100 }"
+            )
             Gui.runCommand("Sketcher_" + command)
             self.flush_gui(150)
             viewport = view.graphicsView().viewport()
@@ -165,8 +176,9 @@ class TestSketchGroupsGui(SketcherGuiTestCase):
             elif command == "Scale":
                 points.append((40, 0))
             for index, (x, y) in enumerate(points):
-                pos = self.viewport_to_qpoint(view, viewport,
-                                             view.getPointOnScreen(App.Vector(x, y, 0)))
+                pos = self.viewport_to_qpoint(
+                    view, viewport, view.getPointOnScreen(App.Vector(x, y, 0))
+                )
                 self.move(viewport, pos)
                 self.click(viewport, pos)
                 if index == 0:
