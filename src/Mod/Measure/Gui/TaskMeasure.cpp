@@ -137,17 +137,20 @@ constexpr std::array snapModeDisplayLabels {
     QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Vertex"),
     QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Center"),
     QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Midpoint"),
-    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Axis")};
+    QT_TRANSLATE_NOOP("Measure::MeasureSnapMode", "Axis")
+};
 
 void populateSnapCombo(QComboBox* combo)
 {
-    static_assert(snapModeDisplayLabels.size()
-                      == static_cast<std::size_t>(Measure::MeasureSnapMode::Axis) + 1,
-                  "Snap mode display labels must track Measure::MeasureSnapMode");
+    static_assert(
+        snapModeDisplayLabels.size() == static_cast<std::size_t>(Measure::MeasureSnapMode::Axis) + 1,
+        "Snap mode display labels must track Measure::MeasureSnapMode"
+    );
     for (std::size_t i = 0; i < snapModeDisplayLabels.size(); ++i) {
         combo->addItem(
             QCoreApplication::translate("Measure::MeasureSnapMode", snapModeDisplayLabels[i]),
-            QVariant(static_cast<int>(i)));
+            QVariant(static_cast<int>(i))
+        );
     }
 }
 
@@ -262,14 +265,9 @@ TaskMeasure::TaskMeasure()
     for (auto* combo : {snap1Switch, snap2Switch}) {
         // populate before connect: the first addItem emits currentIndexChanged
         populateSnapCombo(combo);
-        connect(
-            combo,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            [this, slot](int) {
-                applySnapMode(slot);
-            }
-        );
+        connect(combo, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, slot](int) {
+            applySnapMode(slot);
+        });
         ++slot;
     }
 
