@@ -685,7 +685,8 @@ class TestPathPocket(PathTestBase):
         if FreeCAD.GuiUp:
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
-        pocket_large = self.createPocketOperation(
+        # Pocket with large tool
+        self.createPocketOperation(
             part_obj,
             pocket_bottom_z,
             "pocket_rest_large",
@@ -697,6 +698,7 @@ class TestPathPocket(PathTestBase):
             Angle=0,
         )
 
+        # Pocket with small tool; rest machining
         pocket_small = self.createPocketOperation(
             part_obj,
             pocket_bottom_z,
