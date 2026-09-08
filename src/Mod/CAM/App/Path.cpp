@@ -235,7 +235,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double rapid)
 
         double l = 0;
         double feedrate = hFeed;
-        Vector3d next = command.getPlacement(last).getPosition();
+        Vector3d next = getNextPosition(command, last, absolute);
 
         if (isRapidCommand(name)) {
             // Rapid Move
@@ -255,7 +255,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double rapid)
         }
         else if (isArcCommand(name)) {
             // Arc Move
-            l += getArcLength(command, last, next, absoluteCenter);
+            l = getArcLength(command, last, next, absoluteCenter);
             if (fCommand) {
                 fG1 = fCommand;
             }
