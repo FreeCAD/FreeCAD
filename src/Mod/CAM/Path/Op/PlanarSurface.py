@@ -1587,6 +1587,71 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
+    def _prepare_geometry(self):
+        """
+        Resolves the model bodies into one working shape, used
+        throughout opExecute for boundary and STL generation.
+
+        Multiple bodies are fused into a single continuous solid where
+        possible, falling back to a plain Compound if the fuse itself
+        fails. Vertical faces are excluded up front — Surface Scan,
+        Waterline, and Z-Level all treat them as irrelevant for boundary
+        and mesh purposes, so there's no reason to carry them further
+        into the pipeline.
+
+        Returns:
+            tuple: (base_objs, model_shape, model_faces, optimized_shape),
+                or None if there is no valid geometry to machine.
+        """
+
+        # Self.model / self.stock are provided by the base
+        # class and are already in the working frame when a 3+2 workplane
+        # rotation is active (see ObjectOp.execute); never read JOB.Model or
+        # JOB.Stock directly here or the rotation would be silently bypassed.
+        base_objs = self.model
+        if not base_objs:
+            Path.Log.error("No models found in Job.")
+            return None
+
+        if getattr(self, "_geom_transform_matrix", None) is not None and any(
+            not hasattr(b, "Shape") for b in base_objs
+        ):
+            # Mesh::Feature bases carry no .Shape, so the base class cannot
+            # rotate them. Refuse rather than cut an unrotated mesh on a
+            # rotated setup.
+            Path.Log.error(
+                translate(
+                    "CAM_PlanarSurface",
+                    "Mesh base objects are not supported with a rotated Workplane.",
+                )
+            )
+            return None
+
+        valid_shapes = []
+        for b in base_objs:
+            shp = getattr(b, "Shape", None)
+            if shp is not None and not shp.isNull():
+                valid_shapes.append(shp.copy())
+        if len(valid_shapes) > 1:
+            try:
+                # Melt overlapping models into one clean continuous object
+                model_shape = valid_shapes[0].fuse(valid_shapes[1:])
+                if hasattr(model_shape, "removeSplitter"):
+                    model_shape = model_shape.removeSplitter()
+            except (Part.OCCError, RuntimeError, ValueError) as e:
+                Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
+                model_shape = Part.Compound(valid_shapes)
+        elif len(valid_shapes) == 1:
+            model_shape = valid_shapes[0]
+        else:
+            Path.Log.error("No valid shapes found to machine.")
+            return None
+
+        model_faces = surface_common._filter_vertical(model_shape.Faces)
+        optimized_shape = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
+
+        return base_objs, model_shape, model_faces, optimized_shape
+
     def opExecute(self, obj):
         """Main execution method for Planar Surface operation.
 
@@ -1627,7 +1692,7 @@ class ObjectSurface(PathOp.ObjectOp):
         tool_params = self._extractToolParams(obj)
         tool_diam = tool_params.get("diameter", 0.0)
         tool_radius = tool_diam / 2.0
-        avoid_overlap = -obj.AvoidFacesOverlap.Value
+        avoid_overlap = tool_radius - obj.AvoidFacesOverlap.Value
 
         # Initialize geometric and OCL containers
         cutter = stl = safe_stl = stl_faces = None
@@ -1637,6 +1702,9 @@ class ObjectSurface(PathOp.ObjectOp):
         is_surface_scan = strategy == "SurfaceScan"
         is_waterline = strategy == "Waterline"
         is_zlevel = strategy == "ZLevelHybrid"
+        # NOTE: Temporarily disable optimization and CPP tessellation for 3+2 axis operations
+        is_three_plus_two = getattr(self, "_geom_transform_matrix", None)
+        use_cpp = True
 
         # Geometry & Generation Requirements
         needs_face_selection = is_surface_scan
@@ -1663,48 +1731,18 @@ class ObjectSurface(PathOp.ObjectOp):
             op_depth = obj.StartDepth.Value - obj.FinalDepth.Value
             tool_params["length_offset"] = op_depth + tool_params["edge_height"]
 
-        # Geometry preparation. self.model / self.stock are provided by the base
-        # class and are already in the working frame when a 3+2 workplane
-        # rotation is active (see ObjectOp.execute); never read JOB.Model or
-        # JOB.Stock directly here or the rotation would be silently bypassed.
-        base_objs = self.model
-        if not base_objs:
-            Path.Log.error("No models found in Job.")
+        # Geometry preperation
+        geometry = self._prepare_geometry()
+        if geometry is None:
             return
+        base_objs, model_shape, model_faces, optimized_shape = geometry
 
-        if getattr(self, "_geom_transform_matrix", None) is not None and any(
-            not hasattr(b, "Shape") for b in base_objs
-        ):
-            # Mesh::Feature bases carry no .Shape, so the base class cannot
-            # rotate them. Refuse rather than cut an unrotated mesh on a
-            # rotated setup.
-            Path.Log.error(
-                translate(
-                    "CAM_PlanarSurface",
-                    "Mesh base objects are not supported with a rotated Workplane.",
-                )
-            )
-            return
-
-        valid_shapes = []
-        for b in base_objs:
-            shp = getattr(b, "Shape", None)
-            if shp is not None and not shp.isNull():
-                valid_shapes.append(shp.copy())
-        if len(valid_shapes) > 1:
-            try:
-                # Melt overlapping models into one clean continuous object
-                model_shape = valid_shapes[0].fuse(valid_shapes[1:])
-                if hasattr(model_shape, "removeSplitter"):
-                    model_shape = model_shape.removeSplitter()
-            except (Part.OCCError, RuntimeError, ValueError) as e:
-                Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
-                model_shape = Part.Compound(valid_shapes)
-        elif len(valid_shapes) == 1:
-            model_shape = valid_shapes[0]
-        else:
-            Path.Log.error("No valid shapes found to machine.")
-            return
+        # NOTE: Temporarily disable the model optimization on 3+2 axis operations
+        if is_three_plus_two:
+            use_cpp = False
+            model_faces = None
+            optimized_shape = model_shape
+            optimize_stl = False
 
         # Split selected features
         if needs_face_selection:
@@ -1738,7 +1776,7 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 # Create a boundary from model_shape
                 bb_face = surface_common.create_boundary_face(
-                    model_shape.Faces, offset, avoids=False, model_boundary=True
+                    model_shape.Faces, offset, avoids=False, compound=optimized_shape if optimize_stl else False
                 )
 
         # Avoid Faces processing
@@ -1788,7 +1826,8 @@ class ObjectSurface(PathOp.ObjectOp):
             stl_start = time.time()
 
             stl, safe_stl = surface_mesh.generate_stl(
-                model_shape=model_shape,
+                model_shape=optimized_shape,
+                model_faces=model_faces,
                 base_objs=base_objs,
                 optimize_stl=optimize_stl,
                 strategy=strategy,
@@ -1804,6 +1843,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 linear_deflection=obj.LinearDeflection.Value,
                 angular_deflection=obj.AngularDeflection.Value,
                 mesh_simplification=getattr(obj, "MeshSimplification", 1),
+                use_cpp=use_cpp,
             )
             stl_time = time.time() - stl_start
 

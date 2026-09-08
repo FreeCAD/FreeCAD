@@ -244,9 +244,10 @@ class CAMWorkbench(Workbench):
                 except ImportError:
                     import opencamlib as ocl
                 from Path.Op.Gui import Surface
+                from Path.Op.Gui import PlanarSurface
                 from Path.Op.Gui import Waterline
 
-                threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+                threedopcmdlist.extend(["CAM_Surface", "CAM_PlanarSurface", "CAM_Waterline"])
 
                 if Path.Preferences.experimentalFeaturesEnabled():
                     # Planar Surface and Rotary Surface are companion operations

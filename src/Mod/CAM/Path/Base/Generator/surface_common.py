@@ -217,56 +217,67 @@ def make_safe_cutter(
 
 
 def create_boundary_face(
-    model_faces, offset=0.0, tolerance=0.005, avoids=False, model_boundary=False
+    faces, offset=0.0, tolerance=0.005, avoids=False, compound=None
 ):
     """
-    Creates a flat 2D boundary face from a list of 3D faces using
-    Path.Area's built-in HLR projection (Outline mode) as primary method,
-    falling back to TechDraw.findShapeOutline() if projection fails.
+    Creates a flat 2D boundary face from 3D faces using Path.Area's HLR
+    projection (Outline mode) as primary method, falling back to
+    TechDraw.findShapeOutline() if projection fails.
 
     Path.Area with Outline=True uses OCC's HLRBRep_Algo to project the
     3D shape silhouette onto the XY plane — more robust than TechDraw
     for complex curved and spiral faces where findShapeOutline() struggles.
 
     Args:
-        model_faces (list): List of Part.Face objects to build boundary from.
+        faces (list): Part.Face objects to build the boundary from. Also
+            used for mesh detection; pass the real list even when
+            `compound` is given too, so mesh detection isn't skipped.
         offset (float): Offset to apply to the resulting boundary.
         tolerance (float): Tolerance for wire joining.
         avoids (bool): 'True' only from _preprocess_avoid_faces.
+        compound (Part.Shape, optional): A pre-built shape to use directly
+            instead of rebuilding one from `faces` — pass this when the
+            caller already has a cohesive shape (e.g. a fused multi-body
+            model) to avoid reconstructing it from scratch.
 
     Returns:
         Part.Shape: The 2D boundary face, or None on failure.
     """
-    if not model_faces:
+    if not faces and not compound:
         Path.Log.warning(
             "No faces provided. Check that the Base Geometry selection contains valid faces."
         )
         return None
 
-    outline = not avoids
-    is_triangulated = _is_triangulated_mesh(model_faces)
+    if faces and not compound:
+        compound = faces[0] if len(faces) == 1 else Part.makeCompound(faces)
+
+    outline = bool(not avoids)
+    is_triangulated = _is_triangulated_mesh(faces)
 
     if not is_triangulated:
-        if model_boundary:
-            model_faces = _filter_vertical(model_faces)
-        result = _boundary_via_area(model_faces, offset, outline)
+        result = _boundary_via_area(compound, offset, outline)
         if result is not None:
             return result
 
-    return _boundary_via_techdraw(model_faces, offset, outline)
+    return _boundary_via_techdraw(compound, offset, outline)
 
 
-def _boundary_via_area(model_faces, offset, outline):
+def _boundary_via_area(compound, offset, outline):
     """
     Primary boundary engine: Path.Area projection/offset.
+
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
 
     Returns:
         Part.Shape: The resulting boundary, or None if Path.Area
         produced an empty/null shape or raised an exception.
     """
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         wpc = Part.makeCircle(2)
         area = Path.Area()
         area.setPlane(wpc)
@@ -294,7 +305,7 @@ def _boundary_via_area(model_faces, offset, outline):
         return None
 
 
-def _boundary_via_techdraw(model_faces, offset, outline):
+def _boundary_via_techdraw(compound, offset, outline):
     """
     Secondary (fallback) boundary engine: TechDraw.findShapeOutline(),
     followed by a second Path.Area pass purely to apply `offset`.
@@ -303,6 +314,12 @@ def _boundary_via_techdraw(model_faces, offset, outline):
     _boundary_via_area(), it cannot preserve inner wires (holes) when
     `outline` is False. If a caller needed holes preserved and lands
     here, that guarantee is lost, and a warning is logged.
+
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
 
     Returns:
         Part.Shape: The resulting boundary, or None on failure.
@@ -313,8 +330,6 @@ def _boundary_via_techdraw(model_faces, offset, outline):
             "inner wires (holes). Any holes in this selection will be lost."
         )
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         import TechDraw
 
         direction = FreeCAD.Vector(0, 0, 1)
@@ -786,54 +801,114 @@ def _classify_and_cap_faces(raw_faces):
 
         # Non-Planar 3D Walls (Sloped, Tapered, Curved)
         face_zmax = round(raw_face.BoundBox.ZMax, 4)
-        face_zmin = round(raw_face.BoundBox.ZMin, 4)
 
-        top_edges = []
-        for edge in raw_face.Edges:
-            # 1. Identify and skip "seam" edges that run vertically down the walls
-            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and (
-                round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3
-            )
-            if is_seam:
-                continue
-
-            # 2. Keep only the edges that form the upper rim
-            if round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3:
-                top_edges.append(edge)
-
-        if not top_edges:
+        top_wire = _extract_top_rim_wire(raw_face)
+        if top_wire is None:
             fallback_faces.append(raw_face)
             continue
 
-        try:
-            # Reconstruct just the top boundary into a new wire
-            sorted_edges = Part.__sortEdges__(top_edges)
-            top_wire = Part.Wire(sorted_edges)
-
-            # 3. Discretize and crush the 3D rim to a flat 2D polygon at Z-Max.
-            # This safely handles curved 3D splines and perfectly preserves the
-            # "egged" ellipse of angled holes without crashing OpenCASCADE.
-            flat_edges = []
-            for edge in top_wire.Edges:
-                points = edge.discretize(Distance=0.1)
-                flat_pts = [FreeCAD.Vector(p.x, p.y, face_zmax) for p in points]
-                flat_polygon = Part.makePolygon(flat_pts)
-                flat_edges.extend(flat_polygon.Edges)
-
-            sorted_flat = Part.__sortEdges__(flat_edges)
-            flat_wire = Part.Wire(sorted_flat)
-            cap_face = Part.Face(flat_wire)
-
-            if cap_face.isValid() and not cap_face.isNull():
-                prepared_faces.append(cap_face)
-            else:
-                fallback_faces.append(raw_face)
-
-        except Exception as e:
-            Path.Log.debug(
-                "_preprocess_avoid_faces: Failed to pre-process Avoid Face. "
-                f"Fall back to the original Avoid Faces process: {e}"
-            )
+        cap_face = flatten_wire_to_cap(top_wire, face_zmax, translate_to_zero=False)
+        if cap_face is not None:
+            prepared_faces.append(cap_face)
+        else:
             fallback_faces.append(raw_face)
 
     return prepared_faces, fallback_faces
+
+
+def _extract_top_rim_wire(face, tolerance=1e-3):
+    """
+    Extracts just the top rim of a non-planar 3D wall face (sloped,
+    tapered, or curved) as a single Part.Wire, skipping vertical seam
+    edges that run the full height of the wall.
+
+    Shared by _classify_and_cap_faces() here and surface_zlevel's
+    _cap_3d_wall() — both need to find "the top edge loop of an
+    arbitrary 3D wall" and previously duplicated this logic separately.
+
+    Returns:
+        Part.Wire or None: the top rim wire, or None if no top edges
+        were found or the wire couldn't be assembled.
+    """
+    face_zmax = round(face.BoundBox.ZMax, 4)
+    face_zmin = round(face.BoundBox.ZMin, 4)
+
+    top_edges = []
+    for edge in face.Edges:
+        # Skip "seam" edges that run vertically down the full wall height
+        is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + tolerance) and (
+            round(edge.BoundBox.ZMax, 4) >= face_zmax - tolerance
+        )
+        if is_seam:
+            continue
+        # Keep only the edges that form the upper rim
+        if round(edge.BoundBox.ZMax, 4) >= face_zmax - tolerance:
+            top_edges.append(edge)
+
+    if not top_edges:
+        return None
+
+    try:
+        sorted_edges = Part.__sortEdges__(top_edges)
+        return Part.Wire(sorted_edges)
+    except Exception as e:
+        Path.Log.debug(f"_extract_top_rim_wire: Failed to assemble top rim wire: {e}")
+        return None
+
+
+def flatten_wire_to_cap(wire, cap_z, discretize_distance=0.1, translate_to_zero=False):
+    """
+    Discretizes a wire, flattens all edges onto cap_z, and returns a
+    closed Part.Face. Safely handles curved 3D edges (e.g. the rim of
+    an angled hole) by crushing them to a flat 2D polygon rather than
+    attempting an exact projection, which can crash OpenCASCADE for
+    some inputs.
+
+    Shared by _classify_and_cap_faces() here and surface_zlevel's
+    _cap_3d_wall()/_cap_flat_face_holes() — all three previously
+    duplicated this flatten-and-rebuild logic separately, with subtly
+    different edge-case handling between copies.
+
+    Args:
+        wire (Part.Wire): the (possibly 3D/curved) wire to flatten.
+        cap_z (float): the Z height to flatten edges onto.
+        discretize_distance (float): point spacing used to discretize
+            curved edges before flattening.
+        translate_to_zero (bool): if True, translates the resulting
+            face so its ZMin is 0 (for use as a Z=0 mask); if False,
+            leaves it at cap_z.
+
+    Returns:
+        Part.Face or None: the flattened cap face, or None on failure.
+    """
+    flat_edges = []
+    for edge in wire.Edges:
+        try:
+            points = edge.discretize(Distance=discretize_distance)
+            flat_pts = [FreeCAD.Vector(p.x, p.y, cap_z) for p in points]
+            flat_edge = Part.makePolygon(flat_pts)
+            flat_edges.extend(flat_edge.Edges)
+        except Exception as e:
+            # A single bad edge shouldn't sink the whole cap — skip it
+            # and keep going with the rest.
+            Path.Log.debug(f"flatten_wire_to_cap: Edge flatten failed, skipping: {e}")
+            continue
+
+    if not flat_edges:
+        return None
+
+    try:
+        sorted_edges = Part.__sortEdges__(flat_edges)
+        flat_wire = Part.Wire(sorted_edges)
+        cap_face = Part.Face(flat_wire)
+
+        if not cap_face.isValid() or cap_face.isNull():
+            return None
+
+        if translate_to_zero:
+            cap_face.translate(FreeCAD.Vector(0, 0, -cap_face.BoundBox.ZMin))
+
+        return cap_face
+    except Exception as e:
+        Path.Log.debug(f"flatten_wire_to_cap: Failed to build cap face: {e}")
+        return None
