@@ -718,6 +718,14 @@ class TestPathPocket(PathTestBase):
         pocket_front = pocket_offset_y
         pocket_back = pocket_offset_y + pocket_height
 
+        corners = [
+            (pocket_left, pocket_front),
+            (pocket_right, pocket_front),
+            (pocket_left, pocket_back),
+            (pocket_right, pocket_back),
+        ]
+        corners_reached = [False] * 4
+
         pos = {"X": 0.0, "Y": 0.0}
         for cmd in pocket_small.Path.Commands:
             params = cmd.Parameters
@@ -735,8 +743,17 @@ class TestPathPocket(PathTestBase):
                 or pos["Y"] - pocket_front < margin
                 or pocket_back - pos["Y"] < margin
             )
-
             self.assertTrue(near_edge)
+
+            for i, (cx, cy) in enumerate(corners):
+                if math.hypot(pos["X"] - cx, pos["Y"] - cy) < margin:
+                    corners_reached[i] = True
+
+        for i, (cx, cy) in enumerate(corners):
+            self.assertTrue(
+                corners_reached[i],
+                f"Rest machining never cut within {margin}mm of corner ({cx}, {cy})",
+            )
 
 
 def _addViewProvider(pocketOp):

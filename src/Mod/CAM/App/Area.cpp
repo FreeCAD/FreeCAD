@@ -712,7 +712,7 @@ std::shared_ptr<Area> Area::getClearedArea(
     AreaParams params = {};
     const double buffer = params.Accuracy * 3;
     params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
-    params.SubjectFill = Clipper2Lib::FillRule::NonZero;
+    params.SubjectFill = Clipper2Lib::FillRule::Positive;
 
     CAreaConfig conf(params);
 
@@ -744,6 +744,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     AreaParams params = myParams;
     const double buffer = myParams.Accuracy * 3;
     params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    params.SubjectFill = Clipper2Lib::FillRule::NonZero;
     CAreaConfig conf(params);
 
     // transform all clearedAreas into our workplane
@@ -775,13 +776,13 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
-    remaining.Clip(Clipper2Lib::ClipType::Difference, *(clearedAreasInPlane.myArea), myParams.SubjectFill);
+    remaining.Clip(Clipper2Lib::ClipType::Difference, *(clearedAreasInPlane.myArea), params.SubjectFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
     restCArea.Offset(diameter + buffer);
-    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill);
+    restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, params.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
         return {};

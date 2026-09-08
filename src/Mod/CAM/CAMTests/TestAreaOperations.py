@@ -581,6 +581,41 @@ class TestAreaOperations(unittest.TestCase):
         self.assertEqual(nearest.x, 10, "Nearest x should be on the corner of the square")
         self.assertEqual(nearest.y, 10, "Nearest y should be on the corner of the square")
 
+    def test_offset_rest_area_single_curve(self):
+        """Regression test for problematic offset that came up in rest machining tests."""
+        a = make_area(
+            [
+                make_curve(
+                    [
+                        (12.0147, 9.7451),
+                        (10.4272, 11.3326, 1, 10.4272, 9.7451),
+                        (9.8936, 11.3326),
+                        (9.9304, 11.3268, -1, 9.5189, 8.8320),
+                        (11.4818, 10.4210, -1, 9.5083, 8.8402),
+                        (11.5178, 10.3764, -1, 9.5312, 8.8123),
+                        (11.5920, 10.2740, -1, 9.5077, 8.8423),
+                        (11.6254, 10.2260, -1, 9.5319, 8.8081),
+                        (11.6912, 10.1193, -1, 9.5074, 8.8445),
+                        (11.7215, 10.0682, -1, 9.5321, 8.8037),
+                        (11.7790, 9.9577, -1, 9.5073, 8.8468),
+                        (11.8059, 9.9039, -1, 9.5317, 8.7991),
+                        (11.8549, 9.7898, -1, 9.5076, 8.8491),
+                        (11.8780, 9.7340, -1, 9.5308, 8.7944),
+                        (11.9186, 9.6164, -1, 9.5083, 8.8512),
+                        (11.9376, 9.5594, -1, 9.5294, 8.7896),
+                        (11.9696, 9.4380, -1, 9.5093, 8.8530),
+                        (11.9842, 9.3810, -1, 9.5274, 8.7843),
+                        (12.0078, 9.2542, -1, 9.5108, 8.8537),
+                        (12.0147, 9.2169, -1, 9.5249, 8.7786),
+                        (12.0147, 9.7451),
+                    ]
+                )
+            ]
+        )
+        a.Offset(3.2050)
+
+        self.assertEqual(a.num_curves(), 1, format_area(a, "Result"))
+
 
 if __name__ == "__main__":
     # Allow running this test file directly

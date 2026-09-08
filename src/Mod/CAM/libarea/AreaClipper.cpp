@@ -455,14 +455,29 @@ void CArea::NaiveOffset(double offset)
                 cNeg.m_vertices.emplace_back(0, pNegE, heeks::Point {0, 0});
             }
             else {
-                // Check if the offset causes the arc to collapse; if so, generate a straight line
-                // instead of an arc because it will be optimized out anyway in a union operation later
+                // Check if the offset causes the arc to collapse; if so, it needs special handling.
+                // Offsetting by -R reduces the arc to a point at the arc's center. Further
+                // offsetting should have the same effect as offsetting that point (connecting
+                // segments back to the point).
                 assert(v.m_type == 1 || v.m_type == -1);
-                const bool posCollapse = radius + (offset * v.m_type) <= 0;
-                const bool negCollapse = radius - (offset * v.m_type) <= 0;
 
-                cPos.m_vertices.emplace_back(posCollapse ? 0 : v.m_type, pPosE, v.m_c);
-                cNeg.m_vertices.emplace_back(negCollapse ? 0 : v.m_type, pNegE, v.m_c);
+                const bool posCollapse = radius + (offset * v.m_type) <= 0;
+                if (posCollapse) {
+                    cPos.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
+                    cPos.m_vertices.emplace_back(0, pPosE, heeks::Point {0, 0});
+                }
+                else {
+                    cPos.m_vertices.emplace_back(v.m_type, pPosE, v.m_c);
+                }
+
+                const bool negCollapse = radius - (offset * v.m_type) <= 0;
+                if (negCollapse) {
+                    cNeg.m_vertices.emplace_back(0, v.m_c, heeks::Point {0, 0});
+                    cNeg.m_vertices.emplace_back(0, pNegE, heeks::Point {0, 0});
+                }
+                else {
+                    cNeg.m_vertices.emplace_back(v.m_type, pNegE, v.m_c);
+                }
             }
 
             // Update state variables
