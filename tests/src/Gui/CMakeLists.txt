@@ -10,6 +10,8 @@ add_executable(Gui_tests_run
         ColorScaleOverlayTest.cpp
         FileDialog.cpp
         StyleParameters/DiagnosticsCapture.h
+        StyleParameters/ValueMatchers.h
+        StyleParameters/ValueMatchers.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
         StyleParameters/ParameterManagerTest.cpp
