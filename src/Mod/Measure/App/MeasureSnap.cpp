@@ -64,6 +64,8 @@ namespace
 // Mutable and sentinel-terminated because setEnums() takes const char**.
 std::array<const char*, 7> SnapModeLabels
     = {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
+static_assert(SnapModeLabels.size() == static_cast<std::size_t>(MeasureSnapMode::Axis) + 2,
+              "SnapModeLabels must hold every mode plus the sentinel");
 
 constexpr std::array<const char*, 6> SnaplessMeasureTypes
     = {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS", "POSITION"};
