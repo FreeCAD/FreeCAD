@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
@@ -50,6 +53,7 @@ namespace Sketcher
 {
 enum class PointPos : int;
 class SketchObject;
+class Constraint;
 
 bool isCircle(const Part::Geometry&);
 bool isArcOfCircle(const Part::Geometry&);
@@ -72,6 +76,10 @@ namespace SketcherGui
 {
 class DrawSketchHandler;
 class ViewProviderSketch;
+
+/// Copy a complete Group/Text constraint, remapping every member into a transformed copy.
+std::unique_ptr<Sketcher::Constraint> copyTransformedGroup(
+    const Sketcher::Constraint& constraint, const std::vector<int>& geometry, int firstGeometry);
 
 enum OffsetMode : bool
 {

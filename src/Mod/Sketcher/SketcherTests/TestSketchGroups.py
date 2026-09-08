@@ -79,9 +79,10 @@ class TestSketchGroups(unittest.TestCase):
         s.delConstraint(2)
         self.assertEqual(s.solve(), 0)
         self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 2)
+        self.assertEqual(s.GeometryCount, 4)
         s.addConstraint(Sketcher.Constraint("Distance", self.handles[1], 20.0))
         self.assertEqual(s.solve(), 0)
-        self.assertAlmostEqual(s.Geometry[self.circle].Radius, 4)
+        self.assertAlmostEqual(s.Geometry[self.circle - 1].Radius, 4)
 
     def testSaveRestore(self):
         self.nested()
@@ -129,7 +130,8 @@ class TestSketchGroups(unittest.TestCase):
         self.doc.commitTransaction()
         self.assertEqual(s.solve(), 0)
         s.setDatum(self.length - 2, 20.0)
-        self.assertAlmostEqual(s.Geometry[self.circle].Radius, 4)
+        self.assertEqual(s.GeometryCount, 3)
+        self.assertAlmostEqual(s.Geometry[self.circle - 2].Radius, 4)
         self.doc.undo()
         self.assertEqual(s.solve(), 0)
         self.assertEqual(sum(c.Type == "Group" for c in s.Constraints), 3)

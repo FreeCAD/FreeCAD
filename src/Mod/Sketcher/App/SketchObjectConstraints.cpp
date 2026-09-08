@@ -985,7 +985,7 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
     const std::set<int> removedIndices(ConstrIds.begin(), ConstrIds.end());
     for (int id : removedIndices) {
         const auto* c = vals[id];
-        if (c->isActive && (c->Type == Group || c->Type == Text)) {
+        if (c->Type == Group || c->Type == Text) {
             removedGroups.emplace(c->getGeoId(0), c);
         }
     }
@@ -1002,12 +1002,13 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
                 members.push_back(member);
             }
         }
-        const size_t originalSize = members.size();
+        bool expanded = false;
         for (size_t i = 0; i < members.size(); ++i) {
             auto group = removedGroups.find(members[i]);
             if (group == removedGroups.end()) {
                 continue;
             }
+            expanded = true;
             for (int j = 1; group->second->hasElement(j); ++j) {
                 const int member = group->second->getGeoId(j);
                 if (member != GeoEnum::GeoUndef && visited.insert(member).second) {
@@ -1015,11 +1016,13 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
                 }
             }
         }
-        if (members.size() != originalSize) {
+        if (expanded) {
             auto* replacement = c->clone();
             replacement->truncateElements(1);
             for (int member : members) {
-                replacement->addElement(GeoElementId(member));
+                if (!removedGroups.contains(member)) {
+                    replacement->addElement(GeoElementId(member));
+                }
             }
             newVals[id] = replacement;
         }
@@ -1032,6 +1035,17 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions optio
     }
 
     this->Constraints.setValues(std::move(newVals));
+
+    // Ungrouping releases the members, but the group-owned handle is no longer geometry.
+    std::vector<int> removedHandles;
+    for (const auto& [handle, group] : removedGroups) {
+        if (handle >= 0 && handle <= getHighestCurveIndex() && !isGroupHandle(handle)) {
+            removedHandles.push_back(handle);
+        }
+    }
+    if (!removedHandles.empty()) {
+        delGeometriesExclusiveList(removedHandles, DeleteOption::NoSolve);
+    }
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
     if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
