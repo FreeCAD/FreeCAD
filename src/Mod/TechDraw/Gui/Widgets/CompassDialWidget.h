@@ -28,6 +28,8 @@
 #include <QWidget>
 #include <QSize>
 
+class QMouseEvent;
+
 namespace TechDrawGui {
 
 class CompassDialWidget : public QWidget
@@ -44,11 +46,17 @@ public:
     void setAngle(double newAngle);
     void setSize(int newSize);
 
+Q_SIGNALS:
+    void angleSelected(double angle);
+
 public Q_SLOTS:
     void slotChangeAngle(double angle) { setAngle(angle); }
     void resetAngle() { setAngle(0.0); }
 
 protected:
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
     void drawWidget(QPainter& painter);
     void drawNeedle(QPainter& painter);
@@ -56,14 +64,19 @@ protected:
     void drawBackground(QPainter& painter);
 
 private:
+    bool selectAngleAt(const QPoint& position, bool requireInsideDial);
+
     QRect m_rect;
     double m_angle;
+    double m_lastSelectedAngle;
     double m_margin;
     double m_markInterval;
     int m_defaultSize;
     int m_defaultMargin;
     int m_designRadius;
     int m_designDiameter;
+    bool m_dragging;
+    bool m_hasSelectedAngle;
 };
 
 } //namespace TechDrawGui

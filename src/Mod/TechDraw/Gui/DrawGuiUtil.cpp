@@ -22,11 +22,15 @@
  ***************************************************************************/
 
 
-# include <sstream>
+#include <algorithm>
+#include <set>
+#include <sstream>
+#include <cmath>
 
 #include <QBitmap>
 #include <QColor>
 #include <QComboBox>
+#include <QGraphicsView>
 #include <QMessageBox>
 #include <QPalette>
 #include <QPixmap>
@@ -66,6 +70,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/GeometryObject.h>
 #include <Mod/TechDraw/App/LineGenerator.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Preferences.h>
@@ -834,4 +839,47 @@ void DrawGuiUtil::rotateToAlign(DrawViewPart* view, const Base::Vector2d& oldDir
 
     double oldRotation = view->Rotation.getValue();
     view->Rotation.setValue(oldRotation + toRotate * cw);
+}
+
+QPointF DrawGuiUtil::snapToViewGeometry(
+    const QPointF& point,
+    const TechDraw::DrawViewPart& view,
+    const QGIViewPart& viewItem,
+    const QGraphicsView& graphicsView,
+    double snapPixels)
+{
+    QPointF best = point;
+    double bestDistance = snapPixels;
+    const QPoint cursor = graphicsView.mapFromScene(viewItem.mapToScene(point));
+    const auto consider = [&](const Base::Vector3d& candidate) {
+        const QPointF local(Rez::guiX(candidate.x), Rez::guiX(candidate.y));
+        const QPoint viewport =
+            graphicsView.mapFromScene(viewItem.mapToScene(local));
+        const double distance =
+            std::hypot(viewport.x() - cursor.x(), viewport.y() - cursor.y());
+        if (distance < bestDistance) {
+            bestDistance = distance;
+            best = local;
+        }
+    };
+
+    for (const auto& vertex : view.getVertexGeometry()) {
+        if (vertex->getHlrVisible()) {
+            consider(vertex->point());
+        }
+    }
+    for (const auto& geometry : view.getEdgeGeometry()) {
+        if (!geometry->getHlrVisible()) {
+            continue;
+        }
+        if (geometry->getGeomType() == GeomType::CIRCLE
+            || geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
+            consider(std::static_pointer_cast<TechDraw::Circle>(geometry)->center);
+        }
+        else if (geometry->getGeomType() == GeomType::ELLIPSE
+                 || geometry->getGeomType() == GeomType::ARCOFELLIPSE) {
+            consider(std::static_pointer_cast<TechDraw::Ellipse>(geometry)->center);
+        }
+    }
+    return best;
 }

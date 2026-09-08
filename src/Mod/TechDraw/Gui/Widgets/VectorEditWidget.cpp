@@ -211,7 +211,6 @@ void VectorEditWidget::buildWidget()
     tbExpand->setCheckable(true);
     VectorEditButtonLayout->addWidget(tbExpand);
 
-    VectorEditButtonLayout->setStretch(0, 1);
     VectorEditButtonLayout->setStretch(1, 1);
     vectorEditLayout->addLayout(VectorEditButtonLayout);
 
@@ -262,4 +261,3 @@ void VectorEditWidget::buildWidget()
 
     verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 }
-

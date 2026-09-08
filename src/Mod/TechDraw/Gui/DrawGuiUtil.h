@@ -33,6 +33,7 @@
 
 
 class QComboBox;
+class QGraphicsView;
 class QPointF;
 class QRectF;
 
@@ -57,6 +58,7 @@ class Vector2d;
 namespace TechDrawGui
 {
 class QGIEdge;
+class QGIViewPart;
 class QGIVertex;
 
 /// Convenient utility functions for TechDraw Gui Module
@@ -104,6 +106,12 @@ class TechDrawGuiExport DrawGuiUtil {
     static void rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direction);
     static void rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d& direction);
     static void rotateToAlign(TechDraw::DrawViewPart* view, const Base::Vector2d& oldDirection, const Base::Vector2d& newDirection);
+
+    static QPointF snapToViewGeometry(const QPointF& point,
+                                      const TechDraw::DrawViewPart& view,
+                                      const QGIViewPart& viewItem,
+                                      const QGraphicsView& graphicsView,
+                                      double snapPixels = 12.0);
 
     static void showNoPageMessage();
 

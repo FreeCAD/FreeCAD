@@ -42,6 +42,10 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
+    bool contains(const QPointF& point) const override;
+    void paint(QPainter* painter,
+               const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
 
     int getProjIndex() const { return projIndex; }
 
@@ -52,6 +56,7 @@ public:
     bool getSmoothEdge() const { return(isSmoothEdge); }
     void setPrettyNormal() override;
     void setLinePen(const QPen& isoPen);
+    void setPaintClip(const QPainterPath& clip);
 
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}
@@ -65,6 +70,8 @@ protected:
     QColor getHiddenColor();
 
 private:
+    QPainterPath unclippedShape() const;
+
     int projIndex;                                                     //index of edge in Projection. must exist.
 
     bool isCosmetic;
@@ -72,6 +79,7 @@ private:
     bool isSmoothEdge;
 
     TechDraw::SourceType m_source{TechDraw::SourceType::GEOMETRY};
+    QPainterPath m_paintClip;
 };
 
 }

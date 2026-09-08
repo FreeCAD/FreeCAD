@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+# include <QPainter>
 # include <QPainterPath>
 # include <QPainterPathStroker>
 
@@ -84,16 +85,56 @@ QColor QGIEdge::getHiddenColor()
 
 QRectF QGIEdge::boundingRect() const
 {
-    return shape().controlPointRect();
+    // Curved paths can have control points far outside the painted curve.
+    return shape().boundingRect();
 }
 
 QPainterPath QGIEdge::shape() const
+{
+    const QPainterPath edgeShape = unclippedShape();
+    if (m_paintClip.isEmpty()) {
+        return edgeShape;
+    }
+
+    // Keep Bezier control points out of the Boolean operation. Intersecting
+    // two polygonal envelopes gives a stable, tight bound at diagonal
+    // partial-section boundaries.
+    QPainterPath edgeEnvelope;
+    edgeEnvelope.addRect(edgeShape.boundingRect());
+    return edgeEnvelope.intersected(m_paintClip);
+}
+
+QPainterPath QGIEdge::unclippedShape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
     stroker.setWidth(this->m_edgeFuzz);
     outline = stroker.createStroke(path());
     return outline;
+}
+
+bool QGIEdge::contains(const QPointF& point) const
+{
+    return (m_paintClip.isEmpty() || m_paintClip.contains(point))
+        && unclippedShape().contains(point);
+}
+
+void QGIEdge::paint(QPainter* painter,
+                    const QStyleOptionGraphicsItem* option,
+                    QWidget* widget)
+{
+    painter->save();
+    if (!m_paintClip.isEmpty()) {
+        painter->setClipPath(m_paintClip, Qt::IntersectClip);
+    }
+    QGIPrimPath::paint(painter, option, widget);
+    painter->restore();
+}
+
+void QGIEdge::setPaintClip(const QPainterPath& clip)
+{
+    prepareGeometryChange();
+    m_paintClip = clip;
 }
 
 void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
