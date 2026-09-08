@@ -83,7 +83,10 @@ class ViewProviderSketch;
 
 /// Copy a complete Group/Text constraint, remapping every member into a transformed copy.
 std::unique_ptr<Sketcher::Constraint> copyTransformedGroup(
-    const Sketcher::Constraint& constraint, const std::vector<int>& geometry, int firstGeometry);
+    const Sketcher::Constraint& constraint,
+    const std::vector<int>& geometry,
+    int firstGeometry
+);
 
 enum OffsetMode : bool
 {

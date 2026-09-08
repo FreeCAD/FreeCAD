@@ -2615,8 +2615,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 if (member == GeoEnum::GeoUndef) {
                     continue;
                 }
-                if (member < 0 || member >= static_cast<int>(Geoms.size())
-                    || Geoms[member].external) {
+                if (member < 0 || member >= static_cast<int>(Geoms.size()) || Geoms[member].external) {
                     return -1;
                 }
             }
@@ -5831,8 +5830,10 @@ void Sketch::applyGroupTransformations()
         Base::Matrix4D R;  // Identity
         if (preLen > Precision::Confusion()) {
             // Signed planar angle also handles a 180-degree turn (zero cross product).
-            const double angle = std::atan2(preVec.x * postVec.y - preVec.y * postVec.x,
-                                            preVec.x * postVec.x + preVec.y * postVec.y);
+            const double angle = std::atan2(
+                preVec.x * postVec.y - preVec.y * postVec.x,
+                preVec.x * postVec.x + preVec.y * postVec.y
+            );
             R.rotZ(angle);
         }
 

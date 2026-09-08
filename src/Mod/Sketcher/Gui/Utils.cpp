@@ -54,7 +54,10 @@ bool Sketcher::isCircle(const Part::Geometry& geom)
 }
 
 std::unique_ptr<Sketcher::Constraint> SketcherGui::copyTransformedGroup(
-    const Sketcher::Constraint& constraint, const std::vector<int>& geometry, int firstGeometry)
+    const Sketcher::Constraint& constraint,
+    const std::vector<int>& geometry,
+    int firstGeometry
+)
 {
     auto result = std::unique_ptr<Sketcher::Constraint>(constraint.copy());
     for (int index = 0; constraint.hasElement(index); ++index) {

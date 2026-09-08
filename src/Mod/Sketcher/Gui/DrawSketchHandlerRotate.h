@@ -427,8 +427,11 @@ private:
                     int thirdIndexi = firstCurveCreated + thirdIndex + static_cast<int>(size * i);
 
                     if (cstr->Type == Group || cstr->Type == Text) {
-                        auto group = copyTransformedGroup(*cstr, listOfGeoIds,
-                                                          firstCurveCreated + static_cast<int>(size * i));
+                        auto group = copyTransformedGroup(
+                            *cstr,
+                            listOfGeoIds,
+                            firstCurveCreated + static_cast<int>(size * i)
+                        );
                         if (group) {
                             ShapeConstraints.push_back(std::move(group));
                         }
