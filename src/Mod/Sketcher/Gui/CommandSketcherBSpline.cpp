@@ -199,7 +199,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     for (const auto& [originalGeoId, id] : selectedGeometry) {
         int GeoId = originalGeoId < 0 ? originalGeoId : findGeometry(id);
         if (GeoId == GeoEnum::GeoUndef) {
-            continue; // An auxiliary element removed by an earlier conversion.
+            continue;  // An auxiliary element removed by an earlier conversion.
         }
         int previousSize = Obj->Geometry.getSize();
         Gui::cmdAppObjectArgs(Obj, "convertToNURBS(%d)", GeoId);
