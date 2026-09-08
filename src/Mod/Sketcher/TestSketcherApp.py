@@ -22,6 +22,7 @@
 
 # Broken-out test modules
 from SketcherTests.TestSketcherSolver import TestSketcherSolver
+from SketcherTests.TestSketchGroups import TestSketchGroups
 from SketcherTests.TestSketchFillet import TestSketchFillet
 from SketcherTests.TestSketchExpression import TestSketchExpression
 from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
