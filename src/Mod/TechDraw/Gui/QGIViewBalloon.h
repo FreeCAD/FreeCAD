@@ -36,7 +36,6 @@
 #include "QGCustomText.h"
 #include "QGIView.h"
 #include "QGIUserTypes.h"
-#include "ScreenScalable.h"
 
 
 namespace TechDraw
@@ -163,7 +162,7 @@ private:
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIViewBalloon: public QGIView, public ScreenScalable
+class TechDrawGuiExport QGIViewBalloon: public QGIView
 {
     Q_OBJECT
 
@@ -213,8 +212,6 @@ public:
 
     // balloons handle their own dragging
     void dragFinished() override { };
-
-    void setScreenScale(double scale) override;
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);

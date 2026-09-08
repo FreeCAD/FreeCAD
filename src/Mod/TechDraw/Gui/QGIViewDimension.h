@@ -37,7 +37,6 @@
 #include "QGIView.h"
 #include "QGIUserTypes.h"
 #include "Rez.h"
-#include "ScreenScalable.h"
 
 
 namespace TechDraw {
@@ -61,7 +60,7 @@ class ViewProviderDimension;
 enum class DragState;
 
 
-class TechDrawGuiExport QGIViewDimension : public QGIView, public ScreenScalable
+class TechDrawGuiExport QGIViewDimension : public QGIView
 {
     Q_OBJECT
 
@@ -92,7 +91,6 @@ public:
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
-    void setScreenScale(double scale) override;
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
