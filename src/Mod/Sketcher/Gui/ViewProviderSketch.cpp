@@ -5035,7 +5035,7 @@ bool ViewProviderSketch::hasMissingExternalGeometry() const
 QString ViewProviderSketch::getToolTip() const
 {
     return hasMissingExternalGeometry()
-        ? tr("Missing external geometry. Check the sketch's external references.")
+        ? tr("Missing external geometry")
         : QString();
 }
 
