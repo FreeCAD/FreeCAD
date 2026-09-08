@@ -15,11 +15,17 @@ on:  # yamllint disable-line rule:truthy
 permissions:
   contents: read
 
+# A scheduled run and a manual run must not fight over the same project fields.
+concurrency:
+  group: score-prs
+  cancel-in-progress: false
+
 jobs:
   score-prs:
     name: Score open PRs and update project
     runs-on: ubuntu-latest
     if: github.repository_owner == 'FreeCAD'
+    timeout-minutes: 30
 
     permissions:
       contents: read
@@ -31,18 +37,20 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Checkout repository
+      - name: Checkout scoring script
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          sparse-checkout: .github/scripts
+          sparse-checkout-cone-mode: true
 
       - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.0.0
         with:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install --disable-pip-version-check 'requests>=2.32,<3'
 
       - name: Score open PRs and update project
         env:
@@ -51,10 +59,10 @@ jobs:
           GH_TOKEN: ${{ secrets.PR_TRIAGE_PROJECT_TOKEN }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
-          SKIP_LABELS: ${{ github.event.inputs.skip_labels }}
+          SKIP_LABELS: ${{ inputs.skip_labels }}
         run: |
           if [ -z "$GH_TOKEN" ]; then
-            echo "::error::Set GH_TOKEN_FOR_CI_RUNNERS to a token with PR read and organization Projects write access."
+            echo "::error::Secret PR_TRIAGE_PROJECT_TOKEN is not set. It needs a token with pull request read and organization Projects write access."
             exit 1
           fi
 
@@ -64,7 +72,7 @@ jobs:
             for label in "${labels[@]}"; do
               label="${label#"${label%%[![:space:]]*}"}"  # ltrim
               label="${label%"${label##*[![:space:]]}"}"  # rtrim
-              args+=(--skip-label "$label")
+              [ -n "$label" ] && args+=(--skip-label "$label")
             done
           fi
           python .github/scripts/score_prs.py "${args[@]}"
