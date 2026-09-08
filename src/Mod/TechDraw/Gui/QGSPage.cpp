@@ -866,9 +866,6 @@ void QGSPage::updateScreenScale()
         }
     }
 
-    // The items should not be larger than their original size only smaller
-    scale = std::clamp(scale, Precision::Confusion(), 1.0);
-
     const QList<QGraphicsItem*> allItems = items();
 
     for (auto* item : allItems) {

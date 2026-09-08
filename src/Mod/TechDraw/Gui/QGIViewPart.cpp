@@ -1377,6 +1377,10 @@ double QGIViewPart::getLineWidth() {
 }
 
 double QGIViewPart::getVertexSize() {
+    if (PreferencesGui::screenMode()) {
+        return PreferencesGui::get3dMarkerSize();
+    }
+
     return getLineWidth() * Preferences::vertexScale();
 }
 

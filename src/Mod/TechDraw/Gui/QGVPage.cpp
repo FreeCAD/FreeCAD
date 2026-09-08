@@ -132,9 +132,8 @@ public:
             }
         }
         else if (strcmp(Reason, "ScreenMode") == 0) {
-            // If the screen mode changes we instantly update the screen scale of all items
             if (page->getScene()) {
-                page->getScene()->updateScreenScale();
+                page->getScene()->refreshViews();
             }
         }
     }

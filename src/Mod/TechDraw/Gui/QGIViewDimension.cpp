@@ -2522,7 +2522,7 @@ void QGIViewDimension::setPens()
 
 void QGIViewDimension::setScreenScale(double scale)
 {
-    ScreenScalable::setScreenScale(scale);
+    ScreenScalable::setScreenScale(std::clamp(scale, Precision::Confusion(), 1.0));
     draw();
 }
 
