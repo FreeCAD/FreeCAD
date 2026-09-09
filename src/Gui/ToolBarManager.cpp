@@ -1347,5 +1347,22 @@ void ToolBarManager::setState(const QString& name, State state)
         }
     }
 }
+bool ToolBarManager::isAnyVisible(const QList<QString>& names)
+{
+    for (auto& name : names) {
+        if (!isVisible(name)) {
+            return true;
+        }
+    }
+    return false;
+}
+bool ToolBarManager::isVisible(const QString& name)
+{
+    QToolBar* tb = findToolBar(toolBars(), name);
+    if (tb) {
+        return tb->isVisible();
+    }
+    return false;
+}
 
 #include "moc_ToolBarManager.cpp"
