@@ -40,6 +40,12 @@ public:
 
     App::PropertyLinkList Transformations;
 
+    bool isTransformationSuppressed(int index) const override;
+    bool hasOriginalTransformation() const override
+    {
+        return originalTransformation;
+    }
+
     /** @name methods override feature */
     //@{
     short mustExecute() const override;
@@ -62,6 +68,10 @@ public:
 
 protected:
     void positionBySupport() override;
+
+private:
+    std::vector<bool> generatedSuppression;
+    bool originalTransformation = true;
 };
 
 }  // namespace PartDesign
