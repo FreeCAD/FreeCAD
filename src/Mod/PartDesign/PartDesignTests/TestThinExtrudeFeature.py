@@ -700,6 +700,211 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.assertAlmostEqual(rebuilt.cut(wall.Shape).Volume, 0, delta=1e-5)
         self.assertAlmostEqual(wall.Shape.cut(rebuilt).Volume, 0, delta=1e-5)
 
+    def testSpatialSharpGrowthAndWidths(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        profile = body.newObject("PartDesign::Feature", "SpatialProfile")
+        points = [App.Vector(*p) for p in ((0, 0, 0), (30, 0, 3), (30, 20, 0), (10, 25, 4))]
+        profile.Shape = Part.makePolygon(points)
+        self.doc.recompute()
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = profile
+        rib.RibMode = "SpatialWeb"
+        rib.FillDirection = App.Vector(0, 0, 1)
+        rib.Length = 12
+        rib.ThinThickness = 2
+        for side, a, b in (
+            ("SideA", 0, 2),
+            ("SideB", -2, 0),
+            ("Centered", -1, 1),
+            ("Two sides", -0.5, 2),
+        ):
+            rib.ThinSide = side
+            rib.ThinThickness2 = 0.5
+            for reversed in (False, True):
+                rib.Reversed = reversed
+                self.doc.recompute()
+                self.valid(rib)
+                height = -6 if reversed else 6
+                self.assertLess(rib.Shape.getTolerance(1), 1e-4)
+                section = rib.Shape.section(Part.makePlane(100, 100, App.Vector(-20, -20, height)))
+                area = Part.Face(Part.Wire(Part.sortEdges(section.Edges)[0])).Area
+                expected = (50 + math.sqrt(425)) * (b - a) - (1 + (math.sqrt(425) - 5) / 20) * (
+                    b * b - a * a
+                )
+                self.assertAlmostEqual(area, expected, delta=1e-5)
+
+    def testSpatialStartAndSymmetricDepth(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        rib.Reversed = False
+        rib.ThinSide = "Centered"
+        self.doc.recompute()
+        self.valid(rib)
+        expected = rib.Shape.copy()
+        expected.translate(App.Vector(0, 0, -3))
+        rib.StartType = "Offset"
+        rib.StartOffset = 3
+        rib.SideType = "Symmetric"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, expected.Volume, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.common(expected).Volume, expected.Volume, delta=1e-5)
+
+    def testSpatialDirectionReferences(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        body = self.doc.getObject("Body")
+        rib.Reversed = False
+        rib.ThinSide = "Centered"
+        self.doc.recompute()
+        expected = rib.Shape.copy()
+        rib.UseCustomVector = True
+        rib.Direction = App.Vector(0, 0, 1)
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(rib.Shape).Volume, 0, delta=1e-5)
+        rib.UseCustomVector = False
+        axis = next(o for o in body.Origin.OriginFeatures if o.Name.startswith("Z_Axis"))
+        rib.ReferenceAxis = (axis, [""])
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(rib.Shape).Volume, 0, delta=1e-5)
+
+    def testSpatialNetwork(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        profile = body.newObject("PartDesign::Feature", "SpatialProfile")
+        profile.Shape = Part.makeCompound(
+            [
+                Part.makeLine(App.Vector(0, 0, 0), App.Vector(30, 0, 3)),
+                Part.makeLine(App.Vector(15, -10, 1.5), App.Vector(15, 10, 1.5)),
+                Part.makeLine(App.Vector(15, 10, 1.5), App.Vector(25, 15, 4)),
+            ]
+        )
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = profile
+        rib.RibMode = "SpatialWeb"
+        rib.FillDirection = App.Vector(0, 0, 1)
+        rib.Length = 12
+        rib.ThinThickness = 2
+        for cap in ("Flat", "Round"):
+            rib.ThinCap = cap
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertTrue(rib.Shape.isInside(App.Vector(15, 0, 6), 1e-7, False))
+            rib.Shape.check(True)
+            # Intersections between curved caps may need sub-micron tolerance,
+            # but must not hide a macroscopic gap at the network junction.
+            self.assertLess(rib.Shape.getTolerance(1), 1e-4)
+
+    def testSpatialTwoIndependentTargets(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        profile = body.newObject("PartDesign::Feature", "SpatialProfile")
+        profile.Shape = Part.makePolygon(
+            [App.Vector(0, 0, 0), App.Vector(20, 0, 1), App.Vector(20, 15, 0)]
+        )
+        targets = []
+        for name, z in (("Upper", 10), ("Lower", -8)):
+            reference = self.doc.addObject("Part::Feature", name)
+            reference.Shape = Part.makePlane(60, 60, App.Vector(-20, -20, z))
+            binder = body.newObject("PartDesign::SubShapeBinder", name + "Binder")
+            binder.Support = [(reference, ["Face1"])]
+            targets.append(binder)
+        body.Tip = profile
+        self.doc.recompute()
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = profile
+        rib.RibMode = "SpatialWeb"
+        rib.FillDirection = App.Vector(0, 0, 1)
+        rib.ThinThickness = 2
+        rib.SideType = "Two sides"
+        rib.Type = rib.Type2 = "UpToFace"
+        rib.UpToFace = (targets[0], ["Face1"])
+        rib.UpToFace2 = (targets[1], ["Face1"])
+        self.doc.recompute()
+        self.valid(rib)
+        rib.Shape.check(True)
+        self.assertAlmostEqual(rib.Shape.Volume, 35 * 2 * 18, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.BoundBox.ZMin, -8, delta=1e-6)
+        self.assertAlmostEqual(rib.Shape.BoundBox.ZMax, 10, delta=1e-6)
+
+    def testSpatialSpline(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        profile = body.newObject("PartDesign::Feature", "SpatialProfile")
+        curve = Part.BSplineCurve()
+        curve.interpolate(
+            [App.Vector(0, 0, 0), App.Vector(10, 3, 2), App.Vector(20, -2, 1), App.Vector(30, 0, 4)]
+        )
+        profile.Shape = curve.toShape()
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = profile
+        rib.RibMode = "SpatialWeb"
+        rib.FillDirection = App.Vector(0, 0, 1)
+        rib.Length = 12
+        rib.ThinThickness = 2
+        rib.ThinSide = "Centered"
+        self.doc.recompute()
+        self.valid(rib)
+        rib.Shape.check(True)
+        self.assertLess(rib.Shape.getTolerance(1), 1e-4)
+        points = profile.Shape.discretize(5000)
+        projected_length = sum(math.hypot(b.x - a.x, b.y - a.y) for a, b in zip(points, points[1:]))
+        self.assertAlmostEqual(rib.Shape.Volume, projected_length * 2 * 12, delta=1e-2)
+
+    def testSpatialRoundJoins(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        rib.ThinJoin = "Round"
+        for side in ("SideA", "SideB", "Centered", "Two sides"):
+            for reverse in (False, True):
+                with self.subTest(side=side, reverse=reverse):
+                    rib.ThinSide = side
+                    rib.Reversed = reverse
+                    self.doc.recompute()
+                    self.valid(rib)
+                    rib.Shape.check(True)
+
+    def testRoundEndsWithReversedSourceEdge(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        source = self.doc.getObject("SpatialProfile")
+        rib.Reversed = False
+        rib.ThinSide = "SideA"
+        rib.ThinCap = "Round"
+        self.doc.recompute()
+        self.valid(rib)
+        expected = rib.Shape.copy()
+        edges = source.Shape.Edges
+        edge = edges[-1]
+        edges[-1] = Part.makeLine(edge.Vertexes[-1].Point, edge.Vertexes[0].Point)
+        source.Shape = Part.makeCompound(edges)
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(expected.cut(rib.Shape).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.cut(expected).Volume, 0, delta=1e-5)
+
+    def testSpatialRoundEnds(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        for side in ("SideA", "SideB", "Centered", "Two sides"):
+            for reverse in (False, True):
+                with self.subTest(side=side, reverse=reverse):
+                    rib.ThinSide = side
+                    rib.Reversed = reverse
+                    rib.ThinCap = "Flat"
+                    self.doc.recompute()
+                    self.valid(rib)
+                    uncapped = rib.Shape.copy()
+                    rib.ThinCap = "Round"
+                    self.doc.recompute()
+                    self.valid(rib)
+                    width = 2.5 if side == "Two sides" else 2
+                    self.assertAlmostEqual(uncapped.cut(rib.Shape).Volume, 0, delta=1e-5)
+                    self.assertAlmostEqual(
+                        rib.Shape.cut(uncapped).Volume, math.pi * (width / 2) ** 2 * 12, delta=1e-5
+                    )
+
     def testSideProfileRib(self):
         body = self.doc.addObject("PartDesign::Body", "Body")
         base = body.newObject("PartDesign::Feature", "Base")
@@ -760,6 +965,26 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.assertAlmostEqual(
             rib.Shape.Volume - base.Shape.Volume, 2 * 26 * (2 - 4 / 40), delta=1e-5
         )
+
+    def testExtendedWebNetwork(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeBox(40, 30, 18).cut(Part.makeBox(36, 26, 18, App.Vector(2, 2, 3)))
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.addGeometry(Part.LineSegment(App.Vector(8, 15, 0), App.Vector(32, 15, 0)), False)
+        sketch.addGeometry(Part.LineSegment(App.Vector(20, 8, 0), App.Vector(20, 23, 0)), False)
+        sketch.Placement.Base.z = 13
+        self.doc.recompute()
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.ThinThickness = 2
+        rib.Reversed = True
+        rib.Type = "UpToFirst"
+        for mode in ("Tangent", "Natural"):
+            rib.Extension = mode
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertAlmostEqual(rib.Shape.Volume, base.Shape.Volume + 1200, delta=1e-5)
 
     def bossRib(self, mode="Tangent", width=1, placement="Centered"):
         body = self.doc.addObject("PartDesign::Body", "Body")
