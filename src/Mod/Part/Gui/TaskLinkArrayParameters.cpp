@@ -399,6 +399,139 @@ App::DocumentObject* TaskLinkArrayParameters::getSelectedLinkedObject() const
     return array ? array->LinkedObject.getValue() : nullptr;
 }
 
+void TaskLinkArrayParameters::setupInstanceControls(Gui::View3DInventorViewer* viewer)
+{
+    instanceControlsViewer = viewer;
+    if (!viewer) {
+        instanceControls.reset();
+        return;
+    }
+
+    instanceControls = std::make_unique<PatternInstanceControls>(viewer, this);
+    connect(
+        instanceControls.get(),
+        &PatternInstanceControls::toggleRequested,
+        this,
+        [this](int index, bool suppress) { setInstanceSuppressed(index, suppress); }
+    );
+    updateInstanceControls();
+}
+
+std::optional<Base::Vector3d> TaskLinkArrayParameters::getInstanceCenter(int index) const
+{
+    auto* root = arrayReference.getObject();
+    auto* viewProvider = root ? Gui::Application::Instance->getViewProvider(root) : nullptr;
+    if (!viewProvider || index < 0) {
+        return std::nullopt;
+    }
+
+    std::string sub = arrayReference.getSubNameNoElement();
+    if (!sub.empty() && sub.back() != '.') {
+        sub += '.';
+    }
+    sub += std::to_string(index) + '.';
+    const auto bbox = viewProvider->getBoundingBox(sub.c_str(), nullptr, true, instanceControlsViewer);
+    return bbox.IsValid() ? std::optional<Base::Vector3d>(bbox.GetCenter()) : std::nullopt;
+}
+
+std::optional<Base::Vector3d> TaskLinkArrayParameters::estimateInstanceCenter(int index) const
+{
+    auto localCenter
+        = viewProviderCenter(array->getTrueLinkedObject(false), instanceControlsViewer, false);
+    if (!localCenter) {
+        return std::nullopt;
+    }
+
+    // getPlacementOf includes the array's own placement; replace it with the edited occurrence.
+    const auto localPlacement = App::GeoFeature::getGlobalPlacement(array, array, "");
+    const auto placement = getArrayPlacement() * localPlacement.inverse()
+        * array->getPlacementOf(std::to_string(index), nullptr);
+    Base::Vector3d center;
+    placement.multVec(*localCenter, center);
+    return center;
+}
+
+void TaskLinkArrayParameters::updateInstanceControls()
+{
+    if (!instanceControls || !instanceControlsViewer) {
+        return;
+    }
+
+    if (!array) {
+        instanceControls->clear();
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    if (instanceControlCenters.size() != elements.size()) {
+        instanceControlCenters.resize(elements.size());
+        instanceControlCentersValid.assign(elements.size(), false);
+    }
+
+    std::vector<PatternInstanceControls::Instance> instances;
+    instances.reserve(elements.size());
+    for (size_t i = 0; i < elements.size(); ++i) {
+        App::DocumentObject* element = elements[i];
+        if (!element) {
+            continue;
+        }
+
+        const bool suppressed = isSuppressed(element);
+        std::optional<Base::Vector3d> center;
+        if (!suppressed) {
+            center = getInstanceCenter(static_cast<int>(i));
+        }
+        if (center) {
+            instanceControlCenters[i] = *center;
+            instanceControlCentersValid[i] = true;
+        }
+        else if (instanceControlCentersValid[i]) {
+            center = instanceControlCenters[i];
+        }
+        else {
+            center = estimateInstanceCenter(static_cast<int>(i));
+        }
+
+        if (!center) {
+            continue;
+        }
+
+        instances.push_back({static_cast<int>(i), *center, suppressed});
+    }
+
+    instanceControls->setInstances(instances);
+}
+
+void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
+{
+    if (!array || index < 0) {
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    const auto idx = static_cast<size_t>(index);
+    if (idx >= elements.size() || !elements[idx]) {
+        return;
+    }
+
+    auto* suppressible = elements[idx]->getExtension<App::SuppressibleExtension>();
+    if (!suppressible || suppressible->Suppressed.getValue() == suppress) {
+        return;
+    }
+
+    if (suppress) {
+        auto center = getInstanceCenter(index);
+        if (center && idx < instanceControlCenters.size()) {
+            instanceControlCenters[idx] = *center;
+            instanceControlCentersValid[idx] = true;
+        }
+    }
+
+    setupPatternTransaction();
+    suppressible->Suppressed.setValue(suppress);
+    updateInstanceControls();
+}
+
 void TaskLinkArrayParameters::fillDirectionCombo(
     Gui::ComboLinks& combo,
     Part::LinearPatternDirection direction
@@ -462,6 +595,114 @@ void TaskLinkArrayParameters::fillDirectionCombo(
         tr("Select reference…"),
         PatternParametersWidget::SelectReferenceUserData
     );
+}
+
+void TaskLinkArrayParameters::setupPatternTransaction()
+{
+    if (!array) {
+        return;
+    }
+
+    App::Document* doc = array->getDocument();
+    if (!doc || doc->getBookedTransactionID() != App::NullTransaction) {
+        return;
+    }
+
+    std::string name("Edit ");
+    name += array->Label.getValue();
+    doc->openTransaction(name.c_str());
+}
+
+void TaskLinkArrayParameters::recomputePatternFeature()
+{
+    if (array && array->getDocument() && array->getDocument()->recomputeFeature(array)) {
+        array->purgeTouched();
+    }
+    // vector<bool> does not satisfy the C++20 output_range requirements of ranges::fill.
+    std::fill(instanceControlCentersValid.begin(), instanceControlCentersValid.end(), false);
+    updateInstanceControls();
+}
+
+Base::Placement TaskLinkArrayParameters::getArrayPlacement() const
+{
+    auto* root = arrayReference.getObject();
+    if (!root) {
+        return {};
+    }
+
+    // Use the same transform traversal as Gui::Document::setEdit(), including LinkTransform.
+    Base::Matrix4D transform;
+    auto* object = root->getSubObject(arrayReference.getSubName().c_str(), nullptr, &transform);
+    for (int depth = 0; object && object != array && App::GetApplication().checkLinkDepth(depth);
+         ++depth) {
+        auto* linked = object->getLinkedObject(false, &transform, false, depth);
+        if (linked == object) {
+            return {};
+        }
+        object = linked;
+    }
+    // An array is itself a link: stop here, before following it to its source.
+    return object == array ? Base::Placement(transform) : Base::Placement();
+}
+
+Base::Vector3d TaskLinkArrayParameters::getPatternStartPoint() const
+{
+    return array ? getArrayPlacement().getPosition() : Base::Vector3d();
+}
+
+Base::Vector3d TaskLinkArrayParameters::getLinearPatternFallbackDirection(
+    Part::LinearPatternDirection direction
+) const
+{
+    Base::Vector3d fallback = TaskPatternParameters::getLinearPatternFallbackDirection(direction);
+    auto* linear = freecad_cast<Part::LinkArrayLinear*>(array);
+    if (!linear) {
+        return fallback;
+    }
+
+    const bool second = direction == Part::LinearPatternDirection::Second;
+    const auto& directionProp = second ? linear->Direction2 : linear->Direction;
+    if (!directionProp.getValue()) {
+        const auto& subValues = directionProp.getSubValues();
+        if (!subValues.empty()) {
+            std::string role = subValues.front();
+            const auto dot = role.rfind('.');
+            if (dot != std::string::npos) {
+                role = role.substr(dot + 1);
+            }
+            if (role == "X_Axis") {
+                fallback = Base::Vector3d::UnitX;
+            }
+            else if (role == "Y_Axis") {
+                fallback = Base::Vector3d::UnitY;
+            }
+            else if (role == "Z_Axis") {
+                fallback = Base::Vector3d::UnitZ;
+            }
+        }
+    }
+
+    const auto& reversed = second ? linear->Reversed2 : linear->Reversed;
+    return reversed.getValue() ? -fallback : fallback;
+}
+
+Base::Vector3d TaskLinkArrayParameters::transformLinearPatternDirection(
+    const Base::Vector3d& direction
+) const
+{
+    if (!array) {
+        return direction;
+    }
+    Base::Vector3d transformed;
+    getArrayPlacement().getRotation().multVec(direction, transformed);
+    return transformed;
+}
+
+void TaskLinkArrayParameters::transformPolarPatternAxis(gp_Ax2& axis) const
+{
+    if (array) {
+        axis.Transform(Part::TopoShape::convert(getArrayPlacement().toMatrix()));
+    }
 }
 
 void TaskLinkArrayParameters::onReferenceSelectionRequested()
@@ -609,3 +850,78 @@ void TaskLinkArrayParameters::exitReferenceSelectionMode()
     Gui::getMainWindow()->showMessage(QString());
 }
 
+bool TaskLinkArrayParameters::accept()
+{
+    if (!array) {
+        return true;
+    }
+
+    try {
+        App::DocumentObject* linked = getSelectedLinkedObject();
+        if (!linked) {
+            QMessageBox::warning(this, tr("Input Error"), tr("Select an object to link."));
+            return false;
+        }
+
+        setupPatternTransaction();
+        array->LinkedObject.setValue(linked);
+        linked->Visibility.setValue(false);
+        applyPatternParameters(array);
+        if (!consumePendingUpdate()) {
+            recomputePatternFeature();
+        }
+        array->getDocument()->commitTransaction();
+    }
+    catch (const Base::Exception& e) {
+        // Keep the creation transaction and its array alive so the user can correct the input.
+        QMessageBox::warning(
+            this,
+            tr("Input Error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
+        return false;
+    }
+
+    return true;
+}
+
+bool TaskLinkArrayParameters::reject()
+{
+    cancelPendingUpdate();
+    if (array && array->getDocument()) {
+        array->getDocument()->abortTransaction();
+        Gui::Command::updateActive();
+    }
+
+    return true;
+}
+
+/* TRANSLATOR PartGui::TaskDlgLinkArrayParameters */
+
+TaskDlgLinkArrayParameters::TaskDlgLinkArrayParameters(
+    Part::LinkArray* array,
+    const App::SubObjectT& reference
+)
+{
+    associateToObject3dView(reference.getObject());
+    setAutoCloseOnDeletedDocument(true);
+    setAutoCloseOnTransactionChange(true);
+    parameter = new TaskLinkArrayParameters(array, reference);
+    Content.push_back(parameter);
+}
+
+bool TaskDlgLinkArrayParameters::accept()
+{
+    parameter->exitLinkedObjectSelectionMode();
+    parameter->exitReferenceSelectionMode();
+    return parameter->accept();
+}
+
+bool TaskDlgLinkArrayParameters::reject()
+{
+    parameter->exitLinkedObjectSelectionMode();
+    parameter->exitReferenceSelectionMode();
+    return parameter->reject();
+}
+
+#include "moc_TaskLinkArrayParameters.cpp"
