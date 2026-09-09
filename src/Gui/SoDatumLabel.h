@@ -118,6 +118,8 @@ public:
     SoSFFloat param7;
     SoSFFloat param8;
     SoMFVec3f pnts;
+    // Optional line pairs connecting dimension anchors to finite geometry.
+    SoMFVec3f extensionLines;
     SoSFVec3f norm;
     SoSFBool strikethrough;
     SoSFImage image;
