@@ -299,7 +299,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 
                 gp_Trsf trsf = supportTransform.Inverted().Multiplied(
                     feature->getLocation().Transformation()
-                    );
+                );
 
                 if (shape.isNull()) {
                     continue;
@@ -527,7 +527,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     const Part::TopoShape& supportShape,
     const std::vector<DocumentObject*>& originals,
     std::vector<FeatureShape>& shapes
-    )
+)
 {
 
     // compute the difference solid between each Feature and the shape of its previous Feature,
@@ -570,7 +570,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
                 "Only additive and subtractive features can be transformed"
-                ));
+            ));
         }
 
         feature->getAddSubShape(addShape, subShape);
@@ -578,7 +578,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
         if (addShape.isNull() && subShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
-                );
+            );
         }
 
         auto prevFeature = getPreviousOriginal(original);
@@ -590,7 +590,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 addShape,
                 trsf,
                 std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
-                );
+            );
             if (prevShape != NULL) {
                 addShape.makeElementCut(
                     {addShape, prevShape},
@@ -598,9 +598,9 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                         "Cut_add_{}-{}",
                         feature->getNameInDocument(),
                         prevFeature->getNameInDocument()
-                        )
+                    )
                         .c_str()
-                    );
+                );
             }
 
             if (!addShape.isNull()) {
@@ -618,11 +618,11 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 subShape,
                 trsf,
                 std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
-                );
+            );
 
-                    // we need to unwrap the pocket toolShapes because
-                    // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
-                    // returns an empty solid if A and B don't intersect.
+            // we need to unwrap the pocket toolShapes because
+            // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
+            // returns an empty solid if A and B don't intersect.
             std::vector<Part::TopoShape> subShapes;
             if (subShape.shapeType() == TopAbs_COMPOUND) {
                 TopoShape::expandCompound(subShape, subShapes);
@@ -631,7 +631,7 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 subShapes.push_back(subShape);
             }
 
-                    // fuse the pocket shapes back together to use them in a single CUT operation later
+            // fuse the pocket shapes back together to use them in a single CUT operation later
             std::vector<Part::TopoShape> toFuse;
 
             size_t i = 0;
@@ -643,8 +643,9 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                         feature->getNameInDocument(),
                         i,
                         prevFeature->getNameInDocument()
-                        ).c_str()
-                    );
+                    )
+                        .c_str()
+                );
 
                 if (!s.isNull()) {
                     toFuse.push_back(s);
@@ -656,28 +657,18 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             if (toFuse.size() == 1) {
                 Part::TopoShape onlyShape = toFuse.front();
                 if (!onlyShape.isNull()) {
-                    shapes.push_back({
-                        feature->getNameInDocument(),
-                        onlyShape,
-                        Operation::Sub
-                    });
+                    shapes.push_back({feature->getNameInDocument(), onlyShape, Operation::Sub});
                 }
-            } else if (!toFuse.empty()) {
+            }
+            else if (!toFuse.empty()) {
                 Part::TopoShape subShape;
                 subShape.makeElementFuse(
                     toFuse,
-                    std::format(
-                        "Fuse_sub_{}",
-                        feature->getNameInDocument()
-                        ).c_str()
-                    );
+                    std::format("Fuse_sub_{}", feature->getNameInDocument()).c_str()
+                );
 
                 if (!subShape.isNull()) {
-                    shapes.push_back({
-                        feature->getNameInDocument(),
-                        subShape,
-                        Operation::Sub
-                    });
+                    shapes.push_back({feature->getNameInDocument(), subShape, Operation::Sub});
                 }
             }
         }
