@@ -1346,6 +1346,183 @@ class TestThinExtrudeFeature(unittest.TestCase):
             self.valid(rib)
             self.assertAlmostEqual(rib.Shape.Volume, base.Shape.Volume + 1200, delta=1e-5)
 
+    def testNaturalAndTangentArcExtensions(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeBox(20, 30, 3, App.Vector(-10, -15, 0)).fuse(
+            [
+                Part.makeBox(2, 30, 18, App.Vector(-10, -15, 0)),
+                Part.makeBox(2, 30, 18, App.Vector(8, -15, 0)),
+            ]
+        )
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(App.Vector(), App.Vector(0, 0, 1), 10),
+                math.radians(70),
+                math.radians(110),
+            ),
+            False,
+        )
+        sketch.Placement.Base.z = 13
+        self.doc.recompute()
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.ThinThickness = 1
+        rib.Reversed = True
+        rib.Type = "UpToFirst"
+        volumes = []
+        for mode in ("Tangent", "Natural"):
+            rib.Extension = mode
+            self.doc.recompute()
+            self.valid(rib)
+            volumes.append(rib.Shape.Volume)
+        self.assertGreater(abs(volumes[0] - volumes[1]), 1)
+
+    def testSingularSplineEndpointExtension(self):
+        self.testSideProfileRib()
+        rib, base, sketch = self.doc.Rib, self.doc.Base, self.doc.Profile
+        base.Shape = Part.makeBox(50, 24, 3, App.Vector(0, 0, -3)).fuse(Part.makeBox(3, 24, 45))
+        spline = Part.BSplineCurve()
+        spline.buildFromPolesMultsKnots(
+            [
+                App.Vector(x, y, 0)
+                for x, y in ((10, 30), (12, 27), (32, 16), (41, 13), (42, 9), (42, 9))
+            ],
+            [4, 1, 1, 4],
+            [0, 1, 2, 3],
+            False,
+            3,
+        )
+        sketch.delGeometry(0)
+        sketch.addGeometry(spline, False)
+        rib.Type = "UpToShape"
+        rib.ThinThickness = 2
+        poles = sketch.Geometry[0].getPoles()
+        for mode in ("Off", "Tangent"):
+            rib.Extension = mode
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertEqual(sketch.Geometry[0].getPoles(), poles)
+        extended = rib.Shape.Volume
+        rib.Extension = "Natural"
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+        self.assertIn("C2 extension requires a regular spline endpoint", rib.getStatusString())
+        rib.Extension = "Tangent"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, extended, delta=1e-5)
+        added = rib.Shape.cut(base.Shape)
+        floor = next(
+            f
+            for f in base.Shape.Faces
+            if f.normalAt(0, 0).z > 0.99 and abs(f.CenterOfMass.z) < 1e-6
+        )
+        wall = next(
+            f
+            for f in base.Shape.Faces
+            if f.normalAt(0, 0).x > 0.99 and abs(f.CenterOfMass.x - 3) < 1e-6
+        )
+        self.assertGreater(added.common(floor).Area, 1)
+        self.assertGreater(added.common(wall).Area, 1)
+        self.assertAlmostEqual(added.BoundBox.ZMin, 0, delta=1e-6)
+        self.assertAlmostEqual(added.BoundBox.XMin, 3, delta=1e-6)
+
+    def testRegularSplineC2Extension(self):
+        self.testSideProfileRib()
+        rib, base, sketch = self.doc.Rib, self.doc.Base, self.doc.Profile
+        base.Shape = Part.makeBox(80, 24, 3, App.Vector(0, 0, -3)).fuse(Part.makeBox(3, 24, 45))
+        curve = Part.BSplineCurve()
+        curve.buildFromPolesMultsKnots(
+            [App.Vector(x, y, 0) for x, y in ((8, 30), (12, 25), (25, 15), (38, 10))],
+            [4, 4],
+            [0, 1],
+            False,
+            3,
+        )
+        sketch.delGeometry(0)
+        sketch.addGeometry(curve, False)
+        rib.Type = "UpToShape"
+        for mode in ("Tangent", "Natural"):
+            rib.Extension = mode
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertEqual(sketch.Geometry[0].getPoles(), curve.getPoles())
+
+    def testSmoothSplineRibTopology(self):
+        self.testRegularSplineC2Extension()
+        rib, base, sketch = self.doc.Rib, self.doc.Base, self.doc.Profile
+        poles = sketch.Geometry[0].getPoles()
+        for mode, continuity in (("Tangent", "C1"), ("Natural", "C2")):
+            for placement in ("SideA", "SideB", "Centered"):
+                for refine in (False, True):
+                    with self.subTest(mode=mode, placement=placement, refine=refine):
+                        rib.Extension = mode
+                        rib.ThinSide = placement
+                        rib.Refine = refine
+                        self.doc.recompute()
+                        self.valid(rib)
+                        # One smooth roof, two sides, and two body-contact faces.
+                        # This must be true of the tool, not just a refined result.
+                        self.assertEqual(len(rib.AddSubShape.Faces), 5)
+                        roofs = [
+                            f
+                            for f in rib.AddSubShape.Faces
+                            if isinstance(f.Surface, Part.SurfaceOfExtrusion)
+                        ]
+                        self.assertEqual(len(roofs), 1)
+                        roof = roofs[0]
+                        self.assertEqual(len(roof.Edges), 4)
+                        curve = next(
+                            e.Curve for e in roof.Edges if isinstance(e.Curve, Part.BSplineCurve)
+                        )
+                        self.assertEqual(curve.Continuity, continuity)
+                        for point in sketch.Shape.Edges[0].discretize(41):
+                            self.assertLess(Part.Vertex(point).distToShape(roof)[0], 1e-7)
+                        # The cheap spline control-polygon box overestimates
+                        # trimmed curves; measure the actual geometric bounds.
+                        bounds = rib.AddSubShape.optimalBoundingBox(False)
+                        self.assertAlmostEqual(bounds.YLength, 2, delta=1e-6)
+                        self.assertAlmostEqual(bounds.XMin, 3, delta=1e-6)
+                        self.assertAlmostEqual(bounds.ZMin, 0, delta=1e-6)
+                        self.assertAlmostEqual(
+                            rib.AddSubShape.common(base.Shape).Volume, 0, delta=1e-6
+                        )
+                        if refine:
+                            self.assertEqual(len(rib.Shape.Faces), 11)
+        self.assertEqual(sketch.Geometry[0].getPoles(), poles)
+        rib.Shape.check(True)
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "SmoothSplineRib.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            self.doc.Rib.touch()
+            self.doc.recompute()
+            self.valid(self.doc.Rib)
+            self.assertEqual(len(self.doc.Rib.AddSubShape.Faces), 5)
+            self.assertEqual(len(self.doc.Rib.Shape.Faces), 11)
+
+    def testPlanarRibPreservesSharpCorner(self):
+        self.testRegularSplineC2Extension()
+        rib, sketch = self.doc.Rib, self.doc.Profile
+        sketch.delGeometry(0)
+        points = [App.Vector(x, z, 0) for x, z in ((8, 30), (22, 22), (38, 10))]
+        sketch.addGeometry([Part.LineSegment(a, b) for a, b in zip(points, points[1:])], False)
+        for mode in ("Tangent", "Natural"):
+            rib.Extension = mode
+            self.doc.recompute()
+            self.valid(rib)
+            # A genuine corner still needs two roof faces and two ridge vertices.
+            self.assertEqual(len(rib.AddSubShape.Faces), 6)
+            corner = [
+                v
+                for v in rib.AddSubShape.Vertexes
+                if abs(v.Point.x - 22) < 1e-7 and abs(v.Point.z - 22) < 1e-7
+            ]
+            self.assertEqual(len(corner), 2)
+
     def testAutomaticSideRibDirection(self):
         self.testSideProfileRib()
         rib = self.doc.Rib
@@ -1404,6 +1581,122 @@ class TestThinExtrudeFeature(unittest.TestCase):
                 p = App.Vector(x, y, 15)
                 self.assertFalse(base.Shape.isInside(p, 1e-7, False))
                 self.assertTrue(material.isInside(p, 1e-7, True), str(p))
+
+    def testBossRibAutomaticDirectionAndFullWidthContact(self):
+        body, base, sketch, rib = self.bossRib()
+        self.checkBossContact(base, rib)
+        self.assertAlmostEqual(rib.Direction.x, 0, delta=1e-9)
+        self.assertAlmostEqual(rib.Direction.z, -1, delta=1e-9)
+        volume = rib.Shape.Volume
+        for mode in ("Tangent", "Natural"):
+            for width in (1, 4):
+                for placement in ("Centered", "SideA", "SideB", "Two sides"):
+                    with self.subTest(mode=mode, width=width, placement=placement):
+                        rib.ThinThickness = width
+                        rib.ThinThickness2 = 1.5
+                        rib.ThinSide = placement
+                        rib.Extension = "Off"
+                        self.doc.recompute()
+                        self.valid(rib)
+                        unextended = rib.Shape.cut(base.Shape).BoundBox
+                        rib.Extension = mode
+                        self.doc.recompute()
+                        self.checkBossContact(base, rib)
+                        extended = rib.Shape.cut(base.Shape).BoundBox
+                        self.assertAlmostEqual(extended.YMin, unextended.YMin, delta=1e-6)
+                        self.assertAlmostEqual(extended.YMax, unextended.YMax, delta=1e-6)
+        rib.Extension = "Tangent"
+        rib.ThinThickness = 1
+        rib.ThinSide = "Centered"
+        self.doc.recompute()
+        body.Placement = App.Placement(
+            App.Vector(12, -34, 56), App.Rotation(App.Vector(1, 2, 3), 47)
+        )
+        rib.touch()
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, volume, delta=1e-5)
+
+    def testBossRibRejectsUnboundedWidth(self):
+        body, base, sketch, rib = self.bossRib(width=22)
+        self.assertIn("Invalid", rib.State)
+        self.assertTrue(
+            any(
+                text in rib.getStatusString()
+                for text in (
+                    "not bounded by the body across the full thickness",
+                    "footprint misses the next body boundary",
+                )
+            )
+        )
+
+    def testBossRibOffDoesNotExtend(self):
+        body, base, sketch, rib = self.bossRib(mode="Off")
+        self.valid(rib)
+        material = rib.Shape.cut(base.Shape)
+        self.assertAlmostEqual(material.BoundBox.XMin, 22, delta=1e-6)
+        self.assertAlmostEqual(material.BoundBox.XMax, 36, delta=1e-6)
+
+    def testBossRibAlreadyTouchingEndpoints(self):
+        body, base, sketch, rib = self.bossRib()
+        sketch.delGeometry(1)
+        sketch.delGeometry(0)
+        points = [App.Vector(x, z, 0) for x, z in ((20, 25.75), (30, 17), (40, 17))]
+        sketch.addGeometry([Part.LineSegment(a, b) for a, b in zip(points, points[1:])], False)
+        self.doc.recompute()
+        self.checkBossContact(base, rib)
+
+    def testSideRibPeriodicC2Extension(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = (
+            Part.makeBox(24, 20, 3, App.Vector(-12, -10, -3))
+            .fuse(
+                [
+                    Part.makeBox(4, 20, 15, App.Vector(-12, -10, 0)),
+                    Part.makeBox(4, 20, 15, App.Vector(8, -10, 0)),
+                ]
+            )
+            .removeSplitter()
+        )
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(App.Vector(), App.Vector(0, 0, 1), 10),
+                math.radians(60),
+                math.radians(120),
+            ),
+            False,
+        )
+        sketch.Placement = App.Placement(App.Vector(), App.Rotation(App.Vector(1, 0, 0), 90))
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.RibMode = "Rib"
+        rib.Type = "UpToShape"
+        rib.Extension = "Natural"
+        rib.ThinThickness = 2
+        self.doc.recompute()
+        self.valid(rib)
+        added = rib.Shape.cut(base.Shape)
+        self.assertAlmostEqual(added.BoundBox.XMin, -8, delta=1e-6)
+        self.assertAlmostEqual(added.BoundBox.XMax, 8, delta=1e-6)
+        self.assertAlmostEqual(added.BoundBox.ZMin, 0, delta=1e-6)
+
+    def testSignedBossRibDraft(self):
+        body, base, sketch, rib = self.bossRib(width=4)
+        original = rib.Shape.Volume
+        direction = rib.Direction
+        for angle in (0.5, -0.5):
+            rib.TaperAngle = angle
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertEqual(rib.Direction, direction)
+            self.assertFalse(rib.Reversed)
+            self.assertGreater((original - rib.Shape.Volume) * angle, 0)
+            material = rib.Shape.cut(base.Shape)
+            for face in base.Shape.Faces:
+                if isinstance(face.Surface, Part.Cylinder):
+                    self.assertGreater(material.common(face).Area, 1)
 
     def testInactiveDirectionInputs(self):
         self.testSideProfileRib()
