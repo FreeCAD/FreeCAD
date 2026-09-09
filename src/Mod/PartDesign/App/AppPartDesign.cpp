@@ -48,6 +48,7 @@
 #include "FeatureMirrored.h"
 #include "FeatureMultiTransform.h"
 #include "FeaturePad.h"
+#include "FeatureRib.h"
 #include "FeatureThinExtrude.h"
 #include "FeaturePipe.h"
 #include "FeaturePocket.h"
@@ -111,6 +112,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::FeatureExtrude              ::init();
     PartDesign::Pad                         ::init();
     PartDesign::ThinExtrude                 ::init();
+    PartDesign::Rib                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
     PartDesign::Revolved                    ::init();

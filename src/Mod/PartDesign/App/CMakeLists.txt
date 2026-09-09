@@ -78,18 +78,25 @@ SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 SET(ThinExtrusion_SRCS
     ThinProfile.cpp
     ThinProfile.h
-    ThinExtrusionGeometry.cpp
-    ThinExtrusionGeometry.h
     ThinExtrusion.cpp
     ThinExtrusion.h
-    ThinSurfaceExtrusion.cpp
-    ThinSurfaceExtrusion.h
     ThinWallExtension.cpp
     ThinWallExtension.h
+    ThinSurfaceExtrusion.cpp
+    ThinSurfaceExtrusion.h
+    ThinExtrusionGeometry.cpp
+    ThinExtrusionGeometry.h
     FeatureThinExtrude.cpp
     FeatureThinExtrude.h
 )
 SOURCE_GROUP("ThinExtrusion" FILES ${ThinExtrusion_SRCS})
+
+# Dedicated command adapter; the shared layer must not depend on this (PR2).
+SET(ThinFeatureAdapters_SRCS
+    FeatureRib.cpp
+    FeatureRib.h
+)
+SOURCE_GROUP("ThinFeatureAdapters" FILES ${ThinFeatureAdapters_SRCS})
 
 SET(FeaturesSketchBased_SRCS
     FeatureExtrude.cpp
@@ -152,6 +159,7 @@ SET(PartDesign_SRCS
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
     ${ThinExtrusion_SRCS}
+    ${ThinFeatureAdapters_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
     ${Python_SRCS}

@@ -56,7 +56,7 @@ from PartDesignTests.TestChamfer import TestChamfer
 from PartDesignTests.TestDraft import TestDraft
 from PartDesignTests.TestThickness import TestThickness
 from PartDesignTests.TestThinExtrude import TestThinExtrude
-from PartDesignTests.TestThinExtrudeFeature import TestThinExtrudeFeature
+from PartDesignTests.TestRib import TestRib
 
 # extras
 from PartDesignTests.TestInvoluteGear import TestInvoluteGear
