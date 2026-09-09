@@ -195,4 +195,195 @@ Part::TopoShape segmentedWall(
 }
 }  // namespace
 
+Part::TopoShape makeThinSurfaceExtrusion(
+    const std::vector<Part::TopoShape>& edges,
+    const gp_Dir& direction,
+    double length,
+    double thickness,
+    int side,
+    bool reversed,
+    Part::JoinType join,
+    bool intersection,
+    long tag
+)
+{
+    const double tolerance = Precision::Confusion();
+    if (!std::isfinite(length) || length <= tolerance || !std::isfinite(thickness)
+        || thickness <= 2 * tolerance || side < 0 || side > 2) {
+        throw Base::ValueError(
+            "Pipe length and thickness must be positive and exceed modeling tolerance"
+        );
+    }
+
+    if (edges.empty()) {
+        throw Base::ValueError("Select one connected, nonbranching edge chain or closed loop");
+    }
+
+    Part::TopoShape wire(tag, edges.front().Hasher);
+    auto orientedEdges = edges;
+    for (auto& edge : orientedEdges) {
+        edge.setShape(edge.getShape().Oriented(TopAbs_FORWARD), false);
+    }
+
+    wire.makeElementWires(orientedEdges, "PipeProfile", tolerance);
+    if (wire.countSubShapes(TopAbs_WIRE) != 1 || wire.countSubShapes(TopAbs_EDGE) != edges.size()) {
+        throw Base::ValueError(
+            "Pipe requires one connected, nonbranching chain without duplicate edges"
+        );
+    }
+
+    wire = wire.getSubTopoShape(TopAbs_WIRE, 1);
+    if (!wire.isValid() || !BRepAlgoAPI_Check(wire.getShape(), false, true).IsValid()) {
+        throw Base::ValueError("Pipe profile is invalid or self-intersecting");
+    }
+
+    // Anchor open profiles to the underlying curve of the first source edge,
+    // not its incidental topological orientation in a face/wire. Callers order
+    // edges by source topology, not by selection order or global coordinates.
+
+    for (BRepTools_WireExplorer it(TopoDS::Wire(wire.getShape())); it.More(); it.Next()) {
+        if (it.Current().IsSame(edges.front().getShape())) {
+            if (it.Current().Orientation() != TopAbs_FORWARD) {
+                Part::TopoShape oriented(tag, wire.Hasher, wire.getShape().Reversed());
+                oriented.mapSubElement(wire);
+                wire = oriented;
+            }
+            break;
+        }
+    }
+
+    double sign = side == 1 ? -1.0 : 1.0;
+    gp_Pln plane;
+    const bool planarProfile = wire.findPlane(plane);
+    const bool normalExtrusion = planarProfile
+        && plane.Axis().Direction().IsParallel(direction, Precision::Angular());
+    if (wire.isClosed() && planarProfile) {
+        // Establish inside/outside independently of the input wire orientation.
+        // The face orientation fixer changes orientations, not the profile curves.
+        if (plane.Axis().Direction().Dot(direction) < 0) {
+            plane.UReverse();
+        }
+        BRepBuilderAPI_MakeFace face(plane, TopoDS::Wire(wire.getShape()), true);
+        ShapeFix_Face fixer(face.Face());
+        fixer.FixOrientation();
+        Part::TopoShape oriented(tag, wire.Hasher, BRepTools::OuterWire(fixer.Face()));
+        oriented.mapSubElement(wire);
+        wire = oriented;
+        sign = -sign;
+    }
+
+    // Build in the unreversed direction. Reversal is a translation of the
+    // complete wall, so it never reverses the surface normal or thickness side.
+    const gp_Vec travel = gp_Vec(direction) * length;
+    auto shell = wire.makeElementPrism(travel, "PipeExtrude");
+    if (shell.countSubShapes(TopAbs_FACE) != edges.size() || !shell.isValid()) {
+        throw Base::ValueError("Profile cannot be extruded along this direction (degenerate surface)");
+    }
+
+    gp_Pln support;
+    if (shell.findPlane(support)) {
+        // A planar side-profile sweep is a material region, not a spatial
+        // offset problem. Merge its smooth boundary with OCCT history, then
+        // extrude the entire width once (including centered placement).
+        // OCCT concatenates spline boundaries, but not mixed line/spline
+        // chains. Exact NURBS conversion also includes straight extensions.
+        Part::TopoShape region;
+        try {
+            auto converted = shell;
+            if (edges.size() > 1 && std::any_of(edges.begin(), edges.end(), [](const auto& edge) {
+                    const auto type = BRepAdaptor_Curve(TopoDS::Edge(edge.getShape())).GetType();
+                    return type == GeomAbs_BSplineCurve || type == GeomAbs_BezierCurve;
+                })) {
+                BRepBuilderAPI_NurbsConvert convert(wire.getShape(), true);
+                converted = wire.makeElementShape(convert, "RibRegionCurves")
+                                .makeElementPrism(travel, "RibRegionSweep");
+            }
+
+            ShapeUpgrade_UnifySameDomain unify(converted.getShape(), true, true, true);
+            unify.Build();
+            region = Part::TopoShape(tag, wire.Hasher)
+                         .makeShapeWithElementMap(
+                             unify.Shape(),
+                             Part::MapperHistory(unify.History()),
+                             {converted},
+                             "RibRegion"
+                         );
+        }
+        catch (const Standard_Failure&) {
+            // Concatenation can reject a singular parameterization even when
+            // the limiting tangent is valid. Keep its original boundary;
+            // seam removal must not invalidate an otherwise usable profile.
+            region = shell.makeElementRefine("RibRegion", Part::RefineFail::shapeUntouched);
+        }
+
+        if (region.countSubShapes(TopAbs_FACE) == 1) {
+            auto face = region.getSubTopoShape(TopAbs_FACE, 1);
+            if (!face.isValid() || !BRepAlgoAPI_Check(face.getShape(), false, true).IsValid()) {
+                throw Base::CADKernelError("Rib profile sweep overlaps itself");
+            }
+
+            const auto sourceFace = TopoDS::Face(shell.getSubShape(TopAbs_FACE, 1));
+            const BRepAdaptor_Surface surface(sourceFace);
+            gp_Pnt point;
+            gp_Vec du, dv;
+            surface.D1(
+                (surface.FirstUParameter() + surface.LastUParameter()) / 2,
+                (surface.FirstVParameter() + surface.LastVParameter()) / 2,
+                point,
+                du,
+                dv
+            );
+
+            gp_Vec width = du.Crossed(dv).Normalized()
+                * (sourceFace.Orientation() == TopAbs_REVERSED ? -sign : sign) * thickness;
+
+            auto wall = face.makeElementPrism(width, "RibWidth");
+
+            gp_Trsf placement;
+            placement.SetTranslation(
+                (side == 2 ? -width / 2 : gp_Vec()) + (reversed ? -travel : gp_Vec())
+            );
+            wall.move(placement);
+            wall.fixSolidOrientation();
+
+            // A normal prism of a valid, non-self-intersecting planar region
+            // cannot self-intersect. Check the solid topology without repeating
+            // the expensive face/face interference analysis in three dimensions.
+            validateWall(wall, false);
+            return wall;
+        }
+    }
+
+    auto buildSide = [&](double distance, const char* op) {
+        try {
+            return thicken(shell, distance, join, intersection, tag, op);
+        }
+        catch (const Base::CADKernelError&) {
+            if (normalExtrusion) {
+                throw;
+            }
+        }
+        catch (const Standard_Failure&) {
+            if (normalExtrusion) {
+                throw;
+            }
+        }
+        return segmentedWall(wire, direction, length, distance, join, intersection, tag);
+    };
+
+    auto wall = buildSide(sign * thickness / (side == 2 ? 2.0 : 1.0), "PipeSideA");
+    if (side == 2) {
+        auto other = buildSide(-sign * thickness / 2.0, "PipeSideB");
+        wall = Part::TopoShape(tag, wire.Hasher).makeElementFuse({wall, other}, "PipeBoth");
+        validateWall(wall);
+    }
+
+    if (reversed) {
+        gp_Trsf translation;
+        translation.SetTranslation(-travel);
+        wall.move(translation);
+    }
+
+    return wall;
+}
 }  // namespace PartDesign
