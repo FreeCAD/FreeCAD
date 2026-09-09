@@ -49,6 +49,8 @@ SET(FeaturesTransformed_SRCS
     FeatureMirrored.cpp
     FeatureLinearPattern.h
     FeatureLinearPattern.cpp
+    FeatureCircularPattern.h
+    FeatureCircularPattern.cpp
     FeaturePolarPattern.h
     FeaturePolarPattern.cpp
     FeatureScaled.h

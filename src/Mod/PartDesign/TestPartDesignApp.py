@@ -45,6 +45,7 @@ from PartDesignTests.TestHelix import TestHelix
 # transformations and boolean
 from PartDesignTests.TestMirrored import TestMirrored
 from PartDesignTests.TestLinearPattern import TestLinearPattern
+from PartDesignTests.TestCircularPattern import TestCircularPattern
 from PartDesignTests.TestPolarPattern import TestPolarPattern
 from PartDesignTests.TestMultiTransform import TestMultiTransform
 from PartDesignTests.TestBoolean import TestBoolean
