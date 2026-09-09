@@ -99,6 +99,12 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    thinPanel = new Gui::TaskView::TaskBox(tr("Web Properties"));
+    thinPanel->setObjectName(QStringLiteral("thinPropertiesPanel"));
+    thinProxy = new QWidget(thinPanel);
+    thinUi = std::make_unique<Ui_TaskThinProperties>();
+    thinUi->setupUi(thinProxy);
+    thinPanel->groupLayout()->addWidget(thinProxy);
     setupOperation(ui->labelOperation, ui->comboOperation);
     handleLineFaceNameNo(ui->lineFaceName);
     handleLineFaceNameNo(ui->lineFaceName2);
@@ -144,6 +150,160 @@ void TaskExtrudeParameters::setupDialog()
 
     // --- Global, Non-Side-Specific Setup ---
     auto extrude = getObject<PartDesign::FeatureExtrude>();
+
+    ui->thinMode->setChecked(extrude->Thin.getValue());
+    if (!extrude->Thin.getValue()) {
+        thinPanel->hide();
+    }
+    if (extrude->isDerivedFrom<PartDesign::ThinExtrude>()) {
+        ui->thinMode->setEnabled(false);
+    }
+
+    thinUi->thinSide->setCurrentIndex(extrude->ThinSide.getValue());
+    thinUi->thinJoin->setCurrentIndex(extrude->ThinJoin.getValue());
+    thinUi->thinCap->setCurrentIndex(extrude->ThinCap.getValue());
+    thinUi->thinDraftReference->setCurrentIndex(extrude->ThinDraftReference.getValue());
+    thinUi->thinExtension->setCurrentIndex(extrude->ThinExtension.getValue());
+
+    thinUi->thinExtensionEdgesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    thinUi->thinExtensionEdgesTable->verticalHeader()->hide();
+    thinUi->thinRemoveExtensionEdges->setIcon(QIcon(Gui::BitmapFactory().pixmap("edit-delete")));
+    updateThinExtensionEdges();
+
+    thinUi->thinThickness->setValue(extrude->ThinThickness.getQuantityValue());
+    thinUi->thinThickness2->setValue(extrude->ThinThickness2.getQuantityValue());
+    thinUi->thinThickness->bind(extrude->ThinThickness);
+    thinUi->thinThickness2->bind(extrude->ThinThickness2);
+
+    thinUi->thinFilletRadius->setValue(extrude->RootFilletRadius.getQuantityValue());
+    thinUi->thinFilletRadius->bind(extrude->RootFilletRadius);
+    connect(
+        thinUi->thinFilletRadius,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->RootFilletRadius.setValue(value);
+            recomputeFeature();
+        }
+    );
+
+    auto updateThin = [this]() {
+        const bool two = thinUi->thinSide->currentIndex() == 3;
+        thinUi->thinThickness2Label->setVisible(two);
+        thinUi->thinThickness2->setVisible(two);
+        thinUi->thinThicknessLabel->setText(two ? tr("Side A thickness") : tr("Thickness"));
+    };
+    updateThin();
+    connect(ui->thinMode, &QCheckBox::toggled, this, [this, extrude](bool enabled) {
+        if (!enabled && selectionMode == SelectThinExtensionEdges) {
+            setSelectionMode(None);
+        }
+        extrude->Thin.setValue(enabled);
+        thinPanel->setVisible(enabled);
+        updateUI(Side::First);
+        recomputeFeature();
+    });
+    connect(
+        thinUi->thinSide,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude, updateThin](int side) {
+            extrude->ThinSide.setValue(side);
+            updateThin();
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinJoin,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int join) {
+            extrude->ThinJoin.setValue(join);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinCap,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int cap) {
+            extrude->ThinCap.setValue(cap);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinDraftReference,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int reference) {
+            extrude->ThinDraftReference.setValue(reference);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinExtension,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int mode) {
+            if (mode == 0 && selectionMode == SelectThinExtensionEdges) {
+                setSelectionMode(None);
+            }
+            extrude->ThinExtension.setValue(mode);
+            updateThinExtensionEdges();
+            recomputeFeature();
+        }
+    );
+    connect(thinUi->thinSelectExtensionEdges, &QToolButton::toggled, this, [this](bool selected) {
+        setSelectionMode(selected ? SelectThinExtensionEdges : None);
+    });
+    connect(thinUi->thinExtendAll, &QCheckBox::toggled, this, [this, extrude](bool all) {
+        if (all) {
+            setSelectionMode(None);
+            extrude->ThinExtensionEdges.setValue(nullptr);
+        }
+        extrude->ThinExtendAll.setValue(all);
+        updateThinExtensionEdges();
+        recomputeFeature();
+    });
+    connect(
+        thinUi->thinRemoveExtensionEdges,
+        &QToolButton::clicked,
+        this,
+        &TaskExtrudeParameters::removeThinExtensionEdges
+    );
+
+    auto removeEdges = new QAction(tr("Remove"), thinUi->thinExtensionEdgesTable);
+    removeEdges->setShortcut(Gui::QtTools::deleteKeySequence());
+    removeEdges->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    thinUi->thinExtensionEdgesTable->addAction(removeEdges);
+    connect(removeEdges, &QAction::triggered, this, &TaskExtrudeParameters::removeThinExtensionEdges);
+    connect(
+        thinUi->thinExtensionEdgesTable,
+        &QTableWidget::itemSelectionChanged,
+        this,
+        &TaskExtrudeParameters::highlightThinExtensionEdges
+    );
+    connect(thinUi->thinExtensionEdgesTable, &QTableWidget::itemDoubleClicked, this, [this]() {
+        setSelectionMode(None);
+    });
+    connect(
+        thinUi->thinThickness,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->ThinThickness.setValue(value);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinThickness2,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->ThinThickness2.setValue(value);
+            recomputeFeature();
+        }
+    );
 
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->XDirectionEdit->setDecimals(UserDecimals);
@@ -209,6 +369,10 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     side.taperEdit->setMaximum(side.TaperAngle->getMaximum());
     side.taperEdit->setSingleStep(side.TaperAngle->getStepSize());
     side.taperEdit->setValue(taper);
+    side.taperEdit->setToolTip(
+        tr("Use a negative taper angle to reverse draft. "
+           "Reversed changes the extrusion direction.")
+    );
 
     // --- Bind UI widgets to the correct properties ---
     side.lengthEdit->bind(*side.Length);
@@ -487,6 +651,19 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
     if (selectionMode == mode && activeSelectionSide == side) {
         return;
     }
+    if (selectionMode == SelectThinExtensionEdges) {
+        auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+        if (!thinProfileWasVisible) {
+            getGuiDocument()->setHide(profile->getNameInDocument());
+        }
+    }
+    {
+        const QSignalBlocker blocker(thinUi->thinSelectExtensionEdges);
+        thinUi->thinSelectExtensionEdges->setChecked(mode == SelectThinExtensionEdges);
+        thinUi->thinSelectExtensionEdges->setText(
+            mode == SelectThinExtensionEdges ? tr("Done") : tr("+ Add edge")
+        );
+    }
 
     const auto updateCheckedForSide = [mode, side](
                                           Side relatedSide,
@@ -506,6 +683,14 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
     activeSelectionSide = side;
 
     switch (mode) {
+        case SelectThinExtensionEdges: {
+            auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+            thinProfileWasVisible = getGuiDocument()->getViewProvider(profile)->isVisible();
+            onSelectReference(AllowSelection::EDGE);
+            Gui::Selection().addSelectionGate(new ThinProfileEdgeSelection(profile));
+            getGuiDocument()->setShow(profile->getNameInDocument());
+            break;
+        }
         case SelectShape:
             onSelectReference(AllowSelection::WHOLE);
             Gui::Selection().addSelectionGate(new SelectionFilterGate("SELECT Part::Feature COUNT 1"));
@@ -523,7 +708,15 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
             break;
         }
         case SelectReferenceAxis:
-            onSelectReference(AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE);
+            if (auto rib = getObject<PartDesign::ThinExtrude>();
+                rib && rib->TowardReference.getValue()) {
+                onSelectReference(AllowSelection::EDGE);
+            }
+            else {
+                onSelectReference(
+                    AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
+                );
+            }
             break;
         default:
             getViewObject<ViewProviderExtrude>()->highlightShapeFaces({});
@@ -548,6 +741,9 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         switch (selectionMode) {
+            case SelectThinExtensionEdges:
+                selectedThinExtensionEdge(msg);
+                break;
             case SelectShape:
                 selectedShape(msg, sideCtrl);
                 break;
@@ -1499,6 +1695,7 @@ void TaskExtrudeParameters::changeEvent(QEvent* e)
         // Translate direction items
         int index = ui->directionCB->currentIndex();
         ui->retranslateUi(proxy);
+        thinUi->retranslateUi(thinProxy);
 
         // Keep custom items
         for (int i = 0; i < ui->directionCB->count(); i++) {
@@ -1531,8 +1728,28 @@ void TaskExtrudeParameters::saveHistory()
 
 void TaskExtrudeParameters::applyParameters()
 {
+    setSelectionMode(None);
     TaskSketchBasedParameters::apply();
     auto obj = getObject();
+    thinUi->thinThickness->apply();
+    thinUi->thinThickness2->apply();
+    thinUi->thinFilletRadius->apply();
+    FCMD_OBJ_CMD(
+        obj,
+        "Thin = " << (obj->isDerivedFrom<PartDesign::ThinExtrude>() || ui->thinMode->isChecked() ? 1 : 0)
+    );
+    FCMD_OBJ_CMD(obj, "ThinSide = " << thinUi->thinSide->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinJoin = " << thinUi->thinJoin->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinCap = " << thinUi->thinCap->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinDraftReference = " << thinUi->thinDraftReference->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinExtension = " << thinUi->thinExtension->currentIndex());
+    const auto& extension = getObject<PartDesign::FeatureExtrude>()->ThinExtensionEdges;
+    const auto extensionCommand = extension.getValue()
+        ? Gui::Command::getObjectCmd(extension.getValue(), "(", ", ")
+            + buildLinkSubPythonStr(extension.getValue(), extension.getSubValues()) + ")"
+        : std::string("None");
+    FCMD_OBJ_CMD(obj, "ThinExtensionEdges = " << extensionCommand);
+    FCMD_OBJ_CMD(obj, "ThinExtendAll = " << (thinUi->thinExtendAll->isChecked() ? 1 : 0));
 
     QString facename = QStringLiteral("None");
     QString facename2 = QStringLiteral("None");
