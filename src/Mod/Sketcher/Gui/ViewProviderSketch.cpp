@@ -4335,13 +4335,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         Base::Console().error("ViewProviderSketch::setEdit: {}\n", e.GetMessageString());
     }
 
-    // intercept del key press from main app
-    listener = std::make_unique<ShortcutListener>(this);
-
-    Gui::getMainWindow()->installEventFilter(listener.get());
-    if (editDoc && editDoc->isActive()) {
-        setupActiveAndInEdit();
-    }
+    setupActiveAndInEdit();
 
     return true;
 }
