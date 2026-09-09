@@ -6193,23 +6193,6 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
     }
-    else if (strcmp(maker, Part::OpCodes::Common) == 0) {
-        for (const auto& s : shapes) {
-            if (s.isNull()) {
-                FC_THROWM(NullShapeException, "Null input shape");
-            }
-
-            // we need to expand compounds because for COMMON operations
-            // the inputs (compound(A, B), C)
-            // should be treated as A ∩ B ∩ C
-            if (s.shapeType() == TopAbs_COMPOUND) {
-                expandCompound(s, _shapes);
-            }
-            else {
-                _shapes.push_back(s);
-            }
-        }
-    }
 
     if (tolerance != 0.0 && _shapes.empty()) {
         _shapes = shapes;
