@@ -211,6 +211,9 @@ struct GeometryScreenPreselector
 
             int pointCount = coords->point.getNum();
             for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+                if (!coinMapping.isValidPointVertexId(pointIndex, layerIndex)) {
+                    continue;
+                }
                 int vertexId = coinMapping.getPointVertexId(pointIndex, layerIndex);
                 if (vertexId < 0) {
                     continue;
@@ -359,6 +362,7 @@ private:
     )
     {
         if (!coinMapping.isValidPointId(pointIndex, layerIndex)
+            || !coinMapping.isValidPointVertexId(pointIndex, layerIndex)
             || static_cast<int>(editModeScenegraphNodes.PointsCoordinate.size()) <= layerIndex) {
             return false;
         }
@@ -1324,6 +1328,9 @@ bool EditModeCoinManager::detectPointPreselection(
     }
 
     int pointIndex = static_cast<const SoPointDetail*>(pointDetail)->getCoordinateIndex();
+    if (!coinMapping.isValidPointVertexId(pointIndex, layerIndex)) {
+        return false;
+    }
     result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
     if (result.PointIndex == -1) {
         result.Kind = PreselectionResult::HitKind::Axis;
@@ -1360,6 +1367,9 @@ bool EditModeCoinManager::detectCurvePreselection(
         }
 
         int curveIndex = static_cast<const SoLineDetail*>(curveDetail)->getLineIndex();
+        if (!coinMapping.isValidCurveId(curveIndex, layerIndex, subLayerIndex)) {
+            return false;
+        }
         result.GeoIndex = coinMapping.getCurveGeoId(curveIndex, layerIndex, subLayerIndex);
         result.Kind = PreselectionResult::HitKind::Edge;
         result.setPickedPoint(point);
