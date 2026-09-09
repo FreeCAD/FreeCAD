@@ -583,4 +583,197 @@ void checkThinExtensionBoundary(
     }
 }
 
+Part::TopoShape roundThinExtrusionEnds(
+    const Part::TopoShape& tool,
+    const Part::TopoShape& profile,
+    const gp_Dir& direction,
+    double length,
+    double sideA,
+    double sideB,
+    bool reversed,
+    long tag
+)
+{
+    const auto chains = makeThinProfileGraph(profile, tag);
+    const auto directed = Part::TopoShape(tag, profile.Hasher)
+                              .makeElementCompound(
+                                  chains.chains,
+                                  "RibCapGraph",
+                                  Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+                              );
+
+    TopTools_IndexedDataMapOfShapeListOfShape graph;
+    TopExp::MapShapesAndAncestors(directed.getShape(), TopAbs_VERTEX, TopAbs_EDGE, graph);
+    std::vector<Part::TopoShape> pieces {tool};
+    for (int i = 1; i <= graph.Extent(); ++i) {
+        if (graph.FindFromIndex(i).Extent() != 1) {
+            continue;
+        }
+        const auto vertex = TopoDS::Vertex(graph.FindKey(i));
+        const auto directedEdge = graph.FindFromIndex(i).First();
+        const auto edge = TopoDS::Edge(directedEdge.Oriented(TopAbs_FORWARD));
+        TopoDS_Vertex first, last;
+        TopExp::Vertices(edge, first, last);
+        if (first.IsSame(last)) {
+            continue;
+        }
+        const bool atEnd = vertex.IsSame(last);
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt point;
+        gp_Vec tangent;
+        curve.D1(atEnd ? curve.LastParameter() : curve.FirstParameter(), point, tangent);
+        const gp_Vec axis(direction);
+        tangent -= axis * tangent.Dot(axis);
+        tangent.Normalize();
+        const gp_Vec normal = axis.Crossed(tangent)
+            * (directedEdge.Orientation() == TopAbs_REVERSED ? -1 : 1);
+        const double radius = (sideA + sideB) / 2;
+        const auto center = point.Translated(normal * ((sideA - sideB) / 2));
+        const auto a = point.Translated(normal * sideA);
+        const auto b = point.Translated(-normal * sideB);
+        const auto middle = center.Translated(tangent * (atEnd ? radius : -radius));
+        BRepBuilderAPI_MakeEdge arc(GC_MakeArcOfCircle(a, middle, b).Value());
+        BRepBuilderAPI_MakeEdge diameter(b, a);
+        BRepBuilderAPI_MakeWire boundary(arc.Edge(), diameter.Edge());
+        BRepBuilderAPI_MakeFace face(boundary.Wire());
+        auto cap
+            = Part::TopoShape(tag, profile.Hasher).makeElementShape(face, {profile}, "RibRoundEnd");
+        cap = cap.makeElementPrism(axis * (reversed ? -length : length), "RibRoundEndPrism");
+        pieces.push_back(cap);
+    }
+    return pieces.size() == 1
+        ? tool
+        : Part::TopoShape(tag, profile.Hasher).makeElementFuse(pieces, "RibCappedWall");
+}
+
+Part::TopoShape trimThinExtrusionToBoundary(
+    const Part::TopoShape& tool,
+    const Part::TopoShape& body,
+    const Part::TopoShape& source,
+    const gp_Vec& travel,
+    long tag,
+    bool requireTermination
+)
+{
+    if (body.isNull() || !body.hasSubShape(TopAbs_FACE)) {
+        throw Base::ValueError("Rib/Web requires a target body or face for boundary termination");
+    }
+
+    Part::TopoShape remainder;
+    if (body.hasSubShape(TopAbs_SOLID)) {
+        remainder = tool.makeElementCut(body, "RibBoundary");
+    }
+    else {
+        BRepAlgoAPI_Splitter splitter;
+        TopTools_ListOfShape arguments, targets;
+        arguments.Append(tool.getShape());
+        targets.Append(body.getShape());
+        splitter.SetArguments(arguments);
+        splitter.SetTools(targets);
+        splitter.Build();
+        remainder = Part::TopoShape(tag, tool.Hasher)
+                        .makeElementShape(splitter, {tool, body}, "RibTargetSplit");
+    }
+
+    auto farSource = source;
+    gp_Trsf translation;
+    translation.SetTranslation(travel);
+    farSource.move(translation);
+
+    std::vector<Part::TopoShape> selected;
+    for (auto solid : remainder.getSubTopoShapes(TopAbs_SOLID)) {
+        if (!touches(solid, source)) {
+            continue;
+        }
+        if (requireTermination && touches(solid, farSource)) {
+            throw Base::ValueError("Rib/Web footprint misses the next body boundary");
+        }
+        selected.push_back(solid);
+    }
+
+    if (selected.empty()) {
+        throw Base::ValueError("No rib material exists between the profile and target body");
+    }
+
+    return Part::TopoShape(tag, tool.Hasher)
+        .makeElementCompound(
+            selected,
+            "RibTrim",
+            Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+        );
+}
+
+Part::TopoShape finishThinExtrusion(
+    const Part::TopoShape& result,
+    const Part::TopoShape& body,
+    const Part::TopoShape& tool,
+    double rootRadius,
+    double exposedRadius,
+    long tag
+)
+{
+    if (rootRadius < 0 || exposedRadius < 0) {
+        throw Base::ValueError("Rib fillet radii cannot be negative");
+    }
+
+    Part::TopoShape finished = result;
+
+    // Classify against the body's boundary, not its volume: for a Pocket,
+    // interior tool edges belong to the removed volume but are not junctions.
+    Part::TopoShape boundary;
+    if (!body.isNull()) {
+        boundary = Part::TopoShape(tag, body.Hasher)
+                       .makeElementCompound(body.getSubTopoShapes(TopAbs_FACE), "ThinBodyBoundary");
+    }
+
+    for (bool root : {true, false}) {
+        const double radius = root ? rootRadius : exposedRadius;
+        if (radius <= Precision::Confusion()) {
+            continue;
+        }
+
+        std::vector<Part::TopoShape> edges;
+        for (const auto& edge : finished.getSubTopoShapes(TopAbs_EDGE)) {
+            if (!containsEdge(tool, edge)) {
+                continue;
+            }
+
+            bool onBody = !boundary.isNull() && containsEdge(boundary, edge);
+            bool oldEdge = false;
+            if (onBody) {
+                for (const auto& old : body.getSubTopoShapes(TopAbs_EDGE)) {
+                    if (containsEdge(old, edge)) {
+                        oldEdge = true;
+                        break;
+                    }
+                }
+            }
+
+            if ((root && onBody && !oldEdge) || (!root && !onBody)) {
+                edges.push_back(edge);
+            }
+        }
+
+        if (edges.empty()) {
+            throw Base::ValueError(
+                root ? "No root edges available for the requested fillet"
+                     : "No exposed edges available for the requested fillet"
+            );
+        }
+
+        finished = Part::TopoShape(tag, result.Hasher)
+                       .makeElementFillet(
+                           finished,
+                           edges,
+                           radius,
+                           radius,
+                           root ? "RibRootFillet" : "RibEdgeFillet"
+                       );
+        if (!finished.isValid()) {
+            throw Base::CADKernelError("The requested rib fillet produces invalid geometry");
+        }
+    }
+
+    return finished;
+}
 }  // namespace PartDesign
