@@ -22,6 +22,7 @@ add_executable(Base_tests_run
         Persistence.cpp
         PyException.cpp
         Quantity.cpp
+        UnitRegistry.cpp
         Reader.cpp
         Rotation.cpp
         SchemaTests.cpp
