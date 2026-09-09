@@ -680,6 +680,16 @@ class TestThinExtrudeFeature(unittest.TestCase):
                 self.doc.Block.Shape.Volume - pocket.Shape.Volume, expected_cut, delta=1e-5
             )
 
+    def testRootFillet(self):
+        body, base, sketch, rib = self.web()
+        rib.RootFilletRadius = 0.8
+        self.doc.recompute()
+        self.valid(rib)
+        # Root classification includes the two long sides AND the two butt
+        # ends. Check the independent long-side section away from corners.
+        section = rib.Shape.common(Part.makeBox(1, 30, 12, App.Vector(20, 0, 0)))
+        self.assertAlmostEqual(section.Volume, 24 + 2 * 0.8**2 * (1 - math.pi / 4), delta=1e-5)
+
     def testThinPadBowlRimJunctionFillet(self):
         body, base, sketch, wall, inner = self.bowlWall(cross=True, kind="PartDesign::Pad")
         wall.Type = "UpToFace"
@@ -699,6 +709,59 @@ class TestThinExtrudeFeature(unittest.TestCase):
         rebuilt = base.Shape.fuse(wall.AddSubShape)
         self.assertAlmostEqual(rebuilt.cut(wall.Shape).Volume, 0, delta=1e-5)
         self.assertAlmostEqual(wall.Shape.cut(rebuilt).Volume, 0, delta=1e-5)
+
+    def testCurvedRootUsesOneNeutralPlane(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeCylinder(20, 10, App.Vector(0, -5, 0), App.Vector(0, 1, 0))
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.Placement.Base.z = 30
+        sketch.addGeometry(Part.LineSegment(App.Vector(-10, 0, 0), App.Vector(10, 0, 0)), False)
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.Type = "UpToFirst"
+        rib.Reversed = True
+        rib.ThinThickness = 2
+        self.doc.recompute()
+        self.valid(rib)
+        # Root is the furthest root extent along growth, not a surface that
+        # follows the cylindrical attachment. Sections above the body measure
+        # the resulting constant-angle draft independently of the Boolean.
+        root_plane_z = math.sqrt(20**2 - 10**2)
+        rib.TaperAngle = 3
+        for reference in ("Root", "Top"):
+            rib.ThinDraftReference = reference
+            self.doc.recompute()
+            self.valid(rib)
+            rib.Shape.check(True)
+            neutral_z = root_plane_z if reference == "Root" else 30
+            for z in (22, 28):
+                section = rib.Shape.section(Part.makePlane(60, 60, App.Vector(-30, -30, z)))
+                expected = 2 - 2 * (z - neutral_z) * math.tan(math.radians(3))
+                self.assertAlmostEqual(section.BoundBox.YLength, expected, delta=1e-5)
+
+    def testSignedDraftReference(self):
+        body, base, sketch, rib = self.web()
+        for reference in ("Root", "Top"):
+            for angle in (-3, 3):
+                with self.subTest(reference=reference, angle=angle):
+                    rib.ThinDraftReference = reference
+                    rib.TaperAngle = angle
+                    self.doc.recompute()
+                    self.valid(rib)
+                    delta = 12 * math.tan(math.radians(angle))
+                    root = 2 if reference == "Root" else 2 + 2 * delta
+                    top = 2 - 2 * delta if reference == "Root" else 2
+                    self.assertAlmostEqual(
+                        rib.Shape.Volume - base.Shape.Volume, 24 * 12 * (root + top) / 2, delta=1e-5
+                    )
+                    for z in (1e-4, 12 - 1e-4):
+                        section = rib.Shape.section(
+                            Part.makePlane(100, 100, App.Vector(-20, -20, z))
+                        )
+                        self.assertAlmostEqual(
+                            section.BoundBox.YLength, root + (top - root) * z / 12, delta=1e-5
+                        )
 
     def testSpatialSharpGrowthAndWidths(self):
         body = self.doc.addObject("PartDesign::Body", "Body")
@@ -852,6 +915,87 @@ class TestThinExtrudeFeature(unittest.TestCase):
         projected_length = sum(math.hypot(b.x - a.x, b.y - a.y) for a, b in zip(points, points[1:]))
         self.assertAlmostEqual(rib.Shape.Volume, projected_length * 2 * 12, delta=1e-2)
 
+    def testPatternIncludesRootFillets(self):
+        body, base, sketch, rib = self.web()
+        rib.RootFilletRadius = 0.5
+        self.doc.recompute()
+        self.valid(rib)
+        material = rib.AddSubShape.copy()
+        pattern = body.newObject("PartDesign::LinearPattern", "RibPattern")
+        pattern.Originals = [rib]
+        pattern.Direction = (sketch, ["V_Axis"])
+        pattern.Length = 6
+        pattern.Occurrences = 2
+        self.doc.recompute()
+        self.valid(pattern)
+        self.assertAlmostEqual(
+            pattern.Shape.Volume, base.Shape.Volume + 2 * material.Volume, delta=1e-5
+        )
+        translated = material.copy()
+        translated.translate(App.Vector(0, 6, 0))
+        self.assertAlmostEqual(translated.cut(pattern.Shape).Volume, 0, delta=1e-5)
+
+    def testMirroredRibWithPlacedBody(self):
+        body, base, sketch, rib = self.web()
+        base.Shape = Part.makeBox(40, 40, 3, App.Vector(0, -20, -3))
+        rib.RootFilletRadius = 0.5
+        self.doc.recompute()
+        self.valid(rib)
+        material_volume = rib.AddSubShape.Volume
+        mirror = body.newObject("PartDesign::Mirrored", "MirroredRib")
+        mirror.Originals = [rib]
+        mirror.MirrorPlane = (sketch, ["H_Axis"])
+        self.doc.recompute()
+        self.valid(mirror)
+        self.assertAlmostEqual(
+            mirror.Shape.Volume, base.Shape.Volume + 2 * material_volume, delta=1e-5
+        )
+        body.Placement = App.Placement(
+            App.Vector(123, -87, 45), App.Rotation(App.Vector(1, 2, 3), 37)
+        )
+        self.doc.recompute()
+        self.valid(mirror)
+        self.assertAlmostEqual(
+            mirror.Shape.Volume, base.Shape.Volume + 2 * material_volume, delta=1e-5
+        )
+        rib.ThinThickness = 3
+        self.doc.recompute()
+        self.valid(mirror)
+        self.assertAlmostEqual(
+            mirror.Shape.Volume, base.Shape.Volume + 2 * rib.AddSubShape.Volume, delta=1e-5
+        )
+
+    def testIndependentFinishingRadii(self):
+        body, base, sketch, rib = self.web()
+        unfilleted = rib.Shape.copy()
+        rib.EdgeFilletRadius = 0.4
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertLess(rib.Shape.Volume, unfilleted.Volume)
+        radii = [f.Surface.Radius for f in rib.Shape.Faces if isinstance(f.Surface, Part.Cylinder)]
+        self.assertTrue(any(abs(r - 0.4) < 1e-7 for r in radii))
+        rib.RootFilletRadius = 0.5
+        self.doc.recompute()
+        self.valid(rib)
+        radii = [f.Surface.Radius for f in rib.Shape.Faces if isinstance(f.Surface, Part.Cylinder)]
+        self.assertTrue(any(abs(r - 0.4) < 1e-7 for r in radii))
+        self.assertTrue(any(abs(r - 0.5) < 1e-7 for r in radii))
+        rib.RootFilletRadius = -1
+        self.doc.recompute()
+        # PropertyLength uses FreeCAD's nonnegative length constraint.
+        self.assertEqual(rib.RootFilletRadius.Value, 0)
+        self.valid(rib)
+
+    def testSourceGeometryIsNotMutated(self):
+        self.testSpatialSharpGrowthAndWidths()
+        rib = self.doc.getObject("Rib")
+        source = self.doc.getObject("SpatialProfile")
+        before = source.Shape.exportBrepToString()
+        for thickness in (0.3, 1, 2, 0.5, 3):
+            rib.ThinThickness = thickness
+            self.doc.recompute()
+            self.assertEqual(source.Shape.exportBrepToString(), before)
+
     def testSpatialRoundJoins(self):
         self.testSpatialSharpGrowthAndWidths()
         rib = self.doc.getObject("Rib")
@@ -904,6 +1048,15 @@ class TestThinExtrudeFeature(unittest.TestCase):
                     self.assertAlmostEqual(
                         rib.Shape.cut(uncapped).Volume, math.pi * (width / 2) ** 2 * 12, delta=1e-5
                     )
+
+    def testWebToNext(self):
+        body, base, sketch, rib = self.web()
+        sketch.Placement.Base.z = 12
+        rib.Reversed = True
+        rib.Type = "UpToFirst"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, base.Shape.Volume + 24 * 2 * 12, delta=1e-5)
 
     def testSideProfileRib(self):
         body = self.doc.addObject("PartDesign::Body", "Body")
@@ -1682,6 +1835,22 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.assertAlmostEqual(added.BoundBox.XMax, 8, delta=1e-6)
         self.assertAlmostEqual(added.BoundBox.ZMin, 0, delta=1e-6)
 
+    def testSignedRibDraft(self):
+        self.testSideProfileRib()
+        rib, base = self.doc.Rib, self.doc.Base
+        direction = rib.Direction
+        for angle in (1, -1):
+            rib.TaperAngle = angle
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertEqual(rib.Direction, direction)
+            self.assertFalse(rib.Reversed)
+            material = rib.Shape.cut(base.Shape)
+            for height in (1, 10):
+                section = Part.makeCompound(material.slice(App.Vector(0, 0, 1), height))
+                expected = 2 - 2 * height * math.tan(math.radians(angle))
+                self.assertAlmostEqual(section.BoundBox.YLength, expected, delta=1e-6)
+
     def testSignedBossRibDraft(self):
         body, base, sketch, rib = self.bossRib(width=4)
         original = rib.Shape.Volume
@@ -1697,6 +1866,116 @@ class TestThinExtrudeFeature(unittest.TestCase):
             for face in base.Shape.Faces:
                 if isinstance(face.Surface, Part.Cylinder):
                     self.assertGreater(material.common(face).Area, 1)
+
+    def testDraftPullModes(self):
+        self.testSideProfileRib()
+        rib, base = self.doc.Rib, self.doc.Base
+        rib.TaperAngle = 1
+        self.doc.recompute()
+        automatic = rib.Shape.Volume
+        growth = rib.Direction
+        self.assertEqual(rib.DraftPullMode, "Automatic")
+        for mode, vector in (
+            ("Vector", App.Vector(0, 0, 1)),
+            ("ProfileLocalVector", App.Vector(0, 1, 0)),
+        ):
+            rib.DraftPullMode = mode
+            rib.DraftPullVector = vector
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertAlmostEqual(rib.Shape.Volume, automatic, delta=1e-5)
+            self.assertEqual(rib.Direction, growth)
+        floor = next(
+            i + 1
+            for i, f in enumerate(base.Shape.Faces)
+            if f.normalAt(0, 0).z > 0.99 and abs(f.CenterOfMass.z) < 1e-6
+        )
+        rib.DraftPullMode = "ParallelToReference"
+        rib.DraftPullMode = "ParallelToReference"
+        rib.DraftPullDirection = (base, ["Face%d" % floor])
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, automatic, delta=1e-5)
+        rib.DraftPullMode = "TowardParent"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertEqual(rib.Direction, growth)
+        rib.DraftPullMode = "TowardReference"
+        edge = next(
+            i + 1
+            for i, e in enumerate(base.Shape.Edges)
+            if abs(e.CenterOfMass.z) < 1e-6 and abs(e.CenterOfMass.x - 3) < 1e-6 and e.Length > 23
+        )
+        rib.DraftPullDirection = (base, ["Edge%d" % edge])
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertEqual(rib.Direction, growth)
+        # Local vectors follow the sketch/body; global vectors remain global.
+        rib.DraftPullMode = "ProfileLocalVector"
+        rib.DraftPullVector = App.Vector(0, 1, 0)
+        self.doc.Body.Placement = App.Placement(
+            App.Vector(15, -27, 36), App.Rotation(App.Vector(1, 2, 3), 47)
+        )
+        rib.touch()
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, automatic, delta=1e-5)
+        rib.DraftPullVector = App.Vector()
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+        self.assertIn("must not be zero", rib.getStatusString())
+        rib.DraftPullVector = App.Vector(0, 1, 0)
+        self.doc.recompute()
+        with tempfile.TemporaryDirectory() as directory:
+            name = os.path.join(directory, "rib-pull-modes.FCStd")
+            self.doc.saveAs(name)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(name)
+            self.doc.Rib.touch()
+            self.doc.recompute()
+            self.valid(self.doc.Rib)
+            self.assertEqual(self.doc.Rib.DraftPullMode, "ProfileLocalVector")
+            self.assertAlmostEqual(self.doc.Rib.Shape.Volume, automatic, delta=1e-5)
+
+    def testIndependentDraftPull(self):
+        self.testSideProfileRib()
+        rib, base = self.doc.Rib, self.doc.Base
+        rib.TaperAngle = 2
+        floor = next(
+            i + 1
+            for i, face in enumerate(base.Shape.Faces)
+            if face.normalAt(0, 0).z > 0.99 and abs(face.CenterOfMass.z) < 1e-6
+        )
+        rib.DraftPullMode = "ParallelToReference"
+        rib.DraftPullDirection = (base, ["Face%d" % floor])
+        direction = rib.Direction
+        volumes = []
+        for flip in (False, True):
+            rib.FlipPullDirection = flip
+            self.doc.recompute()
+            self.valid(rib)
+            self.assertEqual(rib.Direction, direction)
+            self.assertFalse(rib.Reversed)
+            volumes.append(rib.Shape.Volume)
+        self.assertGreater(abs(volumes[0] - volumes[1]), 1e-3)
+        self.doc.Body.Placement = App.Placement(
+            App.Vector(15, -27, 36), App.Rotation(App.Vector(1, 2, 3), 47)
+        )
+        rib.touch()
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, volumes[-1], delta=1e-5)
+        with tempfile.TemporaryDirectory() as directory:
+            name = os.path.join(directory, "draft-pull.FCStd")
+            self.doc.saveAs(name)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(name)
+            self.doc.Rib.touch()
+            self.doc.recompute()
+            self.valid(self.doc.Rib)
+            self.assertTrue(self.doc.Rib.FlipPullDirection)
+            self.assertEqual(self.doc.Rib.DraftPullDirection[1], ["Face%d" % floor])
+            self.assertAlmostEqual(self.doc.Rib.Shape.Volume, volumes[-1], delta=1e-5)
 
     def testInactiveDirectionInputs(self):
         self.testSideProfileRib()
