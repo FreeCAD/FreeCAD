@@ -26,6 +26,7 @@
 
 
 #include <Mod/PartDesign/App/FeaturePad.h>
+#include <Mod/PartDesign/App/FeatureThinExtrude.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskPadParameters.h"
@@ -37,7 +38,13 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
 TaskPadParameters::TaskPadParameters(ViewProviderPad* PadView, QWidget* parent, bool newObj)
-    : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
+    : TaskExtrudeParameters(
+          PadView,
+          parent,
+          "PartDesign_Pad",
+          PadView->getObject()->isDerivedFrom<PartDesign::ThinExtrude>() ? tr("Growth Parameters")
+                                                                         : tr("Pad Parameters")
+      )
 {
     ui->offsetEdit->setToolTip(tr("Offset the pad from the face at which the pad will end on side 1"));
     ui->offsetEdit2->setToolTip(tr("Offset the pad from the face at which the pad will end on side 2"));
@@ -143,6 +150,7 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool /*newO
     , parameters(new TaskPadParameters(PadView))
 {
     Content.push_back(parameters);
+    Content.push_back(parameters->getThinPropertiesPanel());
     Content.push_back(preview);
 }
 

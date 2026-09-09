@@ -151,6 +151,7 @@ TaskDlgPocketParameters::TaskDlgPocketParameters(ViewProviderPocket* PocketView)
     , parameters(new TaskPocketParameters(PocketView))
 {
     Content.push_back(parameters);
+    Content.push_back(parameters->getThinPropertiesPanel());
     Content.push_back(preview);
 }
 

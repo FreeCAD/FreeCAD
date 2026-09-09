@@ -792,6 +792,12 @@ the sketch plane's normal vector will be used</string>
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="thinMode">
+     <property name="text"><string>Web Mode</string></property>
+     <property name="toolTip"><string>Extrude a thin wall from profile edges.</string></property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
