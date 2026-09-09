@@ -59,7 +59,7 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 4> transformModeEnums = {"Features", "Whole Body", "Feature Result", nullptr};
+std::array<char const*, 4> transformModeEnums = {"Tool Shapes", "Whole Body", "Feature Result", nullptr};
 
 Transformed::Transformed()
 {
@@ -705,14 +705,14 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
             case Operation::Add:
                 supportShape.makeElementFuse(
                     transformedShapes,
-                    std::format("Fuse_add_+{}", element.source).c_str()
+                    std::format("Fuse_add_{}", element.source).c_str()
                 );
                 break;
 
             case Operation::Sub:
                 supportShape.makeElementCut(
                     transformedShapes,
-                    std::format("Cut_sub_-{}", element.source).c_str()
+                    std::format("Cut_sub_{}", element.source).c_str()
                 );
                 break;
 
@@ -740,7 +740,7 @@ App::DocumentObjectExecReturn* Transformed::executeWholeBody(
     supportShape.makeElementFuse(
         shapes,
         std::format(
-            "Fuse_add_-{}",
+            "Fuse_add_{}",
             this->getFeatureBody() == nullptr ? "<no body>"
                                               : this->getFeatureBody()->getNameInDocument()
         )
