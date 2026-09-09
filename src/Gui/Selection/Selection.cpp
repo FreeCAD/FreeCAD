@@ -1809,18 +1809,56 @@ void SelectionSingleton::setVisible(VisibleState vis)
         if (!doc) {
             continue;
         }
-        App::DocumentObject* obj = doc->getObject(sel.FeatName.c_str());
-        if (!obj) {
+        App::DocumentObject* selObj = doc->getObject(sel.FeatName.c_str());
+        if (!selObj) {
             continue;
         }
 
         // get parent object
         App::DocumentObject* parent = nullptr;
         std::string elementName;
-        obj = obj->resolve(sel.SubName.c_str(), &parent, &elementName);
+        App::DocumentObject* obj = selObj->resolve(sel.SubName.c_str(), &parent, &elementName);
         if (!obj || !obj->isAttachedToDocument() || (parent && !parent->isAttachedToDocument())) {
             continue;
         }
+
+        // Deep 3D picks (e.g. Link.Link_i0.Pad.Face4) often resolve past the
+        // multi-element Link VisibilityList entry. Walk shorter subname prefixes
+        // until a parent that supports element visibility is found (same idea as
+        // Tree DocumentObjectItem::getElementVisibilityParent).
+        if ((!parent || parent->isElementVisible(elementName.c_str()) < 0)
+            && !sel.SubName.empty()) {
+            std::string sub = sel.SubName;
+            while (!sub.empty()) {
+                auto pos = sub.find_last_of('.');
+                if (pos == std::string::npos) {
+                    break;
+                }
+                sub.resize(pos);
+                if (sub.empty()) {
+                    break;
+                }
+                std::string trySub = sub;
+                if (trySub.back() != '.') {
+                    trySub.push_back('.');
+                }
+                App::DocumentObject* walkParent = nullptr;
+                std::string walkElement;
+                App::DocumentObject* walkObj =
+                    selObj->resolve(trySub.c_str(), &walkParent, &walkElement);
+                if (!walkObj || !walkObj->isAttachedToDocument() || !walkParent
+                    || !walkParent->isAttachedToDocument()) {
+                    continue;
+                }
+                if (walkParent->isElementVisible(walkElement.c_str()) >= 0) {
+                    obj = walkObj;
+                    parent = walkParent;
+                    elementName = std::move(walkElement);
+                    break;
+                }
+            }
+        }
+
         // try call parent object's setElementVisible
         if (parent) {
             // prevent setting the same object visibility more than once
