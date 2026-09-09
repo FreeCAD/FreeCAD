@@ -74,6 +74,13 @@ SET(FeaturesDressUp_SRCS
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
+# Geometry and reusable feature execution for Thin Pad/Pocket (PR1).
+SET(ThinExtrusion_SRCS
+    ThinProfile.cpp
+    ThinProfile.h
+)
+SOURCE_GROUP("ThinExtrusion" FILES ${ThinExtrusion_SRCS})
+
 SET(FeaturesSketchBased_SRCS
     FeatureExtrude.cpp
     FeatureExtrude.h
@@ -134,6 +141,7 @@ SET(PartDesign_SRCS
     ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
+    ${ThinExtrusion_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
     ${Python_SRCS}
