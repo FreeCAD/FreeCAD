@@ -432,30 +432,16 @@ QPixmap SplashScreen::splashImage()
                 numberFont = defaultSplashFont(numberFont);
             }
             numberFont.setPixelSize(20);
-            QFont labelFont(numberFont);
-            labelFont.setPixelSize(16);
             painter.setPen(color);
 
-            const QString versionLabel = QStringLiteral("version");
             const QFontMetricsF numberMetrics(numberFont);
-            const QFontMetricsF labelMetrics(labelFont);
             const QRectF numberBounds = numberMetrics.boundingRect(versionText);
-            const QRectF labelBounds = labelMetrics.boundingRect(versionLabel);
             // Match the version line to the wordmark geometry in freecadsplash.svg.
             constexpr qreal versionRight = 418;
             constexpr qreal versionBaseline = 158;
-            constexpr qreal versionSpacing = 8.0;
             const qreal numberPosition = versionRight - numberBounds.right();
             painter.setFont(numberFont);
             painter.drawText(QPointF(numberPosition, versionBaseline), versionText);
-            painter.setFont(labelFont);
-            painter.drawText(
-                QPointF(
-                    numberPosition + numberBounds.left() - versionSpacing - labelBounds.right(),
-                    versionBaseline
-                ),
-                versionLabel
-            );
 
             if (suffix == developmentSuffix && warningColor.isValid()) {
                 numberFont.setPixelSize(10);
