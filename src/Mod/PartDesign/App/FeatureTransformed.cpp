@@ -341,12 +341,30 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 
     gp_Trsf supportTransform = supportShape.getShape().Location().Transformation();
 
-    const auto makeCompoundOfToolShapes = [this, &supportTransform]() {
+    auto originals = getOriginals();
+    std::vector<gp_Trsf> transformations;
+    try {
+        std::list<gp_Trsf> t_list = getTransformations(originals);
+        transformations.insert(transformations.end(), t_list.begin(), t_list.end());
+    }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (const Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+
+    if (transformations.empty()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+
+    const auto makeCompoundOfToolShapes = [&]() {
         BRep_Builder builder;
         TopoDS_Compound compound;
 
         builder.MakeCompound(compound);
-        for (const auto& original : getOriginals()) {
+        for (const auto& original : originals) {
             if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
                 auto shape = feature->AddSubShape.getShape();
 
@@ -385,6 +403,7 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
         case Mode::Features: {
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
+        }
 
         case Mode::WholeShape: {
             auto shape = getBaseTopoShape();
@@ -542,7 +561,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         }
 
         case Mode::WholeShape: {
-            result = executeWholeBody(transformations, supportShape, originals);
+            result = executeWholeBody(transformations, supportShape);
             break;
         }
 
@@ -645,22 +664,12 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     std::vector<FeatureShape>& shapes
 )
 {
-    enum class Operation : std::uint8_t
-    {
-        Add,
-        Sub
-    };
-    struct FeatureShape
-    {
-        Part::TopoShape shape;
-        Operation operation;
-    };
 
     // compute the difference solid between each Feature and the shape of its previous Feature,
     // * for additive operations, we take (toolShape-previousShape) and use it to Fuse later.
     // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
-    // later. Then apply them in order to the shape from the Feature before this FeatureTransformed.
-    std::vector<FeatureShape> shapes;
+    // later.
+    // Then apply them in order to the shape from the Feature before this FeatureTransformed.
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
     auto getPreviousOriginal = [&](DocumentObject* original) -> PartDesign::Feature* {
@@ -736,10 +745,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 
         if (!subShape.isNull()) {
             if (!prevFeature) {
-                // return new App::DocumentObjectExecReturn(
-                //     QT_TRANSLATE_NOOP("Exception", "Subtractive shape has no previous additive
-                //     shape.")
-                // );
                 continue;
                 // skip this feature if it is subtractive with nothing to subtract it from
             }
@@ -750,6 +755,9 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 std::format("Transform_sub_{}", feature->getNameInDocument()).c_str()
             );
 
+            // we need to unwrap the pocket toolShapes because
+            // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
+            // returns an empty solid if A and B don't intersect.
             std::vector<Part::TopoShape> subShapes;
             if (subShape.shapeType() == TopAbs_COMPOUND) {
                 TopoShape::expandCompound(subShape, subShapes);
@@ -757,6 +765,9 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             else {
                 subShapes.push_back(subShape);
             }
+
+            // fuse the pocket shapes back together to use them in a single CUT operation later
+            std::vector<Part::TopoShape> toFuse;
 
             size_t i = 0;
             for (auto s : subShapes) {
@@ -772,13 +783,28 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 );
 
                 if (!s.isNull()) {
-                    // TODO: We could merge them back together ?
-                    shapes.push_back(
-                        {std::format("{}[{}]", feature->getNameInDocument(), i), s, Operation::Sub}
-                    );
+                    toFuse.push_back(s);
                 }
 
                 i++;
+            }
+
+            if (toFuse.size() == 1) {
+                Part::TopoShape onlyShape = toFuse.front();
+                if (!onlyShape.isNull()) {
+                    shapes.push_back({feature->getNameInDocument(), onlyShape, Operation::Sub});
+                }
+            }
+            else if (!toFuse.empty()) {
+                Part::TopoShape subShape;
+                subShape.makeElementFuse(
+                    toFuse,
+                    std::format("Fuse_sub_{}", feature->getNameInDocument()).c_str()
+                );
+
+                if (!subShape.isNull()) {
+                    shapes.push_back({feature->getNameInDocument(), subShape, Operation::Sub});
+                }
             }
         }
 
@@ -839,8 +865,7 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
 
 App::DocumentObjectExecReturn* Transformed::executeWholeBody(
     const std::vector<gp_Trsf>& transformations,
-    Part::TopoShape& supportShape,
-    const std::vector<DocumentObject*>& originals
+    Part::TopoShape& supportShape
 )
 {
     auto shapes = getTransformedCompShape(transformations, supportShape, supportShape);
