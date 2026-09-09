@@ -147,6 +147,8 @@ SET(PartGui_SRCS
     PatternParametersWidget.ui
     PatternReferenceWidget.cpp
     PatternReferenceWidget.h
+    PatternInstanceControls.cpp
+    PatternInstanceControls.h
     Resources/Part.qrc
     PreCompiled.h
     PreviewUpdateScheduler.cpp
