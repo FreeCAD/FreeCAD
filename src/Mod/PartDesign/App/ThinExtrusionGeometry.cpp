@@ -317,4 +317,270 @@ gp_Dir thinReferenceAxis(const Part::TopoShape& reference)
     throw Base::ValueError("Reference has no unique axis or normal; use Toward Reference for points or arbitrary geometry");
 }
 
+namespace
+{
+bool touches(const Part::TopoShape& a, const Part::TopoShape& b)
+{
+    BRepExtrema_DistShapeShape distance(a.getShape(), b.getShape());
+    if (!distance.IsDone()) {
+        throw Base::CADKernelError("Cannot classify rib/body contact");
+    }
+
+    return distance.Value() <= Precision::Confusion();
+}
+
+bool containsEdge(const Part::TopoShape& shape, const Part::TopoShape& edge)
+{
+    BRepAlgoAPI_Common common(shape.getShape(), edge.getShape());
+    if (!common.IsDone()) {
+        throw Base::CADKernelError("Cannot classify rib fillet edges");
+    }
+
+    GProp_GProps original, overlap;
+    BRepGProp::LinearProperties(edge.getShape(), original);
+    BRepGProp::LinearProperties(common.Shape(), overlap);
+    return original.Mass() > Precision::Confusion()
+        && std::abs(original.Mass() - overlap.Mass()) <= Precision::Confusion();
+}
+}  // namespace
+
+Part::TopoShape extendThinProfile(
+    const Part::TopoShape& profile,
+    const Part::TopoShape& body,
+    bool naturalCurve,
+    long tag,
+    bool throughBody
+)
+{
+    if (body.isNull() || !body.hasSubShape(TopAbs_SOLID)) {
+        throw Base::ValueError("Endpoint extension requires a target body");
+    }
+
+    auto edges = profile.getSubTopoShapes(TopAbs_EDGE);
+    auto split = profile;
+    if (edges.size() > 1) {
+        std::vector<std::vector<Part::TopoShape>> history;
+        split.makeElementGeneralFuse(edges, history, 0.0, "RibExtensionGraph");
+    }
+
+    TopTools_IndexedDataMapOfShapeListOfShape graph;
+    TopExp::MapShapesAndAncestors(split.getShape(), TopAbs_VERTEX, TopAbs_EDGE, graph);
+
+    std::vector<Part::TopoShape> result {profile};
+    auto bounds = body.getBoundBox();
+    bounds.Add(profile.getBoundBox());
+    const double reach = 2 * bounds.CalcDiagonalLength();
+
+    for (int v = 1; v <= graph.Extent(); ++v) {
+        if (graph.FindFromIndex(v).Extent() != 1) {
+            continue;
+        }
+
+        const auto vertex = TopoDS::Vertex(graph.FindKey(v));
+        const auto edge = TopoDS::Edge(graph.FindFromIndex(v).First());
+        TopoDS_Vertex firstVertex, lastVertex;
+        TopExp::Vertices(edge, firstVertex, lastVertex);
+        if (firstVertex.IsSame(lastVertex)) {
+            continue;
+        }
+
+        Part::TopoShape endpoint(tag, profile.Hasher, vertex);
+        if (!throughBody && touches(endpoint, body)) {
+            continue;
+        }
+
+        const bool after = vertex.IsSame(lastVertex);
+        double first, last;
+        auto curve = BRep_Tool::Curve(edge, first, last);
+        const double parameter = after ? last : first;
+        const auto jet = thinEndpointJet(edge, after, naturalCurve);
+        gp_Pnt point = jet.point;
+        const gp_Vec tangent = jet.tangent;
+
+        IntCurvesFace_ShapeIntersector intersector;
+        intersector.Load(body.getShape(), Precision::Confusion());
+        BRepBuilderAPI_MakeEdge builder;
+
+        if (!naturalCurve) {
+            intersector.PerformNearest(gp_Lin(point, gp_Dir(tangent)), Precision::Confusion(), reach);
+            if (!intersector.IsDone() || intersector.NbPnt() == 0) {
+                throw Base::ValueError("A dangling endpoint's tangent does not reach the target body");
+            }
+
+            builder = BRepBuilderAPI_MakeEdge(
+                point,
+                throughBody ? point.Translated(tangent * reach) : intersector.Pnt(1)
+            );
+        }
+        else {
+            auto basis = Handle(Geom_TrimmedCurve)::DownCast(curve);
+            if (!basis.IsNull()) {
+                curve = basis->BasisCurve();
+            }
+
+            double limit;
+            if (curve->IsPeriodic()) {
+                const double available = throughBody
+                    ? curve->Period() - (last - first) - Precision::PConfusion()
+                    : curve->Period();
+                limit = parameter + (after ? 1 : -1) * available;
+            }
+            else {
+                auto bounded = Handle(Geom_BoundedCurve)::DownCast(curve);
+                if (!bounded.IsNull()) {
+                    // A long ExtendCurveToPoint can curl back or move the join
+                    // parameter. Instead construct an independent quintic Hermite
+                    // continuation, retaining the original profile verbatim.
+                    // Its initial derivatives match D1*h and D2*h*h; its far
+                    // end is C2 with a straight tangent ray. Limit the transition
+                    // scale by the endpoint jet, not by the particular model.
+
+                    const auto continuation = makeThinC2Transition(jet, reach);
+                    const gp_Pnt tail = continuation->Value(1);
+                    Handle(GeomAdaptor_Curve) adaptor = new GeomAdaptor_Curve(continuation);
+                    intersector.Perform(adaptor, 0, 1);
+
+                    double end = 2;
+                    for (int i = 1; intersector.IsDone() && i <= intersector.NbPnt(); ++i) {
+                        if (intersector.WParameter(i) > Precision::PConfusion()) {
+                            end = std::min(end, intersector.WParameter(i));
+                        }
+                    }
+
+                    if (throughBody) {
+                        BRepBuilderAPI_MakeEdge transitionEdge(continuation);
+                        result.push_back(
+                            Part::TopoShape(tag, profile.Hasher)
+                                .makeElementShape(transitionEdge, {split, body}, "RibC2Transition")
+                        );
+                        builder = BRepBuilderAPI_MakeEdge(tail, tail.Translated(tangent * reach));
+                    }
+                    else if (end <= 1) {
+                        builder = BRepBuilderAPI_MakeEdge(continuation, 0, end);
+                    }
+                    else {
+                        intersector.PerformNearest(gp_Lin(tail, gp_Dir(tangent)), 0, reach);
+                        if (!intersector.IsDone() || intersector.NbPnt() == 0) {
+                            throw Base::ValueError(
+                                "A dangling endpoint's C2 extension does not reach the target body"
+                            );
+                        }
+                        BRepBuilderAPI_MakeEdge transitionEdge(continuation);
+                        result.push_back(
+                            Part::TopoShape(tag, profile.Hasher)
+                                .makeElementShape(transitionEdge, {split, body}, "RibC2Transition")
+                        );
+                        builder = BRepBuilderAPI_MakeEdge(tail, intersector.Pnt(1));
+                    }
+
+                    result.push_back(
+                        Part::TopoShape(tag, profile.Hasher)
+                            .makeElementShape(builder, {split, body}, "RibEndpointExtension")
+                    );
+                    continue;
+                }
+                else {
+                    gp_Vec derivative;
+                    curve->D1(parameter, point, derivative);
+                    limit = parameter + (after ? 1 : -1) * reach / derivative.Magnitude();
+                }
+            }
+
+            Handle(GeomAdaptor_Curve) adaptor = new GeomAdaptor_Curve(curve);
+            const double lower = std::min(parameter, limit);
+            const double upper = std::max(parameter, limit);
+
+            // OCCT reports periodic intersections in the curve's native period,
+            // even when a continuation crosses the parameter seam. Map them
+            // into this endpoint's continuation interval before sorting hits.
+            intersector.Perform(
+                adaptor,
+                curve->IsPeriodic() ? curve->FirstParameter() : lower,
+                curve->IsPeriodic() ? curve->FirstParameter() + curve->Period() : upper
+            );
+
+            std::vector<double> hits;
+            double delta = std::numeric_limits<double>::max();
+            for (int i = 1; intersector.IsDone() && i <= intersector.NbPnt(); ++i) {
+                double hit = intersector.WParameter(i);
+                if (curve->IsPeriodic()) {
+                    hit = lower + std::fmod(hit - lower, curve->Period());
+                    if (hit < lower) {
+                        hit += curve->Period();
+                    }
+                }
+                if (hit < lower - Precision::PConfusion() || hit > upper + Precision::PConfusion()) {
+                    continue;
+                }
+                const double distance = std::abs(hit - parameter);
+                if (distance > Precision::PConfusion()) {
+                    hits.push_back(distance);
+                    delta = std::min(delta, distance);
+                }
+            }
+
+            if (hits.empty()) {
+                throw Base::ValueError(
+                    "A dangling endpoint's natural curve does not reach the target body"
+                );
+            }
+
+            double end = throughBody ? limit : parameter + (after ? delta : -delta);
+            if (throughBody && curve->IsPeriodic()) {
+                // Do not wrap both ends around the unused period: they could
+                // overlap each other. Continue into the first body barrier,
+                // stopping within that first intersection interval. Continuing
+                // to the exit can wrap behind the body and fold the swept face.
+                double next = std::abs(limit - parameter);
+                for (const double distance : hits) {
+                    if (distance > delta + Precision::PConfusion() && distance < next) {
+                        next = distance;
+                    }
+                }
+                const double extent = (delta + next) / 2;
+                end = parameter + (after ? extent : -extent);
+            }
+            builder
+                = BRepBuilderAPI_MakeEdge(curve, std::min(parameter, end), std::max(parameter, end));
+        }
+
+        result.push_back(
+            Part::TopoShape(tag, profile.Hasher)
+                .makeElementShape(builder, {split, body}, "RibEndpointExtension")
+        );
+    }
+
+    return Part::TopoShape(tag, profile.Hasher)
+        .makeElementCompound(
+            result,
+            "RibExtendedProfile",
+            Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+        );
+}
+
+void checkThinExtensionBoundary(
+    const Part::TopoShape& wall,
+    const Part::TopoShape& extendedProfile,
+    const gp_Dir& normal,
+    const gp_Dir& growth
+)
+{
+    const auto graph = makeThinProfileGraph(extendedProfile, wall.Tag);
+    auto bounds = wall.getBoundBox();
+    bounds.Add(extendedProfile.getBoundBox());
+    const double reach = 4 * bounds.CalcDiagonalLength();
+
+    const gp_Dir guardNormal(gp_Vec(normal).Crossed(gp_Vec(growth)));
+    for (int i = 1; i <= graph.freeVertices.Extent(); ++i) {
+        const auto point = BRep_Tool::Pnt(TopoDS::Vertex(graph.freeVertices(i)));
+        const auto guard
+            = BRepBuilderAPI_MakeFace(gp_Pln(point, guardNormal), -reach, reach, -reach, reach).Face();
+        if (touches(wall, Part::TopoShape(guard))) {
+            throw Base::ValueError(
+                "A rib endpoint is not bounded by the body across the full thickness"
+            );
+        }
+    }
+}
+
 }  // namespace PartDesign
