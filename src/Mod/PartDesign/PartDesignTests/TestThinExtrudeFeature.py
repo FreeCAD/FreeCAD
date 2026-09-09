@@ -941,6 +941,236 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.valid(rib)
         return rib
 
+    def testTowardCornerEdge(self):
+        rib = self.towardCorner()
+        expected = App.Vector(-13, 0, -10).normalize()
+        self.assertLess((rib.Direction - expected).Length, 1e-7)
+        self.assertAlmostEqual(rib.Shape.Volume - self.doc.Base.Shape.Volume, 26 * 20, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.optimalBoundingBox().ZMin, -3, delta=1e-7)
+
+    def testTowardCornerPlaced(self):
+        rib = self.towardCorner()
+        expected = rib.Shape.copy()
+        placement = App.Placement(App.Vector(23, -17, 41), App.Rotation(App.Vector(1, 2, 3), 47))
+        self.doc.Body.Placement = placement
+        self.doc.recompute()
+        self.valid(rib)
+        expected.Placement = placement.multiply(expected.Placement)
+        self.assertAlmostEqual(self.doc.Body.Shape.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(self.doc.Body.Shape).Volume, 0, delta=1e-5)
+
+    def testTowardReferenceReversedAndCustom(self):
+        rib = self.towardCorner()
+        original = rib.Shape.copy()
+        # Existing custom-vector precedence and reversal are unchanged.
+        direction = rib.Direction
+        rib.UseCustomVector = True
+        rib.Direction = -direction
+        rib.Reversed = True
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(original.cut(rib.Shape).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.cut(original).Volume, 0, delta=1e-5)
+
+    def testTowardReferenceMissingAndInvalid(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        self.assertFalse(rib.TowardReference)
+        rib.TowardReference = True
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+        empty = self.doc.addObject("PartDesign::Feature", "EmptyReference")
+        rib.ReferenceAxis = empty
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+        rib.TowardReference = False
+        rib.ReferenceAxis = None
+        self.doc.recompute()
+        self.valid(rib)
+
+    def testReferenceGeometryTypes(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        expected = rib.Shape.Volume
+        center = App.Vector(16, 12, 0)
+        down = App.Vector(0, 0, -1)
+        refs = []
+        for name, shape in (
+            ("VertexReference", Part.Vertex(center)),
+            ("EdgeReference", Part.makeLine(App.Vector(0, 12, 0), App.Vector(32, 12, 0))),
+            ("FaceReference", Part.makePlane(40, 24)),
+            ("SolidReference", Part.makeBox(36, 24, 3, App.Vector(0, 0, -3))),
+        ):
+            obj = self.doc.addObject("PartDesign::Feature", name)
+            obj.Shape = shape
+            refs.append((obj, [""]))
+            refs.append(
+                (
+                    obj,
+                    [
+                        (
+                            "Vertex1"
+                            if name == "VertexReference"
+                            else "Edge1" if name == "EdgeReference" else "Face1"
+                        )
+                    ],
+                )
+            )
+        for typeName in (
+            "PartDesign::Point",
+            "PartDesign::Line",
+            "PartDesign::Plane",
+            "App::Point",
+            "App::Line",
+            "App::Plane",
+        ):
+            obj = self.doc.addObject(typeName, "DatumReference")
+            obj.Placement.Base = center
+            if typeName.endswith("Line"):
+                obj.Placement.Rotation = App.Rotation(
+                    App.Vector(1, 0, 0) if typeName == "App::Line" else App.Vector(0, 0, 1),
+                    App.Vector(1, 0, 0),
+                )
+            refs.append((obj, [""]))
+        rib.TowardReference = True
+        for ref in refs:
+            with self.subTest(reference=ref[0].Name, sub=ref[1]):
+                rib.ReferenceAxis = ref
+                self.doc.recompute()
+                # Face1 of a box is a different (but valid) nearest-face direction.
+                if ref[0].Name == "SolidReference" and ref[1] == ["Face1"]:
+                    self.valid(rib)
+                    self.assertLess(
+                        (rib.Direction - App.Vector(-16, 0, -10).normalize()).Length, 1e-7
+                    )
+                    continue
+                self.valid(rib)
+                self.assertLess((rib.Direction - down).Length, 1e-7)
+                self.assertAlmostEqual(rib.Shape.Volume, expected, delta=1e-5)
+                rib.TaperAngle = 0.5
+                rib.DraftPullMode = "TowardReference"
+                rib.DraftPullDirection = ref
+                self.doc.recompute()
+                self.valid(rib)
+                rib.TaperAngle = 0
+                rib.DraftPullMode = "Automatic"
+                rib.DraftPullDirection = None
+
+    def testAxisReferenceGeometryTypes(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        expected = rib.Shape.Volume
+        refs = []
+        for name, shape in (
+            ("LineReference", Part.makeLine(App.Vector(0, 0, 0), App.Vector(0, 0, 10))),
+            ("CircleReference", Part.makeCircle(4)),
+            ("FaceReference", Part.makePlane(40, 24)),
+            ("CylinderReference", Part.makeCylinder(4, 10).Faces[0]),
+            (
+                "WireReference",
+                Part.Wire([Part.makeLine(App.Vector(0, 0, 0), App.Vector(0, 0, 10))]),
+            ),
+        ):
+            obj = self.doc.addObject("PartDesign::Feature", name)
+            obj.Shape = shape
+            refs.append((obj, [""]))
+        for typeName in ("PartDesign::Line", "PartDesign::Plane", "App::Line", "App::Plane"):
+            obj = self.doc.addObject(typeName, "AxisDatum")
+            if typeName == "App::Line":
+                obj.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), App.Vector(0, 0, 1))
+            refs.append((obj, [""]))
+        refs.extend(
+            (o, [""])
+            for o in self.doc.Body.Origin.OriginFeatures
+            if o.Name.startswith(("Z_Axis", "XY_Plane"))
+        )
+        rib.Reversed = True
+        rib.TowardReference = False
+        for ref in refs:
+            with self.subTest(reference=ref[0].Name):
+                rib.ReferenceAxis = ref
+                self.doc.recompute()
+                self.valid(rib)
+                self.assertLess((rib.Direction - App.Vector(0, 0, 1)).Length, 1e-7)
+                self.assertAlmostEqual(rib.Shape.Volume, expected, delta=1e-5)
+                rib.DraftPullDirection = ref
+                rib.DraftPullMode = "ParallelToReference"
+                rib.TaperAngle = 0.5
+                self.doc.recompute()
+                self.valid(rib)
+                rib.TaperAngle = 0
+                rib.DraftPullMode = "Automatic"
+                rib.DraftPullDirection = None
+
+    def testAmbiguousReferenceDirections(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        reference = self.doc.addObject("PartDesign::Feature", "Reference")
+        for toward, shape, message in (
+            (False, Part.Vertex(App.Vector(16, 12, 0)), "no unique axis"),
+            (False, Part.makeBox(2, 2, 2), "multiple axis directions"),
+            (True, Part.Vertex(App.Vector(16, 12, 10)), "does not define a direction"),
+            (
+                True,
+                Part.makeCompound(
+                    [Part.Vertex(App.Vector(16, 12, 0)), Part.Vertex(App.Vector(16, 12, 20))]
+                ),
+                "multiple nearest points",
+            ),
+        ):
+            with self.subTest(toward=toward, message=message):
+                reference.Shape = shape
+                rib.TowardReference = toward
+                rib.ReferenceAxis = reference
+                self.doc.recompute()
+                self.assertIn("Invalid", rib.State)
+                self.assertIn(message, rib.getStatusString())
+
+    def testTowardReferenceWeb(self):
+        body, base, sketch, rib = self.web()
+        sketch.Placement.Base.z = 12
+        rib.ReferenceAxis = (base, ["Edge1"])
+        rib.TowardReference = True
+        rib.Type = "Length"
+        rib.Length = 30
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertLess(rib.Direction.z, 0)
+
+    def testTowardReferencePersistence(self):
+        rib = self.towardCorner()
+        expected = rib.Shape.Volume
+        reference = rib.ReferenceAxis[1]
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "TowardCorner.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            self.doc.Rib.touch()
+            self.doc.recompute()
+            self.valid(self.doc.Rib)
+            self.assertTrue(self.doc.Rib.TowardReference)
+            self.assertEqual(self.doc.Rib.ReferenceAxis[1], reference)
+            self.assertAlmostEqual(self.doc.Rib.Shape.Volume, expected, delta=1e-5)
+
+    def testTowardReferenceEdgeOrientationAndMotion(self):
+        rib = self.towardCorner()
+        base, subs = rib.ReferenceAxis
+        reference = self.doc.addObject("PartDesign::Feature", "DirectionReference")
+        reference.Shape = base.Shape.getElement(subs[0]).reversed()
+        rib.ReferenceAxis = (reference, ["Edge1"])
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertLess((rib.Direction - App.Vector(-13, 0, -10).normalize()).Length, 1e-7)
+        reference.Placement.Base.x = -2
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertLess((rib.Direction - App.Vector(-15, 0, -10).normalize()).Length, 1e-7)
+        # A line through the center cannot determine which way to grow.
+        reference.Placement.Base = App.Vector(13, 0, 10)
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+
     def testFiniteSideRibStopsAtBody(self):
         self.testSideProfileRib()
         rib = self.doc.getObject("Rib")
@@ -966,6 +1196,136 @@ class TestThinExtrudeFeature(unittest.TestCase):
             rib.Shape.Volume - base.Shape.Volume, 2 * 26 * (2 - 4 / 40), delta=1e-5
         )
 
+    def testFiniteSideRibPlacedAndReversed(self):
+        self.testFiniteSideRibStopsAtBody()
+        rib = self.doc.getObject("Rib")
+        body = self.doc.getObject("Body")
+        expected = rib.Shape.copy()
+        # The opposite vector plus Reversed must describe exactly the same cut.
+        rib.FillDirection = App.Vector(0, 1, 0)
+        rib.Reversed = True
+        body.Placement = App.Placement(
+            App.Vector(23, -17, 41), App.Rotation(App.Vector(1, 2, 3), 47)
+        )
+        self.doc.recompute()
+        self.valid(rib)
+        expected.Placement = body.Placement.multiply(expected.Placement)
+        actual = body.Shape
+        self.assertAlmostEqual(actual.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(actual).Volume, 0, delta=1e-5)
+
+    def testFiniteSideRibDraftNeutralPlane(self):
+        self.testFiniteSideRibStopsAtBody()
+        rib = self.doc.getObject("Rib")
+        rib.Length = 7
+        rib.TaperAngle = 1
+        rib.ThinDraftReference = "Root"
+        self.doc.recompute()
+        self.valid(rib)
+        # The root reference is the trimmed floor at z=0, not the original
+        # finite prism's z=-7 endpoint. Measure within the right-hand foot.
+        section = rib.Shape.common(Part.makeBox(1, 24, 0.001, App.Vector(27, 0, 0.5)))
+        expected = 2 - 2 * 0.5 * math.tan(math.radians(1))
+        self.assertAlmostEqual(section.BoundBox.YLength, expected, delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.optimalBoundingBox(False).ZMin, -3, delta=1e-6)
+
+    def testFiniteSideRibCurvedBody(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeCylinder(20, 10, App.Vector(0, -5, 0), App.Vector(0, 1, 0))
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.addGeometry(Part.LineSegment(App.Vector(-10, 25, 0), App.Vector(10, 25, 0)), False)
+        sketch.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.RibMode = "Rib"
+        rib.Length = 50
+        rib.ThinThickness = 2
+        self.doc.recompute()
+        self.valid(rib)
+        # No re-emergence below a curved body, and the actual circular root
+        # remains intact (no world-axis or planar bounding-box clipping).
+        self.assertAlmostEqual(rib.Shape.BoundBox.ZMin, -20, delta=1e-6)
+        self.assertFalse(rib.Shape.isInside(App.Vector(9, 0, -23), 1e-7, False))
+        integral = 10 * math.sqrt(300) + 400 * math.asin(0.5)
+        self.assertAlmostEqual(
+            rib.Shape.Volume - base.Shape.Volume, 2 * (20 * 25 - integral), delta=1e-4
+        )
+
+    def testFiniteSideRibTwoDirections(self):
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        base = body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeBox(36, 24, 3, App.Vector(0, 0, -8)).fuse(
+            [
+                Part.makeBox(36, 24, 3, App.Vector(0, 0, 6)),
+                Part.makeBox(3, 24, 17, App.Vector(0, 0, -8)),
+            ]
+        )
+        sketch = body.newObject("Sketcher::SketchObject", "Profile")
+        sketch.addGeometry(Part.LineSegment(App.Vector(3, 0, 0), App.Vector(29, 0, 0)), False)
+        sketch.Placement = App.Placement(
+            App.Vector(0, 12, 0), App.Rotation(App.Vector(1, 0, 0), 90)
+        )
+        rib = body.newObject(self.featureType, "Rib")
+        rib.Profile = sketch
+        rib.RibMode = "Rib"
+        rib.SideType = "Two sides"
+        rib.Type = "Length"
+        rib.Type2 = "Length"
+        rib.Length = 14
+        rib.Length2 = 17
+        rib.ThinThickness = 2
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume - base.Shape.Volume, 26 * 2 * (5 + 6), delta=1e-5)
+        self.assertAlmostEqual(rib.Shape.BoundBox.ZMin, -8, delta=1e-6)
+        self.assertAlmostEqual(rib.Shape.BoundBox.ZMax, 9, delta=1e-6)
+
+    def testFiniteSideRibManualProfiles(self):
+        # Curved and sharp profiles from the illustrated gusset family. Check
+        # the complete result rather than only the first straight wall.
+        self.testSideProfileRib()
+        body = self.doc.getObject("Body")
+        base = self.doc.getObject("Base")
+        rib = self.doc.getObject("Rib")
+        rib.Type = "Length"
+        rib.Length = 7
+        curve = Part.BSplineCurve()
+        curve.interpolate(
+            [App.Vector(3, 20, 0), App.Vector(7, 18, 0), App.Vector(13, 8, 0), App.Vector(29, 0, 0)]
+        )
+        for i, geometry in enumerate(
+            (
+                [curve],
+                [
+                    Part.LineSegment(App.Vector(3, 20, 0), App.Vector(10, 20, 0)),
+                    Part.LineSegment(App.Vector(10, 20, 0), App.Vector(29, 3, 0)),
+                ],
+            )
+        ):
+            sketch = body.newObject("Sketcher::SketchObject", "AdditionalProfile")
+            sketch.addGeometry(geometry, False)
+            sketch.Placement = App.Placement(
+                App.Vector(0, 5 + 14 * i, 0), App.Rotation(App.Vector(1, 0, 0), 90)
+            )
+            rib = body.newObject(self.featureType, "AdditionalRib")
+            rib.Profile = sketch
+            rib.RibMode = "Rib"
+            rib.Length = 7
+            rib.ThinThickness = 2
+            self.doc.recompute()
+            self.valid(rib)
+        rib.Shape.check(True)
+        below = Part.makeBox(60, 40, 20, App.Vector(-10, -5, -23))
+        self.assertAlmostEqual(rib.Shape.common(below).Volume, 0, delta=1e-6)
+        self.assertAlmostEqual(base.Shape.cut(rib.Shape).Volume, 0, delta=1e-6)
+        # Finishing must operate on the body-limited wall, not reintroduce its
+        # original below-floor prism.
+        rib.RootFilletRadius = 0.3
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.common(below).Volume, 0, delta=1e-6)
+
     def testExtendedWebNetwork(self):
         body = self.doc.addObject("PartDesign::Body", "Body")
         base = body.newObject("PartDesign::Feature", "Base")
@@ -985,6 +1345,24 @@ class TestThinExtrudeFeature(unittest.TestCase):
             self.doc.recompute()
             self.valid(rib)
             self.assertAlmostEqual(rib.Shape.Volume, base.Shape.Volume + 1200, delta=1e-5)
+
+    def testAutomaticSideRibDirection(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        rib.AutoDirection = True
+        rib.Type = "UpToShape"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertLess(rib.Direction.z, 0)
+        self.assertAlmostEqual(rib.Direction.y, 0, delta=1e-9)
+        volume = rib.Shape.Volume
+        self.doc.Body.Placement = App.Placement(
+            App.Vector(15, -27, 36), App.Rotation(App.Vector(1, 2, 3), 47)
+        )
+        rib.touch()
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, volume, delta=1e-5)
 
     def bossRib(self, mode="Tangent", width=1, placement="Centered"):
         body = self.doc.addObject("PartDesign::Body", "Body")
@@ -1026,6 +1404,37 @@ class TestThinExtrudeFeature(unittest.TestCase):
                 p = App.Vector(x, y, 15)
                 self.assertFalse(base.Shape.isInside(p, 1e-7, False))
                 self.assertTrue(material.isInside(p, 1e-7, True), str(p))
+
+    def testInactiveDirectionInputs(self):
+        self.testSideProfileRib()
+        rib = self.doc.Rib
+        rib.AutoDirection = True
+        rib.FillDirection = App.Vector()
+        self.doc.recompute()
+        self.valid(rib)
+        automatic = rib.Shape.copy()
+        rib.UseCustomVector = True
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, automatic.Volume, delta=1e-5)
+        rib.UseCustomVector = False
+        rib.TaperAngle = 2
+        self.doc.recompute()
+        self.valid(rib)
+        drafted = rib.Shape.copy()
+        # A point cannot define a parallel axis, but an unused reference is harmless.
+        rib.DraftPullDirection = (self.doc.Base, ["Vertex1"])
+        rib.DraftPullVector = App.Vector()
+        rib.DraftPullMode = "Automatic"
+        self.doc.recompute()
+        self.valid(rib)
+        self.assertAlmostEqual(rib.Shape.Volume, drafted.Volume, delta=1e-5)
+        rib.DraftPullMode = "ParallelToReference"
+        self.doc.recompute()
+        self.assertIn("Invalid", rib.State)
+        rib.DraftPullMode = "Automatic"
+        self.doc.recompute()
+        self.valid(rib)
 
     def testZeroThicknessRecovery(self):
         self.testSideProfileRib()
