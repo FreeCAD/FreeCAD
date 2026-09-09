@@ -184,7 +184,7 @@ public Q_SLOTS:
     virtual void onSectionCutFinished();
 
 protected:
-    TopoDS_Compound unprojectedSectionFaces; // Temporary variable to hold 3D section faces for Face finder v1.2
+    TopoDS_Compound unprojectedSectionFaces; // Temporary variable to hold 3D section faces for Face finder v26.3
     TopoDS_Compound m_sectionTopoDSFaces;//needed for hatching
     std::vector<LineSet> m_lineSets;
     std::vector<TechDraw::FacePtr> m_tdSectionFaces;

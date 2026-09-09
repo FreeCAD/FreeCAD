@@ -557,20 +557,20 @@ void DrawViewPart::findFacesV26_3(const std::vector<BaseGeomPtr> &goEdges)
         Standard_SStream errStream;
         builder.DumpErrors(errStream);
         const std::string &errStr = errStream.str();
-        Base::Console().error("FaceFinder v1.2: OCC General Fuse algorithm failed with error(s):\n%s\n", errStr.c_str());
+        Base::Console().error("FaceFinder v26.3: OCC General Fuse algorithm failed with error(s):\n%s\n", errStr.c_str());
         return;
     }
     if (builder.HasWarnings()) {
         Standard_SStream warnStream;
         builder.DumpWarnings(warnStream);
         const std::string &warnStr = warnStream.str();
-        Base::Console().warning("FaceFinder v1.2: OCC General Fuse algorithm raised warning(s):\n%s\n", warnStr.c_str());
+        Base::Console().warning("FaceFinder v26.3: OCC General Fuse algorithm raised warning(s):\n%s\n", warnStr.c_str());
     }
 
     // Go through the resulting faces while discarding the hole-in-plane face and the really tiny ones
     const TopoDS_Shape& resultShape = builder.Shape();
     if (resultShape.IsNull()) {
-        Base::Console().warning("FaceFinder v1.2: OCC General Fuse resulting shape is null\n");
+        Base::Console().warning("FaceFinder v26.3: OCC General Fuse resulting shape is null\n");
         return;
     }
 
@@ -610,7 +610,7 @@ void DrawViewPart::findFacesV26_3(const std::vector<BaseGeomPtr> &goEdges)
     // Report possible face representation problems, were there any
     for (unsigned int i = 0; i < faceGeoms.size(); ++i) {
         if (faceGeoms[i]->getRepresentation() == FaceRepresentation::Failed) {
-            Base::Console().warning("FaceFinder v1.2: Failed to determine how to display face %s.Face%d\n",
+            Base::Console().warning("FaceFinder v26.3: Failed to determine how to display face %s.Face%d\n",
                                     getNameInDocument(), i);
         }
     }
