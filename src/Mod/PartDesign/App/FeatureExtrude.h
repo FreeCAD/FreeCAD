@@ -63,11 +63,27 @@ public:
     /** Compatibility property preserving profile-copy behavior in restored documents. */
     App::PropertyBool UseLegacyTaperDirection;
 
+    App::PropertyBool Thin;
+    App::PropertyLength ThinThickness;
+    App::PropertyLength ThinThickness2;
+    App::PropertyEnumeration ThinSide;
+    App::PropertyEnumeration ThinJoin;
+    App::PropertyEnumeration ThinCap;
+    App::PropertyEnumeration ThinDraftReference;
+    App::PropertyLength RootFilletRadius;
+    App::PropertyEnumeration ThinExtension;
+    App::PropertyBool ThinExtendAll;
+    App::PropertyLinkSub ThinExtensionEdges;
+
+    /// Nonnegative distances on the two sides of the oriented profile.
+    std::pair<double, double> getThinWidths() const;
+
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
     static App::PropertyAngle::Constraints floatAngle;
 
     double getStartOffset() const;
+    Base::Vector3d getProfileNormal() const override;
 
     /** @name methods override feature */
     //@{
@@ -83,9 +99,14 @@ public:
     static const char* SideTypesEnums[];
 
 protected:
+    TopoShape getThinInput() const;
+    virtual TopoShape prepareThinInput(const TopoShape& profile) const
+    {
+        return profile;
+    }
     void Restore(Base::XMLReader& reader) override;
     void onDocumentRestored() override;
-    Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
+    virtual Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
     void onChanged(const App::Property* prop) override;
 

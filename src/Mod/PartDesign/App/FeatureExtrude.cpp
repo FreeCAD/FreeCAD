@@ -52,6 +52,10 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
+#include "ThinProfile.h"
+#include "ThinExtrusion.h"
+#include "ThinExtrusionGeometry.h"
+#include "ThinWallExtension.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -75,10 +79,103 @@ FeatureExtrude::FeatureExtrude()
         App::Prop_Hidden,
         "Use legacy profile copying for tapered extrusions"
     );
+    static const char* sides[] = {"SideA", "SideB", "Centered", "Two sides", nullptr};
+    static const char* joins[] = {"Sharp", "Round", nullptr};
+    static const char* caps[] = {"Flat", "Round", nullptr};
+
+    ADD_PROPERTY_TYPE(Thin, (false), "Thin", App::Prop_None, "Widen profile edges before extrusion");
+    ADD_PROPERTY_TYPE(
+        ThinThickness,
+        (1.0),
+        "Thin",
+        App::Prop_None,
+        "Total thickness, or side A distance in two-side mode"
+    );
+    ADD_PROPERTY_TYPE(ThinThickness2, (1.0), "Thin", App::Prop_None, "Side B distance in two-side mode");
+
+    ADD_PROPERTY_TYPE(
+        ThinSide,
+        (2L),
+        "Thin",
+        App::Prop_None,
+        "Thickness placement, independent of extrusion reversal"
+    );
+    ADD_PROPERTY_TYPE(ThinJoin, (0L), "Thin", App::Prop_None, "Join at profile corners");
+    ThinSide.setEnums(sides);
+    ThinSide.setValue(2L);
+    ThinJoin.setEnums(joins);
+    ADD_PROPERTY_TYPE(ThinCap, (0L), "Thin", App::Prop_None, "Shape of free endpoints");
+    ThinCap.setEnums(caps);
+
+    static const char* draftReferences[] = {"Root", "Top", nullptr};
+    ADD_PROPERTY_TYPE(
+        ThinDraftReference,
+        (0L),
+        "Thin",
+        App::Prop_None,
+        "Hold nominal thickness on one neutral plane normal to growth at the root or top extent; "
+        "thickness along a curved attachment may vary"
+    );
+    ThinDraftReference.setEnums(draftReferences);
+
+    ADD_PROPERTY_TYPE(
+        RootFilletRadius,
+        (0.0),
+        "Thin",
+        App::Prop_None,
+        "Fillet new thin-wall junctions with the existing body; zero disables"
+    );
+
+    static const char* extensions[] = {"Off", "Tangent", "Natural", nullptr};
+    ADD_PROPERTY_TYPE(
+        ThinExtension,
+        (0L),
+        "Thin",
+        App::Prop_None,
+        "Extend free ends to the body: Off, C1 tangent, or C2 curvature continuity"
+    );
+    ThinExtension.setEnums(extensions);
+    ADD_PROPERTY_TYPE(
+        ThinExtendAll,
+        (true),
+        "Thin",
+        App::Prop_None,
+        "Extend all free endpoints instead of only the selected profile edges"
+    );
+    ADD_PROPERTY_TYPE(
+        ThinExtensionEdges,
+        (nullptr),
+        "Thin",
+        App::Prop_None,
+        "Profile edges to extend when ThinExtendAll is false"
+    );
+}
+
+std::pair<double, double> FeatureExtrude::getThinWidths() const
+{
+    const double thickness = ThinThickness.getValue();
+    const long side = ThinSide.getValue();
+    const double a = side == 1 ? 0 : side == 2 ? thickness / 2 : thickness;
+    const double b = side == 0 ? 0
+        : side == 2            ? thickness / 2
+        : side == 3            ? ThinThickness2.getValue()
+                               : thickness;
+    if (!std::isfinite(a) || !std::isfinite(b) || a < 0 || b < 0
+        || a + b <= 2 * Precision::Confusion()) {
+        throw Base::ValueError("Thin-wall thicknesses must be nonnegative with a positive total");
+    }
+
+    return {a, b};
 }
 
 short FeatureExtrude::mustExecute() const
 {
+    if (Thin.isTouched() || ThinThickness.isTouched() || ThinThickness2.isTouched()
+        || ThinSide.isTouched() || ThinJoin.isTouched() || ThinCap.isTouched()
+        || ThinDraftReference.isTouched() || ThinExtension.isTouched() || ThinExtendAll.isTouched()
+        || ThinExtensionEdges.isTouched() || RootFilletRadius.isTouched()) {
+        return 1;
+    }
     if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
         || Length.isTouched() || Length2.isTouched() || TaperAngle.isTouched()
         || TaperAngle2.isTouched() || UseCustomVector.isTouched() || Direction.isTouched()
@@ -89,6 +186,65 @@ short FeatureExtrude::mustExecute() const
         return 1;
     }
     return ProfileBased::mustExecute();
+}
+
+TopoShape FeatureExtrude::getThinInput() const
+{
+    const auto object = getVerifiedObject();
+    auto subs = Profile.getSubValues(false);
+    if (subs.empty()) {
+        subs.emplace_back("");
+    }
+    if (subs.size() > 1) {
+        const auto full = Part::Feature::getTopoShape(
+            object,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+        // Independent sketch subshape fetches need not share TShape identity.
+        // Resolve names before fetching, and anchor A/B to source topology.
+        std::stable_sort(subs.begin(), subs.end(), [&full](const auto& a, const auto& b) {
+            const auto ai = full.getElementName(a.c_str()).index;
+            const auto bi = full.getElementName(b.c_str()).index;
+            return ai == bi ? a < b : ai < bi;
+        });
+    }
+    std::vector<TopoShape> shapes;
+    for (const auto& sub : subs) {
+        if (sub.empty() && subs.size() > 1) {
+            continue;
+        }
+        auto shape = Part::Feature::getTopoShape(
+            object,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                | Part::ShapeOption::Transform,
+            sub.c_str()
+        );
+        if (shape.isNull() || !shape.hasSubShape(TopAbs_EDGE)) {
+            throw Base::ValueError("Failed to obtain thin profile edges");
+        }
+        shapes.push_back(shape);
+    }
+    return TopoShape(getID(), getDocument()->getStringHasher())
+        .makeElementCompound(
+            shapes,
+            "ThinInput",
+            TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+        );
+}
+
+Base::Vector3d FeatureExtrude::getProfileNormal() const
+{
+    if (Thin.getValue()) {
+        const auto object = Profile.getValue();
+        if (object && !object->isDerivedFrom<Part::Part2DObject>()) {
+            gp_Pln plane;
+            if (getThinInput().findPlane(plane)) {
+                const auto normal = plane.Axis().Direction();
+                return Base::Vector3d(normal.X(), normal.Y(), normal.Z());
+            }
+        }
+    }
+    return ProfileBased::getProfileNormal();
 }
 
 Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
@@ -361,7 +517,7 @@ double FeatureExtrude::getStartOffset() const
 
     TopLoc_Location identity;
     return getStartReferenceOffset(
-        getTopoShapeVerifiedFace(),
+        Thin.getValue() ? getProfileShape() : getTopoShapeVerifiedFace(),
         StartReference,
         dir,
         StartOffset.getValue(),
