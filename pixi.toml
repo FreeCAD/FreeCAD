@@ -7,6 +7,15 @@ channels = ["conda-forge"]
 platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
 requires-pixi = ">=0.48"
 
+## macOS needs __osx >=14.0: qt6-main >=6.11.2 pulls moltenvk >=1.4.2, which
+## requires it. Without this, macOS solves against pixi's 13.0 default and is
+## held on older qt6-main/vtk than Linux and Windows.
+## NOTE: pixi deprecates this table in favour of virtual packages on `platforms`,
+## but that form requires renaming the platform entries, which would churn the
+## lock-file keys. Revisit when pixi allows it without a rename.
+[system-requirements]
+macos = "14.0"
+
 [dependencies]
 av = "*"
 blinker = "*"
@@ -19,7 +28,7 @@ debugpy = "*"
 defusedxml = "*"
 docutils = "*"
 doxygen = "*"
-eigen = ">=3.3,<5"
+eigen = "*"
 expat = "*"
 fmt = "*"
 freetype = "*"
@@ -36,9 +45,9 @@ matplotlib = "*"
 nine = "*"
 ninja = "*"
 noqt5 = "*"
-numpy = ">=1.26,<1.27"
+numpy = "*"
 nlohmann_json = "*"
-occt = ">=7.8,<7.9"
+occt = ">=8.0,<8.1"
 opencamlib = "*"
 openssl = "*"
 pandas = "*"
@@ -46,14 +55,13 @@ pcl = "*"
 pip = "*"
 ply = "*"
 pre-commit = "*"
-pyright = "==1.1.408"
+pyright = "*"
 pybind11 = "*"
 pycollada = "*"
 pyside6 = "*"
-python = ">=3.11,<3.12"
-pythonocc-core = "*"
+python = ">=3.14,<3.15"
 pyyaml = "*"
-qt6-main = ">=6.8,<6.9"
+qt6-main = "*"
 requests = "*"
 scipy = "*"
 six = "*"
@@ -61,7 +69,7 @@ smesh = "*"
 swig = "*"
 sympy = "*"
 typing-extensions = "*"
-tbb-devel = ">=2022,<2023"
+tbb-devel = "*"
 vtk = "*"
 xerces-c = "*"
 xlutils = "*"
@@ -100,10 +108,14 @@ mesa-libgl-devel-cos7-x86_64 = "*"
 mesa-libglu-devel-conda-x86_64 = "*"
 mold = "*"
 pixman-cos7-x86_64 = "*"
-qt6-wayland = ">=6.8,<6.9"
+qt6-wayland = "*"
 sed = "*"
 sysroot_linux-64 = "*"
-xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+## FIXME: was pinned ==0.1.5 for https://github.com/FreeCAD/FreeCAD/issues/26726
+## (0.1.6 broke cursor rendering on X11). qt6-main >=6.11, required by the occt
+## 8.0 stack, hard-requires xcb-util-cursor >=0.1.6, so the pin is no longer
+## satisfiable. Re-verify #26726 on X11 before release.
+xcb-util-cursor = "*"
 xorg-x11-server-common-cos7-x86_64 = "*"
 xorg-x11-server-xvfb-cos7-x86_64 = "*"
 xorg-xproto = "*"
@@ -142,10 +154,14 @@ mesa-libgl-devel-cos7-aarch64 = "*"
 mesa-libglapi-cos7-aarch64 = "*"
 mold = "*"
 pixman-cos7-aarch64 = "*"
-qt6-wayland = ">=6.8,<6.9"
+qt6-wayland = "*"
 sed = "*"
 sysroot_linux-aarch64 = "*"
-xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+## FIXME: was pinned ==0.1.5 for https://github.com/FreeCAD/FreeCAD/issues/26726
+## (0.1.6 broke cursor rendering on X11). qt6-main >=6.11, required by the occt
+## 8.0 stack, hard-requires xcb-util-cursor >=0.1.6, so the pin is no longer
+## satisfiable. Re-verify #26726 on X11 before release.
+xcb-util-cursor = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
 xorg-xproto = "*"
@@ -162,7 +178,8 @@ sed = "*"
 
 [target.win-64.dependencies]
 cpptrace = "*"
-pthreads-win32 = "*"
+## pthreads-win32 dropped: libwinpthread >=12, pulled in by the smesh build
+## against occt 8.0, declares "constrains: pthreads-win32 <0.0a0".
 
 [pypi-dependencies]
 freecad-stubs = "*"

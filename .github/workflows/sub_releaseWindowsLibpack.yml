@@ -158,6 +158,7 @@ jobs:
         with:
           pixi-version: v0.68.1
           cache: false
+          locked: true
 
       - name: Install log-enabled NSIS
         if: inputs.makeInstaller == 'true'
