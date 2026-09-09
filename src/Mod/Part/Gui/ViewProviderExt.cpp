@@ -1150,6 +1150,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     // the edges.
     std::map<int, std::vector<int32_t>> lineSetMap;
     std::set<int> edgeIdxSet;
+    std::set<int> edgeFailed;
     std::vector<int32_t> edgeVector;
 
     // count and index the edges
@@ -1326,6 +1327,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                 Handle(Poly_PolygonOnTriangulation)
                     aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                 if (aPoly.IsNull()) {
+                    edgeFailed.insert(edgeIndex);
                     continue;  // polygon does not exist
                 }
 
@@ -1400,12 +1402,14 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
     }
 
+    std::map<int, int> coordsMap;
     nodeset->startIndex.setValue(faceNodeOffset);
     for (int i = 0; i < vertexMap.Extent(); i++) {
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i + 1));
         gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
 
         verts[faceNodeOffset + i] = Base::convertTo<SbVec3f>(pnt);
+        coordsMap[i + 1] = faceNodeOffset + i;
     }
 
     // normalize all normals
@@ -1413,12 +1417,36 @@ void ViewProviderPartExt::setupCoinGeometry(
         norms[i].normalize();
     }
 
-    // lineSetMap only holds entries for edges that actually produced a polyline
-    // (an edge whose Poly_PolygonOnTriangulation is null is skipped above, and the
-    // free-edge pass only rescues edges belonging to no face). The emitted polyline
-    // order therefore has gaps with respect to the topological edge numbering, so
-    // record the real edge index of each polyline rather than inferring it from the
-    // line index later - see ViewProviderPartExt::getElement().
+    // If no adjacent face has a polygon for an edge, use its endpoint coordinates so that
+    // the edge still has a line entry. Fall back to a zero-length line to preserve the edge
+    // numbering when no usable polygon is available.
+    for (int edgeIndex : edgeFailed) {
+        if (lineSetMap.find(edgeIndex) != lineSetMap.end()) {
+            continue;
+        }
+
+        int indexedPnt1 = faceNodeOffset;
+        int indexedPnt2 = faceNodeOffset;
+        TopoDS_Edge edge = TopoDS::Edge(edgeMap.FindKey(edgeIndex));
+        Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(edge, aLoc);
+        if (!aPoly.IsNull() && aPoly->NbNodes() == 2) {
+            const int v1 = vertexMap.FindIndex(TopExp::FirstVertex(edge));
+            const int v2 = vertexMap.FindIndex(TopExp::LastVertex(edge));
+            const auto it = coordsMap.find(v1);
+            const auto jt = coordsMap.find(v2);
+            if (it != coordsMap.end() && jt != coordsMap.end()) {
+                indexedPnt1 = it->second;
+                indexedPnt2 = jt->second;
+            }
+        }
+
+        lineSetMap[edgeIndex].push_back(indexedPnt1);
+        lineSetMap[edgeIndex].push_back(indexedPnt2);
+    }
+
+    // lineSetMap may omit edges that produced no usable polyline. The emitted polyline order
+    // can therefore have gaps with respect to the topological edge numbering, so record the
+    // real edge index of each polyline rather than inferring it from the line index later.
     std::vector<int32_t> lineSetCoords;
     std::vector<int> lineToEdge;
     lineToEdge.reserve(lineSetMap.size());

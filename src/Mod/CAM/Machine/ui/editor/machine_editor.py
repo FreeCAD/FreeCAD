@@ -46,6 +46,7 @@ from Path.Post.Processor import (
 )
 from Machine.ui.editor.postprocessor_properties import PostProcessorPropertyManager
 from Machine.ui.editor.output_options_layout import build_output_options
+from Machine.models.validate import Severity, validate_machine
 import re
 
 translate = FreeCAD.Qt.translate
@@ -475,6 +476,17 @@ class MachineEditorDialog(QtGui.QDialog):
         self.toggle_button = QtGui.QPushButton(translate("CAM_MachineEditor", "Edit as Text"))
         self.toggle_button.clicked.connect(self.toggle_editor_mode)
         button_layout.addWidget(self.toggle_button)
+
+        self.validate_button = QtGui.QPushButton(translate("CAM_MachineEditor", "Validate"))
+        self.validate_button.setToolTip(
+            translate(
+                "CAM_MachineEditor",
+                "Check this machine for problems that would stop it loading or "
+                "would silently drop settings",
+            )
+        )
+        self.validate_button.clicked.connect(self.validate_current_machine)
+        button_layout.addWidget(self.validate_button)
 
         button_layout.addStretch()
 
@@ -2283,6 +2295,78 @@ class MachineEditorDialog(QtGui.QDialog):
                     translate("CAM_MachineEditor", "Error"),
                     translate("CAM_MachineEditor", "Failed to generate JSON: {}").format(str(e)),
                 )
+
+    def _current_machine_and_raw(self):
+        """Return (machine, raw_dict) for whatever is currently in the editor.
+
+        In text mode the JSON buffer is the truth and has not been parsed yet.
+        Otherwise ``self.machine`` is kept current by the field signal handlers,
+        and the dict is produced from it -- which means the dropped-data check
+        cannot fire, since there is no on-disk document to compare against.
+
+        Raises:
+            json.JSONDecodeError: the text buffer is not valid JSON.
+            Exception: the document does not load into a Machine.
+        """
+        if self.text_mode:
+            raw = json.loads(self.text_editor.toPlainText())
+            return Machine.from_dict(raw), raw
+        return self.machine, None
+
+    def validate_current_machine(self):
+        """Run the shared validator against the machine being edited.
+
+        Uses the same checks as the command line validator, so a definition
+        that passes here will pass CI in the machine repository.
+        """
+        try:
+            machine, raw = self._current_machine_and_raw()
+        except json.JSONDecodeError as exc:
+            QtGui.QMessageBox.critical(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "Invalid JSON: {}").format(str(exc)),
+            )
+            return
+        except Exception as exc:
+            QtGui.QMessageBox.critical(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "This machine does not load: {}").format(str(exc)),
+            )
+            return
+
+        if machine is None:
+            return
+
+        findings = validate_machine(machine, raw=raw, source=self.filename)
+
+        errors = [f for f in findings if f.severity is Severity.ERROR]
+        warnings = [f for f in findings if f.severity is Severity.WARNING]
+
+        if not errors and not warnings:
+            QtGui.QMessageBox.information(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "No problems found."),
+            )
+            return
+
+        if errors:
+            icon = QtGui.QMessageBox.Critical
+            summary = translate("CAM_MachineEditor", "{} error(s) and {} warning(s) found.").format(
+                len(errors), len(warnings)
+            )
+        else:
+            icon = QtGui.QMessageBox.Warning
+            summary = translate("CAM_MachineEditor", "{} warning(s) found.").format(len(warnings))
+
+        box = QtGui.QMessageBox(self)
+        box.setIcon(icon)
+        box.setWindowTitle(translate("CAM_MachineEditor", "Validation"))
+        box.setText(summary)
+        box.setDetailedText("\n\n".join(f"[{f.severity.value}] {f.message}" for f in findings))
+        box.exec_()
 
     def accept(self):
         """Handle save and close action."""
