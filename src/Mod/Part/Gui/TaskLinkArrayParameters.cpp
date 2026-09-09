@@ -225,6 +225,132 @@ std::optional<Base::Vector3d> estimateElementCenter(
 }
 }  // namespace
 
+namespace PartGui
+{
+
+void showLinkArrayTask(App::DocumentObject* object)
+{
+    auto* array = dynamic_cast<Part::LinkArray*>(object);
+    if (!array) {
+        return;
+    }
+    if (Gui::Control().activeDialog(array->getDocument())) {
+        return;
+    }
+
+    Gui::Control().showDialog(new PartGui::TaskDlgLinkArrayParameters(array));
+}
+
+void showLinkArrayLinearTask(App::DocumentObject* object)
+{
+    showLinkArrayTask(object);
+}
+
+void showLinkArrayPathTask(App::DocumentObject* object)
+{
+    showLinkArrayTask(object);
+}
+
+void showLinkArrayPointTask(App::DocumentObject* object)
+{
+    showLinkArrayTask(object);
+}
+
+void showLinkArrayCircularTask(App::DocumentObject* object)
+{
+    showLinkArrayTask(object);
+}
+
+void showLinkArrayPolarTask(App::DocumentObject* object)
+{
+    showLinkArrayTask(object);
+}
+
+}  // namespace PartGui
+
+/* TRANSLATOR PartGui::TaskLinkArrayParameters */
+
+TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent)
+    : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)), taskTitle(array), true, parent)
+    , Gui::SelectionObserver(false, Gui::ResolveMode::OldStyleElement)
+    , array(array)
+{
+    proxy = new QWidget(this);
+    ui = std::make_unique<Ui_TaskLinkArrayParameters>();
+    ui->setupUi(proxy);
+    groupLayout()->addWidget(proxy);
+    setupLinkedObjectButton();
+    applyInitialSelection();
+    Gui::View3DInventorViewer* viewer = active3DViewer();
+
+    if (dynamic_cast<Part::LinkArrayCircular*>(array)) {
+        ui->parametersWidgetPlaceholder2->hide();
+        auto* circular = static_cast<Part::LinkArrayCircular*>(array);
+        setupCircularPatternParameterUI(
+            proxy,
+            ui->parametersWidgetPlaceholder,
+            this,
+            500,
+            &circular->Axis,
+            &circular->RadialDistance,
+            &circular->TangentialDistance,
+            &circular->NumberCircles,
+            &circular->Symmetry
+        );
+        setupInstanceControls(viewer);
+        return;
+    }
+    if (dynamic_cast<Part::LinkArrayPath*>(array)) {
+        ui->parametersWidgetPlaceholder2->hide();
+        auto* path = static_cast<Part::LinkArrayPath*>(array);
+        setupPathPatternParameterUI(
+            proxy,
+            ui->parametersWidgetPlaceholder,
+            this,
+            500,
+            &path->Path,
+            &path->Count,
+            &path->SpacingMode,
+            &path->Spacing,
+            &path->StartOffset,
+            &path->EndOffset,
+            &path->ReversePath,
+            &path->Align
+        );
+        setupInstanceControls(viewer);
+        return;
+    }
+    if (dynamic_cast<Part::LinkArrayPoint*>(array)) {
+        ui->parametersWidgetPlaceholder2->hide();
+        auto* point = static_cast<Part::LinkArrayPoint*>(array);
+        setupPointPatternParameterUI(proxy, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupInstanceControls(viewer);
+        return;
+    }
+
+    setupPatternParameterUI(
+        proxy,
+        ui->parametersWidgetPlaceholder,
+        ui->parametersWidgetPlaceholder2,
+        viewer,
+        this,
+        500
+    );
+    if (!dynamic_cast<Part::LinkArrayLinear*>(array)) {
+        ui->parametersWidgetPlaceholder2->hide();
+    }
+    updatePatternSpacingLabels();
+    setupInstanceControls(viewer);
+}
+
+TaskLinkArrayParameters::~TaskLinkArrayParameters()
+{
+    instanceControls.reset();
+    array = nullptr;
+    exitLinkedObjectSelectionMode();
+    exitReferenceSelectionMode();
+}
+
 App::DocumentObject* TaskLinkArrayParameters::getPatternObject() const
 {
     return array;
@@ -347,6 +473,105 @@ bool TaskLinkArrayParameters::isUsefulLinkedObject(App::DocumentObject* obj) con
 App::DocumentObject* TaskLinkArrayParameters::getSelectedLinkedObject() const
 {
     return array ? array->LinkedObject.getValue() : nullptr;
+}
+
+void TaskLinkArrayParameters::setupInstanceControls(Gui::View3DInventorViewer* viewer)
+{
+    instanceControlsViewer = viewer;
+    if (!viewer) {
+        instanceControls.reset();
+        return;
+    }
+
+    instanceControls = std::make_unique<PatternInstanceControls>(viewer, this);
+    connect(
+        instanceControls.get(),
+        &PatternInstanceControls::toggleRequested,
+        this,
+        [this](int index, bool suppress) { setInstanceSuppressed(index, suppress); }
+    );
+    updateInstanceControls();
+}
+
+void TaskLinkArrayParameters::updateInstanceControls()
+{
+    if (!instanceControls || !instanceControlsViewer) {
+        return;
+    }
+
+    if (!array) {
+        instanceControls->clear();
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    if (instanceControlCenters.size() != elements.size()) {
+        instanceControlCenters.resize(elements.size());
+        instanceControlCentersValid.assign(elements.size(), false);
+    }
+
+    std::vector<PatternInstanceControls::Instance> instances;
+    instances.reserve(elements.size());
+    for (size_t i = 0; i < elements.size(); ++i) {
+        App::DocumentObject* element = elements[i];
+        if (!element) {
+            continue;
+        }
+
+        const bool suppressed = isSuppressed(element);
+        std::optional<Base::Vector3d> center;
+        if (!suppressed) {
+            center = viewProviderCenter(element, instanceControlsViewer, true);
+        }
+        if (center) {
+            instanceControlCenters[i] = *center;
+            instanceControlCentersValid[i] = true;
+        }
+        else if (instanceControlCentersValid[i]) {
+            center = instanceControlCenters[i];
+        }
+        else {
+            center = estimateElementCenter(array, static_cast<int>(i), instanceControlsViewer);
+        }
+
+        if (!center) {
+            continue;
+        }
+
+        instances.push_back({static_cast<int>(i), *center, suppressed});
+    }
+
+    instanceControls->setInstances(instances);
+}
+
+void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
+{
+    if (!array || index < 0) {
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    const auto idx = static_cast<size_t>(index);
+    if (idx >= elements.size() || !elements[idx]) {
+        return;
+    }
+
+    auto* suppressible = elements[idx]->getExtensionByType<App::SuppressibleExtension>(true);
+    if (!suppressible || suppressible->Suppressed.getValue() == suppress) {
+        return;
+    }
+
+    if (suppress) {
+        auto center = viewProviderCenter(elements[idx], instanceControlsViewer, true);
+        if (center && idx < instanceControlCenters.size()) {
+            instanceControlCenters[idx] = *center;
+            instanceControlCentersValid[idx] = true;
+        }
+    }
+
+    setupPatternTransaction();
+    suppressible->Suppressed.setValue(suppress);
+    updateInstanceControls();
 }
 
 void TaskLinkArrayParameters::fillDirectionCombo(
@@ -642,4 +867,72 @@ void TaskLinkArrayParameters::exitReferenceSelectionMode()
     }
     Gui::Selection().clearSelection();
     Gui::getMainWindow()->showMessage(QString());
+}
+
+bool TaskLinkArrayParameters::accept()
+{
+    if (!array) {
+        return true;
+    }
+
+    try {
+        App::DocumentObject* linked = getSelectedLinkedObject();
+        if (!linked) {
+            QMessageBox::warning(this, translate("Input Error"), translate("Select an object to link."));
+            return false;
+        }
+
+        array->LinkedObject.setValue(linked);
+        hideArraySource(linked);
+        applyPatternParameters(array);
+        consumePendingUpdate();
+        recomputePatternFeature();
+        array->getDocument()->commitTransaction();
+    }
+    catch (const Base::Exception& e) {
+        array->getDocument()->abortTransaction();
+        QMessageBox::warning(
+            this,
+            translate("Input Error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
+        return false;
+    }
+
+    return true;
+}
+
+bool TaskLinkArrayParameters::reject()
+{
+    if (array && array->getDocument()) {
+        array->getDocument()->abortTransaction();
+        Gui::Command::updateActive();
+    }
+
+    return true;
+}
+
+/* TRANSLATOR PartGui::TaskDlgLinkArrayParameters */
+
+TaskDlgLinkArrayParameters::TaskDlgLinkArrayParameters(Part::LinkArray* array)
+{
+    associateToObject3dView(array);
+    setAutoCloseOnDeletedDocument(true);
+    setAutoCloseOnTransactionChange(true);
+    parameter = new TaskLinkArrayParameters(array);
+    Content.push_back(parameter);
+}
+
+bool TaskDlgLinkArrayParameters::accept()
+{
+    parameter->exitLinkedObjectSelectionMode();
+    parameter->exitReferenceSelectionMode();
+    return parameter->accept();
+}
+
+bool TaskDlgLinkArrayParameters::reject()
+{
+    parameter->exitLinkedObjectSelectionMode();
+    parameter->exitReferenceSelectionMode();
+    return parameter->reject();
 }
