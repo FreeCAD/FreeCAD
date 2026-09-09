@@ -139,8 +139,7 @@ private:
     );
     App::DocumentObjectExecReturn* executeWholeBody(
         const std::vector<gp_Trsf>& transformations,
-        Part::TopoShape& supportShape,
-        const std::vector<DocumentObject*>& originals
+        Part::TopoShape& supportShape
     );
     App::DocumentObjectExecReturn* executeFeatureResult(
         const std::vector<gp_Trsf>& transformations,
