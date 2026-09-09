@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<ui version="4.0">
+ <class>PartDesignGui::TaskRibParameters</class>
+ <widget class="QWidget" name="ribParametersPanel">
+  <layout class="QFormLayout" name="form">
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="ribProfileRow">
+     <layout class="QHBoxLayout" name="ribProfileRowLayout" stretch="0,1,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="ribSelectProfile">
+        <property name="text">
+         <string>Select Profile</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ribProfile">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Select a sketch or edges. Hold Ctrl to add edges from the same object.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ribClearProfile">
+        <property name="toolTip">
+         <string>Clear Selection</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QWidget" name="ribProfileSpacing">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>8</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>8</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="ribExtensionLabel">
+     <property name="text">
+      <string>Extend</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="ribExtension">
+     <item>
+      <property name="text">
+       <string>Off</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>C1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>C2</string>
+      </property>
+     </item>
+     <property name="toolTip">
+      <string>Off: keep endpoints. C1: tangent extension. C2: curvature-continuous extension. Singular spline endpoints require C1 or profile repair.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="ribThicknessLabel">
+     <property name="text">
+      <string>Thickness</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribThickness"></widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="ribPlacementLabel">
+     <property name="text">
+      <string>Placement</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="ribPlacement">
+     <item>
+      <property name="text">
+       <string>Side 1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Side 2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Centered</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Two Thicknesses</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="ribThickness2Label">
+     <property name="text">
+      <string>Second Thickness</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribThickness2"></widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="ribExtentLabel">
+     <property name="text">
+      <string>Extent Type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QComboBox" name="ribExtent">
+     <item>
+      <property name="text">
+       <string>Shape</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Distance</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="ribLengthLabel">
+     <property name="text">
+      <string>Distance</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribLength"></widget>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QCheckBox" name="ribReversed">
+     <property name="text">
+      <string>Reversed</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="ribTargetRowLabel">
+     <property name="text">
+      <string>Extend To Shape</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QWidget" name="ribTargetRow">
+     <layout class="QHBoxLayout" name="ribTargetRowLayout" stretch="0,1,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="ribSelectTarget">
+        <property name="text">
+         <string>Object</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ribTarget">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ribClearTarget">
+        <property name="toolTip">
+         <string>Clear Selection</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="ribDraftAngleLabel">
+     <property name="text">
+      <string>Draft Angle</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDraftAngle"></widget>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="ribFilletRadiusLabel">
+     <property name="text">
+      <string>Fillet Radius</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribFilletRadius"></widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources></resources>
+ <connections></connections>
+</ui>
