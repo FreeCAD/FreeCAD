@@ -80,6 +80,8 @@ SET(ThinExtrusion_SRCS
     ThinProfile.h
     ThinExtrusionGeometry.cpp
     ThinExtrusionGeometry.h
+    ThinExtrusion.cpp
+    ThinExtrusion.h
 )
 SOURCE_GROUP("ThinExtrusion" FILES ${ThinExtrusion_SRCS})
 
