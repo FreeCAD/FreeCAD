@@ -292,4 +292,372 @@ std::pair<TopoShape, TopoShape> ThinExtrude::getConstructionPreview() const
     return {extension, target};
 }
 
+App::DocumentObjectExecReturn* ThinExtrude::execute()
+{
+    try {
+        if (ThinExtension.getValue() != 0 && RibMode.getValue() != 0) {
+            throw Base::ValueError("Full-height end extension requires Web (plan profile) mode");
+        }
+        if (RootFilletRadius.getValue() < 0 || EdgeFilletRadius.getValue() < 0) {
+            throw Base::ValueError("Rib fillet radii cannot be negative");
+        }
+        if (RibMode.getValue() == 0) {
+            if (AutoDirection.getValue() || FlipPullDirection.getValue()
+                || DraftPullMode.getValue() != 0) {
+                throw Base::ValueError("Automatic rib direction and draft-pull overrides require Rib or SpatialWeb interpretation");
+            }
+            auto status = Pad::execute();
+            if (status != App::DocumentObject::StdReturn) {
+                return status;
+            }
+        }
+        else {
+            auto obj = getVerifiedObject();
+
+            positionByPrevious();
+            const auto inverse = getLocation().Inverted();
+            auto base = getBaseTopoShape(true);
+            if (!base.hasSubShape(TopAbs_SOLID)) {
+                base = TopoShape();
+            }
+            else {
+                base = base.makeElementCopy("RibBodyInput");
+            }
+            base.move(inverse);
+
+            auto profile = getThinInput().makeElementCopy("RibProfileInput");
+            profile.move(inverse);
+
+            auto selectionProfile = profile;
+
+            const bool boundEnds = RibMode.getValue() == 1 && Extension.getValue() != 0;
+            if (Extension.getValue() != 0) {
+                profile
+                    = extendThinProfile(profile, base, Extension.getValue() == 2, getID(), boundEnds);
+            }
+
+            gp_Dir dir;
+            if (UseCustomVector.getValue()) {
+                dir = Base::convertTo<gp_Dir>(Direction.getValue());
+            }
+            else if (TowardReference.getValue()) {
+                dir = Base::convertTo<gp_Dir>(towardReferenceDirection());
+            }
+            else if (ReferenceAxis.getValue()) {
+                dir = Base::convertTo<gp_Dir>(
+                    referenceDirection(ReferenceAxis.getValue(), ReferenceAxis.getSubValues(), false)
+                );
+            }
+            else if (AutoDirection.getValue()) {
+                auto unextended = getThinInput();
+                auto target = getBaseTopoShape(true);
+                auto sweep = profile;
+                sweep.move(getLocation());
+                dir = thinDirectionTowardBody(
+                    unextended,
+                    target,
+                    Base::convertTo<gp_Dir>(getProfileNormal()),
+                    &sweep
+                );
+            }
+            else {
+                // Inactive vectors must not invalidate an automatic/reference direction.
+                dir = Base::convertTo<gp_Dir>(FillDirection.getValue());
+                dir.Transform(obj->getLocation().Transformation());
+            }
+            Direction.setValue(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+            Direction.setReadOnly(!UseCustomVector.getValue());
+            AlongSketchNormal.setValue(false);
+            AlongSketchNormal.setReadOnly(true);
+            dir.Transform(inverse.Transformation());
+            if (RibMode.getValue() == 1) {
+                auto normal = Base::convertTo<gp_Dir>(getProfileNormal());
+                normal.Transform(inverse.Transformation());
+                const gp_Pnt origin = BRep_Tool::Pnt(
+                    TopoDS::Vertex(profile.getSubShape(TopAbs_VERTEX, 1))
+                );
+                gp_Trsf toPlane;
+                toPlane.SetTransformation(gp_Ax3(origin, normal));
+                const auto measured
+                    = TopoShape(getID(), profile.Hasher).makeElementTransform(profile, toPlane);
+                const auto bounds = measured.getBoundBoxOptimal();
+                if (std::abs(bounds.MinZ) > 10 * Precision::Confusion()
+                    || std::abs(bounds.MaxZ) > 10 * Precision::Confusion()) {
+                    throw Base::ValueError("Side-profile rib requires a planar profile; use Spatial web for spatial edges");
+                }
+                if (std::abs(dir.Dot(normal)) > Precision::Angular()) {
+                    throw Base::ValueError(
+                        "Side-profile rib fill direction must lie in the profile plane"
+                    );
+                }
+            }
+            gp_Dir growth = Reversed.getValue() ? dir.Reversed() : dir;
+            const double start = StartType.getValue() == 0 ? 0
+                : StartType.getValue() == 1
+                ? StartOffset.getValue()
+                : getStartReferenceOffset(profile, StartReference, growth, StartOffset.getValue(), inverse);
+            profile = moveProfileToStart(profile, growth, start, true);
+            selectionProfile = moveProfileToStart(selectionProfile, growth, start, true);
+            const auto side = ThinSide.getValue();
+            const auto [widthA, widthB] = getThinWidths();
+            auto construct = [&](TopoShape source,
+                                 const std::string& method,
+                                 double length,
+                                 double taper,
+                                 const App::PropertyLinkSub& face,
+                                 const App::PropertyLinkSubList& shapes,
+                                 double offset,
+                                 bool reverse) {
+                TopoShape target;
+                if (method == "UpToFirst") {
+                    target = base;
+                }
+                else if (method == "UpToLast") {
+                    auto actualDir = reverse ? dir.Reversed() : dir;
+                    getUpToFace(target, base, source, method, actualDir);
+                }
+                else if (method == "UpToFace") {
+                    getUpToFaceFromLinkSub(target, face);
+                    target.move(inverse);
+                }
+                else if (method == "UpToShape") {
+                    getUpToShapeFromLinkSubList(target, shapes);
+                    if (target.isNull()) {
+                        target = base;
+                    }
+                    else {
+                        target.move(inverse);
+                    }
+                }
+                else if (method != "Length") {
+                    throw Base::ValueError("Unsupported Rib/Web termination mode");
+                }
+                if (method != "Length") {
+                    if (target.isNull()) {
+                        throw Base::ValueError("Select a target body or face");
+                    }
+                    target = target.makeElementCopy("RibTargetInput");
+                    const auto actualDir = reverse ? dir.Reversed() : dir;
+                    target = moveProfileToStart(target, actualDir, offset, true);
+                    auto bounds = target.getBoundBox();
+                    bounds.Add(source.getBoundBox());
+                    length = 2 * bounds.CalcDiagonalLength();
+                    if (method == "UpToFace") {
+                        BRepBuilderAPI_MakeFace extended(
+                            BRep_Tool::Surface(TopoDS::Face(target.getSubShape(TopAbs_FACE, 1))),
+                            Precision::Confusion()
+                        );
+                        target = TopoShape(getID(), profile.Hasher)
+                                     .makeElementShape(extended, {target}, "RibExtendedTarget");
+                    }
+                }
+
+                const auto graph = makeThinProfileGraph(source, getID());
+                auto wall = [&](double thickness, int placement) {
+                    std::vector<TopoShape> chains;
+                    for (const auto& chain : graph.chains) {
+                        chains.push_back(makeThinSurfaceExtrusion(
+                            chain.getSubTopoShapes(TopAbs_EDGE),
+                            dir,
+                            length,
+                            thickness,
+                            placement,
+                            reverse,
+                            ThinJoin.getValue() == 0 ? Part::JoinType::intersection
+                                                     : Part::JoinType::arc,
+                            false,
+                            getID()
+                        ));
+                    }
+                    return chains.size() == 1
+                        ? chains.front()
+                        : TopoShape(getID(), source.Hasher).makeElementFuse(chains, "RibNetwork");
+                };
+                TopoShape tool;
+                if (side != 3) {
+                    tool = wall(ThinThickness.getValue(), side);
+                }
+                else {
+                    std::vector<TopoShape> halves;
+                    if (ThinThickness.getValue() > Precision::Confusion()) {
+                        halves.push_back(wall(ThinThickness.getValue(), 0));
+                    }
+                    if (ThinThickness2.getValue() > Precision::Confusion()) {
+                        halves.push_back(wall(ThinThickness2.getValue(), 1));
+                    }
+                    if (halves.size() == 1) {
+                        tool = halves.front();
+                    }
+                    else {
+                        tool.makeElementFuse(halves, "RibThicknessSides");
+                    }
+                }
+
+                if (ThinCap.getValue() != 0) {
+                    tool = roundThinExtrusionEnds(
+                        tool,
+                        source,
+                        dir,
+                        length,
+                        widthA,
+                        widthB,
+                        reverse,
+                        getID()
+                    );
+                }
+
+                if (!target.isNull()) {
+                    tool = trimThinExtrusionToBoundary(
+                        tool,
+                        target,
+                        boundEnds ? selectionProfile : source,
+                        gp_Vec(dir) * (reverse ? -length : length),
+                        getID()
+                    );
+                }
+
+                const bool limitDepthToBody = method == "Length" && !base.isNull();
+                auto limitToBody = [&](const TopoShape& wall) {
+                    return trimThinExtrusionToBoundary(
+                        wall,
+                        base,
+                        boundEnds ? selectionProfile : source,
+                        gp_Vec(dir) * (reverse ? -length : length),
+                        getID(),
+                        false
+                    );
+                };
+
+                if (limitDepthToBody || boundEnds) {
+                    // Establish the actual root before choosing the draft's
+                    // neutral plane, rather than the unclipped prism's far end.
+                    tool = limitToBody(tool);
+                }
+
+                std::optional<gp_Dir> draftPull;
+                if (const auto pull = getDraftPullVector()) {
+                    draftPull = Base::convertTo<gp_Dir>(*pull);
+                    draftPull->Transform(inverse.Transformation());
+                }
+
+                tool = draftThinExtrusion(
+                    tool,
+                    source,
+                    base,
+                    reverse ? dir.Reversed() : dir,
+                    Base::toRadians(taper),
+                    ThinDraftReference.getValue() == 1,
+                    getID(),
+                    nullptr,
+                    draftPull ? &*draftPull : nullptr,
+                    FlipPullDirection.getValue()
+                );
+
+                if ((limitDepthToBody || boundEnds) && std::abs(taper) > Precision::Angular()) {
+                    // A rib's finite depth is a maximum, not permission to
+                    // emerge through the existing body. Split after drafting
+                    // so the final wall, including its tapered sides, is capped.
+                    tool = limitToBody(tool);
+                }
+
+                if (boundEnds) {
+                    auto normal = Base::convertTo<gp_Dir>(getProfileNormal());
+                    normal.Transform(inverse.Transformation());
+                    checkThinExtensionBoundary(tool, source, normal, dir);
+                }
+                return tool;
+            };
+            std::vector<TopoShape> sides;
+            if (SideType.getValue() == 2 && std::string(Type.getValueAsString()) == "Length") {
+                profile = moveProfileToStart(profile, growth, -Length.getValue() / 2, true);
+                selectionProfile
+                    = moveProfileToStart(selectionProfile, growth, -Length.getValue() / 2, true);
+                sides.push_back(construct(
+                    profile,
+                    "Length",
+                    Length.getValue(),
+                    TaperAngle.getValue(),
+                    UpToFace,
+                    UpToShape,
+                    Offset.getValue(),
+                    Reversed.getValue()
+                ));
+            }
+            else {
+                sides.push_back(construct(
+                    profile,
+                    Type.getValueAsString(),
+                    Length.getValue(),
+                    TaperAngle.getValue(),
+                    UpToFace,
+                    UpToShape,
+                    Offset.getValue(),
+                    Reversed.getValue()
+                ));
+                if (SideType.getValue() != 0) {
+                    const bool symmetric = SideType.getValue() == 2;
+                    sides.push_back(construct(
+                        profile,
+                        symmetric ? Type.getValueAsString() : Type2.getValueAsString(),
+                        symmetric ? Length.getValue() : Length2.getValue(),
+                        symmetric ? TaperAngle.getValue() : TaperAngle2.getValue(),
+                        symmetric ? UpToFace : UpToFace2,
+                        symmetric ? UpToShape : UpToShape2,
+                        symmetric ? Offset.getValue() : Offset2.getValue(),
+                        !Reversed.getValue()
+                    ));
+                }
+            }
+
+            auto tool = sides.size() == 1
+                ? sides.front()
+                : TopoShape(getID(), profile.Hasher).makeElementFuse(sides, "RibGrowthSides");
+
+            AddSubShape.setValue(tool);
+
+            auto result = base.isNull()
+                ? tool
+                : TopoShape(getID(), profile.Hasher).makeElementFuse({base, tool}, "RibFuse");
+
+            result = refineShapeIfActive(result);
+            if (!isSingleSolidRuleSatisfied(result.getShape()) || !result.isValid()) {
+                throw Base::ValueError("Rib/Web does not form a valid connected body");
+            }
+
+            rawShape = result;
+            Shape.setValue(getSolid(result));
+        }
+
+        if ((RibMode.getValue() != 0 && RootFilletRadius.getValue() > 0)
+            || EdgeFilletRadius.getValue() > 0) {
+            auto base = getBaseTopoShape(true);
+            if (!base.isNull()) {
+                base = base.makeElementCopy("RibFinishingBody");
+            }
+            base.move(getLocation().Inverted());
+            auto result = finishThinExtrusion(
+                Shape.getShape(),
+                base,
+                AddSubShape.getShape(),
+                RibMode.getValue() == 0 ? 0.0 : RootFilletRadius.getValue(),
+                EdgeFilletRadius.getValue(),
+                getID()
+            );
+
+            rawShape = result;
+            Shape.setValue(getSolid(result));
+            AddSubShape.setValue(
+                base.isNull() ? result : result.makeElementCut(base, "RibFilletMaterial")
+            );
+        }
+
+        return App::DocumentObject::StdReturn;
+    }
+    catch (const Base::Exception& error) {
+        return new App::DocumentObjectExecReturn(error.what());
+    }
+    catch (const Standard_Failure& error) {
+        return new App::DocumentObjectExecReturn(error.GetMessageString());
+    }
+}
 }  // namespace PartDesign

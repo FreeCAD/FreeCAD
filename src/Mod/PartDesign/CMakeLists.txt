@@ -59,6 +59,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestDraft.py
     PartDesignTests/TestThickness.py
     PartDesignTests/TestThinExtrude.py
+    PartDesignTests/TestThinExtrudeFeature.py
     PartDesignTests/TestTopologicalNamingProblem.py
     PartDesignTests/TestInvoluteGear.py
     PartDesignTests/TestSketch.py
