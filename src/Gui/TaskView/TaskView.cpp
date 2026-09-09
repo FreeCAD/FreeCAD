@@ -703,9 +703,12 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
     if (remove) {
         remove->ActiveDialog->closed();
         remove->ActiveDialog->emitDestructionSignal();
-        delete remove->ActiveCtrl;
-        delete remove->ActiveDialog;
-        delete remove->taskPanel;
+        // Defer the deletion: a dialog may still be on the stack here (e.g. its own
+        // accept()/reject() invocation, or a pending focus event referencing the
+        // widgets), so deleting synchronously would leave dangling users behind.
+        remove->ActiveCtrl->deleteLater();
+        remove->ActiveDialog->deleteLater();
+        remove->taskPanel->deleteLater();
     }
 
     tryRestoreWidth();
