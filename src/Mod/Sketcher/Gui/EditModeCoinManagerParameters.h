@@ -570,6 +570,17 @@ struct CoinMapping
         // clang-format on
     }
 
+    /// checks whether the point mapping holds an entry for the given MF index of a point in the
+    /// given coin layer; the mapping and the coin scenegraph are not always updated in sync, so
+    /// event-driven lookups must be validated before indexing
+    bool isValidPointVertexId(int pointindex, int layerindex) const
+    {
+        // clang-format off
+        return static_cast<int>(PointIdToVertexId.size()) > layerindex &&
+               static_cast<int>(PointIdToVertexId[layerindex].size()) > pointindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the PosId of
     /// the point
     Sketcher::PointPos getPointPosId(int pointindex, int layerindex)
