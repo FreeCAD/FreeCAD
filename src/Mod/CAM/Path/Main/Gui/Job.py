@@ -1251,7 +1251,10 @@ class TaskPanel:
 
     def objectDelete(self, widget):
         for item in widget.selectedItems():
-            obj = item.data(self.DataObject, 0)
+            if isinstance(widget, QtGui.QTreeWidget):  # operationsList
+                obj = item.data(self.DataObject, 0)
+            else:  # toolControllerList
+                obj = item.data(self.DataObject)
             if (
                 obj.ViewObject
                 and hasattr(obj.ViewObject, "Proxy")
