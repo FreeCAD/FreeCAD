@@ -1917,15 +1917,54 @@ void TaskExtrudeParameters::setupGizmos()
     startOffsetGizmo->setDraggerStyle(Gui::LinearDraggerStyle::Sphere);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+    thinThicknessGizmo = new Gui::LinearGizmo(thinUi->thinThickness);
+    thinThickness2Gizmo = new Gui::LinearGizmo(thinUi->thinThickness2);
+    thinDraftGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
+    thinDraftGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
 
     connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
         setGizmoPositions();
     });
 
     gizmoContainer = GizmoContainer::create(
-        {lengthGizmo1, lengthGizmo2, startOffsetGizmo, taperAngleGizmo1, taperAngleGizmo2},
+        {lengthGizmo1,
+         lengthGizmo2,
+         startOffsetGizmo,
+         taperAngleGizmo1,
+         taperAngleGizmo2,
+         thinThicknessGizmo,
+         thinThickness2Gizmo,
+         thinDraftGizmo1,
+         thinDraftGizmo2},
         vp
     );
+    gizmoContainer->setName("ExtrudeGizmos");
+    thinThicknessGizmo->getDraggerContainer()->setName("ThinThickness");
+    thinThickness2Gizmo->getDraggerContainer()->setName("ThinSecondThickness");
+    thinDraftGizmo1->getDraggerContainer()->setName("ThinDraft");
+    thinDraftGizmo2->getDraggerContainer()->setName("ThinSecondDraft");
+    for (auto field :
+         {thinUi->thinThickness,
+          thinUi->thinThickness2,
+          thinUi->thinFilletRadius,
+          ui->taperEdit,
+          ui->taperEdit2,
+          ui->lengthEdit,
+          ui->lengthEdit2}) {
+        connect(field, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), this, [this](double) {
+            setGizmoPositions();
+        });
+    }
+    for (auto combo :
+         {thinUi->thinSide, thinUi->thinDraftReference, thinUi->thinJoin, thinUi->thinCap}) {
+        connect(combo, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
+            setGizmoPositions();
+        });
+    }
+    connect(ui->thinMode, &QCheckBox::toggled, this, [this](bool) { setGizmoPositions(); });
+    connect(thinUi->thinExtension, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
+        setGizmoPositions();
+    });
 
     setGizmoPositions();
     showDraggerHints();
@@ -1939,7 +1978,10 @@ void TaskExtrudeParameters::setGizmoPositions()
 
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     if (!extrude || extrude->isError()) {
-        gizmoContainer->visible = false;
+        // A failed web recompute must not remove the controls needed to recover.
+        // Keep their last valid placements; never position them from failed
+        // geometry, and keep them hidden if no usable placement was established.
+        gizmoContainer->visible = extrude && extrude->Thin.getValue() && hasValidGizmoPlacement;
         return;
     }
     gizmoContainer->visible = true;
@@ -1999,7 +2041,119 @@ void TaskExtrudeParameters::setGizmoPositions()
         lengthGizmo2->setMultFactor(multFactor);
     }
 
+    setThinGizmoPositions();
     gizmoContainer->calculateScaleAndOrientation();
+    hasValidGizmoPlacement = true;
+}
+
+void TaskExtrudeParameters::setThinGizmoPositions()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    for (auto gizmo : {thinThicknessGizmo, thinThickness2Gizmo}) {
+        gizmo->setVisibility(false);
+    }
+    for (auto gizmo : {thinDraftGizmo1, thinDraftGizmo2}) {
+        gizmo->setVisibility(false);
+    }
+    if (!extrude->Thin.getValue()) {
+        return;
+    }
+    taperAngleGizmo1->setVisibility(false);
+    taperAngleGizmo2->setVisibility(false);
+    try {
+        const auto source = extrude->getProfileShape();
+        const auto wires = source.makeWires().getSubTopoShapes(TopAbs_WIRE);
+        if (wires.empty()) {
+            return;
+        }
+        auto wire = wires.front();
+        const auto normal = Base::convertTo<gp_Dir>(extrude->getProfileNormal());
+        if (wire.isClosed()) {
+            // Match ThinProfile's outside/inside convention for closed loops.
+            const auto origin = BRep_Tool::Pnt(TopoDS::Vertex(wire.getSubShape(TopAbs_VERTEX, 1)));
+            ShapeFix_Face fix(
+                BRepBuilderAPI_MakeFace(gp_Pln(origin, normal), TopoDS::Wire(wire.getShape()), true).Face()
+            );
+            fix.FixOrientation();
+            wire = Part::TopoShape(BRepTools::OuterWire(fix.Face()));
+        }
+        const auto edge = TopoDS::Edge(wire.getSubShape(TopAbs_EDGE, 1));
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt point;
+        gp_Vec tangent;
+        curve.D1((curve.FirstParameter() + curve.LastParameter()) / 2, point, tangent);
+        if (edge.Orientation() == TopAbs_REVERSED) {
+            tangent.Reverse();
+        }
+        auto width = gp_Vec(normal).Crossed(tangent);
+        if (wire.isClosed()) {
+            width.Reverse();
+        }
+        if (width.Magnitude() <= Precision::Confusion()) {
+            return;
+        }
+        width.Normalize();
+        auto growth = Base::convertTo<gp_Dir>(extrude->Direction.getValue());
+        if (extrude->Reversed.getValue()) {
+            growth.Reverse();
+        }
+        point.Translate(gp_Vec(growth) * extrude->getStartOffset());
+        auto material = extrude->AddSubShape.getShape();
+        material.move(extrude->getLocation());
+        const bool rootAtStart = PartDesign::thinRootAtStart(source, extrude->getBaseTopoShape(true));
+        auto neutralPoint = [&](const gp_Dir& dir) {
+            gp_Trsf frame;
+            frame.SetTransformation(gp_Ax3(point, dir));
+            const auto bounds
+                = Part::TopoShape().makeElementTransform(material, frame).getBoundBoxOptimal();
+            const bool holdTop = extrude->ThinDraftReference.getValue() == 1;
+            const double near = extrude->SideType.getValue() == 0 ? bounds.MinZ
+                                                                  : std::max(0.0, bounds.MinZ);
+            const double distance = holdTop == rootAtStart ? bounds.MaxZ : near;
+            return point.Translated(gp_Vec(dir) * distance);
+        };
+        const auto side = extrude->ThinSide.getValue();
+        const auto widthDirection = side == 1 ? -width : width;
+        const double factor = side == 2 ? .5 : 1.;
+        const auto anchor = neutralPoint(growth);
+        thinThicknessGizmo->setMultFactor(factor);
+        thinThicknessGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(widthDirection)
+        );
+        thinThickness2Gizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(-width)
+        );
+        thinThicknessGizmo->setVisibility(true);
+        thinThickness2Gizmo->setVisibility(side == 3);
+        auto placeDraft = [&](Gui::RotationGizmo* gizmo, const gp_Dir& dir) {
+            const auto pull = rootAtStart ? dir : dir.Reversed();
+            auto axis = widthDirection.Crossed(gp_Vec(pull));
+            if (axis.Magnitude() <= Precision::Confusion()) {
+                return;
+            }
+            axis.Normalize();
+            const auto origin = neutralPoint(dir).Translated(
+                widthDirection * extrude->ThinThickness.getValue() * factor
+            );
+            gizmo->Gizmo::setDraggerPlacement(
+                Base::convertTo<Base::Vector3d>(origin),
+                Base::convertTo<Base::Vector3d>(pull)
+            );
+            gizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axis));
+            gizmo->automaticOrientation = false;
+            gizmo->setVisibility(true);
+        };
+        placeDraft(thinDraftGizmo1, growth);
+        if (extrude->SideType.getValue() == 1) {
+            placeDraft(thinDraftGizmo2, growth.Reversed());
+        }
+    }
+    catch (const Base::Exception&) {
+    }
+    catch (const Standard_Failure&) {
+    }
 }
 
 TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)
