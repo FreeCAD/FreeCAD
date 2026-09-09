@@ -246,7 +246,7 @@ ExpressionPtr Parser::parsePrimary()
         case TokenKind::Number:
         case TokenKind::Constant: {
             auto number = numberExpression(owner, token);
-            return tryParseUnitSuffix(std::move(number));
+            return tryParseQuantitySuffix(std::move(number));
         }
         case TokenKind::String:
             return std::make_unique<StringExpression>(owner, std::get<std::string>(token.value));
@@ -376,7 +376,7 @@ ExpressionPtr Parser::parseIdentifier()
         }
     }
 
-    while (tokens.peek().kind == TokenKind::Dot && tokens.peek(1).kind == TokenKind::Name) {
+    while (tokens.peek().kind == TokenKind::Dot && isIdOrCell(tokens.peek(1).kind)) {
         tokens.take();
         path.addComponent(ObjectIdentifier::SimpleComponent(tokenString(tokens.take())));
     }
@@ -384,7 +384,7 @@ ExpressionPtr Parser::parseIdentifier()
     ExpressionPtr expression = std::make_unique<VariableExpression>(owner, path);
     while (tokens.peek().kind == TokenKind::LeftBracket) {
         expression = parseIndexer(std::move(expression));
-        while (tokens.peek().kind == TokenKind::Dot && tokens.peek(1).kind == TokenKind::Name) {
+        while (tokens.peek().kind == TokenKind::Dot && isIdOrCell(tokens.peek(1).kind)) {
             tokens.take();
             expression->addComponent(Expression::createComponent(tokenString(tokens.take())));
         }
@@ -489,14 +489,20 @@ std::vector<ExpressionPtr> Parser::parseArguments()
     return arguments;
 }
 
-ExpressionPtr Parser::tryParseUnitSuffix(ExpressionPtr quantityIntroducer)
+ExpressionPtr Parser::tryParseQuantitySuffix(ExpressionPtr quantityIntroducer)
 {
-    if (!nextTokenStartsUnitAtom()) {
+    const bool reciprocal = tokens.peek().kind == TokenKind::Divide
+        && nextTokenStartsUnitAtom(1);
+    if (!nextTokenStartsUnitAtom() && !reciprocal) {
         return quantityIntroducer;
     }
 
     const auto start = tokens.position();
-    const bool startsWithUsBuildingUnit = tokens.peek().kind == TokenKind::UsBuildingUnit;
+    if (reciprocal) {
+        tokens.take();
+    }
+    const bool startsWithUsBuildingUnit = !reciprocal
+        && tokens.peek().kind == TokenKind::UsBuildingUnit;
     ExpressionPtr unit;
     try {
         unit = parseUnitExpression();
@@ -504,6 +510,13 @@ ExpressionPtr Parser::tryParseUnitSuffix(ExpressionPtr quantityIntroducer)
     catch (const Base::ParserError&) {
         tokens.rewind(start);
         return quantityIntroducer;
+    }
+
+    if (reciprocal) {
+        return std::make_unique<OperatorExpression>(owner,
+                                                    quantityIntroducer.release(),
+                                                    OperatorExpression::DIV,
+                                                    unit.release());
     }
 
     auto quantity = std::make_unique<OperatorExpression>(owner,

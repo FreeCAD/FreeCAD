@@ -248,6 +248,17 @@ TEST_F(ExpressionParserTest, isTokenAConstant)
     }
 }
 
+TEST_F(ExpressionParserTest, unitRecognitionRequiresACompleteSymbol)
+{
+    for (const auto& unit : {"mm", "kg", "K", "deg"}) {
+        EXPECT_TRUE(isTokenAUnit(unit)) << unit;
+    }
+    for (const auto& identifier : {"test", "temperature", "secondValue", "notAUnit"}) {
+        EXPECT_FALSE(isTokenAUnit(identifier)) << identifier;
+        EXPECT_TRUE(isTokenAnIndentifier(identifier)) << identifier;
+    }
+}
+
 TEST_F(ExpressionParserTest, simpleExpressionsParse)
 {
     static constexpr auto IsMm = [](auto m) {
@@ -303,6 +314,9 @@ TEST_F(ExpressionParserTest, expressionsWithMultiplyDivideParse)
         parseExpr("24 V / (2 A)"),
         IsQuantity(Base::Quantity(12'000'000, Base::Unit::ElectricalResistance))
     ) << "division of electrical quantities";
+    EXPECT_THAT(parseExpr("2/mm"), IsQuantity(Base::Quantity::parse("2/mm")));
+    EXPECT_THAT(parseExpr("5*1/K"), IsQuantity(Base::Quantity::parse("5/K")));
+    EXPECT_THAT(parseExpr("2/mm * 3"), IsQuantity(Base::Quantity::parse("6/mm")));
 }
 
 TEST_F(ExpressionParserTest, expressionsWithCompoundUnitSuffixesParse)
@@ -716,7 +730,9 @@ TEST_F(ExpressionParserTest, pathEntryPointMatchesVariablePaths)
           "Sketch.<<(Sub object)>>.Foo",
           "Doc#Sketch.Foo",
           "Doc#Sketch.<<(Sub object)>>.Foo",
-          "Foo.Bar.Baz"}) {
+          "Foo.Bar.Baz",
+          ".cells.Bind.A3.C4",
+          ".cells.BindHiddenRef.A3.C4"}) {
         const auto generated = parse(this_obj(), pathText);
         const auto* variable = freecad_cast<VariableExpression*>(generated.get());
         ASSERT_NE(variable, nullptr) << pathText;

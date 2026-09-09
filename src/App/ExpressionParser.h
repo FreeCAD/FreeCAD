@@ -164,7 +164,7 @@ private:
     // A unit operator is consumed only if parsing the following unit atom also
     // succeeds.  In particular, '/' is retained for the expression parser in
     // `24 V / (2 A)`, but consumed by the unit parser in `24 V / (kg * s)`.
-    ExpressionPtr tryParseUnitSuffix(ExpressionPtr quantityIntroducer);
+    ExpressionPtr tryParseQuantitySuffix(ExpressionPtr quantityIntroducer);
     ExpressionPtr parseUnitExpression(int minimumBindingPower = 0);
     ExpressionPtr parseUnitAtom();
     bool nextTokenStartsUnitAtom(std::size_t offset = 0);
