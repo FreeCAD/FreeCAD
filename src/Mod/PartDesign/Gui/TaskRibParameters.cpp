@@ -67,6 +67,246 @@ public:
 };
 }  // namespace
 
+TaskRibParameters::TaskRibParameters(ViewProviderPad* view)
+    : TaskSketchBasedParameters(view, nullptr, "PartDesign_Rib", tr("Rib Parameters"))
+    , ui(std::make_unique<Ui_TaskRibParameters>())
+    , advancedUi(std::make_unique<Ui_TaskRibAdvancedParameters>())
+{
+    auto rib = getObject<PartDesign::Rib>();
+    auto container = new QWidget(this);
+    ui->setupUi(container);
+    groupLayout()->addWidget(container);
+
+    advanced = new Gui::TaskView::TaskBox(tr("Advanced Rib Parameters"));
+    advanced->setObjectName(QStringLiteral("ribAdvancedParameters"));
+    auto advancedContainer = new QWidget(advanced);
+    advancedUi->setupUi(advancedContainer);
+    advanced->groupLayout()->addWidget(advancedContainer);
+
+    // Designer owns the layout; these bindings keep selection and model updates together.
+    auto picker =
+        [this](QToolButton* button, QToolButton* reset, Pick mode, std::function<void()> clear) {
+            reset->setIcon(Gui::BitmapFactory().iconFromTheme("edit-delete"));
+            connect(button, &QToolButton::clicked, this, [this, mode]() { select(mode); });
+
+            connect(reset, &QToolButton::clicked, this, [this, clear]() {
+                finishSelection();
+                clear();
+                refresh();
+                updateFeature();
+            });
+        };
+
+    picker(ui->ribSelectProfile, ui->ribClearProfile, Pick::Profile, [rib]() {
+        rib->Profile.setValue(nullptr);
+    });
+
+    ui->ribExtension->setCurrentIndex(rib->Extension.getValue());
+    connect(ui->ribExtension, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, rib](int value) {
+        rib->Extension.setValue(value);
+        updateFeature();
+    });
+
+    auto quantity = [this](
+                        Gui::PrefQuantitySpinBox* field,
+                        App::PropertyQuantity& property,
+                        bool signedValue = false
+                    ) {
+        field->setMinimum(signedValue ? -1e9 : 0);
+        field->setMaximum(1e9);
+        field->setValue(property.getQuantityValue());
+        field->bind(property);
+        quantities.push_back(field);
+
+        connect(
+            field,
+            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this,
+            [this, &property](double value) {
+                property.setValue(value);
+                updateFeature();
+            }
+        );
+    };
+
+    quantity(ui->ribThickness, rib->ThinThickness);
+
+    ui->ribPlacement->setCurrentIndex(rib->ThinSide.getValue());
+    quantity(ui->ribThickness2, rib->ThinThickness2);
+    connect(ui->ribPlacement, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, rib](int value) {
+        rib->ThinSide.setValue(value);
+        updateVisibility();
+        updateFeature();
+    });
+
+    // Store stable feature enum values independently of translated captions.
+    ui->ribExtent->setItemData(0, QStringLiteral("UpToShape"));
+    ui->ribExtent->setItemData(1, QStringLiteral("Length"));
+    const auto savedType = QString::fromLatin1(rib->Type.getValueAsString());
+    ui->ribExtent->setCurrentIndex(ui->ribExtent->findData(savedType));
+    quantity(ui->ribLength, rib->Length);
+    ui->ribReversed->setChecked(rib->Reversed.getValue());
+    picker(ui->ribSelectTarget, ui->ribClearTarget, Pick::Target, [rib]() {
+        rib->UpToShape.setValues({}, {});
+    });
+
+    connect(ui->ribExtent, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, rib]() {
+        finishSelection();
+        rib->Type.setValue(ui->ribExtent->currentData().toString().toLatin1().constData());
+        // Shape in this compact panel means contact with the selected body.
+        if (ui->ribExtent->currentData() == QStringLiteral("UpToShape")) {
+            rib->Offset.setValue(0);
+        }
+        updateVisibility();
+        updateFeature();
+    });
+    connect(ui->ribReversed, &QCheckBox::toggled, this, [this, rib](bool value) {
+        finishSelection();
+        rib->Reversed.setValue(value);
+        updateVisibility();
+        updateFeature();
+    });
+
+    quantity(ui->ribDraftAngle, rib->TaperAngle, true);
+    ui->ribDraftAngle->setMinimum(rib->TaperAngle.getMinimum());
+    ui->ribDraftAngle->setMaximum(rib->TaperAngle.getMaximum());
+    ui->ribDraftAngle->setSingleStep(rib->TaperAngle.getStepSize());
+    quantity(ui->ribFilletRadius, rib->RootFilletRadius);
+
+    advancedUi->ribDirectionMode->setCurrentIndex(
+        rib->UseCustomVector.getValue()       ? 3
+            : rib->TowardReference.getValue() ? 1
+            : rib->ReferenceAxis.getValue()   ? 2
+            : rib->AutoDirection.getValue()   ? 0
+                                              : 4
+    );
+    picker(advancedUi->ribSelectDirection, advancedUi->ribClearDirection, Pick::Direction, [this, rib]() {
+        rib->ReferenceAxis.setValue(nullptr);
+        rib->TowardReference.setValue(false);
+        rib->UseCustomVector.setValue(false);
+        rib->AutoDirection.setValue(true);
+        QSignalBlocker blocker(advancedUi->ribDirectionMode);
+        advancedUi->ribDirectionMode->setCurrentIndex(0);
+    });
+
+    direction = {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ};
+    const auto vector = advancedUi->ribDirectionMode->currentIndex() == 4
+        ? rib->FillDirection.getValue()
+        : rib->Direction.getValue();
+    const double values[] = {vector.x, vector.y, vector.z};
+    for (int i = 0; i < 3; ++i) {
+        direction[i]->setMinimum(-1e9);
+        direction[i]->setMaximum(1e9);
+        direction[i]->setValue(values[i]);
+
+        connect(
+            direction[i],
+            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this,
+            [this, rib]() {
+                const Base::Vector3d value(
+                    direction[0]->value().getValue(),
+                    direction[1]->value().getValue(),
+                    direction[2]->value().getValue()
+                );
+                if (advancedUi->ribDirectionMode->currentIndex() == 4) {
+                    rib->FillDirection.setValue(value);
+                }
+                else {
+                    rib->Direction.setValue(value);
+                }
+                updateFeature();
+            }
+        );
+    }
+
+    connect(
+        advancedUi->ribDirectionMode,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, rib](int mode) {
+            finishSelection();
+            rib->AutoDirection.setValue(mode == 0);
+            rib->TowardReference.setValue(mode == 1);
+            rib->UseCustomVector.setValue(mode == 3);
+            if (mode == 0 || mode == 3 || mode == 4) {
+                rib->ReferenceAxis.setValue(nullptr);
+            }
+            const auto vector = mode == 4 ? rib->FillDirection.getValue() : rib->Direction.getValue();
+            const double values[] = {vector.x, vector.y, vector.z};
+            for (int i = 0; i < 3; ++i) {
+                QSignalBlocker blocker(direction[i]);
+                direction[i]->setValue(values[i]);
+            }
+            refresh();
+            updateFeature();
+        }
+    );
+
+    advancedUi->ribPullMode->setCurrentIndex(rib->DraftPullMode.getValue());
+    picker(
+        advancedUi->ribSelectPullDirection,
+        advancedUi->ribClearPullDirection,
+        Pick::Pull,
+        [this, rib]() {
+            rib->DraftPullDirection.setValue(nullptr);
+            rib->DraftPullMode.setValue(0L);
+            QSignalBlocker blocker(advancedUi->ribPullMode);
+            advancedUi->ribPullMode->setCurrentIndex(0);
+        }
+    );
+
+    pullVector = {advancedUi->ribPullX, advancedUi->ribPullY, advancedUi->ribPullZ};
+    const auto pull = rib->DraftPullVector.getValue();
+    const double pullValues[] = {pull.x, pull.y, pull.z};
+    for (int i = 0; i < 3; ++i) {
+        pullVector[i]->setMinimum(-1e9);
+        pullVector[i]->setMaximum(1e9);
+        pullVector[i]->setValue(pullValues[i]);
+
+        connect(
+            pullVector[i],
+            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this,
+            [this, rib]() {
+                rib->DraftPullVector.setValue(
+                    Base::Vector3d(
+                        pullVector[0]->value().getValue(),
+                        pullVector[1]->value().getValue(),
+                        pullVector[2]->value().getValue()
+                    )
+                );
+                updateFeature();
+            }
+        );
+    }
+
+    connect(
+        advancedUi->ribPullMode,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, rib](int mode) {
+            finishSelection();
+            rib->DraftPullMode.setValue(mode);
+            if (mode == 0) {
+                rib->DraftPullDirection.setValue(nullptr);
+            }
+            refresh();
+            updateFeature();
+        }
+    );
+
+    advancedUi->ribFlipPullDirection->setChecked(rib->FlipPullDirection.getValue());
+    connect(advancedUi->ribFlipPullDirection, &QCheckBox::toggled, this, [this, rib](bool value) {
+        rib->FlipPullDirection.setValue(value);
+        updateFeature();
+    });
+
+    refresh();
+    advanced->hideGroupBox();
+    setupGizmos();
+}
+
 TaskRibParameters::~TaskRibParameters()
 {
     finishSelection();
