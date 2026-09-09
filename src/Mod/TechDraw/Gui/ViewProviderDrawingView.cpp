@@ -257,16 +257,19 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
 
     App::PropertyLink* ownerProp = obj->getOwnerProperty();
 
+
     //only move the view on X, Y change
     if (prop == &obj->X ||
         prop == &obj->Y) {
-
-        if (qgiv->isSnapping() ||
-            obj->LockPosition.getValue()) {
+        // there was an attempt to prevent X/Y changes for Locked views here, but the
+        // property value has already been changed by this point.  Not moving the graphic
+        // will leave X,Y and scene position out of sync.  At load time, preventing
+        // repositioning of locked views will cause them to be loaded at (0,0).
+        if (qgiv->isSnapping()) {
+            // wait for snap movements to finish
             Gui::ViewProviderDocumentObject::updateData(prop);
             return;
         }
-
         qgiv->updatePositionFromFeatureXY();
 
         // Update also the owner/parent view, if there is any
