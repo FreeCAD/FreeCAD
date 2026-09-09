@@ -29,6 +29,7 @@ qt_add_resources(PartDesignGui_SRCS
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
     TaskPadPocketParameters.ui
+    TaskThinProperties.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDefeaturingParameters.ui
@@ -140,6 +141,7 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskExtrudeParameters.cpp
     TaskExtrudeParameters.h
     TaskPadPocketParameters.ui
+    TaskThinProperties.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
     TaskPocketParameters.cpp

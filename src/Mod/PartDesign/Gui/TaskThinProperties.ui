@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskThinProperties</class>
+ <widget class="QWidget" name="PartDesignGui::TaskThinProperties">
+     <layout class="QFormLayout" name="thinLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="thinThicknessLabel">
+        <property name="text">
+         <string>Thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefQuantitySpinBox" name="thinThickness" native="true">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="thinThickness2Label">
+        <property name="text">
+         <string>Side B thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefQuantitySpinBox" name="thinThickness2" native="true">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="thinSideLabel">
+        <property name="text">
+         <string>Placement</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="thinSide">
+        <item>
+         <property name="text">
+          <string>Side A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Side B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Centered</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Two sides</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="thinJoinLabel">
+        <property name="text">
+         <string>Corners</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="thinJoin">
+        <item>
+         <property name="text">
+          <string>Sharp</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Round</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="thinCapLabel">
+        <property name="text">
+         <string>Endpoints</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="thinCap">
+        <item>
+         <property name="text">
+          <string>Flat</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Round</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="thinDraftReferenceLabel">
+        <property name="text">
+         <string>Draft Reference</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="thinDraftReference">
+        <property name="toolTip">
+         <string>Hold nominal thickness on one plane normal to growth at the root or top extent. Thickness along a curved attachment may vary.</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Root</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Top</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="thinFilletRadiusLabel">
+        <property name="text"><string>Fillet radius</string></property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefQuantitySpinBox" name="thinFilletRadius" native="true">
+        <property name="unit" stdset="0"><string notr="true">mm</string></property>
+        <property name="keyboardTracking" stdset="0"><bool>false</bool></property>
+        <property name="toolTip"><string>Round new junction edges where the thin extrusion meets the existing body's surface. Zero leaves the junction sharp.</string></property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="thinExtensionLabel">
+        <property name="text"><string>Extend</string></property>
+        <property name="buddy"><cstring>thinExtension</cstring></property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QComboBox" name="thinExtension">
+        <property name="toolTip">
+         <string>Using Dimension or Up to face: extend free endpoints to the existing shape over the extrusion height. C1 continues the tangent; C2 preserves endpoint curvature before transitioning to a tangent. Extend all free ends, or uncheck All Free Ends to select specific edges. Off keeps the original endpoints.</string>
+        </property>
+        <item><property name="text"><string>Off</string></property></item>
+        <item><property name="text"><string>C1</string></property></item>
+        <item><property name="text"><string>C2</string></property></item>
+       </widget>
+      </item>
+      <item row="9" column="0" colspan="2">
+       <widget class="QCheckBox" name="thinExtendAll">
+        <property name="text"><string>All Free Ends</string></property>
+        <property name="checked"><bool>true</bool></property>
+        <property name="toolTip"><string>Extend every free endpoint. Uncheck to select the profile edges whose free endpoints should extend.</string></property>
+       </widget>
+      </item>
+      <item row="10" column="0" colspan="2">
+       <widget class="QWidget" name="thinExtensionControls" native="true">
+        <layout class="QVBoxLayout" name="thinExtensionLayout">
+         <property name="leftMargin"><number>0</number></property>
+         <property name="topMargin"><number>0</number></property>
+         <property name="rightMargin"><number>0</number></property>
+         <property name="bottomMargin"><number>0</number></property>
+         <item><widget class="QTableWidget" name="thinExtensionEdgesTable">
+          <property name="minimumSize"><size><width>0</width><height>110</height></size></property>
+          <property name="maximumSize"><size><width>16777215</width><height>180</height></size></property>
+          <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+          <property name="frameShadow"><enum>QFrame::Sunken</enum></property>
+          <property name="showGrid"><bool>false</bool></property>
+          <property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property>
+          <property name="selectionMode"><enum>QAbstractItemView::ExtendedSelection</enum></property>
+          <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>
+          <property name="contextMenuPolicy"><enum>Qt::ActionsContextMenu</enum></property>
+          <property name="toolTip"><string>Select rows to highlight their profile edges. Use the trash button or Delete to remove selected rows. No endpoints extend until an edge is selected.</string></property>
+          <attribute name="horizontalHeaderVisible"><bool>true</bool></attribute>
+          <column><property name="text"><string>Edges</string></property></column>
+         </widget></item>
+         <item><layout class="QHBoxLayout" name="thinExtensionButtons">
+          <item><widget class="QToolButton" name="thinSelectExtensionEdges">
+           <property name="text"><string>+ Add edge</string></property>
+           <property name="toolButtonStyle"><enum>Qt::ToolButtonTextBesideIcon</enum></property>
+           <property name="checkable"><bool>true</bool></property>
+           <property name="toolTip"><string>Click source profile edges to add or remove them, then click Done. Only free endpoints of selected edges extend.</string></property>
+          </widget></item>
+          <item><spacer name="thinSelectionSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+          <item><widget class="QToolButton" name="thinRemoveExtensionEdges">
+           <property name="text"><string>Delete selected geometry</string></property>
+           <property name="accessibleName"><string>Delete selected geometry</string></property>
+           <property name="toolButtonStyle"><enum>Qt::ToolButtonIconOnly</enum></property>
+           <property name="toolTip"><string>Remove the selected rows from the edges to extend.</string></property>
+          </widget></item>
+         </layout></item>
+         <item><widget class="QLabel" name="thinExtensionEdgeNames">
+          <property name="text"><string>Select edges to extend</string></property>
+          <property name="wordWrap"><bool>true</bool></property>
+         </widget></item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
