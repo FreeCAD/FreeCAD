@@ -37,6 +37,7 @@
 #include <Gui/Macro.h>
 
 #include <Mod/Part/App/PolarPatternExtension.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "PatternParametersWidget.h"
 #include "PatternCircularParametersWidget.h"
@@ -67,6 +68,207 @@ std::string patternReferenceCommand(
 TaskPatternParameters::TaskPatternParameters() = default;
 
 TaskPatternParameters::~TaskPatternParameters() = default;
+
+void TaskPatternParameters::setupPatternParameterUI(
+    QWidget* parent,
+    QWidget* firstPlaceholder,
+    QWidget* secondPlaceholder,
+    Gui::View3DInventorViewer* viewer,
+    QObject* signalContext,
+    int updateViewTimeout
+)
+{
+    auto* pattern = getPatternObject();
+    if (!pattern) {
+        return;
+    }
+
+    auto* linear = dynamic_cast<Part::LinearPatternExtension*>(pattern);
+    auto* polar = dynamic_cast<Part::PolarPatternExtension*>(pattern);
+    if (!linear && !polar) {
+        Base::Console().warning(
+            "Pattern task panel property binding failed. Unsupported pattern object.\n"
+        );
+        return;
+    }
+
+    PartGui::PatternType type = linear ? PartGui::PatternType::Linear : PartGui::PatternType::Polar;
+
+    parametersWidget = new PartGui::PatternParametersWidget(type, viewer, parent);
+    auto* placeholderLayout = new QVBoxLayout(firstPlaceholder);
+    placeholderLayout->setContentsMargins(0, 0, 0, 0);
+    placeholderLayout->addWidget(parametersWidget);
+    firstPlaceholder->setLayout(placeholderLayout);
+
+    fillDirectionCombo(parametersWidget->dirLinks, Part::LinearPatternDirection::First);
+    QObject::connect(
+        parametersWidget,
+        &PartGui::PatternParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = parametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        parametersWidget,
+        &PartGui::PatternParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
+
+    if (linear) {
+        parametersWidget2 = new PartGui::PatternParametersWidget(type, viewer, parent);
+        auto* placeholderLayout2 = new QVBoxLayout(secondPlaceholder);
+        placeholderLayout2->setContentsMargins(0, 0, 0, 0);
+        placeholderLayout2->addWidget(parametersWidget2);
+        secondPlaceholder->setLayout(placeholderLayout2);
+
+        fillDirectionCombo(parametersWidget2->dirLinks, Part::LinearPatternDirection::Second);
+        QObject::connect(
+            parametersWidget2,
+            &PartGui::PatternParametersWidget::requestReferenceSelection,
+            signalContext,
+            [this]() {
+                activeDirectionWidget = parametersWidget2;
+                onReferenceSelectionRequested();
+            }
+        );
+        QObject::connect(
+            parametersWidget2,
+            &PartGui::PatternParametersWidget::parametersChanged,
+            signalContext,
+            [this]() { onPatternParametersChanged(); }
+        );
+        parametersWidget2->setTitle(tr("Direction 2"));
+        parametersWidget2->setCheckable(true);
+    }
+
+    bindPatternProperties();
+
+    updateViewTimer = new QTimer(signalContext);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(updateViewTimeout);
+    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
+        onUpdateViewTimer();
+    });
+}
+
+void TaskPatternParameters::setupCircularPatternParameterUI(
+    QWidget* parent,
+    QWidget* placeholder,
+    QObject* signalContext,
+    int updateViewTimeout,
+    App::PropertyLinkSub* axis,
+    App::PropertyLength* radialDistance,
+    App::PropertyLength* tangentialDistance,
+    App::PropertyIntegerConstraint* numberCircles,
+    App::PropertyIntegerConstraint* symmetry
+)
+{
+    circularParametersWidget = new PatternCircularParametersWidget(parent);
+    auto* layout = new QVBoxLayout(placeholder);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(circularParametersWidget);
+
+    fillDirectionCombo(circularParametersWidget->dirLinks, Part::LinearPatternDirection::First);
+    circularParametersWidget
+        ->bindProperties(axis, radialDistance, tangentialDistance, numberCircles, symmetry);
+
+    QObject::connect(
+        circularParametersWidget,
+        &PatternCircularParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = circularParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        circularParametersWidget,
+        &PatternCircularParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
+
+    updateViewTimer = new QTimer(signalContext);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(updateViewTimeout);
+    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
+        onUpdateViewTimer();
+    });
+}
+
+void TaskPatternParameters::setupPathPatternParameterUI(
+    QWidget* parent,
+    QWidget* placeholder,
+    QObject* signalContext,
+    int updateViewTimeout,
+    App::PropertyLinkSub* path,
+    App::PropertyIntegerConstraint* count,
+    App::PropertyEnumeration* spacingMode,
+    App::PropertyLength* spacing,
+    App::PropertyLength* startOffset,
+    App::PropertyLength* endOffset,
+    App::PropertyBool* reversePath,
+    App::PropertyBool* align
+)
+{
+    pathParametersWidget = new PatternPathParametersWidget(parent);
+    auto* layout = new QVBoxLayout(placeholder);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(pathParametersWidget);
+
+    pathParametersWidget
+        ->bindProperties(path, count, spacingMode, spacing, startOffset, endOffset, reversePath, align);
+
+    QObject::connect(
+        pathParametersWidget,
+        &PatternPathParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pathParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        pathParametersWidget,
+        &PatternPathParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
+
+    updateViewTimer = new QTimer(signalContext);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(updateViewTimeout);
+    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
+        onUpdateViewTimer();
+    });
+}
+
+void TaskPatternParameters::setupPointPatternParameterUI(
+    QWidget* parent,
+    QWidget* placeholder,
+    QObject* signalContext,
+    App::PropertyLinkSub* pointObject
+)
+{
+    pointParametersWidget = new PatternPointParametersWidget(parent);
+    auto* layout = new QVBoxLayout(placeholder);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(pointParametersWidget);
+    pointParametersWidget->bindProperty(pointObject);
+
+    QObject::connect(
+        pointParametersWidget,
+        &PatternPointParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pointParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+}
 
 void TaskPatternParameters::bindPatternProperties()
 {
@@ -241,6 +443,94 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
 
     if (dynamic_cast<Part::PolarPatternExtension*>(pattern)) {
         applyWidget(parametersWidget, "Axis", "Reversed", "Mode", "SpacingPattern");
+    }
+}
+
+void TaskPatternParameters::updatePatternSpacingLabels()
+{
+    auto* pattern = getPatternObject();
+    if (!pattern) {
+        return;
+    }
+
+    if (auto* linearPattern = dynamic_cast<Part::LinearPatternExtension*>(pattern)) {
+        const Base::Vector3d startPoint = getPatternStartPoint();
+
+        auto updateLinearLabels = [this, linearPattern, startPoint](
+                                      PartGui::PatternParametersWidget* widget,
+                                      Part::LinearPatternDirection dir,
+                                      const Base::Vector3d& fallbackDirection
+                                  ) {
+            if (!widget) {
+                return;
+            }
+
+            Base::Vector3d direction = fallbackDirection;
+            try {
+                gp_Vec offset = linearPattern->calculateOffsetVector(dir);
+                if (offset.Magnitude() > Precision::Confusion()) {
+                    offset.Normalize();
+                    direction = Base::convertTo<Base::Vector3d>(offset);
+                }
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().warning(
+                    "Could not update linear pattern spacing labels: %s\n",
+                    e.what()
+                );
+            }
+
+            direction = transformLinearPatternDirection(direction);
+            widget->updateSpacingLabels(startPoint, direction, getLinearPatternLabelPlaneNormal(dir));
+        };
+
+        updateLinearLabels(
+            parametersWidget,
+            Part::LinearPatternDirection::First,
+            getLinearPatternFallbackDirection(Part::LinearPatternDirection::First)
+        );
+        updateLinearLabels(
+            parametersWidget2,
+            Part::LinearPatternDirection::Second,
+            getLinearPatternFallbackDirection(Part::LinearPatternDirection::Second)
+        );
+        return;
+    }
+
+    if (auto* polarPattern = dynamic_cast<Part::PolarPatternExtension*>(pattern)) {
+        try {
+            gp_Ax2 axisDef = polarPattern->getRotation();
+            transformPolarPatternAxis(axisDef);
+
+            gp_Pnt centerGp = axisDef.Location();
+            gp_Dir axisGp = axisDef.Direction();
+            Base::Vector3d center = Base::convertTo<Base::Vector3d>(centerGp);
+            Base::Vector3d axis = Base::convertTo<Base::Vector3d>(axisGp);
+
+            Base::Rotation labelRot(Base::Vector3d::UnitZ, axis);
+            Base::Vector3d xDir;
+            labelRot.multVec(Base::Vector3d::UnitX, xDir);
+
+            const Base::Vector3d startPoint = getPatternStartPoint();
+            Base::Vector3d startRadiusVec = startPoint - center;
+            double radius = startRadiusVec.Length();
+            if (radius < Precision::Confusion()) {
+                radius = 1.0;
+            }
+
+            double initialAngleRad = 0.0;
+            Base::Vector3d projectedRadiusVec = startRadiusVec - (startRadiusVec.Dot(axis)) * axis;
+            if (projectedRadiusVec.Length() > 1e-6) {
+                initialAngleRad = xDir.GetAngleOriented(projectedRadiusVec, axis);
+            }
+
+            if (parametersWidget) {
+                parametersWidget->updateSpacingLabels(center, axis, radius, initialAngleRad);
+            }
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Could not update polar pattern spacing labels: %s\n", e.what());
+        }
     }
 }
 

@@ -257,6 +257,8 @@ SET(PartGui_SRCS
     TaskFaceAppearances.cpp
     TaskFaceAppearances.h
     TaskFaceAppearances.ui
+    TaskPatternParameters.cpp
+    TaskPatternParameters.h
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui
