@@ -158,4 +158,177 @@ void TaskRibParameters::refresh()
     updateVisibility();
 }
 
+void TaskRibParameters::finishSelection()
+{
+    if (picking == Pick::None) {
+        return;
+    }
+
+    auto rib = getObject<PartDesign::Rib>();
+    if (picking == Pick::Profile && rib && rib->Profile.getValue() && !profileVisible) {
+        getGuiDocument()->setHide(rib->Profile.getValue()->getNameInDocument());
+    }
+    exitSelectionMode();
+    picking = Pick::None;
+    for (auto button :
+         {ui->ribSelectProfile,
+          ui->ribSelectTarget,
+          advancedUi->ribSelectDirection,
+          advancedUi->ribSelectPullDirection}) {
+        QSignalBlocker blocker(button);
+        button->setChecked(false);
+    }
+    refresh();
+    setGizmoPositions();
+}
+
+void TaskRibParameters::select(Pick mode)
+{
+    const auto old = picking;
+    finishSelection();
+    if (old == mode) {
+        return;
+    }
+
+    picking = mode;
+    auto flags = mode == Pick::Target ? AllowSelection::FACE | AllowSelection::WHOLE
+        : mode == Pick::Profile ? AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::WHOLE
+                                : AllowSelectionFlags(AllowSelection::EDGE);
+    onSelectReference(flags);
+
+    auto rib = getObject<PartDesign::Rib>();
+    if (mode == Pick::Direction || mode == Pick::Pull) {
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new RibDirectionSelection(
+            rib,
+            mode == Pick::Direction ? advancedUi->ribDirectionMode->currentIndex() == 1
+                                    : advancedUi->ribPullMode->currentIndex() == 2
+        ));
+    }
+
+    if (mode == Pick::Profile && rib->Profile.getValue()) {
+        auto view = getGuiDocument()->getViewProvider(rib->Profile.getValue());
+        profileVisible = view && view->isVisible();
+        getGuiDocument()->setShow(rib->Profile.getValue()->getNameInDocument());
+    }
+
+    (mode == Pick::Profile         ? ui->ribSelectProfile
+         : mode == Pick::Target    ? ui->ribSelectTarget
+         : mode == Pick::Direction ? advancedUi->ribSelectDirection
+                                   : advancedUi->ribSelectPullDirection)
+        ->setChecked(true);
+
+    auto edit = mode == Pick::Profile ? ui->ribProfile
+        : mode == Pick::Target        ? ui->ribTarget
+        : mode == Pick::Direction     ? advancedUi->ribDirectionReference
+                                      : advancedUi->ribPullReference;
+    edit->clear();
+    edit->setPlaceholderText(tr("Selecting…"));
+    if (gizmoContainer) {
+        gizmoContainer->visible = false;
+    }
+}
+
+void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (picking == Pick::None || msg.Type != Gui::SelectionChanges::AddSelection) {
+        return;
+    }
+
+    auto rib = getObject<PartDesign::Rib>();
+    App::DocumentObject* object = nullptr;
+    std::vector<std::string> names;
+    NoDependentsSelection gate(rib);
+    auto raw = rib->getDocument()->getObject(msg.pObjectName);
+    if (!raw || !gate.allow(rib->getDocument(), raw, msg.pSubName)
+        || !getReferencedSelection(rib, msg, object, names) || !object || names.empty()) {
+        return;
+    }
+
+    if (picking == Pick::Profile) {
+        if (!names.front().empty() && names.front().rfind("Edge", 0) != 0) {
+            return;
+        }
+        const bool add = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
+        if (add && object == rib->Profile.getValue() && !names.front().empty()) {
+            auto old = rib->Profile.getSubValues();
+            old.erase(std::remove(old.begin(), old.end(), ""), old.end());
+            if (std::find(old.begin(), old.end(), names.front()) == old.end()) {
+                old.push_back(names.front());
+            }
+            names = old;
+        }
+        rib->Profile.setValue(object, names);
+        Gui::Selection().clearSelection();
+        if (!add || names.front().empty()) {
+            finishSelection();
+        }
+    }
+    else {
+        if (picking == Pick::Target) {
+            rib->UpToShape.setValues({object}, names);
+        }
+        else if (picking == Pick::Direction) {
+            rib->ReferenceAxis.setValue(object, names);
+        }
+        else {
+            rib->DraftPullDirection.setValue(object, names);
+        }
+        finishSelection();
+    }
+    refresh();
+    updateFeature();
+}
+
+void TaskRibParameters::apply()
+{
+    finishSelection();
+
+    auto rib = getObject<PartDesign::Rib>();
+    for (auto field : quantities) {
+        field->apply();
+    }
+
+    FCMD_OBJ_CMD(rib, "Extension = " << ui->ribExtension->currentIndex());
+    FCMD_OBJ_CMD(rib, "ThinSide = " << ui->ribPlacement->currentIndex());
+    FCMD_OBJ_CMD(rib, "Type = '" << rib->Type.getValueAsString() << "'");
+    FCMD_OBJ_CMD(rib, "Reversed = " << (rib->Reversed.getValue() ? "True" : "False"));
+    FCMD_OBJ_CMD(rib, "AutoDirection = " << (rib->AutoDirection.getValue() ? "True" : "False"));
+    FCMD_OBJ_CMD(rib, "TowardReference = " << (rib->TowardReference.getValue() ? "True" : "False"));
+    FCMD_OBJ_CMD(rib, "UseCustomVector = " << (rib->UseCustomVector.getValue() ? "True" : "False"));
+    FCMD_OBJ_CMD(rib, "FlipPullDirection = " << (rib->FlipPullDirection.getValue() ? "True" : "False"));
+    FCMD_OBJ_CMD(rib, "DraftPullMode = " << rib->DraftPullMode.getValue());
+
+    const auto pull = rib->DraftPullVector.getValue();
+    FCMD_OBJ_CMD(rib, "DraftPullVector = (" << pull.x << "," << pull.y << "," << pull.z << ")");
+
+    auto link = [](const App::PropertyLinkSub& property) {
+        return property.getValue() ? "(" + Gui::Command::getObjectCmd(property.getValue()) + ", "
+                + buildLinkSubPythonStr(property.getValue(), property.getSubValues()) + ")"
+                                   : "None";
+    };
+    FCMD_OBJ_CMD(rib, "Profile = " << link(rib->Profile));
+    FCMD_OBJ_CMD(rib, "ReferenceAxis = " << link(rib->ReferenceAxis));
+    FCMD_OBJ_CMD(rib, "DraftPullDirection = " << link(rib->DraftPullDirection));
+    FCMD_OBJ_CMD(
+        rib,
+        "UpToShape = "
+            << buildLinkSubListPythonStr(rib->UpToShape.getValues(), rib->UpToShape.getSubValues())
+    );
+
+    const auto value = rib->UseCustomVector.getValue() ? rib->Direction.getValue()
+                                                       : rib->FillDirection.getValue();
+    FCMD_OBJ_CMD(
+        rib,
+        (rib->UseCustomVector.getValue() ? "Direction" : "FillDirection")
+            << " = (" << value.x << "," << value.y << "," << value.z << ")"
+    );
+}
+
+void TaskRibParameters::updateFeature()
+{
+    recomputeFeature();
+    setGizmoPositions();
+}
+
 }  // namespace PartDesignGui
