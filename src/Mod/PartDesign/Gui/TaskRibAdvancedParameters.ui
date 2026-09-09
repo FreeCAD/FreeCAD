@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<ui version="4.0">
+ <class>PartDesignGui::TaskRibAdvancedParameters</class>
+ <widget class="QWidget" name="ribAdvancedPanel">
+  <layout class="QFormLayout" name="advancedForm">
+   <item row="0" column="0">
+    <widget class="QLabel" name="ribDirectionModeLabel">
+     <property name="text">
+      <string>Extent Direction</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="ribDirectionMode">
+     <item>
+      <property name="text">
+       <string>Towards Parent Shape</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Toward Reference</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Parallel To Reference</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Vector</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Profile-Local Vector</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="ribReferenceRowLabel">
+     <property name="text">
+      <string>Reference Direction</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QWidget" name="ribReferenceRow">
+     <layout class="QHBoxLayout" name="ribReferenceRowLayout" stretch="0,1,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="ribSelectDirection">
+        <property name="text">
+         <string>Object</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ribDirectionReference">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ribClearDirection">
+        <property name="toolTip">
+         <string>Clear Selection</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="ribDirectionXLabel">
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionX"></widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="ribDirectionYLabel">
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionY"></widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="ribDirectionZLabel">
+     <property name="text">
+      <string>Z</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionZ"></widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="ribPullModeLabel">
+     <property name="text">
+      <string>Draft Pull Direction</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="ribPullMode">
+     <item>
+      <property name="text">
+       <string>Automatic</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Towards Parent Shape</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Toward Reference</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Parallel To Reference</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Vector</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Profile-Local Vector</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="ribPullRowLabel">
+     <property name="text">
+      <string>Pull Reference</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QWidget" name="ribPullRow">
+     <layout class="QHBoxLayout" name="ribPullRowLayout" stretch="0,1,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="ribSelectPullDirection">
+        <property name="text">
+         <string>Object</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Select an edge or axis, or a plane/planar face to use its normal.</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="ribPullReference">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="ribClearPullDirection">
+        <property name="toolTip">
+         <string>Clear Selection</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="ribPullXLabel">
+     <property name="text">
+      <string>X</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullX"></widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="ribPullYLabel">
+     <property name="text">
+      <string>Y</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullY"></widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="ribPullZLabel">
+     <property name="text">
+      <string>Z</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullZ"></widget>
+   </item>
+   <item row="10" column="0" colspan="2">
+    <widget class="QCheckBox" name="ribFlipPullDirection">
+     <property name="text">
+      <string>Flip Pull Direction</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources></resources>
+ <connections></connections>
+</ui>
