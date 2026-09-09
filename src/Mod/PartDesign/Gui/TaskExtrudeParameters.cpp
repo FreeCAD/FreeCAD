@@ -1113,7 +1113,10 @@ void TaskExtrudeParameters::fillDirectionCombo()
             hasFace = hasProfileFace(pcFeat);
         }
 
-        if (pcSketch) {
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            addAxisToCombo(nullptr, std::string(), tr("Profile direction"));
+        }
+        else if (pcSketch) {
             addAxisToCombo(pcSketch, "N_Axis", tr("Sketch normal"));
         }
         else if (hasFace) {
@@ -1124,11 +1127,24 @@ void TaskExtrudeParameters::fillDirectionCombo()
         addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
 
         // we start with the sketch normal as proposal for the custom direction
-        if (pcSketch) {
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            addAxisToCombo(nullptr, std::string(), tr("Custom direction"));
+        }
+        else if (pcSketch) {
             addAxisToCombo(pcSketch, "N_Axis", tr("Custom direction"));
         }
         else if (hasFace) {
             addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Custom direction"), false);
+        }
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            // Append after the existing fixed entries; Pad/Pocket indices are unchanged.
+            addAxisToCombo(nullptr, std::string(), tr("Toward reference…"));
+            ui->directionCB->setItemData(
+                3,
+                tr("Select an edge to grow toward from the profile center. Termination is "
+                   "controlled separately."),
+                Qt::ToolTipRole
+            );
         }
     }
 
@@ -1137,7 +1153,19 @@ void TaskExtrudeParameters::fillDirectionCombo()
     int indexOfCurrent = -1;
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string>& subList = propReferenceAxis->getSubValues();
+    auto rib = getObject<PartDesign::ThinExtrude>();
+    if (rib) {
+        axesInList[3]->setValue(ax, subList);
+        ui->directionCB->setItemText(
+            3,
+            rib->TowardReference.getValue() && ax ? tr("Toward: %1").arg(getRefStr(ax, subList))
+                                                  : tr("Toward reference…")
+        );
+    }
     for (size_t i = 0; i < axesInList.size(); i++) {
+        if (rib && i == 3) {
+            continue;
+        }
         if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
             indexOfCurrent = i;
             break;
@@ -1163,6 +1191,9 @@ void TaskExtrudeParameters::fillDirectionCombo()
     // highlight either current index or set custom direction
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     bool hasCustom = extrude->UseCustomVector.getValue();
+    if (rib && rib->TowardReference.getValue() && !hasCustom) {
+        indexOfCurrent = 3;
+    }
     if (indexOfCurrent != -1 && !hasCustom) {
         ui->directionCB->setCurrentIndex(indexOfCurrent);
         updateDirectionEdits();
@@ -1280,7 +1311,8 @@ void TaskExtrudeParameters::updateSideUI(
     s.offsetEdit->setVisible(finalOffsetVisible);
     s.offsetEdit->setEnabled(finalOffsetVisible);
 
-    const bool finalTaperVisible = isParentVisible && isTaperVisible;
+    const bool finalTaperVisible = isParentVisible
+        && (isTaperVisible || getObject<PartDesign::FeatureExtrude>()->Thin.getValue());
     s.labelTaperAngle->setVisible(finalTaperVisible);
     s.taperEdit->setVisible(finalTaperVisible);
     s.taperEdit->setEnabled(finalTaperVisible);
@@ -1311,7 +1343,12 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
 
-    if (num == DirectionModes::Select) {
+    auto rib = getObject<PartDesign::ThinExtrude>();
+    const bool toward = rib && num == 3;
+    if (rib) {
+        rib->TowardReference.setValue(toward);
+    }
+    if (num == DirectionModes::Select || toward) {
         // to distinguish that this is the direction selection
         setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
@@ -1461,6 +1498,18 @@ void TaskExtrudeParameters::setDirectionMode(int index)
             ui->checkBoxAlongDirection->show();
             break;
     }
+    if (auto rib = dynamic_cast<PartDesign::ThinExtrude*>(extrude);
+        rib && rib->RibMode.getValue() != 0) {
+        ui->checkBoxAlongDirection->setChecked(false);
+        ui->checkBoxAlongDirection->hide();
+    }
+}
+
+void TaskExtrudeParameters::refreshDirectionControls()
+{
+    setDirectionMode(ui->directionCB->currentIndex());
+    updateDirectionEdits();
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onReversedChanged(bool on)
@@ -1781,6 +1830,9 @@ void TaskExtrudeParameters::applyParameters()
         "Direction = (" << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")"
     );
     FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
+    if (auto rib = dynamic_cast<PartDesign::ThinExtrude*>(obj)) {
+        FCMD_OBJ_CMD(obj, "TowardReference = " << (rib->TowardReference.getValue() ? 1 : 0));
+    }
     FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "SideType = " << getSidesMode());
     FCMD_OBJ_CMD(obj, "Type = " << type1);
