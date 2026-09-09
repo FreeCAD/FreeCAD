@@ -81,6 +81,19 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.assertAlmostEqual(expected.cut(feature.AddSubShape).Volume, 0, delta=1e-5)
         return body, base, sketch, feature, inner
 
+    def testFullHeightConicalWall(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        for z in (0.1, 9, 17.9):
+            section = web.AddSubShape.section(Part.makePlane(100, 100, App.Vector(-50, -50, z)))
+            self.assertAlmostEqual(section.BoundBox.XLength, 2 * (20 + z / 2), delta=1e-5)
+            self.assertAlmostEqual(section.BoundBox.YLength, 2, delta=1e-5)
+
+    def testFullHeightCurvedWall(self):
+        self.bowlWall(curved=True)
+
+    def testFullHeightThinPad(self):
+        self.bowlWall(kind="PartDesign::Pad")
+
     def checkBowlRimTermination(self, kind=None):
         body, base, sketch, wall, inner = self.bowlWall(cross=True, kind=kind)
         self.assertAlmostEqual(base.Shape.Faces[1].BoundBox.ZMin, 30, delta=1e-6)
@@ -123,6 +136,67 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.doc.recompute()
         self.valid(wall)
         self.assertAlmostEqual(wall.Shape.Volume, volume, delta=1e-5)
+
+    def testBowlRimTerminationWithDraft(self):
+        body, base, sketch, wall, inner = self.bowlWall()
+        wall.Type = "UpToFace"
+        wall.UpToFace = (base, ["Face2"])
+        wall.TaperAngle = 1
+        self.doc.recompute()
+        self.valid(wall)
+        self.assertAlmostEqual(wall.AddSubShape.cut(inner).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(wall.AddSubShape.BoundBox.ZMax, 30, delta=1e-5)
+
+    def testBowlRimTermination(self):
+        self.checkBowlRimTermination()
+
+    def testThinPadBowlRimTermination(self):
+        self.checkBowlRimTermination(kind="PartDesign::Pad")
+
+    def testWallExtensionToSmallObliqueFace(self):
+        body, base, sketch, wall, inner = self.bowlWall(cross=True)
+        reference = self.doc.addObject("Part::Feature", "ObliqueReference")
+        reference.Shape = Part.Face(
+            Part.makePolygon(
+                [
+                    App.Vector(x, y, 25 + 0.1 * x)
+                    for x, y in ((-2, -2), (2, -2), (2, 2), (-2, 2), (-2, -2))
+                ]
+            )
+        )
+        target = body.newObject("PartDesign::SubShapeBinder", "ObliqueTarget")
+        target.Support = [(reference, ["Face1"])]
+        body.Tip = wall
+        self.doc.recompute()
+        wall.Type = "UpToFace"
+        wall.UpToFace = (target, ["Face1"])
+        self.doc.recompute()
+        self.valid(wall)
+        below = Part.Face(
+            Part.makePolygon(
+                [
+                    App.Vector(x, -50, z)
+                    for x, z in ((-50, -1), (50, -1), (50, 30), (-50, 20), (-50, -1))
+                ]
+            )
+        ).extrude(App.Vector(0, 100, 0))
+        expected = (
+            Part.makeBox(100, 2, 40, App.Vector(-50, -1, 0))
+            .fuse(Part.makeBox(2, 100, 40, App.Vector(-1, -50, 0)))
+            .common(inner)
+            .common(below)
+        )
+        self.assertAlmostEqual(wall.AddSubShape.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(wall.AddSubShape).Volume, 0, delta=1e-5)
+        # OCCT currently rejects this drafted oblique network. Preserve a clear
+        # failure instead of accepting a stale or invalid shape as a new result.
+        wall.TaperAngle = 1
+        self.doc.recompute()
+        self.assertIn("Invalid", wall.State)
+        self.assertIn("draft", wall.getStatusString().lower())
+
+    def testFullHeightNetwork(self):
+        self.bowlWall(cross=True)
 
     def checkSelectedExtension(self, kind=None):
         body, base, sketch, web, inner = self.bowlWall(cross=True, kind=kind)
@@ -175,6 +249,456 @@ class TestThinExtrudeFeature(unittest.TestCase):
         self.doc.recompute()
         self.valid(web)
         self.assertAlmostEqual(web.AddSubShape.Volume, allEnds.Volume, delta=1e-5)
+
+    def testSelectedFullHeightExtension(self):
+        self.checkSelectedExtension()
+
+    def testThinPadSelectedFullHeightExtension(self):
+        self.checkSelectedExtension(kind="PartDesign::Pad")
+
+    def testExtensionSelectionRejectsForeignEdges(self):
+        body, base, sketch, web, inner = self.bowlWall(cross=True)
+        for selection in (
+            (base, ["Edge1"]),
+            (sketch, ["Vertex1"]),
+            (sketch, ["Edge999"]),
+            (sketch, [""]),
+        ):
+            web.ThinExtensionEdges = selection
+            web.ThinExtendAll = selection is None
+            self.doc.recompute()
+            self.assertIn("Invalid", web.State)
+        # A valid edge in the same sketch but outside the selected profile is invalid too.
+        web.Profile = (sketch, ["Edge1"])
+        web.ThinExtensionEdges = (sketch, ["Edge2"])
+        web.ThinExtendAll = False
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("contained", web.getStatusString())
+
+    def testExtensionSelectionRejectsInteriorEdge(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        sketch.delGeometry(0)
+        for x1, x2 in ((-18, -6), (-6, 6), (6, 18)):
+            sketch.addGeometry(Part.LineSegment(App.Vector(x1, 0, 0), App.Vector(x2, 0, 0)), False)
+        web.ThinExtensionEdges = (sketch, ["Edge2"])
+        web.ThinExtendAll = False
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("no free endpoints", web.getStatusString())
+        web.ThinExtensionEdges = (sketch, ["Edge1"])
+        web.ThinExtendAll = False
+        self.doc.recompute()
+        self.valid(web)
+        section = web.AddSubShape.section(Part.makePlane(100, 100, App.Vector(-50, -50, 9)))
+        self.assertAlmostEqual(section.BoundBox.XMin, -24.5, delta=1e-5)
+        self.assertAlmostEqual(section.BoundBox.XMax, 18, delta=1e-5)
+
+    def testFullHeightPlacedAndReversed(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        expected = web.Shape.copy()
+        sketch.Placement.Base.z = 18
+        web.Reversed = True
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(web.Shape.cut(expected).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(expected.cut(web.Shape).Volume, 0, delta=1e-5)
+        body.Placement = App.Placement(
+            App.Vector(135, -71, 46), App.Rotation(App.Vector(1, 2, 3), 57)
+        )
+        web.touch()
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(web.Shape.Volume, expected.Volume, delta=1e-5)
+
+    def testFullHeightStartAndTwoSides(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        expected = web.Shape.copy()
+        web.StartType = "Offset"
+        web.StartOffset = 9
+        web.SideType = "Symmetric"
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(expected.cut(web.Shape).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(web.Shape.cut(expected).Volume, 0, delta=1e-5)
+        web.SideType = "Two sides"
+        web.Length = 9
+        web.Length2 = 9
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(web.Shape.Volume, expected.Volume, delta=1e-5)
+
+    def testFullHeightRejectsEscapingEnds(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        web.Length = 32
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("not bounded", web.getStatusString())
+        web.ThinExtension = "Off"
+        self.doc.recompute()
+        self.valid(web)
+
+    def testFullHeightThicknessSidesAndDraft(self):
+        body, base, sketch, web, inner = self.bowlWall(curved=True)
+        for side in ("SideA", "SideB", "Two sides"):
+            web.ThinSide = side
+            web.ThinThickness2 = 1
+            self.doc.recompute()
+            self.valid(web)
+            self.assertAlmostEqual(web.AddSubShape.cut(inner).Volume, 0, delta=1e-5)
+        web.ThinSide = "Centered"
+        web.TaperAngle = 2
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(web.AddSubShape.cut(inner).Volume, 0, delta=1e-5)
+        for z in (1, 17):
+            section = web.AddSubShape.section(Part.makePlane(100, 100, App.Vector(-50, -50, z)))
+            self.assertAlmostEqual(
+                section.BoundBox.XLength, 2 * math.sqrt(900 - (z - 20) ** 2), delta=1e-5
+            )
+            self.assertAlmostEqual(
+                section.BoundBox.YLength, 2 - 2 * z * math.tan(math.radians(2)), delta=1e-5
+            )
+
+    def testFullHeightRejectsUnsupportedInputs(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        web.Type = "UpToFirst"
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("finite-length", web.getStatusString())
+        web.Type = "Length"
+        web.RibMode = 1
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("plan profile", web.getStatusString())
+        web.RibMode = 0
+        sketch.delGeometry(0)
+        sketch.addGeometry(Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), 12), False)
+        self.doc.recompute()
+        self.assertIn("Invalid", web.State)
+        self.assertIn("free endpoints", web.getStatusString())
+
+    def testFullHeightCurvedProfileAndObliqueDirection(self):
+        body, base, sketch, web, inner = self.bowlWall(curved=True)
+        sketch.delGeometry(0)
+        sketch.addGeometry(
+            Part.Arc(App.Vector(-18, 0, 0), App.Vector(0, 5, 0), App.Vector(18, 0, 0)), False
+        )
+        self.doc.recompute()
+        self.valid(web)
+        web.UseCustomVector = True
+        web.AlongSketchNormal = False
+        web.Direction = App.Vector(0.1, 0.1, 1)
+        self.doc.recompute()
+        self.valid(web)
+        self.assertAlmostEqual(web.AddSubShape.cut(inner).Volume, 0, delta=1e-5)
+
+    def testFullHeightPersistence(self):
+        body, base, sketch, web, inner = self.bowlWall()
+        volume = web.Shape.Volume
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "BodyBoundedWeb.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            web = self.doc.getObject("BowlWeb")
+            web.touch()
+            self.doc.recompute()
+            self.assertEqual(web.ThinExtension, "Tangent")
+            self.valid(web)
+            self.assertAlmostEqual(web.Shape.Volume, volume, delta=1e-5)
+
+    def testThinExtensionModesAndSelection(self):
+        body, base, sketch, pad, inner = self.bowlWall(kind="PartDesign::Pad", cross=True)
+        self.assertEqual(pad.ThinExtension, "Tangent")
+        for mode in ("Tangent", "Natural"):
+            for selected in (None, (sketch, ["Edge1"])):
+                pad.ThinExtension = mode
+                pad.ThinExtensionEdges = selected
+                pad.ThinExtendAll = selected is None
+                self.doc.recompute()
+                self.valid(pad)
+                y = 100 if selected is None else 36
+                expected = (
+                    Part.makeBox(100, 2, 18, App.Vector(-50, -1, 0))
+                    .fuse(Part.makeBox(2, y, 18, App.Vector(-1, -y / 2, 0)))
+                    .common(inner)
+                )
+                self.assertAlmostEqual(pad.AddSubShape.cut(expected).Volume, 0, delta=1e-5)
+                self.assertAlmostEqual(expected.cut(pad.AddSubShape).Volume, 0, delta=1e-5)
+        pad.ThinExtension = "Off"
+        self.assertEqual(pad.ThinExtensionEdges[1], ["Edge1"])
+        self.doc.recompute()
+        self.valid(pad)
+        self.assertAlmostEqual(pad.AddSubShape.BoundBox.XLength, 36, delta=1e-5)
+
+    def testExplicitAllFreeEnds(self):
+        body, base, sketch, pad, inner = self.bowlWall(kind="PartDesign::Pad", cross=True)
+        self.assertTrue(pad.ThinExtendAll)
+        all_volume = pad.AddSubShape.Volume
+        pad.ThinExtendAll = False
+        self.doc.recompute()
+        self.valid(pad)
+        none_volume = pad.AddSubShape.Volume
+        self.assertLess(none_volume, all_volume)
+        pad.ThinExtensionEdges = (sketch, ["Edge1"])
+        pad.ThinExtendAll = False
+        self.doc.recompute()
+        self.valid(pad)
+        self.assertFalse(pad.ThinExtendAll)
+        self.assertGreater(pad.AddSubShape.Volume, none_volume)
+        self.assertLess(pad.AddSubShape.Volume, all_volume)
+        pad.ThinExtendAll = True
+        self.assertEqual(pad.ThinExtensionEdges[1], ["Edge1"])
+        self.doc.recompute()
+        self.assertAlmostEqual(pad.AddSubShape.Volume, all_volume, delta=1e-5)
+        pad.ThinExtendAll = False
+        pad.ThinExtensionEdges = None
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "NoSelectedEnds.FCStd")
+            self.doc.recompute()
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            pad = self.doc.BowlWeb
+            self.assertFalse(pad.ThinExtendAll)
+            pad.touch()
+            self.doc.recompute()
+            self.valid(pad)
+            self.assertAlmostEqual(pad.AddSubShape.Volume, none_volume, delta=1e-5)
+
+    def testThinPocketExtensionModes(self):
+        body = self.doc.addObject("PartDesign::Body", "PocketBody")
+        base = body.newObject("PartDesign::Feature", "Block")
+        base.Shape = Part.makeBox(40, 30, 20, App.Vector(-20, -15, 0))
+        sketch = body.newObject("Sketcher::SketchObject", "CutProfile")
+        sketch.Placement.Base.z = 20
+        sketch.addGeometry(
+            [
+                Part.LineSegment(App.Vector(-8, 0, 0), App.Vector(8, 0, 0)),
+                Part.LineSegment(App.Vector(0, -5, 0), App.Vector(0, 5, 0)),
+            ],
+            False,
+        )
+        pocket = body.newObject("PartDesign::Pocket", "Pocket")
+        pocket.Profile = sketch
+        pocket.Thin = True
+        pocket.ThinThickness = 2
+        pocket.Length = 5
+        for mode in ("Off", "Tangent", "Natural"):
+            for selected in (None, (sketch, ["Edge1"])):
+                pocket.ThinExtension = mode
+                pocket.ThinExtensionEdges = selected
+                pocket.ThinExtendAll = selected is None
+                self.doc.recompute()
+                self.valid(pocket)
+                x = 16 if mode == "Off" else 40
+                y = 30 if mode != "Off" and selected is None else 10
+                cut = Part.makeBox(x, 2, 5, App.Vector(-x / 2, -1, 15)).fuse(
+                    Part.makeBox(2, y, 5, App.Vector(-1, -y / 2, 15))
+                )
+                expected = base.Shape.cut(cut)
+                self.assertAlmostEqual(pocket.Shape.cut(expected).Volume, 0, delta=1e-5)
+                self.assertAlmostEqual(expected.cut(pocket.Shape).Volume, 0, delta=1e-5)
+
+    def testThinC2SplineWall(self):
+        body, base, sketch, pad, inner = self.bowlWall(kind="PartDesign::Pad")
+        sketch.delGeometry(0)
+        curve = Part.BSplineCurve()
+        curve.buildFromPolesMultsKnots(
+            [
+                App.Vector(-18, 0, 0),
+                App.Vector(-6, 4, 0),
+                App.Vector(6, 4, 0),
+                App.Vector(18, 0, 0),
+            ],
+            [4, 4],
+            [0.0, 1.0],
+            False,
+            3,
+        )
+        sketch.addGeometry(curve, False)
+        self.doc.recompute()
+        source = sketch.Shape.copy()
+        volumes = []
+        for mode in ("Tangent", "Natural"):
+            pad.ThinExtension = mode
+            self.doc.recompute()
+            self.valid(pad)
+            self.assertAlmostEqual(pad.AddSubShape.cut(inner).Volume, 0, delta=1e-5)
+            self.assertAlmostEqual(sketch.Shape.Length, source.Length, delta=1e-7)
+            volumes.append(pad.AddSubShape.Volume)
+        self.assertNotAlmostEqual(*volumes, places=4)
+        volume = pad.Shape.Volume
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "C2Web.FCStd")
+            self.doc.saveAs(path)
+            App.closeDocument(self.doc.Name)
+            self.doc = App.openDocument(path)
+            pad = self.doc.BowlWeb
+            self.assertEqual(pad.ThinExtension, "Natural")
+            pad.touch()
+            self.doc.recompute()
+            self.valid(pad)
+            self.assertAlmostEqual(pad.Shape.Volume, volume, delta=1e-5)
+
+    def testThinPocketC2SplineAndReversedFaceExtent(self):
+        self.testThinPocketExtensionModes()
+        pocket = self.doc.Pocket
+        sketch = self.doc.CutProfile
+        sketch.delGeometry(1)
+        sketch.delGeometry(0)
+        curve = Part.BSplineCurve()
+        curve.buildFromPolesMultsKnots(
+            [App.Vector(-8, 0, 0), App.Vector(-3, 2, 0), App.Vector(3, 2, 0), App.Vector(8, 0, 0)],
+            [4, 4],
+            [0.0, 1.0],
+            False,
+            3,
+        )
+        sketch.addGeometry(curve, False)
+        pocket.ThinExtensionEdges = None
+        pocket.ThinExtendAll = True
+        volumes = []
+        for mode in ("Tangent", "Natural"):
+            pocket.ThinExtension = mode
+            self.doc.recompute()
+            self.valid(pocket)
+            self.assertAlmostEqual(pocket.Shape.cut(self.doc.Block.Shape).Volume, 0, delta=1e-5)
+            volumes.append(pocket.Shape.Volume)
+        self.assertNotAlmostEqual(*volumes, places=4)
+        sketch.Placement.Base.z = 0
+        pocket.Reversed = True
+        self.doc.recompute()
+        self.valid(pocket)
+        self.assertAlmostEqual(pocket.Shape.Volume, volumes[-1], delta=1e-5)
+        target = self.doc.addObject("Part::Feature", "Termination")
+        target.Shape = Part.makePlane(60, 50, App.Vector(-30, -25, 7))
+        pocket.Type = "UpToFace"
+        pocket.UpToFace = (target, ["Face1"])
+        self.doc.recompute()
+        self.valid(pocket)
+        removed = self.doc.Block.Shape.cut(pocket.Shape)
+        # Default spline bounds include control-polygon/deflection padding.
+        bounds = removed.optimalBoundingBox(False, False)
+        self.assertAlmostEqual(bounds.ZMin, 0, delta=1e-5)
+        self.assertAlmostEqual(bounds.ZMax, 7, delta=1e-5)
+        permitted = Part.makeBox(40, 30, 7, App.Vector(-20, -15, 0))
+        self.assertAlmostEqual(removed.cut(permitted).Volume, 0, delta=1e-5)
+
+    def testCrossPocketDraft(self):
+        self.testThinPocketExtensionModes()
+        pocket = self.doc.Pocket
+        pocket.ThinExtensionEdges = None
+        pocket.ThinExtendAll = True
+        source_length = self.doc.CutProfile.Shape.Length
+        height, thickness = 5, 2
+        for mode in ("Off", "Tangent", "Natural"):
+            pocket.ThinExtension = mode
+            total_length = 26 if mode == "Off" else 70
+            for neutral in ("Root", "Top"):
+                pocket.ThinDraftReference = neutral
+                sign = -1 if neutral == "Root" else 1
+                for angle in (-2, 2):
+                    pocket.TaperAngle = angle
+                    self.doc.recompute()
+                    self.valid(pocket)
+                    slope = math.tan(math.radians(angle))
+                    # Integrate the cross area (Lx+Ly)*w-w*w, where
+                    # w varies linearly with depth about the neutral plane.
+                    width_integral = thickness * height + sign * height**2 * slope
+                    width2_integral = (
+                        thickness**2 * height
+                        + sign * 2 * thickness * height**2 * slope
+                        + 4 / 3 * height**3 * slope**2
+                    )
+                    expected_cut = total_length * width_integral - width2_integral
+                    self.assertAlmostEqual(
+                        self.doc.Block.Shape.Volume - pocket.Shape.Volume, expected_cut, delta=1e-5
+                    )
+                    self.assertAlmostEqual(
+                        self.doc.CutProfile.Shape.Length, source_length, delta=1e-7
+                    )
+        volume = pocket.Shape.Volume
+        self.doc.PocketBody.Placement = App.Placement(
+            App.Vector(17, 23, -9), App.Rotation(App.Vector(1, 2, 3), 37)
+        )
+        pocket.touch()
+        self.doc.recompute()
+        self.valid(pocket)
+        self.assertAlmostEqual(pocket.Shape.Volume, volume, delta=1e-5)
+
+    def testCrossPadDraft(self):
+        body, base, sketch, pad, inner = self.bowlWall(kind="PartDesign::Pad", cross=True)
+        for angle in (-2, 2):
+            pad.TaperAngle = angle
+            self.doc.recompute()
+            self.valid(pad)
+            top_width = 2 - 36 * math.tan(math.radians(angle))
+
+            def strip(swap):
+                sections = []
+                for z, width in ((0, 2), (18, top_width)):
+                    points = [
+                        (-100, -width / 2),
+                        (100, -width / 2),
+                        (100, width / 2),
+                        (-100, width / 2),
+                    ]
+                    points.append(points[0])
+                    sections.append(
+                        Part.makePolygon(
+                            [
+                                App.Vector(y, x, z) if swap else App.Vector(x, y, z)
+                                for x, y in points
+                            ]
+                        )
+                    )
+                return Part.makeLoft(sections, True, True)
+
+            expected = strip(False).fuse(strip(True)).common(inner)
+            self.assertAlmostEqual(pad.AddSubShape.cut(expected).Volume, 0, delta=1e-5)
+            self.assertAlmostEqual(expected.cut(pad.AddSubShape).Volume, 0, delta=1e-5)
+
+    def testDisconnectedPocketDraft(self):
+        self.testThinPocketExtensionModes()
+        pocket = self.doc.Pocket
+        sketch = self.doc.CutProfile
+        sketch.delGeometry(1)
+        sketch.delGeometry(0)
+        for y in (-6, 6):
+            sketch.addGeometry(Part.LineSegment(App.Vector(-8, y, 0), App.Vector(8, y, 0)), False)
+        pocket.ThinExtension = "Off"
+        pocket.ThinExtensionEdges = None
+        pocket.ThinExtendAll = True
+        for angle in (-2, 2):
+            pocket.TaperAngle = angle
+            self.doc.recompute()
+            self.valid(pocket)
+            expected_cut = 32 * (10 - 25 * math.tan(math.radians(angle)))
+            self.assertAlmostEqual(
+                self.doc.Block.Shape.Volume - pocket.Shape.Volume, expected_cut, delta=1e-5
+            )
+
+    def testThinPadBowlRimJunctionFillet(self):
+        body, base, sketch, wall, inner = self.bowlWall(cross=True, kind="PartDesign::Pad")
+        wall.Type = "UpToFace"
+        wall.UpToFace = (base, ["Face2"])
+        self.doc.recompute()
+        self.valid(wall)
+        sharp = wall.Shape.copy()
+        wall.RootFilletRadius = 0.5
+        self.doc.recompute()
+        self.valid(wall)
+        self.assertGreater(wall.Shape.Volume, sharp.Volume)
+        # Spline control-polygon bounds may overestimate the finished fillet.
+        self.assertAlmostEqual(wall.Shape.optimalBoundingBox(False, False).ZMax, 30, delta=1e-5)
+        above = Part.makeBox(200, 200, 30, App.Vector(-100, -100, 30))
+        self.assertAlmostEqual(wall.Shape.common(above).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(sharp.cut(wall.Shape).Volume, 0, delta=1e-5)
+        rebuilt = base.Shape.fuse(wall.AddSubShape)
+        self.assertAlmostEqual(rebuilt.cut(wall.Shape).Volume, 0, delta=1e-5)
+        self.assertAlmostEqual(wall.Shape.cut(rebuilt).Volume, 0, delta=1e-5)
 
     def testSideProfileRib(self):
         body = self.doc.addObject("PartDesign::Body", "Body")
