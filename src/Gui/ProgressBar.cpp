@@ -85,6 +85,16 @@ struct ProgressBarPrivate
         return false;
     }
 };
+
+void safeProcessEvents()
+{
+    static bool inProcessEvents = false;
+    if (!inProcessEvents) {
+        inProcessEvents = true;
+        qApp->processEvents(QEventLoop::ExcludeSocketNotifiers, 20);
+        inProcessEvents = false;
+    }
+}
 }  // namespace Gui
 
 SequencerBar* SequencerBar::_pclSingleton = nullptr;
@@ -185,7 +195,7 @@ void SequencerBar::checkAbort()
             return;
         }
         d->checkAbortTime.restart();
-        qApp->processEvents();
+        safeProcessEvents();
         return;
     }
     // restore cursor
@@ -272,7 +282,11 @@ void SequencerBar::setValue(int step)
             }
             else {
                 d->bar->setValueEx(d->bar->value() + 1);
-                qApp->processEvents();
+                if (d->bar->isVisible()) {
+                    d->bar->repaint();
+                }
+                d->bar->resetObserveEventFilter();
+                safeProcessEvents();
             }
         }
     }
@@ -296,9 +310,10 @@ void SequencerBar::setValue(int step)
                 d->bar->setValueEx(step);
                 if (d->bar->isVisible()) {
                     showRemainingTime();
+                    d->bar->repaint();
                 }
                 d->bar->resetObserveEventFilter();
-                qApp->processEvents();
+                safeProcessEvents();
             }
         }
     }
