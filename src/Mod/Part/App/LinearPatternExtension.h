@@ -28,6 +28,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyGeo.h>
 #include <App/DocumentObjectExtension.h>
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
@@ -74,6 +75,14 @@ public:
     App::PropertyIntegerConstraint Occurrences2;
     App::PropertyFloatList Spacings2;
     App::PropertyFloatList SpacingPattern2;
+
+    /// Zero-based (direction 1, direction 2, 0) indices, independent of the grid dimensions.
+    App::PropertyVectorList SuppressedPositions;
+
+    Base::Vector3d getInstancePosition(long index) const;
+    bool isInstanceSuppressed(long index) const;
+    void setInstanceSuppressed(long index, bool suppressed);
+    void setPositionSuppressed(const Base::Vector3d& position, bool suppressed);
 
     gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
     std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
