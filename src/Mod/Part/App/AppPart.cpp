@@ -95,6 +95,7 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "CircularPatternExtension.h"
 #include "LinearPatternExtension.h"
 #include "PolarPatternExtension.h"
 #include "Geometry.h"
@@ -451,6 +452,7 @@ PyMOD_INIT_FUNC(Part)
     Part::PreviewExtension      ::init();
     Part::PreviewExtensionPython::init();
     Part::PrismExtension        ::init();
+    Part::CircularPatternExtension::init();
     Part::LinearPatternExtension::init();
     Part::PolarPatternExtension ::init();
 
