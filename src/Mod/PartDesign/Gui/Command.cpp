@@ -1230,18 +1230,54 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which, double len
         return;
     }
 
-    auto worker = [cmd, length](Part::Feature* profile, App::DocumentObject* Feat) {
+    auto worker = [cmd, length, which](Part::Feature* profile, App::DocumentObject* Feat) {
         if (!Feat) {
             return;
         }
 
         // specific parameters for Pad/Pocket
         FCMD_OBJ_CMD(Feat, "Length = " << length);
+        if (which == "Pad" || which == "Pocket") {
+            auto extrusion = static_cast<PartDesign::ProfileBased*>(Feat);
+            try {
+                const auto shape = extrusion->getProfileShape();
+                if (shape.hasSubShape(TopAbs_EDGE) && !shape.hasSubShape(TopAbs_FACE)) {
+                    const auto& subs = extrusion->Profile.getSubValues();
+                    const bool wholeSketch = profile->isDerivedFrom<Part::Part2DObject>()
+                        && std::all_of(subs.begin(), subs.end(), [](const auto& s) {
+                                                 return s.empty();
+                                             });
+                    bool thin = !wholeSketch;
+                    if (wholeSketch) {
+                        const auto wires = shape.makeWires().getSubTopoShapes(TopAbs_WIRE);
+                        thin = std::any_of(wires.begin(), wires.end(), [](const auto& wire) {
+                            return !BRep_Tool::IsClosed(wire.getShape());
+                        });
+                    }
+                    // This is a creation default, before the first recompute.
+                    // Do not change persisted Pad/Pocket execution or edit behavior.
+                    if (thin) {
+                        FCMD_OBJ_CMD(Feat, "Thin = True");
+                    }
+                }
+            }
+            catch (const Base::Exception&) {
+                // Let normal feature validation explain malformed/empty profiles.
+            }
+            catch (const Standard_Failure&) {
+            }
+        }
+        if (which == "Rib") {
+            FCMD_OBJ_CMD(Feat, "RibMode = 'Rib'");
+            FCMD_OBJ_CMD(Feat, "Extension = 'Tangent'");
+            FCMD_OBJ_CMD(Feat, "Type = 'UpToShape'");
+            FCMD_OBJ_CMD(Feat, "AutoDirection = True");
+        }
         Gui::Command::updateActive();
 
         Part::Part2DObject* sketch = dynamic_cast<Part::Part2DObject*>(profile);
 
-        if (sketch) {
+        if (sketch && which != "Rib") {
             std::ostringstream str;
             Gui::cmdAppObject(
                 Feat,
@@ -1280,6 +1316,30 @@ void CmdPartDesignPad::activated(int iMsg)
 }
 
 bool CmdPartDesignPad::isActive()
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdPartDesignRib)
+
+CmdPartDesignRib::CmdPartDesignRib()
+    : Command("PartDesign_Rib")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Rib/Web");
+    sToolTipText = QT_TR_NOOP("Creates reinforcing ribs from profile edges");
+    sWhatsThis = "PartDesign_Rib";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_Rib";
+}
+
+void CmdPartDesignRib::activated(int)
+{
+    prepareProfileBased(this, "Rib", 10.0);
+}
+
+bool CmdPartDesignRib::isActive()
 {
     return hasActiveDocument();
 }
@@ -2854,6 +2914,7 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
+    rcCmdMgr.addCommand(new CmdPartDesignRib());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
