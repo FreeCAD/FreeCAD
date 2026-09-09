@@ -198,6 +198,8 @@ SET(PartGui_SRCS
     ViewProviderCircleParametric.h
     ViewProviderLineParametric.cpp
     ViewProviderLineParametric.h
+    ViewProviderLinkArray.cpp
+    ViewProviderLinkArray.h
     ViewProviderPointParametric.cpp
     ViewProviderPointParametric.h
     ViewProviderEllipseParametric.cpp
