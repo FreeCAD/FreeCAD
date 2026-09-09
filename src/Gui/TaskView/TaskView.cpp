@@ -958,6 +958,14 @@ void TaskView::accept(App::Document* doc)
         return;
     }
 
+    // Take the dialog out of interaction right away: accept() may run a long
+    // recompute or open dialogs while pumping events, and a second click on
+    // OK during that time would re-enter this slot.
+    QWidget* panel = foundTaskInfo->taskPanel;
+    QWidget* ctrl = foundTaskInfo->ActiveCtrl;
+    panel->hide();
+    ctrl->hide();
+
     // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'accept' method
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
@@ -965,6 +973,11 @@ void TaskView::accept(App::Document* doc)
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
+    }
+    else {
+        // The dialog stays open, restore it
+        panel->show();
+        ctrl->show();
     }
 }
 
@@ -976,6 +989,12 @@ void TaskView::reject(App::Document* doc)
         return;
     }
 
+    // See 'accept'
+    QWidget* panel = foundTaskInfo->taskPanel;
+    QWidget* ctrl = foundTaskInfo->ActiveCtrl;
+    panel->hide();
+    ctrl->hide();
+
     // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
     // the dialog leaves the 'reject' method
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", true);
@@ -983,6 +1002,11 @@ void TaskView::reject(App::Document* doc)
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
         removeDialog(doc);
+    }
+    else {
+        // The dialog stays open, restore it
+        panel->show();
+        ctrl->show();
     }
 }
 
