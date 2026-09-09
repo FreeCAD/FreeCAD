@@ -34,6 +34,9 @@ DEFINE_STYLE_PARAMETER(PreviewDressUpColor, Base::Color(1.0F, 0.0F, 1.0F));
 
 DEFINE_STYLE_PARAMETER(PreviewProfileLineWidth, Gui::StyleParameters::Numeric(4));
 DEFINE_STYLE_PARAMETER(PreviewProfileOpacity, Gui::StyleParameters::Numeric(0.0));
+DEFINE_STYLE_PARAMETER(PreviewThinProfileColor, Base::Color(0.9F, 0.2F, 0.65F));
+DEFINE_STYLE_PARAMETER(PreviewRibExtensionColor, Base::Color(1.0F, 0.65F, 0.1F));
+DEFINE_STYLE_PARAMETER(PreviewRibTargetColor, Base::Color(0.25F, 0.55F, 1.0F));
 
 DEFINE_STYLE_PARAMETER(PreviewErrorColor, Base::Color(1.0F, 0.0F, 0.0F));
 DEFINE_STYLE_PARAMETER(PreviewErrorOpacity, Gui::StyleParameters::Numeric(0.05));
