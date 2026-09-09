@@ -59,7 +59,8 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 4> transformModeEnums = {"Tool Shapes", "Whole Body", "Feature Result", nullptr};
+std::array<char const*, 4> transformModeEnums
+    = {"Tool Shapes", "Whole Body", "Feature Result", nullptr};
 
 Transformed::Transformed()
 {
