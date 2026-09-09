@@ -1478,7 +1478,7 @@ void ProfileBased::getAxis(
             }  // else - an edge of the sketch was selected as an axis
         }
     }
-    else if (profile->isDerivedFrom<Part::Feature>()) {
+    else if (profile->isDerivedFrom<Part::Feature>() && checkAxis != ForbiddenAxis::NoCheck) {
         Base::Placement SketchPlm = getVerifiedObject()->Placement.getValue();
         Base::Vector3d SketchVector = getProfileNormal();
         Base::Vector3d SketchPos = SketchPlm.getPosition();
