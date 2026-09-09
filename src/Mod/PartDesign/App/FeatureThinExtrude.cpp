@@ -135,4 +135,161 @@ short ThinExtrude::mustExecute() const
     return Pad::mustExecute();
 }
 
+std::optional<Base::Vector3d> ThinExtrude::getDraftPullVector() const
+{
+    const long mode = DraftPullMode.getValue();
+    auto reference = DraftPullDirection.getValue();
+    if (mode == 0) {
+        return std::nullopt;
+    }
+
+    if (mode == 1) {
+        return Base::convertTo<Base::Vector3d>(thinDirectionTowardBody(
+            getThinInput(),
+            getBaseTopoShape(true),
+            Base::convertTo<gp_Dir>(getProfileNormal())
+        ));
+    }
+
+    if (mode == 4 || mode == 5) {
+        const auto value = DraftPullVector.getValue();
+        if (value.Length() <= Precision::Confusion()) {
+            throw Base::ValueError("Draft pull vector must not be zero");
+        }
+        auto direction = Base::convertTo<gp_Dir>(value);
+        if (mode == 5) {
+            direction.Transform(getVerifiedObject()->getLocation().Transformation());
+        }
+        return Base::convertTo<Base::Vector3d>(direction);
+    }
+
+    if (!reference) {
+        throw Base::ValueError("Select a reference for Draft Pull Direction");
+    }
+
+    return referenceDirection(reference, DraftPullDirection.getSubValues(), mode == 2);
+}
+
+Base::Vector3d ThinExtrude::referenceDirection(
+    const App::DocumentObject* object,
+    const std::vector<std::string>& names,
+    bool toward
+) const
+{
+    if (!object || names.size() > 1) {
+        throw Base::ValueError("Select one reference object or subelement");
+    }
+
+    const std::string name = names.empty() ? std::string() : names.front();
+
+    // Retain sketch H/V/N and construction axes, which are not shape subelements.
+    if (!toward && object == Profile.getValue()
+        && (name == "H_Axis" || name == "V_Axis" || name == "N_Axis" || name.rfind("Axis", 0) == 0)) {
+        Base::Vector3d origin, direction;
+        getAxis(object, names, origin, direction, ForbiddenAxis::NoCheck);
+        return direction;
+    }
+
+    // getTopoShape also resolves datum points/lines/planes, origin geometry,
+    // links and nested subobjects. Keep reference and profile in the same frame.
+    const auto target = Part::Feature::getTopoShape(
+        object,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        name.c_str()
+    );
+    return Base::convertTo<Base::Vector3d>(
+        toward ? thinDirectionTowardReference(getThinInput(), target) : thinReferenceAxis(target)
+    );
+}
+
+Base::Vector3d ThinExtrude::towardReferenceDirection() const
+{
+    return referenceDirection(ReferenceAxis.getValue(), ReferenceAxis.getSubValues(), true);
+}
+
+Base::Vector3d ThinExtrude::computeDirection(const Base::Vector3d& sketchVector, bool inverse)
+{
+    if (UseCustomVector.getValue() || (!TowardReference.getValue() && !ReferenceAxis.getValue())) {
+        return Pad::computeDirection(sketchVector, inverse);
+    }
+
+    const auto direction = referenceDirection(
+        ReferenceAxis.getValue(),
+        ReferenceAxis.getSubValues(),
+        TowardReference.getValue()
+    );
+    Direction.setValue(direction);
+    Direction.setReadOnly(true);
+    ReferenceAxis.setReadOnly(false);
+    return direction;
+}
+
+TopoShape ThinExtrude::prepareThinInput(const TopoShape& profile) const
+{
+    if (Extension.getValue() == 0 || ThinExtension.getValue() != 0) {
+        return profile;
+    }
+
+    auto body = getBaseTopoShape(true);
+    if (!body.isNull()) {
+        body = body.makeElementCopy("RibExtensionBody");
+    }
+
+    return extendThinProfile(
+        profile.makeElementCopy("RibExtensionInput"),
+        body,
+        Extension.getValue() == 2,
+        getID()
+    );
+}
+
+std::pair<TopoShape, TopoShape> ThinExtrude::getConstructionPreview() const
+{
+    TopoShape extension;
+    auto base = getBaseTopoShape(true);
+    if (!base.isNull()) {
+        base = base.makeElementCopy("RibPreviewBody");
+    }
+    if (Extension.getValue() != 0) {
+        auto profile = getThinInput().makeElementCopy("RibPreviewProfile");
+        extension = extendThinProfile(profile, base, Extension.getValue() == 2, getID())
+                        .makeElementCut(profile, "RibPreviewExtension");
+    }
+    std::vector<TopoShape> targets;
+    auto collect = [&](const App::PropertyEnumeration& type,
+                       const App::PropertyLinkSub& face,
+                       const App::PropertyLinkSubList& shapes) {
+        const std::string method = type.getValueAsString();
+        TopoShape target;
+        if (method == "UpToFace") {
+            getUpToFaceFromLinkSub(target, face);
+        }
+        else if (method == "UpToShape") {
+            getUpToShapeFromLinkSubList(target, shapes);
+            if (target.isNull()) {
+                target = base;
+            }
+        }
+        else if (method == "UpToFirst" || method == "UpToLast") {
+            target = base;
+        }
+        if (!target.isNull()) {
+            targets.push_back(target);
+        }
+    };
+    collect(Type, UpToFace, UpToShape);
+    if (SideType.getValue() == 1) {
+        collect(Type2, UpToFace2, UpToShape2);
+    }
+    TopoShape target;
+    if (!targets.empty()) {
+        target.makeElementCompound(targets, "RibPreviewTargets");
+    }
+    const auto inverse = getLocation().Inverted();
+    extension.move(inverse);
+    target.move(inverse);
+    return {extension, target};
+}
+
 }  // namespace PartDesign
