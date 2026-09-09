@@ -699,10 +699,10 @@ class SH3DImporter:
             NO = App.Vector(bb.XMin - dx, bb.YMax + dy, 0)
             NE = App.Vector(bb.XMax + dx, bb.YMax + dy, 0)
             SE = App.Vector(bb.XMax + dx, bb.YMin - dy, 0)
-            edge0 = Part.make_line(SO, NO)
-            edge1 = Part.make_line(NO, NE)
-            edge2 = Part.make_line(NE, SE)
-            edge3 = Part.make_line(SE, SO)
+            edge0 = Part.makeLine(SO, NO)
+            edge1 = Part.makeLine(NO, NE)
+            edge2 = Part.makeLine(NE, SE)
+            edge3 = Part.makeLine(SE, SO)
             ground_face = Part.makeFace([Part.Wire([edge0, edge1, edge2, edge3])])
 
             ground = App.ActiveDocument.addObject("Mesh::Feature", "Ground")
@@ -2394,9 +2394,9 @@ class WallHandler(BaseHandler):
             )
 
         edge0 = bottom_edge.copy()
-        edge1 = Part.make_line(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
+        edge1 = Part.makeLine(bottom_edge.Vertexes[1].Point, offset_bottom_edge.Vertexes[1].Point)
         edge2 = offset_bottom_edge
-        edge3 = Part.make_line(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
+        edge3 = Part.makeLine(offset_bottom_edge.Vertexes[0].Point, bottom_edge.Vertexes[0].Point)
 
         # make sure all edges are coplanar...
         ref_z = bottom_edge.CenterOfGravity.z
