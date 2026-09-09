@@ -414,7 +414,7 @@ endmacro()
 macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -c
-            "import ${IMPORT_NAME} as _m; print(getattr(_m, '__version__', '') or getattr(_m, 'version', 'unknown'), end='')"
+            "import ${IMPORT_NAME} as _m; print(getattr(_m, '__version__', 'unknown'), end='')"
         RESULT_VARIABLE _fc_import_failed
         OUTPUT_VARIABLE ${VERSION_VAR}
         ERROR_VARIABLE _fc_import_error)
