@@ -1826,8 +1826,7 @@ void SelectionSingleton::setVisible(VisibleState vis)
         // multi-element Link VisibilityList entry. Walk shorter subname prefixes
         // until a parent that supports element visibility is found (same idea as
         // Tree DocumentObjectItem::getElementVisibilityParent).
-        if ((!parent || parent->isElementVisible(elementName.c_str()) < 0)
-            && !sel.SubName.empty()) {
+        if ((!parent || parent->isElementVisible(elementName.c_str()) < 0) && !sel.SubName.empty()) {
             std::string sub = sel.SubName;
             while (!sub.empty()) {
                 auto pos = sub.find_last_of('.');
@@ -1844,8 +1843,8 @@ void SelectionSingleton::setVisible(VisibleState vis)
                 }
                 App::DocumentObject* walkParent = nullptr;
                 std::string walkElement;
-                App::DocumentObject* walkObj =
-                    selObj->resolve(trySub.c_str(), &walkParent, &walkElement);
+                App::DocumentObject* walkObj
+                    = selObj->resolve(trySub.c_str(), &walkParent, &walkElement);
                 if (!walkObj || !walkObj->isAttachedToDocument() || !walkParent
                     || !walkParent->isAttachedToDocument()) {
                     continue;
