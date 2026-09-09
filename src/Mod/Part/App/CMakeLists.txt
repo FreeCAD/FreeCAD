@@ -215,6 +215,8 @@ SET(Features_SRCS
     FeatureOffset.h
     LinearPatternExtension.cpp
     LinearPatternExtension.h
+    LinkArray.cpp
+    LinkArray.h
     PolarPatternExtension.cpp
     PolarPatternExtension.h
     OCCTMessagePrinter.cpp
