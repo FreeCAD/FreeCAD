@@ -571,4 +571,154 @@ void TaskRibParameters::updateFeature()
     setGizmoPositions();
 }
 
+void TaskRibParameters::setupGizmos()
+{
+    if (!Gui::GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    thicknessGizmo = new Gui::LinearGizmo(ui->ribThickness);
+    thickness2Gizmo = new Gui::LinearGizmo(ui->ribThickness2);
+    lengthGizmo = new Gui::LinearGizmo(ui->ribLength);
+    lengthGizmo->setClickCallback([this]() {
+        if (ui->ribExtent->currentData() == QStringLiteral("Length")) {
+            ui->ribReversed->setChecked(!ui->ribReversed->isChecked());
+        }
+    });
+
+    draftGizmo = new Gui::RotationGizmo(ui->ribDraftAngle);
+    gizmoContainer = Gui::GizmoContainer::create(
+        {thicknessGizmo, thickness2Gizmo, lengthGizmo, draftGizmo},
+        getViewObject<ViewProviderPad>()
+    );
+    setGizmoPositions();
+    showDraggerHints();
+}
+
+void TaskRibParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    gizmoContainer->visible = false;
+
+    auto rib = getObject<PartDesign::Rib>();
+    if (!rib || rib->isError() || !rib->Profile.getValue() || picking != Pick::None) {
+        return;
+    }
+
+    try {
+        const auto source = rib->getInputProfile();
+        const auto edges = source.getSubTopoShapes(TopAbs_EDGE);
+        if (edges.empty()) {
+            return;
+        }
+
+        GProp_GProps properties;
+        BRepGProp::LinearProperties(source.getShape(), properties);
+        auto center = properties.CentreOfMass();
+        auto dir = Base::convertTo<gp_Dir>(rib->Direction.getValue());
+        const auto growth = rib->Reversed.getValue() ? dir.Reversed() : dir;
+        center.Translate(gp_Vec(growth) * rib->getStartOffset());
+
+        // Side placement follows the first source edge's orientation, just as
+        // the surface-extrusion engine does, rather than a world axis.
+        BRepAdaptor_Curve curve(TopoDS::Edge(edges.front().getShape()));
+        gp_Pnt at;
+        gp_Vec tangent;
+        curve.D1((curve.FirstParameter() + curve.LastParameter()) / 2, at, tangent);
+        auto width = tangent.Crossed(gp_Vec(dir));
+        if (width.Magnitude() <= Precision::Confusion()) {
+            return;
+        }
+        width.Normalize();
+
+        auto material = rib->AddSubShape.getShape();
+        material.move(rib->getLocation());
+        gp_Trsf toGrowth;
+        toGrowth.SetTransformation(gp_Ax3(center, growth));
+        const auto measured = Part::TopoShape().makeElementTransform(material, toGrowth);
+        const auto bounds = measured.getBoundBoxOptimal();
+
+        const bool rootAtStart = PartDesign::thinRootAtStart(source, rib->getBaseTopoShape(true));
+        const bool holdTop = rib->ThinDraftReference.getValue() == 1;
+        const double neutral = holdTop == rootAtStart ? bounds.MaxZ : bounds.MinZ;
+        const auto anchor = center.Translated(gp_Vec(growth) * neutral);
+
+        const auto side = rib->ThinSide.getValue();
+        const auto widthDirection = side == 1 ? -width : width;
+        const double widthFactor = side == 2 ? .5 : 1.;
+        thicknessGizmo->setMultFactor(widthFactor);
+        thicknessGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(widthDirection)
+        );
+        thickness2Gizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(-width)
+        );
+        thickness2Gizmo->setVisibility(side == 3);
+
+        lengthGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(center),
+            Base::convertTo<Base::Vector3d>(growth)
+        );
+        lengthGizmo->setMultFactor(rib->SideType.getValue() == 2 ? .5 : 1.);
+        lengthGizmo->setVisibility(ui->ribExtent->currentData() == QStringLiteral("Length"));
+
+        auto pull = rootAtStart ? growth : growth.Reversed();
+        if (const auto explicitPull = rib->getDraftPullVector()) {
+            pull = Base::convertTo<gp_Dir>(*explicitPull);
+        }
+        if (rib->FlipPullDirection.getValue()) {
+            pull.Reverse();
+        }
+
+        auto rotationAxis = widthDirection.Crossed(gp_Vec(pull));
+        draftGizmo->setVisibility(rotationAxis.Magnitude() > Precision::Confusion());
+        if (rotationAxis.Magnitude() > Precision::Confusion()) {
+            rotationAxis.Normalize();
+            const auto draftAnchor = anchor.Translated(
+                widthDirection * rib->ThinThickness.getValue() * widthFactor
+            );
+            draftGizmo->Gizmo::setDraggerPlacement(
+                Base::convertTo<Base::Vector3d>(draftAnchor),
+                Base::convertTo<Base::Vector3d>(pull)
+            );
+            draftGizmo->getDraggerContainer()->setArcNormalDirection(
+                Base::convertTo<SbVec3f>(rotationAxis)
+            );
+            draftGizmo->automaticOrientation = false;
+        }
+
+        gizmoContainer->visible = true;
+        gizmoContainer->calculateScaleAndOrientation();
+    }
+    catch (const Base::Exception&) {
+    }
+    catch (const Standard_Failure&) {
+    }
+}
+
+TaskDlgRibParameters::TaskDlgRibParameters(ViewProviderPad* view)
+    : TaskDlgSketchBasedParameters(view)
+    , parameters(new TaskRibParameters(view))
+{
+    Content.push_back(parameters);
+    Content.push_back(parameters->advancedPanel());
+    Content.push_back(preview);
+}
+
+bool TaskDlgRibParameters::accept()
+{
+    parameters->finishSelection();
+    return TaskDlgSketchBasedParameters::accept();
+}
+
+bool TaskDlgRibParameters::reject()
+{
+    parameters->finishSelection();
+    return TaskDlgSketchBasedParameters::reject();
+}
 }  // namespace PartDesignGui
