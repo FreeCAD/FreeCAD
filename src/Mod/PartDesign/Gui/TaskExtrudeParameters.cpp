@@ -25,29 +25,66 @@
 #include <QAction>
 #include <QAbstractButton>
 #include <QSignalBlocker>
+#include <QHeaderView>
 
 
 #include <App/Document.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Tools.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include <Mod/Part/App/GizmoHelper.h>
+#include <Mod/Part/App/Tools.h>
+#include <Gui/Utilities.h>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Tool.hxx>
+#include <Mod/PartDesign/App/ThinExtrusion.h>
+#include <ShapeFix_Face.hxx>
+#include <TopoDS.hxx>
 
 #include "ui_TaskPadPocketParameters.h"
+#include "ui_TaskThinProperties.h"
 #include "TaskExtrudeParameters.h"
 #include "TaskTransformedParameters.h"
 #include "ReferenceSelection.h"
+#include <Mod/PartDesign/App/FeatureThinExtrude.h>
 
 
 using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskExtrudeParameters */
+
+namespace
+{
+class ThinProfileEdgeSelection: public Gui::SelectionFilterGate
+{
+public:
+    explicit ThinProfileEdgeSelection(App::DocumentObject* source)
+        : profile(source)
+    {}
+
+    bool allow(App::Document* doc, App::DocumentObject* object, const char* sub) override
+    {
+        if (!object || doc != profile->getDocument()) {
+            return false;
+        }
+        const App::SubObjectT reference(object, sub);
+        return reference.getSubObject() == profile
+            && reference.getOldElementName().compare(0, 4, "Edge") == 0;
+    }
+
+private:
+    App::DocumentObject* profile;
+};
+}  // namespace
 
 TaskExtrudeParameters::TaskExtrudeParameters(
     ViewProviderExtrude* SketchBasedView,
@@ -73,6 +110,22 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     group->setExclusive(true);
 
     this->groupLayout()->addWidget(proxy);
+}
+
+TaskExtrudeParameters::~TaskExtrudeParameters()
+{
+    if (selectionMode == SelectThinExtensionEdges && !thinProfileWasVisible) {
+        if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+            if (auto profile = extrude->getVerifiedObject(true)) {
+                getGuiDocument()->setHide(profile->getNameInDocument());
+            }
+        }
+    }
+}
+
+QWidget* TaskExtrudeParameters::getThinPropertiesPanel() const
+{
+    return thinPanel;
 }
 
 void TaskExtrudeParameters::setupDialog()
@@ -524,6 +577,101 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             clearFaceName(sideCtrl.lineFaceName);
         }
     }
+}
+
+void TaskExtrudeParameters::updateThinExtensionEdges()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    const bool enabled = extrude->ThinExtension.getValue() != 0;
+    const bool all = extrude->ThinExtendAll.getValue();
+    const QSignalBlocker allBlocker(thinUi->thinExtendAll);
+    thinUi->thinExtendAll->setChecked(all);
+    thinUi->thinExtendAll->setVisible(enabled);
+    thinUi->thinExtensionControls->setVisible(enabled && !all);
+    const auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    const QSignalBlocker blocker(thinUi->thinExtensionEdgesTable);
+    thinUi->thinExtensionEdgesTable->setRowCount(static_cast<int>(names.size()));
+    for (size_t i = 0; i < names.size(); ++i) {
+        thinUi->thinExtensionEdgesTable->setItem(
+            static_cast<int>(i),
+            0,
+            new QTableWidgetItem(QString::fromStdString(names[i]))
+        );
+    }
+    thinUi->thinRemoveExtensionEdges->setEnabled(false);
+    thinUi->thinExtensionEdgeNames->setVisible(names.empty());
+    thinUi->thinExtensionEdgeNames->setText(tr("Select edges to extend"));
+}
+
+void TaskExtrudeParameters::removeThinExtensionEdges()
+{
+    const auto items = thinUi->thinExtensionEdgesTable->selectedItems();
+    if (items.empty()) {
+        return;
+    }
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    for (const auto* item : items) {
+        const auto name = item->text().toStdString();
+        names.erase(std::remove(names.begin(), names.end(), name), names.end());
+    }
+    extrude->ThinExtensionEdges.setValue(names.empty() ? nullptr : extrude->getVerifiedObject(), names);
+    extrude->ThinExtendAll.setValue(false);
+    Gui::Selection().clearSelection();
+    if (names.empty()) {
+        setSelectionMode(None);
+    }
+    updateThinExtensionEdges();
+    tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::highlightThinExtensionEdges()
+{
+    const auto items = thinUi->thinExtensionEdgesTable->selectedItems();
+    thinUi->thinRemoveExtensionEdges->setEnabled(!items.empty());
+    if (items.empty()) {
+        return;
+    }
+    setSelectionMode(SelectThinExtensionEdges);
+    const bool wasBlocked = blockSelection(true);
+    Gui::Selection().clearSelection();
+    auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+    for (const auto* item : items) {
+        Gui::Selection().addSelection(
+            profile->getDocument()->getName(),
+            profile->getNameInDocument(),
+            item->text().toUtf8().constData()
+        );
+    }
+    blockSelection(wasBlocked);
+}
+
+void TaskExtrudeParameters::selectedThinExtensionEdge(const Gui::SelectionChanges& msg)
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto object = msg.Object.getSubObject();
+    if (object != extrude->getVerifiedObject()) {
+        return;
+    }
+    const std::vector<std::string> picked {msg.Object.getOldElementName()};
+    auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    for (const auto& name : picked) {
+        if (name.compare(0, 4, "Edge") != 0) {
+            continue;
+        }
+        const auto found = std::find(names.begin(), names.end(), name);
+        if (found == names.end()) {
+            names.push_back(name);
+        }
+        else {
+            names.erase(found);
+        }
+    }
+    extrude->ThinExtensionEdges.setValue(names.empty() ? nullptr : object, names);
+    extrude->ThinExtendAll.setValue(false);
+    updateThinExtensionEdges();
+    tryRecomputeFeature();
+    Gui::Selection().clearSelection();
 }
 
 void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& msg)
