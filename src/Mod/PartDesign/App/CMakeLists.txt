@@ -78,6 +78,8 @@ SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 SET(ThinExtrusion_SRCS
     ThinProfile.cpp
     ThinProfile.h
+    ThinExtrusionGeometry.cpp
+    ThinExtrusionGeometry.h
 )
 SOURCE_GROUP("ThinExtrusion" FILES ${ThinExtrusion_SRCS})
 
