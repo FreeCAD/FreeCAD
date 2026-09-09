@@ -279,3 +279,333 @@ App::DocumentObject* TaskLinkArrayParameters::getPatternObject() const
     return array;
 }
 
+void TaskLinkArrayParameters::setupLinkedObjectButton()
+{
+    updateLinkedObjectButton();
+    connect(ui->linkedObjectButton, &QPushButton::toggled, this, [this](bool checked) {
+        if (blockUpdate) {
+            return;
+        }
+
+        if (checked) {
+            enterLinkedObjectSelectionMode();
+        }
+        else {
+            exitLinkedObjectSelectionMode();
+        }
+    });
+}
+
+void TaskLinkArrayParameters::updateLinkedObjectButton()
+{
+    if (linkedObjectSelectionMode) {
+        ui->linkedObjectButton->setText(tr("Selecting…"));
+        return;
+    }
+
+    App::DocumentObject* linked = getSelectedLinkedObject();
+    ui->linkedObjectButton->setText(
+        linked ? QString::fromUtf8(linked->getLabelOrName()) : tr("Select Object")
+    );
+}
+
+void TaskLinkArrayParameters::enterLinkedObjectSelectionMode()
+{
+    if (!array) {
+        return;
+    }
+
+    if (referenceSelectionMode) {
+        exitReferenceSelectionMode();
+    }
+
+    linkedObjectSelectionMode = true;
+    attachSelection();
+    Gui::Selection().clearSelection();
+    updateLinkedObjectButton();
+    Gui::getMainWindow()->showMessage(tr("Select an object to link"));
+}
+
+void TaskLinkArrayParameters::exitLinkedObjectSelectionMode()
+{
+    if (!linkedObjectSelectionMode) {
+        updateLinkedObjectButton();
+        return;
+    }
+
+    linkedObjectSelectionMode = false;
+    if (!referenceSelectionMode) {
+        detachSelection();
+    }
+
+    blockUpdate = true;
+    ui->linkedObjectButton->setChecked(false);
+    blockUpdate = false;
+    ui->linkedObjectButton->clearFocus();
+    updateLinkedObjectButton();
+    Gui::getMainWindow()->showMessage(QString());
+}
+
+void TaskLinkArrayParameters::applyLinkedObjectSelection(App::DocumentObject* linked)
+{
+    if (!isUsefulLinkedObject(linked)) {
+        return;
+    }
+
+    setupPatternTransaction();
+    array->LinkedObject.setValue(linked);
+    linked->Visibility.setValue(false);
+    recomputePatternFeature();
+    updatePatternSpacingLabels();
+    updateLinkedObjectButton();
+}
+
+void TaskLinkArrayParameters::applyInitialSelection()
+{
+    if (!array || array->LinkedObject.getValue()) {
+        return;
+    }
+
+    auto selection = Gui::Selection().getSelectionEx(
+        nullptr,
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::OldStyleElement,
+        true
+    );
+    if (selection.empty()) {
+        return;
+    }
+
+    applyLinkedObjectSelection(selection.front().getObject());
+}
+
+bool TaskLinkArrayParameters::isUsefulLinkedObject(App::DocumentObject* obj) const
+{
+    if (!obj || !array || obj == array || obj->getDocument() != array->getDocument()
+        || obj->isInOutListRecursive(array)) {
+        return false;
+    }
+
+    if (obj->isDerivedFrom<Part::Feature>() || obj->isDerivedFrom<App::Part>()) {
+        return true;
+    }
+
+    auto* link = freecad_cast<App::Link*>(obj);
+    return link && !link->isLinkGroup();
+}
+
+App::DocumentObject* TaskLinkArrayParameters::getSelectedLinkedObject() const
+{
+    return array ? array->LinkedObject.getValue() : nullptr;
+}
+
+void TaskLinkArrayParameters::fillDirectionCombo(
+    Gui::ComboLinks& combo,
+    Part::LinearPatternDirection direction
+)
+{
+    combo.clear();
+
+    App::PropertyLinkSub defaultAxis;
+    const bool isLinear = array->isDerivedFrom<Part::LinkArrayLinear>();
+    const bool isSecondDirection = direction == Part::LinearPatternDirection::Second;
+
+    if (isLinear && !isSecondDirection) {
+        combo.addLink(defaultAxis, tr("Object X-axis"), PatternParametersWidget::DefaultDirectionUserData);
+        combo.addLink(
+            nullptr,
+            "Y_Axis",
+            tr("Object Y-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Z_Axis",
+            tr("Object Z-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+    }
+    else if (isLinear && isSecondDirection) {
+        combo.addLink(
+            nullptr,
+            "X_Axis",
+            tr("Object X-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(defaultAxis, tr("Object Y-axis"), PatternParametersWidget::DefaultDirectionUserData);
+        combo.addLink(
+            nullptr,
+            "Z_Axis",
+            tr("Object Z-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+    }
+    else {
+        combo.addLink(
+            nullptr,
+            "X_Axis",
+            tr("Object X-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Y_Axis",
+            tr("Object Y-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(defaultAxis, tr("Object Z-axis"), PatternParametersWidget::DefaultDirectionUserData);
+    }
+
+    combo.addLink(
+        nullptr,
+        std::string(),
+        tr("Select reference…"),
+        PatternParametersWidget::SelectReferenceUserData
+    );
+}
+
+void TaskLinkArrayParameters::onReferenceSelectionRequested()
+{
+    enterReferenceSelectionMode();
+}
+
+void TaskLinkArrayParameters::enterReferenceSelectionMode()
+{
+    if (linkedObjectSelectionMode) {
+        exitLinkedObjectSelectionMode();
+    }
+
+    referenceSelectionMode = true;
+    attachSelection();
+    Gui::Selection().clearSelection();
+    const QString message = [this]() {
+        if (array->isDerivedFrom<Part::LinkArrayPath>()) {
+            return tr("Select connected path edges");
+        }
+        if (array->isDerivedFrom<Part::LinkArrayPoint>()) {
+            return tr("Select a sketch or shape containing points");
+        }
+        if (array->isDerivedFrom<Part::LinkArrayPolar>()
+            || array->isDerivedFrom<Part::LinkArrayCircular>()) {
+            return tr("Select a rotation axis");
+        }
+        return tr("Select a direction reference");
+    }();
+    Gui::getMainWindow()->showMessage(message);
+}
+
+void TaskLinkArrayParameters::onPatternParametersChanged()
+{
+    if (blockUpdate) {
+        return;
+    }
+
+    kickUpdateViewTimer();
+}
+
+void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type != Gui::SelectionChanges::AddSelection || !array) {
+        return;
+    }
+
+    if (linkedObjectSelectionMode) {
+        App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
+        App::DocumentObject* obj = doc ? doc->getObject(msg.pObjectName) : nullptr;
+        if (isUsefulLinkedObject(obj)) {
+            applyLinkedObjectSelection(obj);
+            exitLinkedObjectSelectionMode();
+        }
+        return;
+    }
+
+    if (!referenceSelectionMode) {
+        return;
+    }
+
+    App::DocumentObject* obj = nullptr;
+    std::vector<std::string> subNames;
+
+    auto selection = Gui::Selection().getSelectionEx(
+        "*",
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::FollowLink,
+        true
+    );
+    if (!selection.empty()) {
+        obj = selection.front().getObject();
+        subNames = selection.front().getSubNames();
+    }
+    else {
+        App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
+        obj = doc ? doc->getObject(msg.pObjectName) : nullptr;
+        if (!Base::Tools::isNullOrEmpty(msg.pSubName)) {
+            subNames.emplace_back(msg.pSubName);
+        }
+    }
+
+    if (!obj || obj == array || obj->isInOutListRecursive(array)) {
+        return;
+    }
+
+    subNames = cleanSubNames(std::move(subNames));
+
+    setupPatternTransaction();
+    App::PropertyLinkSub* reference = nullptr;
+    const char* referenceKind = "pattern reference";
+    if (auto* linear = freecad_cast<Part::LinkArrayLinear*>(array)) {
+        reference = getActiveDirectionWidget() == getSecondaryParametersWidget()
+            ? &linear->Direction2
+            : &linear->Direction;
+        referenceKind = "linear pattern direction";
+    }
+    else if (auto* polar = freecad_cast<Part::LinkArrayPolar*>(array)) {
+        reference = &polar->Axis;
+        referenceKind = "polar pattern axis";
+    }
+    else if (auto* circular = freecad_cast<Part::LinkArrayCircular*>(array)) {
+        reference = &circular->Axis;
+        referenceKind = "circular pattern axis";
+    }
+    else if (auto* path = freecad_cast<Part::LinkArrayPath*>(array)) {
+        reference = &path->Path;
+        referenceKind = "path pattern edges";
+    }
+    else if (auto* point = freecad_cast<Part::LinkArrayPoint*>(array)) {
+        reference = &point->PointObject;
+        referenceKind = "point pattern object";
+        subNames.clear();
+    }
+
+    if (!reference) {
+        return;
+    }
+
+    App::DocumentObject* oldObj = reference->getValue();
+    std::vector<std::string> oldSubNames = reference->getSubValues();
+
+    try {
+        reference->setValue(obj, subNames);
+        recomputePatternFeature();
+        updatePatternSpacingLabels();
+        updatePatternParameterUI();
+    }
+    catch (const Base::Exception& e) {
+        reference->setValue(oldObj, oldSubNames);
+        Base::Console().warning("Could not set %s: %s\n", referenceKind, e.what());
+    }
+
+    exitReferenceSelectionMode();
+}
+
+void TaskLinkArrayParameters::exitReferenceSelectionMode()
+{
+    referenceSelectionMode = false;
+    clearActiveDirectionWidget();
+    if (!linkedObjectSelectionMode) {
+        detachSelection();
+    }
+    Gui::Selection().clearSelection();
+    Gui::getMainWindow()->showMessage(QString());
+}
+
