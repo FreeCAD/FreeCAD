@@ -2455,15 +2455,12 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension* ext)
         MaterialList.setSize(0);
     }
 
-    boost::dynamic_bitset<> elementVisibility;
-    const auto& visibility = ext->getVisibilityListValue();
-    elementVisibility.resize(elements.size());
+    linkView->setChildren(elements, ext->getVisibilityListValue());
     for (size_t i = 0; i < elements.size(); ++i) {
-        elementVisibility[i] = elements[i] && !isSuppressedLinkElement(elements[i])
-            && (visibility.size() <= i || visibility[i]);
+        if (!elements[i] || isSuppressedLinkElement(elements[i])) {
+            linkView->setElementVisible(static_cast<int>(i), false);
+        }
     }
-
-    linkView->setChildren(elements, elementVisibility);
     applyColors();
 }
 
