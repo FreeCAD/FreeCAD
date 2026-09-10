@@ -280,6 +280,46 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
             msg="The repaired segment face area is incorrect.",
         )
 
+    def test_bind_repairs_collinear_segment_face_for_extrusion(self):
+        """A segment-bound face should produce a valid solid."""
+        points = [
+            Vector(0.0, y, 0.0)
+            for y in (
+                -11969.75,
+                -10979.15,
+                -9201.15,
+                -6902.45,
+                -5734.05,
+                -4514.85,
+                -2870.2,
+                -1092.2,
+                0.0,
+            )
+        ]
+        wire = Part.Wire(
+            [Part.makeLine(start, end) for start, end in zip(points[:-1], points[1:])]
+        )
+        width = 120.65
+        offset = Vector(-width, 0.0, 0.0)
+        offset_args = {
+            "widthList": [width] * len(wire.Edges),
+            "alignList": ["Right"] * len(wire.Edges),
+            "normal": Vector(0.0, 0.0, 1.0),
+            "basewireOffset": [0.0] * len(wire.Edges),
+            "wireNedge": True,
+        }
+        outer_wire = DraftGeomUtils.offsetWire(
+            wire, offset, bind=False, occ=False, offsetMode=None, **offset_args
+        )[0]
+        base_wire = DraftGeomUtils.offsetWire(
+            wire, offset, bind=False, occ=False, offsetMode="BasewireMode", **offset_args
+        )[0]
+
+        face = DraftGeomUtils.bind(base_wire, outer_wire, per_segment=True)
+
+        self.assertIsNotNone(face)
+        self.assertTrue(face.extrude(Vector(0.0, 0.0, 3000.0)).isValid())
+
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)
 # unittest.TextTestRunner().run(suite)
