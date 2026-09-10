@@ -132,6 +132,10 @@ class TVStack(object):
                         details[detail.full_key] = detail
 
         self._rewind_tv = mTempoVis.TempoVis(self.document, None)
+        # Capture all values before applying any changes: showing a PartDesign
+        # feature can implicitly hide another feature in the same body.
+        for detail in details.values():
+            self._rewind_tv.save(detail)
         for key, detail in details.items():
             self._rewind_tv.modify(detail)
 

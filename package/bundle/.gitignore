@@ -10,3 +10,4 @@ osx/FreeCAD.app
 **.7z
 **.exe
 **-SHA256.txt
+osx/build

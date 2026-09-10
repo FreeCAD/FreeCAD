@@ -394,6 +394,28 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertTrue(len(values) == 0)
         FreeCAD.closeDocument("Issue3245")
 
+    def testPointGeometryExtension(self):
+        """Reading point geometry must preserve extensions and return a copy (#15545)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.Point(vec(1, 2)))
+        geometry = sketch.Geometry
+        geometry[0].setExtension(Part.GeometryStringExtension("point-uuid", "uuid"))
+        tag = geometry[0].Tag
+        sketch.Geometry = geometry
+        self.Doc.recompute()
+
+        point = sketch.Geometry[0]
+        self.assertTrue(point.hasExtensionOfName("uuid"))
+        self.assertEqual(point.getExtensionOfName("uuid").Value, "point-uuid")
+        self.assertEqual(point.Tag, tag)
+        self.assertEqual((point.X, point.Y, point.Z), (1, 2, 0))
+
+        point.X = 10
+        point.deleteExtensionOfName("uuid")
+        unchanged = sketch.Geometry[0]
+        self.assertEqual(unchanged.X, 1)
+        self.assertEqual(unchanged.getExtensionOfName("uuid").Value, "point-uuid")
+
     def testBlockConstraintEllipse(self):
         self.Doc3 = FreeCAD.newDocument("BlockConstraintTests")
         ActiveSketch = self.Doc3.addObject("Sketcher::SketchObject", "Sketch")
@@ -453,6 +475,41 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.solve()
         self.assertTrue(status == 0)  # no redundants/conflicts/convergence issues
         FreeCAD.closeDocument(self.Doc3.Name)
+
+    def testMissingVerticalHorizontalConstraints(self):
+        """Validation must not duplicate existing constraints (issue #21396)."""
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(
+            [
+                Part.LineSegment(vec(0, 0), vec(10, 0)),
+                Part.LineSegment(vec(20, 0), vec(20, 10)),
+            ]
+        )
+        sketch.addConstraint(
+            [
+                Sketcher.Constraint("Horizontal", 0),
+                Sketcher.Constraint("Vertical", 1),
+            ]
+        )
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+
+        sketch.delConstraint(1)
+        sketch.delConstraint(0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 2)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 2)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
+
+        sketch.setActive(0, False)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 1)
+        sketch.makeMissingVerticalHorizontal(False)
+        self.assertEqual(sketch.ConstraintCount, 3)
+        self.assertEqual(sketch.solve(), 0)
+        self.assertEqual(sketch.detectMissingVerticalHorizontalConstraints(0.1), 0)
 
     def testThreeLinesWithCoincidences_1(self):
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")

@@ -54,7 +54,7 @@ endif(FREECAD_USE_PCH)
 target_link_libraries(Start ${Start_LIBS})
 target_compile_warn_error(Start)
 
-set_bin_dir(Start Start /Mod/Start)
+set_bin_dir(Start Start)
 set_python_prefix_suffix(Start)
 
 install(TARGETS Start DESTINATION ${CMAKE_INSTALL_LIBDIR})
