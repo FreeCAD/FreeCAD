@@ -67,7 +67,7 @@ public:
 };
 }  // namespace
 
-TaskRibParameters::TaskRibParameters(ViewProviderPad* view)
+TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     : TaskSketchBasedParameters(view, nullptr, "PartDesign_Rib", tr("Rib Parameters"))
     , ui(std::make_unique<Ui_TaskRibParameters>())
     , advancedUi(std::make_unique<Ui_TaskRibAdvancedParameters>())
@@ -589,7 +589,7 @@ void TaskRibParameters::setupGizmos()
     draftGizmo = new Gui::RotationGizmo(ui->ribDraftAngle);
     gizmoContainer = Gui::GizmoContainer::create(
         {thicknessGizmo, thickness2Gizmo, lengthGizmo, draftGizmo},
-        getViewObject<ViewProviderPad>()
+        getViewObject<ViewProviderRib>()
     );
     setGizmoPositions();
     showDraggerHints();
@@ -701,7 +701,7 @@ void TaskRibParameters::setGizmoPositions()
     }
 }
 
-TaskDlgRibParameters::TaskDlgRibParameters(ViewProviderPad* view)
+TaskDlgRibParameters::TaskDlgRibParameters(ViewProviderRib* view)
     : TaskDlgSketchBasedParameters(view)
     , parameters(new TaskRibParameters(view))
 {

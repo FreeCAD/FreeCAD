@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 #pragma once
 #include "TaskSketchBasedParameters.h"
-#include "ViewProviderPad.h"
+#include "ViewProviderRib.h"
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include <array>
@@ -21,7 +21,7 @@ class TaskRibParameters: public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    explicit TaskRibParameters(ViewProviderPad* view);
+    explicit TaskRibParameters(ViewProviderRib* view);
     ~TaskRibParameters() override;
     void apply() override;
     void finishSelection();
@@ -64,7 +64,7 @@ private:
 class TaskDlgRibParameters: public TaskDlgSketchBasedParameters
 {
 public:
-    explicit TaskDlgRibParameters(ViewProviderPad* view);
+    explicit TaskDlgRibParameters(ViewProviderRib* view);
     bool accept() override;
     bool reject() override;
 

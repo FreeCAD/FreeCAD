@@ -78,29 +78,20 @@ SET(FeaturesDressUp_SRCS
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
-# Geometry and reusable feature execution for Thin Pad/Pocket (PR1).
-SET(ThinExtrusion_SRCS
+# Isolated side-profile Rib feature and its construction helpers.
+SET(Rib_SRCS
+    FeatureRib.cpp
+    FeatureRib.h
     ThinProfile.cpp
     ThinProfile.h
     ThinExtrusion.cpp
     ThinExtrusion.h
-    ThinWallExtension.cpp
-    ThinWallExtension.h
     ThinSurfaceExtrusion.cpp
     ThinSurfaceExtrusion.h
     ThinExtrusionGeometry.cpp
     ThinExtrusionGeometry.h
-    FeatureThinExtrude.cpp
-    FeatureThinExtrude.h
 )
-SOURCE_GROUP("ThinExtrusion" FILES ${ThinExtrusion_SRCS})
-
-# Dedicated command adapter; the shared layer must not depend on this (PR2).
-SET(ThinFeatureAdapters_SRCS
-    FeatureRib.cpp
-    FeatureRib.h
-)
-SOURCE_GROUP("ThinFeatureAdapters" FILES ${ThinFeatureAdapters_SRCS})
+SOURCE_GROUP("Rib" FILES ${Rib_SRCS})
 
 SET(FeaturesSketchBased_SRCS
     FeatureExtrude.cpp
@@ -162,8 +153,7 @@ SET(PartDesign_SRCS
     ${DatumFeatures_SRCS}
     ${FeaturesTransformed_SRCS}
     ${FeaturesSketchBased_SRCS}
-    ${ThinExtrusion_SRCS}
-    ${ThinFeatureAdapters_SRCS}
+    ${Rib_SRCS}
     ${FeaturesDressUp_SRCS}
     ${Module_SRCS}
     ${Python_SRCS}

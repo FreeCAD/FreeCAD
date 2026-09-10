@@ -656,7 +656,7 @@ Part::TopoShape trimThinExtrusionToBoundary(
 )
 {
     if (body.isNull() || !body.hasSubShape(TopAbs_FACE)) {
-        throw Base::ValueError("Rib/Web requires a target body or face for boundary termination");
+        throw Base::ValueError("Rib requires a target body or face for boundary termination");
     }
 
     Part::TopoShape remainder;
@@ -686,7 +686,7 @@ Part::TopoShape trimThinExtrusionToBoundary(
             continue;
         }
         if (requireTermination && touches(solid, farSource)) {
-            throw Base::ValueError("Rib/Web footprint misses the next body boundary");
+            throw Base::ValueError("Rib footprint misses the next body boundary");
         }
         selected.push_back(solid);
     }

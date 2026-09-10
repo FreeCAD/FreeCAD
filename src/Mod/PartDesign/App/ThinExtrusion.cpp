@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 #include "ThinExtrusion.h"
 #include "ThinExtrusionGeometry.h"
-#include <BRepAdaptor_Surface.hxx>
 #include <BRepAlgoAPI_Common.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -18,107 +16,6 @@
 
 namespace PartDesign
 {
-double thinExtrusionReach(
-    const Part::TopoShape& profile,
-    const Part::TopoShape& target,
-    const gp_Dir& growth,
-    bool extendTarget
-)
-{
-    if (target.isNull() || !target.hasSubShape(TopAbs_FACE)) {
-        throw Base::ValueError("Select a termination face for the thin extrusion");
-    }
-
-    auto bounds = profile.getBoundBoxOptimal();
-    double reach;
-    const BRepAdaptor_Surface surface(TopoDS::Face(target.getSubShape(TopAbs_FACE, 1)));
-    if (!target.hasSubShape(TopAbs_WIRE) || (extendTarget && surface.GetType() == GeomAbs_Plane)) {
-        if (surface.GetType() != GeomAbs_Plane) {
-            throw Base::ValueError("An unbounded thin-extrusion target must be a plane");
-        }
-        const auto plane = surface.Plane();
-        const double cosine = std::abs(growth.Dot(plane.Axis().Direction()));
-        if (cosine <= Precision::Angular()) {
-            throw Base::ValueError("Thin extrusion direction is parallel to the target plane");
-        }
-        double distance = 0;
-        for (double x : {bounds.MinX, bounds.MaxX}) {
-            for (double y : {bounds.MinY, bounds.MaxY}) {
-                for (double z : {bounds.MinZ, bounds.MaxZ}) {
-                    distance = std::max(distance, plane.Distance(gp_Pnt(x, y, z)) / cosine);
-                }
-            }
-        }
-        reach = 2 * (distance + bounds.CalcDiagonalLength());
-    }
-    else {
-        bounds.Add(target.getBoundBoxOptimal());
-        reach = 2 * bounds.CalcDiagonalLength();
-    }
-
-    if (!std::isfinite(reach) || reach <= Precision::Confusion()) {
-        throw Base::ValueError("Cannot determine a finite reach for the thin extrusion");
-    }
-
-    return reach;
-}
-
-Part::TopoShape makeThinExtrusionUntil(
-    const Part::TopoShape& profile,
-    const Part::TopoShape& target,
-    const gp_Dir& growth,
-    bool extendTarget,
-    long tag,
-    const Part::TopoShape* selectionProfile
-)
-{
-    auto boundary = target;
-    const double reach = thinExtrusionReach(profile, target, growth, extendTarget);
-    if (extendTarget) {
-        const auto face = TopoDS::Face(target.getSubShape(TopAbs_FACE, 1));
-        BRepBuilderAPI_MakeFace support(BRep_Tool::Surface(face), Precision::Confusion());
-        boundary = Part::TopoShape(tag, target.Hasher)
-                       .makeElementShape(support, {target}, "ThinExtendedTarget");
-    }
-
-    const gp_Vec travel = gp_Vec(growth) * reach;
-    auto tool = profile.makeElementPrism(travel, "ThinBoundaryPrism");
-    if (extendTarget || !boundary.hasSubShape(TopAbs_WIRE)) {
-        const BRepAdaptor_Surface surface(TopoDS::Face(boundary.getSubShape(TopAbs_FACE, 1)));
-        if (surface.GetType() == GeomAbs_Plane) {
-            // The splitter needs a finite trimming tool. Bound a datum/extended
-            // plane by the entire prism in its own frame, not world XY.
-            const auto plane = surface.Plane();
-            gp_Trsf toPlane;
-            toPlane.SetTransformation(plane.Position());
-            const auto projected = Part::TopoShape(tag, tool.Hasher)
-                                       .makeElementTransform(tool, toPlane)
-                                       .getBoundBoxOptimal();
-            const double margin = std::max(1.0, projected.CalcDiagonalLength());
-            BRepBuilderAPI_MakeFace patch(
-                plane,
-                projected.MinX - margin,
-                projected.MaxX + margin,
-                projected.MinY - margin,
-                projected.MaxY + margin
-            );
-            boundary = Part::TopoShape(tag, target.Hasher)
-                           .makeElementShape(patch, {target}, "ThinTargetPatch");
-        }
-    }
-
-    // Artificial endpoint extensions may cross behind an oblique target even
-    // when the entire real profile is in front of it. Classify using the actual
-    // source, not those temporary overshoots.
-    return trimThinExtrusionToBoundary(
-        tool,
-        boundary,
-        selectionProfile ? *selectionProfile : profile,
-        travel,
-        tag
-    );
-}
-
 bool thinRootAtStart(const Part::TopoShape& profile, const Part::TopoShape& body)
 {
     if (body.isNull()) {

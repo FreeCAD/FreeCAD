@@ -30,7 +30,6 @@
 #include <Gui/Utilities.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureExtrude.h>
 
 #include "ViewProviderSketchBased.h"
 #include "StyleParameters.h"
@@ -104,32 +103,7 @@ void ViewProviderSketchBased::updateProfileShape()
     }
 
     auto profileBased = getObject<PartDesign::ProfileBased>();
-    auto extrude = dynamic_cast<PartDesign::FeatureExtrude*>(profileBased);
-    PartDesign::TopoShape profileShape;
-    if (extrude && extrude->Thin.getValue()) {
-        try {
-            if (profileBased->Profile.getValue()) {
-                profileShape = profileBased->getProfileShape();
-            }
-        }
-        catch (const Base::Exception&) {
-            // Invalid or removed Web references must clear the old preview.
-        }
-        catch (const Standard_Failure&) {
-        }
-    }
-    else {
-        profileShape = profileBased->getTopoShapeVerifiedFace(true);
-    }
-    if (extrude && extrude->Thin.getValue()) {
-        auto manager = Base::provideService<Gui::StyleParameters::ParameterManager>();
-        const auto color = manager->resolve(StyleParameters::PreviewThinProfileColor);
-        pcProfileShape->color.disconnect();
-        pcProfileShape->color.setValue(color.r, color.g, color.b);
-    }
-    else {
-        pcProfileShape->color.connectFrom(&pcPreviewShape->color);
-    }
+    auto profileShape = profileBased->getTopoShapeVerifiedFace(true);
 
     // set the correct coordinate space for the profile shape
     profileShape.setPlacement(

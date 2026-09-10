@@ -38,7 +38,6 @@ class QListWidget;
 class QToolButton;
 
 class Ui_TaskPadPocketParameters;
-class Ui_TaskThinProperties;
 
 namespace App
 {
@@ -122,8 +121,7 @@ public:
         SelectStartReference,
         SelectShape,
         SelectShapeFaces,
-        SelectReferenceAxis,
-        SelectThinExtensionEdges
+        SelectReferenceAxis
     };
 
     TaskExtrudeParameters(
@@ -132,13 +130,11 @@ public:
         const std::string& pixmapname,
         const QString& parname
     );
-    ~TaskExtrudeParameters() override;
-    QWidget* getThinPropertiesPanel() const;
+    ~TaskExtrudeParameters() override = default;
 
     void saveHistory() override;
 
     void fillDirectionCombo();
-    void refreshDirectionControls();
     void addAxisToCombo(
         App::DocumentObject* linkObj,
         std::string linkSubname,
@@ -259,12 +255,6 @@ private:
     void setupSideDialog(SideController& side);
 
     void selectedReferenceAxis(const Gui::SelectionChanges& msg);
-    void selectedThinExtensionEdge(const Gui::SelectionChanges& msg);
-    void updateThinExtensionEdges();
-    void removeThinExtensionEdges();
-    void highlightThinExtensionEdges();
-    bool thinProfileWasVisible = false;
-    bool hasValidGizmoPlacement = false;
     void selectedFace(const Gui::SelectionChanges& msg, SideController& side);
     void selectedStartReference(const Gui::SelectionChanges& msg);
     void selectedShape(const Gui::SelectionChanges& msg, SideController& side);
@@ -293,13 +283,8 @@ private:
     Gui::LinearGizmo* lengthGizmo2 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo1 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo2 = nullptr;
-    Gui::LinearGizmo* thinThicknessGizmo = nullptr;
-    Gui::LinearGizmo* thinThickness2Gizmo = nullptr;
-    Gui::RotationGizmo* thinDraftGizmo1 = nullptr;
-    Gui::RotationGizmo* thinDraftGizmo2 = nullptr;
     void setupGizmos();
     void setGizmoPositions();
-    void setThinGizmoPositions();
 
 protected:
     QWidget* proxy;
@@ -307,9 +292,6 @@ protected:
     QAction* unselectShapeFaceAction2;
 
     std::unique_ptr<Ui_TaskPadPocketParameters> ui;
-    std::unique_ptr<Ui_TaskThinProperties> thinUi;
-    Gui::TaskView::TaskBox* thinPanel;
-    QWidget* thinProxy;
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 
     SelectionMode selectionMode = None;
