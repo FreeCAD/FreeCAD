@@ -69,25 +69,23 @@ void LinkArrayLinear::connectElementSuppression()
         if (!elements[i]) {
             continue;
         }
-        suppressionConnections.emplace_back(
-            elements[i]->signalChanged.connect([this,
-                                                i](const App::DocumentObject& obj,
+        const auto handleElementChange = [this, i](const App::DocumentObject& obj,
                                                    const App::Property& prop) {
-                if (syncingSuppression || isRestoring()
-                    || (getDocument() && getDocument()->isPerformingTransaction())) {
-                    return;
-                }
-                const auto* suppressible = obj.getExtensionByType<App::SuppressibleExtension>(true);
-                if (!suppressible || &prop != &suppressible->Suppressed) {
-                    return;
-                }
-                const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue()));
-                setPositionSuppressed(
-                    {static_cast<long>(i / stride), static_cast<long>(i % stride)},
-                    suppressible->Suppressed.getValue()
-                );
-            })
-        );
+            if (syncingSuppression || isRestoring()
+                || (getDocument() && getDocument()->isPerformingTransaction())) {
+                return;
+            }
+            const auto* suppressible = obj.getExtensionByType<App::SuppressibleExtension>(true);
+            if (!suppressible || &prop != &suppressible->Suppressed) {
+                return;
+            }
+            const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue()));
+            setPositionSuppressed(
+                {static_cast<long>(i / stride), static_cast<long>(i % stride)},
+                suppressible->Suppressed.getValue()
+            );
+        };
+        suppressionConnections.emplace_back(elements[i]->signalChanged.connect(handleElementChange));
     }
 }
 
@@ -168,13 +166,11 @@ gp_Dir LinkArrayLinear::getDirectionFromProperty(const App::PropertyLinkSub& dir
 {
     const auto datumDirection = [](App::DocumentObject* obj) -> std::optional<gp_Dir> {
         if (auto* line = freecad_cast<App::Line*>(obj)) {
-            Base::Vector3d d = line->getDirection();
-            return Base::convertTo<gp_Dir>(d);
+            return Base::convertTo<gp_Dir>(line->getDirection());
         }
 
         if (auto* plane = freecad_cast<App::Plane*>(obj)) {
-            Base::Vector3d d = plane->getDirection();
-            return Base::convertTo<gp_Dir>(d);
+            return Base::convertTo<gp_Dir>(plane->getDirection());
         }
 
         return {};
@@ -236,15 +232,13 @@ gp_Dir LinkArrayLinear::getDirectionFromProperty(const App::PropertyLinkSub& dir
     if (role == App::LocalCoordinateSystem::AxisRoles[0]
         || role == App::LocalCoordinateSystem::AxisRoles[1]
         || role == App::LocalCoordinateSystem::AxisRoles[2]) {
-        Base::Vector3d d = lcs->getAxis(role.c_str())->getDirection();
-        return Base::convertTo<gp_Dir>(d);
+        return Base::convertTo<gp_Dir>(lcs->getAxis(role.c_str())->getDirection());
     }
 
     if (role == App::LocalCoordinateSystem::PlaneRoles[0]
         || role == App::LocalCoordinateSystem::PlaneRoles[1]
         || role == App::LocalCoordinateSystem::PlaneRoles[2]) {
-        Base::Vector3d d = lcs->getPlane(role.c_str())->getDirection();
-        return Base::convertTo<gp_Dir>(d);
+        return Base::convertTo<gp_Dir>(lcs->getPlane(role.c_str())->getDirection());
     }
 
     return LinearPatternExtension::getDirectionFromProperty(dirProp);
