@@ -24,14 +24,12 @@
 
 #pragma once
 
-#include <Base/Converter.h>
 #include <Base/Placement.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
-#include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <Poly_Triangle.hxx>
@@ -51,78 +49,6 @@ class TopoShape;
 class gp_Lin;
 class gp_Pln;
 class Bnd_Box;
-
-namespace Base
-{
-// Specialization for gp_Pnt
-template<>
-struct vec_traits<gp_Pnt>
-{
-    using vec_type = gp_Pnt;
-    using float_type = double;
-    explicit vec_traits(const vec_type& v)
-        : v(v)
-    {}
-    inline std::tuple<float_type, float_type, float_type> get() const
-    {
-        return std::make_tuple(v.X(), v.Y(), v.Z());
-    }
-
-private:
-    const vec_type& v;
-};
-// Specialization for gp_Vec
-template<>
-struct vec_traits<gp_Vec>
-{
-    using vec_type = gp_Vec;
-    using float_type = double;
-    explicit vec_traits(const vec_type& v)
-        : v(v)
-    {}
-    inline std::tuple<float_type, float_type, float_type> get() const
-    {
-        return std::make_tuple(v.X(), v.Y(), v.Z());
-    }
-
-private:
-    const vec_type& v;
-};
-// Specialization for gp_Dir
-template<>
-struct vec_traits<gp_Dir>
-{
-    using vec_type = gp_Dir;
-    using float_type = double;
-    explicit vec_traits(const vec_type& v)
-        : v(v)
-    {}
-    inline std::tuple<float_type, float_type, float_type> get() const
-    {
-        return std::make_tuple(v.X(), v.Y(), v.Z());
-    }
-
-private:
-    const vec_type& v;
-};
-// Specialization for gp_XYZ
-template<>
-struct vec_traits<gp_XYZ>
-{
-    using vec_type = gp_XYZ;
-    using float_type = double;
-    explicit vec_traits(const vec_type& v)
-        : v(v)
-    {}
-    inline std::tuple<float_type, float_type, float_type> get() const
-    {
-        return std::make_tuple(v.X(), v.Y(), v.Z());
-    }
-
-private:
-    const vec_type& v;
-};
-}  // namespace Base
 
 namespace Part
 {

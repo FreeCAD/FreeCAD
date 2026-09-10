@@ -45,7 +45,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Points/App/Structured.h>
 #include <Mod/ReverseEngineering/App/ApproxSurface.h>
 

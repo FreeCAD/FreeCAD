@@ -59,7 +59,7 @@
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Gui/SoDatumLabel.h>
 #include <Gui/Tools.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoEnum.h>

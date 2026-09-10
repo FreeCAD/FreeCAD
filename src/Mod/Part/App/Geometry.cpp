@@ -180,6 +180,7 @@
 #include "SpherePy.h"
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfRevolutionPy.h"
+#include "Conversion/OCC.h"
 #include "Tools.h"
 #include "ToroidPy.h"
 #include "TopoShape.h"

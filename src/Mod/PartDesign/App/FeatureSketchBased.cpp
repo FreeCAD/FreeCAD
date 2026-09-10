@@ -66,7 +66,7 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "Body.h"
 #include "FeatureSketchBased.h"

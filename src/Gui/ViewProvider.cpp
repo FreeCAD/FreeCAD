@@ -62,7 +62,7 @@
 #include "ViewProviderLink.h"
 #include "ViewProviderPy.h"
 
-#include <Utilities.h>
+#include <Conversion/Coin.h>
 
 
 FC_LOG_LEVEL_INIT("ViewProvider", true, true)

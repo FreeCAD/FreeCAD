@@ -38,11 +38,11 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 #include <Mod/Part/App/GizmoHelper.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"

@@ -604,6 +604,7 @@ SET(Part_SRCS
     PyException.cpp
     PyException.h
     Tools.cpp
+    Conversion/OCC.h
     Tools.h
     encodeFilename.h
     OCCError.h

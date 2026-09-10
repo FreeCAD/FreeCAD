@@ -54,8 +54,6 @@
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/Part/Gui/PatternParametersWidget.h>
-#include <Mod/Part/App/Tools.h>
-
 #include "ui_TaskPatternParameters.h"
 #include "TaskPatternParameters.h"
 #include "ReferenceSelection.h"

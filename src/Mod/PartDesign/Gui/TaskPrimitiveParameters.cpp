@@ -39,7 +39,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 

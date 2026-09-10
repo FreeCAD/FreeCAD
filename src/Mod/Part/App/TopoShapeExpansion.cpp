@@ -113,7 +113,6 @@
 #include <SignalException.h>
 #include <ShapeAnalysis_FreeBoundsProperties.hxx>
 #include <BRepFeat_MakeRevol.hxx>
-
 #include "Tools.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT

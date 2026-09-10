@@ -22,7 +22,7 @@
  **************************************************************************/
 
 #include "Camera.h"
-#include "Utilities.h"
+#include "Conversion/Coin.h"
 
 #include <App/Application.h>
 

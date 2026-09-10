@@ -35,7 +35,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Mod/PartDesign/App/FeatureChamfer.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/GizmoHelper.h>

@@ -85,7 +85,7 @@
 
 #include "Geometry2d.h"
 #include "OCCError.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 
 using namespace Part;

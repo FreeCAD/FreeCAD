@@ -53,7 +53,7 @@
 #include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "CrossSections.h"
 #include "ui_CrossSections.h"

@@ -158,6 +158,7 @@
 #include "ViewProviderLink.h"
 #include "Navigation/NavigationAnimator.h"
 #include "Navigation/NavigationAnimation.h"
+#include "Conversion/Coin.h"
 #include "Utilities.h"
 
 #include <Inventor/nodes/SoRotation.h>

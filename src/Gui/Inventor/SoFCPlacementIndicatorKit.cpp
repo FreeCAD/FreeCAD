@@ -44,7 +44,7 @@
 #include "SoAxisCrossKit.h"
 
 #include <Gui/SoLabelNodes.h>
-#include <Utilities.h>
+#include <Conversion/Coin.h>
 #include <ViewParams.h>
 #include <ViewProvider.h>
 #include <Base/Color.h>

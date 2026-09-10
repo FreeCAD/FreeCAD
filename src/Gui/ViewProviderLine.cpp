@@ -32,7 +32,7 @@
 
 #include <Base/Tools.h>
 #include <App/Datums.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderLine.h"

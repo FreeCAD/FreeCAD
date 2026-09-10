@@ -34,7 +34,7 @@
 
 #include <App/Datums.h>
 #include <Base/Axis.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 

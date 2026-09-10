@@ -45,6 +45,7 @@
 #include <Gui/Inventor/SoToggleSwitch.h>
 #include <Gui/ViewProviderDragger.h>
 #include <Gui/QuantitySpinBox.h>
+#include <Gui/Conversion/Coin.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
 

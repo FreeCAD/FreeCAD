@@ -39,7 +39,7 @@
 #include "HLRBRep/HLRBRep_AlgoPy.h"
 #include "HLRBRep/HLRBRep_AlgoPy.cpp"
 #include "TopoShapePy.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 
 using namespace Part;

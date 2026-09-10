@@ -42,7 +42,7 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
 #include <Mod/Part/App/GizmoHelper.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"

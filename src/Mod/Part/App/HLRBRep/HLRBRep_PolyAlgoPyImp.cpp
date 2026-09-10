@@ -40,7 +40,7 @@
 #include "HLRBRep/HLRBRep_PolyAlgoPy.h"
 #include "HLRBRep/HLRBRep_PolyAlgoPy.cpp"
 #include "TopoShapePy.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 
 
 using namespace Part;

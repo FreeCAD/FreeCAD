@@ -35,7 +35,6 @@
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Mod/PartDesign/App/Body.h>

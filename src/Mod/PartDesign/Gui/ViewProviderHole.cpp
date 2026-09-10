@@ -48,6 +48,7 @@
 #include <App/Material.h>
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -57,7 +58,7 @@
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <App/Property.h>
-#include <Utilities.h>
+#include <Conversion/Coin.h>
 
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoCoordinate3.h>

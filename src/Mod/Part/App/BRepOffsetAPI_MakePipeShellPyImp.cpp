@@ -40,7 +40,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.cpp"
 #include "OCCError.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 #include "TopoShapePy.h"
 #include "TopoShapeVertexPy.h"
 

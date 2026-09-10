@@ -33,7 +33,8 @@
 #include "DlgSettingsLightSources.h"
 #include "ui_DlgSettingsLightSources.h"
 
-#include <Utilities.h>
+#include <Conversion/Coin.h>
+#include <Conversion/Qt.h>
 #include <Base/Builder3D.h>
 #include <Base/Tools.h>
 #include <Gui/View3DInventorViewer.h>

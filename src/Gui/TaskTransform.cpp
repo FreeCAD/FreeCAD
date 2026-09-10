@@ -25,7 +25,6 @@
 #include <QApplication>
 
 #include <View3DInventorViewer.h>
-#include <Utilities.h>
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>

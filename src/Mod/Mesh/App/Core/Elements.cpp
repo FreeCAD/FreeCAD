@@ -31,7 +31,7 @@
 
 #include "Algorithm.h"
 #include "Elements.h"
-#include "Utilities.h"
+#include <Mod/Mesh/App/Conversion/Wm4.h>
 #include "tritritest.h"
 
 

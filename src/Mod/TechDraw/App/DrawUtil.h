@@ -48,7 +48,7 @@
 #include <Base/Vector3D.h>
 #include <Base/Converter.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 

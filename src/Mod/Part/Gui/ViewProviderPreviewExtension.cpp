@@ -35,10 +35,9 @@
 #include <App/Document.h>
 #include <App/ExtensionPython.h>
 #include <Base/ServiceProvider.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/PreviewExtension.h>
-#include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
 using namespace PartGui;

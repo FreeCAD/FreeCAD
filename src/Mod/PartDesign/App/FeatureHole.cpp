@@ -61,7 +61,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/TopoShapeMapper.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
-#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 
 #include "FeatureHole.h"
 #include "nlohmann/json.hpp"

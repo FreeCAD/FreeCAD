@@ -41,7 +41,7 @@
 #include "TaskDressUpParameters.h"
 
 #include <Base/ServiceProvider.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 
 using namespace PartDesignGui;
 

@@ -39,7 +39,7 @@
 
 #include "OCCError.h"
 #include "PartPyCXX.h"
-#include "Tools.h"
+#include "Conversion/OCC.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeFacePy.h"

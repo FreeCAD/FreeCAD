@@ -181,6 +181,7 @@
 #include "modelRefine.h"
 #include "PartPyCXX.h"
 #include "ProgressIndicator.h"
+#include "Conversion/OCC.h"
 #include "Tools.h"
 #include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"

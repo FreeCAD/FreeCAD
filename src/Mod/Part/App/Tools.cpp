@@ -70,10 +70,9 @@
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>
 
-#include "Tools.h"
-
 #include <TopExp_Explorer.hxx>
 #include <TopoShape.h>
+#include "Tools.h"
 
 
 class TopExp_Explorer;

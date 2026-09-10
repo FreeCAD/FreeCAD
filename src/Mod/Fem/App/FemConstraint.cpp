@@ -60,8 +60,6 @@
 #include <App/Datums.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/Tools.h>
-
 #include "FemConstraint.h"
 #include "FemTools.h"
 

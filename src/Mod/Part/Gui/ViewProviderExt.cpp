@@ -81,9 +81,10 @@
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
-#include <Gui/Utilities.h>
+#include <Gui/Conversion/Coin.h>
 
 #include <Mod/Part/App/ShapeMapHasher.h>
+#include <Mod/Part/App/Conversion/OCC.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderExt.h"

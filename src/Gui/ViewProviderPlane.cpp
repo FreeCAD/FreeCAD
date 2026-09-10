@@ -40,7 +40,7 @@
 #include "ViewProviderPlane.h"
 #include "ViewProviderCoordinateSystem.h"
 
-#include <Utilities.h>
+#include <Conversion/Coin.h>
 #include <Base/Tools.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoEvent.h>

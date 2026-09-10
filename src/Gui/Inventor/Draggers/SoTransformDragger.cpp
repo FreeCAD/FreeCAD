@@ -55,7 +55,6 @@
 #include "SoLinearDragger.h"
 #include "SoPlanarDragger.h"
 #include "SoRotationDragger.h"
-#include "Utilities.h"
 
 #include <Gui/SoLabelNodes.h>
 
