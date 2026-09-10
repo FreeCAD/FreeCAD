@@ -411,6 +411,9 @@ endmacro()
 
 # check that the python interpreter FreeCAD will use at runtime can actually
 # import a required module, and get its version.
+# NOTE: see the below link for why the python exe is used instead of
+# `find_pip_package(${PIP_NAME})`
+# https://github.com/FreeCAD/FreeCAD/pull/32554#pullrequestreview-5159207504
 macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
     execute_process(
         COMMAND ${Python3_EXECUTABLE} -c
