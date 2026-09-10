@@ -113,7 +113,7 @@ jobs:
       - name: Compiling sources
         run: |
           cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false
+          msbuild ALL_BUILD.vcxproj /m:3 /p:Configuration=Release /p:TrackFileAccess=false
 
       - name: Installing to staging tree
         run: |
