@@ -78,12 +78,6 @@ def setStatusIcons(show=True):
     from PySide import QtCore, QtGui
     from bimcommands import BimNudge
 
-    nudgeLabels = (
-        [translate("BIM", "Custom…")]
-        + BimNudge._NUDGE_DISTANCES_STRINGS
-        + [translate("BIM", "Auto")]
-    )
-
     def toggleBimViews(state):
         FreeCADGui.runCommand("BIM_Views")
 
@@ -92,7 +86,7 @@ def setStatusIcons(show=True):
 
     def setNudge(action):
         utext = action.text().replace("&", "")
-        if utext == nudgeLabels[0]:
+        if utext == translate("BIM", "Custom…"):
             # load dialog
             form = FreeCADGui.PySideUic.loadUi(":/ui/dialogNudgeValue.ui")
             # center the dialog over FreeCAD window
@@ -172,7 +166,7 @@ def setStatusIcons(show=True):
                     ifc_status.set_status_widget(statuswidget)
 
                 # nudge button
-                nudge = QtGui.QPushButton(nudgeLabels[-1])
+                nudge = QtGui.QPushButton(translate("BIM", "Auto"))
                 nudge.setIcon(QtGui.QIcon(":/icons/BIM_Nudge.svg"))
                 nudge.setFlat(True)
                 nudge.setToolTip(_get_nudge_tooltip())
@@ -180,10 +174,21 @@ def setStatusIcons(show=True):
                 statuswidget.nudge = nudge
                 menu = QtGui.QMenu(nudge)
                 gnudge = QtGui.QActionGroup(menu)
-                for u in nudgeLabels:
-                    a = QtGui.QAction(gnudge)
-                    a.setText(u)
-                    menu.addAction(a)
+
+                def updateNudgeMenu():
+                    menu.clear()
+                    labels = (
+                        [translate("BIM", "Custom…")]
+                        + [label for label, _quantity in BimNudge.get_nudge_presets()]
+                        + [translate("BIM", "Auto")]
+                    )
+                    for label in labels:
+                        action = QtGui.QAction(gnudge)
+                        action.setText(label)
+                        menu.addAction(action)
+
+                updateNudgeMenu()
+                menu.aboutToShow.connect(updateNudgeMenu)
                 nudge.setMenu(menu)
                 gnudge.triggered.connect(setNudge)
                 statuswidget.show()

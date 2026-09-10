@@ -27,6 +27,7 @@
 from bimtests.TestArchImportersGui import TestArchImportersGui
 from bimtests.TestArchAxisGui import TestArchAxisGui
 from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
+from bimtests.TestBimTrimexGui import TestBimTrimexGui
 from bimtests.TestArchStairsGui import TestArchStairsGui
 from bimtests.TestArchReportGui import TestArchReportGui
 from bimtests.TestArchSiteGui import TestArchSiteGui
@@ -34,3 +35,4 @@ from bimtests.TestArchWallGui import TestArchWallGui
 from bimtests.TestArchWindowGui import TestArchWindowGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui
 from bimtests.TestArchCoveringGui import TestArchCoveringGui
+from bimtests.TestBimNudgeGui import TestBimNudgeGui
