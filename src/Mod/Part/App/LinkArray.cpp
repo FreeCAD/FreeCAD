@@ -24,14 +24,16 @@
 #include "LinkArray.h"
 
 #include <algorithm>
+#include <iterator>
 
 #include <gp_Trsf.hxx>
 
 #include <App/Document.h>
 #include <App/SuppressibleExtension.h>
 #include <Base/Exception.h>
-#include <Base/Matrix.h>
 #include <Base/Tools.h>
+
+#include "Tools.h"
 
 using namespace Part;
 
@@ -80,7 +82,7 @@ void LinkArray::onChanged(const App::Property* prop)
 Base::Placement LinkArray::getPlacementOf(const std::string& sub, App::DocumentObject* targetObj)
 {
     Base::Placement placement;
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    auto* propPlacement = getPropertyByName<App::PropertyPlacement>("Placement");
     if (propPlacement) {
         placement = propPlacement->getValue();
     }
@@ -106,7 +108,7 @@ Base::Placement LinkArray::getPlacementOf(const std::string& sub, App::DocumentO
     }
 
     placement = placement * placements[index];
-    if (!remaining || !remaining[0]) {
+    if (Base::Tools::isNullOrEmpty(remaining)) {
         return placement;
     }
 
@@ -178,9 +180,9 @@ void LinkArray::syncGeneratedElementLinkPlacements(const std::vector<Base::Place
     const auto count = std::min(elements.size(), placements.size());
 
     for (size_t i = 0; i < count; ++i) {
-        auto* placement = dynamic_cast<App::PropertyPlacement*>(
-            elements[i] ? elements[i]->getPropertyByName("Placement") : nullptr
-        );
+        auto* placement = elements[i]
+            ? elements[i]->getPropertyByName<App::PropertyPlacement>("Placement")
+            : nullptr;
         if (!placement || placement->getValue().isSame(placements[i])) {
             continue;
         }
@@ -206,21 +208,26 @@ void LinkArray::enforceLinkArrayPropertyStatus()
 {
     _LinkTouched.setStatus(App::Property::Output, true);
     _LinkTouched.setStatus(App::Property::NoRecompute, true);
+
     ShowElement.setStatus(App::Property::Immutable, hasSuppressedElements());
     ShowElement.setStatus(App::Property::Hidden, false);
     ShowElement.setStatus(App::Property::NoRecompute, false);
+
     ElementCount.setStatus(App::Property::Immutable, true);
     ElementCount.setStatus(App::Property::Hidden, true);
     ElementCount.setStatus(App::Property::Output, true);
     ElementCount.setStatus(App::Property::NoRecompute, true);
+
     PlacementList.setStatus(App::Property::Hidden, true);
     PlacementList.setStatus(App::Property::Immutable, true);
     PlacementList.setStatus(App::Property::Output, true);
     PlacementList.setStatus(App::Property::NoRecompute, true);
+
     ScaleList.setStatus(App::Property::Hidden, true);
     ScaleList.setStatus(App::Property::Immutable, true);
     ScaleList.setStatus(App::Property::Output, true);
     ScaleList.setStatus(App::Property::NoRecompute, true);
+
     ElementList.setStatus(App::Property::Hidden, true);
     ElementList.setStatus(App::Property::Immutable, true);
     ElementList.setStatus(App::Property::Output, true);
@@ -229,26 +236,7 @@ void LinkArray::enforceLinkArrayPropertyStatus()
 
 Base::Placement LinkArray::placementFromTransform(const gp_Trsf& transform)
 {
-    Base::Matrix4D matrix(
-        transform.Value(1, 1),
-        transform.Value(1, 2),
-        transform.Value(1, 3),
-        transform.Value(1, 4),
-        transform.Value(2, 1),
-        transform.Value(2, 2),
-        transform.Value(2, 3),
-        transform.Value(2, 4),
-        transform.Value(3, 1),
-        transform.Value(3, 2),
-        transform.Value(3, 3),
-        transform.Value(3, 4),
-        0.0,
-        0.0,
-        0.0,
-        1.0
-    );
-
-    return Base::Placement(matrix);
+    return Base::convertTo<Base::Placement>(transform);
 }
 
 std::vector<Base::Placement> LinkArray::placementsFromTransforms(
@@ -258,9 +246,11 @@ std::vector<Base::Placement> LinkArray::placementsFromTransforms(
     std::vector<Base::Placement> placements;
     placements.reserve(transformations.size());
 
-    for (const auto& transform : transformations) {
-        placements.push_back(placementFromTransform(transform));
-    }
+    std::ranges::transform(
+        transformations,
+        std::back_inserter(placements),
+        Base::convertTo<Base::Placement, gp_Trsf>
+    );
 
     return placements;
 }
