@@ -274,7 +274,7 @@
         <widget class="QLineEdit" name="alias"/>
        </item>
        <item row="1" column="1">
-       <widget class="QLabel" name="aliasStatus">
+        <widget class="QLabel" name="aliasStatus">
          <property name="text">
           <string/>
          </property>

@@ -190,7 +190,14 @@ public:
 
     std::string getAddressFromAlias(const std::string& alias) const;
 
-    bool isReservedAliasName(const std::string& candidate) const;
+    enum class ReservedAliasToken
+    {
+        None,
+        Unit,
+        Constant
+    };
+
+    static ReservedAliasToken classifyReservedAliasName(const std::string& candidate);
 
     bool isValidAlias(const std::string& candidate);
 

@@ -23,8 +23,6 @@
  ***************************************************************************/
 
 
-#include <cctype>
-
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
@@ -44,43 +42,12 @@ using namespace SpreadsheetGui;
 
 namespace
 {
-bool hasValidAliasSyntax(const std::string& candidate)
-{
-    if (candidate.empty()) {
-        return false;
-    }
-
-    const unsigned char first = static_cast<unsigned char>(candidate[0]);
-    if (!std::isalpha(first)) {
-        return false;
-    }
-
-    for (char ch : candidate) {
-        const unsigned char uch = static_cast<unsigned char>(ch);
-        if (!(std::isalnum(uch) || ch == '_')) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 QString aliasHelpTooltip()
 {
     return QCoreApplication::translate(
         "PropertiesDialog",
         "Allows referring to a cell by an alias name, for example\n"
         "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
-    );
-}
-
-QString reservedAliasTooltip()
-{
-    return QCoreApplication::translate(
-        "PropertiesDialog",
-        "Cannot use a unit or constant name as alias. Reserved examples: m = meters, "
-        "s = seconds, e = Euler's number, A = amperes, T = tesla, G = gauss/giga, "
-        "H = henry, L = liter. Alternatives include 'myM', 'LenM', or 'Sec'."
     );
 }
 
@@ -370,22 +337,14 @@ void PropertiesDialog::aliasChanged(const QString& text)
 
     aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
     if (!text.isEmpty() && !aliasOk) {
-        if (sheet->isReservedAliasName(aliasText)) {
-            const bool isUnitToken = ExpressionParser::isTokenAUnit(aliasText);
-            const bool isConstantToken = ExpressionParser::isTokenAConstant(aliasText);
-
-            if (isUnitToken && isConstantToken) {
-                tooltip = reservedAliasTooltip();
-                statusText = tr("Invalid: reserved unit and constant token");
-            }
-            else if (isUnitToken) {
-                tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
-                statusText = tr("Invalid: reserved unit token");
-            }
-            else {
-                tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
-                statusText = tr("Invalid: reserved constant token");
-            }
+        const auto reservedToken = Sheet::classifyReservedAliasName(aliasText);
+        if (reservedToken == Sheet::ReservedAliasToken::Unit) {
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
+            statusText = tr("Invalid: reserved unit token");
+        }
+        else if (reservedToken == Sheet::ReservedAliasToken::Constant) {
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
+            statusText = tr("Invalid: reserved constant token");
         }
         else if (!sheet->getAddressFromAlias(aliasText).empty()) {
             tooltip = tr("Alias already defined");
@@ -399,13 +358,9 @@ void PropertiesDialog::aliasChanged(const QString& text)
             tooltip = tr("Alias conflicts with an existing spreadsheet property name");
             statusText = tr("Invalid: conflicts with existing property name");
         }
-        else if (!hasValidAliasSyntax(aliasText)) {
+        else {
             tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'");
             statusText = tr("Invalid: bad alias syntax");
-        }
-        else {
-            tooltip = tr("Alias is not valid in this spreadsheet context");
-            statusText = tr("Invalid alias");
         }
     }
 
