@@ -27,85 +27,18 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 
-#include <QColor>
 #include <QEvent>
-#include <QIcon>
-#include <QPainter>
-#include <QPen>
-#include <QPixmap>
 #include <QPoint>
 #include <QSize>
 #include <QTimer>
 #include <QToolButton>
 #include <QWidget>
 
+#include <Gui/BitmapFactory.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
 
 using namespace PartGui;
-
-namespace
-{
-
-QIcon makeCrossIcon()
-{
-    QPixmap pixmap(18, 18);
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(QColor(208, 36, 36), 3, Qt::SolidLine, Qt::RoundCap));
-    painter.drawLine(5, 5, 13, 13);
-    painter.drawLine(13, 5, 5, 13);
-
-    return QIcon(pixmap);
-}
-
-QIcon makePlusIcon()
-{
-    QPixmap pixmap(18, 18);
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(QColor(29, 132, 72), 3, Qt::SolidLine, Qt::RoundCap));
-    painter.drawLine(9, 4, 9, 14);
-    painter.drawLine(4, 9, 14, 9);
-
-    return QIcon(pixmap);
-}
-
-const QIcon& suppressIcon()
-{
-    static const QIcon icon = makeCrossIcon();
-    return icon;
-}
-
-const QIcon& restoreIcon()
-{
-    static const QIcon icon = makePlusIcon();
-    return icon;
-}
-
-QString buttonStyleSheet()
-{
-    return QStringLiteral(
-        "QToolButton {"
-        "  background-color: rgba(255, 255, 255, 215);"
-        "  border: 1px solid rgba(40, 40, 40, 120);"
-        "  border-radius: 11px;"
-        "  padding: 2px;"
-        "}"
-        "QToolButton:hover {"
-        "  background-color: rgba(255, 255, 255, 245);"
-        "}"
-        "QToolButton:pressed {"
-        "  background-color: rgba(232, 232, 232, 245);"
-        "}"
-    );
-}
-
-}  // namespace
 
 PatternInstanceControls::PatternInstanceControls(Gui::View3DInventorViewer* viewer, QObject* parent)
     : QObject(parent)
@@ -168,7 +101,7 @@ void PatternInstanceControls::setInstances(const std::vector<Instance>& instance
         button->setFixedSize(24, 24);
         button->setFocusPolicy(Qt::NoFocus);
         button->setIconSize(QSize(18, 18));
-        button->setStyleSheet(buttonStyleSheet());
+        button->setObjectName(QStringLiteral("overlayButton"));
 
         ButtonInfo info;
         info.instance = instance;
@@ -289,12 +222,12 @@ void PatternInstanceControls::updateButton(ButtonInfo& info) const
     }
 
     if (info.instance.suppressed) {
-        info.button->setIcon(restoreIcon());
+        info.button->setIcon(Gui::BitmapFactory().iconFromTheme("overlay-add"));
         info.button->setToolTip(tr("Restores this instance"));
         return;
     }
 
-    info.button->setIcon(suppressIcon());
+    info.button->setIcon(Gui::BitmapFactory().iconFromTheme("overlay-minus"));
     info.button->setToolTip(tr("Suppresses this instance"));
 }
 
