@@ -47,6 +47,8 @@ SET(SurfaceGui_SRCS
     PreCompiled.h
     ViewProviderExtend.cpp
     ViewProviderExtend.h
+    ViewProviderIntersectionCurve.cpp
+    ViewProviderIntersectionCurve.h
     Workbench.cpp
     Workbench.h
 #    ViewProviderCut.cpp

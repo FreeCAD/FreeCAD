@@ -32,6 +32,7 @@
 #include "TaskGeomFillSurface.h"
 #include "TaskSections.h"
 #include "ViewProviderExtend.h"
+#include "ViewProviderIntersectionCurve.h"
 #include "Workbench.h"
 
 
@@ -80,6 +81,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
     SurfaceGui::ViewProviderFilling         ::init();
     SurfaceGui::ViewProviderSections        ::init();
     SurfaceGui::ViewProviderExtend          ::init();
+    SurfaceGui::ViewProviderIntersectionCurve ::init();
     SurfaceGui::ViewProviderBlendCurve      ::init();
     // SurfaceGui::ViewProviderCut::init();
     // clang-format on
