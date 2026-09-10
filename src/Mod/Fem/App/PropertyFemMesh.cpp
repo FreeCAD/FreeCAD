@@ -28,7 +28,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include "FemMeshProperty.h"
+#include "PropertyFemMesh.h"
 #include "FemMeshPy.h"
 
 
