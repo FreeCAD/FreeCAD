@@ -2170,6 +2170,7 @@ void Application::initTypes()
     App::PropertyPercent            ::init();
     App::PropertyEnumeration        ::init();
     App::PropertyIntegerList        ::init();
+    App::PropertyIntPairList        ::init();
     App::PropertyIntegerSet         ::init();
     App::PropertyMap                ::init();
     App::PropertyString             ::init();
