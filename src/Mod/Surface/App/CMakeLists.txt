@@ -78,7 +78,7 @@ target_link_directories(Surface PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(Surface ${Surface_LIBS})
 target_compile_warn_error(Surface)
 
-SET_BIN_DIR(Surface Surface /Mod/Surface)
+SET_BIN_DIR(Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)
 
 install(TARGETS Surface DESTINATION ${CMAKE_INSTALL_LIBDIR})

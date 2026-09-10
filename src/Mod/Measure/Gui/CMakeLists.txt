@@ -99,7 +99,7 @@ endif()
 
 target_compile_warn_error(MeasureGui)
 
-SET_BIN_DIR(MeasureGui MeasureGui /Mod/Measure)
+SET_BIN_DIR(MeasureGui)
 SET_PYTHON_PREFIX_SUFFIX(MeasureGui)
 
 fc_copy_sources(MeasureGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Measure/" ${MeasureGuiIcon_SVG})
