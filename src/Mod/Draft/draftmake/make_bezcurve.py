@@ -24,21 +24,32 @@
 # ***************************************************************************
 """Provides functions to create BezCurve objects."""
 
+from __future__ import annotations
+
 ## @package make_bezcurve
 # \ingroup draftmake
 # \brief Provides functions to create BezCurve objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.translate import translate
-from draftobjects.bezcurve import BezCurve
+from draftobjects.bezcurve import BezCurve, BezCurveObject
 
 if App.GuiUp:
     from draftviewproviders.view_bezcurve import ViewProviderBezCurve
+
+
+def _new_bezcurve_object(doc: App.Document, name: str) -> BezCurveObject:
+    obj = doc.addObject("Part::FeaturePython", name)
+    obj.addExtension("Part::AttachExtensionPython")
+    BezCurve(obj)
+    return cast(BezCurveObject, obj)
 
 
 def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=None, degree=None):
@@ -70,7 +81,8 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
     degree : int
         Degree of the BezCurve
     """
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
     if not isinstance(pointslist, list):
@@ -84,9 +96,7 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
         fname = "Line"
     else:
         fname = "BezCurve"
-    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
-    obj.addExtension("Part::AttachExtensionPython")
-    BezCurve(obj)
+    obj = _new_bezcurve_object(doc, fname)
     obj.Points = pointslist
     if degree:
         obj.Degree = degree

@@ -20,7 +20,7 @@ from stubgen.cpp_properties import (  # noqa: E402
 )
 from stubgen.document_object_types import direct_python_types  # noqa: E402
 from stubgen.discovery import collect_type_registrations  # noqa: E402
-from stubgen.parsing import iter_source_files  # noqa: E402
+from stubgen.parsing import load_source_files  # noqa: E402
 from stubgen.property_contracts import load_property_catalog  # noqa: E402
 from stubgen.source_inputs import collect_binding_classes  # noqa: E402
 from stubgen.type_hierarchy import (  # noqa: E402
@@ -37,7 +37,7 @@ class CppPropertyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.hierarchy = discover_type_hierarchy(ROOT_DIR)
-        source_files = list(iter_source_files(ROOT_DIR, ROOT_DIR / "src"))
+        source_files = load_source_files(ROOT_DIR, ROOT_DIR / "src")
         registrations = collect_type_registrations(ROOT_DIR, source_files)
         cls.classes = collect_binding_classes(ROOT_DIR, ROOT_DIR / "src", registrations)
         cls.catalog = load_property_catalog(ROOT_DIR)

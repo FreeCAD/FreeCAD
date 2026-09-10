@@ -27,11 +27,14 @@ This creates a `Part::Part2DObjectPython`, and then assigns the Proxy class
 `Fillet`, and the `ViewProviderFillet` for the view provider.
 """
 
+from __future__ import annotations
+
 ## @package make_fillet
 # \ingroup draftmake
 # \brief Provides functions to create Fillet objects between two lines.
 
 import lazy_loader.lazy_loader as lz
+from typing import TYPE_CHECKING, cast
 
 import FreeCAD as App
 from draftgeoutils import fillets as geo_fillets
@@ -48,6 +51,12 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 ## \addtogroup draftmake
 # @{
+
+
+def _new_fillet_object(doc: App.Document) -> fillet.FilletObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "Fillet")
+    fillet.Fillet(obj)
+    return cast(fillet.FilletObject, obj)
 
 
 def _preprocess(objs, radius, chamfer):
@@ -77,6 +86,9 @@ def _preprocess(objs, radius, chamfer):
         return None, None
 
     edges = geo_fillets.fillet(edges, radius, chamfer)
+    if edges is None:
+        _err(translate("draft", "Edges are not connected or radius is too large"))
+        return None, None
     if len(edges) < 3:
         _err(translate("draft", "Edges are not connected or radius is too large"))
         return None, None
@@ -113,7 +125,7 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
     """
 
     edges, del_objs = _preprocess(objs, radius, chamfer)
-    if edges is None:
+    if edges is None or del_objs is None:
         return
 
     try:
@@ -122,8 +134,11 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         return None
 
     doc = App.activeDocument()
-    obj = doc.addObject("Part::Part2DObjectPython", "Fillet")
-    fillet.Fillet(obj)
+    if not doc:
+        _err(translate("draft", "No active document. Aborting."))
+        return None
+
+    obj = _new_fillet_object(doc)
     obj.Shape = wire
     obj.Length = wire.Length
     obj.Start = wire.Vertexes[0].Point

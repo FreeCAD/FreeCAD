@@ -138,6 +138,12 @@ process. Missing table documentation receives a stable generated description;
 explicit `doc` fields remain the preferred form for user-facing details.
 Irregular exports remain curated until they have a stable structured source
 representation.
+
+The generator also scans literal `obj.addProperty("App::Property...", name, ...)`
+calls in the typed Draft object sources. Cataloged declarations that appear as
+explicit getter/setter members in Draft protocols are checked during
+generation; dynamic declarations and uncataloged property kinds remain
+outside this conservative validation pass until they have structured input.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or

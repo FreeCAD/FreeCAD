@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides the object code for the Polygon object."""
 
+from __future__ import annotations
+
 ## @package polygon
 # \ingroup draftobjects
 # \brief Provides the object code for the Polygon object.
@@ -31,13 +33,55 @@
 ## \addtogroup draftobjects
 # @{
 import math
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftgeoutils import fillets as geo_fillets
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import DraftMakeFaceObject, QuantityValueInput
 from draftutils import gui_utils
 from draftutils import params
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class PolygonObject(DraftMakeFaceObject, Protocol):
+    """Document object with properties added by the Polygon proxy."""
+
+    @property
+    def DrawMode(self) -> str: ...
+
+    @DrawMode.setter
+    def DrawMode(self, value: str | list[str]) -> None: ...
+
+    FacesNumber: int
+
+    @property
+    def Radius(self) -> Quantity: ...
+
+    @Radius.setter
+    def Radius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def FilletRadius(self) -> Quantity: ...
+
+    @FilletRadius.setter
+    def FilletRadius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def ChamferSize(self) -> Quantity: ...
+
+    @ChamferSize.setter
+    def ChamferSize(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 class Polygon(DraftObject):

@@ -64,6 +64,11 @@ from .property_contracts import (
     render_property_aliases,
 )
 from .property_hierarchy import property_hierarchy_from
+from .property_declarations import (
+    DRAFT_PROPERTY_SOURCES,
+    format_issues,
+    validate_protocol_property_contracts,
+)
 from .render import type_stub_lines, write_stub_file
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
 from .project import Project
@@ -318,6 +323,16 @@ def write_outputs(
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
     append_property_aliases(out_dir / "stubs", module_names, property_catalog)
+    property_issues = validate_protocol_property_contracts(
+        root,
+        paths=DRAFT_PROPERTY_SOURCES,
+        hierarchy=property_hierarchy,
+        catalog=property_catalog,
+    )
+    if property_issues:
+        raise ValueError(
+            "Draft property protocol contracts are inconsistent:\n" + format_issues(property_issues)
+        )
     append_type_stubs(
         out_dir / "stubs",
         methods,

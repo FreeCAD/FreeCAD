@@ -24,19 +24,29 @@
 # ***************************************************************************
 """Provides functions to create ShapeString objects."""
 
+from __future__ import annotations
+
 ## @package make_shapestring
 # \ingroup draftmake
 # \brief Provides functions to create ShapeString objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.shapestring import ShapeString
+from draftobjects.shapestring import ShapeString, ShapeStringObject
 
 if App.GuiUp:
     from draftviewproviders.view_shapestring import ViewProviderShapeString
+
+
+def _new_shapestring_object(doc: App.Document) -> ShapeStringObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "ShapeString")
+    ShapeString(obj)
+    return cast(ShapeStringObject, obj)
 
 
 def make_shapestring(String, FontFile, Size=100, Tracking=0):
@@ -50,12 +60,12 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         Major radius of the ellipse.
 
     """
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "ShapeString")
-    ShapeString(obj)
+    obj = _new_shapestring_object(doc)
     obj.String = String
     obj.FontFile = FontFile
     obj.Size = Size
@@ -65,7 +75,7 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
         ViewProviderShapeString(obj.ViewObject)
         gui_utils.format_object(obj)
         obrep = obj.ViewObject
-        if "PointSize" in obrep.PropertiesList:
+        if obrep is not None and "PointSize" in obrep.PropertiesList:
             obrep.PointSize = 1  # hide the segment end points
         gui_utils.select(obj)
     obj.recompute()

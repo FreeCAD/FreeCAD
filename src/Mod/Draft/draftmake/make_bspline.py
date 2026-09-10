@@ -24,21 +24,32 @@
 # ***************************************************************************
 """Provides functions to create BSpline objects."""
 
+from __future__ import annotations
+
 ## @package make_bspline
 # \ingroup draftmake
 # \brief Provides functions to create BSpline objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.translate import translate
-from draftobjects.bspline import BSpline
+from draftobjects.bspline import BSpline, BSplineObject
 
 if App.GuiUp:
     from draftviewproviders.view_bspline import ViewProviderBSpline
+
+
+def _new_bspline_object(doc: App.Document, name: str) -> BSplineObject:
+    obj = doc.addObject("Part::FeaturePython", name)
+    obj.addExtension("Part::AttachExtensionPython")
+    BSpline(obj)
+    return cast(BSplineObject, obj)
 
 
 def make_bspline(pointslist, closed=False, placement=None, face=None, support=None):
@@ -67,7 +78,8 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
     support :
         TODO: Describe
     """
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
     if not isinstance(pointslist, list):
@@ -97,9 +109,7 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         fname = "Line"
     else:
         fname = "BSpline"
-    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
-    obj.addExtension("Part::AttachExtensionPython")
-    BSpline(obj)
+    obj = _new_bspline_object(doc, fname)
     obj.Closed = closed
     obj.Points = pointslist
     obj.AttachmentSupport = support

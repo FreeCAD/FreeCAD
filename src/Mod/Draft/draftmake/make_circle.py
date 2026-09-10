@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides functions to create Circle objects."""
 
+from __future__ import annotations
+
 ## @package make_circle
 # \ingroup draftmake
 # \brief Provides functions to create Circle objects.
@@ -31,17 +33,38 @@
 ## \addtogroup draftmake
 # @{
 import math
+from typing import Protocol, TypeGuard, cast
 
 import FreeCAD as App
 import Part
 import DraftVecUtils
 from draftgeoutils import general as geo_general
-from draftobjects.circle import Circle
+from draftobjects.circle import Circle, CircleObject
+from draftobjects.type_hints import QuantityValueInput
 from draftutils import utils
 from draftutils import gui_utils
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
+
+
+class _CircleVertex(Protocol):
+    Point: App.Vector
+
+
+class _CircularEdge(Protocol):
+    Curve: Part.Circle
+    Vertexes: list[_CircleVertex]
+
+
+def _new_circle_object(doc: App.Document, name: str) -> CircleObject:
+    obj = doc.addObject("Part::Part2DObjectPython", name)
+    Circle(obj)
+    return cast(CircleObject, obj)
+
+
+def _is_circular_edge(edge: Part.Edge) -> TypeGuard[_CircularEdge]:
+    return geo_general.geomType(edge) == "Circle"
 
 
 def _get_normal(axis, ref_rot):
@@ -101,7 +124,8 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
         set to other than `'Deactivated'`.
     """
 
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
@@ -113,33 +137,33 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     else:
         name = "Circle"
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", name)
-
-    Circle(obj)
+    obj = _new_circle_object(doc, name)
 
     if face is not None:
         obj.MakeFace = face
 
-    if isinstance(radius, Part.Edge) and geo_general.geomType(radius) == "Circle":
+    if isinstance(radius, Part.Edge) and _is_circular_edge(radius):
         edge = radius
-        obj.Radius = edge.Curve.Radius
-        axis = edge.Curve.Axis
+        curve = edge.Curve
+        obj.Radius = curve.Radius
+        axis = curve.Axis
+        center = curve.Center
         ref_rot = App.Rotation() if placement is None else placement.Rotation
         normal = _get_normal(axis, ref_rot)
         ref_x_axis = ref_rot.multVec(App.Vector(1, 0, 0))
         ref_y_axis = ref_rot.multVec(App.Vector(0, 1, 0))
         rot = App.Rotation(ref_x_axis, ref_y_axis, normal, "ZXY")
-        placement = App.Placement(edge.Curve.Center, rot)
+        placement = App.Placement(center, rot)
         if len(edge.Vertexes) > 1:
-            v1 = (edge.Vertexes[0].Point).sub(edge.Curve.Center)
-            v2 = (edge.Vertexes[-1].Point).sub(edge.Curve.Center)
+            v1 = (edge.Vertexes[0].Point).sub(center)
+            v2 = (edge.Vertexes[-1].Point).sub(center)
             if not axis.isEqual(normal, 1e-4):
                 v1, v2 = v2, v1
             x_axis = rot.multVec(App.Vector(1, 0, 0))
             obj.FirstAngle = math.degrees(DraftVecUtils.angle(x_axis, v1, normal))
             obj.LastAngle = math.degrees(DraftVecUtils.angle(x_axis, v2, normal))
     else:
-        obj.Radius = radius
+        obj.Radius = cast(QuantityValueInput, radius)
         if (startangle is not None) and (endangle is not None):
             obj.FirstAngle = math.copysign(abs(startangle) % 360, startangle)
             obj.LastAngle = math.copysign(abs(endangle) % 360, endangle)

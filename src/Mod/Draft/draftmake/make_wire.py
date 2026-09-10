@@ -23,20 +23,31 @@
 # ***************************************************************************
 """Provides functions to create multipoint Wire objects."""
 
+from __future__ import annotations
+
 ## @package make_wire
 # \ingroup draftmake
 # \brief Provides functions to create multipoint Wire objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 from draftgeoutils import geometry as geo_geometry
-from draftobjects.wire import Wire
+from draftobjects.wire import Wire, WireObject
 from draftutils import utils
 from draftutils import gui_utils
 
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
+
+
+def _new_wire_object(doc: App.Document, name: str) -> WireObject:
+    obj = doc.addObject("Part::FeaturePython", name)
+    obj.addExtension("Part::AttachExtensionPython")
+    Wire(obj)
+    return cast(WireObject, obj)
 
 
 def make_wire(pointslist, closed=False, placement=None, face=None, support=None, bs2wire=False):
@@ -68,7 +79,8 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     bs2wire : bool
         TODO: Describe
     """
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return None
 
@@ -108,9 +120,7 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     else:
         fname = "Wire"
 
-    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
-    obj.addExtension("Part::AttachExtensionPython")
-    Wire(obj)
+    obj = _new_wire_object(doc, fname)
     obj.Points = pointslist
     obj.Closed = closed
     obj.AttachmentSupport = support

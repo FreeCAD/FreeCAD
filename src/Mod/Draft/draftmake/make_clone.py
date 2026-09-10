@@ -24,14 +24,18 @@
 # ***************************************************************************
 """Provides functions to create Clone objects."""
 
+from __future__ import annotations
+
 ## @package make_clone
 # \ingroup draftmake
 # \brief Provides functions to create Clone objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import Protocol, cast
+
 import FreeCAD as App
-from draftobjects.clone import Clone
+from draftobjects.clone import Clone, CloneObject
 from draftutils import params
 from draftutils import utils
 from draftutils import gui_utils
@@ -41,7 +45,32 @@ if App.GuiUp:
     from draftviewproviders.view_clone import ViewProviderClone
 
 
-def _make_bim_clone(selected_base):
+class _CloneSourceProxy(Protocol):
+    Type: str
+
+
+class _CloneSourceObject(Protocol):
+    Label: str
+    LongName: str
+    Placement: App.Placement
+    Proxy: _CloneSourceProxy
+
+    def isDerivedFrom(self, identifier: str, /) -> bool: ...
+
+
+class _ArchCloneObject(Protocol):
+    Label: str
+    CloneOf: object
+    Placement: App.Placement
+    RailingLeft: object
+    RailingRight: object
+
+
+def _new_clone_object(doc: App.Document, type_id: str, name: str) -> CloneObject:
+    return cast(CloneObject, doc.addObject(type_id, name))
+
+
+def _make_bim_clone(selected_base: _CloneSourceObject) -> _ArchCloneObject | None:
 
     try:
         import Arch
@@ -50,27 +79,38 @@ def _make_bim_clone(selected_base):
         return None
 
     if utils.get_type(selected_base) == "BuildingPart":
-        cl = Arch.makeComponent()
+        cl = cast(_ArchCloneObject, Arch.makeComponent())
     else:
         try:  # new-style make function
-            cl = getattr(Arch, "make_" + selected_base.Proxy.Type.lower())()
+            cl = cast(
+                _ArchCloneObject,
+                getattr(Arch, "make_" + selected_base.Proxy.Type.lower())(),
+            )
         except Exception:
             try:  # old-style make function
-                cl = getattr(Arch, "make" + selected_base.Proxy.Type)()
+                cl = cast(
+                    _ArchCloneObject,
+                    getattr(Arch, "make" + selected_base.Proxy.Type)(),
+                )
             except Exception:
                 return None
 
-    base = utils.get_clone_base(selected_base)
-    prefix = params.get_param("ClonePrefix")
+    base = cast(
+        _CloneSourceObject,
+        utils.get_clone_base(cast(App.DocumentObject, selected_base)),
+    )
+    prefix = cast(str, params.get_param("ClonePrefix"))
     cl.Label = prefix + base.Label
     cl.CloneOf = base
     if utils.get_type(selected_base) != "BuildingPart":
         cl.Placement = selected_base.Placement
     if utils.get_type(selected_base) == "Stairs":
-        if selected_base.RailingLeft:
-            cl.RailingLeft = _make_bim_clone(selected_base.RailingLeft)
-        if selected_base.RailingRight:
-            cl.RailingRight = _make_bim_clone(selected_base.RailingRight)
+        railing_left = getattr(selected_base, "RailingLeft", None)
+        if railing_left:
+            cl.RailingLeft = _make_bim_clone(cast(_CloneSourceObject, railing_left))
+        railing_right = getattr(selected_base, "RailingRight", None)
+        if railing_right:
+            cl.RailingRight = _make_bim_clone(cast(_CloneSourceObject, railing_right))
 
     for prop in ("Description", "IfcType", "Material", "Subvolume", "Tag"):
         try:
@@ -103,32 +143,39 @@ def make_clone(obj, delta=None, forcedraft=False):
 
     """
 
-    prefix = params.get_param("ClonePrefix")
+    doc = App.ActiveDocument
+    if not doc:
+        App.Console.PrintError("No active document. Aborting\n")
+        return
 
-    cl = None
+    prefix_param = params.get_param("ClonePrefix")
+    prefix = ""
 
-    if prefix:
-        prefix = prefix.strip() + " "
+    if prefix_param:
+        prefix = str(prefix_param).strip() + " "
 
     if not isinstance(obj, list):
         obj = [obj]
 
+    source = cast(_CloneSourceObject, obj[0])
+    draft_clone = None
+
     if (
         len(obj) == 1
-        and obj[0].isDerivedFrom("Part::Part2DObject")
-        and utils.get_type(obj[0]) not in ["BezCurve", "BSpline", "Wire"]
+        and source.isDerivedFrom("Part::Part2DObject")
+        and utils.get_type(source) not in ["BezCurve", "BSpline", "Wire"]
     ):
         # "BezCurve", "BSpline" and "Wire" objects created with < v1.1
         # are "Part::Part2DObject" objects but they need not be 2D.
-        cl = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Clone2D")
-        cl.Label = prefix + obj[0].Label + " (2D)"
+        draft_clone = _new_clone_object(doc, "Part::Part2DObjectPython", "Clone2D")
+        draft_clone.Label = prefix + source.Label + " (2D)"
     elif (
         len(obj) == 1
-        and (hasattr(obj[0], "CloneOf") or utils.get_type(obj[0]) == "BuildingPart")
+        and (hasattr(source, "CloneOf") or utils.get_type(source) == "BuildingPart")
         and not forcedraft
     ):
         # arch objects can be clones
-        cl = _make_bim_clone(obj[0])
+        cl = _make_bim_clone(source)
         if cl is not None:
             if App.GuiUp:
                 # Delay required in case a stairs with railings is cloned:
@@ -136,26 +183,26 @@ def make_clone(obj, delta=None, forcedraft=False):
             return cl
 
     # fall back to Draft clone mode
-    if cl is None:
-        cl = App.ActiveDocument.addObject("Part::FeaturePython", "Clone")
-        cl.addExtension("Part::AttachExtensionPython")
-        cl.Label = prefix + obj[0].Label
-    Clone(cl)
-    cl.Objects = obj
+    if draft_clone is None:
+        draft_clone = _new_clone_object(doc, "Part::FeaturePython", "Clone")
+        draft_clone.addExtension("Part::AttachExtensionPython")
+        draft_clone.Label = prefix + source.Label
+    Clone(draft_clone)
+    draft_clone.Objects = obj
     if delta:
-        cl.Placement.move(delta)
-    elif (len(obj) == 1) and hasattr(obj[0], "Placement"):
-        cl.Placement = obj[0].Placement
-    if hasattr(cl, "LongName") and hasattr(obj[0], "LongName"):
-        cl.LongName = obj[0].LongName
+        draft_clone.Placement.move(delta)
+    elif (len(obj) == 1) and hasattr(source, "Placement"):
+        draft_clone.Placement = source.Placement
+    if hasattr(draft_clone, "LongName") and hasattr(source, "LongName"):
+        draft_clone.LongName = source.LongName
     if App.GuiUp:
-        ViewProviderClone(cl.ViewObject)
+        ViewProviderClone(draft_clone.ViewObject)
         # Shape of clone may not yet be available (v1.1 regression). We need to delay
         # `format_object()` as that function requires the correct number of faces.
         # https://github.com/FreeCAD/FreeCAD/issues/27958
-        QtCore.QTimer.singleShot(0, lambda: gui_utils.format_object(cl, obj[0]))
-        gui_utils.select(cl)
-    return cl
+        QtCore.QTimer.singleShot(0, lambda: gui_utils.format_object(draft_clone, source))
+        gui_utils.select(draft_clone)
+    return draft_clone
 
 
 clone = make_clone

@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides the object code for the ShapeString object."""
 
+from __future__ import annotations
+
 ## @package shapestring
 # \ingroup draftobjects
 # \brief Provides the object code for the ShapeString object.
@@ -32,15 +34,74 @@
 # @{
 import os
 import math
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Protocol, cast
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import Part
 from draftgeoutils import faces
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import QuantityInput, QuantityValueInput
 from draftutils import gui_utils
 from draftutils.messages import _err, _log
 from draftutils.translate import translate
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class ShapeStringViewObject(Protocol):
+    """View object shape used by Draft ShapeString creation."""
+
+    PropertiesList: list[str]
+    PointSize: object
+
+
+class ShapeStringObject(Protocol):
+    """Document object with properties added by the ShapeString proxy."""
+
+    String: str
+    FontFile: str
+    KeepLeftMargin: bool
+    ScaleToSize: bool
+    MakeFace: bool
+    Fuse: bool
+
+    @property
+    def Justification(self) -> str: ...
+
+    @Justification.setter
+    def Justification(self, value: str | list[str]) -> None: ...
+
+    @property
+    def JustificationReference(self) -> str: ...
+
+    @JustificationReference.setter
+    def JustificationReference(self, value: str | list[str]) -> None: ...
+
+    @property
+    def Size(self) -> Quantity: ...
+
+    @Size.setter
+    def Size(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Tracking(self) -> Quantity: ...
+
+    @Tracking.setter
+    def Tracking(self, value: QuantityInput) -> None: ...
+
+    @property
+    def ObliqueAngle(self) -> Quantity: ...
+
+    @ObliqueAngle.setter
+    def ObliqueAngle(self, value: QuantityValueInput) -> None: ...
+
+    ViewObject: ShapeStringViewObject | None
+
+    def recompute(self, recursive: bool = False, /) -> None: ...
 
 
 class ShapeString(DraftObject):
@@ -213,7 +274,7 @@ class ShapeString(DraftObject):
                 shapes.extend(self.make_faces(char))
         if shapes:
             if fill and obj.Fuse:
-                ss_shape = shapes[0].fuse(shapes[1:])
+                ss_shape = shapes[0].fuse(tuple(shapes[1:]))
                 ss_shape = faces.concatenate(ss_shape)
                 # Concatenate returns a Face or a Compound. We always
                 # need a Compound as we use ss_shape.SubShapes later.
@@ -326,7 +387,8 @@ class ShapeString(DraftObject):
             "Part::FaceMakerUnified",
         ):
             try:
-                faces = Part.makeFace(wirelist, maker).Faces
+                make_face = cast(Callable[..., Part.Shape], Part.makeFace)
+                faces = make_face(wirelist, maker).Faces
                 for face in faces:
                     face.validate()
                 break
@@ -339,7 +401,8 @@ class ShapeString(DraftObject):
         for face in faces:
             try:
                 # some fonts fail here
-                if face.normalAt(0, 0).z < 0:  # Does not seem to occur for FaceMakerBullseye.
+                normal_at = cast(Callable[..., App.Vector], face.normalAt)
+                if normal_at(0, 0).z < 0:  # Does not seem to occur for FaceMakerBullseye.
                     face.reverse()
             except Exception:
                 pass
