@@ -301,7 +301,10 @@ class BIM_Views:
                                         lv.addChild(wp)
                                 lvHold.append((lv, lvH))
                         if obj and (t == "WorkingPlaneProxy"):
-                            if obj.getParent() and obj.getParent().IfcType == "Building Storey":
+                            if (
+                                obj.getParent()
+                                and getattr(obj.getParent(), "IfcType", "") == "Building Storey"
+                            ):
                                 continue
                             wp, _ = getTreeViewItem(obj)
                             soloProxyHold.append(wp)

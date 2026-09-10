@@ -2092,7 +2092,7 @@ a raw wire from the original shape is added</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Apply cuts</source>
-      <translation type="unfinished">Apply cuts</translation>
+      <translation>Применить разрезы</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
@@ -2814,7 +2814,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>Note: DXF options apply to DWG files as well.</source>
-      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
+      <translation>Примечание: параметры DXF также применяются к файлам DWG.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -3110,9 +3110,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Copy</source>
       <translation>Копировать</translation>
     </message>
@@ -3461,7 +3461,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1031"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="291"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>Повернуть</translation>
     </message>
@@ -3665,7 +3665,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_layer.py" line="56"/>
       <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
+      <location filename="../../draftutils/utils.py" line="1143"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
@@ -3755,17 +3755,17 @@ or try saving to a lower DWG version.</source>
       <translation>Объекты имеют разное размещение. Расстояние между двумя базовыми точками:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="967"/>
+      <location filename="../../draftutils/utils.py" line="969"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s нельзя изменить, потому что их размещение доступно только для чтения</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1182"/>
+      <location filename="../../draftutils/utils.py" line="1184"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>Эта функция будет удалена в {}. Пожалуйста, используйте "{}".</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1188"/>
+      <location filename="../../draftutils/utils.py" line="1190"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>Эта функция будет устарела. Пожалуйста, используйте "{}".</translation>
     </message>
@@ -3780,12 +3780,12 @@ or try saving to a lower DWG version.</source>
       <translation>не существует ни в одном из объектов</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="958"/>
+      <location filename="../../draftutils/utils.py" line="960"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s имеет общую базу с %d другими объектами. Пожалуйста, проверьте, хотите ли вы изменить её.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1104"/>
+      <location filename="../../draftutils/utils.py" line="1106"/>
       <source>Wrong input: unknown document {}</source>
       <translation>Неверный ввод: неизвестный документ {}</translation>
     </message>
@@ -3814,17 +3814,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="243"/>
       <source>%1 pick arrow point</source>
-      <translation type="unfinished">%1 pick arrow point</translation>
+      <translation>%1 укажите точку стрелки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="247"/>
       <source>%1 pick corner point</source>
-      <translation type="unfinished">%1 pick corner point</translation>
+      <translation>%1 укажите угловую точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_labels.py" line="251"/>
       <source>%1 pick text point</source>
-      <translation type="unfinished">%1 pick text point</translation>
+      <translation>%1 укажите точку текста</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="95"/>
@@ -3950,7 +3950,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="171"/>
-      <location filename="../../draftguitools/gui_move.py" line="241"/>
+      <location filename="../../draftguitools/gui_move.py" line="244"/>
       <source>Pick end point</source>
       <translation>Укажите конечную точку</translation>
     </message>
@@ -3962,17 +3962,17 @@ or try saving to a lower DWG version.</source>
       <translation>Действительные подэлементы не выбраны</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
       <source>Move</source>
       <translation>Переместить</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="252"/>
+      <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
-      <translation type="unfinished">%1 pick start point</translation>
+      <translation>%1 укажите начальную точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="256"/>
+      <location filename="../../draftguitools/gui_move.py" line="259"/>
       <source>%1 pick end point</source>
       <translation>%1 укажите конечную точку</translation>
     </message>
@@ -4022,32 +4022,32 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
       <source>Hold %1 constrain</source>
-      <translation type="unfinished">Hold %1 constrain</translation>
+      <translation>Удерживайте %1 для ограничения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="81"/>
       <source>Hold %1 horizontal/vertical dimension</source>
-      <translation type="unfinished">Hold %1 horizontal/vertical dimension</translation>
+      <translation>Удерживайте %1 для горизонтального/вертикального размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="86"/>
       <source>Hold %1 radial dimension</source>
-      <translation type="unfinished">Hold %1 radial dimension</translation>
+      <translation>Удерживайте %1 для радиального размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="93"/>
       <source>Hold %1 snap</source>
-      <translation type="unfinished">Hold %1 snap</translation>
+      <translation>Удерживайте %1 для привязки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="98"/>
       <source>Hold %1 copy</source>
-      <translation type="unfinished">Hold %1 copy</translation>
+      <translation>Удерживайте %1 для копирования</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="114"/>
       <source>%1 select objects to modify</source>
-      <translation type="unfinished">%1 select objects to modify</translation>
+      <translation>%1 выберите объекты для изменения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="116"/>
@@ -4057,7 +4057,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="133"/>
       <source>%1 / %2 / %3 switch constraint</source>
-      <translation type="unfinished">%1 / %2 / %3 switch constraint</translation>
+      <translation>%1 / %2 / %3 переключить ограничение</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="143"/>
@@ -4077,12 +4077,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="172"/>
       <source>%1 / hold %2 select edge</source>
-      <translation type="unfinished">%1 / hold %2 select edge</translation>
+      <translation>%1 / удерживайте %2 для выбора ребра</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="174"/>
       <source>Hold %1 select edge</source>
-      <translation type="unfinished">Hold %1 select edge</translation>
+      <translation>Удерживайте %1 для выбора ребра</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="490"/>
@@ -4174,7 +4174,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
-      <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
+      <translation>%1 применить перемещение, поворот или масштабирование к подэлементам</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="179"/>
@@ -4191,22 +4191,22 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="374"/>
       <source>%1 select object to edit</source>
-      <translation type="unfinished">%1 select object to edit</translation>
+      <translation>%1 выберите объект для редактирования</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="382"/>
       <source>%1 pick node to edit</source>
-      <translation type="unfinished">%1 pick node to edit</translation>
+      <translation>%1 укажите узел для редактирования</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="384"/>
       <source>%1 options for hovered node/edge</source>
-      <translation type="unfinished">%1 options for hovered node/edge</translation>
+      <translation>%1 параметры для подсвеченного узла/ребра</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="392"/>
       <source>%1 place node</source>
-      <translation type="unfinished">%1 place node</translation>
+      <translation>%1 разместить узел</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="541"/>
@@ -4340,54 +4340,54 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="314"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
       <source>Base angle</source>
       <translation>Базовый угол</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="196"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
       <source>The base angle to start the rotation from</source>
       <translation>Базовый угол, с которого начинается поворот</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="336"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="339"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>Величина поворота, которую необходимо выполнить.
 Конечный угол будет равен базовому углу плюс эта величина.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="354"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
-      <translation type="unfinished">%1 pick rotation center</translation>
+      <translation>%1 укажите центр поворота</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
-      <translation type="unfinished">%1 pick base angle</translation>
+      <translation>%1 укажите базовый угол</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="358"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
-      <translation type="unfinished">%1 pick rotation angle</translation>
+      <translation>%1 укажите угол поворота</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="323"/>
       <source>Pick base angle</source>
       <translation>Указать начальный угол</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="209"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="330"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="333"/>
       <source>Rotation</source>
       <translation>Поворот</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="221"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="344"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="347"/>
       <source>Pick rotation angle</source>
       <translation>Выберите угол поворота</translation>
     </message>
@@ -4552,22 +4552,22 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="604"/>
       <source>%1 pick target</source>
-      <translation type="unfinished">%1 pick target</translation>
+      <translation>%1 укажите цель</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="606"/>
       <source>Hold %1 free direction</source>
-      <translation type="unfinished">Hold %1 free direction</translation>
+      <translation>Удерживайте %1 для свободного направления</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="609"/>
       <source>Hold %1 keep active endpoint</source>
-      <translation type="unfinished">Hold %1 keep active endpoint</translation>
+      <translation>Удерживайте %1 для сохранения активной конечной точки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="612"/>
       <source>Hold %1 invert trim direction</source>
-      <translation type="unfinished">Hold %1 invert trim direction</translation>
+      <translation>Удерживайте %1 для инвертирования направления обрезки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="92"/>
@@ -4588,7 +4588,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="337"/>
       <source>%1 pick distance</source>
-      <translation type="unfinished">%1 pick distance</translation>
+      <translation>%1 укажите расстояние</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
@@ -4630,7 +4630,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
       <source>Set Point as First</source>
-      <translation type="unfinished">Set Point as First</translation>
+      <translation>Установить точку первой</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
@@ -4768,12 +4768,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 определите первую точку и узел</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 определите следующую точку и узел</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4814,39 +4814,39 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Укажите базовую точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="167"/>
+      <location filename="../../draftguitools/gui_scale.py" line="170"/>
       <source>Pick reference distance from base point</source>
       <translation>Укажите опорное расстояние от базовой точки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="215"/>
+      <location filename="../../draftguitools/gui_scale.py" line="218"/>
       <source>Zero scale factor not allowed</source>
       <translation>Нулевой коэффициент масштабирования не допускается. </translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="228"/>
+      <location filename="../../draftguitools/gui_scale.py" line="231"/>
       <source>Scale</source>
       <translation>Масштабировать</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="268"/>
+      <location filename="../../draftguitools/gui_scale.py" line="271"/>
       <source>Pick new distance from base point</source>
       <translation>Выберите новое расстояние от базовой точки</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="293"/>
+      <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
-      <translation type="unfinished">%1 pick base point</translation>
+      <translation>%1 укажите базовую точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="295"/>
+      <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
-      <translation type="unfinished">%1 pick reference distance</translation>
+      <translation>%1 укажите эталонное расстояние</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="297"/>
+      <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
-      <translation type="unfinished">%1 pick new distance</translation>
+      <translation>%1 укажите новое расстояние</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="158"/>
@@ -4869,27 +4869,27 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
-      <translation type="unfinished">%1 pick dimension position</translation>
+      <translation>%1 укажите положение размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
-      <translation type="unfinished">%1 select edge</translation>
+      <translation>%1 выберите ребро</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
-      <translation type="unfinished">%1 pick next dimension point</translation>
+      <translation>%1 укажите следующую точку размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
-      <translation type="unfinished">%1 pick first dimension point</translation>
+      <translation>%1 укажите первую точку размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
-      <translation type="unfinished">%1 pick second dimension point</translation>
+      <translation>%1 укажите вторую точку размера</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="80"/>
@@ -4914,22 +4914,22 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="536"/>
       <source>%1 pick first point of selection rectangle</source>
-      <translation type="unfinished">%1 pick first point of selection rectangle</translation>
+      <translation>%1 укажите первую точку прямоугольника выделения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="538"/>
       <source>%1 pick opposite point of selection rectangle</source>
-      <translation type="unfinished">%1 pick opposite point of selection rectangle</translation>
+      <translation>%1 укажите противоположную точку прямоугольника выделения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="540"/>
       <source>%1 pick start point of displacement</source>
-      <translation type="unfinished">%1 pick start point of displacement</translation>
+      <translation>%1 укажите начальную точку смещения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="542"/>
       <source>%1 pick end point of displacement</source>
-      <translation type="unfinished">%1 pick end point of displacement</translation>
+      <translation>%1 укажите конечную точку смещения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="180"/>
@@ -4985,12 +4985,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="210"/>
       <source>%1 pick start point of mirror line</source>
-      <translation type="unfinished">%1 pick start point of mirror line</translation>
+      <translation>%1 укажите начальную точку линии зеркального отражения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_mirror.py" line="212"/>
       <source>%1 pick end point of mirror line</source>
-      <translation type="unfinished">%1 pick end point of mirror line</translation>
+      <translation>%1 укажите конечную точку линии зеркального отражения</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="86"/>
@@ -6023,7 +6023,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="123"/>
       <source>%1 click on a line to split it</source>
-      <translation type="unfinished">%1 click on a line to split it</translation>
+      <translation>%1 щелкните по линии, чтобы разделить ее</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="76"/>
@@ -6143,24 +6143,24 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftobjects/hatch.py" line="243"/>
       <source>No valid faces for hatch</source>
-      <translation type="unfinished">No valid faces for hatch</translation>
+      <translation>Нет допустимых граней для штриховки</translation>
     </message>
     <message>
       <location filename="../../drafttests/test_lines_gui.py" line="56"/>
       <location filename="../../drafttests/test_lines_gui.py" line="94"/>
       <location filename="../../draftguitools/gui_lines.py" line="246"/>
       <source>Point identical to previous point</source>
-      <translation type="unfinished">Point identical to previous point</translation>
+      <translation>Точка совпадает с предыдущей точкой</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Сохранить вид камеры</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
-      <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
+      <translation>Фиксирует значение во время ввода в 3D. Значок замка или двойной щелчок разблокирует поле.</translation>
     </message>
   </context>
   <context>
@@ -6334,12 +6334,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>_BSpline.createGeometry: Замкнут с той же первой/последней точкой. Геометрия не обновлена.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="111"/>
       <source>Writing camera position</source>
       <translation>Запись положения камеры</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="129"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Запись состояния объектов показан/скрыт</translation>
     </message>
@@ -7008,7 +7008,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The objects and faces used by this object</source>
-      <translation type="unfinished">The objects and faces used by this object</translation>
+      <translation>Объекты и грани, используемые этим объектом</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="63"/>

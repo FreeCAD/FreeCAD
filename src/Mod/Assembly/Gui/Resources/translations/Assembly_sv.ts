@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1420"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>Uppdatera lagrade positioner</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1859"/>
@@ -569,7 +569,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>Radiell förflyttning</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -584,17 +584,17 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>Vinkel för denna rörelse i sprängskissen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>Avstånd för denna rörelse i sprängskissen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>Redigera placering</translation>
     </message>
   </context>
   <context>
@@ -719,7 +719,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="1284"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>Lista över referenser till komponenter som ska grupperas</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1443"/>
@@ -1638,17 +1638,17 @@ Obs! För närvarande väljs endast delar som inte är anslutna, inte bundna del
     <message>
       <location filename="../../../CommandCreateJoint.py" line="413"/>
       <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
+      <translation>Välj minst två komponenter för att skapa en styv grupp</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="536"/>
       <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
+      <translation>Skapa styv grupp</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="542"/>
       <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapa en styv grupp.&lt;/p&gt;&lt;p&gt;Skapar en styv grupp som permanent låser samman de valda komponenterna.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

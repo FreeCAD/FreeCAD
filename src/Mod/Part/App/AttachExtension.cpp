@@ -511,12 +511,19 @@ bool AttachExtension::extensionHandleChangedPropertyName(
         if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this->getExtendedContainer());
             tmp.Restore(reader);
-            AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
-            this->MapMode.setValue(Attacher::mmFlatFace);
+            if (tmp.getValue()) {
+                AttachmentSupport.setValue(tmp.getValue(), tmp.getSubValues());
+                this->MapMode.setValue(Attacher::mmFlatFace);
+            }
             return true;
         }
         if (AttachmentSupport.getClassTypeId() == type) {
-            AttachmentSupport.Restore(reader);
+            App::PropertyLinkSubList tmp;
+            tmp.setContainer(this->getExtendedContainer());
+            tmp.Restore(reader);
+            if (!tmp.getValues().empty()) {
+                AttachmentSupport.Paste(tmp);
+            }
             return true;
         }
     }

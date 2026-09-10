@@ -141,7 +141,7 @@ SketchObject::SketchObject() : geoLastId(0)
     lastHasRedundancies = false;
     lastHasPartialRedundancies = false;
     lastHasMalformedConstraints = false;
-    lastSolverStatus = 0;
+    lastSolverStatus = GCS::SolveStatus::Success;
     lastSolveTime = 0;
 
     solverNeedsUpdate = false;
@@ -221,29 +221,29 @@ App::DocumentObjectExecReturn* SketchObject::execute()
 
     // This includes a regular solve including full geometry update, except when an error
     // ensues
-    int err = this->solve(true);
-
-    if (err == -4) {// over-constrained sketch
-        std::string msg = "Over-constrained sketch\n";
+    std::string msg;
+    switch (solve(true)) {
+    case SketchSolveStatus::Success:
+        break;
+    case SketchSolveStatus::Overconstrained:
+        msg = "Over-constrained sketch\n";
         appendConflictMsg(lastConflicting, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -3) {// conflicting constraints
-        std::string msg = "Sketch with conflicting constraints\n";
+        // TODO: std::move(msg) when DocumentObjectExecReturn takes string by value
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::ConflictingConstraints:
+        msg = "Sketch with conflicting constraints\n";
         appendConflictMsg(lastConflicting, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -2) {// redundant constraints
-        std::string msg = "Sketch with redundant constraints\n";
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::RedundantConstraints:
+        msg = "Sketch with redundant constraints\n";
         appendRedundantMsg(lastRedundant, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -5) {
-        std::string msg = "Sketch with malformed constraints\n";
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::MalformedConstraints:
+        msg = "Sketch with malformed constraints\n";
         appendMalformedConstraintsMsg(lastMalformedConstraints, msg);
-        return new App::DocumentObjectExecReturn(msg.c_str(), this);
-    }
-    else if (err == -1) {// Solver failed
+        return new App::DocumentObjectExecReturn(msg, this);
+    case SketchSolveStatus::SolverError:
+    case SketchSolveStatus::InvalidGeometry:
         return new App::DocumentObjectExecReturn("Solving the sketch failed", this);
     }
 
@@ -686,25 +686,30 @@ void SketchObject::generateId(const Part::Geometry* geo)
     FC_TRACE("found " << found.front());
     preReturn(found.front());
 }
-// clang-format off
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction)
+SketchSolveStatus SketchObject::setTextAndFont(
+    int ConstrId,
+    std::string& newText,
+    std::string& newFont,
+    bool isHeight,
+    bool isConstruction
+)
 {
-;    // no need to check input data validity as this is an sketchobject managed operation.
+    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     // set the changed value for the constraint
     if (this->Constraints.hasInvalidGeometry()) {
-        return -6;
+        return SketchSolveStatus::InvalidGeometry;
     }
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size())) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     auto* constr = vals[ConstrId];
     if (constr->Type != Text || !constr->hasElement(0)) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     // First we replace the old geometries by the new text.
@@ -729,7 +734,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
             }
             geoIdsToDelete.push_back(constr->getGeoId(i));
             if (handleLast) {
-                --handleGeoId; // handle line is added after all text geos.
+                --handleGeoId;  // handle line is added after all text geos.
             }
         }
 
@@ -738,17 +743,19 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
 
     auto* line = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(handleGeoId));
     if (!line) {
-        return -1;
+        return SketchSolveStatus::SolverError;
     }
 
     // Generate text geos based on new text/font :
     std::vector<std::unique_ptr<Part::Geometry>> newGeos;
     std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont);
-    Part::transformAndConvertToGeometry(newGeos,
-                                    shapes,
-                                    line->getStartPoint(),
-                                    line->getEndPoint(),
-                                    isHeight);
+    Part::transformAndConvertToGeometry(
+        newGeos,
+        shapes,
+        line->getStartPoint(),
+        line->getEndPoint(),
+        isHeight
+    );
 
     // Add the geometries to sketch
     int lastGeoid = getHighestCurveIndex();
@@ -775,7 +782,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     if (hasExistingText) {
         constr = new Constraint();
         constr->Type = Text;
-        constr->truncateElements(0); // remove the First/Second/Third that are created automatically
+        constr->truncateElements(0);  // remove the First/Second/Third that are created automatically
         constr->addElement(GeoElementId(handleGeoId));
     }
     for (int i = lastGeoid + 1; i <= newLastGeoid; ++i) {
@@ -789,16 +796,17 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         addConstraint(constr);
     }
 
-    int err = solve();
+    auto status = solve();
 
-    if (err) {
+    if (status == SketchSolveStatus::Success) {
         constr->setText(oldText);
         constr->setFont(oldFont);
         constr->setIsTextHeight(oldIsHeight);
     }
 
-    return err;
+    return status;
 }
+// clang-format off
 
 void SketchObject::acceptGeometry()
 {
@@ -1405,7 +1413,7 @@ void SketchObject::onSketchRestore()
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
-            if (this->solve(true) == 0)
+            if (this->solve(true) == SketchSolveStatus::Success)
                 Shape.setValue(solvedSketch.toShape());
         }
 

@@ -200,20 +200,20 @@ PyMOD_INIT_FUNC(SketcherGui)
 
     // Add Types to module
     Base::Interpreter().addType(
-        &SketcherGui::ViewProviderSketchGeometryExtensionPy ::Type,
+        &SketcherGui::ViewProviderSketchGeometryExtensionPy::Type,
         sketcherGuiModule,
         "ViewProviderSketchGeometryExtension"
     );
 
     // init objects
-    SketcherGui::ViewProviderSketch ::init();
-    SketcherGui::ViewProviderPython ::init();
-    SketcherGui::ViewProviderCustom ::init();
-    SketcherGui::ViewProviderCustomPython ::init();
-    SketcherGui::SoZoomTranslation ::initClass();
-    SketcherGui::SoSketchFaces ::initClass();
-    SketcherGui::PropertyConstraintListItem ::init();
-    SketcherGui::ViewProviderSketchGeometryExtension ::init();
+    SketcherGui::ViewProviderSketch::init();
+    SketcherGui::ViewProviderPython::init();
+    SketcherGui::ViewProviderCustom::init();
+    SketcherGui::ViewProviderCustomPython::init();
+    SketcherGui::SoZoomTranslation::initClass();
+    SketcherGui::SoSketchFaces::initClass();
+    SketcherGui::PropertyConstraintListItem::init();
+    SketcherGui::ViewProviderSketchGeometryExtension::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>(
         QT_TRANSLATE_NOOP("QObject", "Sketcher")

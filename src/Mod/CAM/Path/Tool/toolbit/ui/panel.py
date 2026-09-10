@@ -35,36 +35,32 @@ class TaskPanel:
         Path.Log.track(vobj.Object.Label)
         self.vobj = vobj
         self.obj = vobj.Object
-        self.editor = ToolBitEditorPanel(self.obj, self.editor.form)
+        self.editor = ToolBitEditorPanel(self.obj.Proxy)
+        # The task dialog supplies its own OK/Cancel.
+        self.editor._button_box.hide()
+        self.form = self.editor
         self.deleteOnReject = deleteOnReject
         FreeCAD.ActiveDocument.openTransaction("Edit ToolBit")
 
     def reject(self):
+        # The transaction holds every edit made in the panel, so aborting it
+        # is the undo; the editor has nothing of its own to roll back.
         FreeCAD.ActiveDocument.abortTransaction()
-        self.editor.reject()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction("Uncreate ToolBit")
-            self.editor.reject()
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        return True
 
     def accept(self):
-        self.editor.accept()
-
+        self.editor.save_toolbit()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-
-    def updateUI(self):
-        Path.Log.track()
-        self.editor.updateUI()
-
-    def updateModel(self):
-        self.editor.updateTool()
-        FreeCAD.ActiveDocument.recompute()
+        return True
 
     def setupUi(self):
-        self.editor.setupUI()
+        pass

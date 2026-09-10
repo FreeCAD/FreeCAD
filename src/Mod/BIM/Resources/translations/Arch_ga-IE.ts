@@ -3809,7 +3809,7 @@ Tá an teimpléad réamhshocraithe suite ag:
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
       <source>Preset</source>
       <translation>Réamhshocrú</translation>
@@ -4420,12 +4420,12 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Níor aimsíodh aon fhuinneog. Ní féidir leanúint ar aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>Uath-áireamh san réad óstach</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>Airde na sile</translation>
     </message>
@@ -4448,7 +4448,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation>Roghanna Fuinneoige</translation>
     </message>

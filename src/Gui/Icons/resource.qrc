@@ -151,6 +151,8 @@
         <file>LinkSubElement.svg</file>
         <file>LinkSubOverlay.svg</file>
         <file>list-add.svg</file>
+        <file>overlay-add.svg</file>
+        <file>overlay-minus.svg</file>
         <file>list-remove.svg</file>
         <file>MacroEditor.svg</file>
         <file>MacroFolder.svg</file>
