@@ -2,10 +2,12 @@
 
 #include "PathPatternExtension.h"
 
+#include <Mod/Part/App/Tools.h>
+
 #include <algorithm>
 #include <cmath>
 #include <limits>
-#include <numeric>
+#include <string>
 #include <vector>
 
 #include <BRepAdaptor_Curve.hxx>
@@ -24,6 +26,7 @@
 #include <Base/Exception.h>
 
 #include "PartFeature.h"
+#include "PatternConstants.h"
 #include "TopoShape.h"
 
 using namespace Part;
@@ -38,6 +41,11 @@ const char* PathPatternExtension::SpacingModeEnums[]
 
 namespace
 {
+
+bool verticesCoincide(const TopoDS_Vertex& first, const TopoDS_Vertex& second)
+{
+    return BRep_Tool::Pnt(first).Distance(BRep_Tool::Pnt(second)) <= Precision::Confusion();
+}
 
 std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
 {
@@ -102,26 +110,16 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
             TopoDS_Vertex candidateLast;
             TopExp::Vertices(candidate, candidateFirst, candidateLast, true);
 
-            if (BRep_Tool::Pnt(currentLast).Distance(BRep_Tool::Pnt(candidateFirst))
-                <= Precision::Confusion()) {
+            if (verticesCoincide(currentLast, candidateFirst)) {
                 result.push_back(candidate);
             }
-            else if (
-                BRep_Tool::Pnt(currentLast).Distance(BRep_Tool::Pnt(candidateLast))
-                <= Precision::Confusion()
-            ) {
+            else if (verticesCoincide(currentLast, candidateLast)) {
                 result.push_back(TopoDS::Edge(candidate.Reversed()));
             }
-            else if (
-                BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateLast))
-                <= Precision::Confusion()
-            ) {
+            else if (verticesCoincide(currentFirst, candidateLast)) {
                 result.insert(result.begin(), candidate);
             }
-            else if (
-                BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateFirst))
-                <= Precision::Confusion()
-            ) {
+            else if (verticesCoincide(currentFirst, candidateFirst)) {
                 result.insert(result.begin(), TopoDS::Edge(candidate.Reversed()));
             }
             else {
@@ -161,7 +159,7 @@ bool isClosed(const std::vector<TopoDS_Edge>& edges)
     if (first.IsNull() || last.IsNull()) {
         return false;
     }
-    return BRep_Tool::Pnt(first).Distance(BRep_Tool::Pnt(last)) <= Precision::Confusion();
+    return verticesCoincide(first, last);
 }
 
 std::vector<double> calculateDistances(
@@ -208,13 +206,20 @@ std::vector<double> calculateDistances(
             break;
         }
         distances.push_back(distance);
-        if (distances.size() > 10000) {
-            throw Base::ValueError("Path pattern would create more than 10000 occurrences");
+        if (distances.size() > PatternConstants::MaximumOccurrences) {
+            const auto limit = std::to_string(PatternConstants::MaximumOccurrences);
+            throw Base::ValueError("Path pattern would create more than " + limit + " occurrences");
         }
     }
     return distances;
 }
 
+/** Build an occurrence frame at an arc-length distance along the ordered path.
+ * `ends` contains cumulative edge lengths. Evaluate from the edge's oriented start.
+ * With alignment disabled the frame only translates. Otherwise X follows the tangent;
+ * the preferred vertical vector is projected perpendicular to X to define Z. If they
+ * are parallel, a world axis supplies a stable fallback. Y completes a right-handed frame.
+ */
 gp_Trsf frameAt(
     const std::vector<TopoDS_Edge>& edges,
     const std::vector<double>& ends,
@@ -254,7 +259,7 @@ gp_Trsf frameAt(
             throw Base::ValueError("Path tangent is null");
         }
         gp_Dir xDirection(tangent);
-        gp_Vec zCandidate(vertical.x, vertical.y, vertical.z);
+        gp_Vec zCandidate = Base::convertTo<gp_Vec>(vertical);
         zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
         if (zCandidate.Magnitude() <= Precision::Confusion()) {
             zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
@@ -276,7 +281,7 @@ gp_Trsf frameAt(
         );
         frame.SetRotation(gp_Quaternion(rotation));
     }
-    frame.SetTranslationPart(gp_Vec(position.X(), position.Y(), position.Z()));
+    frame.SetTranslationPart(Base::convertTo<gp_Vec>(position));
     return frame;
 }
 
@@ -340,7 +345,7 @@ PathPatternExtension::PathPatternExtension()
     );
     EXTENSION_ADD_PROPERTY_TYPE(
         VerticalVector,
-        (Base::Vector3d(0.0, 0.0, 1.0)),
+        (Base::Vector3d::UnitZ),
         "PathPattern",
         App::Prop_None,
         "Preferred local Z direction when aligning occurrences."

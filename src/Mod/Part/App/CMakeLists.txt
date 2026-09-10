@@ -223,6 +223,7 @@ SET(Features_SRCS
     PolarPatternExtension.h
     PathPatternExtension.cpp
     PathPatternExtension.h
+    PatternConstants.h
     OCCTMessagePrinter.cpp
     OCCTMessagePrinter.h
     PartFeatures.cpp
