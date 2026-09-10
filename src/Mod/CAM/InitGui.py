@@ -124,7 +124,8 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Sanity"]
+        projcmdlist = ["CAM_Job"]
+        sanitycmdlist = ["CAM_Sanity", "CAM_QuickValidate"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 
@@ -170,6 +171,14 @@ class CAMWorkbench(Workbench):
         toolcmdlist.extend(PathToolBitLibraryCmd.BarList)
         toolbitcmdlist = PathToolBitLibraryCmd.MenuList
 
+        sanitycmdgroup = ["CAM_SanityTools"]
+        FreeCADGui.addCommand(
+            "CAM_SanityTools",
+            PathCommandGroup(
+                sanitycmdlist,
+                QT_TRANSLATE_NOOP("CAM_SanityTools", "Sanity check"),
+            ),
+        )
         postcmdgroup = ["CAM_PostTools"]
         FreeCADGui.addCommand(
             "CAM_PostTools",
@@ -266,7 +275,7 @@ class CAMWorkbench(Workbench):
 
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Project Setup"),
-            projcmdlist + postcmdgroup,
+            projcmdlist + sanitycmdgroup + postcmdgroup,
         )
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Tool Commands"),
@@ -285,6 +294,7 @@ class CAMWorkbench(Workbench):
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&CAM")],
             projcmdlist
+            + sanitycmdlist
             + postcmdlist
             + ["CAM_ExportTemplate", "Separator"]
             + simcmdlist
