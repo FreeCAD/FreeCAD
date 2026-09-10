@@ -78,18 +78,10 @@ SET(FeaturesDressUp_SRCS
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
-# Isolated side-profile Rib feature and its construction helpers.
+# Isolated profile-based Rib feature.
 SET(Rib_SRCS
     FeatureRib.cpp
     FeatureRib.h
-    ThinProfile.cpp
-    ThinProfile.h
-    ThinExtrusion.cpp
-    ThinExtrusion.h
-    ThinSurfaceExtrusion.cpp
-    ThinSurfaceExtrusion.h
-    ThinExtrusionGeometry.cpp
-    ThinExtrusionGeometry.h
 )
 SOURCE_GROUP("Rib" FILES ${Rib_SRCS})
 

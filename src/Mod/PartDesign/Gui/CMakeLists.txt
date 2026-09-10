@@ -30,7 +30,6 @@ set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
     TaskPadPocketParameters.ui
     TaskRibParameters.ui
-    TaskRibAdvancedParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDefeaturingParameters.ui
@@ -69,13 +68,11 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderPad.cpp
     ViewProviderPad.h
     CommandRib.cpp
-    RibStyleParameters.h
     ViewProviderRib.cpp
     ViewProviderRib.h
     TaskRibParameters.cpp
     TaskRibParameters.h
     TaskRibParameters.ui
-    TaskRibAdvancedParameters.ui
     ViewProviderHole.cpp
     ViewProviderHole.h
     ViewProviderPocket.cpp
