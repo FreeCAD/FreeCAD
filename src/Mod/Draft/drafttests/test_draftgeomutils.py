@@ -296,9 +296,7 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
                 0.0,
             )
         ]
-        wire = Part.Wire(
-            [Part.makeLine(start, end) for start, end in zip(points[:-1], points[1:])]
-        )
+        wire = Part.Wire([Part.makeLine(start, end) for start, end in zip(points[:-1], points[1:])])
         width = 120.65
         offset = Vector(-width, 0.0, 0.0)
         offset_args = {
