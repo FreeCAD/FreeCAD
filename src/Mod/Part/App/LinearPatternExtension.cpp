@@ -195,18 +195,18 @@ LinearPatternExtension::LinearPatternExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(
         SuppressedPositions,
-        (std::vector<Base::Vector3d> {}),
+        (std::vector<App::PropertyIntPairList::IntPair> {}),
         "Pattern",
         App::Prop_None,
-        "Suppressed instances as zero-based (direction 1, direction 2, 0) indices. "
+        "Suppressed instances as zero-based (direction 1, direction 2) indices. "
         "Positions outside the current pattern are retained."
     );
 }
 
-Base::Vector3d LinearPatternExtension::getInstancePosition(long index) const
+LinearPatternExtension::PatternPosition LinearPatternExtension::getInstancePosition(long index) const
 {
     const long stride = std::max(1L, Occurrences2.getValue());
-    return Base::Vector3d(index / stride, index % stride, 0);
+    return {index / stride, index % stride};
 }
 
 bool LinearPatternExtension::isInstanceSuppressed(long index) const
@@ -215,7 +215,7 @@ bool LinearPatternExtension::isInstanceSuppressed(long index) const
         return false;
     }
     const auto& positions = SuppressedPositions.getValues();
-    return std::ranges::find(positions, getInstancePosition(index)) != positions.end();
+    return std::ranges::find(positions, getInstancePosition(index).asPair()) != positions.end();
 }
 
 void LinearPatternExtension::setInstanceSuppressed(long index, bool suppressed)
@@ -225,18 +225,19 @@ void LinearPatternExtension::setInstanceSuppressed(long index, bool suppressed)
     }
 }
 
-void LinearPatternExtension::setPositionSuppressed(const Base::Vector3d& position, bool suppressed)
+void LinearPatternExtension::setPositionSuppressed(const PatternPosition& position, bool suppressed)
 {
     auto positions = SuppressedPositions.getValues();
-    const auto it = std::ranges::find(positions, position);
+    const auto value = position.asPair();
+    const auto it = std::ranges::find(positions, value);
     if ((it != positions.end()) == suppressed) {
         return;
     }
     if (suppressed) {
-        positions.push_back(position);
+        positions.push_back(value);
     }
     else {
-        std::erase(positions, position);
+        std::erase(positions, value);
     }
     SuppressedPositions.setValues(positions);
 }

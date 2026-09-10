@@ -28,7 +28,6 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
 #include <App/DocumentObjectExtension.h>
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
@@ -55,6 +54,17 @@ class PartExport LinearPatternExtension: public App::DocumentObjectExtension
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::LinearPatternExtension);
 
 public:
+    struct PatternPosition
+    {
+        long direction1;
+        long direction2;
+
+        App::PropertyIntPairList::IntPair asPair() const
+        {
+            return {direction1, direction2};
+        }
+    };
+
     LinearPatternExtension();
     ~LinearPatternExtension() override = default;
 
@@ -76,13 +86,13 @@ public:
     App::PropertyFloatList Spacings2;
     App::PropertyFloatList SpacingPattern2;
 
-    /// Zero-based (direction 1, direction 2, 0) indices, independent of the grid dimensions.
-    App::PropertyVectorList SuppressedPositions;
+    /// Zero-based (direction 1, direction 2) indices, independent of the grid dimensions.
+    App::PropertyIntPairList SuppressedPositions;
 
-    Base::Vector3d getInstancePosition(long index) const;
+    PatternPosition getInstancePosition(long index) const;
     bool isInstanceSuppressed(long index) const;
     void setInstanceSuppressed(long index, bool suppressed);
-    void setPositionSuppressed(const Base::Vector3d& position, bool suppressed);
+    void setPositionSuppressed(const PatternPosition& position, bool suppressed);
 
     gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
     std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
