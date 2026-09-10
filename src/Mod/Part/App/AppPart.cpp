@@ -97,6 +97,7 @@
 #include "FeatureRevolution.h"
 #include "CircularPatternExtension.h"
 #include "LinearPatternExtension.h"
+#include "LinkArray.h"
 #include "PolarPatternExtension.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
@@ -455,6 +456,7 @@ PyMOD_INIT_FUNC(Part)
     Part::CircularPatternExtension::init();
     Part::LinearPatternExtension::init();
     Part::PolarPatternExtension ::init();
+    Part::LinkArray             ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
