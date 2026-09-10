@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <string>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <gp_Ax1.hxx>
@@ -22,6 +23,7 @@
 
 #include "Part2DObject.h"
 #include "PartFeature.h"
+#include "PatternConstants.h"
 #include "TopoShape.h"
 #include "Tools.h"
 
@@ -94,8 +96,11 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
         throw Base::ValueError("At least two concentric circles are required");
     }
 
-    if (circleCount > 10000) {
-        throw Base::ValueError("Circular pattern would create more than 10000 circles");
+    if (circleCount > PatternConstants::MaximumOccurrences) {
+        throw Base::ValueError(
+            "Circular pattern would create more than "
+            + std::to_string(PatternConstants::MaximumOccurrences) + " circles"
+        );
     }
 
     const gp_Ax2 axis = getRotation();
@@ -116,11 +121,13 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
         const double radius = circle * radialDistance;
         const double requestedCount = std::floor(fullCircle * radius / tangentialDistance);
         // Bound the allocation before narrowing to int or constructing any instances.
-        constexpr int maximumOccurrences = 10000;
-        if (!std::isfinite(requestedCount) || requestedCount > maximumOccurrences
+        if (!std::isfinite(requestedCount) || requestedCount > PatternConstants::MaximumOccurrences
             || transformations.size() + static_cast<std::size_t>(requestedCount)
-                > maximumOccurrences) {
-            throw Base::ValueError("Circular pattern would create more than 10000 occurrences");
+                > PatternConstants::MaximumOccurrences) {
+            throw Base::ValueError(
+                "Circular pattern would create more than "
+                + std::to_string(PatternConstants::MaximumOccurrences) + " occurrences"
+            );
         }
         int elementCount = static_cast<int>(requestedCount);
         elementCount = elementCount / symmetry * symmetry;
