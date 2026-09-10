@@ -23,6 +23,7 @@
 #include "Part2DObject.h"
 #include "PartFeature.h"
 #include "TopoShape.h"
+#include "Tools.h"
 
 using namespace Part;
 
@@ -172,14 +173,14 @@ gp_Ax2 CircularPatternExtension::getRotation() const
             axis = sketch->getAxis(Part::Part2DObject::N_Axis);
         }
         axis *= sketch->Placement.getValue();
-        base = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
-        direction = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
+        base = Base::convertTo<gp_Pnt>(axis.getBase());
+        direction = Base::convertTo<gp_Dir>(axis.getDirection());
     }
     else if (auto* line = freecad_cast<App::Line*>(reference)) {
         const Base::Vector3d point = line->getBasePoint();
         const Base::Vector3d vector = line->getDirection();
-        base = gp_Pnt(point.x, point.y, point.z);
-        direction = gp_Dir(vector.x, vector.y, vector.z);
+        base = Base::convertTo<gp_Pnt>(point);
+        direction = Base::convertTo<gp_Dir>(vector);
     }
     else if (auto* feature = freecad_cast<Part::Feature*>(reference)) {
         TopoDS_Edge edge = TopoDS::Edge(feature->Shape.getShape().getSubShape(subname.c_str()));
@@ -202,8 +203,7 @@ gp_Ax2 CircularPatternExtension::getRotation() const
 
     Base::Placement placement;
     if (auto* object = getExtendedObject()) {
-        if (auto* property
-            = freecad_cast<App::PropertyPlacement*>(object->getPropertyByName("Placement"))) {
+        if (auto* property = object->getPropertyByName<App::PropertyPlacement>("Placement")) {
             placement = property->getValue();
         }
     }
@@ -212,12 +212,8 @@ gp_Ax2 CircularPatternExtension::getRotation() const
     double angle;
     inversePlacement.getRotation().getValue(rotationAxis, angle);
     gp_Trsf inverse;
-    inverse.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(rotationAxis.x, rotationAxis.y, rotationAxis.z)), angle);
-    inverse.SetTranslationPart(gp_Vec(
-        inversePlacement.getPosition().x,
-        inversePlacement.getPosition().y,
-        inversePlacement.getPosition().z
-    ));
+    inverse.SetRotation(gp_Ax1(gp_Pnt(), Base::convertTo<gp_Dir>(rotationAxis)), angle);
+    inverse.SetTranslationPart(Base::convertTo<gp_Vec>(inversePlacement.getPosition()));
     base.Transform(inverse);
     direction.Transform(inverse);
     return gp_Ax2(base, direction);
