@@ -39,7 +39,7 @@ def get_information():
     return {
         "name": "Magnetic Field Around Wire",
         "meshtype": "solid",
-        "meshelement": "Tet10",
+        "meshelement": "Tet4",
         "constraints": ["electromagnetic", "magnetization"],
         "solvers": ["elmer"],
         "material": "solid",

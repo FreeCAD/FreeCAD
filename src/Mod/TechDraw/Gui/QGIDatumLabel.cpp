@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -465,9 +467,10 @@ void QGIDatumLabel::setToleranceString()
     const auto dim(dynamic_cast<TechDraw::DrawViewDimension*>(qgivd->getViewObject()));
     if (!dim) {
         return;
-        // don't show if both are zero or if EqualTolerance is true
     }
-    else if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue()
+
+    // skip regular 2 line tolerance formatting when it does not apply
+    if (!dim->hasOverUnderTolerance() || dim->EqualTolerance.getValue()
              || dim->TheoreticalExact.getValue()) {
         m_tolTextOver->hide();
         m_tolTextUnder->hide();
@@ -480,22 +483,17 @@ void QGIDatumLabel::setToleranceString()
         return;
     }
 
-    std::pair<std::string, std::string> labelTexts, unitTexts;
+    std::pair<std::string, std::string> labelTexts;
 
     if (dim->ArbitraryTolerances.getValue()) {
         labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);//copy tolerance spec
-        unitTexts.first = "";
-        unitTexts.second = "";
     }
     else {
         if (dim->isMultiValueSchema()) {
             labelTexts = dim->getFormattedToleranceValues(Format::UNALTERED);//don't format multis
-            unitTexts.first = "";
-            unitTexts.second = "";
         }
         else {
             labelTexts = dim->getFormattedToleranceValues(Format::FORMATTED);// prefix value [unit] postfix
-            unitTexts = dim->getFormattedToleranceValues(Format::UNIT); //just the unit
         }
     }
 
@@ -503,13 +501,24 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextUnder->hide();
     }
     else {
+        if (dim->UnderTolerance.getValue() == 0 &&
+            (labelTexts.first.at(0) == '+' ||
+             labelTexts.first.at(0) == '-')) {
+             labelTexts.first.at(0) = ' ';
+        }
         m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()));
         m_tolTextUnder->show();
     }
+
     if (labelTexts.second.empty()) {
         m_tolTextOver->hide();
     }
     else {
+        if (dim->OverTolerance.getValue() == 0 &&
+            (labelTexts.second.at(0) == '+' ||
+             labelTexts.second.at(0) == '-')) {
+             labelTexts.second.at(0) = ' ';
+        }
         m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()));
         m_tolTextOver->show();
     }
@@ -517,6 +526,7 @@ void QGIDatumLabel::setToleranceString()
     updateFrameRect();
     boundingRectChanged();
 }
+
 
 
 int QGIDatumLabel::getPrecision()

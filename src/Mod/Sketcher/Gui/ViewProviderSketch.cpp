@@ -76,6 +76,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -2135,8 +2136,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             getSketchObject()->initTemporaryBSplinePieceMove(
                 geoId,
                 Sketcher::PointPos::none,
-                Base::Vector3d(drag.xInit, drag.yInit, 0.0),
-                false);
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0));
             return;
         }
     }
@@ -2146,7 +2146,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    getSketchObject()->initTemporaryMove(drag.Dragged, false);
+    getSketchObject()->initTemporaryMove(drag.Dragged);
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)
@@ -2191,7 +2191,7 @@ bool ViewProviderSketch::doDragStep(double x, double y)
         }
     }
 
-    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == GCS::SolveStatus::Success) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
         return true;
@@ -3364,7 +3364,22 @@ bool ViewProviderSketch::isConstructionMode() const
 
 void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
 {
+    if (geometryCreationMode == newMode) {
+        return;
+    }
+
     geometryCreationMode = newMode;
+
+    if (!editCoinManager) {
+        return;
+    }
+
+    editCoinManager->updateEditCurveAppearance(newMode);
+
+    Gui::MDIView* mdi = getActiveView();
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
+        static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
+    }
 }
 
 GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const
@@ -3531,7 +3546,15 @@ bool ViewProviderSketch::selectAll()
 
 bool ViewProviderSketch::doubleClicked()
 {
-    Gui::Application::Instance->activeDocument()->setEdit(this);
+    Gui::Document* document = Gui::Application::Instance->activeDocument();
+    if (document) {
+        if (document->getInEdit() == this && isInEditMode()) {
+            Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ViewSketch");
+        }
+        else {
+            document->setEdit(this);
+        }
+    }
     return true;
 }
 
@@ -3837,6 +3860,10 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
         ViewProvider2DObject::updateData(prop);
     }
 
+    if (prop == &getSketchObject()->ExternalGeo) {
+        signalChangeIcon();
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3872,15 +3899,8 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
 
-        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
-            return editdoc->getEditViewProvider() == this;
-        });
-
-        Gui::MDIView* mdi = nullptr;
-
-        if (editDoc) {
-            mdi = editDoc->getActiveView();
-        }
+        Gui::MDIView* mdi =
+            Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
         }
@@ -4122,7 +4142,8 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit Sketch"), receiver, member);
+    QAction* act = menu->addAction(tr("Edit Sketch"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -4474,7 +4495,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
-    else if (getSketchObject()->getLastSolverStatus() != 0) {
+    else if (getSketchObject()->getLastSolverStatus() != GCS::SolveStatus::Success) {
         signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
                     QStringLiteral(""),
@@ -4966,9 +4987,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             }
         }
 
-        int ret = getSketchObject()->solve();
+        const auto status = getSketchObject()->solve();
 
-        if (ret != 0) {
+        if (status == SketchSolveStatus::Success) {
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();
@@ -5002,9 +5023,31 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
+bool ViewProviderSketch::hasMissingExternalGeometry() const
+{
+    const auto& externalGeometry = getSketchObject()->ExternalGeo.getValues();
+    return std::ranges::any_of(externalGeometry, [](const Part::Geometry* geometry) {
+        return ExternalGeometryFacade::getFacade(geometry)->testFlag(
+            ExternalGeometryExtension::Missing);
+    });
+}
+
+QString ViewProviderSketch::getToolTip() const
+{
+    return hasMissingExternalGeometry()
+        ? tr("Missing external geometry")
+        : QString();
+}
+
 QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
+
+    if (hasMissingExternalGeometry()) {
+        static QPixmap warning(Gui::BitmapFactory().pixmapFromSvg("Warning", QSize(10, 10)));
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(
+            mergedicon, warning, Gui::BitmapFactoryInst::TopRight);
+    }
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
@@ -5027,6 +5070,11 @@ void ViewProviderSketch::slotToolWidgetChanged(QWidget* newwidget)
 void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
 {
     editCoinManager->setConstraintSelectability(enabled);
+}
+
+void ViewProviderSketch::setOriginPointMarker(bool hollow)
+{
+    editCoinManager->setOriginPointMarker(hollow);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d& Pos, const SbString& text)

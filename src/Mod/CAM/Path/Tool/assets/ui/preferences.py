@@ -108,12 +108,20 @@ class AssetPreferencesPage:
         self.machines_list = QtGui.QListWidget()
         self.machines_layout.addWidget(self.machines_list)
 
-        # Buttons: Add / Edit / Delete
+        # Buttons: Add / Import / Edit / Delete
         self.btn_layout = QtGui.QHBoxLayout()
         self.add_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Add"))
+        self.import_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Import..."))
+        self.import_machine_btn.setToolTip(
+            translate(
+                "CAM_PreferencesAssets",
+                "Create a machine from the probe document of an MTConnect agent",
+            )
+        )
         self.edit_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Edit"))
         self.delete_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Delete"))
         self.btn_layout.addWidget(self.add_machine_btn)
+        self.btn_layout.addWidget(self.import_machine_btn)
         self.btn_layout.addWidget(self.edit_machine_btn)
         self.btn_layout.addWidget(self.delete_machine_btn)
         self.machines_layout.addLayout(self.btn_layout)
@@ -122,8 +130,18 @@ class AssetPreferencesPage:
 
         self.main_layout.addWidget(self.machines_group)
 
+        # Tool update on load
+        self.tool_update_check = QtGui.QCheckBox(
+            translate(
+                "CAM_PreferencesAssets",
+                "Check for tool updates from the library when opening a document",
+            )
+        )
+        self.main_layout.addWidget(self.tool_update_check)
+
         # Wire up buttons
         self.add_machine_btn.clicked.connect(self.add_machine)
+        self.import_machine_btn.clicked.connect(self.import_machine)
         self.edit_machine_btn.clicked.connect(self.edit_machine)
         self.delete_machine_btn.clicked.connect(self.delete_machine)
 
@@ -166,6 +184,7 @@ class AssetPreferencesPage:
                 return False
         Path.Preferences.setAssetPath(asset_path)
         Path.Preferences.setLastToolLibrary("")
+        Path.Preferences.set_tool_update_on_load_enabled(self.tool_update_check.isChecked())
         return True
 
     def loadSettings(self):
@@ -175,6 +194,7 @@ class AssetPreferencesPage:
         if not asset_path:
             asset_path = str(Path.Preferences.getDefaultAssetPath())
         self.asset_path_edit.setText(asset_path)
+        self.tool_update_check.setChecked(Path.Preferences.tool_update_on_load_enabled())
 
     def add_machine(self):
         # Create a new machine JSON file in the user's machine asset folder
@@ -190,6 +210,25 @@ class AssetPreferencesPage:
                 self.machines_list.addItem(item)
         except Exception as e:
             Path.Log.error(f"Failed to create machine file: {e}")
+
+    def import_machine(self):
+        # Create a new machine from an MTConnect agent's probe document
+        try:
+            from Machine.ui.mtconnect_import_dialog import MTConnectImportDialog
+
+            result = MTConnectImportDialog.get_machine(self.form)
+            if not result:
+                return
+            machine, _report = result
+            editor = MachineEditorDialog(machine=machine)
+            if editor.exec_() == QtGui.QDialog.Accepted:
+                filename = editor.filename
+                display_name = MachineFactory.get_machine_display_name(filename)
+                item = QtGui.QListWidgetItem(display_name)
+                item.setData(QtCore.Qt.UserRole, filename)
+                self.machines_list.addItem(item)
+        except Exception as e:
+            Path.Log.error(f"Failed to import machine: {e}")
 
     def edit_machine(self):
         try:

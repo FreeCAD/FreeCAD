@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <vector>
@@ -91,9 +92,17 @@ protected:
     bool visible = true;
 };
 
+enum class LinearDraggerStyle
+{
+    Arrow,
+    Sphere,
+};
+
 class GuiExport LinearGizmo: public Gizmo
 {
 public:
+    using ClickCallback = std::function<void()>;
+
     LinearGizmo(QuantitySpinBox* property);
     ~LinearGizmo() override = default;
 
@@ -114,6 +123,8 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setDraggerStyle(LinearDraggerStyle style);
+    void setClickCallback(ClickCallback callback);
     void setVisibility(bool visible);
 
 private:
@@ -121,6 +132,9 @@ private:
     SoLinearDraggerContainer* draggerContainer = nullptr;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
+    LinearDraggerStyle draggerStyle = LinearDraggerStyle::Arrow;
+    bool hasDragged = false;
+    ClickCallback clickCallback;
 
     void draggingStarted();
     void draggingFinished();
@@ -132,6 +146,8 @@ private:
 class GuiExport RotationGizmo: public Gizmo
 {
 public:
+    using ClickCallback = std::function<void()>;
+
     RotationGizmo(QuantitySpinBox* property);
     ~RotationGizmo() override;
 
@@ -162,6 +178,7 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setClickCallback(ClickCallback callback);
     void setVisibility(bool visible);
 
 private:
@@ -171,6 +188,9 @@ private:
     LinearGizmo* linearGizmo = nullptr;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
+    double lastDragOffset = 0.0;
+    bool hasDragged = false;
+    ClickCallback clickCallback;
 
     void draggingStarted();
     void draggingFinished();

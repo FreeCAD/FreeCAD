@@ -501,7 +501,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         if not overallboundbox:
                             overallboundbox = bb
                         if not overallboundbox.isInside(bb):
-                            Gui.SendMsgToActiveView("ViewFit")
+                            Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                         overallboundbox.add(bb)
 
                 if (preferences["MERGE_MODE_ARCH"] > 0 and archobj) or structobj:
@@ -1453,7 +1453,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     doc.recompute()
 
     if FreeCAD.GuiUp and ZOOMOUT:
-        Gui.SendMsgToActiveView("ViewFit")
+        Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     endtime = time.time() - starttime
 

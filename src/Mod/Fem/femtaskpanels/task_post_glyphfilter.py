@@ -68,6 +68,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         self._enumPropertyToCombobox(self.obj, "VectorScaleMode", self.widget.VectorModeComboBox)
         self._enumPropertyToCombobox(self.obj, "MaskMode", self.widget.MaskModeComboBox)
 
+        FreeCADGui.ExpressionBinding(self.widget.ScaleFactorBox).bind(self.obj, "ScaleFactor")
         self.widget.ScaleFactorBox.setValue(self.obj.ScaleFactor)
         self.__slide_min = self.obj.ScaleFactor * 0.5
         self.__slide_max = self.obj.ScaleFactor * 1.5
@@ -91,8 +92,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     def __update_scaling_ui(self):
         enabled = self.widget.ScaleComboBox.currentIndex() != 0
         self.widget.VectorModeComboBox.setEnabled(enabled)
-        self.widget.ScaleFactorBox.setEnabled(enabled)
-        self.widget.ScaleSlider.setEnabled(enabled)
 
     def __update_masking_ui(self):
         enabled = self.widget.MaskModeComboBox.currentIndex() != 0
@@ -125,7 +124,13 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # set slider
         self.__slide_min = value * 0.5
         self.__slide_max = value * 1.5
-        slider_value = (value - self.__slide_min) / (self.__slide_max - self.__slide_min) * 100.0
+        try:
+            slider_value = (
+                (value - self.__slide_min) / (self.__slide_max - self.__slide_min) * 100.0
+            )
+        except ZeroDivisionError:
+            slider_value = 0
+
         self.widget.ScaleSlider.blockSignals(True)
         self.widget.ScaleSlider.setValue(slider_value)
         self.widget.ScaleSlider.blockSignals(False)

@@ -44,6 +44,7 @@
 #include <App/Document.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Converter.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
 #include <Mod/Part/App/Tools.h>
@@ -57,7 +58,6 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 using namespace PartDesign;
 
 const char* FeatureExtrude::SideTypesEnums[] = {"One side", "Two sides", "Symmetric", nullptr};
-const char* FeatureExtrude::StartTypesEnums[] = {"Profile plane", "Offset", "Reference", nullptr};
 
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
@@ -66,7 +66,16 @@ App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstra
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
 
-FeatureExtrude::FeatureExtrude() = default;
+FeatureExtrude::FeatureExtrude()
+{
+    ADD_PROPERTY_TYPE(
+        UseLegacyTaperDirection,
+        (false),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Use legacy profile copying for tapered extrusions"
+    );
+}
 
 short FeatureExtrude::mustExecute() const
 {
@@ -76,7 +85,7 @@ short FeatureExtrude::mustExecute() const
         || ReferenceAxis.isTouched() || AlongSketchNormal.isTouched() || Offset.isTouched()
         || Offset2.isTouched() || StartType.isTouched() || StartOffset.isTouched()
         || StartReference.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
-        || UpToShape.isTouched() || UpToShape2.isTouched()) {
+        || UpToShape.isTouched() || UpToShape2.isTouched() || UseLegacyTaperDirection.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -143,24 +152,25 @@ bool FeatureExtrude::hasTaperedAngle() const
 
 void FeatureExtrude::onChanged(const App::Property* prop)
 {
-    if (!isRestoring() && prop == &Midplane) {
+    if (prop == &Midplane && !isRestoring() && !migratingDeprecatedProperties) {
         // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
         // FreeCAD 1.1 when FeatureExtrude was refactored.
-        App::DocumentObject* obj = Profile.getValue();
-        auto baseName = obj ? obj->getNameInDocument() : "";
-        Base::Console().warning(
-            "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
-            "been replaced by the 'SideType' property in FeatureExtrude. Please update your script,"
-            " this property will be removed in a future version.\n",
-            baseName
-        );
-        if (Midplane.getValue()) {
-            SideType.setValue("Symmetric");
-        }
-        else {
-            Base::Console()
-                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
-            SideType.setValue("One side");
+        const char* impliedSideType = Midplane.getValue() ? "Symmetric" : "One side";
+
+        // Scripts routinely assign every property, so only scream when the write actually
+        // asks for something SideType is not already saying.
+        if (SideType.getValueAsString() != std::string(impliedSideType)) {
+            App::DocumentObject* obj = Profile.getValue();
+            auto baseName = obj ? obj->getNameInDocument() : "";
+            Base::Console().warning(
+                "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+                "been replaced by the 'SideType' property in FeatureExtrude; assuming "
+                "SideType='%s'. Please update your script, this property will be removed in a"
+                " future version.\n",
+                baseName,
+                impliedSideType
+            );
+            SideType.setValue(impliedSideType);
         }
     }
     ProfileBased::onChanged(prop);
@@ -525,8 +535,15 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             : std::strcmp(startType, "Offset") == 0
             ? StartOffset.getValue()
             : getStartReferenceOffset(sketchshape, StartReference, dir, StartOffset.getValue(), invObjLoc);
-        TopoShape startSketch = moveProfileToStart(sketchshape, dir, startOffset);
+        const bool useLegacyTaperDirection = UseLegacyTaperDirection.getValue();
+        TopoShape startSketch
+            = moveProfileToStart(sketchshape, dir, startOffset, useLegacyTaperDirection);
 
+        // Preserve the old deep-copy path for restored files because it can affect both generated
+        // topology and taper direction. New features reuse the profile for each side.
+        auto profileForSide = [useLegacyTaperDirection](const TopoShape& profile) {
+            return useLegacyTaperDirection ? profile.makeElementCopy() : profile;
+        };
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
@@ -557,7 +574,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     // directions.
                     L /= 2.0;
                     TopoShape prism1 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        profileForSide(startSketch),
                         method,
                         L,
                         taper1,
@@ -576,7 +593,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Dir dir2 = dir;
                     dir2.Reverse();
                     TopoShape prism2 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        profileForSide(startSketch),
                         method,
                         L,
                         taper1,
@@ -710,7 +727,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    profileForSide(startSketch),
                     method,
                     L,
                     taper1,
@@ -728,7 +745,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // Side 2
                 TopoShape prism2 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    profileForSide(startSketch),
                     method2,
                     L2,
                     taper2,
@@ -790,15 +807,12 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             // Let's call algorithm computing a fuse operation:
             TopoShape result(0, getDocument()->getStringHasher());
             try {
-                const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
-                }
-                result.makeElementBoolean(maker, {base, prism}, nullptr, FuzzyTolerance.getValue());
+                result.makeElementBoolean(
+                    getBooleanMaker(),
+                    {base, prism},
+                    nullptr,
+                    FuzzyTolerance.getValue()
+                );
             }
             catch (Standard_Failure&) {
                 return new App::DocumentObjectExecReturn(
@@ -878,80 +892,6 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     }
 }
 
-double FeatureExtrude::getStartReferenceOffset(
-    const TopoShape& sketchShape,
-    const App::PropertyLinkSub& reference,
-    const gp_Dir& dir,
-    double offset,
-    const TopLoc_Location& invObjLoc
-) const
-{
-    if (!reference.getValue()) {
-        return 0.0;
-    }
-
-    TopoShape referenceShape;
-    if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        referenceShape
-            = getTopoShapeVerifiedFace(false, false, reference.getValue(), reference.getSubValues());
-    }
-    else {
-        getUpToFaceFromLinkSub(referenceShape, reference);
-    }
-    referenceShape.move(invObjLoc);
-
-    TopoShape referenceFace = referenceShape;
-    if (referenceFace.shapeType(true) != TopAbs_FACE) {
-        referenceFace = referenceFace.getSubTopoShape(TopAbs_FACE, 1);
-    }
-    BRepAdaptor_Surface surface(TopoDS::Face(referenceFace.getShape()));
-    if (surface.GetType() == GeomAbs_Plane) {
-        // A planar start reference defines its underlying plane, independent of its trimming.
-        GProp_GProps properties;
-        BRepGProp::SurfaceProperties(sketchShape.getShape(), properties);
-        const gp_Pnt profileCenter = properties.CentreOfMass();
-        const gp_Dir normal = surface.Plane().Axis().Direction();
-        const double denominator = gp_Vec(dir).Dot(gp_Vec(normal));
-        if (std::fabs(denominator) > Precision::Confusion()) {
-            const double distance
-                = gp_Vec(profileCenter, surface.Plane().Location()).Dot(gp_Vec(normal)) / denominator;
-            return distance + offset;
-        }
-    }
-
-    auto faces = Part::findAllFacesCutBy(referenceShape, sketchShape, dir);
-    double direction = 1.0;
-    if (faces.empty()) {
-        gp_Dir oppositeDirection = dir;
-        oppositeDirection.Reverse();
-        faces = Part::findAllFacesCutBy(referenceShape, sketchShape, oppositeDirection);
-        direction = -1.0;
-    }
-
-    if (faces.empty()) {
-        throw Base::ValueError("Extrude: Start reference does not intersect the profile direction");
-    }
-
-    const auto nearest
-        = std::min_element(faces.begin(), faces.end(), [](const auto& first, const auto& second) {
-              return first.distsq < second.distsq;
-          });
-    return direction * std::sqrt(nearest->distsq) + offset;
-}
-
-TopoShape FeatureExtrude::moveProfileToStart(const TopoShape& sketchShape, const gp_Dir& dir, double offset)
-{
-    if (std::fabs(offset) < Precision::Confusion()) {
-        return sketchShape;
-    }
-
-    TopoShape result = sketchShape.makeElementCopy();
-    gp_Trsf transform;
-    transform.SetTranslation(gp_Vec(dir) * offset);
-    result.move(transform);
-    return result;
-}
-
 TopoShape FeatureExtrude::generateSingleExtrusionSide(
     const TopoShape& sketchshape,
     const std::string& method,
@@ -1008,7 +948,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
         try {
             TopoShape _base;
-            if (addSubType != FeatureAddSub::Subtractive) {
+            if (addSubType != FeatureAddSub::Type::Subtractive) {
                 _base = base;  // avoid issue #16690
             }
             prism.makeElementPrismUntil(
@@ -1081,10 +1021,22 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     return prism;
 }
 
+void FeatureExtrude::Restore(Base::XMLReader& reader)
+{
+    // SideType was introduced in 1.1. If the property exists in the file, restoring the remaining
+    // properties below overrides this version-based default.
+    UseLegacyTaperDirection.setValue(Base::getVersion(reader.ProgramVersion) >= Base::Version::v1_1);
+    ProfileBased::Restore(reader);
+}
+
 void FeatureExtrude::onDocumentRestored()
 {
+    Base::StateLocker migrating(migratingDeprecatedProperties);
+
     // property Type no longer has TwoLengths.
     if (strcmp(Type.getValueAsString(), "?TwoLengths") == 0) {
+        // TwoLengths predates SideType and used the original profile for both taper directions.
+        UseLegacyTaperDirection.setValue(false);
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
@@ -1127,6 +1079,11 @@ void FeatureExtrude::onDocumentRestored()
         }
     }
     else if (Midplane.getValue()) {
+        // A missing SideType restores as One side. This distinguishes old Midplane documents from
+        // newer scripts that saved both Midplane and the corresponding SideType.
+        if (strcmp(SideType.getValueAsString(), "One side") == 0) {
+            UseLegacyTaperDirection.setValue(false);
+        }
         Midplane.setValue(false);
         SideType.setValue("Symmetric");
     }

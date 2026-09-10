@@ -149,13 +149,13 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     System()->addConstraintPointOnArc(point, arc, 0, true);
     System()->addConstraintPointOnBSpline(point, bspline, &bsplineParam, 0, true);
     System()->addConstraintAngleViaPointAndParam(bspline, arc, point, &bsplineParam, &desiredAngle, 0, true);
-    int solveResult = System()->solve(params);
-    if (solveResult == GCS::Success) {
+    const auto solveResult = System()->solve(params);
+    if (solveResult == GCS::SolveStatus::Success) {
         System()->applySolution();
     }
 
     // Assert
-    EXPECT_EQ(solveResult, GCS::Success);
+    EXPECT_EQ(solveResult, GCS::SolveStatus::Success);
     // is point on arc?
     EXPECT_DOUBLE_EQ(
         (arcRadius) * (arcRadius),
