@@ -1,40 +1,37 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 This file has the GUI command for checking and catching common errors in FreeCAD
 CAM projects.
 """
 
-from Path.Main.Sanity import Sanity
-from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide.QtGui import QFileDialog
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Log
+from Path.Main.Sanity import Sanity
+from PathScripts.PathUtils import findParentJob
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide.QtGui import QFileDialog
 import os
 import webbrowser
 
@@ -57,15 +54,15 @@ class CommandCAMSanity:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if len(selection) == 0:
+        if not (selection := FreeCADGui.Selection.getSelection()):
             return False
-        obj = selection[0].Object
-        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
+        return bool(findParentJob(selection[0]))
 
     def Activated(self):
-        FreeCADGui.addIconPath(":/icons")
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        if not (selection := FreeCADGui.Selection.getSelection()):
+            return False
+        if not (job := findParentJob(selection[0])):
+            return False
 
         # Ask the user for a filename to save the report to
 
@@ -84,7 +81,7 @@ class CommandCAMSanity:
         if file_location == "":
             return
 
-        sanity_checker = Sanity.CAMSanity(obj, file_location)
+        sanity_checker = Sanity.CAMSanity(job, file_location)
         html = sanity_checker.get_output_report()
 
         if html is None:
@@ -104,7 +101,7 @@ class CommandCAMQuickValidate:
 
     def GetResources(self):
         return {
-            "Pixmap": "CAM_Sanity",
+            "Pixmap": "CAM_SanityQuick",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Quick Validate"),
             "Accel": "P, V",
             "ToolTip": QT_TRANSLATE_NOOP(
@@ -114,17 +111,18 @@ class CommandCAMQuickValidate:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if len(selection) == 0:
+        if not (selection := FreeCADGui.Selection.getSelection()):
             return False
-        obj = selection[0].Object
-        return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
+        return bool(findParentJob(selection[0]))
 
     def Activated(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        if not (selection := FreeCADGui.Selection.getSelection()):
+            return False
+        if not (job := findParentJob(selection[0])):
+            return False
 
         try:
-            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(obj)
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(job)
         except Exception as e:
             Path.Log.error(f"CAM_QuickValidate: Validation failed: {e}")
             FreeCAD.Console.PrintError(f"Quick Validate failed: {e}\n")
