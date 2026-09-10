@@ -34,10 +34,41 @@ __url__ = "https://www.freecad.org"
 #
 #  This module handles the Cut Plane object
 
+from typing import Any, Protocol, Sequence, cast
+
 import FreeCAD
 import ArchCommands
 import Draft
 import Part
+from ArchTypeHints import DocumentObjectLink
+
+
+class _ArchParent(Protocol):
+    def addObject(self, obj: object, /) -> object: ...
+
+    def getGlobalPlacement(self) -> FreeCAD.Placement: ...
+
+
+class _ArchShapeObject(Protocol):
+    Shape: Part.Shape
+    PropertiesList: Sequence[str]
+
+    def getParentGeoFeatureGroup(self) -> _ArchParent | None: ...
+
+
+class _CutObject(Protocol):
+    @property
+    def Base(self) -> DocumentObjectLink: ...
+
+    @Base.setter
+    def Base(self, value: DocumentObjectLink) -> None: ...
+
+    @property
+    def Tool(self) -> DocumentObjectLink: ...
+
+    @Tool.setter
+    def Tool(self, value: DocumentObjectLink) -> None: ...
+
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -45,14 +76,16 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context, text, comment=None):
+        return text
 
     # \endcond
 
 
 # _getShapes(FreeCADGui.Selection.getSelectionEx("", 0))
-def _getShapes(sels):
+def _getShapes(
+    sels: Sequence[Any],
+) -> tuple[_ArchShapeObject | None, Part.Shape | None, Part.Shape | None]:
     """Check and process the user selection.
     Returns a tuple: (baseObj, baseShp, cutterShp).
     baseShp and cutterShp are in the global coordinate system, cutterShp is a planar face.
@@ -60,7 +93,7 @@ def _getShapes(sels):
     """
     if not sels:
         return None, None, None
-    objs = []
+    objs: list[tuple[Part.Shape, FreeCAD.Matrix, FreeCAD.DocumentObject | None]] = []
     needSubEle = False
     for sel in sels:
         for sub in sel.SubElementNames if sel.SubElementNames else [""]:
@@ -70,12 +103,13 @@ def _getShapes(sels):
         return None, None, None
     baseShp, _, baseObj = objs[0]
     cutterShp, _, _ = objs[1]
+    baseObj = cast(_ArchShapeObject | None, baseObj)
     if baseShp.isNull():
         return baseObj, None, None
     if cutterShp.isNull():
         return baseObj, baseShp, None
     if cutterShp.ShapeType == "Edge":
-        if isinstance(cutterShp.Curve, Part.Line):
+        if isinstance(cutterShp, Part.Edge) and isinstance(cutterShp.Curve, Part.Line):
             cutterShp = _extrudeEdge(cutterShp)
         else:
             try:
@@ -107,14 +141,18 @@ def _getShapes(sels):
     return baseObj, baseShp, cutterShp.Faces[0]
 
 
-def _extrudeEdge(edge):
+def _extrudeEdge(edge: Part.Edge) -> Part.Shape:
     """Exrude an edge along the WP normal"""
     import WorkingPlane
 
     return edge.extrude(WorkingPlane.get_working_plane().axis)
 
 
-def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
+def cutComponentwithPlane(
+    baseObj: _ArchShapeObject | list[Any],
+    cutterShp: Part.Shape | None = None,
+    side: int = 0,
+) -> None:
     """cut an object with a plane defined by a face.
 
     Parameters
@@ -137,21 +175,30 @@ def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
         and len(baseObj) >= 1
         and baseObj[0].isDerivedFrom("Gui::SelectionObject")
     ):
-        baseObj, baseShp, cutterShp = _getShapes(baseObj)
+        selected_base, baseShp, cutterShp = _getShapes(baseObj)
+        if selected_base is None or baseShp is None or cutterShp is None:
+            return
+        baseObj = selected_base
         baseParent = baseObj.getParentGeoFeatureGroup()
     else:
+        baseObj = cast(_ArchShapeObject, baseObj)
         baseShp = baseObj.Shape
         baseParent = baseObj.getParentGeoFeatureGroup()
         if baseParent is not None:
             baseShp = baseShp.transformGeometry(baseParent.getGlobalPlacement().toMatrix())
 
+    if cutterShp is None:
+        return
     if cutterShp.ShapeType != "Face":
-        cutterShp = _extrudeEdge(cutterShp)
+        cutterShp = _extrudeEdge(cast(Part.Edge, cutterShp))
 
     cutVolume = ArchCommands.getCutVolume(cutterShp, baseShp)
     cutVolume = cutVolume[2] if side == 0 else cutVolume[1]
     if cutVolume:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "CutVolume")
+        document = FreeCAD.ActiveDocument
+        if document is None:
+            return
+        obj = document.addObject("Part::Feature", "CutVolume")
         if baseParent is not None:
             cutVolume.Placement = baseParent.getGlobalPlacement().inverse()
         obj.Shape = Part.Compound([cutVolume])
@@ -160,9 +207,9 @@ def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
         if "Additions" in baseObj.PropertiesList:
             ArchCommands.removeComponents(obj, baseObj)  # Also changes the obj colors.
         else:
-            Draft.format_object(obj, baseObj)
-            cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut", "CutPlane")
+            getattr(Draft, "format_object")(obj, baseObj)
+            cutObj = cast(_CutObject, document.addObject("Part::Cut", "CutPlane"))
             if baseParent is not None:
                 baseParent.addObject(cutObj)
-            cutObj.Base = baseObj
+            cutObj.Base = cast(FreeCAD.DocumentObject, baseObj)
             cutObj.Tool = obj

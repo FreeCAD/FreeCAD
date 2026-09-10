@@ -230,11 +230,14 @@ def run_check(args: argparse.Namespace) -> int:
         return generation_code
 
     stubs_dir = root / "src/Tools/typing"
+    generated_stubs_dir = (
+        args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+    ) / "stubs"
     log_dir = args.log_dir.resolve() if args.log_dir else None
 
     pyright_code, _ = run_logged_command(
         "python-stubs-pyright",
-        ["pixi", "run", "pyright", "-p", "smoke/pyrightconfig.json"],
+        ["pixi", "run", "pyright", "-p", str(generated_stubs_dir / "_bim_pyrightconfig.json")],
         stubs_dir,
         log_dir,
     )
@@ -247,7 +250,7 @@ def run_check(args: argparse.Namespace) -> int:
             "pyrefly",
             "check",
             "--config",
-            "smoke/pyrefly.toml",
+            str(generated_stubs_dir / "_bim_pyrefly.toml"),
         ],
         stubs_dir,
         log_dir,

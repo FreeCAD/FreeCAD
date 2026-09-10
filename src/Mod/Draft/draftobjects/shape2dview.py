@@ -24,22 +24,90 @@
 # ***************************************************************************
 """Provides the object code for the Shape2dView object."""
 
+from __future__ import annotations
+
 ## @package shape2dview
 # \ingroup draftobjects
 # \brief Provides the object code for the Shape2dView object.
 
 ## \addtogroup draftobjects
 # @{
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Protocol, cast
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
 from draftgeoutils import wires as geo_wires
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import (
+    DraftDocumentObject,
+    DocumentObjectLink,
+    IntegerList,
+    IntegerListInput,
+    StringList,
+    StringListInput,
+    VectorInput,
+    VectorList,
+    VectorListInput,
+    VectorValue,
+)
 from draftutils import groups
 from draftutils import gui_utils
 from draftutils import utils
 from draftutils.translate import translate
+
+
+class Shape2DViewObject(DraftDocumentObject, Protocol):
+    """Document object with properties added by the Shape2DView proxy."""
+
+    @property
+    def Base(self) -> DocumentObjectLink: ...
+
+    @Base.setter
+    def Base(self, value: DocumentObjectLink) -> None: ...
+
+    @property
+    def Projection(self) -> VectorValue: ...
+
+    @Projection.setter
+    def Projection(self, value: VectorInput) -> None: ...
+
+    @property
+    def FaceNumbers(self) -> IntegerList: ...
+
+    @FaceNumbers.setter
+    def FaceNumbers(self, value: IntegerListInput) -> None: ...
+
+    @property
+    def ProjectionMode(self) -> str: ...
+
+    @ProjectionMode.setter
+    def ProjectionMode(self, value: str | list[str]) -> None: ...
+
+    HiddenLines: bool
+    FuseArch: bool
+    Tessellation: bool
+    InPlace: bool
+    SegmentLength: float
+    VisibleOnly: bool
+
+    @property
+    def ExclusionPoints(self) -> VectorList: ...
+
+    @ExclusionPoints.setter
+    def ExclusionPoints(self, value: VectorListInput) -> None: ...
+
+    @property
+    def ExclusionNames(self) -> StringList: ...
+
+    @ExclusionNames.setter
+    def ExclusionNames(self, value: StringListInput) -> None: ...
+
+    OnlySolids: bool
+    Clip: bool
+    AutoUpdate: bool
 
 
 class Shape2DView(DraftObject):
@@ -198,6 +266,11 @@ class Shape2DView(DraftObject):
                 nedges.append(edge)
         return nedges
 
+    def excludeNames(self, obj, objs):
+        if hasattr(obj, "ExclusionNames"):
+            objs = [o for o in objs if not (o.Name in obj.ExclusionNames)]
+        return objs
+
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
@@ -261,28 +334,33 @@ class Shape2DView(DraftObject):
                         objs = gui_utils.remove_hidden(objs)
                     shapes = []
                     if getattr(obj, "FuseArch", False):
-                        shtypes = {}
+                        shtypes: dict[str, list[Part.Shape]] = {}
                         for o in objs:
                             if utils.get_type(o) in ["Wall", "Structure"]:
-                                shtypes.setdefault(
-                                    (
-                                        o.Material.Name
-                                        if (hasattr(o, "Material") and o.Material)
-                                        else "None"
-                                    ),
-                                    [],
-                                ).extend(self._get_shapes(o.Shape, onlysolids))
+                                material_name = (
+                                    o.Material.Name
+                                    if (hasattr(o, "Material") and o.Material)
+                                    else "None"
+                                )
+                                material_shapes = shtypes.setdefault(material_name, [])
+                                material_shapes.extend(self._get_shapes(o.Shape, onlysolids))
                             elif hasattr(o, "Shape"):
                                 shapes.extend(self._get_shapes(o.Shape, onlysolids))
                         for k, v in shtypes.items():
+                            if not v:
+                                continue
                             v1 = v.pop()
                             if v:
                                 try:
-                                    v1 = v1.multiFuse(v)
+                                    multi_fuse = cast(
+                                        Callable[[list[Part.Shape]], Part.Shape], v1.multiFuse
+                                    )
+                                    v1 = multi_fuse(v)
                                 except (RuntimeError, Part.OCCError):
                                     # multifuse can fail
                                     for v2 in v:
-                                        v1 = v1.fuse(v2)
+                                        fuse = cast(Callable[[Part.Shape], Part.Shape], v1.fuse)
+                                        v1 = fuse(v2)
                                 try:
                                     v1 = v1.removeSplitter()
                                 except (RuntimeError, Part.OCCError):
@@ -342,6 +420,7 @@ class Shape2DView(DraftObject):
                             if sh.Volume < 0:
                                 sh.reverse()
                             faces = []
+                            projected_shape = None
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
                                 sc = sh.common(cutp)
                                 facesOrg = None
@@ -367,10 +446,9 @@ class Shape2DView(DraftObject):
                                                 ).Faces
                                             )
                             else:
-                                c = sh.section(cutp)
-                                if hasattr(obj, "InPlace"):
-                                    if not obj.InPlace:
-                                        c = self.getProjected(obj, c, proj)
+                                projected_shape = sh.section(cutp)
+                                if not getattr(obj, "InPlace", True):
+                                    projected_shape = self.getProjected(obj, projected_shape, proj)
                             # faces = []
                             # if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
                             #    wires = geo_wires.findWires(c.Edges)
@@ -379,8 +457,8 @@ class Shape2DView(DraftObject):
                             #            faces.append(Part.Face(w))
                             if faces:
                                 cuts.extend(faces)
-                            else:
-                                cuts.append(c)
+                            elif projected_shape is not None:
+                                cuts.append(projected_shape)
                         comp = Part.makeCompound(cuts)
                         opl = App.Placement(obj.Base.Placement)
                         comp.Placement = opl.inverse()

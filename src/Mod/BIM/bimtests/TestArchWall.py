@@ -24,6 +24,7 @@
 
 # Unit tests for the Arch wall module
 
+import math
 import os
 import Arch
 import Draft
@@ -258,6 +259,28 @@ class TestArchWall(TestArchBase.TestArchBase):
         wall = Arch.makeWall(arc)
         self.document.recompute()
         self.assertFalse(Arch.is_debasable(wall), "Wall on curved base should not be debasable.")
+
+    def test_wall_from_circular_base_offsets_radially(self):
+        """Tests that a circular wall base is offset along its radius."""
+        self.printTestMessage("Checking Arch Wall circular-base offset direction...")
+
+        radius = 100.0
+        width = 20.0
+        circle = Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), radius)
+        edge = Part.ArcOfCircle(circle, 0, math.pi / 2).toShape()
+        base = self.document.addObject("Part::Feature", "CircularBase")
+        base.Shape = edge
+        wall = Arch.makeWall(base, width=width, height=30.0, align="Left")
+        self.document.recompute()
+
+        circle_radii = [
+            edge.Curve.Radius for edge in wall.Shape.Edges if isinstance(edge.Curve, Part.Circle)
+        ]
+        self.assertTrue(wall.Shape.isValid(), "Wall from circular base should be valid.")
+        self.assertTrue(
+            any(abs(circle_radius - (radius + width)) < 1e-7 for circle_radius in circle_radii),
+            f"Circular wall offset should produce radius {radius + width}, got {circle_radii}",
+        )
 
     def test_is_debasable_with_no_base(self):
         """Tests that a baseless wall is not debasable."""

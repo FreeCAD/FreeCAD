@@ -32,6 +32,8 @@ in other modules of the workbench, and which don't require
 the graphical user interface (GUI).
 """
 
+from __future__ import annotations
+
 ## @package utils
 # \ingroup draftutils
 # \brief Provides general utility functions used throughout the workbench.
@@ -39,11 +41,15 @@ the graphical user interface (GUI).
 ## \addtogroup draftutils
 # @{
 import os
+from collections.abc import Iterable
+from typing import cast
+
 import PySide.QtCore as QtCore
 
 import FreeCAD as App
 from draftutils import params
-from draftutils.messages import _wrn, _err, _log
+from draftutils.messages import _wrn, _err, _log, _msg
+from draftutils.type_hints import CloneObjectLike
 from draftutils.translate import translate
 from builtins import open
 
@@ -222,7 +228,7 @@ def type_check(args_and_types, name="?"):
 typecheck = type_check
 
 
-def precision():
+def precision() -> int:
     """Return the precision value from the parameter database.
 
     It is the number of decimal places that a float will have.
@@ -242,10 +248,10 @@ def precision():
     int
         params.get_param("precision")
     """
-    return params.get_param("precision")
+    return int(params.get_param("precision") or 0)
 
 
-def svg_precision():
+def svg_precision() -> int:
     """Return the precision value for SVG import from the parameter database.
 
     It is the number of decimal places that a float will have.
@@ -265,7 +271,7 @@ def svg_precision():
     int
         params.get_param("svgPrecision")
     """
-    return params.get_param("svgPrecision")
+    return int(params.get_param("svgPrecision") or 0)
 
 
 def tolerance():
@@ -311,7 +317,7 @@ def get_real_name(name):
 getRealName = get_real_name
 
 
-def get_type(obj):
+def get_type(obj: object | None) -> str | None:
     """Return a string indicating the type of the given object.
 
     Parameters
@@ -338,12 +344,16 @@ def get_type(obj):
         return None
     if isinstance(obj, Part.Shape):
         return "Shape"
-    if hasattr(obj, "Class") and "Ifc" in str(obj.Class):
-        return obj.Class
-    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
-        return obj.Proxy.Type
-    if hasattr(obj, "TypeId"):
-        return obj.TypeId
+    obj_class = getattr(obj, "Class", None)
+    if obj_class is not None and "Ifc" in str(obj_class):
+        return cast(str, obj_class)
+    proxy = getattr(obj, "Proxy", None)
+    proxy_type = getattr(proxy, "Type", None)
+    if proxy_type is not None:
+        return cast(str, proxy_type)
+    type_id = getattr(obj, "TypeId", None)
+    if type_id is not None:
+        return cast(str, type_id)
     return "Unknown"
 
 
@@ -422,7 +432,9 @@ def get_trimex_unsupported_reason(obj, subobjects=None):
     return translate("draft", "Trimex does not support this object type")
 
 
-def get_objects_of_type(objects, typ):
+def get_objects_of_type(
+    objects: Iterable[App.DocumentObject], typ: str
+) -> list[App.DocumentObject]:
     """Return only the objects that match the type in the list of objects.
 
     Parameters
@@ -449,7 +461,11 @@ def get_objects_of_type(objects, typ):
 getObjectsOfType = get_objects_of_type
 
 
-def is_clone(obj, objtype=None, recursive=False):
+def is_clone(
+    obj: App.DocumentObject,
+    objtype: str | list[str] | None = None,
+    recursive: bool = False,
+) -> bool:
     """Return True if the given object is a clone of a certain type.
 
     A clone is of type `'Clone'`, and has a reference
@@ -497,16 +513,18 @@ def is_clone(obj, objtype=None, recursive=False):
     if isinstance(objtype, list):
         return any([is_clone(obj, t, recursive) for t in objtype])
     if getType(obj) == "Clone":
-        if len(obj.Objects) == 1:
+        clone = cast(CloneObjectLike, obj)
+        if len(clone.Objects) == 1:
             if objtype:
-                if getType(obj.Objects[0]) == objtype:
+                if getType(clone.Objects[0]) == objtype:
                     return True
-            elif recursive and (getType(obj.Objects[0]) == "Clone"):
-                return is_clone(obj.Objects[0], objtype, recursive)
+            elif recursive and (getType(clone.Objects[0]) == "Clone"):
+                return is_clone(clone.Objects[0], objtype, recursive)
     elif hasattr(obj, "CloneOf"):
-        if obj.CloneOf:
+        clone = cast(CloneObjectLike, obj)
+        if clone.CloneOf:
             if objtype:
-                if getType(obj.CloneOf) == objtype:
+                if getType(clone.CloneOf) == objtype:
                     return True
             else:
                 return True
@@ -516,7 +534,11 @@ def is_clone(obj, objtype=None, recursive=False):
 isClone = is_clone
 
 
-def get_clone_base(obj, strict=False, recursive=True):
+def get_clone_base(
+    obj: App.DocumentObject,
+    strict: bool = False,
+    recursive: bool = True,
+) -> App.DocumentObject | bool:
     """Return the object cloned by this object, if any.
 
     Parameters
@@ -553,14 +575,19 @@ def get_clone_base(obj, strict=False, recursive=True):
         It will return `False` if `obj` is not a clone,
         and `strict` is `True`.
     """
-    if hasattr(obj, "CloneOf") and obj.CloneOf:
+    if hasattr(obj, "CloneOf"):
+        clone = cast(CloneObjectLike, obj)
+        if clone.CloneOf:
+            if recursive:
+                return get_clone_base(clone.CloneOf)
+            return clone.CloneOf
+    if get_type(obj) == "Clone":
+        clone = cast(CloneObjectLike, obj)
+        if not clone.Objects:
+            return False if strict else obj
         if recursive:
-            return get_clone_base(obj.CloneOf)
-        return obj.CloneOf
-    if get_type(obj) == "Clone" and obj.Objects:
-        if recursive:
-            return get_clone_base(obj.Objects[0])
-        return obj.Objects[0]
+            return get_clone_base(clone.Objects[0])
+        return clone.Objects[0]
     if strict:
         return False
     return obj
@@ -618,9 +645,12 @@ def shapify(obj, delete=True):
     else:
         name = get_real_name(obj.Name)
 
+    document = App.ActiveDocument
+    if document is None:
+        return None
     if delete:
-        App.ActiveDocument.removeObject(obj.Name)
-    newobj = App.ActiveDocument.addObject("Part::Feature", name)
+        document.removeObject(obj.Name)
+    newobj = document.addObject("Part::Feature", name)
     newobj.Shape = shape
 
     return newobj
@@ -721,7 +751,8 @@ def load_svg_patterns():
     """
     import importSVG
 
-    App.svgpatterns = {}
+    patterns = {}
+    App.svgpatterns = patterns
 
     # Get default patterns in the resource file
     patfiles = QtCore.QDir(":/patterns").entryList()
@@ -733,7 +764,7 @@ def load_svg_patterns():
         if p:
             for k in p:
                 p[k] = [p[k], file]
-            App.svgpatterns.update(p)
+            patterns.update(p)
 
     # Get patterns in a user defined file
     altpat = params.get_param("patternFile")
@@ -745,7 +776,7 @@ def load_svg_patterns():
                 if p:
                     for k in p:
                         p[k] = [p[k], file]
-                    App.svgpatterns.update(p)
+                    patterns.update(p)
 
     # Get TechDraw patterns
     altpat = os.path.join(App.getResourceDir(), "Mod", "TechDraw", "Patterns")
@@ -760,7 +791,7 @@ def load_svg_patterns():
                 else:
                     # some TD pattern files have no <pattern> definition but can still be used by Draft
                     p = {f[:-4]: ["<pattern></pattern>", file]}
-                    App.svgpatterns.update(p)
+                    patterns.update(p)
 
 
 loadSvgPatterns = load_svg_patterns
@@ -777,11 +808,11 @@ def svg_patterns():
         before returning it.
     """
     if hasattr(App, "svgpatterns"):
-        return App.svgpatterns
+        return getattr(App, "svgpatterns")
     else:
         loadSvgPatterns()
         if hasattr(App, "svgpatterns"):
-            return App.svgpatterns
+            return getattr(App, "svgpatterns")
     return {}
 
 
@@ -959,7 +990,7 @@ def _modifiers_filter_objects(objs, copy, scale=False):
                     "%s shares a base with %d other objects. Please check if you want to modify this.",
                 ) % (obj.Name, len(parents) - 1)
                 _err(message)
-            if not scale or utils.get_type(obj.Base) == "Wire":
+            if not scale or get_type(obj.Base) == "Wire":
                 result.append(obj.Base)
         elif (
             not copy and hasattr(obj, "Placement") and "ReadOnly" in obj.getEditorMode("Placement")
@@ -1070,7 +1101,9 @@ def print_header(name, description, debug=True):
         _msg(description)
 
 
-def find_doc(doc=None):
+def find_doc(
+    doc: App.Document | str | None = None,
+) -> tuple[bool, App.Document | None]:
     """Return the active document or find a document by name.
 
     Parameters
@@ -1109,7 +1142,10 @@ def find_doc(doc=None):
     return FOUND, doc
 
 
-def find_object(obj, doc=None):
+def find_object(
+    obj: App.DocumentObject | str,
+    doc: App.Document | str | None = None,
+) -> tuple[bool, App.DocumentObject | None]:
     """Find object in the document, inclusive by Label.
 
     Parameters
@@ -1139,7 +1175,7 @@ def find_object(obj, doc=None):
     FOUND = True
 
     found, doc = find_doc(doc)
-    if not found:
+    if not found or doc is None:
         _err(translate("draft", "No active document. Aborting."))
         return not FOUND, None
 

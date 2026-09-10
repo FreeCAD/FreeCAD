@@ -24,19 +24,64 @@
 # ***************************************************************************
 """Provides the object code for the Rectangle object."""
 
+from __future__ import annotations
+
 ## @package rectangle
 # \ingroup draftobjects
 # \brief Provides the object code for the Rectangle object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftgeoutils import fillets as geo_fillets
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import DraftMakeFaceObject, QuantityInput, QuantityValueInput
 from draftutils import gui_utils
 from draftutils import params
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class RectangleObject(DraftMakeFaceObject, Protocol):
+    """Document object with properties added by the Rectangle proxy."""
+
+    @property
+    def Length(self) -> Quantity: ...
+
+    @Length.setter
+    def Length(self, value: QuantityInput) -> None: ...
+
+    @property
+    def Height(self) -> Quantity: ...
+
+    @Height.setter
+    def Height(self, value: QuantityInput) -> None: ...
+
+    @property
+    def FilletRadius(self) -> Quantity: ...
+
+    @FilletRadius.setter
+    def FilletRadius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def ChamferSize(self) -> Quantity: ...
+
+    @ChamferSize.setter
+    def ChamferSize(self, value: QuantityValueInput) -> None: ...
+
+    Rows: int
+    Columns: int
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 class Rectangle(DraftObject):

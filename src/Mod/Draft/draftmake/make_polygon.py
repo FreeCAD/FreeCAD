@@ -24,17 +24,27 @@
 # ***************************************************************************
 """Provides functions to create Polygon objects."""
 
+from __future__ import annotations
+
 ## @package make_polygon
 # \ingroup draftmake
 # \brief Provides functions to create Polygon objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.polygon import Polygon
+from draftobjects.polygon import Polygon, PolygonObject
 from draftviewproviders.view_base import ViewProviderDraft
+
+
+def _new_polygon_object(doc: App.Document) -> PolygonObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "Polygon")
+    Polygon(obj)
+    return cast(PolygonObject, obj)
 
 
 def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
@@ -63,13 +73,13 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     support :
         TODO: Describe
     """
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
     if nfaces < 3:
         return None
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Polygon")
-    Polygon(obj)
+    obj = _new_polygon_object(doc)
     obj.FacesNumber = nfaces
     obj.Radius = radius
     if face is not None:

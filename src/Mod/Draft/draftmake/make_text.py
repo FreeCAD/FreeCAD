@@ -26,22 +26,46 @@
 # ***************************************************************************
 """Provides functions to create Text objects."""
 
+from __future__ import annotations
+
 ## @package make_text
 # \ingroup draftmake
 # \brief Provides functions to create Text objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import Protocol, cast
+
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
 from draftutils.messages import _err
 from draftutils.translate import translate
-from draftobjects.text import Text
+from draftobjects.text import Text, TextObject
 
 if App.GuiUp:
     from draftviewproviders.view_text import ViewProviderText
+
+
+class _LegacyAnnotationObject(Protocol):
+    Label: str
+    LabelText: str | list[str]
+    Position: App.Placement | App.Vector | App.Rotation
+    InList: list[App.DocumentObject]
+    Name: str
+
+
+class _DocumentObjectGroup(Protocol):
+    Group: list[App.DocumentObject]
+
+    def isDerivedFrom(self, identifier: str, /) -> bool: ...
+
+
+def _new_text_object(doc: App.Document) -> TextObject:
+    obj = doc.addObject("App::FeaturePython", "Text")
+    Text(obj)
+    return cast(TextObject, obj)
 
 
 def make_text(string, placement=None, screen=False, height=None, line_spacing=1):
@@ -91,7 +115,7 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
     _name = "make_text"
 
     found, doc = utils.find_doc(App.activeDocument())
-    if not found:
+    if not found or doc is None:
         _err(translate("draft", "No active document. Aborting."))
         return None
 
@@ -119,27 +143,28 @@ def make_text(string, placement=None, screen=False, height=None, line_spacing=1)
     elif isinstance(placement, App.Rotation):
         placement = App.Placement(App.Vector(), placement)
 
-    new_obj = doc.addObject("App::FeaturePython", "Text")
-    Text(new_obj)
+    new_obj = _new_text_object(doc)
     new_obj.Text = string
     new_obj.Placement = placement
 
     if App.GuiUp:
         ViewProviderText(new_obj.ViewObject)
+        view_object = new_obj.ViewObject
 
-        if screen is None:
+        if view_object is None or screen is None:
             # Keep value as set by viewprovider
             pass
         elif screen:
-            new_obj.ViewObject.DisplayMode = "Screen"
+            view_object.DisplayMode = "Screen"
         else:
-            new_obj.ViewObject.DisplayMode = "World"
+            view_object.DisplayMode = "World"
 
-        if height:  # Keep value as set by viewprovider if zero or None
-            new_obj.ViewObject.FontSize = height
+        if view_object is not None and height:  # Keep value as set by viewprovider if zero or None
+            view_object.FontSize = height
 
-        if line_spacing:  # Keep value as set by viewprovider if zero or None
-            new_obj.ViewObject.LineSpacing = line_spacing
+        if view_object is not None and line_spacing:
+            # Keep value as set by viewprovider if zero or None
+            view_object.LineSpacing = line_spacing
 
         gui_utils.format_object(new_obj)
         gui_utils.select(new_obj)
@@ -174,7 +199,7 @@ def convert_draft_texts(textslist=None):
     _name = "convert_draft_texts"
 
     found, doc = utils.find_doc(App.activeDocument())
-    if not found:
+    if not found or doc is None:
         _err(translate("draft", "No active document. Aborting."))
         return None
 
@@ -187,24 +212,28 @@ def convert_draft_texts(textslist=None):
     if not isinstance(textslist, list):
         textslist = [textslist]
 
-    to_delete = []
+    to_delete: list[_LegacyAnnotationObject] = []
 
     for obj in textslist:
-        label = obj.Label
-        obj.Label = label + ".old"
+        annotation = cast(_LegacyAnnotationObject, obj)
+        label = annotation.Label
+        annotation.Label = label + ".old"
 
         # Create a new Draft Text object
-        new_obj = make_text(obj.LabelText, placement=obj.Position)
+        new_obj = make_text(annotation.LabelText, placement=annotation.Position)
+        if new_obj is None:
+            continue
         new_obj.Label = label
-        to_delete.append(obj)
+        to_delete.append(annotation)
 
         # Move the new object to the group which contained the old object
-        for in_obj in obj.InList:
+        for in_obj in annotation.InList:
             if in_obj.isDerivedFrom("App::DocumentObjectGroup"):
-                if obj in in_obj.Group:
-                    group = in_obj.Group
-                    group.append(new_obj)
-                    in_obj.Group = group
+                group_obj = cast(_DocumentObjectGroup, in_obj)
+                if obj in group_obj.Group:
+                    group = group_obj.Group
+                    group.append(cast(App.DocumentObject, new_obj))
+                    group_obj.Group = group
 
     for obj in to_delete:
         doc.removeObject(obj.Name)

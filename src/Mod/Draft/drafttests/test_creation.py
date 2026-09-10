@@ -40,6 +40,7 @@ import tempfile
 
 import FreeCAD as App
 import Draft
+import Part
 from FreeCAD import Vector
 from drafttests import test_base
 from draftutils.messages import _msg
@@ -56,6 +57,14 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         b = Vector(2, 0, 0)
         _msg("  a={0}, b={1}".format(a, b))
         obj = Draft.make_line(a, b)
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_line_from_shape(self):
+        """Create a line from a shape with vertices."""
+        operation = "Draft Line from Shape"
+        _msg("  Test '{}'".format(operation))
+        shape = Part.makeBox(2, 2, 2)
+        obj = Draft.make_line(shape)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_polyline(self):

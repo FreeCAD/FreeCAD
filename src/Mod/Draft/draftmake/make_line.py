@@ -57,7 +57,7 @@ def make_line(first_param, last_param=None):
         if hasattr(first_param, "StartPoint") and hasattr(first_param, "EndPoint"):
             p2 = first_param.EndPoint
             p1 = first_param.StartPoint
-        elif hasattr(p1, "Vertexes"):
+        elif hasattr(first_param, "Vertexes"):
             p2 = first_param.Vertexes[-1].Point
             p1 = first_param.Vertexes[0].Point
         else:

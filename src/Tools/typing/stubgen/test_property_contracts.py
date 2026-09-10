@@ -49,6 +49,8 @@ class PropertyContractsTests(unittest.TestCase):
         type_ids = {contract.type_id for contract in catalog.contracts}
         self.assertIn("App::PropertyQuantity", type_ids)
         self.assertIn("App::PropertyQuantityConstraint", type_ids)
+        self.assertIn("App::PropertyEnumeration", type_ids)
+        self.assertIn("App::PropertyMap", type_ids)
         self.assertNotIn("App::PropertyLength", type_ids)
         self.assertNotIn("App::PropertyDistance", type_ids)
 

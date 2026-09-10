@@ -35,6 +35,7 @@ __url__ = "https://www.freecad.org"
 
 import os
 import tempfile
+from typing import Any, Iterator, cast
 
 import FreeCAD
 import Arch
@@ -45,6 +46,16 @@ import DraftVecUtils
 
 from draftutils import params
 from draftutils import utils
+from draftutils.type_hints import DraftAPI
+
+_draft = cast(DraftAPI, Draft)
+
+
+def _set_coin_field(node: object, name: str, value: object) -> None:
+    """Assign a SWIG-exposed Coin field without hiding the dynamic boundary."""
+
+    setattr(node, name, value)
+
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -53,11 +64,11 @@ if FreeCAD.GuiUp:
     import draftutils.units as units
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, text: str, /) -> str:
+        return text
 
     # \endcond
 unicode = str
@@ -434,7 +445,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             if hasattr(obj, "Group"):
                 for child in obj.Group:
                     if (
-                        Draft.get_type(child) in ["Space", "BuildingPart"]
+                        _draft.get_type(child) in ["Space", "BuildingPart"]
                         and hasattr(child, "IfcType")
                         and hasattr(child, "Area")
                     ):
@@ -451,7 +462,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         shapes = []
         solidindex = 0
         materialstable = {}
-        for child in Draft.get_group_contents(obj, walls=True):
+        for child in _draft.get_group_contents(obj, walls=True):
             if hasattr(child, "Shape") and child.Shape:
                 shapes.append(child.Shape)
                 for solid in child.Shape.Solids:
@@ -481,15 +492,15 @@ class BuildingPart(ArchIFC.IfcProduct):
         g = []
         if hasattr(obj, "Group"):
             g = obj.Group
-        elif Draft.getType(obj) in ["Wall", "Structure"]:
+        elif _draft.getType(obj) in ["Wall", "Structure"]:
             g = obj.Additions
         for child in g:
-            if Draft.getType(child) in ["Wall", "Structure"]:
+            if _draft.getType(child) in ["Wall", "Structure"]:
                 if not child.Height.Value:
                     FreeCAD.Console.PrintLog("Auto-updating Height of " + child.Name + "\n")
                     self.touchChildren(child)
                     child.Proxy.execute(child)
-            elif Draft.getType(child) in ["App::DocumentObjectGroup", "Group", "BuildingPart"]:
+            elif _draft.getType(child) in ["App::DocumentObjectGroup", "Group", "BuildingPart"]:
                 self.touchChildren(child)
 
     def addObject(self, obj, child):
@@ -510,7 +521,9 @@ class BuildingPart(ArchIFC.IfcProduct):
                     cbb = child.Shape.BoundBox
                     if abb.isValid():
                         if not cbb.isValid():
-                            FreeCAD.ActiveDocument.recompute()
+                            document = FreeCAD.ActiveDocument
+                            if document is not None:
+                                document.recompute()
                         if not cbb.isValid():
                             cbb = FreeCAD.BoundBox()
                             for v in child.Shape.Vertexes:
@@ -862,18 +875,18 @@ class ViewProviderBuildingPart:
         self.sep.addChild(self.lco)
         import PartGui  # Required for "SoBrepEdgeSet" (because a BuildingPart is not a Part::FeaturePython object).
 
-        lin = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        lin: Any = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         if lin:
             lin.coordIndex.setValues([0, 1, -1, 2, 3, -1, 4, 5, -1])
         self.sep.addChild(lin)
         self.bbox = coin.SoSwitch()
-        self.bbox.whichChild = -1
+        _set_coin_field(self.bbox, "whichChild", -1)
         bboxsep = coin.SoSeparator()
         self.bbox.addChild(bboxsep)
         drawstyle = coin.SoDrawStyle()
-        drawstyle.style = coin.SoDrawStyle.LINES
-        drawstyle.lineWidth = 3
-        drawstyle.linePattern = 0x0F0F  # 0xaa
+        _set_coin_field(drawstyle, "style", coin.SoDrawStyle.LINES)
+        _set_coin_field(drawstyle, "lineWidth", 3)
+        _set_coin_field(drawstyle, "linePattern", 0x0F0F)  # 0xaa
         bboxsep.addChild(drawstyle)
         self.bbco = coin.SoCoordinate3()
         bboxsep.addChild(self.bbco)
@@ -889,7 +902,7 @@ class ViewProviderBuildingPart:
         self.fon = coin.SoFont()
         self.sep.addChild(self.fon)
         self.txt = coin.SoAsciiText()
-        self.txt.justification = coin.SoText2.LEFT
+        _set_coin_field(self.txt, "justification", coin.SoText2.LEFT)
         self.txt.string.setValue("level")
         self.sep.addChild(self.txt)
         vobj.addDisplayMode(self.sep, "Default")
@@ -930,7 +943,7 @@ class ViewProviderBuildingPart:
     def getColors(self, obj):
         "get the colors of objects inside this BuildingPart"
 
-        return Draft.get_diffuse_color(Draft.get_group_contents(obj, walls=True))
+        return _draft.get_diffuse_color(_draft.get_group_contents(obj, walls=True))
 
     def onChanged(self, vobj, prop):
 
@@ -942,7 +955,7 @@ class ViewProviderBuildingPart:
                 self.mat.diffuseColor.setValue(*color)
         elif prop == "LineWidth":
             if hasattr(vobj, "LineWidth"):
-                self.dst.lineWidth = vobj.LineWidth
+                _set_coin_field(self.dst, "lineWidth", vobj.LineWidth)
         elif prop == "FontName":
             if hasattr(vobj, "FontName") and hasattr(self, "fon"):
                 if vobj.FontName:
@@ -991,7 +1004,7 @@ class ViewProviderBuildingPart:
                 and hasattr(vobj, "ShowLabel")
                 and hasattr(self, "txt")
             ):
-                offset = getattr(vobj.Object, "LevelOffset", 0)
+                offset = cast(Any, getattr(vobj.Object, "LevelOffset", 0))
                 if hasattr(offset, "Value"):
                     offset = offset.Value
                 z = vobj.Object.Placement.Base.z + offset
@@ -1045,19 +1058,21 @@ class ViewProviderBuildingPart:
                         ):
                             setattr(child.ViewObject, prop[8:], getattr(vobj, prop))
         elif prop in ["CutView", "CutMargin"]:
+            gui_document = FreeCADGui.ActiveDocument
             if (
                 hasattr(vobj, "CutView")
-                and FreeCADGui.ActiveDocument.ActiveView
-                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
+                and gui_document is not None
+                and gui_document.ActiveView
+                and hasattr(gui_document.ActiveView, "getSceneGraph")
             ):
-                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                sg = gui_document.ActiveView.getSceneGraph()
                 if vobj.CutView:
                     from pivy import coin
 
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
+                    for o in _draft.get_group_contents(vobj.Object.Group, walls=True):
                         if hasattr(o.ViewObject, "Lighting"):
                             o.ViewObject.Lighting = "One side"
                     self.clip = coin.SoClipPlane()
@@ -1082,7 +1097,7 @@ class ViewProviderBuildingPart:
                     if getattr(self, "clip", None):
                         sg.removeChild(self.clip)
                         self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
+                    for o in _draft.get_group_contents(vobj.Object.Group, walls=True):
                         if hasattr(o.ViewObject, "Lighting"):
                             o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
@@ -1099,10 +1114,10 @@ class ViewProviderBuildingPart:
                         self.autobbox.move(vobj.Object.Placement.Base)
                         pts = [list(self.autobbox.getPoint(i)) for i in range(8)]
                         self.bbco.point.setValues(pts)
-                        self.bbox.whichChild = 0
+                        _set_coin_field(self.bbox, "whichChild", 0)
                 else:
                     self.autobbox = None
-                    self.bbox.whichChild = -1
+                    _set_coin_field(self.bbox, "whichChild", -1)
         elif prop in ["AutogroupAutosize", "AutogroupMargin"]:
             if hasattr(vobj, "AutogroupAutosize") and vobj.AutogroupAutosize:
                 bbox = vobj.Object.Shape.BoundBox
@@ -1115,10 +1130,12 @@ class ViewProviderBuildingPart:
     def onDelete(self, vobj, subelements):
 
         if self.clip:
-            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-            sg.removeChild(self.clip)
-            self.clip = None
-        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
+            gui_document = FreeCADGui.ActiveDocument
+            if gui_document is not None:
+                sg = gui_document.ActiveView.getSceneGraph()
+                sg.removeChild(self.clip)
+                self.clip = None
+        for o in _draft.get_group_contents(vobj.Object.Group, walls=True):
             if hasattr(o.ViewObject, "Lighting"):
                 o.ViewObject.Lighting = "Two side"
         return True
@@ -1148,13 +1165,14 @@ class ViewProviderBuildingPart:
         from PySide import QtCore, QtGui
         import Draft_rc
 
-        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
+        gui_document = FreeCADGui.ActiveDocument
+        if gui_document is None or FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         menuTxt = translate("Arch", "Active")
         actionActivate = QtGui.QAction(menuTxt, menu)
         actionActivate.setCheckable(True)
-        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+        if gui_document.ActiveView.getActiveObject("Arch") == self.Object:
             actionActivate.setChecked(True)
         else:
             actionActivate.setChecked(False)
@@ -1228,7 +1246,10 @@ class ViewProviderBuildingPart:
         if hasattr(self, "Object"):
             from pivy import coin
 
-            n = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            gui_document = FreeCADGui.ActiveDocument
+            if gui_document is None:
+                return
+            n = gui_document.ActiveView.getCameraNode()
             FreeCAD.Console.PrintMessage(
                 QT_TRANSLATE_NOOP("Draft", "Writing camera position") + "\n"
             )
@@ -1262,11 +1283,16 @@ class ViewProviderBuildingPart:
                 g = self.Object.Group
                 g.sort(key=lambda obj: obj.Label)
                 self.Object.Group = g
-                FreeCAD.ActiveDocument.recompute()
+                document = FreeCAD.ActiveDocument
+                if document is not None:
+                    document.recompute()
 
     def cloneUp(self):
 
         if hasattr(self, "Object"):
+            document = FreeCAD.ActiveDocument
+            if document is None:
+                return
             if not self.Object.Height.Value:
                 FreeCAD.Console.PrintError(
                     "This level has no height value. Define a height before using this function.\n"
@@ -1276,11 +1302,11 @@ class ViewProviderBuildingPart:
             ng = []
             if hasattr(self.Object, "Group") and self.Object.Group:
                 for o in self.Object.Group:
-                    no = Draft.clone(o)
-                    Draft.move(no, FreeCAD.Vector(0, 0, height))
+                    no = _draft.clone(o)
+                    _draft.move(no, FreeCAD.Vector(0, 0, height))
                     ng.append(no)
-            nobj = Arch.makeBuildingPart()
-            Draft.formatObject(nobj, self.Object)
+            nobj = cast(Any, Arch.makeBuildingPart())
+            _draft.formatObject(nobj, self.Object)
             nobj.Placement = self.Object.Placement
             nobj.Placement.move(FreeCAD.Vector(0, 0, height))
             nobj.IfcType = self.Object.IfcType
@@ -1294,7 +1320,7 @@ class ViewProviderBuildingPart:
                     and (self.Object in parent.Group)
                 ):
                     parent.addObject(nobj)
-            FreeCAD.ActiveDocument.recompute()
+            document.recompute()
             # fix for missing IFC attributes
             for no in ng:
                 if (
@@ -1304,7 +1330,7 @@ class ViewProviderBuildingPart:
                     and hasattr(no.CloneOf, "LongName")
                 ):
                     no.LongName = no.CloneOf.LongName
-            FreeCAD.ActiveDocument.recompute()
+            document.recompute()
 
     def dumps(self):
         return None
@@ -1314,8 +1340,10 @@ class ViewProviderBuildingPart:
 
     def writeInventor(self, obj):
 
+        color_values: Iterator[str] = iter(())
+
         def callback(match):
-            return next(callback.v)
+            return next(color_values)
 
         if hasattr(obj.ViewObject, "SaveInventor") and obj.ViewObject.SaveInventor:
             if obj.Shape and obj.Shape.Faces and hasattr(obj, "SavedInventor"):
@@ -1340,7 +1368,7 @@ class ViewProviderBuildingPart:
                             for color in colors
                         ]
                         # replace
-                        callback.v = iter(colors)
+                        color_values = iter(colors)
                         iv = re.sub(r"IndexedFaceSet", callback, iv)
                     else:
                         print("Debug: IndexedFaceSet mismatch in", obj.Label)

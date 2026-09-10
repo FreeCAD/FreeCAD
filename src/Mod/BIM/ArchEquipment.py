@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Equipment"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -34,9 +36,14 @@ __url__ = "https://www.freecad.org"
 #  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
+from typing import Any, TYPE_CHECKING
+
 import FreeCAD
 import ArchComponent
 import DraftVecUtils
+
+if TYPE_CHECKING:
+    from bim_typing import ArchEquipmentObject
 
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -45,11 +52,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
@@ -59,7 +66,7 @@ if FreeCAD.GuiUp:
     class EquipmentTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         """A task panel for Arch Equipment using the generic options box"""
 
-        def __init__(self, obj):
+        def __init__(self, obj: ArchEquipmentObject) -> None:
             property_definitions = [
                 {"prop": "Model", "label": translate("Arch", "Model")},
                 {"prop": "EquipmentPower", "label": translate("Arch", "Equipment Power")},
@@ -70,7 +77,7 @@ if FreeCAD.GuiUp:
 class _Equipment(ArchComponent.Component):
     "The Equipment object"
 
-    def __init__(self, obj):
+    def __init__(self, obj: ArchEquipmentObject) -> None:
 
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Equipment"
@@ -86,7 +93,7 @@ class _Equipment(ArchComponent.Component):
         else:
             obj.IfcType = "Building Element Proxy"
 
-    def setProperties(self, obj):
+    def setProperties(self, obj: ArchEquipmentObject) -> None:
 
         pl = obj.PropertiesList
         if not "Model" in pl:
@@ -135,21 +142,21 @@ class _Equipment(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: ArchEquipmentObject) -> None:
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
 
         self.Type = "Equipment"
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj: ArchEquipmentObject, prop: str) -> None:
 
         self.hideSubobjects(obj, prop)
         ArchComponent.Component.onChanged(self, obj, prop)
 
-    def execute(self, obj):
+    def execute(self, obj: ArchEquipmentObject) -> None:
 
         if self.clone(obj):
             return
@@ -158,16 +165,22 @@ class _Equipment(ArchComponent.Component):
 
         pl = obj.Placement
         if obj.Base:
-            base = None
-            if hasattr(obj.Base, "Shape"):
-                base = obj.Base.Shape.copy()
+            base_shape = getattr(obj.Base, "Shape", None)
+            if base_shape is not None:
+                base = base_shape.copy()
                 base = self.processSubShapes(obj, base, pl)
                 self.applyShape(obj, base, pl, allowinvalid=False, allownosolid=True)
 
         # Execute features in the SketchArch External Add-on, if present
         self.executeSketchArchFeatures(obj)
 
-    def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
+    def executeSketchArchFeatures(
+        self,
+        obj: ArchEquipmentObject,
+        linkObj: object | None = None,
+        index: int | None = None,
+        linkElement: object | None = None,
+    ) -> None:
         """
         To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
         -  import ArchSketchObject module, and
@@ -182,24 +195,29 @@ class _Equipment(ArchComponent.Component):
 
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
             # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
-            ArchSketchObject.updateAttachmentOffset(obj, linkObj)
+            update_attachment_offset = getattr(ArchSketchObject, "updateAttachmentOffset", None)
+            if callable(update_attachment_offset):
+                update_attachment_offset(obj, linkObj)
         except:
             pass
 
-    def computeAreas(self, obj):
+    def computeAreas(self, obj: ArchEquipmentObject) -> None:
         return
 
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
     "A View Provider for the Equipment object"
 
-    def __init__(self, vobj):
+    Object: ArchEquipmentObject
+    coords: Any
+
+    def __init__(self, vobj: Any) -> None:
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
-    def getIcon(self):
+    def getIcon(self) -> str:
 
-        import Arch_rc
+        import Arch_rc  # pyright: ignore[reportMissingImports]
 
         if hasattr(self, "Object"):
             if hasattr(self.Object, "CloneOf"):
@@ -207,10 +225,10 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                     return ":/icons/Arch_Equipment_Clone.svg"
         return ":/icons/Arch_Equipment_Tree.svg"
 
-    def attach(self, vobj):
+    def attach(self, vobj: Any) -> None:
 
         self.Object = vobj.Object
-        from pivy import coin
+        from pivy import coin  # pyright: ignore[reportMissingImports]
 
         sep = coin.SoSeparator()
         self.coords = coin.SoCoordinate3()
@@ -223,7 +241,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         rn.addChild(sep)
         ArchComponent.ViewProviderComponent.attach(self, vobj)
 
-    def updateData(self, obj, prop):
+    def updateData(self, obj: ArchEquipmentObject, prop: str) -> None:
 
         if prop == "SnapPoints":
             if obj.SnapPoints:
@@ -234,7 +252,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         else:
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
 
-    def setEdit(self, vobj, mode):
+    def setEdit(self, vobj: Any, mode: int) -> bool | None:
         if mode != 0:
             return None
 

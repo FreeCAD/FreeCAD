@@ -138,6 +138,30 @@ process. Missing table documentation receives a stable generated description;
 explicit `doc` fields remain the preferred form for user-facing details.
 Irregular exports remain curated until they have a stable structured source
 representation.
+
+The generator also scans literal `obj.addProperty("App::Property...", name, ...)`
+calls in the typed Draft object sources. Cataloged declarations that appear as
+explicit getter/setter members in Draft protocols are checked during
+generation; dynamic declarations and uncataloged property kinds remain
+outside this conservative validation pass until they have structured input.
+
+The BIM typing layer uses the same conservative validation for literal
+property declarations in its typed object sources. The shared `DraftAPI`
+protocol in `draftutils/type_hints.py` is the single typed boundary used by
+BIM modules that call the dynamic public `Draft` module.
+
+The generator also has a BIM object path. It resolves literal `addProperty()`
+declarations through the Core property catalog and emits disposable nominal
+`bim_typing` classes under `generated/stubs/`. The `BIM_OBJECTS` registry in
+`stubgen/property_declarations.py` is the source for generated object classes,
+manual structural interfaces, runtime base types, property discovery, and
+checker coverage. `ArchEquipment`, `ArchFrame`, and `ArchSpace` are currently
+type-checked generated objects; their implementations import the generated
+types only under `TYPE_CHECKING`. The check command writes disposable
+registry-driven Pyright and Pyrefly configs beside the generated stubs, so every
+registry entry marked for checking is included automatically. Keep non-property
+BIM semantics in small source-local adapters and extend the generated path
+incrementally as more object families are migrated.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or

@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -34,10 +36,36 @@ __url__ = "https://www.freecad.org"
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
+from typing import Any, Protocol, TYPE_CHECKING, cast
+
 import FreeCAD
 import ArchComponent
 import Draft
 import DraftVecUtils
+from FreeCAD import Vector
+
+if TYPE_CHECKING:
+    import FreeCADGui
+    import Part
+    from bim_typing import ArchFrameObject
+
+
+class _PlacementFacade(Protocol):
+    """Placement operations used by the frame proxy."""
+
+    Base: Vector
+    Rotation: Any
+
+    def isNull(self) -> bool: ...
+    def multiply(self, placement: Any, /) -> Any: ...
+
+
+class _ShapeObject(Protocol):
+    """Shape-bearing document object linked by a frame."""
+
+    Shape: Part.Shape
+    Placement: FreeCAD.Placement
+
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -45,11 +73,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
@@ -57,13 +85,13 @@ else:
 class _Frame(ArchComponent.Component):
     "A parametric frame object"
 
-    def __init__(self, obj):
+    def __init__(self, obj: ArchFrameObject) -> None:
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Frame"
         self.setProperties(obj)
         obj.IfcType = "Railing"
 
-    def setProperties(self, obj):
+    def setProperties(self, obj: ArchFrameObject) -> None:
 
         pl = obj.PropertiesList
         if not "Profile" in pl:
@@ -151,16 +179,16 @@ class _Frame(ArchComponent.Component):
                 locked=True,
             )
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: ArchFrameObject) -> None:
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
 
         self.Type = "Frame"
 
-    def execute(self, obj):
+    def execute(self, obj: ArchFrameObject) -> None:
 
         if self.clone(obj):
             return
@@ -169,39 +197,41 @@ class _Frame(ArchComponent.Component):
 
         if not obj.Base:
             return
-        if not obj.Base.Shape:
+        base = cast(_ShapeObject, obj.Base)
+        if not base.Shape:
             return
-        if not obj.Base.Shape.Wires:
+        if not base.Shape.Wires:
             return
 
-        pl = obj.Placement
-        if obj.Base.Shape.Solids:
-            obj.Shape = obj.Base.Shape.copy()
+        pl = cast(_PlacementFacade, obj.Placement)
+        if base.Shape.Solids:
+            obj.Shape = base.Shape.copy()
             if not pl.isNull():
-                obj.Placement = obj.Shape.Placement.multiply(pl)
+                obj.Placement = cast(Any, obj.Shape.Placement).multiply(cast(Any, pl))
         else:
             if not obj.Profile:
                 return
-            if not obj.Profile.Shape:
+            profile_obj = cast(_ShapeObject, obj.Profile)
+            if not profile_obj.Shape:
                 return
-            if obj.Profile.Shape.findPlane() is None:
+            if profile_obj.Shape.findPlane() is None:
                 return
-            if not obj.Profile.Shape.Wires:
+            if not profile_obj.Shape.Wires:
                 return
-            if not obj.Profile.Shape.Faces:
-                for w in obj.Profile.Shape.Wires:
+            if not profile_obj.Shape.Faces:
+                for w in profile_obj.Shape.Wires:
                     if not w.isClosed():
                         return
             import math
             import DraftGeomUtils
             import Part
 
-            baseprofile = obj.Profile.Shape.copy()
+            baseprofile = profile_obj.Shape.copy()
             if hasattr(obj, "ProfilePlacement"):
-                if not obj.ProfilePlacement.isNull():
+                if not cast(Any, obj.ProfilePlacement).isNull():
                     baseprofile.Placement = obj.ProfilePlacement.multiply(baseprofile.Placement)
             if not baseprofile.Faces:
-                f = []
+                f: list[Any] = []
                 for w in baseprofile.Wires:
                     f.append(Part.Face(w))
                 if len(f) == 1:
@@ -209,45 +239,47 @@ class _Frame(ArchComponent.Component):
                 else:
                     baseprofile = Part.makeCompound(f)
             shapes = []
-            normal = DraftGeomUtils.getNormal(obj.Base.Shape)
-            edges = obj.Base.Shape.Edges
+            normal = DraftGeomUtils.getNormal(base.Shape)
+            edges = base.Shape.Edges
             if hasattr(obj, "Edges"):
                 if obj.Edges == "Vertical edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0, 1, 0))
+                    rv = base.Placement.Rotation.multVec(FreeCAD.Vector(0, 1, 0))
                     edges = [
                         e
                         for e in edges
                         if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
                     ]
                 elif obj.Edges == "Horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    rv = base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
                     edges = [
                         e
                         for e in edges
                         if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
                     ]
                 elif obj.Edges == "Top horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    rv = base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
                     edges = [
                         e
                         for e in edges
                         if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
                     ]
-                    edges = sorted(edges, key=lambda x: x.CenterOfMass.z, reverse=True)
-                    z = edges[0].CenterOfMass.z
-                    edges = [e for e in edges if abs(e.CenterOfMass.z - z) < 0.00001]
+                    edges = sorted(edges, key=lambda x: cast(Any, x.CenterOfMass).z, reverse=True)
+                    z = cast(Any, edges[0].CenterOfMass).z
+                    edges = [e for e in edges if abs(cast(Any, e.CenterOfMass).z - z) < 0.00001]
                 elif obj.Edges == "Bottom horizontal edges":
-                    rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+                    rv = base.Placement.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
                     edges = [
                         e
                         for e in edges
                         if round(rv.getAngle(e.tangentAt(e.FirstParameter)), 4) in [0, 3.1416]
                     ]
-                    edges = sorted(edges, key=lambda x: x.CenterOfMass.z)
-                    z = edges[0].CenterOfMass.z
-                    edges = [e for e in edges if abs(e.CenterOfMass.z - z) < 0.00001]
+                    edges = sorted(edges, key=lambda x: cast(Any, x.CenterOfMass).z)
+                    z = cast(Any, edges[0].CenterOfMass).z
+                    edges = [e for e in edges if abs(cast(Any, e.CenterOfMass).z - z) < 0.00001]
             for e in edges:
                 bvec = DraftGeomUtils.vec(e)
+                if bvec is None:
+                    continue
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
                 rot = None  # New rotation.
@@ -284,7 +316,7 @@ class _Frame(ArchComponent.Component):
                         delta = delta + rot.multVec(obj.Offset)
                 profile.translate(delta)
                 if obj.Rotation:
-                    profile.rotate(bpoint, bvec, obj.Rotation)
+                    profile.rotate(bpoint, bvec, cast(Any, obj.Rotation))
                 # profile = wire.makePipeShell([profile], True, False, 2) TODO buggy
                 profile = profile.extrude(bvec)
                 shapes.append(profile)
@@ -295,28 +327,30 @@ class _Frame(ArchComponent.Component):
                             s = shapes[0].multiFuse(shapes[1:])
                             s = s.removeSplitter()
                             obj.Shape = s
-                            obj.Placement = pl
+                            obj.Placement = cast(Any, pl)
                             return
                 obj.Shape = Part.makeCompound(shapes)
-                obj.Placement = pl
+                obj.Placement = cast(Any, pl)
 
 
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     "A View Provider for the Frame object"
 
-    def __init__(self, vobj):
+    Object: ArchFrameObject
+
+    def __init__(self, vobj: Any) -> None:
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
-    def getIcon(self):
+    def getIcon(self) -> Any:
 
-        import Arch_rc
+        import Arch_rc  # pyright: ignore[reportMissingImports]
 
         return ":/icons/Arch_Frame_Tree.svg"
 
-    def claimChildren(self):
+    def claimChildren(self) -> list[Any]:
 
-        p = []
+        p: list[Any] = []
         if hasattr(self, "Object"):
             if self.Object.Profile:
                 p = [self.Object.Profile]

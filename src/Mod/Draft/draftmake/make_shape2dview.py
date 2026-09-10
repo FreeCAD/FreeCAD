@@ -24,19 +24,29 @@
 # ***************************************************************************
 """Provides functions to create Shape2DView objects."""
 
+from __future__ import annotations
+
 ## @package make_shape2dview
 # \ingroup draftmake
 # \brief Provides functions to create Shape2DView objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.shape2dview import Shape2DView
+from draftobjects.shape2dview import Shape2DView, Shape2DViewObject
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
+
+
+def _new_shape2dview_object(doc: App.Document) -> Shape2DViewObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "Shape2DView")
+    Shape2DView(obj)
+    return cast(Shape2DViewObject, obj)
 
 
 def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
@@ -58,8 +68,7 @@ def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Shape2DView")
-    Shape2DView(obj)
+    obj = _new_shape2dview_object(App.ActiveDocument)
     if App.GuiUp:
         ViewProviderDraftAlt(obj.ViewObject)
     obj.Base = baseobj

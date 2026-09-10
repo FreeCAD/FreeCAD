@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides functions to create Arc objects by using 3 points."""
 
+from __future__ import annotations
+
 ## @package make_arc_3points
 # \ingroup draftmake
 # \brief Provides functions to create Arc objects by using 3 points.
@@ -31,6 +33,7 @@
 ## \addtogroup draftmake
 # @{
 import math
+from typing import cast
 
 import FreeCAD as App
 import Part
@@ -83,6 +86,10 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
         Returns `None` if there is a problem and the object cannot be created.
     """
     _name = "make_arc_3points"
+    doc = App.ActiveDocument
+    if not doc:
+        _err(translate("draft", "No active document. Aborting."))
+        return None
 
     try:
         utils.type_check([(points, (list, tuple))], name=_name)
@@ -103,6 +110,9 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
     except TypeError:
         _err(translate("draft", "Wrong input: incorrect type of points."))
         return None
+    p1 = cast(App.Vector, p1)
+    p2 = cast(App.Vector, p2)
+    p3 = cast(App.Vector, p3)
 
     if placement is not None:
         try:
@@ -119,7 +129,7 @@ def make_arc_3points(points, placement=None, face=False, support=None, primitive
         return None
 
     if primitive:
-        obj = App.ActiveDocument.addObject("Part::Feature", "Arc")
+        obj = doc.addObject("Part::Feature", "Arc")
         obj.Shape = edge
         return obj
 

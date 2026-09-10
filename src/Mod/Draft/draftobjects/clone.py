@@ -24,19 +24,62 @@
 # ***************************************************************************
 """Provides the object code for the Clone object."""
 
+from __future__ import annotations
+
 ## @package clone
 # \ingroup draftobjects
 # \brief Provides the object code for the Clone object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import (
+    DraftDocumentObject,
+    DocumentObjectList,
+    DocumentObjectListInput,
+    VectorInput,
+    VectorValue,
+)
 from draftutils import gui_utils
 from draftutils.messages import _log
+
+if TYPE_CHECKING:
+    import Part
+
+
+class CloneObject(DraftDocumentObject, Protocol):
+    """Document object with properties added by the Clone proxy."""
+
+    Label: str
+    LongName: str
+
+    @property
+    def Objects(self) -> DocumentObjectList: ...
+
+    @Objects.setter
+    def Objects(self, value: DocumentObjectListInput) -> None: ...
+
+    @property
+    def Scale(self) -> VectorValue: ...
+
+    @Scale.setter
+    def Scale(self, value: VectorInput) -> None: ...
+
+    Fuse: bool
+    ForceCompound: bool
+    Shape: Part.Shape
+
+    def addExtension(self, identifier: str, /) -> None: ...
+
+    def isDerivedFrom(self, identifier: str, /) -> bool: ...
+
+    def positionBySupport(self) -> None: ...
 
 
 class Clone(DraftObject):

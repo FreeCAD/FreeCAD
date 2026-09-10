@@ -431,6 +431,18 @@ def exercise(
     assert_type(gui_up, int)
     assert_type(active_document, FreeCAD.Document | None)
     assert_type(part_feature.Shape, Part.Shape)
+    assert_type(python_feature, Part.Feature)
+    assert_type(part_2d_object, Part.Part2DObject)
+    assert_type(shape.Faces, list[Part.Face])
+    assert_type(shape.Vertexes, list[Part.Vertex])
+    assert_type(shape.Shells, list[Part.Shell])
+    assert_type(shape.Solids, list[Part.Solid])
+    assert_type(shape.Edges, list[Part.Edge])
+    assert_type(shape.Wires, list[Part.Wire])
+    if obj.ViewObject is not None:
+        assert_type(obj.ViewObject, FreeCADGui.ViewProviderDocumentObject)
+        assert_type(obj.ViewObject.Object, FreeCAD.DocumentObject)
+        assert_type(obj.ViewObject.Document, FreeCADGui.Document)
     part_feature.Shape = shape
     assert_type(copied_object, FreeCAD.DocumentObject)
     assert_type(Console.PrintMessage("message"), None)

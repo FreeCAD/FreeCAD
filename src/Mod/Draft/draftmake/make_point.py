@@ -24,20 +24,30 @@
 # ***************************************************************************
 """Provides functions to create Point objects."""
 
+from __future__ import annotations
+
 ## @package make_point
 # \ingroup draftmake
 # \brief Provides functions to create Point objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.point import Point
+from draftobjects.point import Point, PointObject
 
 if App.GuiUp:
     import FreeCADGui as Gui
     from draftviewproviders.view_point import ViewProviderPoint
+
+
+def _new_point_object(doc: App.Document, name: str, x, y, z) -> PointObject:
+    obj = doc.addObject("Part::FeaturePython", name)
+    Point(obj, x, y, z)
+    return cast(PointObject, obj)
 
 
 def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
@@ -70,22 +80,22 @@ def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    obj = App.ActiveDocument.addObject("Part::FeaturePython", name)
-
     if isinstance(X, App.Vector):
         Z = X.z
         Y = X.y
         X = X.x
 
-    Point(obj, X, Y, Z)
+    obj = _new_point_object(App.ActiveDocument, name, X, Y, Z)
     obj.Placement.Base = App.Vector(X, Y, Z)
 
     if App.GuiUp:
         ViewProviderPoint(obj.ViewObject)
         gui_utils.formatObject(obj)
-        if color is not None:
-            obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
-        obj.ViewObject.PointSize = point_size
+        view_object = obj.ViewObject
+        if view_object is not None:
+            if color is not None:
+                view_object.PointColor = (float(color[0]), float(color[1]), float(color[2]))
+            view_object.PointSize = point_size
         gui_utils.select(obj)
 
     return obj

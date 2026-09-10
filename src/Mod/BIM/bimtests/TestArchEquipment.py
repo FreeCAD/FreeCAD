@@ -43,3 +43,20 @@ class TestArchEquipment(TestArchBase.TestArchBase):
         box.Height = 600
         equip = Arch.makeEquipment(box)
         self.assertTrue(equip, "Arch Equipment failed")
+
+    def test_equipment_properties(self):
+        """Test the equipment-specific property surface."""
+        equip = Arch.makeEquipment()
+        equip.Model = "Example model"
+        equip.ProductURL = "https://example.com/equipment"
+        equip.StandardCode = "EQUIPMENT-001"
+        equip.SnapPoints = [App.Vector(1, 2, 3)]
+        equip.EquipmentPower = 1500.0
+        self.document.recompute()
+
+        self.assertEqual(equip.Model, "Example model")
+        self.assertEqual(equip.ProductURL, "https://example.com/equipment")
+        self.assertEqual(equip.StandardCode, "EQUIPMENT-001")
+        self.assertEqual(len(equip.SnapPoints), 1)
+        self.assertTrue(equip.SnapPoints[0].isEqual(App.Vector(1, 2, 3), 1e-9))
+        self.assertEqual(equip.EquipmentPower, 1500.0)
