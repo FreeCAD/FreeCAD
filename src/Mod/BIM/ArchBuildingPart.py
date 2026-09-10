@@ -317,6 +317,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
+            obj.setPropertyStatus("MaterialsTable", "Hidden")
 
     def onDocumentRestored(self, obj):
 

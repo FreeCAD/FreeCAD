@@ -78,6 +78,7 @@ class IfcRoot:
                 QT_TRANSLATE_NOOP("App::Property", "IFC data"),
                 locked=True,
             )
+            obj.setPropertyStatus("IfcData", "Hidden")
 
         if not "IfcType" in obj.PropertiesList:
             obj.addProperty(
@@ -97,6 +98,7 @@ class IfcRoot:
                 QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
                 locked=True,
             )
+            obj.setPropertyStatus("IfcProperties", "Hidden")
 
         self.migrateDeprecatedAttributes(obj)
 
