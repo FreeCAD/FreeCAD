@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final
 
-
 @export(
     Include="Gui/QtTesting/QtTestUtility.h",
     Namespace="QtTesting",

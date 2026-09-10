@@ -48,8 +48,7 @@ QtTestUtility::QtTestUtility(QObject* parent)
 
 void QtTestUtility::addWidgetEventTranslator(pqWidgetEventTranslator* translator)
 {
-    if (translator)
-    {
+    if (translator) {
         eventTranslator()->addWidgetEventTranslator(translator);
     }
 }
@@ -61,8 +60,7 @@ void QtTestUtility::addCustomTranslators()
 
 void QtTestUtility::addWidgetEventPlayer(pqWidgetEventPlayer* player)
 {
-    if (player)
-    {
+    if (player) {
         eventPlayer()->addWidgetEventPlayer(player);
     }
 }
