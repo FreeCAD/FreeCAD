@@ -28,7 +28,6 @@ rm -rf ${conda_env}/lib/python*/site-packages/pycparser
 rm -rf ${conda_env}/lib/python*/site-packages/pyright
 rm -rf ${conda_env}/lib/python*/site-packages/qtpy/tests
 rm -rf ${conda_env}/lib/python*/site-packages/tests
-rm -rf ${conda_env}/lib/python3.1/site-packages/pandas/tests
 rm -rf ${conda_env}/lib/qt6/bin
 rm -rf ${conda_env}/libexec/gcc
 rm -rf ${conda_env}/libexec/git-core

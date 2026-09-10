@@ -1,13 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 set -e
 
 PREFIX=$CONDA_PREFIX
+PYTHON=$CONDA_PREFIX/bin/python
 EXT=
 
 if [[ ${OS} == Windows_NT ]]; then
     CMAKE_PRESET=conda-windows-release
     PREFIX=$CONDA_PREFIX/Library
+    PYTHON=$CONDA_PREFIX/python.exe
     EXT=.exe
     CMAKE_PLATFORM_FLAGS+=(-D CMAKE_C_COMPILER="$CC")
     CMAKE_PLATFORM_FLAGS+=(-D CMAKE_CXX_COMPILER="$CXX")

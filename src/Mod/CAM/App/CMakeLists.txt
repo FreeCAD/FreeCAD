@@ -165,7 +165,7 @@ if (FREECAD_WARN_ERROR)
 target_compile_warn_error(surface_generator)
 endif()
 
-SET_BIN_DIR(surface_generator surface_generator /Mod/CAM)
+SET_BIN_DIR(surface_generator)
 SET_PYTHON_PREFIX_SUFFIX(surface_generator)
 
 INSTALL(TARGETS surface_generator DESTINATION ${CMAKE_INSTALL_LIBDIR})
