@@ -35,19 +35,19 @@ _IMPERIAL_SCHEMAS = {2, 3, 5, 7}
 _METRIC_NUDGE_PRESETS = ("1 mm", "5 mm", "1 cm", "5 cm", "10 cm", "50 cm")
 _IMPERIAL_NUDGE_PRESETS = ('1/16"', '1/8"', '1/4"', '1"', '6"', "1'")
 
+
 def get_unit_schema():
     doc = FreeCAD.ActiveDocument
     if doc is None:
         return FreeCAD.Units.getSchema()
     return doc.getEnumerationsOfProperty("UnitSystem").index(doc.UnitSystem)
 
+
 def get_nudge_presets():
     """Return display labels and quantities for the active unit schema."""
 
     presets = (
-        _IMPERIAL_NUDGE_PRESETS
-        if get_unit_schema() in _IMPERIAL_SCHEMAS
-        else _METRIC_NUDGE_PRESETS
+        _IMPERIAL_NUDGE_PRESETS if get_unit_schema() in _IMPERIAL_SCHEMAS else _METRIC_NUDGE_PRESETS
     )
     return [(label, FreeCAD.Units.Quantity(label)) for label in presets]
 
