@@ -69,8 +69,9 @@ void LinkArrayLinear::connectElementSuppression()
         if (!elements[i]) {
             continue;
         }
-        const auto handleElementChange = [this, i](const App::DocumentObject& obj,
-                                                   const App::Property& prop) {
+        const auto handleElementChange = [this,
+                                          i](const App::DocumentObject& obj,
+                                             const App::Property& prop) {
             if (syncingSuppression || isRestoring()
                 || (getDocument() && getDocument()->isPerformingTransaction())) {
                 return;
