@@ -105,10 +105,10 @@ class PostProcessDialog:
         # Post-processor parameter widgets (from get_property_schema)
         self._post_param_widgets = (
             {}
-        )  # runtime params on Overview: {param_name: (widget, schema_entry)}
+        )  # "run"-scoped params on Overview: {param_name: (widget, schema_entry)}
         self._post_config_widgets = (
             {}
-        )  # non-runtime params on Options: {param_name: (widget, schema_entry)}
+        )  # "job"-scoped params on Options: {param_name: (widget, schema_entry)}
         # Stores generated G-code: {full_path_filename: gcode_string}
         self._generated_outputs = {}
         # Original (subpart, gcode) sections — used to regenerate filenames
@@ -265,19 +265,22 @@ class PostProcessDialog:
 
         container.deleteLater()
 
-        # Populate runtime post-processor params on Overview tab
+        # Populate "job"-scoped post-processor properties on the Options tab,
+        # after the machine output groups and before the trailing spacer.
+        self._rebuild_post_config_section(machine, scroll_layout, insert_idx)
+
+        # Populate "run"-scoped post-processor params on Overview tab
         self._rebuild_post_params_section(machine)
 
     def _rebuild_post_config_section(self, machine, scroll_layout, insert_idx):
-        """Build non-runtime postprocessor property widgets on the Options tab.
+        """Build the "job"-scoped postprocessor property widgets on the Options tab.
 
-        These mirror the same properties shown in the machine editor and allow
+        These mirror properties the machine editor also shows, and allow
         per-run overrides of machine-config values like pierce_delay, cooling_delay, etc.
         """
-        # Clear previous non-runtime config widgets
-        for name, (widget, _schema) in self._post_config_widgets.items():
-            # The widget is inside a group box tracked by _dynamic_output_groups
-            pass
+        # Clear previous job-scoped config widgets.  The widgets themselves live
+        # in a group box tracked by _dynamic_output_groups, which the caller
+        # removes and deletes before this runs, so only the map needs clearing.
         self._post_config_widgets.clear()
 
         if machine is None:
@@ -302,26 +305,40 @@ class PostProcessDialog:
             return
 
         try:
-            schema = post_class.get_property_schema()
+            schema = post_class.get_full_property_schema()
         except Exception:
             return
 
-        non_runtime = [e for e in schema if not e.get("runtime", False)] if schema else []
-        if not non_runtime:
+        # "machine" and "internal" properties are not offered here: the former
+        # are machine-editor-only by declaration, the latter are never shown.
+        from Path.Post.Processor import SCOPE_JOB, properties_in_scope
+
+        job_scoped = properties_in_scope(schema, SCOPE_JOB)
+        if not job_scoped:
             return
 
-        # Build the configuration bundle to get values with job overrides applied
+        # Build the configuration bundle to get values with job overrides applied.
+        # The postprocessor resolved its own machine from the job, but the combo
+        # box may point somewhere else; the dialog's selection wins, matching
+        # what _apply_options_to_machine() does before export.  The bundle
+        # dereferences _machine, which is None when the job names a machine the
+        # factory cannot find, so fall back to the raw properties in that case.
         bundle = {}
         if post_obj is not None and hasattr(post_obj, "build_configuration_bundle"):
-            bundle = post_obj.build_configuration_bundle()
-            Path.Log.debug(f"Post config bundle for dialog: {bundle}")
+            try:
+                post_obj._machine = machine
+                bundle = post_obj.build_configuration_bundle()
+                Path.Log.debug(f"Post config bundle for dialog: {bundle}")
+            except Exception as e:
+                Path.Log.warning(f"Could not build post config bundle for dialog: {e}")
+                bundle = {}
 
         pp_props = bundle if bundle else (getattr(machine, "postprocessor_properties", {}) or {})
 
         group = QtGui.QGroupBox(translate("CAM_Post", "Postprocessor Properties"))
         form = QtGui.QFormLayout(group)
 
-        for entry in non_runtime:
+        for entry in job_scoped:
             name = entry.get("name", "")
             param_type = entry.get("type", "string")
             label_text = entry.get("label", name)
@@ -375,21 +392,14 @@ class PostProcessDialog:
                 widget.setToolTip(help_text)
                 widget.value_getter = lambda w=widget: w.text()
 
-            # if widget is not None:
-            #     # Connect signal to recompute warnings when value changes
-            #     if isinstance(widget, (QtGui.QCheckBox, QtGui.QLineEdit, QtGui.QPlainTextEdit)):
-            #         (
-            #             widget.textChanged.connect(self._recompute_warnings)
-            #             if hasattr(widget, "textChanged")
-            #             else widget.stateChanged.connect(self._recompute_warnings)
-            #         )
-            #     elif isinstance(widget, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)):
-            #         widget.valueChanged.connect(self._recompute_warnings)
-            #     elif isinstance(widget, QtGui.QComboBox):
-            #         widget.currentIndexChanged.connect(self._recompute_warnings)
-
-            #     form.addRow(label_text, widget)
-            #     self._post_config_widgets[name] = (widget, entry)
+            if widget is not None:
+                # No change signals are connected here.  _recompute_warnings()
+                # runs a full CAMSanity.validate_job(), which is far too costly
+                # to fire per keystroke, and the Overview tab's widgets are
+                # likewise unconnected.  Values are read on demand by
+                # _collect_post_param_values() via each widget's value_getter.
+                form.addRow(label_text, widget)
+                self._post_config_widgets[name] = (widget, entry)
 
         scroll_layout.insertWidget(insert_idx, group)
         self._dynamic_output_groups.append(group)
@@ -436,16 +446,18 @@ class PostProcessDialog:
 
         # Get the property schema
         try:
-            schema = post_class.get_property_schema()
+            schema = post_class.get_full_property_schema()
         except Exception as e:
             Path.Log.warning(f"Could not get property schema: {e}")
             placeholder.setVisible(True)
             return
 
-        # Only runtime parameters are shown on the Overview tab
-        runtime_schema = [e for e in schema if e.get("runtime", False)] if schema else []
+        # Only "run"-scoped parameters are shown on the Overview tab
+        from Path.Post.Processor import SCOPE_RUN, properties_in_scope
 
-        if not runtime_schema:
+        run_scoped = properties_in_scope(schema, SCOPE_RUN)
+
+        if not run_scoped:
             placeholder.setVisible(True)
             return
 
@@ -454,7 +466,7 @@ class PostProcessDialog:
         # Get current machine postprocessor_properties for initial values
         pp_props = getattr(machine, "postprocessor_properties", {}) or {}
 
-        for entry in runtime_schema:
+        for entry in run_scoped:
 
             name = entry.get("name", "")
             param_type = entry.get("type", "string")
@@ -522,17 +534,17 @@ class PostProcessDialog:
                 self._post_param_widgets[name] = (widget, entry)
 
     def _collect_post_param_values(self):
-        """Read current values from all post-parameter widgets (runtime + non-runtime).
+        """Read current values from all post-parameter widgets ("job" + "run" scoped).
 
         Returns:
             dict: {param_name: value} for all post-processor parameters.
         """
         values = {}
-        # Non-runtime config from Options tab
+        # "job"-scoped config from Options tab
         for name, (widget, _schema) in self._post_config_widgets.items():
             if hasattr(widget, "value_getter"):
                 values[name] = widget.value_getter()
-        # Runtime params from Overview tab (override if same key exists)
+        # "run"-scoped params from Overview tab (override if same key exists)
         for name, (widget, _schema) in self._post_param_widgets.items():
             if hasattr(widget, "value_getter"):
                 values[name] = widget.value_getter()

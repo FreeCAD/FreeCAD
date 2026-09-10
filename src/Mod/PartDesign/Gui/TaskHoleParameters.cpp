@@ -69,6 +69,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupOperation(ui->labelOperation, ui->comboOperation);
     QMetaObject::connectSlotsByName(this);
 
     ui->ThreadType->addItem(tr("None"), QByteArray("None"));
@@ -919,7 +920,10 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         widget->setDisabled(ro);
     };
 
-    if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
+    if (&Prop == &hole->Operation) {
+        updateComboBox(ui->comboOperation, hole->Operation.getValue());
+    }
+    else if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
         updateHoleTypeCombo();
     }
     else if (&Prop == &hole->ModelThread) {
@@ -1123,29 +1127,7 @@ void TaskHoleParameters::updateStartUI()
 void TaskHoleParameters::updateStartReferenceName()
 {
     auto hole = getObject<PartDesign::Hole>();
-    App::DocumentObject* reference = hole->StartReference.getValue();
-    const auto subValues = hole->StartReference.getSubValues();
-    const std::string subName = subValues.empty() ? "" : subValues.front();
-
-    if (!reference) {
-        ui->lineStartReference->clear();
-        ui->lineStartReference->setProperty("FeatureName", QVariant());
-        ui->lineStartReference->setProperty("FaceName", QVariant());
-        ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
-        return;
-    }
-
-    QString text = QString::fromUtf8(reference->Label.getValue());
-    if (subName.rfind("Face", 0) == 0) {
-        text += QStringLiteral(":%1%2").arg(tr("Face"), QString::fromStdString(subName.substr(4)));
-    }
-    else if (!subName.empty()) {
-        text += QStringLiteral(":%1").arg(QString::fromStdString(subName));
-    }
-
-    ui->lineStartReference->setText(text);
-    ui->lineStartReference->setProperty("FeatureName", QByteArray(reference->getNameInDocument()));
-    ui->lineStartReference->setProperty("FaceName", QByteArray(subName.c_str()));
+    updateReferenceName(ui->lineStartReference, hole->StartReference, tr("No start reference selected"));
 }
 
 QString TaskHoleParameters::getStartReference() const
@@ -1312,6 +1294,7 @@ int TaskHoleParameters::getBaseProfileType() const
 }
 void TaskHoleParameters::apply()
 {
+    TaskSketchBasedParameters::apply();
     auto hole = getObject<PartDesign::Hole>();
 
     ui->Diameter->apply();

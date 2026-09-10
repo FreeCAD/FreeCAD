@@ -1658,6 +1658,14 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
         cells.setAlias(address, alias);
     }
     else {
+        switch (classifyReservedAliasName(alias)) {
+            case ReservedAliasToken::Unit:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved unit token");
+            case ReservedAliasToken::Constant:
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved constant token");
+            case ReservedAliasToken::None:
+                break;
+        }
         throw Base::ValueError("Invalid alias");
     }
 }
@@ -1677,6 +1685,17 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
         return cell->getAddress().toString();
     }
     return {};
+}
+
+Sheet::ReservedAliasToken Sheet::classifyReservedAliasName(const std::string& candidate)
+{
+    if (ExpressionParser::isTokenAUnit(candidate)) {
+        return ReservedAliasToken::Unit;
+    }
+    if (ExpressionParser::isTokenAConstant(candidate)) {
+        return ReservedAliasToken::Constant;
+    }
+    return ReservedAliasToken::None;
 }
 
 /**

@@ -30,6 +30,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.SetupSheet as PathSetupSheetGui
+import Path.Base.Gui.Theme as PathGuiTheme
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
 import Path.Main.Gui.JobCmd as PathJobCmd
@@ -678,7 +679,7 @@ class StockCreateCylinderEdit(StockEdit):
 
     def getFields(self, obj, fields=None):
         if fields is None:
-            fields = ["radius", "height"]
+            fields = ("axis", "radius", "height")
         try:
             if self.IsStock(obj):
                 if "radius" in fields:
@@ -689,6 +690,8 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(
                         self.form.stockCylinderHeight.property("rawValue"), FreeCAD.Units.Length
                     )
+                if "axis" in fields and hasattr(self.form, "stockCylinderAxis"):
+                    obj.Stock.Axis = str(self.form.stockCylinderAxis.currentData())
             else:
                 Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
         except Exception:
@@ -696,15 +699,38 @@ class StockCreateCylinderEdit(StockEdit):
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
-            self.setStock(obj, PathStock.CreateCylinder(obj))
+            self.setStock(obj, PathStock.CreateCylinder(obj, axis=self.axis))
             self.force = False
         self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
         self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.selectComboBoxText(self.form.stockCylinderAxis, obj.Stock.Axis)
 
     def setupUi(self, obj):
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.axis = self.form.stockCylinderAxis.currentData()
+            self.populateCombobox(self.form.stockCylinderAxis, ("X", "Y", "Z"))
+        else:
+            self.axis = "Z"
         self.setFields(obj)
         self.form.stockCylinderRadius.textChanged.connect(lambda: self.getFields(obj, ["radius"]))
         self.form.stockCylinderHeight.textChanged.connect(lambda: self.getFields(obj, ["height"]))
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.form.stockCylinderAxis.currentIndexChanged.connect(
+                lambda: self.getFields(obj, ["axis"])
+            )
+
+    def populateCombobox(self, widget, enumTups):
+        widget.clear()
+        for name in enumTups:
+            widget.addItem(name, name)
+
+    def selectComboBoxText(self, widget, text):
+        newindex = widget.findData(text)
+        if newindex >= 0:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(newindex)
+            widget.blockSignals(False)
 
 
 class StockFromExistingEdit(StockEdit):
@@ -780,6 +806,15 @@ class StockFromExistingEdit(StockEdit):
             self.form.stockExisting.addItem(solid.Label, solid)
             if stockBaseName == solid.Name:
                 index = i
+
+        if self.force and self.IsStock(obj) and obj.Model.Group:  # set placement while refresh
+            for model in obj.Model.Group:
+                objects = getattr(model, "Objects", None)
+                if objects and objects[0] == obj.Stock.Objects[0]:
+                    obj.Stock.Placement = model.Placement
+                    break
+            else:
+                obj.Stock.Placement = obj.Model.Group[0].Placement
 
         self.form.stockExisting.setCurrentIndex(index)
         self.form.stockExisting.blockSignals(False)
@@ -1917,10 +1952,7 @@ class TaskPanel:
         current theme (white on dark, black on light).  The XYZ axis buttons always
         keep their fixed Red / Green / Blue stroke colors."""
 
-        theme = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
-            "Theme", ""
-        )
-        is_dark = "dark" in theme.lower() if theme else False
+        is_dark = PathGuiTheme.is_dark_theme()
 
         def _adaptive_icon(resource_path, size=16):
             """Load a monochrome SVG icon (#111111 stroke/fill) and invert to white

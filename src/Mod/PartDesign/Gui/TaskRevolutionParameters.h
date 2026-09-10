@@ -44,6 +44,7 @@ namespace Gui
 {
 class QuantitySpinBox;
 class RadialGizmo;
+class RotationGizmo;
 class Gizmo;
 class ViewProvider;
 class ViewProviderCoordinateSystem;
@@ -88,6 +89,9 @@ private Q_SLOTS:
     void onAngle2Changed(double);
     void onAxisChanged(int);
     void onReversed(bool);
+    void onStartModeChanged(int);
+    void onStartOffsetChanged(double);
+    void onSelectStartReferenceToggle(bool);
     void onModeChangedSide1(int);
     void onModeChangedSide2(int);
     void onSidesModeChanged(int);
@@ -114,6 +118,21 @@ protected:
     {
         First,
         Second,
+    };
+
+    enum class StartMode
+    {
+        ProfilePlane,
+        Offset,
+        Reference,
+    };
+
+    enum class SelectionMode
+    {
+        None,
+        Face,
+        StartReference,
+        Axis,
     };
 
     enum class Mode
@@ -163,6 +182,8 @@ private:
     void connectSignals();
     void updateUI(Side side);
     void updateWholeUI(Side side);
+    void updateStartUI();
+    void updateStartReferenceName();
     void updateSideUI(const SideController& side, Mode mode, bool isParentVisible, bool setFocus);
     void translateModeList(QComboBox* box, int index);
     void translateSidesList(int index);
@@ -174,13 +195,14 @@ private:
     void onModeChanged(int index, Side side);
     void onButtonFace(bool pressed, Side side);
     void onFaceName(const QString& text, Side side);
+    void setSelectionMode(SelectionMode mode, Side side = Side::First);
     Gui::ViewProviderCoordinateSystem* getOriginView() const;
 
 private:
     std::unique_ptr<Ui_TaskRevolutionParameters> ui;
     QWidget* proxy;
-    bool selectionFace;
     bool isGroove;
+    SelectionMode selectionMode;
     Side activeSelectionSide;
     double defaultGizmoMultFactor;
 
@@ -197,6 +219,7 @@ private:
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::RadialGizmo* rotationGizmo = nullptr;
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
+    Gui::RotationGizmo* startOffsetGizmo = nullptr;
     void setupGizmos(ViewProvider* vp);
     void setGizmoPositions();
 };

@@ -213,8 +213,12 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    CircularPatternExtension.cpp
+    CircularPatternExtension.h
     LinearPatternExtension.cpp
     LinearPatternExtension.h
+    LinkArray.cpp
+    LinkArray.h
     PolarPatternExtension.cpp
     PolarPatternExtension.h
     OCCTMessagePrinter.cpp
@@ -645,11 +649,9 @@ if (MSVC)
     target_compile_options(Part PRIVATE /wd4251 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Part)
-endif()
+target_compile_warn_error(Part)
 
-SET_BIN_DIR(Part Part /Mod/Part)
+SET_BIN_DIR(Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)
 
 INSTALL(TARGETS Part DESTINATION ${CMAKE_INSTALL_LIBDIR})

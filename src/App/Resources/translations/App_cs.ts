@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="607"/>
+      <location filename="../../Application.cpp" line="609"/>
       <source>Unnamed</source>
       <translation>Nepojmenovaný</translation>
     </message>
@@ -51,32 +51,32 @@ Poté by měl uživatel kliknout na tlačítko "Přepočítat" na hlavním panel
     <message>
       <location filename="../../Datums.cpp" line="267"/>
       <source>X-axis</source>
-      <translation>osa X</translation>
+      <translation>Osa X</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="268"/>
       <source>Y-axis</source>
-      <translation>osa Y</translation>
+      <translation>Osa Y</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="269"/>
       <source>Z-axis</source>
-      <translation>osa Z</translation>
+      <translation>Osa Z</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="270"/>
       <source>XY-plane</source>
-      <translation>rovina XY</translation>
+      <translation>Rovina XY</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>XZ-plane</source>
-      <translation>rovina XZ</translation>
+      <translation>Rovina XZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="272"/>
       <source>YZ-plane</source>
-      <translation>rovina YZ</translation>
+      <translation>Rovina YZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="273"/>

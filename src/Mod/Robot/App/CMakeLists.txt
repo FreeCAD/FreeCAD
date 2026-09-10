@@ -129,9 +129,7 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 target_sources(Robot PRIVATE ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Robot)
-endif()
+target_compile_warn_error(Robot)
 
 unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
@@ -143,7 +141,7 @@ if(MINGW)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
 endif()
 
-SET_BIN_DIR(Robot Robot /Mod/Robot)
+SET_BIN_DIR(Robot)
 SET_PYTHON_PREFIX_SUFFIX(Robot)
 
 INSTALL(TARGETS Robot DESTINATION ${CMAKE_INSTALL_LIBDIR})

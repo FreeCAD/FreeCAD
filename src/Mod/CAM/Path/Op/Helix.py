@@ -328,7 +328,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
         obj.setPropertyStatus("Direction", ("ReadOnly", "Output"))
 
-        obj.setEditorMode("RotationAngle", 2)  # hide
         obj.setEditorMode("FinishHelixCircle", 2)  # hide
         obj.setEditorMode("FinishSpiralCircle", 2)  # hide
         obj.setEditorMode("OverrideArcFeedRate", 2)  # hide
@@ -581,7 +580,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
     # Automatic calculation angle of direction
     def getDirAngle(self, obj, holes, i):
         p1 = FreeCAD.Vector(holes[i]["x"], holes[i]["y"], 0)
-        p2 = FreeCAD.Vector()  # by default orient to (0,0)
+        p2 = Path.Geom.xy(obj.StartPoint)
 
         if obj.StartAt == "Inside":
             if i < len(holes) - 1:
@@ -590,7 +589,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             elif len(holes) > 1:
                 # orient last hole to previous hole
                 p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)
-        else:
+        else:  # Outside
             if i:
                 # orient each hole (except first) to previous hole
                 p2 = FreeCAD.Vector(holes[i - 1]["x"], holes[i - 1]["y"], 0)

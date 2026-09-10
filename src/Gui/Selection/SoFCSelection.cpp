@@ -423,7 +423,7 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
             }
         }
     }  // key press events
-    else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
+    else if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
         auto const e = static_cast<const SoKeyboardEvent*>(event);
         if (SoKeyboardEvent::isKeyPressEvent(e, SoKeyboardEvent::LEFT_SHIFT)
             || SoKeyboardEvent::isKeyPressEvent(e, SoKeyboardEvent::RIGHT_SHIFT)) {

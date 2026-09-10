@@ -195,7 +195,8 @@ public:
         {
             None,
             Icon,
-            DatumLabel
+            DatumPresentation,
+            DatumAnnotation
         };
 
         enum SpecialValues
@@ -319,6 +320,9 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
+    /// Use an outline origin marker while a drawing tool is active.
+    void setOriginPointMarker(bool hollow);
+
     // Updates the Axes extension to span the specified area.
     void updateAxesLength(const Base::BoundBox2d& bb);
 
@@ -406,6 +410,8 @@ private:
     // Coin Helpers
     std::unique_ptr<EditModeConstraintCoinManager> pEditModeConstraintCoinManager;
     std::unique_ptr<EditModeGeometryCoinManager> pEditModeGeometryCoinManager;
+
+    bool originPointMarkerHollow = false;
 };
 
 

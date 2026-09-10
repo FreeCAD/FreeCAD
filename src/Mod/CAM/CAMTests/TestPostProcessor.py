@@ -31,7 +31,18 @@ import FreeCAD
 import Path
 import Path.Preferences
 import Path.Main.Job as PathJob
-from Path.Post.Processor import PostProcessor, PostProcessorFactory, _HeaderBuilder
+from Path.Post.Processor import (
+    PostProcessor,
+    PostProcessorFactory,
+    SCOPE_INTERNAL,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    SCOPE_RUN,
+    VALID_SCOPES,
+    _HeaderBuilder,
+    properties_in_scope,
+    property_scope,
+)
 import Path.Post.Command as PathCommand
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.PostList import Postable
@@ -508,6 +519,91 @@ class TestPostProcessorClassification(unittest.TestCase):
         # Default implementation should return empty list
         squawks = processor.get_sanity_checks(mock_job)
         self.assertEqual(squawks, [])
+
+
+class TestPropertyScope(unittest.TestCase):
+    """Tests for property_scope() and properties_in_scope().
+
+    Scope decides which UI surface may edit a postprocessor property:
+    the machine editor ("machine", "job"), the post-processing dialog
+    ("job" on Options, "run" on Overview), or neither ("internal").
+    """
+
+    def test00_explicit_scope_is_returned(self):
+        """An entry declaring a valid scope gets that scope back."""
+        for scope in VALID_SCOPES:
+            with self.subTest(scope=scope):
+                self.assertEqual(property_scope({"name": "p", "scope": scope}), scope)
+
+    def test01_missing_scope_defaults_to_job(self):
+        """An entry declaring no scope is editable in both surfaces.
+
+        This preserves the historical behaviour of postprocessor-specific
+        properties written before the scope key existed.
+        """
+        self.assertEqual(property_scope({"name": "p"}), SCOPE_JOB)
+
+    def test02_runtime_true_is_an_alias_for_run(self):
+        """The deprecated "runtime": True spelling still means "run" scope.
+
+        Out-of-tree postprocessors written against the older API must keep
+        working without modification.
+        """
+        self.assertEqual(property_scope({"name": "p", "runtime": True}), SCOPE_RUN)
+
+    def test03_runtime_false_defaults_to_job(self):
+        """An explicit "runtime": False is not a scope declaration."""
+        self.assertEqual(property_scope({"name": "p", "runtime": False}), SCOPE_JOB)
+
+    def test04_explicit_scope_beats_runtime_alias(self):
+        """When both keys are present, "scope" wins over the deprecated alias."""
+        prop = {"name": "p", "scope": SCOPE_MACHINE, "runtime": True}
+        self.assertEqual(property_scope(prop), SCOPE_MACHINE)
+
+    def test05_unknown_scope_degrades_to_job(self):
+        """A typo must leave the property visible rather than silently hidden."""
+        self.assertEqual(property_scope({"name": "p", "scope": "mahcine"}), SCOPE_JOB)
+
+    def test06_properties_in_scope_filters_and_preserves_order(self):
+        """Filtering keeps schema order and accepts several scopes at once."""
+        schema = [
+            {"name": "a", "scope": SCOPE_MACHINE},
+            {"name": "b", "scope": SCOPE_RUN},
+            {"name": "c", "scope": SCOPE_JOB},
+            {"name": "d", "scope": SCOPE_INTERNAL},
+            {"name": "e"},  # defaults to job
+        ]
+
+        editor = [p["name"] for p in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB)]
+        self.assertEqual(editor, ["a", "c", "e"])
+
+        overview = [p["name"] for p in properties_in_scope(schema, SCOPE_RUN)]
+        self.assertEqual(overview, ["b"])
+
+        self.assertEqual(properties_in_scope(schema, SCOPE_INTERNAL)[0]["name"], "d")
+
+    def test07_properties_in_scope_handles_empty_schema(self):
+        """None and [] are both acceptable schemas."""
+        self.assertEqual(properties_in_scope(None, SCOPE_JOB), [])
+        self.assertEqual(properties_in_scope([], SCOPE_JOB), [])
+
+    def test08_every_common_property_declares_a_scope(self):
+        """The common schema must not rely on the default scope.
+
+        Common properties are machine configuration by default; leaving the
+        key off would silently promote them to "job" and expose them on the
+        post-processing dialog.
+        """
+        for prop in PostProcessor.get_common_property_schema():
+            with self.subTest(prop=prop["name"]):
+                self.assertIn("scope", prop)
+                self.assertIn(prop["scope"], VALID_SCOPES)
+
+    def test09_scopes_partition_the_full_schema(self):
+        """The four scopes are exhaustive and mutually exclusive."""
+        schema = PostProcessor.get_full_property_schema()
+        buckets = [properties_in_scope(schema, scope) for scope in VALID_SCOPES]
+        self.assertEqual(sum(len(b) for b in buckets), len(schema))
 
 
 class TestConfigurationBundle(unittest.TestCase):

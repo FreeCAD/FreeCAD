@@ -3091,9 +3091,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
-      <location filename="../../draftguitools/gui_move.py" line="218"/>
-      <location filename="../../draftguitools/gui_scale.py" line="226"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <location filename="../../draftguitools/gui_move.py" line="221"/>
+      <location filename="../../draftguitools/gui_scale.py" line="229"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="292"/>
       <source>Copy</source>
       <translation>ກັອບປີ້</translation>
     </message>
@@ -3440,7 +3440,7 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1031"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="291"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="294"/>
       <source>Rotate</source>
       <translation>ໝູນ</translation>
     </message>
@@ -3646,7 +3646,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_layer.py" line="56"/>
       <location filename="../../draftmake/make_layer.py" line="146"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
-      <location filename="../../draftutils/utils.py" line="1141"/>
+      <location filename="../../draftutils/utils.py" line="1143"/>
       <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/groups.py" line="101"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
@@ -3736,17 +3736,17 @@ or try saving to a lower DWG version.</source>
       <translation>ວັດຖຸມີການຈັດວາງທີ່ແຕກຕ່າງກັນ. ໄລຍະຫ່າງລະຫວ່າງສອງຈຸດພື້ນຖານ:</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="967"/>
+      <location filename="../../draftutils/utils.py" line="969"/>
       <source>%s cannot be modified because its placement is readonly</source>
       <translation>%s ບໍ່ສາມາດແກ້ໄຂໄດ້ ເພາະວ່າການຈັດວາງຂອງມັນແມ່ນສຳລັບອ່ານຢ່າງດຽວ</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1182"/>
+      <location filename="../../draftutils/utils.py" line="1184"/>
       <source>This function will be deprecated in {}. Please use '{}'.</source>
       <translation>ຟັງຊັນນີ້ຈະຖືກຍົກເລີກໃນ {}. ກະລຸນາໃຊ້ '{}' ແທນ.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1188"/>
+      <location filename="../../draftutils/utils.py" line="1190"/>
       <source>This function will be deprecated. Please use '{}'.</source>
       <translation>ຟັງຊັນນີ້ຈະຖືກຍົກເລີກ. ກະລຸນາໃຊ້ '{}' ແທນ.</translation>
     </message>
@@ -3761,12 +3761,12 @@ or try saving to a lower DWG version.</source>
       <translation>ບໍ່ມີຢູ່ໃນວັດຖຸໃດໜຶ່ງ</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="958"/>
+      <location filename="../../draftutils/utils.py" line="960"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
       <translation>%s ໃຊ້ພື້ນຖານຮ່ວມກັບວັດຖຸອື່ນອີກ %d ອັນ. ກະລຸນາກວດສອບວ່າທ່ານຕ້ອງການແກ້ໄຂສິ່ງນີ້ຫຼືບໍ່.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/utils.py" line="1104"/>
+      <location filename="../../draftutils/utils.py" line="1106"/>
       <source>Wrong input: unknown document {}</source>
       <translation>ຂໍ້ມູນທີ່ປ້ອນເຂົ້າຜິດ: ບໍ່ຮູ້ຈັກເອກະສານ {}</translation>
     </message>
@@ -3931,7 +3931,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="171"/>
-      <location filename="../../draftguitools/gui_move.py" line="241"/>
+      <location filename="../../draftguitools/gui_move.py" line="244"/>
       <source>Pick end point</source>
       <translation>ເລືອກຈຸດສຸດທ້າຍ</translation>
     </message>
@@ -3943,17 +3943,17 @@ or try saving to a lower DWG version.</source>
       <translation>ບໍ່ມີອົງປະກອບຍ່ອຍທີ່ຖືກຕ້ອງຖືກເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="220"/>
+      <location filename="../../draftguitools/gui_move.py" line="223"/>
       <source>Move</source>
       <translation>ຍ້າຍ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="252"/>
+      <location filename="../../draftguitools/gui_move.py" line="255"/>
       <source>%1 pick start point</source>
       <translation>%1 ເລືອກຈຸດເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="256"/>
+      <location filename="../../draftguitools/gui_move.py" line="259"/>
       <source>%1 pick end point</source>
       <translation>%1 ເລືອກຈຸດສຸດທ້າຍ</translation>
     </message>
@@ -4321,53 +4321,53 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="193"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="314"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
       <source>Base angle</source>
       <translation>ມຸມພື້ນຖານ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="196"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="317"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
       <source>The base angle to start the rotation from</source>
       <translation>ມຸມພື້ນຖານເພື່ອເລີ່ມຕົ້ນການໝຸນ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="215"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="336"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="339"/>
       <source>The amount of rotation to perform.
 The final angle will be the base angle plus this amount.</source>
       <translation>ຈຳນວນການໝຸນທີ່ຈະປະຕິບັດ. ມຸມສຸດທ້າຍຈະແມ່ນມຸມພື້ນຖານບວກກັບຈຳນວນນີ້.</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="354"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="357"/>
       <source>%1 pick rotation center</source>
       <translation>%1 ເລືອກຈຸດໃຈກາງການໝຸນ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="356"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="359"/>
       <source>%1 pick base angle</source>
       <translation>%1 ເລືອກມຸມພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="358"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="361"/>
       <source>%1 pick rotation angle</source>
       <translation>%1 ເລືອກມຸມການໝຸນ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="201"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="320"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="323"/>
       <source>Pick base angle</source>
       <translation>ເລືອກມຸມພື້ນຖານ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="209"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="330"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="333"/>
       <source>Rotation</source>
       <translation>ການໝູນ</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="221"/>
-      <location filename="../../draftguitools/gui_rotate.py" line="344"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="347"/>
       <source>Pick rotation angle</source>
       <translation>ເລືອກມຸມການໝຸນ</translation>
     </message>
@@ -4794,37 +4794,37 @@ The final angle will be the base angle plus this amount.</source>
       <translation>ເລືອກຈຸດພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="167"/>
+      <location filename="../../draftguitools/gui_scale.py" line="170"/>
       <source>Pick reference distance from base point</source>
       <translation>ເລືອກໄລຍະອ້າງອີງຈາກຈຸດພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="215"/>
+      <location filename="../../draftguitools/gui_scale.py" line="218"/>
       <source>Zero scale factor not allowed</source>
       <translation>ບໍ່ອະນຸຍາດໃຫ້ໃຊ້ຄ່າຕົວຄູນຂະໜາດເປັນສູນ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="228"/>
+      <location filename="../../draftguitools/gui_scale.py" line="231"/>
       <source>Scale</source>
       <translation>ອັດຕາສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="268"/>
+      <location filename="../../draftguitools/gui_scale.py" line="271"/>
       <source>Pick new distance from base point</source>
       <translation>ເລືອກໄລຍະໃໝ່ຈາກຈຸດພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="293"/>
+      <location filename="../../draftguitools/gui_scale.py" line="296"/>
       <source>%1 pick base point</source>
       <translation>%1 ເລືອກຈຸດພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="295"/>
+      <location filename="../../draftguitools/gui_scale.py" line="298"/>
       <source>%1 pick reference distance</source>
       <translation>%1 ເລືອກໄລຍະອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="297"/>
+      <location filename="../../draftguitools/gui_scale.py" line="300"/>
       <source>%1 pick new distance</source>
       <translation>%1 ເລືອກໄລຍະໃໝ່</translation>
     </message>
@@ -6132,7 +6132,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>ຈຸດຄືກັນກັບຈຸດກ່ອນໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="97"/>
       <source>Save Camera View</source>
       <translation>ບັນທຶກມຸມມອງກ້ອງ</translation>
     </message>
@@ -6313,12 +6313,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>_BSpline.createGeometry: ປິດດ້ວຍຈຸດເລີ່ມຕົ້ນ/ສຸດທ້າຍດຽວກັນ. ເລຂາຄະນິດບໍ່ໄດ້ຖືກອັບເດດ.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="111"/>
       <source>Writing camera position</source>
       <translation>ກຳລັງບັນທຶກຕຳແໜ່ງກ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="129"/>
       <source>Writing objects shown/hidden state</source>
       <translation>ກຳລັງບັນທຶກສະຖານະ ສະແດງ/ເຊື່ອງ ຂອງວັດຖຸ</translation>
     </message>

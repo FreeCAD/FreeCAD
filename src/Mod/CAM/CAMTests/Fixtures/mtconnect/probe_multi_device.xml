@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hand-written fixture: an agent hosting two machine devices plus its own
+     Agent self-description, to exercise device listing and selection. -->
+<MTConnectDevices xmlns="urn:mtconnect.org:MTConnectDevices:1.7">
+  <Header creationTime="2026-08-19T00:00:00Z" sender="shop-agent" instanceId="1" version="1.7" assetCount="0" bufferSize="131072"/>
+  <Devices>
+    <Agent id="agent1" name="shop_agent" uuid="shop_agent" mtconnectVersion="1.7">
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="agent_avail"/>
+      </DataItems>
+    </Agent>
+    <Device id="d1" name="mill-1" uuid="mill-1-uuid">
+      <Description manufacturer="Example Machine Works"/>
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="m1_avail"/>
+      </DataItems>
+      <Components>
+        <Axes id="m1_ax" name="base">
+          <Components>
+            <Linear id="m1_x" name="X">
+              <Configuration>
+                <Specifications>
+                  <Specification id="m1_x_travel" type="POSITION" units="MILLIMETER" name="X travel">
+                    <Maximum>500</Maximum>
+                    <Minimum>0</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="m1_xp" subType="ACTUAL" units="MILLIMETER"/>
+              </DataItems>
+            </Linear>
+          </Components>
+        </Axes>
+      </Components>
+    </Device>
+    <Device id="d2" name="mill-2" uuid="mill-2-uuid">
+      <Description manufacturer="Example Machine Works"/>
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="m2_avail"/>
+      </DataItems>
+      <Components>
+        <Axes id="m2_ax" name="base">
+          <Components>
+            <Linear id="m2_x" name="X">
+              <Configuration>
+                <Specifications>
+                  <Specification id="m2_x_travel" type="POSITION" units="MILLIMETER" name="X travel">
+                    <Maximum>800</Maximum>
+                    <Minimum>0</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="m2_xp" subType="ACTUAL" units="MILLIMETER"/>
+              </DataItems>
+            </Linear>
+          </Components>
+        </Axes>
+      </Components>
+    </Device>
+  </Devices>
+</MTConnectDevices>
