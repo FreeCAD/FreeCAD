@@ -34,8 +34,7 @@ translate = FreeCAD.Qt.translate
 class BIM_Slab:
 
     def __init__(self):
-        self.callback = None
-        self.view = None
+        self.observing = False
 
     def GetResources(self):
         return {
@@ -50,9 +49,7 @@ class BIM_Slab:
         return v
 
     def Activated(self):
-        import DraftTools
-
-        self.removeCallback()
+        self.removeObserver()
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             self.proceed()
@@ -66,17 +63,24 @@ class BIM_Slab:
                     FreeCADGui.UserInput.MouseLeft,
                 )
             )
-            self.view = FreeCADGui.ActiveDocument.ActiveView
-            self.callback = self.view.addEventCallback("SoEvent", DraftTools.selectObject)
+            FreeCADGui.Selection.addObserver(self)
+            self.observing = True
 
-    def proceed(self):
-        self.removeCallback()
-        sel = FreeCADGui.Selection.getSelection()
-        if len(sel) == 1:
+    def addSelection(self, document, obj_name, _sub_name, _position):
+        obj = FreeCAD.getDocument(document).getObject(obj_name)
+        if obj:
+            self.proceed(obj)
+
+    def proceed(self, obj=None):
+        self.removeObserver()
+        if obj is None:
+            sel = FreeCADGui.Selection.getSelection()
+            obj = sel[0] if len(sel) == 1 else None
+        if obj:
             FreeCADGui.addModule("Arch")
             FreeCAD.ActiveDocument.openTransaction("Create Slab")
             FreeCADGui.doCommand(
-                "s = Arch.makeStructure(FreeCAD.ActiveDocument." + sel[0].Name + ",height=200)"
+                "s = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ",height=200)"
             )
             FreeCADGui.doCommand("s.Label = " + repr(translate("BIM", "Slab")))
             FreeCADGui.doCommand('s.IfcType = "Slab"')
@@ -85,16 +89,13 @@ class BIM_Slab:
             FreeCAD.ActiveDocument.recompute()
         self.finish()
 
-    def removeCallback(self):
-        if self.callback:
-            try:
-                self.view.removeEventCallback("SoEvent", self.callback)
-            except RuntimeError:
-                pass
-            self.callback = None
+    def removeObserver(self):
+        if self.observing:
+            FreeCADGui.Selection.removeObserver(self)
+            self.observing = False
 
     def finish(self):
-        self.removeCallback()
+        self.removeObserver()
         FreeCADGui.HintManager.hide()
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.offUi()

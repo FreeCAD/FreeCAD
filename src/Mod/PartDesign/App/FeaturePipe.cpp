@@ -527,7 +527,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         if (base.isNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (getAddSubType() == FeatureAddSub::Type::Subtractive) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from")
                 );
@@ -548,41 +548,21 @@ App::DocumentObjectExecReturn* Pipe::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        std::string maker;
-        Part::TopoShape boolOp = Part::TopoShape(base.Tag, getDocument()->getStringHasher());
+        Part::TopoShape boolOp(0, getDocument()->getStringHasher());
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
-            maker = Part::OpCodes::Fuse;
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-            maker = Part::OpCodes::Cut;
-        }
+        result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
+        //                        from the post-boolean pipe
+        //                        setting result to the negative tag is a bit confusing,
+        //                        because you would expect this to be set to the feature's shape,
+        //                        but boolOp is the topoShape that is actually being copied
 
-        if (!maker.empty()) {
-            result.Tag = -getID();  // invert tag to differentiate the pre-boolean pipe
-            //                        from the post-boolean pipe
-            //                        setting result to the negative tag is a bit confusing,
-            //                        because you would expect this to be set to the feature's shape,
-            //                        but boolOp is the topoShape that is actually being copied
+        boolOp.makeElementBoolean(getBooleanMaker(), {base, result}, nullptr, FuzzyTolerance.getValue());
 
-            boolOp.makeElementBoolean(maker.c_str(), {base, result}, nullptr, FuzzyTolerance.getValue());
-
-            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                    "Exception",
-                    "Result has multiple solids: enable 'Allow Compound' in the active body."
-                ));
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Pipe: Invalid Boolean Type")
-            );
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Result has multiple solids: enable 'Allow Compound' in the active body."
+            ));
         }
 
         TopoShape solid = getSolid(boolOp);
@@ -594,16 +574,16 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         // store shape before refinement
-        this->rawShape = boolOp;
-        boolOp = refineShapeIfActive(boolOp);
-        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+        this->rawShape = solid;
+        solid = refineShapeIfActive(solid);
+        if (!isSingleSolidRuleSatisfied(solid.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                 "Exception",
                 "Result has multiple solids: enable 'Allow Compound' in the active body."
             ));
         }
-        boolOp = getSolid(boolOp);
-        Shape.setValue(boolOp);
+
+        Shape.setValue(solid);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -768,13 +748,13 @@ void Pipe::buildPipePath(
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe()
 {
-    addSubType = Additive;
+    defineAdditive();
 }
 
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe()
 {
-    addSubType = Subtractive;
+    defineSubtractive();
 }
 
 void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)

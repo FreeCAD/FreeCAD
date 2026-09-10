@@ -434,6 +434,19 @@ class PostProcessor:
                 ),
             },
             {
+                "name": "ignored_commands",
+                "scope": SCOPE_MACHINE,
+                "type": "text",
+                "label": translate("CAM", "Ignore G-code Commands"),
+                "default": "",
+                "help": translate(
+                    "CAM",
+                    "List of G-code commands, "
+                    "tolerated but ignored by this post-processor (one per line). "
+                    "Commands in this list will be filtered out.",
+                ),
+            },
+            {
                 "name": "drill_cycles_to_translate",
                 "scope": SCOPE_MACHINE,
                 "type": "text",
@@ -603,17 +616,6 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "Unchecked to suppress tool-change (M6)",
-                ),
-            },
-            {
-                "name": "output_units",
-                "scope": SCOPE_MACHINE,
-                "type": "str",
-                "label": translate("CAM", "Unit-command in output"),
-                "default": OutputUnits.METRIC,
-                "help": translate(
-                    "CAM",
-                    "Unit-command in output",
                 ),
             },
             {
@@ -1566,6 +1568,14 @@ class PostProcessor:
                             item.path = Path.Path(filtered_commands)
             return postables
 
+    def _expand_tool_length_offset_post_command(self, item, command):
+        """override in a PP if your TLO is different.
+        return a list of Path.Commands
+        """
+        tool_num = command.Parameters["T"]
+        Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
+        return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
+
     def _expand_tool_length_offset(self, postables):
         """Inject or remove G43 tool length offset commands.
 
@@ -1591,9 +1601,7 @@ class PostProcessor:
             # add
             else:
                 if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
-                    tool_num = cmd.Parameters["T"]
-                    Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
-                    return 1, [Path.Command("G43", {"H": tool_num}, {"tool_length_offset": True})]
+                    return 1, self._expand_tool_length_offset_post_command(item, cmd)
                 else:
                     return None, None
 
@@ -2094,16 +2102,16 @@ class PostProcessor:
 
             else:
 
-                # Modal GCode
-                if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
-                    next_previous, new_command = modal_gcode(cmd, section_state["previous"])
-                else:
-                    new_command = cmd
-                    next_previous = cmd
+                # Modal Axis always runs on the original command, so "previous"
+                # accumulates the axis state under the command's real name.
+                # Deriving it from a name-stripped command instead makes every
+                # other duplicate compare unequal and re-emit its gcode word.
+                next_previous, axis_command = modal_axis(cmd, section_state["previous"])
+                new_command = axis_command if not self.values["OUTPUT_DOUBLES"] else cmd
 
-                # Modal Axis
-                if not self.values["OUTPUT_DOUBLES"]:
-                    next_previous, new_command = modal_axis(new_command, section_state["previous"])
+                # Modal GCode
+                if not self.values["OUTPUT_DUPLICATE_COMMANDS"] and new_command is not None:
+                    _, new_command = modal_gcode(new_command, section_state["previous"])
 
                 section_state["previous"] = next_previous
 
@@ -2590,6 +2598,11 @@ class PostProcessor:
         if "as-is" in command.Annotations:
             return command.Annotations[Constants.ANNOT_AS_IS]
 
+        # "ignored" commands need not be in "SUPPORTED_COMMANDS"
+        if command.Name != "" and command.Name in self.values["IGNORED_COMMANDS"]:
+            Path.Log.debug(f"ignored {command}")
+            return None
+
         # Validate command is supported
         supported = self.values.get(
             "SUPPORTED_COMMANDS",
@@ -2601,8 +2614,20 @@ class PostProcessor:
             and not command.Name.startswith("T")
             and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
+            # Try to help them if it is Custom op
+            extra = ""
+            if (
+                self._operation
+                and getattr(self._operation, "source", None)
+                and getattr(self._operation.source, "Proxy")
+                and isinstance(self._operation.source.Proxy, Path.Op.Custom.ObjectCustom)
+            ):
+                extra = translate(
+                    "CAM",
+                    " (in the Custom op, uncheck Post Process Output, or put '!' in front of specific command)",
+                )
             raise CAMValueError(
-                f"Unsupported command: {command.Name}",
+                f"Unsupported command: {command.Name}{extra}",
                 job=self._job,
                 operation=self._operation,
                 command=command,
@@ -2837,7 +2862,11 @@ class PostProcessor:
             prefix = self.values["LINE_NUMBER_PREFIX"]
             command_line.append(f"{prefix}{ int(params['N']):d}")
 
-        command_line.append(command_name)
+        # A modal-stripped command has no name. Appending it anyway leaves an
+        # empty leading element, which format_command_line renders as a leading
+        # separator: "G1 X1.0 Y2.0" followed by " X3.0 Y4.0".
+        if command_name:
+            command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
         parameter_order = self.values.get(
@@ -2878,6 +2907,11 @@ class PostProcessor:
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
+
+        # Nothing left to emit, e.g. a modal command whose parameters were all
+        # suppressed as duplicates.
+        if not command_line:
+            return None
 
         # Format the command line
         formatted_line = format_command_line(self.values, command_line)

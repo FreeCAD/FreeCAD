@@ -4873,7 +4873,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // Check that the solver does not report redundant/conflicting constraints
-    if (Obj->getLastSolverStatus() != GCS::Success || Obj->getLastHasConflicts()
+    if (Obj->getLastSolverStatus() != GCS::SolveStatus::Success || Obj->getLastHasConflicts()
         || Obj->getLastHasRedundancies()) {
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong solver status"),
@@ -5516,12 +5516,26 @@ bool CmdSketcherConstrainCoincidentUnified::isCoincidentSelectionValid(SketchObj
 {
     // check if this coincidence is already enforced (even indirectly)
     bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
-    bool sameGeo = GeoId1 == GeoId2;
+    if (constraintExists) {
+        return false;
+    }
 
-    const Part::Geometry* geo = obj->getGeometry(GeoId1);
-    bool isBSpline = geo && geo->is<Part::GeomBSplineCurve>();
+    auto firstPoints = obj->getAllCoincidentPoints(GeoId1, PosId1);
+    auto secondPoints = obj->getAllCoincidentPoints(GeoId2, PosId2);
+    firstPoints.emplace(GeoId1, PosId1);
+    secondPoints.emplace(GeoId2, PosId2);
 
-    return !constraintExists && (!sameGeo || isBSpline);
+    // Joining the groups must not collapse an element, even when its endpoints
+    // are selected through coincident points belonging to other elements.
+    for (const auto& [geoId, posId] : firstPoints) {
+        if (secondPoints.contains(geoId)) {
+            const Part::Geometry* geo = obj->getGeometry(geoId);
+            if (!geo || !geo->is<Part::GeomBSplineCurve>()) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // ======================================================================================

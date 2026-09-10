@@ -533,22 +533,22 @@
       <translation>惯性</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
       <source>Close</source>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
       <source>Reset</source>
       <translation>重置</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <location filename="../../TaskMassProperties.cpp" line="1218"/>
       <source> (Average)</source>
       <translation> （平均值）</translation>
     </message>

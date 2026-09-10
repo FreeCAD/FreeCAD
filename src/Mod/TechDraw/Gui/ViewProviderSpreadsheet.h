@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -44,6 +46,10 @@ public:
 
     App::PropertyBool ClaimSheetAsChild;
     std::vector<App::DocumentObject*> claimChildren(void) const override;
+
+    bool doubleClicked() override;
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 
     bool useNewSelectionModel() const override {return false;}
 

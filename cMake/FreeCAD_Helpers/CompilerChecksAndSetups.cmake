@@ -28,6 +28,7 @@ macro(CompilerChecksAndSetups)
     endif(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
     # Enabled C++20 for Freecad 1.1 and later
+    add_definitions(-DMINIMUM_CPLUSPLUS_VERSION=202002L)
     set(BUILD_ENABLE_CXX_STD "C++20"  CACHE STRING  "Enable C++ standard")
     set_property(CACHE BUILD_ENABLE_CXX_STD PROPERTY STRINGS
                  "C++20"

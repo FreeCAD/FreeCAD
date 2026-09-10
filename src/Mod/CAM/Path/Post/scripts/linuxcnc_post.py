@@ -165,9 +165,12 @@ class Linuxcnc(PostProcessor):
         """inject blend command"""
         blend = self._get_blend_command()
 
-        if self.values["PREAMBLE"] is None:
-            self.values["PREAMBLE"] = ""
-        self.values["PREAMBLE"] += blend
+        preamble = self.values["PREAMBLE"] or ""
+        # Separate the blend command from whatever the preamble ends with,
+        # otherwise "... G80 G90" + "G64 P0.0010" runs together as "G90G64".
+        if preamble and not preamble[-1].isspace():
+            preamble += " "
+        self.values["PREAMBLE"] = preamble + blend
 
         super()._expand_prefix(postables)
 

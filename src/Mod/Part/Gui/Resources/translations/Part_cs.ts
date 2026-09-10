@@ -582,7 +582,7 @@
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Midplane between faces</translation>
+      <translation>Středová rovina mezi plochami</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="365"/>
@@ -1085,12 +1085,12 @@
     <message>
       <location filename="../../DlgBlock.ui" line="14"/>
       <source>Block Definition</source>
-      <translation>Block Definition</translation>
+      <translation>Definice bloku</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
       <source>First Limit</source>
-      <translation>First Limit</translation>
+      <translation>První limit</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="40"/>
@@ -1148,7 +1148,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
       <source>Second Limit</source>
-      <translation>Second Limit</translation>
+      <translation>Druhý limit</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="83"/>
@@ -1233,7 +1233,7 @@
     <message>
       <location filename="../../Command.cpp" line="2318"/>
       <source>Analyzes the selected shapes for errors</source>
-      <translation>Analyzuje vybrané tvary na chyby</translation>
+      <translation>Analyzuje vybrané tvary z hlediska chyb</translation>
     </message>
   </context>
   <context>
@@ -1288,7 +1288,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="118"/>
       <source>Creates a solid cube</source>
-      <translation>Vytváří pevnou krychli</translation>
+      <translation>Vytvoří plnou krychli</translation>
     </message>
   </context>
   <context>
@@ -1360,7 +1360,7 @@
     <message>
       <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
-      <translation>Zkosení vybraných hran tvaru</translation>
+      <translation>Zkosí vybrané hrany tvaru</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1409,7 @@
     <message>
       <location filename="../../Command.cpp" line="569"/>
       <source>Join Shapes</source>
-      <translation>Join Shapes</translation>
+      <translation>Spojit tvary</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
@@ -1445,7 +1445,7 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Split Shapes</source>
-      <translation>Split Shapes</translation>
+      <translation>Rozdělit tvary</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="685"/>
@@ -1487,7 +1487,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="206"/>
       <source>Creates a solid cone</source>
-      <translation>Vytvoří pevný kužel</translation>
+      <translation>Vytvoří plný kužel</translation>
     </message>
   </context>
   <context>
@@ -1500,12 +1500,12 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>Cross-Sections</source>
-      <translation>Průřezy</translation>
+      <translation>Příčné řezy</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Creates cross-sections</source>
-      <translation>Creates cross-sections</translation>
+      <translation>Vytváří příčné řezy</translation>
     </message>
   </context>
   <context>
@@ -1523,7 +1523,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Cuts 2 selected shapes</source>
-      <translation>Cuts 2 selected shapes</translation>
+      <translation>Ořízne 2 vybrané tvary</translation>
     </message>
   </context>
   <context>
@@ -1542,7 +1542,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="74"/>
       <source>Creates a solid cylinder</source>
-      <translation>Vytvoří pevný válec</translation>
+      <translation>Vytvoří plný válec</translation>
     </message>
   </context>
   <context>
@@ -1560,7 +1560,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation>Removes the selected features from a shape</translation>
+      <translation>Odstraní vybrané prvky z tvaru</translation>
     </message>
   </context>
   <context>
@@ -1573,12 +1573,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="359"/>
       <source>Shape Element Copy</source>
-      <translation>Kopírovat tvarové prvky</translation>
+      <translation>Kopírovat tvarový prvek</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="360"/>
       <source>Creates a non-parametric copy of the selected shape element</source>
-      <translation>Creates a non-parametric copy of the selected shape element</translation>
+      <translation>Vytvoří neparametrickou kopii vybraného tvarového prvku</translation>
     </message>
   </context>
   <context>
@@ -1632,7 +1632,7 @@
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fillets the selected edges of a shape</source>
-      <translation>Fillets the selected edges of a shape</translation>
+      <translation>Zaoblí vybrané hrany tvaru</translation>
     </message>
   </context>
   <context>
@@ -1650,7 +1650,7 @@
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Unites the selected shapes</source>
-      <translation>Spojí vybrané tvary</translation>
+      <translation>Sloučit vybrané tvary</translation>
     </message>
   </context>
   <context>
@@ -1663,7 +1663,7 @@
     <message>
       <location filename="../../Command.cpp" line="1067"/>
       <source>Import CAD File</source>
-      <translation>Importovat CAD soubor</translation>
+      <translation>Import CAD souboru</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1069"/>
@@ -1717,12 +1717,12 @@
     <message>
       <location filename="../../Command.cpp" line="1493"/>
       <source>Face From Wires</source>
-      <translation>Face From Wires</translation>
+      <translation>Plocha z čar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
-      <translation>Creates a face from the selected wires (e.g. from a sketch)</translation>
+      <translation>Vytvoří plochu z vybraných čar (např. z náčrtu)</translation>
     </message>
   </context>
   <context>
@@ -1758,7 +1758,7 @@
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Mirrors the selected shape</source>
-      <translation>Mirrors the selected shape</translation>
+      <translation>Zrcadlí vybraný tvar</translation>
     </message>
   </context>
   <context>
@@ -1776,7 +1776,7 @@
     <message>
       <location filename="../../Command.cpp" line="1792"/>
       <source>Offsets shapes in 3D</source>
-      <translation>Offsets shapes in 3D</translation>
+      <translation>Odsadí tvary ve 3D</translation>
     </message>
   </context>
   <context>
@@ -1794,7 +1794,7 @@
     <message>
       <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation>Offsets planar shapes in 2D</translation>
+      <translation>Odsadí rovinné tvary ve 2D</translation>
     </message>
   </context>
   <context>
@@ -1812,7 +1812,7 @@
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Picks a curve network</source>
-      <translation>Picks a curve network</translation>
+      <translation>Vybere síť křivek</translation>
     </message>
   </context>
   <context>
@@ -1825,7 +1825,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="143"/>
       <source>Points From Shape</source>
-      <translation>Points From Shape</translation>
+      <translation>Body z tvaru</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="144"/>
@@ -1884,7 +1884,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Refine Shape</source>
-      <translation>Refine Shape</translation>
+      <translation>Vylepšit tvar</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="388"/>
@@ -1907,7 +1907,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
-      <translation>Reverses the orientation of the selected shapes</translation>
+      <translation>Obrátí orientaci vybraných tvarů</translation>
     </message>
   </context>
   <context>
@@ -1925,7 +1925,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../Command.cpp" line="1553"/>
       <source>Revolves the selected shape</source>
-      <translation>Revolves the selected shape</translation>
+      <translation>Orotuje vybraný tvar</translation>
     </message>
   </context>
   <context>
@@ -1974,7 +1974,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="115"/>
       <source>Shape From Mesh</source>
-      <translation>Shape From Mesh</translation>
+      <translation>Tvar ze sítě</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="116"/>
@@ -1997,7 +1997,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
       <source>Creates a simple non-parametric copy of the selected shapes</source>
-      <translation>Creates a simple non-parametric copy of the selected shapes</translation>
+      <translation>Vytvoří jednoduchou neparametrickou kopii vybraných tvarů</translation>
     </message>
   </context>
   <context>
@@ -2034,7 +2034,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="162"/>
       <source>Creates a solid sphere</source>
-      <translation>Creates a solid sphere</translation>
+      <translation>Vytvoří plnou kouli</translation>
     </message>
   </context>
   <context>
@@ -2099,7 +2099,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="250"/>
       <source>Creates a solid torus</source>
-      <translation>Creates a solid torus</translation>
+      <translation>Vytvoří plný toroid</translation>
     </message>
   </context>
   <context>
@@ -2112,7 +2112,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Transformed Copy</source>
-      <translation>Transformed Copy</translation>
+      <translation>Transformovaná kopie</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="330"/>
@@ -2196,27 +2196,27 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../Command.cpp" line="2536"/>
       <source>Add coordinate system</source>
-      <translation>Add coordinate system</translation>
+      <translation>Přidat souřadnicový systém</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
-      <translation>Add datum plane</translation>
+      <translation>Přidat referenční rovinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
       <source>Add datum line</source>
-      <translation>Add datum line</translation>
+      <translation>Přidat referenční linii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
-      <translation>Add datum point</translation>
+      <translation>Přidat referenční bod</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Cylinder</source>
-      <translation>Create Cylinder</translation>
+      <translation>Vytvořit válec</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="200"/>
@@ -2292,7 +2292,7 @@ Směr projekce určuje pohled kamery.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="213"/>
       <source>Edit mirror</source>
-      <translation>Edit mirror</translation>
+      <translation>Upravit zrcadlení</translation>
     </message>
   </context>
   <context>
@@ -2373,22 +2373,22 @@ Poznámka: Umístění je vyjádřeno v lokálním prostoru připojeného objekt
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation>Attachment Mode</translation>
+      <translation>Režim připojení</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation>In X-direction</translation>
+      <translation>Ve směru X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation>In Y-direction</translation>
+      <translation>Ve směru Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation>In Z-direction</translation>
+      <translation>Ve směru Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -2401,7 +2401,7 @@ Poznámka: Umístění je vyjádřeno v lokálním prostoru připojeného objekt
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation>Cross Sections</translation>
+      <translation>Příčné řezy</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -2451,7 +2451,7 @@ Poznámka: Umístění je vyjádřeno v lokálním prostoru připojeného objekt
     <message>
       <location filename="../../CrossSections.cpp" line="341"/>
       <source>Cannot compute cross-sections</source>
-      <translation>Cannot compute cross-sections</translation>
+      <translation>Nelze vypočítat příčné řezy</translation>
     </message>
   </context>
   <context>
@@ -2534,17 +2534,17 @@ Poznámka: Umístění je vyjádřeno v lokálním prostoru připojeného objekt
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="414"/>
       <source>First, select a shape on the left side</source>
-      <translation>First, select a shape on the left side</translation>
+      <translation>Nejprve vyberte tvar na levé straně</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="418"/>
       <source>First, select a shape on the right side</source>
-      <translation>First, select a shape on the right side</translation>
+      <translation>Nejprve vyberte tvar na pravé straně</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="447"/>
       <source>One of the selected objects does not exist anymore</source>
-      <translation>One of the selected objects does not exist anymore</translation>
+      <translation>Jeden z vybraných objektů již neexistuje</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="457"/>
@@ -2648,7 +2648,7 @@ do geometrie tvaru, místo aby bylo uloženo v rámci vlastnosti umístění.</t
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation>STEP Export Settings</translation>
+      <translation>Nastavení exportu STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="126"/>
@@ -2733,7 +2733,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
       <source>Along edge</source>
-      <translation>Along edge</translation>
+      <translation>Podél hrany</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2743,7 +2743,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Starts the selection of edges in the 3D view</source>
-      <translation>Spustí  výběr hran ve 3D pohledu</translation>
+      <translation>Spustí výběr hran ve 3D pohledu</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
@@ -2773,12 +2773,12 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along</source>
-      <translation>Along</translation>
+      <translation>Podél</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
       <source>Against</source>
-      <translation>Against</translation>
+      <translation>Proti</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
@@ -2838,7 +2838,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="230"/>
       <source>Selecting…</source>
-      <translation>Selecting…</translation>
+      <translation>Výběr…</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="506"/>
@@ -2928,7 +2928,7 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
       <source>Selected shape</source>
-      <translation>Selected shape</translation>
+      <translation>Vybraný tvar</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -2968,12 +2968,12 @@ Jsou-li obě délky nula, pak je použita velikost směru.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation>Constant radius</translation>
+      <translation>Konstantní poloměr</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable radius</source>
-      <translation>Variable radius</translation>
+      <translation>Proměnný poloměr</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
@@ -3139,7 +3139,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
       <source>Solids (type 186) and shells (type 514) / B-rep mode</source>
-      <translation>Pevné objekty (typ 186) a pláště (typ 514) / režim B-rep</translation>
+      <translation>Tělesa (typ 186) a pláště (typ 514) / režim B-rep</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3187,7 +3187,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation>STEP Import Settings</translation>
+      <translation>Nastavení importu STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="23"/>
@@ -3202,7 +3202,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
+      <translation>Při importu sloučí všechny tvary do jediného složeného tvaru, přičemž vyřeší instance dílů a aplikuje transformace. Prodlouží to dobu importu, ale nemá to vliv na přesnost geometrie ani na kvalitu vykreslení.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3212,7 +3212,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part</source>
-      <translation>Select this to use App::LinkGroup as group container, or else use App::Part</translation>
+      <translation>Tuto možnost vyberte, chcete-li jako kontejner skupiny použít App::LinkGroup; v opačném případě použijte App::Part</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="61"/>
@@ -3301,7 +3301,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder Definition</source>
-      <translation>Cylinder Definition</translation>
+      <translation>Definice válce</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3349,7 +3349,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES Input File</source>
-      <translation>IGES Input File</translation>
+      <translation>Vstupní soubor IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
@@ -3359,7 +3359,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
       <source>Search File</source>
-      <translation>Search File</translation>
+      <translation>Vyhledat soubor</translation>
     </message>
   </context>
   <context>
@@ -3367,7 +3367,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP Input File</source>
-      <translation>STEP Input File</translation>
+      <translation>Vstupní soubor STEP</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3390,7 +3390,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation>Select the type of geometric primitive to create</translation>
+      <translation>Vyberte typ geometrického prvku, který chcete vytvořit</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3550,12 +3550,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="470"/>
       <source>Radius of the cylinder</source>
-      <translation>Radius of the cylinder</translation>
+      <translation>Poloměr válce</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="493"/>
       <source>Height of the cylinder along the local Z axis</source>
-      <translation>Height of the cylinder along the local Z axis</translation>
+      <translation>Výška válce podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="516"/>
@@ -3570,12 +3570,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="593"/>
       <source>Rotation angle</source>
-      <translation>Rotation angle</translation>
+      <translation>Úhel rotace</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="600"/>
       <source>Rotation angle of the cylinder cross-section</source>
-      <translation>Rotation angle of the cylinder cross-section</translation>
+      <translation>Úhel rotace průřezu válce</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="670"/>
@@ -3604,7 +3604,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="723"/>
       <source>Height of the cone along the local Z axis</source>
-      <translation>Height of the cone along the local Z axis</translation>
+      <translation>Výška kužele podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="765"/>
@@ -3620,54 +3620,54 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="849"/>
       <source>Radius of the sphere</source>
-      <translation>Radius of the sphere</translation>
+      <translation>Poloměr koule</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="894"/>
       <location filename="../../DlgPrimitives.ui" line="1124"/>
       <location filename="../../DlgPrimitives.ui" line="1328"/>
       <source>U parameter</source>
-      <translation>U parameter</translation>
+      <translation>U parametr</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="901"/>
       <source>Rotation angle of the sphere cross-section around the local Z axis</source>
-      <translation>Rotation angle of the sphere cross-section around the local Z axis</translation>
+      <translation>Úhel rotace průřezu koule kolem lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="917"/>
       <source>V parameters</source>
-      <translation>V parameters</translation>
+      <translation>V parametry</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
       <source>Start angle of the sphere along the local Z axis</source>
-      <translation>Start angle of the sphere along the local Z axis</translation>
+      <translation>Počáteční úhel koule podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="956"/>
       <source>End angle of the sphere along the local Z axis</source>
-      <translation>End angle of the sphere along the local Z axis</translation>
+      <translation>Koncový úhel koule podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1033"/>
       <source>Radius of the ellipsoid along the local Z axis</source>
-      <translation>Radius of the ellipsoid along the local Z axis</translation>
+      <translation>Poloměr elipsoidu podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1056"/>
       <source>Radius of the ellipsoid along the local X axis</source>
-      <translation>Radius of the ellipsoid along the local X axis</translation>
+      <translation>Poloměr elipsoidu podél lokální osy X</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1072"/>
       <source>Radius 3</source>
-      <translation>Radius 3</translation>
+      <translation>Poloměr 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1079"/>
       <source>Radius of the ellipsoid along the local Y axis</source>
-      <translation>Radius of the ellipsoid along the local Y axis</translation>
+      <translation>Poloměr elipsoidu podél lokální osy Y</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1131"/>
@@ -3678,17 +3678,17 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
       <location filename="../../DlgPrimitives.ui" line="1351"/>
       <source>V parameter</source>
-      <translation>V parameter</translation>
+      <translation>V parametr</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Start angle of the ellipsoid along the local Z axis</source>
-      <translation>Start angle of the ellipsoid along the local Z axis</translation>
+      <translation>Počáteční úhel elipsoidu podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1186"/>
       <source>End angle of the ellipsoid along the local Z axis</source>
-      <translation>End angle of the ellipsoid along the local Z axis</translation>
+      <translation>Koncový úhel elipsoidu podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1260"/>
@@ -3740,7 +3740,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
       <source>Height of the prism along the local Z axis</source>
-      <translation>Height of the prism along the local Z axis</translation>
+      <translation>Výška hranolu podél lokální osy Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1539"/>
@@ -3850,27 +3850,27 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1924"/>
       <source>Taper angle of the helix</source>
-      <translation>Taper angle of the helix</translation>
+      <translation>Úhel zúžení šroubovice</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
       <source>Coordinate system</source>
-      <translation>Coordinate system</translation>
+      <translation>Souřadnicový systém</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1944"/>
       <source>Handedness of the helix: right-handed or left-handed</source>
-      <translation>Handedness of the helix: right-handed or left-handed</translation>
+      <translation>Směr závitu: pravotočivý nebo levotočivý</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2012"/>
       <source>Growth</source>
-      <translation>Growth</translation>
+      <translation>Přírůstek</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2019"/>
       <source>Radial growth per rotation of the spiral</source>
-      <translation>Radial growth per rotation of the spiral</translation>
+      <translation>Radiální přírůstek na jednu otáčku spirály</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
@@ -3885,7 +3885,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2065"/>
       <source>Starting radius of the spiral</source>
-      <translation>Starting radius of the spiral</translation>
+      <translation>Počáteční poloměr spirály</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2124"/>
@@ -3901,7 +3901,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2147"/>
       <source>Start angle of the circular arc</source>
-      <translation>Start angle of the circular arc</translation>
+      <translation>Počáteční úhel kruhového oblouku</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2160"/>
@@ -3927,7 +3927,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2231"/>
       <source>Major radius</source>
-      <translation>Major radius</translation>
+      <translation>Hlavní poloměr</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2238"/>
@@ -3937,7 +3937,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2254"/>
       <source>Minor radius</source>
-      <translation>Minor radius</translation>
+      <translation>Menší poloměr</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2261"/>
@@ -3952,7 +3952,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2304"/>
       <source>End angle of the elliptical arc</source>
-      <translation>End angle of the elliptical arc</translation>
+      <translation>Koncový úhel eliptického oblouku</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2341"/>
@@ -3963,7 +3963,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2351"/>
       <source>X coordinate of the point</source>
-      <translation>X coordinate of the point</translation>
+      <translation>Souřadnice bodu na ose X</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2364"/>
@@ -3974,7 +3974,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2374"/>
       <source>Y coordinate of the point</source>
-      <translation>Y coordinate of the point</translation>
+      <translation>Souřadnice bodu na ose Y</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2387"/>
@@ -3990,7 +3990,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2471"/>
       <source>X coordinate of the end point</source>
-      <translation>X coordinate of the end point</translation>
+      <translation>Souřadnice X koncového bodu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2497"/>
@@ -4000,7 +4000,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2510"/>
       <source>Y coordinate of the end point</source>
-      <translation>Y coordinate of the end point</translation>
+      <translation>Souřadnice Y koncového bodu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2536"/>
@@ -4010,12 +4010,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2549"/>
       <source>Z coordinate of the end point</source>
-      <translation>Z coordinate of the end point</translation>
+      <translation>Souřadnice Z koncového bodu</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2623"/>
       <source>Number of sides of the regular polygon</source>
-      <translation>Number of sides of the regular polygon</translation>
+      <translation>Počet stran pravidelného mnohoúhelníku</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
@@ -4108,12 +4108,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
       <source>Add Face</source>
-      <translation>Add Face</translation>
+      <translation>Přidat plochu</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add Wire</source>
-      <translation>Add Wire</translation>
+      <translation>Přidat čáru</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
@@ -4123,7 +4123,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show edges</source>
-      <translation>Show edges</translation>
+      <translation>Zobrazit hrany</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -4191,7 +4191,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation>Revolution Axis</translation>
+      <translation>Osa rotace</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
@@ -4212,28 +4212,28 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
       <location filename="../../DlgRevolution.ui" line="146"/>
       <location filename="../../DlgRevolution.ui" line="187"/>
       <source>Sets this as axis</source>
-      <translation>Sets this as axis</translation>
+      <translation>Nastaví toto jako osu</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
       <source>X-Direction</source>
-      <translation>X-Direction</translation>
+      <translation>Směr X</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="190"/>
       <source>Y-Direction</source>
-      <translation>Y-Direction</translation>
+      <translation>Směr Y</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="228"/>
       <source>Z-Direction</source>
-      <translation>Z-Direction</translation>
+      <translation>Směr Z</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
       <location filename="../../DlgRevolution.cpp" line="544"/>
       <source>Select Reference</source>
-      <translation>Select Reference</translation>
+      <translation>Vybrat referenci</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
@@ -4268,7 +4268,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="285"/>
       <source>Select a shape for revolution.</source>
-      <translation>Select a shape for revolution.</translation>
+      <translation>Vyberte tvar pro rotaci.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="304"/>
@@ -4317,7 +4317,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape View</source>
-      <translation>Shape View</translation>
+      <translation>Zobrazení tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
@@ -4332,7 +4332,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Mozaika&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Určuje maximální odchylku mozaikové sítě od povrchu. Čím menší je tato hodnota, tím pomalejší je vykreslování, což vede ke zvýšení detailnosti/rozlišení.teselace&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Mozaika&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Určuje maximální odchylku mozaikové sítě od povrchu. Čím menší je tato hodnota, tím pomalejší je vykreslování, což vede ke zvýšení detailnosti/rozlišení.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
@@ -4390,7 +4390,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="18"/>
       <source>Model Settings</source>
-      <translation>Model Settings</translation>
+      <translation>Nastavení modelu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="33"/>
@@ -4425,12 +4425,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="145"/>
       <source>Currently not implemented: this option does not yet modify automatically generated Part feature names</source>
-      <translation>Currently not implemented: this option does not yet modify automatically generated Part feature names</translation>
+      <translation>V současné době není implementováno: tato volba zatím neupravuje automaticky generované názvy prvků typu Part</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="164"/>
       <source>Features Settings</source>
-      <translation>Features Settings</translation>
+      <translation>Nastavení funkcí</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="178"/>
@@ -4440,7 +4440,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="181"/>
       <source>Default profile type for holes</source>
-      <translation>Default profile type for holes</translation>
+      <translation>Výchozí typ profilu pro otvory</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="194"/>
@@ -4455,7 +4455,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="212"/>
       <source>Points, circles and arcs</source>
-      <translation>Points, circles and arcs</translation>
+      <translation>Body, kruhy a oblouky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="217"/>
@@ -4480,27 +4480,27 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Show final result by default when editing features</source>
-      <translation>Show final result by default when editing features</translation>
+      <translation>Při úpravách prvků zobrazovat ve výchozím nastavení konečný výsledek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
-      <translation>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</translation>
+      <translation>Při úpravě prvku zobrazí ve 3D pohledu kompletně vypočítaný model, čímž znázorní konečný kontext, nikoli pouze izolovaný prvek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="314"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation>Show transparent preview overlay by default when editing features</translation>
+      <translation>Při úpravách prvků ve výchozím nastavení zobrazovat průhlednou náhledovou vrstvu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
-      <translation>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</translation>
+      <translation>Během úprav prvků se zobrazí poloprůhledný náhled výsledku, který umožňuje vizualizovat změny ještě před jejich provedením</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="339"/>
       <source>Highlight the profile used to create features</source>
-      <translation>Highlight the profile used to create features</translation>
+      <translation>Zvýraznit profil použitý k vytvoření prvků</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="342"/>
@@ -4520,7 +4520,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
-      <translation>Show interactive draggers when editing features</translation>
+      <translation>Při úpravách prvků zobrazovat interaktivní táhla</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="386"/>
@@ -4535,12 +4535,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
-      <translation>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</translation>
+      <translation>Zabrání tomu, aby se model při manipulaci s prvky pro přetahování přepočítával. Tvar se aktualizuje až po uvolnění tlačítka myši.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
-      <translation>Enable coarse snapping while dragging</translation>
+      <translation>Povolit hrubé přichytávání při přetahování</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="427"/>
@@ -4550,12 +4550,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
-      <translation>Fine snap modifier</translation>
+      <translation>Modifikátor jemného přichycení</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="452"/>
       <source>Defines the modifier key used for fine snapping while dragging</source>
-      <translation>Defines the modifier key used for fine snapping while dragging</translation>
+      <translation>Definuje modifikační klávesu používanou pro přesné přichytávání při přetahování</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="472"/>
@@ -4565,12 +4565,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
-      <translation>Determines whether the drag is coarse or fine without holding the modifier key</translation>
+      <translation>Určuje, zda bude posun hrubý nebo jemný, aniž by bylo nutné držet modifikační klávesu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
-      <translation>Coarse movement multiplier</translation>
+      <translation>Multiplikátor hrubého pohybu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="515"/>
@@ -4580,7 +4580,7 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
-      <translation>Coarse rotation step (degrees)</translation>
+      <translation>Krok hrubého otáčení (stupně)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="548"/>
@@ -4629,12 +4629,12 @@ Nejprve označte jeden nebo více prvků hrany.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape Appearance</source>
-      <translation>Shape Appearance</translation>
+      <translation>Vzhled tvaru</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape Appearance Properties</source>
-      <translation>Default Shape Appearance Properties</translation>
+      <translation>Výchozí vlastnosti vzhledu tvarů</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4785,7 +4785,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation Color</source>
-      <translation>Default Annotation Color</translation>
+      <translation>Výchozí barva poznámky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
@@ -4813,7 +4813,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../Location.ui" line="32"/>
       <source>Set the placement location coordinates</source>
-      <translation>Set the placement location coordinates</translation>
+      <translation>Nastavení souřadnic umístění</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="40"/>
@@ -4854,7 +4854,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../Location.ui" line="137"/>
       <source>Rotation Axis</source>
-      <translation>Rotation Axis</translation>
+      <translation>Osa rotace</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="145"/>
@@ -4864,7 +4864,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../Location.ui" line="155"/>
       <source>X-component of direction vector</source>
-      <translation>X-component of direction vector</translation>
+      <translation>Složka X směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="177"/>
@@ -4874,7 +4874,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../Location.ui" line="187"/>
       <source>Y-component of direction vector</source>
-      <translation>Y-component of direction vector</translation>
+      <translation>Složka Y směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="209"/>
@@ -4884,7 +4884,7 @@ nebo černá.</translation>
     <message>
       <location filename="../../Location.ui" line="219"/>
       <source>Z-component of direction vector</source>
-      <translation>Z-component of direction vector</translation>
+      <translation>Složka Z směrového vektoru</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="133"/>
@@ -4930,12 +4930,12 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
-      <translation>Too Few Elements</translation>
+      <translation>Příliš málo prvků</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
-      <translation>At least 2 vertices, edges, wires, or faces are required.</translation>
+      <translation>Je třeba zadat alespoň 2 vrcholy, hrany, čáry nebo plochy.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="240"/>
@@ -4983,7 +4983,7 @@ bude použit normálový vektor roviny náčrtu</translation>
     <message>
       <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane</source>
-      <translation>Mirror plane</translation>
+      <translation>Rovina zrcadlení</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="106"/>
@@ -5137,7 +5137,7 @@ mají stejné hodnoty.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh View</source>
-      <translation>Refresh View</translation>
+      <translation>Obnovit zobrazení</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -5227,7 +5227,7 @@ budou viditelné pouze vytvořené řezy</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
       <location filename="../../TaskShapeBuilder.cpp" line="378"/>
       <source>Select at least 1 edge</source>
-      <translation>Vyberte alespoň jednu hranu</translation>
+      <translation>Vyberte alespoň 1 hranu</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
@@ -5237,7 +5237,7 @@ budou viditelné pouze vytvořené řezy</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
       <source>Select only 1 shape object</source>
-      <translation>Vyberte pouze jeden objekt tvaru</translation>
+      <translation>Vyberte pouze 1 objekt tvaru</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="570"/>
@@ -5247,7 +5247,7 @@ budou viditelné pouze vytvořené řezy</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="577"/>
       <source>Select a closed loop of edges</source>
-      <translation>Select a closed loop of edges</translation>
+      <translation>Vyberte uzavřenou smyčku hran</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
@@ -5295,7 +5295,7 @@ budou viditelné pouze vytvořené řezy</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
-      <translation>Vyberte alespoň jednu hranu z jednoho objektu.</translation>
+      <translation>Vyberte alespoň 1 hranu z jednoho objektu.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="377"/>
@@ -5305,7 +5305,7 @@ budou viditelné pouze vytvořené řezy</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
-      <translation>Invalid Selection</translation>
+      <translation>Neplatný výběr</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5676,7 +5676,7 @@ Kontroly jednotlivých booleovských operací:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
-      <translation>Run Check</translation>
+      <translation>Spustit kontrolu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
@@ -5764,18 +5764,18 @@ Kontroly jednotlivých booleovských operací:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
-      <translation>Null shape</translation>
+      <translation>Prázdný tvar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="491"/>
       <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
-      <translation>Skipped</translation>
+      <translation>Přeskočeno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
-      <translation>Infinite shape</translation>
+      <translation>Neomezený tvar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="529"/>
@@ -5790,7 +5790,7 @@ Kontroly jednotlivých booleovských operací:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
-      <translation>No errors</translation>
+      <translation>Žádné chyby</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="591"/>
@@ -5810,7 +5810,7 @@ Kontroly jednotlivých booleovských operací:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
-      <translation>to report view.</translation>
+      <translation>do zobrazení přehledu.</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="740"/>
@@ -5853,12 +5853,12 @@ Kontroly jednotlivých booleovských operací:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation>%1 select and confirm</translation>
+      <translation>%1 vybrat a potvrdit</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
       <source>Datum dialog: input error</source>
-      <translation>Datum dialog: input error</translation>
+      <translation>Dialogové okno Reference: chyba zadání</translation>
     </message>
   </context>
   <context>
@@ -5960,7 +5960,7 @@ Kontroly jednotlivých booleovských operací:</translation>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
       <source>Create Shape</source>
-      <translation>Create Shape</translation>
+      <translation>Vytvořit tvar</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -6140,7 +6140,7 @@ ve 3D pohledu pro dráhu protažení.</translation>
       <location filename="../../Command.cpp" line="334"/>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
-      <translation>Select 2 shapes</translation>
+      <translation>Vyberte 2 tvary</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -6158,18 +6158,18 @@ ve 3D pohledu pro dráhu protažení.</translation>
       <location filename="../../Command.cpp" line="528"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation>The use of non-solids for boolean operations may lead to unexpected results.
-Continue?</translation>
+      <translation>Použití nepevných těles pro booleovské operace může vést k neočekávaným výsledkům.
+Chcete pokračovat?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
-      <translation>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</translation>
+      <translation>Vyberte alespoň 2 tvary. Případně vyberte 1 složený tvar obsahující 2 nebo více tvarů, u nichž chcete vypočítat průnik.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
-      <translation>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</translation>
+      <translation>Vyberte alespoň 2 tvary. Případně vyberte 1 složený tvar obsahující 2 nebo více tvarů, které chcete spojit.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="953"/>
@@ -6180,13 +6180,13 @@ Continue?</translation>
       <location filename="../../Command.cpp" line="1080"/>
       <location filename="../../Command.cpp" line="1150"/>
       <source>STEP with colors</source>
-      <translation>STEP with colors</translation>
+      <translation>STEP s barvami</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <location filename="../../Command.cpp" line="1152"/>
       <source>IGES with colors</source>
-      <translation>IGES with colors</translation>
+      <translation>IGES s barvami</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1201"/>
@@ -6196,7 +6196,7 @@ Continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="2278"/>
       <source>Select either 2 edges or 2 wires.</source>
-      <translation>Select either 2 edges or 2 wires.</translation>
+      <translation>Vyberte buď 2 hrany, nebo 2 čáry.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="83"/>
@@ -6227,7 +6227,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
-      <translation>Compound solid</translation>
+      <translation>Složené pevné těleso</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -6252,27 +6252,27 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
-      <translation>No error</translation>
+      <translation>Žádná chyba</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
-      <translation>Invalid point on curve</translation>
+      <translation>Neplatný bod na křivce</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
-      <translation>Invalid point on curve on surface</translation>
+      <translation>Neplatný bod na křivce na povrchu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
-      <translation>Invalid point on surface</translation>
+      <translation>Neplatný bod na povrchu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
-      <translation>No 3D curve</translation>
+      <translation>Žádná 3D křivka</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
@@ -6282,7 +6282,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
-      <translation>Invalid 3D curve</translation>
+      <translation>Neplatná 3D křivka</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
@@ -6297,47 +6297,47 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
-      <translation>Invalid curve on closed surface</translation>
+      <translation>Neplatná křivka na uzavřené ploše</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
-      <translation>Invalid same range flag</translation>
+      <translation>Neplatný příznak stejného rozsahu</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
-      <translation>Invalid same parameter flag</translation>
+      <translation>Neplatný příznak stejného parametru</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
-      <translation>Invalid degenerated flag</translation>
+      <translation>Neplatný degenerovaný příznak</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
-      <translation>Free edge</translation>
+      <translation>Volná hrana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
-      <translation>Neplatná multikonekce</translation>
+      <translation>Neplatná vícenásobná konektivita</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
-      <translation>Invalid range</translation>
+      <translation>Neplatný rozsah</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
-      <translation>Empty wire</translation>
+      <translation>Prázdná čára</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
-      <translation>Redundant edge</translation>
+      <translation>Nadbytečná hrana</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
@@ -6347,17 +6347,17 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
-      <translation>No surface</translation>
+      <translation>Žádný povrch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
-      <translation>Invalid wire</translation>
+      <translation>Neplatná čára</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
-      <translation>Redundant wire</translation>
+      <translation>Nadbytečná čára</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
@@ -6372,7 +6372,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
-      <translation>Empty shell</translation>
+      <translation>Prázdná skořepina</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
@@ -6382,12 +6382,12 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
-      <translation>Unorientable shape</translation>
+      <translation>Neorientovatelný tvar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
-      <translation>Not closed</translation>
+      <translation>Není uzavřeno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
@@ -6397,12 +6397,12 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
-      <translation>Sub-tvar není součástí tvaru</translation>
+      <translation>Pod-tvar není součástí tvaru</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
-      <translation>Bad orientation</translation>
+      <translation>Špatná orientace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="137"/>
@@ -6422,12 +6422,12 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
-      <translation>No result</translation>
+      <translation>Žádný výsledek</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
-      <translation>Out of enum range:</translation>
+      <translation>Mimo rozsah výčtu:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
@@ -6442,7 +6442,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
-      <translation>Booleovská operace: nalezen samoprůnik</translation>
+      <translation>Boolovská operace: zjištěn vlastní průnik</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
@@ -6502,12 +6502,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="307"/>
       <source>Edit Fillet</source>
-      <translation>Edit Fillet</translation>
+      <translation>Upravit zaoblení</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="428"/>
       <source>Edit Chamfer</source>
-      <translation>Edit Chamfer</translation>
+      <translation>Upravit sražení</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="568"/>
@@ -6527,7 +6527,7 @@ Continue?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation>Distance in Parameter Space</translation>
+      <translation>Vzdálenost v parametrickém prostoru</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
@@ -6542,17 +6542,17 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="53"/>
       <source>Edit Projection</source>
-      <translation>Edit Projection</translation>
+      <translation>Upravit projekci</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="93"/>
       <source>Show Control Points</source>
-      <translation>Show Control Points</translation>
+      <translation>Zobrazit kontrolní body</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="71"/>
       <source>Delete %1 content?</source>
-      <translation>Delete %1 content?</translation>
+      <translation>Chcete odstranit obsah %1?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
@@ -6562,7 +6562,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="236"/>
       <source>base and tool objects</source>
-      <translation>base and tool objects</translation>
+      <translation>základní a nástrojové objekty</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="239"/>
@@ -6598,17 +6598,17 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="94"/>
       <source>Delete compound content?</source>
-      <translation>Delete compound content?</translation>
+      <translation>Smazat obsah sloučeniny?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="95"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
-      <translation>Složenina '%1' má %2 c objekty. Chcete je také smazat?</translation>
+      <translation>Složený objekt '%1' obsahuje %2 podřízené objekty. Chcete je také smazat?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation>Edit Attachment</translation>
+      <translation>Upravit připojení</translation>
     </message>
   </context>
   <context>
@@ -6700,7 +6700,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="358"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="474"/>
       <source>Bad Selection</source>
-      <translation>Bad Selection</translation>
+      <translation>Špatný výběr</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="97"/>
@@ -6821,7 +6821,7 @@ pro filtrování podle kolizí nebo vzdálenosti.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
-      <translation>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</translation>
+      <translation>Rozdělí složený objekt na jednotlivé objekty a pro každý tvar vytvoří složený filtr</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="74"/>
@@ -7084,7 +7084,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X-factor</source>
-      <translation>X-factor</translation>
+      <translation>Měřítko X</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -7099,7 +7099,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z-factor</source>
-      <translation>Z-factor</translation>
+      <translation>Měřítko Z</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
@@ -7109,12 +7109,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y-factor</source>
-      <translation>Y-factor</translation>
+      <translation>Měřítko Y</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation>Specify a different scale factor for each cardinal direction</translation>
+      <translation>Zadejte pro každý základní směr jiný faktor měřítka</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
@@ -7146,7 +7146,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <location filename="../../DlgScale.cpp" line="283"/>
       <source>Creating scale failed.
 %1</source>
-      <translation>Creating scale failed.
+      <translation>Vytvoření měřítka se nezdařilo.
 %1</translation>
     </message>
   </context>
@@ -7199,7 +7199,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="65"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation>Supports making planar faces with holes with islands in them</translation>
+      <translation>Podporuje vytváření rovinných ploch s otvory, v nichž se nacházejí ostrůvky</translation>
     </message>
   </context>
   <context>
@@ -7212,7 +7212,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="262"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation>Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>Podporuje vytváření rovinných ploch s otvory, avšak bez ostrůvků uvnitř otvorů</translation>
     </message>
   </context>
   <context>
@@ -7238,7 +7238,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
       <source>Select the faces in the 3D view</source>
-      <translation>Vyberat plochy ve 3D pohledu</translation>
+      <translation>Vyberte plochy ve 3D pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
@@ -7253,7 +7253,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="74"/>
       <source>Custom appearance</source>
-      <translation>Custom appearance</translation>
+      <translation>Vlastní vzhled</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
@@ -7268,7 +7268,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
       <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
-      <translation>Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
+      <translation>Umožňuje výběr více ploch tažením obdélníku ve 3D pohledu</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
@@ -7309,7 +7309,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="237"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
-      <translation>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+      <translation>Vytvoří parametrickou kopii vybraného objektu, přičemž všechny obsažené tolerance budou nastaveny alespoň na určitou minimální hodnotu</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="249"/>
@@ -7337,7 +7337,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2526"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
-      <translation>Creates a coordinate system that can be attached to other objects</translation>
+      <translation>Vytvoří souřadnicový systém, který lze přiřadit k jiným objektům</translation>
     </message>
   </context>
   <context>
@@ -7355,7 +7355,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
-      <translation>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</translation>
+      <translation>Vytvoří referenční objekt (souřadnicový systém, rovinu, přímku nebo bod), který lze přiřadit k jiným objektům</translation>
     </message>
   </context>
   <context>
@@ -7363,7 +7363,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../App/Geometry.cpp" line="6723"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>Nelze určit průsečík křivek. Zkuste přidat vazbu souběhu mezi vrcholy křivek, které chcete zaoblit.</translation>
     </message>
   </context>
   <context>
@@ -7381,7 +7381,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
-      <translation>Creates a datum plane that can be attached to other objects</translation>
+      <translation>Vytvoří referenční rovinu, kterou lze připojit k jiným objektům</translation>
     </message>
   </context>
   <context>
@@ -7399,7 +7399,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2599"/>
       <source>Creates a datum line that can be attached to other objects</source>
-      <translation>Creates a datum line that can be attached to other objects</translation>
+      <translation>Vytvoří referenční linii, kterou lze připojit k jiným objektům</translation>
     </message>
   </context>
   <context>
@@ -7417,7 +7417,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
-      <translation>Creates a datum point that can be attached to other objects</translation>
+      <translation>Vytvoří referenční bod, který lze připojit k jiným objektům</translation>
     </message>
   </context>
   <context>
@@ -7430,7 +7430,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
-      <translation>Opens the attachment editor to change the attachment of the selected object</translation>
+      <translation>Otevře editor připojení pro změnu připojení vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -7438,7 +7438,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="223"/>
       <source>Connect Shapes</source>
-      <translation>Connect Shapes</translation>
+      <translation>Propojit tvary</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
@@ -7451,12 +7451,12 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation>Embed Shapes</translation>
+      <translation>Vložit tvary</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation>Fuses one shape into another, taking care to preserve voids</translation>
+      <translation>Spojuje jeden tvar s druhým a dbá přitom na zachování prázdných prostorů</translation>
     </message>
   </context>
   <context>
@@ -7464,7 +7464,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation>Cutout Shape</translation>
+      <translation>Výřez tvaru</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
@@ -7482,7 +7482,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="227"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
-      <translation>Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
+      <translation>Vytvoří booleovské sjednocení, které je rozřezáno v průsečících vybraných tvarů</translation>
     </message>
   </context>
   <context>
@@ -7495,7 +7495,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation>Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
+      <translation>Rozřízne vybraný objekt tak, že jako řezací nástroje použije jiné objekty a výsledky uloží do jednoho složeného objektu</translation>
     </message>
   </context>
   <context>
@@ -7503,7 +7503,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="482"/>
       <source>Slice Apart</source>
-      <translation>Slice Apart</translation>
+      <translation>Rozřezat na plátky</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
@@ -7605,7 +7605,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../Command.cpp" line="2461"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
-      <translation>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
+      <translation>Vytvoří nový objekt jako booleovský průnik všech viditelných tvarů a vybraných osových rovin</translation>
     </message>
   </context>
   <context>
@@ -7613,7 +7613,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation>Selection Filter</translation>
+      <translation>Výběrový filtr</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
@@ -7626,7 +7626,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="193"/>
       <source>Vertex Selection</source>
-      <translation>Vertex Selection</translation>
+      <translation>Výběr vrcholů</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="194"/>
@@ -7639,7 +7639,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="218"/>
       <source>Edge Selection</source>
-      <translation>Edge Selection</translation>
+      <translation>Výběr hrany</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="219"/>
@@ -7665,7 +7665,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
-      <translation>No Selection Filters</translation>
+      <translation>Žádné výběrové filtry</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="274"/>
@@ -7694,7 +7694,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="29"/>
       <source>Direction 2</source>
-      <translation>Direction 2</translation>
+      <translation>Směr 2</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="36"/>
@@ -7746,13 +7746,13 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
-      <translation>Total Angle</translation>
+      <translation>Celkový úhel</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
       <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
-      <translation>Angular Spacing</translation>
+      <translation>Úhlové rozestupy</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="425"/>
@@ -7774,7 +7774,17 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="159"/>
+      <source>Preview requires a Part-based view provider; none found for %1.</source>
+      <translation>Pro náhled je zapotřebí poskytovatel zobrazení založený na částech; pro %1 nebyl nalezen žádný.</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="160"/>
+      <source>unknown object</source>
+      <translation>neznámý objekt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="303"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>Selhání při vykreslování náhledu: %1. To obvykle znamená chybu modelu.</translation>
     </message>
@@ -7798,7 +7808,7 @@ Překrývající se objemy tvarů budou odstraněny.</translation>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
-      <translation>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
+      <translation>Rozdělí hrany v bodech průsečíků a vyhledá všechny ohraničené oblasti ploch. Zvládá libovolnou překrývající se geometrii.</translation>
     </message>
   </context>
   <context>

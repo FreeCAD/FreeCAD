@@ -38,11 +38,50 @@ else:
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
+translate = FreeCAD.Qt.translate
+
 Part = LazyLoader("Part", globals(), "Part")
 
 
 class ObjectEngrave(EngraveBase.ObjectOp):
     """Proxy class for Engrave operation."""
+
+    @classmethod
+    def engraveOpPropertyEnumerations(cls, dataType="data"):
+        """engraveOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+        Args:
+            dataType = 'data', 'raw', 'translated'
+        Notes:
+        'data' is list of internal string literals used in code
+        'raw' is list of (translated_text, data_string) tuples
+        'translated' is list of translated string literals
+        """
+
+        # Enumeration lists for App::PropertyEnumeration properties
+        enums = {
+            "CutPattern": [
+                (translate("CAM_Engrave", "Bidirectional"), "Bidirectional"),
+                (translate("CAM_Engrave", "Directional"), "Directional"),
+            ],  # allows reverse direction to optimize path
+            "SortingMode": [
+                (translate("CAM_Engrave", "Automatic"), "Automatic"),
+                (translate("CAM_Engrave", "Manual"), "Manual"),
+            ],  # sorting wires
+        }
+
+        if dataType == "raw":
+            return enums
+
+        data = []
+        idx = 0 if dataType == "translated" else 1
+
+        Path.Log.debug(enums)
+
+        for k, v in enumerate(enums):
+            data.append((v, [tup[idx] for tup in enums[v]]))
+        Path.Log.debug(data)
+
+        return data
 
     def __init__(self, obj, name, parentJob):
         super().__init__(obj, name, parentJob)
@@ -91,11 +130,6 @@ class ObjectEngrave(EngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Set the cut pattern for the operation"),
         )
-        obj.CutPattern = [
-            QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
-            QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
-        ]
-        obj.CutPattern = "Bidirectional"
         obj.addProperty(
             "App::PropertyBool",
             "Approximation",
@@ -113,7 +147,6 @@ class ObjectEngrave(EngraveBase.ObjectOp):
                 "\nAutomatic - Sorting wires by the nearest neighbour method, further improved with 2-opt",
             ),
         )
-        obj.SortingMode = ("Automatic", "Manual")
 
         obj.addProperty(
             "App::PropertyVectorDistance",
@@ -137,6 +170,9 @@ class ObjectEngrave(EngraveBase.ObjectOp):
         obj.setEditorMode("EndPoint", 2)  # hide
         obj.setEditorMode("UseEndPoint", 2)  # hide
         self.setupAdditionalProperties(obj)
+
+        for n in self.engraveOpPropertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "Reverse"):

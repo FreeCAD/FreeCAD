@@ -32,6 +32,7 @@ import Part
 import FreeCAD as App
 from FreeCAD import Units
 from bimtests import TestArchBase
+from importers import exportIFC
 import WorkingPlane
 
 
@@ -61,6 +62,21 @@ class TestArchSpace(TestArchBase.TestArchBase):
         b.Shape = sb
         s = Arch.makeSpace([b])
         self.assertTrue(s, "Arch Space failed")
+
+    def testElevationWithFlooringIsNotInferred(self):
+        """Do not infer the finished floor elevation from the space geometry."""
+        shape = Part.makeBox(1, 1, 1, App.Vector(0, 0, 100))
+        base = App.ActiveDocument.addObject("Part::Feature", "ElevatedBox")
+        base.Shape = shape
+        space = Arch.makeSpace([base])
+        App.ActiveDocument.recompute()
+
+        expressions = dict(getattr(space, "ExpressionEngine", []))
+        self.assertNotIn("ElevationWithFlooring", expressions)
+        self.assertEqual(space.ElevationWithFlooring.Value, 0.0)
+
+        attributes = exportIFC.exportIFC2X3Attributes(space, {})
+        self.assertNotIn("ElevationWithFlooring", attributes)
 
     def testSpaceBBox(self):
         operation = "Checking Arch Space bound box..."

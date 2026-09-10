@@ -533,22 +533,22 @@
       <translation>Inèrcia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
       <source>Reset</source>
       <translation>Reinicia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <location filename="../../TaskMassProperties.cpp" line="1218"/>
       <source> (Average)</source>
       <translation> (Mitjana)</translation>
     </message>

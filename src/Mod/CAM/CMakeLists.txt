@@ -202,6 +202,7 @@ SET(PathPythonMachineModels_SRCS
     Machine/models/__init__.py
     Machine/models/machine.py
     Machine/models/mtconnect_import.py
+    Machine/models/validate.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
@@ -574,10 +575,12 @@ SET(Tests_SRCS
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericPlasma.py
     CAMTests/TestGrblPost.py
+    CAMTests/TestKineticNCBeamicon2LegacyPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
+    CAMTests/TestMachineValidate.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
@@ -642,6 +645,7 @@ SET(Tests_SRCS
     CAMTests/TestPathToolBitEditorWidget.py
     CAMTests/TestPathToolBitListWidget.py
     CAMTests/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/TestPathToolDocObject.py
     CAMTests/TestPathToolDocumentObjectEditorWidget.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py

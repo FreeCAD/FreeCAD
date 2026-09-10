@@ -3330,7 +3330,7 @@ jsou místo toho umístěny do 'skupiny'.
     <message>
       <location filename="../ui/preferences-ifc.ui" line="447"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation>Nahraďte „Projekt“, „Místo“, „Budova“ a „Podlaží“ za „Skupina“</translation>
+      <translation>Nahradit 'Projekt', 'Místo', 'Budova' a 'Podlaží' za 'Skupina'</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
@@ -3526,7 +3526,7 @@ To vede k menším rozdílům mezi verzemi souborů.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Use IfcOpenShell serializer if available</source>
-      <translation>Pokud je k dispozici, použijte serializátor IfcOpenShell</translation>
+      <translation>Pokud je k dispozici, použít serializátor IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="180"/>
@@ -3816,7 +3816,7 @@ Výchozí šablona se nachází na adrese:&lt;FreeCAD installation directory&gt;
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
       <source>Preset</source>
       <translation>Předvolba</translation>
@@ -4427,12 +4427,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Nebylo nalezeno žádné okno. Nelze pokračovat.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>Automaticky zahrnout do hostitelského objektu</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>Výška parapetu</translation>
     </message>
@@ -4455,7 +4455,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation type="unfinished">Window Options</translation>
     </message>
