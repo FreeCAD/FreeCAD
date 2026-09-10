@@ -156,7 +156,12 @@ def _make_segment_face(edge1, edge2):
         if not face.isValid():
             continue
 
-        face.fix(1e-7, 0, 1)
+        try:
+            if not face.fix(1e-7, 0, 1):
+                continue
+        except (RuntimeError, Part.OCCError):
+            continue
+
         return face
 
     _err("DraftGeomUtils: unable to bind wires")
@@ -291,11 +296,12 @@ def bind(w1, w2, per_segment=False):
         # return Part.Face(w1).cut(Part.Face(w2)).Faces[0] # Only works if wires do not self-intersect.
         try:
             face = Part.Face([w1, w2])
-            face.fix(1e-7, 0, 1)
-            return face
-        except Part.OCCError:
-            _err("DraftGeomUtils: unable to bind wires")
-            return None
+            if face.fix(1e-7, 0, 1):
+                return face
+        except (RuntimeError, Part.OCCError):
+            pass
+        _err("DraftGeomUtils: unable to bind wires")
+        return None
     else:
         return _make_segment_face(w1, w2)
 
