@@ -1114,6 +1114,11 @@ class ViewProviderJoint:
 
     def updateData(self, joint, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
+        # The JCS switches are created in attach(); updateData() can fire on a
+        # property change before attach() has run (e.g. during document restore).
+        if not hasattr(self, "switch_JCS1"):
+            return
+
         if prop == "Placement1" and hasattr(joint, "Reference1"):
             self.redrawJointPlacement(self.switch_JCS1, joint.Placement1, joint.Reference1)
 
@@ -1121,6 +1126,11 @@ class ViewProviderJoint:
             self.redrawJointPlacement(self.switch_JCS2, joint.Placement2, joint.Reference2)
 
     def redrawJointPlacements(self, joint):
+        # Called from AssemblyObject::solve(), which can run before attach() has
+        # created the JCS switches (e.g. right after a document restore).
+        if not hasattr(self, "switch_JCS1"):
+            return
+
         if not hasattr(joint, "Reference1") or not hasattr(joint, "Reference2"):
             return
 
