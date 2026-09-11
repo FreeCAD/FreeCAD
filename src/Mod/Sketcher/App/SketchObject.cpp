@@ -194,6 +194,19 @@ short SketchObject::mustExecute() const
     return Part2DObject::mustExecute();
 }
 
+namespace {
+GCS::Algorithm getDefaultSolver()
+{
+    auto preferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
+    int solver = preferences->GetInt("DefaultSolver", GCS::DogLeg);
+    if (solver < GCS::BFGS || solver > GCS::DogLeg) {
+        throw Base::ValueError("Invalid Sketcher DefaultSolver preference: expected a value from 0 to 2");
+    }
+    return static_cast<GCS::Algorithm>(solver);
+}
+} // namespace
+
 App::DocumentObjectExecReturn* SketchObject::execute()
 {
     try {
@@ -217,6 +230,13 @@ App::DocumentObjectExecReturn* SketchObject::execute()
         // Base::Console().error("%s\nClear constraints to external geometry\n", e.what());
         // we cannot trust the constraints of external geometries, so remove them
         //  delConstraintsToExternal();
+    }
+
+    try {
+        solvedSketch.defaultSolver = getDefaultSolver();
+    }
+    catch (const Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what(), this);
     }
 
     // This includes a regular solve including full geometry update, except when an error
