@@ -47,6 +47,9 @@ public:
 
     bool acceptPageCreation();
 
+Q_SIGNALS:
+    void templateValidityChanged(bool valid);
+
 protected:
     void changeEvent(QEvent* e) override;
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -82,6 +85,7 @@ class TaskDlgNewPage: public Gui::TaskView::TaskDialog
 public:
     explicit TaskDlgNewPage();
 
+    void modifyStandardButtons(QDialogButtonBox* buttons) override;
     void open() override;
     bool accept() override;
     bool reject() override;
