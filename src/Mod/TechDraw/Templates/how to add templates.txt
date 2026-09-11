@@ -2,7 +2,8 @@ How to Add Custom Page Templates for TechDraw
 ---------------------------------------------
 
 Existing template folders do not need to be reorganized. In the Insert New
-Page task panel, click "Choose Template File…" to select any SVG template.
+Page task panel, select "Choose template manually" in the Standard list,
+then click "Choose Template File…" to select any SVG template.
 The file picker starts in the template directory configured in TechDraw
 preferences and supports flat directories and arbitrary subfolders.
 The "Insert Page Using Browser…" command also remains available.
@@ -21,11 +22,11 @@ The first directory names the standard (for example ISO5457, ASME, or
 MyCompany). The next directory names the paper size (for example A3 or
 Letter). The orientation directory must be named "landscape" or "portrait".
 The panel uses the first SVG file alphabetically in that orientation folder.
-Use "Choose Template File…" to select another variant directly. Changing a
-standard, size, or orientation returns to selecting a template by its folders.
+Use "Choose template manually" to select another variant directly. Selecting
+a standard again restores the size, orientation, and language controls.
 The filename above the preview identifies the currently selected template.
 
-Click "Add Template" to open the configured template directory in the system
+Click "See template folder" to open the configured template directory in the system
 file manager. After adding files or folders, close and reopen the task panel
 to refresh the standard and size lists.
 

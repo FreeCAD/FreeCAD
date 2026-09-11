@@ -37,7 +37,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QEvent>
-#include <QPalette>
+#include <QPainter>
 #endif  // #ifndef _PreComp_
 
 #include "TaskNewPage.h"
@@ -73,8 +73,6 @@ TaskNewPage::TaskNewPage(QWidget* parent)
 {
     ui->setupUi(this);
 
-    ui->svgPreviewWidget->setBackgroundRole(QPalette::Base);
-    ui->svgPreviewWidget->setAutoFillBackground(true);
     ui->svgPreviewWidget->installEventFilter(this);
 
     m_baseTemplateDir = TechDraw::Preferences::defaultTemplateDir();
@@ -93,7 +91,7 @@ TaskNewPage::TaskNewPage(QWidget* parent)
         ui->portraitRadioButton->setChecked(true);
     }
     connect(ui->browseTemplateButton, &QPushButton::clicked, this, &TaskNewPage::onBrowseTemplate);
-    connect(ui->addTemplateButton,
+    connect(ui->templateFolderButton,
             &QPushButton::clicked,
             this,
             &TaskNewPage::onOpenTemplateFolderClicked);
@@ -118,6 +116,8 @@ void TaskNewPage::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        const int manualIndex = ui->standardComboBox->count() - 1;
+        ui->standardComboBox->setItemText(manualIndex, tr("Choose template manually"));
     }
     else {
         QWidget::changeEvent(e);
@@ -130,9 +130,9 @@ void TaskNewPage::updatePreviewAndPath()
     QString currentSize = ui->sizeComboBox->currentText();
     bool isLandscape = ui->landscapeRadioButton->isChecked();
 
-    m_currentTemplateFile = m_browsedTemplateFile.isEmpty()
-        ? findTemplateFile(currentStandard, currentSize, isLandscape)
-        : m_browsedTemplateFile;
+    m_currentTemplateFile = isManualSelection()
+        ? m_browsedTemplateFile
+        : findTemplateFile(currentStandard, currentSize, isLandscape);
 
     if (!m_currentTemplateFile.isEmpty()) {
         QFileInfo tfi(m_currentTemplateFile);
@@ -160,7 +160,7 @@ void TaskNewPage::updatePreviewAndPath()
 
     ui->selectedTemplateLabel->setText(
         QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
-    ui->selectedTemplateLabel->setVisible(!m_currentTemplateFile.isEmpty());
+    ui->selectedTemplateLabel->setVisible(isManualSelection());
 
     ui->svgPreviewWidget->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
     ui->svgPreviewWidget->updateGeometry();
@@ -169,6 +169,13 @@ void TaskNewPage::updatePreviewAndPath()
 
 bool TaskNewPage::eventFilter(QObject* watched, QEvent* event)
 {
+    if (watched == ui->svgPreviewWidget && event->type() == QEvent::Paint) {
+        QPainter painter(ui->svgPreviewWidget);
+        // SVG templates describe ink on paper, independently of the application theme.
+        painter.fillRect(ui->svgPreviewWidget->rect(), Qt::white);
+        ui->svgPreviewWidget->renderer()->render(&painter);
+        return true;
+    }
     if (watched == ui->svgPreviewWidget
         && (event->type() == QEvent::Resize || event->type() == QEvent::Show)) {
         updatePreviewSize();
@@ -195,13 +202,6 @@ void TaskNewPage::populateStandards()
     ui->standardComboBox->clear();
 
     QDir dir(m_baseTemplateDir);
-    if (!dir.exists()) {
-        ui->svgPreviewWidget->setToolTip(tr("Template directory not found: %1").arg(m_baseTemplateDir));
-        ui->standardComboBox->blockSignals(false);
-        updatePreviewAndPath();
-        return;
-    }
-
     QStringList rawEntries =
         dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name | QDir::LocaleAware);
 
@@ -212,8 +212,10 @@ void TaskNewPage::populateStandards()
         }
     }
 
+    ui->standardComboBox->addItems(entries);
+    ui->standardComboBox->addItem(tr("Choose template manually"), true);
+
     if (!entries.isEmpty()) {
-        ui->standardComboBox->addItems(entries);
 
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/TechDraw");
@@ -232,14 +234,33 @@ void TaskNewPage::populateStandards()
         ui->svgPreviewWidget->setToolTip(tr("No standards found in: %1").arg(m_baseTemplateDir));
     }
     ui->standardComboBox->blockSignals(false);
-    populateSizes();
+    onStandardChanged(ui->standardComboBox->currentIndex());
+}
+
+bool TaskNewPage::isManualSelection() const
+{
+    return ui->standardComboBox->currentData().toBool();
 }
 
 void TaskNewPage::onStandardChanged(int index)
 {
     Q_UNUSED(index);
-    m_browsedTemplateFile.clear();
-    populateSizes();
+    const bool manual = isManualSelection();
+    ui->labelSize->setVisible(!manual);
+    ui->sizeComboBox->setVisible(!manual);
+    ui->labelOrientation->setVisible(!manual);
+    ui->landscapeRadioButton->setVisible(!manual);
+    ui->portraitRadioButton->setVisible(!manual);
+    ui->labelLanguage->setVisible(!manual);
+    ui->languageComboBox->setVisible(!manual);
+    ui->browseTemplateButton->setVisible(manual);
+    ui->selectedTemplateLabel->setVisible(manual);
+    if (manual) {
+        updatePreviewAndPath();
+    }
+    else {
+        populateSizes();
+    }
 }
 
 void TaskNewPage::populateSizes()
@@ -293,7 +314,7 @@ void TaskNewPage::onBrowseTemplate()
 {
     const QString workingDirectory = Gui::FileDialog::getWorkingDirectory();
     const QString filename = Gui::FileDialog::getOpenFileName(
-        this, tr("Select a template file"), m_baseTemplateDir,
+        Gui::getMainWindow(), tr("Select a template file"), m_baseTemplateDir,
         Gui::FileDialog::FilterList{{tr("Template"), {"*.svg"}}});
     Gui::FileDialog::setWorkingDirectory(workingDirectory);
     if (!filename.isEmpty()) {
@@ -311,13 +332,11 @@ void TaskNewPage::onOpenTemplateFolderClicked()
 void TaskNewPage::onSizeChanged(int index)
 {
     Q_UNUSED(index);
-    m_browsedTemplateFile.clear();
     updatePreviewAndPath();
 }
 
 void TaskNewPage::onOrientationChanged()
 {
-    m_browsedTemplateFile.clear();
     if (ui->landscapeRadioButton->isChecked() || ui->portraitRadioButton->isChecked()) {
         updatePreviewAndPath();
     }
@@ -405,7 +424,7 @@ bool TaskNewPage::acceptPageCreation()
                                 svgTemplate->getNameInDocument());
 
     page->Template.setValue(svgTemplate);
-    svgTemplate->Language.setValue(ui->languageComboBox->currentIndex());
+    svgTemplate->Language.setValue(isManualSelection() ? 0 : ui->languageComboBox->currentIndex());
 
     const std::string filespecStd =
         TechDraw::DrawUtil::cleanFilespecBackslash(templateFileName.toStdString());
@@ -421,10 +440,12 @@ bool TaskNewPage::acceptPageCreation()
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw");
-    hGrp->SetBool("TemplateLastUsedLandscape", ui->landscapeRadioButton->isChecked());
-    hGrp->SetASCII("TemplateLastUsedStandardName", ui->standardComboBox->currentText().toUtf8().constData());
-    hGrp->SetASCII("TemplateLastUsedSizeName", ui->sizeComboBox->currentText().toUtf8().constData());
-    hGrp->SetInt("TemplateLastUsedLanguage", ui->languageComboBox->currentIndex());
+    if (!isManualSelection()) {
+        hGrp->SetBool("TemplateLastUsedLandscape", ui->landscapeRadioButton->isChecked());
+        hGrp->SetASCII("TemplateLastUsedStandardName", ui->standardComboBox->currentText().toUtf8().constData());
+        hGrp->SetASCII("TemplateLastUsedSizeName", ui->sizeComboBox->currentText().toUtf8().constData());
+        hGrp->SetInt("TemplateLastUsedLanguage", ui->languageComboBox->currentIndex());
+    }
 
     return true;
 }
