@@ -48,7 +48,7 @@
         </item>
         <item>
          <property name="text">
-          <string comment="Pattern the body's entire solid">Whole body</string>
+          <string comment="Pattern the body's entire solid">Body</string>
          </property>
         </item>
         <item>

@@ -6234,7 +6234,7 @@ TopoShape& TopoShape::makeElementBoolean(
         _shapes = shapes;
     }
 
-    const auto& inputs = _shapes.size() ? _shapes : shapes;
+    const auto& inputs = !_shapes.empty() ? _shapes : shapes;
     if (inputs.empty()) {
         FC_THROWM(NullShapeException, "Null input shape");
     }
