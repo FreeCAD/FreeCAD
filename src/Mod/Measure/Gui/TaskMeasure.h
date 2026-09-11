@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
+#include <Mod/Measure/Gui/MeasureSnapManager.h>
 #include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
 
 
@@ -91,6 +92,10 @@ private:
     QComboBox* unitSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
+    QComboBox* snap1Switch {nullptr};
+    QComboBox* snap2Switch {nullptr};
+    QLabel* snap1Label {nullptr};
+    QLabel* snap2Label {nullptr};
     QAction* autoSaveAction {nullptr};
     QAction* newMeasurementBehaviourAction {nullptr};
     QToolButton* mSettings {nullptr};
@@ -110,6 +115,11 @@ private:
     void createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
+    void setSnapPossible(bool possible);
+    void applySnapMode(int slot);
+    void applySnapModesToObject();
+    void refreshSnapRows(const App::MeasureSelection& selection);
+    void updateSnapPreviewMode();
     void initViewObject(Measure::MeasureBase* measure);
     void syncDisplayUnit();
     void refreshResult();
@@ -121,7 +131,10 @@ private:
     bool delta = true;
     bool mAutoSave = false;
     bool mGreedySelection = false;
+    std::size_t mPickedCount {0};
     Gui::Document* mTargetDoc;
+
+    MeasureSnapManager mSnapManager;
 };
 
 }  // namespace MeasureGui
