@@ -306,8 +306,8 @@ void FreehandBSpline::setPointTangent(int index, const std::string& subname)
             throw Base::ValueError("Choose an edge or face belonging to the locked reference.");
         }
         const auto& locks = SupportPointIndices.getValues();
-        object = Support.getValues(
-        )[std::distance(locks.begin(), std::find(locks.begin(), locks.end(), index))];
+        object
+            = Support.getValues()[std::distance(locks.begin(), std::find(locks.begin(), locks.end(), index))];
     }
     for (size_t i = 0; i < indices.size(); ++i) {
         if (indices[i] == index) {

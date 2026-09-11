@@ -229,8 +229,10 @@ FreehandBSplineEditor::FreehandBSplineEditor(ViewProviderFreehandBSpline* provid
                 subname = subs.empty() ? std::string() : subs.front();
             }
             if (!reference) {
-                throw Base::ValueError("Select a reference vertex, edge or face in the view, then "
-                                       "press Lock to.");
+                throw Base::ValueError(
+                    "Select a reference vertex, edge or face in the view, then "
+                    "press Lock to."
+                );
             }
             feature->setPointSupport(*selectedPoints.begin(), reference, subname);
             applyPoints(feature->Points.getValues());
@@ -731,8 +733,10 @@ void FreehandBSplineEditor::refresh()
             auto combo = qobject_cast<QComboBox*>(table->cellWidget(i, 1));
             if (!combo) {
                 combo = new QComboBox;
-                combo->setToolTip(tr("Follow an edge tangent or the tangent plane of a face. "
-                                     "None leaves the spline direction unconstrained."));
+                combo->setToolTip(
+                    tr("Follow an edge tangent or the tangent plane of a face. "
+                       "None leaves the spline direction unconstrained.")
+                );
                 table->setCellWidget(i, 1, combo);
                 connect(combo, qOverload<int>(&QComboBox::activated), this, [this, combo, i] {
                     const auto objects = feature->TangentSupport.getValues();
@@ -773,8 +777,9 @@ void FreehandBSplineEditor::refresh()
             const auto& tangentIndices = feature->TangentPointIndices.getValues();
             for (size_t j = 0; j < tangentIndices.size(); ++j) {
                 if (tangentIndices[j] == i) {
-                    const auto value = QString::fromStdString(feature->TangentSupport.getSubValues(
-                    )[j]);
+                    const auto value = QString::fromStdString(
+                        feature->TangentSupport.getSubValues()[j]
+                    );
                     int selected = combo->findData(value);
                     if (selected < 0) {
                         combo->addItem(value, value);
@@ -1235,8 +1240,7 @@ bool FreehandBSplineEditor::editCoordinateAt(const QPointF& position)
         spin->setUnit(Base::Unit::Length);
         spin->setRange(-1e12, 1e12);
         spin->setValue(feature->Points.getValues()[coordinatePoint][coordinateAxis]);
-        spin->setToolTip(tr("Point %1 - %2").arg(coordinatePoint + 1).arg(QChar('X' + coordinateAxis))
-        );
+        spin->setToolTip(tr("Point %1 - %2").arg(coordinatePoint + 1).arg(QChar('X' + coordinateAxis)));
         spin->resize(spin->sizeHint().expandedTo(QSize(140, 0)));
         const auto bounds = viewer->getGLWidget()->size();
         // Like EditableDatumLabel, center the editor at the label and clamp it to the view.
