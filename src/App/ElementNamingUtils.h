@@ -60,11 +60,10 @@ namespace Data
  */
 
 /** Element name encoding scheme version number
-    *
-    * Increase this version if there is major change in encoding scheme.
-    * Opening a document containing a mismatched version number will cause the
-    * element map to be regenerated after recompute
-    */
+*   Increase this version if there is major change in encoding scheme.
+*   Opening a document containing a mismatched version number will cause the
+*   element map to be regenerated after recompute
+*/
 
 constexpr const int   ELEMENT_NAME_ENCODING_VERSION     = 15;
 

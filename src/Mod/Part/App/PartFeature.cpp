@@ -360,7 +360,8 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
             if (loopNamePair.name == searchName
-                || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
+                || Feature::doNamesMatch(searchName, loopNamePair.name, true))
+            {
                 ret.push_back(loopNamePair);
             }
         }

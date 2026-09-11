@@ -62,7 +62,6 @@ struct ShapeHasher;
 class TopoShape;
 class TopoShapeCache;
 using TopoShapeMap = std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher>;
-using IncludedNameMap = std::unordered_map<TopoDS_Shape, std::pair<size_t, Data::MappedName>, ShapeHasher, ShapeHasher>;
 
 /** Controls whether shape-making operations preserve mapped element names. */
 enum class ElementMapPolicy
@@ -113,6 +112,25 @@ public:
 
     TopoDS_Shape Shape;
 };
+
+struct PartExport IncludedHistoryMapValue {
+    const Part::TopoShape* incomingShape;
+    Data::IndexedName incomingShapeElementIdx;
+    Data::MappedName incomingShapeElementName;
+
+    IncludedHistoryMapValue() = default;
+
+    IncludedHistoryMapValue(
+        const TopoShape* newIncomingShape,
+        const Data::IndexedName& newIncomingShapeElementIdx,
+        const Data::MappedName& newIncomingShapeElementName
+    ) : incomingShape(newIncomingShape),
+        incomingShapeElementIdx(newIncomingShapeElementIdx),
+        incomingShapeElementName(newIncomingShapeElementName)
+    { };
+};
+
+using IncludedHistoryMap = std::unordered_map<TopoDS_Shape, IncludedHistoryMapValue, ShapeHasher, ShapeHasher>;
 
 /// When tracing an element's history, one can either stop the trace when the element's type
 /// changes, or continue tracing the history through the change. This enumeration replaces a boolean
@@ -1813,9 +1831,9 @@ public:
         QVector<Data::MappedElement>& names
     ) const;
 
-    void mapSubElement(const TopoShape& other, const char* op = nullptr, bool forceHasher = false, IncludedNameMap* nameMap = nullptr);
-    void mapSubElement(const std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedNameMap* nameMap = nullptr);
-    void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedNameMap* nameMap = nullptr) const;
+    void mapSubElement(const TopoShape& other, const char* op = nullptr, bool forceHasher = false, IncludedHistoryMap* nameMap = nullptr);
+    void mapSubElement(const std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedHistoryMap* nameMap = nullptr);
+    void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr, IncludedHistoryMap* nameMap = nullptr) const;
     bool hasPendingElementMap() const;
 
     void flushElementMap() const override;

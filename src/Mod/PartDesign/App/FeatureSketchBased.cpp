@@ -130,6 +130,9 @@ ProfileBased::ProfileBased()
         App::Prop_None,
         "Allow multiple faces in profile"
     );
+
+    Profile.useMultipleMatchedNames(true);
+    Profile.allowDuplicateLinks(false);
 }
 
 short ProfileBased::mustExecute() const
