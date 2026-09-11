@@ -135,6 +135,7 @@ PartExport bool extentAlong(
 /// True if the loop's first and last point meet within `tolerance`.
 PartExport bool isClosed(const std::vector<Base::Vector3d>& loop, double tolerance);
 
+
 /// Hatch lines across a cap that is already triangulated.
 ///
 /// Every triangle is material, so any crossing is inside - no parity, no closed

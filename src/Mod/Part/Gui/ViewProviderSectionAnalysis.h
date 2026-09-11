@@ -126,6 +126,14 @@ public:
     /// through the editor, so a restored file or a script can put anything here.
     static constexpr double minHatchSpacing = 0.001;
 
+    /// Hatch lines spacings across the model.
+    static constexpr double hatchLinesAcrossModel = 120.0;
+
+    /// The spacing to hatch at: the property, or one derived from the model when
+    /// the property is left at zero. Zero rather than a number so a section made
+    /// from Python follows the model too, not only one made by the command.
+    double effectiveHatchSpacing();
+
     /// Visually distinct default colours, cycled by index, so successive
     /// sections and the bodies within one are easy to tell apart.
     static App::Material paletteColor(std::size_t index);

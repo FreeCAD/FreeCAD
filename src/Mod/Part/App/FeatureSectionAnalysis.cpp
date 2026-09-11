@@ -51,11 +51,15 @@
 #include <cmath>
 #include <cstring>
 #include <functional>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/GroupExtension.h>
+#include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/Part.h>
 #include <Base/Console.h>
 
 #include "FaceMakerBullseye.h"
@@ -348,6 +352,80 @@ std::vector<App::DocumentObject*> SectionAnalysis::distinctSourceParts(
         }
     });
     return parts;
+}
+
+bool SectionAnalysis::canBeSectioned(const App::DocumentObject* obj)
+{
+    if (!obj || obj->isDerivedFrom(SectionAnalysis::getClassTypeId())) {
+        return false;
+    }
+
+    // Find the folder the sections live in, if there is one.
+    if (const auto* group = dynamic_cast<const App::DocumentObjectGroup*>(obj)) {
+        if (!group->getObjectsOfType(SectionAnalysis::getClassTypeId()).empty()) {
+            return false;
+        }
+    }
+
+    return isEffectivelyVisible(obj);
+}
+
+std::vector<App::DocumentObject*> SectionAnalysis::defaultSources(App::Document* doc)
+{
+    std::vector<App::DocumentObject*> sources;
+    if (!doc) {
+        return sources;
+    }
+
+    for (auto* obj : doc->getObjects()) {
+        if (!obj->isDerivedFrom(Feature::getClassTypeId())
+            && !obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+            continue;
+        }
+        // Skip objects claimed inside a Body or a Part. Their container is the
+        // candidate, not the internal feature.
+        if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+            continue;
+        }
+        if (canBeSectioned(obj)) {
+            sources.push_back(obj);
+        }
+    }
+
+    // Whatever one candidate already links to is not a candidate of its own. An
+    // assembly holds Links to parts that also sit loose at the top of the tree,
+    // so both arrive here: every part is then sectioned twice, once at its
+    // assembled placement and once where the original stands, and the pair cuts
+    // to nothing. Only this fallback needs it - an explicit selection is meant.
+    std::unordered_set<const App::DocumentObject*> linked;
+    std::unordered_set<const App::DocumentObject*> visited;
+    std::function<void(App::DocumentObject*)> collectLinked = [&](App::DocumentObject* obj) {
+        if (!obj || !visited.insert(obj).second) {
+            return;
+        }
+        for (auto* child : obj->getOutList()) {
+            if (!child) {
+                continue;
+            }
+            if (auto* target = child->getLinkedObject(true); target && target != child) {
+                linked.insert(target);
+                collectLinked(target);
+            }
+            collectLinked(child);
+        }
+    };
+    for (auto* src : sources) {
+        collectLinked(src);
+    }
+    sources.erase(
+        std::remove_if(
+            sources.begin(),
+            sources.end(),
+            [&linked](App::DocumentObject* obj) { return linked.count(obj) > 0; }
+        ),
+        sources.end()
+    );
+    return sources;
 }
 
 bool SectionAnalysis::sourceBoundingBox(Bnd_Box& bbox) const

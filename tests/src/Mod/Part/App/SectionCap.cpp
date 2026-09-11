@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <numbers>
 
 #include <Mod/Part/App/SectionCap.h>
 
@@ -294,6 +295,74 @@ double totalLength(const std::vector<Segment>& segments)
 }
 
 }  // namespace
+
+TEST(SectionCapChain, testASliverAtTheStartDoesNotStealTheOutline)
+{
+    // Arrange - a cut grazing a chamfer leaves a pair of near coincident
+    // segments in the soup. Seeded first, the walk closes on them because their
+    // ends are within tolerance of each other, and the outline they belong to
+    // is left without them. Which segment is seeded first is an accident of the
+    // triangle order, which is why the same body sections cleanly one moment
+    // and shatters the next.
+    auto seg = [](double x0, double y0, double x1, double y1) {
+        return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
+    };
+    const std::vector<Segment> segments = {
+        seg(0, 0, 0.005, 0),           // the sliver, first in the list
+        seg(0.005, 0, 0.0001, 0.0001),
+        seg(0.0001, 0.0001, 10, 0),    // the outline it belongs to
+        seg(10, 0, 10, 10),
+        seg(10, 10, 0, 10),
+        seg(0, 10, 0, 0),
+    };
+
+    // Act
+    const auto loops = chainLoops(segments, 0.01);
+
+    // Assert - one outline that spans the square, not a sliver plus wreckage
+    ASSERT_EQ(loops.size(), 1U);
+    EXPECT_TRUE(Part::SectionCap::isClosed(loops.front(), 0.01));
+    double span = 0.0;
+    for (std::size_t i = 0; i + 1 < loops.front().size(); ++i) {
+        span += Base::Distance(loops.front()[i], loops.front()[i + 1]);
+    }
+    EXPECT_GT(span, 30.0) << "the loop should go round the square, not sit in a corner";
+}
+
+TEST(SectionCapChain, testTwoLoopsTouchingAtAPointStayTwoLoops)
+{
+    // Arrange - two squares meeting at the origin, as a cross section does
+    // wherever a body pinches or a hole reaches its outer wall. Four segment
+    // ends meet at that point, so the walk has to pick the one that stays on
+    // the boundary it is already tracing.
+    auto edges = [](double x0, double y0, double x1, double y1) {
+        return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
+    };
+    const std::vector<Segment> segments = {
+        edges(0, 0, 1, 0),    edges(1, 0, 1, 1),    edges(1, 1, 0, 1),    edges(0, 1, 0, 0),
+        edges(0, 0, -1, 0),   edges(-1, 0, -1, -1), edges(-1, -1, 0, -1), edges(0, -1, 0, 0),
+    };
+
+    // Act
+    const auto loops = chainLoops(segments, 1e-6);
+
+    // Assert - two squares, each closed, neither straying into the other
+    ASSERT_EQ(loops.size(), 2U);
+    for (const auto& loop : loops) {
+        EXPECT_TRUE(Part::SectionCap::isClosed(loop, 1e-6));
+        // Both squares meet at the origin, so the loop's first point says
+        // nothing about which one it is. What matters is that it never holds
+        // points from both.
+        bool reachesPositive = false;
+        bool reachesNegative = false;
+        for (const auto& p : loop) {
+            reachesPositive = reachesPositive || p.x > 0.5 || p.y > 0.5;
+            reachesNegative = reachesNegative || p.x < -0.5 || p.y < -0.5;
+        }
+        EXPECT_NE(reachesPositive, reachesNegative)
+            << "loop straddles both squares, so the walk crossed at the shared point";
+    }
+}
 
 TEST(SectionCapFill, testASquareIsFilledWithItsOwnArea)
 {

@@ -197,6 +197,9 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
         segmentsByEndpoint[cellOf(segments[i].end, tolerance)].push_back(i);
     }
 
+    // Chain length before its ends count as closure.
+    constexpr double closureTravel = 4.0;
+
     std::vector<bool> used(segments.size(), false);
     const double tolSq = tolerance * tolerance;
 
@@ -232,6 +235,7 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
 
         std::vector<Base::Vector3d> loop {segments[seed].start, segments[seed].end};
         Base::Vector3d tail = segments[seed].end;
+        double travelled = Base::Distance(segments[seed].start, tail);
 
         while (true) {
             const std::size_t next = findNext(tail);
@@ -241,10 +245,13 @@ std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
             used[next] = true;
             // walk on from whichever end of the found segment is further away
             const bool startMatches = Base::DistanceP2(segments[next].start, tail) <= tolSq;
-            tail = startMatches ? segments[next].end : segments[next].start;
+            const Base::Vector3d ahead = startMatches ? segments[next].end : segments[next].start;
+            travelled += Base::Distance(tail, ahead);
+            tail = ahead;
             loop.push_back(tail);
 
-            if (Base::DistanceP2(tail, loop.front()) <= tolSq) {
+            if (travelled > closureTravel * tolerance
+                && Base::DistanceP2(tail, loop.front()) <= tolSq) {
                 break;  // closed
             }
         }

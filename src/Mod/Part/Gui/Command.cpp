@@ -25,6 +25,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
+#include <unordered_set>
 
 #include <QFileInfo>
 #include <QPointer>
@@ -2473,28 +2475,6 @@ CmdPartSectionAnalysis::CmdPartSectionAnalysis()
     sPixmap = "Part_SectionAnalysis";
 }
 
-namespace
-{
-/// A section of a section means nothing, and leaving one selected in the tree
-/// is an easy way to feed it in as a source.
-bool canBeSectioned(const App::DocumentObject* obj)
-{
-    if (!obj || obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())) {
-        return false;
-    }
-
-    // The folder the sections live in, once there is one. Selecting it would
-    // otherwise feed every section made so far back in as a source.
-    if (const auto* group = dynamic_cast<const App::DocumentObjectGroup*>(obj)) {
-        if (!group->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).empty()) {
-            return false;
-        }
-    }
-
-    return Part::SectionAnalysis::isEffectivelyVisible(obj);
-}
-}  // namespace
-
 void CmdPartSectionAnalysis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -2505,25 +2485,14 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     auto sel = Gui::Selection().getSelectionEx();
     for (auto& selObj : sel) {
         auto* obj = selObj.getObject();
-        if (canBeSectioned(obj)) {
+        if (Part::SectionAnalysis::canBeSectioned(obj)) {
             sources.push_back(obj);
         }
     }
     if (sources.empty()) {
-        auto* doc = App::GetApplication().getActiveDocument();
-        for (auto* obj : doc->getObjects()) {
-            if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
-                || obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-                // Skip objects claimed inside a Bodies or Parts. Their container is
-                // the candidate, not the internal feature.
-                if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
-                    continue;
-                }
-                if (canBeSectioned(obj)) {
-                    sources.push_back(obj);
-                }
-            }
-        }
+        sources = Part::SectionAnalysis::defaultSources(
+            App::GetApplication().getActiveDocument()
+        );
     }
 
     if (sources.empty()) {
@@ -2626,14 +2595,12 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // Center the offset on the combined bounding box along the normal. Emitting
     // the resolved number keeps the recorded macro reproducing this exact plane.
     Bnd_Box bbox;
-    double modelDiagonal = 0.0;
     if (Part::SectionAnalysis::sourceBoundingBox(sources, bbox)) {
         double xmin, ymin, zmin, xmax, ymax, zmax;
         bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
         const double offset = (xmin + xmax) / 2 * nx + (ymin + ymax) / 2 * ny
             + (zmin + zmax) / 2 * nz;
         doCommand(Doc, "App.getDocument('%s').ActiveObject.PlaneOffset = %.12g", docName.c_str(), offset);
-        modelDiagonal = std::hypot(std::hypot(xmax - xmin, ymax - ymin), zmax - zmin);
     }
 
     // Don't commitCommand() here - leave the transaction open.
@@ -2653,17 +2620,6 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 vp->ShapeAppearance.setValues(
                     {PartGui::ViewProviderSectionAnalysis::paletteColor(count - 1)}
                 );
-
-                // Hatch spacing follows the model. To keep it more realistic
-                constexpr double hatchLinesAcrossModel = 120.0;
-                if (modelDiagonal > 0.0) {
-                    vp->HatchSpacing.setValue(
-                        std::max(
-                            modelDiagonal / hatchLinesAcrossModel,
-                            PartGui::ViewProviderSectionAnalysis::minHatchSpacing
-                        )
-                    );
-                }
 
                 // If the sources come from multiple parts, enable per-solid colors
                 const bool severalParts
