@@ -162,6 +162,18 @@ public:
         const App::DocumentObject* exclude
     );
 
+    /// True if this object is a sensible thing to feed a section.
+    ///
+    /// Rejects anything living in sections folder.
+    static bool canBeSectioned(const App::DocumentObject* obj);
+
+    /// What to section when the user has selected nothing.
+    ///
+    /// Lives here rather than in the command so it can be tested: every
+    /// regression this rule has produced was in choosing sources, and a command
+    /// body reachable only through the GUI cannot be pinned by a test.
+    static std::vector<App::DocumentObject*> defaultSources(App::Document* doc);
+
     /// Combined bounding box of the visible source shapes. False if empty.
     bool sourceBoundingBox(Bnd_Box& bbox) const;
     static bool sourceBoundingBox(const std::vector<App::DocumentObject*>& objs, Bnd_Box& bbox);

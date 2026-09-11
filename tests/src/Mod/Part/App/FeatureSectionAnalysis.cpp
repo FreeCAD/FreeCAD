@@ -587,6 +587,87 @@ TEST_F(FeatureSectionAnalysisTest, testFaceMappingComesBack)
     App::GetApplication().closeDocument(reopened->getName());
 }
 
+TEST_F(FeatureSectionAnalysisTest, testTheClipTargetsSurviveAReload)
+{
+    // Arrange - the list the view provider installs clip planes against, and
+    // harvests triangles for, is resolved from Source rather than stored. A
+    // reopened section that resolves to nothing draws nothing: no cap, no
+    // hatching, an empty outline where the cut was.
+    tests::TempDirectory tmp;
+    _section->Source.setValues({_boxes[0], _boxes[2]});
+    _doc->recompute();
+    const std::size_t before =
+        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
+    ASSERT_GT(before, 0U);
+
+    // Act
+    App::Document* reopened = nullptr;
+    auto* sa = saveAndReopen(tmp.path().string(), reopened);
+    ASSERT_NE(sa, nullptr);
+
+    // Assert
+    const auto parts = Part::SectionAnalysis::distinctSourceParts(sa->Source.getValues(), sa);
+    EXPECT_EQ(parts.size(), before);
+    for (auto* part : parts) {
+        EXPECT_NE(part, nullptr);
+        EXPECT_EQ(part->getDocument(), reopened) << "resolved into the old document";
+    }
+    App::GetApplication().closeDocument(reopened->getName());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAContainerSourceStillResolvesAfterReload)
+{
+    // Arrange - the same, but reached through a container, which is how a real
+    // document arrives: one entry in Source standing for many bodies.
+    tests::TempDirectory tmp;
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    container->addObject(_boxes[2]);
+    _section->Source.setValues({container});
+    _doc->recompute();
+    const std::size_t before =
+        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
+    ASSERT_EQ(before, 2U);
+
+    // Act
+    App::Document* reopened = nullptr;
+    auto* sa = saveAndReopen(tmp.path().string(), reopened);
+    ASSERT_NE(sa, nullptr);
+
+    // Assert - still two bodies, not the container and not nothing
+    const auto parts = Part::SectionAnalysis::distinctSourceParts(sa->Source.getValues(), sa);
+    EXPECT_EQ(parts.size(), 2U);
+    App::GetApplication().closeDocument(reopened->getName());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testATiltedPlaneComesBackExactly)
+{
+    // Arrange - a plane left at an angle, as the task panel writes it. The panel
+    // shows no preset for such a plane by design; what must not drift is the
+    // plane itself.
+    tests::TempDirectory tmp;
+    const Base::Vector3d tilted(0.0, -0.984807753012, 0.173648177667);
+    _section->Source.setValues({_boxes[0]});
+    _section->PlaneNormal.setValue(tilted);
+    _section->PlaneOffset.setValue(0.9);
+    _doc->recompute();
+    const std::size_t facesBefore = faces(_section).size();
+
+    // Act
+    App::Document* reopened = nullptr;
+    auto* sa = saveAndReopen(tmp.path().string(), reopened);
+    ASSERT_NE(sa, nullptr);
+    sa->execute();
+
+    // Assert - same plane, same cut
+    EXPECT_NEAR(sa->PlaneNormal.getValue().x, tilted.x, 1e-12);
+    EXPECT_NEAR(sa->PlaneNormal.getValue().y, tilted.y, 1e-12);
+    EXPECT_NEAR(sa->PlaneNormal.getValue().z, tilted.z, 1e-12);
+    EXPECT_NEAR(sa->PlaneOffset.getValue(), 0.9, 1e-12);
+    EXPECT_EQ(faces(sa).size(), facesBefore);
+    App::GetApplication().closeDocument(reopened->getName());
+}
+
 TEST_F(FeatureSectionAnalysisTest, testMovingThePlaneAfterReloadStillCuts)
 {
     // Arrange
@@ -1139,6 +1220,31 @@ TEST_F(FeatureSectionAnalysisTest, testAContainerIsBrokenIntoThePartsInsideIt)
     EXPECT_EQ(parts.size(), 3);
 }
 
+TEST_F(FeatureSectionAnalysisTest, testNestedContainersResolveToTheirLeaves)
+{
+    // Arrange - what the view provider asks for when it installs clip planes in
+    // Display mode, where execute() publishes no SourceParts at all. Clipping a
+    // container is useless: the clip node goes under that object's own view
+    // provider, and only a GeoFeatureGroup nests its children there, so a group
+    // or an Arch BuildingPart would be clipped while its contents were not.
+    auto* outer = _doc->addObject<App::DocumentObjectGroup>();
+    auto* inner = _doc->addObject<App::DocumentObjectGroup>();
+    outer->addObject(inner);
+    inner->addObject(_boxes[0]);
+    inner->addObject(_boxes[2]);
+    _doc->recompute();
+
+    // Act
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({outer}, _section);
+
+    // Assert - the two boxes, neither of the groups
+    ASSERT_EQ(parts.size(), 2U);
+    EXPECT_NE(std::find(parts.begin(), parts.end(), _boxes[0]), parts.end());
+    EXPECT_NE(std::find(parts.begin(), parts.end(), _boxes[2]), parts.end());
+    EXPECT_EQ(std::find(parts.begin(), parts.end(), outer), parts.end());
+    EXPECT_EQ(std::find(parts.begin(), parts.end(), inner), parts.end());
+}
+
 TEST_F(FeatureSectionAnalysisTest, testABodyIsOnePartNotABagOfFeatures)
 {
     // A PartDesign Body owns an Origin, so it inherits GeoFeatureGroupExtension
@@ -1265,4 +1371,101 @@ TEST_F(FeatureSectionAnalysisTest, testAnUnnamedPropertyIsNotTreatedAsGeometry)
     // Another object's property is not this section's Source, however it is named.
     EXPECT_FALSE(_section->invalidatesHarvest(_boxes[1]->Shape));
 }
+
+// --- what the shipped example documents section ---------------------------
+//
+// A characterisation test, not a specification: the numbers are what the code
+// produces today, recorded so that a change to source selection or traversal
+// has to be argued for rather than noticed later in a screenshot. Every rule
+// tried for defaultSources() so far has been right for some of these files and
+// wrong for others - one candidate rule took ArchDetail from 181 faces to none
+// and collapsed BIMExample from 94 bodies to 1 - and nothing in the suite
+// noticed.
+
+namespace
+{
+struct ExampleExpectation
+{
+    const char* document;
+    std::size_t sources;   //!< what defaultSources() picks with nothing selected
+    std::size_t parts;     //!< distinct bodies the section attributes faces to
+    std::size_t faces;     //!< faces in the cap, cut through the middle in X
+};
+
+// clang-format off
+const ExampleExpectation exampleExpectations[] = {
+    {"ArchDetail", 135, 128, 181},
+    {"AssemblyExample", 1, 13, 16},
+    {"BIMExample", 112, 94, 66},
+    {"EngineBlock", 10, 2, 4},
+    {"FEMExample", 0, 0, 0},
+    {"PartDesignExample", 1, 1, 1},
+    {"draft_test_objects", 45, 3, 0},
+};
+// clang-format on
+}  // namespace
+
+class SectionAnalysisExamplesTest: public ::testing::TestWithParam<ExampleExpectation>
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+    }
+};
+
+TEST_P(SectionAnalysisExamplesTest, sectionsTheDocumentAsRecorded)
+{
+    const ExampleExpectation& expected = GetParam();
+    const std::string path = App::Application::getHomePath() + "/share/examples/"
+        + expected.document + ".FCStd";
+    if (!std::filesystem::exists(path)) {
+        GTEST_SKIP() << "example not installed: " << path;
+    }
+
+    App::Document* doc = App::GetApplication().openDocument(path.c_str());
+    ASSERT_NE(doc, nullptr);
+
+    const auto sources = Part::SectionAnalysis::defaultSources(doc);
+    EXPECT_EQ(sources.size(), expected.sources);
+
+    std::size_t parts = 0;
+    std::size_t faces = 0;
+    if (!sources.empty()) {
+        Bnd_Box bbox;
+        if (Part::SectionAnalysis::sourceBoundingBox(sources, bbox) && !bbox.IsVoid()) {
+            double xmin, ymin, zmin, xmax, ymax, zmax;
+            bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+
+            auto* section = doc->addObject<Part::SectionAnalysis>();
+            section->Source.setValues(sources);
+            section->PlaneNormal.setValue(Base::Vector3d(1, 0, 0));
+            section->PlaneOffset.setValue((xmin + xmax) / 2.0);
+            section->ResultMode.setValue("Geometry");
+            section->execute();
+
+            parts = section->SourceParts.getValues().size();
+            const TopoDS_Shape shape = section->Shape.getShape().getShape();
+            if (!shape.IsNull()) {
+                for (TopExp_Explorer xp(shape, TopAbs_FACE); xp.More(); xp.Next()) {
+                    ++faces;
+                }
+            }
+        }
+    }
+    EXPECT_EQ(parts, expected.parts);
+    EXPECT_EQ(faces, expected.faces);
+
+    App::GetApplication().closeDocument(doc->getName());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    Examples,
+    SectionAnalysisExamplesTest,
+    ::testing::ValuesIn(exampleExpectations),
+    [](const ::testing::TestParamInfo<ExampleExpectation>& info) {
+        return std::string(info.param.document);
+    }
+);
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

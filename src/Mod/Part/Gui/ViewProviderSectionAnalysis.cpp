@@ -296,10 +296,10 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
     HatchLineWidth.setConstraints(&hatchWidthRange);
     ADD_PROPERTY_TYPE(
         HatchSpacing,
-        (2.0),
+        (0.0),
         "Section Analysis",
         App::Prop_None,
-        "Distance between the hatching lines"
+        "Distance between the hatching lines. Zero follows the size of the model."
     );
     ADD_PROPERTY_TYPE(
         AutoHideHatching,
@@ -513,7 +513,6 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
         }
     }
     if (owners.empty()) {
-        harvestValid = true;
         return;
     }
 
@@ -769,13 +768,24 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
     Base::Vector3d v;
     Part::SectionAnalysis::planeFrame(n, u, v);
 
-    const double spacing = HatchSpacing.getValue();
+    const double spacing = effectiveHatchSpacing();
     const bool wantHatch = hatchingEnabled() && std::isfinite(spacing) && spacing >= minHatchSpacing;
 
     // Deliberately far looser than Precision::Confusion(). Coin holds vertices
     // as float, so points on a half metre part agree only to about 1e-4 mm;
     // chaining at OCCT's 1e-7 would leave every tessellation seam unjoined.
-    constexpr double chainTolerance = 1e-3;
+    Base::Vector3d sourceCentre;
+
+    double sourceDiagonal = 0.0;
+
+    if (!sourceBounds(sourceCentre, sourceDiagonal)) {
+        sourceDiagonal = 0.0;
+    }
+
+    constexpr double chainToleranceFloor = 1e-3;
+    constexpr double chainToleranceRatio = 2e-6;
+    const double chainTolerance =
+        std::max(chainToleranceFloor, sourceDiagonal * chainToleranceRatio);
 
     // Walking the scene graph is most of the cost and does not depend on the
     // plane, so it is done once and kept.
@@ -805,7 +815,26 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             continue;
         }
 
-        const auto loops = Part::SectionCap::chainLoops(segments, chainTolerance);
+        // Tolerance from the mesh, not from the model box.
+        double meshTolerance = chainTolerance;
+        {
+            std::vector<double> chord;
+            chord.reserve(segments.size());
+            for (const auto& seg : segments) {
+                const double len = Base::Distance(seg.start, seg.end);
+                if (len > 0.0) {
+                    chord.push_back(len);
+                }
+            }
+            if (!chord.empty()) {
+                const std::size_t mid = chord.size() / 2;
+                std::nth_element(chord.begin(), chord.begin() + mid, chord.end());
+                constexpr double chordFraction = 0.05;
+                meshTolerance = std::max(chainTolerance, chord[mid] * chordFraction);
+            }
+        }
+
+        const auto loops = Part::SectionCap::chainLoops(segments, meshTolerance);
         if (loops.empty()) {
             continue;
         }
@@ -831,12 +860,13 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         std::vector<std::vector<Base::Vector3d>> closedLoops;
         closedLoops.reserve(loops.size());
         for (const auto& loop : loops) {
-            if (Part::SectionCap::isClosed(loop, chainTolerance)) {
+            if (Part::SectionCap::isClosed(loop, meshTolerance)) {
                 closedLoops.push_back(loop);
             }
         }
 
         const auto fill = Part::SectionCap::fillLoops(closedLoops, u, v);
+
         if (!fill.indices.empty()) {
             std::vector<SbVec3f> fillPoints;
             fillPoints.reserve(fill.points.size());
@@ -920,7 +950,7 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
                     static_cast<float>(p.z)
                 );
             }
-            if (Part::SectionCap::isClosed(loop, chainTolerance)) {
+            if (Part::SectionCap::isClosed(loop, meshTolerance)) {
                 lineIndex.push_back(lineIndex[lineIndex.size() - loop.size()]);
             }
             lineIndex.push_back(SO_END_LINE_INDEX);
@@ -991,9 +1021,7 @@ void ViewProviderSectionAnalysis::finishRestoring()
     if (Visibility.getValue()) {
         installClipPlane();
 
-        // attach() already tried this, but it runs before the source view
-        // providers have their scene graphs, so it harvested an empty walk.
-        // This is the first moment there is anything to slice.
+        harvestValid = false;
         updateCapFromScene();
         updateRemovedMaterial();
     }
@@ -1022,7 +1050,15 @@ void ViewProviderSectionAnalysis::installClipPlane()
     // sits under a different accumulated transform.
     std::vector<App::DocumentObject*> targets = feat->SourceParts.getValues();
     if (targets.empty()) {
-        targets = feat->Source.getValues();
+        // Leaves are resolved here instead of in the Display mode.
+        // execute() skips the boolean outright. 
+        // Clipping the Source
+        // entries themselves only works when every one of them is a leaf: a clip
+        // plane goes under the object's own view provider, and only a
+        // GeoFeatureGroup nests its children there. A plain group or an Arch
+        // BuildingPart leaves them at the document root, so a container source
+        // clipped a subtree holding none of the geometry, and nothing was cut.
+        targets = Part::SectionAnalysis::distinctSourceParts(feat->Source.getValues(), feat);
     }
     for (auto* obj : targets) {
         if (!obj || obj == feat) {
@@ -1107,7 +1143,14 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
 
         Base::Vector3d localNormal = gNormal;
         Base::Vector3d localPoint = gPoint;
-        if (obj && obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (obj) {
+            // Asked of every object, not only a GeoFeature. 
+            // An assembly is built from App::Link, which is a DocumentObject 
+            // carrying LinkExtension and is not a GeoFeature at all.
+            // So the frame correction was skipped for exactly the objects that need it most
+
+            // Safe to ask unconditionally: getGlobalPlacement() wants a Placement
+            // property, not a type, and hands back the identity without one.
             const Base::Placement inv = App::GeoFeature::getGlobalPlacement(obj).inverse();
             inv.getRotation().multVec(gNormal, localNormal);  // rotate the normal only
             inv.multVec(gPoint, localPoint);                  // full transform for the point
@@ -1212,6 +1255,21 @@ void ViewProviderSectionAnalysis::refreshSourceBBoxCache()
     const gp_Pnt hi = bbox.CornerMax();
     sourceBBox = Base::BoundBox3d(lo.X(), lo.Y(), lo.Z(), hi.X(), hi.Y(), hi.Z());
     sourceBBoxValid = true;
+}
+
+double ViewProviderSectionAnalysis::effectiveHatchSpacing()
+{
+    const double stored = HatchSpacing.getValue();
+    if (std::isfinite(stored) && stored >= minHatchSpacing) {
+        return stored;
+    }
+
+    Base::Vector3d centre;
+    double diagonal = 0.0;
+    if (!sourceBounds(centre, diagonal) || !(diagonal > 0.0)) {
+        return 0.0;
+    }
+    return std::max(diagonal / hatchLinesAcrossModel, minHatchSpacing);
 }
 
 bool ViewProviderSectionAnalysis::sourceBounds(Base::Vector3d& centre, double& diagonal)
@@ -1402,7 +1460,7 @@ void ViewProviderSectionAnalysis::updateHatchGeometry()
 
     // PropertyLength only clamps to >= 0 through the editor, and setValue() from
     // C++ or a restored file bypasses even that, so anything can land here
-    const double spacing = HatchSpacing.getValue();
+    const double spacing = effectiveHatchSpacing();
     if (!std::isfinite(spacing) || spacing < minHatchSpacing) {
         return;
     }
