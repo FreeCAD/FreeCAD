@@ -39,13 +39,15 @@
 #include <ShapeFix_Face.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeFix_Wireframe.hxx>
+#include <ShapeUpgrade_UnifySameDomain.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_Real.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
-
+#include <BOPTools_AlgoTools.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 #include "FeatureProjectOnSurface.h"
 #include "ShapeAnalysis_FreeBoundsFix.h"
@@ -133,6 +135,7 @@ TopoDS_Face ProjectOnSurface::getSupportFace() const
 
 std::vector<TopoDS_Shape> ProjectOnSurface::getProjectionShapes() const
 {
+
     std::vector<TopoDS_Shape> shapes;
     auto objects = Projection.getValues();
     auto subvalues = Projection.getSubValues();
@@ -367,39 +370,53 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
         return {};
     }
 
-    // find the combined bounding box of source and target
-    Bnd_Box bounds;
-    BRepBndLib::Add(sourceFace, bounds);
-    BRepBndLib::Add(supportFace, bounds);
-    if (bounds.IsVoid()) {
-        return {};
-    }
 
-    // extrude the source face towards the target
-    const auto length = 2.0 * Max(Sqrt(bounds.SquareExtent()), 1.0);
-    gp_Vec extrusion(direction);
-    extrusion.Multiply(length);
+    TopoShape prism;
+    prism.makeElementPrismUntil(
+        TopoShape(),                 // no base
+        TopoShape(sourceFace),       // profile
+        TopoShape(),                 // don't need support
+        TopoShape(supportFace),      // target
+        direction,
+        TopoShape::PrismMode::None,
+        false                        // needs to be false to avoid filling holes/ or failing partial overlaps
+    );
 
-    // and make prism for boolean common op to trim
-    BRepPrimAPI_MakePrism prismMaker(sourceFace, extrusion);
-    if (!prismMaker.IsDone()) {
-        return {};
-    }
-
-    // boolean common operation to get trimmed face
-    FCBRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
+    // get trimmed face
+    FCBRepAlgoAPI_Common common(supportFace, prism.getShape());
     common.Build();
     if (!common.IsDone()) {
         return {};
     }
 
-    // we only want the first intersection in case of curved target that may have multiple hits
+    // connect faces across seams
+    // for example, when projecting onto a cylinder with a seam that splits the prjected face
+    // it would only return a face on one side of the seam, so we conenct patches then find the nearest
+    TopTools_ListOfShape patches;
+    BOPTools_AlgoTools::MakeConnexityBlocks(common.Shape(), TopAbs_EDGE, TopAbs_FACE, patches);
+
+
+   // find the closest face to the proejction source
     auto nearestDistance = Precision::Infinite();
     TopoDS_Face nearestFace;
-    // traverse faces to find the nearest intersection
-    for (TopExp_Explorer explorer(common.Shape(), TopAbs_FACE); explorer.More(); explorer.Next()) {
-        const auto candidate = TopoDS::Face(explorer.Current());
-        if (!BRepCheck_Analyzer(candidate).IsValid()) {
+    for (const auto& patch : patches) {
+        // Note: we use unifysamedomain instead of removesplitter here b/c
+        // it succeeds in unifying edges (of projection) across cylinderical seam
+        ShapeUpgrade_UnifySameDomain unify(patch, true, true, false);
+        unify.Build();
+
+        TopExp_Explorer faces(unify.Shape(), TopAbs_FACE);
+
+        if (!faces.More()) {
+            continue;
+        }
+
+        const auto candidate = TopoDS::Face(faces.Current());
+
+        faces.Next();
+
+        // filter out multi-face results
+        if (faces.More() || !BRepCheck_Analyzer(candidate).IsValid()) {
             continue;
         }
 
