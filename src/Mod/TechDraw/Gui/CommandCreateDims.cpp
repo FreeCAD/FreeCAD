@@ -2339,6 +2339,18 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
     dim->setReferences2d(references2d);
     dim->setReferences3d(references3d);
 
+    ViewProviderDimension* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
+    if (vp) {
+        if (dimType == "Diameter") {
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
+                vp->StandardAndStyle.setValue(ViewProviderDimension::STD_STYLE_ASME_REFERENCING);
+            }
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_REFERENCING) {
+                vp->RenderingExtent.setValue(ViewProviderDimension::REND_EXTENT_REDUCED);
+            }
+        }
+    }
+
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.activeDocument().%s.addView(App.activeDocument().%s)",
                             PageName.c_str(),
