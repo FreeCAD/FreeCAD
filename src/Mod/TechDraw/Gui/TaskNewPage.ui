@@ -81,6 +81,26 @@
      </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="browseTemplateButton">
+     <property name="text">
+      <string>Choose Template File…</string>
+     </property>
+     <property name="toolTip">
+      <string>Selects an SVG template from any folder, including existing template directories</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="selectedTemplateLabel">
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxPreview">
      <property name="title">
       <string>Preview</string>

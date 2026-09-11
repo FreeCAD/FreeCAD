@@ -61,15 +61,17 @@ public:
         };
         const auto locale = locales.constFind(languageName);
         if (locale == locales.cend() || *locale == QLatin1String("en")) {
-            return {};
+            return key;
         }
 
         // Do not install this translator: the drawing language is independent of the UI language.
         QTranslator translator;
         if (!translator.load(QStringLiteral(":/translations/TechDraw_%1.qm").arg(*locale))) {
-            return {};
+            return key;
         }
-        return translator.translate("TechDraw::TemplateTranslator", key.toUtf8().constData());
+        const QString translated =
+            translator.translate("TechDraw::TemplateTranslator", key.toUtf8().constData());
+        return translated.isEmpty() ? key : translated;
     }
 };
 }  // namespace
