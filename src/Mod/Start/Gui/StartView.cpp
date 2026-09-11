@@ -241,7 +241,7 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     auto draft = gsl::owner<NewFileButton*>(new NewFileButton(
         {tr("2D Draft"), tr("Creates a 2D Draft document"), QLatin1String(":/icons/DraftWorkbench.svg")}
     ));
-    auto arch = gsl::owner<NewFileButton*>(new NewFileButton(
+    auto bim = gsl::owner<NewFileButton*>(new NewFileButton(
         {tr("BIM/Architecture"),
          tr("Creates an architectural project"),
          QLatin1String(":/icons/BIMWorkbench.svg")}
@@ -251,7 +251,7 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     layout->addWidget(partDesign);
     layout->addWidget(assembly);
     layout->addWidget(draft);
-    layout->addWidget(arch);
+    layout->addWidget(bim);
     layout->addWidget(newEmptyFile);
     layout->addWidget(openFile);
 
@@ -260,7 +260,7 @@ void StartView::configureNewFileButtons(QLayout* layout) const
     connect(partDesign, &QPushButton::clicked, this, &StartView::newPartDesignFile);
     connect(assembly, &QPushButton::clicked, this, &StartView::newAssemblyFile);
     connect(draft, &QPushButton::clicked, this, &StartView::newDraftFile);
-    connect(arch, &QPushButton::clicked, this, &StartView::newArchFile);
+    connect(bim, &QPushButton::clicked, this, &StartView::newBimFile);
 }
 
 void StartView::configureFileCardWidget(QListView* fileCardWidget)
@@ -355,7 +355,7 @@ void StartView::newDraftFile()
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newArchFile()
+void StartView::newBimFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     auto* doc = App::GetApplication().getActiveDocument();
