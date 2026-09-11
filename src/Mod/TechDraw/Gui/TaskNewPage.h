@@ -61,6 +61,7 @@ private Q_SLOTS:
     void onOrientationChanged();
 
 private:
+    bool isManualSelection() const;
     void populateStandards();
     void populateSizes();
     void updatePreviewSize();
