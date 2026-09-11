@@ -55,6 +55,7 @@ public Q_SLOTS:
     void onOpenTemplateFolderClicked();
 
 private Q_SLOTS:
+    void onBrowseTemplate();
     void onStandardChanged(int index);
     void onSizeChanged(int index);
     void onOrientationChanged();
@@ -68,6 +69,7 @@ private:
     std::unique_ptr<Ui_TaskNewPage> ui;
     QString m_baseTemplateDir;
     QString m_currentTemplateFile;
+    QString m_browsedTemplateFile;
     QButtonGroup* m_orientationGroup;
 };
 
