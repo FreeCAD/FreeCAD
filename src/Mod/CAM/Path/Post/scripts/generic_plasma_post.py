@@ -490,9 +490,9 @@ class GenericPlasma(PostProcessor):
         self._force_rapid_feeds(postables)
 
     def get_sanity_checks(self, job):
-        """Plasma cutter specific sanity checks."""
+        """Plasma cutter specific sanity checks, plus the machine-level checks."""
         Path.Log.track("GenericPlasma.get_sanity_checks() called")
-        squawks = []
+        squawks = super().get_sanity_checks(job)
 
         # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_generic_plasma_sanity_checks_integration)
         Path.Log.track("Adding test squawk from GenericPlasma")
