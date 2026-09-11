@@ -123,6 +123,15 @@ class TestResolvingPostProcessorName(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     PathCommand._resolve_post_processor_name(self.job)
 
+    def test050(self):
+        # Test that dismissing the selection dialog aborts quietly
+        if not FreeCAD.GuiUp:
+            return
+        self.job.PostProcessor = ""
+        with patch("Path.Post.Command.DlgSelectPostProcessor") as mock_dlg:
+            mock_dlg.return_value.exec_.return_value = None
+            self.assertIsNone(PathCommand._resolve_post_processor_name(self.job))
+
 
 class TestPostProcessorFactory(unittest.TestCase):
     """Test creation of postprocessor objects."""

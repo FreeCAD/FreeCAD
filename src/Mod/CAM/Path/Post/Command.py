@@ -56,6 +56,10 @@ def _resolve_post_processor_name(job):
         valid_name = Path.Preferences.defaultPostProcessor()
     elif FreeCAD.GuiUp:
         valid_name = DlgSelectPostProcessor().exec_()  # Ensure DlgSelectPostProcessor is defined
+        if valid_name is None:
+            # The user dismissed the selection dialog. That is not an error,
+            # it just means there is nothing to post process.
+            return None
     else:
         valid_name = None
 
