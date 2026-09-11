@@ -142,7 +142,8 @@ void TaskNewPage::updatePreviewAndPath()
                 QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
         }
         else {
-            ui->svgPreviewWidget->load(QString());
+            ui->svgPreviewWidget->load(
+                QByteArrayLiteral("<svg xmlns=\"http://www.w3.org/2000/svg\"/>"));
             ui->svgPreviewWidget->setToolTip(
                 tr("Invalid or not readable: %1")
                     .arg(QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile)));
@@ -150,21 +151,21 @@ void TaskNewPage::updatePreviewAndPath()
         }
     }
     else {
-        ui->svgPreviewWidget->load(QString());
-        ui->svgPreviewWidget->setToolTip(
-            tr("Invalid or not readable: %1")
-                .arg(QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile)));
-        m_currentTemplateFile.clear();
+        ui->svgPreviewWidget->load(
+            QByteArrayLiteral("<svg xmlns=\"http://www.w3.org/2000/svg\"/>"));
+        ui->svgPreviewWidget->setToolTip(QString());
     }
 
 
     ui->selectedTemplateLabel->setText(
-        QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
+        m_currentTemplateFile.isEmpty() ? QString()
+                                      : QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
     ui->selectedTemplateLabel->setVisible(isManualSelection());
 
     ui->svgPreviewWidget->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
     ui->svgPreviewWidget->updateGeometry();
     updatePreviewSize();
+    Q_EMIT templateValidityChanged(isTemplateValid());
 }
 
 bool TaskNewPage::eventFilter(QObject* watched, QEvent* event)
@@ -384,7 +385,8 @@ bool TaskNewPage::isTemplateValid() const
         return false;
     }
     QFileInfo tfi(m_currentTemplateFile);
-    return tfi.exists() && tfi.isReadable() && tfi.isFile();
+    return tfi.exists() && tfi.isReadable() && tfi.isFile()
+        && ui->svgPreviewWidget->renderer()->isValid();
 }
 
 bool TaskNewPage::acceptPageCreation()
@@ -454,6 +456,15 @@ TaskDlgNewPage::TaskDlgNewPage() : Gui::TaskView::TaskDialog()
     , m_widget(new TaskNewPage())
 {
     addTaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_PageDefault"), m_widget);
+}
+
+void TaskDlgNewPage::modifyStandardButtons(QDialogButtonBox* buttons)
+{
+    if (auto* okButton = buttons->button(QDialogButtonBox::Ok)) {
+        okButton->setEnabled(m_widget->isTemplateValid());
+        connect(m_widget, &TaskNewPage::templateValidityChanged,
+                okButton, &QWidget::setEnabled, Qt::UniqueConnection);
+    }
 }
 
 void TaskDlgNewPage::open()
