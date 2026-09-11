@@ -85,6 +85,9 @@ public:
     HLRAlgo_Projector getProjector(const gp_Ax2& viewAxis) const;
     void projectShape(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis);
+    // The prepared input and camera used by HLR, also used for shaded display.
+    const TopoDS_Shape& getProjectionShape() const { return m_projectionShape; }
+    const gp_Ax2& getProjectionAxis() const { return m_projectionAxis; }
     static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS, bool invertYRequired = true);
     static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape, const gp_Ax2& projCS);
     static TopoDS_Shape projectFace(const TopoDS_Shape& face, const gp_Ax2& CS);
@@ -132,6 +135,8 @@ public:
     int addCenterLine(TechDraw::BaseGeomPtr bg, std::string tag);
 
 protected:
+    TopoDS_Shape m_projectionShape;
+    gp_Ax2 m_projectionAxis;
     //HLR output
     TopoDS_Shape visHard;
     TopoDS_Shape visOutline;
