@@ -145,7 +145,7 @@ void TaskTransformedParameters::setupUI()
             break;
     }
 
-    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -231,7 +231,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
-            std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+            std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValue();
             const auto or_iter = std::ranges::find(originals, selectedObject);
             if (selectionMode == SelectionMode::AddFeature) {
                 if (or_iter == originals.end()) {
@@ -321,10 +321,6 @@ void TaskTransformedParameters::onModeChanged(int index)
 
     ui->groupFeatureList->setEnabled(mode != Mode::WholeShape);
 
-    if (mode == Mode::WholeShape) {
-        ui->listWidgetFeatures->clear();
-    }
-
     setupTransaction();
     recomputeFeature();
 }
@@ -383,7 +379,7 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 void TaskTransformedParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     int currentRow = ui->listWidgetFeatures->currentRow();
     if (currentRow < 0) {
         Base::Console().error("PartDesign Pattern: No feature selected for removing.\n");
