@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <set>
 
 #include <QDir>
 #include <QFileInfo>
@@ -301,11 +302,22 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
     }
 }
 
-void PropertyLinkBase::updateAllElementReferences(bool reverse)
+void PropertyLinkBase::updateAllElementReferences(const std::vector<App::DocumentT>& newDocs, bool reverse)
 {
+    std::set<App::Document*> newDocSet;
+    for (const auto& doc : newDocs) {
+        if (auto* d = doc.getDocument()) {
+            newDocSet.insert(d);
+        }
+    }
+
     for (auto reference : _ElementRefMap) {
         for (auto prop : reference.second) {
             if (prop->getContainer()) {
+                const auto docObj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+                if (!docObj || !newDocSet.count(docObj->getDocument())) {
+                    continue;
+                }
                 try {
                     prop->updateElementReference(reference.first, reverse, true);
                 }
