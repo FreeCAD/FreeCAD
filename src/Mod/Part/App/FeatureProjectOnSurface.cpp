@@ -373,13 +373,13 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
 
     TopoShape prism;
     prism.makeElementPrismUntil(
-        TopoShape(),                 // no base
-        TopoShape(sourceFace),       // profile
-        TopoShape(),                 // don't need support
-        TopoShape(supportFace),      // target
+        TopoShape(),             // no base
+        TopoShape(sourceFace),   // profile
+        TopoShape(),             // don't need support
+        TopoShape(supportFace),  // target
         direction,
         TopoShape::PrismMode::None,
-        false                        // needs to be false to avoid filling holes/ or failing partial overlaps
+        false  // needs to be false to avoid filling holes/ or failing partial overlaps
     );
 
     // get trimmed face
@@ -396,7 +396,7 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
     BOPTools_AlgoTools::MakeConnexityBlocks(common.Shape(), TopAbs_EDGE, TopAbs_FACE, patches);
 
 
-   // find the closest face to the proejction source
+    // find the closest face to the proejction source
     auto nearestDistance = Precision::Infinite();
     TopoDS_Face nearestFace;
     for (const auto& patch : patches) {
