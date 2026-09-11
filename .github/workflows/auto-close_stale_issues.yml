@@ -14,7 +14,6 @@ on:  # yamllint disable-line rule:truthy
 permissions:
   contents: read
   issues: write  # for actions/stale to close stale issues
-  pull-requests: write # for actions/stale to close stale pull requests
 
 jobs:
   stale:
@@ -35,7 +34,7 @@ jobs:
           days-before-issue-close: 14
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          operations-per-run: 200  # max num of ops per run
+          operations-per-run: 250  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           only-issue-types: 'Bug'
@@ -62,7 +61,7 @@ jobs:
           days-before-issue-close: 14
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          operations-per-run: 100  # max num of ops per run
+          operations-per-run: 250  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           only-issue-types: 'Bug'
@@ -90,7 +89,7 @@ jobs:
           days-before-issue-close: 60
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          operations-per-run: 100  # max num of ops per run
+          operations-per-run: 250  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           only-issue-types: 'Bug'
@@ -111,27 +110,3 @@ jobs:
               - **Forum**: https://forum.freecad.org
               - **Blog**: https://blog.freecad.org
               - **Wiki**: https://wiki.freecad.org
-
-      - name: '🧹 Tag & close inactive PRs'
-        id: inactive_pr
-        uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10.4.0
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-issue-stale: -1
-          days-before-issue-close: -1
-          days-before-pr-stale: 120
-          days-before-pr-close: 60
-          operations-per-run: 150  # max num of ops per run
-          stale-pr-label: 'Status: Stale'
-          close-pr-label: 'Status: Auto-closing'
-          exempt-pr-labels: 'Needs backport,Priority: High,Priority: Critical,no-auto-close'
-          remove-stale-when-updated: true
-          ascending: true
-          stale-pr-message: |
-            Thanks for helping improve FreeCAD!
-            This pull request hasn’t seen activity in a while. We automatically check each PR after 120 days without activity to keep the repository tidy.
-
-            If the PR is still relevant, let us know by adding a comment.
-            Otherwise, we’ll close this PR automatically in 60 days.
-
-            If you would like to keep working on this pull request, we advice to rebase it on current main branch, ask feedback from users or maintainers and engage with the community to get it forward.
