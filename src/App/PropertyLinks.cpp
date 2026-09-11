@@ -305,10 +305,6 @@ void PropertyLinkBase::updateAllElementReferences(bool reverse)
 {
     for (auto& reference : _ElementRefMap) {
         for (auto& prop : reference.second) {
-            if (prop != nullptr) {
-                continue;
-            }
-
             if (prop->getContainer()) {
                 try {
                     prop->updateElementReference(reference.first, reverse, true);
