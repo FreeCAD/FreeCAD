@@ -1618,9 +1618,7 @@ class PostProcessor:
                 if output_tool_length_offset and "T" in cmd.Parameters:
                     tool_num = cmd.Parameters["T"]
                     Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
-                    changes.extend(
-                        self._expand_tool_length_offset_post_command(item, cmd)
-                    )
+                    changes.extend(self._expand_tool_length_offset_post_command(item, cmd))
 
                 if changes:
                     return 1, changes
