@@ -31,6 +31,12 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoVertexProperty.h>
+#include <QImage>
+#include <Inventor/nodes/SoTransparencyType.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoCoordinate3.h>
 
 #include "SoFCBackgroundGradient.h"
 
@@ -98,6 +104,7 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
 
     gradientSwitch->addChild(linearSeparator);
     gradientSwitch->addChild(radialSeparator);
+    addOverlay();
     ensureGeometry();
 }
 
@@ -321,4 +328,44 @@ void SoFCBackgroundGradient::updateRadialGeometry(const GeometryState& state)
         radialRingVertexProperty->vertex.setNum(0);
         radialRingVertexProperty->orderedRGBA.setNum(0);
     }
+}
+
+void SoFCBackgroundGradient::addOverlay(void)
+{
+    constexpr float default_transparency{0.95f};
+
+    static const QImage glImage{QImage{":/images/bg_overlay.png"}.convertToFormat(QImage::Format_RGBA8888)};
+    const SbVec2s size(static_cast <short> (glImage.width()), static_cast <short> (glImage.height()));
+    constexpr int nc = 4;
+
+    auto transType = new SoTransparencyType;
+    transType->value = SoTransparencyType::BLEND;
+    addChild(transType);
+
+    auto material = new SoMaterial;
+    material->transparency.setValue(default_transparency);
+    material->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+    addChild(material);
+
+    auto texture = new SoTexture2;
+    texture->image.setValue(size, nc, glImage.bits());
+    addChild(texture);
+
+    auto texCoords = new SoTextureCoordinate2;
+    texCoords->point.set1Value(0, SbVec2f{0.0f, 0.0f}); // bottom-left
+    texCoords->point.set1Value(1, SbVec2f{1.0f, 0.0f}); // bottom-right
+    texCoords->point.set1Value(2, SbVec2f{1.0f, 1.0f}); // top-right
+    texCoords->point.set1Value(3, SbVec2f{0.0f, 1.0f}); // top-left
+    addChild(texCoords);
+
+    auto coords = new SoCoordinate3;
+    coords->point.set1Value(0, SbVec3f{-1.0f, -1.0f, 0.0f});
+    coords->point.set1Value(1, SbVec3f{ 1.0f, -1.0f, 0.0f});
+    coords->point.set1Value(2, SbVec3f{ 1.0f,  1.0f, 0.0f});
+    coords->point.set1Value(3, SbVec3f{-1.0f,  1.0f, 0.0f});
+    addChild(coords);
+
+    auto faceSet = new SoFaceSet;
+    faceSet->numVertices.setValue(4);
+    addChild(faceSet);
 }

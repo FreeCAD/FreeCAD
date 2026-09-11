@@ -456,4 +456,7 @@
         <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
         <file alias="PRIVACY_POLICY">../../../PRIVACY_POLICY.md</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>bg_overlay.png</file>
+    </qresource>
 </RCC>

@@ -87,6 +87,7 @@ private:
     GeometryState currentGeometryState() const;
     void updateLinearGeometry(const GeometryState& state);
     void updateRadialGeometry(const GeometryState& state);
+    void addOverlay(void);
 
     static constexpr int CircleSegments = 32;
 
