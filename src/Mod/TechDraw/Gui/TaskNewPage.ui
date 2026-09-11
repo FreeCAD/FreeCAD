@@ -29,7 +29,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="labelSize">
         <property name="text">
-         <string>Page Size</string>
+         <string>Page size</string>
         </property>
        </widget>
       </item>
@@ -110,7 +110,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>0</height> <!-- Adjusted spacer -->
+       <height>0</height>
       </size>
      </property>
     </spacer>

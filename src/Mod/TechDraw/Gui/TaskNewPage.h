@@ -45,11 +45,11 @@ public:
     bool isTemplateValid() const;
     void updatePreviewAndPath();
 
-    // For TaskDlgNewPage to delegate accept
     bool acceptPageCreation();
 
 protected:
     void changeEvent(QEvent* e) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 public Q_SLOTS:
     void onOpenTemplateFolderClicked();
@@ -62,6 +62,7 @@ private Q_SLOTS:
 private:
     void populateStandards();
     void populateSizes();
+    void updatePreviewSize();
     QString findTemplateFile(const QString& standard, const QString& size, bool landscape) const;
 
     std::unique_ptr<Ui_TaskNewPage> ui;
