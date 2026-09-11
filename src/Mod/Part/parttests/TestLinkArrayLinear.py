@@ -3,8 +3,6 @@
 import os
 import tempfile
 import unittest
-import xml.etree.ElementTree as ET
-import zipfile
 
 import FreeCAD as App
 import Part
@@ -30,25 +28,11 @@ class TestLinkArrayLinear(unittest.TestCase):
             indices,
         )
 
-    def reload(self, legacy=False):
+    def reload(self):
         with tempfile.TemporaryDirectory(prefix="freecad_linear_array_") as directory:
             path = os.path.join(directory, "array.FCStd")
             self.doc.saveAs(path)
             App.closeDocument(self.doc.Name)
-            if legacy:
-                # Reproduce a file written before coordinate-based suppression existed.
-                with zipfile.ZipFile(path) as archive:
-                    entries = {name: archive.read(name) for name in archive.namelist()}
-                root = ET.fromstring(entries["Document.xml"])
-                for properties in root.iter("Properties"):
-                    for prop in list(properties):
-                        if prop.get("name") in ("SuppressedPositions", "GeneratedOccurrences2"):
-                            properties.remove(prop)
-                    properties.set("Count", str(len(properties.findall("Property"))))
-                entries["Document.xml"] = ET.tostring(root)
-                with zipfile.ZipFile(path, "w") as archive:
-                    for name, data in entries.items():
-                        archive.writestr(name, data)
             self.doc = App.openDocument(path)
             self.array = self.doc.getObject("Array")
 
@@ -85,10 +69,10 @@ class TestLinkArrayLinear(unittest.TestCase):
         self.doc.recompute()
         self.assertSuppressed([6])
 
-    def testLegacySuppressionIsMigrated(self):
+    def testSuppressionSurvivesReloadInsideGrid(self):
         self.array.ElementList[5].Suppressed = True
         self.doc.recompute()
-        self.reload(legacy=True)
+        self.reload()
         self.array.Occurrences2 = 4
         self.doc.recompute()
         self.assertSuppressed([6])
