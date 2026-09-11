@@ -113,12 +113,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="addTemplateButton">
+    <widget class="QPushButton" name="templateFolderButton">
      <property name="text">
-      <string>Add Template</string>
+      <string>See template folder</string>
      </property>
      <property name="toolTip">
-      <string>Opens a file browser to the templates folder where custom SVG templates can be added, following a standard/size/portrait or landscape folder hierarchy</string>
+      <string>Opens the configured template folder in the file manager</string>
      </property>
     </widget>
    </item>
