@@ -308,9 +308,9 @@ TEST(SectionCapChain, testASliverAtTheStartDoesNotStealTheOutline)
         return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
     };
     const std::vector<Segment> segments = {
-        seg(0, 0, 0.005, 0),           // the sliver, first in the list
+        seg(0, 0, 0.005, 0),  // the sliver, first in the list
         seg(0.005, 0, 0.0001, 0.0001),
-        seg(0.0001, 0.0001, 10, 0),    // the outline it belongs to
+        seg(0.0001, 0.0001, 10, 0),  // the outline it belongs to
         seg(10, 0, 10, 10),
         seg(10, 10, 0, 10),
         seg(0, 10, 0, 0),
@@ -339,8 +339,14 @@ TEST(SectionCapChain, testTwoLoopsTouchingAtAPointStayTwoLoops)
         return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
     };
     const std::vector<Segment> segments = {
-        edges(0, 0, 1, 0),    edges(1, 0, 1, 1),    edges(1, 1, 0, 1),    edges(0, 1, 0, 0),
-        edges(0, 0, -1, 0),   edges(-1, 0, -1, -1), edges(-1, -1, 0, -1), edges(0, -1, 0, 0),
+        edges(0, 0, 1, 0),
+        edges(1, 0, 1, 1),
+        edges(1, 1, 0, 1),
+        edges(0, 1, 0, 0),
+        edges(0, 0, -1, 0),
+        edges(-1, 0, -1, -1),
+        edges(-1, -1, 0, -1),
+        edges(0, -1, 0, 0),
     };
 
     // Act

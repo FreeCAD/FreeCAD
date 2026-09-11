@@ -596,8 +596,8 @@ TEST_F(FeatureSectionAnalysisTest, testTheClipTargetsSurviveAReload)
     tests::TempDirectory tmp;
     _section->Source.setValues({_boxes[0], _boxes[2]});
     _doc->recompute();
-    const std::size_t before =
-        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
+    const std::size_t before
+        = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
     ASSERT_GT(before, 0U);
 
     // Act
@@ -625,8 +625,8 @@ TEST_F(FeatureSectionAnalysisTest, testAContainerSourceStillResolvesAfterReload)
     container->addObject(_boxes[2]);
     _section->Source.setValues({container});
     _doc->recompute();
-    const std::size_t before =
-        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
+    const std::size_t before
+        = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section).size();
     ASSERT_EQ(before, 2U);
 
     // Act
@@ -1387,9 +1387,9 @@ namespace
 struct ExampleExpectation
 {
     const char* document;
-    std::size_t sources;   //!< what defaultSources() picks with nothing selected
-    std::size_t parts;     //!< distinct bodies the section attributes faces to
-    std::size_t faces;     //!< faces in the cap, cut through the middle in X
+    std::size_t sources;  //!< what defaultSources() picks with nothing selected
+    std::size_t parts;    //!< distinct bodies the section attributes faces to
+    std::size_t faces;    //!< faces in the cap, cut through the middle in X
 };
 
 // clang-format off

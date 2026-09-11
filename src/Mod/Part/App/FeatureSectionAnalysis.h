@@ -53,6 +53,13 @@ public:
     /// side at document level.
     App::PropertyLinkList Source;
     App::PropertyVector PlaneNormal;
+
+    /// The orientation the two tilt angles are measured from.
+    ///
+    /// A tilt bakes itself into PlaneNormal, so without this a reopened section
+    /// cannot say whether it began as XZ plus ten degrees or was always askew.
+    /// A hint for the panel: PlaneNormal stays the plane of record.
+    App::PropertyVector AngleBase;
     App::PropertyDistance PlaneOffset;
     App::PropertyBool FlipCut;
 

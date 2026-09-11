@@ -2490,9 +2490,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         }
     }
     if (sources.empty()) {
-        sources = Part::SectionAnalysis::defaultSources(
-            App::GetApplication().getActiveDocument()
-        );
+        sources = Part::SectionAnalysis::defaultSources(App::GetApplication().getActiveDocument());
     }
 
     if (sources.empty()) {
