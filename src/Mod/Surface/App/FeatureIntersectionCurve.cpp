@@ -138,7 +138,8 @@ App::DocumentObjectExecReturn* IntersectionCurve::execute()
         return StdReturn;
     }
     catch (const Standard_Failure& error) {
-        return new App::DocumentObjectExecReturn(error.what());
+        // OCCT 7.6 (Ubuntu) does not provide Standard_Failure::what().
+        return new App::DocumentObjectExecReturn(error.GetMessageString());
     }
     catch (const Base::Exception& error) {
         return new App::DocumentObjectExecReturn(error.what());
