@@ -138,15 +138,12 @@ QString DrawSVGTemplate::processTemplate()
         return QString();
     }
 
-    // 1 - Translate static fields.
     TechDraw::TemplateTranslator translator;
     QStringList placeholderKeys = translator.getAllKeys();
 
-    // Determine the language name directly from the Language property
     int langEnumIndex = Language.getValue();
     const std::vector<std::string> langEnumVec = Language.getEnumVector();
     const char* langNameCStr = langEnumVec[langEnumIndex].c_str();
-    // Ensure langNameCStr is not null before using. Fallback to "English" if something is wrong.
     QString effectiveLanguageName = QString::fromUtf8(langNameCStr ? langNameCStr : LanguageEnums[0]);
 
     QDomNodeList allTextElements = templateDocument.elementsByTagName(QStringLiteral("text"));
@@ -191,7 +188,6 @@ QString DrawSVGTemplate::processTemplate()
     }
 
 
-    // 2 - Handle editable fields
     XMLQuery query(templateDocument);
     std::map<std::string, std::string> substitutions = EditableTexts.getValues();
     // auto captureTextValues = m_initialTextValues;

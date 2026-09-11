@@ -36,30 +36,24 @@
 #include <QLatin1Char>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QEvent>
+#include <QPalette>
 #endif  // #ifndef _PreComp_
 
 #include "TaskNewPage.h"
-#include "ui_TaskNewPage.h"  // Assuming UI file is TaskNewPage.ui
-
-// FreeCAD Base Includes
+#include "ui_TaskNewPage.h"
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
-
-// FreeCAD App Includes
 #include <App/Application.h>
 #include <App/Document.h>
-
-// FreeCAD Gui Includes
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>             // For Gui::ActiveDocument
-#include <Gui/TaskView/TaskDialog.h>  // For Gui::TaskView::TaskDialog base
-#include <Gui/TaskView/TaskView.h>    // For Gui::TaskView::TaskBox
-#include <Gui/BitmapFactory.h>        // For Gui::BitmapFactory
-
-// TechDraw Includes
+#include <Gui/Document.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/BitmapFactory.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/TemplateTranslator.h>
@@ -71,19 +65,16 @@
 namespace TechDrawGui
 {
 
-//===========================================================================
-// TaskNewPage (Widget)
-//===========================================================================
-
-TaskNewPage::TaskNewPage(QWidget* parent)  // Parent is now typically the TaskBox
+TaskNewPage::TaskNewPage(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui_TaskNewPage())
     , m_orientationGroup(nullptr)
 {
     ui->setupUi(this);
 
-    ui->svgPreviewWidget->setStyleSheet(QString::fromUtf8("QSvgWidget { background-color: white; border: 1px solid black;}"));
-    ui->svgPreviewWidget->ensurePolished();
+    ui->svgPreviewWidget->setBackgroundRole(QPalette::Base);
+    ui->svgPreviewWidget->setAutoFillBackground(true);
+    ui->svgPreviewWidget->installEventFilter(this);
 
     m_baseTemplateDir = TechDraw::Preferences::defaultTemplateDir();
 
@@ -124,11 +115,6 @@ TaskNewPage::TaskNewPage(QWidget* parent)  // Parent is now typically the TaskBo
 
     ui->svgPreviewWidget->show();
     populateStandards();
-
-    // Make sure the preview widget is correctly sized on initial show.
-    QTimer::singleShot(200, this, [this]() {
-        updatePreviewAndPath();
-    });
 }
 
 void TaskNewPage::changeEvent(QEvent* e)
@@ -154,11 +140,10 @@ void TaskNewPage::updatePreviewAndPath()
         if (tfi.isReadable() && tfi.isFile()) {
             ui->svgPreviewWidget->load(m_currentTemplateFile);
             ui->svgPreviewWidget->setToolTip(
-                tr("%1")
-                    .arg(QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile)));
+                QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
         }
         else {
-            ui->svgPreviewWidget->load(QString());  // Clear if not readable/file
+            ui->svgPreviewWidget->load(QString());
             ui->svgPreviewWidget->setToolTip(
                 tr("Invalid or not readable: %1")
                     .arg(QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile)));
@@ -166,7 +151,7 @@ void TaskNewPage::updatePreviewAndPath()
         }
     }
     else {
-        ui->svgPreviewWidget->load(QString());  // Clear preview
+        ui->svgPreviewWidget->load(QString());
         ui->svgPreviewWidget->setToolTip(
             tr("Invalid or not readable: %1")
                 .arg(QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile)));
@@ -176,15 +161,28 @@ void TaskNewPage::updatePreviewAndPath()
 
     ui->svgPreviewWidget->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
     ui->svgPreviewWidget->updateGeometry();
+    updatePreviewSize();
+}
 
-    // There is a problem with the height of the preview widget. It's much too tall.
-    // So we calculate the correct height and manually set it.
+bool TaskNewPage::eventFilter(QObject* watched, QEvent* event)
+{
+    if (watched == ui->svgPreviewWidget
+        && (event->type() == QEvent::Resize || event->type() == QEvent::Show)) {
+        updatePreviewSize();
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
+void TaskNewPage::updatePreviewSize()
+{
     int currentWidgetWidth = ui->svgPreviewWidget->width();
     QSizeF svgSize = ui->svgPreviewWidget->renderer()->defaultSize();
     if (!svgSize.isEmpty() && svgSize.width() > 0) {
         double aspectRatio = svgSize.height() / svgSize.width();
         int calculatedHeight = static_cast<int>(currentWidgetWidth * aspectRatio);
-        ui->svgPreviewWidget->setFixedHeight(calculatedHeight);
+        if (ui->svgPreviewWidget->height() != calculatedHeight) {
+            ui->svgPreviewWidget->setFixedHeight(calculatedHeight);
+        }
     }
 }
 
@@ -216,16 +214,21 @@ void TaskNewPage::populateStandards()
 
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/TechDraw");
-        int index = hGrp->GetInt("TemplateLastUsedStandard", 4); //4 is ISO5457
+        const QString standard = QString::fromStdString(
+            hGrp->GetASCII("TemplateLastUsedStandardName", "ISO5457"));
+        int index = ui->standardComboBox->findText(standard);
+        if (index < 0) {
+            index = ui->standardComboBox->findText(QStringLiteral("ISO5457"));
+        }
+        if (index < 0) {
+            index = 0;
+        }
         ui->standardComboBox->setCurrentIndex(index);
     }
     else {
         ui->svgPreviewWidget->setToolTip(tr("No standards found in: %1").arg(m_baseTemplateDir));
-        // Still call populateSizes and updatePreviewAndPath to clear/update UI state
     }
     ui->standardComboBox->blockSignals(false);
-
-    // Trigger subsequent updates regardless of whether items were added, to handle empty cases
     populateSizes();
 }
 
@@ -243,7 +246,7 @@ void TaskNewPage::populateSizes()
     QString currentStandard = ui->standardComboBox->currentText();
     if (currentStandard.isEmpty()) {
         ui->sizeComboBox->blockSignals(false);
-        updatePreviewAndPath();  // Update preview for empty selection
+        updatePreviewAndPath();
         return;
     }
 
@@ -252,7 +255,7 @@ void TaskNewPage::populateSizes()
         ui->svgPreviewWidget->setToolTip(
             tr("Standard directory not found: %1").arg(standardDir.path()));
         ui->sizeComboBox->blockSignals(false);
-        updatePreviewAndPath();  // Update preview for error
+        updatePreviewAndPath();
         return;
     }
 
@@ -263,16 +266,23 @@ void TaskNewPage::populateSizes()
 
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/TechDraw");
-        int index = hGrp->GetInt("TemplateLastUsedSize", 3); //3 is A3
+        const QString size = QString::fromStdString(
+            hGrp->GetASCII("TemplateLastUsedSizeName", "A3"));
+        int index = ui->sizeComboBox->findText(size);
+        if (index < 0) {
+            index = ui->sizeComboBox->findText(QStringLiteral("A3"));
+        }
+        if (index < 0) {
+            index = 0;
+        }
         ui->sizeComboBox->setCurrentIndex(index);
     }
     else {
         ui->svgPreviewWidget->setToolTip(tr("No sizes found for standard: %1").arg(currentStandard));
-        // Still call updatePreviewAndPath to clear/update UI state
     }
 
     ui->sizeComboBox->blockSignals(false);
-    updatePreviewAndPath();  // Always update preview after size changes (or lack thereof)
+    updatePreviewAndPath();
 }
 
 void TaskNewPage::onOpenTemplateFolderClicked()
@@ -297,40 +307,32 @@ void TaskNewPage::onOrientationChanged()
 QString TaskNewPage::findTemplateFile(const QString& standard, const QString& size, bool landscape) const
 {
     if (standard.isEmpty() || size.isEmpty()) {
-        return QString();  // Not enough information to find a template
+        return QString();
     }
-
-    // Determine the orientation subfolder name
     QString orientationSubfolder =
         landscape ? QStringLiteral("landscape") : QStringLiteral("portrait");
-
-    // Construct the path to the specific orientation directory
-    // m_baseTemplateDir already ends with a slash
-    QString orientationDirPath = m_baseTemplateDir + standard + QLatin1Char('/') + size
-        + QLatin1Char('/') + orientationSubfolder + QLatin1Char('/');
+    QString orientationDirPath = QDir(m_baseTemplateDir).filePath(
+        QStringLiteral("%1/%2/%3").arg(standard, size, orientationSubfolder));
 
     QDir orientationDir(orientationDirPath);
 
     if (!orientationDir.exists()) {
         Base::Console().warning("Template orientation directory not found: %s\n",
         orientationDirPath.toStdString().c_str());
-        return QString();  // Directory for this specific orientation does not exist
+        return QString();
     }
-
-    // List all SVG files in that directory and select first.
     QStringList nameFilters;
-    nameFilters << QStringLiteral("*.svg");  // Find any .svg file
+    nameFilters << QStringLiteral("*.svg");
 
     QStringList files =
         orientationDir.entryList(nameFilters, QDir::Files | QDir::NoSymLinks, QDir::Name);
 
     if (!files.isEmpty()) {
-        // Return the full path to the first SVG file found
         return orientationDir.filePath(files.first());
     }
 
     Base::Console().warning("No SVG file found in: %s\n", orientationDirPath.toStdString().c_str());
-    return QString();  // No SVG template file found in the specified orientation directory
+    return QString();
 }
 
 QString TaskNewPage::getSelectedTemplatePath() const
@@ -347,11 +349,10 @@ bool TaskNewPage::isTemplateValid() const
     return tfi.exists() && tfi.isReadable() && tfi.isFile();
 }
 
-// New methods for TaskDlgNewPage to call
 bool TaskNewPage::acceptPageCreation()
 {
     if (!isTemplateValid()) {
-        Base::Console().warning(tr("A valid template file must be selected to proceed.").toStdString().c_str());
+        Base::Console().warning("%s\n", tr("A valid template file must be selected to proceed.").toStdString().c_str());
         return false;
     }
 
@@ -359,7 +360,7 @@ bool TaskNewPage::acceptPageCreation()
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc || !doc->getDocument()) {
-        Base::Console().warning(tr("No active document found.").toStdString().c_str());
+        Base::Console().warning("%s\n", tr("No active document found.").toStdString().c_str());
         return false;
     }
     App::Document* appDoc = doc->getDocument();
@@ -402,17 +403,12 @@ bool TaskNewPage::acceptPageCreation()
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw");
     hGrp->SetBool("TemplateLastUsedLandscape", ui->landscapeRadioButton->isChecked());
-    hGrp->SetInt("TemplateLastUsedStandard", ui->standardComboBox->currentIndex());
-    hGrp->SetInt("TemplateLastUsedSize", ui->sizeComboBox->currentIndex());
+    hGrp->SetASCII("TemplateLastUsedStandardName", ui->standardComboBox->currentText().toUtf8().constData());
+    hGrp->SetASCII("TemplateLastUsedSizeName", ui->sizeComboBox->currentText().toUtf8().constData());
     hGrp->SetInt("TemplateLastUsedLanguage", ui->languageComboBox->currentIndex());
 
-    return true;  // Indicate success
+    return true;
 }
-
-
-//===========================================================================
-// TaskDlgNewPage (Dialog)
-//===========================================================================
 
 TaskDlgNewPage::TaskDlgNewPage() : Gui::TaskView::TaskDialog()
     , m_widget(new TaskNewPage())
@@ -422,12 +418,12 @@ TaskDlgNewPage::TaskDlgNewPage() : Gui::TaskView::TaskDialog()
 
 void TaskDlgNewPage::open()
 {
-    m_widget->updatePreviewAndPath();  // Ensure UI is current
+    m_widget->updatePreviewAndPath();
 }
 
 bool TaskDlgNewPage::accept()
 {
-    return m_widget->acceptPageCreation();  // Delegate and return success/failure
+    return m_widget->acceptPageCreation();
 }
 
 bool TaskDlgNewPage::reject()
