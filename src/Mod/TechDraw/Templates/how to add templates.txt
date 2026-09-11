@@ -1,74 +1,38 @@
 How to Add Custom Page Templates for TechDraw
 ---------------------------------------------
 
-This guide explains how to add your own SVG page templates to FreeCAD's TechDraw workbench.
+Existing template folders do not need to be reorganized. In the Insert New
+Page task panel, click "Choose Template File…" to select any SVG template.
+The file picker starts in the template directory configured in TechDraw
+preferences and supports flat directories and arbitrary subfolders.
+The "Insert Page Using Browser…" command also remains available.
 
-**Understanding the Folder Structure:**
+To select templates using the Standard, Page size, and Orientation controls,
+organize the configured template directory as follows:
 
-TechDraw organizes templates in a hierarchical structure:
-
-Base Template Directory
-  |
-  +-- [StandardName_1]          (e.g., ISO_5457, ANSI, MyCompanyStandard)
-  |     |
-  |     +-- [PageSizeName_A]    (e.g., A4, A3, Letter, Tabloid, CustomSize1)
-  |     |     |
-  |     |     +-- landscape     (Folder for landscape-oriented templates)
-  |     |     |     |
-  |     |     |     +-- your_template_landscape.svg
-  |     |     |
-  |     |     +-- portrait      (Folder for portrait-oriented templates)
-  |     |           |
-  |     |           +-- your_template_portrait.svg
-  |     |
-  |     +-- [PageSizeName_B]
-  |           |
-  |           +-- landscape
-  |           |     |
-  |           |     +-- ...
-  |           |
-  |           +-- portrait
-  |                 |
-  |                 +-- ...
-  |
-  +-- [StandardName_2]
-        |
-        +-- ... (similar structure)
-
-
-**Key Points:**
-
-*   **StandardName:** This is the top-level grouping, like "ISO_5457", "ANSI", or a custom name like "MyCompanyDesigns". It will appear in the "Standard" dropdown.
-*   **PageSizeName:** Within each standard, this defines a page size, like "A4", "Letter", or "SpecialSize". It will appear in the "Page Size" dropdown.
-*   **landscape / portrait:** These specific folder names are mandatory. They tell TechDraw the orientation of the SVG templates within them.
-*   **SVG Files:** Place your `.svg` template files directly inside the `landscape` or `portrait` folders. The first SVG file found in the selected orientation folder will be used.
-
-**Example: Adding a Custom A3 Landscape Template for a New "MyStd" Standard:**
-
-1.  **Locate your TechDraw template directory.**
-    (You can open this directory by clicking the "Open Template Folder" button in the "Create New Page" task panel).
-
-2.  **Create the folder structure:**
-    Inside your base template directory, create the following folders if they don't already exist:
-
-    ```
-    MyStd/
+    MyCompany/
       A3/
         landscape/
-    ```
+          MyTemplate.svg
+        portrait/
+          MyPortraitTemplate.svg
 
-3.  **Place your SVG file:**
-    Copy your custom A3 landscape SVG template (e.g., `MyCustomA3Landscape.svg`) into the `MyStd/A3/landscape/` folder.
+The first directory names the standard (for example ISO5457, ASME, or
+MyCompany). The next directory names the paper size (for example A3 or
+Letter). The orientation directory must be named "landscape" or "portrait".
+The panel uses the first SVG file alphabetically in that orientation folder.
+Use "Choose Template File…" to select another variant directly. Changing a
+standard, size, or orientation returns to selecting a template by its folders.
+The filename above the preview identifies the currently selected template.
 
-4.  **Restart/Refresh (Important):**
-    *   You may need to close and reopen the "Create New Page" task panel for it to recognize the new standard and size.
+Click "Add Template" to open the configured template directory in the system
+file manager. After adding files or folders, close and reopen the task panel
+to refresh the standard and size lists.
 
-**Naming Conventions:**
-
-*   Standard and size names can be anything, but you must have a landscape or portrait folder in the size folder.
-
-**Important Notes:**
-*   **Translations:** If your template has a title block, if you use the same wording as ISO5457, then it will be translatable out of the box. Else if you add different wordings, you need to add the translations to TemplateTranslator.cpp (and so build yourself unfortunately).
-*   **Hidden Folders:** Any folder name that starts with a period (`.`), such as `.src` or `.backup`, will be ignored and will not appear in the dropdown lists.
-*   **SVG Format:** Ensure your templates are valid SVG files. TechDraw relies on specific editable text fields within the SVG for title blocks. Refer to the HowToExample.svg example file.
-*   **One Template per Orientation:** While you can place multiple SVGs in an orientation folder, the "Create New Page" dialog will typically pick the first one it finds alphabetically for the preview and for creating the page. If you need distinct variations, consider creating separate PageSizeName folders (e.g., A4_Variant1, A4_Variant2).
+Templates must be valid SVG files. See HowToExample.svg for editable title
+block fields. Static labels matching the English ISO5457 labels use the
+selected template language through the TechDraw translation catalogs managed
+in Crowdin. Missing translations keep the English label. The template
+language is independent of the interface language. Adding new translatable
+labels requires marking their English source text in TemplateTranslator.cpp
+and providing translations through the normal translation workflow.
