@@ -6198,7 +6198,7 @@ TopoShape& TopoShape::makeElementBoolean(
         _shapes = shapes;
     }
 
-    const auto& inputs = _shapes.size() ? _shapes : shapes;
+    const auto& inputs = !_shapes.empty() ? _shapes : shapes;
     if (inputs.empty()) {
         FC_THROWM(NullShapeException, "Null input shape");
     }
@@ -6247,7 +6247,16 @@ TopoShape& TopoShape::makeElementBoolean(
 
             std::string message = "Invalid input shape for boolean ";
             message += maker;
+            // message += " on [";
+            // message += shape.shapeName(true);
+            // message += "]:\n";
+            // int j = -1;
+            // for(const auto& s : inputs) {
+            //     message += std::format("[{}] {}\n", (j < i ? "V" : " "), s.shapeName(true));
+            //     j++;
+            // }
             if (!details.str().empty()) {
+                // message += "Details:\n";
                 message += ":\n";
                 message += details.str();
             }

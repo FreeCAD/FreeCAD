@@ -59,8 +59,7 @@ extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
 
-std::array<char const*, 4> transformModeEnums
-    = {"Tool Shapes", "Whole Body", "Feature Result", nullptr};
+std::array<char const*, 4> transformModeEnums = {"Tool Shapes", "Body", "Feature Result", nullptr};
 
 Transformed::Transformed()
 {
@@ -317,16 +316,20 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 
     switch (mode) {
         case Mode::FeatureResult: {
-            std::vector<FeatureShape> shapes(originals.size());
+            std::vector<FeatureShape> shapes;
             App::DocumentObjectExecReturn* ret = computeFeatureShapes(supportShape, originals, shapes);
             if (ret) {
                 return ret;
             }
-            std::vector<TopoShape> compoundShapes(shapes.size());
-            for (auto s : shapes) {
-                compoundShapes.push_back(s.shape);
+            BRep_Builder builder;
+            TopoDS_Compound compound;
+
+            builder.MakeCompound(compound);
+            for (const auto& s : shapes) {
+                builder.Add(compound, s.shape.getShape());
             }
-            PreviewShape.setValue(TopoShape().makeCompound(compoundShapes));
+
+            PreviewShape.setValue(compound);
             return StdReturn;
         }
 
@@ -369,9 +372,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     std::vector<DocumentObject*> originals = getOriginals();
 
-    if ((mode == Mode::Features || mode == Mode::FeatureResult) && originals.empty()) {
-        return App::DocumentObject::StdReturn;
-    }
+    // if ((mode == Mode::Features || mode == Mode::FeatureResult) && originals.empty()) {
+    //     return App::DocumentObject::StdReturn;
+    // }
 
     if (!this->BaseFeature.getValue()) {
         if (auto body = getFeatureBody()) {
@@ -530,7 +533,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     std::vector<FeatureShape>& shapes
 )
 {
-
     // compute the difference solid between each Feature and the shape of its previous Feature,
     // * for additive operations, we take (toolShape-previousShape) and use it to Fuse later.
     // * for subtractive operations, we take the (toolShape ∩ previousShape) and use it to Cut
@@ -555,11 +557,29 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             --it;
 
             if (auto feature = freecad_cast<PartDesign::Feature*>(*it)) {
-                return feature;
+                if (!feature->Suppressed.getValue()) {
+                    return feature;
+                }
             }
         }
 
         return nullptr;
+    };
+
+    auto checkValidShape = [](const TopoShape& shape, std::string_view text, auto&&... args) {
+        if (!shape.isValid()) {
+            std::ostringstream details;
+            shape.analyze(false, details);
+
+            std::string message = "Invalid subtractive shape after ";
+            message += std::vformat(text, std::make_format_args(args...));
+            if (!details.str().empty()) {
+                message += ":\n";
+                message += details.str();
+            }
+
+            FC_THROWM(Base::CADKernelError, message.c_str());
+        }
     };
 
     for (auto original : originals) {
@@ -583,7 +603,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
         }
 
         auto prevFeature = getPreviousOriginal(original);
-        auto prevShape = prevFeature != nullptr ? prevFeature->Shape.getShape() : NULL;
 
         gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
@@ -592,7 +611,9 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                 trsf,
                 std::format("Transform_add_{}", feature->getNameInDocument()).c_str()
             );
-            if (prevShape != NULL) {
+            if (prevFeature) {
+                Part::TopoShape prevShape(prevFeature->Shape.getShape());
+
                 addShape.makeElementCut(
                     {addShape, prevShape},
                     std::format(
@@ -605,6 +626,15 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             }
 
             if (!addShape.isNull()) {
+                if (prevFeature) {
+                    checkValidShape(
+                        addShape,
+                        "CUT {}-{}",
+                        feature->getNameInDocument(),
+                        prevFeature->getNameInDocument()
+                    );
+                }
+
                 shapes.push_back({feature->getNameInDocument(), addShape, Operation::Add});
             }
         }
@@ -625,22 +655,17 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             // (COMMON(subShape = compounds(A, B), prevShape = C) = A ∩ B ∩ C)
             // returns an empty solid if A and B don't intersect.
             std::vector<Part::TopoShape> subShapes;
-            if (subShape.shapeType() == TopAbs_COMPOUND) {
-                TopoShape::expandCompound(subShape, subShapes);
-            }
-            else {
-                subShapes.push_back(subShape);
-            }
+            TopoShape::expandCompound(subShape, subShapes);
 
-            // fuse the pocket shapes back together to use them in a single CUT operation later
-            std::vector<Part::TopoShape> toFuse;
+            Part::TopoShape prevShape(prevFeature->Shape.getShape());
 
             size_t i = 0;
-            for (auto s : subShapes) {
+            for (auto& s : subShapes) {
+                Base::Console().log("Current (1): %d %s\n", i, s.shapeName(true));
                 s.makeElementCommon(
                     {s, prevShape},
                     std::format(
-                        "Common_sub_{}[{}]+{}",
+                        "Common_sub_{}[{}]*{}",
                         feature->getNameInDocument(),
                         i,
                         prevFeature->getNameInDocument()
@@ -648,29 +673,28 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
                         .c_str()
                 );
 
+                Base::Console().log("Current (2): %d %s\n", i, s.shapeName(true));
+                Base::Console().log(
+                    "Previous: %s %s\n",
+                    prevFeature->getNameInDocument(),
+                    prevShape.shapeName(true)
+                );
+
                 if (!s.isNull()) {
-                    toFuse.push_back(s);
+                    checkValidShape(
+                        s,
+                        "COMMON {}[{}]*{}",
+                        feature->getNameInDocument(),
+                        i,
+                        prevFeature->getNameInDocument()
+                    );
+
+                    shapes.push_back(
+                        {std::format("{}[{}]", feature->getNameInDocument(), i), s, Operation::Sub}
+                    );
                 }
 
                 i++;
-            }
-
-            if (toFuse.size() == 1) {
-                Part::TopoShape onlyShape = toFuse.front();
-                if (!onlyShape.isNull()) {
-                    shapes.push_back({feature->getNameInDocument(), onlyShape, Operation::Sub});
-                }
-            }
-            else if (!toFuse.empty()) {
-                Part::TopoShape subShape;
-                subShape.makeElementFuse(
-                    toFuse,
-                    std::format("Fuse_sub_{}", feature->getNameInDocument()).c_str()
-                );
-
-                if (!subShape.isNull()) {
-                    shapes.push_back({feature->getNameInDocument(), subShape, Operation::Sub});
-                }
             }
         }
 
@@ -770,7 +794,7 @@ std::vector<TopoShape> Transformed::getTransformedCompShape(
 
     for (; transformIter != transformations.end(); transformIter++) {
         if (Base::Sequencer().wasCanceled()) {
-            return std::vector<TopoShape>();
+            return {};
         }
 
         auto opName = Data::indexSuffix(idx++);
