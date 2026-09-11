@@ -326,6 +326,20 @@ class TestFileNameGenerator(unittest.TestCase):
 
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
 
+    def test074(self):
+        """Test %O substitution when the template has literal text around it"""
+        teststring = "%j-Op-%O.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("OutsideProfile")
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(
+            self, filename, os.path.join(self.testfilepath, "MainJob-Op-OutsideProfile.nc")
+        )
+
     def test075(self):
         """Test path and filename substitutions together"""
         teststring = "%D/%j_%S.nc"

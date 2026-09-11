@@ -57,10 +57,13 @@ class FilenameGenerator:
         self._file_extension_override = file_extension
         self.subpartname = ""
         self.sequencenumber = 0
+        self._warned_about_subpart = False
         path, filename, ext = self.get_path_and_filename_default()
 
         self.qualified_path = self._apply_path_substitutions(path)
-        self.qualified_filename = self._apply_filename_substitutions(filename)
+        # The subpart substitutions are resolved in generate_filenames() because
+        # the subpart name is only known once the output sections are built.
+        self.filename_template = filename
         self.extension = ext
 
     def get_path_and_filename_default(self):
@@ -161,7 +164,7 @@ class FilenameGenerator:
     def generate_filenames(self):
         """Yield filenames indefinitely with proper substitutions."""
         while True:
-            temp_filename = self.qualified_filename
+            temp_filename = self.filename_template
             Path.Log.debug(f"temp_filename: {temp_filename}")
             explicit_sequence = False
             matches = re.findall(r"%S", temp_filename)
@@ -170,7 +173,19 @@ class FilenameGenerator:
                 temp_filename = re.sub(r"%S", str(self.sequencenumber), temp_filename)
                 explicit_sequence = True
 
-            subpart = f"-{self.subpartname}" if self.subpartname else ""
+            explicit_subpart = bool(re.search(r"%[TtWO]", temp_filename))
+            if explicit_subpart and not self.subpartname and not self._warned_about_subpart:
+                self._warned_about_subpart = True
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "CAM_Post",
+                        "The %T, %t, %W and %O substitutions name the section of a split "
+                        "output. The job is not splitting its output, so they are ignored.\n",
+                    )
+                )
+            temp_filename = self._apply_filename_substitutions(temp_filename)
+
+            subpart = f"-{self.subpartname}" if self.subpartname and not explicit_subpart else ""
             sequence = (
                 f"-{self.sequencenumber}" if not explicit_sequence and self.sequencenumber else ""
             )
