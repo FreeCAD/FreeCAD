@@ -332,10 +332,12 @@ void SoFCBackgroundGradient::updateRadialGeometry(const GeometryState& state)
 
 void SoFCBackgroundGradient::addOverlay(void)
 {
-    constexpr float default_transparency{0.95f};
+    constexpr float default_transparency {0.95f};
 
-    static const QImage glImage{QImage{":/images/bg_overlay.png"}.convertToFormat(QImage::Format_RGBA8888)};
-    const SbVec2s size(static_cast <short> (glImage.width()), static_cast <short> (glImage.height()));
+    static const QImage glImage {
+        QImage {":/images/bg_overlay.png"}.convertToFormat(QImage::Format_RGBA8888)
+    };
+    const SbVec2s size(static_cast<short>(glImage.width()), static_cast<short>(glImage.height()));
     constexpr int nc = 4;
 
     auto transType = new SoTransparencyType;
@@ -352,17 +354,17 @@ void SoFCBackgroundGradient::addOverlay(void)
     addChild(texture);
 
     auto texCoords = new SoTextureCoordinate2;
-    texCoords->point.set1Value(0, SbVec2f{0.0f, 0.0f}); // bottom-left
-    texCoords->point.set1Value(1, SbVec2f{1.0f, 0.0f}); // bottom-right
-    texCoords->point.set1Value(2, SbVec2f{1.0f, 1.0f}); // top-right
-    texCoords->point.set1Value(3, SbVec2f{0.0f, 1.0f}); // top-left
+    texCoords->point.set1Value(0, SbVec2f {0.0f, 0.0f});  // bottom-left
+    texCoords->point.set1Value(1, SbVec2f {1.0f, 0.0f});  // bottom-right
+    texCoords->point.set1Value(2, SbVec2f {1.0f, 1.0f});  // top-right
+    texCoords->point.set1Value(3, SbVec2f {0.0f, 1.0f});  // top-left
     addChild(texCoords);
 
     auto coords = new SoCoordinate3;
-    coords->point.set1Value(0, SbVec3f{-1.0f, -1.0f, 0.0f});
-    coords->point.set1Value(1, SbVec3f{ 1.0f, -1.0f, 0.0f});
-    coords->point.set1Value(2, SbVec3f{ 1.0f,  1.0f, 0.0f});
-    coords->point.set1Value(3, SbVec3f{-1.0f,  1.0f, 0.0f});
+    coords->point.set1Value(0, SbVec3f {-1.0f, -1.0f, 0.0f});
+    coords->point.set1Value(1, SbVec3f {1.0f, -1.0f, 0.0f});
+    coords->point.set1Value(2, SbVec3f {1.0f, 1.0f, 0.0f});
+    coords->point.set1Value(3, SbVec3f {-1.0f, 1.0f, 0.0f});
     addChild(coords);
 
     auto faceSet = new SoFaceSet;
