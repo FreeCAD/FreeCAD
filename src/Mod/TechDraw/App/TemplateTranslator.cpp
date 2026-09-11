@@ -24,12 +24,13 @@
 #include "PreCompiled.h"
 
 #include "TemplateTranslator.h"
-#include <algorithm> // For std::sort
+#include <algorithm>
 #include <QSet>
 #include <Base/Console.h>
+#include <Base/ServiceProvider.h>
 
 namespace TechDraw
-{   
+{
 TechDrawExport const char* LanguageEnums[] = {
     "English",
     "Afrikaans",
@@ -82,24 +83,39 @@ TemplateTranslator::TemplateTranslator()
 
 void TemplateTranslator::initializeTranslations()
 {
-    // --- Placeholder Keys (matching SVGs) ---
-    const QString KEY_SCALE = QStringLiteral("Scale:");
-    const QString KEY_SHEET = QStringLiteral("Sheet:");
-    const QString KEY_TITLE = QStringLiteral("Title, supplementary title:");
-    const QString KEY_DATE = QStringLiteral("Issue date:");
-    const QString KEY_CREATED_BY = QStringLiteral("Created by:");
-    const QString KEY_APPROVED_BY = QStringLiteral("Approved by:");
-    const QString KEY_DRAWING_NUMBER = QStringLiteral("Drawing number:");
-    const QString KEY_MATERIAL = QStringLiteral("Part Material:");
-    const QString KEY_REVISION = QStringLiteral("Revision:");
-    const QString KEY_GENERAL_TOLERANCES = QStringLiteral("General tolerances:");
-    const QString KEY_OWNER = QStringLiteral("Owner:");
-    const QString KEY_DOC_TYPE = QStringLiteral("Document type:");
-    const QString KEY_DEPARTEMENT = QStringLiteral("Responsible department:");
-    const QString KEY_STATUS = QStringLiteral("Document status:");
-    const QString KEY_LANGUAGE = QStringLiteral("Language:");
+    // Keep these built-in fallbacks until the template strings are translated in Crowdin.
+    const QString KEY_SCALE = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Scale:"));
+    const QString KEY_SHEET = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Sheet:"));
+    const QString KEY_TITLE = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Title, supplementary title:"));
+    const QString KEY_DATE = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Issue date:"));
+    const QString KEY_CREATED_BY = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Created by:"));
+    const QString KEY_APPROVED_BY = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Approved by:"));
+    const QString KEY_DRAWING_NUMBER = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Drawing number:"));
+    const QString KEY_MATERIAL = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Part Material:"));
+    const QString KEY_REVISION = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Revision:"));
+    const QString KEY_GENERAL_TOLERANCES = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "General tolerances:"));
+    const QString KEY_OWNER = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Owner:"));
+    const QString KEY_DOC_TYPE = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Document type:"));
+    const QString KEY_DEPARTEMENT = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Responsible department:"));
+    const QString KEY_STATUS = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Document status:"));
+    const QString KEY_LANGUAGE = QString::fromUtf8(
+        QT_TRANSLATE_NOOP("TechDraw::TemplateTranslator", "Language:"));
 
-    
+
     // --- English (en) ---
     const QString LANG_NAME_ENGLISH = QStringLiteral("English");
     m_translations[KEY_SCALE][LANG_NAME_ENGLISH] = KEY_SCALE;
@@ -118,7 +134,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_STATUS][LANG_NAME_ENGLISH] = KEY_STATUS;
     m_translations[KEY_LANGUAGE][LANG_NAME_ENGLISH] = KEY_LANGUAGE;
 
-        
+
     // --- Afrikaans ---
     const QString LANG_NAME_AFRIKAANS = QStringLiteral("Afrikaans");
     m_translations[KEY_SCALE][LANG_NAME_AFRIKAANS] = QStringLiteral("Skaal:");
@@ -190,7 +206,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_DEUTSCH] = QStringLiteral("Abteilung:");
     m_translations[KEY_STATUS][LANG_NAME_DEUTSCH] = QStringLiteral("Dokumentstatus:");
     m_translations[KEY_LANGUAGE][LANG_NAME_DEUTSCH] = QStringLiteral("Sprache:");
-    
+
     // --- Español ---
     const QString LANG_NAME_ESPANOL = QStringLiteral("Español");
     m_translations[KEY_SCALE][LANG_NAME_ESPANOL] = QStringLiteral("Escala:");
@@ -208,7 +224,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_ESPANOL] = QStringLiteral("Departamento:");
     m_translations[KEY_STATUS][LANG_NAME_ESPANOL] = QStringLiteral("Estado del documento:");
     m_translations[KEY_LANGUAGE][LANG_NAME_ESPANOL] = QStringLiteral("Idioma:");
-    
+
     // --- Euskara ---
     const QString LANG_NAME_EUSKARA = QStringLiteral("Euskara");
     m_translations[KEY_SCALE][LANG_NAME_EUSKARA] = QStringLiteral("Eskala:");
@@ -226,7 +242,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_EUSKARA] = QStringLiteral("Saila:");
     m_translations[KEY_STATUS][LANG_NAME_EUSKARA] = QStringLiteral("Dokumentuaren egoera:");
     m_translations[KEY_LANGUAGE][LANG_NAME_EUSKARA] = QStringLiteral("Hizkuntza:");
-    
+
     // --- Filipino ---
     const QString LANG_NAME_FILIPINO = QStringLiteral("Filipino");
     m_translations[KEY_SCALE][LANG_NAME_FILIPINO] = QStringLiteral("Iskala:");
@@ -262,7 +278,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_FRENCH] = QStringLiteral("Département:");
     m_translations[KEY_STATUS][LANG_NAME_FRENCH] = QStringLiteral("Statut du document:");
     m_translations[KEY_LANGUAGE][LANG_NAME_FRENCH] = QStringLiteral("Langue:");
-    
+
     // --- Galego ---
     const QString LANG_NAME_GALEGO = QStringLiteral("Galego");
     m_translations[KEY_SCALE][LANG_NAME_GALEGO] = QStringLiteral("Escala:");
@@ -335,7 +351,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_STATUS][LANG_NAME_ITALIAN] = QStringLiteral("Stato del documento:");
     m_translations[KEY_LANGUAGE][LANG_NAME_ITALIAN] = QStringLiteral("Lingua:");
 
-    
+
     // --- Lietuvių ---
     const QString LANG_NAME_LIETUVIU = QStringLiteral("Lietuvių");
     m_translations[KEY_SCALE][LANG_NAME_LIETUVIU] = QStringLiteral("Mastelis:");
@@ -408,7 +424,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_STATUS][LANG_NAME_NORSK_BOKMAL] = QStringLiteral("Dokumentstatus:");
     m_translations[KEY_LANGUAGE][LANG_NAME_NORSK_BOKMAL] = QStringLiteral("Språk:");
 
-    
+
     // --- Polski ---
     const QString LANG_NAME_POLSKI = QStringLiteral("Polski");
     m_translations[KEY_SCALE][LANG_NAME_POLSKI] = QStringLiteral("Skala:");
@@ -480,7 +496,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_SLOVENCINA_SK] = QStringLiteral("Oddelenie:");
     m_translations[KEY_STATUS][LANG_NAME_SLOVENCINA_SK] = QStringLiteral("Stav dokumentu:");
     m_translations[KEY_LANGUAGE][LANG_NAME_SLOVENCINA_SK] = QStringLiteral("Jazyk:");
-    
+
     // --- Slovenščina --- (Slovenian)
     const QString LANG_NAME_SLOVENSCINA_SL = QStringLiteral("Slovenščina");
     m_translations[KEY_SCALE][LANG_NAME_SLOVENSCINA_SL] = QStringLiteral("Merilo:");
@@ -750,7 +766,7 @@ void TemplateTranslator::initializeTranslations()
     m_translations[KEY_DEPARTEMENT][LANG_NAME_UKRAINSKA] = QStringLiteral("Відділ:");
     m_translations[KEY_STATUS][LANG_NAME_UKRAINSKA] = QStringLiteral("Стан документа:");
     m_translations[KEY_LANGUAGE][LANG_NAME_UKRAINSKA] = QStringLiteral("Мова:");
-    
+
     // --- العربية --- (Arabic)
     // Note on RTL: The colon placement might need adjustment based on overall title block layout for RTL.
     // These translations keep the colon at the end of the Arabic phrase.
@@ -864,6 +880,13 @@ void TemplateTranslator::initializeTranslations()
 
 QString TemplateTranslator::translate(const QString& key, const QString& languageCode) const
 {
+    if (auto* service = Base::provideService<TemplateTranslationService>()) {
+        const QString translated = service->translate(key, languageCode);
+        if (!translated.isEmpty()) {
+            return translated;
+        }
+    }
+
     if (m_translations.contains(key)) {
         const auto& langMap = m_translations.value(key);
         if (langMap.contains(languageCode)) {
