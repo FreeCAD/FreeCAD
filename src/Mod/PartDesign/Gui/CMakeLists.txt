@@ -29,6 +29,9 @@ qt_add_resources(PartDesignGui_SRCS
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
     TaskPadPocketParameters.ui
+    TaskThinProperties.ui
+    TaskRibParameters.ui
+    TaskRibAdvancedParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDefeaturingParameters.ui
@@ -66,6 +69,12 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderExtrude.h
     ViewProviderPad.cpp
     ViewProviderPad.h
+    ViewProviderRib.cpp
+    ViewProviderRib.h
+    TaskRibParameters.cpp
+    TaskRibParameters.h
+    TaskRibParameters.ui
+    TaskRibAdvancedParameters.ui
     ViewProviderHole.cpp
     ViewProviderHole.h
     ViewProviderPocket.cpp
@@ -140,6 +149,7 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskExtrudeParameters.cpp
     TaskExtrudeParameters.h
     TaskPadPocketParameters.ui
+    TaskThinProperties.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
     TaskPocketParameters.cpp

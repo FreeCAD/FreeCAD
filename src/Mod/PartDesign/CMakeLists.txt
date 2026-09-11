@@ -59,6 +59,9 @@ set(PartDesign_TestScripts
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py
     PartDesignTests/TestThickness.py
+    PartDesignTests/TestThinExtrude.py
+    PartDesignTests/TestThinExtrudeFeature.py
+    PartDesignTests/TestRib.py
     PartDesignTests/TestTopologicalNamingProblem.py
     PartDesignTests/TestInvoluteGear.py
     PartDesignTests/TestSketch.py
@@ -68,6 +71,7 @@ if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
         PartDesignTests/TestSuppressed.py
+        PartDesignTests/TestThinCommands.py
     )
 endif(BUILD_GUI)
 

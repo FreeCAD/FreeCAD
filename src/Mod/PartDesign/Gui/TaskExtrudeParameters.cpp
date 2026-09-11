@@ -25,29 +25,66 @@
 #include <QAction>
 #include <QAbstractButton>
 #include <QSignalBlocker>
+#include <QHeaderView>
 
 
 #include <App/Document.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Tools.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
 #include <Mod/Part/App/GizmoHelper.h>
+#include <Mod/Part/App/Tools.h>
+#include <Gui/Utilities.h>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepTools.hxx>
+#include <BRep_Tool.hxx>
+#include <Mod/PartDesign/App/ThinExtrusion.h>
+#include <ShapeFix_Face.hxx>
+#include <TopoDS.hxx>
 
 #include "ui_TaskPadPocketParameters.h"
+#include "ui_TaskThinProperties.h"
 #include "TaskExtrudeParameters.h"
 #include "TaskTransformedParameters.h"
 #include "ReferenceSelection.h"
+#include <Mod/PartDesign/App/FeatureThinExtrude.h>
 
 
 using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskExtrudeParameters */
+
+namespace
+{
+class ThinProfileEdgeSelection: public Gui::SelectionFilterGate
+{
+public:
+    explicit ThinProfileEdgeSelection(App::DocumentObject* source)
+        : profile(source)
+    {}
+
+    bool allow(App::Document* doc, App::DocumentObject* object, const char* sub) override
+    {
+        if (!object || doc != profile->getDocument()) {
+            return false;
+        }
+        const App::SubObjectT reference(object, sub);
+        return reference.getSubObject() == profile
+            && reference.getOldElementName().compare(0, 4, "Edge") == 0;
+    }
+
+private:
+    App::DocumentObject* profile;
+};
+}  // namespace
 
 TaskExtrudeParameters::TaskExtrudeParameters(
     ViewProviderExtrude* SketchBasedView,
@@ -62,6 +99,12 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    thinPanel = new Gui::TaskView::TaskBox(tr("Web Properties"));
+    thinPanel->setObjectName(QStringLiteral("thinPropertiesPanel"));
+    thinProxy = new QWidget(thinPanel);
+    thinUi = std::make_unique<Ui_TaskThinProperties>();
+    thinUi->setupUi(thinProxy);
+    thinPanel->groupLayout()->addWidget(thinProxy);
     setupOperation(ui->labelOperation, ui->comboOperation);
     handleLineFaceNameNo(ui->lineFaceName);
     handleLineFaceNameNo(ui->lineFaceName2);
@@ -73,6 +116,22 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     group->setExclusive(true);
 
     this->groupLayout()->addWidget(proxy);
+}
+
+TaskExtrudeParameters::~TaskExtrudeParameters()
+{
+    if (selectionMode == SelectThinExtensionEdges && !thinProfileWasVisible) {
+        if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
+            if (auto profile = extrude->getVerifiedObject(true)) {
+                getGuiDocument()->setHide(profile->getNameInDocument());
+            }
+        }
+    }
+}
+
+QWidget* TaskExtrudeParameters::getThinPropertiesPanel() const
+{
+    return thinPanel;
 }
 
 void TaskExtrudeParameters::setupDialog()
@@ -91,6 +150,160 @@ void TaskExtrudeParameters::setupDialog()
 
     // --- Global, Non-Side-Specific Setup ---
     auto extrude = getObject<PartDesign::FeatureExtrude>();
+
+    ui->thinMode->setChecked(extrude->Thin.getValue());
+    if (!extrude->Thin.getValue()) {
+        thinPanel->hide();
+    }
+    if (extrude->isDerivedFrom<PartDesign::ThinExtrude>()) {
+        ui->thinMode->setEnabled(false);
+    }
+
+    thinUi->thinSide->setCurrentIndex(extrude->ThinSide.getValue());
+    thinUi->thinJoin->setCurrentIndex(extrude->ThinJoin.getValue());
+    thinUi->thinCap->setCurrentIndex(extrude->ThinCap.getValue());
+    thinUi->thinDraftReference->setCurrentIndex(extrude->ThinDraftReference.getValue());
+    thinUi->thinExtension->setCurrentIndex(extrude->ThinExtension.getValue());
+
+    thinUi->thinExtensionEdgesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    thinUi->thinExtensionEdgesTable->verticalHeader()->hide();
+    thinUi->thinRemoveExtensionEdges->setIcon(QIcon(Gui::BitmapFactory().pixmap("edit-delete")));
+    updateThinExtensionEdges();
+
+    thinUi->thinThickness->setValue(extrude->ThinThickness.getQuantityValue());
+    thinUi->thinThickness2->setValue(extrude->ThinThickness2.getQuantityValue());
+    thinUi->thinThickness->bind(extrude->ThinThickness);
+    thinUi->thinThickness2->bind(extrude->ThinThickness2);
+
+    thinUi->thinFilletRadius->setValue(extrude->RootFilletRadius.getQuantityValue());
+    thinUi->thinFilletRadius->bind(extrude->RootFilletRadius);
+    connect(
+        thinUi->thinFilletRadius,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->RootFilletRadius.setValue(value);
+            recomputeFeature();
+        }
+    );
+
+    auto updateThin = [this]() {
+        const bool two = thinUi->thinSide->currentIndex() == 3;
+        thinUi->thinThickness2Label->setVisible(two);
+        thinUi->thinThickness2->setVisible(two);
+        thinUi->thinThicknessLabel->setText(two ? tr("Side A thickness") : tr("Thickness"));
+    };
+    updateThin();
+    connect(ui->thinMode, &QCheckBox::toggled, this, [this, extrude](bool enabled) {
+        if (!enabled && selectionMode == SelectThinExtensionEdges) {
+            setSelectionMode(None);
+        }
+        extrude->Thin.setValue(enabled);
+        thinPanel->setVisible(enabled);
+        updateUI(Side::First);
+        recomputeFeature();
+    });
+    connect(
+        thinUi->thinSide,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude, updateThin](int side) {
+            extrude->ThinSide.setValue(side);
+            updateThin();
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinJoin,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int join) {
+            extrude->ThinJoin.setValue(join);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinCap,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int cap) {
+            extrude->ThinCap.setValue(cap);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinDraftReference,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int reference) {
+            extrude->ThinDraftReference.setValue(reference);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinExtension,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        [this, extrude](int mode) {
+            if (mode == 0 && selectionMode == SelectThinExtensionEdges) {
+                setSelectionMode(None);
+            }
+            extrude->ThinExtension.setValue(mode);
+            updateThinExtensionEdges();
+            recomputeFeature();
+        }
+    );
+    connect(thinUi->thinSelectExtensionEdges, &QToolButton::toggled, this, [this](bool selected) {
+        setSelectionMode(selected ? SelectThinExtensionEdges : None);
+    });
+    connect(thinUi->thinExtendAll, &QCheckBox::toggled, this, [this, extrude](bool all) {
+        if (all) {
+            setSelectionMode(None);
+            extrude->ThinExtensionEdges.setValue(nullptr);
+        }
+        extrude->ThinExtendAll.setValue(all);
+        updateThinExtensionEdges();
+        recomputeFeature();
+    });
+    connect(
+        thinUi->thinRemoveExtensionEdges,
+        &QToolButton::clicked,
+        this,
+        &TaskExtrudeParameters::removeThinExtensionEdges
+    );
+
+    auto removeEdges = new QAction(tr("Remove"), thinUi->thinExtensionEdgesTable);
+    removeEdges->setShortcut(Gui::QtTools::deleteKeySequence());
+    removeEdges->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    thinUi->thinExtensionEdgesTable->addAction(removeEdges);
+    connect(removeEdges, &QAction::triggered, this, &TaskExtrudeParameters::removeThinExtensionEdges);
+    connect(
+        thinUi->thinExtensionEdgesTable,
+        &QTableWidget::itemSelectionChanged,
+        this,
+        &TaskExtrudeParameters::highlightThinExtensionEdges
+    );
+    connect(thinUi->thinExtensionEdgesTable, &QTableWidget::itemDoubleClicked, this, [this]() {
+        setSelectionMode(None);
+    });
+    connect(
+        thinUi->thinThickness,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->ThinThickness.setValue(value);
+            recomputeFeature();
+        }
+    );
+    connect(
+        thinUi->thinThickness2,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this, extrude](double value) {
+            extrude->ThinThickness2.setValue(value);
+            recomputeFeature();
+        }
+    );
 
     int UserDecimals = Base::UnitsApi::getDecimals();
     ui->XDirectionEdit->setDecimals(UserDecimals);
@@ -156,6 +369,10 @@ void TaskExtrudeParameters::setupSideDialog(SideController& side)
     side.taperEdit->setMaximum(side.TaperAngle->getMaximum());
     side.taperEdit->setSingleStep(side.TaperAngle->getStepSize());
     side.taperEdit->setValue(taper);
+    side.taperEdit->setToolTip(
+        tr("Use a negative taper angle to reverse draft. "
+           "Reversed changes the extrusion direction.")
+    );
 
     // --- Bind UI widgets to the correct properties ---
     side.lengthEdit->bind(*side.Length);
@@ -434,6 +651,19 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
     if (selectionMode == mode && activeSelectionSide == side) {
         return;
     }
+    if (selectionMode == SelectThinExtensionEdges) {
+        auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+        if (!thinProfileWasVisible) {
+            getGuiDocument()->setHide(profile->getNameInDocument());
+        }
+    }
+    {
+        const QSignalBlocker blocker(thinUi->thinSelectExtensionEdges);
+        thinUi->thinSelectExtensionEdges->setChecked(mode == SelectThinExtensionEdges);
+        thinUi->thinSelectExtensionEdges->setText(
+            mode == SelectThinExtensionEdges ? tr("Done") : tr("+ Add edge")
+        );
+    }
 
     const auto updateCheckedForSide = [mode, side](
                                           Side relatedSide,
@@ -453,6 +683,14 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
     activeSelectionSide = side;
 
     switch (mode) {
+        case SelectThinExtensionEdges: {
+            auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+            thinProfileWasVisible = getGuiDocument()->getViewProvider(profile)->isVisible();
+            onSelectReference(AllowSelection::EDGE);
+            Gui::Selection().addSelectionGate(new ThinProfileEdgeSelection(profile));
+            getGuiDocument()->setShow(profile->getNameInDocument());
+            break;
+        }
         case SelectShape:
             onSelectReference(AllowSelection::WHOLE);
             Gui::Selection().addSelectionGate(new SelectionFilterGate("SELECT Part::Feature COUNT 1"));
@@ -470,7 +708,15 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
             break;
         }
         case SelectReferenceAxis:
-            onSelectReference(AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE);
+            if (auto rib = getObject<PartDesign::ThinExtrude>();
+                rib && rib->TowardReference.getValue()) {
+                onSelectReference(AllowSelection::EDGE);
+            }
+            else {
+                onSelectReference(
+                    AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
+                );
+            }
             break;
         default:
             getViewObject<ViewProviderExtrude>()->highlightShapeFaces({});
@@ -495,6 +741,9 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         switch (selectionMode) {
+            case SelectThinExtensionEdges:
+                selectedThinExtensionEdge(msg);
+                break;
             case SelectShape:
                 selectedShape(msg, sideCtrl);
                 break;
@@ -524,6 +773,101 @@ void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             clearFaceName(sideCtrl.lineFaceName);
         }
     }
+}
+
+void TaskExtrudeParameters::updateThinExtensionEdges()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    const bool enabled = extrude->ThinExtension.getValue() != 0;
+    const bool all = extrude->ThinExtendAll.getValue();
+    const QSignalBlocker allBlocker(thinUi->thinExtendAll);
+    thinUi->thinExtendAll->setChecked(all);
+    thinUi->thinExtendAll->setVisible(enabled);
+    thinUi->thinExtensionControls->setVisible(enabled && !all);
+    const auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    const QSignalBlocker blocker(thinUi->thinExtensionEdgesTable);
+    thinUi->thinExtensionEdgesTable->setRowCount(static_cast<int>(names.size()));
+    for (size_t i = 0; i < names.size(); ++i) {
+        thinUi->thinExtensionEdgesTable->setItem(
+            static_cast<int>(i),
+            0,
+            new QTableWidgetItem(QString::fromStdString(names[i]))
+        );
+    }
+    thinUi->thinRemoveExtensionEdges->setEnabled(false);
+    thinUi->thinExtensionEdgeNames->setVisible(names.empty());
+    thinUi->thinExtensionEdgeNames->setText(tr("Select edges to extend"));
+}
+
+void TaskExtrudeParameters::removeThinExtensionEdges()
+{
+    const auto items = thinUi->thinExtensionEdgesTable->selectedItems();
+    if (items.empty()) {
+        return;
+    }
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    for (const auto* item : items) {
+        const auto name = item->text().toStdString();
+        names.erase(std::remove(names.begin(), names.end(), name), names.end());
+    }
+    extrude->ThinExtensionEdges.setValue(names.empty() ? nullptr : extrude->getVerifiedObject(), names);
+    extrude->ThinExtendAll.setValue(false);
+    Gui::Selection().clearSelection();
+    if (names.empty()) {
+        setSelectionMode(None);
+    }
+    updateThinExtensionEdges();
+    tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::highlightThinExtensionEdges()
+{
+    const auto items = thinUi->thinExtensionEdgesTable->selectedItems();
+    thinUi->thinRemoveExtensionEdges->setEnabled(!items.empty());
+    if (items.empty()) {
+        return;
+    }
+    setSelectionMode(SelectThinExtensionEdges);
+    const bool wasBlocked = blockSelection(true);
+    Gui::Selection().clearSelection();
+    auto profile = getObject<PartDesign::FeatureExtrude>()->getVerifiedObject();
+    for (const auto* item : items) {
+        Gui::Selection().addSelection(
+            profile->getDocument()->getName(),
+            profile->getNameInDocument(),
+            item->text().toUtf8().constData()
+        );
+    }
+    blockSelection(wasBlocked);
+}
+
+void TaskExtrudeParameters::selectedThinExtensionEdge(const Gui::SelectionChanges& msg)
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    auto object = msg.Object.getSubObject();
+    if (object != extrude->getVerifiedObject()) {
+        return;
+    }
+    const std::vector<std::string> picked {msg.Object.getOldElementName()};
+    auto names = extrude->ThinExtensionEdges.getSubValues(false);
+    for (const auto& name : picked) {
+        if (name.compare(0, 4, "Edge") != 0) {
+            continue;
+        }
+        const auto found = std::find(names.begin(), names.end(), name);
+        if (found == names.end()) {
+            names.push_back(name);
+        }
+        else {
+            names.erase(found);
+        }
+    }
+    extrude->ThinExtensionEdges.setValue(names.empty() ? nullptr : object, names);
+    extrude->ThinExtendAll.setValue(false);
+    updateThinExtensionEdges();
+    tryRecomputeFeature();
+    Gui::Selection().clearSelection();
 }
 
 void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& msg)
@@ -769,7 +1113,10 @@ void TaskExtrudeParameters::fillDirectionCombo()
             hasFace = hasProfileFace(pcFeat);
         }
 
-        if (pcSketch) {
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            addAxisToCombo(nullptr, std::string(), tr("Profile direction"));
+        }
+        else if (pcSketch) {
             addAxisToCombo(pcSketch, "N_Axis", tr("Sketch normal"));
         }
         else if (hasFace) {
@@ -780,11 +1127,24 @@ void TaskExtrudeParameters::fillDirectionCombo()
         addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
 
         // we start with the sketch normal as proposal for the custom direction
-        if (pcSketch) {
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            addAxisToCombo(nullptr, std::string(), tr("Custom direction"));
+        }
+        else if (pcSketch) {
             addAxisToCombo(pcSketch, "N_Axis", tr("Custom direction"));
         }
         else if (hasFace) {
             addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Custom direction"), false);
+        }
+        if (pcFeat->isDerivedFrom<PartDesign::ThinExtrude>()) {
+            // Append after the existing fixed entries; Pad/Pocket indices are unchanged.
+            addAxisToCombo(nullptr, std::string(), tr("Toward reference…"));
+            ui->directionCB->setItemData(
+                3,
+                tr("Select an edge to grow toward from the profile center. Termination is "
+                   "controlled separately."),
+                Qt::ToolTipRole
+            );
         }
     }
 
@@ -793,7 +1153,19 @@ void TaskExtrudeParameters::fillDirectionCombo()
     int indexOfCurrent = -1;
     App::DocumentObject* ax = propReferenceAxis->getValue();
     const std::vector<std::string>& subList = propReferenceAxis->getSubValues();
+    auto rib = getObject<PartDesign::ThinExtrude>();
+    if (rib) {
+        axesInList[3]->setValue(ax, subList);
+        ui->directionCB->setItemText(
+            3,
+            rib->TowardReference.getValue() && ax ? tr("Toward: %1").arg(getRefStr(ax, subList))
+                                                  : tr("Toward reference…")
+        );
+    }
     for (size_t i = 0; i < axesInList.size(); i++) {
+        if (rib && i == 3) {
+            continue;
+        }
         if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
             indexOfCurrent = i;
             break;
@@ -819,6 +1191,9 @@ void TaskExtrudeParameters::fillDirectionCombo()
     // highlight either current index or set custom direction
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     bool hasCustom = extrude->UseCustomVector.getValue();
+    if (rib && rib->TowardReference.getValue() && !hasCustom) {
+        indexOfCurrent = 3;
+    }
     if (indexOfCurrent != -1 && !hasCustom) {
         ui->directionCB->setCurrentIndex(indexOfCurrent);
         updateDirectionEdits();
@@ -936,7 +1311,8 @@ void TaskExtrudeParameters::updateSideUI(
     s.offsetEdit->setVisible(finalOffsetVisible);
     s.offsetEdit->setEnabled(finalOffsetVisible);
 
-    const bool finalTaperVisible = isParentVisible && isTaperVisible;
+    const bool finalTaperVisible = isParentVisible
+        && (isTaperVisible || getObject<PartDesign::FeatureExtrude>()->Thin.getValue());
     s.labelTaperAngle->setVisible(finalTaperVisible);
     s.taperEdit->setVisible(finalTaperVisible);
     s.taperEdit->setEnabled(finalTaperVisible);
@@ -967,7 +1343,12 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
     // or we are normal to a face
     App::PropertyLinkSub& lnk = *(axesInList[num]);
 
-    if (num == DirectionModes::Select) {
+    auto rib = getObject<PartDesign::ThinExtrude>();
+    const bool toward = rib && num == 3;
+    if (rib) {
+        rib->TowardReference.setValue(toward);
+    }
+    if (num == DirectionModes::Select || toward) {
         // to distinguish that this is the direction selection
         setSelectionMode(SelectReferenceAxis);
         setDirectionMode(num);
@@ -1117,6 +1498,18 @@ void TaskExtrudeParameters::setDirectionMode(int index)
             ui->checkBoxAlongDirection->show();
             break;
     }
+    if (auto rib = dynamic_cast<PartDesign::ThinExtrude*>(extrude);
+        rib && rib->RibMode.getValue() != 0) {
+        ui->checkBoxAlongDirection->setChecked(false);
+        ui->checkBoxAlongDirection->hide();
+    }
+}
+
+void TaskExtrudeParameters::refreshDirectionControls()
+{
+    setDirectionMode(ui->directionCB->currentIndex());
+    updateDirectionEdits();
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onReversedChanged(bool on)
@@ -1351,6 +1744,7 @@ void TaskExtrudeParameters::changeEvent(QEvent* e)
         // Translate direction items
         int index = ui->directionCB->currentIndex();
         ui->retranslateUi(proxy);
+        thinUi->retranslateUi(thinProxy);
 
         // Keep custom items
         for (int i = 0; i < ui->directionCB->count(); i++) {
@@ -1383,8 +1777,28 @@ void TaskExtrudeParameters::saveHistory()
 
 void TaskExtrudeParameters::applyParameters()
 {
+    setSelectionMode(None);
     TaskSketchBasedParameters::apply();
     auto obj = getObject();
+    thinUi->thinThickness->apply();
+    thinUi->thinThickness2->apply();
+    thinUi->thinFilletRadius->apply();
+    FCMD_OBJ_CMD(
+        obj,
+        "Thin = " << (obj->isDerivedFrom<PartDesign::ThinExtrude>() || ui->thinMode->isChecked() ? 1 : 0)
+    );
+    FCMD_OBJ_CMD(obj, "ThinSide = " << thinUi->thinSide->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinJoin = " << thinUi->thinJoin->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinCap = " << thinUi->thinCap->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinDraftReference = " << thinUi->thinDraftReference->currentIndex());
+    FCMD_OBJ_CMD(obj, "ThinExtension = " << thinUi->thinExtension->currentIndex());
+    const auto& extension = getObject<PartDesign::FeatureExtrude>()->ThinExtensionEdges;
+    const auto extensionCommand = extension.getValue()
+        ? Gui::Command::getObjectCmd(extension.getValue(), "(", ", ")
+            + buildLinkSubPythonStr(extension.getValue(), extension.getSubValues()) + ")"
+        : std::string("None");
+    FCMD_OBJ_CMD(obj, "ThinExtensionEdges = " << extensionCommand);
+    FCMD_OBJ_CMD(obj, "ThinExtendAll = " << (thinUi->thinExtendAll->isChecked() ? 1 : 0));
 
     QString facename = QStringLiteral("None");
     QString facename2 = QStringLiteral("None");
@@ -1416,6 +1830,9 @@ void TaskExtrudeParameters::applyParameters()
         "Direction = (" << getXDirection() << ", " << getYDirection() << ", " << getZDirection() << ")"
     );
     FCMD_OBJ_CMD(obj, "ReferenceAxis = " << getReferenceAxis());
+    if (auto rib = dynamic_cast<PartDesign::ThinExtrude*>(obj)) {
+        FCMD_OBJ_CMD(obj, "TowardReference = " << (rib->TowardReference.getValue() ? 1 : 0));
+    }
     FCMD_OBJ_CMD(obj, "AlongSketchNormal = " << (getAlongSketchNormal() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "SideType = " << getSidesMode());
     FCMD_OBJ_CMD(obj, "Type = " << type1);
@@ -1500,15 +1917,54 @@ void TaskExtrudeParameters::setupGizmos()
     startOffsetGizmo->setDraggerStyle(Gui::LinearDraggerStyle::Sphere);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+    thinThicknessGizmo = new Gui::LinearGizmo(thinUi->thinThickness);
+    thinThickness2Gizmo = new Gui::LinearGizmo(thinUi->thinThickness2);
+    thinDraftGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
+    thinDraftGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
 
     connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
         setGizmoPositions();
     });
 
     gizmoContainer = GizmoContainer::create(
-        {lengthGizmo1, lengthGizmo2, startOffsetGizmo, taperAngleGizmo1, taperAngleGizmo2},
+        {lengthGizmo1,
+         lengthGizmo2,
+         startOffsetGizmo,
+         taperAngleGizmo1,
+         taperAngleGizmo2,
+         thinThicknessGizmo,
+         thinThickness2Gizmo,
+         thinDraftGizmo1,
+         thinDraftGizmo2},
         vp
     );
+    gizmoContainer->setName("ExtrudeGizmos");
+    thinThicknessGizmo->getDraggerContainer()->setName("ThinThickness");
+    thinThickness2Gizmo->getDraggerContainer()->setName("ThinSecondThickness");
+    thinDraftGizmo1->getDraggerContainer()->setName("ThinDraft");
+    thinDraftGizmo2->getDraggerContainer()->setName("ThinSecondDraft");
+    for (auto field :
+         {thinUi->thinThickness,
+          thinUi->thinThickness2,
+          thinUi->thinFilletRadius,
+          ui->taperEdit,
+          ui->taperEdit2,
+          ui->lengthEdit,
+          ui->lengthEdit2}) {
+        connect(field, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged), this, [this](double) {
+            setGizmoPositions();
+        });
+    }
+    for (auto combo :
+         {thinUi->thinSide, thinUi->thinDraftReference, thinUi->thinJoin, thinUi->thinCap}) {
+        connect(combo, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
+            setGizmoPositions();
+        });
+    }
+    connect(ui->thinMode, &QCheckBox::toggled, this, [this](bool) { setGizmoPositions(); });
+    connect(thinUi->thinExtension, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int) {
+        setGizmoPositions();
+    });
 
     setGizmoPositions();
     showDraggerHints();
@@ -1522,7 +1978,10 @@ void TaskExtrudeParameters::setGizmoPositions()
 
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     if (!extrude || extrude->isError()) {
-        gizmoContainer->visible = false;
+        // A failed web recompute must not remove the controls needed to recover.
+        // Keep their last valid placements; never position them from failed
+        // geometry, and keep them hidden if no usable placement was established.
+        gizmoContainer->visible = extrude && extrude->Thin.getValue() && hasValidGizmoPlacement;
         return;
     }
     gizmoContainer->visible = true;
@@ -1582,7 +2041,119 @@ void TaskExtrudeParameters::setGizmoPositions()
         lengthGizmo2->setMultFactor(multFactor);
     }
 
+    setThinGizmoPositions();
     gizmoContainer->calculateScaleAndOrientation();
+    hasValidGizmoPlacement = true;
+}
+
+void TaskExtrudeParameters::setThinGizmoPositions()
+{
+    auto extrude = getObject<PartDesign::FeatureExtrude>();
+    for (auto gizmo : {thinThicknessGizmo, thinThickness2Gizmo}) {
+        gizmo->setVisibility(false);
+    }
+    for (auto gizmo : {thinDraftGizmo1, thinDraftGizmo2}) {
+        gizmo->setVisibility(false);
+    }
+    if (!extrude->Thin.getValue()) {
+        return;
+    }
+    taperAngleGizmo1->setVisibility(false);
+    taperAngleGizmo2->setVisibility(false);
+    try {
+        const auto source = extrude->getProfileShape();
+        const auto wires = source.makeWires().getSubTopoShapes(TopAbs_WIRE);
+        if (wires.empty()) {
+            return;
+        }
+        auto wire = wires.front();
+        const auto normal = Base::convertTo<gp_Dir>(extrude->getProfileNormal());
+        if (wire.isClosed()) {
+            // Match ThinProfile's outside/inside convention for closed loops.
+            const auto origin = BRep_Tool::Pnt(TopoDS::Vertex(wire.getSubShape(TopAbs_VERTEX, 1)));
+            ShapeFix_Face fix(
+                BRepBuilderAPI_MakeFace(gp_Pln(origin, normal), TopoDS::Wire(wire.getShape()), true).Face()
+            );
+            fix.FixOrientation();
+            wire = Part::TopoShape(BRepTools::OuterWire(fix.Face()));
+        }
+        const auto edge = TopoDS::Edge(wire.getSubShape(TopAbs_EDGE, 1));
+        BRepAdaptor_Curve curve(edge);
+        gp_Pnt point;
+        gp_Vec tangent;
+        curve.D1((curve.FirstParameter() + curve.LastParameter()) / 2, point, tangent);
+        if (edge.Orientation() == TopAbs_REVERSED) {
+            tangent.Reverse();
+        }
+        auto width = gp_Vec(normal).Crossed(tangent);
+        if (wire.isClosed()) {
+            width.Reverse();
+        }
+        if (width.Magnitude() <= Precision::Confusion()) {
+            return;
+        }
+        width.Normalize();
+        auto growth = Base::convertTo<gp_Dir>(extrude->Direction.getValue());
+        if (extrude->Reversed.getValue()) {
+            growth.Reverse();
+        }
+        point.Translate(gp_Vec(growth) * extrude->getStartOffset());
+        auto material = extrude->AddSubShape.getShape();
+        material.move(extrude->getLocation());
+        const bool rootAtStart = PartDesign::thinRootAtStart(source, extrude->getBaseTopoShape(true));
+        auto neutralPoint = [&](const gp_Dir& dir) {
+            gp_Trsf frame;
+            frame.SetTransformation(gp_Ax3(point, dir));
+            const auto bounds
+                = Part::TopoShape().makeElementTransform(material, frame).getBoundBoxOptimal();
+            const bool holdTop = extrude->ThinDraftReference.getValue() == 1;
+            const double near = extrude->SideType.getValue() == 0 ? bounds.MinZ
+                                                                  : std::max(0.0, bounds.MinZ);
+            const double distance = holdTop == rootAtStart ? bounds.MaxZ : near;
+            return point.Translated(gp_Vec(dir) * distance);
+        };
+        const auto side = extrude->ThinSide.getValue();
+        const auto widthDirection = side == 1 ? -width : width;
+        const double factor = side == 2 ? .5 : 1.;
+        const auto anchor = neutralPoint(growth);
+        thinThicknessGizmo->setMultFactor(factor);
+        thinThicknessGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(widthDirection)
+        );
+        thinThickness2Gizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(-width)
+        );
+        thinThicknessGizmo->setVisibility(true);
+        thinThickness2Gizmo->setVisibility(side == 3);
+        auto placeDraft = [&](Gui::RotationGizmo* gizmo, const gp_Dir& dir) {
+            const auto pull = rootAtStart ? dir : dir.Reversed();
+            auto axis = widthDirection.Crossed(gp_Vec(pull));
+            if (axis.Magnitude() <= Precision::Confusion()) {
+                return;
+            }
+            axis.Normalize();
+            const auto origin = neutralPoint(dir).Translated(
+                widthDirection * extrude->ThinThickness.getValue() * factor
+            );
+            gizmo->Gizmo::setDraggerPlacement(
+                Base::convertTo<Base::Vector3d>(origin),
+                Base::convertTo<Base::Vector3d>(pull)
+            );
+            gizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axis));
+            gizmo->automaticOrientation = false;
+            gizmo->setVisibility(true);
+        };
+        placeDraft(thinDraftGizmo1, growth);
+        if (extrude->SideType.getValue() == 1) {
+            placeDraft(thinDraftGizmo2, growth.Reversed());
+        }
+    }
+    catch (const Base::Exception&) {
+    }
+    catch (const Standard_Failure&) {
+    }
 }
 
 TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderExtrude* vp)
