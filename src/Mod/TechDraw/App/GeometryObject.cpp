@@ -139,6 +139,8 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& viewAxis)
 {
     clear();
+    m_projectionShape = inShape;
+    m_projectionAxis = viewAxis;
 
     Handle(HLRBRep_Algo) brep_hlr;
     try {
@@ -304,6 +306,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
     }
 
     Handle(HLRBRep_PolyAlgo) brep_hlrPoly;
+    m_projectionShape = inCopy;
+    m_projectionAxis = viewAxis;
 
     try {
         // HLRBRep_PolyAlgo will fail if the whole input shape has not been meshed.
