@@ -51,6 +51,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/BitmapFactory.h>
@@ -78,11 +79,6 @@ TaskNewPage::TaskNewPage(QWidget* parent)
 
     m_baseTemplateDir = TechDraw::Preferences::defaultTemplateDir();
 
-    if (!m_baseTemplateDir.endsWith(QLatin1Char('/'))
-        && !m_baseTemplateDir.endsWith(QLatin1Char('\\'))) {
-        m_baseTemplateDir += QLatin1Char('/');
-    }
-
     m_orientationGroup = new QButtonGroup(this);
     m_orientationGroup->addButton(ui->landscapeRadioButton);
     m_orientationGroup->addButton(ui->portraitRadioButton);
@@ -96,6 +92,7 @@ TaskNewPage::TaskNewPage(QWidget* parent)
     else {
         ui->portraitRadioButton->setChecked(true);
     }
+    connect(ui->browseTemplateButton, &QPushButton::clicked, this, &TaskNewPage::onBrowseTemplate);
     connect(ui->addTemplateButton,
             &QPushButton::clicked,
             this,
@@ -133,7 +130,9 @@ void TaskNewPage::updatePreviewAndPath()
     QString currentSize = ui->sizeComboBox->currentText();
     bool isLandscape = ui->landscapeRadioButton->isChecked();
 
-    m_currentTemplateFile = findTemplateFile(currentStandard, currentSize, isLandscape);
+    m_currentTemplateFile = m_browsedTemplateFile.isEmpty()
+        ? findTemplateFile(currentStandard, currentSize, isLandscape)
+        : m_browsedTemplateFile;
 
     if (!m_currentTemplateFile.isEmpty()) {
         QFileInfo tfi(m_currentTemplateFile);
@@ -158,6 +157,10 @@ void TaskNewPage::updatePreviewAndPath()
         m_currentTemplateFile.clear();
     }
 
+
+    ui->selectedTemplateLabel->setText(
+        QDir(m_baseTemplateDir).relativeFilePath(m_currentTemplateFile));
+    ui->selectedTemplateLabel->setVisible(!m_currentTemplateFile.isEmpty());
 
     ui->svgPreviewWidget->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
     ui->svgPreviewWidget->updateGeometry();
@@ -235,6 +238,7 @@ void TaskNewPage::populateStandards()
 void TaskNewPage::onStandardChanged(int index)
 {
     Q_UNUSED(index);
+    m_browsedTemplateFile.clear();
     populateSizes();
 }
 
@@ -250,7 +254,7 @@ void TaskNewPage::populateSizes()
         return;
     }
 
-    QDir standardDir(m_baseTemplateDir + currentStandard);
+    QDir standardDir(QDir(m_baseTemplateDir).filePath(currentStandard));
     if (!standardDir.exists()) {
         ui->svgPreviewWidget->setToolTip(
             tr("Standard directory not found: %1").arg(standardDir.path()));
@@ -285,6 +289,19 @@ void TaskNewPage::populateSizes()
     updatePreviewAndPath();
 }
 
+void TaskNewPage::onBrowseTemplate()
+{
+    const QString workingDirectory = Gui::FileDialog::getWorkingDirectory();
+    const QString filename = Gui::FileDialog::getOpenFileName(
+        this, tr("Select a template file"), m_baseTemplateDir,
+        Gui::FileDialog::FilterList{{tr("Template"), {"*.svg"}}});
+    Gui::FileDialog::setWorkingDirectory(workingDirectory);
+    if (!filename.isEmpty()) {
+        m_browsedTemplateFile = filename;
+        updatePreviewAndPath();
+    }
+}
+
 void TaskNewPage::onOpenTemplateFolderClicked()
 {
     QString nativePath = QDir::toNativeSeparators(m_baseTemplateDir);
@@ -294,11 +311,13 @@ void TaskNewPage::onOpenTemplateFolderClicked()
 void TaskNewPage::onSizeChanged(int index)
 {
     Q_UNUSED(index);
+    m_browsedTemplateFile.clear();
     updatePreviewAndPath();
 }
 
 void TaskNewPage::onOrientationChanged()
 {
+    m_browsedTemplateFile.clear();
     if (ui->landscapeRadioButton->isChecked() || ui->portraitRadioButton->isChecked()) {
         updatePreviewAndPath();
     }
