@@ -196,6 +196,8 @@ SET(TechDrawGui_SRCS
     TaskActiveView.cpp
     TaskActiveView.h
     TaskNewPage.ui
+    TemplateTranslationService.cpp
+    TemplateTranslationService.h
     TaskNewPage.cpp
     TaskNewPage.h
     Grabber3d.cpp
