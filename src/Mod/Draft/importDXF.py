@@ -5460,7 +5460,7 @@ def _write_arch_panel_sheet_entities(obj, writer_proxy):
 
         # 3. Process all child objects of the PanelSheet
         for child in obj.Group:
-            if Draft.getType(child) == "PanelCut":
+            if utils.get_type(child) == "PanelCut":
                 # Call the existing handler for PanelCut objects
                 _export_arch_panel_cut(child, writer_proxy)
             elif child.isDerivedFrom("Part::Feature"):
@@ -5487,7 +5487,7 @@ def _write_generic_shape_entity(obj, writer_proxy):
     shape_to_export = obj.Shape
 
     # Check for sketches, which need special handling to be flattened
-    if Draft.getType(obj) == "Sketch":
+    if utils.get_type(obj) == "Sketch":
         # This assumes a helper exists to correctly get a flat shape from a sketch
         # In a real implementation, we might need Sketcher.getExportShape(obj)
         pass  # For now, we just use the default shape
@@ -5513,7 +5513,7 @@ def _export_object(obj, writer_proxy):
     writer_proxy.setColor(aci_color)
 
     # 2. Get the object's type
-    obj_type = Draft.getType(obj)
+    obj_type = utils.get_type(obj)
 
     # 3. Dispatch to the correct handler
     try:
