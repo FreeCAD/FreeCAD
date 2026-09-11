@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileCopyrightText: 2026 sliptonic
+# SPDX-FileCopyrightText: 2026 awgrover@gmail.com
 # SPDX-FileNotice: Part of the FreeCAD project.
 
 ################################################################################
@@ -24,15 +24,16 @@
 Test suite for Tapping
 """
 
-import unittest
 import Path
+from CAMTests import PathTestUtils
 
 from Path.Post.Processor import PostProcessor
+from Path.Post.CAMErrors import CAMValueError, CAMAttributeError
 from Machine.models.machine import OutputUnits, Machine
 from CAMTests.PostTestMocks import MockJob
 
 
-class TestPostTapping(unittest.TestCase):
+class TestPostTapping(PathTestUtils.PathTestBase):
     """Test special behavior of Tapping (G84 G74)"""
 
     @classmethod
@@ -57,7 +58,7 @@ class TestPostTapping(unittest.TestCase):
         conv = {OutputUnits.IMPERIAL: 1 / 25.4, OutputUnits.METRIC: 1}
 
         # Values to make it more obvious what went wrong in calculation
-        z = 10  # mm/sec
+        z = 10  # mm
         pitch = 2  # mm/thread (.1mm = 1/10mm per thread)
         s = 3  # rev/min
 
@@ -81,3 +82,15 @@ class TestPostTapping(unittest.TestCase):
                     rez,
                     f"For {direction}, {units}",
                 )
+
+    def test_no_S(self):
+        with self.assertRaisesRegex(CAMAttributeError, "S parameter is required"):
+            self.pp._convert_drill_cycle(
+                Path.Command("G84", {"F": 100, "Z": 10}, {"operation": "tapping"})
+            )
+
+    def test_zero_S(self):
+        with self.assertRaisesRegex(CAMValueError, "S parameter must be > 0"):
+            self.pp._convert_drill_cycle(
+                Path.Command("G84", {"F": 100, "S": 0, "Z": 10}, {"operation": "tapping"})
+            )

@@ -2945,15 +2945,35 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
-    def _tapping_to_speed(self, command: Path.Command):
+    def _tapping_to_speed(self, command: Path.Command) -> Path.Command:
         """Updates F to the speed, not pitch, if appropriate
         Returns original command, or modified command
         Override in the PP if the logic is completely different
         """
         # Tapping F is pitch, convert to speed
-        if "tapping" == command.Annotations.get("operation", "") and "F" in command.Parameters:
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and "tapping" == command.Annotations.get("operation", "")
+            and "F" in command.Parameters
+        ):
             # we are still FreeCAD units: mm and secs, so mm/min -> mm/sec
-            spindle_speed = command.Parameters["S"]
+            spindle_speed = command.Parameters.get("S", None)
+            if spindle_speed is None:
+                raise CAMAttributeError(
+                    translate("CAM", "S parameter is required for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            if spindle_speed <= 0:
+                raise CAMValueError(
+                    translate("CAM", "S parameter must be > 0 for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
             f = command.Parameters["F"] * spindle_speed / 60.0
             new_command = Path.Command(
                 command.Name, {**command.Parameters, "F": f}, command.Annotations
