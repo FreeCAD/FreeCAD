@@ -1741,7 +1741,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # NOTE: Temporarily disable the model optimization on 3+2 axis operations
         if is_three_plus_two:
-            use_cpp = False
+            use_cpp = False if is_waterline else True  # Disable C++ tessellation for Waterline
             model_faces = None
             optimized_shape = model_shape
             optimize_stl = False

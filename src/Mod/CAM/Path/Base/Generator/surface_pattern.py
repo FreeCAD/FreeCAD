@@ -520,7 +520,7 @@ def _emit_zones_nearest_neighbor(chains, sample_interval, climb, current_start_p
             pts = wire.discretize(Distance=sample_interval)
             if len(pts) < 2:
                 continue
-            if not climb:
+            if climb:
                 pts.reverse()
             if wire.isClosed() and (pts[0] - pts[-1]).Length > 1e-5:
                 pts.append(pts[0])

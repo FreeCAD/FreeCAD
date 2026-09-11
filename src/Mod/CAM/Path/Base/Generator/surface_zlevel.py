@@ -686,6 +686,7 @@ def zlevel_hybrid_stack(
                 model_top,
                 z_target,
                 tool_params,
+                stock_to_leave,
                 tol,
                 critical_heights,
             )
@@ -779,7 +780,16 @@ def zlevel_hybrid_stack(
     return stack
 
 
-def _first_pass_mask(shape, wpc, model_top, z_target, tool_params, tol, critical_heights=None):
+def _first_pass_mask(
+    shape,
+    wpc,
+    model_top,
+    z_target,
+    tool_params,
+    stock_to_leave,
+    tol,
+    critical_heights=None,
+):
     """
     Seeds all_prev_comp for a first cut level deeper than the tool's corner
     radius below model_top — without this, the first level has no
@@ -799,6 +809,7 @@ def _first_pass_mask(shape, wpc, model_top, z_target, tool_params, tol, critical
     profile = tool_params["profile"]
     radius = tool_params["radius"]
     c_rad = tool_params["c_rad"]
+    offset = radius + stock_to_leave
 
     if "ballend" in profile:
         c_rad = radius
@@ -820,7 +831,7 @@ def _first_pass_mask(shape, wpc, model_top, z_target, tool_params, tol, critical
         section_engine.add(shape)
         params = section_engine.getDefaultParams()
         params["SectionTolerance"] = 0.0001
-        params["Offset"] = radius
+        params["Offset"] = offset
         section_engine.setParams(**params)
 
         slices = []

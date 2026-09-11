@@ -285,6 +285,7 @@ def _shape_to_stl(
         linear_deflection: Linear deflection for tessellation (mm).
         angular_deflection: Angular deflection for tessellation (degrees).
         mesh_simplification: Integer 1-7 for mesh simplification (1=highest accuracy, 7=fastest).
+        use_cpp: Temporary Flag to disable C++ tessellation for 3+2 axis on Waterline Op (Default - True)
 
     Returns:
         An ocl.STLSurf object.
@@ -751,6 +752,7 @@ def generate_stl(
         model_faces (list, optional): Pre-computed model_shape.Faces, if the caller
             already has it (e.g. reused from boundary-face construction), to avoid
             re-deriving FreeCAD's freshly-built face wrappers again here.
+        use_cpp (bool): Temporary Flag to disable C++ tessellation for 3+2 axis on Waterline Op
 
     Returns:
         tuple: (stl, safe_stl), where stl is the primary mesh and safe_stl is the
