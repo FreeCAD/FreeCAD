@@ -256,6 +256,11 @@ PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int o
     }
 }
 
+Py_hash_t TopoShapeVertexPy::hash(PyObject* self)
+{
+    return TopoShapePy::hash(self);
+}
+
 Py::Object TopoShapeVertexPy::getPoint() const
 {
     try {

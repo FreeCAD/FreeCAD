@@ -1009,3 +1009,52 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         v3 = Part.Vertex(tuple(v2))
         self.assertNotEqual(v3, v1)
         self.assertNotIn(v3, b.Vertexes)
+
+    def testTopoShapeVertexHashFollowsEquality(self):
+        b = Part.makeBox(10, 10, 10)
+        v1 = b.Vertexes[0]
+        v2 = Part.Vertex(v1)
+        self.assertEqual(hash(v1), hash(v2))
+        self.assertEqual(len({v1, v2}), 1)
+        self.assertEqual(len(set(b.Vertexes)), 8)
+        self.assertIn(v2, {v1: "found"})
+
+    def testTopoShapeVertexEqualityIgnoresOrientation(self):
+        b = Part.makeBox(10, 10, 10)
+        v1 = b.Vertexes[0]
+        v2 = Part.Vertex(v1)
+        v2.reverse()
+        self.assertNotEqual(v1.Orientation, v2.Orientation)
+        self.assertTrue(v1.isSame(v2))
+        self.assertEqual(v1, v2)
+        self.assertEqual(hash(v1), hash(v2))
+
+    def testTopoShapeVertexComparesOnlyWithVertices(self):
+        v = Part.Vertex(1, 2, 3)
+        self.assertNotEqual(v, (1, 2, 3))
+        self.assertNotEqual(v, Part.Vertex())
+        with self.assertRaises(TypeError):
+            v < Part.Vertex(0, 0, 0)
+
+    def testTopoShapeVertexIsNotTreatedAsShapeSequence(self):
+        b = Part.makeBox(10, 10, 10)
+        v = b.Vertexes[2]
+        self.assertEqual(b.findSubShape(v), ("Vertex", 3))
+        self.assertEqual(b.findSubShape([v]), [("Vertex", 3)])
+        self.assertEqual(b.findSubShape(Part.Vertex(v)), ("Vertex", 3))
+        self.assertEqual(b.findSubShape(Part.Vertex(1, 1, 1)), (None, 0))
+
+    def testTopoShapeVertexSequence(self):
+        v = Part.Vertex(1, 2, 3)
+        self.assertEqual(len(v), 3)
+        self.assertEqual(tuple(v), (1, 2, 3))
+        self.assertEqual(v[-1], 3)
+        self.assertEqual(App.Vector(v), App.Vector(1, 2, 3))
+        with self.assertRaises(IndexError):
+            _ = v[3]
+        with self.assertRaises(RuntimeError):
+            tuple(Part.Vertex())
+
+    def testTopoShapeVertexRepr(self):
+        self.assertEqual(repr(Part.Vertex(1, 2, 3)), "<Part.Vertex (1, 2, 3)>")
+        self.assertEqual(repr(Part.Vertex()), "<Part.Vertex()>")

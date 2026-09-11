@@ -15,6 +15,7 @@ from typing import Final, overload
     Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
     RichCompare=True,
+    Hash=True,
 )
 @sequence_protocol(
     sq_length=True,
