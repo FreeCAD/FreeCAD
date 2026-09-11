@@ -153,6 +153,10 @@ class BaseGUITestRunner:
         "Override to indicate that a test has just errored"
         pass
 
+    def notifySubTest(self, test, subtest, err):
+        "Override to indicate that a subtest has just finished (it may have failed or errored)"
+        pass
+
     def notifyTestStarted(self, test):
         "Override to indicate that a test is about to run"
         pass
@@ -179,6 +183,10 @@ class GUITestResult(unittest.TestResult):
     def addFailure(self, test, err):
         unittest.TestResult.addFailure(self, test, err)
         self.callback.notifyTestFailed(test, err)
+
+    def addSubTest(self, test, subtest, err):
+        unittest.TestResult.addSubTest(self, test, subtest, err)
+        self.callback.notifySubTest(test, subtest, err)
 
     def stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
@@ -276,6 +284,28 @@ class QtTestRunner(BaseGUITestRunner):
         self.gui.insertError("Error: %s" % test, tracebackText)
         self.errorInfo.append((test, err))
         self.stream.write("{}\nERROR: {}\n{}\n{}\n".format("=" * 70, test, "-" * 70, tracebackText))
+
+    def notifySubTest(self, test, subtest, err):
+        """Called when a subtest has finished. If it failed or errored, add it to the list of errors."""
+        if err is not None:
+            self.errorInfo.append((subtest, err))
+            testName = str(test) + "-" + str(subtest)
+            if isinstance(err[1], AssertionError):
+                self.failCountVar = self.failCountVar + 1
+                self.gui.setFailCount(self.failCountVar)
+                tracebackLines = traceback.format_exception(*err + (10,))
+                tracebackText = "".join(tracebackLines)
+                self.gui.insertError("Failure: %s" % (testName), tracebackText)
+                self.errorInfo.append((testName, err))
+                self.stream.write("FAILED: {}\n{}\n".format(testName, tracebackText))
+            else:
+                self.errorCountVar = self.errorCountVar + 1
+                self.gui.setErrorCount(self.errorCountVar)
+                tracebackLines = traceback.format_exception(*err + (10,))
+                tracebackText = "".join(tracebackLines)
+                self.gui.insertError("Error: %s" % (testName), tracebackText)
+                self.errorInfo.append((testName, err))
+                self.stream.write("ERROR: {}\n{}\n".format(testName, tracebackText))
 
     def notifyTestFinished(self, test):
         self.remainingCountVar = self.remainingCountVar - 1

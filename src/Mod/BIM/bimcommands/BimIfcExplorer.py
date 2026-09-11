@@ -323,7 +323,7 @@ class BIM_IfcExplorer:
                     FreeCAD.ActiveDocument.recompute()
                     FreeCADGui.Selection.clearSelection()
                     FreeCADGui.Selection.addSelection(self.mesh)
-                    FreeCADGui.SendMsgToActiveView("ViewSelection")
+                    FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
             else:
                 if self.mesh:
                     self.mesh.ViewObject.hide()

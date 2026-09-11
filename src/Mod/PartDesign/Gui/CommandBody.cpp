@@ -30,6 +30,7 @@
 
 #include <App/Datums.h>
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
@@ -41,6 +42,7 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
@@ -58,6 +60,20 @@
 
 namespace PartDesignGui
 {
+
+static Part::TopoShape getBaseFeatureShape(const App::DocumentObject* object)
+{
+    auto shape = Part::Feature::getTopoShape(object, Part::ShapeOption::ResolveLink);
+    if (shape.isNull()) {
+        auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+            App::GeoFeature::getPropertyOfGeometry(object)
+        );
+        if (shapeProperty) {
+            shape = shapeProperty->getShape();
+        }
+    }
+    return shape;
+}
 
 /// Returns active part, if there is no such, creates a new part, if it fails, shows a message
 App::Part* assertActivePart()
@@ -103,10 +119,9 @@ void CmdPartDesignBody::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     App::Part* actPart = PartDesignGui::getActivePart();
-    App::Part* partOfBaseFeature = nullptr;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(
-        Part::Feature::getClassTypeId()
+        App::DocumentObject::getClassTypeId()
     );
     App::DocumentObject* baseFeature = nullptr;
     bool addtogroup = false;
@@ -139,71 +154,60 @@ void CmdPartDesignBody::activated(int iMsg)
                 // Prevent creating bodies based on bodies (but don't pop-up a dialog)
                 baseFeature = nullptr;
             }
+            else if (baseFeature->isDerivedFrom<Sketcher::SketchObject>()) {
+                // Add sketcher to the body's group property
+                addtogroup = true;
+            }
             else {
-                partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
-                if (partOfBaseFeature && partOfBaseFeature != actPart) {
-                    // prevent cross-part mess
+                Part::TopoShape baseShape = PartDesignGui::getBaseFeatureShape(baseFeature);
+                if (baseShape.isNull()) {
                     QMessageBox::warning(
                         Gui::getMainWindow(),
                         QObject::tr("Bad base feature"),
-                        QObject::tr("Base feature (%1) belongs to other part.")
+                        QObject::tr("Base feature (%1) has an empty shape.")
                             .arg(QString::fromUtf8(baseFeature->Label.getValue()))
                     );
                     baseFeature = nullptr;
                 }
-                else if (baseFeature->isDerivedFrom<Sketcher::SketchObject>()) {
-                    // Add sketcher to the body's group property
-                    addtogroup = true;
-                }
-                // if a standard Part feature (not a PartDesign feature) is selected then check
-                // the number of solids/shells
                 else if (!baseFeature->isDerivedFrom<PartDesign::Feature>()) {
-                    const TopoDS_Shape& shape
-                        = static_cast<Part::Feature*>(baseFeature)->Shape.getValue();
-                    if (!shape.IsNull()) {
-                        int numSolids = 0;
-                        int numShells = 0;
-                        for (TopExp_Explorer xp(shape, TopAbs_SOLID); xp.More(); xp.Next()) {
-                            numSolids++;
-                        }
-                        for (TopExp_Explorer xp(shape, TopAbs_SHELL, TopAbs_SOLID); xp.More();
-                             xp.Next()) {
-                            numShells++;
-                        }
+                    const TopoDS_Shape& shape = baseShape.getShape();
+                    int numSolids = 0;
+                    int numShells = 0;
+                    for (TopExp_Explorer xp(shape, TopAbs_SOLID); xp.More(); xp.Next()) {
+                        numSolids++;
+                    }
+                    for (TopExp_Explorer xp(shape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+                        numShells++;
+                    }
 
-                        QString warning;
-                        if (numSolids > 1 && numShells == 0) {
-                            warning = QObject::tr(
-                                "The selected shape consists of multiple solids.\n"
-                                "This may lead to unexpected results."
-                            );
-                        }
-                        else if (numShells > 1 && numSolids == 0) {
-                            warning = QObject::tr(
-                                "The selected shape consists of multiple shells.\n"
-                                "This may lead to unexpected results."
-                            );
-                        }
-                        else if (numShells == 1 && numSolids == 0) {
-                            warning = QObject::tr(
-                                "The selected shape consists of only a shell.\n"
-                                "This may lead to unexpected results."
-                            );
-                        }
-                        else if (numSolids + numShells > 1) {
-                            warning = QObject::tr(
-                                "The selected shape consists of multiple solids or shells.\n"
-                                "This may lead to unexpected results."
-                            );
-                        }
+                    QString warning;
+                    if (numSolids > 1 && numShells == 0) {
+                        warning = QObject::tr(
+                            "The selected shape consists of multiple solids.\n"
+                            "This may lead to unexpected results."
+                        );
+                    }
+                    else if (numShells > 1 && numSolids == 0) {
+                        warning = QObject::tr(
+                            "The selected shape consists of multiple shells.\n"
+                            "This may lead to unexpected results."
+                        );
+                    }
+                    else if (numShells == 1 && numSolids == 0) {
+                        warning = QObject::tr(
+                            "The selected shape consists of only a shell.\n"
+                            "This may lead to unexpected results."
+                        );
+                    }
+                    else if (numSolids + numShells > 1) {
+                        warning = QObject::tr(
+                            "The selected shape consists of multiple solids or shells.\n"
+                            "This may lead to unexpected results."
+                        );
+                    }
 
-                        if (!warning.isEmpty()) {
-                            QMessageBox::warning(
-                                Gui::getMainWindow(),
-                                QObject::tr("Base feature"),
-                                warning
-                            );
-                        }
+                    if (!warning.isEmpty()) {
+                        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
                     }
                 }
             }

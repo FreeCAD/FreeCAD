@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -774,6 +776,8 @@ void execCenterLine(Gui::Command* cmd)
                                                         edgeNames.front(),
                                                         true));
     }
+
+    Gui::Selection().clearSelection();
 }
 
 //===========================================================================

@@ -88,11 +88,9 @@ if (MSVC)
     target_compile_options(PathGui PRIVATE /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PathGui)
-endif()
+target_compile_warn_error(PathGui)
 
-SET_BIN_DIR(PathGui PathGui /Mod/CAM)
+SET_BIN_DIR(PathGui)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/CAM" ${PathGuiIcon_SVG})

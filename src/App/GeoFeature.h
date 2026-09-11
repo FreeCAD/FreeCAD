@@ -76,6 +76,8 @@ public:
      * The default implementation returns null.
      */
     virtual const PropertyComplexGeoData* getPropertyOfGeometry() const;
+    /// Returns the geometry property of a GeoFeature object, or null for other object types.
+    static const PropertyComplexGeoData* getPropertyOfGeometry(const DocumentObject* object);
     /**
      * @brief getPyObject returns the Python binding object
      * @return the Python binding object

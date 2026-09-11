@@ -37,13 +37,17 @@ inputs:
   reportFile:
     description: "Path for report file"
     required: true
+  shellCmd:
+    description: "Shell command to use for action steps (e.g. 'pixi run bash -l {0}')"
+    default: "bash -l {0}"
+    required: false
 
 runs:
   using: "composite"
   steps:
     - name: Run tests
       id: runTests
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       run: |
         set -o pipefail
         mkdir -p "$(dirname "${{ inputs.logFile }}")"
@@ -51,7 +55,7 @@ runs:
           ${{ inputs.testCommand }}
         } 2>&1 | sed -Ee "/[[:blank:]]*\\([[:digit:]]{1,3} %\\)[[:blank:]]*/d" | tee -a "${{ inputs.logFile }}"
     - name: Write report
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       if: always()
       run: |
         mkdir -p "$(dirname "${{ inputs.logFile }}")"

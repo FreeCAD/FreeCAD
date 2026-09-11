@@ -116,7 +116,8 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         schema = self.post.get_property_schema()
 
         # Check that we have the expected number of properties
-        # 5 machine-config properties + 1 runtime-only (mark_entry_only)
+        # 4 "job"-scoped properties + 2 "run"-scoped
+        # (force_rapid_feeds, mark_entry_only)
         self.assertEqual(len(schema), 6)
 
         # Check pierce_delay property

@@ -724,6 +724,7 @@ public:
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+    QString getToolTip() const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
@@ -834,6 +835,8 @@ protected:
     ) const override;
 
 private:
+    bool hasMissingExternalGeometry() const;
+
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
         GeoListFacade& geolist,
@@ -999,6 +1002,7 @@ private:
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);
+    void setOriginPointMarker(bool hollow);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();

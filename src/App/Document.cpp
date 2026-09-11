@@ -1786,6 +1786,17 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
         reader.FileVersion = 0;
     }
 
+    // Imported objects may reference strings stored in the source document's
+    // StringHasher table, for example in topological element maps. Restore the
+    // source table before reading the objects so their persisted references can
+    // be resolved. Use a separate hasher instead of replacing the target
+    // document's table.
+    if (reader.hasAttribute("StringHasher")) {
+        StringHasherRef sourceHasher = new StringHasher;
+        sourceHasher->Restore(reader);
+        addStringHasher(sourceHasher);
+    }
+
     std::vector<DocumentObject*> objs = readObjects(reader);
     for (const auto o : objs) {
         if (o && o->isAttachedToDocument()) {
@@ -1814,6 +1825,7 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
     reader.readEndElement("Document");
 
     signalImportObjects(objs, reader);
+    DocumentP::checkStringHasher(reader);
     afterRestore(objs, true);
 
     signalFinishImportObjects(objs);
@@ -2001,7 +2013,7 @@ bool Document::saveToFile(const char* filename) const
     // check if file is writeable, then block the save if it is not.
     Base::FileInfo originalFileInfo(nativePath);
     if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
-        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+        throw Base::FileWritePermissionException(originalFileInfo);
     }
 
     // make a tmp. file where to save the project data first and then rename to

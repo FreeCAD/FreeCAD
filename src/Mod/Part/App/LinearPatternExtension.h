@@ -54,6 +54,17 @@ class PartExport LinearPatternExtension: public App::DocumentObjectExtension
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::LinearPatternExtension);
 
 public:
+    struct PatternPosition
+    {
+        long direction1;
+        long direction2;
+
+        App::PropertyIntPairList::IntPair asPair() const
+        {
+            return {direction1, direction2};
+        }
+    };
+
     LinearPatternExtension();
     ~LinearPatternExtension() override = default;
 
@@ -74,6 +85,14 @@ public:
     App::PropertyIntegerConstraint Occurrences2;
     App::PropertyFloatList Spacings2;
     App::PropertyFloatList SpacingPattern2;
+
+    /// Zero-based (direction 1, direction 2) indices, independent of the grid dimensions.
+    App::PropertyIntPairList SuppressedPositions;
+
+    PatternPosition getInstancePosition(long index) const;
+    bool isInstanceSuppressed(long index) const;
+    void setInstanceSuppressed(long index, bool suppressed);
+    void setPositionSuppressed(const PatternPosition& position, bool suppressed);
 
     gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
     std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;

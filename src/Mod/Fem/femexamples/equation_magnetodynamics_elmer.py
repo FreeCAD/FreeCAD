@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *                                                                         *
@@ -39,7 +41,7 @@ def get_information():
     return {
         "name": "Magnetic Field Around Wire",
         "meshtype": "solid",
-        "meshelement": "Tet10",
+        "meshelement": "Tet4",
         "constraints": ["electromagnetic", "magnetization"],
         "solvers": ["elmer"],
         "material": "solid",

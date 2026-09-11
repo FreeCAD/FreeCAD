@@ -55,6 +55,7 @@ class TestToolLengthOffset(unittest.TestCase):
         processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
         processor.values["FILTER_INEFFICIENT_MOVES"] = False
         processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
 
         # Create a simple path with G43 command
         commands = [Path.Command("G43", {"H": 1})]
@@ -86,6 +87,7 @@ class TestToolLengthOffset(unittest.TestCase):
         processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
         processor.values["FILTER_INEFFICIENT_MOVES"] = False
         processor.values["OUTPUT_LINE_NUMBERS"] = False
+        processor.values["IGNORED_COMMANDS"] = ""
 
         # Create a simple path with G43 command
         commands = [Path.Command("G43", {"H": 1})]
