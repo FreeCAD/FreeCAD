@@ -784,8 +784,7 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
 
     constexpr double chainToleranceFloor = 1e-3;
     constexpr double chainToleranceRatio = 2e-6;
-    const double chainTolerance =
-        std::max(chainToleranceFloor, sourceDiagonal * chainToleranceRatio);
+    const double chainTolerance = std::max(chainToleranceFloor, sourceDiagonal * chainToleranceRatio);
 
     // Walking the scene graph is most of the cost and does not depend on the
     // plane, so it is done once and kept.
@@ -795,6 +794,12 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
     // it here only meant doing it twice per plane move - once here and once from
     // updateData(), which already asks for both.
     refreshHarvestCache();
+
+    // XXX THROWAWAY DIAGNOSTIC
+    Base::Console().message(
+        "CAP rebuild bodies=%zu n=(%.4f,%.4f,%.4f) d=%.4f spacing=%.4f\n",
+        harvestCache.size(), n.x, n.y, n.z, d, spacing
+    );
 
     // Indexed rather than range-for: index picks the colour and the hatch angle,
     // and has to advance even for bodies the plane misses, so a part keeps its
@@ -836,6 +841,12 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
 
         const auto loops = Part::SectionCap::chainLoops(segments, meshTolerance);
         if (loops.empty()) {
+            // XXX THROWAWAY DIAGNOSTIC
+            Base::Console().message(
+                "CAP noloops %-24s segs=%zu tol=%.5f\n",
+                body.source ? body.source->Label.getValue() : "<null>",
+                segments.size(), meshTolerance
+            );
             continue;
         }
 
@@ -866,6 +877,23 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         }
 
         const auto fill = Part::SectionCap::fillLoops(closedLoops, u, v);
+
+        // XXX THROWAWAY DIAGNOSTIC - the stage between a slice and a drawn cap
+        {
+            double worstGap = 0.0;
+            for (const auto& loop : loops) {
+                if (!Part::SectionCap::isClosed(loop, meshTolerance) && loop.size() > 1) {
+                    worstGap = std::max(worstGap, Base::Distance(loop.front(), loop.back()));
+                }
+            }
+            Base::Console().message(
+                "CAP fill %-26s segs=%zu loops=%zu closed=%zu fillTris=%zu "
+                "worstGap=%.4f tol=%.5f\n",
+                body.source ? body.source->Label.getValue() : "<null>",
+                segments.size(), loops.size(), closedLoops.size(),
+                fill.indices.size() / 3, worstGap, meshTolerance
+            );
+        }
 
         if (!fill.indices.empty()) {
             std::vector<SbVec3f> fillPoints;
@@ -1051,7 +1079,7 @@ void ViewProviderSectionAnalysis::installClipPlane()
     std::vector<App::DocumentObject*> targets = feat->SourceParts.getValues();
     if (targets.empty()) {
         // Leaves are resolved here instead of in the Display mode.
-        // execute() skips the boolean outright. 
+        // execute() skips the boolean outright.
         // Clipping the Source
         // entries themselves only works when every one of them is a leaf: a clip
         // plane goes under the object's own view provider, and only a
@@ -1144,8 +1172,8 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
         Base::Vector3d localNormal = gNormal;
         Base::Vector3d localPoint = gPoint;
         if (obj) {
-            // Asked of every object, not only a GeoFeature. 
-            // An assembly is built from App::Link, which is a DocumentObject 
+            // Asked of every object, not only a GeoFeature.
+            // An assembly is built from App::Link, which is a DocumentObject
             // carrying LinkExtension and is not a GeoFeature at all.
             // So the frame correction was skipped for exactly the objects that need it most
 
@@ -1698,15 +1726,149 @@ void ViewProviderSectionAnalysis::setPerSolidColors(bool on)
     PerBodyColors.setValue(on);
 }
 
+void ViewProviderSectionAnalysis::syncPlaneDragger()
+{
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!planeDragger || !feat) {
+        return;
+    }
+
+    Base::Vector3d normal;
+    double offset = 0.0;
+    Base::Vector3d hint(0, 0, 0);
+    double diagonal = 0.0;
+    if (!feat->cutPlane(normal, offset) || !sourceBounds(hint, diagonal)) {
+        return;
+    }
+
+    // Anchored on the geometry, not on the plane's closest approach to the origin.
+    const Base::Vector3d onPlane = Part::SectionAnalysis::draggerAnchor(normal, offset, hint);
+
+    // Z is the plane normal; the other two need only lie in the plane.
+    Base::Vector3d u;
+    Base::Vector3d v;
+    Part::SectionAnalysis::planeFrame(normal, u, v);
+    Base::Matrix4D frame;
+    frame.setCol(0, u);
+    frame.setCol(1, v);
+    frame.setCol(2, normal);
+
+    draggerBase = Base::Placement(onPlane, Base::Rotation(frame));
+    planeDragger->translation.setValue(Base::convertTo<SbVec3f>(draggerBase.getPosition()));
+    planeDragger->rotation.setValue(Base::convertTo<SbRotation>(draggerBase.getRotation()));
+    planeDragger->clearIncrementCounts();
+}
+
+void ViewProviderSectionAnalysis::applyPlaneDragger()
+{
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!planeDragger || !feat) {
+        return;
+    }
+
+    // In steps, not off the matrix: that is what makes snapping land on round numbers.
+    const double step = planeDragger->translationIncrement.getValue();
+    const double along = step * planeDragger->translationIncrementCountZ.getValue();
+    const double acrossU = step * planeDragger->translationIncrementCountX.getValue();
+    const double acrossV = step * planeDragger->translationIncrementCountY.getValue();
+
+    const double turn = planeDragger->rotationIncrement.getValue();
+    const Base::Rotation base = draggerBase.getRotation();
+    Base::Vector3d u;
+    Base::Vector3d v;
+    Base::Vector3d n;
+    base.multVec(Base::Vector3d(1, 0, 0), u);
+    base.multVec(Base::Vector3d(0, 1, 0), v);
+    base.multVec(Base::Vector3d(0, 0, 1), n);
+
+    // Turns about the handle being held, wherever it has been slid to.
+    const Base::Rotation tilt =
+        Base::Rotation(u, turn * planeDragger->rotationIncrementCountX.getValue())
+        * Base::Rotation(v, turn * planeDragger->rotationIncrementCountY.getValue());
+    Base::Vector3d turned;
+    tilt.multVec(n, turned);
+    const double len = turned.Length();
+    if (!(len > 0.0)) {
+        return;
+    }
+    turned /= len;
+
+    const Base::Vector3d pivot = draggerBase.getPosition() + u * acrossU + v * acrossV;
+    const Base::Vector3d onPlane = pivot + turned * along;
+
+    // Undo FlipCut: the property holds the plane, not the side that survives.
+    const Base::Vector3d publish = feat->FlipCut.getValue() ? -turned : turned;
+    feat->PlaneNormal.setValue(publish);
+    feat->PlaneOffset.setValue(onPlane * publish);
+}
+
+void ViewProviderSectionAnalysis::planeDragStart(void* data, SoDragger*)
+{
+    static_cast<ViewProviderSectionAnalysis*>(data)->syncPlaneDragger();
+}
+
+void ViewProviderSectionAnalysis::planeDragMotion(void* data, SoDragger*)
+{
+    static_cast<ViewProviderSectionAnalysis*>(data)->applyPlaneDragger();
+}
+
+void ViewProviderSectionAnalysis::planeDragFinish(void* data, SoDragger*)
+{
+    auto* self = static_cast<ViewProviderSectionAnalysis*>(data);
+    self->applyPlaneDragger();
+    self->syncPlaneDragger();
+}
+
 void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    // The task panel owns the handles now, and the base class is what puts the
-    // gizmo container into the viewer and keeps it scaled to the camera.
+    if (viewer && !planeDragger) {
+        planeDragger = new Gui::SoTransformDragger();
+        planeDragger->setAxisColors(
+            Gui::ViewParams::instance()->getAxisXColor(),
+            Gui::ViewParams::instance()->getAxisYColor(),
+            Gui::ViewParams::instance()->getAxisZColor()
+        );
+        planeDragger->draggerSize.setValue(
+            static_cast<float>(Gui::ViewParams::instance()->getDraggerScale())
+        );
+
+        // Four of the nine handles: slide along the normal, tilt about the two
+        // in-plane axes, slide the pivot within the plane. The rest move nothing.
+        planeDragger->hideTranslationX();
+        planeDragger->hideTranslationY();
+        planeDragger->showTranslationZ();
+        planeDragger->showPlanarTranslationXY();
+        planeDragger->hidePlanarTranslationYZ();
+        planeDragger->hidePlanarTranslationZX();
+        planeDragger->showRotationX();
+        planeDragger->showRotationY();
+        planeDragger->hideRotationZ();
+
+        Base::Vector3d centre;
+        double diagonal = 0.0;
+        planeDragger->translationIncrement.setValue(
+            sourceBounds(centre, diagonal) && diagonal > 0.0 ? diagonal / 1000.0 : 0.1
+        );
+        planeDragger->rotationIncrement.setValue(0.1 * std::numbers::pi / 180.0);
+
+        planeDragger->addStartCallback(planeDragStart, this);
+        planeDragger->addMotionCallback(planeDragMotion, this);
+        planeDragger->addFinishCallback(planeDragFinish, this);
+
+        planeDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+        Base::Matrix4D identity;
+        viewer->getDocument()->setEditingTransform(identity);
+        viewer->setupEditingRoot(planeDragger, &identity);
+        syncPlaneDragger();
+    }
+
     ViewProviderDragger::setEditViewer(viewer, ModNum);
 }
 
 void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    planeDragger.reset();
     ViewProviderDragger::unsetEditViewer(viewer);
 }
 

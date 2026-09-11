@@ -94,6 +94,13 @@ SectionAnalysis::SectionAnalysis()
         "Normal of the cutting plane"
     );
     ADD_PROPERTY_TYPE(
+        AngleBase,
+        (Base::Vector3d(0, 0, 1)),
+        "Section Analysis",
+        App::Prop_None,
+        "Orientation the tilt angles are measured from"
+    );
+    ADD_PROPERTY_TYPE(
         PlaneOffset,
         (0.0),
         "Section Analysis",

@@ -30,6 +30,7 @@
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Gui/Inventor/Draggers/SoTransformDragger.h>
 
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -43,6 +44,7 @@ class SoSeparator;
 class SoShapeHints;
 class SoSwitch;
 class SoCamera;
+class SoDragger;
 
 namespace Gui
 {
@@ -198,6 +200,17 @@ protected:
     ) const override;
 
 private:
+    void syncPlaneDragger();   //!< put the dragger back on the plane
+    void applyPlaneDragger();  //!< read a drag back out as a plane
+
+    // Coin callbacks take plain function pointers.
+    static void planeDragStart(void* data, SoDragger* dragger);
+    static void planeDragMotion(void* data, SoDragger* dragger);
+    static void planeDragFinish(void* data, SoDragger* dragger);
+
+    Gui::CoinPtr<Gui::SoTransformDragger> planeDragger;
+    Base::Placement draggerBase;  //!< where the dragger sat when the drag began
+
     void installClipPlane();
     void removeClipPlane();
     void updateClipPlaneEquation();

@@ -23,6 +23,8 @@
 
 #include <memory>
 
+#include <fastsignals/signal.h>
+
 #include <Base/Vector3D.h>
 
 #include <Gui/TaskView/TaskView.h>
@@ -36,9 +38,6 @@ namespace Gui
 {
 class QuantitySpinBox;
 class ColorButton;
-class GizmoContainer;
-class LinearGizmo;
-class RotationGizmo;
 }  // namespace Gui
 
 namespace Part
@@ -84,30 +83,9 @@ private:
     void setupUi();
     void setupConnections();
 
-    /// Build the drag handles, bound to the spin boxes they edit. This is the
-    /// same arrangement PartDesign uses for pull-plus-tilt features: the gizmos
-    /// drive the spin boxes and the spin boxes drive the feature, so there is
-    /// one path into the plane rather than two.
-    void setupGizmos();
-
-    /// Tell the user the fine-drag modifier exists.
-    ///
-    /// The handles snap coarsely by default, which reads as "the resolution is
-    /// rough" unless something says otherwise. Every other gizmo-driven task
-    /// panel shows this hint, so ours has to as well.
-    void showDraggerHints();
-    void hideDraggerHints();
-
-    /// Re-place the handles after the plane has moved.
-    void setGizmoPositions();
-
     /// Base orientation and the two axes the angle boxes turn about.
     ///
-    /// The single source for both what the angles mean (applyAngles rotates the
-    /// base normal about these) and where the tilt handles go (setGizmoPositions
-    /// uses them as the arcs' rotation axes). A handle turning about a different
-    /// axis than the box it drives is worse than no handle, so both must read the
-    /// same frame.
+    /// What the angles mean: applyAngles rotates the base normal about these.
     void angleReferenceFrame(
         Base::Vector3d& baseNormal,
         Base::Vector3d& angle1Axis,
@@ -116,6 +94,10 @@ private:
 
     /// Name the two tilt boxes after the axes the given preset turns about.
     void applyPresetAngleLabels(Preset preset);
+
+    /// Pull the plane back out of the feature into the boxes, after something
+    /// other than the boxes moved it - the dragger, or a script.
+    void refreshFromFeature();
 
     void onPresetChanged(int index);
     void onAngle1Changed(double val);
@@ -132,9 +114,31 @@ private:
     Part::SectionAnalysis* feature;
     ViewProviderSectionAnalysis* viewProvider;
 
-    /// Orientation the tilt angles are measured from, for the presets that have
-    /// no fixed axis.
-    Base::Vector3d angleBaseNormal {0.0, 0.0, 1.0};
+
+    fastsignals::scoped_connection featureConn;
+
+    /// True while the panel is the one writing the plane, so the change coming
+    /// back does not overwrite the box being typed into.
+    bool pushingToFeature = false;
+
+    /// Sets that flag for as long as it lives, early returns included.
+    struct PanelWrite
+    {
+        explicit PanelWrite(SectionAnalysisWidget* widget)
+            : panel(widget)
+        {
+            panel->pushingToFeature = true;
+        }
+        ~PanelWrite()
+        {
+            panel->pushingToFeature = false;
+        }
+        PanelWrite(const PanelWrite&) = delete;
+        PanelWrite& operator=(const PanelWrite&) = delete;
+
+    private:
+        SectionAnalysisWidget* panel;
+    };
 
     QComboBox* presetCombo = nullptr;
     QLabel* angleLabel1 = nullptr;
@@ -143,18 +147,6 @@ private:
     Gui::QuantitySpinBox* angle1Spin = nullptr;
     Gui::QuantitySpinBox* angle2Spin = nullptr;
 
-    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
-    Gui::LinearGizmo* offsetGizmo = nullptr;
-    /// True while any handle is being dragged. Re-placing a gizmo mid drag moves
-    /// the frame it is projecting the mouse into, so its next reading jumps -
-    /// which feeds back through the spin box and runs away.
-    ///
-    /// Asked of the draggers rather than mirrored in a flag of our own: Coin has
-    /// no abort callback, only a finish on mouse release, so a mirrored flag
-    /// latches for good if a release is ever missed. This cannot go stale.
-    bool anyGizmoDragging() const;
-    Gui::RotationGizmo* tiltGizmo1 = nullptr;
-    Gui::RotationGizmo* tiltGizmo2 = nullptr;
     QCheckBox* flipCheck = nullptr;
     Gui::ColorButton* sectionColorBtn = nullptr;
     QCheckBox* hatchCheck = nullptr;
