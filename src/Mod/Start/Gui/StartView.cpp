@@ -45,6 +45,7 @@
 #include "NewFileButton.h"
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentSettings.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
@@ -357,6 +358,14 @@ void StartView::newDraftFile()
 void StartView::newArchFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
+    auto* doc = App::GetApplication().getActiveDocument();
+    App::DocumentSettings gridSettings(doc, "Draft");
+
+    // Create a 10 m grid (100 mm spacing x 100 squares), matching the camera zoom set below
+    gridSettings.setString("GridSpacing", "100 mm");
+    gridSettings.setInt("GridMainlines", 10);
+    gridSettings.setInt("GridSize", 100);
+
     try {
         Gui::Application::Instance->activateWorkbench("BIMWorkbench");
     }
