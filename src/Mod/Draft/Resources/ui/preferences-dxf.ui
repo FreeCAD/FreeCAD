@@ -221,7 +221,7 @@ shape. Best for importing and viewing very large files with maximum performance.
    <item>
     <widget class="QGroupBox" name="groupBox_ImportSettings">
      <property name="title">
-      <string>Import Settings</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_ImportSettings">
       <item>
@@ -577,7 +577,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_dxfmesh">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>All objects containing faces will be exported as 3D polyface meshes</string>
@@ -624,7 +624,7 @@ This might fail for post DXF R12 templates.</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_dxfproject">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="toolTip">
            <string>Exported objects will be projected to reflect the current view direction</string>
@@ -764,38 +764,6 @@ This might fail for post DXF R12 templates.</string>
    <signal>toggled(bool)</signal>
    <receiver>groupBox_ImportAs</receiver>
    <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_dxfUseLegacyExporter</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_dxfmesh</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_dxfUseLegacyExporter</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_dxfproject</receiver>
-   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
