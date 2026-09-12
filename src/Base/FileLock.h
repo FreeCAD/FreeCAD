@@ -76,7 +76,7 @@ public:
     Failure lastFailure() const;
 
 private:
-    bool tryLockUntil(std::chrono::steady_clock::time_point deadline);
+    Failure tryLockUntil(std::chrono::steady_clock::time_point deadline);
 
     std::string _path;
     Failure _failure {Failure::None};
