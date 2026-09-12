@@ -90,6 +90,10 @@
 #include "SoBrepFaceSet.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderSectionAnalysis.h"
+
+
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Shape.hxx>
 #include "TaskSectionAnalysis.h"
 
 
@@ -543,6 +547,34 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
         harvestCache.push_back(std::move(body));
     }
 
+    // The displayed triangles are meshed one face at a time and do not meet
+    // along shared edges, so a contour cut through them breaks wherever the
+    // plane crosses a face boundary. Anything with a solid behind it is remeshed
+    // watertight instead; the rest keeps what the scene graph gave.
+    Part::SectionAnalysis::forEachSourcePart(
+        sources,
+        feat,
+        [this](App::DocumentObject* obj, const TopoDS_Shape& shape) {
+            if (shape.IsNull() || TopExp_Explorer(shape, TopAbs_SOLID).More() == Standard_False) {
+                return;
+            }
+            const auto body = std::find_if(
+                harvestCache.begin(),
+                harvestCache.end(),
+                [obj](const HarvestedBody& candidate) { return candidate.source == obj; }
+            );
+            if (body == harvestCache.end()) {
+                return;
+            }
+            auto watertight = Part::SectionCap::meshSolid(shape);
+            if (watertight.indices.empty()) {
+                return;
+            }
+            body->bounds
+                = Base::BoundBox3d(watertight.points.data(), watertight.points.size());
+            body->soup = std::move(watertight);
+        }
+    );
     harvestValid = true;
 }
 
@@ -782,9 +814,6 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         sourceDiagonal = 0.0;
     }
 
-    constexpr double chainToleranceFloor = 1e-3;
-    constexpr double chainToleranceRatio = 2e-6;
-    const double chainTolerance = std::max(chainToleranceFloor, sourceDiagonal * chainToleranceRatio);
 
     // Walking the scene graph is most of the cost and does not depend on the
     // plane, so it is done once and kept.
@@ -794,12 +823,6 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
     // it here only meant doing it twice per plane move - once here and once from
     // updateData(), which already asks for both.
     refreshHarvestCache();
-
-    // XXX THROWAWAY DIAGNOSTIC
-    Base::Console().message(
-        "CAP rebuild bodies=%zu n=(%.4f,%.4f,%.4f) d=%.4f spacing=%.4f\n",
-        harvestCache.size(), n.x, n.y, n.z, d, spacing
-    );
 
     // Indexed rather than range-for: index picks the colour and the hatch angle,
     // and has to advance even for bodies the plane misses, so a part keeps its
@@ -820,33 +843,8 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             continue;
         }
 
-        // Tolerance from the mesh, not from the model box.
-        double meshTolerance = chainTolerance;
-        {
-            std::vector<double> chord;
-            chord.reserve(segments.size());
-            for (const auto& seg : segments) {
-                const double len = Base::Distance(seg.start, seg.end);
-                if (len > 0.0) {
-                    chord.push_back(len);
-                }
-            }
-            if (!chord.empty()) {
-                const std::size_t mid = chord.size() / 2;
-                std::nth_element(chord.begin(), chord.begin() + mid, chord.end());
-                constexpr double chordFraction = 0.05;
-                meshTolerance = std::max(chainTolerance, chord[mid] * chordFraction);
-            }
-        }
-
-        const auto loops = Part::SectionCap::chainLoops(segments, meshTolerance);
+        const auto loops = Part::SectionCap::chainLoops(segments);
         if (loops.empty()) {
-            // XXX THROWAWAY DIAGNOSTIC
-            Base::Console().message(
-                "CAP noloops %-24s segs=%zu tol=%.5f\n",
-                body.source ? body.source->Label.getValue() : "<null>",
-                segments.size(), meshTolerance
-            );
             continue;
         }
 
@@ -871,29 +869,12 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         std::vector<std::vector<Base::Vector3d>> closedLoops;
         closedLoops.reserve(loops.size());
         for (const auto& loop : loops) {
-            if (Part::SectionCap::isClosed(loop, meshTolerance)) {
+            if (Part::SectionCap::isClosedExactly(loop)) {
                 closedLoops.push_back(loop);
             }
         }
 
         const auto fill = Part::SectionCap::fillLoops(closedLoops, u, v);
-
-        // XXX THROWAWAY DIAGNOSTIC - the stage between a slice and a drawn cap
-        {
-            double worstGap = 0.0;
-            for (const auto& loop : loops) {
-                if (!Part::SectionCap::isClosed(loop, meshTolerance) && loop.size() > 1) {
-                    worstGap = std::max(worstGap, Base::Distance(loop.front(), loop.back()));
-                }
-            }
-            Base::Console().message(
-                "CAP fill %-26s segs=%zu loops=%zu closed=%zu fillTris=%zu "
-                "worstGap=%.4f tol=%.5f\n",
-                body.source ? body.source->Label.getValue() : "<null>",
-                segments.size(), loops.size(), closedLoops.size(),
-                fill.indices.size() / 3, worstGap, meshTolerance
-            );
-        }
 
         if (!fill.indices.empty()) {
             std::vector<SbVec3f> fillPoints;
@@ -978,7 +959,7 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
                     static_cast<float>(p.z)
                 );
             }
-            if (Part::SectionCap::isClosed(loop, meshTolerance)) {
+            if (Part::SectionCap::isClosedExactly(loop)) {
                 lineIndex.push_back(lineIndex[lineIndex.size() - loop.size()]);
             }
             lineIndex.push_back(SO_END_LINE_INDEX);

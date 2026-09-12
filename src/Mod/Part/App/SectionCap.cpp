@@ -26,12 +26,20 @@
 #include <cstdint>
 #include <functional>
 #include <limits>
-#include <map>
 #include <unordered_map>
 
 #include <Base/Console.h>
 
 #include "SectionCap.h"
+
+#include <map>
+
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepTools.hxx>
+#include <TopoDS_Shape.hxx>
+
+#include "BRepMesh.h"
+#include "TopoShape.h"
 
 
 using namespace Part;
@@ -105,7 +113,23 @@ std::optional<Part::SectionCap::Segment> SectionCap::planeTriangleIntersection(
     double offset
 )
 {
+    return triangleCrossing(a, b, c, -1, -1, -1, normal, offset);
+}
+
+
+std::optional<Part::SectionCap::Segment> SectionCap::triangleCrossing(
+    const Base::Vector3d& a,
+    const Base::Vector3d& b,
+    const Base::Vector3d& c,
+    int ia,
+    int ib,
+    int ic,
+    const Base::Vector3d& normal,
+    double offset
+)
+{
     const Base::Vector3d* p[3] = {&a, &b, &c};
+    const int index[3] = {ia, ib, ic};
 
     // signed distance from the plane
     const double s[3] = {a * normal - offset, b * normal - offset, c * normal - offset};
@@ -118,14 +142,21 @@ std::optional<Part::SectionCap::Segment> SectionCap::planeTriangleIntersection(
     }
 
     Base::Vector3d hit[2];
+    MeshEdge edge[2];
     int hits = 0;
     for (int e = 0; e < 3 && hits < 2; ++e) {
-        const int i = e;
-        const int j = (e + 1) % 3;
+        int i = e;
+        int j = (e + 1) % 3;
         if (above[i] == above[j]) {
             continue;
         }
+        if (index[i] >= 0 && index[j] >= 0 && index[j] < index[i]) {
+            std::swap(i, j);
+        }
         const double t = s[i] / (s[i] - s[j]);
+        edge[hits] = index[i] < 0 || index[j] < 0
+            ? MeshEdge {-1, -1}
+            : MeshEdge {std::min(index[i], index[j]), std::max(index[i], index[j])};
         hit[hits++] = *p[i] + (*p[j] - *p[i]) * t;
     }
     // A triangle resting one vertex on the plane produces two crossings that
@@ -135,7 +166,47 @@ std::optional<Part::SectionCap::Segment> SectionCap::planeTriangleIntersection(
         return std::nullopt;
     }
 
-    return SectionCap::Segment {hit[0], hit[1]};
+    return SectionCap::Segment {hit[0], hit[1], edge[0], edge[1]};
+}
+
+
+SectionCap::TriangleSoup SectionCap::meshSolid(const TopoDS_Shape& shape, double deflection)
+{
+    TriangleSoup soup;
+    if (shape.IsNull()) {
+        return soup;
+    }
+
+    BRepTools::Clean(shape);
+
+    const Part::TopoShape topo(shape);
+    const double accuracy = deflection > 0.0 ? deflection : topo.getAccuracy();
+
+    // Meshed on one thread. In parallel OCCT gives each face its own
+    // discretisation of an edge they share, leaving the patches millimetres
+    // apart - far too wide for the merge below, and the cut then falls through
+    // the seam. TopoShape::getFaces() meshes in parallel, so it is not used.
+    BRepMesh_IncrementalMesh mesher(
+        shape,
+        accuracy,
+        /*isRelative*/ Standard_False,
+        meshAngularDeflection,
+        /*isInParallel*/ Standard_False
+    );
+
+    std::vector<Data::ComplexGeoData::Domain> domains;
+    topo.getDomains(domains);
+    std::vector<Data::ComplexGeoData::Facet> facets;
+    Part::BRepMesh merger;
+    merger.getFacesFromDomains(domains, soup.points, facets);
+
+    soup.indices.reserve(facets.size() * 3);
+    for (const auto& facet : facets) {
+        soup.indices.push_back(static_cast<int>(facet.I1));
+        soup.indices.push_back(static_cast<int>(facet.I2));
+        soup.indices.push_back(static_cast<int>(facet.I3));
+    }
+    return soup;
 }
 
 
@@ -163,10 +234,13 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
             continue;
         }
 
-        auto segment = planeTriangleIntersection(
+        auto segment = triangleCrossing(
             soup.points[ia],
             soup.points[ib],
             soup.points[ic],
+            ia,
+            ib,
+            ic,
             normal,
             offset
         );
@@ -180,88 +254,68 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
 
 
 std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
-    const std::vector<Segment>& segments,
-    double tolerance
+    const std::vector<Segment>& segments
 )
 {
     std::vector<std::vector<Base::Vector3d>> loops;
-    if (segments.empty() || tolerance <= 0.0) {
+    if (segments.empty()) {
         return loops;
     }
 
-    // Every segment filed under the cell of each of its two ends, so growing a
-    // chain is a lookup rather than a scan over everything still unused.
-    std::unordered_map<EndpointCell, std::vector<std::size_t>, EndpointCellHash> segmentsByEndpoint;
+    // Which segments touch each edge. 
+    std::multimap<MeshEdge, std::size_t> byEdge;
     for (std::size_t i = 0; i < segments.size(); ++i) {
-        segmentsByEndpoint[cellOf(segments[i].start, tolerance)].push_back(i);
-        segmentsByEndpoint[cellOf(segments[i].end, tolerance)].push_back(i);
+        byEdge.emplace(segments[i].startEdge, i);
+        byEdge.emplace(segments[i].endEdge, i);
     }
 
-    // Chain length before its ends count as closure.
-    constexpr double closureTravel = 4.0;
-
     std::vector<bool> used(segments.size(), false);
-    const double tolSq = tolerance * tolerance;
-
-    auto findNext = [&](const Base::Vector3d& from) -> std::size_t {
-        std::size_t found = segments.size();
-        forEachNeighbouringCell(cellOf(from, tolerance), [&](const EndpointCell& k) {
-            if (found != segments.size()) {
-                return;
-            }
-            auto it = segmentsByEndpoint.find(k);
-            if (it == segmentsByEndpoint.end()) {
-                return;
-            }
-            for (std::size_t idx : it->second) {
-                if (used[idx]) {
-                    continue;
-                }
-                if (Base::DistanceP2(segments[idx].start, from) <= tolSq
-                    || Base::DistanceP2(segments[idx].end, from) <= tolSq) {
-                    found = idx;
-                    return;
-                }
-            }
-        });
-        return found;
-    };
-
     for (std::size_t seed = 0; seed < segments.size(); ++seed) {
         if (used[seed]) {
             continue;
         }
         used[seed] = true;
 
+        const MeshEdge opening = segments[seed].startEdge;
         std::vector<Base::Vector3d> loop {segments[seed].start, segments[seed].end};
-        Base::Vector3d tail = segments[seed].end;
-        double travelled = Base::Distance(segments[seed].start, tail);
+        MeshEdge tail = segments[seed].endEdge;
 
-        while (true) {
-            const std::size_t next = findNext(tail);
-            if (next >= segments.size()) {
-                break;
+        while (tail != opening) {
+            // The other triangle on this edge, if it has not been walked yet
+            std::size_t next = segments.size();
+            const auto range = byEdge.equal_range(tail);
+            for (auto it = range.first; it != range.second; ++it) {
+                if (!used[it->second]) {
+                    next = it->second;
+                    break;
+                }
+            }
+            if (next == segments.size()) {
+                break;  // the mesh is open here
             }
             used[next] = true;
-            // walk on from whichever end of the found segment is further away
-            const bool startMatches = Base::DistanceP2(segments[next].start, tail) <= tolSq;
-            const Base::Vector3d ahead = startMatches ? segments[next].end : segments[next].start;
-            travelled += Base::Distance(tail, ahead);
-            tail = ahead;
-            loop.push_back(tail);
 
-            if (travelled > closureTravel * tolerance
-                && Base::DistanceP2(tail, loop.front()) <= tolSq) {
-                break;  // closed
-            }
+            // Continue from whichever end of it is not the edge we arrived on
+            const bool enteredAtStart = segments[next].startEdge == tail;
+            loop.push_back(enteredAtStart ? segments[next].end : segments[next].start);
+            tail = enteredAtStart ? segments[next].endEdge : segments[next].startEdge;
         }
 
+        if (tail == opening) {
+            loop.push_back(loop.front());  // say so plainly rather than by distance
+        }
         if (loop.size() >= 3) {
             loops.push_back(std::move(loop));
         }
     }
 
     return loops;
+}
+
+
+bool SectionCap::isClosedExactly(const std::vector<Base::Vector3d>& loop)
+{
+    return loop.size() >= 4 && loop.front() == loop.back();
 }
 
 
