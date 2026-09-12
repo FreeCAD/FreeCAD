@@ -246,14 +246,14 @@ int main(int argc, char** argv)
 # endif
 
 #else
-				// Fix for XWayland window stacking
-				if (argc > 0 && argv && argv[0]) {
+        // Fix for XWayland window stacking
+        if (argc > 0 && argv && argv[0]) {
             argv[0] = const_cast<char*>("FreeCAD");
         }
         App::Application::init(argc, argv);
 #endif
 
-				// To set the window icon on Wayland, the desktop file has to be available to the
+        // To set the window icon on Wayland, the desktop file has to be available to the
         // compositor. Qt also uses the desktop file name to register with the portal registry.
         const QString desktopFileName = QString::fromStdString(
             App::Application::Config()["DesktopFileName"]
@@ -264,13 +264,11 @@ int main(int argc, char** argv)
         }
 
         // Keep this to protect configurations and native Wayland tracking
-				const QString applicationName= QString::fromStdString(
-						App::Application::Config()["ExeName"]
-				);
+        const QString applicationName = QString::fromStdString(App::Application::Config()["ExeName"]);
 
-				QGuiApplication::setApplicationName(applicationName);
-			
-				std::map<std::string, std::string>::iterator it = App::Application::Config().find(
+        QGuiApplication::setApplicationName(applicationName);
+
+        std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
         );
         if (it != App::Application::Config().end()) {
@@ -284,12 +282,10 @@ int main(int argc, char** argv)
 
         Gui::Application::initApplication();
 
-	        // Only if 'RunMode' is set to 'Gui' do the replacement
+        // Only if 'RunMode' is set to 'Gui' do the replacement
         if (App::Application::Config()["RunMode"] == "Gui") {
             Base::Interpreter().replaceStdOutput();
         }
-
-
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc, argv);

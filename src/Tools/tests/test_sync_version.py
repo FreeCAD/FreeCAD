@@ -29,9 +29,7 @@ def make_version(
     suffix="dev",
     build=0,
 ) -> VersionInfo:
-    return VersionInfo(
-        name=name, major=major, minor=minor, patch=patch, suffix=suffix, build=build
-    )
+    return VersionInfo(name=name, major=major, minor=minor, patch=patch, suffix=suffix, build=build)
 
 
 class TestVersionInfo(unittest.TestCase):
@@ -110,10 +108,7 @@ class TestVersionInfo(unittest.TestCase):
 
 
 class TestReplaceInTomlSection(unittest.TestCase):
-    SAMPLE = (
-        '[workspace]\nname = "FreeCAD"\nversion = "1.0.0"\n\n'
-        '[dependencies]\nfoo = "*"\n'
-    )
+    SAMPLE = '[workspace]\nname = "FreeCAD"\nversion = "1.0.0"\n\n' '[dependencies]\nfoo = "*"\n'
 
     def test_replaces_field_in_correct_section(self):
         result = replace_in_toml_section(self.SAMPLE, "[workspace]", "version", "2.0.0")
@@ -125,9 +120,7 @@ class TestReplaceInTomlSection(unittest.TestCase):
         self.assertIn('foo = "*"', result)
 
     def test_no_match_returns_unchanged(self):
-        result = replace_in_toml_section(
-            self.SAMPLE, "[nonexistent]", "version", "2.0.0"
-        )
+        result = replace_in_toml_section(self.SAMPLE, "[nonexistent]", "version", "2.0.0")
         self.assertEqual(result, self.SAMPLE)
 
     def test_key_not_in_section_returns_unchanged(self):
@@ -324,9 +317,7 @@ class TestMainGui(unittest.TestCase):
             filepath = write_temp_file(Path(tmp), "MainGui.cpp", MAINGUI_CPP_SYNCED)
             version = make_version()
             result, changed = sync_MainGui(filepath, version)
-            self.assertIn(
-                'App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result
-            )
+            self.assertIn('App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result)
             self.assertIn(
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
@@ -339,9 +330,7 @@ class TestMainGui(unittest.TestCase):
             filepath = write_temp_file(Path(tmp), "MainGui.cpp", MAINGUI_CPP_UNSYNCED)
             version = make_version()
             result, changed = sync_MainGui(filepath, version)
-            self.assertIn(
-                'App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result
-            )
+            self.assertIn('App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result)
             self.assertIn(
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
@@ -351,14 +340,10 @@ class TestMainGui(unittest.TestCase):
 
     def test_partially_synced(self):
         with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(
-                Path(tmp), "MainGui.cpp", MAINGUI_CPP_PARTIALLY_SYNCED
-            )
+            filepath = write_temp_file(Path(tmp), "MainGui.cpp", MAINGUI_CPP_PARTIALLY_SYNCED)
             version = make_version()
             result, changed = sync_MainGui(filepath, version)
-            self.assertIn(
-                'App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result
-            )
+            self.assertIn('App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";', result)
             self.assertIn(
                 'App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";',
                 result,
@@ -473,9 +458,7 @@ class TestRun(unittest.TestCase):
             root, "src/XDGData/org.freecad.FreeCAD-1.2.0.desktop", DESKTOP_FILE_UNSYNCED
         )
         write_temp_file(root, "src/Main/MainGui.cpp", MAINGUI_CPP_UNSYNCED)
-        write_temp_file(
-            root, "package/bundle/linux/create_bundle.sh", LINUX_CREATE_BUNDLE_UNSYNCED
-        )
+        write_temp_file(root, "package/bundle/linux/create_bundle.sh", LINUX_CREATE_BUNDLE_UNSYNCED)
         return root
 
     def test_check_detects_out_of_sync(self, _stdout):
@@ -559,12 +542,8 @@ class TestRun(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = self._create_repo(tmp, make_version())
             run(root, check_only=False)
-            self.assertFalse(
-                (root / "src/XDGData/org.freecad.FreeCAD.desktop").exists()
-            )
-            self.assertTrue(
-                (root / "src/XDGData/org.freecad.FreeCAD-1.2.0.desktop").exists()
-            )
+            self.assertFalse((root / "src/XDGData/org.freecad.FreeCAD.desktop").exists())
+            self.assertTrue((root / "src/XDGData/org.freecad.FreeCAD-1.2.0.desktop").exists())
 
     def test_already_renamed_is_ok(self, _stdout):
         with tempfile.TemporaryDirectory() as tmp:
@@ -619,19 +598,15 @@ class TestRun(unittest.TestCase):
 
             run(root, check_only=False)
 
-            content = (root / "package/bundle/linux/create_bundle.sh").read_text(
-                encoding="utf-8"
-            )
+            content = (root / "package/bundle/linux/create_bundle.sh").read_text(encoding="utf-8")
 
             self.assertIn(
-                "cp ${conda_env}/share/applications/"
-                "org.freecad.FreeCAD-1.2.0.desktop AppDir/",
+                "cp ${conda_env}/share/applications/" "org.freecad.FreeCAD-1.2.0.desktop AppDir/",
                 content,
             )
 
             self.assertIn(
-                "sed -i 's/Exec=FreeCAD/Exec=AppRun/g' "
-                "AppDir/org.freecad.FreeCAD-1.2.0.desktop",
+                "sed -i 's/Exec=FreeCAD/Exec=AppRun/g' " "AppDir/org.freecad.FreeCAD-1.2.0.desktop",
                 content,
             )
 

@@ -97,9 +97,7 @@ def replace_in_toml_section(content: str, section: str, key: str, value: str) ->
 
     section_start = section_match.start()
     next_section = re.search(r"\n\[", content[section_match.end() :])
-    section_end = (
-        section_match.end() + next_section.start() if next_section else len(content)
-    )
+    section_end = section_match.end() + next_section.start() if next_section else len(content)
 
     section_text = content[section_start:section_end]
     field_pattern = rf'({re.escape(key)}\s*=\s*)"[^"]*"'
@@ -229,7 +227,7 @@ SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
     ("package/fedora/freecad.spec", sync_fedora_spec),
     (
-       lambda version:  f"src/XDGData/org.freecad.FreeCAD-{version.simple}.desktop",
+        lambda version: f"src/XDGData/org.freecad.FreeCAD-{version.simple}.desktop",
         sync_desktop_file,
     ),
     ("src/Main/MainGui.cpp", sync_MainGui),
@@ -258,7 +256,6 @@ def run(repo_root: Path, check_only: bool) -> bool:
     """
     version = VersionInfo.from_json(repo_root)
     all_synced = True
-
 
     for relative_path, sync_function in SYNC_TARGETS:
         if callable(relative_path):
