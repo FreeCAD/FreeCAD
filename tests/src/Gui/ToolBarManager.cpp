@@ -151,6 +151,52 @@ TEST(ToolBarManagerPersistenceId, roundTripsUnicodeCharacters)
     );
 }
 
+TEST(ToolBarManagerPersistenceId, migratesTuxToolbarLayouts)
+{
+    auto parameters = ParameterManager::Create();
+    parameters->CreateDocument();
+    const auto persistentToolbars = parameters->GetGroup("Tux")->GetGroup("PersistentToolbars");
+    const auto source = persistentToolbars->GetGroup("User")->GetGroup("SketcherWorkbench");
+    source->SetBool("Saved", true);
+    source->SetASCII("Top", "File,Break,\xE5\xB7\xA5\xE5\x85\xB7");
+    source->SetASCII("Left", "View");
+
+    Gui::Internal::migrateTuxPersistentToolbars(*parameters);
+
+    const auto mainWindow
+        = parameters->GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
+    EXPECT_TRUE(mainWindow->GetBool("RememberToolbarLayoutByWorkbench", false));
+    EXPECT_TRUE(mainWindow->GetBool("TuxPersistentToolbarsMigrated", false));
+
+    const auto target = parameters->GetGroup("BaseApp")
+                            ->GetGroup("MainWindow")
+                            ->GetGroup("WorkbenchLayouts")
+                            ->GetGroup("SketcherWorkbench");
+    ASSERT_TRUE(target->GetBool("Saved", false));
+    const auto layout = target->GetGroup("Layout");
+    const auto top = layout->GetGroup("Top");
+    ASSERT_EQ(top->GetInt("Count", 0), 3);
+    EXPECT_EQ(top->GetGroup("0")->GetASCII("Toolbar"), "File");
+    EXPECT_TRUE(top->GetGroup("1")->GetBool("Break", false));
+    EXPECT_EQ(top->GetGroup("2")->GetASCII("Toolbar"), "\xE5\xB7\xA5\xE5\x85\xB7");
+    EXPECT_EQ(layout->GetGroup("Left")->GetGroup("0")->GetASCII("Toolbar"), "View");
+
+    const auto sharedLayout
+        = parameters->GetGroup("BaseApp")->GetGroup("MainWindow")->GetGroup("SharedToolBarLayout");
+    ASSERT_TRUE(sharedLayout->GetBool("Saved", false));
+    const auto sharedTop = sharedLayout->GetGroup("Layout")->GetGroup("Top");
+    ASSERT_EQ(sharedTop->GetInt("Count", 0), 3);
+    EXPECT_EQ(sharedTop->GetGroup("0")->GetASCII("Toolbar"), "File");
+    EXPECT_TRUE(sharedTop->GetGroup("1")->GetBool("Break", false));
+    EXPECT_EQ(sharedTop->GetGroup("2")->GetASCII("Toolbar"), "\xE5\xB7\xA5\xE5\x85\xB7");
+    EXPECT_EQ(
+        sharedLayout->GetGroup("Layout")->GetGroup("Left")->GetGroup("0")->GetASCII("Toolbar"),
+        "View"
+    );
+
+    EXPECT_EQ(source->GetASCII("Top"), "File,Break,\xE5\xB7\xA5\xE5\x85\xB7");
+}
+
 TEST(ToolBarManagerPersistenceId, invalidScopedKeysFallBackToLegacyToolbarIdentity)
 {
     const auto incompleteWorkbench = ToolBarManager::toolBarPersistenceId(

@@ -11,8 +11,13 @@
 
 #include <FCGlobal.h>
 
+class ParameterManager;
+
 namespace Gui::Internal
 {
+
+/** Import toolbar layouts written by the former Tux persistent-toolbar module. */
+GuiExport void migrateTuxPersistentToolbars(ParameterManager& parameters);
 
 GuiExport QString findToolbarIdentityCollision(
     const QString& toolbarName,

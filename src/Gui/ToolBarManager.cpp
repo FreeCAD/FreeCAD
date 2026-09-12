@@ -45,6 +45,7 @@
 #include <Base/Tools.h>
 
 #include "ToolBarManager.h"
+#include "ToolBarManagerInternal.h"
 #include "ToolBarAreaWidget.h"
 #include "Application.h"
 #include "Command.h"
@@ -295,6 +296,89 @@ void writeToolBarLayoutState(const ParameterGrp::handle& group, const ToolBarLay
     writeStructuredToolBarLayoutEntries(layoutGroup, "Left", state.left);
     writeStructuredToolBarLayoutEntries(layoutGroup, "Right", state.right);
     writeStructuredToolBarLayoutEntries(layoutGroup, "Bottom", state.bottom);
+}
+QList<ToolBarLayoutEntry> readTuxToolBarLayoutEntries(const std::string& value)
+{
+    QList<ToolBarLayoutEntry> entries;
+    if (value.empty()) {
+        return entries;
+    }
+
+    const auto names = QString::fromUtf8(value.c_str()).split(QLatin1Char(','), Qt::SkipEmptyParts);
+    entries.reserve(names.size());
+    for (const auto& name : names) {
+        entries.push_back(makeToolBarLayoutEntry(name));
+    }
+    return entries;
+}
+
+void migrateTuxPersistentToolbarsImpl(
+    ParameterManager& parameters,
+    const ParameterGrp::handle& mainWindow,
+    const ParameterGrp::handle& workbenchLayouts,
+    const ParameterGrp::handle& sharedToolBarLayout
+)
+{
+    constexpr auto migrationKey = "TuxPersistentToolbarsMigrated";
+    if (mainWindow->GetBool(migrationKey, false)) {
+        return;
+    }
+
+    if (!parameters.HasGroup("Tux")) {
+        return;
+    }
+    const auto tux = parameters.GetGroup("Tux");
+    if (!tux->HasGroup("PersistentToolbars")) {
+        return;
+    }
+
+    const auto persistentToolbars = tux->GetGroup("PersistentToolbars");
+    mainWindow->SetBool(
+        "RememberToolbarLayoutByWorkbench",
+        persistentToolbars->GetBool("Enabled", true)
+    );
+
+    if (persistentToolbars->HasGroup("User")) {
+        for (const auto& source : persistentToolbars->GetGroup("User")->GetGroups()) {
+            if (!source->GetBool("Saved", false)) {
+                continue;
+            }
+
+            if (!sharedToolBarLayout->GetBool("Saved", false)) {
+                // Tux stored a full layout per workbench. Seed the new global toolbar
+                // layout from the first saved arrangement; the workbench copy below
+                // continues to carry workbench-owned toolbar placements.
+                writeToolBarLayoutState(
+                    sharedToolBarLayout,
+                    {
+                        .saved = true,
+                        .top = readTuxToolBarLayoutEntries(source->GetASCII("Top")),
+                        .left = readTuxToolBarLayoutEntries(source->GetASCII("Left")),
+                        .right = readTuxToolBarLayoutEntries(source->GetASCII("Right")),
+                        .bottom = readTuxToolBarLayoutEntries(source->GetASCII("Bottom")),
+                    }
+                );
+            }
+
+            const auto target = workbenchLayouts->GetGroup(source->GetGroupName());
+            if (target->HasGroup(StructuredLayoutGroup)) {
+                continue;
+            }
+
+            writeToolBarLayoutState(
+                target,
+                {
+                    .saved = true,
+                    .top = readTuxToolBarLayoutEntries(source->GetASCII("Top")),
+                    .left = readTuxToolBarLayoutEntries(source->GetASCII("Left")),
+                    .right = readTuxToolBarLayoutEntries(source->GetASCII("Right")),
+                    .bottom = readTuxToolBarLayoutEntries(source->GetASCII("Bottom")),
+                }
+            );
+        }
+    }
+
+    mainWindow->SetBool(migrationKey, true);
 }
 
 QString toolBarScopeLabel(ToolBarManager::Scope scope)
@@ -1218,6 +1302,22 @@ int toolBarWidthForLayout(const QToolBar* toolbar)
 }
 }  // namespace
 
+void Gui::Internal::migrateTuxPersistentToolbars(ParameterManager& parameters)
+{
+    const auto preferencesMainWindow
+        = parameters.GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
+    const auto workbenchLayouts
+        = parameters.GetGroup("BaseApp")->GetGroup("MainWindow")->GetGroup("WorkbenchLayouts");
+    const auto sharedToolBarLayout
+        = parameters.GetGroup("BaseApp")->GetGroup("MainWindow")->GetGroup("SharedToolBarLayout");
+    migrateTuxPersistentToolbarsImpl(
+        parameters,
+        preferencesMainWindow,
+        workbenchLayouts,
+        sharedToolBarLayout
+    );
+}
+
 ToolBarItem::ToolBarItem()
     : visibilityPolicy(DefaultVisibility::Visible)
     , _tier(defaultToolBarTier(visibilityPolicy))
@@ -1832,6 +1932,7 @@ void ToolBarManager::setupParameters()
     hMenuBarRight = hGlobalMenuBarRight;
     hMenuBarLeft = hGlobalMenuBarLeft;
     hPref = mgr.GetGroup("BaseApp/MainWindow/Toolbars");
+    Internal::migrateTuxPersistentToolbars(mgr);
 }
 
 void ToolBarManager::setupStatusBar()
