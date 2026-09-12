@@ -25,6 +25,7 @@
 
 #include "Selection/Selection.h"
 #include "TaskView/TaskDialog.h"
+#include "TransformSnap.h"
 #include "ViewProviderDragger.h"
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -200,11 +201,7 @@ private:
     ) const;
     std::optional<Base::Placement> solveCumulativeSnapObjectPlacement(
         const Base::Placement& candidate,
-        const Base::Placement& currentReferenceLocalPlacement,
-        const Base::Placement& currentReferenceTargetPlacement,
-        App::SubObjectPlacementProvider::SnapGeometryType currentReferenceType,
-        App::SubObjectPlacementProvider::SnapGeometryType currentTargetType,
-        bool currentTargetDirectionFixed = false,
+        const TransformSnap::Constraint& constraint,
         std::size_t historySize = std::numeric_limits<std::size_t>::max()
     ) const;
     void startCumulativeSnap();
@@ -212,10 +209,7 @@ private:
     void appendCumulativeSnapStep(
         const QString& referenceLabel,
         const QString& targetLabel,
-        const Base::Placement& referenceLocalPlacement,
-        const Base::Placement& targetPlacement,
-        App::SubObjectPlacementProvider::SnapGeometryType referenceType,
-        App::SubObjectPlacementProvider::SnapGeometryType targetType
+        TransformSnap::Constraint constraint
     );
     void restoreCumulativeSnapPlacement(const Base::Placement& placement);
     bool isCumulativeSnapStepInvertible(const CumulativeSnapStep& step) const;
@@ -264,11 +258,7 @@ private:
     {
         std::string label;
         Base::Placement objectPlacement;
-        Base::Placement referenceLocalPlacement;
-        Base::Placement targetPlacement;
-        App::SubObjectPlacementProvider::SnapGeometryType referenceType;
-        App::SubObjectPlacementProvider::SnapGeometryType targetType;
-        bool targetDirectionFixed {false};
+        TransformSnap::Constraint constraint;
     };
     std::optional<CumulativeSnapReference> currentCumulativeSnapReference {};
     std::vector<CumulativeSnapStep> cumulativeSnapHistory;

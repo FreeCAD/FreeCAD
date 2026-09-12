@@ -770,13 +770,14 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
                 targetType
             );
 
-            const auto constrainedObjectPlacement = solveCumulativeSnapObjectPlacement(
-                candidateObjectPlacement,
+            const TransformSnap::Constraint constraint {
                 currentCumulativeSnapReference->localPlacement,
                 targetReferencePlacement,
                 referenceType,
-                targetType
-            );
+                targetType,
+            };
+            const auto constrainedObjectPlacement
+                = solveCumulativeSnapObjectPlacement(candidateObjectPlacement, constraint);
             if (!constrainedObjectPlacement) {
                 if (msg.Type == SelectionChanges::AddSelection) {
                     Gui::Selection().clearSelection();
@@ -799,10 +800,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
                 appendCumulativeSnapStep(
                     QString::fromStdString(currentCumulativeSnapReference->label),
                     reference->label,
-                    currentCumulativeSnapReference->localPlacement,
-                    targetReferencePlacement,
-                    referenceType,
-                    targetType
+                    constraint
                 );
                 currentCumulativeSnapReference.reset();
                 setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
@@ -1077,11 +1075,7 @@ bool TaskTransform::isCumulativeSnapMovingObjectSelection(
 
 std::optional<Base::Placement> TaskTransform::solveCumulativeSnapObjectPlacement(
     const Base::Placement& candidate,
-    const Base::Placement& currentReferenceLocalPlacement,
-    const Base::Placement& currentReferenceTargetPlacement,
-    App::SubObjectPlacementProvider::SnapGeometryType currentReferenceType,
-    App::SubObjectPlacementProvider::SnapGeometryType currentTargetType,
-    bool currentTargetDirectionFixed,
+    const TransformSnap::Constraint& constraint,
     std::size_t historySize
 ) const
 {
@@ -1089,22 +1083,9 @@ std::optional<Base::Placement> TaskTransform::solveCumulativeSnapObjectPlacement
     const auto activeHistorySize = std::min(historySize, cumulativeSnapHistory.size());
     constraints.reserve(activeHistorySize + 1);
     for (std::size_t i = 0; i < activeHistorySize; ++i) {
-        const auto& step = cumulativeSnapHistory[i];
-        constraints.push_back({
-            step.referenceLocalPlacement,
-            step.targetPlacement,
-            step.referenceType,
-            step.targetType,
-            step.targetDirectionFixed,
-        });
+        constraints.push_back(cumulativeSnapHistory[i].constraint);
     }
-    constraints.push_back({
-        currentReferenceLocalPlacement,
-        currentReferenceTargetPlacement,
-        currentReferenceType,
-        currentTargetType,
-        currentTargetDirectionFixed,
-    });
+    constraints.push_back(constraint);
     return TransformSnap::solve(candidate, constraints);
 }
 
@@ -1148,23 +1129,19 @@ std::array<QWidget*, 3> TaskTransform::taskWidgets() const
 void TaskTransform::appendCumulativeSnapStep(
     const QString& referenceLabel,
     const QString& targetLabel,
-    const Base::Placement& referenceLocalPlacement,
-    const Base::Placement& targetPlacement,
-    App::SubObjectPlacementProvider::SnapGeometryType referenceType,
-    App::SubObjectPlacementProvider::SnapGeometryType targetType
+    TransformSnap::Constraint constraint
 )
 {
-    const auto constraintLabel = snapTypeLabel(referenceType);
+    const auto constraintLabel = snapTypeLabel(constraint.referenceType);
     const auto objectPlacement = vp->getObjectPlacement();
-    auto storedTargetPlacement = targetPlacement;
-    const auto targetDirectionFixed = isPlaneSnap(referenceType, targetType);
-    if (targetDirectionFixed) {
-        const auto acceptedReferencePlacement = objectPlacement * referenceLocalPlacement;
+    constraint.targetDirectionSignFixed = isPlaneSnap(constraint.referenceType, constraint.targetType);
+    if (constraint.targetDirectionSignFixed) {
+        const auto acceptedReferencePlacement = objectPlacement * constraint.localPlacement;
         if (TransformSnap::zAxis(acceptedReferencePlacement)
-                * TransformSnap::zAxis(storedTargetPlacement)
+                * TransformSnap::zAxis(constraint.targetPlacement)
             < 0.0) {
-            storedTargetPlacement = TransformSnap::invertedPlacementAroundLocalAxis(
-                storedTargetPlacement,
+            constraint.targetPlacement = TransformSnap::invertedPlacementAroundLocalAxis(
+                constraint.targetPlacement,
                 Base::Vector3d::UnitX
             );
         }
@@ -1173,11 +1150,7 @@ void TaskTransform::appendCumulativeSnapStep(
     cumulativeSnapHistory.push_back({
         QStringLiteral("%1: %2 -> %3").arg(constraintLabel, referenceLabel, targetLabel).toStdString(),
         objectPlacement,
-        referenceLocalPlacement,
-        storedTargetPlacement,
-        referenceType,
-        targetType,
-        targetDirectionFixed,
+        constraint,
     });
     updateCumulativeSnapUi();
 }
@@ -1200,13 +1173,15 @@ bool TaskTransform::isCumulativeSnapStepInvertible(const CumulativeSnapStep& ste
 {
     using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
 
-    if (step.referenceType == step.targetType) {
-        return step.referenceType == SnapGeometryType::Axis
-            || step.referenceType == SnapGeometryType::Plane;
+    const auto& constraint = step.constraint;
+    if (constraint.referenceType == constraint.targetType) {
+        return constraint.referenceType == SnapGeometryType::Axis
+            || constraint.referenceType == SnapGeometryType::Plane;
     }
 
-    return step.referenceType == SnapGeometryType::AxisSystem
-        && (step.targetType == SnapGeometryType::Axis || step.targetType == SnapGeometryType::Plane);
+    return constraint.referenceType == SnapGeometryType::AxisSystem
+        && (constraint.targetType == SnapGeometryType::Axis
+            || constraint.targetType == SnapGeometryType::Plane);
 }
 
 std::optional<std::size_t> TaskTransform::cumulativeSnapInvertTargetIndex() const
@@ -1243,17 +1218,18 @@ void TaskTransform::invertCumulativeSnapDirection(const Base::Vector3d& localAxi
     const auto previousTransformOrigin = vp->getTransformOrigin();
 
     auto& step = cumulativeSnapHistory[*targetIndex];
-    step.targetPlacement
-        = TransformSnap::invertedPlacementAroundLocalAxis(step.targetPlacement, localAxis);
-    step.targetDirectionFixed = true;
+    auto& constraint = step.constraint;
+    constraint.targetPlacement
+        = TransformSnap::invertedPlacementAroundLocalAxis(constraint.targetPlacement, localAxis);
+    constraint.targetDirectionSignFixed = true;
     step.objectPlacement = TransformSnap::objectPlacementMatchingSnapFrame(
         step.objectPlacement,
-        step.referenceLocalPlacement,
-        step.targetPlacement,
+        constraint.localPlacement,
+        constraint.targetPlacement,
         localAxis
     );
 
-    vp->setTransformOrigin(step.referenceLocalPlacement);
+    vp->setTransformOrigin(constraint.localPlacement);
     if (!updateCumulativeSnapHistoryPlacements()) {
         cumulativeSnapHistory = previousHistory;
         vp->setTransformOrigin(previousTransformOrigin);
@@ -1286,15 +1262,8 @@ bool TaskTransform::updateCumulativeSnapHistoryPlacements()
         const auto preferredPlacement = TransformSnap::isFinitePlacement(step.objectPlacement)
             ? step.objectPlacement
             : candidate;
-        const auto placement = solveCumulativeSnapObjectPlacement(
-            preferredPlacement,
-            step.referenceLocalPlacement,
-            step.targetPlacement,
-            step.referenceType,
-            step.targetType,
-            step.targetDirectionFixed,
-            i
-        );
+        const auto placement
+            = solveCumulativeSnapObjectPlacement(preferredPlacement, step.constraint, i);
         if (!placement) {
             return false;
         }
