@@ -18,6 +18,12 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
+#include <Base/Converter.h>
+#include <Gui/Utilities.h>
+#include <Mod/Part/App/Tools.h>
+#include <Precision.hxx>
+#include <gp_Ax3.hxx>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/FeatureRib.h>
@@ -31,7 +37,8 @@ class RibProfileSelection: public NoDependentsSelection
 {
 public:
     explicit RibProfileSelection(const PartDesign::Rib* rib)
-        : NoDependentsSelection(rib), document(rib->getDocument())
+        : NoDependentsSelection(rib)
+        , document(rib->getDocument())
     {}
 
     bool allow(App::Document* doc, App::DocumentObject* object, const char* subname) override
@@ -62,11 +69,13 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     auto advancedContainer = new QWidget(advanced);
     advancedUi->setupUi(advancedContainer);
     advanced->groupLayout()->addWidget(advancedContainer);
+    advanced->hideGroupBox();
 
     auto rib = getObject<PartDesign::Rib>();
     ui->ribClearProfile->setIcon(Gui::BitmapFactory().iconFromTheme("edit-delete"));
     refreshProfile();
     refreshEnums();
+    ui->ribReversed->setChecked(rib->Reversed.getValue());
 
     ui->ribThickness->setMinimum(0.0);
     ui->ribThickness->setMaximum(1e9);
@@ -79,7 +88,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribLength->setMinimum(0.0);
     ui->ribLength->setMaximum(1e9);
     ui->ribLength->setValue(rib->Distance.getValue());
-
+    ui->ribLength->bind(App::ObjectIdentifier::parse(rib, "Distance"));
 
     ui->ribDraftAngle->setUnit(Base::Unit::Angle);
     ui->ribDraftAngle->setMinimum(-89.0);
@@ -95,8 +104,8 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribFilletRadius->bind(App::ObjectIdentifier::parse(rib, "FilletRadius"));
 
     advancedUi->ribUseCustomPullDirection->setChecked(rib->UseCustomPullDirection.getValue());
-    for (auto field : {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY,
-                       advancedUi->ribPullDirectionZ}) {
+    for (auto field :
+         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
         field->setMinimum(-1e9);
         field->setMaximum(1e9);
     }
@@ -107,13 +116,18 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     advancedUi->ribPullDirectionX->bind(App::ObjectIdentifier::parse(rib, "PullDirection.x"));
     advancedUi->ribPullDirectionY->bind(App::ObjectIdentifier::parse(rib, "PullDirection.y"));
     advancedUi->ribPullDirectionZ->bind(App::ObjectIdentifier::parse(rib, "PullDirection.z"));
-    for (auto field : {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY,
-                       advancedUi->ribPullDirectionZ}) {
-        connect(field, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-                this, &TaskRibParameters::updatePullDirection);
+    for (auto field :
+         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
+        connect(
+            field,
+            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this,
+            &TaskRibParameters::updatePullDirection
+        );
     }
 
-    for (auto field : {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
+    for (auto field :
+         {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
         field->setMinimum(-1e9);
         field->setMaximum(1e9);
     }
@@ -124,9 +138,14 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     advancedUi->ribDirectionX->bind(App::ObjectIdentifier::parse(rib, "Direction.x"));
     advancedUi->ribDirectionY->bind(App::ObjectIdentifier::parse(rib, "Direction.y"));
     advancedUi->ribDirectionZ->bind(App::ObjectIdentifier::parse(rib, "Direction.z"));
-    for (auto field : {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
-        connect(field, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-                this, &TaskRibParameters::updateDirection);
+    for (auto field :
+         {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
+        connect(
+            field,
+            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+            this,
+            &TaskRibParameters::updateDirection
+        );
     }
     updateVisibility();
 
@@ -136,49 +155,74 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         finishSelection();
         getObject<PartDesign::Rib>()->Profile.setValue(nullptr);
         refreshProfile();
-        recomputeFeature();
+        updateRib();
     });
     const auto connectEnum = [this](QComboBox* combo, App::PropertyEnumeration& property) {
-        connect(combo, qOverload<int>(&QComboBox::currentIndexChanged), this,
-                [this, combo, &property](int index) {
-            if (index < 0) {
-                return;
+        connect(
+            combo,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            [this, combo, &property](int index) {
+                if (index < 0) {
+                    return;
+                }
+                // Item data holds the untranslated model value, not the visible caption.
+                property.setValue(combo->itemData(index).toString().toUtf8().constData());
+                updateVisibility();
+                updateRib();
             }
-            // Item data holds the untranslated model value, not the visible caption.
-            property.setValue(combo->itemData(index).toString().toUtf8().constData());
-            updateVisibility();
-            recomputeFeature();
-        });
+        );
     };
     connectEnum(ui->ribExtension, rib->ExtendType);
     connectEnum(ui->ribPlacement, rib->PlacementType);
     connectEnum(ui->ribExtent, rib->ExtentType);
-    connect(ui->ribThickness, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this, [this](double value) {
-        getObject<PartDesign::Rib>()->Thickness.setValue(value);
-        recomputeFeature();
+    connectEnum(ui->ribDraftReference, rib->DraftReference);
+    connect(ui->ribReversed, &QCheckBox::toggled, this, [this](bool reversed) {
+        getObject<PartDesign::Rib>()->Reversed.setValue(reversed);
+        updateRib();
     });
-    connect(ui->ribDraftAngle, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this, [this](double value) {
-        getObject<PartDesign::Rib>()->DraftAngle.setValue(value);
-        recomputeFeature();
-    });
-    connect(ui->ribFilletRadius, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this, [this](double value) {
-        getObject<PartDesign::Rib>()->FilletRadius.setValue(value);
-        recomputeFeature();
-    });
-    connect(advancedUi->ribUseCustomPullDirection, &QCheckBox::toggled,
-            this, [this](bool checked) {
+    connect(
+        ui->ribThickness,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            getObject<PartDesign::Rib>()->Thickness.setValue(value);
+            updateRib();
+        }
+    );
+    connect(
+        ui->ribDraftAngle,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            getObject<PartDesign::Rib>()->DraftAngle.setValue(value);
+            updateRib();
+        }
+    );
+    connect(
+        ui->ribFilletRadius,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            getObject<PartDesign::Rib>()->FilletRadius.setValue(value);
+            updateRib();
+        }
+    );
+    connect(advancedUi->ribUseCustomPullDirection, &QCheckBox::toggled, this, [this](bool checked) {
         getObject<PartDesign::Rib>()->UseCustomPullDirection.setValue(checked);
         updateVisibility();
-        recomputeFeature();
+        updateRib();
     });
-    connect(ui->ribLength, qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this, [this](double value) {
-        getObject<PartDesign::Rib>()->Distance.setValue(value);
-        recomputeFeature();
-    });
+    connect(
+        ui->ribLength,
+        qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
+        this,
+        [this](double value) {
+            getObject<PartDesign::Rib>()->Distance.setValue(value);
+            updateRib();
+        }
+    );
+    setupGizmos();
 }
 
 TaskRibParameters::~TaskRibParameters()
@@ -194,14 +238,36 @@ QWidget* TaskRibParameters::advancedPanel() const
 void TaskRibParameters::refreshEnums()
 {
     const auto caption = [](const std::string& value) {
-        if (value == "Off") return tr("Off");
-        if (value == "C1") return tr("C1");
-        if (value == "C2") return tr("C2");
-        if (value == "Side A") return tr("Side A");
-        if (value == "Side B") return tr("Side B");
-        if (value == "Centered") return tr("Centered");
-        if (value == "Shape") return tr("Shape");
-        if (value == "Distance") return tr("Distance");
+        if (value == "Off") {
+            return tr("Off");
+        }
+        if (value == "C1") {
+            return tr("C1");
+        }
+        if (value == "C2") {
+            return tr("C2");
+        }
+        if (value == "Side A") {
+            return tr("Side A");
+        }
+        if (value == "Side B") {
+            return tr("Side B");
+        }
+        if (value == "Centered") {
+            return tr("Centered");
+        }
+        if (value == "Free end") {
+            return tr("Free End");
+        }
+        if (value == "Root") {
+            return tr("Root");
+        }
+        if (value == "Shape") {
+            return tr("Shape");
+        }
+        if (value == "Distance") {
+            return tr("Distance");
+        }
         return QString::fromStdString(value);
     };
     const auto populate = [&caption](QComboBox* combo, const App::PropertyEnumeration& property) {
@@ -216,6 +282,7 @@ void TaskRibParameters::refreshEnums()
         populate(ui->ribExtension, rib->ExtendType);
         populate(ui->ribPlacement, rib->PlacementType);
         populate(ui->ribExtent, rib->ExtentType);
+        populate(ui->ribDraftReference, rib->DraftReference);
     }
 }
 
@@ -236,7 +303,9 @@ void TaskRibParameters::refreshProfile()
             }
         }
         ui->ribProfile->setText(text);
-        ui->ribProfile->setPlaceholderText(pickingProfile ? tr("Selecting…") : tr("Select a sketch or edges"));
+        ui->ribProfile->setPlaceholderText(
+            pickingProfile ? tr("Selecting…") : tr("Select a sketch or edges")
+        );
         ui->ribClearProfile->setEnabled(rib->Profile.getValue() != nullptr);
     }
 }
@@ -247,12 +316,14 @@ void TaskRibParameters::updateVisibility()
     ui->ribLengthLabel->setVisible(distance);
     ui->ribLength->setVisible(distance);
     const bool custom = advancedUi->ribUseCustomPullDirection->isChecked();
-    for (auto field : {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY,
-                       advancedUi->ribPullDirectionZ}) {
+    for (auto field :
+         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
         field->setEnabled(custom);
     }
-    for (auto label : {advancedUi->ribPullDirectionXLabel, advancedUi->ribPullDirectionYLabel,
-                       advancedUi->ribPullDirectionZLabel}) {
+    for (auto label :
+         {advancedUi->ribPullDirectionXLabel,
+          advancedUi->ribPullDirectionYLabel,
+          advancedUi->ribPullDirectionZLabel}) {
         label->setEnabled(custom);
     }
 }
@@ -264,7 +335,7 @@ void TaskRibParameters::updateDirection()
         advancedUi->ribDirectionY->value().getValue(),
         advancedUi->ribDirectionZ->value().getValue()
     );
-    recomputeFeature();
+    updateRib();
 }
 
 void TaskRibParameters::updatePullDirection()
@@ -274,7 +345,7 @@ void TaskRibParameters::updatePullDirection()
         advancedUi->ribPullDirectionY->value().getValue(),
         advancedUi->ribPullDirectionZ->value().getValue()
     );
-    recomputeFeature();
+    updateRib();
 }
 
 void TaskRibParameters::selectProfile(bool enabled)
@@ -285,6 +356,9 @@ void TaskRibParameters::selectProfile(bool enabled)
     }
     auto rib = getObject<PartDesign::Rib>();
     pickingProfile = true;
+    if (gizmoContainer) {
+        gizmoContainer->visible = false;
+    }
     selectedSource.clear();
     resolvedSource.clear();
     onSelectReference(AllowSelection::EDGE | AllowSelection::WHOLE);
@@ -314,6 +388,7 @@ void TaskRibParameters::finishSelection()
     const QSignalBlocker blocker(ui->ribSelectProfile);
     ui->ribSelectProfile->setChecked(false);
     refreshProfile();
+    setGizmoPositions();
 }
 
 void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -332,13 +407,14 @@ void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
     const bool add = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (add && !selectedSource.empty() && selectedSource != raw->getNameInDocument()) {
-        return; // A Profile link can hold multiple edges, but only from one object.
+        return;  // A Profile link can hold multiple edges, but only from one object.
     }
 
     // Resolve an external object once per picking session. Copy the whole source
     // so Ctrl-added edges can all refer to the same copy, rather than separate copies.
     App::DocumentObject* object = selectedSource == raw->getNameInDocument()
-        ? rib->getDocument()->getObject(resolvedSource.c_str()) : nullptr;
+        ? rib->getDocument()->getObject(resolvedSource.c_str())
+        : nullptr;
     if (!object) {
         auto wholeObjectSelection = msg;
         wholeObjectSelection.pSubName = "";
@@ -366,7 +442,7 @@ void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         finishSelection();
     }
     refreshProfile();
-    recomputeFeature();
+    updateRib();
 }
 
 void TaskRibParameters::apply()
@@ -375,12 +451,16 @@ void TaskRibParameters::apply()
     TaskSketchBasedParameters::apply();
     auto rib = getObject<PartDesign::Rib>();
     ui->ribThickness->apply();
-    FCMD_OBJ_CMD(rib, "Thickness = " << ui->ribThickness->value().getValue());
+    if (!ui->ribThickness->hasExpression()) {
+        FCMD_OBJ_CMD(rib, "Thickness = " << ui->ribThickness->value().getValue());
+    }
     advancedUi->ribDirectionX->apply();
     advancedUi->ribDirectionY->apply();
     advancedUi->ribDirectionZ->apply();
     ui->ribDraftAngle->apply();
-    FCMD_OBJ_CMD(rib, "DraftAngle = " << ui->ribDraftAngle->value().getValue());
+    if (!ui->ribDraftAngle->hasExpression()) {
+        FCMD_OBJ_CMD(rib, "DraftAngle = " << ui->ribDraftAngle->value().getValue());
+    }
     ui->ribFilletRadius->apply();
     if (!ui->ribFilletRadius->hasExpression()) {
         FCMD_OBJ_CMD(rib, "FilletRadius = " << ui->ribFilletRadius->value().getValue());
@@ -388,22 +468,35 @@ void TaskRibParameters::apply()
     advancedUi->ribPullDirectionX->apply();
     advancedUi->ribPullDirectionY->apply();
     advancedUi->ribPullDirectionZ->apply();
-    FCMD_OBJ_CMD(rib, "UseCustomPullDirection = "
-                 << (advancedUi->ribUseCustomPullDirection->isChecked() ? "True" : "False"));
+    FCMD_OBJ_CMD(
+        rib,
+        "UseCustomPullDirection = "
+            << (advancedUi->ribUseCustomPullDirection->isChecked() ? "True" : "False")
+    );
     const auto pullDirection = rib->PullDirection.getValue();
-    FCMD_OBJ_CMD(rib, "PullDirection = (" << pullDirection.x << ", " << pullDirection.y
-                 << ", " << pullDirection.z << ")");
+    FCMD_OBJ_CMD(
+        rib,
+        "PullDirection = (" << pullDirection.x << ", " << pullDirection.y << ", " << pullDirection.z
+                            << ")"
+    );
     FCMD_OBJ_CMD(rib, "ExtendType = " << rib->ExtendType.getValue());
     FCMD_OBJ_CMD(rib, "PlacementType = " << rib->PlacementType.getValue());
     FCMD_OBJ_CMD(rib, "ExtentType = " << rib->ExtentType.getValue());
-    FCMD_OBJ_CMD(rib, "Distance = " << ui->ribLength->value().getValue());
+    FCMD_OBJ_CMD(rib, "DraftReference = " << rib->DraftReference.getValue());
+    FCMD_OBJ_CMD(rib, "Reversed = " << (rib->Reversed.getValue() ? "True" : "False"));
+    ui->ribLength->apply();
+    if (!ui->ribLength->hasExpression()) {
+        FCMD_OBJ_CMD(rib, "Distance = " << ui->ribLength->value().getValue());
+    }
     const auto direction = rib->Direction.getValue();
-    FCMD_OBJ_CMD(rib, "Direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")");
+    FCMD_OBJ_CMD(
+        rib,
+        "Direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")"
+    );
     const auto profile = rib->Profile.getValue();
-    const std::string reference = profile
-        ? "(" + Gui::Command::getObjectCmd(profile) + ", "
+    const std::string reference = profile ? "(" + Gui::Command::getObjectCmd(profile) + ", "
             + buildLinkSubPythonStr(profile, rib->Profile.getSubValues()) + ")"
-        : "None";
+                                          : "None";
     FCMD_OBJ_CMD(rib, "Profile = " << reference);
 }
 
@@ -418,6 +511,121 @@ void TaskRibParameters::changeEvent(QEvent* event)
         refreshProfile();
     }
     TaskSketchBasedParameters::changeEvent(event);
+}
+
+
+void TaskRibParameters::updateRib()
+{
+    recomputeFeature();
+    // A failed preview must not remove the controls needed to correct its inputs.
+    setGizmoPositions();
+}
+
+void TaskRibParameters::setupGizmos()
+{
+    if (!Gui::GizmoContainer::isEnabled()) {
+        return;
+    }
+    thicknessGizmo = new Gui::LinearGizmo(ui->ribThickness);
+    lengthGizmo = new Gui::LinearGizmo(ui->ribLength);
+    lengthGizmo->setClickCallback([this] {
+        ui->ribReversed->setChecked(!ui->ribReversed->isChecked());
+    });
+    draftGizmo = new Gui::RotationGizmo(ui->ribDraftAngle);
+    gizmoContainer = Gui::GizmoContainer::create(
+        {thicknessGizmo, lengthGizmo, draftGizmo},
+        getViewObject<ViewProviderRib>()
+    );
+    setGizmoPositions();
+    showDraggerHints();
+}
+
+void TaskRibParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+    gizmoContainer->visible = false;
+    auto rib = getObject<PartDesign::Rib>();
+    if (!rib || !rib->Profile.getValue() || pickingProfile) {
+        return;
+    }
+    try {
+        const auto profile = rib->getRibProfileWire();
+        Base::Vector3d centerValue;
+        if (!profile.getCenterOfGravity(centerValue)) {
+            return;
+        }
+        gp_Pnt center(centerValue.x, centerValue.y, centerValue.z);
+        const auto plane = rib->getRibProfilePlane();
+        const gp_Vec normal(plane.Axis().Direction());
+        const auto direction = rib->Direction.getValue();
+        gp_Vec travel(direction.x, direction.y, direction.z);
+        if (travel.Magnitude() <= Precision::Confusion()) {
+            return;
+        }
+        travel.Normalize();
+        if (rib->Reversed.getValue()) {
+            travel.Reverse();
+        }
+        gp_Vec pull = -travel;
+        if (rib->UseCustomPullDirection.getValue()) {
+            const auto value = rib->PullDirection.getValue();
+            pull = gp_Vec(value.x, value.y, value.z);
+        }
+        // Properties are Rib-local; the scene graph and selected profile are world-space.
+        travel.Transform(rib->getLocation().Transformation());
+        pull.Transform(rib->getLocation().Transformation());
+        if (pull.Magnitude() <= Precision::Confusion()) {
+            return;
+        }
+        pull.Normalize();
+
+        auto anchor = center;
+        const auto addition = rib->AddSubShape.getShape();
+        if (!addition.isNull()) {
+            auto material = addition.moved(rib->getLocation());
+            gp_Trsf frame;
+            frame.SetTransformation(gp_Ax3(center, gp_Dir(pull)));
+            const auto bounds = material.moved(TopLoc_Location(frame)).getBoundBoxOptimal();
+            anchor.Translate(pull * (rib->DraftReference.isValue("Root") ? bounds.MinZ : bounds.MaxZ));
+        }
+        const gp_Vec width = rib->PlacementType.isValue("Side B") ? -normal : normal;
+        const double fraction = rib->PlacementType.isValue("Centered") ? .5 : 1.;
+        thicknessGizmo->setMultFactor(fraction);
+        thicknessGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(anchor),
+            Base::convertTo<Base::Vector3d>(width)
+        );
+        lengthGizmo->Gizmo::setDraggerPlacement(
+            Base::convertTo<Base::Vector3d>(center),
+            Base::convertTo<Base::Vector3d>(travel)
+        );
+        lengthGizmo->setVisibility(rib->ExtentType.isValue("Distance"));
+
+        gp_Vec rotationAxis = width.Crossed(pull);
+        if (rotationAxis.Magnitude() > Precision::Confusion()) {
+            rotationAxis.Normalize();
+            const auto at = anchor.Translated(width * (fraction * rib->Thickness.getValue()));
+            draftGizmo->Gizmo::setDraggerPlacement(
+                Base::convertTo<Base::Vector3d>(at),
+                Base::convertTo<Base::Vector3d>(pull)
+            );
+            draftGizmo->getDraggerContainer()->setArcNormalDirection(
+                Base::convertTo<SbVec3f>(rotationAxis)
+            );
+            draftGizmo->automaticOrientation = false;
+        }
+        draftGizmo->setVisibility(rotationAxis.Magnitude() > Precision::Confusion());
+        gizmoContainer->visible = true;
+        gizmoContainer->calculateScaleAndOrientation();
+    }
+    catch (const Base::Exception&) {
+    }
+    catch (const Standard_Failure&) {
+    }
+    catch (const std::exception&) {
+    }
 }
 
 TaskDlgRibParameters::TaskDlgRibParameters(ViewProviderRib* view)

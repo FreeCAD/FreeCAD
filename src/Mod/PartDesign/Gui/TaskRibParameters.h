@@ -3,6 +3,7 @@
 #pragma once
 
 #include "TaskSketchBasedParameters.h"
+#include <Gui/Inventor/Draggers/Gizmo.h>
 
 #include <string>
 
@@ -35,6 +36,9 @@ private:
     void updateVisibility();
     void updateDirection();
     void updatePullDirection();
+    void updateRib();
+    void setupGizmos();
+    void setGizmoPositions();
 
     std::unique_ptr<Ui_TaskRibParameters> ui;
     std::unique_ptr<Ui_TaskRibAdvancedParameters> advancedUi;
@@ -44,6 +48,10 @@ private:
     bool profileWasVisible = false;
     std::string selectedSource;
     std::string resolvedSource;
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* thicknessGizmo = nullptr;
+    Gui::LinearGizmo* lengthGizmo = nullptr;
+    Gui::RotationGizmo* draftGizmo = nullptr;
 };
 
 class TaskDlgRibParameters: public TaskDlgSketchBasedParameters

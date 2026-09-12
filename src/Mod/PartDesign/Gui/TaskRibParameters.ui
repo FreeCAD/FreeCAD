@@ -140,7 +140,7 @@
    <item row="5" column="0">
     <widget class="QLabel" name="ribDraftAngleLabel">
      <property name="text">
-      <string>Draft angle</string>
+      <string>Draft Angle</string>
      </property>
      <property name="buddy">
       <cstring>ribDraftAngle</cstring>
@@ -218,14 +218,25 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
-    <widget class="QLabel" name="implementationNotice">
+   <item row="8" column="0">
+    <widget class="QLabel" name="ribDraftReferenceLabel">
      <property name="text">
-      <string>Rib construction is not implemented yet.</string>
+      <string>Draft Reference</string>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
+     <property name="buddy">
+      <cstring>ribDraftReference</cstring>
      </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QComboBox" name="ribDraftReference">
+     <property name="toolTip"><string>Preserve the entered thickness at the free end or at the root of the undrafted rib.</string></property>
+    </widget>
+   </item>
+   <item row="9" column="0" colspan="2">
+    <widget class="QCheckBox" name="ribReversed">
+     <property name="text"><string>Reversed</string></property>
+     <property name="toolTip"><string>Reverse the fill direction. Signed draft angles independently control widening and narrowing.</string></property>
     </widget>
    </item>
   </layout>

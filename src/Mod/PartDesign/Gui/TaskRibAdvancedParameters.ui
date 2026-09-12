@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartDesignGui::TaskRibAdvancedParameters</class>
+ <widget class="QWidget" name="ribAdvancedPanel">
+  <layout class="QFormLayout" name="advancedForm">
+   <property name="horizontalSpacing">
+    <number>8</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>8</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="ribExtentDirectionLabel">
+     <property name="text">
+      <string>Extent Direction</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="ribExtentDirection">
+     <property name="toolTip">
+      <string>The extent direction is defined by a vector</string>
+     </property>
+     <property name="text">
+      <string>Vector</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="ribDirectionXLabel">
+     <property name="text">
+      <string>X</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDirectionX</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionX" native="true">
+     <property name="toolTip">
+      <string>X component of the extent direction vector</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="ribDirectionYLabel">
+     <property name="text">
+      <string>Y</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDirectionY</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionY" native="true">
+     <property name="toolTip">
+      <string>Y component of the extent direction vector</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="ribDirectionZLabel">
+     <property name="text">
+      <string>Z</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDirectionZ</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribDirectionZ" native="true">
+     <property name="toolTip">
+      <string>Z component of the extent direction vector</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QCheckBox" name="ribUseCustomPullDirection">
+     <property name="text">
+      <string>Custom Draft Pull Direction</string>
+     </property>
+     <property name="toolTip">
+      <string>Override the direction opposite the fill. The custom vector must lie in the profile plane. Draft Reference determines where the entered thickness is preserved.</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="ribPullDirectionXLabel">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribPullDirectionX</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullDirectionX" native="true">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>X component of the draft pull direction in Rib-local coordinates</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="ribPullDirectionYLabel">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Y</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribPullDirectionY</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullDirectionY" native="true">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>Y component of the draft pull direction in Rib-local coordinates</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="ribPullDirectionZLabel">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>Z</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribPullDirectionZ</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribPullDirectionZ" native="true">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>Z component of the draft pull direction in Rib-local coordinates</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="rawValue" stdset="0">
+      <double>-1.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>Gui::QuantitySpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>ribDirectionX</tabstop>
+  <tabstop>ribDirectionY</tabstop>
+  <tabstop>ribDirectionZ</tabstop>
+  <tabstop>ribUseCustomPullDirection</tabstop>
+  <tabstop>ribPullDirectionX</tabstop>
+  <tabstop>ribPullDirectionY</tabstop>
+  <tabstop>ribPullDirectionZ</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

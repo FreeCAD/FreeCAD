@@ -1,136 +1,119 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-
 #pragma once
 
-#include "App/PropertyContainer.h"
-#include "App/PropertyStandard.h"
 #include <App/PropertyUnits.h>
+#include <gp_Pln.hxx>
 #include "FeatureSketchBased.h"
-#include "Mod/Part/App/TopoShape.h"
-
-class Bnd_Box;
 
 namespace PartDesign
 {
 
-/// Starting point for a profile-based additive feature.
+/// A planar open profile filled towards a body, with thickness, draft and root fillets.
 class PartDesignExport Rib: public ProfileBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Rib);
 
 public:
     Rib();
-
     const char* getViewProviderName() const override
     {
         return "PartDesignGui::ViewProviderRib";
     }
 
-    App::PropertyEnumeration ExtendType; // off, c1, c2
-    App::PropertyLength Thickness; //
-    App::PropertyEnumeration PlacementType; // centered, side a, side b
-    App::PropertyEnumeration ExtentType; // shape or distance
-    App::PropertyFloat Distance; // distance to extend towards when distance is specified
-    App::PropertyVector Direction; // Rib-local sweep direction, for both extent types
-    App::PropertyAngle DraftAngle; // draft angle pos or neg ok
+    App::PropertyEnumeration ExtendType;
+    App::PropertyLength Thickness;
+    App::PropertyEnumeration PlacementType;
+    App::PropertyEnumeration ExtentType;
+    App::PropertyFloat Distance;
+    App::PropertyVector Direction;  // Rib-local fill direction; Reversed is inherited.
+    App::PropertyAngle DraftAngle;
+    App::PropertyEnumeration DraftReference;
     App::PropertyBool UseCustomPullDirection;
-    App::PropertyVector PullDirection; // Optional Rib-local draft axis; otherwise opposite the sweep
-    App::PropertyFloat FilletRadius; // fillet radius
-
-
+    App::PropertyVector PullDirection;  // Rib-local axis; otherwise opposite the fill.
+    App::PropertyFloat FilletRadius;
 
     short mustExecute() const override;
+
+    /// World-space queries shared with the task panel, including on failed previews.
+    Part::TopoShape getRibProfileWire() const;
+    gp_Pln getRibProfilePlane() const;
+
 protected:
     App::DocumentObjectExecReturn* execute() override;
 
 private:
-    /// Get a single valid open profile wire (e.g., a connected wire with two free endpoints)
-    Part::TopoShape getRibProfileWire() const;
+    /// Validate and scale the user-selected Rib-local fill direction.
+    gp_Vec getRibTravel(const gp_Pln& plane, double reach) const;
 
-    /// Extend both ends by reach with C1/C2; each new portion must contact the body.
-    /// Inputs share a coordinate frame. Continuity 0 leaves the profile unchanged.
+    /// Extend the two free ends while preserving interior curves and element names.
     Part::TopoShape extendRibProfile(
         const Part::TopoShape& body,
         const Part::TopoShape& profile,
         double reach,
-        long continuity
+        long continuity,
+        const gp_Dir& normal,
+        double width
     ) const;
 
+    /// Planar fill region between the profile and its translated copy.
+    Part::TopoShape makeRibSurface(
+        const Part::TopoShape& profile,
+        const gp_Vec& travel,
+        const gp_Pln& plane
+    ) const;
 
-
-
-
-
-
-
-    /// Sweep the extended profile and create a surface
-    Part::TopoShape makeRibSurface(const Part::TopoShape& profile, const gp_Vec& travel) const;
-
-    /// Extrude the surface to thickness and apply its placement offset (e.g., to recenter).
+    /// Form a prism, with total width and Side A/B/Centered placement.
     Part::TopoShape makeRibTool(
         const Part::TopoShape& surface,
-        const double& thickness,
-        const long& thicknessPlacementType,
+        const gp_Dir& normal,
+        double thickness,
+        long placement
     ) const;
 
-    /// Draft side faces belonging to the uncut tool. Angle is in radians;
-    /// faces, pull direction and neutral plane must share the tool's local frame.
-    Part::TopoShape applyDraft(
-        const Part::TopoShape& tool,
-        const std::vector<Part::TopoShape>& faces,
-        const gp_Dir& pullDirection,
-        double draftAngle,
-        const gp_Pln& neutralPlane
+    /// Roof ribbon used to distinguish wanted material from remote cut pieces.
+    Part::TopoShape makeProfileReference(
+        const Part::TopoShape& profile,
+        const gp_Dir& normal,
+        double width
     ) const;
 
-    /// Bound the uncut tool using the retained rib, then draft it before the final body cut.
-    /// All inputs share the Rib-local frame. Root/top planes are measured before padding.
-    Part::TopoShape makeDraftedRibTool(
-        const Part::TopoShape& tool,
-        const Part::TopoShape& retained,
-        const Part::TopoShape& body,
-        const gp_Pln& profilePlane,
-        const gp_Vec& travel,
-        double draftAngle,
-        bool holdRoot = false
-    ) const;
-
-    /// Subtract the base from the tool while retaining history from both operands.
     Part::TopoShape cutRibTool(const Part::TopoShape& tool, const Part::TopoShape& base) const;
-
-    /// Test geometric contact without changing either shape.
-    static bool profileTouchesSolid(const TopoDS_Shape& solid, const TopoDS_Shape& reference);
-
-    /// Keep source-connected solids; require termination at the body only in Shape mode.
     Part::TopoShape selectRibMaterial(
-        const Part::TopoShape& cutResult,
-        const Part::TopoShape& originalProfile,
+        const Part::TopoShape& cut,
+        const Part::TopoShape& roof,
         const gp_Vec& travel,
         bool requireBodyTermination
     ) const;
 
-    /// Fuse the post-cut rib tool with the base
-    Part::TopoShape fuseRibWithBase(
-        const Part::TopoShape& base,
+    /// Transform into the common draft frame: X=reach, Y=thickness, Z=pull.
+    gp_Trsf getDraftFrame(const gp_Pln& plane, const gp_Vec& travel) const;
+    double getExtensionWidth(
         const Part::TopoShape& retained,
-        bool refine
+        const gp_Pln& plane,
+        const gp_Vec& travel
     ) const;
 
-    /// Fillet edges between body and rib faces in an unrefined union, in a common frame.
+    /// Draft ONLY a simple box's two broad sides, then intersect the profile prism.
+    Part::TopoShape makeDraftedRibTool(
+        const Part::TopoShape& surface,
+        const Part::TopoShape& retained,
+        const Part::TopoShape& body,
+        const gp_Pln& plane,
+        const gp_Vec& travel
+    ) const;
+    void checkDraftTermination(
+        const Part::TopoShape& tool,
+        const Part::TopoShape& retained,
+        const gp_Pln& plane,
+        const gp_Vec& travel
+    ) const;
+
+    Part::TopoShape fuseRibWithBase(const Part::TopoShape& base, const Part::TopoShape& retained) const;
     Part::TopoShape filletIntersectingEdges(
         const Part::TopoShape& fused,
         const Part::TopoShape& body
     ) const;
-
-    /// Build a solid from finite bounds; rejects empty or degenerate boxes.
-    static Part::TopoShape bboxToShape(const Bnd_Box& bbox);
-
-    /// Calculate normalized sweep direction
-    Base::Vector3d calculateSweepDirection(const Part::TopoShape& profileShape, const Part::TopoShape& baseShape) const;
-
-    /// Calculate the direction vector from the profile center to the body
-    gp_Vec calculateRibDirection(const gp_Vec& profileCenter, const gp_Vec& bodyCenter) const;
-
+    void publishRib(const Part::TopoShape& result, const Part::TopoShape& body);
 };
 
 }  // namespace PartDesign
