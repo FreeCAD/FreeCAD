@@ -24,6 +24,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <optional>
 #include <string>
 
 #ifndef FC_GLOBAL_H
@@ -40,7 +41,7 @@ namespace Base
  * exist and removed again on unlock.
  *
  * Note: this is an advisory lock; it does not implement "stale lock" handling (PID checking, etc).
- * On Emscripten/WASM this is a no-op (single-process), and always succeeds.
+ * On Emscripten/WASM no lock is available, so locking always fails with Failure::Unavailable.
  */
 class BaseExport FileLock
 {
@@ -48,9 +49,6 @@ public:
     /// Why the most recent tryLock() or lock() call did not acquire the lock.
     enum class Failure : std::uint8_t
     {
-        /// There was no failure
-        None,
-
         /// Another process holds the lock.
         Contended,
 
@@ -73,23 +71,20 @@ public:
     bool lock();
     void unlock() noexcept;
     bool isLocked() const;
-    Failure lastFailure() const;
+    std::optional<Failure> lastFailure() const;
 
 private:
-    bool tryLockUntil(std::chrono::steady_clock::time_point deadline);
+    std::optional<Failure> tryLockUntil(std::chrono::steady_clock::time_point deadline);
 
     std::string _path;
-    Failure _failure {Failure::None};
+    std::optional<Failure> _failure;
+    bool _locked {false};
 
-#if defined(__EMSCRIPTEN__)
-    bool _locked {false};
-#elif defined(_WIN32)
-    void* _handle {nullptr};
+#if defined(_WIN32)
+    void* _handle;
     std::wstring _widePath;
-    bool _locked {false};
-#else
+#elif !defined(__EMSCRIPTEN__)
     int _fd {-1};
-    bool _locked {false};
 #endif
 };
 

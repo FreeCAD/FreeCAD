@@ -28,17 +28,29 @@
 
 bool Base::FileLock::tryLock(std::chrono::milliseconds timeout)
 {
-    return tryLockUntil(std::chrono::steady_clock::now() + timeout);
+    _failure = tryLockUntil(std::chrono::steady_clock::now() + timeout);
+    return !_failure;
 }
 
 bool Base::FileLock::lock()
 {
-    return tryLockUntil(std::chrono::steady_clock::time_point::max());
+    _failure = tryLockUntil(std::chrono::steady_clock::time_point::max());
+    return !_failure;
+}
+
+bool Base::FileLock::isLocked() const
+{
+    return _locked;
+}
+
+std::optional<Base::FileLock::Failure> Base::FileLock::lastFailure() const
+{
+    return _failure;
 }
 
 #if defined(__EMSCRIPTEN__)
 
-// No locks on Emscripten, these are all just no-ops
+// No locks on Emscripten: report that and let the caller decide how to proceed
 
 using namespace Base;
 
@@ -48,26 +60,15 @@ FileLock::FileLock(std::string path)
 
 FileLock::~FileLock() = default;
 
-bool FileLock::tryLockUntil(std::chrono::steady_clock::time_point /*deadline*/)
+std::optional<FileLock::Failure> FileLock::tryLockUntil(
+    std::chrono::steady_clock::time_point /*deadline*/
+)
 {
-    _locked = true;
-    return true;
+    return Failure::Unavailable;
 }
 
 void FileLock::unlock() noexcept
-{
-    _locked = false;
-}
-
-bool FileLock::isLocked() const
-{
-    return _locked;
-}
-
-FileLock::Failure FileLock::lastFailure() const
-{
-    return _failure;
-}
+{}
 
 #elif defined(_WIN32)
 
@@ -79,11 +80,15 @@ namespace
 {
 constexpr std::chrono::milliseconds pollInterval {10};
 
+/// How long to keep retrying an open that failed for a reason that is usually momentary, before
+/// concluding that the lock file genuinely cannot be opened here.
+constexpr std::chrono::milliseconds transientOpenWindow {1000};
+
 HANDLE openLockFile(const std::wstring& path, DWORD creationDisposition)
 {
     return CreateFileW(
         path.c_str(),
-        GENERIC_READ | GENERIC_WRITE,
+        GENERIC_READ | GENERIC_WRITE | DELETE,
         FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
         nullptr,
         creationDisposition,
@@ -106,8 +111,16 @@ bool handleRefersToPath(HANDLE handle, const std::wstring& path)
         && GetFileInformationByHandle(byPath, &named)
         && held.dwVolumeSerialNumber == named.dwVolumeSerialNumber
         && held.nFileIndexHigh == named.nFileIndexHigh && held.nFileIndexLow == named.nFileIndexLow;
-    CloseHandle(byPath);
+    (void)CloseHandle(byPath);
     return same;
+}
+
+/// A file that a releasing holder has marked for deletion cannot be opened until its last handle
+/// closes, and antivirus or indexing services briefly open freshly created files without sharing:
+/// both fail the open even though the lock will shortly be obtainable.
+bool isTransientOpenFailure(DWORD error)
+{
+    return error == ERROR_ACCESS_DENIED || error == ERROR_SHARING_VIOLATION;
 }
 
 
@@ -116,8 +129,8 @@ void removeLockFile(HANDLE handle, const std::wstring& path)
     FILE_DISPOSITION_INFO_EX disposition {};
     disposition.Flags = FILE_DISPOSITION_FLAG_DELETE | FILE_DISPOSITION_FLAG_POSIX_SEMANTICS;
     if (!SetFileInformationByHandle(handle, FileDispositionInfoEx, &disposition, sizeof(disposition))) {
-        // POSIX_SEMANTICS unlinks immediately; the legacy fallback only marks the file for deletion
-        // once every handle is closed. For our purposes that will generally be fine, though.
+        // With POSIX semantics the name disappears when this handle closes, even if other handles
+        // are open; the legacy fallback waits for every handle to close.
         (void)DeleteFileW(path.c_str());
     }
 }
@@ -145,21 +158,31 @@ FileLock::~FileLock()
     unlock();
 }
 
-bool FileLock::tryLockUntil(std::chrono::steady_clock::time_point deadline)
+std::optional<FileLock::Failure> FileLock::tryLockUntil(std::chrono::steady_clock::time_point deadline)
 {
     if (_locked) {
-        return true;
+        return std::nullopt;
     }
-    _failure = Failure::None;
 
     const std::wstring wpath = FileInfo(_path).toStdWString();
+    std::optional<std::chrono::steady_clock::time_point> openRetryDeadline;
 
     while (true) {
         HANDLE handle = openLockFile(wpath, OPEN_ALWAYS);
         if (handle == INVALID_HANDLE_VALUE) {
-            _failure = Failure::Unavailable;
-            return false;
+            if (!isTransientOpenFailure(GetLastError())) {
+                return Failure::Unavailable;
+            }
+            if (!openRetryDeadline) {
+                openRetryDeadline
+                    = std::min(deadline, std::chrono::steady_clock::now() + transientOpenWindow);
+            }
+            if (!sleepUntil(*openRetryDeadline)) {
+                return Failure::Unavailable;
+            }
+            continue;
         }
+        openRetryDeadline.reset();
 
         OVERLAPPED ov {};
         if (LockFileEx(handle, LOCKFILE_EXCLUSIVE_LOCK | LOCKFILE_FAIL_IMMEDIATELY, 0, 1, 0, &ov)) {
@@ -167,24 +190,24 @@ bool FileLock::tryLockUntil(std::chrono::steady_clock::time_point deadline)
                 _handle = handle;
                 _widePath = wpath;
                 _locked = true;
-                return true;
+                return std::nullopt;
             }
-            // The name moved on to a new file while we waited; this is *not* contention, retry now.
+            // The name moved on to a new file while we waited: the previous holder just released.
             (void)UnlockFileEx(handle, 0, 1, 0, &ov);
-            CloseHandle(handle);
+            (void)CloseHandle(handle);
+            if (!sleepUntil(deadline)) {
+                return Failure::Contended;
+            }
             continue;
         }
 
         const DWORD err = GetLastError();
-        CloseHandle(handle);
+        (void)CloseHandle(handle);
         if (err != ERROR_LOCK_VIOLATION) {
-            _failure = Failure::Unavailable;
-            return false;
+            return Failure::Unavailable;
         }
-        _failure = Failure::Contended;
-
         if (!sleepUntil(deadline)) {
-            return false;
+            return Failure::Contended;
         }
     }
 }
@@ -200,20 +223,10 @@ void FileLock::unlock() noexcept
         removeLockFile(handle, _widePath);
         OVERLAPPED ov {};
         (void)UnlockFileEx(handle, 0, 1, 0, &ov);
-        CloseHandle(handle);
+        (void)CloseHandle(handle);
     }
     _handle = INVALID_HANDLE_VALUE;
     _locked = false;
-}
-
-bool FileLock::isLocked() const
-{
-    return _locked;
-}
-
-FileLock::Failure FileLock::lastFailure() const
-{
-    return _failure;
 }
 
 #else
@@ -274,42 +287,47 @@ FileLock::~FileLock()
     unlock();
 }
 
-bool FileLock::tryLockUntil(std::chrono::steady_clock::time_point deadline)
+std::optional<FileLock::Failure> FileLock::tryLockUntil(std::chrono::steady_clock::time_point deadline)
 {
     if (_locked) {
-        return true;
+        return std::nullopt;
     }
-    _failure = Failure::None;
 
     while (true) {
-        const int fd = ::open(_path.c_str(), O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+        constexpr int openFlag = O_RDWR | O_CREAT | O_CLOEXEC | O_NOFOLLOW;
+        const int fd = ::open(_path.c_str(), openFlag, S_IRUSR | S_IWUSR);
         if (fd < 0) {
-            _failure = Failure::Unavailable;
-            return false;
+            if (errno == EINTR) {
+                continue;
+            }
+            return Failure::Unavailable;
         }
 
         if (tryLockFd(fd)) {
             if (stillNamedByPath(fd, _path)) {
                 _fd = fd;
                 _locked = true;
-                return true;
+                return std::nullopt;
             }
-            // The name moved on to a new inode while we waited; this is not contention, retry now.
-            ::close(fd);
+            // The name moved on to a new inode while we waited: the previous holder just released.
+            (void)::close(fd);
+            if (!sleepUntil(deadline)) {
+                return Failure::Contended;
+            }
             continue;
         }
 
         const int err = errno;
-        ::close(fd);
+        (void)::close(fd);
         errno = err;
-        if (err != EACCES && err != EAGAIN) {
-            _failure = Failure::Unavailable;
-            return false;
+        if (err == EINTR) {
+            continue;
         }
-        _failure = Failure::Contended;
-
+        if (err != EACCES && err != EAGAIN) {
+            return Failure::Unavailable;
+        }
         if (!sleepUntil(deadline)) {
-            return false;
+            return Failure::Contended;
         }
     }
 }
@@ -323,19 +341,9 @@ void FileLock::unlock() noexcept
     // Unlink while still holding the lock so no waiter can acquire a lock on an inode that is
     // about to lose its name; closing the descriptor then releases the lock.
     (void)::unlink(_path.c_str());
-    ::close(_fd);
+    (void)::close(_fd);
     _fd = -1;
     _locked = false;
-}
-
-bool FileLock::isLocked() const
-{
-    return _locked;
-}
-
-FileLock::Failure FileLock::lastFailure() const
-{
-    return _failure;
 }
 
 #endif
