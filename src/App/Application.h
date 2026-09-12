@@ -48,6 +48,7 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include "MainThreadSignal.h"
 #include "TransactionDefs.h"
 
 // forward declarations
@@ -504,15 +505,20 @@ public:
      *
      * @{
      */
+    // These observer-facing signals are synchronous because remove and rename
+    // payloads borrow storage whose lifetime ends when the mutator returns.
+    // In GUI mode they are delivered on the configured main thread; without
+    // GUI hooks they retain same-thread behavior.
 
-    /// Signal on adding a dynamic property.
-    fastsignals::signal<void (const App::Property&)> signalAppendDynamicProperty;
-    /// Signal on renaming a dynamic property.
-    fastsignals::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
+    /// Main-thread observer signal on adding a dynamic property.
+    App::MainThreadSignal<void (const App::Property&)> signalAppendDynamicProperty;
+    /// Main-thread observer signal on renaming a dynamic property.
+    App::MainThreadSignal<void (const App::Property&, const char*)>
+        signalRenameDynamicProperty;
     /// signal on moving a dynamic property
     fastsignals::signal<void (const App::Property&, const App::DocumentObject&)> signalMoveDynamicProperty;
-    /// Signal before removing a dynamic property.
-    fastsignals::signal<void (const App::Property&)> signalRemoveDynamicProperty;
+    /// Main-thread observer signal before removing a dynamic property.
+    App::MainThreadSignal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// Signal before changing the editor mode of a property.
     fastsignals::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     /// @}
