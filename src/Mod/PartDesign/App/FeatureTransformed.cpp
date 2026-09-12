@@ -569,9 +569,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
     };
 
     for (auto original : originals) {
-        Part::TopoShape addShape;
-        Part::TopoShape subShape;
-
         auto feature = freecad_cast<PartDesign::FeatureAddSub*>(original);
         if (!feature) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
@@ -580,8 +577,11 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             ));
         }
 
-        feature->getAddSubShape(addShape, subShape);
+        gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
 
+        Part::TopoShape addShape;
+        Part::TopoShape subShape;
+        feature->getAddSubShape(addShape, subShape);
         if (addShape.isNull() && subShape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
@@ -596,7 +596,6 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
             prevShape.emplace(feature->getBaseShape());
         }
 
-        gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
         if (!addShape.isNull()) {
             addShape = addShape.makeElementTransform(
                 addShape,
@@ -649,16 +648,30 @@ App::DocumentObjectExecReturn* Transformed::computeFeatureShapes(
 
             size_t i = 0;
             for (auto& s : subShapes) {
-                s = s.makeElementCommon(
-                    {*prevShape, s},  // prevShape has to be first because it can be a compound
-                    std::format(
-                        "Common_sub_{}[{}]*{}",
-                        feature->getNameInDocument(),
-                        i,
-                        prevFeature->getNameInDocument()
-                    )
-                        .c_str()
-                );
+                if (feature->getBooleanOperation() == FeatureAddSub::BooleanOperation::Common) {
+                    s = s.makeElementCut(
+                        {*prevShape, s},
+                        std::format(
+                            "Cut_cmn_{}*{}[{}]",
+                            prevFeature->getNameInDocument(),
+                            feature->getNameInDocument(),
+                            i
+                        )
+                            .c_str()
+                    );
+                }
+                else {
+                    s = s.makeElementCommon(
+                        {*prevShape, s},  // prevShape has to be first because it can be a compound
+                        std::format(
+                            "Common_sub_{}[{}]*{}",
+                            feature->getNameInDocument(),
+                            i,
+                            prevFeature->getNameInDocument()
+                        )
+                            .c_str()
+                    );
+                }
 
                 if (!s.isNull()) {
                     checkValidShape(
@@ -693,22 +706,23 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
     const std::vector<DocumentObject*>& originals
 )
 {
-    const auto verifyShape = [&supportShape](std::string_view text, auto&&... args) {
-        if (!supportShape.isValid()) {
-            std::ostringstream details;
-            supportShape.analyze(false, details);
+    const auto verifyShape =
+        [](const Part::TopoShape& supportShape, std::string_view text, auto&&... args) {
+            if (!supportShape.isValid()) {
+                std::ostringstream details;
+                supportShape.analyze(false, details);
 
-            std::string message = std::vformat(text, std::make_format_args(args...));
-            if (!details.str().empty()) {
-                message += "\n";
-                message += details.str();
+                std::string message = std::vformat(text, std::make_format_args(args...));
+                if (!details.str().empty()) {
+                    message += "\n";
+                    message += details.str();
+                }
+
+                FC_THROWM(Base::CADKernelError, message.c_str());
             }
+        };
 
-            FC_THROWM(Base::CADKernelError, message.c_str());
-        }
-    };
-
-    verifyShape("Initial support shape invalid.");
+    verifyShape(supportShape, "Initial support shape invalid.");
 
     std::vector<FeatureShape> shapes;
     auto* ret = computeFeatureShapes(trsfInv, originals, shapes);
@@ -717,22 +731,17 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         return ret;
     }
 
-    verifyShape("Invalid support shape after computing feature shapes.");
+    verifyShape(supportShape, "Invalid support shape after computing feature shapes.");
 
     for (auto& element : shapes) {
         verifyShape(
+            element.shape,
             "Invalid minimum feature shape for {} [{}]",
             element.source,
             element.operation == Operation::Add ? "ADD" : "SUB"
         );
 
         auto transformedShapes = getTransformedCompShape(transformations, supportShape, element.shape);
-
-        verifyShape(
-            "Invalid shape after transforming compound shapes for {} [{}]",
-            element.source,
-            element.operation == Operation::Add ? "ADD" : "SUB"
-        );
 
         if (Base::Sequencer().wasCanceled()) {
             return new App::DocumentObjectExecReturn("User aborted");
@@ -758,6 +767,7 @@ App::DocumentObjectExecReturn* Transformed::executeFeatureResult(
         }
 
         verifyShape(
+            supportShape,
             "Invalid shape after applying boolean for {} [{}]",
             element.source,
             element.operation == Operation::Add ? "ADD" : "SUB"
