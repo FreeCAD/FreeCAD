@@ -4979,6 +4979,13 @@ protected:
     // returns true if a substitution took place
     static bool substituteConstraintCombinationsPointOnObject(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2);
     static bool substituteConstraintCombinationsCoincident(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    static bool addMidpointSymmetryConstraint(
+        SketchObject* obj,
+        int firstGeoId,
+        PointPos firstPosId,
+        int secondGeoId,
+        PointPos secondPosId
+    );
 
     bool isCoincidentSelectionValid(SketchObject* obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 };
@@ -5011,6 +5018,42 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
                            {SelEdge, SelEdge},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge} };
+}
+
+bool CmdSketcherConstrainCoincidentUnified::addMidpointSymmetryConstraint(
+    SketchObject* obj,
+    int firstGeoId,
+    PointPos firstPosId,
+    int secondGeoId,
+    PointPos secondPosId
+)
+{
+    const auto isLineMidpoint = [obj](int geoId, PointPos posId) {
+        const auto* geometry = obj->getGeometry(geoId);
+        return posId == PointPos::mid && geometry && geometry->is<Part::GeomLineSegment>();
+    };
+
+    const bool firstIsLineMidpoint = isLineMidpoint(firstGeoId, firstPosId);
+    const bool secondIsLineMidpoint = isLineMidpoint(secondGeoId, secondPosId);
+    if (!firstIsLineMidpoint && !secondIsLineMidpoint) {
+        return false;
+    }
+
+    const int lineGeoId = firstIsLineMidpoint ? firstGeoId : secondGeoId;
+    const int pointGeoId = firstIsLineMidpoint ? secondGeoId : firstGeoId;
+    const PointPos pointPosId = firstIsLineMidpoint ? secondPosId : firstPosId;
+
+    Gui::cmdAppObjectArgs(
+        obj,
+        "addConstraint(Sketcher.Constraint('Symmetric', %d, %d, %d, %d, %d, %d))",
+        lineGeoId,
+        static_cast<int>(PointPos::start),
+        lineGeoId,
+        static_cast<int>(PointPos::end),
+        pointGeoId,
+        static_cast<int>(pointPosId)
+    );
+    return true;
 }
 
 bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsPointOnObject(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2)
@@ -5274,6 +5317,9 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
 
         if (isCoincidentSelectionValid(obj, GeoId1, PosId1, GeoId2, PosId2)) {
             constraintsAdded = true;
+            if (addMidpointSymmetryConstraint(obj, GeoId1, PosId1, GeoId2, PosId2)) {
+                continue;
+            }
             Gui::cmdAppObjectArgs(obj,
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
                 GeoId1,
@@ -5437,6 +5483,11 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
 
     if (substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {}
     else if (isCoincidentSelectionValid(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+        if (addMidpointSymmetryConstraint(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+            commitCommand();
+            tryAutoRecompute(Obj);
+            return;
+        }
         Gui::cmdAppObjectArgs(sketchgui->getObject(),
             "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d))",
             GeoId1,
