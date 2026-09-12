@@ -58,13 +58,14 @@ struct Constraint
     Base::Placement targetPlacement;
     GeometryType referenceType;
     GeometryType targetType;
-    bool targetDirectionFixed {false};
+    // Otherwise, the solver may reverse the target axis or normal to choose an orientation.
+    bool targetDirectionSignFixed {false};
 };
 
 // Earlier entries are locked snaps; the final entry is the proposed snap.
 std::optional<Base::Placement> solve(
     const Base::Placement& candidate,
-    const std::vector<Constraint>& references
+    const std::vector<Constraint>& constraints
 );
 
 }  // namespace Gui::TransformSnap

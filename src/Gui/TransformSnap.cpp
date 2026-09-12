@@ -462,7 +462,7 @@ private:
 
 std::optional<Base::Placement> solve(
     const Base::Placement& candidate,
-    const std::vector<Constraint>& references
+    const std::vector<Constraint>& constraints
 )
 {
     using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
@@ -481,7 +481,7 @@ std::optional<Base::Placement> solve(
         Base::Placement target;
         ConstraintKind kind;
         bool locked;
-        bool targetDirectionFixed;
+        bool targetDirectionSignFixed;
     };
 
     struct DirectionConstraint
@@ -517,20 +517,20 @@ std::optional<Base::Placement> solve(
     if (!isFinitePlacement(candidate)) {
         return std::nullopt;
     }
-    if (references.empty()) {
+    if (constraints.empty()) {
         return candidate;
     }
 
     std::vector<PlacementConstraint> baseConstraints;
-    baseConstraints.reserve(references.size());
-    for (std::size_t i = 0; i < references.size(); ++i) {
-        const auto& reference = references[i];
+    baseConstraints.reserve(constraints.size());
+    for (std::size_t i = 0; i < constraints.size(); ++i) {
+        const auto& constraint = constraints[i];
         baseConstraints.push_back({
-            reference.localPlacement,
-            reference.targetPlacement,
-            constraintKind(reference.referenceType, reference.targetType),
-            i + 1 < references.size(),
-            reference.targetDirectionFixed,
+            constraint.localPlacement,
+            constraint.targetPlacement,
+            constraintKind(constraint.referenceType, constraint.targetType),
+            i + 1 < constraints.size(),
+            constraint.targetDirectionSignFixed,
         });
     }
 
@@ -575,11 +575,12 @@ std::optional<Base::Placement> solve(
         return bestIndependence;
     };
 
-    auto solveDirectedConstraints =
-        [&](const std::vector<PlacementConstraint>& constraints) -> std::optional<Base::Placement> {
+    auto solveDirectedConstraints = [&](
+                                        const std::vector<PlacementConstraint>& directedConstraints
+                                    ) -> std::optional<Base::Placement> {
         std::vector<DirectionConstraint> directionConstraints;
-        directionConstraints.reserve(constraints.size());
-        for (const auto& constraint : constraints) {
+        directionConstraints.reserve(directedConstraints.size());
+        for (const auto& constraint : directedConstraints) {
             if (!hasDirection(constraint.kind)) {
                 continue;
             }
@@ -590,13 +591,13 @@ std::optional<Base::Placement> solve(
             });
         }
 
-        for (std::size_t i = 0; i < constraints.size(); ++i) {
-            const auto& first = constraints[i];
+        for (std::size_t i = 0; i < directedConstraints.size(); ++i) {
+            const auto& first = directedConstraints[i];
             if (first.kind != ConstraintKind::PointCoincident) {
                 continue;
             }
-            for (std::size_t j = i + 1; j < constraints.size(); ++j) {
-                const auto& second = constraints[j];
+            for (std::size_t j = i + 1; j < directedConstraints.size(); ++j) {
+                const auto& second = directedConstraints[j];
                 if (second.kind != ConstraintKind::PointCoincident) {
                     continue;
                 }
@@ -648,14 +649,14 @@ std::optional<Base::Placement> solve(
 
         if (!rotationDeterminedByDirections) {
             bool twistApplied = false;
-            for (const auto& primary : constraints) {
+            for (const auto& primary : directedConstraints) {
                 if (primary.kind != ConstraintKind::AxisCoincident) {
                     continue;
                 }
 
                 const auto localPrimaryDirection = zAxis(primary.local);
                 const auto targetPrimaryDirection = zAxis(primary.target);
-                for (const auto& secondary : constraints) {
+                for (const auto& secondary : directedConstraints) {
                     if (&secondary == &primary || (!primary.locked && !secondary.locked)) {
                         continue;
                     }
@@ -701,7 +702,7 @@ std::optional<Base::Placement> solve(
         }
 
         TranslationSolver translationSolver(candidate.getPosition());
-        for (const auto& constraint : constraints) {
+        for (const auto& constraint : directedConstraints) {
             const auto rotatedLocalPosition = rotation.multVec(constraint.local.getPosition());
             const auto targetPosition = constraint.target.getPosition();
 
@@ -774,7 +775,7 @@ std::optional<Base::Placement> solve(
             return true;
         };
 
-        if (!std::ranges::all_of(constraints, [&](const PlacementConstraint& constraint) {
+        if (!std::ranges::all_of(directedConstraints, [&](const PlacementConstraint& constraint) {
                 return constraintSatisfied(
                     result,
                     constraint,
@@ -790,7 +791,7 @@ std::optional<Base::Placement> solve(
 
     std::vector<std::size_t> unorientedConstraintIndices;
     for (std::size_t i = 0; i < baseConstraints.size(); ++i) {
-        if (hasDirection(baseConstraints[i].kind) && !baseConstraints[i].targetDirectionFixed) {
+        if (hasDirection(baseConstraints[i].kind) && !baseConstraints[i].targetDirectionSignFixed) {
             unorientedConstraintIndices.push_back(i);
         }
     }
@@ -810,9 +811,9 @@ std::optional<Base::Placement> solve(
     std::optional<Base::Placement> bestPlacement;
     auto bestScore = std::numeric_limits<double>::max();
     for (std::size_t variant = 0; variant < variantCount; ++variant) {
-        auto constraints = baseConstraints;
+        auto directedConstraints = baseConstraints;
         for (std::size_t signIndex = 0; signIndex < unorientedConstraintIndices.size(); ++signIndex) {
-            auto& constraint = constraints[unorientedConstraintIndices[signIndex]];
+            auto& constraint = directedConstraints[unorientedConstraintIndices[signIndex]];
             const auto preferredPositive = candidate.getRotation().multVec(zAxis(constraint.local))
                     * zAxis(constraint.target)
                 >= 0.0;
@@ -823,10 +824,10 @@ std::optional<Base::Placement> solve(
                 constraint.target
                     = invertedPlacementAroundLocalAxis(constraint.target, Base::Vector3d::UnitX);
             }
-            constraint.targetDirectionFixed = true;
+            constraint.targetDirectionSignFixed = true;
         }
 
-        const auto placement = solveDirectedConstraints(constraints);
+        const auto placement = solveDirectedConstraints(directedConstraints);
         if (!placement || !isFinitePlacement(*placement)) {
             continue;
         }
