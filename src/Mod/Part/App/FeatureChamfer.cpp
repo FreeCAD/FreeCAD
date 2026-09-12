@@ -32,6 +32,7 @@
 
 
 #include <SignalException.h>
+#include <Base/Exception.h>
 #include "FeatureChamfer.h"
 #include "TopoShapeOpCode.h"
 
@@ -105,6 +106,14 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         Edges.setValues(edges);
 
         Part::SignalException sig;
+        mkChamfer.Build();
+        if (!mkChamfer.IsDone()) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Chamfer failed: size is incompatible with the shape geometry. "
+                "Reduce the size, select fewer edges, or ensure edges have sufficient width."
+            ));
+        }
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
@@ -114,12 +123,16 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         this->Shape.setValue(res.makeElementShape(mkChamfer, baseTopoShape, Part::OpCodes::Chamfer));
         return Part::FilletBase::execute();
     }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
-            "Chamfer failed: OCC kernel error in chamfer computation"
+            "Chamfer failed: size may be too large for adjacent edges sharing a vertex. "
+            "Reduce the size or chamfer edges individually."
         );
     }
 }
