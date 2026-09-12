@@ -21,6 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from CAMTests.TestPathJobGui import TestPathJobGui
 from CAMTests.TestPathToolBitPropertyEditorWidget import (
     TestBoolPropertyEditorWidget,
     TestEnumPropertyEditorWidget,
