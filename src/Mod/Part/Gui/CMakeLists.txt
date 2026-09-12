@@ -56,6 +56,7 @@ set(PartGui_UIC_SRCS
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
     PatternParametersWidget.ui
+    PatternCircularParametersWidget.ui
     SectionCutting.ui
     ShapeFromMesh.ui
     TaskFaceAppearances.ui
@@ -142,9 +143,16 @@ SET(PartGui_SRCS
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
+    PatternCircularParametersWidget.cpp
+    PatternCircularParametersWidget.h
+    PatternCircularParametersWidget.ui
     PatternParametersWidget.cpp
     PatternParametersWidget.h
     PatternParametersWidget.ui
+    PatternReferenceWidget.cpp
+    PatternReferenceWidget.h
+    PatternInstanceControls.cpp
+    PatternInstanceControls.h
     Resources/Part.qrc
     PreCompiled.h
     PreviewUpdateScheduler.cpp

@@ -219,8 +219,15 @@ SET(Features_SRCS
     LinearPatternExtension.h
     LinkArray.cpp
     LinkArray.h
+    LinkArrayCircular.cpp
+    LinkArrayCircular.h
+    LinkArrayLinear.cpp
+    LinkArrayLinear.h
     PolarPatternExtension.cpp
     PolarPatternExtension.h
+    PathPatternExtension.cpp
+    PathPatternExtension.h
+    PatternConstants.h
     OCCTMessagePrinter.cpp
     OCCTMessagePrinter.h
     PartFeatures.cpp

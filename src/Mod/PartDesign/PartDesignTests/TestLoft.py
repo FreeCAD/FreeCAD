@@ -58,6 +58,218 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
+    @staticmethod
+    def _addRectangle(sketch, xMin, yMin, xMax, yMax):
+        sketch.addGeometry(
+            [
+                Part.LineSegment(Base.Vector(xMin, yMax, 0), Base.Vector(xMax, yMax, 0)),
+                Part.LineSegment(Base.Vector(xMax, yMax, 0), Base.Vector(xMax, yMin, 0)),
+                Part.LineSegment(Base.Vector(xMax, yMin, 0), Base.Vector(xMin, yMin, 0)),
+                Part.LineSegment(Base.Vector(xMin, yMin, 0), Base.Vector(xMin, yMax, 0)),
+            ],
+            False,
+        )
+
+    @staticmethod
+    def _addCapsule(sketch, radius, centerDistance):
+        sketch.addGeometry(
+            [
+                Part.ArcOfCircle(
+                    Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius),
+                    math.pi / 2,
+                    3 * math.pi / 2,
+                ),
+                Part.ArcOfCircle(
+                    Part.Circle(Base.Vector(centerDistance, 0, 0), Base.Vector(0, 0, 1), radius),
+                    -math.pi / 2,
+                    math.pi / 2,
+                ),
+                Part.LineSegment(Base.Vector(0, radius, 0), Base.Vector(centerDistance, radius, 0)),
+                Part.LineSegment(
+                    Base.Vector(0, -radius, 0), Base.Vector(centerDistance, -radius, 0)
+                ),
+            ],
+            False,
+        )
+
+    def _makeIssue6130RectangleLoft(self, name, reverseTopWires):
+        body = self.Doc.addObject("PartDesign::Body", f"{name}Body")
+        bottom = body.newObject("Sketcher::SketchObject", f"{name}Bottom")
+        self._addRectangle(bottom, -25.078129, -25.156250, 26.171875, 23.281252)
+        self._addRectangle(bottom, -18.984377, -18.750000, 20.703131, 17.031252)
+
+        top = body.newObject("Sketcher::SketchObject", f"{name}Top")
+        top.Placement.Base.z = 60
+        topWires = [
+            (-31.484377, -30.781250, 36.171883, 29.531252),
+            (-28.515621, -27.656250, 32.421879, 26.406252),
+        ]
+        if reverseTopWires:
+            topWires.reverse()
+        for wire in topWires:
+            self._addRectangle(top, *wire)
+
+        loft = body.newObject("PartDesign::AdditiveLoft", f"{name}Loft")
+        loft.Profile = bottom
+        loft.Sections = [top]
+        return loft
+
+    def _makeIssue6130CircleLoft(self, name, reverseTopWires):
+        body = self.Doc.addObject("PartDesign::Body", f"{name}Body")
+        bottom = body.newObject("Sketcher::SketchObject", f"{name}Bottom")
+        bottom.addGeometry(
+            Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), 47.132468), False
+        )
+        bottom.addGeometry(
+            Part.Circle(Base.Vector(0, 0.385132, 0), Base.Vector(0, 0, 1), 41.109848),
+            False,
+        )
+
+        top = body.newObject("Sketcher::SketchObject", f"{name}Top")
+        top.Placement.Base.z = 50
+        topRadii = [67.753235, 58.631832]
+        if reverseTopWires:
+            topRadii.reverse()
+        for radius in topRadii:
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
+
+        loft = body.newObject("PartDesign::AdditiveLoft", f"{name}Loft")
+        loft.Profile = bottom
+        loft.Sections = [top]
+        return loft
+
+    def _makeIssue6130SubtractiveCircleLoft(self, name, reverseTopWires):
+        body = self.Doc.addObject("PartDesign::Body", f"{name}Body")
+        padSketch = body.newObject("Sketcher::SketchObject", f"{name}PadSketch")
+        self._addRectangle(padSketch, -90, -90, 90, 90)
+        pad = body.newObject("PartDesign::Pad", f"{name}Pad")
+        pad.Profile = padSketch
+        pad.Length = 60
+        self.Doc.recompute()
+
+        bottom = body.newObject("Sketcher::SketchObject", f"{name}Bottom")
+        bottom.addGeometry(
+            Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), 47.132468), False
+        )
+        bottom.addGeometry(
+            Part.Circle(Base.Vector(0, 0.385132, 0), Base.Vector(0, 0, 1), 41.109848),
+            False,
+        )
+
+        top = body.newObject("Sketcher::SketchObject", f"{name}Top")
+        top.Placement.Base.z = 50
+        topRadii = [67.753235, 58.631832]
+        if reverseTopWires:
+            topRadii.reverse()
+        for radius in topRadii:
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
+
+        loft = body.newObject("PartDesign::SubtractiveLoft", f"{name}Loft")
+        loft.Profile = bottom
+        loft.Sections = [top]
+        return loft
+
+    def _makeCapsuleLoft(self, name, reverseTopWires, subtractive):
+        body = self.Doc.addObject("PartDesign::Body", f"{name}Body")
+        if subtractive:
+            padSketch = body.newObject("Sketcher::SketchObject", f"{name}PadSketch")
+            self._addRectangle(padSketch, -100, -100, 100, 100)
+            pad = body.newObject("PartDesign::Pad", f"{name}Pad")
+            pad.Profile = padSketch
+            pad.Length = 30
+            self.Doc.recompute()
+
+        bottom = body.newObject("Sketcher::SketchObject", f"{name}Bottom")
+        self._addCapsule(bottom, 10, 20)
+        self._addCapsule(bottom, 9, 20)
+
+        top = body.newObject("Sketcher::SketchObject", f"{name}Top")
+        top.Placement.Base.z = 20
+        topCapsules = [(22, 40), (20, 40)]
+        if reverseTopWires:
+            topCapsules.reverse()
+        for radius, centerDistance in topCapsules:
+            self._addCapsule(top, radius, centerDistance)
+
+        featureType = "PartDesign::SubtractiveLoft" if subtractive else "PartDesign::AdditiveLoft"
+        loft = body.newObject(featureType, f"{name}Loft")
+        loft.Profile = bottom
+        loft.Sections = [top]
+        return loft
+
+    def _makeNestedIslandLoft(self, name, permuteTopWires):
+        body = self.Doc.addObject("PartDesign::Body", f"{name}Body")
+        bottom = body.newObject("Sketcher::SketchObject", f"{name}Bottom")
+        for radius in (30, 20, 8):
+            bottom.addGeometry(
+                Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False
+            )
+
+        top = body.newObject("Sketcher::SketchObject", f"{name}Top")
+        top.Placement.Base.z = 40
+        topRadii = (10, 36, 24) if permuteTopWires else (36, 24, 10)
+        for radius in topRadii:
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
+
+        loft = body.newObject("PartDesign::AdditiveLoft", f"{name}Loft")
+        loft.Profile = bottom
+        loft.Sections = [top]
+        return loft
+
+    def testIssue6130NestedRectanglesIgnoreCreationOrder(self):
+        """Nested rectangle pairing must not depend on sketch geometry order."""
+        reversedOrder = self._makeIssue6130RectangleLoft("Reversed", True)
+        consistentOrder = self._makeIssue6130RectangleLoft("Consistent", False)
+        self.Doc.recompute()
+
+        self.assertIsNone(reversedOrder.Shape.check(True))
+        self.assertAlmostEqual(reversedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
+    def testIssue6130NestedCirclesIgnoreCreationOrder(self):
+        """Nested circle pairing must not depend on sketch geometry order."""
+        reversedOrder = self._makeIssue6130CircleLoft("Reversed", True)
+        consistentOrder = self._makeIssue6130CircleLoft("Consistent", False)
+        self.Doc.recompute()
+
+        self.assertIsNone(reversedOrder.Shape.check(True))
+        self.assertAlmostEqual(reversedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
+    def testIssue6130SubtractiveLoftIgnoresCreationOrder(self):
+        """Nested wire pairing must also be stable for subtractive lofts."""
+        reversedOrder = self._makeIssue6130SubtractiveCircleLoft("ReversedCut", True)
+        consistentOrder = self._makeIssue6130SubtractiveCircleLoft("ConsistentCut", False)
+        self.Doc.recompute()
+
+        self.assertIsNone(reversedOrder.Shape.check(True))
+        self.assertAlmostEqual(reversedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
+    def testCapsuleAdditiveLoftIgnoresCreationOrder(self):
+        """Capsule wire pairing must not depend on sketch geometry order."""
+        reversedOrder = self._makeCapsuleLoft("ReversedCapsuleAdd", True, False)
+        consistentOrder = self._makeCapsuleLoft("ConsistentCapsuleAdd", False, False)
+        self.Doc.recompute()
+
+        self.assertIsNone(reversedOrder.Shape.check(True))
+        self.assertAlmostEqual(reversedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
+    def testCapsuleSubtractiveLoftIgnoresCreationOrder(self):
+        """Capsule wire pairing must also be stable for subtractive lofts."""
+        reversedOrder = self._makeCapsuleLoft("ReversedCapsuleCut", True, True)
+        consistentOrder = self._makeCapsuleLoft("ConsistentCapsuleCut", False, True)
+        self.Doc.recompute()
+
+        self.assertIsNone(reversedOrder.Shape.check(True))
+        self.assertAlmostEqual(reversedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
+    def testNestedIslandLoftIgnoresCreationOrder(self):
+        """Pair outer, hole, and island wires by nesting depth."""
+        permutedOrder = self._makeNestedIslandLoft("Permuted", True)
+        consistentOrder = self._makeNestedIslandLoft("Consistent", False)
+        self.Doc.recompute()
+
+        self.assertIsNone(permutedOrder.Shape.check(True))
+        self.assertAlmostEqual(permutedOrder.Shape.Volume, consistentOrder.Shape.Volume)
+
     def testSimpleSubtractiveLoftCase(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")

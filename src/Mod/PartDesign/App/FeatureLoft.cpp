@@ -40,6 +40,58 @@
 #include "FeatureLoft.h"
 using namespace PartDesign;
 
+namespace
+{
+
+void sortWiresByNesting(std::vector<Part::TopoShape>& wires)
+{
+    if (wires.size() < 2) {
+        return;
+    }
+
+    struct WireInfo
+    {
+        Part::TopoShape wire;
+        std::size_t depth {0};
+    };
+
+    std::vector<WireInfo> wireInfos;
+    wireInfos.reserve(wires.size());
+    for (const auto& wire : wires) {
+        if (!wire.isClosed()) {
+            return;
+        }
+        wireInfos.push_back({wire, 0});
+    }
+
+    try {
+        for (std::size_t outer = 0; outer < wireInfos.size(); ++outer) {
+            const auto outerWire = TopoDS::Wire(wireInfos[outer].wire.getShape());
+            for (std::size_t inner = 0; inner < wireInfos.size(); ++inner) {
+                if (outer == inner) {
+                    continue;
+                }
+                const auto innerWire = TopoDS::Wire(wireInfos[inner].wire.getShape());
+                if (Part::FaceMakerCheese::isInside(outerWire, innerWire)) {
+                    ++wireInfos[inner].depth;
+                }
+            }
+        }
+    }
+    catch (const Standard_Failure&) {
+        // Non-planar or otherwise unsuitable wires are still valid loft inputs. Preserve their
+        // original order and let the loft algorithm report any actual construction error.
+        return;
+    }
+
+    // Keep the original ordering within the same depth (e.g., if multiple wires/loops exist within
+    // an outer loop) because this doesn't determine correspondence between peers.
+    std::ranges::stable_sort(wireInfos, {}, &WireInfo::depth);
+    std::ranges::transform(wireInfos, wires.begin(), [](auto& info) { return std::move(info.wire); });
+}
+
+}  // namespace
+
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
 Loft::Loft()
@@ -139,6 +191,7 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
         if (expected_size && expected_size != wires.size()) {
             FC_THROWM(Base::CADKernelError, msg);
         }
+        sortWiresByNesting(wires);
         return wires;
     }
     auto vertices = compound.getSubTopoShapes(TopAbs_VERTEX);
