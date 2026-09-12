@@ -277,4 +277,187 @@ Base::Placement preferredPlacement(
     return referencePlacement * referenceLocalPlacement.inverse();
 }
 
+int rankOfDirections(const std::vector<Base::Vector3d>& directions)
+{
+    double rows[3][3] {};
+    const auto size = std::min<std::size_t>(directions.size(), 3);
+    for (std::size_t row = 0; row < size; ++row) {
+        const auto direction = normalized(directions[row]);
+        rows[row][0] = direction.x;
+        rows[row][1] = direction.y;
+        rows[row][2] = direction.z;
+    }
+
+    int rank = 0;
+    for (int col = 0; col < 3 && rank < static_cast<int>(size); ++col) {
+        int best = rank;
+        for (int row = rank + 1; row < static_cast<int>(size); ++row) {
+            if (std::fabs(rows[row][col]) > std::fabs(rows[best][col])) {
+                best = row;
+            }
+        }
+        if (std::fabs(rows[best][col]) < Base::Precision::Confusion()) {
+            continue;
+        }
+        if (best != rank) {
+            for (int swapCol = col; swapCol < 3; ++swapCol) {
+                std::swap(rows[rank][swapCol], rows[best][swapCol]);
+            }
+        }
+        const auto divisor = rows[rank][col];
+        for (int normalizeCol = col; normalizeCol < 3; ++normalizeCol) {
+            rows[rank][normalizeCol] /= divisor;
+        }
+        for (int row = 0; row < static_cast<int>(size); ++row) {
+            if (row == rank) {
+                continue;
+            }
+            const auto factor = rows[row][col];
+            for (int eliminateCol = col; eliminateCol < 3; ++eliminateCol) {
+                rows[row][eliminateCol] -= factor * rows[rank][eliminateCol];
+            }
+        }
+        ++rank;
+    }
+    return rank;
+}
+
+class TranslationSolver
+{
+public:
+    explicit TranslationSolver(const Base::Vector3d& preferred)
+        : preferred(preferred)
+    {}
+
+    void addEquation(const Base::Vector3d& normal, double value)
+    {
+        equations.push_back({normalized(normal), value});
+    }
+
+    std::optional<Base::Vector3d> solve() const
+    {
+        return solveConstrained(preferred, independentEquations());
+    }
+
+private:
+    struct Equation
+    {
+        Base::Vector3d normal;
+        double value;
+    };
+
+    static std::optional<std::array<double, 3>> solveLinearSystem(
+        const double matrix[3][3],
+        const double rhs[3],
+        std::size_t size
+    )
+    {
+        double augmented[3][4] {};
+        for (std::size_t row = 0; row < size; ++row) {
+            for (std::size_t col = 0; col < size; ++col) {
+                augmented[row][col] = matrix[row][col];
+            }
+            augmented[row][size] = rhs[row];
+        }
+
+        for (std::size_t pivot = 0; pivot < size; ++pivot) {
+            auto best = pivot;
+            for (std::size_t row = pivot + 1; row < size; ++row) {
+                if (std::fabs(augmented[row][pivot]) > std::fabs(augmented[best][pivot])) {
+                    best = row;
+                }
+            }
+            if (std::fabs(augmented[best][pivot]) < Base::Precision::Confusion()) {
+                return std::nullopt;
+            }
+            if (best != pivot) {
+                for (std::size_t col = pivot; col <= size; ++col) {
+                    std::swap(augmented[pivot][col], augmented[best][col]);
+                }
+            }
+
+            const auto divisor = augmented[pivot][pivot];
+            for (std::size_t col = pivot; col <= size; ++col) {
+                augmented[pivot][col] /= divisor;
+            }
+            for (std::size_t row = 0; row < size; ++row) {
+                if (row == pivot) {
+                    continue;
+                }
+                const auto factor = augmented[row][pivot];
+                for (std::size_t col = pivot; col <= size; ++col) {
+                    augmented[row][col] -= factor * augmented[pivot][col];
+                }
+            }
+        }
+
+        std::array<double, 3> result {};
+        for (std::size_t row = 0; row < size; ++row) {
+            result[row] = augmented[row][size];
+        }
+        return result;
+    }
+
+    static int rankOf(const std::vector<Equation>& equations)
+    {
+        std::vector<Base::Vector3d> directions;
+        directions.reserve(equations.size());
+        std::ranges::transform(equations, std::back_inserter(directions), [](const auto& equation) {
+            return equation.normal;
+        });
+        return rankOfDirections(directions);
+    }
+
+    std::vector<Equation> independentEquations() const
+    {
+        std::vector<Equation> result;
+        result.reserve(3);
+
+        for (const auto& equation : equations) {
+            auto candidate = result;
+            candidate.push_back(equation);
+            if (rankOf(candidate) > rankOf(result)) {
+                result.push_back(equation);
+                if (result.size() == 3) {
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    static std::optional<Base::Vector3d> solveConstrained(
+        const Base::Vector3d& base,
+        const std::vector<Equation>& constraints
+    )
+    {
+        if (constraints.empty()) {
+            return base;
+        }
+
+        double matrix[3][3] {};
+        double rhs[3] {};
+        for (std::size_t row = 0; row < constraints.size(); ++row) {
+            rhs[row] = constraints[row].value - constraints[row].normal * base;
+            for (std::size_t col = 0; col < constraints.size(); ++col) {
+                matrix[row][col] = constraints[row].normal * constraints[col].normal;
+            }
+        }
+
+        const auto lambda = solveLinearSystem(matrix, rhs, constraints.size());
+        if (!lambda) {
+            return std::nullopt;
+        }
+
+        auto result = base;
+        for (std::size_t i = 0; i < constraints.size(); ++i) {
+            result += constraints[i].normal * (*lambda)[i];
+        }
+        return result;
+    }
+
+    Base::Vector3d preferred;
+    std::vector<Equation> equations;
+};
+
 }  // namespace Gui::TransformSnap
