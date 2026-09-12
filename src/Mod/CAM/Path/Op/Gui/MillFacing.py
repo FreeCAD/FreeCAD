@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -122,6 +120,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # Update QuantitySpinBox displays
         self.updateQuantitySpinBoxes()
 
+        self.updateVisibility()
+
     def updateQuantitySpinBoxes(self, index=None):
         """updateQuantitySpinBoxes() ... refresh QuantitySpinBox displays from properties"""
         self.axialStockToLeaveSpinBox.updateWidget()
@@ -149,6 +149,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
 
         return signals
+
+    def updateVisibility(self):
+        if self.obj.ClearingPattern == "Spiral":
+            self.form.passExtension.hide()
+            self.form.passExtension_label.hide()
+        else:
+            self.form.passExtension.show()
+            self.form.passExtension_label.show()
+
+    def registerSignalHandlers(self, obj):
+        self.form.clearingPattern.currentIndexChanged.connect(self.updateVisibility)
 
 
 Command = PathOpGui.SetupOperation(
