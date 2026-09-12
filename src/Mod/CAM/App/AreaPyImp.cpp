@@ -22,8 +22,10 @@
  ****************************************************************************/
 
 
+#include <pybind11/pybind11.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Mod/CAM/libarea/Area.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
@@ -567,6 +569,7 @@ return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
 }
 PY_CATCH_OCC
 }
+
 
 PyObject* AreaPy::setDefaultParams(PyObject*, PyObject*)
 {

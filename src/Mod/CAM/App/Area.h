@@ -102,11 +102,9 @@ struct PathExport CAreaConfig
     /** The constructor automatically saves current setting and apply user defined ones
      *
      * \arg \c p user defined configurations
-     * \arg \c noFitArgs if true, will override and disable arc fitting. Because
-     * arc unfiting and fitting is lossy. And repeatedly perform these operation
-     * may cause shape deformation. So it is best to delay arc fitting until the
-     * final step*/
-    explicit CAreaConfig(const CAreaParams& p, bool noFitArcs = true);
+     * \arg \c noFitArcs if true, will override and disable arc fitting.
+     **/
+    explicit CAreaConfig(const CAreaParams& p, bool noFitArcs = false);
 
     /** The destructor restores the setting, and thus exception safe.  */
     ~CAreaConfig();
@@ -200,7 +198,6 @@ public:
     ~Area() override;
 
     bool isBuilt() const;
-
     /** Set a working plane
      *
      * \arg \c shape: a shape defining a working plane.

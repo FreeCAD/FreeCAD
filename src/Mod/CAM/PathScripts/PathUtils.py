@@ -407,7 +407,6 @@ def getOffsetArea(
     # Default: XY plane
     plane=Part.makeCircle(10),
     tolerance=1e-4,
-    joinType=None,
 ):
     """Make an offset area of a shape, projected onto a plane.
     Positive offsets expand the area, negative offsets shrink it.
@@ -424,17 +423,10 @@ def getOffsetArea(
     areaParams["SectionCount"] = 1  # -1 = full(all per depthparams??) sections
     areaParams["Reorient"] = True
     areaParams["OpenMode"] = 0
-    areaParams["MaxArcPoints"] = 400  # 400
     areaParams["Project"] = True
-    areaParams["FitArcs"] = False  # Can be buggy & expensive
     areaParams["Deflection"] = tolerance
     areaParams["Accuracy"] = tolerance
     areaParams["Tolerance"] = 1e-5  # Equal point tolerance
-    areaParams["Simplify"] = True
-    areaParams["CleanDistance"] = tolerance / 5
-
-    if joinType is not None:
-        areaParams["JoinType"] = joinType
 
     area = Path.Area()  # Create instance of Area() class object
     # Set working plane normal to Z=1
