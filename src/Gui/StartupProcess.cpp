@@ -51,6 +51,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "MainWindow.h"
+#include "ToolBarManager.h"
 #include "Language/Translator.h"
 #include "Dialogs/DlgVersionMigrator.h"
 #include "FreeCADStyle.h"
@@ -523,6 +524,11 @@ void StartupPostProcess::activateWorkbench()
 
     // Reactivate the startup workbench
     guiApp.activateWorkbench(start.c_str());
+
+    // Background module initialization can add or reposition toolbars after the main window and
+    // startup workbench have restored their state. Reapply the active scoped layout once startup
+    // has finished so it remains authoritative over those initialization side effects.
+    ToolBarManager::getInstance()->restoreState();
 }
 
 void StartupPostProcess::setStyleSheet()

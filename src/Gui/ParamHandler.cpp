@@ -30,29 +30,57 @@ ParamHandlers::ParamHandlers()
 ParamHandlers::~ParamHandlers()
 {}
 
-void ParamHandlers::addHandler(const ParamKey& key, const std::shared_ptr<ParamHandler>& handler)
+void ParamHandlers::ensureConnected()
 {
-    if (handlers.empty()) {
-        conn = App::GetApplication().GetUserParameter().signalParamChanged.connect(
-            [this](ParameterGrp* Param, ParameterGrp::ParamType, const char* Name, const char*) {
-                if (!Param || !Name) {
-                    return;
-                }
-                auto it = handlers.find(ParamKey(Param, Name));
-                if (it != handlers.end() && it->second->onChange(&it->first)) {
-                    pendings.insert(it->second);
+    if (conn.connected()) {
+        return;
+    }
+
+    conn = App::GetApplication().GetUserParameter().signalParamChanged.connect(
+        [this](ParameterGrp* Param, ParameterGrp::ParamType, const char* Name, const char*) {
+            if (!Param || !Name) {
+                return;
+            }
+
+            const ParamKey changedKey(Param, Name);
+            std::set<std::shared_ptr<ParamHandler>> matched;
+
+            if (auto it = handlers.find(changedKey); it != handlers.end()) {
+                matched.insert(it->second);
+            }
+
+            auto range = groupHandlers.equal_range(ParameterGrp::handle(Param));
+            for (auto it = range.first; it != range.second; ++it) {
+                matched.insert(it->second);
+            }
+
+            for (const auto& handler : matched) {
+                if (handler->onChange(&changedKey)) {
+                    pendings.insert(handler);
                     timer.start(100);
                 }
             }
-        );
+        },
+        fastsignals::advanced_tag()
+    );
 
-        timer.setSingleShot(true);
-        QObject::connect(&timer, &QTimer::timeout, [this]() {
-            for (const auto& v : pendings) {
-                v->onTimer();
-            }
-            pendings.clear();
-        });
-    }
+    timer.setSingleShot(true);
+    QObject::connect(&timer, &QTimer::timeout, [this]() {
+        for (const auto& v : pendings) {
+            v->onTimer();
+        }
+        pendings.clear();
+    });
+}
+
+void ParamHandlers::addHandler(const ParamKey& key, const std::shared_ptr<ParamHandler>& handler)
+{
+    ensureConnected();
     handlers[key] = handler;
+}
+
+void ParamHandlers::addGroupHandler(ParameterGrp* hGrp, const std::shared_ptr<ParamHandler>& handler)
+{
+    ensureConnected();
+    groupHandlers.emplace(ParameterGrp::handle(hGrp), handler);
 }

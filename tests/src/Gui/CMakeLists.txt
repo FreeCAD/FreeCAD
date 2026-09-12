@@ -12,6 +12,7 @@ add_executable(Gui_tests_run
         StyleParameters/DiagnosticsCapture.h
         StyleParameters/ValueMatchers.h
         StyleParameters/ValueMatchers.cpp
+        ToolBarManager.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
         StyleParameters/ParserRobustnessTest.cpp

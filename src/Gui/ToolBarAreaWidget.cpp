@@ -45,18 +45,76 @@ QString widgetPersistenceKey(QWidget* widget)
 
     return widget->objectName();
 }
+QString widgetLegacyPersistenceKey(QWidget* widget)
+{
+    auto toolbar = qobject_cast<QToolBar*>(widget);
+    if (!toolbar) {
+        return {};
+    }
+
+    const auto legacyKey = toolbar->objectName();
+    if (legacyKey.isEmpty() || legacyKey == ToolBarManager::toolBarPersistenceKey(toolbar)) {
+        return {};
+    }
+
+    return legacyKey;
+}
+
+bool widgetUsesSharedLayout(QWidget* widget)
+{
+    auto toolbar = qobject_cast<QToolBar*>(widget);
+    if (!toolbar) {
+        return true;
+    }
+
+    const auto scope = ToolBarManager::toolBarScopeId(toolbar).scope;
+    return scope == ToolBarManager::Scope::Legacy || scope == ToolBarManager::Scope::Shared;
+}
+
+void clearToolbarIndices(const ParameterGrp::handle& parameters)
+{
+    if (!parameters) {
+        return;
+    }
+
+    const auto values = parameters->GetIntMap();
+    for (const auto& value : values) {
+        parameters->RemoveInt(value.first.c_str());
+    }
+}
+
+QWidget* findRestorableWidget(ToolBarAreaWidget* area, const QString& key)
+{
+    if (!area || key.isEmpty()) {
+        return nullptr;
+    }
+
+    if (auto widget = area->findChild<QWidget*>(key)) {
+        return widget;
+    }
+
+    for (auto toolbar : area->findChildren<QToolBar*>()) {
+        if (ToolBarManager::toolBarPersistenceKey(toolbar) == key || toolbar->objectName() == key) {
+            return toolbar;
+        }
+    }
+
+    return nullptr;
+}
 }  // namespace
 
 ToolBarAreaWidget::ToolBarAreaWidget(
     QWidget* parent,
     ToolBarArea area,
-    const ParameterGrp::handle& hParam,
+    const ParameterGrp::handle& hGlobalParam,
+    const ParameterGrp::handle& hScopedParam,
     fastsignals::advanced_scoped_connection& conn,
     QTimer* timer
 )
     : QWidget(parent)
     , _sizingTimer(timer)
-    , _hParam(hParam)
+    , _hGlobalParam(hGlobalParam)
+    , _hScopedParam(hScopedParam)
     , _conn(conn)
     , _area(area)
 {
@@ -78,12 +136,7 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     _layout->addWidget(widget);
     adjustParent();
 
-    QString name = widgetPersistenceKey(widget);
-
-    if (!name.isEmpty()) {
-        Base::ConnectionBlocker block(_conn);
-        _hParam->SetInt(name.toUtf8().constData(), _layout->count() - 1);
-    }
+    saveState();
 }
 
 void ToolBarAreaWidget::insertWidget(int index, QWidget* widget)
@@ -110,7 +163,7 @@ void ToolBarAreaWidget::insertWidget(int index, QWidget* widget)
     saveState();
 }
 
-void ToolBarAreaWidget::removeWidget(QWidget* widget)
+void ToolBarAreaWidget::removeWidget(QWidget* widget, bool persistChange)
 {
     _layout->removeWidget(widget);
 
@@ -118,18 +171,38 @@ void ToolBarAreaWidget::removeWidget(QWidget* widget)
         toolbar->updateCustomGripVisibility();
     }
 
-    QString name = widgetPersistenceKey(widget);
-    if (!name.isEmpty()) {
+    if (persistChange) {
         Base::ConnectionBlocker block(_conn);
-        _hParam->RemoveInt(name.toUtf8().constData());
+        const auto key = widgetPersistenceKey(widget);
+        const auto legacyKey = widgetLegacyPersistenceKey(widget);
+        auto removeKey = [&key, &legacyKey](const ParameterGrp::handle& parameters) {
+            if (!parameters) {
+                return;
+            }
+            if (!key.isEmpty()) {
+                parameters->RemoveInt(key.toUtf8().constData());
+            }
+            if (!legacyKey.isEmpty()) {
+                parameters->RemoveInt(legacyKey.toUtf8().constData());
+            }
+        };
+
+        if (_separateScopes && !widgetUsesSharedLayout(widget)) {
+            removeKey(_hScopedParam);
+        }
+        else {
+            removeKey(_hGlobalParam);
+        }
+        saveState();
     }
 
     adjustParent();
 }
 
-void ToolBarAreaWidget::setParameters(const ParameterGrp::handle& hParam)
+void ToolBarAreaWidget::setParameters(const ParameterGrp::handle& hScopedParam, bool separateScopes)
 {
-    _hParam = hParam;
+    _hScopedParam = hScopedParam;
+    _separateScopes = separateScopes;
 }
 
 void ToolBarAreaWidget::adjustParent()
@@ -142,20 +215,37 @@ void ToolBarAreaWidget::adjustParent()
 void ToolBarAreaWidget::saveState()
 {
     Base::ConnectionBlocker block(_conn);
-
-    for (auto& v : _hParam->GetIntMap()) {
-        _hParam->RemoveInt(v.first.c_str());
+    clearToolbarIndices(_hGlobalParam);
+    if (_separateScopes && _hScopedParam != _hGlobalParam) {
+        clearToolbarIndices(_hScopedParam);
     }
 
-    foreachToolBar([this](QToolBar* toolbar, int idx, ToolBarAreaWidget*) {
-        auto key = ToolBarManager::toolBarPersistenceKey(toolbar);
-        _hParam->SetInt(key.toUtf8().constData(), idx);
-    });
+    int globalIndex = 0;
+    int scopedIndex = 0;
+    int unifiedIndex = 0;
+    foreachToolBar(
+        [this, &globalIndex, &scopedIndex, &unifiedIndex](QToolBar* toolbar, int, ToolBarAreaWidget*) {
+            const auto key = ToolBarManager::toolBarPersistenceKey(toolbar);
+            if (key.isEmpty()) {
+                return;
+            }
+
+            if (!_separateScopes || _hScopedParam == _hGlobalParam) {
+                _hGlobalParam->SetInt(key.toUtf8().constData(), unifiedIndex++);
+            }
+            else if (widgetUsesSharedLayout(toolbar)) {
+                _hGlobalParam->SetInt(key.toUtf8().constData(), globalIndex++);
+            }
+            else {
+                _hScopedParam->SetInt(key.toUtf8().constData(), scopedIndex++);
+            }
+        }
+    );
 }
 
 void ToolBarAreaWidget::restoreState(
     const std::map<int, QToolBar*>& toolbars,
-    const ParameterGrp::handle& source
+    const QMap<QString, bool>& widgetVisibility
 )
 {
     for (const auto& [index, toolbar] : toolbars) {
@@ -166,16 +256,11 @@ void ToolBarAreaWidget::restoreState(
         toolbar->setVisible(visible);
     }
 
-    auto stateParams = source ? source : _hParam;
-    if (!stateParams) {
-        return;
-    }
-
-    for (const auto& [name, visible] : stateParams->GetBoolMap()) {
-        auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
+    for (auto it = widgetVisibility.cbegin(); it != widgetVisibility.cend(); ++it) {
+        auto widget = findRestorableWidget(this, it.key());
 
         if (widget) {
-            widget->setVisible(visible);
+            widget->setVisible(it.value());
         }
     }
 }
