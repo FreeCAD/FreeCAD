@@ -226,7 +226,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
     App::Application::Config()["SplashInfoColor"] = "#000000";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
-    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
+    App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-26.3.0";
 
     try {
         // Init phase ===========================================================
@@ -244,19 +244,33 @@ int main(int argc, char** argv)
             App::Application::getUserAppDataDir() + "CrashReports"
         );
 # endif
+
 #else
+				// Fix for XWayland window stacking
+				if (argc > 0 && argv && argv[0]) {
+            argv[0] = const_cast<char*>("FreeCAD");
+        }
         App::Application::init(argc, argv);
 #endif
-        // To set the window icon on Wayland, the desktop file has to be available to the
+
+				// To set the window icon on Wayland, the desktop file has to be available to the
         // compositor. Qt also uses the desktop file name to register with the portal registry.
         const QString desktopFileName = QString::fromStdString(
             App::Application::Config()["DesktopFileName"]
         );
+
         if (desktopFileIsAvailable(desktopFileName)) {
             QGuiApplication::setDesktopFileName(desktopFileName);
         }
 
-        std::map<std::string, std::string>::iterator it = App::Application::Config().find(
+        // Keep this to protect configurations and native Wayland tracking
+				const QString applicationName= QString::fromStdString(
+						App::Application::Config()["ExeName"]
+				);
+
+				QGuiApplication::setApplicationName(applicationName);
+			
+				std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
         );
         if (it != App::Application::Config().end()) {
@@ -270,10 +284,12 @@ int main(int argc, char** argv)
 
         Gui::Application::initApplication();
 
-        // Only if 'RunMode' is set to 'Gui' do the replacement
+	        // Only if 'RunMode' is set to 'Gui' do the replacement
         if (App::Application::Config()["RunMode"] == "Gui") {
             Base::Interpreter().replaceStdOutput();
         }
+
+
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc, argv);
