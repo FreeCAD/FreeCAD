@@ -2,6 +2,7 @@
 from SketcherTests.TestConstraintPreselectionGui import SketcherGuiTestCases
 from SketcherTests.TestDistanceLabelExtensionGui import TestDistanceLabelExtensionGui
 from SketcherTests.TestConstraintCommandsGui import TestConstraintCommandsGui
+from SketcherTests.TestCoincidentCommandGui import TestCoincidentCommandGui
 from SketcherTests.TestOnViewParameterGui import TestOnViewParameterGui
 from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
 from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
@@ -12,6 +13,7 @@ from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselect
     if SketcherGuiTestCases
     and TestDistanceLabelExtensionGui
     and TestConstraintCommandsGui
+    and TestCoincidentCommandGui
     and TestSketchPlacementUpdate
     and TestOnViewParameterGui
     and TestExternalFacePreselection

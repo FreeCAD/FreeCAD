@@ -4949,6 +4949,24 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
 
 // ======================================================================================
 
+namespace
+{
+struct ConstraintDiagnosticIdentity {
+    std::optional<int> invalidDiagnosticNumber;
+    ConstraintType type {None};
+    InternalAlignmentType alignmentType {Undef};
+    int orientation {0};
+    double value {0.0};
+    bool driving {true};
+    bool active {true};
+    bool virtualSpace {false};
+    int alignmentIndex {-1};
+    std::vector<GeoElementId> elements;
+
+    bool operator==(const ConstraintDiagnosticIdentity&) const = default;
+};
+}  // namespace
+
 class CmdSketcherConstrainCoincidentUnified : public CmdSketcherConstraint
 {
 public:
@@ -4967,6 +4985,19 @@ protected:
         Both
     };
 
+    enum class CoincidentSelectionResult {
+        Valid,
+        AlreadyCoincident,
+        WouldCollapseGeometry,
+    };
+
+    struct CoincidentSolveStatus {
+        SketchSolveStatus status {SketchSolveStatus::Success};
+        std::vector<ConstraintDiagnosticIdentity> redundantIdentities;
+        std::vector<ConstraintDiagnosticIdentity> conflictingIdentities;
+        std::vector<ConstraintDiagnosticIdentity> malformedIdentities;
+    };
+
     void activated(int iMsg) override;
     void onActivated(CoincicenceType type);
     void activatedCoincident(SketchObject* obj, std::vector<SelIdPair> points, std::vector<SelIdPair> curves);
@@ -4980,7 +5011,18 @@ protected:
     static bool substituteConstraintCombinationsPointOnObject(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2);
     static bool substituteConstraintCombinationsCoincident(SketchObject* Obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
 
-    bool isCoincidentSelectionValid(SketchObject* obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+    CoincidentSelectionResult validateCoincidentSelection(SketchObject* obj,
+                                                          int GeoId1,
+                                                          PointPos PosId1,
+                                                          int GeoId2,
+                                                          PointPos PosId2);
+    void showCoincidentSelectionWarning(SketchObject* obj, CoincidentSelectionResult result);
+    void showCoincidentSolveWarning(SketchObject* obj, SketchSolveStatus result);
+    CoincidentSolveStatus getCoincidentSolveStatus(SketchObject* obj);
+    CoincidentSolveStatus getCoincidentSolveStatus(SketchObject* obj, SketchSolveStatus result);
+    bool abortIfCoincidentSolveRejected(SketchObject* obj, const CoincidentSolveStatus& before);
+    static bool shouldRejectCoincidentSolve(const CoincidentSolveStatus& before,
+                                            const CoincidentSolveStatus& after);
 };
 
 CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(const char* initName)
@@ -5085,7 +5127,6 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
                 notifyConstraintSubstitutions(
                     QObject::tr("Endpoint to endpoint tangency was applied instead."));
 
-                getSelection().clearSelection();
                 return true;
             }
             else if (isBsplineKnot(Obj, GeoId1) != isBsplineKnot(Obj, GeoId2)) {
@@ -5105,7 +5146,6 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
                     notifyConstraintSubstitutions(
                         QObject::tr("B-spline knot to endpoint tangency was applied instead."));
 
-                    getSelection().clearSelection();
                     return true;
                 }
             }
@@ -5251,6 +5291,8 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
 
     // undo command open
     bool constraintsAdded = false;
+    auto beforeSolve = getCoincidentSolveStatus(obj);
+    CoincidentSelectionResult lastRejectedSelection = CoincidentSelectionResult::Valid;
     openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
 
     for (std::size_t i = 1; i < vecOfSelIdToUse.size(); i++) {
@@ -5272,7 +5314,8 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
             break;
         }
 
-        if (isCoincidentSelectionValid(obj, GeoId1, PosId1, GeoId2, PosId2)) {
+        auto validation = validateCoincidentSelection(obj, GeoId1, PosId1, GeoId2, PosId2);
+        if (validation == CoincidentSelectionResult::Valid) {
             constraintsAdded = true;
             Gui::cmdAppObjectArgs(obj,
                 "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d))",
@@ -5281,20 +5324,24 @@ void CmdSketcherConstrainCoincidentUnified::activatedCoincident(SketchObject* ob
                 GeoId2,
                 static_cast<int>(PosId2));
         }
+        else {
+            lastRejectedSelection = validation;
+        }
     }
 
     // finish or abort the transaction and update
     if (constraintsAdded) {
+        if (abortIfCoincidentSolveRejected(obj, beforeSolve)) {
+            return;
+        }
         commitCommand();
+        tryAutoRecompute(obj);
+        getSelection().clearSelection();
     }
     else {
         abortCommand();
+        showCoincidentSelectionWarning(obj, lastRejectedSelection);
     }
-
-    tryAutoRecompute(obj);
-
-    // clear the selection (convenience)
-    getSelection().clearSelection();
 }
 
 void CmdSketcherConstrainCoincidentUnified::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
@@ -5434,9 +5481,16 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
 
     // undo command open
     openCommand(QT_TRANSLATE_NOOP("Command", "Add coincident constraint"));
+    auto beforeSolve = getCoincidentSolveStatus(Obj);
 
-    if (substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {}
-    else if (isCoincidentSelectionValid(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+    if (!substituteConstraintCombinationsCoincident(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
+        auto validation = validateCoincidentSelection(Obj, GeoId1, PosId1, GeoId2, PosId2);
+        if (validation != CoincidentSelectionResult::Valid) {
+            abortCommand();
+            showCoincidentSelectionWarning(Obj, validation);
+            return;
+        }
+
         Gui::cmdAppObjectArgs(sketchgui->getObject(),
             "addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d))",
             GeoId1,
@@ -5444,19 +5498,24 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
             GeoId2,
             static_cast<int>(PosId2));
     }
-    else {
-        abortCommand();
+    if (abortIfCoincidentSolveRejected(Obj, beforeSolve)) {
         return;
     }
+
     finishTransactionAndUpdate(this, Obj);
 }
 
-bool CmdSketcherConstrainCoincidentUnified::isCoincidentSelectionValid(SketchObject* obj, int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
+CmdSketcherConstrainCoincidentUnified::CoincidentSelectionResult
+CmdSketcherConstrainCoincidentUnified::validateCoincidentSelection(SketchObject* obj,
+                                                                   int GeoId1,
+                                                                   PointPos PosId1,
+                                                                   int GeoId2,
+                                                                   PointPos PosId2)
 {
     // check if this coincidence is already enforced (even indirectly)
     bool constraintExists = obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
     if (constraintExists) {
-        return false;
+        return CoincidentSelectionResult::AlreadyCoincident;
     }
 
     auto firstPoints = obj->getAllCoincidentPoints(GeoId1, PosId1);
@@ -5470,10 +5529,256 @@ bool CmdSketcherConstrainCoincidentUnified::isCoincidentSelectionValid(SketchObj
         if (secondPoints.contains(geoId)) {
             const Part::Geometry* geo = obj->getGeometry(geoId);
             if (!geo || !geo->is<Part::GeomBSplineCurve>()) {
-                return false;
+                return CoincidentSelectionResult::WouldCollapseGeometry;
             }
         }
     }
+
+    return CoincidentSelectionResult::Valid;
+}
+
+void CmdSketcherConstrainCoincidentUnified::showCoincidentSelectionWarning(
+    SketchObject* obj, CoincidentSelectionResult result)
+{
+    switch (result) {
+        case CoincidentSelectionResult::AlreadyCoincident:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("The selected points are already coincident."));
+            break;
+        case CoincidentSelectionResult::WouldCollapseGeometry:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("Cannot add a coincident constraint because it would collapse geometry "
+                            "to zero length."));
+            break;
+        case CoincidentSelectionResult::Valid:
+            break;
+    }
+}
+
+void CmdSketcherConstrainCoincidentUnified::showCoincidentSolveWarning(SketchObject* obj,
+                                                                       SketchSolveStatus result)
+{
+    switch (result) {
+        case SketchSolveStatus::RedundantConstraints:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("Cannot add the coincident constraint because it would create redundant "
+                            "constraints."));
+            break;
+        case SketchSolveStatus::ConflictingConstraints:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("Cannot add the coincident constraint because it would conflict with "
+                            "existing constraints."));
+            break;
+        case SketchSolveStatus::Overconstrained:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Coincident constraint not added"),
+                QObject::tr("Cannot add the coincident constraint because it would over-constrain "
+                            "the sketch."));
+            break;
+        case SketchSolveStatus::MalformedConstraints:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add the coincident constraint because the sketch has malformed "
+                            "constraints."));
+            break;
+        case SketchSolveStatus::SolverError:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add the coincident constraint because the solver failed to "
+                            "converge."));
+            break;
+        case SketchSolveStatus::InvalidGeometry:
+            Gui::TranslatedUserWarning(
+                obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add the coincident constraint because the sketch contains "
+                            "constraints that refer to invalid geometry."));
+            break;
+        case SketchSolveStatus::Success:
+            break;
+    }
+}
+
+namespace
+{
+ConstraintDiagnosticIdentity getConstraintDiagnosticIdentity(const Constraint& constraint)
+{
+    ConstraintDiagnosticIdentity identity;
+    identity.type = constraint.Type;
+    identity.alignmentType = constraint.AlignmentType;
+    identity.orientation = constraint.Orientation.toUnderlyingType();
+    identity.value = constraint.getValue();
+    identity.driving = constraint.isDriving;
+    identity.active = constraint.isActive;
+    identity.virtualSpace = constraint.isInVirtualSpace;
+    identity.alignmentIndex = constraint.InternalAlignmentIndex;
+    identity.elements.reserve(constraint.getElementsSize());
+
+    for (size_t i = 0; i < constraint.getElementsSize(); ++i) {
+        identity.elements.push_back(constraint.getElement(i));
+    }
+
+    return identity;
+}
+
+std::vector<ConstraintDiagnosticIdentity> getConstraintDiagnosticIdentities(
+    const SketchObject* obj,
+    const std::vector<int>& constraintNumbers)
+{
+    const auto& constraints = obj->Constraints.getValues();
+    std::vector<ConstraintDiagnosticIdentity> identities;
+    identities.reserve(constraintNumbers.size());
+
+    for (const int constraintNumber : constraintNumbers) {
+        const int constraintIndex = constraintNumber - 1;
+        if (constraintIndex >= 0 && constraintIndex < static_cast<int>(constraints.size())) {
+            identities.push_back(getConstraintDiagnosticIdentity(*constraints[constraintIndex]));
+        }
+        else {
+            // Preserve unexpected solver diagnostics as distinct entries rather than silently
+            // treating an invalid diagnostic index as an existing constraint.
+            ConstraintDiagnosticIdentity identity;
+            identity.invalidDiagnosticNumber = constraintNumber;
+            identities.push_back(std::move(identity));
+        }
+    }
+
+    return identities;
+}
+
+int getCoincidentSolveStatusSeverity(SketchSolveStatus status)
+{
+    // Redundancy is a solvable issue; each following status prevents progressively more reliable
+    // solving. Invalid geometry is highest because constraint references cannot be trusted.
+    switch (status) {
+        case SketchSolveStatus::Success:
+            return 0;
+        case SketchSolveStatus::RedundantConstraints:
+            return 1;
+        case SketchSolveStatus::ConflictingConstraints:
+            return 2;
+        case SketchSolveStatus::Overconstrained:
+            return 3;
+        case SketchSolveStatus::MalformedConstraints:
+        case SketchSolveStatus::SolverError:
+            return 4;
+        case SketchSolveStatus::InvalidGeometry:
+            return 5;
+    }
+
+    return 5;
+}
+}  // namespace
+
+CmdSketcherConstrainCoincidentUnified::CoincidentSolveStatus
+CmdSketcherConstrainCoincidentUnified::getCoincidentSolveStatus(SketchObject* obj)
+{
+    if (obj->Constraints.hasInvalidGeometry()) {
+        return getCoincidentSolveStatus(obj, SketchSolveStatus::InvalidGeometry);
+    }
+
+    auto result = SketchSolveStatus::Success;
+    if (obj->getLastHasRedundancies()) {
+        result = SketchSolveStatus::RedundantConstraints;
+    }
+    if (obj->getLastDoF() < 0) {
+        result = SketchSolveStatus::Overconstrained;
+    }
+    else if (obj->getLastHasConflicts()) {
+        result = SketchSolveStatus::ConflictingConstraints;
+    }
+    else if (obj->getLastHasMalformedConstraints()) {
+        result = SketchSolveStatus::MalformedConstraints;
+    }
+    else if (obj->getLastSolverStatus() != GCS::SolveStatus::Success) {
+        result = SketchSolveStatus::SolverError;
+    }
+    return getCoincidentSolveStatus(obj, result);
+}
+
+CmdSketcherConstrainCoincidentUnified::CoincidentSolveStatus
+CmdSketcherConstrainCoincidentUnified::getCoincidentSolveStatus(SketchObject* obj,
+                                                                SketchSolveStatus status)
+{
+    // Property-level geometry validity is authoritative even when solve() reports a different
+    // status for the same invalid constraint list.
+    if (obj->Constraints.hasInvalidGeometry()) {
+        status = SketchSolveStatus::InvalidGeometry;
+    }
+
+    return {status,
+            getConstraintDiagnosticIdentities(obj, obj->getLastRedundant()),
+            getConstraintDiagnosticIdentities(obj, obj->getLastConflicting()),
+            getConstraintDiagnosticIdentities(obj, obj->getLastMalformedConstraints())};
+}
+
+bool CmdSketcherConstrainCoincidentUnified::shouldRejectCoincidentSolve(
+    const CoincidentSolveStatus& before,
+    const CoincidentSolveStatus& after)
+{
+    if (after.status == SketchSolveStatus::Success) {
+        return false;
+    }
+
+    if (after.status == SketchSolveStatus::InvalidGeometry) {
+        return true;
+    }
+
+    if (getCoincidentSolveStatusSeverity(after.status)
+        > getCoincidentSolveStatusSeverity(before.status)) {
+        return true;
+    }
+
+    const auto introducesDiagnostic = [](const auto& beforeDiagnostics,
+                                         const auto& afterDiagnostics) {
+        auto unmatchedBefore = beforeDiagnostics;
+        for (const auto& afterDiagnostic : afterDiagnostics) {
+            auto existing = std::ranges::find(unmatchedBefore, afterDiagnostic);
+            if (existing == unmatchedBefore.end()) {
+                return true;
+            }
+            unmatchedBefore.erase(existing);
+        }
+        return false;
+    };
+
+    return introducesDiagnostic(before.redundantIdentities, after.redundantIdentities)
+        || introducesDiagnostic(before.conflictingIdentities, after.conflictingIdentities)
+        || introducesDiagnostic(before.malformedIdentities, after.malformedIdentities);
+}
+
+bool CmdSketcherConstrainCoincidentUnified::abortIfCoincidentSolveRejected(
+    SketchObject* obj,
+    const CoincidentSolveStatus& before)
+{
+    if (before.status == SketchSolveStatus::InvalidGeometry) {
+        abortCommand();
+        tryAutoRecomputeIfNotSolve(obj);
+        showCoincidentSolveWarning(obj, SketchSolveStatus::InvalidGeometry);
+        return true;
+    }
+
+    auto solveResult = obj->solve();
+    auto after = getCoincidentSolveStatus(obj, solveResult);
+
+    if (!shouldRejectCoincidentSolve(before, after)) {
+        return false;
+    }
+
+    abortCommand();
+    tryAutoRecomputeIfNotSolve(obj);
+    showCoincidentSolveWarning(obj, after.status);
     return true;
 }
 
