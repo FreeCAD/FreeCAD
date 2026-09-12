@@ -220,6 +220,7 @@ SET(nativeifc_SRCS
     nativeifc/ifc_psets.py
     nativeifc/ifc_selftest.py
     nativeifc/ifc_status.py
+    nativeifc/ifc_summary.py
     nativeifc/ifc_tools.py
     nativeifc/ifc_tree.py
     nativeifc/ifc_viewproviders.py
