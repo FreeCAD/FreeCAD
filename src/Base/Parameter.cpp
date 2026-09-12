@@ -37,6 +37,7 @@
 #include <xercesc/sax/ErrorHandler.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <sstream>
+#include <chrono>
 #include <string>
 #include <utility>
 
@@ -1798,15 +1799,24 @@ bool ParameterManager::IgnoreSave() const
 
 namespace
 {
+/// Get the path we should use for a lockfile, given the original file that we want to work on.
+/// Does *not* actually create the file, just the name.
 std::string getLockFile(const Base::FileInfo& file)
 {
-    return Base::FileInfo::getTempPath() + file.fileName() + ".lock";
+    // The lock lives beside its file: a shared temp dir would let one user's lock block every other
+    // user on the machine, and a bare basename would conflate same-named files in different places.
+    // See Issue #32605.
+    return file.filePath() + ".lock";
 }
 
-int getTimeout()
+constexpr std::chrono::milliseconds lockTimeout {5000};
+
+/// Try to get a lock: if we fail because the lock exists, then fail, return false. If we get the
+/// lock, or we can't get a lock because the filesystem is read only, has no lock support, etc. then
+/// continue for now, and the file operation itself will report any actual problem later.
+bool lockOrProceedUnlocked(Base::FileLock& lock)
 {
-    const int timeout = 5000;
-    return timeout;
+    return lock.tryLock(lockTimeout) || lock.lastFailure() != FileLock::Failure::Contended;
 }
 }  // namespace
 
@@ -1830,11 +1840,11 @@ int ParameterManager::LoadDocument(const char* sFileName)
     try {
         Base::FileInfo file(sFileName);
         Base::FileLock lock(getLockFile(file));
-        if (!lock.tryLock(getTimeout())) {
+        if (!lockOrProceedUnlocked(lock)) {
             // Continue with empty config
             CreateDocument();
             SetIgnoreSave(true);
-            std::cerr << "Failed to access file for reading: " << sFileName << std::endl;
+            std::cerr << "File is locked for reading: " << sFileName << "\n";
             return 1;
         }
 #if defined(FC_OS_WIN32)
@@ -1937,8 +1947,8 @@ void ParameterManager::SaveDocument(const char* sFileName) const
     try {
         Base::FileInfo file(sFileName);
         Base::FileLock lock(getLockFile(file));
-        if (!lock.tryLock(getTimeout())) {
-            std::cerr << "Failed to access file for writing: " << sFileName << std::endl;
+        if (!lockOrProceedUnlocked(lock)) {
+            std::cerr << "File is locked for writing: " << sFileName << "\n";
             return;
         }
         //

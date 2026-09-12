@@ -4,6 +4,7 @@
 #include <Base/FileLock.h>
 #include <Base/Parameter.h>
 
+#include <chrono>
 #include <filesystem>
 
 #if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
@@ -632,39 +633,43 @@ TEST_F(ParameterTest, TestLockFile)
     std::string fn = getFileName();
     fn.append(".lock");
 
-    // tryLock(0) should still attempt the lock once (no polling) and succeed when available.
+    // tryLock(std::chrono::milliseconds::zero()) should still attempt the lock once (no polling)
+    // and succeed when available.
     Base::FileLock lockFile1(fn);
-    ASSERT_TRUE(lockFile1.tryLock(0));
+    ASSERT_TRUE(lockFile1.tryLock(std::chrono::milliseconds::zero()));
     EXPECT_TRUE(lockFile1.isLocked());
 
 #if defined(_WIN32)
     // Windows file locks are per-handle, so another handle in the same process conflicts.
     Base::FileLock lockFile2(fn);
-    EXPECT_FALSE(lockFile2.tryLock(0));
+    EXPECT_FALSE(lockFile2.tryLock(std::chrono::milliseconds::zero()));
     EXPECT_FALSE(lockFile2.isLocked());
+    EXPECT_EQ(lockFile2.lastFailure(), Base::FileLock::Failure::Contended);
 
     lockFile1.unlock();
-    ASSERT_TRUE(lockFile2.tryLock(0));
+    ASSERT_TRUE(lockFile2.tryLock(std::chrono::milliseconds::zero()));
     lockFile2.unlock();
 #else
     // POSIX fcntl locks are per-process, so we normally test contention via a separate process.
     //
     // macOS differs here (locks can be inherited across fork), which makes it hard to test
-    // contention without launching an unrelated helper process. We still validate tryLock(0)
-    // and that unlock() releases the lock.
+    // contention without launching an unrelated helper process. We still validate
+    // tryLock(std::chrono::milliseconds::zero()) and that unlock() releases the lock.
 # if defined(__APPLE__)
     lockFile1.unlock();
 
     Base::FileLock lockFile2(fn);
-    ASSERT_TRUE(lockFile2.tryLock(0));
+    ASSERT_TRUE(lockFile2.tryLock(std::chrono::milliseconds::zero()));
     lockFile2.unlock();
 # else
     const pid_t pid = fork();
     ASSERT_NE(pid, -1);
     if (pid == 0) {
         Base::FileLock lockFile2(fn);
-        const bool locked = lockFile2.tryLock(0);
-        _exit(locked ? 1 : 0);
+        if (lockFile2.tryLock(std::chrono::milliseconds::zero())) {
+            _exit(1);
+        }
+        _exit(lockFile2.lastFailure() == Base::FileLock::Failure::Contended ? 0 : 2);
     }
 
     int status = 0;
@@ -674,7 +679,7 @@ TEST_F(ParameterTest, TestLockFile)
 
     lockFile1.unlock();
     Base::FileLock lockFile3(fn);
-    ASSERT_TRUE(lockFile3.tryLock(0));
+    ASSERT_TRUE(lockFile3.tryLock(std::chrono::milliseconds::zero()));
     lockFile3.unlock();
 # endif
 #endif
@@ -683,5 +688,65 @@ TEST_F(ParameterTest, TestLockFile)
     std::error_code ec;
     (void)std::filesystem::remove(std::filesystem::path(fn), ec);
 }
+
+TEST_F(ParameterTest, TestNoLockFileLeftBehind)  // NOLINT
+{
+#if defined(__EMSCRIPTEN__)
+    GTEST_SKIP() << "File locking is a no-op in Emscripten/WASM (single-process).";
+#endif
+
+    namespace fs = std::filesystem;
+    const fs::path directory(Base::FileInfo::getTempFileName());
+    fs::create_directories(directory);
+    const fs::path document = directory / "prefs.cfg";
+    const fs::path lockBesideDocument = directory / "prefs.cfg.lock";
+    const fs::path lockInTempDir(Base::FileInfo::getTempPath() + "prefs.cfg.lock");
+    std::error_code ec;
+    (void)fs::remove(lockInTempDir, ec);
+
+    const auto config = getCreateConfig();
+    config->GetGroup("Group")->SetInt("Int", 42);
+    config->SaveDocument(Base::FileInfo::pathToString(document).c_str());
+    EXPECT_FALSE(fs::exists(lockBesideDocument));
+    EXPECT_FALSE(fs::exists(lockInTempDir));
+
+    const auto loaded = ParameterManager::Create();
+    EXPECT_EQ(loaded->LoadDocument(Base::FileInfo::pathToString(document).c_str()), 1);
+    EXPECT_EQ(loaded->GetGroup("Group")->GetInt("Int"), 42);
+    EXPECT_FALSE(loaded->IgnoreSave());
+    EXPECT_FALSE(fs::exists(lockBesideDocument));
+    EXPECT_FALSE(fs::exists(lockInTempDir));
+
+    (void)std::filesystem::remove_all(directory, ec);
+}
+
+#if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
+TEST_F(ParameterTest, TestLoadDocumentFromUnwritableDirectory)
+{
+    if (geteuid() == 0) {
+        GTEST_SKIP() << "Directory permissions do not restrict root.";
+    }
+
+    namespace fs = std::filesystem;
+    const fs::path directory(Base::FileInfo::getTempFileName());
+    fs::create_directories(directory);
+    const fs::path document = directory / "prefs.cfg";
+
+    const auto cfg = getCreateConfig();
+    cfg->GetGroup("Group")->SetInt("Int", 7);
+    cfg->SaveDocument(Base::FileInfo::pathToString(document).c_str());
+    fs::permissions(directory, fs::perms::owner_read | fs::perms::owner_exec);
+
+    const auto loaded = ParameterManager::Create();
+    EXPECT_EQ(loaded->LoadDocument(Base::FileInfo::pathToString(document).c_str()), 1);
+    EXPECT_EQ(loaded->GetGroup("Group")->GetInt("Int"), 7);
+    EXPECT_FALSE(loaded->IgnoreSave());
+    EXPECT_FALSE(fs::exists(directory / "prefs.cfg.lock"));
+
+    fs::permissions(directory, fs::perms::owner_all);
+    std::error_code ec;
+    (void)fs::remove_all(directory, ec);
+}
+#endif
 
 // NOLINTEND(cppcoreguidelines-*,readability-*)
