@@ -23,16 +23,100 @@
 import FreeCAD as App
 import Arch
 import ArchSectionPlane
+import ArchWindow
 import Draft
 from bimtests import TestArchBaseGui
 
 
 class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
-    def test_change_window_opening(self):
-        """Tests if changes to a window opening touches the window's chain of hosts"""
+    def setUp(self):
+        super().setUp()
+        self.rectangle = Draft.make_rectangle(length=1000, height=1000)
+        # makeWindow() derives its default WindowParts from baseobj.Shape.Wires,
+        # which only exist once the rectangle has been recomputed.
+        App.ActiveDocument.recompute()
+        self.window = Arch.makeWindow(self.rectangle)
+        App.ActiveDocument.recompute()
 
-        # Create a wall, a window, a level and a section.
+    def testWindowHasPreviewExtensions(self):
+        self.assertTrue(self.window.hasExtension("Part::PreviewExtensionPython"))
+        self.assertTrue(
+            self.window.ViewObject.hasExtension("PartGui::ViewProviderPreviewExtensionPython")
+        )
+
+    def testRecomputePreviewPublishesShape(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+
+        self.assertFalse(self.window.PreviewShape.isNull())
+
+    def testPreviewFollowsWindowPartsWithoutDocumentRecompute(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+        volumeBefore = self.window.PreviewShape.Volume
+
+        firstComponentThickness = 3
+        parts = self.window.WindowParts
+        parts[firstComponentThickness] = str(float(parts[firstComponentThickness]) * 2.0)
+        self.window.WindowParts = parts
+
+        self.window.updatePreview()  # deliberately without a document recompute
+
+        self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
+
+    def testPreviewHasTwoNodes(self):
+        self.assertEqual(self.window.ViewObject.PreviewRootNode.getNumChildren(), 2)
+
+    def testHoleNodeIsMoreTransparentThanWindowNode(self):
+        windowNode = self.window.ViewObject.PreviewShapeNode
+        holeNode = self.window.ViewObject.PreviewRootNode.getChild(1)
+
+        self.assertGreater(holeNode.transparency.getValue(), windowNode.transparency.getValue())
+
+    def _holeNodeCoordinateCount(self, viewObject):
+        from pivy import coin
+
+        holeNode = viewObject.PreviewRootNode.getChild(1)
+
+        # coords is a plain child rather than a registered field, so it has to be
+        # searched for; a freshly-constructed SoCoordinate3 already reports 1.
+        search = coin.SoSearchAction()
+        search.setType(coin.SoCoordinate3.getClassTypeId())
+        search.apply(holeNode)
+        return search.getPath().getTail().point.getNum()
+
+    def testHolePreviewNodeIsEmptyForUnhostedWindow(self):
+        self.window.ViewObject.updatePreview()
+
+        self.assertEqual(self._holeNodeCoordinateCount(self.window.ViewObject), 1)
+
+    def testHolePreviewNodeGetsGeometryForHostedWindow(self):
+        _, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+
+        self.assertGreaterEqual(self._holeNodeCoordinateCount(win.ViewObject), 8)
+
+    def testHolePreviewNodeCombinesAllHosts(self):
+        """A window spanning a junction must show the volume removed from every
+        host, since each host is cut by its own subvolume."""
+        wall1, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+        singleHostCount = self._holeNodeCoordinateCount(win.ViewObject)
+
+        points2 = [App.Vector(0.0, 500.0, 0.0), App.Vector(2000.0, 500.0, 0.0)]
+        line2 = Draft.make_wire(points2)
+        # a width distinct from wall1's default, so the second subvolume is not
+        # a duplicate of the first
+        wall2 = Arch.makeWall(line2, height=2000, width=800)
+        win.Hosts = win.Hosts + [wall2]
+        App.ActiveDocument.recompute()
+        win.ViewObject.updatePreview()
+
+        self.assertGreater(self._holeNodeCoordinateCount(win.ViewObject), singleHostCount)
+
+    def _makeHostedWindow(self):
+        """Wall hosting a window, recomputed once so both have settled geometry."""
         points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
         line = Draft.make_wire(points)
         wall = Arch.makeWall(line, height=2000)
@@ -51,6 +135,67 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
             placement=wpl,
         )
         win.Hosts = [wall]
+        App.ActiveDocument.recompute()
+        return wall, win
+
+    def testEditingWidthThroughTaskPanelDoesNotTouchHosts(self):
+        """A live property edit must not recompute the host wall; that is deferred to accept()."""
+        wall, win = self._makeHostedWindow()
+        wallVolumeBefore = wall.Shape.Volume
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", win.Width.Value * 2.0)
+        self.pump_gui_events()
+
+        self.assertAlmostEqual(win.Width.Value, 2000.0, places=3)
+        self.assertAlmostEqual(wall.Shape.Volume, wallVolumeBefore, places=3)
+
+        taskd.reject()
+
+    def testAcceptingWindowEditRecomputesHosts(self):
+        """accept() must still trigger the real recompute that used to happen per keystroke."""
+        wall, win = self._makeHostedWindow()
+        wallVolumeBefore = wall.Shape.Volume
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", win.Width.Value * 2.0)
+        self.pump_gui_events()
+
+        taskd.accept()
+
+        self.assertAlmostEqual(win.Width.Value, 2000.0, places=3)
+        self.assertNotAlmostEqual(wall.Shape.Volume, wallVolumeBefore, places=3)
+
+    def testRejectingWindowEditRevertsWidth(self):
+        """Cancel must revert the property change.
+
+        Instantiating the panel directly bypasses the double-click handler that books the edit
+        transaction in real usage, so the transaction is opened explicitly here.
+        """
+        _, win = self._makeHostedWindow()
+        originalWidth = win.Width.Value
+
+        App.ActiveDocument.openTransaction("Edit Window")
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", originalWidth * 2.0)
+        self.pump_gui_events()
+        self.assertNotAlmostEqual(win.Width.Value, originalWidth, places=3)
+
+        taskd.reject()
+
+        self.assertAlmostEqual(win.Width.Value, originalWidth, places=3)
+
+    def test_change_window_opening(self):
+        """Tests if changes to a window opening touches the window's chain of hosts"""
+
+        wall, win = self._makeHostedWindow()
         level = Arch.makeFloor()
         level.addObject(wall)
         section = Arch.makeSectionPlane(level)
