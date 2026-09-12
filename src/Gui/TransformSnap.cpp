@@ -460,4 +460,386 @@ private:
     std::vector<Equation> equations;
 };
 
+std::optional<Base::Placement> solve(
+    const Base::Placement& candidate,
+    const std::vector<Constraint>& references
+)
+{
+    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
+
+    enum class ConstraintKind
+    {
+        Unknown,
+        PointCoincident,
+        AxisCoincident,
+        PlaneCoincident,
+    };
+
+    struct PlacementConstraint
+    {
+        Base::Placement local;
+        Base::Placement target;
+        ConstraintKind kind;
+        bool locked;
+        bool targetDirectionFixed;
+    };
+
+    struct DirectionConstraint
+    {
+        Base::Vector3d local;
+        Base::Vector3d target;
+        bool locked;
+    };
+
+    auto constraintKind = [](SnapGeometryType referenceType, SnapGeometryType targetType) {
+        if (referenceType == SnapGeometryType::Point && targetType == SnapGeometryType::Point) {
+            return ConstraintKind::PointCoincident;
+        }
+        if (referenceType == SnapGeometryType::Axis && targetType == SnapGeometryType::Axis) {
+            return ConstraintKind::AxisCoincident;
+        }
+        if (referenceType == SnapGeometryType::AxisSystem && targetType == SnapGeometryType::Axis) {
+            return ConstraintKind::AxisCoincident;
+        }
+        if (referenceType == SnapGeometryType::Plane && targetType == SnapGeometryType::Plane) {
+            return ConstraintKind::PlaneCoincident;
+        }
+        if (referenceType == SnapGeometryType::AxisSystem && targetType == SnapGeometryType::Plane) {
+            return ConstraintKind::PlaneCoincident;
+        }
+        return ConstraintKind::Unknown;
+    };
+
+    auto hasDirection = [](ConstraintKind kind) {
+        return kind == ConstraintKind::AxisCoincident || kind == ConstraintKind::PlaneCoincident;
+    };
+
+    if (!isFinitePlacement(candidate)) {
+        return std::nullopt;
+    }
+    if (references.empty()) {
+        return candidate;
+    }
+
+    std::vector<PlacementConstraint> baseConstraints;
+    baseConstraints.reserve(references.size());
+    for (std::size_t i = 0; i < references.size(); ++i) {
+        const auto& reference = references[i];
+        baseConstraints.push_back({
+            reference.localPlacement,
+            reference.targetPlacement,
+            constraintKind(reference.referenceType, reference.targetType),
+            i + 1 < references.size(),
+            reference.targetDirectionFixed,
+        });
+    }
+
+    if (baseConstraints.back().kind == ConstraintKind::Unknown) {
+        return std::nullopt;
+    }
+
+    constexpr double directionIndependenceTolerance = 1e-4;
+    constexpr double snapPositionTolerance = 1e-5;
+    constexpr double snapDirectionTolerance = 1e-5;
+
+    auto findIndependentDirectionPair = [](const std::vector<DirectionConstraint>& directions,
+                                           bool lockedOnly,
+                                           std::size_t& firstIndex,
+                                           std::size_t& secondIndex) {
+        std::size_t bestFirst = 0;
+        std::size_t bestSecond = 0;
+        double bestIndependence = 0.0;
+
+        for (std::size_t i = 0; i < directions.size(); ++i) {
+            if (lockedOnly && !directions[i].locked) {
+                continue;
+            }
+            for (std::size_t j = i + 1; j < directions.size(); ++j) {
+                if (lockedOnly && !directions[j].locked) {
+                    continue;
+                }
+                const auto localIndependence = directions[i].local.Cross(directions[j].local).Length();
+                const auto targetIndependence
+                    = directions[i].target.Cross(directions[j].target).Length();
+                const auto independence = std::min(localIndependence, targetIndependence);
+                if (independence > bestIndependence) {
+                    bestIndependence = independence;
+                    bestFirst = i;
+                    bestSecond = j;
+                }
+            }
+        }
+
+        firstIndex = bestFirst;
+        secondIndex = bestSecond;
+        return bestIndependence;
+    };
+
+    auto solveDirectedConstraints =
+        [&](const std::vector<PlacementConstraint>& constraints) -> std::optional<Base::Placement> {
+        std::vector<DirectionConstraint> directionConstraints;
+        directionConstraints.reserve(constraints.size());
+        for (const auto& constraint : constraints) {
+            if (!hasDirection(constraint.kind)) {
+                continue;
+            }
+            directionConstraints.push_back({
+                zAxis(constraint.local),
+                zAxis(constraint.target),
+                constraint.locked,
+            });
+        }
+
+        for (std::size_t i = 0; i < constraints.size(); ++i) {
+            const auto& first = constraints[i];
+            if (first.kind != ConstraintKind::PointCoincident) {
+                continue;
+            }
+            for (std::size_t j = i + 1; j < constraints.size(); ++j) {
+                const auto& second = constraints[j];
+                if (second.kind != ConstraintKind::PointCoincident) {
+                    continue;
+                }
+                const auto local = second.local.getPosition() - first.local.getPosition();
+                const auto target = second.target.getPosition() - first.target.getPosition();
+                if (local.Length() > snapPositionTolerance
+                    && target.Length() > snapPositionTolerance) {
+                    directionConstraints.push_back({
+                        normalized(local),
+                        normalized(target),
+                        first.locked && second.locked,
+                    });
+                }
+            }
+        }
+
+        auto rotation = candidate.getRotation();
+        bool rotationDeterminedByDirections = false;
+        if (directionConstraints.size() == 1) {
+            rotation = rotationAligningDirectionNear(
+                rotation,
+                directionConstraints.front().local,
+                directionConstraints.front().target
+            );
+        }
+        else if (directionConstraints.size() > 1) {
+            std::size_t first = 0;
+            std::size_t second = 0;
+            if (findIndependentDirectionPair(directionConstraints, true, first, second)
+                    <= directionIndependenceTolerance
+                && findIndependentDirectionPair(directionConstraints, false, first, second)
+                    <= directionIndependenceTolerance) {
+                rotation = rotationAligningDirectionNear(
+                    rotation,
+                    directionConstraints.front().local,
+                    directionConstraints.front().target
+                );
+            }
+            else {
+                rotation = rotationFromPrimaryAndSecondaryDirections(
+                    directionConstraints[first].local,
+                    directionConstraints[second].local,
+                    directionConstraints[first].target,
+                    directionConstraints[second].target
+                );
+                rotationDeterminedByDirections = true;
+            }
+        }
+
+        if (!rotationDeterminedByDirections) {
+            bool twistApplied = false;
+            for (const auto& primary : constraints) {
+                if (primary.kind != ConstraintKind::AxisCoincident) {
+                    continue;
+                }
+
+                const auto localPrimaryDirection = zAxis(primary.local);
+                const auto targetPrimaryDirection = zAxis(primary.target);
+                for (const auto& secondary : constraints) {
+                    if (&secondary == &primary || (!primary.locked && !secondary.locked)) {
+                        continue;
+                    }
+                    if (secondary.kind == ConstraintKind::AxisCoincident) {
+                        if (localPrimaryDirection.Cross(zAxis(secondary.local)).Length()
+                                > directionIndependenceTolerance
+                            || targetPrimaryDirection.Cross(zAxis(secondary.target)).Length()
+                                > directionIndependenceTolerance) {
+                            continue;
+                        }
+                    }
+                    else if (secondary.kind != ConstraintKind::PointCoincident) {
+                        continue;
+                    }
+
+                    const auto rotatedOffset = rotation.multVec(
+                        secondary.local.getPosition() - primary.local.getPosition()
+                    );
+                    auto currentOffset = rotatedOffset
+                        - targetPrimaryDirection * (rotatedOffset * targetPrimaryDirection);
+                    auto targetOffset = secondary.target.getPosition() - primary.target.getPosition();
+                    targetOffset = targetOffset
+                        - targetPrimaryDirection * (targetOffset * targetPrimaryDirection);
+                    if (currentOffset.Length() < Base::Precision::Confusion()
+                        || targetOffset.Length() < Base::Precision::Confusion()) {
+                        continue;
+                    }
+
+                    currentOffset.Normalize();
+                    targetOffset.Normalize();
+                    const auto angle = std::atan2(
+                        targetPrimaryDirection * currentOffset.Cross(targetOffset),
+                        currentOffset * targetOffset
+                    );
+                    rotation = Base::Rotation(targetPrimaryDirection, angle) * rotation;
+                    twistApplied = true;
+                    break;
+                }
+                if (twistApplied) {
+                    break;
+                }
+            }
+        }
+
+        TranslationSolver translationSolver(candidate.getPosition());
+        for (const auto& constraint : constraints) {
+            const auto rotatedLocalPosition = rotation.multVec(constraint.local.getPosition());
+            const auto targetPosition = constraint.target.getPosition();
+
+            switch (constraint.kind) {
+                case ConstraintKind::PointCoincident:
+                    translationSolver.addEquation(
+                        Base::Vector3d::UnitX,
+                        targetPosition.x - rotatedLocalPosition.x
+                    );
+                    translationSolver.addEquation(
+                        Base::Vector3d::UnitY,
+                        targetPosition.y - rotatedLocalPosition.y
+                    );
+                    translationSolver.addEquation(
+                        Base::Vector3d::UnitZ,
+                        targetPosition.z - rotatedLocalPosition.z
+                    );
+                    break;
+                case ConstraintKind::AxisCoincident: {
+                    const auto [first, second] = perpendicularDirections(zAxis(constraint.target));
+                    const auto delta = targetPosition - rotatedLocalPosition;
+                    translationSolver.addEquation(first, first * delta);
+                    translationSolver.addEquation(second, second * delta);
+                    break;
+                }
+                case ConstraintKind::PlaneCoincident: {
+                    const auto normal = zAxis(constraint.target);
+                    translationSolver.addEquation(
+                        normal,
+                        normal * (targetPosition - rotatedLocalPosition)
+                    );
+                    break;
+                }
+                case ConstraintKind::Unknown:
+                    break;
+            }
+        }
+
+        const auto translation = translationSolver.solve();
+        if (!translation) {
+            return std::nullopt;
+        }
+        const Base::Placement result {*translation, rotation};
+        auto constraintSatisfied = [](const Base::Placement& objectPlacement,
+                                      const PlacementConstraint& constraint,
+                                      double positionTolerance,
+                                      double directionTolerance) {
+            const auto referencePlacement = objectPlacement * constraint.local;
+            const auto referenceDirection = zAxis(referencePlacement);
+            const auto targetDirection = zAxis(constraint.target);
+            const auto positionDelta = referencePlacement.getPosition()
+                - constraint.target.getPosition();
+
+            switch (constraint.kind) {
+                case ConstraintKind::PointCoincident:
+                    return positionDelta.Length() <= positionTolerance;
+                case ConstraintKind::AxisCoincident:
+                    if (referenceDirection * targetDirection < 1.0 - directionTolerance) {
+                        return false;
+                    }
+                    return (positionDelta.Cross(targetDirection)).Length() <= positionTolerance;
+                case ConstraintKind::PlaneCoincident:
+                    if (referenceDirection * targetDirection < 1.0 - directionTolerance) {
+                        return false;
+                    }
+                    return std::fabs(positionDelta * targetDirection) <= positionTolerance;
+                case ConstraintKind::Unknown:
+                    return true;
+            }
+            return true;
+        };
+
+        if (!std::ranges::all_of(constraints, [&](const PlacementConstraint& constraint) {
+                return constraintSatisfied(
+                    result,
+                    constraint,
+                    snapPositionTolerance,
+                    snapDirectionTolerance
+                );
+            })) {
+            return std::nullopt;
+        }
+
+        return result;
+    };
+
+    std::vector<std::size_t> unorientedConstraintIndices;
+    for (std::size_t i = 0; i < baseConstraints.size(); ++i) {
+        if (hasDirection(baseConstraints[i].kind) && !baseConstraints[i].targetDirectionFixed) {
+            unorientedConstraintIndices.push_back(i);
+        }
+    }
+
+    constexpr std::size_t maxEnumeratedUnorientedDirections = 12;
+    const auto enumeratedUnorientedDirections
+        = std::min(maxEnumeratedUnorientedDirections, unorientedConstraintIndices.size());
+    const std::size_t variantCount = std::size_t {1} << enumeratedUnorientedDirections;
+
+    auto rotationScore = [](const Base::Rotation& rotation, const Base::Rotation& preferred) {
+        return 3.0
+            - rotation.multVec(Base::Vector3d::UnitX) * preferred.multVec(Base::Vector3d::UnitX)
+            - rotation.multVec(Base::Vector3d::UnitY) * preferred.multVec(Base::Vector3d::UnitY)
+            - rotation.multVec(Base::Vector3d::UnitZ) * preferred.multVec(Base::Vector3d::UnitZ);
+    };
+
+    std::optional<Base::Placement> bestPlacement;
+    auto bestScore = std::numeric_limits<double>::max();
+    for (std::size_t variant = 0; variant < variantCount; ++variant) {
+        auto constraints = baseConstraints;
+        for (std::size_t signIndex = 0; signIndex < unorientedConstraintIndices.size(); ++signIndex) {
+            auto& constraint = constraints[unorientedConstraintIndices[signIndex]];
+            const auto preferredPositive = candidate.getRotation().multVec(zAxis(constraint.local))
+                    * zAxis(constraint.target)
+                >= 0.0;
+            const auto flipFromPreferred = signIndex < enumeratedUnorientedDirections
+                && (variant & (std::size_t {1} << signIndex)) != 0;
+            const auto usePositive = flipFromPreferred ? !preferredPositive : preferredPositive;
+            if (!usePositive) {
+                constraint.target
+                    = invertedPlacementAroundLocalAxis(constraint.target, Base::Vector3d::UnitX);
+            }
+            constraint.targetDirectionFixed = true;
+        }
+
+        const auto placement = solveDirectedConstraints(constraints);
+        if (!placement || !isFinitePlacement(*placement)) {
+            continue;
+        }
+
+        const auto score = rotationScore(placement->getRotation(), candidate.getRotation())
+            + (placement->getPosition() - candidate.getPosition()).Length() * 1e-6;
+        if (score < bestScore) {
+            bestPlacement = placement;
+            bestScore = score;
+        }
+    }
+
+    return bestPlacement;
+}
+
 }  // namespace Gui::TransformSnap
