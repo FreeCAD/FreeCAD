@@ -278,7 +278,7 @@ void SectionAnalysis::forEachSourcePart(
 )
 {
 
-    // Helper to avoid duplication. 
+    // Helper to avoid duplication.
     // A source can be listed several times, and a single object can contribute several solids
     std::unordered_set<App::DocumentObject*> seen;
 
