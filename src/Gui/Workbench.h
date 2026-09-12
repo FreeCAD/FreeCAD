@@ -24,10 +24,13 @@
 #pragma once
 
 #include <list>
+#include <optional>
 #include <string>
 #include <Base/BaseClass.h>
 #include <Base/Parameter.h>
 #include <Gui/TaskView/TaskWatcher.h>
+
+#include "ToolBarManager.h"
 
 namespace Base
 {
@@ -38,7 +41,6 @@ namespace Gui
 {
 
 class MenuItem;
-class ToolBarItem;
 class DockWindowItems;
 class WorkbenchManager;
 
@@ -268,6 +270,13 @@ class GuiExport PythonBaseWorkbench: public Workbench
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+    struct ToolBarOptions
+    {
+        std::optional<ToolBarManager::PersistenceId> persistenceId;
+        std::optional<ToolBarItem::Tier> tier;
+        std::optional<ToolBarItem::DefaultVisibility> visibility;
+    };
+
     PythonBaseWorkbench();
     ~PythonBaseWorkbench() override;
     /**
@@ -291,6 +300,11 @@ public:
 
     /// Appends a new toolbar
     void appendToolbar(const std::string& bar, const std::list<std::string>& items) const;
+    void appendToolbar(
+        const std::string& bar,
+        const std::list<std::string>& items,
+        const ToolBarOptions& options
+    ) const;
     /// Removes a toolbar
     void removeToolbar(const std::string& bar) const;
 

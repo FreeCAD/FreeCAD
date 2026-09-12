@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from Base.Metadata import deprecated, export
-from Workbench import Workbench
-from typing import Any, List
+from Workbench import Workbench, ToolbarOptions
+from typing import Any, List, Sequence
 
 @export(
     Twin="PythonBaseWorkbench",
@@ -43,9 +43,18 @@ class PythonWorkbench(Workbench):
         """
         ...
 
-    def appendToolbar(self) -> None:
-        """
-        Append a new toolbar
+    def appendToolbar(
+        self,
+        name: str,
+        cmds: Sequence[str] | str,
+        options: ToolbarOptions | None = None,
+    ) -> None:
+        """Append a toolbar.
+
+        ``name`` is its user-facing, translatable label and is not a stable
+        identity. Use ``options`` to provide a stable identifier, layout scope,
+        tier, and default visibility. ``cmds`` may be one command string or any
+        sequence of command strings.
         """
         ...
 
