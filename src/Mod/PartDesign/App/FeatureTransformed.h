@@ -133,6 +133,7 @@ private:
     };
 
     App::DocumentObjectExecReturn* executeFeatures(
+        const gp_Trsf& trsfInv,
         const std::vector<gp_Trsf>& transformations,
         Part::TopoShape& supportShape,
         const std::vector<DocumentObject*>& originals
@@ -142,13 +143,14 @@ private:
         Part::TopoShape& supportShape
     );
     App::DocumentObjectExecReturn* executeFeatureResult(
+        const gp_Trsf& trsfInv,
         const std::vector<gp_Trsf>& transformations,
         Part::TopoShape& supportShape,
         const std::vector<DocumentObject*>& originals
     );
 
     App::DocumentObjectExecReturn* computeFeatureShapes(
-        const Part::TopoShape& supportShape,
+        const gp_Trsf& trsfInv,
         const std::vector<DocumentObject*>& originals,
         std::vector<FeatureShape>& shapes
     );
