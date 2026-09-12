@@ -409,7 +409,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    Base::Console().log("Using support: %s\n", supportFeature->getNameInDocument());
     const Part::TopoShape& supportTopShape = supportFeature->Shape.getShape();
     const gp_Trsf trsfInv = supportTopShape.getShape().Location().Transformation().Inverted();
     if (supportTopShape.getShape().IsNull()) {
