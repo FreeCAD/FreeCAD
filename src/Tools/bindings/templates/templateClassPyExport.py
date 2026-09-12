@@ -153,6 +153,9 @@ public:
 + if (self.export.RichCompare):
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
++ if (self.export.Hash):
+    static Py_hash_t hash(PyObject *self);
+-
 + if (self.export.DescriptorGetter):
     static PyObject* descriptorGetter(PyObject* self, PyObject* obj, PyObject* type);
 -
@@ -406,6 +409,9 @@ PyTypeObject @self.export.Name@::Type = {
 + if (self.export.Sequence):
     .tp_as_sequence = @self.export.Namespace@::@self.export.Name@::Sequence,
     .tp_as_mapping = @self.export.Namespace@::@self.export.Name@::Mapping,
+-
++ if (self.export.Hash):
+    .tp_hash = @self.export.Namespace@::@self.export.Name@::hash,
 -
     .tp_getattro = __getattro,
     .tp_setattro = __setattro,
@@ -1282,6 +1288,13 @@ PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
     return nullptr;
 }
 -
++ if (self.export.Hash):
+Py_hash_t @self.export.Name@::hash(PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
+}
+-
 + for i in self.export.Attribute:
 
 Py::@i.Parameter.Type@ @self.export.Name@::get@i.Name@() const
@@ -1627,6 +1640,13 @@ PyObject* @self.export.Name@::richCompare(PyObject *v, PyObject *w, int op)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return nullptr;
+}
+-
++ if (self.export.Hash):
+Py_hash_t @self.export.Name@::hash(PyObject *self)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return -1;
 }
 -
 

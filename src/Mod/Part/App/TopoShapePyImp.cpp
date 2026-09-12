@@ -103,22 +103,15 @@
 
 using namespace Part;
 
-static Py_hash_t _TopoShapeHash(PyObject* self)
+Py_hash_t TopoShapePy::hash(PyObject* self)
 {
-    if (!self) {
-        PyErr_SetString(
-            PyExc_TypeError,
-            "descriptor 'hash' of 'Part.TopoShape' object needs an argument"
-        );
-        return 0;
-    }
     if (!static_cast<Base::PyObjectBase*>(self)->isValid()) {
         PyErr_SetString(
             PyExc_ReferenceError,
             "This object is already deleted most likely through closing a document. "
             "This reference is no longer valid!"
         );
-        return 0;
+        return -1;
     }
 #if OCC_VERSION_HEX >= 0x070800
     return std::hash<TopoDS_Shape> {}(static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape());
@@ -128,14 +121,6 @@ static Py_hash_t _TopoShapeHash(PyObject* self)
     );
 #endif
 }
-
-struct TopoShapePyInit
-{
-    TopoShapePyInit()
-    {
-        TopoShapePy::Type.tp_hash = _TopoShapeHash;
-    }
-} _TopoShapePyInit;
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation() const
@@ -2647,10 +2632,12 @@ PyObject* TopoShapePy::findSubShape(PyObject* args) const
                 res.append(Py::TupleN(Py::Object(), Py::Long(0)));
             }
         }
-        if (PySequence_Check(pyobj)) {
-            return Py::new_reference_to(res);
+        bool singleShape = PyObject_TypeCheck(pyobj, &TopoShapePy::Type)
+            || PyObject_TypeCheck(pyobj, &GeometryPy::Type);
+        if (singleShape) {
+            return Py::new_reference_to(Py::Object(res[0].ptr()));
         }
-        return Py::new_reference_to(Py::Object(res[0].ptr()));
+        return Py::new_reference_to(res);
     }
     PY_CATCH_OCC
 }

@@ -125,7 +125,11 @@ PyObject* PropertyTopoShapeList::getPyObject()
 
 void PropertyTopoShapeList::setPyObject(PyObject* value)
 {
-    if (PySequence_Check(value)) {
+    if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
+        TopoShapePy* pcObject = static_cast<TopoShapePy*>(value);
+        setValue(*pcObject->getTopoShapePtr());
+    }
+    else if (PySequence_Check(value)) {
         Py::Sequence sequence(value);
         Py_ssize_t nSize = sequence.size();
         std::vector<TopoShape> values;
@@ -142,10 +146,6 @@ void PropertyTopoShapeList::setPyObject(PyObject* value)
             values[i] = *static_cast<TopoShapePy*>(item.ptr())->getTopoShapePtr();
         }
         setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(TopoShapePy::Type))) {
-        TopoShapePy* pcObject = static_cast<TopoShapePy*>(value);
-        setValue(*pcObject->getTopoShapePtr());
     }
     else {
         std::string error = std::string("type must be 'Shape' or list of 'Shape', not ");

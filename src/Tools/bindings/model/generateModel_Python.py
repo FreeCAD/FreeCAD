@@ -1120,6 +1120,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         Constructor=export_decorator_kwargs.get("Constructor", False),
         NumberProtocol=export_decorator_kwargs.get("NumberProtocol", False),
         RichCompare=export_decorator_kwargs.get("RichCompare", False),
+        Hash=export_decorator_kwargs.get("Hash", False),
         Delete=export_decorator_kwargs.get("Delete", False),
         Reference=export_decorator_kwargs.get("Reference", None),
         Initialization=export_decorator_kwargs.get("Initialization", False),
