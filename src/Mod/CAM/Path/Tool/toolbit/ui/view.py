@@ -99,7 +99,11 @@ class ViewProvider(object):
         return []
 
     def doubleClicked(self, vobj):
-        return self.setEdit(vobj)
+        # Through the document rather than straight to setEdit: that registers
+        # the object as in edit, so unsetEdit runs when the panel closes and
+        # resetEdit in the panel means something.
+        FreeCADGui.ActiveDocument.setEdit(vobj.Object.Name)
+        return True
 
     def setupContextMenu(self, vobj, menu):
         # Override the base class method to prevent adding the "Edit" action

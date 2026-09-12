@@ -35,6 +35,9 @@ class TaskPanel:
         Path.Log.track(vobj.Object.Label)
         self.vobj = vobj
         self.obj = vobj.Object
+        # The editor switches the global schema to the bit's units, and the
+        # panel outlives it, so the panel is what has to put it back.
+        self._entry_schema = FreeCAD.Units.getSchema()
         self.editor = ToolBitEditorPanel(self.obj.Proxy)
         # The task dialog supplies its own OK/Cancel.
         self.editor._button_box.hide()
@@ -46,6 +49,8 @@ class TaskPanel:
         # The transaction holds every edit made in the panel, so aborting it
         # is the undo; the editor has nothing of its own to roll back.
         FreeCAD.ActiveDocument.abortTransaction()
+        FreeCAD.Units.setSchema(self._entry_schema)
+        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
             FreeCAD.ActiveDocument.openTransaction("Uncreate ToolBit")
@@ -57,6 +62,7 @@ class TaskPanel:
     def accept(self):
         self.editor.save_toolbit()
         FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.Units.setSchema(self._entry_schema)
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
