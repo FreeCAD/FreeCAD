@@ -277,10 +277,16 @@ void SectionAnalysis::forEachSourcePart(
     const std::function<void(App::DocumentObject*, const TopoDS_Shape&)>& visit
 )
 {
+
+    // Helper to avoid duplication. 
+    // A source can be listed several times, and a single object can contribute several solids
+    std::unordered_set<App::DocumentObject*> seen;
+
     // The pair a step is addressed by: a base object and a subname path below it.
     // Not one accumulated path from the original source, because a container is
     // free to resolve only its own first level - an Arch BuildingPart hands back
     // itself for anything deeper - and the walk then spins on that object.
+
     std::function<void(App::DocumentObject*, const std::string&)> descend =
         [&](App::DocumentObject* root, const std::string& sub) {
             App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
@@ -317,7 +323,9 @@ void SectionAnalysis::forEachSourcePart(
                     sub.empty() ? nullptr : sub.c_str()
                 );
                 if (!shape.IsNull()) {
-                    visit(obj, shape);
+                    if (seen.insert(obj).second) {
+                        visit(obj, shape);
+                    }
                     return;
                 }
             }

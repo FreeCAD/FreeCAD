@@ -428,6 +428,70 @@ TEST_F(FeatureSectionAnalysisTest, testAHiddenNestedContainerHidesItsContents)
     EXPECT_TRUE(_section->Shape.getShape().getShape().IsNull());
 }
 
+TEST_F(FeatureSectionAnalysisTest, testSwitchingResultModeRebuildsTheResult)
+{
+    // Arrange - Geometry mode publishes a Shape, Display mode deliberately does
+    // not. Recomputed through the document rather than by calling execute()
+    // directly, because the question is whether changing the mode is enough to
+    // make the feature run at all.
+    _doc->recompute();
+    ASSERT_FALSE(faces(_section).empty());
+
+    // Act - ask for the preview-only mode
+    _section->ResultMode.setValue("Display");
+    _doc->recompute();
+
+    // Assert - the geometry from the previous mode is gone, not left stale
+    EXPECT_TRUE(_section->Shape.getShape().getShape().IsNull());
+    EXPECT_TRUE(_section->SourceParts.getValues().empty());
+
+    // Act - and back again
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    // Assert
+    EXPECT_FALSE(faces(_section).empty());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAContainerAndItsOwnChildSectionTheChildOnce)
+{
+    // Arrange - both the container and the box inside it are named as sources.
+    // The walk reaches the box by two routes; cutting it twice puts two cap
+    // faces in the same place, which z-fight and double every area measured.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    _section->Source.setValues({container, _boxes[0]});
+
+    // Act
+    _section->execute();
+
+    // Assert - one part, one face
+    ASSERT_EQ(_section->SourceParts.getValues().size(), 1U);
+    EXPECT_EQ(_section->SourceParts.getValues().front(), _boxes[0]);
+    EXPECT_EQ(faces(_section).size(), 1U);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testTheBoundingBoxIgnoresHiddenChildren)
+{
+    // Arrange - a visible container holding a hidden box. Nothing here will be
+    // sectioned, so nothing should size the cutting plane either: the box is
+    // what the plane visual and the default offset are built from, and a plane
+    // sized to geometry that is not cut reads as a bug to the user.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    _boxes[0]->Visibility.setValue(false);
+    _section->Source.setValues({container});
+
+    // Act
+    Bnd_Box bbox;
+    const bool gotBox = Part::SectionAnalysis::sourceBoundingBox({container}, bbox);
+
+    // Assert - matches what the section itself finds, which is nothing
+    _section->execute();
+    ASSERT_TRUE(_section->SourceParts.getValues().empty());
+    EXPECT_FALSE(gotBox);
+}
+
 TEST_F(FeatureSectionAnalysisTest, testMappingHasExactlyOneEntryPerFace)
 {
     // Arrange
