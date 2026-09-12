@@ -39,6 +39,7 @@
 #include <QWidget>
 
 #include <array>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <string>
@@ -137,6 +138,8 @@ private Q_SLOTS:
     void onCumulativeSnap();
     void onUndoCumulativeSnap();
     void onClearCumulativeSnap();
+    void onInvertCumulativeSnapU();
+    void onInvertCumulativeSnapV();
 
     void onCoordinateSystemChange(int mode);
 
@@ -144,6 +147,8 @@ private Q_SLOTS:
     void onRotationChange(QuantitySpinBox* changed);
 
 private:
+    struct CumulativeSnapStep;
+
     static inline bool firstDrag = true;
     static void dragStartCallback(void* data, SoDragger* d);
     static void dragMotionCallback(void* data, SoDragger* d);
@@ -198,7 +203,9 @@ private:
         const Base::Placement& currentReferenceLocalPlacement,
         const Base::Placement& currentReferenceTargetPlacement,
         App::SubObjectPlacementProvider::SnapGeometryType currentReferenceType,
-        App::SubObjectPlacementProvider::SnapGeometryType currentTargetType
+        App::SubObjectPlacementProvider::SnapGeometryType currentTargetType,
+        bool currentTargetDirectionFixed = false,
+        std::size_t historySize = std::numeric_limits<std::size_t>::max()
     ) const;
     void startCumulativeSnap();
     void stopCumulativeSnap();
@@ -211,6 +218,11 @@ private:
         App::SubObjectPlacementProvider::SnapGeometryType targetType
     );
     void restoreCumulativeSnapPlacement(const Base::Placement& placement);
+    bool isCumulativeSnapStepInvertible(const CumulativeSnapStep& step) const;
+    std::optional<std::size_t> cumulativeSnapInvertTargetIndex() const;
+    bool canInvertCumulativeSnapDirection() const;
+    void invertCumulativeSnapDirection(const Base::Vector3d& localAxis);
+    bool updateCumulativeSnapHistoryPlacements();
     void updateCumulativeSnapUi() const;
 
     bool isDraggerAlignedToCoordinateSystem() const;
