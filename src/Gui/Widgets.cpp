@@ -1739,9 +1739,25 @@ void ExpLineEdit::finishFormulaDialog()
 
 void ExpLineEdit::keyPressEvent(QKeyEvent* event)
 {
-    if (m_tentativeDiscard || !hasExpression()) {
-        QLineEdit::keyPressEvent(event);
+    // A bound expression is edited via the formula dialog (or after a double-click
+    // stash). Ignore keys until then so they don't clobber the expression text.
+    if (!(m_tentativeDiscard || !hasExpression())) {
+        return;
     }
+
+    // Same '=' shortcut as numeric spinboxes, but only at the start or when the
+    // whole string is selected so '=' can still be typed in the middle.
+    if (isBound() && event->text() == QLatin1String("=")) {
+        const bool allSelected = !text().isEmpty() && selectedText() == text();
+        const bool atStart = cursorPosition() == 0 && selectedText().isEmpty();
+        if (allSelected || atStart) {
+            event->accept();
+            openFormulaDialog();
+            return;
+        }
+    }
+
+    QLineEdit::keyPressEvent(event);
 }
 
 void ExpLineEdit::stashExpression()
