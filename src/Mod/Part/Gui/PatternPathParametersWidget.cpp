@@ -10,6 +10,7 @@
 #include <Base/Tools.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/SpinBox.h>
+#include <Mod/Part/App/PathPatternExtension.h>
 
 #include "ui_PatternPathParametersWidget.h"
 
@@ -169,9 +170,9 @@ void PatternPathParametersWidget::applyQuantitySpinboxes() const
 
 void PatternPathParametersWidget::updateVisibility()
 {
-    const int mode = ui->spacingMode->currentIndex();
-    ui->countLabel->setVisible(mode != 1);
-    ui->count->setVisible(mode != 1);
-    ui->spacingLabel->setVisible(mode != 0);
-    ui->spacing->setVisible(mode != 0);
+    const auto mode = static_cast<Part::PathPatternSpacingMode>(ui->spacingMode->currentIndex());
+    ui->countLabel->setVisible(mode != Part::PathPatternSpacingMode::FixedSpacing);
+    ui->count->setVisible(mode != Part::PathPatternSpacingMode::FixedSpacing);
+    ui->spacingLabel->setVisible(mode != Part::PathPatternSpacingMode::FixedCount);
+    ui->spacing->setVisible(mode != Part::PathPatternSpacingMode::FixedCount);
 }
