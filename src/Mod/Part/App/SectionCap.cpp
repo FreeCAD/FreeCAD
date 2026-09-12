@@ -234,16 +234,8 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
             continue;
         }
 
-        auto segment = triangleCrossing(
-            soup.points[ia],
-            soup.points[ib],
-            soup.points[ic],
-            ia,
-            ib,
-            ic,
-            normal,
-            offset
-        );
+        auto segment
+            = triangleCrossing(soup.points[ia], soup.points[ib], soup.points[ic], ia, ib, ic, normal, offset);
         if (segment.has_value()) {
             segments.push_back(segment.value());
         }
@@ -253,16 +245,14 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
 }
 
 
-std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
-    const std::vector<Segment>& segments
-)
+std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(const std::vector<Segment>& segments)
 {
     std::vector<std::vector<Base::Vector3d>> loops;
     if (segments.empty()) {
         return loops;
     }
 
-    // Which segments touch each edge. 
+    // Which segments touch each edge.
     std::multimap<MeshEdge, std::size_t> byEdge;
     for (std::size_t i = 0; i < segments.size(); ++i) {
         byEdge.emplace(segments[i].startEdge, i);

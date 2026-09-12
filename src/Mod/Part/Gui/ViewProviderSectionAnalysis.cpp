@@ -570,8 +570,7 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
             if (watertight.indices.empty()) {
                 return;
             }
-            body->bounds
-                = Base::BoundBox3d(watertight.points.data(), watertight.points.size());
+            body->bounds = Base::BoundBox3d(watertight.points.data(), watertight.points.size());
             body->soup = std::move(watertight);
         }
     );
@@ -1763,8 +1762,8 @@ void ViewProviderSectionAnalysis::applyPlaneDragger()
     base.multVec(Base::Vector3d(0, 0, 1), n);
 
     // Turns about the handle being held, wherever it has been slid to.
-    const Base::Rotation tilt =
-        Base::Rotation(u, turn * planeDragger->rotationIncrementCountX.getValue())
+    const Base::Rotation tilt
+        = Base::Rotation(u, turn * planeDragger->rotationIncrementCountX.getValue())
         * Base::Rotation(v, turn * planeDragger->rotationIncrementCountY.getValue());
     Base::Vector3d turned;
     tilt.multVec(n, turned);
