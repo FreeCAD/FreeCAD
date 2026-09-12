@@ -714,6 +714,9 @@ Handle(Poly_Polygon3D) Part::Tools::polygonOfEdge(const TopoDS_Edge& edge, TopLo
 
     double uv;
     Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, uv, uv);
+    if (curve.IsNull()) {
+        return {};
+    }
 
     BRepBuilderAPI_MakeEdge mkBuilder(curve, u, v);
     TopoDS_Shape shape = mkBuilder.Shape();
