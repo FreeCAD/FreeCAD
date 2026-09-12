@@ -1,0 +1,90 @@
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+/* SPDX-FileCopyrightText: 2026 FreeCAD contributors */
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
+/** \page toolbarpersistence Toolbar identity and layout persistence
+
+FreeCAD stores toolbar layouts independently for each workbench and, where
+needed, for a context within a workbench. This page describes the identity and
+state model used by Gui::ToolBarManager and by workbench implementations.
+
+\section toolbarpersistence_identity Toolbar identity
+
+Every toolbar can have a persistence identity consisting of a scope, a stable
+toolbar identifier, and the identifiers required by that scope. The stable
+identifier is distinct from the toolbar's label: labels are user-facing and may
+be translated or changed, while persistence identifiers must remain
+untranslated and stable across releases.
+
+Gui::ToolBarManager serializes typed identities into persistence keys. The
+serialized form is an implementation detail and its components are escaped so
+arbitrary Unicode identifiers and delimiter characters round-trip safely.
+Callers should construct and inspect identities through ToolBarManager rather
+than assemble or parse persistence keys themselves.
+
+\section toolbarpersistence_scopes Scopes
+
+Toolbar identities use one of four scopes:
+
+- A shared toolbar represents the same toolbar across workbenches.
+- A workbench toolbar belongs to one workbench and has layout state in that
+  workbench's layout.
+- A contextual toolbar belongs to a named context within a workbench, such as
+  Sketcher edit mode.
+- A legacy identity has only a toolbar name and exists to read settings written
+  before scoped identities were introduced.
+
+A workbench layout is the base layout state. Activating a contextual layout
+selects a separate layout for that context without overwriting the base
+workbench arrangement. Leaving the context restores the workbench layout.
+Shared and legacy toolbars keep one placement and ordering across workbenches;
+workbench and contextual layouts only arrange toolbars owned by that scope.
+Changing a shared toolbar's position therefore changes it for every workbench,
+while resetting a workbench or context leaves shared toolbar placement alone.
+
+\section toolbarpersistence_state Layout state
+
+A saved layout records toolbar area, ordering, and row breaks. With
+workbench-aware persistence enabled, shared and legacy toolbar placement is
+stored once under <tt>BaseApp/MainWindow/SharedToolBarLayout</tt>, while
+workbench and contextual layouts are stored as structured parameter groups
+under <tt>BaseApp/MainWindow/WorkbenchLayouts</tt>. Toolbar visibility remains
+a user preference, separate from placement. User preferences controlling the
+feature remain under <tt>BaseApp/Preferences/MainWindow</tt>; these are separate
+parameter trees with different ownership.
+
+The active scoped layout is restored after workbench activation. This ordering
+allows the workbench and its modules to create their toolbars first, then
+applies persisted placement and visibility without module initialization
+overwriting the user's arrangement.
+
+Toolbar visibility also has a declared default: visible, hidden, or
+unavailable. Unavailable toolbars are omitted from the normal visibility UI for
+that state. Toolbar tiers classify available toolbars as recommended,
+secondary, advanced, or contextual; they provide presentation and reset
+defaults but do not replace the toolbar's persistence identity.
+
+\section toolbarpersistence_python Python workbenches
+
+Python workbenches provide the same metadata through ToolbarOptions when
+calling PythonWorkbench::appendToolbar(). For example:
+
+\code{.py}
+self.appendToolbar(
+    "Measurement tools",
+    ("My_MeasureLength", "My_MeasureArea"),
+    FreeCADGui.ToolbarOptions(
+        id="MeasurementTools",
+        scope=FreeCADGui.ToolbarScopeId.workbench("MyWorkbench"),
+        tier=FreeCADGui.ToolbarTier.Secondary,
+        visibility=FreeCADGui.ToolbarVisibility.Visible,
+    ),
+)
+\endcode
+
+Here, <tt>Measurement tools</tt> is the user-facing label and
+<tt>MeasurementTools</tt> is the stable identifier. Changing the stable
+identifier or its scope creates a different persistence identity, so existing
+saved state for the old identity will no longer apply.
+
+*/
