@@ -6,6 +6,7 @@
 #include "App/PropertyStandard.h"
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
+#include "Mod/Part/App/TopoShape.h"
 
 class Bnd_Box;
 
@@ -46,12 +47,21 @@ private:
     /// Get a single valid open profile wire (e.g., a connected wire with two free endpoints)
     Part::TopoShape getRibProfileWire() const;
 
-    /// Extend the open ends a distance (reach) and continuity c1 or c2.
+    /// Extend both ends by reach with C1/C2; each new portion must contact the body.
+    /// Inputs share a coordinate frame. Continuity 0 leaves the profile unchanged.
     Part::TopoShape extendRibProfile(
-        const Part::TopoShape& source,
+        const Part::TopoShape& body,
+        const Part::TopoShape& profile,
         double reach,
-        int continuity
+        long continuity
     ) const;
+
+
+
+
+
+
+
 
     /// Sweep the extended profile and create a surface
     Part::TopoShape makeRibSurface(const Part::TopoShape& profile, const gp_Vec& travel) const;

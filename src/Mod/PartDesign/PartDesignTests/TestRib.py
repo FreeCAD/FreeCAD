@@ -91,6 +91,99 @@ class TestRib(unittest.TestCase):
                     self.rib.getStatusString(),
                 )
 
+    def assertExtensionReachesDirectionValidation(self, extendTypes=("C1", "C2")):
+        # Extension runs before sweep validation. Require this specific later error
+        # rather than relying on unrelated cut/fuse validity to prove acceptance.
+        self.rib.Direction = App.Vector(0, 0, -1)
+        before = self.base.Shape.exportBrepToString()
+        for continuity in extendTypes:
+            with self.subTest(continuity=continuity):
+                self.rib.ExtendType = continuity
+                self.doc.recompute()
+                self.assertIn("Invalid", self.rib.State)
+                self.assertIn(
+                    "Rib direction must lie in the sketch plane",
+                    self.rib.getStatusString(),
+                )
+                self.assertTrue(self.rib.Shape.isNull())
+                self.assertTrue(self.rib.AddSubShape.isNull())
+                self.assertEqual(before, self.base.Shape.exportBrepToString())
+
+    def testExtensionAcceptsEndpointsOnBody(self):
+        self.profile.delGeometry(0)
+        self.profile.Placement.Base = App.Vector(0, 0, 2.5)
+        # Each outward portion leaves the box immediately: only its original
+        # endpoint supplies contact, which must count for both C1 and C2.
+        self.profile.addGeometry(
+            Part.LineSegment(App.Vector(0, 10, 0), App.Vector(20, 10, 0)), False
+        )
+        self.assertExtensionReachesDirectionValidation()
+
+    def testExtensionAcceptsOutwardContact(self):
+        floor = Part.makeBox(20, 20, 5, App.Vector(0, 0, -5))
+        left = Part.makeBox(2, 20, 5)
+        right = Part.makeBox(2, 20, 5, App.Vector(18, 0, 0))
+        self.base.Shape = floor.fuse(left).fuse(right).removeSplitter()
+        self.assertTrue(self.base.Shape.isValid())
+        self.assertEqual(len(self.base.Shape.Solids), 1)
+        self.profile.delGeometry(0)
+        self.profile.Placement.Base = App.Vector(0, 0, 2.5)
+        # The original edge is clear of the body. Both extensions must cross a
+        # wall, with their full-reach endpoints far beyond those walls.
+        self.profile.addGeometry(
+            Part.LineSegment(App.Vector(5, 10, 0), App.Vector(15, 10, 0)), False
+        )
+        original = Part.makeLine(App.Vector(5, 10, 2.5), App.Vector(15, 10, 2.5))
+        self.assertGreater(original.distToShape(self.base.Shape)[0], 1.0)
+        self.assertExtensionReachesDirectionValidation()
+
+    def prepareExtensionContactProfile(self, startX, endX):
+        self.profile.delGeometry(0)
+        self.profile.Placement.Base = App.Vector(0, 0, 2.5)
+        self.profile.addGeometry(
+            Part.LineSegment(App.Vector(startX, 10, 0), App.Vector(endX, 10, 0)), False
+        )
+
+    def assertExtensionContactRejected(self, startX, endX, endpoint):
+        self.prepareExtensionContactProfile(startX, endX)
+        self.rib.Direction = App.Vector(0, 0, -1)
+        before = self.base.Shape.exportBrepToString()
+        message = f"Rib profile {endpoint} extension does not intersect the body within reach"
+        for continuity in ("C1", "C2"):
+            with self.subTest(continuity=continuity, startX=startX, endX=endX):
+                self.rib.ExtendType = continuity
+                self.doc.recompute()
+                # These fixtures deliberately contact the body along the original
+                # edge; that must not hide a missing outward extension contact.
+                self.assertAlmostEqual(self.profile.Shape.distToShape(self.base.Shape)[0], 0.0)
+                self.assertIn("Invalid", self.rib.State)
+                self.assertIn(message, self.rib.getStatusString())
+                self.assertTrue(self.rib.Shape.isNull())
+                self.assertTrue(self.rib.AddSubShape.isNull())
+                self.assertEqual(before, self.base.Shape.exportBrepToString())
+
+    def testExtensionRejectsOriginalEdgeOnlyContact(self):
+        # Both endpoints are outside the box and both extensions point away.
+        self.assertExtensionContactRejected(-5, 25, "start")
+
+    def testExtensionRejectsMissingStartContact(self):
+        # The end touches x=20; only the start extension misses.
+        self.assertExtensionContactRejected(-5, 20, "start")
+
+    def testExtensionRejectsMissingEndContact(self):
+        # The start touches x=0; only the end extension misses.
+        self.assertExtensionContactRejected(0, 25, "end")
+
+    def testExtensionDiagnosticsFollowReversedSketchEndpoints(self):
+        # Reverse the single sketch segment's traversal without moving its locus.
+        # The missing contact must change from start to end, and vice versa.
+        self.assertExtensionContactRejected(20, -5, "end")
+        self.assertExtensionContactRejected(25, 0, "start")
+
+    def testExtensionOffSkipsContactValidation(self):
+        self.prepareExtensionContactProfile(-5, 25)
+        self.assertExtensionReachesDirectionValidation(("Off",))
+
     def testThicknessTriggersRecompute(self):
         self.doc.recompute()
         self.rib.purgeTouched()

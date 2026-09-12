@@ -34,11 +34,14 @@
 #include <Geom_BSplineCurve.hxx>
 #include <GeomConvert.hxx>
 #include <GeomLib.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <Geom_TrimmedCurve.hxx>
 #include <ShapeUpgrade_UnifySameDomain.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_MapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -110,7 +113,7 @@ Rib::Rib()
     ExtentType.setValue("Shape");
 
 
-    ADD_PROPERTY_TYPE(Distance, (0.0), "Rib", App::Prop_None, "Distance to extend towards when distance is specified.");
+    ADD_PROPERTY_TYPE(Distance, (1.0), "Rib", App::Prop_None, "Distance to sweep towards when distance is specified.");
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(0, 0, -1)), "Rib", App::Prop_None,
                       "Sweep direction in Rib-local coordinates, for both Shape and Distance extents.");
     ADD_PROPERTY_TYPE(DraftAngle, (0.0), "Rib", App::Prop_None, "Draft angle for the rib.");
@@ -187,146 +190,272 @@ gp_Vec Rib::calculateRibDirection(const gp_Vec& profileCenter, const gp_Vec& bod
 
 
 
-Part::TopoShape Rib::extendRibProfile(
-    const Part::TopoShape& source,
-    double reach,
-    int continuity
-) const
-{
 
-    const TopoDS_Wire wire = TopoDS::Wire(source.getShape());
+
+
+
+
+// These file-local helpers work on OCCT geometry, not FreeCAD document objects.
+namespace
+{
+struct RibProfileEnds
+{
     TopoDS_Vertex startVertex;
     TopoDS_Vertex endVertex;
-    TopExp::Vertices(wire, startVertex, endVertex);
-    if (startVertex.IsNull() || endVertex.IsNull() || startVertex.IsSame(endVertex)
-        || !BRepCheck_Analyzer(wire).IsValid()) {
+    TopoDS_Edge startEdge;
+    TopoDS_Edge endEdge;
+};
+
+RibProfileEnds findRibProfileEnds(const TopoDS_Wire& wire)
+{
+    RibProfileEnds ends;
+    TopExp::Vertices(wire, ends.startVertex, ends.endVertex);
+    if (ends.startVertex.IsNull() || ends.endVertex.IsNull()
+        || ends.startVertex.IsSame(ends.endVertex) || !BRepCheck_Analyzer(wire).IsValid()) {
         throw std::runtime_error("Rib extension requires a valid open wire");
     }
 
-    std::vector<TopoDS_Edge> edges;
-    for (BRepTools_WireExplorer explorer(wire); explorer.More(); explorer.Next()) {
-        edges.push_back(explorer.Current());
+    // A free endpoint belongs to one edge. Interior vertices must join two edges.
+    // Count occurrences: a closed edge uses its seam vertex twice.
+    TopTools_IndexedDataMapOfShapeListOfShape vertexEdges;
+    TopExp::MapShapesAndAncestors(wire, TopAbs_VERTEX, TopAbs_EDGE, vertexEdges);
+    int endpoints = 0;
+    for (int i = 1; i <= vertexEdges.Extent(); ++i) {
+        const int degree = vertexEdges.FindFromIndex(i).Extent();
+        if (degree == 1) {
+            ++endpoints;
+        }
+        else if (degree != 2) {
+            throw std::runtime_error("Rib profile must not branch");
+        }
     }
+    if (endpoints != 2) {
+        throw std::runtime_error("Rib profile must have exactly two free endpoints");
+    }
+
+    // Two free endpoints alone do not rule out a disconnected closed loop.
+    // The connected walk must visit every edge exactly once.
     TopTools_IndexedMapOfShape allEdges;
     TopExp::MapShapes(wire, TopAbs_EDGE, allEdges);
-    if (edges.empty() || edges.size() != static_cast<std::size_t>(allEdges.Extent())) {
+    TopTools_MapOfShape visited;
+    for (BRepTools_WireExplorer walk(wire); walk.More(); walk.Next()) {
+        if (!visited.Add(walk.Current())) {
+            throw std::runtime_error("Rib profile must be a single traversable chain");
+        }
+    }
+    if (visited.Extent() != allEdges.Extent()) {
         throw std::runtime_error("Rib profile must be a single traversable chain");
     }
 
+    // A vertex supplies the position; its attached edge supplies the curve.
+    ends.startEdge = TopoDS::Edge(vertexEdges.FindFromKey(ends.startVertex).First());
+    ends.endEdge = TopoDS::Edge(vertexEdges.FindFromKey(ends.endVertex).First());
+    return ends;
+}
 
-    // OCCT curve extension does not report topology history. Record the edge and
-    // endpoint replacements ourselves so FreeCAD can name their downstream faces.
-    Handle(BRepTools_History) history = new BRepTools_History;
-
-    // Build one replacement edge. Flags refer to the wire's traversal, not curve parameters.
-    const auto extendTerminalEdge = [&](const TopoDS_Edge& edge,
-                                        bool extendWireStart,
-                                        bool extendWireEnd) {
-
-        auto first = 0.0;
-        auto last = 0.0;
-        auto geometry = BRep_Tool::Curve(edge, first, last);
-        if (geometry.IsNull()) {
-            throw std::runtime_error("Rib terminal edge has no 3D curve");
-        }
-        Handle(Geom_BoundedCurve) original = new Geom_TrimmedCurve(geometry, first, last);
-        Handle(Geom_BoundedCurve) curve =
-            Handle(Geom_BoundedCurve)::DownCast(original->Copy());
-
-        // Work in curve-parameter order, independently of the edge's wire orientation.
-        TopoDS_Vertex firstVertex, lastVertex;
-        TopExp::Vertices(TopoDS::Edge(edge.Oriented(TopAbs_FORWARD)), firstVertex, lastVertex);
-
-        // Local helper: extend one end, replace its free vertex, and record that change.
-        const auto extendEnd = [&](bool after, TopoDS_Vertex& vertex) {
-            // Always sample the original: extending the copy can change its parameters.
-            gp_Pnt endpoint;
-            gp_Vec tangent;
-            original->D1(
-                after ? original->LastParameter() : original->FirstParameter(),
-                endpoint,
-                tangent
-            );
-            if (tangent.Magnitude() <= gp::Resolution()) {
-                throw std::runtime_error("Rib profile endpoint has no regular tangent");
-            }
-            tangent.Normalize();
-            if (!after) {
-                tangent.Reverse();
-            }
-            if (BRepAdaptor_Curve(edge).GetType() == GeomAbs_Line) {
-                // A straight extension already satisfies C1/C2. Keep the line
-                // analytic so its swept sides remain draftable; do not convert splines.
-                curve = new Geom_TrimmedCurve(
-                    geometry,
-                    curve->FirstParameter() - (after ? 0.0 : reach),
-                    curve->LastParameter() + (after ? reach : 0.0)
-                );
-            }
-            else {
-                GeomLib::ExtendCurveToPoint(
-                    curve, endpoint.Translated(tangent * reach), continuity, after
-                );
-            }
-            const auto movedVertex = BRepBuilderAPI_MakeVertex(
-                after ? curve->EndPoint() : curve->StartPoint()
-            ).Vertex();
-            history->AddModified(vertex, movedVertex);
-            vertex = movedVertex;
-        };
-
-        // A reversed edge swaps curve start/end relative to wire start/end.
-        const bool reversed = edge.Orientation() == TopAbs_REVERSED;
-        if (reversed ? extendWireEnd : extendWireStart) {
-            extendEnd(false, firstVertex);
-        }
-        if (reversed ? extendWireStart : extendWireEnd) {
-            extendEnd(true, lastVertex);
-        }
-
-        // Unextended vertices are still the originals shared with neighboring edges.
-        BRepBuilderAPI_MakeEdge maker(
-            curve, firstVertex, lastVertex, curve->FirstParameter(), curve->LastParameter()
-        );
-        if (!maker.IsDone()) {
-            throw std::runtime_error("Failed to build extended rib edge");
-        }
-        TopoDS_Edge replacement = maker.Edge();
-        replacement.Orientation(edge.Orientation());
-        // This history is consumed by FreeCAD's MapperHistory below.
-        history->AddModified(edge, replacement);
-        return replacement;
-    };
-
-    if (edges.empty()) {
-        throw std::runtime_error("Rib profile contains no traversable edges");
+void extendRibCurveEnd(
+    Handle(Geom_BoundedCurve)& curve,
+    const Handle(Geom_TrimmedCurve)& original,
+    double reach,
+    int continuity,
+    bool after,
+    bool isLine
+)
+{
+    // Sample the original, because a previous extension can reparameterize the copy.
+    const double parameter = after ? original->LastParameter() : original->FirstParameter();
+    gp_Pnt endpoint;
+    gp_Vec tangent;
+    original->D1(parameter, endpoint, tangent);
+    if (!std::isfinite(tangent.Magnitude()) || tangent.Magnitude() <= gp::Resolution()) {
+        throw std::runtime_error("Rib profile endpoint has no regular tangent");
     }
-    if (edges.size() == 1) {
-        // One edge owns both free endpoints: extend both ends of the same copy.
-        edges.front() = extendTerminalEdge(edges.front(), true, true);
+    tangent.Normalize();
+    if (!after) {
+        tangent.Reverse(); // At the curve start, outward is opposite increasing parameters.
+    }
+
+    if (isLine) {
+        // A line already satisfies C1/C2. Extend its bounds to keep it analytic
+        // and its swept sides draftable, rather than converting it to a spline.
+        const double first = curve->FirstParameter() - (after ? 0.0 : reach);
+        const double last = curve->LastParameter() + (after ? reach : 0.0);
+        curve = new Geom_TrimmedCurve(original->BasisCurve(), first, last);
     }
     else {
-        edges.front() = extendTerminalEdge(edges.front(), true, false);
-        edges.back() = extendTerminalEdge(edges.back(), false, true);
+        const gp_Pnt target = endpoint.Translated(tangent * reach);
+        GeomLib::ExtendCurveToPoint(curve, target, continuity, after);
+    }
+}
+
+void requireRibExtensionContact(
+    const TopoDS_Shape& body,
+    const Handle(Geom_BoundedCurve)& curve,
+    const gp_Pnt& originalEndpoint,
+    bool after,
+    const char* endName
+)
+{
+    // Locate the old endpoint on the final curve; its parameter may have changed.
+    GeomAPI_ProjectPointOnCurve projection(originalEndpoint, curve);
+    if (projection.NbPoints() == 0 || projection.LowerDistance() > Precision::Confusion()) {
+        throw std::runtime_error("Cannot locate the rib extension's original endpoint");
+    }
+    const double join = projection.LowerDistanceParameter();
+    const double first = after ? join : curve->FirstParameter();
+    const double last = after ? curve->LastParameter() : join;
+    BRepBuilderAPI_MakeEdge extension(curve, first, last);
+    if (!extension.IsDone()) {
+        throw std::runtime_error("Failed to build rib extension for the contact check");
     }
 
-    // Assemble in traversal order. Interior entries were never changed.
+    // Test only this new portion, including the old endpoint. Contact elsewhere
+    // on the original profile must not hide an extension that misses the body.
+    // Use the actual C1/C2 curve, not its tangent ray; they can take different paths.
+    BRepExtrema_DistShapeShape contact(body, extension.Edge());
+    if (!contact.IsDone()) {
+        throw std::runtime_error("Failed to check rib extension contact with the body");
+    }
+    if (contact.Value() > Precision::Confusion()) {
+        throw std::runtime_error(
+            std::string("Rib profile ") + endName
+            + " extension does not intersect the body within reach"
+        );
+    }
+}
+
+TopoDS_Edge extendRibTerminalEdge(
+    const TopoDS_Edge& edge,
+    const RibProfileEnds& ends,
+    const TopoDS_Shape& body,
+    double reach,
+    int continuity,
+    const Handle(BRepTools_History)& history
+)
+{
+    // Restrict the underlying geometry to the portion used by this edge.
+    double first = 0.0;
+    double last = 0.0;
+    Handle(Geom_Curve) geometry = BRep_Tool::Curve(edge, first, last);
+    if (geometry.IsNull()) {
+        throw std::runtime_error("Rib terminal edge has no 3D curve");
+    }
+    Handle(Geom_TrimmedCurve) original = new Geom_TrimmedCurve(geometry, first, last);
+    Handle(Geom_BoundedCurve) curve = Handle(Geom_BoundedCurve)::DownCast(original->Copy());
+
+    // Parameter order can oppose wire traversal. Match vertex identity instead
+    // of assuming that the wire's start is the curve's first parameter.
+    TopoDS_Vertex firstVertex;
+    TopoDS_Vertex lastVertex;
+    TopExp::Vertices(edge, firstVertex, lastVertex, false);
+    const bool extendFirst = firstVertex.IsSame(ends.startVertex) || firstVertex.IsSame(ends.endVertex);
+    const bool extendLast = lastVertex.IsSame(ends.startVertex) || lastVertex.IsSame(ends.endVertex);
+    const bool isLine = BRepAdaptor_Curve(edge).GetType() == GeomAbs_Line;
+
+    // A single-edge profile has both free endpoints on the same curve copy.
+    if (extendFirst) {
+        extendRibCurveEnd(curve, original, reach, continuity, false, isLine);
+    }
+    if (extendLast) {
+        extendRibCurveEnd(curve, original, reach, continuity, true, isLine);
+    }
+
+    // Check the final geometry before replacing vertices. Keep the full reach;
+    // the later sweep needs overshoot, not an edge trimmed to first contact.
+    TopoDS_Vertex newFirst = firstVertex;
+    TopoDS_Vertex newLast = lastVertex;
+    if (extendFirst) {
+        const char* endName = firstVertex.IsSame(ends.startVertex) ? "start" : "end";
+        requireRibExtensionContact(body, curve, original->StartPoint(), false, endName);
+        newFirst = BRepBuilderAPI_MakeVertex(curve->StartPoint()).Vertex();
+        history->AddModified(firstVertex, newFirst);
+    }
+    if (extendLast) {
+        const char* endName = lastVertex.IsSame(ends.startVertex) ? "start" : "end";
+        requireRibExtensionContact(body, curve, original->EndPoint(), true, endName);
+        newLast = BRepBuilderAPI_MakeVertex(curve->EndPoint()).Vertex();
+        history->AddModified(lastVertex, newLast);
+    }
+
+    // Reuse unextended vertices so neighboring edges remain topologically joined.
+    BRepBuilderAPI_MakeEdge maker(
+        curve, newFirst, newLast, curve->FirstParameter(), curve->LastParameter()
+    );
+    if (!maker.IsDone()) {
+        throw std::runtime_error("Failed to build extended rib edge");
+    }
+    TopoDS_Edge replacement = maker.Edge();
+    replacement.Orientation(edge.Orientation());
+    history->AddModified(edge, replacement);
+    return replacement;
+}
+} // namespace
+
+Part::TopoShape Rib::extendRibProfile(
+    const Part::TopoShape& body,
+    const Part::TopoShape& profile,
+    double reach,
+    long continuity
+) const
+{
+    if (continuity == 0) {
+        return profile; // Off: preserve the shape and its FreeCAD element map.
+    }
+    if (body.isNull()) {
+        throw std::runtime_error("Rib extension requires a body");
+    }
+    if (!std::isfinite(reach) || reach <= Precision::Confusion()) {
+        throw std::runtime_error("Rib extension reach must be positive and finite");
+    }
+    if (continuity != 1 && continuity != 2) {
+        throw std::runtime_error("Rib extension continuity must be C1 or C2");
+    }
+    if (profile.isNull() || profile.getShape().ShapeType() != TopAbs_WIRE) {
+        throw std::runtime_error("Rib extension requires a wire");
+    }
+
+    // 1. Validate one open chain and find the edge attached to each free endpoint.
+    const TopoDS_Wire wire = TopoDS::Wire(profile.getShape());
+    const RibProfileEnds ends = findRibProfileEnds(wire);
+    const int curveContinuity = static_cast<int>(continuity); // Validated as 1 or 2 above.
+
+    // 2. Extend the terminal edges and check each new portion against the body.
+    // GeomLib has no topology history, so our helper records replacements for FreeCAD.
+    Handle(BRepTools_History) history = new BRepTools_History;
+    const TopoDS_Edge extendedStart = extendRibTerminalEdge(
+        ends.startEdge, ends, body.getShape(), reach, curveContinuity, history
+    );
+    TopoDS_Edge extendedEnd = extendedStart;
+    if (!ends.startEdge.IsSame(ends.endEdge)) {
+        extendedEnd = extendRibTerminalEdge(
+            ends.endEdge, ends, body.getShape(), reach, curveContinuity, history
+        );
+    }
+
+    // 3. Rebuild in connected order. Interior edges are reused unchanged.
     BRep_Builder builder;
     TopoDS_Wire extendedWire;
     builder.MakeWire(extendedWire);
-    for (const auto& edge : edges) {
-        builder.Add(extendedWire, edge);
+    for (BRepTools_WireExplorer walk(wire); walk.More(); walk.Next()) {
+        const TopoDS_Edge& edge = walk.Current();
+        if (edge.IsSame(ends.startEdge)) {
+            builder.Add(extendedWire, extendedStart);
+        }
+        else if (edge.IsSame(ends.endEdge)) {
+            builder.Add(extendedWire, extendedEnd);
+        }
+        else {
+            builder.Add(extendedWire, edge);
+        }
     }
-
     if (!BRepCheck_Analyzer(extendedWire).IsValid()) {
         throw std::runtime_error("Extended rib profile is not a valid wire");
     }
 
-    // FreeCAD bridge: combine the OCCT result/history with the original element map.
-    // Unchanged interior edges retain their identity; modified endpoints get new names.
-    Part::TopoShape result(0, source.Hasher);
+    // 4. FreeCAD bridge: carry the profile's element names through the OCCT history.
+    Part::TopoShape result(0, profile.Hasher);
     result.makeShapeWithElementMap(
-        extendedWire, Part::MapperHistory(history), {source},
+        extendedWire, Part::MapperHistory(history), {profile},
         continuity == 1 ? "RibExtendC1" : "RibExtendC2"
     );
     return result;
@@ -756,9 +885,23 @@ App::DocumentObjectExecReturn* Rib::execute()
         const Base::Vector3d sweepDirection = Direction.getValue();
 
 
+        // Note: there is an occt method for making ribs (BRepFeat_MakeLinearForm) but, it does
+        // have limitations, and afaik we cant specify an intermediate distance to sweep
+        // and we still need to take care of extending edges and making sure we extend them far
+        // enough that we don't have missing segments (or small triangles/infill) on curved surfaces
+        // Alternatives:
+        // 1. Use section in combination with our extended profile to get a max wire region for our
+        // rib surface at that planar location
+        //   - would need to get that for each planar extent, including draft etc. to make sure we
+        //     extend far enough
+        // 2. directly construct surfaces and form a solid using these profiles/sections
+        // 3. use oversized rib tool (long extensions) - offset/sweep -> cut and select -> draft -> fillet
+
+
+
         // get combined bounding box from the profle and body
         // and multiply by a factor so that we sweep beyond them
-        const double reachFactor = 1.2; // 20%
+        const double reachFactor = 2.0;
         Bnd_Box bounds;
         BRepBndLib::Add(profile, bounds);
         BRepBndLib::Add(body, bounds);
@@ -768,20 +911,7 @@ App::DocumentObjectExecReturn* Rib::execute()
 
 
         // get the extend type / continuity from the property and extend the profile ends
-        toolProfile = profileShape;
-        auto extendType = ExtendType.getValue();
-        switch (extendType) {
-        case 0: // Off - don't extend
-            break;
-        case 1: // C1
-            toolProfile = extendRibProfile(toolProfile, reach, 1);
-            break;
-        case 2: // C2
-            toolProfile = extendRibProfile(toolProfile, reach, 2);
-            break;
-        default:
-            return new App::DocumentObjectExecReturn("Invalid rib extension type");
-        }
+        toolProfile = extendRibProfile(baseShape, profileShape, reach, ExtendType.getValue());
 
 
         //
