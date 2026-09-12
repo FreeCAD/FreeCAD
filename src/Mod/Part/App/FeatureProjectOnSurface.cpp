@@ -358,6 +358,7 @@ std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
     return wiresInParametricSpace;
 }
 
+
 TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
     const TopoDS_Face& sourceFace,
     const TopoDS_Face& supportFace,
@@ -370,20 +371,31 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
         return {};
     }
 
+    // find the combined bounding box of source and target
+    Bnd_Box bounds;
+    BRepBndLib::Add(sourceFace, bounds);
+    BRepBndLib::Add(supportFace, bounds);
+    if (bounds.IsVoid()) {
+        return {};
+    }
 
-    TopoShape prism;
-    prism.makeElementPrismUntil(
-        TopoShape(),             // no base
-        TopoShape(sourceFace),   // profile
-        TopoShape(),             // don't need support
-        TopoShape(supportFace),  // target
-        direction,
-        TopoShape::PrismMode::None,
-        false  // needs to be false to avoid filling holes/ or failing partial overlaps
-    );
+
+
+    // extrude the source face towards the target
+    const auto length = 2.0 * Max(Sqrt(bounds.SquareExtent()), 1.0);
+    gp_Vec extrusion(direction);
+    extrusion.Multiply(length);
+
+
+    // and make prism for boolean common op to trim
+    BRepPrimAPI_MakePrism prismMaker(sourceFace, extrusion);
+    if (!prismMaker.IsDone()) {
+        return {};
+    }
+
 
     // get trimmed face
-    FCBRepAlgoAPI_Common common(supportFace, prism.getShape());
+    FCBRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
     common.Build();
     if (!common.IsDone()) {
         return {};
