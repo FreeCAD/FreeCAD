@@ -90,6 +90,7 @@ void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElem
     }
 
     updateCursor();
+    unsetCursor();
     startPos = toVector2d(obj->getPoint(dragged.front().GeoId, dragged.front().Pos));
 }
 
