@@ -250,11 +250,23 @@
     </widget>
    </item>
    <item row="7" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
+    <widget class="QWidget" name="utilitiesWidget">
+     <property name="windowTitle">
       <string>Utilities</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="topMargin">
@@ -472,16 +484,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame">
-        <property name="frameShape">
-         <enum>QFrame::Shape::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Raised</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="flipPartButton">
         <property name="text">
          <string>Flip</string>
@@ -492,22 +494,22 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="transformOriginGroupBox">
-     <property name="title">
+    <widget class="QWidget" name="draggerWidget">
+     <property name="windowTitle">
       <string>Dragger</string>
      </property>
      <layout class="QGridLayout" name="transformOriginLayout">
       <property name="leftMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>0</number>
       </property>
       <item row="0" column="1">
        <widget class="QComboBox" name="placementComboBox"/>

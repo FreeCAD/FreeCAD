@@ -24,7 +24,7 @@
 #pragma once
 
 #include "TaskView/TaskDialog.h"
-#include "TaskView/TaskView.h"
+#include "Selection/Selection.h"
 #include "ViewProviderDragger.h"
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -36,8 +36,10 @@
 #include <App/Services.h>
 
 #include <QString>
+#include <QWidget>
 
 #include <array>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -51,7 +53,7 @@ class SoTransformDragger;
 class ViewProviderDragger;
 class Ui_TaskTransformDialog;
 
-class TaskTransform: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskTransform: public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -111,6 +113,8 @@ public:
         = Base::provideService<App::CenterOfMassProvider>()
     );
     ~TaskTransform() override;
+
+    std::array<QWidget*, 3> taskWidgets() const;
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -190,6 +194,7 @@ private:
     CoinPtr<SoTransform> csIndicatorTransform;
 
     Ui_TaskTransformDialog* ui;
+    QWidget* coordinatesWidget;
 
     SelectionMode selectionMode {SelectionMode::None};
     PlacementMode placementMode {PlacementMode::ObjectOrigin};
@@ -231,7 +236,7 @@ private:
 
 private:
     ViewProviderDragger* vp;
-    TaskTransform* transform;
+    std::unique_ptr<TaskTransform> transform;
 };
 }  // namespace Gui
 

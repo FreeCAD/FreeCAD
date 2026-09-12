@@ -106,7 +106,7 @@ TaskTransform::TaskTransform(
     App::SubObjectPlacementProvider* subObjectPlacementProvider,
     App::CenterOfMassProvider* centerOfMassProvider
 )
-    : TaskBox(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"), tr("Transform"), false, parent)
+    : QWidget(parent)
     , vp(vp)
     , subObjectPlacementProvider(subObjectPlacementProvider)
     , centerOfMassProvider(centerOfMassProvider)
@@ -142,6 +142,9 @@ TaskTransform::~TaskTransform()
         ->setEnabled(true);
 
     savePreferences();
+    dragger->removeStartCallback(dragStartCallback, this);
+    dragger->removeMotionCallback(dragMotionCallback, this);
+    delete ui;
 }
 
 void TaskTransform::dragStartCallback([[maybe_unused]] void* data, [[maybe_unused]] SoDragger* dragger)
@@ -221,9 +224,17 @@ void TaskTransform::loadPositionModeItems() const
 
 void TaskTransform::setupGui()
 {
-    auto proxy = new QWidget(this);
-    ui->setupUi(proxy);
-    this->groupLayout()->addWidget(proxy);
+    ui->setupUi(this);
+
+    coordinatesWidget = new QWidget(this);
+    coordinatesWidget->setWindowTitle(tr("Transforms"));
+    auto* coordinatesLayout = new QVBoxLayout(coordinatesWidget);
+    coordinatesLayout->setContentsMargins(0, 0, 0, 0);
+    coordinatesLayout->setSpacing(6);
+    coordinatesLayout->addWidget(ui->coordinateSystemWidget);
+    coordinatesLayout->addWidget(ui->alignRotationCheckBox);
+    coordinatesLayout->addWidget(ui->positionGroupBox);
+    coordinatesLayout->addWidget(ui->rotationGroupBox);
 
     loadPlacementModeItems();
     loadPositionModeItems();
@@ -1039,11 +1050,19 @@ void TaskTransform::onRotationChange(QuantitySpinBox* changed)
     resetReferencePlacement();
 }
 
+std::array<QWidget*, 3> TaskTransform::taskWidgets() const
+{
+    return {ui->draggerWidget, coordinatesWidget, ui->utilitiesWidget};
+}
+
 TaskTransformDialog::TaskTransformDialog(ViewProviderDragger* vp, SoTransformDragger* dragger)
     : vp(vp)
+    , transform(std::make_unique<TaskTransform>(vp, dragger))
 {
-    transform = new TaskTransform(vp, dragger);
-    Content.push_back(transform);
+    const auto [draggerWidget, transformsWidget, utilitiesWidget] = transform->taskWidgets();
+    addTaskBox(Gui::BitmapFactory().pixmap("Std_TransformManip"), draggerWidget);
+    addTaskBox(Gui::BitmapFactory().pixmap("Std_CoordinateSystem"), transformsWidget);
+    addTaskBox(Gui::BitmapFactory().pixmap("Std_Alignment"), utilitiesWidget);
 }
 
 void TaskTransformDialog::open()
