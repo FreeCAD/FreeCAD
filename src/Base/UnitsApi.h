@@ -33,6 +33,8 @@ using PyObject = struct _object;
 
 namespace Base
 {
+class UnitsSchemas;
+struct NumericLocaleContext;
 class BaseExport UnitsApi
 {
     friend class UnitsModulePy;
@@ -44,7 +46,16 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
+    static std::string schemaTranslate(
+        const Quantity& quant,
+        const NumericLocaleContext& formatting,
+        double& factor,
+        std::string& unitString
+    );
+
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string schemaTranslate(const Quantity& quant, const NumericLocaleContext& formatting);
 
     static std::string toUnicodeSuperscript(const std::string& str);
 

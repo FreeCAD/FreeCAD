@@ -227,6 +227,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     editStartValue = val;
 
     lockIconLabel = new QLabel(spinBox);
+    lockIconLabel->setObjectName(QStringLiteral("onViewParameterLockIcon"));
     lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
     // load icon and scale it to fit in spinbox
@@ -266,6 +267,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         this,
         &EditableDatumLabel::handleSpinBoxValueChanged
     );
+    connect(spinBox, &QuantitySpinBox::inputCleared, this, &EditableDatumLabel::handleSpinBoxInputCleared);
     if (auto* edit = spinBox->findChild<QLineEdit*>()) {
         connect(edit, &QLineEdit::textChanged, this, [this, edit]() { this->updateGeometry(edit); });
     }
@@ -300,6 +302,19 @@ void EditableDatumLabel::handleSpinBoxValueChanged()
     if (syncValueFromSpinBox()) {
         Q_EMIT valueChanged(value);
     }
+}
+
+void EditableDatumLabel::handleSpinBoxInputCleared()
+{
+    if (!isSet && !hasFinishedEditing) {
+        return;
+    }
+
+    // Clearing an OVP removes its provisional parameter; it does not create a new numeric value.
+    // Keep the committed value intact so Escape and cancellation can still restore it.
+    isSet = false;
+    resetLockedState();
+    Q_EMIT parameterUnset();
 }
 
 bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
