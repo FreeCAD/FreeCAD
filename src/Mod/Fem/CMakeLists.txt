@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+disable_occt8_deprecation_warnings()
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)

@@ -2,6 +2,7 @@
 
 # Unit tests for the Path.Tool.Shape module and its utilities.
 
+import math
 from pathlib import Path
 from typing import Mapping, Tuple
 import FreeCAD
@@ -102,6 +103,40 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         with self.assertRaisesRegex(KeyError, "Shape 'dummy' has no parameter 'InvalidParam'"):
             shape.get_parameter("InvalidParam")
 
+    def test_base_set_parameter_from_bare_number(self):
+        """A bare number has to pick up the unit its schema declares."""
+        shape = DummyShape(id="dummy_shape_units", filepath=Path("/fake/dummy.fcstd"))
+        shape.set_parameter("Param1", 15.0)
+        shape.set_parameter("Param2", 30)
+        self.assertEqual(shape.get_parameter("Param1"), FreeCAD.Units.Quantity("15 mm"))
+        self.assertEqual(shape.get_parameter("Param1").Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(shape.get_parameter("Param2"), FreeCAD.Units.Quantity("30 deg"))
+        self.assertEqual(shape.get_parameter("Param2").Unit, FreeCAD.Units.Unit("deg"))
+
+    def test_chamfer_derived_diameter(self):
+        """The chamfer's Diameter is derived, and has to come back as a length."""
+        uri = ToolBitShape.resolve_name("chamfer")
+        shape = self.assets.get(uri)
+        shape.set_parameters(
+            TipDiameter=FreeCAD.Units.Quantity("1 mm"),
+            CuttingEdgeHeight=FreeCAD.Units.Quantity("5 mm"),
+            CuttingEdgeAngle=FreeCAD.Units.Quantity("60 deg"),
+            Diameter=FreeCAD.Units.Quantity("0 mm"),
+        )
+
+        changed = shape.apply_derived_parameters()
+        self.assertIn("Diameter", changed)
+
+        diameter = shape.get_parameter("Diameter")
+        expected = 1.0 + 2 * 5.0 * math.tan(math.radians(30.0))
+        self.assertAlmostEqual(diameter.Value, expected)
+        # A unitless Quantity reports .Value too, so the unit is the assertion.
+        self.assertEqual(diameter.Unit, FreeCAD.Units.Unit("mm"))
+        self.assertEqual(diameter.getValueAs("in").Value, expected / 25.4)
+
+        # Dimensioned, it compares equal to the stored value: no second write.
+        self.assertEqual(shape.apply_derived_parameters(), {})
+
     def test_base_get_parameters(self):
         """Test getting the full parameter dictionary."""
         # Provide a dummy filepath for instantiation
@@ -192,6 +227,34 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(ToolBitShape.get_subclass_by_name("torus"), ToolBitShapeBullnose)
         self.assertEqual(ToolBitShape.get_subclass_by_name("slitting-saw"), ToolBitShapeSlittingSaw)
         self.assertIsNone(ToolBitShape.get_subclass_by_name("nonexistent"))
+
+    def test_resolve_asset_by_class_name(self):
+        """
+        Every concrete shape must be resolvable by its own class name alone,
+        with no filename or alias hint - this is the identifier ToolBit.
+        onDocumentRestored() falls back to using when ShapeID doesn't
+        resolve directly (e.g. for documents saved before ShapeID existed),
+        and what from_dict() may see from a template/.fctb dict that only
+        has a bare "shape-type". Regression test for the "ThreadMill" class
+        being stored as "thread-mill.fcstd": that mismatch meant this
+        lookup-by-class-name silently built an empty placeholder shape (no
+        geometry) instead of loading the real asset, which then crashed
+        with an AssertionError the first time something needed to build the
+        tool's 3D body (e.g. creating a Job from a template).
+        """
+        for shape_class in ToolBitShape.__subclasses__():
+            if shape_class.name.lower() in ("custom", "dummy"):
+                # Custom has no backing asset file by design; "dummy" is the
+                # DummyShape test fixture defined above, not a real shape.
+                continue
+            with self.subTest(shape_class=shape_class.name):
+                shape = ToolBitShape.resolve_asset(shape_class.name, assets=self.assets)
+                self.assertIsInstance(shape, shape_class)
+                self.assertIsNotNone(
+                    shape._data,
+                    f"resolving '{shape_class.name}' by class name alone produced a "
+                    "placeholder shape with no geometry data",
+                )
 
     # The following tests for default parameters and labels
     # should also not use mocks for FreeCAD document operations or Units.

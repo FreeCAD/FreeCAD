@@ -30,6 +30,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.SetupSheet as PathSetupSheetGui
+import Path.Base.Gui.Theme as PathGuiTheme
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
 import Path.Main.Gui.JobCmd as PathJobCmd
@@ -44,7 +45,7 @@ import Path.Tool.Gui.Controller as PathToolControllerGui
 import Path.Tool.Gui.UpdateDocumentToolsDlg as PathUpdateToolsGui
 import PathScripts.PathUtils as PathUtils
 from Path.Tool.docobject.ui.docobject import _get_label_text as _format_label
-from Path.Tool.toolbit.ui.selector import ToolBitSelector
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
 from Machine.models import MachineFactory
 from Machine.ui.editor import MachineEditorDialog
 import math
@@ -678,7 +679,7 @@ class StockCreateCylinderEdit(StockEdit):
 
     def getFields(self, obj, fields=None):
         if fields is None:
-            fields = ["radius", "height"]
+            fields = ("axis", "radius", "height")
         try:
             if self.IsStock(obj):
                 if "radius" in fields:
@@ -689,6 +690,8 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(
                         self.form.stockCylinderHeight.property("rawValue"), FreeCAD.Units.Length
                     )
+                if "axis" in fields and hasattr(self.form, "stockCylinderAxis"):
+                    obj.Stock.Axis = str(self.form.stockCylinderAxis.currentData())
             else:
                 Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
         except Exception:
@@ -696,15 +699,38 @@ class StockCreateCylinderEdit(StockEdit):
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
-            self.setStock(obj, PathStock.CreateCylinder(obj))
+            self.setStock(obj, PathStock.CreateCylinder(obj, axis=self.axis))
             self.force = False
         self.setLengthField(self.form.stockCylinderRadius, obj.Stock.Radius)
         self.setLengthField(self.form.stockCylinderHeight, obj.Stock.Height)
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.selectComboBoxText(self.form.stockCylinderAxis, obj.Stock.Axis)
 
     def setupUi(self, obj):
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.axis = self.form.stockCylinderAxis.currentData()
+            self.populateCombobox(self.form.stockCylinderAxis, ("X", "Y", "Z"))
+        else:
+            self.axis = "Z"
         self.setFields(obj)
         self.form.stockCylinderRadius.textChanged.connect(lambda: self.getFields(obj, ["radius"]))
         self.form.stockCylinderHeight.textChanged.connect(lambda: self.getFields(obj, ["height"]))
+        if hasattr(self.form, "stockCylinderAxis"):
+            self.form.stockCylinderAxis.currentIndexChanged.connect(
+                lambda: self.getFields(obj, ["axis"])
+            )
+
+    def populateCombobox(self, widget, enumTups):
+        widget.clear()
+        for name in enumTups:
+            widget.addItem(name, name)
+
+    def selectComboBoxText(self, widget, text):
+        newindex = widget.findData(text)
+        if newindex >= 0:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(newindex)
+            widget.blockSignals(False)
 
 
 class StockFromExistingEdit(StockEdit):
@@ -780,6 +806,15 @@ class StockFromExistingEdit(StockEdit):
             self.form.stockExisting.addItem(solid.Label, solid)
             if stockBaseName == solid.Name:
                 index = i
+
+        if self.force and self.IsStock(obj) and obj.Model.Group:  # set placement while refresh
+            for model in obj.Model.Group:
+                objects = getattr(model, "Objects", None)
+                if objects and objects[0] == obj.Stock.Objects[0]:
+                    obj.Stock.Placement = model.Placement
+                    break
+            else:
+                obj.Stock.Placement = obj.Model.Group[0].Placement
 
         self.form.stockExisting.setCurrentIndex(index)
         self.form.stockExisting.blockSignals(False)
@@ -1287,34 +1322,20 @@ class TaskPanel:
         self.setFields()
         self.toolControllerSelect()
 
+    def toolControllerAdded(self, job, tc):
+        """Refreshes the tool table whenever a controller is added to our job."""
+        if job is self.obj:
+            self.updateToolController()
+
     def toolControllerAdd(self):
-        selector = ToolBitSelector(compact=True, show_all_tools=True)
-        if not selector.exec_():
-            return
-
-        toolbits = selector.get_selected_tools()
-        if not toolbits:
-            return
-
-        # Get tool numbers mapping (from library or empty for auto-increment)
-        tool_numbers = selector.get_tool_numbers()
-
-        # Add each selected tool
-        for toolbit in toolbits:
-            toolbit.attach_to_doc(FreeCAD.ActiveDocument)
-
-            # Get tool number: use library number if available, otherwise auto-increment
-            toolbit_uri = str(toolbit.get_uri())
-            toolNum = tool_numbers.get(toolbit_uri)
-            if toolNum is None:
-                toolNum = self.obj.Proxy.nextToolNumber()
-
-            tc = PathToolControllerGui.Create(
-                name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
-            )
-            self.obj.Proxy.addToolController(tc)
-
-        FreeCAD.ActiveDocument.recompute()
+        # Listen while the dock is open so tools appear in the table as they
+        # are added, rather than only once the dock is closed.
+        PathJob.Notification.updateTC.connect(self.toolControllerAdded)
+        try:
+            dock = ToolBitLibraryDock(self.obj)
+            dock.open()
+        finally:
+            PathJob.Notification.updateTC.disconnect(self.toolControllerAdded)
         self.updateToolController()
 
     def toolControllerDelete(self):
@@ -1328,9 +1349,25 @@ class TaskPanel:
             item.setText(tc.Label)
         elif "Number" == prop:
             try:
-                tc.ToolNumber = int(item.text())
+                toolNumber = int(item.text())
             except Exception:
-                pass
+                toolNumber = tc.ToolNumber
+            if toolNumber != tc.ToolNumber:
+                # Two different tools on one number would emit the same tool
+                # change for both, so refuse the edit and put the old one back.
+                owner = PathToolControllerGui.findConflictingToolController(
+                    self.obj.Tools.Group, toolNumber, getattr(tc.Tool, "ToolBitID", None), tc
+                )
+                if owner is None:
+                    tc.ToolNumber = toolNumber
+                else:
+                    QtGui.QMessageBox.warning(
+                        self.form,
+                        translate("CAM_Job", "Tool Number In Use"),
+                        translate("CAM_Job", "Tool number {} is already used by {}.").format(
+                            toolNumber, owner.Label
+                        ),
+                    )
             item.setText("%d" % tc.ToolNumber)
         elif "Spindle" == prop:
             try:
@@ -1915,10 +1952,7 @@ class TaskPanel:
         current theme (white on dark, black on light).  The XYZ axis buttons always
         keep their fixed Red / Green / Blue stroke colors."""
 
-        theme = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
-            "Theme", ""
-        )
-        is_dark = "dark" in theme.lower() if theme else False
+        is_dark = PathGuiTheme.is_dark_theme()
 
         def _adaptive_icon(resource_path, size=16):
             """Load a monochrome SVG icon (#111111 stroke/fill) and invert to white

@@ -103,6 +103,13 @@
         <file>icons/edge-join-miter.svg</file>
         <file>icons/edge-join-round-not.svg</file>
         <file>icons/edge-join-round.svg</file>
+        <file>icons/flute-ramp-linear.svg</file>
+        <file>icons/flute-ramp-s-curve.svg</file>
+        <file>icons/flute-ramp-smooth.svg</file>
+        <file>icons/flute-ramp-fillet.svg</file>
+        <file>icons/flute-fluting-ramp-full.svg</file>
+        <file>icons/flute-fluting-ramp-start.svg</file>
+        <file>icons/flute-fluting-ramp-start-end.svg</file>
         <file>icons/preferences-cam.svg</file>
         <file>panels/AxisMapEdit.ui</file>
         <file>panels/DlgJobCreate.ui</file>
@@ -138,6 +145,7 @@
         <file>panels/PageOpMillFacingEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
+        <file>panels/PageOpFluteEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
         <file>panels/PageOpRotarySurfaceEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>

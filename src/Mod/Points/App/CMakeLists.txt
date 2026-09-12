@@ -80,9 +80,7 @@ if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
 endif()
 
 target_link_libraries(Points E57Format ${Points_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Points)
-endif()
+target_compile_warn_error(Points)
 
 
 fc_target_copy_resource_flat(Points
@@ -90,7 +88,7 @@ fc_target_copy_resource_flat(Points
     ${CMAKE_BINARY_DIR}/Mod/Points
     ${Points_Scripts})
 
-SET_BIN_DIR(Points Points /Mod/Points)
+SET_BIN_DIR(Points)
 SET_PYTHON_PREFIX_SUFFIX(Points)
 
 INSTALL(TARGETS Points DESTINATION ${CMAKE_INSTALL_LIBDIR})

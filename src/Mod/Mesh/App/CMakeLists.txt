@@ -199,12 +199,10 @@ if (MSVC)
     target_compile_options(Mesh PRIVATE /wd4251 /wd4275 /wd4661)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Mesh)
-endif()
+target_compile_warn_error(Mesh)
 
 
-SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
+SET_BIN_DIR(Mesh)
 SET_PYTHON_PREFIX_SUFFIX(Mesh)
 
 INSTALL(TARGETS Mesh DESTINATION ${CMAKE_INSTALL_LIBDIR})

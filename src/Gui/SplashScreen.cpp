@@ -257,6 +257,8 @@ bool SplashScreen::event(QEvent* e)
 
 void SplashScreen::show()
 {
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Window | Qt::NoDropShadowWindowHint);
+
     QSplashScreen::show();
 
     // Our repaint will call processEvents later on, no need to waste time here

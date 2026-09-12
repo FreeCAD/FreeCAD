@@ -60,6 +60,8 @@ ELSE(Quarter_BUILD_STATIC_LIBRARY)
   TARGET_LINK_LIBRARIES(${Library} ${AllLibs})
 ENDIF(Quarter_BUILD_STATIC_LIBRARY)
 
+target_compile_warn_error(${Library})
+
 #  Install configuration
 #
 # Quarter will be installed into the directory configured by CMAKE_INSTALL_PREFIX. This

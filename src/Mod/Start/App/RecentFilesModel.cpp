@@ -39,10 +39,12 @@ void RecentFilesModel::loadRecentFiles()
 {
     beginResetModel();
     clear();
-    auto numRows {_parameterGroup->GetInt("RecentFiles", 0)};
-    for (int i = 0; i < numRows; ++i) {
-        auto entry = fmt::format("MRU{}", i);
-        auto path = _parameterGroup->GetASCII(entry.c_str(), "");
+    const auto maxRows {_parameterGroup->GetInt("RecentFiles", 0)};  // really like "MaxRecentFiles"
+    for (const auto& path : _parameterGroup->GetASCIIs("MRU")) {
+        if (rowCount() >= maxRows) {
+            // Really shouldn't ever happen -- something got corrupted
+            break;
+        }
         addFile(QString::fromStdString(path));
     }
     endResetModel();

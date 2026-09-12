@@ -468,7 +468,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     // Preselection text yields under width pressure: it elides with an ellipsis
     // rather than crowding out higher-priority widgets like Input Hints.
-    d->actionLabel->setElideMode(Qt::ElideRight);
+    // preselection puts the element ID and coordinates at the end of the string,
+    // so elide the middle: the leading document and object labels are the least
+    // informative part and the tail is what the user is reading
+    d->actionLabel->setElideMode(Qt::ElideMiddle);
     d->actionLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     addStatusBarItem(
         d->actionLabel,

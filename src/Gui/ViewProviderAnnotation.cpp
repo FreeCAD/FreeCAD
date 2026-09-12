@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoAnnotation.h>
@@ -44,11 +45,13 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/sensors/SoIdleSensor.h>
 
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <App/Annotation.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
 
@@ -620,4 +623,75 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     SoSFImage sfHitProxy;
     Gui::BitmapFactory().convert(hitProxy, sfHitProxy);
     pImageHitProxy->image = sfHitProxy;
+}
+
+// ----------------------------------------------------------------------------
+
+AnnotationBuilder::AnnotationBuilder(
+    Gui::ViewProviderDocumentObject* vp,
+    const AnnotationBuilder::Info& s,
+    const SbVec3f& p,
+    const SbVec3f& n
+)
+    : vp(vp)
+    , p(p)
+    , n(n)
+    , info(s)
+{}
+
+void AnnotationBuilder::schedule(
+    Gui::ViewProviderDocumentObject* vp,
+    const SoPickedPoint* point,
+    const AnnotationBuilder::Info& info
+)
+{
+    SbVec3f pt = point->getPoint();
+    SbVec3f nl = point->getNormal();
+    auto anno = new AnnotationBuilder(vp, info, pt, nl);
+    auto sensor = new SoIdleSensor(AnnotationBuilder::run, anno);
+    sensor->schedule();
+}
+
+void AnnotationBuilder::run(void* data, SoSensor* sensor)
+{
+    auto self = static_cast<AnnotationBuilder*>(data);
+    self->show();
+    delete self;
+    delete sensor;
+}
+
+void AnnotationBuilder::show()
+{
+    App::Document* doc = vp->getObject()->getDocument();
+
+    auto groups = doc->getObjectsOfType<App::DocumentObjectGroup>();
+    App::DocumentObjectGroup* group = nullptr;
+    const std::string internalname = info.group;
+    auto it = std::find_if(groups.begin(), groups.end(), [internalname](auto grp) {
+        return internalname == grp->getNameInDocument();
+    });
+    if (it != groups.end()) {
+        group = *it;
+    }
+    else {
+        group = doc->addObject<App::DocumentObjectGroup>(internalname.c_str());
+    }
+
+    auto anno = group->addObject<App::AnnotationLabel>(internalname.c_str());
+    group->purgeTouched();
+
+    std::istringstream inp(info.text);
+    std::string line;
+    std::vector<std::string> text;
+    while (std::getline(inp, line, '\n')) {
+        text.push_back(line);
+    }
+    anno->LabelText.setValues(text);
+
+    std::stringstream str;
+    str << info.label;
+    str << " (" << group->Group.getSize() << ")";
+    anno->Label.setValue(str.str());
+    anno->BasePosition.setValue(p[0], p[1], p[2]);
+    anno->TextPosition.setValue(n[0], n[1], n[2]);
 }

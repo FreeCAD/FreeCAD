@@ -5022,12 +5022,12 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Välj huvudgeometri av typen kant eller yta och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Välj slavgeometri av typen kant eller yta och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>

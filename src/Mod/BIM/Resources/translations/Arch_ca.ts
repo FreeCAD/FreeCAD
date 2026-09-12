@@ -3786,7 +3786,7 @@ La plantilla predeterminada es troba a:
       <location filename="../../ArchStructure.py" line="467"/>
       <location filename="../../ArchCoveringGui.py" line="842"/>
       <location filename="../../bimcommands/BimProfile.py" line="106"/>
-      <location filename="../../bimcommands/BimWindow.py" line="451"/>
+      <location filename="../../bimcommands/BimWindow.py" line="450"/>
       <location filename="../../bimcommands/BimPanel.py" line="204"/>
       <source>Preset</source>
       <translation>Predefinits</translation>
@@ -4397,12 +4397,12 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <translation>No s'ha trobat cap finestra. No es pot continuar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="403"/>
       <source>Auto include in host object</source>
       <translation>Inclou automàticament a l'objecte amfitrió</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="413"/>
+      <location filename="../../bimcommands/BimWindow.py" line="412"/>
       <source>Sill height</source>
       <translation>Alçada de suport</translation>
     </message>
@@ -4425,7 +4425,7 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1191"/>
-      <location filename="../../bimcommands/BimWindow.py" line="400"/>
+      <location filename="../../bimcommands/BimWindow.py" line="399"/>
       <source>Window Options</source>
       <translation type="unfinished">Window Options</translation>
     </message>

@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/GeometryCurvePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -63,7 +64,7 @@ PyObject* SketchPy::solve(PyObject* args)
         return nullptr;
     }
     getSketchPtr()->resetSolver();
-    return Py::new_reference_to(Py::Long(getSketchPtr()->solve()));
+    return Py::new_reference_to(Py::Long(Base::to_underlying(getSketchPtr()->solve())));
 }
 
 PyObject* SketchPy::addGeometry(PyObject* args)
@@ -163,8 +164,14 @@ PyObject* SketchPy::moveGeometry(PyObject* args)
 
     return Py::new_reference_to(
         Py::Long(
-            getSketchPtr()
-                ->moveGeometry(index1, static_cast<Sketcher::PointPos>(index2), *toPoint, (relative > 0))
+            Base::to_underlying(
+                getSketchPtr()->moveGeometry(
+                    index1,
+                    static_cast<Sketcher::PointPos>(index2),
+                    *toPoint,
+                    (relative > 0)
+                )
+            )
         )
     );
 }

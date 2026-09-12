@@ -105,11 +105,9 @@ if(FREECAD_USE_PCH)
     set_source_files_properties(${CAMSimulator_SRCS_Core} PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(CAMSimulator)
-endif()
+target_compile_warn_error(CAMSimulator)
 
-SET_BIN_DIR(CAMSimulator CAMSimulator /Mod/CAM)
+SET_BIN_DIR(CAMSimulator)
 SET_PYTHON_PREFIX_SUFFIX(CAMSimulator)
 
 INSTALL(TARGETS CAMSimulator DESTINATION ${CMAKE_INSTALL_LIBDIR})

@@ -2911,7 +2911,7 @@ that "MAXGS" needs to be increased.</translation>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
-      <translation>Parametr</translation>
+      <translation>Parametry</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
@@ -3995,7 +3995,7 @@ Notes:
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
       <location filename="../ui/MeshAdvanced.ui" line="916"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>Vzorkování</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
@@ -4396,7 +4396,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../../AppFemGui.cpp" line="203"/>
       <location filename="../../AppFemGui.cpp" line="204"/>
       <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <translation>Import-export</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="115"/>
@@ -7914,7 +7914,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
       <source>Data</source>
-      <translation>Údaje</translation>
+      <translation>Data</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
@@ -8051,7 +8051,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
       <source>Y-axis</source>
-      <translation>osa Y</translation>
+      <translation>Osa Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
@@ -8092,7 +8092,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
       <source>X-axis</source>
-      <translation>osa X</translation>
+      <translation>Osa X</translation>
     </message>
   </context>
   <context>

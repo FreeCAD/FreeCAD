@@ -67,7 +67,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Flag.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/SoFCDB.h>
 #include <Gui/SoFCOffscreenRenderer.h>
@@ -75,6 +74,7 @@
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderAnnotation.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Window.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
@@ -1704,13 +1704,6 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
             view->setEditing(false);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), faceInfoCallback, ud);
-            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
-                Gui::GLFlagWindow::getClassTypeId()
-            );
-            for (auto glItem : glItems) {
-                view->removeGraphicsItem(glItem);
-                delete glItem;
-            }
 
             // See comment below
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1735,50 +1728,57 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
             return;
         }
 
-        // FIXME: The Flag class doesn't work well (flickering) when the NaviCube is enabled.
-        // To avoid this the NaviCube is disabled for the time the flags are shown.
-        // When leaving this mode the NaviCube can be displayed again.
-        // For a proper solution it's best to move the Flag class to the QGraphicsView API.
-        view->setEnabledNaviCube(false);
-
         auto that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
         if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
             const auto faceDetail = static_cast<const SoFaceDetail*>(detail);
-            Mesh::FacetIndex uFacet = faceDetail->getFaceIndex();
-            that->faceInfo(uFacet);
-            Gui::GLFlagWindow* flags = nullptr;
-            std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(
-                Gui::GLFlagWindow::getClassTypeId()
-            );
-            if (glItems.empty()) {
-                flags = new Gui::GLFlagWindow(view);
-                view->addGraphicsItem(flags);
-            }
-            else {
-                flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
-            }
+            const Mesh::FacetIndex uFacet = faceDetail->getFaceIndex();
 
-            int point1
-                = static_cast<const SoPointDetail*>(faceDetail->getPoint(0))->getCoordinateIndex();
-            int point2
-                = static_cast<const SoPointDetail*>(faceDetail->getPoint(1))->getCoordinateIndex();
-            int point3
-                = static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
-            auto flag = new Gui::Flag;
-            flag->setText(QObject::tr("Index: %1").arg(uFacet));
-            QString toolTip = QStringLiteral(
-                                  "Facet index: %1\n"
-                                  "Points: <%2, %3, %4>"
+            const MeshCore::MeshKernel& rKernel = that->getMeshObject().getKernel();
+            const MeshCore::MeshFacetArray& facets = rKernel.GetFacets();
+            const MeshCore::MeshFacet face = facets[uFacet];
+            const MeshCore::MeshGeomFacet tria = rKernel.GetFacet(face);
+
+            QString text;
+            text.append(
+                QObject::tr("Mesh: %1").arg(QString::fromUtf8(that->getObject()->Label.getValue()))
+            );
+            text.append(QLatin1Char('\n'));
+            text.append(QObject::tr("Index: %1").arg(uFacet));
+            text.append(QLatin1Char('\n'));
+            text.append(
+                QObject::tr("Points: <%1, %2, %3>")
+                    .arg(face._aulPoints[0])
+                    .arg(face._aulPoints[1])
+                    .arg(face._aulPoints[2])
+            );
+            text.append(QLatin1Char('\n'));
+            text.append(
+                QObject::tr("Neighbours: <%1, %2, %3>")
+                    .arg(face._aulNeighbours[0])
+                    .arg(face._aulNeighbours[1])
+                    .arg(face._aulNeighbours[2])
+            );
+            text.append(QLatin1Char('\n'));
+            text.append(QObject::tr("Triangle:"));
+            text.append(QStringLiteral(
+                            "\n[%1, %2, %3],"
+                            "\n[%4, %5, %6],"
+                            "\n[%7, %8, %9]"
             )
-                                  .arg(uFacet)
-                                  .arg(point1)
-                                  .arg(point2)
-                                  .arg(point3);
-            flag->setToolTip(toolTip);
-            flag->setOrigin(point->getPoint());
-            flags->addFlag(flag, Gui::FlagLayout::TopRight);
+                            .arg(tria._aclPoints[0].x)
+                            .arg(tria._aclPoints[0].y)
+                            .arg(tria._aclPoints[0].z)
+                            .arg(tria._aclPoints[1].x)
+                            .arg(tria._aclPoints[1].y)
+                            .arg(tria._aclPoints[1].z)
+                            .arg(tria._aclPoints[2].x)
+                            .arg(tria._aclPoints[2].y)
+                            .arg(tria._aclPoints[2].z));
+
+            Gui::AnnotationBuilder::Info info {text.toStdString(), "Annotations", "Facet info"};
+            Gui::AnnotationBuilder::schedule(that, point, info);
         }
     }
 }
