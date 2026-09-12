@@ -35,6 +35,7 @@
 #include <QAbstractSpinBox>
 #include <QByteArray>
 #include <QComboBox>
+#include <QLineEdit>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QFileOpenEvent>
@@ -377,26 +378,90 @@ bool WheelEventFilter::isEnabled() const
     return hGrp->GetBool("ComboBoxWheelEventFilter", true);
 }
 
+namespace
+{
+// Marks the widgets whose focus policy this filter changed, so that turning the preference off
+// restores only those.
+const char* wheelFocusDowngraded = "_fc_wheelFocusDowngraded";
+
+// A wheel event goes to the widget under the cursor, which for a spin box or an editable combo box
+// is its internal line edit. Qt propagates it to the parent only for spontaneous events, so pick
+// the widget of interest here.
+QWidget* wheelTarget(QObject* obj)
+{
+    auto* widget = qobject_cast<QWidget*>(obj);
+    if (!widget) {
+        return nullptr;
+    }
+    if (qobject_cast<QAbstractSpinBox*>(widget) || qobject_cast<QComboBox*>(widget)) {
+        return widget;
+    }
+    if (qobject_cast<QLineEdit*>(widget)) {
+        QWidget* parent = widget->parentWidget();
+        if (qobject_cast<QAbstractSpinBox*>(parent) || qobject_cast<QComboBox*>(parent)) {
+            return parent;
+        }
+    }
+    return nullptr;
+}
+}  // namespace
+
+void WheelEventFilter::updateFocusPolicy(QWidget* widget) const
+{
+    if (isEnabled()) {
+        if (widget->focusPolicy() == Qt::WheelFocus) {
+            widget->setFocusPolicy(Qt::StrongFocus);
+            widget->setProperty(wheelFocusDowngraded, true);
+        }
+    }
+    else if (widget->property(wheelFocusDowngraded).toBool()) {
+        widget->setFocusPolicy(Qt::WheelFocus);
+        widget->setProperty(wheelFocusDowngraded, QVariant());
+    }
+}
+
 bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
 {
-    if (qobject_cast<QComboBox*>(obj) && ev->type() == QEvent::Wheel) {
-        return isEnabled();
+    const QEvent::Type type = ev->type();
+    if (type != QEvent::Wheel && type != QEvent::Show && type != QEvent::Polish) {
+        return false;
     }
-    auto sb = qobject_cast<QAbstractSpinBox*>(obj);
+
+    QWidget* target = wheelTarget(obj);
+    if (!target) {
+        return false;
+    }
+
+    auto* sb = qobject_cast<QAbstractSpinBox*>(target);
+
+    if (type != QEvent::Wheel) {
+        // Polish as well as Show: a spin box shown before the filter is installed would keep
+        // Qt::WheelFocus and defeat the filter.
+        if (sb) {
+            updateFocusPolicy(sb);
+        }
+        return false;
+    }
+
+    if (!isEnabled()) {
+        return false;
+    }
+
     if (sb) {
-        if (ev->type() == QEvent::Show) {
-            if (isEnabled()) {
-                sb->setFocusPolicy(Qt::StrongFocus);
-            }
-            else if (sb->focusPolicy() == Qt::StrongFocus) {
-                sb->setFocusPolicy(Qt::WheelFocus);
-            }
+        // Qt focuses a Qt::WheelFocus widget before delivering the wheel event, so such a spin box
+        // would focus itself on the first notch and then pass the hasFocus() check. Fix the policy
+        // and swallow this event.
+        if (sb->focusPolicy() == Qt::WheelFocus) {
+            updateFocusPolicy(sb);
         }
-        else if (ev->type() == QEvent::Wheel) {
-            return isEnabled() && !sb->hasFocus();
+        else if (sb->hasFocus()) {
+            return false;
         }
     }
-    return false;
+
+    // Ignore instead of accept so the scroll reaches the containing scroll area.
+    ev->ignore();
+    return true;
 }
 
 #include "moc_GuiApplication.cpp"
