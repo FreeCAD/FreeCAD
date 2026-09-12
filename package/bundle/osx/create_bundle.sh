@@ -47,7 +47,7 @@ rm -rf ${conda_env}/share/vim
 
 mv ${conda_env}/bin ${conda_env}/bin_tmp
 mkdir ${conda_env}/bin
-cp ${conda_env}/bin_tmp/freecad ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/freecad ${conda_env}/bin/FreeCAD
 cp ${conda_env}/bin_tmp/freecadcmd ${conda_env}/bin
 cp ${conda_env}/bin_tmp/ccx ${conda_env}/bin/
 cp ${conda_env}/bin_tmp/python ${conda_env}/bin/
