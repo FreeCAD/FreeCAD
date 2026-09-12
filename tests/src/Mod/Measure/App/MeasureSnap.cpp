@@ -392,9 +392,7 @@ TEST_F(MeasureSnap, testPreviewPointsRejectsUnusableShapes)
     );
     const TopoDS_Edge pole = makeDegenerateEdge();
     ASSERT_TRUE(BRep_Tool::Degenerated(pole));
-    EXPECT_TRUE(
-        Measure::MeasureSnap::previewPoints(pole, Measure::MeasureSnapMode::Midpoint).empty()
-    );
+    EXPECT_TRUE(Measure::MeasureSnap::previewPoints(pole, Measure::MeasureSnapMode::Midpoint).empty());
 }
 
 // A closed edge has no endpoint, so the vertex preview must not draw two markers
