@@ -40,6 +40,7 @@ add_executable(Part_tests_run
 set(PartTestData_Files
         brepfiles/cylinder1.brep
         brepfiles/helix1.brep
+        brepfiles/sectioncolumn1.brep
 )
 
 ADD_CUSTOM_TARGET(PartTestData ALL

@@ -3,9 +3,32 @@
 #include <gtest/gtest.h>
 
 #include <cmath>
+#include <limits>
 #include <numbers>
 
 #include <Mod/Part/App/SectionCap.h>
+
+#include <algorithm>
+#include <cmath>
+#include <map>
+#include <numbers>
+
+#include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
+#include <TopoDS_Shape.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepTools.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+
+#include "Mod/Part/App/BRepMesh.h"
+
+#include <filesystem>
+#include <string>
+
+#include <App/Application.h>
+#include <src/App/InitApplication.h>
+
+#include "Mod/Part/App/FeatureSectionAnalysis.h"
 
 using namespace Part::SectionCap;
 
@@ -193,7 +216,7 @@ TEST(SectionCapChain, testBoxSectionChainsIntoOneClosedLoop)
     const auto segments = sliceTriangles(box(10), Z, 5.0);
 
     // Act
-    const auto loops = chainLoops(segments, 1e-7);
+    const auto loops = chainLoops(segments);
 
     // Assert - the outline of a box is a single closed rectangle
     ASSERT_EQ(loops.size(), 1);
@@ -202,7 +225,7 @@ TEST(SectionCapChain, testBoxSectionChainsIntoOneClosedLoop)
 
 TEST(SectionCapChain, testTheLoopEnclosesTheCrossSectionArea)
 {
-    const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0), 1e-7);
+    const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0));
 
     ASSERT_EQ(loops.size(), 1);
     EXPECT_NEAR(soupArea(fillLoops(loops, U, V)), 100.0, 1e-3);
@@ -223,7 +246,7 @@ TEST(SectionCapChain, testTwoSeparateBodiesGiveTwoLoops)
     }
 
     // Act
-    const auto loops = chainLoops(sliceTriangles(soup, Z, 5.0), 1e-7);
+    const auto loops = chainLoops(sliceTriangles(soup, Z, 5.0));
 
     // Assert
     ASSERT_EQ(loops.size(), 2);
@@ -244,34 +267,16 @@ TEST(SectionCapChain, testAnOpenOutlineIsStillReturned)
     soup.indices = {0, 1, 2, 0, 2, 3};
 
     // Act
-    const auto loops = chainLoops(sliceTriangles(soup, Z, 0.0), 1e-7);
+    const auto loops = chainLoops(sliceTriangles(soup, Z, 0.0));
 
     // Assert - a partial boundary is more use to draw than nothing at all
     ASSERT_EQ(loops.size(), 1);
     EXPECT_FALSE(isClosed(loops[0], 1e-7));
 }
 
-TEST(SectionCapChain, testEndpointsWithinToleranceAreJoined)
-{
-    // Arrange - a triangle whose corners miss each other by 1e-9
-    using V = Base::Vector3d;
-    std::vector<Segment> segments = {
-        Segment {V(0, 0, 0), V(10, 0, 0)},
-        Segment {V(10, 0, 1e-9), V(10, 10, 0)},
-        Segment {V(10, 10, 0), V(0, 0, -1e-9)},
-    };
-
-    // Act
-    const auto loops = chainLoops(segments, 1e-6);
-
-    // Assert - tessellation seams must not break the chain
-    ASSERT_EQ(loops.size(), 1);
-    EXPECT_TRUE(isClosed(loops[0], 1e-6));
-}
-
 TEST(SectionCapChain, testNoSegmentsGivesNoLoops)
 {
-    EXPECT_TRUE(chainLoops({}, 1e-7).empty());
+    EXPECT_TRUE(chainLoops({}).empty());
 }
 
 namespace
@@ -296,37 +301,226 @@ double totalLength(const std::vector<Segment>& segments)
 
 }  // namespace
 
+namespace
+{
+/// Build a closed contour's segments the way slicing would: each crossing sits
+/// on its own mesh edge, so chaining matches them by identity.
+std::vector<Segment> keyedRing(const std::vector<Base::Vector3d>& points, int firstEdge)
+{
+    std::vector<Segment> out;
+    const int n = static_cast<int>(points.size());
+    for (int i = 0; i < n; ++i) {
+        const int j = (i + 1) % n;
+        out.push_back(Segment {
+            points[i],
+            points[j],
+            MeshEdge {firstEdge + i, firstEdge + i},
+            MeshEdge {firstEdge + j, firstEdge + j},
+        });
+    }
+    return out;
+}
+}  // namespace
+
+
+
 TEST(SectionCapChain, testASliverAtTheStartDoesNotStealTheOutline)
 {
     // Arrange - a cut grazing a chamfer leaves a pair of near coincident
-    // segments in the soup. Seeded first, the walk closes on them because their
-    // ends are within tolerance of each other, and the outline they belong to
-    // is left without them. Which segment is seeded first is an accident of the
-    // triangle order, which is why the same body sections cleanly one moment
-    // and shatters the next.
-    auto seg = [](double x0, double y0, double x1, double y1) {
-        return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
+    // segments in the soup. Chaining used to close on them because their ends
+    // were within tolerance of each other, abandoning the outline they belong
+    // to. Matching by mesh edge instead, nearness cannot mislead it.
+    const std::vector<Base::Vector3d> contour = {
+        Base::Vector3d(0, 0, 0),
+        Base::Vector3d(0.005, 0, 0),  // the sliver, first in the list
+        Base::Vector3d(0.0001, 0.0001, 0),
+        Base::Vector3d(10, 0, 0),
+        Base::Vector3d(10, 10, 0),
+        Base::Vector3d(0, 10, 0),
     };
-    const std::vector<Segment> segments = {
-        seg(0, 0, 0.005, 0),  // the sliver, first in the list
-        seg(0.005, 0, 0.0001, 0.0001),
-        seg(0.0001, 0.0001, 10, 0),  // the outline it belongs to
-        seg(10, 0, 10, 10),
-        seg(10, 10, 0, 10),
-        seg(0, 10, 0, 0),
-    };
+    const auto segments = keyedRing(contour, 0);
 
     // Act
-    const auto loops = chainLoops(segments, 0.01);
+    const auto loops = chainLoops(segments);
 
     // Assert - one outline that spans the square, not a sliver plus wreckage
     ASSERT_EQ(loops.size(), 1U);
-    EXPECT_TRUE(Part::SectionCap::isClosed(loops.front(), 0.01));
+    EXPECT_TRUE(isClosedExactly(loops[0]));
     double span = 0.0;
-    for (std::size_t i = 0; i + 1 < loops.front().size(); ++i) {
-        span += Base::Distance(loops.front()[i], loops.front()[i + 1]);
+    for (const auto& point : loops[0]) {
+        span = std::max(span, point.x);
     }
-    EXPECT_GT(span, 30.0) << "the loop should go round the square, not sit in a corner";
+    EXPECT_GT(span, 9.0) << "the walk kept the outline, not the sliver";
+}
+
+namespace
+{
+/// How many edges of the soup are used by only one triangle. A closed manifold
+/// has none, which is what makes every plane cut through it close.
+int boundaryEdgeCount(const TriangleSoup& soup)
+{
+    std::map<std::pair<int, int>, int> uses;
+    for (std::size_t i = 0; i + 2 < soup.indices.size(); i += 3) {
+        const int v[3] = {soup.indices[i], soup.indices[i + 1], soup.indices[i + 2]};
+        for (int e = 0; e < 3; ++e) {
+            const int a = v[e];
+            const int b = v[(e + 1) % 3];
+            ++uses[{std::min(a, b), std::max(a, b)}];
+        }
+    }
+    return static_cast<int>(
+        std::count_if(uses.begin(), uses.end(), [](const auto& it) { return it.second == 1; })
+    );
+}
+}  // namespace
+
+class SectionCapSavedSolid: public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        tests::initApplication();
+    }
+};
+
+TEST_F(SectionCapSavedSolid, closesAtEveryAngle)
+{
+    // The guide from a real jig: a slender column with chamfers top and bottom.
+    // Cuts that leave through its flat bottom came out hollow, because the
+    // contour broke where it crossed from the side wall onto the end face.
+    const std::string path =
+        App::Application::getHomePath() + "/tests/brepfiles/sectioncolumn1.brep";
+    if (!std::filesystem::exists(path)) {
+        GTEST_SKIP() << "asset not installed: " << path;
+    }
+    BRep_Builder builder;
+    TopoDS_Shape shape;
+    ASSERT_TRUE(BRepTools::Read(shape, path.c_str(), builder));
+    ASSERT_FALSE(shape.IsNull());
+
+    // Meshed the way the view provider meshes it, deflection and all.
+    const auto soup = Part::SectionCap::meshSolid(shape);
+    ASSERT_GT(soup.indices.size(), 0U);
+    EXPECT_EQ(boundaryEdgeCount(soup), 0) << "a solid must mesh to a closed manifold";
+
+    int cuts = 0;
+    int openContours = 0;
+    for (int tilt = 0; tilt <= 25; ++tilt) {
+        const double a = tilt * (std::numbers::pi / 180.0);
+        Base::Vector3d normal(0.0, -std::cos(a), std::sin(a));
+        normal.Normalize();
+
+        double low = std::numeric_limits<double>::max();
+        double high = std::numeric_limits<double>::lowest();
+        for (const auto& point : soup.points) {
+            const double d = point * normal;
+            low = std::min(low, d);
+            high = std::max(high, d);
+        }
+
+        for (double offset = low + 0.5; offset < high - 0.5; offset += 0.7) {
+            const auto loops = chainLoops(sliceTriangles(soup, normal, offset));
+            if (loops.empty()) {
+                continue;
+            }
+            for (const auto& loop : loops) {
+                if (!isClosedExactly(loop)) {
+                    ++openContours;
+                    if (openContours == 1) {
+                        ADD_FAILURE() << "open contour at tilt " << tilt << " offset "
+                                      << offset << " (" << loops.size() << " loops, "
+                                      << loop.size() << " points, ends "
+                                      << Base::Distance(loop.front(), loop.back())
+                                      << " mm apart)";
+                    }
+                }
+            }
+            ++cuts;
+        }
+    }
+    EXPECT_GT(cuts, 500);
+    EXPECT_EQ(openContours, 0) << openContours << " contours of " << cuts << " cuts did not close";
+}
+
+TEST(SectionCapMesh, testASolidMeshesWatertight)
+{
+    // The invariant the whole cap rests on. A shape's own triangulation is per
+    // face and does not meet along shared edges; this one has to.
+    const TopoDS_Shape box = BRepPrimAPI_MakeBox(10.0, 20.0, 30.0).Shape();
+
+    const auto soup = Part::SectionCap::meshSolid(box);
+
+    EXPECT_GT(soup.indices.size(), 0U);
+    EXPECT_EQ(boundaryEdgeCount(soup), 0) << "a solid must mesh to a closed manifold";
+}
+
+TEST(SectionCapMesh, testACurvedSolidMeshesWatertight)
+{
+    // A cylinder's seam is where per face triangulation comes apart.
+    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(7.5, 220.0).Shape();
+
+    const auto soup = Part::SectionCap::meshSolid(cylinder);
+
+    EXPECT_EQ(boundaryEdgeCount(soup), 0);
+}
+
+TEST(SectionCapMesh, testEveryCutOfASolidClosesAtEveryAngle)
+{
+    // The behaviour the user sees: sweep the plane and the cap never blinks.
+    const TopoDS_Shape cylinder = BRepPrimAPI_MakeCylinder(7.5, 220.0).Shape();
+    const auto soup = Part::SectionCap::meshSolid(cylinder);
+    ASSERT_EQ(boundaryEdgeCount(soup), 0);
+
+    int cuts = 0;
+    for (int tilt = 0; tilt <= 40; ++tilt) {
+        const double a = tilt * (std::numbers::pi / 180.0);
+        const Base::Vector3d normal(0.0, std::sin(a), std::cos(a));
+
+        // Only where the plane actually meets the solid; outside that there is
+        // rightly nothing to cut.
+        double low = std::numeric_limits<double>::max();
+        double high = std::numeric_limits<double>::lowest();
+        for (const auto& point : soup.points) {
+            const double d = point * normal;
+            low = std::min(low, d);
+            high = std::max(high, d);
+        }
+
+        for (double offset = low + 1.0; offset < high - 1.0; offset += 3.7) {
+            const auto loops = chainLoops(sliceTriangles(soup, normal, offset));
+            ASSERT_FALSE(loops.empty()) << "no contour at tilt " << tilt << " offset " << offset;
+            for (const auto& loop : loops) {
+                EXPECT_TRUE(isClosedExactly(loop))
+                    << "open contour at tilt " << tilt << " offset " << offset;
+            }
+            ++cuts;
+        }
+    }
+    EXPECT_GT(cuts, 1000);
+}
+
+TEST(SectionCapChain, testTwoRegionsOfOneBodyAreNotJoined)
+{
+    // A fork or a U sections into separate regions. They are each closed, and
+    // joining them would weld a bridge across the gap between the prongs.
+    auto square = [](double x0) {
+        return std::vector<Base::Vector3d> {
+            Base::Vector3d(x0, 0, 0),
+            Base::Vector3d(x0 + 4, 0, 0),
+            Base::Vector3d(x0 + 4, 4, 0),
+            Base::Vector3d(x0, 4, 0),
+        };
+    };
+    std::vector<Segment> segments = keyedRing(square(0), 0);
+    const auto second = keyedRing(square(20), 100);
+    segments.insert(segments.end(), second.begin(), second.end());
+
+    const auto loops = chainLoops(segments);
+
+    ASSERT_EQ(loops.size(), 2U);
+    for (const auto& loop : loops) {
+        EXPECT_TRUE(isClosedExactly(loop));
+    }
 }
 
 TEST(SectionCapChain, testTwoLoopsTouchingAtAPointStayTwoLoops)
@@ -335,27 +529,31 @@ TEST(SectionCapChain, testTwoLoopsTouchingAtAPointStayTwoLoops)
     // wherever a body pinches or a hole reaches its outer wall. Four segment
     // ends meet at that point, so the walk has to pick the one that stays on
     // the boundary it is already tracing.
-    auto edges = [](double x0, double y0, double x1, double y1) {
-        return Segment {Base::Vector3d(x0, y0, 0), Base::Vector3d(x1, y1, 0)};
-    };
-    const std::vector<Segment> segments = {
-        edges(0, 0, 1, 0),
-        edges(1, 0, 1, 1),
-        edges(1, 1, 0, 1),
-        edges(0, 1, 0, 0),
-        edges(0, 0, -1, 0),
-        edges(-1, 0, -1, -1),
-        edges(-1, -1, 0, -1),
-        edges(0, -1, 0, 0),
-    };
+    // The two squares meet in space but not in the mesh: the pinch point is two
+    // distinct crossings, one on each boundary, so their keys differ.
+    std::vector<Segment> segments = keyedRing(
+        {Base::Vector3d(0, 0, 0),
+         Base::Vector3d(1, 0, 0),
+         Base::Vector3d(1, 1, 0),
+         Base::Vector3d(0, 1, 0)},
+        0
+    );
+    const auto below = keyedRing(
+        {Base::Vector3d(0, 0, 0),
+         Base::Vector3d(-1, 0, 0),
+         Base::Vector3d(-1, -1, 0),
+         Base::Vector3d(0, -1, 0)},
+        100
+    );
+    segments.insert(segments.end(), below.begin(), below.end());
 
     // Act
-    const auto loops = chainLoops(segments, 1e-6);
+    const auto loops = chainLoops(segments);
 
     // Assert - two squares, each closed, neither straying into the other
     ASSERT_EQ(loops.size(), 2U);
     for (const auto& loop : loops) {
-        EXPECT_TRUE(Part::SectionCap::isClosed(loop, 1e-6));
+        EXPECT_TRUE(isClosedExactly(loop));
         // Both squares meet at the origin, so the loop's first point says
         // nothing about which one it is. What matters is that it never holds
         // points from both.
@@ -450,6 +648,63 @@ TEST(SectionCapFill, testClosureIsSpeltByRepeatingTheFirstPoint)
     EXPECT_NEAR(soupArea(fillLoops({square(0, 0, 10)}, U, V)), 100.0, 1e-3);
 }
 
+
+TEST(SectionCapFill, testAContourRestingOnAFlatFaceIsStillFilled)
+{
+    // The cut leaves the solid through its flat bottom, so a run of the contour
+    // lies along that face - every one of those points at the very same sweep
+    // level. Taken from a cut that came out hollow.
+    // Data from manual tests which failed
+    const std::vector<Base::Vector3d> contour = {
+    Base::Vector3d(64.145546, -50.982294, 15.325052),
+    Base::Vector3d(63.804646, -51.032620, 15.000000),
+    Base::Vector3d(63.769105, -51.032620, 15.000000),
+    Base::Vector3d(63.079714, -51.032620, 15.000000),
+    Base::Vector3d(62.763278, -51.032620, 15.000000),
+    Base::Vector3d(56.968292, -51.032620, 15.000000),
+    Base::Vector3d(51.587550, -51.032620, 15.000000),
+    Base::Vector3d(51.349516, -51.032620, 15.000000),
+    Base::Vector3d(51.206736, -51.032620, 15.000000),
+    Base::Vector3d(50.699400, -50.956737, 15.490120),
+    Base::Vector3d(50.216004, -50.877793, 16.000000),
+    Base::Vector3d(50.525960, -49.757329, 23.236882),
+    Base::Vector3d(50.540825, -49.703594, 23.583945),
+    Base::Vector3d(51.277573, -48.336461, 32.414015),
+    Base::Vector3d(51.337563, -48.225143, 33.132998),
+    Base::Vector3d(51.427847, -48.121931, 33.799630),
+    Base::Vector3d(52.443314, -46.961052, 41.297542),
+    Base::Vector3d(53.610771, -46.113923, 46.768997),
+    Base::Vector3d(53.802628, -45.974709, 47.668160),
+    Base::Vector3d(55.097657, -45.422110, 51.237296),
+    Base::Vector3d(55.347343, -45.315567, 51.925438),
+    Base::Vector3d(55.622127, -45.265873, 52.246406),
+    Base::Vector3d(57.000000, -45.016685, 53.855862),
+    Base::Vector3d(57.290682, -45.029916, 53.770408),
+    Base::Vector3d(58.677731, -45.093048, 53.362649),
+    Base::Vector3d(60.037017, -45.469070, 50.933992),
+    Base::Vector3d(60.296406, -45.540825, 50.470538),
+    Base::Vector3d(61.571173, -46.227797, 46.033504),
+    Base::Vector3d(61.774857, -46.337563, 45.324550),
+    Base::Vector3d(62.905963, -47.326986, 38.934036),
+    Base::Vector3d(63.038948, -47.443314, 38.182699),
+    Base::Vector3d(63.962104, -48.715547, 29.965569),
+    Base::Vector3d(64.025291, -48.802628, 29.403130),
+    Base::Vector3d(64.673577, -50.321902, 19.590402),
+    Base::Vector3d(64.684433, -50.347343, 19.426082),
+    Base::Vector3d(64.780364, -50.877793, 16.000000),
+    Base::Vector3d(64.145546, -50.982294, 15.325052)
+    };
+    Base::Vector3d normal(0.0, -0.9882, 0.1530);
+    normal.Normalize();
+    Base::Vector3d u;
+    Base::Vector3d v;
+    Part::SectionAnalysis::planeFrame(normal, u, v);
+
+    const auto fill = fillLoops({contour}, u, v);
+
+    EXPECT_GT(fill.indices.size(), 0U) << "a closed contour must fill";
+}
+
 TEST(SectionCapFill, testEveryTriangleIndexIsInRange)
 {
     const auto soup = fillLoops({square(0, 0, 10), square(3, 3, 4)}, U, V);
@@ -465,7 +720,7 @@ TEST(SectionCapFill, testEveryTriangleIndexIsInRange)
 TEST(SectionCapFill, testFillRunsFromTheSlicedGeometry)
 {
     // the whole chain, as the view provider drives it
-    const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0), 1e-7);
+    const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0));
     ASSERT_EQ(loops.size(), 1);
 
     const auto soup = fillLoops(loops, U, V);

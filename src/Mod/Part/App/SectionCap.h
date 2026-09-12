@@ -21,12 +21,15 @@
 
 #pragma once
 
+#include <utility>
 #include <vector>
 
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
 
 #include <Mod/Part/PartGlobal.h>
+
+class TopoDS_Shape;
 
 
 namespace Part
@@ -49,10 +52,19 @@ namespace SectionCap
 {
 
 /// A single crossing of one triangle by the cutting plane.
+/// One edge of the mesh, named by its two vertex indices, lower first.
+///
+/// Two triangles sharing an edge name it identically, which is what lets the
+/// chaining below match endpoints by integer equality instead of by distance.
+using MeshEdge = std::pair<int, int>;
+
 struct Segment
 {
     Base::Vector3d start;
     Base::Vector3d end;
+    /// The edges the endpoints sit on. Absent for segments not cut from a mesh.
+    MeshEdge startEdge {-1, -1};
+    MeshEdge endEdge {-1, -1};
 };
 
 /// Triangles are supplied flattened: `indices` holds 3 entries per triangle,
@@ -62,6 +74,17 @@ struct TriangleSoup
     std::vector<Base::Vector3d> points;
     std::vector<int> indices;
 };
+
+/// FreeCAD's own meshing default. In Radians
+constexpr double meshAngularDeflection = 0.5;
+
+/// Mesh a solid into a watertight triangle soup.
+///
+/// The shape's own triangulation is per face and unwelded, so a contour cut
+/// through it breaks at every face boundary. This rebuilds and merges, giving a
+/// closed manifold: every edge is shared by two triangles, so every cut closes.
+/// Pass deflection <= 0 to size it from the shape.
+PartExport TriangleSoup meshSolid(const TopoDS_Shape& shape, double deflection = 0.0);
 
 /// Where the plane crosses one triangle, if it crosses at all.
 ///
@@ -82,22 +105,26 @@ PartExport std::optional<Segment> planeTriangleIntersection(
 );
 
 /// Every place the plane crosses a triangle, as an unordered segment list.
+/// The plane's crossing of one triangle, carrying the edges it crossed.
+PartExport std::optional<Segment> triangleCrossing(
+    const Base::Vector3d& a,
+    const Base::Vector3d& b,
+    const Base::Vector3d& c,
+    int ia,
+    int ib,
+    int ic,
+    const Base::Vector3d& normal,
+    double offset
+);
+
 PartExport std::vector<Segment> sliceTriangles(
     const TriangleSoup& soup,
     const Base::Vector3d& normal,
     double offset
 );
 
-/// Join segments end to end into closed loops, within `tolerance`.
-///
-/// Tessellation seams leave endpoints that coincide only to within the mesh
-/// tolerance, so joining has to be fuzzy. Chains that fail to close are still
-/// returned - an open mesh has no closed outline, and a partial boundary is
-/// more useful to draw than nothing.
-PartExport std::vector<std::vector<Base::Vector3d>> chainLoops(
-    const std::vector<Segment>& segments,
-    double tolerance
-);
+/// Join segments end to end into loops, matching endpoints by mesh edge.
+PartExport std::vector<std::vector<Base::Vector3d>> chainLoops(const std::vector<Segment>& segments);
 
 /// A solid cap covering the region enclosed by `loops`, as triangles.
 ///
@@ -134,6 +161,9 @@ PartExport bool extentAlong(
 
 /// True if the loop's first and last point meet within `tolerance`.
 PartExport bool isClosed(const std::vector<Base::Vector3d>& loop, double tolerance);
+
+/// Whether chaining ran the contour all the way back to where it started.
+PartExport bool isClosedExactly(const std::vector<Base::Vector3d>& loop);
 
 
 /// Hatch lines across a cap that is already triangulated.
