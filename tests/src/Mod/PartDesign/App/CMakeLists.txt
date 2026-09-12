@@ -8,7 +8,6 @@ add_executable(PartDesign_tests_run
         Pipe.cpp
         Revolution.cpp
         GeoFeatureGroupExtension.cpp
-        ThinExtrusionGeometry.cpp
 )
 
 set(PartDesignTestData_Files
