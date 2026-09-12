@@ -460,21 +460,42 @@ private:
     std::vector<Equation> equations;
 };
 
+namespace
+{
+
+enum class ConstraintKind
+{
+    Unknown,
+    PointCoincident,
+    AxisCoincident,
+    PlaneCoincident,
+};
+
+ConstraintKind constraintKind(const Constraint& constraint)
+{
+    if (!isCompatible(constraint.referenceType, constraint.targetType)) {
+        return ConstraintKind::Unknown;
+    }
+
+    switch (constraint.targetType) {
+        case GeometryType::Point:
+            return ConstraintKind::PointCoincident;
+        case GeometryType::Axis:
+            return ConstraintKind::AxisCoincident;
+        case GeometryType::Plane:
+            return ConstraintKind::PlaneCoincident;
+        default:
+            return ConstraintKind::Unknown;
+    }
+}
+
+}  // namespace
+
 std::optional<Base::Placement> solve(
     const Base::Placement& candidate,
     const std::vector<Constraint>& constraints
 )
 {
-    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
-
-    enum class ConstraintKind
-    {
-        Unknown,
-        PointCoincident,
-        AxisCoincident,
-        PlaneCoincident,
-    };
-
     struct PlacementConstraint
     {
         Base::Placement local;
@@ -489,25 +510,6 @@ std::optional<Base::Placement> solve(
         Base::Vector3d local;
         Base::Vector3d target;
         bool locked;
-    };
-
-    auto constraintKind = [](SnapGeometryType referenceType, SnapGeometryType targetType) {
-        if (referenceType == SnapGeometryType::Point && targetType == SnapGeometryType::Point) {
-            return ConstraintKind::PointCoincident;
-        }
-        if (referenceType == SnapGeometryType::Axis && targetType == SnapGeometryType::Axis) {
-            return ConstraintKind::AxisCoincident;
-        }
-        if (referenceType == SnapGeometryType::AxisSystem && targetType == SnapGeometryType::Axis) {
-            return ConstraintKind::AxisCoincident;
-        }
-        if (referenceType == SnapGeometryType::Plane && targetType == SnapGeometryType::Plane) {
-            return ConstraintKind::PlaneCoincident;
-        }
-        if (referenceType == SnapGeometryType::AxisSystem && targetType == SnapGeometryType::Plane) {
-            return ConstraintKind::PlaneCoincident;
-        }
-        return ConstraintKind::Unknown;
     };
 
     auto hasDirection = [](ConstraintKind kind) {
@@ -525,17 +527,17 @@ std::optional<Base::Placement> solve(
     baseConstraints.reserve(constraints.size());
     for (std::size_t i = 0; i < constraints.size(); ++i) {
         const auto& constraint = constraints[i];
+        const auto kind = constraintKind(constraint);
+        if (kind == ConstraintKind::Unknown) {
+            return std::nullopt;
+        }
         baseConstraints.push_back({
             constraint.localPlacement,
             constraint.targetPlacement,
-            constraintKind(constraint.referenceType, constraint.targetType),
+            kind,
             i + 1 < constraints.size(),
             constraint.targetDirectionSignFixed,
         });
-    }
-
-    if (baseConstraints.back().kind == ConstraintKind::Unknown) {
-        return std::nullopt;
     }
 
     constexpr double directionIndependenceTolerance = 1e-4;
