@@ -493,15 +493,43 @@
       <item>
        <widget class="QPushButton" name="cumulativeSnapButton">
         <property name="toolTip">
-         <string>Snaps geometry on the transformed object to geometry on another object</string>
+         <string>Snaps cumulatively by selecting references on the transformed object and targets on other objects</string>
         </property>
         <property name="text">
-         <string>Snap to Geometry</string>
+         <string>Cumulative Snap</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="cumulativeSnapHistoryList">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>100</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="cumulativeSnapButtonLayout">
+        <item>
+         <widget class="QPushButton" name="undoCumulativeSnapButton">
+          <property name="text">
+           <string>Undo Last</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="clearCumulativeSnapButton">
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -806,6 +834,8 @@
   <tabstop>alignToOtherObjectButton</tabstop>
   <tabstop>flipPartButton</tabstop>
   <tabstop>cumulativeSnapButton</tabstop>
+  <tabstop>undoCumulativeSnapButton</tabstop>
+  <tabstop>clearCumulativeSnapButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
