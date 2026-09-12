@@ -490,6 +490,19 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="cumulativeSnapButton">
+        <property name="toolTip">
+         <string>Snaps geometry on the transformed object to geometry on another object</string>
+        </property>
+        <property name="text">
+         <string>Snap to Geometry</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -792,6 +805,7 @@
   <tabstop>zRotationSpinBox</tabstop>
   <tabstop>alignToOtherObjectButton</tabstop>
   <tabstop>flipPartButton</tabstop>
+  <tabstop>cumulativeSnapButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

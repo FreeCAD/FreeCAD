@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "TaskView/TaskDialog.h"
 #include "Selection/Selection.h"
+#include "TaskView/TaskDialog.h"
 #include "ViewProviderDragger.h"
 
 #include <Inventor/nodes/SoSeparator.h>
@@ -42,6 +42,8 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
+#include <vector>
 
 class SoDragger;
 class SoTransform;
@@ -65,7 +67,9 @@ public:
         None,
         SelectTransformOrigin,
         SelectAlignTarget,
-        SelectCustomCS
+        SelectCustomCS,
+        SelectCumulativeSnapReference,
+        SelectCumulativeSnapTarget
     };
     enum class PlacementMode
     {
@@ -115,6 +119,7 @@ public:
     ~TaskTransform() override;
 
     std::array<QWidget*, 3> taskWidgets() const;
+    void onDocumentRestored();
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
@@ -129,6 +134,7 @@ private Q_SLOTS:
 
     void onAlignToOtherObject();
     void onFlip();
+    void onCumulativeSnap();
 
     void onCoordinateSystemChange(int mode);
 
@@ -177,6 +183,25 @@ private:
     void moveObjectToDragger(
         ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All
     );
+    App::SubObjectPlacementProvider::SnapGeometryType snapGeometryType(
+        const SelectionChanges& msg
+    ) const;
+    bool isCumulativeSnapMovingObjectSelection(
+        const SelectionChanges& msg,
+        const App::DocumentObject* object,
+        const App::DocumentObject* originalObject
+    ) const;
+    std::optional<Base::Placement> solveCumulativeSnapObjectPlacement(
+        const Base::Placement& candidate,
+        const Base::Placement& currentReferenceLocalPlacement,
+        const Base::Placement& currentReferenceTargetPlacement,
+        App::SubObjectPlacementProvider::SnapGeometryType currentReferenceType,
+        App::SubObjectPlacementProvider::SnapGeometryType currentTargetType
+    ) const;
+    void startCumulativeSnap();
+    void stopCumulativeSnap();
+    void restoreCumulativeSnapPlacement(const Base::Placement& placement);
+    void updateCumulativeSnapUi() const;
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
@@ -205,6 +230,14 @@ private:
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
+    bool cumulativeSnapActive {false};
+    struct CumulativeSnapReference
+    {
+        std::string label;
+        Base::Placement localPlacement;
+        App::SubObjectPlacementProvider::SnapGeometryType type;
+    };
+    std::optional<CumulativeSnapReference> currentCumulativeSnapReference {};
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/History/Dragger"
@@ -232,7 +265,6 @@ public:
 
 private:
     void openCommand();
-    void updateDraggerPlacement();
 
 private:
     ViewProviderDragger* vp;
