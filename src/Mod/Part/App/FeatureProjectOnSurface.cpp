@@ -380,7 +380,6 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
     }
 
 
-
     // extrude the source face towards the target
     const auto length = 2.0 * Max(Sqrt(bounds.SquareExtent()), 1.0);
     gp_Vec extrusion(direction);
