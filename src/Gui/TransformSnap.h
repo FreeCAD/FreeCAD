@@ -52,4 +52,19 @@ Base::Placement preferredPlacement(
     GeometryType targetType
 );
 
+struct Constraint
+{
+    Base::Placement localPlacement;
+    Base::Placement targetPlacement;
+    GeometryType referenceType;
+    GeometryType targetType;
+    bool targetDirectionFixed {false};
+};
+
+// Earlier entries are locked snaps; the final entry is the proposed snap.
+std::optional<Base::Placement> solve(
+    const Base::Placement& candidate,
+    const std::vector<Constraint>& references
+);
+
 }  // namespace Gui::TransformSnap
