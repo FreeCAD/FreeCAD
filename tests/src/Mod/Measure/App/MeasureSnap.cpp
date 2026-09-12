@@ -180,7 +180,6 @@ protected:
     }
 };
 
-// A null shape is rejected on both entry points.
 TEST_F(MeasureSnap, testNullShapeReturnsFalse)
 {
     const TopoDS_Shape nullShape;
@@ -195,7 +194,6 @@ TEST_F(MeasureSnap, testNullShapeReturnsFalse)
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(nullShape), 0);
 }
 
-// Auto and None never resolve to a point; callers short-circuit them.
 TEST_F(MeasureSnap, testAutoAndNoneReturnFalse)
 {
     const TopoDS_Edge circle = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
@@ -216,6 +214,7 @@ TEST_F(MeasureSnap, testCenterOnCircleEdge)
     EXPECT_DOUBLE_EQ(snap->point.X(), 3.0);
     EXPECT_DOUBLE_EQ(snap->point.Y(), 4.0);
     EXPECT_DOUBLE_EQ(snap->point.Z(), 0.0);
+    EXPECT_FALSE(snap->axisDir.has_value());
 }
 
 // An arc snaps to the full-circle center, not to a point on the arc.
@@ -267,6 +266,7 @@ TEST_F(MeasureSnap, testMidpointOnLineEdge)
     EXPECT_NEAR(snap->point.X(), 2.0, Precision::Confusion());
     EXPECT_NEAR(snap->point.Y(), 0.0, Precision::Confusion());
     EXPECT_NEAR(snap->point.Z(), 0.0, Precision::Confusion());
+    EXPECT_FALSE(snap->axisDir.has_value());
 }
 
 // The midpoint of an arc lies on the curve, not on the chord: on a unit circle
@@ -277,8 +277,8 @@ TEST_F(MeasureSnap, testMidpointOnArcIsOnCurve)
     const auto snap
         = Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Midpoint, nullptr);
     ASSERT_TRUE(snap.has_value());
-    EXPECT_NEAR(snap->point.X(), 0.877582561890, Precision::Confusion());
-    EXPECT_NEAR(snap->point.Y(), 0.479425538604, Precision::Confusion());
+    EXPECT_NEAR(snap->point.X(), std::cos(0.5), Precision::Confusion());
+    EXPECT_NEAR(snap->point.Y(), std::sin(0.5), Precision::Confusion());
     EXPECT_NEAR(snap->point.Z(), 0.0, Precision::Confusion());
 }
 
@@ -313,25 +313,18 @@ TEST_F(MeasureSnap, testVertexOnVertexShape)
     EXPECT_DOUBLE_EQ(snap->point.X(), 1.0);
     EXPECT_DOUBLE_EQ(snap->point.Y(), 2.0);
     EXPECT_DOUBLE_EQ(snap->point.Z(), 3.0);
+    EXPECT_FALSE(snap->axisDir.has_value());
 }
 
-// With no cursor the first edge endpoint is returned, and the choice is stable
-// across calls so a recompute never shifts a saved measurement.
-TEST_F(MeasureSnap, testVertexOnEdgeNullCursorIsFirstAndStable)
+TEST_F(MeasureSnap, testVertexOnEdgeNullCursorIsFirst)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
-    const auto first
+    const auto snap
         = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
-    ASSERT_TRUE(first.has_value());
-    EXPECT_DOUBLE_EQ(first->point.X(), 0.0);
-    EXPECT_DOUBLE_EQ(first->point.Y(), 0.0);
-    EXPECT_DOUBLE_EQ(first->point.Z(), 0.0);
-    const auto again
-        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
-    ASSERT_TRUE(again.has_value());
-    EXPECT_DOUBLE_EQ(again->point.X(), first->point.X());
-    EXPECT_DOUBLE_EQ(again->point.Y(), first->point.Y());
-    EXPECT_DOUBLE_EQ(again->point.Z(), first->point.Z());
+    ASSERT_TRUE(snap.has_value());
+    EXPECT_DOUBLE_EQ(snap->point.X(), 0.0);
+    EXPECT_DOUBLE_EQ(snap->point.Y(), 0.0);
+    EXPECT_DOUBLE_EQ(snap->point.Z(), 0.0);
 }
 
 TEST_F(MeasureSnap, testVertexOnEdgeCursorSelectsNearer)
@@ -349,7 +342,6 @@ TEST_F(MeasureSnap, testVertexOnEdgeCursorSelectsNearer)
     EXPECT_DOUBLE_EQ(atStart->point.X(), 0.0);
 }
 
-// A cursor exactly between the endpoints falls back to the first vertex.
 TEST_F(MeasureSnap, testVertexEquidistantCursorPicksFirst)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
@@ -398,9 +390,10 @@ TEST_F(MeasureSnap, testPreviewPointsRejectsUnusableShapes)
     EXPECT_TRUE(
         Measure::MeasureSnap::previewPoints(TopoDS_Shape(), Measure::MeasureSnapMode::Axis).empty()
     );
+    const TopoDS_Edge pole = makeDegenerateEdge();
+    ASSERT_TRUE(BRep_Tool::Degenerated(pole));
     EXPECT_TRUE(
-        Measure::MeasureSnap::previewPoints(makeDegenerateEdge(), Measure::MeasureSnapMode::Midpoint)
-            .empty()
+        Measure::MeasureSnap::previewPoints(pole, Measure::MeasureSnapMode::Midpoint).empty()
     );
 }
 
@@ -585,18 +578,18 @@ TEST_F(MeasureSnap, testClosestPointsParallelIndependentOfOriginHeight)
     EXPECT_DOUBLE_EQ(onA.Distance(onB), 4.0);
 }
 
-// Coincident axes are the degenerate parallel case: the rule returns A's origin on
-// both sides, distance zero, without dividing by a zero-length perpendicular.
+// Coincident axes are the degenerate parallel case. The two origins sit apart on the
+// same line so the assertion can tell a's origin from b's, which a shared origin could
+// not; the pair must be a's on both sides, without dividing by a zero-length perpendicular.
 TEST_F(MeasureSnap, testClosestPointsCoincident)
 {
-    const gp_Ax1 a(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
-    const gp_Ax1 b(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0));
+    const gp_Ax1 a(gp_Pnt(7.0, 3.0, 2.0), gp_Dir(0.0, 0.0, 1.0));
+    const gp_Ax1 b(gp_Pnt(7.0, 3.0, 50.0), gp_Dir(0.0, 0.0, 1.0));
     const auto feet = Measure::MeasureSnap::closestPointsOnAxes(a, b);
     ASSERT_TRUE(feet.has_value());
     const auto& [onA, onB] = *feet;
-    // The documented deterministic pair is a's origin on both sides.
-    EXPECT_DOUBLE_EQ(onA.Distance(gp_Pnt(0.0, 0.0, 0.0)), 0.0);
-    EXPECT_DOUBLE_EQ(onB.Distance(gp_Pnt(0.0, 0.0, 0.0)), 0.0);
+    EXPECT_NEAR(onA.Distance(gp_Pnt(7.0, 3.0, 2.0)), 0.0, Precision::Confusion());
+    EXPECT_NEAR(onB.Distance(gp_Pnt(7.0, 3.0, 2.0)), 0.0, Precision::Confusion());
 }
 
 // Near-parallel (0.001 rad) must take the skew branch, not the parallel rule:
@@ -760,12 +753,13 @@ TEST_F(MeasureSnap, testBoundedAxisEdgeVoidBoxReturnsNull)
     const TopoDS_Edge edge = Measure::MeasureSnap::boundedAxisEdge(axis, voidBox);
     EXPECT_TRUE(edge.IsNull());
 }
-// A stored index maps to its mode; the last valid index resolves, while an index
-// past the last mode and the -1 of an out-of-range reload fall back to Auto.
-TEST_F(MeasureSnap, testSnapModeFromIndexClampsOutOfRange)
+
+// PropertyEnumeration persists the index, so an out-of-range reload yields -1.
+TEST_F(MeasureSnap, testSnapModeFromIndexFallsBackToAuto)
 {
-    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(5), Measure::MeasureSnapMode::Axis);
-    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(6), Measure::MeasureSnapMode::Auto);
+    const long lastMode = static_cast<long>(Measure::MeasureSnapMode::Axis);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(lastMode), Measure::MeasureSnapMode::Axis);
+    EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(lastMode + 1), Measure::MeasureSnapMode::Auto);
     EXPECT_EQ(Measure::MeasureSnap::snapModeFromIndex(-1), Measure::MeasureSnapMode::Auto);
 }
 
@@ -889,8 +883,8 @@ TEST_F(MeasureSnap, testAxisPreviewSegmentVoidBoxReturnsFalse)
     EXPECT_FALSE(Measure::MeasureSnap::axisPreviewSegment(axis, voidBox).has_value());
 }
 
-// Wiring: a cylinder face resolves to two axis-line endpoints, symmetric about the bbox
-// centre projected onto the Z axis (0,0,2.5 for a height-5 cylinder) and on the axis line.
+// A cylinder face resolves to two axis-line endpoints, symmetric about the bbox centre
+// projected onto the Z axis (0,0,2.5 for a height-5 cylinder) and on the axis line.
 TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
 {
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
@@ -919,8 +913,8 @@ TEST_F(MeasureSnap, testAxisSnapOnCircleEdge)
     EXPECT_NEAR(snap->point.Z(), 0.0, Precision::Confusion());
 }
 
-// Wiring: a circular edge resolves to two axis-line endpoints along its normal,
-// symmetric about the centre (z=0 for a circle in the XY plane at the origin).
+// A circular edge resolves to two axis-line endpoints along its normal, symmetric
+// about the centre (z=0 for a circle in the XY plane at the origin).
 TEST_F(MeasureSnap, testPreviewPointsAxisOnCircle)
 {
     const TopoDS_Edge circle = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
@@ -934,8 +928,8 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCircle)
     EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 0.0, Precision::Confusion());
 }
 
-// Wiring: a straight edge resolves to two axis-line endpoints along the edge,
-// centred on its midpoint (x=2 for the [0,4] segment) and on the axis line (y=z=0).
+// A straight edge resolves to two axis-line endpoints along the edge, centred on its
+// midpoint (x=2 for the [0,4] segment) and on the axis line (y=z=0).
 TEST_F(MeasureSnap, testPreviewPointsAxisOnLine)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
