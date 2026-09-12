@@ -686,7 +686,7 @@ def getCycleTimeEstimate(obj, formatted=True):
         )
 
     # Get the cycle time in seconds
-    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate)
 
     if math.isnan(seconds):
         return translate("CAM", "Cycletime Error")
