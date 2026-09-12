@@ -90,7 +90,7 @@ PyMOD_INIT_FUNC(Surface)
     // clang-format on
 
     // connect to unified measurement facility
-    Surface::Measure ::initialize();
+    Surface::Measure::initialize();
 
     PyMOD_Return(mod);
 }

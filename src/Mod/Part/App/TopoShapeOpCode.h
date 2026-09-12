@@ -74,6 +74,7 @@ public:
     static constexpr const char* Boolean = "BOL";
     static constexpr const char* Slice = "SLC";
     static constexpr const char* Maker = "MAK";
+    static constexpr const char* Defeaturing = "DEF";
     static constexpr const char* Fillet = "FLT";
     static constexpr const char* Chamfer = "CHF";
     static constexpr const char* Thicken = "THK";

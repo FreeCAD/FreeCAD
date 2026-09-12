@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -181,7 +183,6 @@ private:
 
     QString defaultFileName();
 
-    bool m_previewState{false};
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>

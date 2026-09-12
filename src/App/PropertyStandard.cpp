@@ -927,6 +927,95 @@ unsigned int PropertyIntegerList::getMemSize() const
 
 //**************************************************************************
 //**************************************************************************
+// PropertyIntPairList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyIntPairList, App::PropertyLists)
+
+PyObject* PropertyIntPairList::getPyObject()
+{
+    Py::List result(getSize());
+    for (int i = 0; i < getSize(); ++i) {
+        Py::Tuple pair(2);
+        pair.setItem(0, Py::Long(_lValueList[i].first));
+        pair.setItem(1, Py::Long(_lValueList[i].second));
+        result.setItem(i, pair);
+    }
+    return Py::new_reference_to(result);
+}
+
+void PropertyIntPairList::setPyObject(PyObject* value)
+{
+    // The outer sequence always represents the list, even when it has two entries.
+    PropertyLists::setPyObject(value);
+}
+
+PropertyIntPairList::IntPair PropertyIntPairList::getPyValue(PyObject* item) const
+{
+    if ((!PyTuple_Check(item) && !PyList_Check(item)) || PySequence_Size(item) != 2) {
+        throw Base::TypeError("Expected a pair of integers");
+    }
+    Py::Sequence pair(item);
+    if (!PyLong_Check(pair[0].ptr()) || !PyLong_Check(pair[1].ptr())) {
+        throw Base::TypeError("Pair components must be integers");
+    }
+    int firstOverflow = 0;
+    int secondOverflow = 0;
+    const long first = PyLong_AsLongAndOverflow(pair[0].ptr(), &firstOverflow);
+    const long second = PyLong_AsLongAndOverflow(pair[1].ptr(), &secondOverflow);
+    if (firstOverflow || secondOverflow) {
+        throw Py::OverflowError("Pair component is outside the range of a C++ long");
+    }
+    return {first, second};
+}
+
+void PropertyIntPairList::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind() << "<IntPairList count=\"" << getSize() << "\">" << endl;
+    writer.incInd();
+    for (const auto& [first, second] : _lValueList) {
+        writer.Stream() << writer.ind() << "<Pair first=\"" << first << "\" second=\"" << second
+                        << "\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</IntPairList>" << endl;
+}
+
+void PropertyIntPairList::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("IntPairList");
+    const int count = reader.getAttribute<int>("count");
+    if (count < 0) {
+        throw Base::ValueError("Integer pair list size must not be negative");
+    }
+    std::vector<IntPair> values;
+    values.reserve(count);
+    for (int i = 0; i < count; ++i) {
+        reader.readElement("Pair");
+        values.emplace_back(reader.getAttribute<long>("first"), reader.getAttribute<long>("second"));
+    }
+    reader.readEndElement("IntPairList");
+    setValues(values);
+}
+
+Property* PropertyIntPairList::Copy() const
+{
+    auto* copy = new PropertyIntPairList();
+    copy->_lValueList = _lValueList;
+    return copy;
+}
+
+void PropertyIntPairList::Paste(const Property& from)
+{
+    setValues(dynamic_cast<const PropertyIntPairList&>(from)._lValueList);
+}
+
+unsigned int PropertyIntPairList::getMemSize() const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(IntPair));
+}
+
+//**************************************************************************
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

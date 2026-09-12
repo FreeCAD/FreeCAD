@@ -40,6 +40,8 @@ public:
     QSize sizeHint() const override;
 
 private:
+    int reservedScrollBarWidth() const;
+
     int m_cardSpacing;
 };
 

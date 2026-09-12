@@ -1342,6 +1342,12 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch* sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    // External theme override for Sketcher Elements task-panel icons
+    ui->filterButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("view-filter", ui->filterButton->icon()));
+    ui->settingsButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Sketcher_Settings", ui->settingsButton->icon()));
 #ifdef Q_OS_MAC
     QString cmdKey = QStringLiteral("\xe2\x8c\x98");// U+2318
 #else

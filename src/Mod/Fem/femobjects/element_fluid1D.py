@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *

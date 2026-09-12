@@ -66,9 +66,7 @@ if (MSVC)
     target_compile_options(InspectionGui PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(InspectionGui)
-endif()
+target_compile_warn_error(InspectionGui)
 
 
 fc_target_copy_resource_flat(InspectionGui
@@ -77,7 +75,7 @@ fc_target_copy_resource_flat(InspectionGui
     ${InspectionGui_Scripts}
 )
 
-SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
+SET_BIN_DIR(InspectionGui)
 SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
 
 fc_copy_sources(InspectionGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Inspection" ${InspectionGuiIcon_SVG})

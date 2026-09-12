@@ -48,10 +48,6 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     list(APPEND 3DCONNEXION_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/3Dconnexion/inc)
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
-if (BUILD_VR)
-    add_definitions(-DBUILD_VR )
-endif(BUILD_VR)
-
 if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
@@ -908,9 +904,7 @@ SET(View3D_CPP_SRCS
     View3DInventor.cpp
     View3DInventorSelection.cpp
     View3DInventorViewer.cpp
-    View3DInventorRiftViewer.cpp
     View3DSettings.cpp
-    CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
@@ -930,9 +924,7 @@ SET(View3D_SRCS
     View3DInventorSelection.h
     View3DInventorViewer.h
     View3DPy.h
-    View3DInventorRiftViewer.h
     View3DSettings.h
-    CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
 )
@@ -1373,6 +1365,8 @@ SET(FreeCADGui_CPP_SRCS
     StyleParameters/Value.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
+    StyleParameters/Diagnostics.cpp
+    StyleParameters/ColorShading.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1421,6 +1415,12 @@ SET(FreeCADGui_SRCS
     StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
+    StyleParameters/Diagnostics.h
+    StyleParameters/Edges.h
+    StyleParameters/Insets.h
+    StyleParameters/Corners.h
+    StyleParameters/Gradient.h
+    StyleParameters/ColorShading.h
 )
 
 SET(FreeCADGui_SRCS
@@ -1529,11 +1529,9 @@ if (MSVC)
     target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADGui)
-endif()
+target_compile_warn_error(FreeCADGui)
 
-SET_BIN_DIR(FreeCADGui FreeCADGui)
+SET_BIN_DIR(FreeCADGui)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui

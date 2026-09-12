@@ -473,7 +473,6 @@ This command only works with a mesh object.</source>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
         <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
       </translation>
     </message>
     <message>
@@ -490,8 +489,8 @@ This command only works with a mesh object.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>ערוך מילוי</translation>
     </message>
@@ -527,7 +526,6 @@ This command only works with a mesh object.</source>
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation>
-        <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>
         <numerusform>Edge has %n adjacent faces</numerusform>

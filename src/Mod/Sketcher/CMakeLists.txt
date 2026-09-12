@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 add_subdirectory(App)
 if(BUILD_GUI)
     add_subdirectory(Gui)
@@ -21,6 +23,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchCarbonCopyReverseMapping.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
     SketcherTests/TestSketchInternalFaces.py
+    SketcherTests/TestSketcherEllipse.py
 )
 
 if(BUILD_GUI)
@@ -30,6 +33,9 @@ if(BUILD_GUI)
     )
     list (APPEND Sketcher_TestScripts
           SketcherTests/TestConstraintPreselectionGui.py
+          SketcherTests/TestDistanceLabelExtensionGui.py
+          SketcherTests/TestConstraintCommandsGui.py
+          SketcherTests/TestCoincidentCommandGui.py
           SketcherTests/GuiTestCase.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py

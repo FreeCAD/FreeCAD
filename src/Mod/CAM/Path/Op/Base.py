@@ -27,6 +27,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import Constants
 import Path
 import Path.Base.Util as PathUtil
+import Path.Base.Generator.rotation as rotation
 import Path.Geom
 import PathScripts.PathUtils as PathUtils
 from Path.Op.Util import getCycleTimeEstimate
@@ -1007,13 +1008,22 @@ class ObjectOp(object):
         wp = obj.Workplane
         z_up = FreeCAD.Vector(0, 0, 1)
 
-        # Check if workplane is effectively Z-up (no rotation needed)
+        machine = self.job.Proxy.getMachine() if self.job else None
+        has_rotaries = machine is not None and machine.has_rotary_axes
+
+        # A Z-up workplane needs no geometry transform, but on a machine with
+        # rotary axes the op must still command its pose explicitly: ops are
+        # atomic and cannot know what pose a previous op left the machine in.
         if wp.isEqual(z_up, 1e-6):
+            if has_rotaries:
+                chain = rotation.build_kinematic_chain(machine)
+                if chain:
+                    self._rotation_commands = [
+                        Path.Command("G0", {axis.name: 0.0 for axis in chain})
+                    ]
             return True
 
-        # Need rotation — get machine from job
-        machine = self.job.Proxy.getMachine() if self.job else None
-        if machine is None or not machine.has_rotary_axes:
+        if not has_rotaries:
             Path.Log.warning(
                 f"Operation {obj.Label}: Workplane requires rotation but "
                 f"no machine with rotary axes is configured"
@@ -1022,8 +1032,6 @@ class ObjectOp(object):
 
         # Solve orientation
         try:
-            import Path.Base.Generator.rotation as rotation
-
             result = rotation.solve_orientation(machine, wp)
             Path.Log.debug(result)
 

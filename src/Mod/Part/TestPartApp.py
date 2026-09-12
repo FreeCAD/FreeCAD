@@ -36,6 +36,8 @@ from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
+from parttests.TestLinkArrayCircular import TestLinkArrayCircular
+from parttests.TestLinkArrayLinear import TestLinkArrayLinear
 from parttests.TestPartMirror import TestPartMirroringRegression
 from parttests.TestFaceMakerUnifiedPlanar import *
 from parttests.TestFaceMakerUnifiedNonPlanar import *
