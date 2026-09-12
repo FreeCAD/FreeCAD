@@ -1209,9 +1209,8 @@ bool ToolTip::eventFilter(QObject* o, QEvent* e)
                         // removeEventFilter();
                         this->hidden = true;
                     }
-                    else if (
-                        e->type() == QEvent::Timer && !this->hidden && displayTime.elapsed() < 5000
-                    ) {
+                    else if (e->type() == QEvent::Timer && !this->hidden
+                             && displayTime.elapsed() < 5000) {
                         return true;
                     }
                 }
@@ -1752,7 +1751,10 @@ void ExpLineEdit::stashExpression()
     m_savedExpr = getExpression();
     m_textAtDiscard = text();
     m_tentativeDiscard = true;
+    bool autoApp = autoApply();
+    setAutoApply(false);
     setExpression(std::shared_ptr<App::Expression>());
+    setAutoApply(autoApp);
     onChange();
     selectAll();
 }
