@@ -311,17 +311,18 @@ std::vector<Segment> keyedRing(const std::vector<Base::Vector3d>& points, int fi
     const int n = static_cast<int>(points.size());
     for (int i = 0; i < n; ++i) {
         const int j = (i + 1) % n;
-        out.push_back(Segment {
-            points[i],
-            points[j],
-            MeshEdge {firstEdge + i, firstEdge + i},
-            MeshEdge {firstEdge + j, firstEdge + j},
-        });
+        out.push_back(
+            Segment {
+                points[i],
+                points[j],
+                MeshEdge {firstEdge + i, firstEdge + i},
+                MeshEdge {firstEdge + j, firstEdge + j},
+            }
+        );
     }
     return out;
 }
 }  // namespace
-
 
 
 TEST(SectionCapChain, testASliverAtTheStartDoesNotStealTheOutline)
@@ -368,9 +369,9 @@ int boundaryEdgeCount(const TriangleSoup& soup)
             ++uses[{std::min(a, b), std::max(a, b)}];
         }
     }
-    return static_cast<int>(
-        std::count_if(uses.begin(), uses.end(), [](const auto& it) { return it.second == 1; })
-    );
+    return static_cast<int>(std::count_if(uses.begin(), uses.end(), [](const auto& it) {
+        return it.second == 1;
+    }));
 }
 }  // namespace
 
@@ -388,8 +389,7 @@ TEST_F(SectionCapSavedSolid, closesAtEveryAngle)
     // The guide from a real jig: a slender column with chamfers top and bottom.
     // Cuts that leave through its flat bottom came out hollow, because the
     // contour broke where it crossed from the side wall onto the end face.
-    const std::string path =
-        App::Application::getHomePath() + "/tests/brepfiles/sectioncolumn1.brep";
+    const std::string path = App::Application::getHomePath() + "/tests/brepfiles/sectioncolumn1.brep";
     if (!std::filesystem::exists(path)) {
         GTEST_SKIP() << "asset not installed: " << path;
     }
@@ -427,11 +427,10 @@ TEST_F(SectionCapSavedSolid, closesAtEveryAngle)
                 if (!isClosedExactly(loop)) {
                     ++openContours;
                     if (openContours == 1) {
-                        ADD_FAILURE() << "open contour at tilt " << tilt << " offset "
-                                      << offset << " (" << loops.size() << " loops, "
-                                      << loop.size() << " points, ends "
-                                      << Base::Distance(loop.front(), loop.back())
-                                      << " mm apart)";
+                        ADD_FAILURE()
+                            << "open contour at tilt " << tilt << " offset " << offset << " ("
+                            << loops.size() << " loops, " << loop.size() << " points, ends "
+                            << Base::Distance(loop.front(), loop.back()) << " mm apart)";
                     }
                 }
             }
@@ -655,45 +654,43 @@ TEST(SectionCapFill, testAContourRestingOnAFlatFaceIsStillFilled)
     // lies along that face - every one of those points at the very same sweep
     // level. Taken from a cut that came out hollow.
     // Data from manual tests which failed
-    const std::vector<Base::Vector3d> contour = {
-    Base::Vector3d(64.145546, -50.982294, 15.325052),
-    Base::Vector3d(63.804646, -51.032620, 15.000000),
-    Base::Vector3d(63.769105, -51.032620, 15.000000),
-    Base::Vector3d(63.079714, -51.032620, 15.000000),
-    Base::Vector3d(62.763278, -51.032620, 15.000000),
-    Base::Vector3d(56.968292, -51.032620, 15.000000),
-    Base::Vector3d(51.587550, -51.032620, 15.000000),
-    Base::Vector3d(51.349516, -51.032620, 15.000000),
-    Base::Vector3d(51.206736, -51.032620, 15.000000),
-    Base::Vector3d(50.699400, -50.956737, 15.490120),
-    Base::Vector3d(50.216004, -50.877793, 16.000000),
-    Base::Vector3d(50.525960, -49.757329, 23.236882),
-    Base::Vector3d(50.540825, -49.703594, 23.583945),
-    Base::Vector3d(51.277573, -48.336461, 32.414015),
-    Base::Vector3d(51.337563, -48.225143, 33.132998),
-    Base::Vector3d(51.427847, -48.121931, 33.799630),
-    Base::Vector3d(52.443314, -46.961052, 41.297542),
-    Base::Vector3d(53.610771, -46.113923, 46.768997),
-    Base::Vector3d(53.802628, -45.974709, 47.668160),
-    Base::Vector3d(55.097657, -45.422110, 51.237296),
-    Base::Vector3d(55.347343, -45.315567, 51.925438),
-    Base::Vector3d(55.622127, -45.265873, 52.246406),
-    Base::Vector3d(57.000000, -45.016685, 53.855862),
-    Base::Vector3d(57.290682, -45.029916, 53.770408),
-    Base::Vector3d(58.677731, -45.093048, 53.362649),
-    Base::Vector3d(60.037017, -45.469070, 50.933992),
-    Base::Vector3d(60.296406, -45.540825, 50.470538),
-    Base::Vector3d(61.571173, -46.227797, 46.033504),
-    Base::Vector3d(61.774857, -46.337563, 45.324550),
-    Base::Vector3d(62.905963, -47.326986, 38.934036),
-    Base::Vector3d(63.038948, -47.443314, 38.182699),
-    Base::Vector3d(63.962104, -48.715547, 29.965569),
-    Base::Vector3d(64.025291, -48.802628, 29.403130),
-    Base::Vector3d(64.673577, -50.321902, 19.590402),
-    Base::Vector3d(64.684433, -50.347343, 19.426082),
-    Base::Vector3d(64.780364, -50.877793, 16.000000),
-    Base::Vector3d(64.145546, -50.982294, 15.325052)
-    };
+    const std::vector<Base::Vector3d> contour = {Base::Vector3d(64.145546, -50.982294, 15.325052),
+                                                 Base::Vector3d(63.804646, -51.032620, 15.000000),
+                                                 Base::Vector3d(63.769105, -51.032620, 15.000000),
+                                                 Base::Vector3d(63.079714, -51.032620, 15.000000),
+                                                 Base::Vector3d(62.763278, -51.032620, 15.000000),
+                                                 Base::Vector3d(56.968292, -51.032620, 15.000000),
+                                                 Base::Vector3d(51.587550, -51.032620, 15.000000),
+                                                 Base::Vector3d(51.349516, -51.032620, 15.000000),
+                                                 Base::Vector3d(51.206736, -51.032620, 15.000000),
+                                                 Base::Vector3d(50.699400, -50.956737, 15.490120),
+                                                 Base::Vector3d(50.216004, -50.877793, 16.000000),
+                                                 Base::Vector3d(50.525960, -49.757329, 23.236882),
+                                                 Base::Vector3d(50.540825, -49.703594, 23.583945),
+                                                 Base::Vector3d(51.277573, -48.336461, 32.414015),
+                                                 Base::Vector3d(51.337563, -48.225143, 33.132998),
+                                                 Base::Vector3d(51.427847, -48.121931, 33.799630),
+                                                 Base::Vector3d(52.443314, -46.961052, 41.297542),
+                                                 Base::Vector3d(53.610771, -46.113923, 46.768997),
+                                                 Base::Vector3d(53.802628, -45.974709, 47.668160),
+                                                 Base::Vector3d(55.097657, -45.422110, 51.237296),
+                                                 Base::Vector3d(55.347343, -45.315567, 51.925438),
+                                                 Base::Vector3d(55.622127, -45.265873, 52.246406),
+                                                 Base::Vector3d(57.000000, -45.016685, 53.855862),
+                                                 Base::Vector3d(57.290682, -45.029916, 53.770408),
+                                                 Base::Vector3d(58.677731, -45.093048, 53.362649),
+                                                 Base::Vector3d(60.037017, -45.469070, 50.933992),
+                                                 Base::Vector3d(60.296406, -45.540825, 50.470538),
+                                                 Base::Vector3d(61.571173, -46.227797, 46.033504),
+                                                 Base::Vector3d(61.774857, -46.337563, 45.324550),
+                                                 Base::Vector3d(62.905963, -47.326986, 38.934036),
+                                                 Base::Vector3d(63.038948, -47.443314, 38.182699),
+                                                 Base::Vector3d(63.962104, -48.715547, 29.965569),
+                                                 Base::Vector3d(64.025291, -48.802628, 29.403130),
+                                                 Base::Vector3d(64.673577, -50.321902, 19.590402),
+                                                 Base::Vector3d(64.684433, -50.347343, 19.426082),
+                                                 Base::Vector3d(64.780364, -50.877793, 16.000000),
+                                                 Base::Vector3d(64.145546, -50.982294, 15.325052)};
     Base::Vector3d normal(0.0, -0.9882, 0.1530);
     normal.Normalize();
     Base::Vector3d u;

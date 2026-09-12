@@ -193,9 +193,7 @@ void SectionAnalysisWidget::setupUi()
     const Base::Vector3d n = feature->PlaneNormal.getValue();
     if (feature->AngleBase.getValue().Length() <= minUnitMagnitude) {
         const double openLen = n.Length();
-        feature->AngleBase.setValue(
-            (openLen > minUnitMagnitude) ? n / openLen : Base::Vector3d::UnitZ
-        );
+        feature->AngleBase.setValue((openLen > minUnitMagnitude) ? n / openLen : Base::Vector3d::UnitZ);
     }
 
     // The preset comes from the base, not from the plane: a tilt bakes itself
@@ -344,16 +342,11 @@ void SectionAnalysisWidget::setupConnections()
         this,
         &SectionAnalysisWidget::onAngle2Changed
     );
-    connect(
-        offsetSpin,
-        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-        this,
-        [this](double value) {
-            const PanelWrite writing(this);
-            feature->PlaneOffset.setValue(value);
-            recompute();
-        }
-    );
+    connect(offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, [this](double value) {
+        const PanelWrite writing(this);
+        feature->PlaneOffset.setValue(value);
+        recompute();
+    });
     connect(flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
     connect(sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
         onSectionColorChanged(sectionColorBtn->color());
@@ -430,8 +423,10 @@ void SectionAnalysisWidget::refreshFromFeature()
         return v * ct + k.Cross(v) * st + k * (k * v) * (1.0 - ct);
     };
     undone = rodrigues(undone, angle2Axis, -a2);
-    const double a1 = -(std::asin(std::clamp(undone * angle1Axis, -1.0, 1.0))
-                        - std::asin(std::clamp(baseNormal * angle1Axis, -1.0, 1.0)));
+    const double a1 = -(
+        std::asin(std::clamp(undone * angle1Axis, -1.0, 1.0))
+        - std::asin(std::clamp(baseNormal * angle1Axis, -1.0, 1.0))
+    );
 
     constexpr double toDegrees = 180.0 / std::numbers::pi;
     angle1Spin->setValue(a1 * toDegrees);
