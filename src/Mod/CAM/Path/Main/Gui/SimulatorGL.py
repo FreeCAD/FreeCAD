@@ -89,22 +89,14 @@ class CAMSimulation:
     def __init__(self):
         self.debug = False
         self.stdrot = FreeCAD.Rotation(Vector(0, 0, 1), 0)
-        self.iprogress = 0
-        self.numCommands = 0
-        self.simperiod = 20
         self.quality = 10
         self.resetSimulation = False
         self.jobs = []
-        self.initdone = False
         self.taskForm = None
-        self.disableAnim = False
-        self.firstDrill = True
         self.millSim = None
         self.job = None
         self.activeOps = []
-        self.ioperation = 0
         self.stock = None
-        self.busy = False
         self.operations = []
         self.baseShape = None
 
@@ -209,7 +201,6 @@ class CAMSimulation:
 
     def Activate(self):
         """Invoke the simulator task panel"""
-        self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonPlay, self.SimPlay)
@@ -226,10 +217,7 @@ class CAMSimulation:
         self.onJobChange()
         form.listOperations.itemChanged.connect(self.onOperationItemChange)
         FreeCADGui.Control.showDialog(self.taskForm)
-        self.disableAnim = False
-        self.firstDrill = True
         self.millSim = CAMSimulator.PathSim()
-        self.initdone = True
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
         # self.SetupSimulation()
 
@@ -267,16 +255,14 @@ class CAMSimulation:
         """Prepare all selected job operations for simulation"""
         form = self.taskForm.form
         self.activeOps = []
-        self.numCommands = 0
-        self.ioperation = 0
         for i in range(form.listOperations.count()):
             if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
-                self.firstDrill = True
-                self.activeOps.append(self.operations[i])
-                self.numCommands += len(self.operations[i].Path.Commands)
+                if getattr(self.operations[i], "ArrayGroup", None):
+                    self.activeOps.extend(self.operations[i].ArrayGroup)
+                else:
+                    self.activeOps.append(self.operations[i])
 
         self.stock = self.job.Stock.Shape
-        self.busy = False
 
     def onJobChange(self):
         """When a new job is selected from the drop-down, update job operation list"""

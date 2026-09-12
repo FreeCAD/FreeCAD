@@ -387,10 +387,13 @@ def buildPostList(processor: Any) -> List[Tuple[str, List]]:
     Path.Log.debug(f"Ordering by {orderby}")
 
     if orderby == "Fixture":
+        extract_arrays(processor)
         postlist = build_postlist_by_fixture(processor)
     elif orderby == "Tool":
+        extract_arrays_by_tool(processor)
         postlist = build_postlist_by_tool(processor)
     elif orderby == "Operation":
+        extract_arrays(processor)
         postlist = build_postlist_by_operation(processor)
     else:
         raise ValueError(f"Unknown order: {orderby}")
@@ -414,6 +417,44 @@ def buildPostList(processor: Any) -> List[Tuple[str, List]]:
     if early_tool_prep:
         return apply_early_tool_prep(final_postlist)
     return final_postlist
+
+
+def extract_arrays(processor):
+    """Prepare operations list with arrays sub elements
+    Replace arrays by copies"""
+    for candidate in reversed(processor._operations):
+        if not getattr(candidate, "ArrayGroup", None) or not candidate.Active:
+            continue
+        i = processor._operations.index(candidate)
+        # replace Array object by all copies
+        processor._operations[i : i + 1] = [op for op in candidate.ArrayGroup]
+
+
+def extract_arrays_by_tool(processor):
+    """Prepare operations list with arrays sub elements
+    Place copies after base op to minimize tool changes"""
+    for candidate in reversed(processor._operations):
+        if not getattr(candidate, "ArrayGroup", None) or not candidate.Active:
+            continue
+        index = processor._operations.index(candidate)
+        # remove Array object from operations list
+        processor._operations.remove(candidate)
+        for opFromArray in reversed(candidate.ArrayGroup):
+            for i, op in enumerate(processor._operations):
+                if op.Name == opFromArray.Base[-1]:
+                    # insert copy after base op
+                    processor._operations.insert(i + 1, opFromArray)
+                    break
+                elif (
+                    isinstance(op.Proxy, Path.Op.Array.ObjectArrayChild)
+                    and op.Base[-1] == opFromArray.Base[-1]
+                ):
+                    # export without base operation, add before previous array child
+                    processor._operations.insert(i, opFromArray)
+                    break
+            else:
+                # export without base operation, add in the end
+                processor._operations.insert(index, opFromArray)
 
 
 def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, List]]:
