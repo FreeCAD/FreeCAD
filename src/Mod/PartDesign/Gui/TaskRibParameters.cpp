@@ -4,7 +4,6 @@
 #include "ReferenceSelection.h"
 #include "ViewProviderRib.h"
 #include "ui_TaskRibParameters.h"
-#include "ui_TaskRibAdvancedParameters.h"
 
 #include <algorithm>
 #include <QApplication>
@@ -59,17 +58,10 @@ private:
 TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     : TaskSketchBasedParameters(view, nullptr, "PartDesign_Rib", tr("Rib Parameters"))
     , ui(std::make_unique<Ui_TaskRibParameters>())
-    , advancedUi(std::make_unique<Ui_TaskRibAdvancedParameters>())
-    , advanced(new Gui::TaskView::TaskBox(tr("Advanced Rib Parameters")))
 {
     auto container = new QWidget(this);
     ui->setupUi(container);
     groupLayout()->addWidget(container);
-    advanced->setObjectName(QStringLiteral("ribAdvancedParameters"));
-    auto advancedContainer = new QWidget(advanced);
-    advancedUi->setupUi(advancedContainer);
-    advanced->groupLayout()->addWidget(advancedContainer);
-    advanced->hideGroupBox();
 
     auto rib = getObject<PartDesign::Rib>();
     ui->ribClearProfile->setIcon(Gui::BitmapFactory().iconFromTheme("edit-delete"));
@@ -103,50 +95,6 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribFilletRadius->setValue(rib->FilletRadius.getValue());
     ui->ribFilletRadius->bind(App::ObjectIdentifier::parse(rib, "FilletRadius"));
 
-    advancedUi->ribUseCustomPullDirection->setChecked(rib->UseCustomPullDirection.getValue());
-    for (auto field :
-         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
-        field->setMinimum(-1e9);
-        field->setMaximum(1e9);
-    }
-    const auto pullDirection = rib->PullDirection.getValue();
-    advancedUi->ribPullDirectionX->setValue(pullDirection.x);
-    advancedUi->ribPullDirectionY->setValue(pullDirection.y);
-    advancedUi->ribPullDirectionZ->setValue(pullDirection.z);
-    advancedUi->ribPullDirectionX->bind(App::ObjectIdentifier::parse(rib, "PullDirection.x"));
-    advancedUi->ribPullDirectionY->bind(App::ObjectIdentifier::parse(rib, "PullDirection.y"));
-    advancedUi->ribPullDirectionZ->bind(App::ObjectIdentifier::parse(rib, "PullDirection.z"));
-    for (auto field :
-         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
-        connect(
-            field,
-            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this,
-            &TaskRibParameters::updatePullDirection
-        );
-    }
-
-    for (auto field :
-         {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
-        field->setMinimum(-1e9);
-        field->setMaximum(1e9);
-    }
-    const auto direction = rib->Direction.getValue();
-    advancedUi->ribDirectionX->setValue(direction.x);
-    advancedUi->ribDirectionY->setValue(direction.y);
-    advancedUi->ribDirectionZ->setValue(direction.z);
-    advancedUi->ribDirectionX->bind(App::ObjectIdentifier::parse(rib, "Direction.x"));
-    advancedUi->ribDirectionY->bind(App::ObjectIdentifier::parse(rib, "Direction.y"));
-    advancedUi->ribDirectionZ->bind(App::ObjectIdentifier::parse(rib, "Direction.z"));
-    for (auto field :
-         {advancedUi->ribDirectionX, advancedUi->ribDirectionY, advancedUi->ribDirectionZ}) {
-        connect(
-            field,
-            qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
-            this,
-            &TaskRibParameters::updateDirection
-        );
-    }
     updateVisibility();
 
     // Connect after initialization so opening the dialog does not alter the feature.
@@ -208,11 +156,6 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             updateRib();
         }
     );
-    connect(advancedUi->ribUseCustomPullDirection, &QCheckBox::toggled, this, [this](bool checked) {
-        getObject<PartDesign::Rib>()->UseCustomPullDirection.setValue(checked);
-        updateVisibility();
-        updateRib();
-    });
     connect(
         ui->ribLength,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -228,11 +171,6 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
 TaskRibParameters::~TaskRibParameters()
 {
     finishSelection();
-}
-
-QWidget* TaskRibParameters::advancedPanel() const
-{
-    return advanced;
 }
 
 void TaskRibParameters::refreshEnums()
@@ -315,37 +253,6 @@ void TaskRibParameters::updateVisibility()
     const bool distance = getObject<PartDesign::Rib>()->ExtentType.isValue("Distance");
     ui->ribLengthLabel->setVisible(distance);
     ui->ribLength->setVisible(distance);
-    const bool custom = advancedUi->ribUseCustomPullDirection->isChecked();
-    for (auto field :
-         {advancedUi->ribPullDirectionX, advancedUi->ribPullDirectionY, advancedUi->ribPullDirectionZ}) {
-        field->setEnabled(custom);
-    }
-    for (auto label :
-         {advancedUi->ribPullDirectionXLabel,
-          advancedUi->ribPullDirectionYLabel,
-          advancedUi->ribPullDirectionZLabel}) {
-        label->setEnabled(custom);
-    }
-}
-
-void TaskRibParameters::updateDirection()
-{
-    getObject<PartDesign::Rib>()->Direction.setValue(
-        advancedUi->ribDirectionX->value().getValue(),
-        advancedUi->ribDirectionY->value().getValue(),
-        advancedUi->ribDirectionZ->value().getValue()
-    );
-    updateRib();
-}
-
-void TaskRibParameters::updatePullDirection()
-{
-    getObject<PartDesign::Rib>()->PullDirection.setValue(
-        advancedUi->ribPullDirectionX->value().getValue(),
-        advancedUi->ribPullDirectionY->value().getValue(),
-        advancedUi->ribPullDirectionZ->value().getValue()
-    );
-    updateRib();
 }
 
 void TaskRibParameters::selectProfile(bool enabled)
@@ -454,9 +361,6 @@ void TaskRibParameters::apply()
     if (!ui->ribThickness->hasExpression()) {
         FCMD_OBJ_CMD(rib, "Thickness = " << ui->ribThickness->value().getValue());
     }
-    advancedUi->ribDirectionX->apply();
-    advancedUi->ribDirectionY->apply();
-    advancedUi->ribDirectionZ->apply();
     ui->ribDraftAngle->apply();
     if (!ui->ribDraftAngle->hasExpression()) {
         FCMD_OBJ_CMD(rib, "DraftAngle = " << ui->ribDraftAngle->value().getValue());
@@ -465,20 +369,6 @@ void TaskRibParameters::apply()
     if (!ui->ribFilletRadius->hasExpression()) {
         FCMD_OBJ_CMD(rib, "FilletRadius = " << ui->ribFilletRadius->value().getValue());
     }
-    advancedUi->ribPullDirectionX->apply();
-    advancedUi->ribPullDirectionY->apply();
-    advancedUi->ribPullDirectionZ->apply();
-    FCMD_OBJ_CMD(
-        rib,
-        "UseCustomPullDirection = "
-            << (advancedUi->ribUseCustomPullDirection->isChecked() ? "True" : "False")
-    );
-    const auto pullDirection = rib->PullDirection.getValue();
-    FCMD_OBJ_CMD(
-        rib,
-        "PullDirection = (" << pullDirection.x << ", " << pullDirection.y << ", " << pullDirection.z
-                            << ")"
-    );
     FCMD_OBJ_CMD(rib, "ExtendType = " << rib->ExtendType.getValue());
     FCMD_OBJ_CMD(rib, "PlacementType = " << rib->PlacementType.getValue());
     FCMD_OBJ_CMD(rib, "ExtentType = " << rib->ExtentType.getValue());
@@ -488,11 +378,6 @@ void TaskRibParameters::apply()
     if (!ui->ribLength->hasExpression()) {
         FCMD_OBJ_CMD(rib, "Distance = " << ui->ribLength->value().getValue());
     }
-    const auto direction = rib->Direction.getValue();
-    FCMD_OBJ_CMD(
-        rib,
-        "Direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")"
-    );
     const auto profile = rib->Profile.getValue();
     const std::string reference = profile ? "(" + Gui::Command::getObjectCmd(profile) + ", "
             + buildLinkSubPythonStr(profile, rib->Profile.getSubValues()) + ")"
@@ -504,9 +389,7 @@ void TaskRibParameters::changeEvent(QEvent* event)
 {
     if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this->findChild<QWidget*>(QStringLiteral("ribParametersPanel")));
-        advancedUi->retranslateUi(advanced->findChild<QWidget*>(QStringLiteral("ribAdvancedPanel")));
         setHeaderText(tr("Rib Parameters"));
-        advanced->setHeaderText(tr("Advanced Rib Parameters"));
         refreshEnums();
         refreshProfile();
     }
@@ -633,7 +516,6 @@ TaskDlgRibParameters::TaskDlgRibParameters(ViewProviderRib* view)
     , parameters(new TaskRibParameters(view))
 {
     Content.push_back(parameters);
-    Content.push_back(parameters->advancedPanel());
     Content.push_back(preview);
 }
 

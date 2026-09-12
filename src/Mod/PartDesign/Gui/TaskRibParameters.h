@@ -12,7 +12,6 @@ namespace PartDesignGui
 
 class ViewProviderRib;
 class Ui_TaskRibParameters;
-class Ui_TaskRibAdvancedParameters;
 
 class TaskRibParameters: public TaskSketchBasedParameters
 {
@@ -23,7 +22,6 @@ public:
     ~TaskRibParameters() override;
     void apply() override;
     void finishSelection();
-    QWidget* advancedPanel() const;
 
 protected:
     void changeEvent(QEvent* event) override;
@@ -34,15 +32,11 @@ private:
     void refreshProfile();
     void refreshEnums();
     void updateVisibility();
-    void updateDirection();
-    void updatePullDirection();
     void updateRib();
     void setupGizmos();
     void setGizmoPositions();
 
     std::unique_ptr<Ui_TaskRibParameters> ui;
-    std::unique_ptr<Ui_TaskRibAdvancedParameters> advancedUi;
-    Gui::TaskView::TaskBox* advanced;
     bool pickingProfile = false;
     std::string shownProfile;
     bool profileWasVisible = false;
