@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cmath>
 #include <string_view>
+#include <QAbstractItemView>
 #include <QApplication>
 
 #include <View3DInventorViewer.h>
@@ -101,6 +102,37 @@ QString linkedSelectionLabel(const SelectionChanges& msg)
             QLatin1String(msg.pObjectName),
             QLatin1String(msg.pSubName)
         );
+}
+
+QString snapTypeLabel(App::SubObjectPlacementProvider::SnapGeometryType type)
+{
+    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
+
+    switch (type) {
+        case SnapGeometryType::Point:
+            return QCoreApplication::translate("Gui::TaskTransform", "Point");
+        case SnapGeometryType::Axis:
+            return QCoreApplication::translate("Gui::TaskTransform", "Axis");
+        case SnapGeometryType::Plane:
+            return QCoreApplication::translate("Gui::TaskTransform", "Plane");
+        case SnapGeometryType::AxisSystem:
+            return QCoreApplication::translate("Gui::TaskTransform", "Axis System");
+        case SnapGeometryType::Unknown:
+            return QCoreApplication::translate("Gui::TaskTransform", "Reference");
+    }
+
+    return QCoreApplication::translate("Gui::TaskTransform", "Reference");
+}
+
+bool isPlaneSnap(
+    App::SubObjectPlacementProvider::SnapGeometryType referenceType,
+    App::SubObjectPlacementProvider::SnapGeometryType targetType
+)
+{
+    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
+
+    return (referenceType == SnapGeometryType::Plane && targetType == SnapGeometryType::Plane)
+        || (referenceType == SnapGeometryType::AxisSystem && targetType == SnapGeometryType::Plane);
 }
 
 }  // namespace
@@ -250,6 +282,8 @@ void TaskTransform::setupGui()
     ui->customCSReferenceLabel->hide();
     ui->customCSPickerWidget->hide();
     ui->alignRotationCheckBox->hide();
+    ui->cumulativeSnapHistoryList->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->cumulativeSnapHistoryList->setFocusPolicy(Qt::NoFocus);
 
     for (auto positionSpinBox :
          {ui->translationIncrementSpinBox,
@@ -305,6 +339,13 @@ void TaskTransform::setupGui()
     );
     connect(ui->alignToOtherObjectButton, &QPushButton::clicked, this, &TaskTransform::onAlignToOtherObject);
     connect(ui->cumulativeSnapButton, &QPushButton::clicked, this, &TaskTransform::onCumulativeSnap);
+    connect(ui->undoCumulativeSnapButton, &QPushButton::clicked, this, &TaskTransform::onUndoCumulativeSnap);
+    connect(
+        ui->clearCumulativeSnapButton,
+        &QPushButton::clicked,
+        this,
+        &TaskTransform::onClearCumulativeSnap
+    );
     connect(ui->moveOptionsButton, &QPushButton::toggled, ui->frameMoveOptions, &QWidget::setVisible);
     connect(ui->translateCheckbox, &QCheckBox::toggled, this, [this](bool translateChecked) {
         ui->matchXcheckbox->setEnabled(translateChecked);
@@ -743,6 +784,14 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 
             if (msg.Type == SelectionChanges::AddSelection) {
                 restoreCumulativeSnapPlacement(*constrainedObjectPlacement);
+                appendCumulativeSnapStep(
+                    QString::fromStdString(currentCumulativeSnapReference->label),
+                    reference->label,
+                    currentCumulativeSnapReference->localPlacement,
+                    targetReferencePlacement,
+                    referenceType,
+                    targetType
+                );
                 currentCumulativeSnapReference.reset();
                 setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
             }
@@ -1022,21 +1071,35 @@ std::optional<Base::Placement> TaskTransform::solveCumulativeSnapObjectPlacement
     App::SubObjectPlacementProvider::SnapGeometryType currentTargetType
 ) const
 {
-    return TransformSnap::solve(
-        candidate,
-        {{
-            currentReferenceLocalPlacement,
-            currentReferenceTargetPlacement,
-            currentReferenceType,
-            currentTargetType,
-        }}
-    );
+    std::vector<TransformSnap::Constraint> constraints;
+    const auto activeHistorySize = cumulativeSnapHistory.size();
+    constraints.reserve(activeHistorySize + 1);
+    for (std::size_t i = 0; i < activeHistorySize; ++i) {
+        const auto& step = cumulativeSnapHistory[i];
+        constraints.push_back({
+            step.referenceLocalPlacement,
+            step.targetPlacement,
+            step.referenceType,
+            step.targetType,
+            step.targetDirectionFixed,
+        });
+    }
+    constraints.push_back({
+        currentReferenceLocalPlacement,
+        currentReferenceTargetPlacement,
+        currentReferenceType,
+        currentTargetType,
+        false,
+    });
+    return TransformSnap::solve(candidate, constraints);
 }
 
 void TaskTransform::startCumulativeSnap()
 {
     cumulativeSnapActive = true;
+    cumulativeSnapStartPlacement = vp->getObjectPlacement();
     currentCumulativeSnapReference.reset();
+    cumulativeSnapHistory.clear();
 
     setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
     updateCumulativeSnapUi();
@@ -1046,6 +1109,8 @@ void TaskTransform::stopCumulativeSnap()
 {
     cumulativeSnapActive = false;
     currentCumulativeSnapReference.reset();
+    cumulativeSnapStartPlacement.reset();
+    cumulativeSnapHistory.clear();
     setSelectionMode(SelectionMode::None);
     updateTransformOrigin();
     vp->updateTransformFromDragger();
@@ -1057,13 +1122,50 @@ void TaskTransform::onDocumentRestored()
     const bool wasCumulativeSnapActive = cumulativeSnapActive;
     stopCumulativeSnap();
     if (wasCumulativeSnapActive) {
-        getMainWindow()->showMessage(tr("Geometry snapping stopped after undo or redo"));
+        getMainWindow()->showMessage(tr("Cumulative snap stopped after undo or redo"));
     }
 }
 
 std::array<QWidget*, 3> TaskTransform::taskWidgets() const
 {
     return {ui->draggerWidget, coordinatesWidget, ui->utilitiesWidget};
+}
+
+void TaskTransform::appendCumulativeSnapStep(
+    const QString& referenceLabel,
+    const QString& targetLabel,
+    const Base::Placement& referenceLocalPlacement,
+    const Base::Placement& targetPlacement,
+    App::SubObjectPlacementProvider::SnapGeometryType referenceType,
+    App::SubObjectPlacementProvider::SnapGeometryType targetType
+)
+{
+    const auto constraintLabel = snapTypeLabel(referenceType);
+    const auto objectPlacement = vp->getObjectPlacement();
+    auto storedTargetPlacement = targetPlacement;
+    const auto targetDirectionFixed = isPlaneSnap(referenceType, targetType);
+    if (targetDirectionFixed) {
+        const auto acceptedReferencePlacement = objectPlacement * referenceLocalPlacement;
+        if (TransformSnap::zAxis(acceptedReferencePlacement)
+                * TransformSnap::zAxis(storedTargetPlacement)
+            < 0.0) {
+            storedTargetPlacement = TransformSnap::invertedPlacementAroundLocalAxis(
+                storedTargetPlacement,
+                Base::Vector3d::UnitX
+            );
+        }
+    }
+
+    cumulativeSnapHistory.push_back({
+        QStringLiteral("%1: %2 -> %3").arg(constraintLabel, referenceLabel, targetLabel).toStdString(),
+        objectPlacement,
+        referenceLocalPlacement,
+        storedTargetPlacement,
+        referenceType,
+        targetType,
+        targetDirectionFixed,
+    });
+    updateCumulativeSnapUi();
 }
 
 void TaskTransform::restoreCumulativeSnapPlacement(const Base::Placement& placement)
@@ -1086,7 +1188,7 @@ void TaskTransform::updateCumulativeSnapUi() const
 
     ui->cumulativeSnapButton->setChecked(cumulativeSnapActive);
     ui->cumulativeSnapButton->setText(
-        cumulativeSnapActive ? tr("Stop Snapping") : tr("Snap to Geometry")
+        cumulativeSnapActive ? tr("Stop Cumulative Snap") : tr("Cumulative Snap")
     );
     ui->alignToOtherObjectButton->setEnabled(!cumulativeSnapActive);
     ui->moveOptionsButton->setEnabled(!cumulativeSnapActive);
@@ -1095,6 +1197,20 @@ void TaskTransform::updateCumulativeSnapUi() const
     ui->referencePickerWidget->setEnabled(!cumulativeSnapActive);
     coordinatesWidget->setEnabled(!cumulativeSnapActive);
     ui->cumulativeSnapButton->setEnabled(subObjectPlacementProvider != nullptr);
+
+    ui->cumulativeSnapHistoryList->clear();
+    for (std::size_t i = 0; i < cumulativeSnapHistory.size(); ++i) {
+        ui->cumulativeSnapHistoryList->addItem(QStringLiteral("%1) %2").arg(i + 1).arg(
+            QString::fromStdString(cumulativeSnapHistory[i].label)
+        ));
+    }
+
+    ui->cumulativeSnapHistoryList->setVisible(cumulativeSnapActive);
+    ui->undoCumulativeSnapButton->setVisible(cumulativeSnapActive);
+    ui->clearCumulativeSnapButton->setVisible(cumulativeSnapActive);
+
+    ui->undoCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
+    ui->clearCumulativeSnapButton->setEnabled(cumulativeSnapActive && !cumulativeSnapHistory.empty());
 }
 
 void TaskTransform::onCumulativeSnap()
@@ -1104,6 +1220,42 @@ void TaskTransform::onCumulativeSnap()
     }
     else {
         startCumulativeSnap();
+    }
+}
+
+void TaskTransform::onUndoCumulativeSnap()
+{
+    if (cumulativeSnapHistory.empty()) {
+        return;
+    }
+
+    cumulativeSnapHistory.pop_back();
+    const auto placement = cumulativeSnapHistory.empty()
+        ? cumulativeSnapStartPlacement.value_or(vp->getObjectPlacement())
+        : cumulativeSnapHistory.back().objectPlacement;
+
+    restoreCumulativeSnapPlacement(placement);
+    updateCumulativeSnapUi();
+
+    if (cumulativeSnapActive) {
+        currentCumulativeSnapReference.reset();
+        setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
+    }
+}
+
+void TaskTransform::onClearCumulativeSnap()
+{
+    if (!cumulativeSnapStartPlacement.has_value()) {
+        return;
+    }
+
+    cumulativeSnapHistory.clear();
+    currentCumulativeSnapReference.reset();
+    restoreCumulativeSnapPlacement(*cumulativeSnapStartPlacement);
+    updateCumulativeSnapUi();
+
+    if (cumulativeSnapActive) {
+        setSelectionMode(SelectionMode::SelectCumulativeSnapReference);
     }
 }
 

@@ -135,6 +135,8 @@ private Q_SLOTS:
     void onAlignToOtherObject();
     void onFlip();
     void onCumulativeSnap();
+    void onUndoCumulativeSnap();
+    void onClearCumulativeSnap();
 
     void onCoordinateSystemChange(int mode);
 
@@ -200,6 +202,14 @@ private:
     ) const;
     void startCumulativeSnap();
     void stopCumulativeSnap();
+    void appendCumulativeSnapStep(
+        const QString& referenceLabel,
+        const QString& targetLabel,
+        const Base::Placement& referenceLocalPlacement,
+        const Base::Placement& targetPlacement,
+        App::SubObjectPlacementProvider::SnapGeometryType referenceType,
+        App::SubObjectPlacementProvider::SnapGeometryType targetType
+    );
     void restoreCumulativeSnapPlacement(const Base::Placement& placement);
     void updateCumulativeSnapUi() const;
 
@@ -227,6 +237,7 @@ private:
 
     std::optional<Base::Placement> customTransformOrigin {};
     std::optional<Base::Placement> customCoordinateSystemPlacement {};
+    std::optional<Base::Placement> cumulativeSnapStartPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
@@ -237,7 +248,18 @@ private:
         Base::Placement localPlacement;
         App::SubObjectPlacementProvider::SnapGeometryType type;
     };
+    struct CumulativeSnapStep
+    {
+        std::string label;
+        Base::Placement objectPlacement;
+        Base::Placement referenceLocalPlacement;
+        Base::Placement targetPlacement;
+        App::SubObjectPlacementProvider::SnapGeometryType referenceType;
+        App::SubObjectPlacementProvider::SnapGeometryType targetType;
+        bool targetDirectionFixed {false};
+    };
     std::optional<CumulativeSnapReference> currentCumulativeSnapReference {};
+    std::vector<CumulativeSnapStep> cumulativeSnapHistory;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/History/Dragger"
