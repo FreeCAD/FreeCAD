@@ -579,6 +579,7 @@ SET(Tests_SRCS
     CAMTests/TestKineticNCBeamicon2LegacyPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestLegacyPostRetractMode.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMachineValidate.py
