@@ -82,6 +82,50 @@ SequencerBase::SequencerBase()
     SequencerP::appendInstance(this);
 }
 
+SequencerBase::SequencerBase(const SequencerBase& other)
+    : nProgress(other.nProgress)
+    , nTotalSteps(other.nTotalSteps)
+    , _bLocked(other._bLocked)
+    , _bCanceled(other._bCanceled.load(std::memory_order_relaxed))
+    , _nLastPercentage(other._nLastPercentage)
+{
+    SequencerP::appendInstance(this);
+}
+
+SequencerBase::SequencerBase(SequencerBase&& other) noexcept
+    : nProgress(other.nProgress)
+    , nTotalSteps(other.nTotalSteps)
+    , _bLocked(other._bLocked)
+    , _bCanceled(other._bCanceled.load(std::memory_order_relaxed))
+    , _nLastPercentage(other._nLastPercentage)
+{
+    SequencerP::appendInstance(this);
+}
+
+SequencerBase& SequencerBase::operator=(const SequencerBase& other)
+{
+    if (this != &other) {
+        nProgress = other.nProgress;
+        nTotalSteps = other.nTotalSteps;
+        _bLocked = other._bLocked;
+        _bCanceled.store(other._bCanceled.load(std::memory_order_relaxed), std::memory_order_relaxed);
+        _nLastPercentage = other._nLastPercentage;
+    }
+    return *this;
+}
+
+SequencerBase& SequencerBase::operator=(SequencerBase&& other) noexcept
+{
+    if (this != &other) {
+        nProgress = other.nProgress;
+        nTotalSteps = other.nTotalSteps;
+        _bLocked = other._bLocked;
+        _bCanceled.store(other._bCanceled.load(std::memory_order_relaxed), std::memory_order_relaxed);
+        _nLastPercentage = other._nLastPercentage;
+    }
+    return *this;
+}
+
 SequencerBase::~SequencerBase()
 {
     SequencerP::removeInstance(this);
@@ -94,7 +138,7 @@ bool SequencerBase::start(const char* pszStr, size_t steps)
 
     this->nTotalSteps = steps;
     this->nProgress = 0;
-    this->_bCanceled = false;
+    this->_bCanceled.store(false, std::memory_order_relaxed);
 
     setText(pszStr);
 
@@ -182,18 +226,17 @@ bool SequencerBase::isRunning() const
 
 bool SequencerBase::wasCanceled() const
 {
-    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
-    return this->_bCanceled;
+    return this->_bCanceled.load(std::memory_order_relaxed);
 }
 
 void SequencerBase::tryToCancel()
 {
-    this->_bCanceled = true;
+    this->_bCanceled.store(true, std::memory_order_relaxed);
 }
 
 void SequencerBase::rejectCancel()
 {
-    this->_bCanceled = false;
+    this->_bCanceled.store(false, std::memory_order_relaxed);
 }
 
 int SequencerBase::progressInPercent() const
@@ -203,7 +246,7 @@ int SequencerBase::progressInPercent() const
 
 void SequencerBase::resetData()
 {
-    this->_bCanceled = false;
+    this->_bCanceled.store(false, std::memory_order_relaxed);
 }
 
 void SequencerBase::setText(const char* /*text*/)
@@ -257,7 +300,12 @@ SequencerLauncher::~SequencerLauncher()
 
 void SequencerLauncher::setText(const char* pszTxt)
 {
-    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+    {
+        std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+        if (SequencerP::_topLauncher != this) {
+            return;
+        }
+    }
     SequencerBase::Instance().setText(pszTxt);
 }
 
@@ -272,7 +320,12 @@ bool SequencerLauncher::next(bool canAbort)
 
 void SequencerLauncher::setProgress(size_t pos)
 {
-    std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+    {
+        std::lock_guard<std::recursive_mutex> locker(SequencerP::mutex);
+        if (SequencerP::_topLauncher != this) {
+            return;
+        }
+    }
     SequencerBase::Instance().setProgress(pos);
 }
 
