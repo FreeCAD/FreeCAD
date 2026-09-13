@@ -192,6 +192,7 @@ class TestSurfaceMesh(PathTestUtils.PathTestBase):
             linear_deflection=0.1,
             angular_deflection=0.5,
             mesh_simplification=1,
+            use_cpp=True,
         )
 
         self.assertIsNotNone(safe_stl)

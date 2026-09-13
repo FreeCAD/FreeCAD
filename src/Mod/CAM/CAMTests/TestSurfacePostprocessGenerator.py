@@ -503,6 +503,38 @@ class TestSurfacePostprocess(PathTestUtils.PathTestBase):
         self.assertTrue(all(c.Name == "G1" for c in cmds))
         self.assertIn("F", cmds[0].Parameters)
         self.assertGreater(cmds[0].Parameters["F"], 300.0)
-        self.assertFalse(all("F" in c.Parameters for c in cmds))
-        self.assertIn("F", cmds[-1].Parameters)
+        # Every move carries F, so the commanded feed never relies on G-code
+        # modality holding it over from an earlier line.
+        self.assertTrue(all("F" in c.Parameters for c in cmds))
         self.assertAlmostEqual(cmds[-1].Parameters["F"], 300.0, delta=1.0)
+
+    def test42_volumetric_feed_threshold_cache(self):
+        """
+        Tests that the threshold cache holds the commanded feed steady across
+        insignificant changes, even though every move now carries an F word.
+        """
+        from Path.Base.Generator.surface_postprocess import _generate_volumetric_cut_commands
+
+        # A shallow climb: the height-based feed drifts by 0.3 mm/s per point,
+        # under the generator's 0.5 mm/s threshold, so the cache must hold.
+        line = [(i * 10.0, 0.0, 5.0 + i * 0.02) for i in range(5)]
+
+        cmds = _generate_volumetric_cut_commands(
+            line,
+            depth_offset=0.0,
+            horiz_feed=300.0,
+            vert_feed=50.0,
+            layer_start_z=10.0,
+            layer_target_z=0.0,
+            volumetric_percent=50.0,
+        )
+
+        feeds = [c.Parameters["F"] for c in cmds]
+        self.assertEqual(len(feeds), len(line))
+        # The cache must collapse the sub-threshold drift, so consecutive
+        # commands repeat a feed rather than dithering on every point.
+        self.assertLess(len(set(feeds)), len(feeds))
+        # And when the commanded feed does move, it moves by at least the threshold.
+        for prev, curr in zip(feeds, feeds[1:]):
+            if prev != curr:
+                self.assertGreaterEqual(abs(curr - prev), 0.5)
