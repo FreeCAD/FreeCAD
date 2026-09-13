@@ -299,10 +299,21 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
         for (const auto& [doc, name] : groupRefs) {
             App::DocumentObject* obj = doc ? doc->getObject(name.c_str()) : nullptr;
             if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
+                const std::vector<App::DocumentObject*> parents = obj->getInList();
+                for (App::DocumentObject* parObj : parents) {
+                    // searching parent group
+                    if (parObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                        if (auto parGroup = parObj->getExtension<App::GroupExtension>()) {
+                            auto* group = obj->getExtensionByType<App::GroupExtension>();
+                            std::vector<App::DocumentObject*> children = group->Group.getValues();
+                            parGroup->addObjects(children);  // move children to the parent
+                        }
+                        break;
+                    }
+                }
                 doc->removeObject(name.c_str());
             }
         }
-        return true;
     }
 
     if (choice == QMessageBox::Yes && applyToAll) {
@@ -330,7 +341,19 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
         // delete all of the children recursively and call their viewprovider method
         deleteGroupContentsRecursively(group);
     }
-    // if user has specified "No" then delete the group but move children to the parent or root
+    else {
+        // if user has specified "No" then delete the group but move children to the parent
+        const std::vector<App::DocumentObject*> parents = currentObj->getInList();
+        for (App::DocumentObject* parObj : parents) {
+            // searching parent group
+            if (parObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                if (auto parGroup = parObj->getExtension<App::GroupExtension>()) {
+                    parGroup->addObjects(directChildren);  // move children to the parent
+                }
+                break;
+            }
+        }
+    }
 
     return true;
 }
