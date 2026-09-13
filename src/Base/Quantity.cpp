@@ -34,6 +34,7 @@
 #include "Exception.h"
 #include "Quantity.h"
 #include "Tools.h"
+#include "UnitRegistry.h"
 #include "UnitsApi.h"
 #include "UnitsConvData.h"
 #include "UnitsSchema.h"
@@ -334,6 +335,11 @@ bool Quantity::isValid() const
 void Quantity::setInvalid()
 {
     myValue = std::numeric_limits<double>::quiet_NaN();
+}
+
+std::optional<Quantity> Quantity::lookupUnit(const std::string& symbol)
+{
+    return UnitRegistry::lookup(symbol);
 }
 
 // === Predefined types =====================================================
