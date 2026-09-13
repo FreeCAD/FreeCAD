@@ -236,7 +236,7 @@ void ViewProviderImagePlane::setPlaneSize(const QSizeF& size, const QImage& img)
 
 QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
 {
-QImageReader reader(QString::fromUtf8(fileName));
+    QImageReader reader(QString::fromUtf8(fileName));
     const QSize imageSize = reader.size();
 
     if (imageSize.isValid()) {
@@ -269,9 +269,8 @@ QImageReader reader(QString::fromUtf8(fileName));
     // case (premultiplied format + fully transparent top-left pixel) and
     // composite onto white, which gives the expected page appearance without
     // affecting PNG/SVG images that have genuine partial transparency.
-    if (!img.isNull()
-            && img.format() == QImage::Format_ARGB32_Premultiplied
-            && qAlpha(img.pixel(0, 0)) == 0) {
+    if (!img.isNull() && img.format() == QImage::Format_ARGB32_Premultiplied
+        && qAlpha(img.pixel(0, 0)) == 0) {
         QImage opaque(img.size(), QImage::Format_RGB32);
         opaque.fill(Qt::white);
         QPainter painter(&opaque);
