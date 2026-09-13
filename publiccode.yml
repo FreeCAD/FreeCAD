@@ -1,0 +1,87 @@
+publiccodeYmlVersion: "0.5"
+
+name: FreeCAD
+url: "https://github.com/FreeCAD/FreeCAD"
+landingURL: "https://www.freecad.org"
+softwareVersion: "1.1.1"
+logo: "src/Gui/Icons/freecad.svg"
+
+platforms:
+  - windows
+  - mac
+  - linux
+
+categories:
+  - cad
+  - design
+  - graphic-design
+
+developmentStatus: stable
+softwareType: "standalone/desktop"
+
+intendedAudience:
+  scope:
+    - education
+    - infrastructures
+    - manufacturing
+    - research
+    - science-and-technology
+
+description:
+  en:
+    localisedName: FreeCAD
+    shortDescription: "Open-source parametric 3D modeler for designing real-life objects of any size."
+    longDescription: >
+      FreeCAD is an open-source parametric 3D modeler made primarily to design
+      real-life objects of any size. Parametric modeling lets users modify a
+      design by going back into its model history and changing parameters.
+      FreeCAD can sketch geometry-constrained 2D shapes and use them as a base
+      for 3D models, adjust dimensions, extract design details, and create
+      production-ready drawings. It is designed for a wide range of uses,
+      including product design, mechanical engineering, architecture, education,
+      hobby projects, and software development.
+    documentation: "https://wiki.freecad.org"
+    apiDocumentation: "https://freecad.github.io/DevelopersHandbook/"
+    features:
+      - Parametric 3D modeling with editable model history
+      - Geometry-constrained 2D sketching
+      - Production-ready technical drawings from 3D models
+      - Workbenches for mechanical design, architecture, CAM, FEM, BIM, and more
+      - Python scripting and automation API
+      - Cross-platform desktop application for Windows, macOS, and Linux
+      - Extensible add-on ecosystem
+
+legal:
+  license: "LGPL-2.1-or-later"
+  mainCopyrightOwner: "FreeCAD contributors"
+
+maintenance:
+  type: "community"
+  contacts:
+    - name: "FreeCAD maintainers"
+
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - en
+    - de
+    - fr
+    - it
+    - es
+    - pt-BR
+    - pt-PT
+    - nl
+    - pl
+    - ru
+    - uk
+    - zh-CN
+    - zh-TW
+    - ja
+    - ko
+
+dependsOn:
+  open:
+    - name: OpenCASCADE
+    - name: Qt
+    - name: Python
+    - name: Coin3D
