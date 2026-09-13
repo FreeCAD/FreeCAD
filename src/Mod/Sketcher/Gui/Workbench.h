@@ -70,5 +70,6 @@ SketcherGuiExport void addSketcherWorkbenchConstraints(Gui::ToolBarItem& cons);
 SketcherGuiExport void addSketcherWorkbenchTools(Gui::ToolBarItem& consaccel);
 SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual);
+SketcherGuiExport void addSketcherWorkbenchAutoConstraints(Gui::ToolBarItem& autoConstraints);
 
 }  // namespace SketcherGui
