@@ -590,6 +590,35 @@ static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* ex
     return nullptr;
 }
 
+void DlgExpressionInput::applyImpliedUnit()
+{
+    if (!expression || impliedUnit == Base::Unit::One) {
+        return;
+    }
+
+    std::unique_ptr<App::Expression> evaluated(expression->eval());
+    const auto* numberExpr = toNumberExpr(evaluated.get());
+    if (!numberExpr || !numberExpr->getQuantity().isDimensionless()) {
+        return;
+    }
+
+    double factor = 1.0;
+    std::string unitString;
+    Base::Quantity(1.0, impliedUnit).getUserString(factor, unitString);
+    if (unitString.empty()) {
+        return;
+    }
+
+    auto left = expression->copy();
+    auto right = App::Expression::parse(path.getDocumentObject(), "1" + unitString);
+    expression = std::make_shared<App::OperatorExpression>(
+        path.getDocumentObject(),
+        left.release(),
+        App::OperatorExpression::Operator::MUL,
+        right.release()
+    );
+}
+
 void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
 {
     ObjectIdentifier varSetId(*propVarSet);
@@ -670,18 +699,15 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    try {
-        if (varSetsVisible) {
-            if (needReportOnVarSet()) {
-                return;
-            }
-            acceptWithVarSet();
+    applyImpliedUnit();
+
+    if (varSetsVisible) {
+        if (needReportOnVarSet()) {
+            return;
         }
-        QDialog::accept();
+        acceptWithVarSet();
     }
-    catch (const Base::Exception& e) {
-        e.reportException();
-    }
+    QDialog::accept();
 }
 
 static App::Document* getPreselectedDocument()
