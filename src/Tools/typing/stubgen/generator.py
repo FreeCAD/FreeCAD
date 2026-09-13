@@ -298,6 +298,7 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
+    version_override: str | None = None,
 ) -> GenerationResult:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -348,7 +349,7 @@ def write_outputs(
     )
 
     write_pep561_markers(out_dir / "stubs", module_names)
-    project = Project(root)
+    project = Project(root, version_override=version_override)
     project.write_pyproject(out_dir)
     project.write_readme(out_dir)
 
