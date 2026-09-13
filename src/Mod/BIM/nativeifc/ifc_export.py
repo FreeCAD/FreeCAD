@@ -24,8 +24,6 @@
 
 import tempfile
 
-import ifcopenshell
-
 import FreeCAD
 import Draft
 
@@ -33,12 +31,14 @@ from importers import exportIFC
 from importers import exportIFCHelper
 from importers import importIFCHelper
 
+from . import backend
 from . import ifc_import
 from . import ifc_layers
 from . import ifc_materials
 from . import ifc_psets
 from . import ifc_tools
 
+ifcopenshell = backend.get_backend()
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 

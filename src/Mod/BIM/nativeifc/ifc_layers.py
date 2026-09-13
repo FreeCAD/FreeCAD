@@ -24,10 +24,10 @@
 
 """This NativeIFC module deals with layers"""
 
-import ifcopenshell
-import ifcopenshell.util.element
-
+from . import backend
 from . import ifc_tools
+
+ifcopenshell = backend.get_backend()
 
 
 def load_layers(obj):

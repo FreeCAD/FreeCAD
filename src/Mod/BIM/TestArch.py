@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 # Unit test for the Arch module
+from bimtests.TestIfcOpenShellBackend import TestIfcOpenShellBackend
 from bimtests.TestArchRoof import TestArchRoof
 from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall

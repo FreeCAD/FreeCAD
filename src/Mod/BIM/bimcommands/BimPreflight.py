@@ -287,63 +287,24 @@ class BIM_Preflight_TaskPanel:
             self.results[test] = None
             self.culprits[test] = None
             msg = None
-            try:
-                import ifcopenshell
-            except ImportError:
+            from nativeifc import backend
+
+            status = backend.get_status()
+            if not status.available:
                 msg = (
                     translate(
                         "BIM",
-                        "ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
+                        "IfcOpenShell is not installed or does not provide the APIs required by FreeCAD. Check %1 to obtain more information.",
                     ).replace(
                         "%1", "https://www.freecad.org/wiki/Extra_python_modules#IfcOpenShell"
                     )
                     + " "
                 )
+                if status.error:
+                    msg += status.error
                 self.failed(test)
             else:
-                if hasattr(
-                    ifcopenshell, "schema_identifier"
-                ) and ifcopenshell.schema_identifier.startswith("IFC4"):
-                    self.passed(test)
-                elif hasattr(ifcopenshell, "version"):
-                    try:
-                        from packaging import version
-
-                        if "-" in ifcopenshell.version:
-                            # Prebuild version have a version like 'v0.7.0-<GIT_COMMIT_ID>,
-                            # trying to remove the commit id.
-                            cur_version = version.parse(ifcopenshell.version.split("-")[0])
-                        else:
-                            cur_version = version.parse(ifcopenshell.version)
-                        min_version = version.parse("0.6")
-                        if cur_version >= min_version:
-                            self.passed(test)
-                        else:
-                            msg = self.getToolTip(test)
-                            msg = (
-                                translate(
-                                    "BIM",
-                                    "The version of Ifcopenshell installed on the system could not be parsed",
-                                )
-                                + " "
-                            )
-                            self.failed(test)
-                    except Exception as e:
-                        self.failed(test)
-                else:
-                    msg = self.getToolTip(test)
-                    msg += (
-                        translate(
-                            "BIM",
-                            "The version of Ifcopenshell installed on the system will produce files with this schema version:",
-                        )
-                        + "\n\n"
-                    )
-                    if hasattr(ifcopenshell, "schema_identifier"):
-                        msg += ifcopenshell.schema_identifier + "\n\n"
-                    else:
-                        msg += "Unable to retrieve schemas information from ifcopenshell\n\n"
-                    self.failed(test)
+                self.passed(test)
             self.results[test] = msg
 
     def testHierarchy(self):

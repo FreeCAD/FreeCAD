@@ -26,6 +26,7 @@ import os
 
 import FreeCAD
 import FreeCADGui
+from nativeifc import backend
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -49,14 +50,14 @@ class BIM_IfcExplorer:
 
         from PySide import QtGui
 
-        try:
-            import ifcopenshell
-        except ImportError:
+        status = backend.get_status(capability=backend.EXPLORER)
+        if not status.available:
             FreeCAD.Console.PrintError(
                 translate(
                     "BIM",
-                    "IfcOpenShell was not found on this system. IFC support is disabled",
+                    "IfcOpenShell is unavailable or cannot provide IFC Explorer previews",
                 )
+                + (f": {status.error}" if status.error else "")
                 + "\n"
             )
             return
@@ -174,7 +175,6 @@ class BIM_IfcExplorer:
     def open(self):
         "opens a file"
 
-        import ifcopenshell
         from PySide import QtGui
 
         self.filename = ""
@@ -215,7 +215,12 @@ class BIM_IfcExplorer:
         self.currentmesh = None
 
         # read file and order contents
-        self.ifc = ifcopenshell.open(self.filename)
+        try:
+            self.ifc = self.loadIfcFile(self.filename)
+        except backend.IfcOpenShellUnavailable as exc:
+            FreeCAD.Console.PrintError(f"{exc}\n")
+            self.filename = ""
+            return
         root = self.getEntitiesTree()
 
         # unable to find IfcSite
@@ -234,6 +239,12 @@ class BIM_IfcExplorer:
         for eid, children in root.items():
             self.addEntity(eid, children, self.tree)
         # self.tree.expandAll()
+
+    def loadIfcFile(self, filename):
+        """Open an IFC file through the validated Explorer backend."""
+
+        ifcopenshell = backend.get_backend(capability=backend.EXPLORER)
+        return ifcopenshell.open(filename)
 
     def close(self):
         "close the dialog"
@@ -275,8 +286,8 @@ class BIM_IfcExplorer:
         "turns mesh display on/off"
 
         import Mesh
-        import ifcopenshell
-        from ifcopenshell import geom
+
+        geom = backend.get_module("ifcopenshell.geom", capability=backend.EXPLORER)
 
         if not FreeCAD.ActiveDocument:
             doc = FreeCAD.newDocument()
@@ -300,8 +311,7 @@ class BIM_IfcExplorer:
                         trf = FreeCAD.Matrix()
                         trf.scale(s, s, s)
                     basemesh = Mesh.Mesh()
-                    s = geom.settings()
-                    s.set(s.USE_WORLD_COORDS, True)
+                    s = backend.create_mesh_settings()
                     for product in self.products:
                         try:
                             m = geom.create_shape(s, product)
@@ -466,8 +476,11 @@ class BIM_IfcExplorer:
     def addAttributes(self, eid, parent):
         "adds the attributes of the given IFC entity under the given QTreeWidgetITem"
 
-        import ifcopenshell
         from PySide import QtGui
+
+        entity_instance = backend.get_module(
+            "ifcopenshell.entity_instance", capability=backend.EXPLORER
+        ).entity_instance
 
         entity = self.ifc[eid]
 
@@ -488,7 +501,7 @@ class BIM_IfcExplorer:
                 else:
                     if argname not in ["Id", "GlobalId"]:
                         colored = False
-                        if isinstance(argvalue, ifcopenshell.entity_instance):
+                        if isinstance(argvalue, entity_instance):
                             if argvalue.id() == 0:
                                 t = self.tostr(argvalue)
                             else:
@@ -516,7 +529,7 @@ class BIM_IfcExplorer:
                             j = 0
                             for argitem in argvalue:
                                 colored = False
-                                if isinstance(argitem, ifcopenshell.entity_instance):
+                                if isinstance(argitem, entity_instance):
                                     if argitem.id() == 0:
                                         t = self.tostr(argitem)
                                     else:
