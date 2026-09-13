@@ -21,11 +21,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBoxInfo">
+    <widget class="QGroupBox" name="groupBoxFileInfo">
      <property name="title">
-      <string>Information</string>
+      <string>File Information</string>
      </property>
-     <layout class="QGridLayout">
+     <layout class="QGridLayout" name="gridLayoutFileInfo">
       <property name="leftMargin">
        <number>9</number>
       </property>
@@ -137,46 +137,6 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="textLabelUnitSystem">
-        <property name="text">
-         <string>Unit system</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-        <widget class="QComboBox" name="comboBox_unitSystem">
-         <property name="toolTip">
-          <string>Unit system for this file</string>
-         </property>
-        </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="textLabelCreator">
-        <property name="text">
-         <string>Created &amp;by</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="buddy">
-         <cstring>lineEditCreator</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLineEdit" name="lineEditCreator">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>25</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
        <widget class="QLabel" name="textLabelCreateDate">
         <property name="text">
          <string>Creation &amp;date</string>
@@ -189,7 +149,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="4" column="1">
        <widget class="QLineEdit" name="lineEditDate">
         <property name="minimumSize">
          <size>
@@ -202,7 +162,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="textLabelLastMod">
         <property name="text">
          <string>&amp;Last modified by</string>
@@ -215,7 +175,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="5" column="1">
        <widget class="QLineEdit" name="lineEditLastMod">
         <property name="minimumSize">
          <size>
@@ -223,9 +183,12 @@
           <height>25</height>
          </size>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="textLabelLastModDate">
         <property name="text">
          <string>Last &amp;modification date</string>
@@ -238,7 +201,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="6" column="1">
        <widget class="QLineEdit" name="lineEditLastModDate">
         <property name="minimumSize">
          <size>
@@ -251,10 +214,74 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0">
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBoxInfo">
+     <property name="title">
+      <string>Metadata</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="textLabelUnitSystem">
+        <property name="text">
+         <string>Unit system</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+        <widget class="QComboBox" name="comboBox_unitSystem">
+         <property name="toolTip">
+          <string>Unit system for this file</string>
+         </property>
+        </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="textLabelCreator">
+        <property name="text">
+         <string>Created &amp;by</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="buddy">
+         <cstring>lineEditCreator</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEditCreator">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="textLabelCompany">
         <property name="text">
-         <string>Com&amp;pany</string>
+         <string>Com&amp;pany/Organization</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -264,7 +291,7 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="lineEditCompany">
         <property name="minimumSize">
          <size>
@@ -274,7 +301,7 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="textLabelLicense">
         <property name="text">
          <string>License information</string>
@@ -284,10 +311,10 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="3" column="1">
        <widget class="QComboBox" name="comboLicense"/>
       </item>
-      <item row="11" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="textLabelLicenseURL">
         <property name="text">
          <string>License URL</string>
@@ -297,7 +324,7 @@
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="4" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLineEdit" name="lineEditLicenseURL"/>
@@ -311,7 +338,7 @@
         </item>
        </layout>
       </item>
-      <item row="12" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="textLabelComment">
         <property name="text">
          <string>&amp;Comment</string>
@@ -324,10 +351,10 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="1" rowspan="2">
+      <item row="5" column="1" rowspan="2">
        <widget class="QTextEdit" name="textEditComment"/>
       </item>
-      <item row="13" column="0">
+      <item row="6" column="0">
        <spacer>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -346,12 +373,94 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
+   <item row="2" column="0">
+    <widget class="QWidget" name="widgetNewDocumentOptions" native="true">
+     <layout class="QVBoxLayout" name="verticalLayoutNewDocumentOptions">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="checkBoxRememberAuthor">
+        <property name="toolTip">
+         <string>Uses the creator entered above as the default creator for new documents</string>
+        </property>
+        <property name="text">
+         <string>Remember the creator as the default for new documents</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxRememberCompany">
+        <property name="toolTip">
+         <string>Uses the company/organization entered above as the default for new documents</string>
+        </property>
+        <property name="text">
+         <string>Remember the company/organization as the default for new documents</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBoxRememberLicense">
+        <property name="toolTip">
+         <string>Uses the license selected above as the default license for new documents</string>
+        </property>
+        <property name="text">
+         <string>Remember the license as the default for new documents</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="lineNewDocumentOptions">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayoutButtons">
+     <item>
+      <widget class="QCheckBox" name="checkBoxDontShowAgain">
+       <property name="toolTip">
+        <string>Stops showing this dialog when a new document is created. It can be re-enabled in Preferences, Document.</string>
+       </property>
+       <property name="text">
+        <string>Do not ask again for new documents</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacerButtons">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
