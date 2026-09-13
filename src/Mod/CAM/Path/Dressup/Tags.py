@@ -980,6 +980,15 @@ class ObjectTagDressup:
                 "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "AutomaticallyGenerate",
+            "Tag",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Generate new tags while recompute",
+            ),
+        )
         obj.setEditorMode("Approximation", 2)  # hide
 
         self.obj = obj
@@ -1031,6 +1040,17 @@ class ObjectTagDressup:
                 ),
             )
             obj.setEditorMode("Approximation", 2)  # hide
+
+        if not hasattr(obj, "AutomaticallyGenerate"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "AutomaticallyGenerate",
+                "Tag",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Generate new tags while recompute",
+                ),
+            )
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:
@@ -1235,7 +1255,7 @@ class ObjectTagDressup:
         # pr.disable()
         # pr.print_stats()
 
-    def doExecute(self, obj):
+    def doExecute(self, obj, regen=True):
         if not obj.Base:
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
@@ -1249,6 +1269,9 @@ class ObjectTagDressup:
         if not pathData:
             logger.debug("execute - no pathData")
             return
+
+        if obj.AutomaticallyGenerate and regen:
+            self.generateTags(obj)
 
         self.tags = []
         if hasattr(obj, "Positions"):
