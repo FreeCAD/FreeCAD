@@ -68,9 +68,6 @@ GUIApplication::GUIApplication(int& argc, char** argv)
         &GUIApplication::commitData,
         Qt::DirectConnection
     );
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    setFallbackSessionManagementEnabled(false);
-#endif
 }
 
 GUIApplication::~GUIApplication() = default;
@@ -313,16 +310,8 @@ bool GUISingleApplication::sendMessage(const QString& message, int timeout)
     }
 
     QTextStream ts(&socket);
-#if QT_VERSION <= QT_VERSION_CHECK(6, 0, 0)
-    ts.setCodec("UTF-8");
-#else
     ts.setEncoding(QStringConverter::Utf8);
-#endif
-#if QT_VERSION <= QT_VERSION_CHECK(5, 15, 0)
-    ts << message << endl;
-#else
     ts << message << Qt::endl;
-#endif
 
     return socket.waitForBytesWritten(timeout);
 }
@@ -332,11 +321,7 @@ void GUISingleApplication::readFromSocket()
     auto socket = qobject_cast<QLocalSocket*>(sender());
     if (socket) {
         QTextStream in(socket);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        in.setCodec("UTF-8");
-#else
         in.setEncoding(QStringConverter::Utf8);
-#endif
         while (socket->canReadLine()) {
             d_ptr->timer->stop();
             QString message = in.readLine();

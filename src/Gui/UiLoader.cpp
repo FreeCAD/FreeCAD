@@ -214,7 +214,6 @@ QUiLoader::QUiLoader(QObject* parent)
     Base::PyGILStateLocker lock;
     PythonWrapper wrap;
     wrap.loadUiToolsModule();
-    // PyObject* module = PyImport_ImportModule("PySide2.QtUiTools");
     PyObject* module = PyImport_ImportModule("freecad.UiTools");
     if (module) {
         Py::Tuple args(1);

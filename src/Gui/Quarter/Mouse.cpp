@@ -95,20 +95,12 @@ namespace {
 
 QPointF getLocalPosition(const QMouseEvent* event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
   return event->position();
-#else
-  return event->localPos();
-#endif
 }
 
 QPointF getLocalPosition(const QWheelEvent* event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
   return event->position();
-#else
-  return event->posF();
-#endif
 }
 
 }

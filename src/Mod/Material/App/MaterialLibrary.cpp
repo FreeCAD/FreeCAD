@@ -307,9 +307,6 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        stream.setCodec("UTF-8");
-#endif
         stream.setGenerateByteOrderMark(true);
 
         // Write the contents

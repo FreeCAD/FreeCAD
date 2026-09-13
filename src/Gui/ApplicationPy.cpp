@@ -323,7 +323,7 @@ PyObject* Gui::ApplicationPy::sShowMainWindow(PyObject* /*self*/, PyObject* args
         }
         else {
             // In order to get Jupiter notebook integration working we must create a direct instance
-            // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
+            // of QApplication. Not even a sub-class can be used because otherwise PySide wraps it
             // with a QtCore.QCoreApplication which will raise an exception in ipykernel
 #if defined(Q_OS_WIN)
             static int argc = 0;

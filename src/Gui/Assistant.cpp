@@ -77,11 +77,7 @@ bool Assistant::startAssistant()
 #elif defined(Q_OS_MACOS)
         QString app = QCoreApplication::applicationDirPath() + QDir::separator();
 #else
-# if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
-# else
         QString app = QLibraryInfo::path(QLibraryInfo::BinariesPath) + QDir::separator();
-# endif
 #endif
         app += QLatin1String("assistant");
 

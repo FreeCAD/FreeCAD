@@ -2378,7 +2378,7 @@ if FreeCAD.GuiUp:
                     QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
                 )
             else:
-                # This is the PySide2/Qt5 structure
+                # This is the PySide/Qt structure
                 CaseInsensitiveOption = QtCore.QRegularExpression.CaseInsensitiveOption
 
             # Keywords (case-insensitive regex)

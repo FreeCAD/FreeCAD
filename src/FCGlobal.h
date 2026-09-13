@@ -83,8 +83,3 @@
 #define FC_DEFAULT_COPY_MOVE(Class) \
     FC_DEFAULT_COPY(Class) \
     FC_DEFAULT_MOVE(Class)
-
-#include <QtCore.h>
-#ifndef HAVE_Q_DISABLE_COPY_MOVE
-#define Q_DISABLE_COPY_MOVE FC_DISABLE_COPY_MOVE
-#endif
