@@ -32,6 +32,7 @@ from PySide import QtCore
 import Path
 import Path.Op.Base as PathOp
 
+import Path.Base.Generator.spiral as spiral
 import Path.Base.Generator.spiral_facing as spiral_facing
 import Path.Base.Generator.facing_common as facing_common
 import Path.Base.Generator.zigzag_facing as zigzag_facing
@@ -40,6 +41,8 @@ import Path.Base.Generator.bidirectional_facing as bidirectional_facing
 import Path.Base.Generator.linking as linking
 import PathScripts.PathUtils as PathUtils
 import Path.Base.FeedRate as FeedRate
+
+import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -114,8 +117,15 @@ class ObjectMillFacing(PathOp.ObjectOp):
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
+        if prop == "ClearingPattern":
+            self.opUpdateEditorModes(obj)
+
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def opUpdateEditorModes(self, obj):
+        mode = 2 if obj.ClearingPattern in ("Circular", "Spiral") else 0
+        obj.setEditorMode("PassExtension", mode)
 
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""
@@ -217,6 +227,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 (translate("CAM_MillFacing", "Bidirectional"), "Bidirectional"),
                 (translate("CAM_MillFacing", "Directional"), "Directional"),
                 (translate("CAM_MillFacing", "Spiral"), "Spiral"),
+                (translate("CAM_MillFacing", "Circular"), "Circular"),
             ],
         }
 
@@ -327,14 +338,17 @@ class ObjectMillFacing(PathOp.ObjectOp):
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        # offset with intersection joins
-        boundary_wires = [w.makeOffset2D(obj.StockExtension.Value, 2) for w in boundary_wires]
-
         # Convert boundary to a rectangular polygon aligned to the cut angle.
         # Stock faces may have curved edges (e.g. cylindrical stock) and all
         # facing strategies assume a rectangular boundary.
         cut_angle = getattr(obj.Angle, "Value", obj.Angle)
         boundary_wire = facing_common.get_angled_polygon(boundary_wires, cut_angle)
+
+        # offset with intersection joins
+        offsetVal = obj.StockExtension.Value
+        if offsetVal < 0:
+            offsetVal = max(offsetVal, -0.5 * min(e.Length for e in boundary_wire.Edges))
+        boundary_wire = boundary_wire.makeOffset2D(offsetVal, 2)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -394,6 +408,24 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     reverse=bool(getattr(obj, "Reverse", False)),
                     angle_degrees=getattr(obj.Angle, "Value", obj.Angle),
                 )
+            elif obj.ClearingPattern == "Circular":
+                Path.Log.debug("Generating circular spiral toolpath")
+                step = stepover_percent * tool_diameter / 100
+                radius = max(e.Length for e in boundary_wire.Edges) / 2 + tool_diameter / 2 - step
+                dir_angle_rad = math.radians(obj.Angle.Value) + (math.pi if obj.Reverse else 0)
+                args = {
+                    "center": boundary_wire.BoundBox.Center,
+                    "outer_radius": radius,
+                    "step": step,
+                    "inner_radius": step / 2,
+                    "direction": "CCW" if milling_direction == "conventional" else "CW",
+                    "startAt": "Outside",
+                    "dir_angle_rad": dir_angle_rad,
+                }
+
+                # create spiral
+                base_commands = spiral.generate(**args)
+                base_commands[0].Name = "G0"
             else:
                 Path.Log.error(f"Unknown clearing pattern: {obj.ClearingPattern}")
                 raise ValueError(f"Unknown clearing pattern: {obj.ClearingPattern}")
@@ -462,7 +494,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     # Now append the base commands, skipping the generator's initial positioning move
                     for i, cmd in enumerate(base_commands):
                         # Skip the first move if it only positions at the start point
-                        if i == first_move_idx:
+                        if i <= first_move_idx:
                             # If this first move has only XY(Z) to the start point, skip it because we preambled it
                             pass
                         else:
