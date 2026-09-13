@@ -550,14 +550,29 @@ Part::TopoShape Rib::makeRibSurface(
     Part::TopoShape far(0, profile.Hasher);
     far.makeElementTransform(profile, translation, "RibFarProfile");
     const auto ends = findRibProfileEnds(TopoDS::Wire(profile.getShape()));
-    const gp_Pnt first = BRep_Tool::Pnt(ends.startVertex);
-    const gp_Pnt last = BRep_Tool::Pnt(ends.endVertex);
+    const auto farEnds = findRibProfileEnds(TopoDS::Wire(far.getShape()));
+    // Reuse the wire vertices: coincident new vertices make MakeWire replace
+    // edges while joining, which can break multi-edge wire connectivity/history.
+    const auto endConnector = BRepBuilderAPI_MakeEdge(ends.endVertex, farEnds.endVertex).Edge();
+    const auto startConnector = BRepBuilderAPI_MakeEdge(farEnds.startVertex, ends.startVertex).Edge();
 
     BRepBuilderAPI_MakeWire outline;
-    outline.Add(TopoDS::Wire(profile.getShape()));
-    outline.Add(BRepBuilderAPI_MakeEdge(last, last.Translated(travel)).Edge());
-    outline.Add(TopoDS::Wire(far.getShape().Reversed()));
-    outline.Add(BRepBuilderAPI_MakeEdge(first.Translated(travel), first).Edge());
+    // MakeWire::Add(wire) uses storage order, not connected traversal order.
+    // In particular, reversing a multi-edge wire reverses its edge orientations
+    // without reversing storage order. Walk it from the connected endpoint so
+    // MakeWire cannot reject a disconnected first edge and silently omit a tail.
+    const auto appendWire = [&outline](const TopoDS_Wire& wire) {
+        for (BRepTools_WireExplorer walk(wire); walk.More(); walk.Next()) {
+            outline.Add(walk.Current());
+            if (!outline.IsDone()) {
+                throw std::runtime_error("Cannot connect the rib profile boundary");
+            }
+        }
+    };
+    appendWire(TopoDS::Wire(profile.getShape()));
+    outline.Add(endConnector);
+    appendWire(TopoDS::Wire(far.getShape().Reversed()));
+    outline.Add(startConnector);
     if (!outline.IsDone()) {
         throw std::runtime_error("Cannot close the rib profile in the fill direction");
     }
@@ -569,6 +584,8 @@ Part::TopoShape Rib::makeRibSurface(
 
     // Keep the original edges in the face and record its generation for naming.
     Handle(BRepTools_History) history = new BRepTools_History;
+    history->AddGenerated(ends.startVertex, startConnector);
+    history->AddGenerated(ends.endVertex, endConnector);
     for (TopExp_Explorer it(profile.getShape(), TopAbs_EDGE); it.More(); it.Next()) {
         history->AddGenerated(it.Current(), face.Face());
     }
@@ -681,7 +698,7 @@ Part::TopoShape Rib::makeDraftedRibTool(
     // a curved root is useful for a later trim, but must not create an artificial
     // face-crossing failure beneath a perfectly valid root.
     double bottom = bounds.MinZ; // - std::max(tolerance, height*.2);
-    double top = bounds.MaxZ // + tolerance;
+    double top = bounds.MaxZ; // + tolerance;
     const auto widthAt = [&](double z) { return thickness + 2*(neutral-z)*slope; };
     if (widthAt(bounds.MinZ) <= tolerance || widthAt(bounds.MaxZ) <= tolerance) {
         throw std::runtime_error("Draft closes the rib before its required extent; reduce the angle");

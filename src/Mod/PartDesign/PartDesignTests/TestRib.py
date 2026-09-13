@@ -90,6 +90,39 @@ class TestRib(unittest.TestCase):
     def testCircularBossProfiles(self):
         self.checkProfiles("Boss")
 
+    def testInPlaneSweepDirections(self):
+        """A multi-edge rib can reach either flange or the back of a C bracket."""
+        v = App.Vector
+        self.makeRib("L", "Line")
+        self.base.Shape = self.base.Shape.fuse(Part.makeBox(55, 30, 5, v(0, 0, 35))).removeSplitter()
+        self.profile.delGeometry(0)
+        self.profile.addGeometry([
+            Part.LineSegment(v(12, 16, 0), v(24, 19, 0)),
+            Part.LineSegment(v(24, 19, 0), v(36, 25, 0)),
+        ], False)
+        self.rib.ExtendType = "Off"
+        directions = (v(0, 0, -1), v(0, 0, 1), v(0.2, 0, 1), v(-1, 0, 0))
+        sketchPlacement = self.profile.Placement
+        # Rotate the entire fixture as well: no world-axis assumption is valid.
+        for rotation in (App.Rotation(), App.Rotation(v(1, 2, 3), 37)):
+            placement = App.Placement(v(), rotation)
+            self.base.Placement = placement
+            self.profile.Placement = placement.multiply(sketchPlacement)
+            for direction in directions:
+                with self.subTest(rotation=rotation, direction=direction):
+                    # Rib inherits the base placement; Direction stays Rib-local.
+                    self.rib.Direction = direction
+                    self.rib.Reversed = False
+                    self.assertRib()
+                    forward = self.rib.Shape.copy()
+                    # Reversed and the opposite input vector must describe the
+                    # same solid, not merely two independently valid solids.
+                    self.rib.Direction = -direction
+                    self.rib.Reversed = True
+                    self.assertRib()
+                    self.assertLess(forward.cut(self.rib.Shape).Volume, 1e-6)
+                    self.assertLess(self.rib.Shape.cut(forward).Volume, 1e-6)
+
     def mappedElements(self, shape):
         if not shape.ElementMapVersion:
             self.skipTest("Element maps are disabled in this build")
