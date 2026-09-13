@@ -31,6 +31,27 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 
+_IMPERIAL_SCHEMAS = {2, 3, 5, 7}
+_METRIC_NUDGE_PRESETS = ("1 mm", "5 mm", "1 cm", "5 cm", "10 cm", "50 cm")
+_IMPERIAL_NUDGE_PRESETS = ('1/16"', '1/8"', '1/4"', '1"', '6"', "1'")
+
+
+def get_unit_schema():
+    doc = FreeCAD.ActiveDocument
+    if doc is None:
+        return FreeCAD.Units.getSchema()
+    return doc.getEnumerationsOfProperty("UnitSystem").index(doc.UnitSystem)
+
+
+def get_nudge_presets():
+    """Return display labels and quantities for the active unit schema."""
+
+    presets = (
+        _IMPERIAL_NUDGE_PRESETS if get_unit_schema() in _IMPERIAL_SCHEMAS else _METRIC_NUDGE_PRESETS
+    )
+    return [(label, FreeCAD.Units.Quantity(label)) for label in presets]
+
+
 class BIM_Nudge:
     # base class for the different nudge commands
 
@@ -48,30 +69,27 @@ class BIM_Nudge:
                 nudgeValue = statuswidget.nudge.text().replace("&", "")
                 dist = 0
                 if "auto" in nudgeValue.lower():
-                    unit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                        "UserSchema", 0
-                    )
-                    if unit in [2, 3, 5, 7]:
-                        scale = [1.5875, 3.175, 6.35, 25.4, 152.4, 304.8]
+                    distances = [quantity for _label, quantity in get_nudge_presets()]
+                    if hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph"):
+                        viewsize = (
+                            FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                            .getViewVolume()
+                            .getWidth()
+                        )
                     else:
-                        scale = [1, 5, 10, 50, 100, 500]
-                    viewsize = (
-                        FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-                        .getViewVolume()
-                        .getWidth()
-                    )
+                        viewsize = 4000
                     if viewsize < 250:
-                        dist = scale[0]
+                        dist = distances[0].Value
                     elif viewsize < 750:
-                        dist = scale[1]
+                        dist = distances[1].Value
                     elif viewsize < 4500:
-                        dist = scale[2]
+                        dist = distances[2].Value
                     elif viewsize < 8000:
-                        dist = scale[3]
+                        dist = distances[3].Value
                     elif viewsize < 25000:
-                        dist = scale[4]
+                        dist = distances[4].Value
                     else:
-                        dist = scale[5]
+                        dist = distances[5].Value
                     # u = FreeCAD.Units.Quantity(dist,FreeCAD.Units.Length).UserString
                     statuswidget.nudge.setText(translate("BIM", "Auto"))
                 else:
