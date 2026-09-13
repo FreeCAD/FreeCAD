@@ -45,6 +45,71 @@ using namespace MatGui;
 using namespace std;
 namespace sp = std::placeholders;
 
+namespace
+{
+void applyCustomAppearance(App::PropertyMaterialList& appearance,
+                           const App::Material& original,
+                           const App::Material& custom)
+{
+    const bool ambientChanged = original.ambientColor != custom.ambientColor;
+    const bool diffuseChanged = original.diffuseColor != custom.diffuseColor;
+    const bool emissiveChanged = original.emissiveColor != custom.emissiveColor;
+    const bool specularChanged = original.specularColor != custom.specularColor;
+    const bool shininessChanged = original.shininess != custom.shininess;
+    const bool transparencyChanged = original.transparency != custom.transparency;
+
+    if (ambientChanged) {
+        appearance.setAmbientColor(custom.ambientColor);
+    }
+    if (diffuseChanged) {
+        appearance.setDiffuseColor(custom.diffuseColor);
+    }
+    if (emissiveChanged) {
+        appearance.setEmissiveColor(custom.emissiveColor);
+    }
+    if (specularChanged) {
+        appearance.setSpecularColor(custom.specularColor);
+    }
+    if (shininessChanged) {
+        appearance.setShininess(custom.shininess);
+    }
+    if (transparencyChanged) {
+        appearance.setTransparency(custom.transparency);
+    }
+}
+
+void applyCustomAppearance(App::Material& appearance,
+                           const App::Material& original,
+                           const App::Material& custom)
+{
+    const bool ambientChanged = original.ambientColor != custom.ambientColor;
+    const bool diffuseChanged = original.diffuseColor != custom.diffuseColor;
+    const bool emissiveChanged = original.emissiveColor != custom.emissiveColor;
+    const bool specularChanged = original.specularColor != custom.specularColor;
+    const bool shininessChanged = original.shininess != custom.shininess;
+    const bool transparencyChanged = original.transparency != custom.transparency;
+
+    if (ambientChanged) {
+        appearance.ambientColor = custom.ambientColor;
+    }
+    if (diffuseChanged) {
+        appearance.diffuseColor = custom.diffuseColor;
+    }
+    if (emissiveChanged) {
+        appearance.emissiveColor = custom.emissiveColor;
+    }
+    if (specularChanged) {
+        appearance.specularColor = custom.specularColor;
+    }
+    if (shininessChanged) {
+        appearance.shininess = custom.shininess;
+    }
+    if (transparencyChanged) {
+        appearance.transparency = custom.transparency;
+    }
+}
+}  // namespace
+
 
 /* TRANSLATOR Gui::Dialog::DlgDisplayPropertiesImp */
 
@@ -310,8 +375,15 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
                 d->ui.buttonPointColor->blockSignals(blocked);
             }
         }
+        else if (prop.is<App::PropertyMaterial>()) {
+            if (prop_name == "BaseShapeAppearance") {
+                const auto& material = static_cast<const App::PropertyMaterial&>(prop).getValue();
+                d->ui.widgetMaterial->setMaterial(QString::fromStdString(material.uuid));
+            }
+        }
         else if (prop.isDerivedFrom<App::PropertyMaterialList>()) {
-            if (prop_name == "ShapeAppearance") {
+            if (prop_name == "ShapeAppearance"
+                && !dynamic_cast<const Gui::ViewProviderGeometryObject*>(&obj)) {
                 auto& values = static_cast<const App::PropertyMaterialList&>(prop).getValues();
                 auto& material = values[0];
                 d->ui.widgetMaterial->setMaterial(QString::fromStdString(material.uuid));
@@ -364,18 +436,33 @@ void DlgDisplayPropertiesImp::onButtonCustomAppearanceClicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     Gui::Dialog::DlgMaterialPropertiesImp dlg(this);
-    if (!Provider.empty()) {
-        if (auto vp = dynamic_cast<Gui::ViewProviderGeometryObject*>(Provider.front())) {
-            App::Material mat = vp->ShapeAppearance[0];
-            dlg.setCustomMaterial(mat);
-            dlg.setDefaultMaterial(mat);
+    App::Material original;
+    for (auto* vp : Provider) {
+        if (auto* geometry = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp)) {
+            original = geometry->BaseShapeAppearance.getValue();
+            dlg.setCustomMaterial(original);
+            dlg.setDefaultMaterial(original);
+            break;
+        }
+        if (auto* appearance = dynamic_cast<App::PropertyMaterialList*>(
+                vp->getPropertyByName("ShapeAppearance"))) {
+            original = appearance->getValues()[0];
+            dlg.setCustomMaterial(original);
+            dlg.setDefaultMaterial(original);
+            break;
         }
     }
     dlg.exec();
-    App::Material mat = dlg.getCustomMaterial();
+    const App::Material custom = dlg.getCustomMaterial();
     for (auto vp : Provider) {
-        if (auto vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp)) {
-            vpg->ShapeAppearance.setValue(mat);
+        if (auto* appearance = dynamic_cast<App::PropertyMaterialList*>(
+                vp->getPropertyByName("ShapeAppearance"))) {
+            applyCustomAppearance(*appearance, original, custom);
+            if (auto* geometry = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp)) {
+                App::Material baseAppearance = geometry->BaseShapeAppearance.getValue();
+                applyCustomAppearance(baseAppearance, original, custom);
+                geometry->BaseShapeAppearance.setValue(baseAppearance);
+            }
         }
     }
 }
@@ -567,6 +654,12 @@ void DlgDisplayPropertiesImp::setShapeAppearance(const std::vector<Gui::ViewProv
     bool material = false;
     App::Material mat = App::Material(App::Material::DEFAULT);
     for (auto view : views) {
+        if (auto* geometry = dynamic_cast<Gui::ViewProviderGeometryObject*>(view)) {
+            material = true;
+            mat = geometry->BaseShapeAppearance.getValue();
+            d->ui.widgetMaterial->setMaterial(QString::fromStdString(mat.uuid));
+            break;
+        }
         if (auto* prop =
                 dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
             material = true;
@@ -631,8 +724,12 @@ void DlgDisplayPropertiesImp::onMaterialSelected(
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (auto it : Provider) {
-        if (auto* prop = dynamic_cast<App::PropertyMaterialList*>(
-                it->getPropertyByName("ShapeAppearance"))) {
+        if (auto* geometry = dynamic_cast<Gui::ViewProviderGeometryObject*>(it)) {
+            geometry->setObjectAppearance(material->getMaterialAppearance(),
+                                          d->ui.replaceFaceAppearances->isChecked());
+        }
+        else if (auto* prop = dynamic_cast<App::PropertyMaterialList*>(
+                     it->getPropertyByName("ShapeAppearance"))) {
             prop->setValue(material->getMaterialAppearance());
         }
     }
