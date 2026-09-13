@@ -2075,11 +2075,12 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
     return false;
 }
 
-void SketchObject::getDirectlyCoincidentPoints(
+int SketchObject::getDirectlyCoincidentPoints(
     int GeoId1,
     int GeoId2,
     std::vector<int>& GeoId3,
-    std::vector<PointPos>& PosId3
+    std::vector<PointPos>& PosId3,
+    bool includePointOnObject
 ) const
 {
     std::vector<int> constraints;
@@ -2091,7 +2092,7 @@ void SketchObject::getDirectlyCoincidentPoints(
             continue;
         }
 
-        if (con->Type == Sketcher::ConstraintType::PointOnObject) {
+        if (con->Type == Sketcher::ConstraintType::PointOnObject && includePointOnObject) {
             if (con->getElement(0).Pos != Sketcher::PointPos::none) {
                 GeoId3.push_back(con->getElement(0).GeoId);
                 PosId3.push_back(con->getElement(0).Pos);

@@ -665,13 +665,14 @@ public:
         std::vector<PointPos>& PosIdList
     ) const;
 
-    /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or PointOnObject
+    /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or optionally PointOnObject
     /// constraint
-    void getDirectlyCoincidentPoints(
+    int getDirectlyCoincidentPoints(
         int GeoId1,
         int GeoId2,
         std::vector<int>& GeoIds3,
-        std::vector<PointPos>& PosIds3
+        std::vector<PointPos>& PosIds3,
+        bool includePointOnObject = false
     ) const;
 
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2) const;
@@ -682,7 +683,7 @@ public:
     /// returns a list of indices of all constraints involving given GeoId
     void getConstraintIndices(int GeoId, std::vector<int>& constraintList) const;
 
-    /// generates a warning message about constraint conflicts and appends it to the given message
+    /// generates a warning message about constraint conflicts and appends it to the given messagen
     static void appendConflictMsg(const std::vector<int>& conflicting, std::string& msg);
     /// generates a warning message about redundant constraints and appends it to the given message
     static void appendRedundantMsg(const std::vector<int>& redundant, std::string& msg);
