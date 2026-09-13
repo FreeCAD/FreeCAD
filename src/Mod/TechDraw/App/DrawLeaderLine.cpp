@@ -80,6 +80,7 @@ DrawLeaderLine::DrawLeaderLine()
 
     constexpr long int FilledArrow{0l};
     constexpr long int NoEnd{7l};
+    constexpr long int NormalType{0l};
 
     ADD_PROPERTY_TYPE(LeaderParent, (nullptr), group, (App::PropertyType)(App::Prop_None),
                       "View to which this leader is attached");
@@ -92,6 +93,11 @@ DrawLeaderLine::DrawLeaderLine()
 
     EndSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndSymbol, (NoEnd));                //no symbol
+
+    static const char* TypeEnums[] = {"Normal", "Straight", "Complex", "Complex with kink",  nullptr};
+    Type.setEnums(TypeEnums);
+    ADD_PROPERTY_TYPE(Type, (NormalType), group, App::Prop_None,
+                      "Normal, Straight, Complex (multiple waypoints) leader line");
 
     ADD_PROPERTY_TYPE(Scalable ,(false), group, App::Prop_None, "Scale line with LeaderParent");
     ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()), group, App::Prop_None, "Forces last line segment to be horizontal");
@@ -107,7 +113,6 @@ DrawLeaderLine::DrawLeaderLine()
     Rotation.setStatus(App::Property::Hidden, true);
     Caption.setStatus(App::Property::Hidden, true);
 
-    LockPosition.setValue(true);
     LockPosition.setStatus(App::Property::Hidden, true);
 }
 
