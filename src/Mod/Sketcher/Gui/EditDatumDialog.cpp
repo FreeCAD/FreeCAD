@@ -79,8 +79,7 @@ bool SketcherGui::checkConstraintName(const Sketcher::SketchObject* sketch, std:
 
 EditDatumDialog::EditDatumDialog(int tid, ViewProviderSketch* vp, int ConstrNbr)
     : ConstrNbr(ConstrNbr)
-    , success(false)
-    , transactionID(tid)
+    , transaction(tid)
 {
     sketch = vp->getSketchObject();
     const std::vector<Sketcher::Constraint*>& Constraints = sketch->Constraints.getValues();
@@ -90,14 +89,17 @@ EditDatumDialog::EditDatumDialog(int tid, ViewProviderSketch* vp, int ConstrNbr)
 EditDatumDialog::EditDatumDialog(int tid, Sketcher::SketchObject* pcSketch, int ConstrNbr)
     : sketch(pcSketch)
     , ConstrNbr(ConstrNbr)
-    , transactionID(tid)
+    , transaction(tid)
 {
     const std::vector<Sketcher::Constraint*>& Constraints = sketch->Constraints.getValues();
     Constr = Constraints[ConstrNbr];
 }
 
 EditDatumDialog::~EditDatumDialog()
-{}
+{
+    // Abort unless the transaction was explicitly closed.
+    transaction.close(App::TransactionCloseMode::Abort);
+}
 
 int EditDatumDialog::exec(bool atCursor)
 {
@@ -105,6 +107,7 @@ int EditDatumDialog::exec(bool atCursor)
     if (Constr->isDimensional()) {
 
         if (sketch->hasConflicts()) {
+            transaction.close(App::TransactionCloseMode::Abort);
             Gui::TranslatedUserWarning(
                 sketch,
                 QObject::tr("Dimensional constraint"),
@@ -313,7 +316,7 @@ void EditDatumDialog::accepted()
                 );
             }
 
-            Gui::Command::commitCommand(transactionID);
+            transaction.close(App::TransactionCloseMode::Commit);
 
             // THIS IS A WORK-AROUND NOT TO DELAY 0.19 RELEASE
             //
@@ -338,7 +341,7 @@ void EditDatumDialog::accepted()
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
 
-            Gui::Command::abortCommand(transactionID);
+            transaction.close(App::TransactionCloseMode::Abort);
 
             if (sketch->noRecomputes) {  // if setdatum failed, it is highly likely that solver
                                          // information is invalid.
@@ -350,7 +353,7 @@ void EditDatumDialog::accepted()
 
 void EditDatumDialog::rejected()
 {
-    Gui::Command::abortCommand(transactionID);
+    transaction.close(App::TransactionCloseMode::Abort);
     sketch->recomputeFeature();
 }
 
