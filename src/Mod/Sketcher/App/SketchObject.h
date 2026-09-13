@@ -665,8 +665,8 @@ public:
         std::vector<PointPos>& PosIdList
     ) const;
 
-    /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or optionally PointOnObject
-    /// constraint
+    /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or optionally
+    /// PointOnObject constraint
     int getDirectlyCoincidentPoints(
         int GeoId1,
         int GeoId2,
