@@ -124,6 +124,10 @@ def _transform_shape_with_arc_fix(shape, matrix):
     Returns the (possibly fixed) transformed ``Part.Shape``.
     """
     transformed = shape.copy().transformShape(matrix, False, False)
+
+    if transformed.Faces:
+        return transformed
+
     fixed_edges = []
     any_converted = False
     for edge in transformed.Edges:
