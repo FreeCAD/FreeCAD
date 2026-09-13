@@ -42,6 +42,7 @@
 #include <Gui/ViewProvider.h>
 
 #include "QGIUserTypes.h"
+#include "QGCustomBorder.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -70,7 +71,6 @@ namespace TechDrawGui
 class QGSPage;
 class QGVPage;
 class ViewProviderPage;
-class QGCustomBorder;
 class QGCustomLabel;
 class QGCustomText;
 class QGICaption;
@@ -137,13 +137,13 @@ public:
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
-    inline qreal getY() { return y() * -1; }
+    qreal getY() { return y() * -1; }
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
     virtual void updatePositionFromFeatureXY();
 
-    bool isSnapping() { return snapping; }
+    bool isSnapping() const { return snapping; }
     void snapPosition(QPointF& position);
     void snapSectionView(const TechDraw::DrawViewSection* sectionView,
                          QPointF& newPosition);
@@ -214,7 +214,6 @@ protected:
     virtual QRectF customChildrenBoundingRect() const;
     virtual QRectF frameRect() const;
     void dumpRect(const char* text, QRectF rect);
-    bool m_isHovered;
 
     virtual void updateFrameVisibility();
     bool shouldShowFromViewProvider() const;
@@ -222,6 +221,8 @@ protected:
     bool isViewSelected() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
+
+    bool borderIsVisible() const {return m_border->isVisible(); }
 
 private:
     TechDraw::DrawView *viewObj;
@@ -248,7 +249,7 @@ private:
     double m_lockWidth;
     double m_lockHeight;
     int m_zOrder{0};
-
+    bool m_isHovered;
     bool m_snapped{false};
 
     void layoutDecorations(const QRectF& contentArea,
