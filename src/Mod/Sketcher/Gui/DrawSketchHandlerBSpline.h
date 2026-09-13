@@ -421,17 +421,19 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using State = std::pair<ConstructionMethod, SelectMode>;
-        using enum Gui::InputHint::UserInput;
 
         const Gui::InputHint switchModeHint {
             constructionMethod() == ConstructionMethod::ControlPoints
                 ? tr("%1 switch to knots")
                 : tr("%1 switch to control points"),
-            {KeyM}
+            {{Qt::Key_M}}
         };
-        const Gui::InputHint periodicHint {tr("%1 toggle periodic"), {KeyF}};
-        const Gui::InputHint undoHint {tr("%1 undo last point"), {KeyR}};
-        const Gui::InputHint degreeHint {tr("%1/%2 increase/decrease degree"), {KeyU, KeyJ}};
+        const Gui::InputHint periodicHint {tr("%1 toggle periodic"), {{Qt::Key_F}}};
+        const Gui::InputHint undoHint {tr("%1 undo last point"), {{Qt::Key_R}}};
+        const Gui::InputHint degreeHint {
+            tr("%1/%2 increase/decrease degree"),
+            {{Qt::Key_U}, {Qt::Key_J}}
+        };
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -440,7 +442,7 @@ private:
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {tr("%1 pick first control point"), {MouseLeft}},
+                         {tr("%1 pick first control point"), {{Gui::MouseInput::MouseLeft}}},
                          switchModeHint,
                          periodicHint,
                          degreeHint,
@@ -448,8 +450,8 @@ private:
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next point"), {MouseLeft}},
-                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 pick next point"), {{Gui::MouseInput::MouseLeft}}},
+                         {tr("%1 finish"), {{Gui::MouseInput::MouseRight}}},
                          switchModeHint,
                          periodicHint,
                          undoHint,
@@ -460,15 +462,15 @@ private:
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {tr("%1 pick first knot"), {MouseLeft}},
+                         {tr("%1 pick first knot"), {{Gui::MouseInput::MouseLeft}}},
                          switchModeHint,
                          periodicHint,
                      }},
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {tr("%1 pick next point"), {MouseLeft}},
-                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 pick next point"), {{Gui::MouseInput::MouseLeft}}},
+                         {tr("%1 finish"), {{Gui::MouseInput::MouseRight}}},
                          switchModeHint,
                          periodicHint,
                          undoHint,

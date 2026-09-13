@@ -39,7 +39,6 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/InputHint.h>
 
-using enum Gui::InputHint::UserInput;
 
 #include <QFormLayout>
 #include <QVBoxLayout>
@@ -549,11 +548,11 @@ void TaskMeasure::invoke()
     const std::list<Gui::InputHint> hints {
         {
             .message = tr("%1 auto-save"),
-            .sequences = {ModifierShift},
+            .sequences = {{Qt::ShiftModifier}},
         },
         {
             .message = greedy ? tr("%1 start new measurement") : tr("%1 add to measurement"),
-            .sequences = {ModifierCtrl},
+            .sequences = {{Qt::ControlModifier}},
         },
     };
 
@@ -777,12 +776,14 @@ void TaskMeasure::updateSelectionType()
     std::list<Gui::InputHint> hints;
     if (mGreedySelection) {
         hints = std::list<Gui::InputHint> {
-            {tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+            {tr("%1 new measurement, %2 toggle auto-save"),
+             {{Qt::ControlModifier}, {Qt::ShiftModifier}}}
         };
     }
     else {
         hints = std::list<Gui::InputHint> {
-            {tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+            {tr("%1 add to measurement, %2 toggle auto-save"),
+             {{Qt::ControlModifier}, {Qt::ShiftModifier}}}
         };
     }
     Gui::getMainWindow()->showHints(hints);

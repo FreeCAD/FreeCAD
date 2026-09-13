@@ -1486,17 +1486,16 @@ TaskDlgAttacher::TaskDlgAttacher(
     }
 
     // Status-bar input hints
-    using enum Gui::InputHint::UserInput;
     std::list<Gui::InputHint> hints {
         {
             .message = tr("%1 select reference"),
-            .sequences = {MouseLeft},
+            .sequences = {{Gui::MouseInput::MouseLeft}},
         },
     };
     if (onAccept) {
         hints.push_back({
             .message = tr("%1 select and confirm"),
-            .sequences = {MouseDoubleLeft},
+            .sequences = {{Gui::MouseInput::MouseDoubleLeft}},
         });
     }
     Gui::getMainWindow()->showHints(hints);
