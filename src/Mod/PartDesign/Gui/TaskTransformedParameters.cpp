@@ -124,23 +124,28 @@ void TaskTransformedParameters::setupUI()
 
     using Mode = PartDesign::Transformed::Mode;
 
-    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::WholeShape));
-    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::Features));
-
-    connect(ui->buttonGroupMode, &QButtonGroup::idClicked, this, &TaskTransformedParameters::onModeChanged);
+    connect(
+        ui->transformationMode,
+        &QComboBox::currentIndexChanged,
+        this,
+        &TaskTransformedParameters::onModeChanged
+    );
 
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
-    ui->groupFeatureList->setEnabled(mode == Mode::Features);
+    ui->groupFeatureList->setEnabled(mode != Mode::WholeShape);
     switch (mode) {
-        case Mode::WholeShape:
-            ui->radioTransformBody->setChecked(true);
-            break;
         case Mode::Features:
-            ui->radioTransformToolShapes->setChecked(true);
+            ui->transformationMode->setCurrentIndex(0);
+            break;
+        case Mode::WholeShape:
+            ui->transformationMode->setCurrentIndex(1);
+            break;
+        case Mode::FeatureResult:
+            ui->transformationMode->setCurrentIndex(2);
             break;
     }
 
-    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -226,7 +231,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
-            std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+            std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValue();
             const auto or_iter = std::ranges::find(originals, selectedObject);
             if (selectionMode == SelectionMode::AddFeature) {
                 if (or_iter == originals.end()) {
@@ -290,22 +295,32 @@ bool TaskTransformedParameters::isEnabledTransaction() const
     return enableTransaction;
 }
 
-void TaskTransformedParameters::onModeChanged(int mode_id)
+void TaskTransformedParameters::onModeChanged(int index)
 {
-    if (mode_id < 0) {
+    if (index < 0) {
         return;
     }
 
-    auto pcTransformed = getObject<PartDesign::Transformed>();
-    pcTransformed->TransformMode.setValue(mode_id);
-
     using Mode = PartDesign::Transformed::Mode;
-    Mode const mode = static_cast<Mode>(mode_id);
-
-    ui->groupFeatureList->setEnabled(mode == Mode::Features);
-    if (mode == Mode::WholeShape) {
-        ui->listWidgetFeatures->clear();
+    Mode mode;
+    switch (index) {
+        case 0:
+            mode = Mode::Features;
+            break;
+        case 1:
+            mode = Mode::WholeShape;
+            break;
+        case 2:
+            mode = Mode::FeatureResult;
+            break;
+        default:
+            return;
     }
+    auto pcTransformed = getObject<PartDesign::Transformed>();
+    pcTransformed->TransformMode.setValue(static_cast<int>(mode));
+
+    ui->groupFeatureList->setEnabled(mode != Mode::WholeShape);
+
     setupTransaction();
     recomputeFeature();
 }
@@ -364,7 +379,7 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 void TaskTransformedParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
+    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     int currentRow = ui->listWidgetFeatures->currentRow();
     if (currentRow < 0) {
         Base::Console().error("PartDesign Pattern: No feature selected for removing.\n");

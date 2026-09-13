@@ -784,6 +784,7 @@ public:
         const char* op = nullptr,
         bool copy = false
     );
+
     TopoShape makeTransform(const gp_Trsf& trsf, const char* op = nullptr, bool copy = false) const
     {
         return TopoShape().makeTransform(*this, trsf, op, copy);
@@ -1577,6 +1578,40 @@ public:
         return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
     }
 
+    /** Make a boolean common of this shape with an input shape
+     *
+     * @param source: the source shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementCommon(
+        const std::vector<TopoShape>& sources,
+        const char* op = nullptr,
+        double tol = -1.0
+    );
+    /** Make a boolean common of this shape with an input shape
+     *
+     * @param source: the source shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for the fusion
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape makeElementCommon(const TopoShape& source, const char* op = nullptr, double tol = -1.0)
+    {
+        return TopoShape(0, Hasher).makeElementCommon({*this, source}, op, tol);
+    }
+
     /** Make a boolean xor of this shape with an input shape
      *
      * @param source: the source shape
@@ -1627,6 +1662,9 @@ public:
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const Data::IndexedName& name);
+
+    /// Recursively expands a compond into individual TopoShapes and stores them in `res`
+    static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res);
 
     Data::MappedName setElementComboName(
         const Data::IndexedName& element,
