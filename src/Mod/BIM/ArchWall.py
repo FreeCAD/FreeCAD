@@ -568,33 +568,32 @@ class _Wall(ArchComponent.Component):
             if not isinstance(base_faces, list):
                 base_faces = [base_faces]
 
-            # Determine the fusion strategy: solids should only be fused if the base is a Sketch and
-            # it is not a multi-layer wall.
-            should_fuse_solids = False
-            if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                is_multi_layer = (
-                    hasattr(obj, "Material")
-                    and obj.Material
-                    and hasattr(obj.Material, "Materials")
-                    and obj.Material.Materials
-                )
-                if not is_multi_layer:
-                    should_fuse_solids = True
-
             # Generate solids
             solids = []
             for face in base_faces:
                 face.Placement = extdata[2].multiply(face.Placement)
                 solids.append(face.extrude(extv))
 
-            # Apply the fusion strategy
-            if should_fuse_solids:
-                fused_shape = None
-                for solid in solids:
-                    fused_shape = fused_shape.fuse(solid) if fused_shape else solid
-                base = fused_shape
-            else:
-                base = Part.makeCompound(solids)
+            # Solids of same materials are fused whether there are layers
+            # TODO For consistency in IFC and proper display of materials and
+            # colour, fusing to be done in getExtrusionData() rather than below
+            #
+            solidsGrp = []
+            self.solidsNumLst = []
+            for solidCmpd in solids:  # Nos. of solidCmpd = nos. of Layers
+                fusedSolids = None
+                if hasattr(solidCmpd, "Solids"):  # always has 'Solids'?
+                    for solid in solidCmpd.Solids:
+                        fusedSolids = fusedSolids.fuse(solid) if fusedSolids else solid
+                    solidsGrp.append(fusedSolids)
+                    solidNum = len(fusedSolids.Solids)
+                else:  # can have no solid?
+                    solidsGrp.append(solidCmpd)
+                    solidNum = 0
+                # record number of solids in each layer
+                self.solidsNumLst.append(solidNum)
+            base = Part.makeCompound(solidsGrp)
+
         if obj.Base:
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape.isNull():
@@ -660,11 +659,30 @@ class _Wall(ArchComponent.Component):
         # set the length property
         if hasattr(self, "connectEdges") and self.connectEdges:
             l = float(0)
-            for e in self.connectEdges:
-                l += e.Length
-            l = l / 2
-            if self.layersNum:
-                l = l / self.layersNum
+            if self.layersNum == 1:
+                for w in self.connectEdges:
+                    for e in w:
+                        l += e.Length
+                l = l / 2
+            else:  # if there are layers, check 1st and last layers only
+                # 1 pair of offset/connected edge for each wire
+                n = self.wiresNum * 2
+                l1p1 = l1p2 = lnp1 = lnp2 = float(0)
+                # 1st layer of connectEdges for all wires
+                p1 = self.connectEdges[:n]
+                # last layer of connectEdges for all wires
+                pn = self.connectEdges[-n:]
+                for i in range(0, n, 2):
+                    for e in p1[i]:
+                        l1p1 += e.Length
+                    for e in p1[i + 1]:
+                        l1p2 += e.Length
+                    for e in pn[i]:
+                        lnp1 += e.Length
+                    for e in pn[i + 1]:
+                        lnp2 += e.Length
+                llist = [l1p1, l1p2, lnp1, lnp2]
+                l = (max(llist) + min(llist)) / 2
             if obj.Length.Value != l:
                 obj.Length = l
                 self.oldLength = (
@@ -849,8 +867,6 @@ class _Wall(ArchComponent.Component):
                 # multifuses not considered here
                 return data
         length = obj.Length.Value
-        # TODO currently layers were not supported when len(basewires) > 0	##( or 1 ? )
-
         self.noWidths = False
         self.noHeight = False
         width = 0
@@ -1175,17 +1191,43 @@ class _Wall(ArchComponent.Component):
                         # normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
                         # normal = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
 
+                    # multi-materials with multiple wires support
+                    if self.basewires and layers:
+                        # record number of basewires and layers
+                        self.wiresNum = len(self.basewires)
+                        self.layersNum = len(layers)
+                        basewiresAll = []
+                        for l in layers:
+                            basewiresAll.extend(self.basewires)
+                        # e.g. self.basewires of
+                        #      [[e1, e2, e3, e4], [e5], [e6]]
+                        # with layers becomes:
+                        #      [[e1, e2, e3, e4], [e5], [e6],
+                        #        [e1, e2, e3, e4], [e5], [e6],
+                        #         [e1, e2, e3, e4], [e5], [e6]...]
+                        layersAll = []
+                        layersAll = [item for item in layers for _ in range(self.wiresNum)]
+                        # e.g. layers of
+                        #      [10, 70, 20]
+                        # with multiple wires in Sketch (self.wiresNum) becomes:
+                        #      [10, 10, 10 ...
+                        #        70, 70, 70 ...
+                        #         20, 20, 20 ...]
+                    elif self.basewires:
+                        self.wiresNum = len(self.basewires)
+                        self.layersNum = 1
+                        basewiresAll = self.basewires
+                        # Following above example, no change in this case:
+                        # self.basewires
+                        #      [[e1, e2, e3, e4], [e5], [e6]]
+                        # layers
+                        #      [10, 70, 20]
+
                     if self.basewires:
-                        if (len(self.basewires) == 1) and layers:
-                            self.basewires = [self.basewires[0] for l in layers]
-                            self.layersNum = len(layers)
-                        else:
-                            self.layersNum = 0
                         layeroffset = 0
                         baseface = None
                         self.connectEdges = []
-                        for i, wire in enumerate(self.basewires):
-
+                        for i, wire in enumerate(basewiresAll):
                             # Check number of edges per 'wire' and get the 1st edge
                             if isinstance(wire, Part.Wire):
                                 edgeNum = len(wire.Edges)
@@ -1241,15 +1283,15 @@ class _Wall(ArchComponent.Component):
                             # off = obj.Offset.Value  # off is no longer used
 
                             if curAligns == "Left":
-
                                 if layers:
                                     curWidth = []
                                     for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
+                                        curWidth.append(abs(layersAll[i]))
                                     # off = off+layeroffset  # off is no longer used
                                     offsets = [x + layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
-                                    layeroffset += abs(curWidth[0])
+                                    if (i + 1) % self.wiresNum == 0:
+                                        layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)
@@ -1292,15 +1334,15 @@ class _Wall(ArchComponent.Component):
                                 )
                             elif curAligns == "Right":
                                 dvec = dvec.negative()
-
                                 if layers:
                                     curWidth = []
                                     for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
+                                        curWidth.append(abs(layersAll[i]))
                                     # off = off+layeroffset  # off is no longer used
                                     offsets = [x + layeroffset for x in offsets]
                                     dvec.multiply(curWidth[0])
-                                    layeroffset += abs(curWidth[0])
+                                    if (i + 1) % self.wiresNum == 0:
+                                        layeroffset += abs(curWidth[0])
                                 else:
                                     curWidth = widths
                                     dvec.multiply(width)
@@ -1353,7 +1395,7 @@ class _Wall(ArchComponent.Component):
                                     alignListC = []
                                     offsetListC = []
                                     for n in range(edgeNum):
-                                        curWidth.append(abs(layers[i]))
+                                        curWidth.append(abs(layersAll[i]))
                                         alignListC.append("Right")  # ("Left")
                                         offsetListC.append(off)
                                     # wNe1 = DraftGeomUtils.offsetWire(wire, d1, wireNedge=True)
@@ -1384,7 +1426,8 @@ class _Wall(ArchComponent.Component):
                                         basewireOffset=offsetListC,
                                         wireNedge=True,
                                     )
-                                    layeroffset += abs(curWidth[0])
+                                    if (i + 1) % self.wiresNum == 0:
+                                        layeroffset += abs(curWidth[0])
                                 else:
                                     dvec.multiply(width)
                                     wNe2 = DraftGeomUtils.offsetWire(
@@ -1420,16 +1463,24 @@ class _Wall(ArchComponent.Component):
                             cEdgesF1 = wNe1[1]
                             cEdges1 = wNe1[2]
                             oEdges1 = wNe1[3]
-                            self.connectEdges.extend(cEdges2)
-                            self.connectEdges.extend(cEdges1)
-
+                            self.connectEdges.append(cEdges2)
+                            self.connectEdges.append(cEdges1)
+                            # self.basewires e.g.
+                            #      [ [e1, e2, e3, e4], [e5], [e6] ]
+                            # become self.connectEdges
+                            # (w/o layers)
+                            #      [ [c1-2, c2-2, c3-2, c4-2],
+                            #        [c1-1, c2-1, c3-1, c4-1],
+                            #        [c5-2],
+                            #        [c5-1],
+                            #        [c6-2],
+                            #        [c6-1] ]
+                            # TODO normalise these with layers
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
                             del offsets[0:edgeNum]
-
                             if face:
-
-                                if layers and (layers[i] < 0):
+                                if layers and (layersAll[i] < 0):
                                     # layers with negative values are not drawn
                                     continue
 
@@ -1462,6 +1513,15 @@ class _Wall(ArchComponent.Component):
 
                                     """  Whether layers or not, all baseface = [face] """
 
+                        # Group faces into sub-list:  Each sub-list contains
+                        # faces generate from all wires in a Skech for 1 layer,
+                        # number of sub-list is number of layers (+ve value)
+                        n = self.wiresNum
+                        basefaceGroup = [baseface[i : i + n] for i in range(0, len(baseface), n)]
+                        basefaceGroupCmpd = []
+                        for faces in basefaceGroup:
+                            basefaceGroupCmpd.append(Part.Compound(faces))
+                        baseface = basefaceGroupCmpd
                         if baseface:
                             base, placement = self.rebase(baseface)
 
@@ -2008,6 +2068,18 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                             for i in range(len(obj.Material.Materials))
                             if obj.Material.Thicknesses[i] >= 0
                         ]
+                        # multi-materials with multiple wires (solids) support
+                        if hasattr(obj.Proxy, "solidsNumLst"):
+                            counts = obj.Proxy.solidsNumLst
+                            activematerials = [
+                                a for a, c in zip(activematerials, counts) for _ in range(c)
+                            ]
+                            # e.g. activematerials of
+                            #      [m1, m2, m3]
+                            # with multiple solids in layers (self.solidsNumLst)
+                            #      [1, 2, 3]
+                            # becomes:
+                            #      [m1,  m2, m2,  m3, m3, m3]
                         if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
                             for i, mat in enumerate(activematerials):
