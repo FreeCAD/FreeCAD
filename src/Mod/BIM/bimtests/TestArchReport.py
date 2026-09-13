@@ -757,7 +757,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # 3. Child objects
         space1 = Arch.makeSpace(name="Living Room")
         space2 = Arch.makeSpace(name="Kitchen")
-        win_profile = Draft.makeRectangle(length=1000, height=1200)
+        win_profile = Draft.make_rectangle(length=1000, height=1200)
         window = Arch.makeWindow(baseobj=win_profile, name="Living Room Window")
 
         # 4. An intermediate generic group
@@ -1149,11 +1149,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         building = Arch.makeBuilding(name="Test Building")
         floor = Arch.makeFloor(name="Test Floor")
         wall = Arch.makeWall(name="Test Wall")
-        win_profile = Draft.makeRectangle(1000, 1000)
+        win_profile = Draft.make_rectangle(1000, 1000)
         window = Arch.makeWindow(win_profile, name="Test Window")
 
         generic_group = self.doc.addObject("App::DocumentObjectGroup", "Test Generic Group")
-        space_profile = Draft.makeRectangle(2000, 2000)
+        space_profile = Draft.make_rectangle(2000, 2000)
         space = Arch.makeSpace(space_profile, name="Test Space")
 
         site.addObject(building)
@@ -1855,7 +1855,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # ARRANGE: Create a multi-level hierarchy (Floor -> Wall -> Window)
         floor = Arch.makeFloor(name="TraversalTestFloor")
         wall = Arch.makeWall(name="TraversalTestWall")
-        win_profile = Draft.makeRectangle(1000, 1000)
+        win_profile = Draft.make_rectangle(1000, 1000)
         window = Arch.makeWindow(win_profile, name="TraversalTestWindow")
 
         # Establish the relationships
@@ -1889,7 +1889,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Floor -> Generic Group -> Space
         floor = Arch.makeFloor(name="GroupTestFloor")
         group = self.doc.addObject("App::DocumentObjectGroup", "GenericTestGroup")
-        space_profile = Draft.makeRectangle(500, 500)
+        space_profile = Draft.make_rectangle(500, 500)
         space = Arch.makeSpace(space_profile, name="GroupTestSpace")
 
         # Establish the relationships
@@ -1923,7 +1923,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # ARRANGE: Create a 3-level hierarchy (Floor -> Wall -> Window)
         floor = Arch.makeFloor(name="DepthTestFloor")
         wall = Arch.makeWall(name="DepthTestWall")
-        win_profile = Draft.makeRectangle(1000, 1000)
+        win_profile = Draft.make_rectangle(1000, 1000)
         window = Arch.makeWindow(win_profile, name="DepthTestWindow")
 
         floor.addObject(wall)
@@ -1973,7 +1973,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         floor = Arch.makeFloor(name="SQLFuncTestFloor")
         group = self.doc.addObject("App::DocumentObjectGroup", "SQLFuncTestGroup")
         wall = Arch.makeWall(name="SQLFuncTestWall")
-        win_profile = Draft.makeRectangle(1000, 1000)
+        win_profile = Draft.make_rectangle(1000, 1000)
         window = Arch.makeWindow(win_profile, name="SQLFuncTestWindow")
 
         building.addObject(floor)

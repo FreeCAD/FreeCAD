@@ -73,7 +73,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         commitlist = []
         FreeCADGui.addModule("Draft")
         if len(objs) == 1 and faces:
-            _cmd = "Draft.make_shape2dview"
+            _cmd = "Draft.make_shape_2d_view"
             _cmd += "("
             _cmd += "FreeCAD.ActiveDocument." + objs[0].Name + ", "
             _cmd += DraftVecUtils.toString(vec) + ", "
@@ -86,7 +86,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         else:
             n = 0
             for o in objs:
-                _cmd = "Draft.make_shape2dview"
+                _cmd = "Draft.make_shape_2d_view"
                 _cmd += "("
                 _cmd += "FreeCAD.ActiveDocument." + o.Name + ", "
                 _cmd += DraftVecUtils.toString(vec)

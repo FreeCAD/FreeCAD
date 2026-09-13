@@ -123,7 +123,7 @@ class Arch_CurtainWall:
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand(
-                "base = Draft.makeLine(FreeCAD."
+                "base = Draft.make_line(FreeCAD."
                 + str(self.points[0])
                 + ",FreeCAD."
                 + str(self.points[1])

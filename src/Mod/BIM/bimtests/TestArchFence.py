@@ -32,9 +32,9 @@ class TestArchFence(TestArchBase.TestArchBase):
 
     def test_makeFence(self):
         # Create section, post, and path objects
-        section = Draft.makeRectangle(100, 10)
-        post = Draft.makeRectangle(10, 10)
-        path = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        section = Draft.make_rectangle(100, 10)
+        post = Draft.make_rectangle(10, 10)
+        path = Draft.make_line(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
 
         # Create a fence
         fence = Arch.makeFence(section, post, path)

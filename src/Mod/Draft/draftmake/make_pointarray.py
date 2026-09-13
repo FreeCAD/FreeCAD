@@ -38,12 +38,12 @@ The copies will be created at the points of a point object.
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
+from draftobjects.pointarray import PointArray
+from draftutils import utils
+from draftutils import gui_utils
 from draftutils.messages import _err
 from draftutils.translate import translate
-from draftobjects.pointarray import PointArray
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_array import ViewProviderDraftArray
@@ -153,10 +153,13 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     return new_obj
 
 
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_point_array()",
+)
 def makePointArray(base, ptlst):
-    """Create PointArray. DEPRECATED. Use 'make_point_array'."""
-    utils.use_instead("make_point_array")
-
+    """DEPRECATED. Use 'make_point_array'."""
     return make_point_array(base, ptlst)
 
 

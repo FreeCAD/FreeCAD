@@ -65,7 +65,7 @@ class BIM_Rewire:
                 nobj.shape = wire
                 selectlist.append(nobj)
             else:
-                selectlist.append(Draft.makeWire([v.Point for v in wire.OrderedVertexes]))
+                selectlist.append(Draft.make_wire([v.Point for v in wire.OrderedVertexes]))
         for name in names:
             FreeCAD.ActiveDocument.removeObject(name)
         FreeCAD.ActiveDocument.commitTransaction()

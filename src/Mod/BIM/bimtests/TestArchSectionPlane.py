@@ -135,8 +135,8 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         # Create a drawing view
         section = Arch.makeSectionPlane(level)
         drawing = Arch.make2DDrawing()
-        view = Draft.make_shape2dview(section)
-        cut = Draft.make_shape2dview(section)
+        view = Draft.make_shape_2d_view(section)
+        cut = Draft.make_shape_2d_view(section)
         cut.InPlace = False
         cut.ProjectionMode = "Cutfaces"
         drawing.addObjects([view, cut])
@@ -178,7 +178,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
 
         section = Arch.makeSectionPlane(wall)
-        shp_view = Draft.make_shape2dview(section)
+        shp_view = Draft.make_shape_2d_view(section)
         shp_view.InPlace = False
         shp_view.ProjectionMode = "Cutfaces"
         App.ActiveDocument.recompute()
