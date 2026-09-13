@@ -321,7 +321,7 @@ def wireToCArea(wire, tolerance=0.01):
                     area.Vertex(direction, area.Point(p1.x, p1.y), area.Point(center.x, center.y))
                 )
         else:
-            raise ValueError(f"Unsupported curve type: {type(curve).__name__}")
+            raise TypeError(f"Unsupported curve type: {type(curve).__name__}")
 
     a.append(c)
     return a
