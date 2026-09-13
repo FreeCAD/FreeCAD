@@ -25,10 +25,15 @@
  ***************************************************************************/
 
 
+#include <QComboBox>
+
+#include <App/Application.h>
+
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "ui_DlgPrefsTechDrawGeneral.h"
 #include "PreferencesGui.h"
 #include "DrawGuiUtil.h"
+#include "TaskHatchFace.h"
 
 
 using namespace TechDrawGui;
@@ -48,6 +53,14 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
     ui->pfc_DefDir->setMode(Gui::FileChooser::Mode::Directory);
     ui->pfc_Welding->setMode(Gui::FileChooser::Mode::Directory);
     ui->fcSymbolDir->setMode(Gui::FileChooser::Mode::Directory);
+
+    TaskHatchFace::populatePatternsComboBox(ui->patternComboBox);
+    ui->patternComboBox->addItem(tr("Last used"));
+
+    connect(ui->openPatternsFolder,
+            &QPushButton::clicked,
+            this,
+            &TaskHatchFace::onOpenPatternsFolder);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -70,11 +83,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
 
     ui->pfc_DefTemp->onSave();
     ui->pfc_DefDir->onSave();
-    ui->pfc_HatchFile->onSave();
     ui->pfc_LineGroup->onSave();
     ui->pfc_Welding->onSave();
-    ui->pfc_FilePattern->onSave();
-    ui->le_NamePattern->onSave();
     ui->fcSymbolDir->onSave();
 
     ui->cb_ShowGrid->onSave();
@@ -88,6 +98,10 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->psb_SnapFactor->onSave();
     ui->cb_SnapHighlights->onSave();
     ui->psb_HighlightSnapFactor->onSave();
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw");
+    hGrp->SetInt("HatchDefaultPattern", ui->patternComboBox->currentIndex());
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -110,11 +124,8 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();
-    ui->pfc_HatchFile->onRestore();
     ui->pfc_LineGroup->onRestore();
     ui->pfc_Welding->onRestore();
-    ui->pfc_FilePattern->onRestore();
-    ui->le_NamePattern->onRestore();
     ui->fcSymbolDir->onRestore();
 
 
@@ -138,7 +149,14 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
 
     ui->cb_SnapHighlights->onRestore();
     ui->psb_HighlightSnapFactor->onRestore();
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/TechDraw");
+    int index = hGrp->GetInt("HatchDefaultPattern", ui->patternComboBox->count() - 1);
+    ui->patternComboBox->setCurrentIndex(index);
 }
+
+
 
 /**
  * Sets the strings of the subwidgets using the current language.

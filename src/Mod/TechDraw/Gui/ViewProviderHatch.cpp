@@ -36,7 +36,7 @@
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include "TaskHatch.h"
+#include "TaskHatchFace.h"
 #include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;
@@ -84,7 +84,7 @@ bool ViewProviderHatch::setEdit(int ModNum)
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgHatch(this));
+    Gui::Control().showDialog(new TaskDlgHatchFace(getObject()));
     return true;
 }
 
