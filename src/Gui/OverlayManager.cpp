@@ -61,6 +61,7 @@
 #include "TaskView/TaskView.h"
 #include "Tree.h"
 #include "TreeParams.h"
+#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 
 FC_LOG_LEVEL_INIT("Dock", true, true);
@@ -653,11 +654,14 @@ public:
         }
 
         int naviCubeSize = NaviCube::getNaviCubeSize();
-        int naviCorner = OverlayParams::getDockOverlayCheckNaviCube()
-            ? App::GetApplication()
-                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube")
-                  ->GetInt("CornerNaviCube", 1)
-            : -1;
+        int naviCorner = -1;
+        auto activeView = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+        if (OverlayParams::getDockOverlayCheckNaviCube() && activeView
+            && activeView->getViewer()->isEnabledNaviCube()) {
+            naviCorner = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube")
+                             ->GetInt("CornerNaviCube", 1);
+        }
 
         QRect rect;
         QRect rectBottom(0, 0, 0, 0);
