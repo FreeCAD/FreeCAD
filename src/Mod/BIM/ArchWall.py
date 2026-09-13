@@ -558,6 +558,7 @@ class _Wall(ArchComponent.Component):
                 # else:  # Seems no need ...
                 # obj.PropertySet = 'Default'
 
+        self.joint_enabled = False
         extdata = self.getExtrusionData(obj)
         if extdata:
             base_faces = extdata[0]
@@ -579,7 +580,8 @@ class _Wall(ArchComponent.Component):
                     and obj.Material.Materials
                 )
                 if not is_multi_layer:
-                    should_fuse_solids = True
+                    if not self.joint_enabled:
+                        should_fuse_solids = True
 
             # Generate solids
             solids = []
@@ -1039,6 +1041,7 @@ class _Wall(ArchComponent.Component):
         if self.ensureBase(obj):
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape:
+                    clEdgeSameIndex = None
                     if obj.Base.Shape.Solids:
                         return None
 
@@ -1086,7 +1089,9 @@ class _Wall(ArchComponent.Component):
                             self.basewires = wallBaseShapeEdgesInfo.get(
                                 "wallAxis"
                             )  # 'wallEdges'  # widths, aligns, offsets?
-
+                            pointOnObject = wallBaseShapeEdgesInfo.get("pointOnObject")
+                            trimEdges = wallBaseShapeEdgesInfo.get("trimEdges")
+                            clEdgeSameIndex = obj.Base.Proxy.clEdgeSameIndex
                     # Sort Sketch edges consistently with below procedures
                     # without using Sketch.Shape.Edges - found the latter order
                     # in some corner case != getSortedClusters()
@@ -1413,22 +1418,163 @@ class _Wall(ArchComponent.Component):
                                     )
                             w2 = wNe2[0]
                             w1 = wNe1[0]
-                            face = DraftGeomUtils.bind(w1, w2, per_segment=True)
-                            cEdgesF2 = wNe2[1]
+
+                            cEdgesF2 = wNe2[1]  # offsetMode=None ("Offset")
+                            cEdgesF1 = wNe1[1]  # offsetMode="BasewireMode"
                             cEdges2 = wNe2[2]
-                            oEdges2 = wNe2[3]
-                            cEdgesF1 = wNe1[1]
                             cEdges1 = wNe1[2]
-                            oEdges1 = wNe1[3]
+                            nEdges2 = wNe2[3]
+                            nEdges1 = wNe1[3]
+                            brNEdges2 = wNe2[4]  # before reversing
+                            brNEdges1 = wNe1[4]
+                            anyEdgeF1Replaced = False
+                            anyEdgeF2Replaced = False
+
+                            # if edges in Sketch has pointOnObject constraints,
+                            # form T-Joint for corresponding wall segments
+                            if (
+                                clEdgeSameIndex
+                                and pointOnObject
+                                and not w2.isClosed()
+                                and not w1.isClosed()
+                            ):
+                                self.joint_enabled = True
+                                # check 1st/last edge in the wire, cl[0/-1], if it has pointOnObject Constraint
+                                startEndOfEdges = [0, -1]
+                                for se in startEndOfEdges:
+                                    # get cluster edges list, for [i] of self.basewires
+                                    cl = clEdgeSameIndex[i]
+                                    # loop all pointOnObject Constraint against wires
+                                    lenPOObj = len(pointOnObject)
+                                    for j in range(lenPOObj):
+                                        # Get 1st edge vertex used in ptOnObject
+                                        # 0: Curve itself, 1: Starting point, 2: Ending point
+                                        # vertex = firstPos -1
+                                        consI1Pos = pointOnObject[j][0][1]  # constriant[I].FirstPos
+                                        consI1PosV = consI1Pos - 1
+                                        # Check if 1st edge in the wire, cl[0/-1], has pointOnEdge constraint
+                                        # and if only 1 edge, and both end may has constraints,
+                                        # test one end first:  set rule that to go ahead
+                                        # - startEndOfEdges is 0, and firstPos Vertex = 1 :  | <1-0
+                                        # - startEndOfEdges is -1, and firstPos Vertex = 0 :     1-0> |
+                                        if not (cl[se] == pointOnObject[j][0][0]):
+                                            continue
+                                        if len(cEdgesF2) == 1:
+                                            if not (
+                                                (se == 0 and consI1PosV == 1)
+                                                or (se == -1 and consI1PosV == 0)
+                                            ):
+                                                continue
+                                        # Cut 1st edge in wire cl[0] with trimEdges
+                                        #
+                                        # Get 1st edge other end vertex opposite to ptOnObject to test
+                                        # 0: Curve itself, 1: Starting point, 2: Ending point
+                                        # vertex = firstPos -1
+                                        consI1PosVEnd = (
+                                            consI1PosV ^ 1
+                                        )  # xor, x ^ 1 : 1 -> 0, 0 -> 1, x ^ 3 : 2 -> 1, 1 -> 2
+
+                                        # 1. Get 1st edge of 'OffsetMode'(None) wire in the Wire cl[0]
+                                        cEdgesF2eSe = cEdgesF2[se]
+                                        # Check if edges[0] / [se] was reversed: yes if brNEdges2[0] present (not None), invert if so
+                                        if brNEdges2[se]:
+                                            consI1PosVEnd2 = consI1PosVEnd ^ 1  # reverse direction
+                                            reversed2 = True
+                                        else:
+                                            consI1PosVEnd2 = consI1PosVEnd
+                                            reversed2 = False
+                                        cEdgesF2Test = cEdgesF2eSe.Vertexes[consI1PosVEnd2]
+                                        # check starting point pos and if edge direction was reversed
+                                        # extend edge by doubling length (extend to infinity not works)
+                                        cEdgesF2eSeLs = Part.LineSegment(
+                                            cEdgesF2eSe.Vertexes[0].Point,
+                                            cEdgesF2eSe.Vertexes[1].Point,
+                                        )
+                                        if (
+                                            consI1PosV ^ reversed2
+                                        ):  # if consI1PosV XOR reversed Cases
+                                            cEdgesF2eSeLsLP = cEdgesF2eSeLs.LastParameter
+                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(
+                                                0, cEdgesF2eSeLsLP * 2
+                                            )
+                                        else:
+                                            cEdgesF2eSeLsLP = cEdgesF2eSeLs.LastParameter
+                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(
+                                                -cEdgesF2eSeLsLP, cEdgesF2eSeLsLP
+                                            )
+                                        cEdgesF2eSeExtLsS = cEdgesF2eSeExtLs.toShape()
+                                        cEdgesF2eSeCut = cEdgesF2eSeExtLsS.cut(trimEdges[j])
+                                        cEdgesF2eSeCutEdges = cEdgesF2eSeCut.Edges
+                                        # Check each vertex of resulted cutted edges to find which is connected
+                                        for e2 in cEdgesF2eSeCutEdges:
+                                            ptOnEdge = any(
+                                                DraftGeomUtils.isPtOnEdge(v.Point, cEdgesF2Test)
+                                                for v in e2.Vertexes
+                                            )
+                                            # if found, update cEdgesF2[0] with trimmed / extended one
+                                            if ptOnEdge:
+                                                # Update cEdgesF2 list
+                                                cEdgesF2[se] = e2
+                                                anyEdgeF2Replaced = True
+                                                break
+
+                                        # 2. Get 1st edge of 'BasewireMode'(None) wire in the Wire cl[0]
+                                        cEdgesF1eSe = cEdgesF1[se]
+                                        # Check if edges[0] / [se] was reversed: yes if brNEdges1[0] present (not None), invert if so
+                                        if brNEdges1[se]:
+                                            consI1PosVEnd1 = consI1PosVEnd ^ 1  # reverse direction
+                                            reversed1 = True
+                                        else:
+                                            consI1PosVEnd1 = consI1PosVEnd
+                                            reversed1 = False
+                                        cEdgesF1Test = cEdgesF1eSe.Vertexes[consI1PosVEnd1]
+                                        cEdgesF1eSeLs = Part.LineSegment(
+                                            cEdgesF1eSe.Vertexes[0].Point,
+                                            cEdgesF1eSe.Vertexes[1].Point,
+                                        )
+                                        if (
+                                            consI1PosV ^ reversed1
+                                        ):  # if consI1PosV XOR reversed Cases
+                                            cEdgesF1eSeLsLP = cEdgesF1eSeLs.LastParameter
+                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(
+                                                0, cEdgesF1eSeLsLP * 2
+                                            )
+                                        else:
+                                            cEdgesF1eSeLsLP = cEdgesF1eSeLs.LastParameter
+                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(
+                                                -cEdgesF1eSeLsLP, cEdgesF1eSeLsLP
+                                            )
+                                        cEdgesF1eSeExtLsS = cEdgesF1eSeExtLs.toShape()
+                                        cEdgesF1eSeCut = cEdgesF1eSeExtLsS.cut(trimEdges[j])
+                                        cEdgesF1eSeCutEdges = cEdgesF1eSeCut.Edges
+                                        for e1 in cEdgesF1eSeCutEdges:
+                                            ptOnEdge = any(
+                                                DraftGeomUtils.isPtOnEdge(v.Point, cEdgesF1Test)
+                                                for v in e1.Vertexes
+                                            )
+                                            if ptOnEdge:
+                                                cEdgesF1[se] = e1
+                                                anyEdgeF1Replaced = True
+                                                break
+                                        # if any (or?) both wire has edge replaced
+                                        if anyEdgeF2Replaced and anyEdgeF1Replaced:
+                                            break
+                            # Update w2/w1 only if any edge is replaced
+                            if anyEdgeF2Replaced:
+                                w2 = Part.Wire(cEdgesF2)
+                            if anyEdgeF1Replaced:
+                                w1 = Part.Wire(cEdgesF1)
+                            # TODO Should have trimEdges cut by Left/Right Edge
+                            #      Left/Right Edge to make 'end cap' edge
+
+                            face = DraftGeomUtils.bind(w1, w2, per_segment=True)
                             self.connectEdges.extend(cEdges2)
                             self.connectEdges.extend(cEdges1)
-
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
                             del offsets[0:edgeNum]
 
                             if face:
-
                                 if layers and (layers[i] < 0):
                                     # layers with negative values are not drawn
                                     continue
