@@ -224,7 +224,7 @@ int main(int argc, char** argv)
     App::Application::Config()["SplashAlignment"] = "Bottom|Left";
     App::Application::Config()["SplashTextColor"] = "#418FDE";
     App::Application::Config()["SplashWarningColor"] = "#CA333B";
-    App::Application::Config()["SplashInfoColor"] = "#000000";
+    App::Application::Config()["SplashInfoColor"] = "#212529";
     App::Application::Config()["SplashInfoPosition"] = "6,75";
     App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD";
 
