@@ -107,6 +107,7 @@ class SoFCUnifiedSelection;
 class Document;
 class GLGraphicsItem;
 class RubberbandOverlay;
+class PolygonOverlay;
 class SoShapeScale;
 class ViewerEventFilter;
 
@@ -275,6 +276,7 @@ public:
     void clearGraphicsItems();
 
     RubberbandOverlay& rubberbandOverlay();
+    PolygonOverlay& polygonOverlay();
 
     /** @name Handling of view providers */
     //@{
@@ -605,6 +607,7 @@ Q_SIGNALS:
 protected:
     static GLenum getInternalTextureFormat();
     void renderScene();
+    void renderPolygonOverlay();
     void renderRubberbandOverlay();
     void renderFramebuffer();
     void renderGLImage();
@@ -667,6 +670,7 @@ private:
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
+    std::unique_ptr<PolygonOverlay> polygonOverlayRenderer;
     std::unique_ptr<RubberbandOverlay> rubberbandOverlayRenderer;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient* pcBackGround;
