@@ -705,14 +705,8 @@ TEST_F(MeasureSnap, testSnapModeEnumsIsSentinelTerminated)
 
 TEST_F(MeasureSnap, testSnapModeLabelOutOfRange)
 {
-    EXPECT_STREQ(
-        Measure::MeasureSnap::snapModeLabel(Measure::MeasureSnapMode::Center),
-        "Center"
-    );
-    EXPECT_STREQ(
-        Measure::MeasureSnap::snapModeLabel(static_cast<Measure::MeasureSnapMode>(99)),
-        "Auto"
-    );
+    EXPECT_STREQ(Measure::MeasureSnap::snapModeLabel(Measure::MeasureSnapMode::Center), "Center");
+    EXPECT_STREQ(Measure::MeasureSnap::snapModeLabel(static_cast<Measure::MeasureSnapMode>(99)), "Auto");
 }
 
 // PropertyEnumeration persists the index, so an out-of-range reload yields -1.
