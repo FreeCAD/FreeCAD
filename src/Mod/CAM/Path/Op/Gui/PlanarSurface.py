@@ -48,6 +48,100 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setTitle("Planar Surface - " + obj.Label)
         self.updateVisibility()
         self.form.accuracySlider.setPageStep(1)
+        self.setToolTips(obj)
+
+    def setToolTips(self, obj):
+        """setToolTips(obj) ... set widgets tool tips from properties description"""
+        self.form.strategySelect.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("Strategy"))
+        )
+        self.form.cutPattern.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("CutPattern"))
+        )
+        self.form.cutPatternZLevel.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("CutPatternZLevel"))
+        )
+        self.form.layerMode.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("LayerMode"))
+        )
+        self.form.sampleInterval.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("SampleInterval"))
+        )
+        self.form.adaptiveSampling.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("AdaptiveSampling"))
+        )
+        self.form.minSampleInterval.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("MinSampleInterval"))
+        )
+        self.form.boundBoxSelect.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("BoundBox"))
+        )
+        self.form.boundaryAdjustment.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("BoundaryAdjustment"))
+        )
+        self.form.stockToLeave.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("StockToLeave"))
+        )
+        self.form.depthOffset.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("DepthOffset"))
+        )
+        self.form.avoidLastX_Faces.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("AvoidLastX_Faces"))
+        )
+        self.form.avoidFacesOverlap.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("AvoidFacesOverlap"))
+        )
+        self.form.stepOver.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("StepOver"))
+        )
+        self.form.profileEdges.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("ProfileEdges"))
+        )
+        self.form.cutPatternAngle.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("CutPatternAngle"))
+        )
+        self.form.cutPatternReversed.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("CutPatternReversed"))
+        )
+        self.form.clearPlanarOnly.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("ClearPlanarOnly"))
+        )
+        self.form.ignoreOuter.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("IgnoreOuter"))
+        )
+        self.form.fillSelectedHoles.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("FillSelectedHoles"))
+        )
+        self.form.useStartPoint.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("UseStartPoint"))
+        )
+        self.form.keepToolDown.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("KeepToolDown"))
+        )
+        self.form.optimizeEnabled.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("OptimizeLinearPaths"))
+        )
+        self.form.adaptivePatternAccuracy.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("AdaptiveAccuracy"))
+        )
+        self.form.liftDistance.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("LiftDistance"))
+        )
+        self.form.keepToolDownThreshold.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("KeepToolDownThreshold"))
+        )
+        self.form.helixMaxRampAngle.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("HelixMaxRampAngle"))
+        )
+        self.form.helixMaxDiameter.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("HelixMaxDiameterPercent"))
+        )
+        self.form.forceInsideOut.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("ForceInsideOut"))
+        )
+        self.form.finishingProfile.setToolTip(
+            translate("App::Property", obj.getDocumentationOfProperty("FinishingProfile"))
+        )
 
     def getForm(self):
         """getForm() ... returns UI"""

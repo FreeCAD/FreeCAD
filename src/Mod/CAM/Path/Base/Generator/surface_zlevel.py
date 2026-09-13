@@ -186,7 +186,7 @@ def _get_selected_faces(base_property):
                     extracted_faces.append(shape)
             except Exception as e:
                 Path.Log.debug(
-                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {str(e)}"
+                    f"_get_selected_faces: Bypassed invalid sub-element '{sub}' on '{base.Label}': {e!s}"
                 )
     return extracted_faces
 
@@ -420,9 +420,7 @@ def getTrimFace(border_face, bbFace, wpc):
         if hasattr(trim_face, "removeSplitter"):
             trim_face = trim_face.removeSplitter()
     except Exception as e:
-        Path.Log.debug(
-            f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {str(e)}"
-        )
+        Path.Log.debug(f"surface_zlevel.getTrimFace: Removing splitter on trim face failed: {e!s}")
         return None
 
     return trim_face
@@ -523,7 +521,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
             fuse_engine.add(faces[i])
         try:
             result = fuse_engine.getShape()
-        except:
+        except Exception:
             result = faces[0].multiFuse(faces[1:])
         return result
 
@@ -548,7 +546,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
 
             # If the intersection with the model is empty, path is clear
             return not shape.common(projection).Vertexes
-        except:
+        except Exception:
             return False
 
     # Detect pre-triangulated models and skip floor detection
@@ -569,14 +567,17 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     for face in shape.Faces:
         if _is_planar(face):
             z = round(face.Vertexes[0].Z, 5)
-            if (z >= z_min - tolerance) and (z < z_max):
-                if _is_accessible_from_top(face, shape, abs_top):
-                    f_copy = face.copy()
-                    f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
+            if (
+                (z >= z_min - tolerance)
+                and (z < z_max)
+                and _is_accessible_from_top(face, shape, abs_top)
+            ):
+                f_copy = face.copy()
+                f_copy.translate(FreeCAD.Vector(0, 0, -f_copy.BoundBox.ZMin))
 
-                    if z not in floor_accumulator:
-                        floor_accumulator[z] = []
-                    floor_accumulator[z].append(f_copy)
+                if z not in floor_accumulator:
+                    floor_accumulator[z] = []
+                floor_accumulator[z].append(f_copy)
 
     fused = {}
 
@@ -733,7 +734,7 @@ def zlevel_hybrid_stack(
             # current_silhouette is the union of all 3D contact points at this depth
             current_silhouette = fusion.getShape()
         except Exception as e:
-            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {str(e)}")
+            Path.Log.error(f"Silhouette fusion failed at Z={round(z_target, 3)}. Error: {e!s}")
             continue
 
         # E. Process and apply active fill hole masks
@@ -1081,7 +1082,7 @@ def _calculate_cut_area(
     try:
         cut_area = layer_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {str(e)}")
+        Path.Log.error(f"Layer engine failed at Z={round(z_target, 3)}. Error: {e!s}")
         cut_area = None
 
     return cut_area
@@ -1127,7 +1128,7 @@ def _update_machining_mask(wpc, all_prev_comp, current_silhouette, status, floor
     try:
         all_prev_comp = mask_engine.getShape()
     except Exception as e:
-        Path.Log.error(f"Machining mask update failed: {str(e)}")
+        Path.Log.error(f"Machining mask update failed: {e!s}")
 
     return all_prev_comp
 
@@ -1384,11 +1385,15 @@ def _setup_adaptive_geofence(
         # Irregular Stock Check
         try:
             intersection = cut_area.common(bb_face)
-            if intersection and not intersection.isNull():
-                if abs(cut_area.Area - intersection.Area) > 0.01:
-                    is_open = True
-                elif abs(intersection.Length - cut_area.Length) > 0.01:
-                    is_open = True
+            if (
+                intersection
+                and not intersection.isNull()
+                and (
+                    abs(cut_area.Area - intersection.Area) > 0.01
+                    or abs(intersection.Length - cut_area.Length) > 0.01
+                )
+            ):
+                is_open = True
         except Exception:
             is_open = True
 
@@ -1559,7 +1564,7 @@ def _generate_wire_path(
     try:
         pp = Path.fromShapes(**path_params)
     except Exception as e:
-        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {str(e)}")
+        Path.Log.error(f"Path.fromShapes failed at Z={z_target}: {e!s}")
         return []
 
     # Extend Commands list
@@ -1673,7 +1678,7 @@ def _generatePattern(
             engine.makePocket()
             res_area = engine.getShape()
         except Exception as e:
-            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {str(e)}")
+            Path.Log.error(f"Pattern G-code generation failed for island at Z={z_target}: {e!s}")
             continue
 
         if not res_area or res_area.isNull():
