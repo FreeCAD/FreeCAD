@@ -501,7 +501,7 @@ def _separate_touching_faces(faces, tolerance=0.01):
     # Flatten input — handles both [Face, Face] and [[Face], [Face]]
     flat_faces = []
     for item in faces:
-        if isinstance(item, list):
+        if isinstance(item, (list, Part.ShapeList)):
             flat_faces.extend(item)
         else:
             flat_faces.append(item)

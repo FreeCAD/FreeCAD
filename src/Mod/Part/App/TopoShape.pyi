@@ -7,6 +7,7 @@ from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
+from ShapeList import ShapeList
 from typing import Final, List, Tuple, Union, overload
 
 @export(
@@ -31,32 +32,32 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[List["Face"]] = []
-    """List of faces in this shape."""
+    Faces: Final[ShapeList] = []
+    """Faces of this shape, as a lazy Part.ShapeList."""
 
-    Vertexes: Final[List["Vertex"]] = []
-    """List of vertexes in this shape."""
+    Vertexes: Final[ShapeList] = []
+    """Vertexes of this shape, as a lazy Part.ShapeList."""
 
-    Shells: Final[List["Shell"]] = []
-    """List of subsequent shapes in this shape."""
+    Shells: Final[ShapeList] = []
+    """Shells of this shape, as a lazy Part.ShapeList."""
 
-    Solids: Final[List["Solid"]] = []
-    """List of subsequent shapes in this shape."""
+    Solids: Final[ShapeList] = []
+    """Solids of this shape, as a lazy Part.ShapeList."""
 
-    CompSolids: Final[List["CompSolid"]] = []
-    """List of compound solids in this shape."""
+    CompSolids: Final[ShapeList] = []
+    """CompSolids of this shape, as a lazy Part.ShapeList."""
 
-    Edges: Final[List["Edge"]] = []
-    """List of Edges in this shape."""
+    Edges: Final[ShapeList] = []
+    """Edges of this shape, as a lazy Part.ShapeList."""
 
-    Wires: Final[List["Wire"]] = []
-    """List of wires in this shape."""
+    Wires: Final[ShapeList] = []
+    """Wires of this shape, as a lazy Part.ShapeList."""
 
-    Compounds: Final[List["Compound"]] = []
-    """List of compounds in this shape."""
+    Compounds: Final[ShapeList] = []
+    """Compounds of this shape, as a lazy Part.ShapeList."""
 
-    SubShapes: Final[List["TopoShape"]] = []
-    """List of sub-shapes in this shape."""
+    SubShapes: Final[ShapeList] = []
+    """Direct sub-shapes of this shape, as a lazy Part.ShapeList."""
 
     Length: Final[float] = 0.0
     """Total length of the edges of the shape."""
@@ -1241,11 +1242,11 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> List[TopoShape]:
+    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> ShapeList:
         """
-        getChildShapes(shapetype, avoidtype='') -> list(Shape)
+        getChildShapes(shapetype, avoidtype='') -> Part.ShapeList
 
-        Return a list of child sub-shapes of given type.
+        Return child sub-shapes of the given type as a lazy Part.ShapeList.
 
         shapetype: the type of requesting sub shapes
         avoidtype: optional shape type to skip when exploring

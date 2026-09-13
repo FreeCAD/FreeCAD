@@ -11,6 +11,9 @@ class TopoShapeAssertions:
     def assertAttrEqual(self, toposhape, attr_value_list, msg=None):
         for attr, value in attr_value_list:
             result = toposhape.__getattribute__(attr)  # Look up each attribute by string name
+            if isinstance(value, list):
+                self.assertEqual(list(result), value)
+                continue
             if result.__str__() != value.__str__():
                 if msg == None:
                     msg = (f"TopoShape {attr} is incorrect:  {result} should be {value}",)

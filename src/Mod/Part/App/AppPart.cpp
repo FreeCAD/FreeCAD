@@ -129,6 +129,7 @@
 #include "PointPy.h"
 #include "PrimitiveFeature.h"
 #include "RectangularTrimmedSurfacePy.h"
+#include "ShapeListPy.h"
 #include "SpherePy.h"
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfRevolutionPy.h"
@@ -310,6 +311,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::TopoShapeCompoundPy  ::Type,partModule,"Compound");
     Base::Interpreter().addType(&Part::TopoShapeCompSolidPy ::Type,partModule,"CompSolid");
     Base::Interpreter().addType(&Part::TopoShapeShellPy     ::Type,partModule,"Shell");
+    Base::Interpreter().addType(&Part::ShapeListPy          ::Type,partModule,"ShapeList");
 
     // General
     Base::Interpreter().addType(&Part::LinePy               ::Type,partModule,"Line");
