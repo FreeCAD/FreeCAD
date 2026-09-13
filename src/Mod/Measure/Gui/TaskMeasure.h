@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
+#include <Mod/Measure/Gui/MeasureSnapManager.h>
 #include <Mod/Measure/Gui/ViewProviderMeasureBase.h>
 
 
@@ -122,6 +123,8 @@ private:
     bool mAutoSave = false;
     bool mGreedySelection = false;
     Gui::Document* mTargetDoc;
+
+    MeasureSnapManager mSnapManager;
 };
 
 }  // namespace MeasureGui
