@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormStraighten</class>
+ <widget class="QWidget" name="TaskFormStraighten">
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0"><widget class="QLabel" name="directionLabel"><property name="text"><string>Direction</string></property></widget></item>
+   <item row="0" column="1"><widget class="QComboBox" name="directionMode">
+    <item><property name="text"><string>Fit</string></property></item>
+    <item><property name="text"><string>Select line</string></property></item>
+    <item><property name="text"><string>Select parallel line</string></property></item>
+    <item><property name="text"><string>Select two points</string></property></item>
+   </widget></item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QWidget" name="referenceWidget" native="true">
+     <layout class="QHBoxLayout" name="referenceLayout">
+      <property name="leftMargin"><number>0</number></property>
+      <property name="topMargin"><number>0</number></property>
+      <property name="rightMargin"><number>0</number></property>
+      <property name="bottomMargin"><number>0</number></property>
+      <item><widget class="QPushButton" name="referenceButton"><property name="text"><string>Select line</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+      <item><widget class="QLineEdit" name="referenceName"><property name="readOnly"><bool>true</bool></property><property name="placeholderText"><string>No reference selected</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0"><widget class="QLabel" name="typeLabel"><property name="text"><string>Straighten type</string></property></widget></item>
+   <item row="2" column="1"><widget class="QComboBox" name="straightenType">
+    <item><property name="text"><string>Control points</string></property></item>
+    <item><property name="text"><string>Surface points</string></property></item>
+   </widget></item>
+   <item row="3" column="0" colspan="2"><widget class="QCheckBox" name="rangeSelection"><property name="text"><string>Range selection</string></property><property name="toolTip"><string>Select all control points along the unique shortest cage row between two selected points</string></property></widget></item>
+   <item row="4" column="0" colspan="2"><widget class="QLabel" name="previewStatus"><property name="wordWrap"><bool>true</bool></property></widget></item>
+   <item row="5" column="0" colspan="2"><layout class="QHBoxLayout" name="buttonLayout">
+    <item><widget class="QPushButton" name="applyButton"><property name="text"><string>Apply</string></property></widget></item>
+    <item><widget class="QPushButton" name="cancelButton"><property name="text"><string>Cancel</string></property></widget></item>
+   </layout></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

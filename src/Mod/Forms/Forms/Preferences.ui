@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormsPreferences</class>
+ <widget class="QWidget" name="FormsPreferences">
+  <property name="windowTitle"><string>General</string></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item><widget class="QGroupBox" name="editingGroup">
+    <property name="title"><string>Editing</string></property>
+    <layout class="QVBoxLayout" name="editingLayout">
+     <item><widget class="QCheckBox" name="greedySelection">
+      <property name="text"><string>Greedy selection (select multiple elements without Ctrl)</string></property>
+      <property name="toolTip"><string>Click elements to add or remove them from the selection without holding Ctrl. Clicking empty space still clears the selection.</string></property>
+      <property name="checked"><bool>false</bool></property>
+     </widget></item>
+     <item><widget class="QCheckBox" name="meshPreview">
+      <property name="text"><string>Use mesh preview while dragging</string></property>
+      <property name="toolTip"><string>Use a faceted preview for faster dragging on large models or slower computers. The smooth CAD shape is rebuilt when dragging finishes. Leave disabled to keep the smooth shape during dragging.</string></property>
+      <property name="checked"><bool>false</bool></property>
+     </widget></item>
+    </layout>
+   </widget></item>
+   <item><spacer name="verticalSpacer"><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property></spacer></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -2038,8 +2038,15 @@ bool NavigationStyle::tryStartBoxSelection(
     if (!ViewParams::instance()->getEnableSelection()) {
         return false;
     }
-    if (viewer->isEditing() || viewer->isEditingViewProvider()) {
+    if (viewer->isEditing()) {
         return false;
+    }
+    bool selectEditingElements = false;
+    if (auto* editingProvider = viewer->getEditingViewProvider()) {
+        if (!editingProvider->allowBoxElementSelection()) {
+            return false;
+        }
+        selectEditingElements = true;
     }
     // An active grabber means an Inventor node already owns this drag stream.
     if (sceneGraphHasEventGrabber(viewer)) {
@@ -2060,7 +2067,7 @@ bool NavigationStyle::tryStartBoxSelection(
     // A drag is not a click candidate for the next double-click check.
     clearClickCandidateState();
 
-    auto* selection = new BoxSelectSelection(additiveSelection, selectElement);
+    auto* selection = new BoxSelectSelection(additiveSelection, selectElement || selectEditingElements);
     selection->setAnchor(startPosition, current);
     startSelection(selection);
     return true;

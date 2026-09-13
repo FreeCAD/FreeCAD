@@ -138,6 +138,34 @@ bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, co
     return true;
 }
 
+std::unordered_set<std::string> SelectionGatePython::getGatedTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    std::unordered_set<std::string> allowedTypes;
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->gate.hasAttr(std::string("getGatedTypes"))) {
+            Py::List allTypes;
+            for (const auto* type : allTypesForGeometry) {
+                allTypes.append(Py::String(type));
+            }
+            Py::Tuple args(1);
+            args.setItem(0, allTypes);
+            Py::Callable method(this->gate.getAttr(std::string("getGatedTypes")));
+            Py::List filteredTypes(method.apply(args));
+            for (const auto& type : filteredTypes) {
+                allowedTypes.insert(Py::String(type).as_std_string());
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.reportException();
+    }
+    return allowedTypes;
+}
+
 // ----------------------------------------------------------------------------
 
 SelectionFilterGatePython::SelectionFilterGatePython(SelectionFilterPy* obj)

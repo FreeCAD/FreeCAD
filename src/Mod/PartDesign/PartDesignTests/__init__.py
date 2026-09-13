@@ -6,6 +6,7 @@ from . import TestChamfer
 from . import TestDatum
 from . import TestDraft
 from . import TestFillet
+from . import TestFormSurface
 from . import TestHelix
 from . import TestHole
 from . import TestInvoluteGear

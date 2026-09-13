@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="Forms_Torus.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview12"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="25.875"
+     inkscape:cx="37.855072"
+     inkscape:cy="27.091787"
+     inkscape:window-width="3000"
+     inkscape:window-height="1960"
+     inkscape:window-x="-12"
+     inkscape:window-y="-12"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <defs
+     id="defs5">
+    <linearGradient
+       id="ring"
+       x1="18"
+       y1="9"
+       x2="45"
+       y2="54"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#fce94f"
+         id="stop1" />
+      <stop
+         offset=".55"
+         stop-color="#edd400"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#c4a000"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="front"
+       x1="31"
+       y1="31"
+       x2="33"
+       y2="58"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0.8115942,18.434783)">
+      <stop
+         stop-color="#edd400"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#c4a000"
+         id="stop5" />
+    </linearGradient>
+  </defs>
+  <path
+     fill="url(#ring)"
+     fill-rule="evenodd"
+     stroke="#302b00"
+     stroke-width="2"
+     stroke-linejoin="round"
+     d="M32 7C48 7 59 17 59 31c1 15-11 25-27 26C16 57 5 47 5 32 4 18 16 8 32 7Zm0 13c-8 0-14 4-14 11s6 11 14 11 14-4 14-11-6-11-14-11Z"
+     id="path5" />
+  <g
+     fill="none"
+     stroke="#302b00"
+     stroke-width="1.3"
+     id="g10">
+    <path
+       d="m 13.541063,13.995169 c 4.726662,2.102902 7.255314,6.219101 7.68599,9.78744 M 32,7 v 13 m 20.700483,-5.231884 c -3.330933,0.928395 -8.366859,3.238841 -9.502415,8.975845"
+       id="path8"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       d="m 11.299517,48.729468 c 2,-6 6.099078,-7.777714 10.545894,-9.516907 M 32,57 V 42 m 21.975845,5.2657 C 52.244542,40.694719 48.405207,38.715022 43.15942,38.362319"
+       id="path9"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       d="M 5.2995169,30.995169 C 10.15954,29.081392 13.339925,29.085192 18.024155,31.922705 M 46.05314,30.68599 c 5.963352,-2.548221 10.819476,-2.923608 12.68599,-2.280193"
+       id="path10"
+       sodipodi:nodetypes="cccc" />
+  </g>
+  <path
+     d="M 6.699252,31.647863 C 6.0211278,35.413042 8.403717,44.38163 11.403717,46.38163"
+     stroke="#fce94f"
+     id="path11"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="M 31.144109,8.8061848 C 27.472204,8.3891604 18.378647,11.313361 16.071449,14.084072"
+     stroke="#fce94f"
+     id="path11-1"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="M 50.044816,14.763473 C 47.635255,11.961543 36.272752,8.0792039 32.697144,8.5429153"
+     stroke="#fce94f"
+     id="path11-1-5"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="m 33.313262,55.444036 c 8.642513,-0.647343 17.207729,-6.125604 19.207729,-9.125604 m -14,5"
+     stroke="#edd400"
+     id="path12"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="m 54.12087,44.393971 c 4.749676,-7.249322 4.306464,-11.234349 3.454056,-15.536553"
+     stroke="#edd400"
+     id="path12-1"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="m 12.646382,48.370304 c 6.454982,5.783187 14.716574,7.58369 18.265494,6.947161"
+     stroke="#edd400"
+     id="path12-5"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+  <path
+     d="M 14.174622,15.182463 C 10.295652,17.179627 6.005115,25.88807 6.6396951,29.493429"
+     stroke="#fce94f"
+     id="path11-1-2"
+     sodipodi:nodetypes="cc"
+     style="fill:none;stroke-width:1" />
+</svg>
