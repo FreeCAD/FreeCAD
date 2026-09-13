@@ -84,6 +84,44 @@ void ShortcutManager::destroy()
     Instance = nullptr;
 }
 
+QString ShortcutManager::asString(const QKeySequence& ks, QKeySequence::SequenceFormat format)
+{
+    if (ks.isEmpty()) {
+        return QString();
+    }
+
+    QStringList parts;
+    int count = ks.count();
+
+    for (int i = 0; i < count; ++i) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QKeyCombination combo = ks[i];
+        int key = combo.key();
+        Qt::KeyboardModifiers mods = combo.keyboardModifiers();
+        QKeySequence singleKs(combo);
+#else
+        int keyCombo = ks[i];
+        int key = keyCombo & ~Qt::KeyboardModifierMask;
+        Qt::KeyboardModifiers mods = Qt::KeyboardModifiers(keyCombo & Qt::KeyboardModifierMask);
+        QKeySequence singleKs(keyCombo);
+#endif
+        QString part = singleKs.toString(format);
+
+        // Lowercase single characters that don't have Shift modifier
+        if (key >= Qt::Key_A && key <= Qt::Key_Z && !(mods & Qt::ShiftModifier)) {
+            if (mods == Qt::NoModifier) {
+                part = part.toLower();
+            }
+        }
+        parts << part;
+    }
+
+    QString separator = (format == QKeySequence::PortableText)
+        ? QStringLiteral(", ")
+        : QCoreApplication::translate("QShortcut", ", ");
+    return parts.join(separator);
+}
+
 void ShortcutManager::OnChange(Base::Subject<const char*>& src, const char* reason)
 {
     if (hSetting == &src) {

@@ -216,7 +216,7 @@ void DlgCustomKeyboardImp::populateCommandList(
         }
         item->setText(2, cmd->getShortcut());
         if (auto accel = cmd->getAccel()) {
-            item->setText(3, QKeySequence(QString::fromLatin1(accel)).toString());
+            item->setText(3, Gui::ShortcutManager::asString(QKeySequence(QString::fromLatin1(accel))));
         }
 
         if (current == cmd->getName()) {
@@ -504,7 +504,7 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
     QString portableText;
     if (!accelText.isEmpty()) {
         QKeySequence shortcut = accelText;
-        portableText = shortcut.toString(QKeySequence::PortableText);
+        portableText = Gui::ShortcutManager::asString(shortcut, QKeySequence::PortableText);
         ui->currentShortcut->setKeySequence(shortcut);
         ui->editShortcut->clear();
     }

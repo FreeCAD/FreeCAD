@@ -23,6 +23,7 @@
 #include <QActionEvent>
 #include <QActionGroup>
 #include <QApplication>
+#include "ShortcutManager.h"
 #include <QEvent>
 #include <QFileInfo>
 #include <QMenu>
@@ -226,7 +227,7 @@ void Action::setToolTip(const QString& text, const QString& title)
         text,
         title.isEmpty() ? _action->text() : title,
         _action->font(),
-        _action->shortcut().toString(QKeySequence::NativeText),
+        Gui::ShortcutManager::asString(_action->shortcut(), QKeySequence::NativeText),
         command()
     ));
 }
