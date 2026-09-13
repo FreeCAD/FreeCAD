@@ -195,6 +195,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
         QStringList list;
         list << QString::fromUtf8(Reason.pDocName);
         list << QString::fromUtf8(Reason.pObjectName);
+        list << QString::fromUtf8(Reason.pSubName ? Reason.pSubName : "");
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         getSelectionName(str, Reason.pDocName, Reason.pObjectName, Reason.pSubName, obj);
@@ -239,6 +240,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
             QStringList list;
             list << QString::fromUtf8(it.DocName);
             list << QString::fromUtf8(it.FeatName);
+            list << QString::fromUtf8(it.SubName);
 
             App::Document* doc = App::GetApplication().getDocument(it.DocName);
             App::DocumentObject* obj = doc->getObject(it.FeatName);
@@ -273,7 +275,12 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
                 this->y = sel.y;
                 this->z = sel.z;
 
-                new QListWidgetItem(selObject, pickList);
+                QStringList list;
+                list << QString::fromUtf8(sel.DocName);
+                list << QString::fromUtf8(sel.FeatName);
+                list << QString::fromUtf8(sel.SubName);
+                QListWidgetItem* item = new QListWidgetItem(selObject, pickList);
+                item->setData(Qt::UserRole, list);
             }
         }
     }
@@ -300,6 +307,7 @@ void SelectionView::search(const QString& text)
                     QStringList list;
                     list << QString::fromUtf8(doc->getName());
                     list << QString::fromUtf8(it->getNameInDocument());
+                    list << QString();
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
@@ -386,27 +394,13 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toUtf8().constData();
-    char* docname = &name.at(0);
-    char* objname = std::strchr(docname, '#');
-    if (!objname) {
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2) {
         return;
     }
-    *objname++ = 0;
-    char* subname = std::strchr(objname, '.');
-    if (subname) {
-        *subname++ = 0;
-        char* end = std::strchr(subname, ' ');
-        if (end) {
-            *end = 0;
-        }
-    }
-    else {
-        char* end = std::strchr(objname, ' ');
-        if (end) {
-            *end = 0;
-        }
-    }
+    QByteArray docname = elements[0].toUtf8();
+    QByteArray objname = elements[1].toUtf8();
+    QByteArray subname = elements.size() > 2 ? elements[2].toUtf8() : QByteArray();
     QString cmd;
     if (Gui::Selection().isSelected(docname, objname, subname)) {
         cmd = QString::fromUtf8(
@@ -442,33 +436,15 @@ void SelectionView::preselect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toUtf8().constData();
-    char* docname = &name.at(0);
-    char* objname = std::strchr(docname, '#');
-    if (!objname) {
+    QStringList elements = item->data(Qt::UserRole).toStringList();
+    if (elements.size() < 2) {
         return;
     }
-    *objname++ = 0;
-    char* subname = std::strchr(objname, '.');
-    if (subname) {
-        *subname++ = 0;
-        char* end = std::strchr(subname, ' ');
-        if (end) {
-            *end = 0;
-        }
-    }
-    else {
-        char* end = std::strchr(objname, ' ');
-        if (end) {
-            *end = 0;
-        }
-    }
-    QString cmd
-        = QString::fromUtf8(
-              "Gui.Selection.setPreselection("
-              "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
-        )
-              .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname));
+    QString cmd = QString::fromUtf8(
+                      "Gui.Selection.setPreselection("
+                      "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
+    )
+                      .arg(elements[0], elements[1], elements.size() > 2 ? elements[2] : QString());
     try {
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
