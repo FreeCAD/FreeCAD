@@ -2761,11 +2761,14 @@ void Application::initConfig(int argc, char ** argv)
         Application::Config()["BuildRevision"      ] = FCRevision;
         Application::Config()["BuildRepositoryURL" ] = FCRepositoryURL;
         Application::Config()["BuildRevisionDate"  ] = FCRevisionDate;
-#if defined(FCRepositoryHash)
+#ifdef FCRepositoryHash
         Application::Config()["BuildRevisionHash"  ] = FCRepositoryHash;
 #endif
-#if defined(FCRepositoryBranch)
+#ifdef FCRepositoryBranch
         Application::Config()["BuildRevisionBranch"] = FCRepositoryBranch;
+#endif
+#ifdef CMAKE_BUILD_TYPE
+        Application::Config()["BuildType"          ] = CMAKE_BUILD_TYPE;
 #endif
     }
 
