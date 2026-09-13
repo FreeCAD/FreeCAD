@@ -216,6 +216,31 @@ class TestViewProviderLink(unittest.TestCase):
         if self.FreeCAD.getDocument(self.doc.Name):
             self.FreeCAD.closeDocument(self.doc.Name)
 
+    def test_shape_material_compatibility_attribute(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        link = self.doc.addObject("App::Link", "Link")
+        link.setLink(box)
+
+        self.doc.recompute()
+
+        self.assertTrue(hasattr(box.ViewObject, "ShapeMaterial"))
+        self.assertTrue(hasattr(link.ViewObject, "ShapeMaterial"))
+
+        material = link.ViewObject.ShapeMaterial
+        material.DiffuseColor = (0.2, 0.4, 0.6, 1.0)
+        material.Transparency = 0.35
+        link.ViewObject.ShapeMaterial = material
+
+        self.assertEqual(
+            link.ViewObject.ShapeAppearance[0].DiffuseColor,
+            material.DiffuseColor,
+        )
+        self.assertAlmostEqual(link.ViewObject.ShapeAppearance[0].Transparency, 0.35)
+        self.assertEqual(
+            link.ViewObject.ShapeMaterial.DiffuseColor,
+            material.DiffuseColor,
+        )
+
     def test_apply_element_color_override_api(self):
         root = self.coin.SoSeparator()
         sel_root = _instantiate(self.coin, "SoFCSelectionRoot")
