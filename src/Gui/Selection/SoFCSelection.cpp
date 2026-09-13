@@ -43,6 +43,7 @@
 
 #include "SoFCSelection.h"
 #include "SelectionColors.h"
+#include "SelectionMaterial.h"
 #include "MainWindow.h"
 #include "SoFullPathHelper.h"
 #include "SoFCSelectionAction.h"
@@ -81,7 +82,7 @@ SoFCSelection::SoFCSelection()
 
     SO_NODE_ADD_FIELD(colorHighlight, (SelectionColors::highlightFallbackColor()));
     SO_NODE_ADD_FIELD(colorSelection, (SelectionColors::selectionFallbackColor()));
-    SO_NODE_ADD_FIELD(style, (EMISSIVE));
+    SO_NODE_ADD_FIELD(style, (EMISSIVE_DIFFUSE));
     SO_NODE_ADD_FIELD(preselectionMode, (AUTO));
     SO_NODE_ADD_FIELD(selectionMode, (SEL_ON));
     SO_NODE_ADD_FIELD(selected, (NOTSELECTED));
@@ -670,23 +671,21 @@ SbBool SoFCSelection::preRender(SoGLRenderAction* action, GLint& oldDepthFunc)
     if (drawHighlighted) {
         // prevent diffuse & emissive color from leaking out...
         state->push();
-        SbColor col;
-        if (selected.getValue() == SELECTED) {
-            col = colorSelection.getValue();
-        }
-        else {
-            col = colorHighlight.getValue();
-        }
+        const bool isSelected = selected.getValue() == SELECTED;
+        const SbColor& col = isSelected ? colorSelection.getValue() : colorHighlight.getValue();
+        const auto mode = style.getValue() == EMISSIVE_DIFFUSE
+            ? SelectionMaterial::MaterialMode::Lit
+            : SelectionMaterial::MaterialMode::EmissiveOnly;
 
-        // Emissive Color
-        SoLazyElement::setEmissive(state, &col);
-        SoOverrideElement::setEmissiveColorOverride(state, this, true);
-
-        // Diffuse Color
-        if (style.getValue() == EMISSIVE_DIFFUSE) {
-            SoLazyElement::setDiffuse(state, this, 1, &col, &colorpacker);
-            SoOverrideElement::setDiffuseColorOverride(state, this, true);
-        }
+        SelectionMaterial::applyMaterial(
+            state,
+            this,
+            isSelected ? SelectionMaterial::VisualRole::Selection
+                       : SelectionMaterial::VisualRole::Preselection,
+            mode,
+            col,
+            &colorpacker
+        );
     }
 
     // Draw on top of other things at same z-buffer depth if:
@@ -759,23 +758,21 @@ bool SoFCSelection::setOverride(SoGLRenderAction* action, SelContextPtr ctx)
     SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state, this, true);
 
-    if (!preselected && ctx) {
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    }
-    else if (ctx) {
-        SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    }
-    SoOverrideElement::setEmissiveColorOverride(state, this, true);
+    if (ctx) {
+        const bool needsDiffuse = mystyle == SoFCSelection::EMISSIVE_DIFFUSE
+            || SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR;
+        const auto mode = needsDiffuse ? SelectionMaterial::MaterialMode::Lit
+                                       : SelectionMaterial::MaterialMode::EmissiveOnly;
 
-    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR
-        || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
-        if (!preselected && ctx) {
-            SoLazyElement::setDiffuse(state, this, 1, &ctx->selectionColor, &colorpacker);
-        }
-        else if (ctx) {
-            SoLazyElement::setDiffuse(state, this, 1, &ctx->highlightColor, &colorpacker);
-        }
-        SoOverrideElement::setDiffuseColorOverride(state, this, true);
+        SelectionMaterial::applyMaterial(
+            state,
+            this,
+            preselected ? SelectionMaterial::VisualRole::Preselection
+                        : SelectionMaterial::VisualRole::Selection,
+            mode,
+            preselected ? ctx->highlightColor : ctx->selectionColor,
+            &colorpacker
+        );
     }
 
     this->uniqueId = oldId;
