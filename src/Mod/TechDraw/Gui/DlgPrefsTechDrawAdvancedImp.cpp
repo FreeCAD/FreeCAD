@@ -40,6 +40,9 @@ DlgPrefsTechDrawAdvancedImp::DlgPrefsTechDrawAdvancedImp( QWidget* parent )
     ui->setupUi(this);
 
     makeBalloonBoxConnections();
+
+    connect(ui->cbFaceFinderVer, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgPrefsTechDrawAdvancedImp::faceFinderVersionChanged);
 }
 
 DlgPrefsTechDrawAdvancedImp::~DlgPrefsTechDrawAdvancedImp()
@@ -61,7 +64,6 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->sbMaxPat->onSave();
     ui->cbReportProgress->onSave();
     ui->cbAutoCorrectRefs->onSave();
-    ui->cbNewFaceFinder->onSave();
     ui->sbScrubCount->onSave();
 
     ui->cbDebugBadShape->onSave();
@@ -70,6 +72,11 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     saveBalloonOverride();
 
     ui->cbSwitchWB->onSave();
+
+    if (ui->cbIdentifyVoids->isEnabled()) {
+        ui->cbIdentifyVoids->onSave();
+    }
+    Preferences::setFaceFinderVersion(static_cast<FaceFinderVersion>(ui->cbFaceFinderVer->currentIndex()));
 }
 
 
@@ -116,7 +123,6 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->sbMaxPat->onRestore();
     ui->cbReportProgress->onRestore();
     ui->cbAutoCorrectRefs->onRestore();
-    ui->cbNewFaceFinder->onRestore();
     ui->sbScrubCount->onRestore();
 
     ui->cbDebugBadShape->onRestore();
@@ -125,6 +131,10 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     loadBalloonOverride();
 
     ui->cbSwitchWB->onRestore();
+
+    ui->cbIdentifyVoids->onRestore();
+    lastIdentifyVoids = ui->cbIdentifyVoids->isChecked();
+    ui->cbFaceFinderVer->setCurrentIndex(static_cast<int>(Preferences::faceFinderVersion()));
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadBalloonOverride()
@@ -194,9 +204,7 @@ void DlgPrefsTechDrawAdvancedImp::slotBalloonBoxChecked()
     } else {
         enableBalloonOptions(true);
     }
-
 }
-
 
 void DlgPrefsTechDrawAdvancedImp::makeBalloonBoxConnections()
 {
@@ -256,6 +264,21 @@ void DlgPrefsTechDrawAdvancedImp::changeEvent(QEvent *event)
     }
     else {
         QWidget::changeEvent(event);
+    }
+}
+
+void DlgPrefsTechDrawAdvancedImp::faceFinderVersionChanged(int index)
+{
+    if (index == 2) { // Face Finder version 26.3
+        ui->cbIdentifyVoids->setEnabled(true);
+        ui->cbIdentifyVoids->setChecked(lastIdentifyVoids);
+    }
+    else {
+        if (ui->cbIdentifyVoids->isEnabled()) {
+            lastIdentifyVoids = ui->cbIdentifyVoids->isChecked();
+        }
+        ui->cbIdentifyVoids->setEnabled(false);
+        ui->cbIdentifyVoids->setChecked(false);
     }
 }
 
