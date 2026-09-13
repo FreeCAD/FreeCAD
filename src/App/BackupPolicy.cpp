@@ -55,6 +55,18 @@ void BackupPolicy::setDateFormat(const std::string& fmt)
 }
 void BackupPolicy::apply(const std::string& sourcename, const std::string& targetname)
 {
+    if (numberOfFiles <= 0) {
+        if (Base::FileInfo fi(targetname); fi.exists()) {
+            fi.deleteFile();
+        }
+
+        if (Base::FileInfo tmp(sourcename); !tmp.renameFile(targetname.c_str())) {
+            throw Base::FileException("Cannot rename tmp save file to project file",
+                                      Base::FileInfo(targetname));
+        }
+        return;
+    }
+
     switch (policy) {
         case Standard:
             applyStandard(sourcename, targetname);
@@ -69,10 +81,12 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
 {
     // if saving the project data succeeded rename to the actual file name
     if (Base::FileInfo fi(targetname); fi.exists()) {
-        if (numberOfFiles > 0) {
+        bool backupManagementError = false;
+        try {
             int nSuff = 0;
+            std::string backupDirPath = ensureBackupDirectory(fi);
             std::string fn = fi.fileName();
-            Base::FileInfo di(fi.dirPath());
+            Base::FileInfo di(backupDirPath);
             std::vector<Base::FileInfo> backup;
             std::vector<Base::FileInfo> files = di.getDirectoryContent();
             for (const Base::FileInfo& it : files) {
@@ -106,16 +120,27 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
             else {
                 // create a new backup file
                 std::stringstream str;
-                str << fi.filePath() << (nSuff + 1);
+                str << getBackupFilePath(backupDirPath, fi.fileName()) << (nSuff + 1);
                 fn = str.str();
             }
 
             if (!fi.renameFile(fn.c_str())) {
+                backupManagementError = true;
                 Base::Console().warning("Cannot rename project file to backup file\n");
             }
         }
-        else {
-            fi.deleteFile();
+        catch (...) {
+            backupManagementError = true;
+            Base::Console().warning("Cannot manage backup file history\n");
+        }
+
+        if (backupManagementError && fi.exists()) {
+            try {
+                fi.deleteFile();
+            }
+            catch (...) {
+                Base::Console().warning("Cannot remove existing project file before save\n");
+            }
         }
     }
 
@@ -128,29 +153,42 @@ void BackupPolicy::applyStandard(const std::string& sourcename, const std::strin
 void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::string& targetname)
 {
     Base::FileInfo fi(targetname);
+    bool backupManagementError = false;  // Note error and report at the end
 
     std::string fn = sourcename;
     std::string ext = fi.extension();
     std::string bn;   // full path with no extension but with "."
     std::string pbn;  // base name of the project + "."
+    std::string backupDirPath;
+    
     if (!ext.empty()) {
-        bn = fi.filePath().substr(0, fi.filePath().length() - ext.length());
+        bn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
         pbn = fi.fileName().substr(0, fi.fileName().length() - ext.length());
     }
     else {
-        bn = fi.filePath() + ".";
+        bn = fi.fileName() + ".";
         pbn = fi.fileName() + ".";
     }
 
-    bool backupManagementError = false;  // Note error and report at the end
     if (fi.exists()) {
-        if (numberOfFiles > 0) {
+        try {
+            backupDirPath = ensureBackupDirectory(fi);
+        }
+        catch (...) {
+            backupManagementError = true;
+            backupDirPath = fi.dirPath();
+        }
+        bn = getBackupFilePath(backupDirPath, bn);
+    }
+
+    if (fi.exists()) {
+        try {
             // replace . by - in format to avoid . between base name and extension
             boost::replace_all(saveBackupDateFormat, ".", "-");
             {
                 // Remove all extra backups
                 std::string filename = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
+                Base::FileInfo di(backupDirPath);
                 std::vector<Base::FileInfo> backup;
                 std::vector<Base::FileInfo> files = di.getDirectoryContent();
                 for (const Base::FileInfo& it : files) {
@@ -170,7 +208,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         if ((startsWith(file, filename) && (file.length() > filename.length())
                              && checkDigits(file.substr(filename.length())))
                             ||
-                            // .FCBak case : The bame starts with the base name of the project +
+                            // .FCBak case : The name starts with the base name of the project +
                             // "."
                             // + complement with no "." + ".FCBak"
                             ((fextUp == "FCBAK") && startsWith(file, pbn)
@@ -285,12 +323,15 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     }
                 }
                 else {
+                    const std::string backupBasePath =
+                        getBackupFilePath(backupDirPath, fi.fileName());
+
                     // changed but simpler and solves also the delay sometimes introduced by
                     // google drive
                     while (ext2 < numberOfFiles + 10) {
                         // linux just replace the file if exists, and then the existence is to
                         // be tested before rename
-                        if (renameFileNoErase(fi, fi.filePath() + std::to_string(ext2))) {
+                        if (renameFileNoErase(fi, backupBasePath + std::to_string(ext2))) {
                             break;
                         }
                         ext2++;
@@ -298,6 +339,7 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 }
 
                 if (ext2 >= numberOfFiles + 10) {
+                    backupManagementError = true;
                     Base::Console().error(
                         "File not saved: Cannot rename project file to backup file\n");
                     // throw Base::FileException("File not saved: Cannot rename project file to
@@ -305,15 +347,18 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                 }
             }
         }
-        else {
-            try {
-                fi.deleteFile();
-            }
-            catch (...) {
-                Base::Console().warning("Cannot remove backup file: %s\n",
-                                        fi.fileName().c_str());
-                backupManagementError = true;
-            }
+        catch (...) {
+            backupManagementError = true;
+            Base::Console().warning("Cannot manage backup file history\n");
+        }
+    }
+
+    if (backupManagementError && fi.exists()) {
+        try {
+            fi.deleteFile();
+        }
+        catch (...) {
+            Base::Console().warning("Cannot remove existing project file before save\n");
         }
     }
 
@@ -325,9 +370,8 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
     }
 
     if (backupManagementError) {
-        throw Base::FileException(
-            "Warning: Save complete, but error while managing backup history.",
-            fi);
+        Base::Console().warning(
+            "Save complete, but error while managing backup history.\n");
     }
 }
 
@@ -366,10 +410,46 @@ bool BackupPolicy::checkDigits(const std::string& cmpl) const
 
 bool BackupPolicy::renameFileNoErase(Base::FileInfo fi, const std::string& newName)
 {
-    // linux just replaces the file if it exists, so the existence is to be tested before rename
-    const Base::FileInfo nf(newName);
-    if (!nf.exists()) {
-        return fi.renameFile(newName.c_str());
+    // Linux can replace existing files on rename, so we check target existence first.
+    // Permission errors while probing backup paths must not abort project save.
+    try {
+        const Base::FileInfo nf(newName);
+        if (!nf.exists()) {
+            return fi.renameFile(newName.c_str());
+        }
+    }
+    catch (...) {
+        return false;
     }
     return false;
+}
+
+std::string BackupPolicy::getBackupDirectoryPath(const Base::FileInfo& target)
+{
+    auto backupDir = Base::FileInfo::stringToPath(target.dirPath()) / "freecad-backups";
+    return Base::FileInfo::pathToString(backupDir);
+}
+
+std::string BackupPolicy::getBackupFilePath(const std::string& backupDir,
+                                            const std::string& fileName)
+{
+    auto backupPath = Base::FileInfo::stringToPath(backupDir) / fileName;
+    return Base::FileInfo::pathToString(backupPath);
+}
+
+std::string BackupPolicy::ensureBackupDirectory(const Base::FileInfo& target)
+{
+    std::string backupDirPath = getBackupDirectoryPath(target);
+    Base::FileInfo backupDir(backupDirPath);
+
+    if (backupDir.exists()) {
+        if (!backupDir.isDir()) {
+            throw Base::FileException("Backup path is not a directory", backupDir);
+        }
+    }
+    else if (!backupDir.createDirectories()) {
+        throw Base::FileException("Cannot create backup directory", backupDir);
+    }
+
+    return backupDirPath;
 }
