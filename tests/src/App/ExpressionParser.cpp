@@ -122,6 +122,25 @@ protected:
         }
     }
 
+    boost::any roundTripExpr(const char* text)
+    {
+        try {
+            const auto expression = parse(thisObj, text);
+            const std::string serialized = expression->toString();
+            const auto reparsed = parse(thisObj, serialized.c_str());
+            ExpressionPtr simplified = reparsed->simplify();
+            return simplified->getValueAsAny();
+        }
+        catch (const Base::ParserError& e) {
+            return e;
+        }
+        catch (const Base::Exception& e) {
+            EXPECT_TRUE(false) << "Unexpected Base::Exception when round-tripping \"" << text
+                               << "\": " << e.what();
+            throw;
+        }
+    }
+
 private:
     std::string docName;
     App::Document* thisDoc {};
@@ -325,6 +344,17 @@ TEST_F(ExpressionParserTest, canParseProperties)
     this_obj()->addDynamicProperty("App::PropertyQuantity", "Bar");
     EXPECT_THAT(parseExpr("Sketch.Bar"), IsQuantity(Base::Quantity()))
         << "PropertyQuantity on object";
+}
+
+// https://github.com/FreeCAD/FreeCAD/issues/12173
+TEST_F(ExpressionParserTest, powWithUnitBaseRoundTrips)
+{
+    EXPECT_THAT(roundTripExpr("(5 mm)^2"), IsQuantity(mm2(25))) << "(num unit)^n round-trip";
+    EXPECT_THAT(roundTripExpr("(5 mm)^2 / 1 mm"), IsQuantity(mm(25)))
+        << "(num unit)^n / unit round-trip";
+    EXPECT_THAT(roundTripExpr("(-5 mm)^2"), IsQuantity(mm2(25))) << "(-num unit)^n round-trip";
+    EXPECT_THAT(roundTripExpr("(-5 mm)^2 / 1 mm"), IsQuantity(mm(25)))
+        << "(-num unit)^n / unit round-trip";
 }
 
 }  // namespace App::ExpressionParser::Test
