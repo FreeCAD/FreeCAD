@@ -67,8 +67,6 @@ FC_LOG_LEVEL_INIT("Dock", true, true);
 
 using namespace Gui;
 
-static std::array<OverlayTabWidget*, 4> _Overlays;
-
 static inline OverlayTabWidget* findTabWidget(QWidget* widget = nullptr, bool filterDialog = false)
 {
     if (!widget) {
@@ -370,6 +368,35 @@ public:
 
     OverlayManager::ReloadMode curReloadMode = OverlayManager::ReloadMode::ReloadPending;
 
+    fastsignals::scoped_connection connActivateView;
+    fastsignals::scoped_connection connInEdit;
+    fastsignals::scoped_connection connResetEdit;
+    fastsignals::scoped_connection connActivateWorkbench;
+
+    static std::array<OverlayTabWidget*, 4> overlayTabWidgets()
+    {
+        return {
+            OverlayTabWidget::_LeftOverlay,
+            OverlayTabWidget::_RightOverlay,
+            OverlayTabWidget::_TopOverlay,
+            OverlayTabWidget::_BottomOverlay
+        };
+    }
+
+    static void toggleOverlayState(OverlayTabWidget* tabWidget)
+    {
+        if (!tabWidget) {
+            return;
+        }
+
+        if (tabWidget->isVisible()) {
+            tabWidget->setState(OverlayTabWidget::State::Hidden);
+        }
+        else {
+            tabWidget->setState(OverlayTabWidget::State::Showing);
+        }
+    }
+
     Private(OverlayManager* host, QWidget* parent)
         : _left(parent, "OverlayLeft", Qt::LeftDockWidgetArea, _overlayMap)
         , _right(parent, "OverlayRight", Qt::RightDockWidgetArea, _overlayMap)
@@ -378,13 +405,6 @@ public:
         , _overlayInfos({&_left, &_right, &_top, &_bottom})
         , _actions({&_actOverlay, &_actFloat, &_actClose})
     {
-        _Overlays = {
-            OverlayTabWidget::_LeftOverlay,
-            OverlayTabWidget::_RightOverlay,
-            OverlayTabWidget::_TopOverlay,
-            OverlayTabWidget::_BottomOverlay
-        };
-
         connect(&_timer, &QTimer::timeout, [this]() { onTimer(); });
         _timer.setSingleShot(true);
 
@@ -402,14 +422,18 @@ public:
 
         connect(qApp, &QApplication::focusChanged, host, &OverlayManager::onFocusChanged);
 
-        Application::Instance->signalActivateView.connect([this](const MDIView*) { refresh(); });
-        Application::Instance->signalInEdit.connect([this](const ViewProviderDocumentObject&) {
+        connActivateView = Application::Instance->signalActivateView.connect([this](const MDIView*) {
             refresh();
         });
-        Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject&) {
-            refresh();
-        });
-        Application::Instance->signalActivateWorkbench.connect([this](const char*) { refresh(); });
+        connInEdit = Application::Instance->signalInEdit.connect(
+            [this](const ViewProviderDocumentObject&) { refresh(); }
+        );
+        connResetEdit = Application::Instance->signalResetEdit.connect(
+            [this](const ViewProviderDocumentObject&) { refresh(); }
+        );
+        connActivateWorkbench = Application::Instance->signalActivateWorkbench.connect(
+            [this](const char*) { refresh(); }
+        );
 
         _actOverlay.setData(QStringLiteral("OBTN Overlay"));
         _actFloat.setData(QStringLiteral("OBTN Float"));
@@ -432,12 +456,48 @@ public:
         _cursor = QCursor(px.pixmap(32, 32), 10, 9);
     }
 
+    ~Private()
+    {
+        connActivateView.disconnect();
+        connInEdit.disconnect();
+        connResetEdit.disconnect();
+        connActivateWorkbench.disconnect();
+
+        _timer.stop();
+        _reloadTimer.stop();
+
+        if (mouseTransparent) {
+            qApp->restoreOverrideCursor();
+            mouseTransparent = false;
+        }
+
+        _trackingWidget = nullptr;
+        _trackingOverlay = nullptr;
+        lastIntercept = nullptr;
+
+        _overlayMap.clear();
+        _dockWidgetNameMap.clear();
+
+        if (OverlayTabWidget::_Dragging) {
+            OverlayTabWidget::_Dragging = nullptr;
+        }
+
+        delete OverlayTabWidget::_DragFrame;
+        OverlayTabWidget::_DragFrame = nullptr;
+
+        delete OverlayTabWidget::_DragFloating;
+        OverlayTabWidget::_DragFloating = nullptr;
+    }
+
     void refreshIcons()
     {
         _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
         _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
         _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icons/close.svg"));
-        for (OverlayTabWidget* tabWidget : _Overlays) {
+        for (OverlayTabWidget* tabWidget : overlayTabWidgets()) {
+            if (!tabWidget) {
+                continue;
+            }
             tabWidget->refreshIcons();
             for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>()) {
                 handle->refreshIcons();
@@ -453,7 +513,10 @@ public:
             return;
         }
         mouseTransparent = enabled;
-        for (OverlayTabWidget* tabWidget : _Overlays) {
+        for (OverlayTabWidget* tabWidget : overlayTabWidgets()) {
+            if (!tabWidget) {
+                continue;
+            }
             tabWidget->setAttribute(Qt::WA_TransparentForMouseEvents, enabled);
             tabWidget->touch();
         }
@@ -803,36 +866,16 @@ public:
                 setOverlayMode(OverlayManager::OverlayMode::TransparentAll);
                 return;
             case OverlayManager::OverlayMode::ToggleLeft:
-                if (OverlayTabWidget::_LeftOverlay->isVisible()) {
-                    OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
-                }
-                else {
-                    OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
-                }
+                toggleOverlayState(OverlayTabWidget::_LeftOverlay);
                 break;
             case OverlayManager::OverlayMode::ToggleRight:
-                if (OverlayTabWidget::_RightOverlay->isVisible()) {
-                    OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
-                }
-                else {
-                    OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
-                }
+                toggleOverlayState(OverlayTabWidget::_RightOverlay);
                 break;
             case OverlayManager::OverlayMode::ToggleTop:
-                if (OverlayTabWidget::_TopOverlay->isVisible()) {
-                    OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
-                }
-                else {
-                    OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
-                }
+                toggleOverlayState(OverlayTabWidget::_TopOverlay);
                 break;
             case OverlayManager::OverlayMode::ToggleBottom:
-                if (OverlayTabWidget::_BottomOverlay->isVisible()) {
-                    OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
-                }
-                else {
-                    OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
-                }
+                toggleOverlayState(OverlayTabWidget::_BottomOverlay);
                 break;
             default:
                 break;
@@ -1143,7 +1186,10 @@ public:
         QRect rectMain(getMainWindow()->mapToGlobal(QPoint()), getMainWindow()->size());
         QRect rectMdi(mdi->mapToGlobal(QPoint()), mdi->size());
 
-        for (OverlayTabWidget* overlay : _Overlays) {
+        for (OverlayTabWidget* overlay : overlayTabWidgets()) {
+            if (!overlay) {
+                continue;
+            }
             rect = QRect(mdi->mapToGlobal(overlay->rectOverlay.topLeft()), overlay->rectOverlay.size());
 
             QSize size(rect.width() * 3 / 4, rect.height() * 3 / 4);
@@ -1337,6 +1383,9 @@ public:
             else if (!dock->isFloating()) {
                 if (!OverlayTabWidget::_DragFloating) {
                     OverlayTabWidget::_DragFloating = new QDockWidget(getMainWindow());
+                    QObject::connect(OverlayTabWidget::_DragFloating, &QObject::destroyed, []() {
+                        OverlayTabWidget::_DragFloating = nullptr;
+                    });
                     OverlayTabWidget::_DragFloating->setFloating(true);
                 }
                 OverlayTabWidget::_DragFloating->resize(dock->size());
@@ -1391,6 +1440,9 @@ public:
         if (!drop) {
             if (!OverlayTabWidget::_DragFrame) {
                 OverlayTabWidget::_DragFrame = new OverlayDragFrame(getMainWindow());
+                QObject::connect(OverlayTabWidget::_DragFrame, &QObject::destroyed, []() {
+                    OverlayTabWidget::_DragFrame = nullptr;
+                });
             }
 
             rect = QRect(getMainWindow()->mapFromGlobal(rect.topLeft()), rect.size());
@@ -1528,7 +1580,10 @@ public:
             return;
         }
         Base::StateLocker guard(raising);
-        for (OverlayTabWidget* tabWidget : _Overlays) {
+        for (OverlayTabWidget* tabWidget : overlayTabWidgets()) {
+            if (!tabWidget) {
+                continue;
+            }
             if (tabWidget->isVisible()) {
                 tabWidget->raise();
             }
@@ -1594,6 +1649,7 @@ OverlayManager::OverlayManager()
 
 OverlayManager::~OverlayManager()
 {
+    qApp->removeEventFilter(this);
     delete d;
 }
 
@@ -1820,7 +1876,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                     }
                 }
                 else if (!OverlayTabWidget::_Dragging) {
-                    for (OverlayTabWidget* tabWidget : _Overlays) {
+                    for (OverlayTabWidget* tabWidget : Private::overlayTabWidgets()) {
+                        if (!tabWidget) {
+                            continue;
+                        }
                         if (tabWidget->onEscape()) {
                             accepted = true;
                         }
@@ -1982,7 +2041,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 }
             }
 
-            for (OverlayTabWidget* tabWidget : _Overlays) {
+            for (OverlayTabWidget* tabWidget : Private::overlayTabWidgets()) {
+                if (!tabWidget) {
+                    continue;
+                }
                 if (tabWidget->getProxyWidget()->hitTest(pos)
                     == OverlayProxyWidget::HitTest::HitInner) {
                     if ((ev->type() == QEvent::MouseButtonRelease
