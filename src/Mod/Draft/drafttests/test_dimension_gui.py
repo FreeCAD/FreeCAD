@@ -108,6 +108,25 @@ class DraftGuiDimension(test_base.DraftTestCaseDoc):
         vobj.ArrowTypeEnd = "Dot"
         return dimension
 
+    def test_linear_dimension_marks_stay_under_line_switches(self):
+        """Updating linear dimensions keeps arrow and overshoot nodes under ShowLine switches."""
+        dimension = Draft.make_dimension(Vector(0, 0, 0), Vector(10, 0, 0), Vector(0, 2, 0))
+        vobj = dimension.ViewObject
+
+        vobj.ArrowTypeStart = "Dot"
+        vobj.ArrowTypeEnd = "Dot"
+        vobj.DimOvershoot = 1
+        vobj.ExtOvershoot = 2
+        self.doc.recompute()
+
+        proxy = dimension.ViewObject.Proxy
+        nodes = (proxy.marks, proxy.marksDimOvershoot, proxy.marksExtOvershoot)
+        for node in nodes:
+            self.assertGreaterEqual(proxy.lineswitch_wld.findChild(node), 0)
+            self.assertGreaterEqual(proxy.lineswitch_scr.findChild(node), 0)
+            self.assertEqual(proxy.node_wld.findChild(node), -1)
+            self.assertEqual(proxy.node_scr.findChild(node), -1)
+
     def getAngularSvg(self, dimension):
         """Return the Draft SVG body used by TechDraw DraftView for this dimension."""
         Gui.updateGui()

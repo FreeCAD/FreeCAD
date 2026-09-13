@@ -730,7 +730,10 @@ void ViewProviderHole::updateOverlay()
     auto it = m_threadOverlays.find(hole);
     if (it != m_threadOverlays.end()) {
         SoSwitch* existingSwitch = it->second;
-        bodyVp->getRoot()->removeChild(existingSwitch);
+        SoGroup* root = bodyVp->getRoot();
+        if (root && root->findChild(existingSwitch) >= 0) {
+            root->removeChild(existingSwitch);
+        }
         existingSwitch->unref();
         m_threadOverlays.erase(it);
     }

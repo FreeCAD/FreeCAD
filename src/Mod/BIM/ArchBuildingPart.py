@@ -852,6 +852,7 @@ class ViewProviderBuildingPart:
 
         self.Object = vobj.Object
         self.clip = None
+        self.clip_scene_graph = None
         from pivy import coin
 
         self.sep = coin.SoGroup()
@@ -932,6 +933,16 @@ class ViewProviderBuildingPart:
         "get the colors of objects inside this BuildingPart"
 
         return Draft.get_diffuse_color(Draft.get_group_contents(obj, walls=True))
+
+    def removeClipPlane(self):
+
+        if not self.clip:
+            return
+        sg = self.clip_scene_graph
+        if sg and sg.findChild(self.clip) >= 0:
+            sg.removeChild(self.clip)
+        self.clip = None
+        self.clip_scene_graph = None
 
     def onChanged(self, vobj, prop):
 
@@ -1045,19 +1056,14 @@ class ViewProviderBuildingPart:
                             and not hasattr(child, "ChildrenOverride")
                         ):
                             setattr(child.ViewObject, prop[8:], getattr(vobj, prop))
-        elif prop in ["CutView", "CutMargin"]:
-            if (
-                hasattr(vobj, "CutView")
-                and FreeCADGui.ActiveDocument.ActiveView
-                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
-            ):
-                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-                if vobj.CutView:
+        elif prop in ["CutView", "CutMargin"] and hasattr(vobj, "CutView"):
+            if vobj.CutView:
+                active_view = getattr(FreeCADGui.ActiveDocument, "ActiveView", None)
+                if active_view and hasattr(active_view, "getSceneGraph"):
+                    sg = active_view.getSceneGraph()
                     from pivy import coin
 
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
+                    self.removeClipPlane()
                     for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
                         if hasattr(o.ViewObject, "Lighting"):
                             o.ViewObject.Lighting = "One side"
@@ -1079,13 +1085,12 @@ class ViewProviderBuildingPart:
                     plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip, 0)
-                else:
-                    if getattr(self, "clip", None):
-                        sg.removeChild(self.clip)
-                        self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
-                        if hasattr(o.ViewObject, "Lighting"):
-                            o.ViewObject.Lighting = "Two side"
+                    self.clip_scene_graph = sg
+            else:
+                self.removeClipPlane()
+                for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
+                    if hasattr(o.ViewObject, "Lighting"):
+                        o.ViewObject.Lighting = "Two side"
         elif prop == "Visibility":
             # turn clipping off when turning the object off
             if hasattr(vobj, "Visibility") and not (vobj.Visibility) and hasattr(vobj, "CutView"):
@@ -1115,10 +1120,7 @@ class ViewProviderBuildingPart:
 
     def onDelete(self, vobj, subelements):
 
-        if self.clip:
-            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-            sg.removeChild(self.clip)
-            self.clip = None
+        self.removeClipPlane()
         for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
             if hasattr(o.ViewObject, "Lighting"):
                 o.ViewObject.Lighting = "Two side"
