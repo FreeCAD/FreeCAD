@@ -527,6 +527,12 @@ class ifc_vp_group:
             )
         return self.modicon
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
 
 class ifc_vp_material:
     """View provider for the IFC group object"""
@@ -622,6 +628,15 @@ class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPa
 
     def attach(self, vobj):
         ArchBuildingPart.ViewProviderBuildingPart.attach(self, vobj)
+
+    def getDisplayModes(self, vobj):
+        return ["Default"]
+
+    def getDefaultDisplayMode(self):
+        return "Default"
+
+    def setDisplayMode(self, mode):
+        return mode
 
 
 def overlay(icon1, icon2):

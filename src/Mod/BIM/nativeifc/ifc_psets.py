@@ -153,20 +153,20 @@ def show_psets(obj):
                 value = value.split("::")
             else:
                 ftype = "App::PropertyString"
-            # print("DEBUG: setting",pname, ptype, value)
-            if ftype:
-                if pname in obj.PropertiesList and obj.getGroupOfProperty(pname) == gname:
-                    if obj.getTypeOfProperty(pname) == ftype:
-                        pass
-                    if (
-                        ftype == "App::PropertyString"
-                        and obj.getTypeOfProperty(pname) == "App::PropertyStringList"
-                    ):
-                        value = [value]
-                else:
-                    print(pname, gname, obj.PropertiesList)
-                    obj.addProperty(ftype, pname, gname, ttip, locked=True)
+            # print("DEBUG: setting", pname, ptype, value)
+            if ftype is None:
+                continue
             if pname in obj.PropertiesList:
+                if (
+                    ftype == "App::PropertyString"
+                    and obj.getTypeOfProperty(pname) == "App::PropertyStringList"
+                ):
+                    ftype = "App::PropertyStringList"
+                    value = [value]
+            else:
+                # print(pname, gname, obj.PropertiesList)
+                obj.addProperty(ftype, pname, gname, ttip, locked=True)
+            if obj.getTypeOfProperty(pname) == ftype and obj.getGroupOfProperty(pname) == gname:
                 setattr(obj, pname, value)
 
 
