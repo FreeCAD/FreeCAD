@@ -25,7 +25,7 @@
 #include <cassert>
 #include <limits>
 
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/QuantityPy.h>
 #include <Base/Reader.h>

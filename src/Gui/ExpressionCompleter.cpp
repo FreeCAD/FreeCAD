@@ -34,7 +34,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/ObjectIdentifier.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>

@@ -30,7 +30,7 @@
 #include <sstream>
 
 
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <Base/Console.h>
 #include <Base/Quantity.h>
 #include <Base/Reader.h>

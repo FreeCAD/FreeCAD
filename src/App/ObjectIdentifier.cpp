@@ -40,7 +40,7 @@
 #include "ObjectIdentifier.h"
 #include "Application.h"
 #include "Document.h"
-#include "ExpressionParser.h"
+#include "ExpressionNodes.h"
 #include "Link.h"
 #include "Property.h"
 #include "Services.h"

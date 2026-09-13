@@ -32,7 +32,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/Expression.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 #include <App/ExpressionVisitors.h>
 #include <App/Property.h>
 #include <Base/Console.h>
