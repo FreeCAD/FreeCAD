@@ -1,0 +1,25 @@
+/* Default theme for CustomTitleBarKit */
+
+WindowDecorationButton {
+    background: transparent;
+    border: none;
+}
+
+WindowDecorationButton:hover {
+    background-color: palette(midlight);
+}
+
+WindowDecorationButton:pressed {
+    background-color: palette(mid);
+}
+
+/* Generic backend: red close button (Windows-style convention) */
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:hover {
+    background-color: #e81123;
+    color: white;
+}
+
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:pressed {
+    background-color: #c50f1f;
+    color: white;
+}

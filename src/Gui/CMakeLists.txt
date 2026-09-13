@@ -98,6 +98,7 @@ if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
          libfastsignals
+         customtitlebarkit
          ${OPENGL_gl_LIBRARY}
     )
 
@@ -111,6 +112,7 @@ else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
         libfastsignals
+        customtitlebarkit
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
