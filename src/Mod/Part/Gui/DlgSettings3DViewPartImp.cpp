@@ -27,12 +27,14 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Parameter.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 
 #include "DlgSettings3DViewPartImp.h"
 #include "ui_DlgSettings3DViewPart.h"
 #include "ViewProvider.h"
+#include "ViewProviderExt.h"
 
 
 using namespace PartGui;
@@ -119,8 +121,16 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionEditingFinished()
 
 void DlgSettings3DViewPart::saveSettings()
 {
+    const ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+    const int oldBudget = hPart->GetInt("MaxFacetsForDisplay", 2000000);
+
     ui->maxDeviation->onSave();
     ui->maxAngularDeflection->onSave();
+    ui->maxFacets->onSave();
+
+    const int newBudget = hPart->GetInt("MaxFacetsForDisplay", 2000000);
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -133,11 +143,18 @@ void DlgSettings3DViewPart::saveSettings()
             static_cast<ViewProviderPart*>(view)->reload();
         }
     }
+
+    // If the global facet budget changed, rebuild the tessellation of all visible Part
+    // objects so that the new limit takes effect immediately.
+    if (oldBudget != newBudget) {
+        ViewProviderPartExt::updateVisualOfAllParts();
+    }
 }
 void DlgSettings3DViewPart::loadSettings()
 {
     ui->maxDeviation->onRestore();
     ui->maxAngularDeflection->onRestore();
+    ui->maxFacets->onRestore();
 }
 
 /**
