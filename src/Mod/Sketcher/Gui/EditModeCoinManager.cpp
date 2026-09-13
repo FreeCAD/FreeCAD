@@ -725,7 +725,7 @@ void EditModeCoinManager::ParameterObserver::updateAxisTransparencyParameter(
     );
 
     int transparencyInt = hGrpp->GetInt("AxisTransparency", 30);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.axisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();
@@ -742,7 +742,7 @@ void EditModeCoinManager::ParameterObserver::updateOccludedAxisTransparencyParam
     );
 
     int transparencyInt = hGrpp->GetInt("OccludedAxisTransparency", 90);
-    transparencyInt = Base::clamp(transparencyInt, 0, 100);
+    transparencyInt = std::clamp(transparencyInt, 0, 100);
 
     Client.drawingParameters.occludedAxisTransparency = static_cast<float>(transparencyInt) / 100.0f;
     Client.updateInventorColors();

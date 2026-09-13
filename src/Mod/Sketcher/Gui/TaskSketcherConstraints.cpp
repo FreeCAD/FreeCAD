@@ -1172,7 +1172,7 @@ void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    Base::ConnectionBlocker block(changedSketchView);
+    fastsignals::shared_connection_block blocker(changedSketchView);
     sketchView->Autoconstraints.setValue(value);
 }
 

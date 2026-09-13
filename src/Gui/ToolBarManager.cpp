@@ -1145,7 +1145,7 @@ void ToolBarManager::addToMenu(QLayout* layout, QWidget* area, QMenu* menu)
 
 void ToolBarManager::onToggleStatusBarWidget(QWidget* widget, bool visible)
 {
-    Base::ConnectionBlocker block(connParam);
+    fastsignals::shared_connection_block blocker(connParam);
     widget->setVisible(visible);
     hStatusBar->SetBool(widget->objectName().toUtf8().constData(), widget->isVisible());
 }

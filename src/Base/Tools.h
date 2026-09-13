@@ -32,14 +32,10 @@
 #include <numbers>
 #include <ostream>
 #include <string>
-#include <vector>
-#include <fastsignals/signal.h>
-
-class QString;
-
 #include <string_view>
 #include <vector>
-#include <fastsignals/signal.h>
+
+class QString;
 
 namespace Base
 {
@@ -106,13 +102,6 @@ inline manipulator<int> blanks(int n)
 }
 
 // ----------------------------------------------------------------------------
-
-template<class T>
-    requires std::is_arithmetic_v<T>
-inline T clamp(T num, T lower, T upper)
-{
-    return std::clamp<T>(num, lower, upper);
-}
 
 /// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
 /// As this function might be used in hot paths, it uses branchless implementation
@@ -352,18 +341,6 @@ private:
     bool oldValue;
 };
 
-// ----------------------------------------------------------------------------
-
-class ConnectionBlocker
-{
-    fastsignals::shared_connection_block blocker;
-
-public:
-    ConnectionBlocker(fastsignals::advanced_connection& c)
-        : blocker(c)
-    {}
-    ~ConnectionBlocker() = default;
-};
 // NOLINTEND
 
 // ----------------------------------------------------------------------------
