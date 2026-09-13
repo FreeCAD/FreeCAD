@@ -129,6 +129,7 @@ private:
 
     void setItemState(App::DocumentObject* obj, Qt::CheckState state, bool forced = false);
     void updateAllItemState();
+    void updateDepSplitter();
 
 private:
     Ui_DlgObjectSelection* ui;
