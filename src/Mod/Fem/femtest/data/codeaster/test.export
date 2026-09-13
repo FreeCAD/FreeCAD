@@ -1,0 +1,35 @@
+P actions make_etude
+P aster_root /home/tim/aster
+P consbtc oui
+P corefilesize unlimited
+P cpresok RESNOOK
+P debug nodebug
+P facmtps 1
+P lang en
+P memjob 16384000
+P memory_limit 16000.0
+P mode interactif
+P mpi_nbcpu 1
+P mpi_nbnoeud 1
+P nbmaxnook 5
+P nomjob test
+P origine ASTK 2020.0.final
+P platform LINUX64
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_exec asrun.plugins.server.SSHServer
+P proxy_dir /tmp
+P rep_trav /tmp/tim-ThinkStation-P910-ubuntu-interactif_129150
+P soumbtc oui
+P time_limit 900.0
+P tpsjob 16
+P uclient tim
+P username tim
+P version stable
+A args
+A memjeveux 2000.0
+A tpmax 900.0
+F comm /home/tim/aster/bin/case/testplate.comm D  1
+F mmed /home/tim/aster/bin/case/plate-ORD1.med D  20
+F rmed /home/tim/aster/bin/case/OP.rmed R  80
+F mess /home/tim/aster/bin/case/message R  6

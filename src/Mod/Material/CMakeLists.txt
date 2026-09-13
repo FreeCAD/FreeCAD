@@ -29,6 +29,8 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-Generic.FCMat
     Resources/Materials/Standard/Aggregate/Reinforcement-FIB-B500.FCMat
+    Resources/Materials/Standard/Carbon/Carbon-epoxy-generic-isotropic.FCMat
+    Resources/Materials/Standard/Carbon/CFRP-HS-UD.FCMat
     Resources/Materials/Standard/Carbon/Graphite.FCMat
     Resources/Materials/Standard/Glass/Glass-E-GlassFibre.FCMat
     Resources/Materials/Standard/Glass/Glass-Generic.FCMat
