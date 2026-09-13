@@ -27,6 +27,7 @@ SET(Test_SRCS
     testmakeWireString.py
     TestPythonSyntax.py
     TestPerf.py
+    TestSelection.py
     TestTreeSelection.py
     TestGraphicsViewWrapping.py
     TestMDIView.py
