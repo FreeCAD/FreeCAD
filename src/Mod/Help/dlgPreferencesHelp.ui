@@ -266,6 +266,46 @@ This only applies if Markdown is selected above.</string>
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_externalBrowser">
+          <property name="text">
+           <string>External browser links</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="combo_externalBrowserPolicy">
+          <property name="toolTip">
+           <string>Controls whether FreeCAD asks before opening web pages in your default web browser.
+Set this to "Always ask" to reset a previously remembered choice.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ExternalBrowserPolicy</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Help</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Always ask</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Always open</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Never open</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -293,6 +333,11 @@ This only applies if Markdown is selected above.</string>
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

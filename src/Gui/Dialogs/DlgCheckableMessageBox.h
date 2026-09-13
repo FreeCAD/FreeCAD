@@ -141,7 +141,11 @@ public:
 private Q_SLOTS:
     void slotClicked(QAbstractButton* b);
 
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
 private:
+    static QString extractFirstUrl(const QString& text);
     DlgCheckableMessageBoxPrivate* m_d;
     QByteArray paramEntry;
     QString prefPath;

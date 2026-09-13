@@ -28,10 +28,12 @@
 #include <QTcpSocket>
 
 
+#include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
 
 #include "OnlineDocumentation.h"
+#include "Dialogs/DlgCheckableMessageBox.h"
 #include "MainWindow.h"
 
 
@@ -364,6 +366,58 @@ void StdCmdPythonHelp::activated(int iMsg)
 
 bool Gui::OpenURLInBrowser(const char* URL)
 {
+    // 0 = ask, 1 = always open, 2 = never open
+    constexpr int AskExternalBrowserPolicy = 0;
+    constexpr int AlwaysOpenExternalBrowserPolicy = 1;
+    constexpr int NeverOpenExternalBrowserPolicy = 2;
+
+    auto group = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Help"
+    );
+    int policy = group->GetInt("ExternalBrowserPolicy", AskExternalBrowserPolicy);
+    if (policy != AskExternalBrowserPolicy && policy != AlwaysOpenExternalBrowserPolicy
+        && policy != NeverOpenExternalBrowserPolicy) {
+        policy = AskExternalBrowserPolicy;
+        group->SetInt("ExternalBrowserPolicy", policy);
+    }
+
+    if (policy == NeverOpenExternalBrowserPolicy) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("External Hyperlink Disabled"),
+            QObject::tr(
+                "Opening web pages in the default browser is disabled.\n"
+                "Change this in Preferences > General > Help > External browser links."
+                "Opening web pages in the default browser is disabled by default but can be changed in the preferences"
+        );
+        return false;
+    }
+
+    if (policy == AskExternalBrowserPolicy) {
+        bool rememberChoice = false;
+        const auto result = Gui::Dialog::DlgCheckableMessageBox::question(
+            Gui::getMainWindow(),
+            QObject::tr("Open External Hyperlink"),
+            QObject::tr("Proceed to: %1").arg(QString::fromUtf8(URL)),
+            QObject::tr("Remember for all links"),
+            &rememberChoice,
+            QDialogButtonBox::Open | QDialogButtonBox::Cancel,
+            QDialogButtonBox::Cancel
+        );
+
+        if (rememberChoice) {
+            group->SetInt(
+                "ExternalBrowserPolicy",
+                result == QDialogButtonBox::Open ? AlwaysOpenExternalBrowserPolicy
+                                                 : NeverOpenExternalBrowserPolicy
+            );
+        }
+
+        if (result != QDialogButtonBox::Open) {
+            return false;
+        }
+    }
+
     // The webbrowser Python module allows one to start the system browser in an OS-independent way
     Base::PyGILStateLocker lock;
     try {
