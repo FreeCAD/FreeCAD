@@ -50,8 +50,8 @@ protected:
     {
         TopoDS_Shape shape;
         BRep_Builder builder;
-        const std::string path =
-            App::Application::getHomePath() + "/tests/brepfiles/countersink_cone.brep";
+        const std::string path = App::Application::getHomePath()
+            + "/tests/brepfiles/countersink_cone.brep";
         BRepTools::Read(shape, path.c_str(), builder);
         return shape;
     }
@@ -100,4 +100,3 @@ TEST_F(PartToolsTest, testAnEdgeWithoutACurveYieldsNoPolygon)
 
     EXPECT_TRUE(poly.IsNull());
 }
-
