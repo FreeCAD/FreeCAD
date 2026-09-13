@@ -34,7 +34,7 @@
 #include "DepEdgePy.h"
 #include "DocumentObject.h"
 #include "Document.h"
-#include "ExpressionParser.h"
+#include "ExpressionNodes.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"

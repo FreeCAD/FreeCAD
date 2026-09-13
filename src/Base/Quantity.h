@@ -27,6 +27,7 @@
 
 #include "Unit.h"
 #include <cstdint>
+#include <optional>
 #include <string>
 
 namespace Base
@@ -163,6 +164,9 @@ public:
     std::string getSafeUserString() const;
 
     static Quantity parse(const std::string& string);
+
+    /// Look up one complete unit symbol without parsing an expression.
+    static std::optional<Quantity> lookupUnit(const std::string& symbol);
 
     /// returns the unit of the quantity
     const Unit& getUnit() const

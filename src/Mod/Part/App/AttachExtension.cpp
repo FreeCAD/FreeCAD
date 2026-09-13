@@ -31,7 +31,7 @@
 #include <App/Datums.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Expression.h>
-#include <App/ExpressionParser.h>
+#include <App/ExpressionNodes.h>
 
 #include "AttachExtension.h"
 #include "AttachExtensionPy.h"

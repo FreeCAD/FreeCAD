@@ -32,7 +32,7 @@
 #include "Document.h"
 #include "private/DocumentP.h"
 #include "DocumentObject.h"
-#include "ExpressionParser.h"
+#include "ExpressionNodes.h"
 #include "GeoFeatureGroupExtension.h"
 #include "Origin.h"
 #include "OriginGroupExtension.h"
