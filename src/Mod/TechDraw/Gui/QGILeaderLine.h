@@ -37,7 +37,6 @@
 #include "QGIView.h"
 #include "QGIUserTypes.h"
 
-
 namespace TechDraw
 {
 class DrawLeaderLine;

@@ -26,6 +26,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
+#include <QGraphicsView>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -62,13 +63,16 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "QGICMark.h"
 #include "QGIDrawingTemplate.h"
+#include "QGIEdge.h"
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
 #include "QGIRichAnno.h"
 #include "QGISVGTemplate.h"
 #include "QGITemplate.h"
 #include "QGIUserTypes.h"
+#include "QGIVertex.h"
 #include "QGIViewAnnotation.h"
 #include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
@@ -82,6 +86,7 @@
 #include "QGIWeldSymbol.h"
 #include "QGSPage.h"
 #include "Rez.h"
+#include "ScreenScalable.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderPage.h"
 #include "ZVALUE.h"
@@ -847,6 +852,29 @@ void QGSPage::refreshViews()
             itemView->updateView(true);
         }
     }
+
+    updateScreenScale();
+}
+
+void QGSPage::updateScreenScale()
+{
+    double scale = 1.0;
+    if (PreferencesGui::screenMode()) {
+        const QList<QGraphicsView*> allViews = views();
+        
+        if (!allViews.empty()) {
+            double zoom = allViews.first()->transform().m11();
+            scale = 1.0 / zoom;
+        }
+    }
+
+    const QList<QGraphicsItem*> allItems = items();
+
+    for (auto* item : allItems) {
+        if (auto* scalable = dynamic_cast<ScreenScalable*>(item)) {
+            scalable->setScreenScale(scale);
+        }
+    }
 }
 
 void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
@@ -986,6 +1014,8 @@ void QGSPage::redrawAllViews()
     for (std::vector<QGIView*>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         (*it)->updateView(true);
     }
+
+    updateScreenScale();
 }
 
 //NOTE: this doesn't add missing views.   see fixOrphans()
@@ -999,6 +1029,8 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
             (*it)->updateView(true);
         }
     }
+
+    updateScreenScale();
 }
 
 // RichTextAnno needs to know when it is rendering an Svg as the font size

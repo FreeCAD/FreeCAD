@@ -32,6 +32,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
+#include <Gui/ViewParams.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIEdge.h"
@@ -113,5 +114,18 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void QGIEdge::setLinePen(const QPen& linePen)
 {
     m_pen = linePen;
+}
+
+void QGIEdge::setWidth(double width)
+{
+    m_width = PreferencesGui::screenMode() ? Gui::ViewParams::instance()->getDefaultShapeLineWidth() : width;
+    QGIPrimPath::setWidth(m_width * m_screenScale);
+}
+
+void QGIEdge::setScreenScale(double scale)
+{
+    ScreenScalable::setScreenScale(scale);
+    QGIPrimPath::setWidth(m_width * m_screenScale);
+    setEdgeFuzzScale(m_screenScale);
 }
 

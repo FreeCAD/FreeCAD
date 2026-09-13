@@ -84,6 +84,7 @@ class QGVPage::Private: public ParameterGrp::ObserverType
 public:
     /// handle to the viewer parameter group
     ParameterGrp::handle hGrp;
+    ParameterGrp::handle hGrpView;
     QGVPage* page;
     explicit Private(QGVPage* page) : page(page)
     {
@@ -91,6 +92,9 @@ public:
         hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         hGrp->Attach(this);
+
+        hGrpView = Preferences::getPreferenceGroup("View");
+        hGrpView->Attach(this);
     }
     void init()
     {
@@ -129,12 +133,20 @@ public:
                 page->setTransformationAnchor(QGVPage::AnchorViewCenter);
             }
         }
+        else if (strcmp(Reason, "ScreenMode") == 0) {
+            if (page->getScene()) {
+                page->getScene()->refreshViews();
+            }
+        }
     }
     void detach()
     {
         hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/View");
         hGrp->Detach(this);
+
+        hGrpView = Preferences::getPreferenceGroup("View");
+        hGrpView->Detach(this);
     }
 };
 
