@@ -92,8 +92,6 @@ public:
     App::PropertyBool onlyParts;
 
     std::vector<BomDataElement> dataElements;
-    std::vector<App::DocumentObject*> obj_list;
-    std::vector<bool> obj_mirrored_list;
 
 private:
     std::string getBomPropertyValue(App::DocumentObject* obj, const std::string& baseName);
