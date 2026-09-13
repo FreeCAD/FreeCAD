@@ -23,14 +23,25 @@
 # *                                                                         *
 # ***************************************************************************
 
+import unittest
+
 import FreeCAD as App
 import Arch
-import ifcopenshell
 from bimtests import TestArchBase
-from nativeifc import ifc_export
-from nativeifc import ifc_tools
+
+try:
+    import ifcopenshell
+    from nativeifc import ifc_export
+    from nativeifc import ifc_tools
+
+    _HAVE_IFCOPENSHELL = True
+except ImportError:
+    # ifcopenshell pulls in shapely, which is not available on every platform
+    # (for example Windows on ARM). Skip these tests when it cannot be imported.
+    _HAVE_IFCOPENSHELL = False
 
 
+@unittest.skipUnless(_HAVE_IFCOPENSHELL, "ifcopenshell/shapely is not available")
 class TestArchBuildingPart(TestArchBase.TestArchBase):
 
     @staticmethod
