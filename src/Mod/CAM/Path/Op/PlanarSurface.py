@@ -1041,7 +1041,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # All Z values below are in the working frame: baseShapes() yields
         # transformed geometry when a workplane rotation is active, and model /
         # stock shapes are transformed explicitly via _rotatedShape().
-        if hasattr(obj, "Base") and obj.Base:
+        if getattr(obj, "Base", None):
             zmin = float("inf")
             for base, sublist in self.baseShapes(obj):
                 for sub in sublist:
@@ -1052,15 +1052,14 @@ class ObjectSurface(PathOp.ObjectOp):
                         Path.Log.error(e)
             if zmin != float("inf"):
                 obj.OpFinalDepth = zmin
-        elif self.job:
-            if hasattr(obj, "BoundBox"):
-                if obj.BoundBox == "BaseBoundBox":
-                    models = getattr(self, "model", None) or self.job.Model.Group
-                    zmin = min(self._rotatedShape(M.Shape).BoundBox.ZMin for M in models)
-                    obj.OpFinalDepth = zmin
-                if obj.BoundBox == "Stock":
-                    stock = getattr(self, "stock", None) or self.job.Stock
-                    obj.OpFinalDepth = self._rotatedShape(stock.Shape).BoundBox.ZMin
+        elif self.job and hasattr(obj, "BoundBox"):
+            if obj.BoundBox == "BaseBoundBox":
+                models = getattr(self, "model", None) or self.job.Model.Group
+                zmin = min(self._rotatedShape(M.Shape).BoundBox.ZMin for M in models)
+                obj.OpFinalDepth = zmin
+            elif obj.BoundBox == "Stock":
+                stock = getattr(self, "stock", None) or self.job.Stock
+                obj.OpFinalDepth = self._rotatedShape(stock.Shape).BoundBox.ZMin
 
     # ---- Strategy execution methods ----
 
@@ -1070,31 +1069,17 @@ class ObjectSurface(PathOp.ObjectOp):
         tool = tc.Tool
 
         tool_type = None
-        diameter = 0.0
-        corner_radius = 0.0
-        flat_radius = 0.0
-        edge_height = 0.0
-        edge_angle = 0.0
-        length_offset = 0.0
-
         if hasattr(tool, "ShapeType"):
             tool_type = tool.ShapeType.lower()
         elif hasattr(tool, "ShapeName"):
             tool_type = tool.ShapeName.lower()
-
-        if hasattr(tool, "Diameter"):
-            diameter = float(tool.Diameter)
-        if hasattr(tool, "FlatRadius"):
-            flat_radius = float(tool.FlatRadius)
-        if hasattr(tool, "CornerRadius"):
-            corner_radius = float(tool.CornerRadius)
+        diameter = float(getattr(tool, "Diameter", 0.0))
+        flat_radius = float(getattr(tool, "FlatRadius", 0.0))
+        if corner_radius := float(getattr(tool, "CornerRadius", 0.0)):
             flat_radius = (diameter / 2.0) - corner_radius
-        if hasattr(tool, "CuttingEdgeHeight"):
-            edge_height = float(tool.CuttingEdgeHeight)
-        if hasattr(tool, "CuttingEdgeAngle"):
-            edge_angle = float(tool.CuttingEdgeAngle)
-        if hasattr(tool, "LengthOffset"):
-            length_offset = float(tool.LengthOffset)
+        edge_height = float(getattr(tool, "CuttingEdgeHeight", 0.0))
+        edge_angle = float(getattr(tool, "CuttingEdgeAngle", 0.0))
+        length_offset = float(getattr(tool, "LengthOffset", 0.0))
 
         Path.Log.debug(
             f"Surface tool: type={tool_type}, diameter={diameter}, edge_height={edge_height}, "
@@ -1388,9 +1373,8 @@ class ObjectSurface(PathOp.ObjectOp):
         step_down = obj.StepDown.Value
         cut_climb = obj.CutMode == "Climb"
 
-        adaptive_threshold = (
-            0.25  # If SampleInterval is already this fine, standard dropcutter is faster.
-        )
+        # If SampleInterval is already this fine, standard dropcutter is faster
+        adaptive_threshold = 0.25
         is_truly_adaptive = is_adaptive and sample_interval >= adaptive_threshold
 
         if is_adaptive and not is_truly_adaptive:
@@ -1416,7 +1400,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Filter collinear points if optimization is enabled
         if obj.OptimizeLinearPaths:
-            tolerance = obj.GapThreshold.Value if hasattr(obj.GapThreshold, "Value") else 0.005
+            tolerance = obj.GapThreshold.Value or 0.005
+
             for zh in wl_data:
                 filter_loop = []
                 for loop in wl_data[zh]:
@@ -1678,8 +1663,7 @@ class ObjectSurface(PathOp.ObjectOp):
         startTime = time.time()
 
         # Universal Setup
-        JOB = PathUtils.findParentJob(obj)
-        if JOB is None:
+        if not (JOB := PathUtils.findParentJob(obj)):
             Path.Log.error(translate("CAM_PlanarSurface", "No JOB"))
             return
 
@@ -1741,7 +1725,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # NOTE: Temporarily disable the model optimization on 3+2 axis operations
         if is_three_plus_two:
-            use_cpp = False if is_waterline else True  # Disable C++ tessellation for Waterline
+            use_cpp = not is_waterline  # Disable C++ tessellation for Waterline
             model_faces = None
             optimized_shape = model_shape
             optimize_stl = False
@@ -1872,19 +1856,10 @@ class ObjectSurface(PathOp.ObjectOp):
                 Path.Command(f"N (Sample interval: {obj.SampleInterval.Value!s})", {})
             )
         self.commandlist.append(Path.Command(f"N (Step over %: {obj.StepOver!s})", {}))
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
+        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
         if obj.UseStartPoint:
             self.commandlist.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": obj.StartPoint.x,
-                        "Y": obj.StartPoint.y,
-                        "F": self.horizRapid,
-                    },
-                )
+                Path.Command("G0", {"X": obj.StartPoint.x, "Y": obj.StartPoint.y})
             )
 
         # Dispatch to strategy
@@ -1899,13 +1874,8 @@ class ObjectSurface(PathOp.ObjectOp):
             cmds = self._executeZLevelHybrid(obj, JOB, model_shape, bb_face, tool_params)
         self.commandlist.extend(cmds)
 
-        elapsed = time.time() - startTime
-        hours, remainder = divmod(elapsed, 3600)
-        minutes, seconds = divmod(remainder, 60)
-
-        Path.Log.info(
-            f"Surface operation completed in {hours:02.0f}h:{minutes:02.0f}m:{seconds:05.2f}s"
-        )
+        elapsed = time.strftime("%Hh:%Mm:%Ss", time.gmtime(time.time() - startTime))
+        Path.Log.info(f"Surface operation completed in {elapsed}")
 
 
 def Create(name, obj=None, parentJob=None):
