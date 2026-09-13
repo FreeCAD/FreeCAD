@@ -251,13 +251,23 @@ void PropertyTopoShapeList::RestoreDocFile(Base::Reader& reader)
 
 App::Property* PropertyTopoShapeList::Copy() const
 {
-    PropertyTopoShapeList* p = new PropertyTopoShapeList();
+    auto* p = new PropertyTopoShapeList();
     std::vector<TopoShape> copiedShapes;
     for (auto& shape : _lValueList) {
+        if (shape.isNull()) {
+            // this is probabably(?) undo/redo saving the before state of this property, which
+            // includes invalid references.
+            Base::Console().error(
+                "PropertyTopoShapeList::Copy encountered a null shape. Undo may not be possible.\n"
+            );
+            continue;
+        }
         BRepBuilderAPI_Copy copy(shape.getShape());
         copiedShapes.emplace_back(copy.Shape());
     }
-    p->setValues(copiedShapes);
+    if (!copiedShapes.empty()) {
+        p->setValues(copiedShapes);
+    }
     return p;
 }
 
