@@ -134,10 +134,114 @@ def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     return updated, updated != content
 
 
+def sync_desktop_file(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync the desktop file StartupWMClass field.
+
+    Updates:
+      - StartupWMClass=FreeCAD-1.2.0
+    """
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    # Version: 1.2.0
+    updated = re.sub(
+        r"(StartupWMClass=)\S+",
+        rf"\g<1>FreeCAD-{version.simple}",
+        updated,
+    )
+
+    # Version: 1.2.0
+    updated = re.sub(
+        r"(X-AppImage-Version=)\S+",
+        rf"\g<1>{version.simple}",
+        updated,
+    )
+
+    return updated, updated != content
+
+
+def sync_MainGui(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync C++ application configuration attributes with version.
+
+    Updates:
+       - App::Application::Config()["ExeName"] = "FreeCAD-1.2.0";
+       - App::Application::Config()["DesktopFileName"] = "org.freecad.FreeCAD-1.2.0";
+             - argv[0] = const_cast<char*>("FreeCAD-1.2.0");
+    """
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    # ExeName:           FreeCAD-1.2.0
+    updated = re.sub(
+        r'(App::Application::Config\(\)\["ExeName"\]\s*=\s*")[^"]+(")',
+        rf"\g<1>FreeCAD-{version.simple}\g<2>",
+        updated,
+    )
+
+    # DesktopFileName:    org.freecad.FreeCAD-1.2.0
+    updated = re.sub(
+        r'(App::Application::Config\(\)\["DesktopFileName"\]\s*=\s*")[^"]+(")',
+        rf"\g<1>org.freecad.FreeCAD-{version.simple}\g<2>",
+        updated,
+    )
+
+    # argv[0]:             FreeCAD-1.2.0
+    updated = re.sub(
+        r'(argv\[0\]\s*=\s*const_cast<char\*>\(")[^"]+("\);)',
+        rf"\g<1>FreeCAD-{version.simple}\g<2>",
+        updated,
+    )
+
+    return updated, updated != content
+
+
+def sync_linux_create_bundle(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
+    """Sync desktop file versioned name
+    Updates:
+             - cp ${conda_env}/share/applications/org.freecad.FreeCAD-1.2.0.desktop AppDir/
+             - sed -i 's/Exec=FreeCAD/Exec=AppRun/g' AppDir/org.freecad.FreeCAD-1.2.0.desktop
+    """
+
+    content = filepath.read_text(encoding="utf-8")
+    updated = content
+
+    # org.freecad.FreeCAD-1.2.0.desktop
+    updated = re.sub(
+        r"cp \${conda_env\}/share/applications/org\.freecad\.FreeCAD\.desktop AppDir/",
+        rf"cp ${{conda_env}}/share/applications/org.freecad.FreeCAD-{version.simple}.desktop AppDir/",
+        updated,
+    )
+
+    # org.freecad.FreeCAD-1.2.0.desktop
+    updated = re.sub(
+        r"sed -i 's/Exec=FreeCAD/Exec=AppRun/g' AppDir/org\.freecad\.FreeCAD\.desktop",
+        rf"sed -i 's/Exec=FreeCAD/Exec=AppRun/g' AppDir/org.freecad.FreeCAD-{version.simple}.desktop",
+        updated,
+    )
+
+    return updated, updated != content
+
+
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
     ("package/fedora/freecad.spec", sync_fedora_spec),
+    (
+        lambda version: f"src/XDGData/org.freecad.FreeCAD-{version.simple}.desktop",
+        sync_desktop_file,
+    ),
+    ("src/Main/MainGui.cpp", sync_MainGui),
+    ("package/bundle/linux/create_bundle.sh", sync_linux_create_bundle),
+]
+
+
+# Each entry is (relative_old_path, new_name_fn).
+# Renames are handled separately in run() so --check mode never touches the filesystem.
+RENAME_TARGETS = [
+    (
+        "src/XDGData/org.freecad.FreeCAD.desktop",
+        lambda version: f"src/XDGData/org.freecad.FreeCAD-{version.simple}.desktop",
+    ),
 ]
 
 
@@ -154,6 +258,8 @@ def run(repo_root: Path, check_only: bool) -> bool:
     all_synced = True
 
     for relative_path, sync_function in SYNC_TARGETS:
+        if callable(relative_path):
+            relative_path = relative_path(version)
         filepath = repo_root / relative_path
         if not filepath.exists():
             print(f"  SKIP: {relative_path} (file not found)")
@@ -170,6 +276,28 @@ def run(repo_root: Path, check_only: bool) -> bool:
                 print(f"  UPDATED: {relative_path}")
         else:
             print(f"  OK: {relative_path}")
+
+    for relative_old, new_name_fn in RENAME_TARGETS:
+        old_path = repo_root / relative_old
+        new_path = repo_root / new_name_fn(version)
+
+        if not old_path.exists():
+            if new_path.exists():
+                print(f"  OK: {relative_old} (already renamed to {new_path.name})")
+            else:
+                print(f"  SKIP: {relative_old} (file not found)")
+            continue
+
+        if old_path == new_path:
+            print(f"  OK: {relative_old}")
+            continue
+
+        all_synced = False
+        if check_only:
+            print(f"  OUT OF SYNC: {relative_old} → {new_path.name}")
+        else:
+            old_path.rename(new_path)
+            print(f"  RENAMED: {relative_old} → {new_path.name}")
 
     return all_synced
 
