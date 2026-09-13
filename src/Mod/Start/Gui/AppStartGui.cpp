@@ -133,6 +133,7 @@ PyMOD_INIT_FUNC(StartGui)
     auto manipulator = std::make_shared<StartGui::Manipulator>();
     Gui::WorkbenchManipulator::installManipulator(manipulator);
     loadStartResource();
+    StartGui::StartView::init();
     Base::Console().log("done\n");
 
     // register preferences pages

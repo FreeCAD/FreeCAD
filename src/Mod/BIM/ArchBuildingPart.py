@@ -317,6 +317,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                 ),
                 locked=True,
             )
+            obj.setPropertyStatus("MaterialsTable", "Hidden")
 
     def onDocumentRestored(self, obj):
 
@@ -1173,7 +1174,7 @@ class ViewProviderBuildingPart:
 
         actionWriteCamera = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-            translate("Arch", "Write Camera Position"),
+            translate("Arch", "Save Camera View"),
             menu,
         )
         QtCore.QObject.connect(actionWriteCamera, QtCore.SIGNAL("triggered()"), self.writeCamera)
@@ -1194,7 +1195,8 @@ class ViewProviderBuildingPart:
     def activate(self, action=None):
         from bimcommands.BimViews import _toggle_active_container
 
-        _toggle_active_container(self.Object, action)
+        if self.Object.ViewObject.DoubleClickActivates:
+            _toggle_active_container(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self, restore=False):

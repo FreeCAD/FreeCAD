@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
@@ -21,6 +23,7 @@ if(BUILD_GUI)
     list (APPEND Part_Scripts
           InitGui.py
           TestPartGui.py
+          TestPartPreview.py
     )
 endif(BUILD_GUI)
 
@@ -80,6 +83,9 @@ set(Part_tests
     parttests/TaskFaceAppearancesTest.py
     parttests/TopoShapeTest.py
     parttests/TestTangentMode3-0.21.FCStd
+    parttests/TestLinkArrayCircular.py
+    parttests/TestLinkArrayLinear.py
+    parttests/TestLinkArrayPath.py
     parttests/TestPartMirror.py
     parttests/TestFaceMakerUnifiedPlanar.py
     parttests/TestFaceMakerUnifiedNonPlanar.py

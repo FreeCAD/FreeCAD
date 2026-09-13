@@ -74,10 +74,12 @@
 
 #include <App/MaterialPy.h>
 #include <App/MetadataPy.h>
-// FreeCAD Base header
+// FreeCAD Base headers
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/CrashReporter/Manager.h>
+#include <Base/CrashReporter/Writer.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
@@ -818,7 +820,7 @@ bool Application::isFineGrainedRecomputeEnabled()
     static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General"
     );
-    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute", true);
     return enableFineGrainedRecompute;
 }
 
@@ -2121,6 +2123,11 @@ void Application::init(int argc, char ** argv)
         initTypes();
 
         initConfig(argc,argv);
+
+        // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
+        // things that might crash...
+        initCrashReporter();
+
         initApplication();
         initExceptions();
     }
@@ -2163,6 +2170,7 @@ void Application::initTypes()
     App::PropertyPercent            ::init();
     App::PropertyEnumeration        ::init();
     App::PropertyIntegerList        ::init();
+    App::PropertyIntPairList        ::init();
     App::PropertyIntegerSet         ::init();
     App::PropertyMap                ::init();
     App::PropertyString             ::init();
@@ -2431,8 +2439,8 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     ("log-file", boost::program_options::value<std::string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", boost::program_options::value<std::string>(),"User config file to load/save user settings")
     ("system-cfg,s", boost::program_options::value<std::string>(),"System config file to load/save system settings")
-    ("run-test,t", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
-    ("run-open,r", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
+    ("run-test,t", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -t for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.")
+    ("run-open,r", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -r for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional module paths")
     ("macro-path,E", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional macro paths")
     ("python-path,P", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional python paths")
@@ -2659,15 +2667,32 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     }
 
     if (vm.contains("run-test") || vm.contains("run-open")) {
-        std::string testCase = vm.contains("run-open") ? vm["run-open"].as<std::string>() : vm["run-test"].as<std::string>();
+        std::vector<std::string> testCases;
+        bool runAll = false;
+        bool printAll = false;
+        for (const char* key : {"run-open", "run-test"}) {
+            if (vm.contains(key)) {
+                auto v = vm[key].as<std::vector<std::string>>();
+                for (const auto& s : v) {
+                    if (s == "0") {
+                        runAll = true;
+                    }
+                    else if (s.empty()) {
+                        printAll = true;
+                    }
+                }
+                testCases.insert(testCases.end(), v.begin(), v.end());
+            }
+        }
 
-        if ( "0" == testCase) {
-            testCase = "TestApp.All";
+        if (printAll) {
+            testCases = {"TestApp.PrintAll"};
         }
-        else if (testCase.empty()) {
-            testCase = "TestApp.PrintAll";
+        else if (runAll) {
+            testCases = {"TestApp.All"};
         }
-        mConfig["TestCase"] = std::move(testCase);
+
+        mConfig["TestCase"] = boost::join(testCases, ",");
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         mConfig["ExitTests"] = vm.contains("run-open") ? "no" : "yes";
@@ -2977,6 +3002,23 @@ void Application::SaveEnv(const char* s)
     }
 }
 
+void Application::initCrashReporter()
+{
+    // Make sure anything that escapes doesn't abort startup: this is non-fatal
+    try {
+        const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
+        Base::CrashReporter::Writer::prewarm();
+        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(crashReportsDirectory);
+    } catch (Base::Exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
+    } catch (std::exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.what());
+    } catch (...) {
+        Base::Console().warning("Crash reporting failed during startup\n");
+    }
+}
+
 void Application::initApplication()
 {
     // interpreter and Init script ==========================================================
@@ -3270,17 +3312,9 @@ void Application::LoadParameters()
         if (_pcUserParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            const auto it = mConfig.find("UserParameterTemplate");
-            if (it != mConfig.end()) {
-                QString path = QString::fromUtf8(it->second.c_str());
-                if (QDir(path).isRelative()) {
-                    const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
-                    path = QFileInfo(QDir(home), path).absoluteFilePath();
-                }
-                const QFileInfo fi(path);
-                if (fi.exists()) {
-                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
-                }
+            const char* userParamPath = getUserParameterTemplatePath();
+            if (userParamPath) {
+                _pcUserParamMngr->LoadDocument(userParamPath);
             }
 
             // Configuration file optional when using as Python module
@@ -3299,6 +3333,24 @@ void Application::LoadParameters()
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();
     }
+}
+
+const char* Application::getUserParameterTemplatePath()
+{
+    const auto it = mConfig.find("UserParameterTemplate");
+    if (it != mConfig.end()) {
+        QString path = QString::fromUtf8(it->second.c_str());
+        if (QDir(path).isRelative()) {
+            const QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+        const QFileInfo fi(path);
+        if (fi.exists()) {
+            const char* templatePath = path.toUtf8().constData();
+            return templatePath;
+        }
+    }
+    return nullptr;
 }
 
 #if defined(_MSC_VER) && BOOST_VERSION < 108200

@@ -6,9 +6,11 @@ from dataclasses import dataclass
 from enum import Enum
 import ast
 import re
+import textwrap
 from typing import List
 from model.typedModel import (
     GenerateModel,
+    DeprecationLifecycle,
     PythonExport,
     PythonModuleExport,
     Method,
@@ -24,6 +26,76 @@ SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 CTOR_SELF_CLS_ARG = re.compile(r"^__init__\(\$?(?:self|cls)(?:,\s*)?")
 CTOR_NAME = re.compile(r"^__init__\(")
+DEPRECATION_FIELDS = {"deprecated_in", "removed_in", "replacement", "details"}
+RELEASE_RE = re.compile(r"^\d+\.\d+(?:\.\d+)?$")
+
+
+def _release_key(value: str) -> tuple[int, int, int]:
+    parts = [int(part) for part in value.split(".")]
+    normalized = [*parts, *([0] * (3 - len(parts)))]
+    return normalized[0], normalized[1], normalized[2]
+
+
+def _literal_decorator_kwargs(decorator: ast.Call) -> dict[str, object]:
+    values: dict[str, object] = {}
+    for keyword in decorator.keywords:
+        if keyword.arg is None:
+            raise ValueError("deprecation metadata does not support keyword unpacking")
+        try:
+            values[keyword.arg] = ast.literal_eval(keyword.value)
+        except (ValueError, SyntaxError) as error:
+            raise ValueError(
+                f"deprecation metadata '{keyword.arg}' must be a literal value"
+            ) from error
+    return values
+
+
+def _deprecation_lifecycle(values: dict[str, object]) -> DeprecationLifecycle:
+    unknown = values.keys() - DEPRECATION_FIELDS
+    if unknown:
+        raise ValueError(f"deprecated() got unknown keyword '{sorted(unknown)[0]}'")
+
+    deprecated_in = values.get("deprecated_in")
+    removed_in = values.get("removed_in")
+    if not isinstance(deprecated_in, str) or not deprecated_in:
+        raise ValueError("deprecated() requires a non-empty deprecated_in string")
+    if not isinstance(removed_in, str) or not removed_in:
+        raise ValueError("deprecated() requires a non-empty removed_in string")
+    for field, value in (("deprecated_in", deprecated_in), ("removed_in", removed_in)):
+        if not RELEASE_RE.fullmatch(value):
+            raise ValueError(f"deprecated() {field} must be a release such as '26.3'")
+    if _release_key(removed_in) <= _release_key(deprecated_in):
+        raise ValueError("deprecated() removed_in must be later than deprecated_in")
+
+    replacement = values.get("replacement")
+    if replacement is not None and not isinstance(replacement, str):
+        raise ValueError("deprecated() replacement must be a string or None")
+    details = values.get("details")
+    if details is not None and not isinstance(details, str):
+        raise ValueError("deprecated() details must be a string or None")
+    return DeprecationLifecycle(
+        DeprecatedIn=deprecated_in,
+        RemovedIn=removed_in,
+        Replacement=replacement or None,
+        Details=details.rstrip() if details else None,
+    )
+
+
+def _deprecation_lifecycle_from_decorator(decorator: ast.Call) -> DeprecationLifecycle:
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+    return _deprecation_lifecycle(_literal_decorator_kwargs(decorator))
+
+
+def _extract_deprecation_from_decorator(
+    decorator: ast.expr,
+) -> DeprecationLifecycle | None:
+    if _decorator_name(decorator) != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    return _deprecation_lifecycle_from_decorator(decorator)
 
 
 class ArgumentKind(Enum):
@@ -58,6 +130,7 @@ class FunctionSignature:
     noargs_flag: bool = False
     is_overload: bool = False
     callback: str | None = None
+    deprecation: DeprecationLifecycle | None = None
 
     def __init__(self, func: ast.FunctionDef):
         self.args = []
@@ -177,6 +250,8 @@ class FunctionSignature:
                         raise ValueError("callback decorator requires a string callback symbol")
                     callback = _extract_single_string_argument(deco, "callback")
                     self.callback = callback
+                case "deprecated":
+                    self.deprecation = _extract_deprecation_from_decorator(deco)
 
 
 class Function:
@@ -268,6 +343,13 @@ class Function:
     def bootstrap_export_flag(self) -> bool:
         return any(sig.bootstrap_export_flag for sig in self.public_signatures)
 
+    @property
+    def deprecation(self) -> DeprecationLifecycle | None:
+        signature = self.signature
+        if signature is None:
+            return None
+        return signature.deprecation
+
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
             doc,
@@ -285,6 +367,26 @@ def _decorator_name(node: ast.AST) -> str | None:
         case ast.Call(func=func):
             return _decorator_name(func)
     return None
+
+
+def _property_accessor(node: ast.FunctionDef) -> tuple[str, str] | None:
+    """Return the property name and accessor kind for a property function."""
+    for decorator in node.decorator_list:
+        if isinstance(decorator, ast.Name) and decorator.id == "property":
+            return node.name, "getter"
+
+        if (
+            isinstance(decorator, ast.Attribute)
+            and decorator.attr == "setter"
+            and isinstance(decorator.value, ast.Name)
+        ):
+            return decorator.value.id, "setter"
+
+    return None
+
+
+def _is_typing_only(node: ast.FunctionDef) -> bool:
+    return any(_decorator_name(decorator) == "typing_only" for decorator in node.decorator_list)
 
 
 def _is_text_signature_default_supported(node: ast.AST | None) -> bool:
@@ -458,8 +560,6 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
     if not docstring:
         return Documentation()
 
-    import textwrap
-
     # Remove common indentation
     dedented_docstring = textwrap.dedent(docstring).strip()
     lines = dedented_docstring.split("\n")
@@ -616,8 +716,76 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
                 Parameter=param,
                 Name=name,
                 ReadOnly=readonly,
+                Deprecated=None,
             )
             attributes.append(attr)
+
+    property_accessors: dict[str, dict[str, ast.FunctionDef]] = {}
+    for function in _collect_function_defs(class_node.body):
+        accessor = _property_accessor(function)
+        if accessor is None or _is_typing_only(function):
+            continue
+
+        property_name, accessor_kind = accessor
+        accessors = property_accessors.setdefault(property_name, {})
+        if accessor_kind in accessors:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' has multiple "
+                f"{accessor_kind} declarations"
+            )
+        accessors[accessor_kind] = function
+
+    existing_names = {attribute.Name for attribute in attributes}
+    for property_name, accessors in property_accessors.items():
+        getter = accessors.get("getter")
+        if getter is None:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' has a setter but no getter"
+            )
+        if property_name in existing_names:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' is declared both as an "
+                "attribute and a property"
+            )
+
+        setter = accessors.get("setter")
+        if setter is not None:
+            setter_arguments = [*setter.args.posonlyargs, *setter.args.args]
+            if (
+                len(setter_arguments) != 2
+                or setter.args.vararg is not None
+                or setter.args.kwonlyargs
+                or setter.args.kwarg is not None
+            ):
+                raise ValueError(
+                    f"Property setter '{class_node.name}.{property_name}' must accept "
+                    "exactly self and value"
+                )
+        # The C++ wrapper uses one PyCXX converter type for the get/set pair.
+        # Prefer the setter annotation because it describes the value accepted by
+        # the generated set<Name>() declaration.  The public stub generator keeps
+        # the richer, asymmetric Python getter/setter annotations separately.
+        binding_annotation = (
+            setter.args.args[-1].annotation
+            if setter is not None and setter.args.args
+            else getter.returns
+        )
+        binding_type = (
+            ast.unparse(binding_annotation) if binding_annotation is not None else "object"
+        )
+        attr_doc = _parse_docstring_for_documentation(ast.get_docstring(getter) or "")
+        attributes.append(
+            Attribute(
+                Documentation=attr_doc,
+                Parameter=Parameter(
+                    Name=property_name,
+                    Type=_python_type_to_parameter_type(binding_type),
+                ),
+                Name=property_name,
+                ReadOnly=setter is None,
+                Deprecated=None,
+            )
+        )
 
     return attributes
 
@@ -636,6 +804,8 @@ def _collect_function_defs(nodes) -> list[ast.FunctionDef]:
 def _collect_functions(class_node: ast.ClassDef) -> dict[str, Function]:
     functions: dict[str, Function] = {}
     for func_node in _collect_function_defs(class_node.body):
+        if _property_accessor(func_node) is not None:
+            continue
         if func := functions.get(func_node.name):
             func.update(func_node)
         else:
@@ -648,7 +818,6 @@ def _parse_methods(
     *,
     skip_bound_argument: bool,
     allow_bound_decorators: bool,
-    allow_overload_signatures: bool = False,
 ) -> List[Method]:
     """
     Parse methods from collected class functions, extracting:
@@ -671,9 +840,18 @@ def _parse_methods(
         func.add_signature_docs(doc_obj)
         method_params = []
 
-        signature = func.parse_signature if allow_overload_signatures else func.signature
+        # An overload-only group is valid in a source-adjacent .pyi.  The
+        # binding generator still needs one representative signature to emit
+        # the underlying C++ wrapper declaration; for mixed groups,
+        # ``parse_signature`` continues to prefer the non-overload
+        # implementation signature. Constructors are the exception: their
+        # overloads provide documentation for the class constructor, but do
+        # not describe a separate wrapper method.
+        signature = func.parse_signature if func.name != "__init__" else func.signature
         if signature is None:
             continue
+
+        deprecation = func.deprecation
 
         # Process positional parameters (skipping self/cls)
         for arg_i, arg in enumerate(signature.args):
@@ -694,6 +872,7 @@ def _parse_methods(
             Keyword=func.has_keywords,
             NoArgs=func.noargs_flag,
             Bootstrap=func.bootstrap_export_flag if not allow_bound_decorators else False,
+            Deprecated=deprecation,
         )
 
         methods.append(method)
@@ -835,6 +1014,28 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
+def _apply_deprecated_attributes(
+    class_attributes: list[Attribute], deprecated_attributes: dict[str, object], class_name: str
+) -> None:
+    if not deprecated_attributes:
+        return
+
+    attributes_by_name = {attribute.Name: attribute for attribute in class_attributes}
+    unknown_attributes = sorted(
+        name for name in deprecated_attributes.keys() if name not in attributes_by_name
+    )
+    if unknown_attributes:
+        joined = ", ".join(unknown_attributes)
+        raise Exception(f"Unknown deprecated attribute metadata for class '{class_name}': {joined}")
+
+    for name, metadata in deprecated_attributes.items():
+        if not isinstance(metadata, dict) or not all(isinstance(key, str) for key in metadata):
+            raise ValueError(
+                f"deprecated attribute '{class_name}.{name}' metadata must be a structured mapping"
+            )
+        attributes_by_name[name].Deprecated = _deprecation_lifecycle(metadata)
+
+
 def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
@@ -848,6 +1049,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     forward_declarations_text = ""
     class_declarations_text = ""
     sequence_protocol_kwargs = None
+    deprecated_attributes_kwargs = {}
 
     for decorator in class_node.decorator_list:
         match decorator:
@@ -869,6 +1071,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
                             class_declarations_text = val
             case ast.Call(func=ast.Name(id="sequence_protocol"), keywords=_, args=_):
                 sequence_protocol_kwargs = _extract_decorator_kwargs(decorator)
+            case ast.Call(func=ast.Name(id="deprecated_attributes"), keywords=_, args=_):
+                deprecated_attributes_kwargs = _literal_decorator_kwargs(decorator)
             case _:
                 pass
 
@@ -885,6 +1089,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
     class_attributes = _parse_class_attributes(class_node, source_code)
+    _apply_deprecated_attributes(class_attributes, deprecated_attributes_kwargs, class_node.name)
     class_methods = _parse_methods(
         functions,
         skip_bound_argument=True,
@@ -996,7 +1201,6 @@ def parse_module_python_code(path: str) -> GenerateModel:
         functions,
         skip_bound_argument=False,
         allow_bound_decorators=False,
-        allow_overload_signatures=True,
     )
     metadata, explicit_export = _extract_module_kwargs(tree)
     runtime, module_class = _validate_module_runtime_metadata(metadata)

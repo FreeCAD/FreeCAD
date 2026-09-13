@@ -80,6 +80,71 @@ class TestBaseFeature(unittest.TestCase):
         self.assertAlmostEqual(body.Shape.BoundBox.XMin, 25)
         self.assertAlmostEqual(body.Shape.BoundBox.XMax, 35)
 
+    def testBodyBaseFeaturePreservesPlacementAcrossParts(self):
+        source_part = self.Doc.addObject("App::Part", "SourcePart")
+        source_part.Placement.Base = App.Vector(100, 0, 0)
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        source_part.addObject(box)
+        box.Placement.Base = App.Vector(25, 0, 0)
+
+        target_part = self.Doc.addObject("App::Part", "TargetPart")
+        target_part.Placement.Base = App.Vector(200, 0, 0)
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        target_part.addObject(body)
+        body.Placement.Base = App.Vector(20, 0, 0)
+        body.BaseFeature = box
+        self.Doc.recompute()
+
+        base = body.Group[0]
+        self.assertIs(body.BaseFeature, box)
+        self.assertAlmostEqual(base.Placement.Base.x, -95)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin, -75)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, -65)
+
+    def testBodyBaseFeaturePreservesPlacementFromPartToDocumentRoot(self):
+        source_part = self.Doc.addObject("App::Part", "SourcePart")
+        source_part.Placement.Base = App.Vector(100, 0, 0)
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        source_part.addObject(box)
+        box.Placement.Base = App.Vector(25, 0, 0)
+
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.Placement.Base = App.Vector(20, 0, 0)
+        body.BaseFeature = box
+        self.Doc.recompute()
+
+        base = body.Group[0]
+        self.assertIs(body.BaseFeature, box)
+        self.assertAlmostEqual(base.Placement.Base.x, 105)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin, 125)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 135)
+
+    def testBodyBaseFeatureAcceptsLinkedShape(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        link = self.Doc.addObject("App::Link", "Link")
+        link.LinkedObject = box
+
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        body.BaseFeature = link
+        self.Doc.recompute()
+
+        self.assertIs(body.BaseFeature, link)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 10)
+
+        box.Length = 20
+        self.Doc.recompute()
+        self.assertAlmostEqual(body.Shape.BoundBox.XMax, 20)
+
     def testFeatureBasePlacementControlsExternalBaseFeature(self):
         box = self.Doc.addObject("Part::Box", "Box")
         box.Length = 10

@@ -34,12 +34,12 @@ else:
 
 class RampEntry:
     """
-    Generator ramp enty helix for closed profile
+    Generator ramp enty
 
     Example of uses:
-    from Path.Base.Generator.ramp_entry_helix import HelixRamp
-    helix_ramp = HelixRamp(commands)
-    helix_ramp_commands = helix_ramp.generate()
+    from Path.Base.Generator.ramp_entry import RampEntry
+    ramp_entry = RampEntry(commands)
+    ramp_entry_commands = ramp_entry.generate()
 
     Parameters:
     - commands:    List of Path.Command objects of closed profile
@@ -59,7 +59,9 @@ class RampEntry:
              /                                 /                            \
             /--->                             /                       ramp   \
 
-    Ramp Method 0 - Helix like path
+    Ramp Method 0
+    - Helix like path
+    - Can be applied only to closed path
 
     Ramp Method 1
     1. Start from the original startpoint of the plunge

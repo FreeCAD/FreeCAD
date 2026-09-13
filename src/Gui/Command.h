@@ -707,6 +707,7 @@ private:
 protected:
     enum CmdType
     {
+        AlterNone = 0,      /**< Command change nothing */
         AlterDoc = 1,       /**< Command change the Document */
         Alter3DView = 2,    /**< Command change the Gui */
         AlterSelection = 4, /**< Command change the Selection */

@@ -418,6 +418,21 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject* obj,
     subname = newSub + sub;
 }
 
+/// As a last-ditch effort at recovering otherwise-broken geometry, find the nearest geometric
+/// match. Note that there's still a tolerance window in this search so it will reject geometry that
+/// is too far away to possibly be the right match, but that's still a bit heuristic. At some point
+/// it's better to fail than to convince ourselves everything is "fine".
+static std::vector<std::string> rescueDriftedElement(const GeoFeature& geo, const char* element)
+{
+    auto names = geo.searchElementCache(element, Data::SearchOption::AdaptiveTolerance);
+    if (names.empty()) {
+        return {};
+    }
+    FC_WARN("recovered drifted element reference " << element << " -> " << names.front() << " in "
+                                                    << geo.getFullName());
+    return names;
+}
+
 bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                App::DocumentObject* obj,
                                                std::string& sub,
@@ -481,6 +496,9 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
             if (names.empty()) {
                 // try floating point tolerance
                 names = geo->searchElementCache(oldElement, Data::SearchOptions());
+            }
+            if (names.empty() && missing) {
+                names = rescueDriftedElement(*geo, oldElement);
             }
             if (names.size()) {
                 missing = false;

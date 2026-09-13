@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: Przemo Firszt <przemo@firszt.eu>                              *
@@ -41,7 +43,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPressure, FemGui::ViewProviderF
 ViewProviderFemConstraintPressure::ViewProviderFemConstraintPressure()
 {
     sPixmap = "FEM_ConstraintPressure";
-    loadSymbol((resourceSymbolDir + "ConstraintPressure.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintPressure.iv");
     ShapeAppearance.setDiffuseColor(0.0f, 0.2f, 0.8f);
 }
 

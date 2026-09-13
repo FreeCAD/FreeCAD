@@ -273,6 +273,14 @@ bool Document::redo(const int id)
     return true;
 }
 
+Base::ScopeGuard Document::setDefiningTransaction()
+{
+    d->definingTransaction = true;
+    return Base::ScopeGuard([this]() {
+        d->definingTransaction = false;
+    });
+}
+
 void Document::changePropertyOfObject(TransactionalObject* obj,
                                       const Property* prop,
                                       const std::function<void()>& changeFunc)
@@ -299,6 +307,16 @@ void Document::renamePropertyOfObject(TransactionalObject* obj,
 {
     changePropertyOfObject(obj, prop, [this, obj, prop, oldName]() {
         d->activeUndoTransaction->renameProperty(obj, prop, oldName);
+    });
+}
+
+void Document::arrangeMovePropertyOfObject(TransactionalObject* obj,
+                                           const Property* prop,
+                                           TransactionalObject* targetObj,
+                                           Property* newProp)
+{
+    changePropertyOfObject(obj, prop, [this, obj, prop, targetObj, newProp]() {
+        d->activeUndoTransaction->arrangeMoveProperty(obj, prop, targetObj, newProp);
     });
 }
 
@@ -907,7 +925,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Prop
     if (Who->isDerivedFrom<DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const DocumentObject*>(Who), *What);
     }
-    if (!d->rollback && !globalIsRelabeling) {
+    if (!d->rollback && !globalIsRelabeling && !d->definingTransaction) {
         _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectChange(Who, What);
@@ -1768,6 +1786,17 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
         reader.FileVersion = 0;
     }
 
+    // Imported objects may reference strings stored in the source document's
+    // StringHasher table, for example in topological element maps. Restore the
+    // source table before reading the objects so their persisted references can
+    // be resolved. Use a separate hasher instead of replacing the target
+    // document's table.
+    if (reader.hasAttribute("StringHasher")) {
+        StringHasherRef sourceHasher = new StringHasher;
+        sourceHasher->Restore(reader);
+        addStringHasher(sourceHasher);
+    }
+
     std::vector<DocumentObject*> objs = readObjects(reader);
     for (const auto o : objs) {
         if (o && o->isAttachedToDocument()) {
@@ -1796,6 +1825,7 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
     reader.readEndElement("Document");
 
     signalImportObjects(objs, reader);
+    DocumentP::checkStringHasher(reader);
     afterRestore(objs, true);
 
     signalFinishImportObjects(objs);
@@ -1983,7 +2013,7 @@ bool Document::saveToFile(const char* filename) const
     // check if file is writeable, then block the save if it is not.
     Base::FileInfo originalFileInfo(nativePath);
     if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
-        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+        throw Base::FileWritePermissionException(originalFileInfo);
     }
 
     // make a tmp. file where to save the project data first and then rename to

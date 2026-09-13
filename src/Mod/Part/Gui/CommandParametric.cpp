@@ -91,7 +91,7 @@ void CmdPartCylinder::activated(int iMsg)
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
-    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 bool CmdPartCylinder::isActive()
@@ -135,7 +135,7 @@ void CmdPartBox::activated(int iMsg)
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
-    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 bool CmdPartBox::isActive()
@@ -179,7 +179,7 @@ void CmdPartSphere::activated(int iMsg)
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
-    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 bool CmdPartSphere::isActive()
@@ -223,7 +223,7 @@ void CmdPartCone::activated(int iMsg)
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
-    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 bool CmdPartCone::isActive()
@@ -267,7 +267,7 @@ void CmdPartTorus::activated(int iMsg)
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
     commitCommand();
     updateActive();
-    runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    runCommand(Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
 }
 
 bool CmdPartTorus::isActive()

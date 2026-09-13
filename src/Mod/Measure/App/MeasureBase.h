@@ -40,8 +40,6 @@
 #include <Base/Interpreter.h>
 
 #include <Mod/Part/App/MeasureInfo.h>
-#include <Mod/Part/App/MeasureClient.h>  // needed?
-
 
 namespace Measure
 {
@@ -162,5 +160,8 @@ private:
     inline static HandlerMap _mGeometryHandlers = MeasureBaseExtendable<T>::HandlerMap();
 };
 
+// Datum types are infinite so they have to be handled more delicatly,
+// when comparing 2 datums simply finding extrema may never converge or the result may be infinite.
+bool isDatum(const App::DocumentObject& ob);
 
 }  // namespace Measure

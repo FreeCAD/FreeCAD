@@ -1635,8 +1635,9 @@ private:
             int pos1 = 0;
             int pos2 = 0;
             bool reverse = false;
+            Base::Vector3d cornerPoint;
             std::unique_ptr<Part::GeomArcOfCircle> arc(
-                Part::createFilletGeometry(newGeo, prevGeo, refPnt1, refPnt2, radius, pos1, pos2, reverse)
+                Part::createFilletGeometry(newGeo, prevGeo, refPnt1, refPnt2, radius, pos1, pos2, reverse, cornerPoint)
             );
             if (arc) {
                 if (isLineSegment(*newGeo)) {

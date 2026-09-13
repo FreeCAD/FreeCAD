@@ -977,3 +977,24 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         if cut1.ElementMapVersion != "":  # Should be '4' as of Mar 2023.
             self.assertKeysInMap(cut1.ElementReverseMap, refkeys)
         self.assertEqual(len(cut1.ElementReverseMap.keys()), len(refkeys))
+
+    def testCreateCompound(self):
+        box = Part.makeBox(1, 1, 1)
+        comp = Part.Compound()
+        self.assertTrue(comp.isNull())
+        comp.add(box.Vertex1)
+        self.assertFalse(comp.isNull())
+
+    def testCreateShell(self):
+        box = Part.makeBox(1, 1, 1)
+        shell = Part.Shell()
+        self.assertTrue(shell.isNull())
+        shell.add(box.Face1)
+        self.assertFalse(shell.isNull())
+
+    def testCreateCompSolid(self):
+        box = Part.makeBox(1, 1, 1)
+        solid = Part.CompSolid()
+        self.assertTrue(solid.isNull())
+        solid.add(box)
+        self.assertFalse(solid.isNull())

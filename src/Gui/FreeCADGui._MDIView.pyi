@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import deprecated
 from FreeCAD import DocumentObject
 
 _ActiveObjectReference: TypeAlias = tuple[DocumentObject, DocumentObject, str]
@@ -34,6 +35,7 @@ class _MDIView:
         """Return the redo actions exposed by the view."""
         ...
 
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="sendMessage")
     def message(self, message: str, /) -> bool:
         """Handle one generic message in the view."""
         ...

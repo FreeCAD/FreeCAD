@@ -24,6 +24,7 @@
 #include <QDialogButtonBox>
 #include <QEvent>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -88,6 +89,7 @@ private:
 
     Base::Placement currentDatumPlacement;
     bool hasCurrentDatumPlacement = false;
+    std::optional<MassPropertiesAxisReference> currentAxisReference;
 
     Gui::Action* deleteAction = nullptr;
     bool deleteActivated = false;

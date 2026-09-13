@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Ajinkya Dahale <dahale.a.p@gmail.com>              *
  *                                                                         *
@@ -39,7 +41,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintRigidBody, FemGui::ViewProvider
 ViewProviderFemConstraintRigidBody::ViewProviderFemConstraintRigidBody()
 {
     sPixmap = "FEM_ConstraintRigidBody";
-    loadSymbol((resourceSymbolDir + "ConstraintRigidBody.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintRigidBody.iv");
     ShapeAppearance.setDiffuseColor(0.0f, 0.5f, 0.0f);
 }
 

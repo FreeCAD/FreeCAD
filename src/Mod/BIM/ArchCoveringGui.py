@@ -216,7 +216,7 @@ if FreeCAD.GuiUp:
             import pivy.coin as coin
             from draftutils import gui_utils
 
-            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            switch = vobj.SwitchNode
             if not switch:
                 return None
 
@@ -1578,7 +1578,8 @@ if FreeCAD.GuiUp:
                     self.obj_to_edit.ViewObject.Selectable = self._old_selectable
 
             FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
+            if hasattr(FreeCADGui, "Snapper"):
+                FreeCADGui.Snapper.off()
             self.update_hints()
 
         def get_hints(self):

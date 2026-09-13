@@ -43,7 +43,6 @@ import FreeCADGui as Gui
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import utils
-from draftutils import gui_utils
 from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
@@ -152,9 +151,9 @@ class SubelementHighlight(gui_base_original.Modifier):
             vobj.PointSize = 10
             vobj.PointColor = (1.0, 0.0, 0.0)
             vobj.LineColor = (1.0, 0.0, 0.0)
-            xray = coin.SoAnnotation()
-            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            switch = vobj.SwitchNode
             if switch is not None:
+                xray = coin.SoAnnotation()
                 xray.addChild(switch.getChild(0))
                 xray.setName("xray")
                 vobj.RootNode.addChild(xray)

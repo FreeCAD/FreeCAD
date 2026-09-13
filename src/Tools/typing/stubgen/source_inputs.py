@@ -19,11 +19,14 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
-import re
+from typing import TypeVar
 
+from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
     collect_type_registrations,
+    cpp_namespace_for_source,
     contextual_cpp_type_name,
+    normalize_cpp_qualified_name,
     public_type_context_index,
 )
 from .model import (
@@ -41,10 +44,37 @@ from .parsing import (
     extract_balanced,
     iter_binding_pyi_files,
     iter_module_stub_pyi_files,
-    iter_source_files,
     iter_type_stub_pyi_files,
+    load_source_files,
     parse_python_source,
 )
+
+K = TypeVar("K")
+
+
+def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
+    if decorator_name(decorator).split(".", 1)[-1] != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+
+    kwargs = literal_keyword_values(decorator, "deprecated() metadata")
+    message = structured_deprecation_message(kwargs)
+    if message is None:
+        raise ValueError("deprecated() requires structured lifecycle metadata")
+    return message
+
+
+def deprecated_message_from_function_node(node: ast.FunctionDef) -> str | None:
+    for decorator in node.decorator_list:
+        if message := deprecated_message_from_decorator(decorator):
+            return message
+        if message == "":
+            return ""
+    return None
 
 
 def binding_export_name(class_name: str, export_kwargs: dict[str, object]) -> str:
@@ -108,6 +138,27 @@ def public_names_for_class(
     return names
 
 
+def cpp_type_names_for_class(
+    rel_path: str,
+    class_name: str,
+    export_kwargs: dict[str, object],
+) -> tuple[str, ...]:
+    """Return the C++ TypeId represented by a binding input class."""
+
+    twin = export_kwargs.get("Twin")
+    raw_name = twin if isinstance(twin, str) and twin else class_name
+    raw_name = normalize_cpp_qualified_name(raw_name)
+    if "::" in raw_name:
+        return (raw_name,)
+
+    namespace = export_kwargs.get("Namespace")
+    if not isinstance(namespace, str) or not namespace:
+        namespace = cpp_namespace_for_source(rel_path)
+    if not namespace:
+        return (raw_name,)
+    return (f"{namespace}::{raw_name}",)
+
+
 def parse_binding_class_file(
     root: Path,
     path: Path,
@@ -150,6 +201,7 @@ def parse_binding_class_file(
                 ),
                 base_class=base_class,
                 explicit_export=explicit_export,
+                cpp_type_names=cpp_type_names_for_class(rel, node.name, export_kwargs),
             )
         )
 
@@ -162,7 +214,7 @@ def collect_binding_classes(
     type_registrations: dict[str, list[str]] | None = None,
 ) -> list[BindingClass]:
     if type_registrations is None:
-        source_files = list(iter_source_files(root, source_dir))
+        source_files = load_source_files(root, source_dir)
         type_registrations = collect_type_registrations(root, source_files)
 
     classes: list[BindingClass] = []
@@ -186,10 +238,7 @@ def extracted_function_signature_parts(
         if start == -1:
             raise ValueError(f"{path}: {owner_name}.{node.name} has no parameter list")
         parameters, end = extract_balanced(definition, start, "(", ")")
-        return_match = re.match(r"\s*->\s*(?P<returns>.+?)\s*:", definition[end:], re.DOTALL)
-        if not return_match:
-            raise ValueError(f"{path}: {owner_name}.{node.name} is missing a return annotation")
-        returns = " ".join(return_match.group("returns").split())
+        returns = ast.unparse(node.returns)
     else:
         parameters = ast.unparse(node.args)
         returns = ast.unparse(node.returns)
@@ -214,7 +263,13 @@ def stub_signature_from_function_node(
         parameters = parameters.removeprefix("self,").lstrip()
     else:
         raise ValueError(f"{path}: {class_symbol}.{node.name} must be an instance method")
-    return StubSignature(parameters, returns, class_symbol, doc)
+    return StubSignature(
+        parameters,
+        returns,
+        class_symbol,
+        doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
 
 
 def module_stub_signature_from_function_node(
@@ -226,7 +281,53 @@ def module_stub_signature_from_function_node(
     parameters, returns, doc = extracted_function_signature_parts(path, module_name, source, node)
     if parameters.startswith(("self", "cls")):
         raise ValueError(f"{path}: {module_name}.{node.name} must not declare self or cls")
-    return StubSignature(parameters, returns, doc=doc)
+    return StubSignature(
+        parameters,
+        returns,
+        doc=doc,
+        deprecated_message=deprecated_message_from_function_node(node),
+    )
+
+
+def is_overload_declaration(node: ast.FunctionDef) -> bool:
+    return any(
+        decorator_name(decorator).rsplit(".", 1)[-1] == "overload"
+        for decorator in node.decorator_list
+    )
+
+
+def validate_stub_function_group(
+    path: Path,
+    owner_name: str,
+    function_name: str,
+    declarations: list[tuple[ast.FunctionDef, StubSignature]],
+) -> None:
+    overloads = [is_overload_declaration(node) for node, _ in declarations]
+    if len(declarations) == 1:
+        if overloads[0]:
+            raise ValueError(
+                f"{path}: {owner_name}.{function_name} has a single @overload "
+                "declaration; overloaded .pyi declarations require at least two"
+            )
+        return
+
+    lines = ", ".join(str(node.lineno) for node, _ in declarations)
+    if not all(overloads):
+        raise ValueError(
+            f"{path}: {owner_name}.{function_name} has multiple declarations "
+            f"at lines {lines}; overloaded .pyi declarations must all use @overload"
+        )
+
+    seen: dict[tuple[str, str], int] = {}
+    for node, signature in declarations:
+        key = (signature.parameters, signature.returns)
+        earlier_line = seen.get(key)
+        if earlier_line is not None:
+            raise ValueError(
+                f"{path}: {owner_name}.{function_name} has duplicate overload "
+                f"signatures at lines {earlier_line} and {node.lineno}"
+            )
+        seen[key] = node.lineno
 
 
 def append_module_signature_group(
@@ -262,7 +363,7 @@ def append_type_signature_group(
     )
 
 
-def append_signature_group[K](
+def append_signature_group(
     signatures: dict[K, tuple[StubSignatureGroup, Path]],
     key: K,
     signature: StubSignature,
@@ -296,10 +397,20 @@ def parse_module_stub_signature_overrides(
         except SyntaxError as exc:
             raise ValueError(f"{path}: invalid stub override syntax: {exc}") from exc
 
+        parsed_functions: list[tuple[ast.FunctionDef, StubSignature]] = []
+        function_groups: dict[str, list[tuple[ast.FunctionDef, StubSignature]]] = {}
         for node in tree.body:
             if not isinstance(node, ast.FunctionDef):
                 continue
             signature = module_stub_signature_from_function_node(path, source, module_name, node)
+            declaration = (node, signature)
+            parsed_functions.append(declaration)
+            function_groups.setdefault(node.name, []).append(declaration)
+
+        for function_name, declarations in function_groups.items():
+            validate_stub_function_group(path, module_name, function_name, declarations)
+
+        for node, signature in parsed_functions:
             append_module_signature_group(signatures, module_name, node.name, signature, path)
 
     return signatures
@@ -396,17 +507,22 @@ def parse_source_type_stub_signature_overrides(
         if len(class_nodes) > 1:
             raise ValueError(f"{path}: duplicate class {class_symbol!r} in type stub file")
 
+        parsed_functions: list[tuple[ast.FunctionDef, StubSignature]] = []
+        function_groups: dict[str, list[tuple[ast.FunctionDef, StubSignature]]] = {}
         for item in class_nodes[0].body:
             if not isinstance(item, ast.FunctionDef):
                 continue
             signature = stub_signature_from_function_node(path, source, class_symbol, item)
+            declaration = (item, signature)
+            parsed_functions.append(declaration)
+            function_groups.setdefault(item.name, []).append(declaration)
+
+        for function_name, declarations in function_groups.items():
+            validate_stub_function_group(path, class_symbol, function_name, declarations)
+
+        for item, signature in parsed_functions:
             append_type_signature_group(
-                signatures,
-                module_name,
-                class_symbol,
-                item.name,
-                signature,
-                path,
+                signatures, module_name, class_symbol, item.name, signature, path
             )
 
     return signatures

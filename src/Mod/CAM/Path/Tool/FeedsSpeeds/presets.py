@@ -57,6 +57,7 @@ Preset record schema:
         "surface_speed": float | None,         # m/min  (a.k.a. cutting speed Vc)
         "chipload": float | None,              # mm/tooth
         "vert_feed_ratio": float,              # default 0.33
+        "notes": str | None,                   # free-text, optional
     }
 
 Storage is engineering-only — surface_speed + chipload + the vertical-feed
@@ -113,12 +114,13 @@ def make_preset(
     surface_speed=None,
     chipload=None,
     vert_feed_ratio=0.33,
+    notes: Optional[str] = None,
 ) -> dict:
     """
     Build a well-formed preset record. ``material_hint`` is ``None`` if both
     UUID and name are ``None``. ``name`` is the user-given label and is
     optional. ``surface_speed`` is the cutting speed in m/min (also known
-    as Vc; "SFM" in imperial).
+    as Vc; "SFM" in imperial). ``notes`` is free-text, optional.
     """
     if material_uuid is None and material_name is None:
         material_hint = None
@@ -131,6 +133,7 @@ def make_preset(
         "surface_speed": surface_speed,
         "chipload": chipload,
         "vert_feed_ratio": vert_feed_ratio,
+        "notes": notes,
     }
 
 
@@ -149,3 +152,15 @@ def derive_preset_label(preset: dict, fallback: str = "(unnamed)") -> str:
     if mat == "any" and op == "any":
         return fallback
     return f"{mat} / {op}"
+
+
+def preset_key(preset: dict) -> tuple:
+    """Stable identity for a preset: name plus the material/op-type
+    combination it targets - not name alone. Two presets that share a name
+    but target different materials or op types are different presets, not
+    a collision (e.g. "Default" for hardwood/any vs "Default" for
+    softwood/any). Used for the duplicate check in the Presets tab editor.
+    """
+    hint = preset.get("material_hint") or {}
+    material_key = hint.get("uuid") or hint.get("name")
+    return (preset.get("name"), material_key, preset.get("op_type_hint"))

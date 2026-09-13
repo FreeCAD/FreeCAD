@@ -29,6 +29,7 @@
 #include <Mod/Part/App/Tools.h>
 #include <Base/BaseClass.h>
 #include <Base/Matrix.h>
+#include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Converter.h>
 
@@ -45,17 +46,57 @@
 #include <math_Vector.hxx>
 
 #include <map>
+#include <optional>
 #include <unordered_set>
 #include <string>
 #include <vector>
 #include <cmath>
 #include <QString>
 
+namespace
+{
+
+const App::LocalCoordinateSystem* getReferenceCoordinateSystem(const App::DocumentObject* referenceDatum)
+{
+    if (auto* datum = freecad_cast<App::DatumElement const*>(referenceDatum)) {
+        return datum->getLCS();
+    }
+
+    return freecad_cast<App::LocalCoordinateSystem const*>(referenceDatum);
+}
+
+std::optional<MassPropertiesAxisReference> getReferenceAxis(
+    const App::DocumentObject* referenceDatum,
+    const Base::Placement* referencePlacement,
+    const MassPropertiesAxisReference* referenceAxis
+)
+{
+    if (referenceAxis) {
+        return *referenceAxis;
+    }
+
+    auto const* line = freecad_cast<App::Line const*>(referenceDatum);
+    if (!line) {
+        return std::nullopt;
+    }
+
+    MassPropertiesAxisReference axis {line->getBasePoint(), line->getDirection()};
+    if (referencePlacement) {
+        referencePlacement->multVec(axis.origin, axis.origin);
+        axis.direction = referencePlacement->getRotation().multVec(axis.direction);
+    }
+
+    return axis;
+}
+
+}  // namespace
+
 MassPropertiesData CalculateMassProperties(
     const std::vector<MassPropertiesInput>& objects,
     MassPropertiesMode mode,
     const App::DocumentObject* referenceDatum,
-    const Base::Placement* referencePlacement
+    const Base::Placement* referencePlacement,
+    const MassPropertiesAxisReference* referenceAxis
 )
 {
     MassPropertiesData data {};
@@ -234,34 +275,17 @@ MassPropertiesData CalculateMassProperties(
         );
     }
     else if (mode == MassPropertiesMode::Custom) {
-        if (!referenceDatum) {
-            return data;
-        }
-
-        const App::LocalCoordinateSystem* lcs = nullptr;
-        if (auto referenceDatumElement = freecad_cast<App::DatumElement const*>(referenceDatum)) {
-            lcs = referenceDatumElement->getLCS();
-        }
-
-
-        if (auto const* line = freecad_cast<App::Line const*>(referenceDatum)) {
-
-            Base::Vector3d axisOrigin = line->getBasePoint();
-            Base::Vector3d axisDir = line->getDirection();
+        if (auto axis = getReferenceAxis(referenceDatum, referencePlacement, referenceAxis)) {
+            Base::Vector3d axisDir = axis->direction;
+            if (axisDir.Length() <= Base::Precision::Confusion()) {
+                return data;
+            }
             axisDir.Normalize();
 
-            if (referencePlacement) {
-                Base::Vector3d transformedOrigin;
-                referencePlacement->multVec(axisOrigin, transformedOrigin);
-                axisOrigin = transformedOrigin;
-                axisDir = referencePlacement->getRotation().multVec(axisDir);
-                axisDir.Normalize();
-            }
-
             Base::Vector3d r(
-                data.cog.x - axisOrigin.x,
-                data.cog.y - axisOrigin.y,
-                data.cog.z - axisOrigin.z
+                data.cog.x - axis->origin.x,
+                data.cog.y - axis->origin.y,
+                data.cog.z - axis->origin.z
             );
 
             double projection = r.Dot(axisDir);
@@ -281,13 +305,10 @@ MassPropertiesData CalculateMassProperties(
             return data;
         }
 
+        const auto* lcs = getReferenceCoordinateSystem(referenceDatum);
         if (!lcs) {
-            lcs = freecad_cast<const App::LocalCoordinateSystem*>(referenceDatum);
-            if (!lcs) {
-                return data;
-            }
+            return data;
         }
-
 
         Base::Placement placement = lcs->Placement.getValue();
         if (referencePlacement) {

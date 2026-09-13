@@ -151,6 +151,8 @@
         <file>LinkSubElement.svg</file>
         <file>LinkSubOverlay.svg</file>
         <file>list-add.svg</file>
+        <file>overlay-add.svg</file>
+        <file>overlay-minus.svg</file>
         <file>list-remove.svg</file>
         <file>MacroEditor.svg</file>
         <file>MacroFolder.svg</file>
@@ -282,13 +284,18 @@
         <file>TreeItemVisible.svg</file>
         <file>umf-measurement.svg</file>
         <file>Unlink.svg</file>
+        <file>user-input/mouse-double-left.svg</file>
         <file>user-input/mouse-left.svg</file>
         <file>user-input/mouse-middle.svg</file>
         <file>user-input/mouse-move.svg</file>
+        <file>user-input/mouse-move-left.svg</file>
+        <file>user-input/mouse-move-middle.svg</file>
+        <file>user-input/mouse-move-right.svg</file>
         <file>user-input/mouse-right.svg</file>
         <file>user-input/mouse-scroll-down.svg</file>
         <file>user-input/mouse-scroll-up.svg</file>
         <file>user-input/mouse-scroll.svg</file>
+        <file>user-input/mouse.svg</file>
         <file>user.svg</file>
         <file>utilities-terminal.svg</file>
         <file>VarSet.svg</file>

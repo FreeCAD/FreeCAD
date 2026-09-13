@@ -23,6 +23,10 @@
 
 #include "FileCardView.h"
 
+#include <QScrollBar>
+#include <QStyle>
+#include <QStyleOption>
+
 #include <App/Application.h>
 #include "../App/DisplayedFilesModel.h"
 #include <algorithm>
@@ -52,6 +56,22 @@ FileCardView::FileCardView(QWidget* parent)
     setSpacing(m_cardSpacing);
 }
 
+// Mirrors the layout bounds reduction in QListViewPrivate::prepareItemsLayout
+int FileCardView::reservedScrollBarWidth() const
+{
+    const auto* scrollBar = verticalScrollBar();
+    if (style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarOverlap, nullptr, scrollBar) != 0) {
+        return 0;
+    }
+    int frameAroundContents = 0;
+    if (style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents) != 0) {
+        QStyleOption option;
+        option.initFrom(this);
+        frameAroundContents = 2 * style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &option);
+    }
+    return style()->pixelMetric(QStyle::PM_ScrollBarExtent, nullptr, scrollBar) + frameAroundContents;
+}
+
 int FileCardView::heightForWidth(int width) const
 {
     auto model = this->model();
@@ -61,7 +81,9 @@ int FileCardView::heightForWidth(int width) const
     }
     int numCards = model->rowCount();
     auto cardSize = delegate->sizeHint(QStyleOptionViewItem(), model->index(0, 0));
-    int cardsPerRow = std::max(1, static_cast<int>(width / (cardSize.width() + m_cardSpacing)));
+    // Each row starts after one spacing; the card pitch is cardWidth + spacing
+    const int usableWidth = width - 2 * frameWidth() - reservedScrollBarWidth() - m_cardSpacing;
+    const int cardsPerRow = std::max(1, usableWidth / (cardSize.width() + m_cardSpacing));
     int numRows = static_cast<int>(
         ceil(static_cast<double>(numCards) / static_cast<double>(cardsPerRow))
     );

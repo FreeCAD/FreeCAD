@@ -11,6 +11,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import deprecated
 from FreeCAD import DocumentObject
 from FreeCAD.Base import Vector
 from Part import Shape, Wire
@@ -41,6 +42,7 @@ def show(toolpath: Path, name: str = "Path", /) -> None:
     """Create one document path feature from one standalone `Path` object."""
     ...
 
+@deprecated(deprecated_in="26.3", removed_in="27.2", replacement="fromShapes")
 def fromShape(shape: Shape, /) -> Path:
     """Convert one wire shape into one basic path object."""
     ...

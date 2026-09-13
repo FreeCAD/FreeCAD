@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -67,6 +69,8 @@ public:
 
     //return PyObject as DrawViewSymbolPy
     PyObject *getPyObject() override;
+
+    bool snapsToPosition() const override { return false; }
 
 protected:
     void onChanged(const App::Property* prop) override;

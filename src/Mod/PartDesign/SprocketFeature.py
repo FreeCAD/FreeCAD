@@ -109,12 +109,12 @@ class Sprocket:
         13: [3.000, 1.875, 1.738, "ANSI 240"],
         14: [0.500, 0.3125, 0.11, "Bicycle with Derailleur"],
         15: [0.500, 0.3125, 0.084, "Bicycle without Derailleur"],
-        16: [0.375, 5.72 / 25.4, 5.2 / 25.4, "ISO 606 06B"],
-        17: [0.500, 7.75 / 25.4, 7.0 / 25.4, "ISO 606 08B"],
-        18: [0.625, 9.65 / 25.4, 9.1 / 25.4, "ISO 606 10B"],
-        19: [0.750, 11.68 / 25.4, 11.1 / 25.4, "ISO 606 12B"],
-        20: [1.000, 17.02 / 25.4, 16.2 / 25.4, "ISO 606 16B"],
-        21: [1.250, 19.56 / 25.4, 18.5 / 25.4, "ISO 606 20B"],
+        16: [0.375, 6.35 / 25.4, 5.2 / 25.4, "ISO 606 06B"],
+        17: [0.500, 8.51 / 25.4, 7.0 / 25.4, "ISO 606 08B"],
+        18: [0.625, 10.16 / 25.4, 9.1 / 25.4, "ISO 606 10B"],
+        19: [0.750, 12.07 / 25.4, 11.1 / 25.4, "ISO 606 12B"],
+        20: [1.000, 15.88 / 25.4, 16.2 / 25.4, "ISO 606 16B"],
+        21: [1.250, 19.05 / 25.4, 18.5 / 25.4, "ISO 606 20B"],
         22: [1.500, 25.4 / 25.4, 24.1 / 25.4, "ISO 606 24B"],
         23: [0.500, 0.3125, 0.227, "Motorcycle 420"],
         24: [0.500, 0.3125, 0.284, "Motorcycle 425"],
@@ -257,7 +257,7 @@ class SprocketTaskPanel:
 
         if mode == 0:  # fresh created
             self.obj.Proxy.execute(self.obj)  # calculate once
-            FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def transferTo(self):
         """
@@ -282,7 +282,7 @@ class SprocketTaskPanel:
     def pitchChanged(self, value):
         self.obj.Pitch = value
         self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def sprocketReferenceChanged(self, size):
         self.obj.Pitch = str(Sprocket.SprocketReferenceRollerTable[size][0]) + " in"
@@ -293,7 +293,7 @@ class SprocketTaskPanel:
         self.form.Quantity_RollerDiameter.setText(self.obj.RollerDiameter.UserString)
         self.form.Quantity_Thickness.setText(self.obj.Thickness.UserString)
         self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def rollerDiameterChanged(self, value):
         self.obj.RollerDiameter = value
@@ -302,7 +302,7 @@ class SprocketTaskPanel:
     def numTeethChanged(self, value):
         self.obj.NumberOfTeeth = value
         self.obj.Proxy.execute(self.obj)
-        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def thicknessChanged(self, value):
         self.obj.Thickness = str(value)

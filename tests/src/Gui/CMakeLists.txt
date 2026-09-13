@@ -9,15 +9,26 @@ add_executable(Gui_tests_run
         Camera.cpp
         ColorScaleOverlayTest.cpp
         FileDialog.cpp
+        StyleParameters/DiagnosticsCapture.h
+        StyleParameters/ValueMatchers.h
+        StyleParameters/ValueMatchers.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
+        StyleParameters/ParserRobustnessTest.cpp
         StyleParameters/ParameterManagerTest.cpp
         StyleParameters/YamlParameterSourceTest.cpp
+        StyleParameters/DiagnosticsTest.cpp
+        StyleParameters/ValueAccessTest.cpp
+        StyleParameters/EdgesTest.cpp
+        StyleParameters/CornersTest.cpp
+        StyleParameters/GradientTest.cpp
+        StyleParameters/ColorShadingTest.cpp
         InputHintTest.cpp
         SelectionTest.cpp
 )
 
 # Qt tests
+setup_qt_test(ObjectSelection)
 setup_qt_test(QuantitySpinBox)
 
 target_link_libraries(Gui_tests_run PRIVATE

@@ -520,7 +520,7 @@ public:
    * @return `true` if the update was successful; `false` otherwise.
    */
   bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-      return dynamicProps.changeDynamicProperty(prop,group,doc);
+      return dynamicProps.changeDynamicProperty(prop, group, doc);
   }
 
   /**
@@ -533,7 +533,7 @@ public:
    * @throw Base::NameError If the new name is invalid or already exists.
    */
   virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop,name);
+      return dynamicProps.renameDynamicProperty(prop, name);
   }
 
   /**

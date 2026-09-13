@@ -23,6 +23,8 @@
 # ***************************************************************************
 
 import Arch
+import Draft
+import FreeCAD
 
 from bimtests.TestArchBaseGui import TestArchBaseGui
 
@@ -66,3 +68,30 @@ class TestArchStairsGui(TestArchBaseGui):
         self.pump_gui_events()
         self.document.recompute()
         self._assert_visibility(stairs, True)
+
+    def test_stairs_multi_segment_railing_follow_parent_visibility(self):
+        wire1 = Draft.makeWire([FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0)])
+        wire2 = Draft.makeWire([FreeCAD.Vector(1000, 0, 0), FreeCAD.Vector(1000, 1000, 0)])
+        stairs = Arch.makeStairs(baseobj=[wire1, wire2], width=800, height=2500, steps=14)
+        self.document.recompute()
+
+        Arch.makeRailing([stairs] + stairs.Additions)
+        self.document.recompute()
+
+        segment = stairs.Additions[-1]
+        segment.RailingLeft.ViewObject.Visibility = True
+        segment.RailingRight.ViewObject.Visibility = True
+
+        stairs.ViewObject.Visibility = False
+        self.pump_gui_events()
+        self.document.recompute()
+
+        self.assertFalse(segment.RailingLeft.ViewObject.Visibility)
+        self.assertFalse(segment.RailingRight.ViewObject.Visibility)
+
+        stairs.ViewObject.Visibility = True
+        self.pump_gui_events()
+        self.document.recompute()
+
+        self.assertTrue(segment.RailingLeft.ViewObject.Visibility)
+        self.assertTrue(segment.RailingRight.ViewObject.Visibility)
