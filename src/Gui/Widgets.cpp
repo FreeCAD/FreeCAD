@@ -1745,9 +1745,7 @@ void ExpLineEdit::keyPressEvent(QKeyEvent* event)
 
     if (isBound() && event->text() == QStringLiteral("=")) {
         const int selLen = selectionLength();
-        const bool allSelected = selLen > 0 && selLen == text().size();
-        const bool atStart = selLen == 0 && cursorPosition() == 0;
-        if (allSelected || atStart) {
+        if (selLen == text().size() || (selLen == 0 && cursorPosition() == 0)) {
             event->accept();
             openFormulaDialog();
             return;
