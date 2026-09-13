@@ -22,6 +22,7 @@
 
 
 #include <FCConfig.h>
+#include <qapplication.h>
 
 #ifdef FC_OS_WIN32
 # include <Windows.h>
@@ -40,7 +41,7 @@
 #include <QFileOpenEvent>
 #include <QSessionManager>
 #include <QTimer>
-
+#include <QStyleHints>
 
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -51,6 +52,7 @@
 #include <Base/Exception.h>
 
 #include "GuiApplication.h"
+#include "Gui/PreferencePackManager.h"
 #include "Application.h"
 #include "MainWindow.h"
 #include "SpaceballEvent.h"
@@ -162,6 +164,38 @@ bool GUIApplication::notify(QObject* receiver, QEvent* event)
     return true;
 }
 
+bool GUIApplication::isSystemInDarkMode()
+{
+    // Auto-detect system setting and default to light mode
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const auto scheme = QGuiApplication::styleHints()->colorScheme();
+    return scheme == Qt::ColorScheme::Dark;
+#elif QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    // https://www.qt.io/blog/dark-mode-on-windows-11-with-qt-6.5
+    const QPalette defaultPalette;
+    const auto text = defaultPalette.color(QPalette::WindowText);
+    const auto window = defaultPalette.color(QPalette::Window);
+    return text.lightness() > window.lightness();
+#else
+# ifdef FC_OS_MACOSX
+    auto key = CFSTR("AppleInterfaceStyle");
+    if (auto value = CFPreferencesCopyAppValue(key, kCFPreferencesAnyApplication)) {
+        // If the value is "Dark", Dark Mode is enabled
+        if (CFGetTypeID(value) == CFStringGetTypeID()) {
+            if (CFStringCompare((CFStringRef)value, CFSTR("Dark"), kCFCompareCaseInsensitive)
+                == kCFCompareEqualTo) {
+                CFRelease(value);
+                return true;
+            }
+        }
+        CFRelease(value);
+    }
+# endif  // FC_OS_MACOSX
+#endif   // QT_VERSION >= 6.4+
+    return false;
+}
+
 void GUIApplication::commitData(QSessionManager& manager)
 {
     if (manager.allowsInteraction()) {
@@ -204,6 +238,36 @@ bool GUIApplication::event(QEvent* ev)
             return true;
         }
     }
+#if SYSTEM_THEMING_SUPPORTED
+    else if (ev->type() == QEvent::ThemeChange) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/MainWindow"
+        );
+
+        std::string currentTheme = hGrp->GetASCII("ThemeSetting", "");
+        std::string currentLightTheme = hGrp->GetASCII("LightThemeSetting", "");
+        std::string currentDarkTheme = hGrp->GetASCII("DarkThemeSetting", "");
+
+        if (currentTheme == "Use system theme") {
+            const auto scheme = QGuiApplication::styleHints()->colorScheme();
+            currentTheme = scheme == Qt::ColorScheme::Dark ? currentDarkTheme : currentLightTheme;
+
+            hGrp->SetASCII("Theme", currentTheme);
+
+            Application::Instance->prefPackManager()->rescan();
+            auto packs = Application::Instance->prefPackManager()->preferencePacks();
+
+            for (const auto& pack : packs) {
+                if (pack.first == currentTheme) {
+                    Application::Instance->prefPackManager()->apply(pack.first);
+                    break;
+                }
+            }
+        }
+
+        return true;
+    }
+#endif  // SYSTEM_THEMING_SUPPORTED
 
     return GUIApplicationNativeEventAware::event(ev);
 }
