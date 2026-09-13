@@ -143,6 +143,11 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         find_python_runtime_dep(av av av_VERSION "Assembly simulation video export will not work properly.")
         find_python_runtime_dep(pillow PIL pillow_VERSION "Assembly simulation video export will not work properly.")
     endif()
+
+    # HDF5 might have been imported by any of the above dependencies (SMESH, VTK, ...)
+    # and added _FORTIFY_SOURCE defines to the build. Clean them at the end of import chains
+    # to make sure nothing will reinstate them.
+    hdf5_clean_fortify_source()
 endif()
 
 SetLibraryVersions()
