@@ -69,9 +69,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "ClearingPattern": [
                 (translate("CAM_Pocket", "ZigZag"), "ZigZag"),
                 (translate("CAM_Pocket", "Offset"), "Offset"),
-                (translate("CAM_Pocket", "ZigZagOffset"), "ZigZagOffset"),
+                (translate("CAM_Pocket", "Helix"), "Helix"),
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
+                (translate("CAM_Pocket", "No clearing"), "No clearing"),
             ],  # Fill Pattern
             "SortingMode": [
                 (translate("CAM_Pocket", "Automatic"), "Automatic"),
@@ -111,9 +112,25 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         super().opExecute(obj)
 
     def areaOpOnChanged(self, obj, prop):
-        if prop == "ClearingPattern":
-            angleMode = 0 if obj.ClearingPattern != "Offset" else 2
-            obj.setEditorMode("Angle", angleMode)
+        if not obj.Document.Restoring:
+            finishingPassMode = 0 if obj.FinishingPasses else 2
+            if hasattr(obj, "FinishingOffset"):
+                obj.setEditorMode("FinishingOffset", finishingPassMode)
+            if hasattr(obj, "FinishingOneStepDown"):
+                obj.setEditorMode("FinishingOneStepDown", finishingPassMode)
+            if hasattr(obj, "FinishingRampHelix"):
+                obj.setEditorMode("FinishingRampHelix", finishingPassMode)
+
+            if prop == "ClearingPattern":
+                startAtMode = 0 if obj.ClearingPattern in ("Offset", "Helix") else 2
+                obj.setEditorMode("StartAt", startAtMode)
+                patternsNoAngle = ("Offset", "Helix", "No clearing")
+                angleMode = 0 if obj.ClearingPattern not in patternsNoAngle else 2
+                obj.setEditorMode("Angle", angleMode)
+
+            if getattr(self, "job", None) and obj in self.job.Operations.Group:
+                useRestMode = 0 if self.job.Operations.Group.index(obj) else 2
+                obj.setEditorMode("UseRestMachining", useRestMode)
 
     def pocketInvertExtraOffset(self):
         """pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
@@ -171,12 +188,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "MinTravel",
-            "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
-        )
-        obj.addProperty(
             "App::PropertyLength",
             "RetractThreshold",
             "Pocket",
@@ -214,6 +225,43 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyLength",
+            "FinishingOffset",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Distance between roughing and finishing passes",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "FinishingPasses",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Adds an additional finishing pass "
+                "that clears the stock left over from tool deflection",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishingOneStepDown",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Finishing pass will processing with one step down at final depth",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishingRampHelix",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create helix ramp for finishing pass",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -236,8 +284,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["FromCenter"] = obj.StartAt == "Center"
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
+        if obj.FinishingPasses:
+            extraOffset += obj.FinishingOffset.Value
         if self.pocketInvertExtraOffset():
-            extraOffset = 0 - extraOffset
+            extraOffset = -extraOffset
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
         params["ForceMaxStepover"] = obj.ForceMaxStepOver
@@ -245,9 +295,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Pattern = {
             "ZigZag": 1,
             "Offset": 2,
-            "ZigZagOffset": 4,
+            "Spiral": 3,
+            "ZigZagOffset": 1,  # 4,
             "Line": 5,
             "Grid": 6,
+            "Triangle": 7,
+            "Helix": 2,
         }
 
         params["PocketMode"] = Pattern.get(obj.ClearingPattern, 1)
@@ -255,6 +308,20 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if obj.SplitArcs:
             params["Explode"] = True
             params["FitArcs"] = False
+
+        return params
+
+    def areaOpAreaParamsFinishing(self, obj, isHole):
+        """areaOpAreaParamsOffset(obj, isHole) ... return dictionary with area parameters
+        This AreaParams using for Finishing Offset passes"""
+        params = {}
+        params["Fill"] = 0
+        params["Coplanar"] = 0
+        params["SectionCount"] = -1
+        params["Offset"] = -(self.radius + obj.ExtraOffset.Value)
+        params["ExtraPass"] = 0
+        params["Stepover"] = 0
+        params["JoinType"] = Path.ClipperJoinTypeRound
 
         return params
 
@@ -318,36 +385,72 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if hasattr(obj, "PocketLastStepOver"):
             obj.removeProperty("PocketLastStepOver")
 
+        if not hasattr(obj, "FinishingOffset"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "FinishingOffset",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Distance between roughing and finishing passes"
+                ),
+            )
+            if obj.ClearingPattern == "ZigZagOffset":
+                obj.FinishingOffset = 0.01
+        if not hasattr(obj, "FinishingOneStepDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishingOneStepDown",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Finishing pass will processing with one step down at final depth",
+                ),
+            )
+        if not hasattr(obj, "FinishingPasses"):
+            obj.addProperty(
+                "App::PropertyIntegerConstraint",
+                "FinishingPasses",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Adds an additional finishing pass "
+                    "that clears the stock left over from tool deflection",
+                ),
+            )
+            obj.FinishingPasses = (0, 0, 999999, 1)
+        if not hasattr(obj, "FinishingRampHelix"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishingRampHelix",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create helix ramp for finishing pass",
+                ),
+            )
+
         Path.Log.track()
 
     def areaOpPathParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters"""
         params = {}
 
-        CutMode = ["Conventional", "Climb"]
+        CutMode = ("Conventional", "Climb")
         params["orientation"] = CutMode.index(obj.CutMode)
 
-        # if MinTravel is turned on, set path sorting to 3DSort
-        # 3DSort shouldn't be used without a valid start point. Can cause
-        # tool crash without it.
-        #
-        # ml: experimental feature, turning off for now (see https://forum.freecad.org/viewtopic.php?f=15&t=24422&start=30#p192458)
-        # realthunder: I've fixed it with a new sorting algorithm, which I
-        # tested fine, but of course need more test. Please let know if there is
-        # any problem
-        #
-        if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
-            params["sort_mode"] = 3
         return params
 
 
 def SetupProperties():
     setup = PathAreaOp.SetupProperties()
-    setup.append("CutMode")
-    setup.append("ExtraOffset")
-    setup.append("StepOver")
     setup.append("Angle")
     setup.append("ClearingPattern")
+    setup.append("CutMode")
+    setup.append("ExtraOffset")
+    setup.append("FinishingPasses")
+    setup.append("FinishingOffset")
+    setup.append("FinishingOneStepDown")
     setup.append("StartAt")
-    setup.append("MinTravel")
+    setup.append("StepDown")
+    setup.append("StepOver")
     return setup
