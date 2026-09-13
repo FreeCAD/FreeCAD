@@ -10,7 +10,13 @@ from dataclasses import dataclass
 from pathlib import Path
 import re
 
-from .class_merge import keep_public_stub_decorator
+from .decorators import raw_decorator_name
+
+
+def _keep_public_stub_decorator(decorator: ast.expr) -> bool:
+    name = raw_decorator_name(ast.unparse(decorator))
+    return name in {"classmethod", "deprecated", "overload", "property", "staticmethod", "setter"}
+
 
 INIT_BOOTSTRAP_PATH = Path("src/App/FreeCADInit.py")
 INIT_LOGGING_STUB_PATH = Path("src/App/FreeCADInit.pyi")
@@ -142,7 +148,7 @@ def _render_enum_class(node: ast.ClassDef) -> str:
 def _render_function_stub(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str:
     stub = copy.deepcopy(node)
     stub.decorator_list = [
-        decorator for decorator in stub.decorator_list if keep_public_stub_decorator(decorator)
+        decorator for decorator in stub.decorator_list if _keep_public_stub_decorator(decorator)
     ]
     docstring = None
     if (
