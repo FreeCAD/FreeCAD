@@ -24,6 +24,8 @@
 
 """GUI tests for the ArchWall module."""
 
+from contextlib import contextmanager
+
 import FreeCAD
 import FreeCADGui
 import Draft
@@ -66,6 +68,72 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         """Restore original preferences after the test."""
         self.params.SetInt("WallBaseline", self.original_wall_base)
         super().tearDown()
+
+    @contextmanager
+    def _wall_node_edit(self):
+        from ArchWall import WallTaskPanel
+
+        wall = Arch.makeWall(length=1000, width=200, height=1500)
+        self.document.recompute()
+        panel = WallTaskPanel(wall)
+        gui_doc = FreeCADGui.ActiveDocument
+        try:
+            # startDefaultEditMode() opens this transaction before setEdit().
+            # Calling setEdit() directly in a test does not reproduce that step.
+            self.document.openTransaction("Edit wall")
+            with patch("ArchWall.WallTaskPanel", return_value=panel):
+                self.assertTrue(gui_doc.setEdit(wall.Name))
+            session = wall.ViewObject.Proxy._node_edit_session
+            self.assertTrue(session.is_running())
+            yield wall, panel, session
+        finally:
+            panel._removeDocumentObserver()
+            if gui_doc.getInEdit() is not None:
+                panel.reject()
+            elif self.document.HasPendingTransaction:
+                self.document.abortTransaction()
+
+    def test_cancel_wall_node_edits(self):
+        """Cancel restores node edits and other changes made in the same edit session."""
+        with self._wall_node_edit() as (wall, panel, session):
+            original_position = wall.Placement.Base
+            wall.Width = 300
+            endpoint = wall.Proxy.calc_endpoints(wall)[1] + FreeCAD.Vector(1000, 0, 0)
+            session._apply_update(wall, 2, endpoint)
+            height_node = wall.getGlobalPlacement().multVec(FreeCAD.Vector(0, 0, 2500))
+            session._apply_update(wall, 0, height_node)
+            self.assertAlmostEqual(wall.Length.Value, 2000)
+            self.assertAlmostEqual(wall.Height.Value, 2500)
+
+            panel.reject()
+            self.document.recompute()
+
+            self.assertAlmostEqual(wall.Length.Value, 1000)
+            self.assertAlmostEqual(wall.Height.Value, 1500)
+            self.assertAlmostEqual(wall.Width.Value, 200)
+            self.assertTrue(wall.Placement.Base.isEqual(original_position, 1e-6))
+            self.assertFalse(session.is_running())
+            self.assertIsNone(wall.ViewObject.Proxy._node_edit_session)
+
+    def test_accepted_wall_node_edits_undo_together(self):
+        """Accept commits all node edits as a single undoable wall edit."""
+        with self._wall_node_edit() as (wall, panel, session):
+            original_position = wall.Placement.Base
+            endpoint = wall.Proxy.calc_endpoints(wall)[1] + FreeCAD.Vector(1000, 0, 0)
+            session._apply_update(wall, 2, endpoint)
+            height_node = wall.getGlobalPlacement().multVec(FreeCAD.Vector(0, 0, 2500))
+            session._apply_update(wall, 0, height_node)
+
+            panel.accept()
+
+            self.assertAlmostEqual(wall.Length.Value, 2000)
+            self.assertAlmostEqual(wall.Height.Value, 2500)
+            self.assertFalse(session.is_running())
+            self.document.undo()
+            self.document.recompute()
+            self.assertAlmostEqual(wall.Length.Value, 1000)
+            self.assertAlmostEqual(wall.Height.Value, 1500)
+            self.assertTrue(wall.Placement.Base.isEqual(original_position, 1e-6))
 
     def test_create_baseless_wall_interactive_mode(self):
         """
