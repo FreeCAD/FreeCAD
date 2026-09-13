@@ -190,7 +190,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 h.translate(FreeCAD.Vector(0.0, 0.0, obj.FinalDepth.Value - h.BoundBox.ZMin))
 
             # extrude all faces up to StartDepth and those are the removal shapes
-            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
+            extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value or 0.001)
             self.removalshapes = [
                 (face.removeSplitter().extrude(extent), False) for face in self.horizontal
             ]

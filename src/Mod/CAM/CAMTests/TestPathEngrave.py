@@ -37,6 +37,7 @@ class TestPathEngrave(PathTestUtils.PathTestBase):
         self.doc = FreeCAD.newDocument("test")
         box = self.doc.addObject("Part::Box", "TestBox")
         self.job = PathJob.Create("Job", [box])
+        self.job.Stock.ExtZpos = 0
 
     def _make_op(self):
         """Create Engrave operation"""
@@ -52,8 +53,6 @@ class TestPathEngrave(PathTestUtils.PathTestBase):
         op.ClearanceHeight = 15
         op.clearExpression("SafeHeight")
         op.SafeHeight = 13
-        op.clearExpression("StartDepth")
-        op.StartDepth = 10
         op.clearExpression("StepDown")
         op.StepDown = 5
 
@@ -109,7 +108,7 @@ G0 Z15.000000
 
         # remove Annotations from result
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
 
     def test02(self):
         """Verify Engrave generates correct path for two lines, biderectional"""
@@ -140,7 +139,7 @@ G0 Z15.000000
 """
 
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
 
     def test03(self):
         """Verify Engrave generates correct path for two lines with Reverse"""
@@ -172,7 +171,7 @@ G0 Z15.000000
 """
 
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
 
     def test04(self):
         """Verify Engrave generates correct path for rectangle"""
@@ -205,7 +204,7 @@ G0 Z15.000000
 """
 
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
 
     def test05(self):
         """Verify Engrave generates correct path for rectangle with reverse"""
@@ -239,7 +238,7 @@ G0 Z15.000000
 """
 
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
 
     def test06(self):
         """Verify Engrave generates correct path for rectangle with changed start index"""
@@ -273,4 +272,4 @@ G0 Z15.000000
 """
 
         current = "\n".join([cmd.toGCode().split(";")[0] for cmd in op.Path.Commands])
-        self.assertEqual(expected.split(), current.split())
+        self.assertEqual(expected.strip(), current.strip())
