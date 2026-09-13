@@ -341,8 +341,8 @@ void TaskChamferParameters::apply()
             break;
     }
 
-    // Alert user if he created an empty feature
-    if (ui->listWidgetReferences->count() == 0) {
+    // Alert user if he created an empty feature (ignore when UseAllEdges)
+    if (ui->listWidgetReferences->count() == 0 && !chamfer->UseAllEdges.getValue()) {
         Base::Console().warning(tr("Empty chamfer created!\n").toStdString().c_str());
     }
 }
@@ -454,8 +454,6 @@ bool TaskDlgChamferParameters::accept()
     if (!obj->isError()) {
         getViewObject()->showPreviousFeature(false);
     }
-
-    parameter->apply();
 
     return TaskDlgDressUpParameters::accept();
 }
