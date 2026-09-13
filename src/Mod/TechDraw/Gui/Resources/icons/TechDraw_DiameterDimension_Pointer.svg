@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg5821"
+   version="1.1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><defs
+     id="defs5823" /><metadata
+     id="metadata5826"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:creator><cc:Agent><dc:title>[WandererFan]</dc:title></cc:Agent></dc:creator><dc:date>2016-04-27</dc:date><dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation><dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher><dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension_Diameter.svg</dc:identifier><dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights><cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license><dc:contributor><cc:Agent><dc:title>[agryson] Alexander Gryson</dc:title></cc:Agent></dc:contributor><dc:subject><rdf:Bag><rdf:li>double arrow</rdf:li><rdf:li>circle</rdf:li></rdf:Bag></dc:subject></cc:Work></rdf:RDF></metadata><g
+     id="layer1"
+     transform="translate(-0.1784387,-0.18587361)"><g
+       id="crosshair"
+       style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+       transform="translate(-0.8215613,-0.81412639)"><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path9"
+         style="stroke:#2e3436;stroke-width:4;stroke-dasharray:none" /><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path7"
+         style="stroke:#eeeeec;stroke-width:2;stroke-dasharray:none" /></g><g
+       id="layer1-8"
+       transform="matrix(0.59714339,0,0,0.59714339,21.695134,22.409697)"><path
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate"
+         d="m 43,25.000003 v 4 H 21.000001 v -4 l -10,7 10,6.999997 V 35 H 43 v 4 l 10,-6.999997 z"
+         id="path3770-1" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 49,31.000003 -6,-4"
+         id="path3864" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 15.000001,31.000003 6,-4"
+         id="path3864-4" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 51,31.000003 H 13.000001"
+         id="path3866" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 43,29.000003 3,2"
+         id="path3868" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 21.000001,29.000003 -3,2"
+         id="path3868-8" /><path
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate"
+         d="m 43,25.000003 v 4 H 21.000001 v -4 l -10,7 10,6.999997 V 35 H 43 v 4 l 10,-6.999997 z"
+         id="path3770-9" /><path
+         style="fill:none;stroke:#302b00;stroke-width:9.23077;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048"
+         d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 Z"
+         transform="matrix(0.86666667,0,0,0.86666667,4.2666666,4.2666666)" /><path
+         style="fill:none;stroke:#fce94f;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048-7"
+         d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 Z"
+         transform="matrix(0.83333334,0,0,0.83333333,5.3333329,5.3333335)" /><path
+         style="fill:none;stroke:#edd400;stroke-width:2.22222;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3048-7-4"
+         d="M 62,32 A 30,30 0 1 1 2,32 30,30 0 1 1 62,32 Z"
+         transform="matrix(0.9,0,0,0.9,3.2,3.2)" /></g></g></svg>
