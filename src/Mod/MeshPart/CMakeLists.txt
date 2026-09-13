@@ -11,6 +11,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        netgen_mesh.py
     DESTINATION
         Mod/MeshPart
 )
