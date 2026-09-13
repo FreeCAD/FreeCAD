@@ -45,6 +45,8 @@
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
 #include <App/ExportInfo.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/UniqueNameManager.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
@@ -84,7 +86,7 @@ struct DocumentP
     DocumentObject* activeObject {nullptr};
     Transaction* activeUndoTransaction {nullptr};
     // pointer to the python class
-    Py::Object DocumentPythonObject;
+    Base::NativePythonReference DocumentPythonObject;
     int iTransactionMode {0};
     bool rollback {false};
     bool undoing {false};  ///< document in the middle of undo or redo

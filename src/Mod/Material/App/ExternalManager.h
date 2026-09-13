@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <Base/NativePythonReference.h>
 #include <Base/Parameter.h>
 #include <CXX/Objects.hxx>
 
@@ -47,6 +48,7 @@ class MaterialsExport ExternalManager: public ParameterGrp::ObserverType
 public:
 
     static ExternalManager* getManager();
+    static void cleanup();
 
     /// Observer message from the ParameterGrp
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
@@ -124,6 +126,11 @@ private:
     bool checkMaterialObjectType(const Py::Object& entry);
     std::shared_ptr<Material> materialFromObject(const Py::Object& entry, const QString& uuid);
 
+    Py::Object managerObject() const
+    {
+        return Py::Object(_managerObject.get());
+    }
+
     static ExternalManager* _manager;
     static QMutex _mutex;
 
@@ -133,7 +140,7 @@ private:
     std::string _className;
     bool _instantiated;
 
-    Py::Object _managerObject;
+    Base::NativePythonReference _managerObject;
 };
 
 }  // namespace Materials

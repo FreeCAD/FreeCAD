@@ -60,7 +60,8 @@ public:
     {}
     ~ParameterGrpObserver() override
     {
-        Base::PyGILStateLocker lock;
+        // Destroyed from ParameterGrpPy's Python deallocator; do not reacquire
+        // the GIL here, including during Py_Finalize().
         inst = Py::None();
         callable = Py::None();
     }

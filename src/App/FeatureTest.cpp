@@ -348,28 +348,6 @@ FeatureTestAttribute::FeatureTestAttribute()
     ADD_PROPERTY(Attribute, ("Name"));
 }
 
-FeatureTestAttribute::~FeatureTestAttribute()
-{
-    Base::PyGILStateLocker lock;
-    try {
-        Object.getValue().getAttr("Name");
-#if PYCXX_VERSION_MAJOR >= 7
-        Py::ifPyErrorThrowCxxException();
-#else
-        if (PyErr_Occurred()) {
-            throw Py::RuntimeError();
-        }
-#endif
-    }
-    catch (Py::RuntimeError& e) {
-        e.clear();
-    }
-    catch (Py::Exception& e) {
-        e.clear();
-        Base::Console().error("Unexpected exception in ~FeatureTestRemoval()\n");
-    }
-}
-
 DocumentObjectExecReturn* FeatureTestAttribute::execute()
 {
     Base::PyGILStateLocker lock;

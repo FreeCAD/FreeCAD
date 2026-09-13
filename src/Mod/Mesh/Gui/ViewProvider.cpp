@@ -2484,10 +2484,10 @@ bool ViewProviderMesh::canHighlightColors() const
 PyObject* ViewProviderMesh::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderMeshPy(this);
+        pyViewObject.reset(new ViewProviderMeshPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 // ------------------------------------------------------

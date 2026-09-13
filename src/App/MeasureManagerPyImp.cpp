@@ -24,6 +24,7 @@
 
 
 // inclusion of the generated files (generated out of MeasureManagerPy.xml)
+#include <Base/NativePythonReference.h>
 #include "MeasureManagerPy.h"
 #include "MeasureManagerPy.cpp"
 
@@ -57,8 +58,15 @@ PyObject* MeasureManagerPy::addMeasureType(PyObject* args)
         return nullptr;
     }
 
+    Py_INCREF(pyobj);
     MeasureManager::addMeasureType(
-        new App::MeasureType {id, label, "", nullptr, nullptr, true, pyobj});
+        new App::MeasureType {id,
+                              label,
+                              "",
+                              nullptr,
+                              nullptr,
+                              true,
+                              Base::NativePythonReference(pyobj)});
 
     Py_Return;
 }
@@ -71,7 +79,7 @@ PyObject* MeasureManagerPy::getMeasureTypes()
         Py::Tuple type(3);
         type.setItem(0, Py::String(it->identifier));
         type.setItem(1, Py::String(it->label));
-        type.setItem(2, Py::Object(it->pythonClass));
+        type.setItem(2, Py::Object(it->pythonClass.get()));
 
         types.append(type);
     }

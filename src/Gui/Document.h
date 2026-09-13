@@ -29,6 +29,8 @@
 #include <QString>
 
 #include <Base/Persistence.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Gui/TreeItemMode.h>
 
 class SoNode;
@@ -350,7 +352,7 @@ public:
 
 protected:
     // pointer to the python class
-    Gui::DocumentPy* _pcDocPy;
+    Base::NativePythonReference _pcDocPy;
 
 private:
     bool trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname);

@@ -79,6 +79,7 @@
 #include "Dialogs/DlgAbout.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
+#include "DocumentObserverPython.h"
 #include "DocumentRecovery.h"
 #include "EditableDatumLabelPy.h"
 #include "EditorView.h"
@@ -711,7 +712,7 @@ Application::Application(bool GUIenabled)
     Instance = this;
 
     // instantiate the workbench dictionary
-    _pcWorkbenchDictionary = PyDict_New();
+    _pcWorkbenchDictionary.reset(PyDict_New());
 
     if (GUIenabled) {
         createStandardOperations();
@@ -723,20 +724,36 @@ Application::Application(bool GUIenabled)
 Application::~Application()
 {
     Base::Console().log("Destruct Gui::Application\n");
+    prepareForShutdown();
+    delete d;
+    Instance = nullptr;
+}
+
+void Application::prepareForShutdown()
+{
+    if (_preparedForShutdown) {
+        return;
+    }
+    _preparedForShutdown = true;
+
+    shutdown();
+    // Python may retain _PyResource wrappers until Py_Finalize(). Release their
+    // QWidget and callback state while Qt and the GUI application are still alive.
+    PyResource::prepareForShutdown();
+
 #ifdef USE_3DCONNEXION_NAVLIB
     if (pNavlibInterface) {
         delete pNavlibInterface;
+        pNavlibInterface = nullptr;
     }
 #endif
     WorkbenchManager::destruct();
     WorkbenchManipulator::removeAll();
+    DocumentObserverPython::clearObservers();
     SelectionSingleton::destruct();
     Translator::destruct();
     WidgetFactorySupplier::destruct();
     BitmapFactoryInst::destruct();
-
-    Base::PyGILStateLocker lock;
-    Py_DECREF(_pcWorkbenchDictionary);
 
     // save macros
     try {
@@ -746,8 +763,9 @@ Application::~Application()
         std::cerr << "Saving macros failed: " << e.what() << std::endl;
     }
 
-    delete d;
-    Instance = nullptr;
+    // This is a native-owned Python reference. It must be released while
+    // Python is still running, before the interpreter finalization boundary.
+    _pcWorkbenchDictionary.reset();
 }
 
 
@@ -1873,12 +1891,12 @@ bool Application::activateWorkbench(const char* name)
     // method, if available
     PyObject* pcOldWorkbench = nullptr;
     if (oldWb) {
-        pcOldWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, oldWb->name().c_str());
+        pcOldWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), oldWb->name().c_str());
     }
 
     // get the python workbench object from the dictionary
     PyObject* pcWorkbench = nullptr;
-    pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, name);
+    pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), name);
     // test if the workbench exists
     if (!pcWorkbench) {
         return false;
@@ -2015,7 +2033,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
 {
     Base::PyGILStateLocker lock;
     // get the python workbench object from the dictionary
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // make a unique icon name
@@ -2092,7 +2110,7 @@ QString Application::workbenchToolTip(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -2116,7 +2134,7 @@ QString Application::workbenchMenuText(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -2167,7 +2185,7 @@ QStringList Application::workbenches() const
     Py_ssize_t pos = 0;
     QStringList wb;
     // insert all items
-    while (PyDict_Next(_pcWorkbenchDictionary, &pos, &key, &value)) {
+    while (PyDict_Next(_pcWorkbenchDictionary.get(), &pos, &key, &value)) {
         /* do something interesting with the values... */
         const char* wbName = PyUnicode_AsUTF8(key);
         // add only allowed workbenches
@@ -2202,7 +2220,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
             static_cast<PythonWorkbench*>(actWb)->clearContextMenu();
             Base::PyGILStateLocker lock;
             PyObject* pWorkbench = nullptr;
-            pWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, actWb->name().c_str());
+            pWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary.get(), actWb->name().c_str());
 
             try {
                 // call its GetClassName method if possible
@@ -2681,7 +2699,7 @@ void Application::runApplication()
     mw.setProperty("QuitOnClosed", true);
 
     // Destroy deferred views while their GUI and Python owners are still alive.
-    auto shutdownGuard = qScopeGuard([&app]() { app.shutdown(); });
+    auto shutdownGuard = qScopeGuard([&app]() { app.prepareForShutdown(); });
 
     // https://forum.freecad.org/viewtopic.php?f=3&t=15540
     // Needs to be set after app is created to override platform defaults (qt commit a2aa1f81a81)
@@ -2711,6 +2729,8 @@ void Application::runApplication()
     runEventLoop(mainApp);
 
     Base::Console().log("Finish: Event loop left\n");
+    app.prepareForShutdown();
+    App::GetApplication().prepareForShutdown();
 }
 
 void Application::shutdown()

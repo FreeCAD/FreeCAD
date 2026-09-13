@@ -26,6 +26,8 @@
 #include <list>
 #include <string>
 #include <Base/BaseClass.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Parameter.h>
 #include <Gui/TaskView/TaskWatcher.h>
 
@@ -297,7 +299,7 @@ protected:
     MenuItem* _contextMenu {nullptr};
     ToolBarItem* _toolBar {nullptr};
     ToolBarItem* _commandBar {nullptr};
-    Base::PyObjectBase* _workbenchPy {nullptr};
+    Base::NativePythonReference _workbenchPy;
 };
 
 class GuiExport PythonBlankWorkbench: public PythonBaseWorkbench

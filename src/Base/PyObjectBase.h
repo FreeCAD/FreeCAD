@@ -274,11 +274,22 @@ public:
         return ((PyObjectBase*) self)->PyInit(args, kwd);
     }
 
-    void setInvalid() {
+    /**
+     * Mark the wrapper invalid without touching any Python-owned attributes.
+     *
+     * Native destructors use this variant because they may run while Python is
+     * finalizing.  The wrapper remains allocated and its attributes are
+     * released later by Python's deallocator.
+     */
+    void setInvalidWithoutPython() noexcept {
         // first bit is not set, i.e. invalid
         StatusBits.reset(Valid);
-        clearAttributes();
         _pcTwinPointer = nullptr;
+    }
+
+    void setInvalid() {
+        setInvalidWithoutPython();
+        clearAttributes();
     }
 
     bool isValid() {

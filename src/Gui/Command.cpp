@@ -1408,7 +1408,6 @@ void MacroCommand::save()
 
 PythonCommand::PythonCommand(const char* name, PyObject* pcPyCommand, const char* pActivationString)
     : Command(StringCache::New(name))
-    , _pcPyCommand(pcPyCommand)
 {
     if (pActivationString) {
         Activation = pActivationString;
@@ -1416,12 +1415,13 @@ PythonCommand::PythonCommand(const char* name, PyObject* pcPyCommand, const char
 
     sGroup = "Python";
 
-    Py_INCREF(_pcPyCommand);
+    Py_INCREF(pcPyCommand);
+    _pcPyCommand.reset(pcPyCommand);
 
     // call the method "GetResources()" of the command object
-    _pcPyResourceDict = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
+    _pcPyResourceDict.reset(Interpreter().runMethodObject(_pcPyCommand.get(), "GetResources"));
     // check if the "GetResources()" method returns a Dict object
-    if (!PyDict_Check(_pcPyResourceDict)) {
+    if (!PyDict_Check(_pcPyResourceDict.get())) {
         throw Base::TypeError(
             "PythonCommand::PythonCommand(): Method GetResources() of the Python "
             "command object returns the wrong type (has to be dict)"
@@ -1457,8 +1457,7 @@ PythonCommand::PythonCommand(const char* name, PyObject* pcPyCommand, const char
 
 PythonCommand::~PythonCommand()
 {
-    Base::PyGILStateLocker lock;
-    Py_DECREF(_pcPyCommand);
+    _pcPyCommand.reset();
 }
 
 const char* PythonCommand::getResource(const char* sName) const
@@ -1467,7 +1466,7 @@ const char* PythonCommand::getResource(const char* sName) const
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
-    pcTemp = PyDict_GetItemString(_pcPyResourceDict, sName);
+    pcTemp = PyDict_GetItemString(_pcPyResourceDict.get(), sName);
     if (!pcTemp) {
         return "";
     }
@@ -1485,10 +1484,10 @@ void PythonCommand::activated(int iMsg)
     if (Activation.empty()) {
         try {
             if (isCheckable()) {
-                Interpreter().runMethod(_pcPyCommand, "Activated", "", nullptr, "(i)", iMsg);
+                Interpreter().runMethod(_pcPyCommand.get(), "Activated", "", nullptr, "(i)", iMsg);
             }
             else {
-                Interpreter().runMethodVoid(_pcPyCommand, "Activated");
+                Interpreter().runMethodVoid(_pcPyCommand.get(), "Activated");
             }
         }
         catch (const Base::PyException& e) {
@@ -1508,7 +1507,7 @@ bool PythonCommand::isActive()
 {
     try {
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
         if (cmd.hasAttr("IsActive")) {
             Py::Callable call(cmd.getAttr("IsActive"));
             Py::Tuple args;
@@ -1538,7 +1537,7 @@ void PythonCommand::languageChange()
 const char* PythonCommand::getHelpUrl() const
 {
     PyObject* pcTemp;
-    pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
+    pcTemp = Interpreter().runMethodObject(_pcPyCommand.get(), "CmdHelpURL");
     if (!pcTemp) {
         return "";
     }
@@ -1613,14 +1612,14 @@ const char* PythonCommand::getAccel() const
 bool PythonCommand::isCheckable() const
 {
     Base::PyGILStateLocker lock;
-    PyObject* item = PyDict_GetItemString(_pcPyResourceDict, "Checkable");
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict.get(), "Checkable");
     return item ? true : false;
 }
 
 bool PythonCommand::isChecked() const
 {
     Base::PyGILStateLocker lock;
-    PyObject* item = PyDict_GetItemString(_pcPyResourceDict, "Checkable");
+    PyObject* item = PyDict_GetItemString(_pcPyResourceDict.get(), "Checkable");
     if (!item) {
         throw Base::ValueError(
             "PythonCommand::isChecked(): Method GetResources() of the Python "
@@ -1643,7 +1642,7 @@ void PythonCommand::onActionInit()
 {
     try {
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
         if (cmd.hasAttr("OnActionInit")) {
             Py::Callable call(cmd.getAttr("OnActionInit"));
             Py::Tuple args;
@@ -1664,16 +1663,16 @@ void PythonCommand::onActionInit()
 
 PythonGroupCommand::PythonGroupCommand(const char* name, PyObject* pcPyCommand)
     : Command(StringCache::New(name))
-    , _pcPyCommand(pcPyCommand)
 {
     sGroup = "Python";
 
-    Py_INCREF(_pcPyCommand);
+    Py_INCREF(pcPyCommand);
+    _pcPyCommand.reset(pcPyCommand);
 
     // call the method "GetResources()" of the command object
-    _pcPyResource = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
+    _pcPyResource.reset(Interpreter().runMethodObject(_pcPyCommand.get(), "GetResources"));
     // check if the "GetResources()" method returns a Dict object
-    if (!PyDict_Check(_pcPyResource)) {
+    if (!PyDict_Check(_pcPyResource.get())) {
         throw Base::TypeError(
             "PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
             "command object returns the wrong type (has to be dict)"
@@ -1706,8 +1705,7 @@ PythonGroupCommand::PythonGroupCommand(const char* name, PyObject* pcPyCommand)
 
 PythonGroupCommand::~PythonGroupCommand()
 {
-    Base::PyGILStateLocker lock;
-    Py_DECREF(_pcPyCommand);
+    _pcPyCommand.reset();
 }
 
 void PythonGroupCommand::activated(int iMsg)
@@ -1721,7 +1719,7 @@ void PythonGroupCommand::activated(int iMsg)
         setupCheckable(iMsg);
 
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
         if (cmd.hasAttr("Activated")) {
             Py::Callable call(cmd.getAttr("Activated"));
             Py::Tuple args(1);
@@ -1750,7 +1748,7 @@ bool PythonGroupCommand::isActive()
 {
     try {
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
 
         if (cmd.hasAttr("IsActive")) {
             Py::Callable call(cmd.getAttr("IsActive"));
@@ -1783,7 +1781,7 @@ Action* PythonGroupCommand::createAction()
 
     try {
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
         Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
         Py::Callable call(cmd.getAttr("GetCommands"));
@@ -1931,7 +1929,7 @@ const char* PythonGroupCommand::getResource(const char* sName) const
     PyObject* pcTemp;
 
     // get the "MenuText" resource string
-    pcTemp = PyDict_GetItemString(_pcPyResource, sName);
+    pcTemp = PyDict_GetItemString(_pcPyResource.get(), sName);
     if (!pcTemp) {
         return "";
     }
@@ -1981,7 +1979,7 @@ const char* PythonGroupCommand::getAccel() const
 
 bool PythonGroupCommand::isExclusive() const
 {
-    PyObject* item = PyDict_GetItemString(_pcPyResource, "Exclusive");
+    PyObject* item = PyDict_GetItemString(_pcPyResource.get(), "Exclusive");
     if (!item) {
         return false;
     }
@@ -1999,7 +1997,7 @@ bool PythonGroupCommand::isExclusive() const
 
 bool PythonGroupCommand::hasDropDownMenu() const
 {
-    PyObject* item = PyDict_GetItemString(_pcPyResource, "DropDownMenu");
+    PyObject* item = PyDict_GetItemString(_pcPyResource.get(), "DropDownMenu");
     if (!item) {
         return true;
     }
@@ -2019,7 +2017,7 @@ void PythonGroupCommand::onActionInit()
 {
     try {
         Base::PyGILStateLocker lock;
-        Py::Object cmd(_pcPyCommand);
+        Py::Object cmd(_pcPyCommand.get());
         if (cmd.hasAttr("OnActionInit")) {
             Py::Callable call(cmd.getAttr("OnActionInit"));
             Py::Tuple args;

@@ -31,6 +31,8 @@
 #include <vector>
 
 #include <CXX/Extensions.hxx>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include "Selection.h"
 
 namespace App
@@ -155,7 +157,7 @@ public:
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
-    Py::Object gate;
+    Base::NativePythonReference gate;
 };
 
 /**
@@ -184,7 +186,7 @@ public:
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
 
 private:
-    SelectionFilterPy* filter;
+    Base::NativePythonReference filter;
 };
 
 // === Abstract syntax tree (AST) ===========================================

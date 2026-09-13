@@ -35,6 +35,11 @@
 
 using namespace Gui;
 
+View3DInventorViewer* View3DInventorViewerPy::getView3DInventorViewerPtr() const
+{
+    return _viewer.data();
+}
+
 
 void View3DInventorViewerPy::init_type()
 {
@@ -208,9 +213,10 @@ View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer* vi)
 
 View3DInventorViewerPy::~View3DInventorViewerPy()
 {
-    Base::PyGILStateLocker lock;
-    for (auto it : callbacks) {
-        Py_DECREF(it);
+    // Python invokes extension destructors with an attached thread state.
+    // Do not use PyGILStateLocker here: this may run during Py_Finalize().
+    for (auto* callback : callbacks) {
+        Py_DECREF(callback);
     }
 }
 

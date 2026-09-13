@@ -30,6 +30,9 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
+
 
 namespace Web
 {
@@ -57,7 +60,7 @@ public:
     bool filter(const QByteArray&) const override;
 
 private:
-    Py::Object obj;
+    Base::NativePythonReference obj;
 };
 
 class ServerEvent: public QEvent
@@ -99,7 +102,7 @@ private Q_SLOTS:
 
 private:
     bool direct;
-    Py::Object module;
+    Base::NativePythonReference module;
 };
 
 }  // namespace Web

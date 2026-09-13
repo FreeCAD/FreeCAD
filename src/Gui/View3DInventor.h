@@ -27,6 +27,7 @@
 #include <QImage>
 
 #include <Base/Parameter.h>
+#include <Base/NativePythonReference.h>
 
 #include "MDIViewWithCamera.h"
 
@@ -160,7 +161,7 @@ protected:
 
 private:
     View3DInventorViewer* _viewer;
-    PyObject* _viewerPy;
+    Base::NativePythonReference _viewerPy;
     QTimer* stopSpinTimer;
     QStackedWidget* stack;
     std::unique_ptr<View3DSettings> viewSettings;

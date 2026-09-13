@@ -505,11 +505,11 @@ std::streambuf::pos_type BufferStreambuf::seekpos(pos_type pos, std::ios_base::o
 // http://www.mr-edd.co.uk/blog/beginners_guide_streambuf
 // http://www.icce.rug.nl/documents/cplusplus/cplusplus24.html
 PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back)
-    : inp(o)
-    , put_back(std::max(put_back, std::size_t(1)))
+    : put_back(std::max(put_back, std::size_t(1)))
     , buffer(std::max(buf_size, put_back) + put_back)
 {
-    Py_INCREF(inp);
+    Py_INCREF(o);
+    inp.reset(o);
     char* end = &buffer.front() + buffer.size();
     setg(end, end, end);
 #ifdef PYSTREAM_BUFFERED
@@ -521,7 +521,7 @@ PyStreambuf::PyStreambuf(PyObject* o, std::size_t buf_size, std::size_t put_back
 PyStreambuf::~PyStreambuf()
 {
     PyStreambuf::sync();
-    Py_DECREF(inp);
+    inp.reset();
 }
 
 PyStreambuf::int_type PyStreambuf::underflow()
@@ -542,7 +542,7 @@ PyStreambuf::int_type PyStreambuf::underflow()
     Py::Tuple arg(1);
     long len = static_cast<long>(buffer.size() - (start - base));
     arg.setItem(0, Py::Long(len));
-    Py::Callable meth(Py::Object(inp).getAttr("read"));
+    Py::Callable meth(Py::Object(inp.get()).getAttr("read"));
 
     try {
         std::string c;
@@ -621,7 +621,7 @@ bool PyStreambuf::writeStr(const char* str, std::streamsize num)
 {
     try {
         Py::Tuple arg(1);
-        Py::Callable meth(Py::Object(inp).getAttr("write"));
+        Py::Callable meth(Py::Object(inp.get()).getAttr("write"));
 
         if (type == StringIO) {
             arg.setItem(0, Py::String(str, num));
@@ -694,12 +694,12 @@ PyStreambuf::pos_type PyStreambuf::
         Py::Tuple arg(2);
         arg.setItem(0, Py::Long(static_cast<long>(offset)));
         arg.setItem(1, Py::Long(whence));
-        Py::Callable seek(Py::Object(inp).getAttr("seek"));
+        Py::Callable seek(Py::Object(inp.get()).getAttr("seek"));
         seek.apply(arg);
 
         // get current position
         Py::Tuple arg2;
-        Py::Callable tell(Py::Object(inp).getAttr("tell"));
+        Py::Callable tell(Py::Object(inp.get()).getAttr("tell"));
         Py::Long pos(tell.apply(arg2));
         long cur_pos = static_cast<long>(pos);
         return static_cast<pos_type>(cur_pos);

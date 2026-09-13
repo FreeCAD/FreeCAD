@@ -28,6 +28,9 @@
 #include <string>
 #include <CXX/Objects.hxx>
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
+
 #include "Property.h"
 
 
@@ -77,7 +80,11 @@ private:
     void restoreObject(Base::XMLReader& reader);
     std::string encodeValue(const std::string& str) const;
     std::string decodeValue(const std::string& str) const;
-    Py::Object object;
+    Py::Object getObject() const;
+    void setObject(const Py::Object& value);
+    void setObject(PyObject* value, bool owned = false);
+
+    Base::NativePythonReference object;
 };
 
 

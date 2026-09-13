@@ -326,14 +326,13 @@ int EditableDatumLabelPy::finalization()
         return 1;
     }
 
-    {
-        Base::PyGILStateLocker lock;
-        Py_XDECREF(callbackState->valueChangedCallback);
-        Py_XDECREF(callbackState->editingFinishedCallback);
-        Py_XDECREF(callbackState->editingCanceledCallback);
-        Py_XDECREF(callbackState->parameterUnsetCallback);
-        Py_XDECREF(callbackState->finishEditingCallback);
-    }
+    // Called from the generated Python deallocator; do not reacquire the GIL,
+    // including during Py_Finalize().
+    Py_XDECREF(callbackState->valueChangedCallback);
+    Py_XDECREF(callbackState->editingFinishedCallback);
+    Py_XDECREF(callbackState->editingCanceledCallback);
+    Py_XDECREF(callbackState->parameterUnsetCallback);
+    Py_XDECREF(callbackState->finishEditingCallback);
 
     delete callbackState;
     callbackState = nullptr;

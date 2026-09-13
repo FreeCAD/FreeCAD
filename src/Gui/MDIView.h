@@ -26,6 +26,8 @@
 #include <QMainWindow>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/View.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -199,7 +201,7 @@ protected:
     void cloneFrom(const MDIView& from);
 
 protected:
-    PyObject* pythonObject;
+    Base::NativePythonReference pythonObject;
 
 private:
     ViewMode currentMode;

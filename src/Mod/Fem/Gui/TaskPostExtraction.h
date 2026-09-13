@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Base/NativePythonReference.h>
 
 #include <QAbstractTableModel>
 
@@ -51,7 +52,10 @@ class TaskPostExtraction: public TaskPostWidget
 
 public:
     explicit TaskPostExtraction(ViewProviderFemPostObject* view, QWidget* parent = nullptr);
-    ~TaskPostExtraction();
+    ~TaskPostExtraction() override;
+
+    /// Clear the Python panel before the task widget is destroyed.
+    void clearPythonPanel() noexcept;
 
 protected:
     bool isGuiTaskOnly() override;
@@ -60,7 +64,12 @@ protected:
     bool initiallyCollapsed() override;
 
 private:
-    Py::Object m_panel;
+    Py::Object panelObject() const
+    {
+        return Py::Object(m_panel.get());
+    }
+
+    Base::NativePythonReference m_panel;
 };
 
 

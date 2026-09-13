@@ -124,6 +124,7 @@
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "DocumentObserver.h"
+#include "DocumentObserverPython.h"
 #include "DocumentPy.h"
 #include "DocumentSettingsPy.h"
 #include "ExpressionParser.h"
@@ -137,6 +138,7 @@
 #include "LinkBaseExtensionPy.h"
 #include "VarSet.h"
 #include "MaterialObject.h"
+#include "MeasureManager.h"
 #include "MeasureManagerPy.h"
 #include "Origin.h"
 #include "Datums.h"
@@ -410,13 +412,28 @@ Application::Application(std::map<std::string,std::string> &mConfig)
 
 Application::~Application()
 {
-    // Signal the recompute worker thread to stop and join it.
+    prepareForShutdown();
+}
+
+void Application::prepareForShutdown()
+{
+    if (_preparedForShutdown) {
+        return;
+    }
+    _preparedForShutdown = true;
+
+    // Signal the recompute worker thread to stop and join it. This is kept as
+    // an explicit phase so all asynchronous native producers have stopped
+    // before native Python ownership reaches the finalization boundary.
     _stopRecomputeThread = true;
     _recomputeRequestAvailable.notify_all();
 
     if (_recomputeThread.joinable()) {
         _recomputeThread.join();
     }
+
+    DocumentObserverPython::clearObservers();
+    MeasureManager::destruct();
 }
 
 void Application::setupPythonTypes()
@@ -2044,6 +2061,7 @@ void Application::destruct()
 
     // not initialized or double destruct!
     assert(_pcSingleton);
+    _pcSingleton->prepareForShutdown();
     delete _pcSingleton;
 
     // We must detach from console and delete the observer to save our file
