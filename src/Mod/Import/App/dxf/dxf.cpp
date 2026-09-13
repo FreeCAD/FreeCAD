@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: BSD-3-Clause
+// SPDX-License-Identifier: BSD-3-Clause
 
 // dxf.cpp
 // Copyright (c) 2009, Dan Heeks
