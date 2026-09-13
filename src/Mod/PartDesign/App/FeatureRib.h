@@ -45,14 +45,13 @@ private:
     /// Validate and scale the user-selected Rib-local fill direction.
     gp_Vec getRibTravel(const gp_Pln& plane, double reach) const;
 
-    /// Extend the two free ends while preserving interior curves and element names.
+    /// Extend both free ends to full reach, preserving interior curves and element names.
+    /// Each extension must contact the body; contact validation never trims the curve.
     Part::TopoShape extendRibProfile(
         const Part::TopoShape& body,
         const Part::TopoShape& profile,
         double reach,
-        long continuity,
-        const gp_Dir& normal,
-        double width
+        long continuity
     ) const;
 
     /// Planar fill region between the profile and its translated copy.

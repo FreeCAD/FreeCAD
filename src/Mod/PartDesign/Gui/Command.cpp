@@ -1285,6 +1285,42 @@ bool CmdPartDesignPad::isActive()
 }
 
 //===========================================================================
+// PartDesign_Rib
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignRib)
+
+CmdPartDesignRib::CmdPartDesignRib()
+    : Command("PartDesign_Rib")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Rib");
+    sToolTipText = QT_TR_NOOP("Creates reinforcing ribs from profile edges");
+    sWhatsThis = "PartDesign_Rib";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_Rib";
+}
+
+void CmdPartDesignRib::activated(int)
+{
+    auto body = PartDesignGui::getBody(true);
+    if (!body) {
+        return;
+    }
+    prepareProfileBased(body, this, "Rib", [this](Part::Feature* profile, App::DocumentObject* feature) {
+        if (feature) {
+            Gui::Command::updateActive();
+            finishProfileBased(this, profile, feature);
+        }
+    });
+}
+
+bool CmdPartDesignRib::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Pocket
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignPocket)
@@ -2839,11 +2875,8 @@ public:
 // Initialization
 //===========================================================================
 
-void CreateRibCommands();
-
 void CreatePartDesignCommands()
 {
-    CreateRibCommands();
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
@@ -2857,6 +2890,7 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
 
     rcCmdMgr.addCommand(new CmdPartDesignPad());
+    rcCmdMgr.addCommand(new CmdPartDesignRib());
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignHole());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());

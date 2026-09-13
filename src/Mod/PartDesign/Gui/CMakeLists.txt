@@ -67,7 +67,6 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderExtrude.h
     ViewProviderPad.cpp
     ViewProviderPad.h
-    CommandRib.cpp
     ViewProviderRib.cpp
     ViewProviderRib.h
     TaskRibParameters.cpp
