@@ -917,13 +917,16 @@ void PropertyExpressionEngine::renameExpressions(
     hasSetValue();
 }
 
-void PropertyExpressionEngine::renameObjectIdentifiers(
+int PropertyExpressionEngine::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
 {
+    int renamed = 0;
     for (const auto& it : expressions) {
         RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(*this, paths, it.first);
         it.second.expression->visit(v);
+        renamed += v.changed();
     }
+    return renamed;
 }
 
 PyObject* PropertyExpressionEngine::getPyObject()

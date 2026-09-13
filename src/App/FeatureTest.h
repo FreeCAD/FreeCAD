@@ -101,6 +101,9 @@ public:
     App::PropertyInteger TypeTransient;
     App::PropertyInteger TypeNoRecompute;
 
+    /// Property used by the test suite to exercise the property alias mechanism.
+    App::PropertyInteger AliasTarget;
+
     App::PropertyQuantity QuantityLength;
     App::PropertyQuantity QuantityOther;
     // App::PropertyQuantity  QuantityMass;
