@@ -1743,7 +1743,7 @@ void ExpLineEdit::keyPressEvent(QKeyEvent* event)
         return;
     }
 
-    if (isBound() && event->text() == QLatin1String("=")) {
+    if (isBound() && event->text() == QStringLiteral("=")) {
         const int selLen = selectionLength();
         const bool allSelected = selLen > 0 && selLen == text().size();
         const bool atStart = selLen == 0 && cursorPosition() == 0;
