@@ -3,14 +3,37 @@
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
 #include <filesystem>
+#include <stdexcept>
 
 class FileInfoTest: public ::testing::Test
 {
+
+    std::string createUniqueTempDirectory(const std::string& prefix)
+    {
+        auto tempPath = std::filesystem::path(Base::FileInfo::getTempPath());
+
+        for (int suffix = 0;; ++suffix) {
+            auto candidatePath = tempPath / (prefix + "_" + std::to_string(suffix));
+            std::error_code ec;
+            if (std::filesystem::create_directory(candidatePath, ec)) {
+                return Base::FileInfo::pathToString(candidatePath);
+            }
+
+            if (!ec || ec == std::errc::file_exists) {
+                continue;
+            }
+
+            throw std::runtime_error(
+                "Unable to create temporary test directory: "
+                + Base::FileInfo::pathToString(candidatePath)
+            );
+        }
+    }
+
 protected:
     FileInfoTest()
     {
-        tmp.setFile(Base::FileInfo::getTempPath() + "fctest");
-        tmp.createDirectory();
+        tmp.setFile(createUniqueTempDirectory("fctest"));
 
         file.setFile(tmp.filePath() + "/test.txt");
         dir.setFile(tmp.filePath() + "/subdir");
