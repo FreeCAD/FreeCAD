@@ -1289,6 +1289,7 @@ SET(Workbench_SRCS
     MenuManager.h
     ToolBarAreaWidget.h
     ToolBarManager.h
+    ToolBarManagerInternal.h
     ToolBoxManager.h
     Workbench.h
     WorkbenchFactory.h

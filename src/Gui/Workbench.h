@@ -24,10 +24,13 @@
 #pragma once
 
 #include <list>
+#include <optional>
 #include <string>
 #include <Base/BaseClass.h>
 #include <Base/Parameter.h>
 #include <Gui/TaskView/TaskWatcher.h>
+
+#include "ToolBarManager.h"
 
 namespace Base
 {
@@ -38,7 +41,6 @@ namespace Gui
 {
 
 class MenuItem;
-class ToolBarItem;
 class DockWindowItems;
 class WorkbenchManager;
 
@@ -99,6 +101,8 @@ public:
 
     //// Shows a list of all toolbars
     std::list<std::string> listToolbars() const;
+    /// Shows a list of all toolbars and their persistence identities
+    std::list<std::pair<std::string, std::string>> getToolbarIdentities() const;
     /// Shows a list of all toolbars and their commands
     std::list<std::pair<std::string, std::list<std::string>>> getToolbarItems() const;
     //// Shows a list of all menus
@@ -129,12 +133,24 @@ protected:
     void addPermanentMenuItems(MenuItem*) const;
 
 private:
+    enum class CustomToolBarScope
+    {
+        Legacy,
+        Workbench,
+        Global,
+    };
+
     /**
      * The method imports the user defined toolbars or toolbox bars and creates
      * a ToolBarItem tree structure.
      */
     void setupCustomToolbars(ToolBarItem* root, const char* toolbar) const;
-    void setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp> hGrp) const;
+    void setupCustomToolbars(
+        ToolBarItem* root,
+        const Base::Reference<ParameterGrp> hGrp,
+        CustomToolBarScope scope
+    ) const;
+    void setupToolbarPersistenceKeys(ToolBarItem* root) const;
     void setupCustomShortcuts() const;
 
 private:
@@ -254,6 +270,13 @@ class GuiExport PythonBaseWorkbench: public Workbench
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
+    struct ToolBarOptions
+    {
+        std::optional<ToolBarManager::PersistenceId> persistenceId;
+        std::optional<ToolBarItem::Tier> tier;
+        std::optional<ToolBarItem::DefaultVisibility> visibility;
+    };
+
     PythonBaseWorkbench();
     ~PythonBaseWorkbench() override;
     /**
@@ -277,6 +300,11 @@ public:
 
     /// Appends a new toolbar
     void appendToolbar(const std::string& bar, const std::list<std::string>& items) const;
+    void appendToolbar(
+        const std::string& bar,
+        const std::list<std::string>& items,
+        const ToolBarOptions& options
+    ) const;
     /// Removes a toolbar
     void removeToolbar(const std::string& bar) const;
 

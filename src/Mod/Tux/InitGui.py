@@ -30,12 +30,6 @@ else:
     pass
 
 
-# Persistent toolbars
-if p.GetGroup("PersistentToolbars").GetBool("Enabled", 1):
-    import PersistentToolbarsGui
-else:
-    pass
-
 # Temporary - for FreeCAD v1.0
 # Detect a possible clash between the built-in BIM WB in v1.0
 # and the BIM addon. Resolve this by renaming the BIM add-on path

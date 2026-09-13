@@ -21,7 +21,10 @@
 
 #pragma once
 
+#include <map>
+
 #include <QLayout>
+#include <QMap>
 #include <QToolBar>
 #include <QPointer>
 #include <QWidget>
@@ -54,14 +57,16 @@ public:
     ToolBarAreaWidget(
         QWidget* parent,
         ToolBarArea area,
-        const ParameterGrp::handle& hParam,
+        const ParameterGrp::handle& hGlobalParam,
+        const ParameterGrp::handle& hScopedParam,
         fastsignals::advanced_scoped_connection& conn,
         QTimer* timer = nullptr
     );
 
     void addWidget(QWidget* widget);
     void insertWidget(int index, QWidget* widget);
-    void removeWidget(QWidget* widget);
+    void removeWidget(QWidget* widget, bool persistChange = true);
+    void setParameters(const ParameterGrp::handle& hScopedParam, bool separateScopes);
 
     void adjustParent();
 
@@ -103,14 +108,19 @@ public:
     }
 
     void saveState();
-    void restoreState(const std::map<int, QToolBar*>& toolbars);
+    void restoreState(
+        const std::map<int, QToolBar*>& toolbars,
+        const QMap<QString, bool>& widgetVisibility = {}
+    );
 
 private:
     QHBoxLayout* _layout;
     QPointer<QTimer> _sizingTimer;
-    ParameterGrp::handle _hParam;
+    ParameterGrp::handle _hGlobalParam;
+    ParameterGrp::handle _hScopedParam;
     fastsignals::advanced_scoped_connection& _conn;
     ToolBarArea _area;
+    bool _separateScopes = false;
 };
 
 }  // namespace Gui
