@@ -400,7 +400,7 @@ class ObjectPathShape:
     def setToolController(self):
         job = self.job
         obj = self.obj
-        for op in job.Operations.Group[-2::-1]:
+        for op in PathUtils.getOperations(job)[-2::-1]:
             toolController = PathUtil.toolControllerForOp(op)
             if toolController:
                 break
