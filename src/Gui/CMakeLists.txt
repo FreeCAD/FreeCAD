@@ -23,6 +23,10 @@ if(FC_FLATPAK)
     add_definitions(-DFC_FLATPAK)
 endif(FC_FLATPAK)
 
+if(BUILD_QTTESTING)
+    add_definitions(-DBUILD_QTTESTING)
+endif(BUILD_QTTESTING)
+
 if(WIN32)
     add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
@@ -75,6 +79,10 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
 )
 
+if(BUILD_QTTESTING)
+    target_include_directories(FreeCADGui PUBLIC ${QtTesting_INCLUDE_DIRS})
+endif(BUILD_QTTESTING)
+
 target_include_directories(
     FreeCADGui
     SYSTEM
@@ -116,6 +124,12 @@ else(MSVC)
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if(BUILD_QTTESTING)
+    list(APPEND FreeCADGui_LIBS
+        qttesting
+    )
+endif(BUILD_QTTESTING)
 
 if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADGui_LIBS TracyClient)
@@ -1318,6 +1332,27 @@ SET(Selection_SRCS
 )
 SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
+# The QtTesting sources
+if(BUILD_QTTESTING)
+    generate_from_py(QtTesting/QtTestUtility)
+
+    SET(QtTesting_CPP_SRCS
+        CommandQtTest.cpp
+        QtTesting/QtTestUtility.cpp
+        QtTesting/QtTestUtilityPyImp.cpp
+        QtTesting/XMLEventObserver.cpp
+        QtTesting/XMLEventSource.cpp
+    )
+    SET(QtTesting_SRCS
+        ${QtTesting_CPP_SRCS}
+        QtTesting/QtTestUtility.h
+        QtTesting/QtTestUtility.pyi
+        QtTesting/XMLEventObserver.h
+        QtTesting/XMLEventSource.h
+    )
+    SOURCE_GROUP("QtTesting" FILES ${QtTesting_SRCS})
+endif(BUILD_QTTESTING)
+
 # The FreeCADGui sources
 SET(FreeCADGui_CPP_SRCS
     ${FreeCADGui_MODULE_GENERATED_SRCS}
@@ -1455,6 +1490,12 @@ SET(FreeCADGui_SRCS
     ${Selection_SRCS}
     ${FreeCADGui_SRCS}
 )
+
+if(BUILD_QTTESTING)
+    list(APPEND FreeCADGui_SRCS
+        ${QtTesting_SRCS}
+    )
+endif(BUILD_QTTESTING)
 
 if(MSVC)
     SET(FreeCADGui_CPP_SRCS
