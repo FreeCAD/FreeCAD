@@ -36,6 +36,7 @@ import Draft
 from FreeCAD import Base
 
 from importers import importIFCHelper
+from nativeifc import backend
 
 # global dicts to store ifc object/freecad object relationships
 
@@ -56,8 +57,14 @@ def open(filename):
 def insert(filename, docname=None, preferences=None):
     """imports the contents of an IFC file in the given document"""
 
-    import ifcopenshell
-    from ifcopenshell import geom
+    try:
+        ifcopenshell = backend.get_backend(capability=backend.MULTICORE_IMPORT)
+        geom = backend.get_module("ifcopenshell.geom", capability=backend.MULTICORE_IMPORT)
+    except backend.IfcOpenShellUnavailable as exc:
+        FreeCAD.Console.PrintError(
+            f"IfcOpenShell is unavailable or cannot iterate IFC geometry: {exc}\n"
+        )
+        return None
 
     # reset global values
     global layers
@@ -79,14 +86,11 @@ def insert(filename, docname=None, preferences=None):
     # setup ifcopenshell
     if not preferences:
         preferences = importIFCHelper.getPreferences()
-    settings = ifcopenshell.geom.settings()
-    settings.set(settings.USE_BREP_DATA, True)
-    settings.set(settings.SEW_SHELLS, True)
-    settings.set(settings.USE_WORLD_COORDS, True)
-    if preferences["SEPARATE_OPENINGS"]:
-        settings.set(settings.DISABLE_OPENING_SUBTRACTIONS, True)
-    if preferences["SPLIT_LAYERS"] and hasattr(settings, "APPLY_LAYERSETS"):
-        settings.set(settings.APPLY_LAYERSETS, True)
+    settings = backend.create_geometry_settings(
+        backend.MULTICORE_IMPORT,
+        disable_opening_subtractions=preferences["SEPARATE_OPENINGS"],
+        apply_layersets=preferences["SPLIT_LAYERS"],
+    )
 
     # setup document
     if not FreeCAD.ActiveDocument:
@@ -102,7 +106,7 @@ def insert(filename, docname=None, preferences=None):
     productscount = len(ifcfile.by_type("IfcProduct"))
     progressbar.start("Importing " + str(productscount) + " products...", productscount)
     cores = preferences["MULTICORE"]
-    iterator = ifcopenshell.geom.iterator(settings, ifcfile, cores)
+    iterator = geom.iterator(settings, ifcfile, cores)
     iterator.initialize()
     count = 0
 

@@ -149,7 +149,7 @@ class IFC_MakeProject:
         return bool(FreeCADGui.Selection.getSelection())
 
     def Activated(self):
-        from importers import exportIFC  # lazy loading
+        from . import ifc_export
         from . import ifc_tools
         from PySide import QtGui
 
@@ -165,7 +165,7 @@ class IFC_MakeProject:
             sf = sf[0]
             if not sf.lower().endswith(".ifc"):
                 sf += ".ifc"
-            exportIFC.export(objs, sf)
+            ifc_export.export_file(objs, sf)
             ifc_tools.create_document_object(doc, sf, strategy=2)
             ifc_tools.remove_tree(objs)
             doc.recompute()

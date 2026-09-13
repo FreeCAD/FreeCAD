@@ -32,6 +32,7 @@ import FreeCAD
 import Arch
 import ArchBuildingPart
 import Draft
+from . import backend
 from . import report_missing_ifcopenshell
 
 from draftviewproviders import view_layer
@@ -41,15 +42,7 @@ translate = FreeCAD.Qt.translate
 # heavyweight libraries - ifc_tools should always be lazy loaded
 
 try:
-    import ifcopenshell
-    import ifcopenshell.api
-    import ifcopenshell.geom
-    import ifcopenshell.util.attribute
-    import ifcopenshell.util.element
-    import ifcopenshell.util.placement
-    import ifcopenshell.util.schema
-    import ifcopenshell.util.unit
-    import ifcopenshell.entity_instance
+    ifcopenshell = backend.get_backend()
 except ImportError:
     report_missing_ifcopenshell()
     raise
@@ -1526,9 +1519,9 @@ def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
                 uprel = api_run("spatial.unassign_container", ifcfile, product=element)
         if element.is_a("IfcOpeningElement"):
             uprel = api_run(
-                "void.add_opening",
+                "feature.add_feature",
                 ifcfile,
-                opening=element,
+                feature=element,
                 element=parent_element,
             )
         else:
@@ -1561,8 +1554,13 @@ def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
                 old_obj.Document.removeObject(tempobj.Name)
                 if tempface:
                     old_obj.Document.removeObject(tempface.Name)
-                api_run("void.add_opening", ifcfile, opening=opening, element=parent_element)
-                api_run("void.add_filling", ifcfile, opening=opening, element=element)
+                api_run(
+                    "feature.add_feature",
+                    ifcfile,
+                    feature=opening,
+                    element=parent_element,
+                )
+                api_run("feature.add_filling", ifcfile, opening=opening, element=element)
         # windows must also be part of a spatial container
         try:
             api_run("spatial.unassign_container", ifcfile, products=[element])
@@ -1607,7 +1605,12 @@ def create_relationship(old_obj, obj, parent, element, ifcfile, mode=None):
     elif (parent_element.is_a("IfcElement") and element.is_a("IfcOpeningElement")) or (
         mode == "opening"
     ):
-        uprel = api_run("void.add_opening", ifcfile, opening=element, element=parent_element)
+        uprel = api_run(
+            "feature.add_feature",
+            ifcfile,
+            feature=element,
+            element=parent_element,
+        )
     # case 3: element aggregated inside other element
     elif element.is_a("IfcProduct"):
         try:

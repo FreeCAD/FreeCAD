@@ -34,6 +34,86 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
+def _export_type_class(obj, product, ifcfile):
+    """Return a schema-valid IFC type class for a linked FreeCAD type object."""
+
+    candidate = getattr(obj, "IfcClass", None) or getattr(obj, "Class", None)
+    if not candidate or not str(candidate).startswith("Ifc"):
+        candidate = product.is_a() + "Type"
+        if product.is_a().endswith("StandardCase"):
+            candidate = product.is_a().removesuffix("StandardCase") + "Type"
+    schema = ifc_tools.ifcopenshell.ifcopenshell_wrapper.schema_by_name(
+        ifcfile.wrapped_data.schema_name()
+    )
+    try:
+        declaration = schema.declaration_by_name(candidate)
+    except RuntimeError:
+        return None
+    if not ifc_tools._inherits_from(declaration, "IfcTypeObject"):
+        return None
+    return candidate
+
+
+def assign_export_type(obj, product, ifcfile):
+    """Create and assign the explicit FreeCAD type linked to an occurrence."""
+
+    source = getattr(obj, "Type", None)
+    if not source:
+        return None
+    type_class = _export_type_class(source, product, ifcfile)
+    if not type_class:
+        FreeCAD.Console.PrintWarning(
+            f"IFC: {source.Label} is not a compatible type for {product.is_a()}\n"
+        )
+        return None
+
+    tag = str(getattr(source, "Name", source.Label))
+    source_element = ifc_tools.get_ifc_element(source)
+    if source_element and ifc_tools.get_ifcfile(source) == ifcfile:
+        type_product = source_element
+    else:
+        type_product = next(
+            (
+                candidate
+                for candidate in ifcfile.by_type(type_class)
+                if getattr(candidate, "Tag", None) == tag
+            ),
+            None,
+        )
+    if type_product is None:
+        type_product = ifc_tools.api_run(
+            "root.create_entity",
+            ifcfile,
+            ifc_class=type_class,
+            name=source.Label,
+        )
+        ifc_tools.set_attribute(
+            ifcfile, type_product, "Description", getattr(source, "Description", None)
+        )
+        ifc_tools.set_attribute(ifcfile, type_product, "Tag", tag)
+        from . import ifc_materials
+        from . import ifc_psets
+
+        ifc_psets.export_psets(source, type_product, ifcfile)
+        ifc_materials.assign_export_type_material(source, type_product, product, ifcfile)
+        from . import ifc_classification
+
+        ifc_classification.assign_export_classification(source, type_product, ifcfile)
+
+    if type_class != type_product.is_a():
+        FreeCAD.Console.PrintWarning(
+            f"IFC: {type_product.is_a()} is not compatible with {product.is_a()}\n"
+        )
+        return None
+    ifc_tools.api_run(
+        "type.assign_type",
+        ifcfile,
+        related_objects=[product],
+        relating_type=type_product,
+    )
+    return type_product
+
+
 def show_type(obj):
     """Adds the types of that object as FreeCAD objects"""
 
