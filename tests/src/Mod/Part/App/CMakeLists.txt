@@ -25,6 +25,7 @@ add_executable(Part_tests_run
         PartTestHelpers.cpp
         PreviewExtension.cpp
         PropertyTopoShape.cpp
+        Tools.cpp
         TopoDS_Shape.cpp
         TopoShape.cpp
         TopoShapeCache.cpp
@@ -37,6 +38,7 @@ add_executable(Part_tests_run
 )
 
 set(PartTestData_Files
+        brepfiles/countersink_cone.brep
         brepfiles/cylinder1.brep
         brepfiles/helix1.brep
 )
