@@ -32,6 +32,7 @@
 
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
+#include <Base/NativePythonReference.h>
 
 #include <Mod/Mesh/App/Core/MeshIO.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -323,7 +324,7 @@ public:
 
 private:
     Base::Reference<MeshObject> _meshObject;
-    MeshPy* meshPyObject {nullptr};
+    Base::NativePythonReference meshPyObject;
 };
 
 }  // namespace Mesh

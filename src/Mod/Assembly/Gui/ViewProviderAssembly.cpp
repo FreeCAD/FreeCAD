@@ -1460,10 +1460,10 @@ Gui::SoTransformDragger* ViewProviderAssembly::getDragger()
 PyObject* ViewProviderAssembly::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderAssemblyPy(this);
+        pyViewObject.reset(new ViewProviderAssemblyPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 void ViewProviderAssembly::applyIsolationRecursively(

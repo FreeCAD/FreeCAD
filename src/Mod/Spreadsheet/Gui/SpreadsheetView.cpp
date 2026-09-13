@@ -574,11 +574,11 @@ void SpreadsheetGui::SheetView::setCurrentIndex(App::CellAddress cell) const
 PyObject* SheetView::getPyObject()
 {
     if (!pythonObject) {
-        pythonObject = new SheetViewPy(this);
+        pythonObject.reset(new SheetViewPy(this));
     }
 
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    Py_INCREF(pythonObject.get());
+    return pythonObject.get();
 }
 
 void SheetView::deleteSelf()

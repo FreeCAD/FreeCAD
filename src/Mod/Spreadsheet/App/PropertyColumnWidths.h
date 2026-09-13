@@ -26,6 +26,7 @@
 
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
+#include <Base/NativePythonReference.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 #include <map>
 
@@ -92,7 +93,7 @@ private:
 
     std::set<int> dirty;
 
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 }  // namespace Spreadsheet

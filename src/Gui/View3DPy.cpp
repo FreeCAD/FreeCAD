@@ -367,7 +367,8 @@ View3DInventorPy::View3DInventorPy(View3DInventor* vi)
 
 View3DInventorPy::~View3DInventorPy()
 {
-    Base::PyGILStateLocker lock;
+    // Python invokes extension destructors with an attached thread state.
+    // This may run during Py_Finalize(), so never reacquire the GIL here.
     for (auto it : callbacks) {
         Py_DECREF(it);
     }

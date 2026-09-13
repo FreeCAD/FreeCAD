@@ -30,6 +30,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 #include "Macro.h"
 #include "MainWindow.h"
@@ -361,7 +362,7 @@ public:
         if (out) {
             Base::PyGILStateLocker lock;
             old = PySys_GetObject(std_out);
-            PySys_SetObject(std_out, out);
+            PySys_SetObject(std_out, this->out.get());
         }
     }
     ~PythonRedirector()
@@ -369,13 +370,13 @@ public:
         if (out) {
             Base::PyGILStateLocker lock;
             PySys_SetObject(std_out, old);
-            Py_DECREF(out);
+            this->out.reset();
         }
     }
 
 private:
     const char* std_out;
-    PyObject* out;
+    Base::NativePythonReference out;
     PyObject* old {nullptr};
 };
 }  // namespace Gui

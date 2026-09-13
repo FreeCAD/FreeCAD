@@ -37,6 +37,7 @@
 #include <vector>
 
 #include "FileInfo.h"
+#include "NativePythonReference.h"
 
 
 using PyObject = struct _object;
@@ -561,7 +562,7 @@ public:
     PyStreambuf& operator=(PyStreambuf&&) = delete;
 
 private:
-    PyObject* inp;
+    NativePythonReference inp;
     Type type {Unknown};
     const std::size_t put_back;
     std::vector<char> buffer;

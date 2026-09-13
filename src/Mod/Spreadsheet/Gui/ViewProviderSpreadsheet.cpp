@@ -180,10 +180,10 @@ void ViewProviderSheet::updateData(const App::Property* prop)
 PyObject* ViewProviderSheet::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderSpreadsheetPy(this);
+        pyViewObject.reset(new ViewProviderSpreadsheetPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 // Python feature -----------------------------------------------------------------------

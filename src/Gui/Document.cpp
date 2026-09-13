@@ -563,7 +563,7 @@ Document::Document(App::Document* pcDocument, Application* app)
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
     Base::PyGILStateLocker lock;
-    _pcDocPy = new Gui::DocumentPy(this);
+    _pcDocPy.reset(new Gui::DocumentPy(this));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
@@ -617,10 +617,10 @@ Document::~Document()
         delete va.second;
     }
 
-    // remove the reference from the object
-    Base::PyGILStateLocker lock;
-    _pcDocPy->setInvalid();
-    _pcDocPy->DecRef();
+    // Invalidate the retained wrapper without touching Python-owned
+    // attributes from this native destructor.
+    static_cast<Base::PyObjectBase*>(_pcDocPy.get())->setInvalidWithoutPython();
+    _pcDocPy.reset();
     delete d;
 }
 
@@ -3048,8 +3048,8 @@ void Document::redo(int iSteps)
 
 PyObject* Document::getPyObject()
 {
-    _pcDocPy->IncRef();
-    return _pcDocPy;
+    Py_INCREF(_pcDocPy.get());
+    return _pcDocPy.get();
 }
 
 void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)

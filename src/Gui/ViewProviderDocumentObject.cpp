@@ -571,10 +571,10 @@ PyObject* ViewProviderDocumentObject::getPyObject()
 {
     requireMainThread("Gui::ViewProviderDocumentObject::getPyObject");
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderDocumentObjectPy(this);
+        pyViewObject.reset(new ViewProviderDocumentObjectPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 bool ViewProviderDocumentObject::canDropObjectEx(

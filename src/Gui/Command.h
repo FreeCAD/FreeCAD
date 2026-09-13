@@ -30,6 +30,7 @@
 #include <fastsignals/signal.h>
 
 #include <Base/Type.h>
+#include <Base/NativePythonReference.h>
 #include <Gui/Application.h>
 
 /** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
@@ -838,9 +839,9 @@ protected:
     /// Creates the used Action
     Action* createAction() override;
     /// a pointer to the Python command object
-    PyObject* _pcPyCommand;
+    Base::NativePythonReference _pcPyCommand;
     /// the command object resource dictionary
-    PyObject* _pcPyResourceDict;
+    Base::NativePythonReference _pcPyResourceDict;
     /// the activation sequence
     std::string Activation;
     //// set the parameters on action creation
@@ -897,9 +898,9 @@ protected:
     //// set the parameters on action creation
     void onActionInit();
     /// a pointer to the Python command object
-    PyObject* _pcPyCommand;
+    Base::NativePythonReference _pcPyCommand;
     /// the command object resources
-    PyObject* _pcPyResource;
+    Base::NativePythonReference _pcPyResource;
 
     fastsignals::connection connPyCmdInitialized;
 };

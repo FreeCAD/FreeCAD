@@ -74,7 +74,9 @@ PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
 /// destructor
 PyObjectBase::~PyObjectBase()
 {
-    PyGILStateLocker lock;
+    // This destructor is reached from Python object deallocation. Python has
+    // already attached the current thread state, including during
+    // Py_Finalize(), so do not call PyGILState_Ensure() here.
 #ifdef FC_LOGPYOBJECTS
     Base::Console().log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif

@@ -57,7 +57,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView, Gui::BaseView)
 MDIView::MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
     : QMainWindow(parent, wflags)
     , BaseView(pcDocument)
-    , pythonObject(nullptr)
+    , pythonObject()
     , currentMode(Child)
     , wstate(Qt::WindowNoState)
     , ActiveObjects(pcDocument)
@@ -98,11 +98,7 @@ MDIView::~MDIView()
         connectDelObject.disconnect();
     }
 
-    if (pythonObject) {
-        Base::PyGILStateLocker lock;
-        Py_DECREF(pythonObject);
-        pythonObject = nullptr;
-    }
+    pythonObject.reset();
 }
 
 void MDIView::deleteSelf()
@@ -154,11 +150,11 @@ void MDIView::cloneFrom(const MDIView& from)
 PyObject* MDIView::getPyObject()
 {
     if (!pythonObject) {
-        pythonObject = new MDIViewPy(this);
+        pythonObject.reset(new MDIViewPy(this));
     }
 
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    Py_INCREF(pythonObject.get());
+    return pythonObject.get();
 }
 
 void MDIView::setOverrideCursor(const QCursor& c)

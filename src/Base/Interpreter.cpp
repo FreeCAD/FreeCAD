@@ -30,6 +30,7 @@
 #include <FCConfig.h>
 
 #include "Interpreter.h"
+#include "NativePythonReference.h"
 #include "Console.h"
 #include "ExceptionFactory.h"
 #include "FileInfo.h"
@@ -646,6 +647,7 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
         PySys_SetArgv(argc, _argv.data());
         PythonStdOutput::init_type();
         this->_global = PyEval_SaveThread();
+        NativePythonReference::markInterpreterRunning();
     }
 
     PyGILStateLocker lock;
@@ -699,6 +701,7 @@ std::string InterpreterSingleton::init(int argc, char* argv[])
             PythonStdOutput::init_type();
             this->_global = PyEval_SaveThread();
         }
+        NativePythonReference::markInterpreterRunning();
         return getPythonPath();
     }
     catch (const Exception& e) {
@@ -724,6 +727,13 @@ int InterpreterSingleton::cleanup(void (*func)())
 void InterpreterSingleton::finalize()
 {
     try {
+        if (!NativePythonReference::beginInterpreterFinalization()) {
+            Base::Console().error(
+                "Skipping Py_Finalize(): native Python ownership was not fully released\n"
+            );
+            return;
+        }
+
         PyEval_RestoreThread(this->_global);
         cleanupModules();
         Py_Finalize();

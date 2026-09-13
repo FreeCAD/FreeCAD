@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 #include "Application.h"
 #include "Document.h"
@@ -45,7 +46,7 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
     for (std::vector<DocumentObserverPython*>::iterator it = _instances.begin();
          it != _instances.end();
          ++it) {
-        if ((*it)->inst == obj) {
+        if ((*it)->inst.get() == obj.ptr()) {
             obs = *it;
             _instances.erase(it);
             break;
@@ -56,13 +57,13 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 }
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj)
-    : inst(obj)
 {
+    inst.reset(obj);
     // NOLINTBEGIN
 #define FC_PY_ELEMENT_ARG1(_name1, _name2) \
     do { \
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py); \
-        if (!py##_name1.py.isNone()) \
+        Base::setNativePythonCallable(obj.ptr(), "slot" #_name1, py##_name1.py); \
+        if (py##_name1.py.get()) \
             py##_name1.slot = Application::Instance->signal##_name2.connect( \
                 std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1) \
             ); \
@@ -70,8 +71,8 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj)
 
 #define FC_PY_ELEMENT_ARG2(_name1, _name2) \
     do { \
-        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py); \
-        if (!py##_name1.py.isNone()) \
+        Base::setNativePythonCallable(obj.ptr(), "slot" #_name1, py##_name1.py); \
+        if (py##_name1.py.get()) \
             py##_name1.slot = Application::Instance->signal##_name2.connect( \
                 std::bind(&DocumentObserverPython::slot##_name1, this, sp::_1, sp::_2) \
             ); \
@@ -93,13 +94,21 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj)
 
 DocumentObserverPython::~DocumentObserverPython() = default;
 
+void DocumentObserverPython::clearObservers()
+{
+    for (auto* observer : _instances) {
+        delete observer;
+    }
+    _instances.clear();
+}
+
 void DocumentObserverPython::slotCreatedDocument(const Gui::Document& Doc)
 {
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::Document&>(Doc).getPyObject()));
-        Base::pyCall(pyCreatedDocument.ptr(), args.ptr());
+        Base::pyCall(pyCreatedDocument.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -113,7 +122,7 @@ void DocumentObserverPython::slotDeletedDocument(const Gui::Document& Doc)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::Document&>(Doc).getPyObject()));
-        Base::pyCall(pyDeletedDocument.ptr(), args.ptr());
+        Base::pyCall(pyDeletedDocument.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -127,7 +136,7 @@ void DocumentObserverPython::slotRelabelDocument(const Gui::Document& Doc)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::Document&>(Doc).getPyObject()));
-        Base::pyCall(pyRelabelDocument.ptr(), args.ptr());
+        Base::pyCall(pyRelabelDocument.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -141,7 +150,7 @@ void DocumentObserverPython::slotRenameDocument(const Gui::Document& Doc)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::Document&>(Doc).getPyObject()));
-        Base::pyCall(pyRenameDocument.ptr(), args.ptr());
+        Base::pyCall(pyRenameDocument.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -155,7 +164,7 @@ void DocumentObserverPython::slotActivateDocument(const Gui::Document& Doc)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::Document&>(Doc).getPyObject()));
-        Base::pyCall(pyActivateDocument.ptr(), args.ptr());
+        Base::pyCall(pyActivateDocument.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -169,7 +178,7 @@ void DocumentObserverPython::slotCreatedObject(const Gui::ViewProvider& Obj)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::ViewProvider&>(Obj).getPyObject()));
-        Base::pyCall(pyCreatedObject.ptr(), args.ptr());
+        Base::pyCall(pyCreatedObject.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -183,7 +192,7 @@ void DocumentObserverPython::slotDeletedObject(const Gui::ViewProvider& Obj)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::ViewProvider&>(Obj).getPyObject()));
-        Base::pyCall(pyDeletedObject.ptr(), args.ptr());
+        Base::pyCall(pyDeletedObject.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -205,7 +214,7 @@ void DocumentObserverPython::slotBeforeChangeObject(
         const char* prop_name = Obj.getPropertyName(&Prop);
         if (prop_name) {
             args.setItem(1, Py::String(prop_name));
-            Base::pyCall(pyBeforeChangeObject.ptr(), args.ptr());
+            Base::pyCall(pyBeforeChangeObject.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -225,7 +234,7 @@ void DocumentObserverPython::slotChangedObject(const Gui::ViewProvider& Obj, con
         const char* prop_name = Obj.getPropertyName(&Prop);
         if (prop_name) {
             args.setItem(1, Py::String(prop_name));
-            Base::pyCall(pyChangedObject.ptr(), args.ptr());
+            Base::pyCall(pyChangedObject.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -240,7 +249,7 @@ void DocumentObserverPython::slotInEdit(const Gui::ViewProviderDocumentObject& O
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::ViewProviderDocumentObject&>(Obj).getPyObject()));
-        Base::pyCall(pyInEdit.ptr(), args.ptr());
+        Base::pyCall(pyInEdit.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
@@ -254,7 +263,7 @@ void DocumentObserverPython::slotResetEdit(const Gui::ViewProviderDocumentObject
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::asObject(const_cast<Gui::ViewProviderDocumentObject&>(Obj).getPyObject()));
-        Base::pyCall(pyResetEdit.ptr(), args.ptr());
+        Base::pyCall(pyResetEdit.get(), args.ptr());
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text

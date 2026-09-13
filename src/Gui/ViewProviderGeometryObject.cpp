@@ -419,10 +419,10 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
 PyObject* ViewProviderGeometryObject::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderGeometryObjectPy(this);
+        pyViewObject.reset(new ViewProviderGeometryObjectPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 void ViewProviderGeometryObject::handleChangedPropertyName(

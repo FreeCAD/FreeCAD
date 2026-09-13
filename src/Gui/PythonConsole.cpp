@@ -37,6 +37,7 @@
 
 #include <Base/Interpreter.h>
 #include <Base/Color.h>
+#include <Base/NativePythonReference.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -95,7 +96,10 @@ struct PythonConsoleP
         Command
     };
     CopyType type;
-    PyObject *_stdoutPy = nullptr, *_stderrPy = nullptr, *_stdinPy = nullptr, *_stdin = nullptr;
+    Base::NativePythonReference _stdoutPy;
+    Base::NativePythonReference _stderrPy;
+    Base::NativePythonReference _stdinPy;
+    PyObject* _stdin = nullptr;
     InteractiveInterpreter* interpreter = nullptr;
     ConsoleHistory history;
     QString output, error, info, historyFile;
@@ -114,8 +118,8 @@ struct PythonConsoleP
 
 struct InteractiveInterpreterP
 {
-    PyObject* interpreter {nullptr};
-    PyObject* sysmodule {nullptr};
+    Base::NativePythonReference interpreter;
+    Base::NativePythonReference sysmodule;
     QStringList buffer;
     PythonTracing trace;
 };
@@ -133,7 +137,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
-    d->interpreter = PyObject_CallObject(func, args);
+    d->interpreter.reset(PyObject_CallObject(func, args));
     Py_DECREF(args);
     Py_DECREF(func);
     Py_DECREF(module);
@@ -143,9 +147,6 @@ InteractiveInterpreter::InteractiveInterpreter()
 
 InteractiveInterpreter::~InteractiveInterpreter()
 {
-    Base::PyGILStateLocker lock;
-    Py_XDECREF(d->interpreter);
-    Py_XDECREF(d->sysmodule);
     delete d;
 }
 
@@ -156,12 +157,12 @@ void InteractiveInterpreter::setPrompt()
 {
     // import code.py and create an instance of InteractiveInterpreter
     Base::PyGILStateLocker lock;
-    d->sysmodule = PyImport_ImportModule("sys");
-    if (!PyObject_HasAttrString(d->sysmodule, "ps1")) {
-        PyObject_SetAttrString(d->sysmodule, "ps1", PyUnicode_FromString(">>> "));
+    d->sysmodule.reset(PyImport_ImportModule("sys"));
+    if (!PyObject_HasAttrString(d->sysmodule.get(), "ps1")) {
+        PyObject_SetAttrString(d->sysmodule.get(), "ps1", PyUnicode_FromString(">>> "));
     }
-    if (!PyObject_HasAttrString(d->sysmodule, "ps2")) {
-        PyObject_SetAttrString(d->sysmodule, "ps2", PyUnicode_FromString("... "));
+    if (!PyObject_HasAttrString(d->sysmodule.get(), "ps2")) {
+        PyObject_SetAttrString(d->sysmodule.get(), "ps2", PyUnicode_FromString("... "));
     }
 }
 
@@ -179,7 +180,7 @@ void InteractiveInterpreter::setPrompt()
 PyObject* InteractiveInterpreter::compile(const char* source) const
 {
     Base::PyGILStateLocker lock;
-    PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
+    PyObject* func = PyObject_GetAttrString(d->interpreter.get(), "compile");
     PyObject* args = Py_BuildValue("(s)", source);
     PyObject* eval = PyObject_CallObject(func, args);  // must decref later
 
@@ -212,7 +213,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
 int InteractiveInterpreter::compileCommand(const char* source) const
 {
     Base::PyGILStateLocker lock;
-    PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
+    PyObject* func = PyObject_GetAttrString(d->interpreter.get(), "compile");
     PyObject* args = Py_BuildValue("(s)", source);
     PyObject* eval = PyObject_CallObject(func, args);  // must decref later
 
@@ -464,16 +465,16 @@ PythonConsole::PythonConsole(QWidget* parent)
 
     // try to override Python's stdout/err
     Base::PyGILStateLocker lock;
-    d->_stdoutPy = new PythonStdout(this);
-    d->_stderrPy = new PythonStderr(this);
-    d->_stdinPy = new PythonStdin(this);
+    d->_stdoutPy.reset(new PythonStdout(this));
+    d->_stderrPy.reset(new PythonStderr(this));
+    d->_stdinPy.reset(new PythonStdin(this));
     d->_stdin = PySys_GetObject("stdin");
 
     // Don't override stdin when running FreeCAD as Python module
     auto& cfg = App::Application::Config();
     auto overrideStdIn = cfg.find("DontOverrideStdIn");
     if (overrideStdIn == cfg.end()) {
-        PySys_SetObject("stdin", d->_stdinPy);
+        PySys_SetObject("stdin", d->_stdinPy.get());
     }
 
     const char* version = PyUnicode_AsUTF8(PySys_GetObject("version"));
@@ -504,11 +505,7 @@ PythonConsole::PythonConsole(QWidget* parent)
 PythonConsole::~PythonConsole()
 {
     saveHistory();
-    Base::PyGILStateLocker lock;
     d->hGrpSettings->Detach(this);
-    Py_XDECREF(d->_stdoutPy);
-    Py_XDECREF(d->_stderrPy);
-    Py_XDECREF(d->_stdinPy);
     delete d->interpreter;
     delete d;
 }
@@ -830,8 +827,8 @@ void PythonConsole::runSource(const QString& line)
     Base::PyGILStateLocker lock;
     PyObject* default_stdout = PySys_GetObject("stdout");
     PyObject* default_stderr = PySys_GetObject("stderr");
-    PySys_SetObject("stdout", d->_stdoutPy);
-    PySys_SetObject("stderr", d->_stderrPy);
+    PySys_SetObject("stdout", d->_stdoutPy.get());
+    PySys_SetObject("stderr", d->_stderrPy.get());
     d->interactive = true;
 
     try {

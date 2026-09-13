@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include "TaskDialog.h"
 #include "TaskWatcher.h"
 
@@ -67,7 +69,12 @@ public:
     bool shouldShow() override;
 
 private:
-    Py::Object watcher;
+    Py::Object pythonObject() const
+    {
+        return Py::Object(watcher.get());
+    }
+
+    Base::NativePythonReference watcher;
 };
 
 /**
@@ -174,6 +181,8 @@ public:
 public:
     /// is called by the framework when the dialog is opened
     void open() override;
+    /// is called by the framework before the dialog is destroyed
+    void closed() override;
     /// is called by the framework if a button is clicked which has no accept or reject role
     void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
@@ -191,9 +200,13 @@ private:
     bool tryLoadForm();
     void appendForm(QWidget* widget, const QPixmap& icon);
     void clearForm();
+    Py::Object dialogObject() const
+    {
+        return Py::Object(dlg.get());
+    }
 
 private:
-    Py::Object dlg;
+    Base::NativePythonReference dlg;
 };
 
 }  // namespace TaskView

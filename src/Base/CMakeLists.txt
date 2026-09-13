@@ -223,6 +223,7 @@ SET(FreeCADBase_CPP_SRCS
     Handle.cpp
     InputSource.cpp
     Interpreter.cpp
+    NativePythonReference.cpp
     Matrix.cpp
     MatrixPyImp.cpp
     Observer.cpp
@@ -300,6 +301,7 @@ SET(FreeCADBase_HPP_SRCS
     Handle.h
     InputSource.h
     Interpreter.h
+    NativePythonReference.h
     Matrix.h
     Observer.h
     Parameter.h
