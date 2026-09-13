@@ -30,7 +30,6 @@
 #include <App/Application.h>
 
 #include <Gui/Selection/Selection.h>
-#include <Gui/ViewParams.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -58,8 +57,7 @@ QGIPrimPath::QGIPrimPath():
 
     multiselectActivated = false;
 
-    double defaultScreenEdge = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
-    m_edgeFuzzBase = PreferencesGui::screenMode() ? defaultScreenEdge : PreferencesGui::edgeFuzz();
+    m_edgeFuzzBase = PreferencesGui::screenMode() ? PreferencesGui::screenEdgeWidth() : PreferencesGui::edgeFuzz();
     m_edgeFuzz = m_edgeFuzzBase;
 
     m_colNormal = getNormalColor();

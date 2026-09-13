@@ -234,6 +234,16 @@ void PreferencesGui::setScreenMode(bool enable)
     Preferences::getPreferenceGroup("View")->SetBool("ScreenMode", enable);
 }
 
+double PreferencesGui::screenVertexSize()
+{
+    return Preferences::getPreferenceGroup("View")->GetFloat("ScreenVertexSize", 5.0);
+}
+
+double PreferencesGui::screenEdgeWidth()
+{
+    return Preferences::getPreferenceGroup("View")->GetFloat("ScreenEdgeWidth", 2.0);
+}
+
 Base::Color PreferencesGui::pageColor()
 {
     Base::Color result;

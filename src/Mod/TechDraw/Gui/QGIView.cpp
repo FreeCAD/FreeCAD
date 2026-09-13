@@ -626,6 +626,12 @@ void QGIView::updateView(bool forceUpdate)
     drawBorder();
 
     QGIView::draw();
+
+    if (PreferencesGui::screenMode()) {
+        if (auto* scenePage = dynamic_cast<QGSPage*>(scene())) {
+            scenePage->updateScreenScale();
+        }
+    }
 }
 
 //QGIVP derived classes do not need a rotate view method as rotation is handled on App side.

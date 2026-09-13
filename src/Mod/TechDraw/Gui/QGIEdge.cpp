@@ -30,10 +30,10 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Gui/Control.h>
-#include <Gui/ViewParams.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIEdge.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "TaskLineDecor.h"
 #include "QGIView.h"
@@ -116,7 +116,8 @@ void QGIEdge::setLinePen(const QPen& linePen)
 
 void QGIEdge::setWidth(double width)
 {
-    m_width = PreferencesGui::screenMode() ? Gui::ViewParams::instance()->getDefaultShapeLineWidth() : width;
+    m_width = DrawGuiUtil::screenWidth(width);
+
     QGIPrimPath::setWidth(m_width * m_screenScale);
 }
 

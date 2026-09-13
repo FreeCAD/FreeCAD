@@ -31,6 +31,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGICMark.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 
 using namespace TechDraw;
@@ -38,7 +39,7 @@ using namespace TechDrawGui;
 
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
-    m_markFuzz = PreferencesGui::markFuzz();
+    m_markFuzz = DrawGuiUtil::screenWidth(PreferencesGui::markFuzz());
     setThick(0.75);
     draw();
 }
@@ -63,7 +64,7 @@ void QGICMark::setSize(float s)
 
 void QGICMark::setThick(float t)
 {
-    m_thickness = t;
+    m_thickness = DrawGuiUtil::screenWidth(t);
     draw();
 }
 
@@ -100,7 +101,7 @@ QPainterPath QGICMark::shape() const
 {
     QPainterPath outline;
     QPainterPathStroker stroker;
-    stroker.setWidth(this->m_markFuzz);
+    stroker.setWidth(m_markFuzz * m_screenScale);
     outline = stroker.createStroke(path());
     return outline;
 }

@@ -131,7 +131,9 @@ public:
                 page->setTransformationAnchor(QGVPage::AnchorViewCenter);
             }
         }
-        else if (strcmp(Reason, "ScreenMode") == 0) {
+        else if (strcmp(Reason, "ScreenMode") == 0
+                 || strcmp(Reason, "ScreenVertexSize") == 0
+                 || strcmp(Reason, "ScreenEdgeWidth") == 0) {
             if (page->getScene()) {
                 page->getScene()->refreshViews();
             }
