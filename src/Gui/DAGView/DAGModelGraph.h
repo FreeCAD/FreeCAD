@@ -163,7 +163,7 @@ public:
     void operator()(std::ostream& out, const VertexW& vertexW) const
     {
         out << "[label=\"";
-        out << graphVW[vertexW].text->toPlainText().toLatin1().data();
+        out << graphVW[vertexW].text->toPlainText().toUtf8().constData();
         out << "\"]";
     }
 

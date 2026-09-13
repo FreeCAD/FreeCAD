@@ -543,8 +543,8 @@ MaterialManagerLocal::getConfiguredLibraries()
         for (auto& group : moduleParam->GetGroups()) {
             // auto module = moduleParam->GetGroup(group->GetGroupName());
             auto moduleName = QString::fromStdString(group->GetGroupName());
-            auto materialDir = QString::fromStdString(group->GetASCII("ModuleDir", ""));
-            auto materialIcon = QString::fromStdString(group->GetASCII("ModuleIcon", ""));
+            auto materialDir = QString::fromStdString(group->getString("ModuleDir", ""));
+            auto materialIcon = QString::fromStdString(group->getString("ModuleIcon", ""));
             auto materialReadOnly = group->GetBool("ModuleReadOnly", true);
 
             if (materialDir.length() > 0) {
@@ -584,7 +584,7 @@ MaterialManagerLocal::getConfiguredLibraries()
     }
 
     if (useMatFromCustomDir) {
-        QString resourceDir = QString::fromStdString(param->GetASCII("CustomMaterialsDir", ""));
+        QString resourceDir = QString::fromStdString(param->getString("CustomMaterialsDir", ""));
         if (!resourceDir.isEmpty()) {
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {

@@ -61,8 +61,8 @@ void DlgSettingsImportExport::saveSettings()
     ui->export3mfModel->onSave();
 
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");
-    asy->SetASCII("Width", ui->asymptoteWidth->text().toLatin1());
-    asy->SetASCII("Height", ui->asymptoteHeight->text().toLatin1());
+    asy->setString("Width", ui->asymptoteWidth->text().toStdString());
+    asy->setString("Height", ui->asymptoteHeight->text().toStdString());
 
     MeshCore::MeshOutput::SetAsymptoteSize(
         ui->asymptoteWidth->text().toStdString(),
@@ -83,8 +83,8 @@ void DlgSettingsImportExport::loadSettings()
     ui->export3mfModel->onRestore();
 
     ParameterGrp::handle asy = handle->GetGroup("Asymptote");
-    ui->asymptoteWidth->setText(QString::fromStdString(asy->GetASCII("Width")));
-    ui->asymptoteHeight->setText(QString::fromStdString(asy->GetASCII("Height")));
+    ui->asymptoteWidth->setText(QString::fromStdString(asy->getString("Width")));
+    ui->asymptoteHeight->setText(QString::fromStdString(asy->getString("Height")));
 }
 
 /**

@@ -339,8 +339,8 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Workbenches"
     );
-    hGrp->SetASCII("Ordered", orderedStr.str().c_str());
-    hGrp->SetASCII("Disabled", disabledStr.str().c_str());
+    hGrp->setString("Ordered", orderedStr.str());
+    hGrp->setString("Disabled", disabledStr.str());
 
     // Update the list of workbenches in the WorkbenchGroup and in the WorkbenchComboBox & workbench
     // QMenu
@@ -348,7 +348,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
 
     App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-        ->SetASCII("BackgroundAutoloadModules", autoloadStr.str().c_str());
+        ->setString("BackgroundAutoloadModules", autoloadStr.str());
 
     saveWorkbenchSelector();
 
@@ -357,7 +357,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
     QString startWbName = data.toString();
     App::GetApplication()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-        ->SetASCII("AutoloadModule", startWbName.toLatin1());
+        ->setString("AutoloadModule", startWbName.toStdString());
 
     ui->CheckBox_WbByTab->onSave();
 }
@@ -371,12 +371,12 @@ void DlgSettingsWorkbenchesImp::loadSettings()
     std::string start = App::Application::Config()["StartWorkbench"];
     _startupModule = App::GetApplication()
                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                         ->GetASCII("AutoloadModule", start.c_str());
+                         ->getString("AutoloadModule", start);
 
     // The second autoload setting does a background autoload of any number of other modules
     std::string autoloadCSV = App::GetApplication()
                                   .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                                  ->GetASCII("BackgroundAutoloadModules", "");
+                                  ->getString("BackgroundAutoloadModules", "");
 
     // Tokenize the comma-separated list
     _backgroundAutoloadedModules.clear();
@@ -403,19 +403,19 @@ void DlgSettingsWorkbenchesImp::resetSettingsToDefaults()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Workbenches"
     );
-    hGrp->RemoveASCII("Ordered");
-    hGrp->RemoveASCII("Disabled");
-    hGrp->RemoveASCII("WorkbenchSelectorType");
-    hGrp->RemoveASCII("WorkbenchSelectorItem");
+    hGrp->removeString("Ordered");
+    hGrp->removeString("Disabled");
+    hGrp->removeString("WorkbenchSelectorType");
+    hGrp->removeString("WorkbenchSelectorItem");
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
-    hGrp->RemoveASCII("BackgroundAutoloadModules");
-    hGrp->RemoveASCII("AutoloadModule");
+    hGrp->removeString("BackgroundAutoloadModules");
+    hGrp->removeString("AutoloadModule");
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
-    hGrp->RemoveASCII("WSPosition");
+    hGrp->removeString("WSPosition");
 
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();
@@ -475,7 +475,7 @@ QStringList DlgSettingsWorkbenchesImp::getEnabledWorkbenches()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Workbenches"
     );
-    wbs_ordered = QString::fromStdString(hGrp->GetASCII("Ordered", ""));
+    wbs_ordered = QString::fromStdString(hGrp->getString("Ordered", ""));
 
     wbs_ordered_list = wbs_ordered.split(QLatin1String(","), Qt::SkipEmptyParts);
 
@@ -516,7 +516,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Workbenches"
     );
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII(
+    disabled_wbs = QString::fromStdString(hGrp->getString(
         "Disabled",
         "NoneWorkbench,TestWorkbench,InspectionWorkbench,RobotWorkbench,OpenSCADWorkbench"
     ));
@@ -725,7 +725,7 @@ void DlgSettingsWorkbenchesImp::sortEnabledWorkbenches()
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Workbenches"
     );
-    hGrp->SetASCII("Ordered", "");
+    hGrp->setString("Ordered", "");
 
     buildWorkbenchList();
 }

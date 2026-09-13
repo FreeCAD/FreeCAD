@@ -484,7 +484,7 @@ void ReportOutput::restoreFont()
         "User parameter:BaseApp/Preferences/Editor"
     );
     int fontSize = hPrefGrp->GetInt("FontSize", 10);
-    auto serifFont = hPrefGrp->GetASCII("Font");
+    auto serifFont = hPrefGrp->getString("Font");
     if (serifFont.empty()) {
         font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
         font.setPointSize(fontSize);
@@ -921,7 +921,7 @@ void ReportOutput::OnChange(Base::Subject<const char*>& rCaller, const char* sRe
     else if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = rclGrp.GetInt("FontSize", 10);
         QFont font;
-        auto fontName = rclGrp.GetASCII("Font");
+        auto fontName = rclGrp.getString("Font");
         if (fontName.empty()) {
             font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
             font.setPointSize(fontSize);
