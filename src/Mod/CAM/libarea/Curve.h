@@ -36,6 +36,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Point.h"
 #include "Box2D.h"
 
+#ifndef M_PI
+# define M_PI 3.14159265358979323846
+#endif
+
 namespace heeks
 {
 
