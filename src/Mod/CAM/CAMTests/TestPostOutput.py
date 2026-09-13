@@ -33,6 +33,7 @@ import Path
 import Path.Post.Command as PathCommand
 from Path.Post import PostList
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
@@ -788,6 +789,23 @@ class TestExport2Integration(unittest.TestCase):
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
         self.assertNotIn(" F", gcode)
+
+    def test004_unsupported_convert(self):
+        """Test if throws on unsupported"""
+
+        machine = self._create_machine()
+        post = self._create_postprocessor(machine)
+
+        # Basic unsupported
+        cmd = Path.Command("G9999")
+        with self.assertRaisesRegex(CAMValueError, "Unsupported command") as cm:
+            gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("Unsupported command: G9999", str(cm.exception))
+
+        # But, allow ANNOT_ALLOW_UNSUPPORTED
+        cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("G9999", gcode)
 
     # ===== 010-019: Basic smoke tests =====
 
@@ -1700,6 +1718,122 @@ class TestExport2Integration(unittest.TestCase):
                 f"Bare G0 with no parameters should be suppressed, found: {bare_g0}",
             )
 
+    def test129b_modal_commands_and_axes_together(self):
+        """
+        Test that modal G-code words and modal axes both apply to the same run
+        of moves.
+
+        Modal axis has to run on the original command so that the running axis
+        state is accumulated under the command's real name.  Deriving it from
+        the name-stripped command made every other move compare unequal to its
+        predecessor, so the G-code word came back on alternating lines, and the
+        stripped lines kept a leading separator from the empty command name:
+
+            BEFORE: G0 Z7.000
+                    G1 X3.750 Y2.625
+                    " X3.753 Y2.621"     <- leading space, G1 wrongly dropped/restored
+                    G1 X3.756 Y2.617     <- G1 re-emitted
+                    " X3.758 Y2.612"
+                    G1 Y2.598
+
+            AFTER:  G0 Z7.000
+                    G1 X3.750 Y2.625
+                    X3.753 Y2.621
+                    X3.756 Y2.617
+                    X3.758 Y2.612
+                    Y2.598               <- X unchanged, so only Y is emitted
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=False,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.756, "Y": 2.617}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.612}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.598}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+
+            # NB: deliberately not stripped, a stripped line hides the leading
+            # separator that an empty command name used to leave behind.
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.756 Y2.617",
+                "X3.758 Y2.612",
+                "Y2.598",
+            ]
+
+            self.assertIn(
+                expected[0],
+                lines,
+                f"First cut should carry its G1, in\n{gcode}",
+            )
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Modal moves should keep the G1 only on the first line, in\n{gcode}",
+            )
+
+    def test129c_modal_commands_without_modal_axes(self):
+        """
+        Test that modal G-code words alone (duplicates.parameters=True) still
+        drop only the command word, keeping every parameter.
+
+        Expected:
+            G1 X3.750 Y2.625
+            X3.753 Y2.621
+            X3.758 Y2.625     <- Y is a duplicate, but axis modal is off
+        """
+        machine = self._create_machine(
+            commands=False,
+            parameters=True,
+            axis_precision=3,
+            line_numbers=False,
+            comments_enabled=False,
+            output_header=False,
+        )
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 7.0}),
+                Path.Command("G1", {"X": 3.750, "Y": 2.625}),
+                Path.Command("G1", {"X": 3.753, "Y": 2.621}),
+                Path.Command("G1", {"X": 3.758, "Y": 2.625}),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = gcode.split("\n")
+
+            expected = [
+                "G1 X3.750 Y2.625",
+                "X3.753 Y2.621",
+                "X3.758 Y2.625",
+            ]
+
+            self.assertIn(expected[0], lines, f"First cut should carry its G1, in\n{gcode}")
+            start = lines.index(expected[0])
+            self.assertEqual(
+                lines[start : start + len(expected)],
+                expected,
+                f"Only the G1 word should be dropped, in\n{gcode}",
+            )
+
     def test130_modal_state_reset_after_tool_change(self):
         """
         Test that modal state resets after tool change so parameters are not
@@ -2012,4 +2146,46 @@ class TestExport2Integration(unittest.TestCase):
                 machine.postprocessor_properties["file_extension"],
                 "nc",
                 "Existing property should not be overwritten",
+            )
+
+    def test080_dwell_not_scaled_in_imperial(self):
+        """
+        Test that a dwell time survives imperial output unscaled.
+
+        P on G4 and on a canned cycle is a time in seconds, not a distance.
+        Scaling it as an axis value divides it by 25.4, so a 0.1 second dwell
+        posts as P0.004.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.units = OutputUnits.IMPERIAL
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G4", {"P": 0.5}),
+                Path.Command(
+                    "G82", {"X": 0.0, "Y": 0.0, "Z": -10.0, "R": 2.0, "F": 100.0, "P": 0.1}
+                ),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+
+            def p_value(line):
+                for word in line.split():
+                    if word.startswith("P"):
+                        return float(word[1:])
+                return None
+
+            g4 = next((l for l in lines if l.startswith("G4")), None)
+            self.assertIsNotNone(g4, "expected a G4 dwell in the output")
+            self.assertAlmostEqual(
+                p_value(g4), 0.5, places=4, msg=f"G4 dwell must not be unit-scaled: {g4}"
+            )
+
+            g82 = next((l for l in lines if l.startswith("G82")), None)
+            self.assertIsNotNone(g82, "expected a G82 cycle in the output")
+            self.assertAlmostEqual(
+                p_value(g82), 0.1, places=4, msg=f"cycle dwell must not be unit-scaled: {g82}"
             )

@@ -182,6 +182,7 @@
         <file>translations/Draft_ga-IE.qm</file>
         <file>translations/Draft_sv.qm</file>
         <file>translations/Draft_lo.qm</file>
+        <file>translations/Draft_he.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>

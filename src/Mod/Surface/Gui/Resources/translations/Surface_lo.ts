@@ -487,8 +487,8 @@ This command only works with a mesh object.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>ແກ້ໄຂການຖົມ</translation>
     </message>

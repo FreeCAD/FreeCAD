@@ -498,6 +498,8 @@ public:
     void testStatus(bool resetStatus);
     bool isVisibleInTree() const;
     void displayStatusInfo();
+
+    QVariant data(int column, int role) const override;
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant& value) override;
     bool isChildOfItem(DocumentObjectItem*);

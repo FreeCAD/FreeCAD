@@ -57,6 +57,7 @@ enum class MeasureElementType
     SURFACE,
     TORUS,
     SPHERE,
+    CONE,
 };
 
 

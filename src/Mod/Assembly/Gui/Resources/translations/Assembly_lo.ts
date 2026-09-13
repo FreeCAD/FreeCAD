@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="145"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
       <source>Active object</source>
       <translation>ວັດຖຸທີ່ກຳລັງເຮັດວຽກ</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="120"/>
+      <location filename="../../../InitGui.py" line="121"/>
       <source>Assembly</source>
       <translation>ການປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="121"/>
+      <location filename="../../../InitGui.py" line="122"/>
       <source>Assembly Joints</source>
       <translation>ຂໍ້ຕໍ່ຊຸດປະກອບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="124"/>
+      <location filename="../../../InitGui.py" line="125"/>
       <source>&amp;Assembly</source>
       <translation>&amp;ຊຸດປະກອບ</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1896"/>
+      <location filename="../../../JointObject.py" line="2051"/>
       <source>Distance</source>
       <translation>ໄລຍະຫ່າງ</translation>
     </message>
@@ -180,22 +180,27 @@
       <translation>ແກ້ໄຂຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1420"/>
+      <source>Update Stored Positions</source>
+      <translation>ອັບເດດຕຳແໜ່ງທີ່ບັນທຶກໄວ້</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1859"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>ເລືອກ 2 ອົງປະກອບຈາກ 2 ຊິ້ນສ່ວນທີ່ແຍກກັນ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1898"/>
+      <location filename="../../../JointObject.py" line="2053"/>
       <source>Radius 1</source>
       <translation>ລັດສະໝີ 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1900"/>
+      <location filename="../../../JointObject.py" line="2055"/>
       <source>Thread pitch</source>
       <translation>ໄລຍະກຽວ</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1902"/>
+      <location filename="../../../JointObject.py" line="2057"/>
       <source>Pitch radius</source>
       <translation>ລັດສະໝີໄລຍະຫ່າງ</translation>
     </message>
@@ -527,39 +532,69 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ຮູບແບບການສົ່ງອອກວິດີໂອທີ່ບໍ່ຮູ້ຈັກ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="168"/>
+      <location filename="../../../InitGui.py" line="169"/>
       <source>Create</source>
       <translation>ສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="184"/>
+      <location filename="../../../InitGui.py" line="185"/>
       <source>Activate</source>
       <translation>ເປີດໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="218"/>
+      <location filename="../../../InitGui.py" line="219"/>
       <source>Insert</source>
       <translation>ແຊກ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="229"/>
+      <location filename="../../../InitGui.py" line="230"/>
       <source>Grounding</source>
       <translation>ການຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="256"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Constraints</source>
       <translation>ຂໍ້ກຳນົດບັງຄັບ</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="272"/>
+      <location filename="../../../InitGui.py" line="273"/>
       <source>Tools</source>
       <translation>ເຄື່ອງມື</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="285"/>
+      <location filename="../../../InitGui.py" line="286"/>
       <source>Simulation</source>
       <translation>ການຈຳລອງ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="394"/>
+      <source>Radial Translation</source>
+      <translation>ການເຄື່ອນຍ້າຍຕາມລັດສະໝີ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="397"/>
+      <source>Rotation</source>
+      <translation>ການໝູນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="400"/>
+      <source>Translation</source>
+      <translation>ການຍ້າຍຕຳແໜ່ງ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="988"/>
+      <source>Angle of this exploded-view move</source>
+      <translation>ມຸມຂອງການເຄື່ອນໄຫວມຸມເບິ່ງແບບແຍກຊິ້ນສ່ວນນີ້</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="998"/>
+      <source>Distance of this exploded-view move</source>
+      <translation>ໄລຍະຫ່າງຂອງການເຄື່ອນໄຫວມຸມເບິ່ງແບບແຍກຊິ້ນສ່ວນນີ້</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateView.py" line="1038"/>
+      <source>Edit placement</source>
+      <translation>ແກ້ໄຂການວາງຕຳແໜ່ງ</translation>
     </message>
   </context>
   <context>
@@ -682,23 +717,28 @@ SLOPE ກຳນົດຄວາມຊັນຂອງການປ່ຽນລະ�
       <translation>ການອ້າງອີງທີ {order} ຂອງຂໍ້ຕໍ່</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1288"/>
+      <location filename="../../../JointObject.py" line="1284"/>
+      <source>List of references to compnents to group together</source>
+      <translation>ລາຍການອ້າງອີງເຖິງສ່ວນປະກອບທີ່ຈະຈັດກຸ່ມເຂົ້າກັນ</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1443"/>
       <source>The object to ground</source>
       <translation>ວັດຖຸທີ່ຈະຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="376"/>
-      <location filename="../../../CommandCreateView.py" line="413"/>
+      <location filename="../../../CommandCreateView.py" line="527"/>
+      <location filename="../../../CommandCreateView.py" line="564"/>
       <source>The objects moved by the move</source>
       <translation>ວັດຖຸທີ່ຖືກຍ້າຍໂດຍການເຄື່ອນຍ້າຍນີ້</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="388"/>
+      <location filename="../../../CommandCreateView.py" line="539"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>ນີ້ແມ່ນການເຄື່ອນໄຫວຂອງການຍ້າຍ. ຕຳແໜ່ງສຸດທ້າຍແມ່ນຜົນມາຈາກ ຕຳແໜ່ງເລີ່ມຕົ້ນ * ຕຳແໜ່ງນີ້.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="397"/>
+      <location filename="../../../CommandCreateView.py" line="548"/>
       <source>The type of the move</source>
       <translation>ປະເພດຂອງການເຄື່ອນຍ້າຍ</translation>
     </message>
@@ -974,59 +1014,59 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
       <source>The object is associated to one or more joints.</source>
       <translation>ວັດຖຸນີ້ກ່ຽວຂ້ອງກັບຂໍ້ຕໍ່ໜຶ່ງອັນ ຫຼື ຫຼາຍກວ່ານັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>ທ່ານຕ້ອງການຍ້າຍວັດຖຸ ແລະ ລຶບຂໍ້ຕໍ່ທີ່ກ່ຽວຂ້ອງອອກບໍ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1088"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1095"/>
       <source>Move part</source>
       <translation>ຍ້າຍຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1805"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Empty Assembly</source>
       <translation>ຊຸດປະກອບຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1817"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Over-constrained:</source>
       <translation>ຂໍ້ກຳນົດເກີນຂອບເຂດ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1825"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1835"/>
       <source>Malformed joints:</source>
       <translation>ຂໍ້ຕໍ່ທີ່ຜິດຮູບແບບ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1790"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1800"/>
       <source>and %1 more</source>
       <translation>ແລະ ອີກ %1 ລາຍການ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1849"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Solver failed to converge</source>
       <translation>ຕົວປະມວນຜົນບໍ່ສາມາດຊອກຫາຄຳຕອບທີ່ເໝາະສົມໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1867"/>
       <source>Under-constrained:</source>
       <translation>ຂໍ້ກຳນົດບໍ່ພຽງພໍ:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1869"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ອົງສາອິດສະລະ</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1863"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1873"/>
       <source>Fully constrained</source>
       <translation>ກຳນົດຂໍ້ບັງຄັບຄົບຖ້ວນ</translation>
     </message>
@@ -1505,12 +1545,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="430"/>
+      <location filename="../../../CommandCreateJoint.py" line="454"/>
       <source>Toggle Grounded</source>
       <translation>ສະຫຼັບການຍຶດຕິດກັບພື້ນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="436"/>
+      <location filename="../../../CommandCreateJoint.py" line="460"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
       <translation>&lt;p&gt;ສະຫຼັບການຍຶດຕິດກັບພື້ນຂອງຊິ້ນສ່ວນ.&lt;/p&gt;&lt;p&gt;ການຍຶດຕິດກັບພື້ນຈະລັອກຕຳແໜ່ງຂອງຊິ້ນສ່ວນໃນຊຸດປະກອບແບບຖາວອນ, ປ້ອງກັນການເຄື່ອນໄຫວ ຫຼື ການໝູນທຸກປະເພດ.</translation>
     </message>
@@ -1531,12 +1571,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="53"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
       <translation>ມຸມເບິ່ງແບບແຍກສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="58"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>ສ້າງມຸມເບິ່ງແບບແຍກສ່ວນຂອງຊຸດປະກອບປັດຈຸບັນ</translation>
     </message>
@@ -1589,6 +1629,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
       <translation>ເລືອກຂໍ້ຕໍ່ເຫຼົ່ານີ້ທີ່ຜິດຮູບແບບ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>ເລືອກຢ່າງໜ້ອຍ 2 ສ່ວນປະກອບ ເພື່ອສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ.&lt;/p&gt;&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ ທີ່ລັອກສ່ວນປະກອບທີ່ເລືອກໄວ້ເຂົ້າກັນແບບຖາວອນ.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

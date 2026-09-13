@@ -38,9 +38,15 @@ from Machine.models.machine import (
     WrapStrategy,
 )
 from Path.Main.Gui.Editor import CodeEditor
-from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Processor import (
+    PostProcessorFactory,
+    SCOPE_JOB,
+    SCOPE_MACHINE,
+    properties_in_scope,
+)
 from Machine.ui.editor.postprocessor_properties import PostProcessorPropertyManager
 from Machine.ui.editor.output_options_layout import build_output_options
+from Machine.models.validate import Severity, validate_machine
 import re
 
 translate = FreeCAD.Qt.translate
@@ -387,7 +393,7 @@ class MachineEditorDialog(QtGui.QDialog):
         ("-Z", [0, 0, -1]),
     ]
 
-    def __init__(self, machine_filename: Optional[str] = None, parent=None):
+    def __init__(self, machine_filename: Optional[str] = None, parent=None, machine=None):
         super().__init__(parent)
         self.setMinimumSize(700, 900)
         self.resize(700, 900)
@@ -399,7 +405,10 @@ class MachineEditorDialog(QtGui.QDialog):
         self.filename = machine_filename
         self.machine = None  # Store the Machine object
 
-        if machine_filename:
+        if machine is not None:
+            # An in-memory machine not yet saved to disk (e.g. an import)
+            self.machine = machine
+        elif machine_filename:
             self.machine = MachineFactory.load_configuration(machine_filename)
         else:
             self.machine = Machine(name="New Machine")
@@ -424,6 +433,11 @@ class MachineEditorDialog(QtGui.QDialog):
         self.machine_tab = QtGui.QWidget()
         self.tabs.addTab(self.machine_tab, translate("CAM_MachineEditor", "Machine"))
         self.setup_machine_tab()
+
+        # Toolheads tab
+        self.toolheads_tab = QtGui.QWidget()
+        self.tabs.addTab(self.toolheads_tab, translate("CAM_MachineEditor", "Toolheads"))
+        self.setup_toolheads_tab()
 
         # Postprocessor tab
         self.postprocessor_tab = QtGui.QWidget()
@@ -462,6 +476,17 @@ class MachineEditorDialog(QtGui.QDialog):
         self.toggle_button = QtGui.QPushButton(translate("CAM_MachineEditor", "Edit as Text"))
         self.toggle_button.clicked.connect(self.toggle_editor_mode)
         button_layout.addWidget(self.toggle_button)
+
+        self.validate_button = QtGui.QPushButton(translate("CAM_MachineEditor", "Validate"))
+        self.validate_button.setToolTip(
+            translate(
+                "CAM_MachineEditor",
+                "Check this machine for problems that would stop it loading or "
+                "would silently drop settings",
+            )
+        )
+        self.validate_button.clicked.connect(self.validate_current_machine)
+        button_layout.addWidget(self.validate_button)
 
         button_layout.addStretch()
 
@@ -895,8 +920,8 @@ class MachineEditorDialog(QtGui.QDialog):
         """Set up the machine configuration tab with form fields.
 
         Creates input fields for machine name, manufacturer, description,
-        units, type, toolhead count, axes configuration, and toolheads.
-        Connects change handlers for dynamic updates.
+        units, type, kinematics, and axes configuration. Connects change
+        handlers for dynamic updates.
         """
         layout = QtGui.QFormLayout(self.machine_tab)
 
@@ -1030,9 +1055,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.axes_group.setVisible(False)  # Initially hidden, shown when axes are configured
         layout.addRow(self.axes_group)
 
-        # Toolheads group
-        self.toolheads_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Toolheads"))
-        toolheads_layout = QtGui.QVBoxLayout(self.toolheads_group)
+    def setup_toolheads_tab(self):
+        """Set up the toolheads tab.
+
+        Holds the "Add Toolhead" button bar and the tabbed interface with one
+        tab per toolhead, populated by update_toolheads().
+        """
+        layout = QtGui.QVBoxLayout(self.toolheads_tab)
 
         # Button bar for toolhead actions
         button_bar = QtGui.QHBoxLayout()
@@ -1042,14 +1071,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.add_toolhead_button.clicked.connect(self._add_toolhead)
         self.add_toolhead_button.setEnabled(True)
         button_bar.addWidget(self.add_toolhead_button)
-        toolheads_layout.addLayout(button_bar)
+        layout.addLayout(button_bar)
 
         self.toolheads_tabs = QtGui.QTabWidget()
         self.toolheads_tabs.setTabsClosable(True)
         self.toolheads_tabs.tabCloseRequested.connect(self._remove_toolhead)
 
-        toolheads_layout.addWidget(self.toolheads_tabs)
-        layout.addRow(self.toolheads_group)
+        layout.addWidget(self.toolheads_tabs)
 
     def update_axes(self):
         """Update the axes configuration UI based on machine type and units.
@@ -2100,12 +2128,12 @@ class MachineEditorDialog(QtGui.QDialog):
                 self.post_properties_group.setVisible(False)
                 return
 
-            # Create widgets for each property in the schema
-            # Skip runtime-only properties — they are shown in the post-processing
-            # dialog, not persisted in the machine configuration.
-            for prop in schema:
-                if prop.get("runtime", False):
-                    continue
+            # Create widgets for each property in the schema.  The machine
+            # editor owns the "machine" and "job" scopes: "machine" properties
+            # are only editable here, "job" properties get their default here
+            # and can be overridden per run in the post-processing dialog.
+            # "run" and "internal" properties never appear in this editor.
+            for prop in properties_in_scope(schema, SCOPE_MACHINE, SCOPE_JOB):
                 prop_name = prop.get("name")
                 prop_label = prop.get("label", prop_name)
                 prop_default = prop.get("default")
@@ -2267,6 +2295,78 @@ class MachineEditorDialog(QtGui.QDialog):
                     translate("CAM_MachineEditor", "Error"),
                     translate("CAM_MachineEditor", "Failed to generate JSON: {}").format(str(e)),
                 )
+
+    def _current_machine_and_raw(self):
+        """Return (machine, raw_dict) for whatever is currently in the editor.
+
+        In text mode the JSON buffer is the truth and has not been parsed yet.
+        Otherwise ``self.machine`` is kept current by the field signal handlers,
+        and the dict is produced from it -- which means the dropped-data check
+        cannot fire, since there is no on-disk document to compare against.
+
+        Raises:
+            json.JSONDecodeError: the text buffer is not valid JSON.
+            Exception: the document does not load into a Machine.
+        """
+        if self.text_mode:
+            raw = json.loads(self.text_editor.toPlainText())
+            return Machine.from_dict(raw), raw
+        return self.machine, None
+
+    def validate_current_machine(self):
+        """Run the shared validator against the machine being edited.
+
+        Uses the same checks as the command line validator, so a definition
+        that passes here will pass CI in the machine repository.
+        """
+        try:
+            machine, raw = self._current_machine_and_raw()
+        except json.JSONDecodeError as exc:
+            QtGui.QMessageBox.critical(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "Invalid JSON: {}").format(str(exc)),
+            )
+            return
+        except Exception as exc:
+            QtGui.QMessageBox.critical(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "This machine does not load: {}").format(str(exc)),
+            )
+            return
+
+        if machine is None:
+            return
+
+        findings = validate_machine(machine, raw=raw, source=self.filename)
+
+        errors = [f for f in findings if f.severity is Severity.ERROR]
+        warnings = [f for f in findings if f.severity is Severity.WARNING]
+
+        if not errors and not warnings:
+            QtGui.QMessageBox.information(
+                self,
+                translate("CAM_MachineEditor", "Validation"),
+                translate("CAM_MachineEditor", "No problems found."),
+            )
+            return
+
+        if errors:
+            icon = QtGui.QMessageBox.Critical
+            summary = translate("CAM_MachineEditor", "{} error(s) and {} warning(s) found.").format(
+                len(errors), len(warnings)
+            )
+        else:
+            icon = QtGui.QMessageBox.Warning
+            summary = translate("CAM_MachineEditor", "{} warning(s) found.").format(len(warnings))
+
+        box = QtGui.QMessageBox(self)
+        box.setIcon(icon)
+        box.setWindowTitle(translate("CAM_MachineEditor", "Validation"))
+        box.setText(summary)
+        box.setDetailedText("\n\n".join(f"[{f.severity.value}] {f.message}" for f in findings))
+        box.exec_()
 
     def accept(self):
         """Handle save and close action."""

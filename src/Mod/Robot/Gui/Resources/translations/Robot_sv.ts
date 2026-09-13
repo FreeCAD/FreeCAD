@@ -292,6 +292,20 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Wrong selection</source>
+      <translation>Fel val</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>Välj VRML-fil för Robot</translation>
@@ -312,20 +326,6 @@
       <translation>CSV-filer (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
-      <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <source>Wrong selection</source>
-      <translation>Fel val</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>Välj en robot för att ställa in hempositionen</translation>
@@ -336,10 +336,10 @@
       <translation>Välj en Robot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Välj en robot och ett rörelsebanobjekt.</translation>
     </message>

@@ -122,9 +122,11 @@ else(MSVC)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS} Import Clipper2::Clipper2Z)
-SET_BIN_DIR(area-native area-native /Mod/CAM)
+SET_BIN_DIR(area-native)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
+target_compile_warn_error(area)
+target_compile_warn_error(area-native)
 
 # TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
 # This is a dirty workaround!
@@ -136,7 +138,7 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
     endif()
 endif()
 
-SET_BIN_DIR(area area /Mod/CAM)
+SET_BIN_DIR(area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c

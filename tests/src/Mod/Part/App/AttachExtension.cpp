@@ -4,11 +4,52 @@
 
 #include <cmath>
 #include <numbers>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <src/App/InitApplication.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
+
+
+class TestablePlane: public Part::Plane
+{
+public:
+    bool restoreLegacySupport(Base::XMLReader& reader, const char* typeName)
+    {
+        return extensionHandleChangedPropertyName(reader, typeName, "Support");
+    }
+};
+
+
+template<typename PropertyT>
+void restoreLegacySupport(TestablePlane& plane, PropertyT& property)
+{
+    const std::string typeName(property.getTypeId().getName());
+    Base::StringWriter writer;
+    property.Save(writer);
+
+    std::stringstream data;
+    data << "<?xml version='1.0' encoding='utf-8'?>\n"
+         << "<Property name='Support' type='" << typeName << "'>\n"
+         << writer.getString() << "</Property>\n";
+    Base::XMLReader reader("Document.xml", data);
+
+    EXPECT_TRUE(plane.restoreLegacySupport(reader, typeName.c_str()));
+}
+
+
+template<typename PropertyT>
+void restoreEmptyLegacySupport(TestablePlane& plane)
+{
+    PropertyT property;
+    restoreLegacySupport(plane, property);
+}
 
 
 class AttachExtensionTest: public ::testing::Test
@@ -33,6 +74,13 @@ protected:
     App::Document* getDocument() const
     {
         return _doc;
+    }
+
+    TestablePlane* createTestablePlane(const char* name)
+    {
+        auto plane = new TestablePlane();
+        getDocument()->addObject(plane, name);
+        return plane;
     }
 
 private:
@@ -116,8 +164,8 @@ TEST_F(AttachExtensionTest, testMidPlaneBisectsFaceAngle)
 
     const Base::Vector3d position = midPlane->Placement.getValue().getPosition();
     EXPECT_NEAR(position.x, 50.0, 1e-7);
-    EXPECT_NEAR(position.y, 25.0, 1e-7);
-    EXPECT_NEAR(position.z, 30.0, 1e-7);
+    EXPECT_NEAR(position.y, 27.5, 1e-7);
+    EXPECT_NEAR(position.z, 27.5, 1e-7);
 
     Base::Vector3d secondNormal;
     secondPlacement.getRotation().multVec(Base::Vector3d(0, 0, 1), secondNormal);
@@ -130,6 +178,10 @@ TEST_F(AttachExtensionTest, testMidPlaneBisectsFaceAngle)
     EXPECT_NEAR(normal.x, expectedNormal.x, 1e-7);
     EXPECT_NEAR(normal.y, expectedNormal.y, 1e-7);
     EXPECT_NEAR(normal.z, expectedNormal.z, 1e-7);
+
+    // The faces are z = 0 and y = 0, so they intersect on the X axis.
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(0, 0, 0) - position), 0.0, 1e-7);
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(10, 0, 0) - position), 0.0, 1e-7);
 }
 
 TEST_F(AttachExtensionTest, testMidPlaneBisectsConnectedFaces)
@@ -151,14 +203,55 @@ TEST_F(AttachExtensionTest, testMidPlaneBisectsConnectedFaces)
     const Base::Placement placement = midPlane->Placement.getValue();
     const Base::Vector3d position = placement.getPosition();
     EXPECT_NEAR(position.x, 50.0, 1e-7);
-    EXPECT_NEAR(position.y, 45.0, 1e-7);
-    EXPECT_NEAR(position.z, 15.0, 1e-7);
+    EXPECT_NEAR(position.y, 50.0, 1e-7);
+    EXPECT_NEAR(position.z, 10.0, 1e-7);
 
     Base::Vector3d normal;
     placement.getRotation().multVec(Base::Vector3d(0, 0, 1), normal);
     EXPECT_NEAR(normal.x, 0.0, 1e-7);
     EXPECT_NEAR(normal.y, -std::sqrt(0.5), 1e-7);
     EXPECT_NEAR(normal.z, std::sqrt(0.5), 1e-7);
+
+    // Face6 (z = Height) and Face4 (y = Width) meet at the edge y = 60, z = 20.
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(0, 60, 20) - position), 0.0, 1e-7);
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(100, 60, 20) - position), 0.0, 1e-7);
+}
+
+TEST_F(AttachExtensionTest, testMidPlaneBisectsObliqueFaceAngle)
+{
+    auto firstPlane = getDocument()->addObject<Part::Plane>("FirstPlane");
+    auto secondPlane = getDocument()->addObject<Part::Plane>("SecondPlane");
+    auto midPlane = getDocument()->addObject<Part::Plane>("MidPlane");
+
+    ASSERT_TRUE(firstPlane);
+    ASSERT_TRUE(secondPlane);
+    ASSERT_TRUE(midPlane);
+
+    // Rotating the second plane about the Y axis through the origin keeps both planes on the
+    // Y axis, so the faces intersect there at a 50 degree dihedral angle. The differing sizes
+    // put the face centers off the bisector, so the base point has to be corrected onto it.
+    const double angle = 50.0 * std::numbers::pi / 180.0;
+    secondPlane->Length.setValue(60.0);
+    secondPlane->Width.setValue(60.0);
+    secondPlane->Placement.setValue(
+        Base::Placement(Base::Vector3d(0, 0, 0), Base::Rotation(Base::Vector3d(0, 1, 0), angle))
+    );
+    midPlane->AttachmentSupport.setValues({firstPlane, secondPlane}, {"", ""});
+    midPlane->MapMode.setValue("MidPlane");
+
+    getDocument()->recompute();
+
+    const Base::Placement placement = midPlane->Placement.getValue();
+    const Base::Vector3d position = placement.getPosition();
+    Base::Vector3d normal;
+    placement.getRotation().multVec(Base::Vector3d(0, 0, 1), normal);
+
+    EXPECT_NEAR(normal.x, std::sin(angle / 2.0), 1e-7);
+    EXPECT_NEAR(normal.y, 0.0, 1e-7);
+    EXPECT_NEAR(normal.z, std::cos(angle / 2.0), 1e-7);
+
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(0, 0, 0) - position), 0.0, 1e-7);
+    EXPECT_NEAR(normal.Dot(Base::Vector3d(0, 10, 0) - position), 0.0, 1e-7);
 }
 
 TEST_F(AttachExtensionTest, testAttacherEngineType)
@@ -201,4 +294,63 @@ TEST_F(AttachExtensionTest, testAttacherTypeEngine)
     plane->AttacherType.setValue("Attacher::AttachEngine3D");
     plane->onExtendedDocumentRestored();
     EXPECT_STREQ(plane->AttacherEngine.getValueAsString(), "Engine 3D");
+}
+
+TEST_F(AttachExtensionTest, testEmptyLegacySupportDoesNotClearAttachmentSupport)
+{
+    auto object = createTestablePlane("Object");
+    auto support = getDocument()->addObject<Part::Plane>("Support");
+    ASSERT_TRUE(object);
+    ASSERT_TRUE(support);
+
+    object->AttachmentSupport.setValue(support, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    restoreEmptyLegacySupport<App::PropertyLinkSub>(*object);
+    restoreEmptyLegacySupport<App::PropertyLinkSubList>(*object);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), support);
+    ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face1");
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
+}
+
+TEST_F(AttachExtensionTest, testNonEmptyLegacySupportReplacesAttachmentSupport)
+{
+    auto object = createTestablePlane("Object");
+    auto currentSupport = getDocument()->addObject<Part::Plane>("CurrentSupport");
+    auto legacySupport = getDocument()->addObject<Part::Plane>("LegacySupport");
+    ASSERT_TRUE(object);
+    ASSERT_TRUE(currentSupport);
+    ASSERT_TRUE(legacySupport);
+
+    object->AttachmentSupport.setValue(currentSupport, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    App::PropertyLinkSub oldLinkSub;
+    oldLinkSub.setContainer(object);
+    oldLinkSub.setValue(legacySupport, std::vector<std::string> {"Face2"});
+    restoreLegacySupport(*object, oldLinkSub);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), legacySupport);
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "FlatFace");
+
+    object->AttachmentSupport.setValue(currentSupport, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    App::PropertyLinkSubList oldLinkSubList;
+    oldLinkSubList.setContainer(object);
+    oldLinkSubList.setValues(
+        std::vector<App::DocumentObject*> {legacySupport},
+        std::vector<std::string> {"Face2"}
+    );
+    restoreLegacySupport(*object, oldLinkSubList);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), legacySupport);
+    ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face2");
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
 }

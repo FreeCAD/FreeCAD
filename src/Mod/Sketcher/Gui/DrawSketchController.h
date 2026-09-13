@@ -765,12 +765,18 @@ protected:
     void activateOnViewParameter(size_t i)
     {
         if (i < onViewParameters.size()) {
-            onViewParameters[i]->activate();
+            auto* parameter = onViewParameters[i].get();
 
-            // points/value will be overridden by the mouseMove triggered by the mode
-            // change.
-            onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
-            onViewParameters[i]->startEdit(0.0, keymanager.get());
+            if (!parameter->isActive()) {
+                // Set the initial points before making the label visible. The points/value will be
+                // overridden by the mouseMove triggered by the mode change. Seeding at the
+                // previous cursor position prevents a redraw from flashing at the origin.
+                const Base::Vector3d cursorPosition(prevCursorPosition.x, prevCursorPosition.y, 0.0);
+                parameter->setPoints(cursorPosition, cursorPosition);
+                parameter->activate();
+            }
+
+            parameter->startEdit(0.0, keymanager.get());
         }
     }
 

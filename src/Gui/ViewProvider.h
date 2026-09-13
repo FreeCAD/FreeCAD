@@ -430,6 +430,12 @@ public:
      */
     virtual QIcon mergeColorfulOverlayIcons(const QIcon& orig) const;
 
+    /// Additional information shown when hovering over this object's tree item.
+    virtual QString getToolTip() const
+    {
+        return {};
+    }
+
     /** deliver the children belonging to this object
      * this method is used to deliver the objects to
      * the tree framework which should be grouped under its

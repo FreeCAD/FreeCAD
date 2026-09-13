@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-License-Identifier: LGPL-2.1-or-later AND GPL-3.0-or-later WITH Bison-exception-2.2
 
 // clang-format off
 /* A Bison parser, made by GNU Bison 3.8.2.  */

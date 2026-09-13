@@ -60,6 +60,8 @@ public:
     App::PropertyLength Offset;
     App::PropertyLength Offset2;
     App::PropertyLinkSub ReferenceAxis;
+    /** Compatibility property preserving profile-copy behavior in restored documents. */
+    App::PropertyBool UseLegacyTaperDirection;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
@@ -79,9 +81,9 @@ public:
     //@}
 
     static const char* SideTypesEnums[];
-    static const char* StartTypesEnums[];
 
 protected:
+    void Restore(Base::XMLReader& reader) override;
     void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;
@@ -126,15 +128,6 @@ protected:
         const TopoShape& base,      // The base shape for context (global CS)
         TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
-
-    double getStartReferenceOffset(
-        const TopoShape& sketchShape,
-        const App::PropertyLinkSub& reference,
-        const gp_Dir& dir,
-        double offset,
-        const TopLoc_Location& invObjLoc
-    ) const;
-    static TopoShape moveProfileToStart(const TopoShape& sketchShape, const gp_Dir& dir, double offset);
 };
 
 }  // namespace PartDesign

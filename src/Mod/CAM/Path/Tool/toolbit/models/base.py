@@ -31,12 +31,11 @@ import pathlib
 from abc import ABC
 from itertools import chain
 from lazy_loader.lazy_loader import LazyLoader
-from typing import Any, List, Optional, Tuple, Type, Union, Mapping, cast
+from typing import Any, List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ...docobject import DetachedDocumentObject
 from ...assets.asset import Asset
-from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
 from ..util import to_json, format_value
 from ..migration import ParameterAccessor, migrate_parameters
@@ -161,11 +160,10 @@ class ToolBit(Asset, ABC):
 
         # Create a ToolBitShape instance.
         if not shallow:  # Shallow means: skip loading of child assets
-            shape_asset_uri = ToolBitShape.resolve_name(shape_id)
             try:
-                tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_asset_uri))
+                tool_bit_shape = ToolBitShape.resolve_asset(shape_id)
             except FileNotFoundError:
-                Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
+                Path.Log.debug(f"ToolBit.from_dict: Shape asset '{shape_id}' not found.")
                 # Rely on the fallback below
             else:
                 toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
@@ -528,16 +526,22 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
         self._promote_toolbit()
 
-        # Get the shape instance based on the ShapeType. We try two approaches
-        # to find the shape and shape class:
-        #   1. If the asset with the given type exists, use that.
+        # Get the shape instance based on ShapeID/ShapeType. We try two
+        # approaches to find the shape and shape class:
+        #   1. If the asset with the given ID exists, use that.
         #   2. Otherwise create a new empty instance
-        shape_uri = ToolBitShape.resolve_name(self.obj.ShapeType)
         try:
             # Best case: we directly find the shape file in our assets.
-            self._tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_uri))
+            # ShapeID is the real asset id (e.g. "thread-mill"), unlike
+            # ShapeType which is always the shape class name (e.g.
+            # "ThreadMill") and doesn't necessarily match the asset
+            # filename.
+            self._tool_bit_shape = ToolBitShape.resolve_asset(self.obj.ShapeID)
         except FileNotFoundError:
             # Otherwise, try to at least identify the type of the shape.
+            # A custom shape's ShapeID is an embedded filename with no
+            # matching class, so identify the class from ShapeType instead.
+            shape_uri = ToolBitShape.resolve_name(self.obj.ShapeType)
             shape_class = ToolBitShape.get_subclass_by_name(shape_uri.asset_id)
             if not shape_class:
                 raise ValueError(
@@ -663,6 +667,7 @@ class ToolBit(Asset, ABC):
                 f"Queuing visual representation update."
             )
             self._tool_bit_shape.set_parameter(prop, new_value)
+            self._apply_derived_parameters()
             self._queue_visual_update()
         finally:
             self._in_update = False
@@ -749,7 +754,7 @@ class ToolBit(Asset, ABC):
             return png_data
         icon = self.get_icon()
         if icon:
-            return icon.get_png()
+            return icon.get_png(dimensions=False)
         return None
 
     def _remove_properties(self, group, prop_names):
@@ -763,6 +768,20 @@ class ToolBit(Asset, ABC):
                         Path.Log.error(f"Failed removing property '{group}.{name}': {e}")
             else:
                 Path.Log.warning(f"'{group}.{name}' failed to remove property, not found")
+
+    def _apply_derived_parameters(self):
+        """
+        Recompute the shape's derived parameters and push them onto the object.
+
+        They are not editable, so nothing else keeps them in step: without this
+        a derived value keeps whatever it was last saved with and quietly
+        disagrees with the shape the operations are cutting.
+        """
+        if not self._tool_bit_shape:
+            return
+        for name, value in self._tool_bit_shape.apply_derived_parameters().items():
+            if hasattr(self.obj, name):
+                PathUtil.setProperty(self.obj, name, value)
 
     def _update_tool_properties(self):
         """
@@ -882,6 +901,13 @@ class ToolBit(Asset, ABC):
         if material_value in ("HSS", "Carbide") and self.obj.Material != material_value:
             PathUtil.setProperty(self.obj, "Material", material_value)
 
+        # Derived parameters are computed, never typed in: keep them current and
+        # read-only in FreeCAD's property view.
+        for name in self._tool_bit_shape.derived_parameters():
+            if hasattr(self.obj, name):
+                self.obj.setEditorMode(name, 1)
+        self._apply_derived_parameters()
+
     def _queue_visual_update(self):
         """Queue a visual update to be processed after document recompute is complete."""
         if not hasattr(self, "_visual_update_queued"):
@@ -990,7 +1016,7 @@ class ToolBit(Asset, ABC):
                     f"(type {type(value).__name__ if value is not None else 'None'}, value {value})"
                 )
             try:
-                serialized_value = to_json(value)
+                serialized_value = to_json(value, units=getattr(self.obj, "Units", None))
                 attrs["parameter"][name] = serialized_value
             except (TypeError, ValueError) as e:
                 Path.Log.warning(
@@ -1043,7 +1069,7 @@ class ToolBit(Asset, ABC):
             "id": self._tool_bit_shape.get_id(),
             "name": self._tool_bit_shape.name,
             "parameters": {
-                name: to_json(getattr(self.obj, name, None))
+                name: to_json(getattr(self.obj, name, None), units=getattr(self.obj, "Units", None))
                 for name in self._tool_bit_shape.get_parameters()
                 if not isinstance(getattr(self.obj, name, None), FreeCAD.DocumentObject)
             },

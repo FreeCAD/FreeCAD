@@ -54,6 +54,18 @@ namespace sp = std::placeholders;
 
 using CharRange = boost::iterator_range<const char*>;
 
+namespace
+{
+bool isSuppressedLinkElement(const App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+    return ext && ext->Suppressed.getValue();
+}
+}  // namespace
+
 ////////////////////////////////////////////////////////////////////////
 
 /*[[[cog
@@ -1075,7 +1087,19 @@ int LinkBaseExtension::_getElementCountValue() const
 
 bool LinkBaseExtension::extensionHasChildElement() const
 {
-    if (!_getElementListValue().empty() || (_getElementCountValue() && _getShowElementValue())) {
+    if (isSuppressedLinkElement(getContainer())) {
+        return false;
+    }
+    const auto& elements = _getElementListValue();
+    if (!elements.empty()) {
+        for (auto obj : elements) {
+            if (obj && obj->isAttachedToDocument() && !isSuppressedLinkElement(obj)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    if (_getElementCountValue() && _getShowElementValue()) {
         return true;
     }
     if (getLinkClaimChildValue()) {
@@ -1398,9 +1422,12 @@ Base::Matrix4D LinkBaseExtension::getTransform(bool transform) const
 
 bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string>& ret, int reason) const
 {
+    if (isSuppressedLinkElement(getContainer())) {
+        return true;
+    }
     if (!getLinkedObjectProperty() && getElementListProperty()) {
         for (auto obj : getElementListProperty()->getValues()) {
-            if (obj && obj->isAttachedToDocument()) {
+            if (obj && obj->isAttachedToDocument() && !isSuppressedLinkElement(obj)) {
                 std::string name(obj->getNameInDocument());
                 name += '.';
                 ret.push_back(name);
@@ -1416,7 +1443,12 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string>& ret, in
             }
             else {
                 char index[30];
+                const auto& elements = _getElementListValue();
                 for (int i = 0, count = _getElementCountValue(); i < count; ++i) {
+                    if (i < static_cast<int>(elements.size())
+                        && isSuppressedLinkElement(elements[i])) {
+                        continue;
+                    }
                     snprintf(index, sizeof(index), "%d.", i);
                     ret.emplace_back(index);
                 }
@@ -1438,6 +1470,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject*& ret,
 {
     ret = nullptr;
     auto obj = getContainer();
+    const bool suppressed = isSuppressedLinkElement(obj);
     if (!subname || !subname[0]) {
         ret = const_cast<DocumentObject*>(obj);
         Base::Matrix4D _mat;
@@ -1461,7 +1494,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject*& ret,
             _mat = *mat;
         }
 
-        if (pyObj && !_getElementCountValue() && _getElementListValue().empty()
+        if (!suppressed && pyObj && !_getElementCountValue() && _getElementListValue().empty()
             && mySubElements.size() <= 1) {
             // Scale will be included here
             if (getScaleProperty() || getScaleVectorProperty()) {
@@ -1483,6 +1516,10 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject*& ret,
         return true;
     }
 
+    if (suppressed) {
+        return true;
+    }
+
     if (mat) {
         *mat *= getTransform(transform);
     }
@@ -1495,6 +1532,15 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject*& ret,
         if (!elements.empty()) {
             if (idx >= (int)elements.size() || !elements[idx]
                 || !elements[idx]->isAttachedToDocument()) {
+                return true;
+            }
+            if (isSuppressedLinkElement(elements[idx])) {
+                if (!subname || !subname[0]) {
+                    ret = elements[idx]->getSubObject(subname, nullptr, mat, true, depth + 1);
+                    if (!ret) {
+                        ret = elements[idx];
+                    }
+                }
                 return true;
             }
             ret = elements[idx]->getSubObject(subname, pyObj, mat, true, depth + 1);
@@ -1653,9 +1699,11 @@ DocumentObject* LinkBaseExtension::getTrueLinkedObject(bool recurse,
                                                        int depth,
                                                        bool noElement) const
 {
-    if (noElement && extensionIsDerivedFrom(LinkElement::getExtensionClassTypeId())
-        && !static_cast<const LinkElement*>(this)->canDelete()) {
-        return nullptr;
+    if (noElement) {
+        auto element = freecad_cast<const LinkElement*>(getContainer());
+        if (element && !element->canDelete()) {
+            return nullptr;
+        }
     }
 
     auto ret = getLink(depth);
@@ -2716,6 +2764,7 @@ LinkElement::LinkElement()
 {
     LINK_PROPS_ADD(LINK_PARAMS_ELEMENT);
     LinkBaseExtension::initExtension(this);
+    SuppressibleExtension::initExtension(this);
 }
 
 bool LinkElement::canDelete() const
@@ -2778,6 +2827,17 @@ Base::Placement LinkElement::getPlacementOf(const std::string& sub, DocumentObje
     std::string newSub = Base::Tools::joinList(newNames, ".");
 
     return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
+void LinkElement::onChanged(const Property* prop)
+{
+    if (prop == &Suppressed && !isRestoring() && getDocument() && _LinkOwner.getValue()) {
+        if (auto owner = getDocument()->getObjectByID(_LinkOwner.getValue())) {
+            owner->touch();
+        }
+    }
+
+    inherited::onChanged(prop);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

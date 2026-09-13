@@ -37,6 +37,7 @@
 #include "ViewProviderBody.h"
 #include "ViewProviderBoolean.h"
 #include "ViewProviderChamfer.h"
+#include "ViewProviderDefeaturing.h"
 #include "ViewProviderDatumCS.h"
 #include "ViewProviderDatumLine.h"
 #include "ViewProviderDatumPlane.h"
@@ -139,6 +140,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderGroove        ::init();
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
+    PartDesignGui::ViewProviderDefeaturing   ::init();
     PartDesignGui::ViewProviderDraft         ::init();
     PartDesignGui::ViewProviderThickness     ::init();
     PartDesignGui::ViewProviderTransformed   ::init();

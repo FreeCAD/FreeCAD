@@ -1193,3 +1193,98 @@ class TestStripRotaryAxes(PathTestUtils.PathTestBase):
             "Unstripped rotated path should produce a rotation-compensated "
             "cleared area different from the plain path",
         )
+
+
+class TestWorkplaneRotationCommands(PathTestUtils.PathTestBase):
+    """Verify ops always command their rotary pose on a rotary-capable machine.
+
+    Operations are atomic: an op cannot know what pose the previous op left
+    the machine in. On a machine with rotary axes even a Z-up op must
+    therefore emit an explicit G0 zeroing the rotary axes, otherwise a Z-up
+    op following a rotated op silently machines the wrong face (issue #32046).
+    """
+
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestWorkplaneRotationCommands")
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 100
+        self.doc.recompute()
+        self.job = PathJob.Create("Job", [box], None)
+        self.job.GeometryTolerance.Value = 0.001
+        self.doc.recompute()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def _attachMachine(self):
+        """Attach a C-A table-table machine to the job via getMachine."""
+        from Machine.models.machine import Machine, RotaryAxis, AxisRole
+
+        machine = Machine(name="Test CA Machine")
+        machine.rotary_axes["C"] = RotaryAxis(
+            name="C",
+            rotation_vector=FreeCAD.Vector(0, 0, 1),
+            min_limit=-360,
+            max_limit=360,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
+        )
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=FreeCAD.Vector(1, 0, 0),
+            min_limit=-120,
+            max_limit=120,
+            role=AxisRole.TABLE_ROTARY,
+            parent="C",
+            sequence=1,
+        )
+        self.job.Proxy.getMachine = lambda: machine
+
+    def _makeOp(self, name, workplane):
+        op = PathCustom.Create(name, parentJob=self.job)
+        op.Workplane = workplane
+        op.ToolController.Tool.Diameter = 5.0
+        self.doc.recompute()
+        return op
+
+    def _rotaryCommands(self, op):
+        return [
+            c
+            for c in op.Path.Commands
+            if c.Name in ("G0", "G00")
+            and ("A" in c.Parameters or "B" in c.Parameters or "C" in c.Parameters)
+        ]
+
+    def test_zUpOpEmitsZeroRotation(self):
+        """A Z-up op on a rotary machine commands all rotary axes to zero."""
+        self._attachMachine()
+        op = self._makeOp("ZUp", Vector(0, 0, 1))
+
+        rotary = self._rotaryCommands(op)
+        self.assertTrue(rotary, "Z-up op on a rotary machine must emit a rotary G0")
+        params = rotary[0].Parameters
+        self.assertAlmostEqual(params.get("A"), 0.0)
+        self.assertAlmostEqual(params.get("C"), 0.0)
+
+    def test_rotatedOpEmitsSolvedRotation(self):
+        """A non-Z workplane still emits its solved rotary position."""
+        self._attachMachine()
+        op = self._makeOp("Side", Vector(0, 1, 0))
+
+        rotary = self._rotaryCommands(op)
+        self.assertTrue(rotary, "Rotated op must emit a rotary G0")
+        params = rotary[0].Parameters
+        self.assertAlmostEqual(abs(params.get("A")), 90.0)
+
+    def test_zUpOpWithoutMachineEmitsNoRotation(self):
+        """Without a rotary machine a Z-up op emits no rotary words."""
+        op = self._makeOp("ZUpPlain", Vector(0, 0, 1))
+
+        self.assertEqual(
+            self._rotaryCommands(op),
+            [],
+            "A 3-axis job must not gain rotary words from the Z-up pose reset",
+        )

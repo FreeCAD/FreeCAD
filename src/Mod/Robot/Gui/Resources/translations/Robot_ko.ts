@@ -292,6 +292,20 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Wrong selection</source>
+      <translation>잘못된 선택</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>로봇의 VRML 파일 선택</translation>
@@ -312,20 +326,6 @@
       <translation>CSV 파일 (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
-      <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <source>Wrong selection</source>
-      <translation>잘못된 선택</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>원점 위치를 설정할 로봇 하나를 선택하십시오</translation>
@@ -336,10 +336,10 @@
       <translation>로봇 하나를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>로봇 하나와 궤적 객체 하나를 선택하십시오.</translation>
     </message>

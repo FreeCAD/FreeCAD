@@ -107,7 +107,7 @@ void ViewProviderSketchBased::updateProfileShape()
 
     // set the correct coordinate space for the profile shape
     profileShape.setPlacement(
-        profileShape.getPlacement() * profileBased->Placement.getValue().inverse()
+        profileBased->Placement.getValue().inverse() * profileShape.getPlacement()
     );
 
     updatePreviewShape(profileShape, pcProfileShape);

@@ -628,7 +628,7 @@ bool QuantitySpinBox::isNormalized()
             return true;
         }
     }
-    catch (Base::Exception) {
+    catch (const Base::Exception&) {
         // The exception is intentionally ignored here and should be handled,
         // when the value is assigned
         return false;
@@ -761,6 +761,8 @@ void QuantitySpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
+    Q_EMIT showFormulaDialog(true);
+
     Q_D(const QuantitySpinBox);
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
     if (d->checkRangeInExpression) {
@@ -783,8 +785,6 @@ void QuantitySpinBox::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0, 0));
     box->move(pos - box->expressionPosition());
     Gui::adjustDialogPosition(box);
-
-    Q_EMIT showFormulaDialog(true);
 }
 
 void QuantitySpinBox::handlePendingEmit(bool updateUnit /* = true */)

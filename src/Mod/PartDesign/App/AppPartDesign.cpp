@@ -36,17 +36,20 @@
 #include "FeatureBase.h"
 #include "FeatureBoolean.h"
 #include "FeatureChamfer.h"
+#include "FeatureDefeaturing.h"
 #include "FeatureDraft.h"
 #include "FeatureDressUp.h"
 #include "FeatureFillet.h"
 #include "FeatureGroove.h"
 #include "FeatureHelix.h"
 #include "FeatureHole.h"
+#include "FeatureCircularPattern.h"
 #include "FeatureLinearPattern.h"
 #include "FeatureLoft.h"
 #include "FeatureMirrored.h"
 #include "FeatureMultiTransform.h"
 #include "FeaturePad.h"
+#include "FeaturePathPattern.h"
 #include "FeaturePipe.h"
 #include "FeaturePocket.h"
 #include "FeaturePolarPattern.h"
@@ -100,7 +103,9 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::ProfileBased                ::init();
     PartDesign::Transformed                 ::init();
     PartDesign::Mirrored                    ::init();
+    PartDesign::CircularPattern             ::init();
     PartDesign::LinearPattern               ::init();
+    PartDesign::PathPattern                 ::init();
     PartDesign::PolarPattern                ::init();
     PartDesign::Scaled                      ::init();
     PartDesign::MultiTransform              ::init();
@@ -116,6 +121,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Chamfer                     ::init();
     PartDesign::Draft                       ::init();
     PartDesign::Thickness                   ::init();
+    PartDesign::Defeaturing                 ::init();
     PartDesign::Pipe                        ::init();
     PartDesign::AdditivePipe                ::init();
     PartDesign::SubtractivePipe             ::init();

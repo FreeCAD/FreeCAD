@@ -84,8 +84,6 @@ public:
 
     void toggleVisibility() override;
 
-    /// Provides preview shape
-    Part::TopoShape getPreviewShape() const override;
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 
@@ -123,6 +121,8 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    void updatePreviewColor();
+
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 

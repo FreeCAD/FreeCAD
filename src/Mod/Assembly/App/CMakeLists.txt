@@ -70,9 +70,7 @@ target_include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(Assembly ${Assembly_LIBS})
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Assembly)
-endif()
+target_compile_warn_error(Assembly)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Assembly PRIVATE
@@ -80,7 +78,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(Assembly AssemblyApp /Mod/Assembly)
+SET_BIN_DIR(Assembly AssemblyApp)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
 
 INSTALL(TARGETS Assembly DESTINATION ${CMAKE_INSTALL_LIBDIR})

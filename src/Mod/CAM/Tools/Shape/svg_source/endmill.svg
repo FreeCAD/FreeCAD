@@ -537,47 +537,47 @@
        style="fill:#e33636;stroke:#000000;stroke-width:0.556644"
        cx="136.23701"
        cy="143.46426"
-       r="0.00054124615" />
-    <path
-       id="path4538"
-       d="m 137.48175,191.92376 v -39.1469"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
+       r="0.00054124615" /><g
+     id="dim-shank_diameter"><path
        id="path4542"
        d="m 75.30563,-39.544878 h 59.04385"
-       style="fill:none;stroke:#000000;stroke-width:0.736568;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" />
-    <path
-       id="path4548"
-       d="M 73.227916,179.67926 H 136.88619"
-       style="fill:none;stroke:#000000;stroke-width:0.540802;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" />
-    <text
+       style="fill:none;stroke:#000000;stroke-width:0.736568;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" /><text
        transform="scale(0.97131606,1.029531)"
        id="shank_diameter"
        y="-26.972244"
        x="144.89879"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:3.35351"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:3.35351"
          y="-26.972244"
          x="144.89879"
-         id="tspan5678">S</tspan></text>
-    <text
+         id="tspan5678">S</tspan></text></g><g
+     id="dim-diameter"><path
+       id="path4538"
+       d="m 137.48175,191.92376 v -39.1469"
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><path
+       id="path4548"
+       d="M 73.227916,179.67926 H 136.88619"
+       style="fill:none;stroke:#000000;stroke-width:0.540802;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" /><text
        transform="scale(0.97131606,1.029531)"
        id="diameter"
        y="204.05394"
        x="94.644455"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
        xml:space="preserve"><tspan
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:3.35351"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:3.35351"
          y="204.05394"
          x="94.644455"
-         id="tspan5690">D</tspan></text>
-    <text
+         id="tspan5690">D</tspan></text><path
+       id="path4538-8"
+       d="m 72.706646,194.48411 v -39.1469"
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /></g><g
+     id="dim-cutting_edge_height"><text
        transform="scale(0.97131606,1.029531)"
        id="cutting_edge_height"
        y="101.32485"
        x="161.34537"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
        xml:space="preserve"><tspan
          style="stroke-width:3.35351"
          y="101.32485"
@@ -586,41 +586,30 @@
          style="stroke-width:3.35351"
          id="tspan895"
          y="146.03827"
-         x="161.34537" /></text>
-    <path
-       id="path4538-8"
-       d="m 72.706646,194.48411 v -39.1469"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
+         x="161.34537" /></text><path
        id="path897"
        d="M 150.31501,22.267499 V 170.59241"
-       style="fill:none;stroke:#000000;stroke-width:1.13395;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" />
-    <path
+       style="fill:none;stroke:#000000;stroke-width:1.13395;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" /><path
        id="path1187"
        d="m 133.77842,19.499193 h 24.62222"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><path
        id="path1189"
        d="m 135.62701,171.93303 h 24.62222"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /></g><g
+     id="dim-length"><text
        transform="scale(0.97131606,1.029531)"
        id="length"
        y="65.51088"
        x="24.433861"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
-       xml:space="preserve">L</text>
-    <path
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"
+       xml:space="preserve">L</text><path
        id="path448"
        d="M 54.901487,-46.301137 V 168.32757"
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" />
-    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1181);marker-end:url(#marker1177)" /><path
        id="path450"
        d="m 48.948231,-50.709931 h 24.62222"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><path
        id="path452"
        d="m 50.796821,172.10308 h 24.62222"
-       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-  </g>
+       style="fill:none;stroke:#000000;stroke-width:0.823854;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /></g></g>
 </svg>
