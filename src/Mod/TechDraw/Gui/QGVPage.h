@@ -122,6 +122,8 @@ public:
     void setPanCursor();
     void setZoomCursor();
 
+    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
+
     void pseudoContextEvent();
 
     void centerOnPage();
@@ -152,8 +154,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
     QColor getBackgroundColor();
-
-    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;
 
