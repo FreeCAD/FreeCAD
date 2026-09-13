@@ -248,6 +248,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     }
 
     ViewProvider::onChanged(prop);
+
+    if (prop == &Visibility) {
+        if (auto* document = getDocumentIfAttached()) {
+            document->updateVisibleSpaceVisibility(this);
+        }
+    }
 }
 
 void ViewProviderDocumentObject::hide()
@@ -446,6 +452,17 @@ Gui::Document* ViewProviderDocumentObject::getDocument() const
         App::Document* pAppDoc = pcObject->getDocument();
         return Gui::Application::Instance->getDocument(pAppDoc);
     }
+}
+
+Gui::Document* ViewProviderDocumentObject::getDocumentIfAttached() const
+{
+    if (!pcObject || !isAttachedToDocument() || !pcObject->isAttachedToDocument()) {
+        return nullptr;
+    }
+    if (pcDocument) {
+        return pcDocument;
+    }
+    return Gui::Application::Instance->getDocument(pcObject->getDocument());
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const

@@ -83,6 +83,7 @@ public:
     ViewProviderBody* getBodyViewProvider();
 
     void toggleVisibility() override;
+    Gui::ViewProvider::VisibleSpaceMode getVisibleSpaceMode() const override;
 
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);

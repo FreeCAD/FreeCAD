@@ -1276,42 +1276,19 @@ StdCmdToggleObjects::StdCmdToggleObjects()
     : Command("Std_ToggleObjects")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("To&ggle All Objects");
-    sToolTipText = QT_TR_NOOP("Toggles the visibility of all objects in the active document");
+    sMenuText = QT_TR_NOOP("Toggle Visible Space");
+    sToolTipText = QT_TR_NOOP("Switches between the normal and complementary visible spaces");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_ToggleObjects";
     sPixmap = "Std_ToggleObjects";
+    sAccel = "Shift+Space";
     eType = Alter3DView;
 }
 
 void StdCmdToggleObjects::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    // go through active document
-    Gui::Document* doc = Application::Instance->activeDocument();
-    App::Document* app = doc->getDocument();
-    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType(
-        App::DocumentObject::getClassTypeId()
-    );
-
-    for (const auto& it : obj) {
-        if (doc->isShow(it->getNameInDocument())) {
-            doCommand(
-                Gui,
-                "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
-                app->getName(),
-                it->getNameInDocument()
-            );
-        }
-        else {
-            doCommand(
-                Gui,
-                "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True",
-                app->getName(),
-                it->getNameInDocument()
-            );
-        }
-    }
+    Application::Instance->activeDocument()->toggleVisibleSpace();
 }
 
 bool StdCmdToggleObjects::isActive()
