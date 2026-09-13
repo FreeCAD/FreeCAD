@@ -2437,6 +2437,7 @@ void Application::initTypes()
     Gui::ViewProviderOriginGroup                ::init();
     Gui::ViewProviderPart                       ::init();
     Gui::ViewProviderCoordinateSystem           ::init();
+    Gui::ViewProviderOrigin                     ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
