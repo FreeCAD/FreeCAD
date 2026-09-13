@@ -360,6 +360,7 @@ void DlgSettingsWorkbenchesImp::saveSettings()
         ->SetASCII("AutoloadModule", startWbName.toLatin1());
 
     ui->CheckBox_WbByTab->onSave();
+    ui->CheckBox_ToolBarLayoutByWorkbench->onSave();
 }
 
 void DlgSettingsWorkbenchesImp::loadSettings()
@@ -394,6 +395,10 @@ void DlgSettingsWorkbenchesImp::loadSettings()
     {
         QSignalBlocker sigblk(ui->CheckBox_WbByTab);
         ui->CheckBox_WbByTab->onRestore();
+    }
+    {
+        QSignalBlocker sigblk(ui->CheckBox_ToolBarLayoutByWorkbench);
+        ui->CheckBox_ToolBarLayoutByWorkbench->onRestore();
     }
 }
 

@@ -141,6 +141,27 @@ PyObject* WorkbenchPy::getToolbarItems(PyObject* args)
     PY_CATCH;
 }
 
+/** Shows a dict of all toolbars and their persistence identities */
+PyObject* WorkbenchPy::getToolbarIdentities(PyObject* args)
+{
+    PY_TRY
+    {
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+
+        std::list<std::pair<std::string, std::string>> identities
+            = getWorkbenchPtr()->getToolbarIdentities();
+
+        Py::Dict dict;
+        for (const auto& it : identities) {
+            dict.setItem(it.first, Py::String(it.second));
+        }
+        return Py::new_reference_to(dict);
+    }
+    PY_CATCH;
+}
+
 /** Shows a list of all command bars */
 PyObject* WorkbenchPy::listCommandbars(PyObject* args)
 {

@@ -62,7 +62,6 @@ class StartMigrator2024:
         self._update_startup_flags()
         self._remove_wb_references()
         self._remove_commands()
-        self._remove_toolbars()
         self._remove_deprecated_parameters()
         self._mark_complete()
         FreeCAD.Console.PrintMessage("done.\n")
@@ -97,15 +96,6 @@ class StartMigrator2024:
                 command.startswith("Start_") and command != "Start_Start"
             ):
                 command_prefs.RemString(command)
-
-    # Remove any persistent toolbars
-    def _remove_toolbars(self):
-        tux_prefs = FreeCAD.ParamGet("User parameter:Tux/PersistentToolbars/User")
-        groups = tux_prefs.GetGroups()
-        if "StartWorkbench" in groups:
-            tux_prefs.RemGroup("StartWorkbench")
-        if "WebWorkbench" in groups:
-            tux_prefs.RemGroup("WebWorkbench")
 
     # Delete old Start preferences
     def _remove_deprecated_parameters(self):

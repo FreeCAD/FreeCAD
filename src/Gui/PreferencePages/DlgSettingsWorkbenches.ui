@@ -183,6 +183,25 @@ after FreeCAD launches</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="CheckBox_ToolBarLayoutByWorkbench">
+        <property name="toolTip">
+         <string>Remember toolbar placement separately for each workbench</string>
+        </property>
+        <property name="text">
+         <string>Remember toolbar layout by workbench</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>RememberToolbarLayoutByWorkbench</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>MainWindow</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
