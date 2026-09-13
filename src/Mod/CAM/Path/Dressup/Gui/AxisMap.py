@@ -1,33 +1,32 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
-import Path
 import math
-import Path.Base.Gui.Util as PathGuiUtil
-import PathScripts.PathUtils as PathUtils
+import Path
+from Path.Base.Gui.Util import QuantitySpinBox
 import Path.Dressup.Utils as PathDressup
 import Path.Post.Utils as PostUtils
+from PathPythonGui.simple_edit_panel import SimpleEditPanel
+from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -74,10 +73,39 @@ class ObjectDressup:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Reverse rotary axis direction"),
         )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "Centre",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The centre of rotation.\nAffects only to Path repesentation in 3d view.",
+            ),
+        )
+
         obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
         obj.AxisMap = "Y->A"
         obj.Radius = 45
         obj.Proxy = self
+
+        self.defineCylinder(obj)
+
+    def defineCylinder(self, obj):
+        """Set default Centre, Radius and AxisMap from surfaces in Job"""
+        import Part
+
+        if job := PathUtils.findParentJob(obj):
+            cyls = [
+                f.Surface
+                for m in job.Model.Group + [job.Stock]
+                for f in m.Shape.Faces
+                if isinstance(f.Surface, Part.Cylinder)
+            ]
+            if cyls and all(Path.Geom.pointsCoincide(c.Center, cyls[0].Center) for c in cyls):
+                obj.Centre = cyls[0].Center
+                obj.Radius = max(cyls, key=lambda c: c.Radius).Radius
+                if Path.Geom.compareVecs(cyls[0].Axis, FreeCAD.Vector(0, 1, 0)):
+                    obj.AxisMap = "X->B"
 
     def dumps(self):
         return
@@ -89,7 +117,7 @@ class ObjectDressup:
         if "Restore" not in obj.State and prop == "Radius":
             job = PathUtils.findParentJob(obj)
             if job:
-                job.Proxy.setCenterOfRotation(self.center(obj))
+                job.Proxy.setCenterOfRotation(obj.Centre)
 
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
@@ -102,6 +130,17 @@ class ObjectDressup:
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Reverse rotary axis direction"),
             )
+        if not hasattr(obj, "Centre"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "Centre",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The centre of rotation.\nAffects only to Path repesentation in 3d view.",
+                ),
+            )
+            obj.Centre = FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
 
     def execute(self, obj):
 
@@ -135,7 +174,7 @@ class ObjectDressup:
                 locdiff = dict(set(newparams.items()) - set(lastPar.items()))
                 if len(locdiff) == 1 and outAxis in locdiff:
                     # calculate rotational feed rate
-                    feed = cmd.Parameters["F"] if "F" in cmd.Parameters else lastPar["F"]
+                    feed = cmd.Parameters.get("F", lastPar["F"])
                     newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
                 newcommand = Path.Command(cmd.Name, newparams)
                 newcommandlist.append(newcommand)
@@ -145,60 +184,36 @@ class ObjectDressup:
                 lastPar.update(cmd.Parameters)
 
         path = Path.Path(newcommandlist)
-        path.Center = self.center(obj)
+        path.Center = obj.Centre
         obj.Path = path
 
-    def center(self, obj):
-        return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
 
-
-class TaskPanel:
-    def __init__(self, obj):
-        self.obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
-        self.radius = PathGuiUtil.QuantitySpinBox(self.form.radius, obj, "Radius")
-        self.reverse = PathGuiUtil.BooleanComboBox(self.form.reverse, obj, "Reverse")
-        FreeCAD.ActiveDocument.openTransaction("Edit AxisMap Dress-up")
-
-    def reject(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def accept(self):
-        self.getFields()
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def getFields(self):
-        self.radius.updateProperty()
-        self.reverse.updateProperty()
-        self.obj.AxisMap = self.form.axisMapInput.currentText()
-        self.obj.Proxy.execute(self.obj)
-
-    def updateUI(self):
-        self.radius.updateWidget()
-        self.reverse.updateWidget()
-        self.form.axisMapInput.setCurrentText(self.obj.AxisMap)
-        self.updateModel()
-
-    def updateModel(self):
-        self.getFields()
-        FreeCAD.ActiveDocument.recompute()
-
-    def setFields(self):
-        self.updateUI()
-
-    def open(self):
-        pass
+class TaskPanel(SimpleEditPanel):
+    _transaction_name = "Edit DressupAxisMap"
+    _ui_file = ":/panels/AxisMapEdit.ui"
 
     def setupUi(self):
+        self.setupSpinBoxes()
         self.setFields()
-        self.form.radius.valueChanged.connect(self.updateModel)
-        self.form.reverse.currentIndexChanged.connect(self.updateModel)
-        self.form.axisMapInput.currentIndexChanged.connect(self.updateModel)
+        self.pageRegisterSignalHandlers()
+
+    def setupSpinBoxes(self):
+        self.connectWidget("Reverse", self.form.reverse)
+        self.connectWidget("AxisMap", self.form.axisMap)
+        self.radius = QuantitySpinBox(self.form.radius, self.obj, "Radius", setToolTip=True)
+        self.radius.updateWidget()
+
+    def getSignalsForUpdate(self):
+        signals = []
+        signals.append(self.form.radius.editingFinished)
+        return signals
+
+    def pageGetFields(self):
+        self.radius.updateProperty()
+
+    def pageRegisterSignalHandlers(self):
+        for signal in self.getSignalsForUpdate():
+            signal.connect(self.pageGetFields)
 
 
 class ViewProviderDressup:
@@ -208,24 +223,26 @@ class ViewProviderDressup:
 
     def attach(self, vobj):
         self.obj = vobj.Object
+        self.panel = None
+
         if self.obj and self.obj.Base:
             for i in self.obj.Base.InList:
-                if hasattr(i, "Group"):
-                    group = i.Group
-                    for g in group:
-                        if g.Name == self.obj.Base.Name:
-                            group.remove(g)
-                    i.Group = group
-        return
+                if hasattr(i, "Group") and self.obj.Base.Name in [o.Name for o in i.Group]:
+                    i.Group = [o for o in i.Group if o.Name != self.obj.Base.Name]
+            if self.obj.Base.ViewObject:
+                self.obj.Base.ViewObject.Visibility = False
 
     def unsetEdit(self, vobj, mode=0):
-        return False
+        if mode == 0 and self.panel:
+            self.panel.abort()
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(panel)
-        panel.setupUi()
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskPanel(vobj.Object, self)
+            FreeCADGui.Control.showDialog(panel)
         return True
 
     def claimChildren(self):
@@ -246,6 +263,9 @@ class ViewProviderDressup:
                 job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
             arg1.Object.Base = None
         return True
+
+    def clearTaskPanel(self):
+        self.panel = None
 
     def getIcon(self):
         if getattr(PathDressup.baseOp(self.obj), "Active", True):
@@ -279,11 +299,11 @@ class CommandPathDressup:
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")'
         )
-        FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ObjectDressup(obj)")
         FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
-        FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
+        FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ObjectDressup(obj)")
+        FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("Path.Dressup.Gui.AxisMap.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("base.Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")

@@ -21,78 +21,27 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2" colspan="2">
-    <widget class="Gui::QuantitySpinBox" name="radius">
-     <property name="toolTip">
-      <string>The radius of the wrapped axis</string>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">mm</string>
-     </property>
-    </widget>
+   <item row="0" column="1">
+    <widget class="Gui::QuantitySpinBox" name="radius"/>
    </item>
    <item row="1" column="0">
-    <widget class="QLabel" name="lblAxisMapInput">
+    <widget class="QLabel" name="lblAxisMap">
      <property name="text">
       <string>Axis mapping</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2" colspan="2">
-    <widget class="QComboBox" name="axisMapInput">
-     <property name="toolTip">
-      <string>The input mapping axis. Coordinates of the first axis will be mapped to the second.</string>
-     </property>
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>X-&gt;A</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Y-&gt;A</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>X-&gt;B</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Y-&gt;B</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>X-&gt;C</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Y-&gt;C</string>
-      </property>
-     </item>
-    </widget>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="axisMap"/>
    </item>
    <item row="2" column="0">
-     <widget class="QLabel" name="lblReverse">
-       <property name="text">
-         <string>Reverse</string>
-       </property>
-     </widget>
+    <widget class="QCheckBox" name="reverse">
+     <property name="text">
+      <string>Invert Direction</string>
+     </property>
+    </widget>
    </item>
-   <item row="2" column="2" colspan="2">
-     <widget class="QComboBox" name="reverse">
-       <property name="toolTip">
-         <string>Reverse rotary axis direction</string>
-       </property>
-     </widget>
-   </item>
-  <item row="3" column="2">
+   <item row="3" column="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -105,7 +54,7 @@
      </property>
     </spacer>
    </item>
-   </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
