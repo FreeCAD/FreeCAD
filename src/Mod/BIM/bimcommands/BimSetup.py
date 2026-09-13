@@ -24,11 +24,13 @@
 
 """The BIM Setup command"""
 
+import html
 import os
 import sys
 
 import FreeCAD
 import FreeCADGui
+from nativeifc import backend
 
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -107,12 +109,7 @@ class BIM_Setup:
             import report
         except ImportError:
             m.append("Reporting")
-        try:
-            import ifcopenshell
-        except ImportError:
-            ifcok = False
-        else:
-            ifcok = True
+        ifc_statuses = self.getIfcOpenShellStatus()
         libok = False
         librarypath = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString(
             "destination", ""
@@ -142,8 +139,8 @@ class BIM_Setup:
             )
             self.form.labelMissingWorkbenches.setText(t)
             self.form.labelMissingWorkbenches.show()
-        if not ifcok:
-            self.form.labelIfcOpenShell.show()
+        self.form.labelIfcOpenShell.setText(self.formatIfcOpenShellStatus(ifc_statuses))
+        self.form.labelIfcOpenShell.show()
         if (
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString(
                 "snapModes", "111111111101111"
@@ -598,112 +595,56 @@ class BIM_Setup:
         return QtGui.QColor.fromRgbF(r, g, b)
 
     def getIfcOpenShell(self, force=False):
-        """downloads and installs IfcOpenShell"""
+        """Open the maintained pip-based IfcOpenShell installer when needed."""
 
-        # TODO WARNING the IfcOpenBot repo below is not actively kept updated.
-        # We need to use PIP
+        statuses = self.getIfcOpenShellStatus()
+        if not force and all(status.available for status in statuses.values()):
+            return statuses
 
-        ifcok = False
-        if not force:
-            try:
-                import ifcopenshell
-            except:
-                ifcok = False
-            else:
-                ifcok = False
-                v = [int(i) for i in ifcopenshell.version.split(".")]
-                if v[0] < 1:
-                    if v[1] > 6:
-                        ifcok = True
-        if not ifcok:
-            # ifcopenshell not installed
-            import json
-            import re
-            from urllib import request
-            import zipfile
-            from PySide import QtGui
+        from nativeifc import ifc_openshell  # noqa: F401
 
-            if not FreeCAD.GuiUp:
-                reply = QtGui.QMessageBox.Yes
-            else:
-                reply = QtGui.QMessageBox.question(
-                    None,
-                    translate("BIM", "IfcOpenShell Not Found"),
-                    translate(
-                        "BIM",
-                        "IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.",
-                    ),
-                    QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                    QtGui.QMessageBox.No,
-                )
-            if reply == QtGui.QMessageBox.Yes:
-                print(
-                    "Loading list of latest IfcOpenBot builds from https://github.com/IfcOpenBot/IfcOpenShell..."
-                )
-                url1 = "https://api.github.com/repos/IfcOpenBot/IfcOpenShell/comments?per_page=100"
-                u = request.urlopen(url1)
-                if u:
-                    r = u.read()
-                    u.close()
-                    d = json.loads(r)
-                    l = d[-1]["body"]
-                    links = re.findall(r"http.*?zip", l)
-                    pyv = "python-" + str(sys.version_info.major) + str(sys.version_info.minor)
-                    if sys.platform.startswith("linux"):
-                        plat = "linux"
-                    elif sys.platform.startswith("win"):
-                        plat = "win"
-                    elif sys.platform.startswith("darwin"):
-                        plat = "macos"
-                    else:
-                        FreeCAD.Console.PrintError("Error - unknown platform")
-                        return
-                    if sys.maxsize > 2**32:
-                        plat += "64"
-                    else:
-                        plat += "32"
-                    print("Looking for", plat, pyv)
-                    for link in links:
-                        if ("ifcopenshell-" + pyv in link) and (plat in link):
-                            print("Downloading " + link + "...")
-                            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-                            fp = p.GetString(
-                                "MacroPath",
-                                os.path.join(FreeCAD.getUserAppDataDir(), "Macros"),
-                            )
-                            u = request.urlopen(link)
-                            if u:
-                                if sys.version_info.major < 3:
-                                    import StringIO as io
+        FreeCADGui.runCommand("IFC_UpdateIOS", 1)
+        statuses = self.getIfcOpenShellStatus(refresh=True)
+        if getattr(self, "form", None):
+            self.form.labelIfcOpenShell.setText(self.formatIfcOpenShellStatus(statuses))
+        return statuses
 
-                                    _stringio = io.StringIO
-                                else:
-                                    import io
+    def getIfcOpenShellStatus(self, refresh=False):
+        """Return operation-specific IfcOpenShell health information."""
 
-                                    _stringio = io.BytesIO
-                                zfile = _stringio()
-                                zfile.write(u.read())
-                                zfile = zipfile.ZipFile(zfile)
-                                zfile.extractall(fp)
-                                u.close()
-                                zfile.close()
-                                print("Successfully installed IfcOpenShell to", fp)
-                                break
-                    else:
-                        FreeCAD.Console.PrintWarning(
-                            "Unable to find a build for this version, therefore falling back to a pip install"
-                        )
-                        try:
-                            import pip
-                        except ModuleNotFoundError:
-                            FreeCAD.Console.PrintError(
-                                "Pnstall pip on your system, restart FreeCAD,"
-                                " change to the BIM workbench and navigate the menu: Utils > ifcOpenShell Update"
-                            )
-                            return
-                        from nativeifc import ifc_openshell
+        if refresh:
+            backend.invalidate()
+        return {
+            "Single-process import": backend.get_status(capability=backend.IMPORT),
+            "Multicore import": backend.get_status(capability=backend.MULTICORE_IMPORT),
+            "NativeIFC export": backend.get_status(capability=backend.EXPORT),
+        }
 
-                        FreeCADGui.runCommand("IFC_UpdateIOS", 1)
+    def formatIfcOpenShellStatus(self, statuses):
+        """Format capability health for the setup dialog."""
+
+        available = [status for status in statuses.values() if status.available]
+        version = next((status.version for status in available if status.version), "")
+        title = "IfcOpenShell" + (f" {html.escape(version)}" if version else "")
+        lines = [f"<b>{title}</b>"]
+        labels = {
+            "Single-process import": translate("BIM", "Single-process import"),
+            "Multicore import": translate("BIM", "Multicore import"),
+            "NativeIFC export": translate("BIM", "NativeIFC export"),
+        }
+        for name, status in statuses.items():
+            state = (
+                translate("BIM", "available")
+                if status.available
+                else translate("BIM", "unavailable")
+            )
+            detail = f": {html.escape(status.error)}" if status.error else ""
+            lines.append(f"{labels.get(name, name)}: {state}{detail}")
+        if len(available) != len(statuses):
+            lines.append(
+                '<a href="#install">' + translate("BIM", "Install or update IfcOpenShell") + "</a>"
+            )
+        return "<br>".join(lines)
 
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())

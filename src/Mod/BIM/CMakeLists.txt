@@ -207,10 +207,12 @@ SET(BIM_templates
 )
 
 SET(nativeifc_SRCS
+    nativeifc/backend.py
     nativeifc/ifc_commands.py
     nativeifc/ifc_diff.py
     nativeifc/ifc_generator.py
     nativeifc/ifc_geometry.py
+    nativeifc/ifc_geometry_export.py
     nativeifc/ifc_import.py
     nativeifc/ifc_layers.py
     nativeifc/ifc_materials.py
@@ -231,6 +233,15 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
+    bimtests/TestIfcImportBackend.py
+    bimtests/TestIfcOpenShellBackend.py
+    bimtests/TestBimSetup.py
+    bimtests/TestBimIfcExplorer.py
+    bimtests/TestBimClassification.py
+    bimtests/TestIfcStructuralExport.py
+    bimtests/TestIfcLegacyExport.py
+    bimtests/TestIfcGeometryExport.py
+    bimtests/TestIfcRoundtrip.py
     bimtests/TestArchAxis.py
     bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
@@ -276,6 +287,8 @@ SET(bimtests_SRCS
 
 set(bimtests_FIXTURES
     bimtests/fixtures/FC_site_simple-102.FCStd
+    bimtests/fixtures/roundtrip_ifc2x3.ifc
+    bimtests/fixtures/roundtrip_ifc4.ifc
     bimtests/fixtures/__init__.py
     bimtests/fixtures/BimFixtures.py
 )
