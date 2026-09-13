@@ -122,7 +122,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.textpos = coin.SoTransform()
         self.font = coin.SoFont()
         self.text_wld = coin.SoAsciiText()  # World orientation. Can be oriented in 3D space.
-        self.text_scr = coin.SoText2()  # Screen orientation. Always faces the camera.
+        self.text_scr = gui_utils.make_hidpi_text2()  # Screen orientation. Always faces the camera.
 
         self.fcoords = coin.SoCoordinate3()
         self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
