@@ -58,9 +58,8 @@ def findDogboneKinks(maneuver, threshold):
 
 
 def MNVR(gcode, begin=None):
-    # 'turns out the replace() isn't really necessary
-    # leave it here anyway for clarity
-    return PathLanguage.Maneuver.FromGCode(gcode.replace("/", "\n"), begin)
+    pp = Path.Path([Path.Command(x) for x in gcode.split("/")])
+    return PathLanguage.Maneuver.FromPath(pp, begin)
 
 
 def INSTR(gcode, begin=None):
@@ -113,11 +112,11 @@ class TestGeneratorDogboneII(PathTestUtils.PathTestBase):
 
         # tangential arc moves
         self.assertKinks(MNVR("G1X1/G3Y2J1"), "[0.00]")
-        self.assertKinks(MNVR("G1X1/G3Y2J1G1X0"), "[0.00, 0.00]")
+        self.assertKinks(MNVR("G1X1/G3Y2J1/G1X0"), "[0.00, 0.00]")
 
         # folding back arc moves
         self.assertKinks(MNVR("G1X1/G2Y2J1"), "[-3.14]")
-        self.assertKinks(MNVR("G1X1/G2Y2J1G1X0"), "[-3.14, 3.14]")
+        self.assertKinks(MNVR("G1X1/G2Y2J1/G1X0"), "[-3.14, 3.14]")
 
     def test30(self):
         """Verify dogbone detection"""
