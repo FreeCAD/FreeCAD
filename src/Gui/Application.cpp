@@ -431,6 +431,16 @@ void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
     );
 }
 
+// Document close can wait for a worker recompute. Process only queued
+// MetaCall events in that narrow wait so a worker blocked in a synchronous
+// MainThreadSignal hop can finish without opening a nested user-event loop.
+void qtPumpMainThreadDispatches()
+{
+    if (qApp) {
+        QCoreApplication::sendPostedEvents(MainThreadInvoker::instance(), QEvent::MetaCall);
+    }
+}
+
 }  // namespace Gui
 
 void Application::initStyleParameterManager()
@@ -517,7 +527,11 @@ Application::Application(bool GUIenabled)
 {
     // App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::MainThreadSignalConfig::setHooks(&qtIsMainThread, &qtInvokeOnMain);
+        App::MainThreadSignalConfig::setHooks(
+            &qtIsMainThread,
+            &qtInvokeOnMain,
+            &qtPumpMainThreadDispatches
+        );
 
         // NOLINTBEGIN
         App::GetApplication().signalNewDocument.connect(

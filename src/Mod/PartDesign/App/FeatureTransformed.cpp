@@ -41,6 +41,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Sequencer.h>
+#include <App/Application.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -58,6 +59,16 @@ using namespace PartDesign;
 
 namespace PartDesign
 {
+namespace
+{
+
+bool operationCanceled()
+{
+    return Base::Sequencer().wasCanceled() || App::currentRecomputeWasCanceled();
+}
+
+}  // namespace
+
 extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
@@ -326,6 +337,10 @@ void Transformed::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* Transformed::execute()
 {
+    if (operationCanceled()) {
+        return new App::DocumentObjectExecReturn("User aborted");
+    }
+
     if (isMultiTransformChild()) {
         return App::DocumentObject::StdReturn;
     }
@@ -394,7 +409,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for (; transformIter != transformations.end(); transformIter++) {
-            if (Base::Sequencer().wasCanceled()) {
+            if (operationCanceled()) {
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
@@ -439,14 +454,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 if (!fuseShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (Base::Sequencer().wasCanceled()) {
+                    if (operationCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (Base::Sequencer().wasCanceled()) {
+                    if (operationCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementCut(shapes);
@@ -455,7 +470,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (Base::Sequencer().wasCanceled()) {
+            if (operationCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             supportShape.makeElementFuse(shapes);

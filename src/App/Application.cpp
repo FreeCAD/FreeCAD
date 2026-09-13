@@ -215,6 +215,29 @@ namespace fs = std::filesystem;
 namespace
 {
 
+thread_local RecomputeCancellationHandle currentRecomputeCancellation;
+
+class ScopedCurrentRecomputeCancellation
+{
+public:
+    explicit ScopedCurrentRecomputeCancellation(RecomputeCancellationHandle cancellation)
+        : _previous(std::move(currentRecomputeCancellation))
+    {
+        currentRecomputeCancellation = std::move(cancellation);
+    }
+
+    ~ScopedCurrentRecomputeCancellation()
+    {
+        currentRecomputeCancellation = std::move(_previous);
+    }
+
+    ScopedCurrentRecomputeCancellation(const ScopedCurrentRecomputeCancellation&) = delete;
+    ScopedCurrentRecomputeCancellation& operator=(const ScopedCurrentRecomputeCancellation&) = delete;
+
+private:
+    RecomputeCancellationHandle _previous;
+};
+
 RecomputeRequest takeNextRecomputeRequest(std::deque<RecomputeRequest>& requests)
 {
     RecomputeRequest request = std::move(requests.front());
@@ -259,18 +282,62 @@ void reportRecomputeException(const Base::Exception& exception)
     exception.reportException();
 }
 
+void markCanceledRecomputeResult(RecomputeResult& result)
+{
+    result.success = false;
+    result.failure = RecomputeFailure::Canceled;
+    if (!result.exception) {
+        result.exception = std::make_unique<Base::AbortException>("User aborted");
+    }
+}
+
+bool documentObjectCanRecomputeOnWorker(const DocumentObject& documentObject, bool recursive)
+{
+    if (!recursive) {
+        return documentObject.canRecomputeOnWorker();
+    }
+
+    try {
+        std::vector<DocumentObject*> roots {const_cast<DocumentObject*>(&documentObject)};
+        const auto recomputeObjects = Document::getDependencyList(roots, Document::DepSort);
+        return std::ranges::all_of(recomputeObjects, [](const DocumentObject* object) {
+            return object && object->canRecomputeOnWorker();
+        });
+    }
+    catch (const Base::BadGraphError&) {
+        return false;
+    }
+}
+
 RecomputeResult processRecomputeRequest(RecomputeRequest& request)
 {
     RecomputeResult result;
+    // Object-targeted recomputeFeature() does not acquire the GIL itself,
+    // unlike Document::recompute(). Keep the same worker contract for both
+    // request forms because MainThreadSignal releases the GIL while it hops
+    // document notifications to the GUI thread.
+    Base::PyGILStateLocker gilLocker;
+    ScopedCurrentRecomputeCancellation cancellationScope(request.cancellation);
+
+    if (currentRecomputeWasCanceled()) {
+        markCanceledRecomputeResult(result);
+        return result;
+    }
 
     try {
-        if (Document* document = request.resolveDocument()) {
+        if (!request.documentObjectName.empty()) {
+            if (DocumentObject* documentObject = request.resolveDocumentObject()) {
+                documentObject->recomputeFeature(request.recursive);
+            }
+        }
+        else if (Document* document = request.resolveDocument()) {
             document->recompute({}, request.force, nullptr, request.options);
         }
-
-        if (DocumentObject* documentObject = request.resolveDocumentObject()) {
-            documentObject->recomputeFeature(request.recursive);
-        }
+    }
+    catch (Base::AbortException& exception) {
+        result.exception = std::make_unique<Base::AbortException>(std::move(exception));
+        result.failure = RecomputeFailure::Canceled;
+        result.success = false;
     }
     catch (Base::BadGraphError& exception) {
         result.exception = std::make_unique<Base::BadGraphError>(std::move(exception));
@@ -284,10 +351,36 @@ RecomputeResult processRecomputeRequest(RecomputeRequest& request)
         result.success = false;
     }
 
+    if (currentRecomputeWasCanceled() && result.failure == RecomputeFailure::None) {
+        markCanceledRecomputeResult(result);
+    }
+
     return result;
 }
 
 }  // namespace
+
+void App::RecomputeCancellationState::cancel() noexcept
+{
+    _canceled.store(true, std::memory_order_release);
+}
+
+bool App::RecomputeCancellationState::isCanceled() const noexcept
+{
+    return _canceled.load(std::memory_order_acquire);
+}
+
+bool App::currentRecomputeWasCanceled() noexcept
+{
+    return currentRecomputeCancellation && currentRecomputeCancellation->isCanceled();
+}
+
+void App::throwIfRecomputeCanceled()
+{
+    if (currentRecomputeWasCanceled()) {
+        throw Base::AbortException("User aborted");
+    }
+}
 
 //==========================================================================
 // Application
@@ -827,7 +920,7 @@ bool Application::isFineGrainedRecomputeEnabled()
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 {
     if (DocumentObject* documentObject = req.resolveDocumentObject()) {
-        return documentObject->canRecomputeOnWorker();
+        return documentObjectCanRecomputeOnWorker(*documentObject, req.recursive);
     }
 
     Document* document = req.resolveDocument();
@@ -836,6 +929,10 @@ bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 
 void Application::queueRecomputeRequest(RecomputeRequest req)
 {
+    if (!req.cancellation) {
+        req.cancellation = std::make_shared<RecomputeCancellationState>();
+    }
+
     if (!canRecomputeRequestOnWorker(req)) {
         RecomputeResult result;
 
@@ -867,6 +964,25 @@ void Application::queueRecomputeRequest(RecomputeRequest req)
     notifyRecomputeWorker();
 }
 
+bool Application::cancelRecomputeRequest(const RecomputeCancellationHandle& cancellation)
+{
+    if (!cancellation) {
+        return false;
+    }
+
+    // Set the bit before taking the queue lock so a worker that is just about
+    // to begin the request observes cancellation even if it wins the race.
+    cancellation->cancel();
+
+    std::lock_guard<std::mutex> lock(_recomputeMutex);
+    const bool active = _recomputeRequestInProgress
+        && _recomputeRequestInProgress->cancellation == cancellation;
+    const bool queued = std::ranges::any_of(_recomputeRequests, [&cancellation](const auto& request) {
+        return request.cancellation == cancellation;
+    });
+    return active || queued;
+}
+
 void Application::cancelRecomputeRequestsForDocument(const std::string& documentName)
 {
     if (documentName.empty()) {
@@ -874,15 +990,37 @@ void Application::cancelRecomputeRequestsForDocument(const std::string& document
     }
 
     std::unique_lock<std::mutex> lock(_recomputeMutex);
-    _recomputeStateChanged.wait(lock, [this, &documentName] {
-        return !_recomputeDocumentsInProgress.contains(documentName);
-    });
+    if (_recomputeRequestInProgress
+        && requestTargetsDocument(*_recomputeRequestInProgress, documentName)
+        && _recomputeRequestInProgress->cancellation) {
+        _recomputeRequestInProgress->cancellation->cancel();
+    }
 
-    // Cancellation runs on document-close boundaries, so a linear scan keeps
-    // the queue simple without affecting the steady-state worker path.
-    std::erase_if(_recomputeRequests, [&documentName](const RecomputeRequest& request) {
-        return requestTargetsDocument(request, documentName);
-    });
+    // Keep canceled queued requests in the queue until the worker observes
+    // them. This preserves the normal worker callback thread and guarantees
+    // that each queued request receives exactly one Canceled completion.
+    for (auto& request : _recomputeRequests) {
+        if (requestTargetsDocument(request, documentName) && request.cancellation) {
+            request.cancellation->cancel();
+        }
+    }
+
+    while (_recomputeDocumentsInProgress.contains(documentName)) {
+        if (MainThreadSignalConfig::hasHooks() && MainThreadSignalConfig::isMainThread()
+            && MainThreadSignalConfig::canPumpEvents()) {
+            lock.unlock();
+            MainThreadSignalConfig::pumpEvents();
+            lock.lock();
+            if (_recomputeDocumentsInProgress.contains(documentName)) {
+                _recomputeStateChanged.wait_for(lock, std::chrono::milliseconds(1));
+            }
+        }
+        else {
+            _recomputeStateChanged.wait(lock, [this, &documentName] {
+                return !_recomputeDocumentsInProgress.contains(documentName);
+            });
+        }
+    }
 }
 
 struct DocTiming {
@@ -3240,6 +3378,7 @@ void Application::recomputeWorker()
         // Process all pending recompute requests.
         while (!_recomputeRequests.empty()) {
             RecomputeRequest request = takeNextRecomputeRequest(_recomputeRequests);
+            _recomputeRequestInProgress = request;
             if (!request.documentName.empty()) {
                 _recomputeDocumentsInProgress.insert(request.documentName);
             }
@@ -3254,6 +3393,7 @@ void Application::recomputeWorker()
             }
 
             lock.lock();
+            _recomputeRequestInProgress.reset();
             if (!request.documentName.empty()) {
                 _recomputeDocumentsInProgress.erase(request.documentName);
                 _recomputeStateChanged.notify_all();

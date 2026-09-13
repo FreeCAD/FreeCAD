@@ -47,11 +47,17 @@ class MainThreadSignalConfig
 public:
     using IsMainThreadFn = bool (*)();  // true iff currently on GUI/main thread
     using InvokeFn = void (*)(std::function<void()>&& fn, bool blocking);
+    using PumpEventsFn = void (*)();
 
-    static void setHooks(IsMainThreadFn isMainThread, InvokeFn invoke)
+    static void setHooks(
+        IsMainThreadFn isMainThread,
+        InvokeFn invoke,
+        PumpEventsFn pumpEvents = nullptr
+    )
     {
         isMainThreadSlot() = isMainThread;
         invokeSlot() = invoke;
+        pumpEventsSlot() = pumpEvents;
     }
 
     static inline bool isMainThread()
@@ -65,6 +71,11 @@ public:
         return isMainThreadSlot() && invokeSlot();
     }
 
+    static inline bool canPumpEvents()
+    {
+        return pumpEventsSlot() != nullptr;
+    }
+
     static inline void invoke(std::function<void()>&& fn, bool blocking)
     {
         auto* f = invokeSlot();
@@ -73,6 +84,13 @@ public:
         }
         else {
             fn();  // no hooks, run inline
+        }
+    }
+
+    static inline void pumpEvents()
+    {
+        if (auto* f = pumpEventsSlot()) {
+            f();
         }
     }
 
@@ -85,6 +103,11 @@ private:
     static InvokeFn& invokeSlot()
     {
         static InvokeFn fn = nullptr;
+        return fn;
+    }
+    static PumpEventsFn& pumpEventsSlot()
+    {
+        static PumpEventsFn fn = nullptr;
         return fn;
     }
 };

@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <memory>
+#include <utility>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -43,6 +44,7 @@
 #include <TopTools_ListOfShape.hxx>
 
 
+#include <App/Application.h>
 #include <App/Link.h>
 
 #include <App/Document.h>
@@ -422,6 +424,8 @@ void Thickness::handleChangedPropertyType(
 
 App::DocumentObjectExecReturn* Thickness::execute()
 {
+    App::throwIfRecomputeCanceled();
+
     std::vector<TopoShape> shapes;
     auto base = getTopoShape(Faces.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform);
     if (base.isNull()) {
@@ -443,10 +447,19 @@ App::DocumentObjectExecReturn* Thickness::execute()
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
 
-    this->Shape.setValue(
-        TopoShape(0, getDocument()->getStringHasher())
-            .makeElementThickSolid(base, shapes, thickness, tol, inter, self, mode, static_cast<JoinType>(join))
-    );
+    auto result = TopoShape(0, getDocument()->getStringHasher())
+                      .makeElementThickSolid(
+                          base,
+                          shapes,
+                          thickness,
+                          tol,
+                          inter,
+                          self,
+                          mode,
+                          static_cast<JoinType>(join)
+                      );
+    App::throwIfRecomputeCanceled();
+    this->Shape.setValue(std::move(result));
     return Part::Feature::execute();
 }
 

@@ -30,6 +30,8 @@
 
 namespace Gui
 {
+class AsyncTaskRecompute;
+class AsyncPreviewStatus;
 class LinearGizmo;
 class GizmoContainer;
 }  // namespace Gui
@@ -55,6 +57,10 @@ public:
 
 private:
     void setupConnections();
+    void setEditingEnabled(bool enabled);
+    void schedulePreview();
+    void applyUiState();
+    void completeDeferredAction();
     void onSpinOffsetValueChanged(double);
     void onModeTypeActivated(int);
     void onJoinTypeActivated(int);
