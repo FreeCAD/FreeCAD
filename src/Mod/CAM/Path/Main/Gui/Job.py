@@ -1,26 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 from PySide import QtCore, QtGui
 from collections import Counter
@@ -33,7 +30,6 @@ import Path.Base.Gui.SetupSheet as PathSetupSheetGui
 import Path.Base.Gui.Theme as PathGuiTheme
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
-import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
@@ -43,7 +39,7 @@ import Path.Tool.Gui.Controller as PathToolControllerGui
 # module registers the document-load observer that prompts about stale
 # tool updates on open, which must happen before any document opens.
 import Path.Tool.Gui.UpdateDocumentToolsDlg as PathUpdateToolsGui
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Tool.docobject.ui.docobject import _get_label_text as _format_label
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
 from Machine.models import MachineFactory
@@ -85,7 +81,7 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             missing = "ViewObject"
             if job.ViewObject:
                 missing = "Proxy"
-        Path.Log.warning("Cannot edit %s - no %s" % (obj.Label, missing))
+        Path.Log.warning(f"Cannot edit {obj.Label} - no {missing}")
 
 
 @contextmanager
@@ -215,9 +211,8 @@ class ViewProvider:
         self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        if hasattr(self, "stockVisibility"):
-            if self.stockVisibility:
-                self.obj.Stock.Visibility = True
+        if hasattr(self, "stockVisibility") and self.stockVisibility:
+            self.obj.Stock.Visibility = True
 
     def hideTools(self):
         self.toolsVisibility = {}
@@ -278,7 +273,7 @@ class ViewProvider:
                 return self.openTaskPanel("Model")
             if obj == self.obj.Stock:
                 return self.openTaskPanel("Stock")
-            Path.Log.info("Expected a specific object to edit - %s not recognized" % obj.Label)
+            Path.Log.info(f"Expected a specific object to edit - {obj.Label} not recognized")
         return self.openTaskPanel()
 
     def uneditObject(self, obj=None):
@@ -386,7 +381,7 @@ class ViewProvider:
 
 class MaterialDialog(QtWidgets.QDialog):
     def __init__(self, parent=None, current_uuid=None):
-        super(MaterialDialog, self).__init__(parent)
+        super().__init__(parent)
 
         self.setWindowTitle(translate("CAM_Job", "Assign Stock Material"))
         self.uuid = current_uuid
@@ -404,7 +399,7 @@ class MaterialDialog(QtWidgets.QDialog):
             try:
                 self.materialTreeWidget.UUID = current_uuid
             except Exception as e:
-                Path.Log.debug("Could not preselect material %s: %s" % (current_uuid, e))
+                Path.Log.debug(f"Could not preselect material {current_uuid}: {e}")
 
         # Create OK and Cancel buttons
         self.okButton = QtWidgets.QPushButton("OK")
@@ -434,7 +429,7 @@ class MaterialDialog(QtWidgets.QDialog):
             print(e)
 
 
-class StockEdit(object):
+class StockEdit:
     Index = -1
     StockType = PathStock.StockType.Unknown
 
@@ -499,7 +494,7 @@ class StockFromBaseBoundBoxEdit(StockEdit):
     StockType = PathStock.StockType.FromBase
 
     def __init__(self, obj, form, force):
-        super(StockFromBaseBoundBoxEdit, self).__init__(obj, form, force)
+        super().__init__(obj, form, force)
 
         self.trackXpos = None
         self.trackYpos = None
@@ -537,8 +532,8 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZpos = FreeCAD.Units.Quantity(
                     self.form.stockExtZpos.property("rawValue"), FreeCAD.Units.Length
                 )
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def getFields(self, obj, fields=None):
         if fields is None:
@@ -652,8 +647,8 @@ class StockCreateBoxEdit(StockEdit):
                     )
             else:
                 Path.Log.error("Stock not a box!")
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
@@ -694,8 +689,8 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Axis = str(self.form.stockCylinderAxis.currentData())
             else:
                 Path.Log.error(translate("CAM_Job", "Stock not a cylinder!"))
-        except Exception:
-            pass
+        except Exception as e:
+            Path.Log.debug(e)
 
     def setFields(self, obj):
         if self.force or not self.IsStock(obj):
@@ -747,13 +742,13 @@ class StockFromExistingEdit(StockEdit):
             hasattr(obj.Stock, "Objects")
             and len(obj.Stock.Objects) == 1
             and obj.Stock.Objects[0] == stock
+            and stock
         ):
-            if stock:
-                stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix, "Stock")
-                stock.ViewObject.Visibility = True
-                PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
-                stock.Proxy.execute(stock)
-                self.setStock(obj, stock)
+            stock = PathJob.createResourceClone(obj, stock, self.StockLabelPrefix, "Stock")
+            stock.ViewObject.Visibility = True
+            PathStock.SetupStockObject(stock, PathStock.StockType.Unknown)
+            stock.Proxy.execute(stock)
+            self.setStock(obj, stock)
 
     def candidates(self, obj):
         solids = [o for o in obj.Document.Objects if PathUtil.isSolid(o)]
@@ -769,21 +764,16 @@ class StockFromExistingEdit(StockEdit):
             solids.remove(job.Stock)
         excludeIndexes = []
         for index, model in enumerate(solids):
-            if [ob.Name for ob in model.InListRecursive if "Tools" in ob.Name]:
-                excludeIndexes.append(index)
-            elif hasattr(model, "PathResource"):
-                excludeIndexes.append(index)
-            elif model.InList and hasattr(model.InList[0], "ToolBitID"):
-                excludeIndexes.append(index)
-            elif hasattr(model, "ToolBitID"):
-                excludeIndexes.append(index)
-            elif model.TypeId == "App::DocumentObjectGroup":
-                excludeIndexes.append(index)
-            elif hasattr(model, "StockType"):
-                excludeIndexes.append(index)
-            elif not model.ViewObject.ShowInTree:
-                excludeIndexes.append(index)
-            elif model.isDerivedFrom("PartDesign::Feature"):
+            if (
+                any("Tools" in ob.Name for ob in model.InListRecursive)
+                or hasattr(model, "PathResource")
+                or (model.InList and hasattr(model.InList[0], "ToolBitID"))
+                or hasattr(model, "ToolBitID")
+                or model.TypeId == "App::DocumentObjectGroup"
+                or hasattr(model, "StockType")
+                or not model.ViewObject.ShowInTree
+                or model.isDerivedFrom("PartDesign::Feature")
+            ):
                 excludeIndexes.append(index)
 
         for i in sorted(excludeIndexes, reverse=True):
@@ -1108,26 +1098,26 @@ class TaskPanel:
             item.setData(self.DataProperty, "Label")
             self.form.toolControllerList.setItem(row, 0, item)
 
-            item = QtGui.QTableWidgetItem("%d" % tc.ToolNumber)
+            item = QtGui.QTableWidgetItem(f"{tc.ToolNumber}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "Number")
             self.form.toolControllerList.setItem(row, 1, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.HorizFeed.getValueAs(vUnit))
+            item = QtGui.QTableWidgetItem(f"{tc.HorizFeed.getValueAs(vUnit).Value:g}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "HorizFeed")
             self.form.toolControllerList.setItem(row, 2, item)
 
-            item = QtGui.QTableWidgetItem("%g" % tc.VertFeed.getValueAs(vUnit))
+            item = QtGui.QTableWidgetItem(f"{tc.VertFeed.getValueAs(vUnit).Value:g}")
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
             item.setData(self.DataProperty, "VertFeed")
             self.form.toolControllerList.setItem(row, 3, item)
 
             item = QtGui.QTableWidgetItem(
-                "%s%g" % ("+" if tc.SpindleDir == "Forward" else "-", tc.SpindleSpeed)
+                f"{'+' if tc.SpindleDir.casefold() == 'forward' else '-'}{tc.SpindleSpeed:g}"
             )
             item.setTextAlignment(QtCore.Qt.AlignRight)
             item.setData(self.DataObject, tc)
@@ -1209,7 +1199,7 @@ class TaskPanel:
             if count == 1:
                 self.form.jobModel.addItem(name)
             else:
-                self.form.jobModel.addItem("%s (%d)" % (name, count))
+                self.form.jobModel.addItem(f"{name} ({count})")
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
@@ -1238,7 +1228,7 @@ class TaskPanel:
             msgBox.setInformativeText("<p align='center'>Are you sure?</p>")
             msgBox.findChild(QtGui.QGridLayout).setColumnMinimumWidth(1, 250)
             btn1 = msgBox.addButton("Ok", QtGui.QMessageBox.ButtonRole.YesRole)
-            btn2 = msgBox.addButton("Cancel", QtGui.QMessageBox.ButtonRole.RejectRole)
+            _ = msgBox.addButton("Cancel", QtGui.QMessageBox.ButtonRole.RejectRole)
             msgBox.exec()
             if msgBox.clickedButton() == btn1:
                 self.obj.PostProcessorOutputFile = str(filename[0])
@@ -1261,7 +1251,10 @@ class TaskPanel:
 
     def objectDelete(self, widget):
         for item in widget.selectedItems():
-            obj = item.data(self.DataObject, 0)
+            if isinstance(widget, QtGui.QTreeWidget):  # operationsList
+                obj = item.data(self.DataObject, 0)
+            else:  # toolControllerList
+                obj = item.data(self.DataObject)
             if (
                 obj.ViewObject
                 and hasattr(obj.ViewObject, "Proxy")
@@ -1298,7 +1291,7 @@ class TaskPanel:
             return len(tc.InList) == 1
 
         # if anything is selected it can be edited
-        edit = True if self.form.toolControllerList.selectedItems() else False
+        edit = bool(self.form.toolControllerList.selectedItems())
         self.form.toolControllerEdit.setEnabled(edit)
 
         # can only delete what is selected
@@ -1368,7 +1361,7 @@ class TaskPanel:
                             toolNumber, owner.Label
                         ),
                     )
-            item.setText("%d" % tc.ToolNumber)
+            item.setText(f"{tc.ToolNumber}")
         elif "Spindle" == prop:
             try:
                 speed = float(item.text())
@@ -1378,9 +1371,11 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except Exception:
-                pass
-            item.setText("%s%g" % ("+" if tc.SpindleDir == "Forward" else "-", tc.SpindleSpeed))
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(
+                f"{'+' if tc.SpindleDir.casefold() == 'forward' else '-'}{tc.SpindleSpeed:g}"
+            )
         elif "HorizFeed" == prop or "VertFeed" == prop:
             vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
             try:
@@ -1390,22 +1385,22 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except Exception:
-                pass
-            item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(f"{getattr(tc, prop).getValueAs(vUnit).Value:g}")
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except Exception:
-                pass
-            item.setText("%g" % getattr(tc, prop).Value)
+            except Exception as e:
+                Path.Log.debug(e)
+            item.setText(f"{getattr(tc, prop).Value:g}")
 
     def modelSetAxis(self, axis):
         Path.Log.track(axis)
 
         def alignSel(sel, normal, flip=False):
-            Path.Log.track("Vector(%.2f, %.2f, %.2f)" % (normal.x, normal.y, normal.z), flip)
+            Path.Log.track(f"Vector({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f})", flip)
             v = axis
             if flip:
                 v = axis.negative()
@@ -1422,8 +1417,7 @@ class TaskPanel:
                 r = v.cross(normal)  # rotation axis
                 a = DraftVecUtils.angle(normal, v, r) * 180 / math.pi
             Path.Log.debug(
-                "oh boy: (%.2f, %.2f, %.2f) x (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f) -> %.2f"
-                % (v.x, v.y, v.z, normal.x, normal.y, normal.z, r.x, r.y, r.z, a)
+                f"oh boy: ({v.x:.2f}, {v.y:.2f}, {v.z:.2f}) x ({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> ({r.x:.2f}, {r.y:.2f}, {r.z:.2f}) -> {a:.2f}"
             )
             Draft.rotate(sel.Object, a, axis=r)
 
@@ -1442,13 +1436,11 @@ class TaskPanel:
                         if sub.Orientation == "Reversed":
                             normal = FreeCAD.Vector() - normal
                             Path.Log.debug(
-                                "(%.2f, %.2f, %.2f) -> reversed (%s)"
-                                % (normal.x, normal.y, normal.z, sub.Orientation)
+                                f"({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> reversed ({sub.Orientation})"
                             )
                         else:
                             Path.Log.debug(
-                                "(%.2f, %.2f, %.2f) -> forward  (%s)"
-                                % (normal.x, normal.y, normal.z, sub.Orientation)
+                                f"({normal.x:.2f}, {normal.y:.2f}, {normal.z:.2f}) -> forward  ({sub.Orientation})"
                             )
 
                         if Path.Geom.pointsCoincide(axis, normal):
@@ -1546,14 +1538,13 @@ class TaskPanel:
         try:
             entries = MachineFactory.list_configuration_files()
         except Exception as e:
-            Path.Log.warning("Failed to list machines: %s" % e)
+            Path.Log.warning(f"Failed to list machines: {e}")
             entries = [("<none>", None)]
         for display, filename in entries:
             combo.addItem(display, filename or "")
         current = getattr(self.obj, "Machine", "") or ""
         idx = combo.findText(current) if current else -1
-        if idx < 0:
-            idx = 0
+        idx = max(0, idx)
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
 
@@ -1576,7 +1567,7 @@ class TaskPanel:
                     if idx >= 0:
                         self.form.jobMachine.setCurrentIndex(idx)
         except Exception as e:
-            Path.Log.error("Failed to open Machine Editor: %s" % e)
+            Path.Log.error(f"Failed to open Machine Editor: {e}")
 
     def togglePickTarget(self, modelTarget):
         """Set whether origin/axis picks target the Model or the Stock.
@@ -1722,19 +1713,13 @@ class TaskPanel:
             Draft.move(sel.Object, by)
 
     def isValidDatumSelection(self, sel):
-        if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            return True
-
-        # no valid selection
-        return False
+        return sel.ShapeType in ("Vertex", "Edge", "Face")
 
     def isValidAxisSelection(self, sel):
-        if sel.ShapeType in ["Vertex", "Edge", "Face"]:
+        if sel.ShapeType in ("Vertex", "Edge", "Face"):
             if hasattr(sel, "Curve") and isinstance(sel.Curve, Part.Circle):
                 return False
-            if hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0:
-                return False
-            return True
+            return not (hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0)
 
         # no valid selection
         return False
@@ -1926,15 +1911,15 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ["Layout", "Stock"]:
+        if activate in ("Layout", "Stock"):
             self.form.setCurrentIndex(0)
-        if activate in ["General", "Model"]:
+        if activate in ("General", "Model"):
             self.form.setCurrentIndex(1)
-        if activate in ["Output", "Post Processor"]:
+        if activate in ("Output", "Post Processor"):
             self.form.setCurrentIndex(2)
-        if activate in ["Tools", "Tool Controller"]:
+        if activate in ("Tools", "Tool Controller"):
             self.form.setCurrentIndex(3)
-        if activate in ["Workplan", "Operations"]:
+        if activate in ("Workplan", "Operations"):
             self.form.setCurrentIndex(4)
 
         self.form.currentChanged.connect(self.tabPageChanged)
@@ -1944,8 +1929,8 @@ class TaskPanel:
     def _updateRotateIcons(self):
         """Color the rotate arrows to match the axis selected in the axis combo."""
         axis = ["x", "y", "z"][max(0, min(2, self.form.modelRotateAxis.currentIndex()))]
-        self.form.modelRotateLeft.setIcon(QtGui.QIcon(":/icons/arrow-ccw-%s.svg" % axis))
-        self.form.modelRotateRight.setIcon(QtGui.QIcon(":/icons/arrow-cw-%s.svg" % axis))
+        self.form.modelRotateLeft.setIcon(QtGui.QIcon(f":/icons/arrow-ccw-{axis}.svg"))
+        self.form.modelRotateRight.setIcon(QtGui.QIcon(f":/icons/arrow-cw-{axis}.svg"))
 
     def _applyButtonIcons(self):
         """Set button icons with original SVG colors, adapting monochrome icons to the
