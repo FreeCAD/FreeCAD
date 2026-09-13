@@ -206,6 +206,8 @@ void Persistence::dumpToStream(std::ostream& stream, int compression)
         writer.setLevel(compression);
         writer.putNextEntry("Persistence.xml");
         writer.setMode("BinaryBrep");
+        // This is necessary to make successive dumps reproducible.
+        writer.setStoreDate(false);
 
         // save the content (we need to encapsulate it with xml tags to be able to read single
         // element xmls like happen for properties)
