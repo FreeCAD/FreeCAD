@@ -743,7 +743,7 @@ private:
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;
 
-    ViewerEventFilter* viewerEventFilter;
+    ViewerEventFilter* viewerEventFilter {nullptr};
 
     PyObject* _viewerPy;
 
