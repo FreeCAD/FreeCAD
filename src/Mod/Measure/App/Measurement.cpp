@@ -253,16 +253,16 @@ MeasureType Measurement::findType()
             }
         }
         else {
-            if (planes == 1 && faces == 1) {
-                mode = MeasureType::Plane;
-            }
-            else if (planes == 2 && faces == 2) {
+            if ((planes + discs) == 2 && faces == 2) {
                 if (planesAreParallel()) {
-                    mode = MeasureType::TwoPlanes;
+                    mode = discs == 2 ? MeasureType::TwoDiscs : MeasureType::TwoPlanes;
                 }
                 else {
                     mode = MeasureType::Surfaces;
                 }
+            }
+            else if (planes == 1 && faces == 1) {
+                mode = MeasureType::Plane;
             }
             else if (cylinders == 1 && faces == 1) {
                 mode = MeasureType::Cylinder;
@@ -578,7 +578,8 @@ double Measurement::circleCenterDistance() const
 }
 double Measurement::planePlaneDistance() const
 {
-    if (measureType != MeasureType::TwoPlanes || References3D.getSize() != 2) {
+    if ((measureType != MeasureType::TwoPlanes && measureType != MeasureType::TwoDiscs)
+        || References3D.getSize() != 2) {
         return 0.0;
     }
 
@@ -610,6 +611,26 @@ double Measurement::planePlaneDistance() const
     double distance = Abs(vectorBetweenPlanes.Dot(normalToPlane1));
 
     return distance;
+}
+double Measurement::discAxisDistance() const
+{
+    if (measureType != MeasureType::TwoDiscs || References3D.getSize() != 2) {
+        return 0.0;
+    }
+
+    const auto& objects = References3D.getValues();
+    const auto& subElements = References3D.getSubValues();
+
+    const auto getDiscAxis = [](const TopoDS_Face& face) {
+        TopExp_Explorer edges(face, TopAbs_EDGE);
+        BRepAdaptor_Curve circle(TopoDS::Edge(edges.Current()));
+        return circle.Circle().Axis();
+    };
+
+    const TopoDS_Face face1 = TopoDS::Face(getShape(objects[0], subElements[0].c_str(), TopAbs_FACE));
+    const TopoDS_Face face2 = TopoDS::Face(getShape(objects[1], subElements[1].c_str(), TopAbs_FACE));
+
+    return gp_Lin(getDiscAxis(face1)).Distance(gp_Lin(getDiscAxis(face2)));
 }
 double Measurement::cylinderAxisDistance() const
 {
