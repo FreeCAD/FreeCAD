@@ -285,6 +285,10 @@ public:
     /// destructor
     ~PropertyIntegerConstraint() override;
 
+    /** Sets the property
+     */
+    void setValue(long);
+
     /// Constraint methods
     //@{
     /// the boundary struct
@@ -651,6 +655,9 @@ public:
      */
     ~PropertyFloatConstraint() override;
 
+    /** Sets the property
+     */
+    void setValue(double lValue);
 
     /// Constraint methods
     //@{
@@ -1132,7 +1139,7 @@ protected:
     Base::Color getPyValue(PyObject* py) const override;
 
 private:
-    bool requiresAlphaConversion {false}; // In 1.1 the handling of alpha was inverted
+    bool requiresAlphaConversion {false};  // In 1.1 the handling of alpha was inverted
 };
 
 
@@ -1240,8 +1247,7 @@ public:
     {
         PropertyListsT<Material>::setValue(materials);
     }
-    void
-    setValues(const std::vector<App::Material>& newValues = std::vector<App::Material>()) override;
+    void setValues(const std::vector<App::Material>& newValues = std::vector<App::Material>()) override;
     void setValue(const Material& mat);
     void setValue(int index, const Material& mat);
 
