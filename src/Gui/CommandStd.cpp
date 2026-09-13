@@ -55,7 +55,7 @@
 #include "WorkbenchManager.h"
 #include "App/GeoFeature.h"
 #include "App/Annotation.h"
-
+#include "Control.h"
 
 using Base::Console;
 using Base::Sequencer;
@@ -117,7 +117,7 @@ void StdCmdWorkbench::activated(int i)
 
 bool StdCmdWorkbench::isActive()
 {
-    return true;
+    return !Gui::Control().activeDialog();
 }
 
 Action* StdCmdWorkbench::createAction()
