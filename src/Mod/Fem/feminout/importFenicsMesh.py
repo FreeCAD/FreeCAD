@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017-2023 Johannes Hartung <j.hartung@gmx.net>          *
 # *                                                                         *

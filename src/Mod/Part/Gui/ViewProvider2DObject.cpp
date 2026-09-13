@@ -413,8 +413,9 @@ void ViewProvider2DObject::onChanged(const App::Property* property)
 {
     ViewProviderPart::onChanged(property);
 
-    if (property == &ShowPlane) {
-        plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    if (property == &ShowPlane || property == &Visibility) {
+        plane->whichChild = (ShowPlane.getValue() && Visibility.getValue()) ? SO_SWITCH_ALL
+                                                                            : SO_SWITCH_NONE;
     }
 }
 
@@ -439,7 +440,7 @@ const char* ViewProvider2DObject::getDefaultDisplayMode() const
 
 void ViewProvider2DObject::updatePlane()
 {
-    plane->whichChild = ShowPlane.getValue() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    onChanged(&ShowPlane);
 
     Gui::coinRemoveAllChildren(plane);
 

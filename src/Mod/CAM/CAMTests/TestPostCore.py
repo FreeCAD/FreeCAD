@@ -1067,7 +1067,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
         Expected:
             - Override values are reflected in the final G-code output
         """
-        from Path.Post.scripts.generic_plasma_post import GenericPlasma
+        from Path.Post.scripts.generic_sheet_cutting_post import GenericSheetCutting
         from Machine.models.machine import MachineFactory
 
         # Reset job overrides to clean state
@@ -1075,7 +1075,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         # Create machine with plasma postprocessor
         machine = self._create_test_machine(pierce_delay=1000)
-        machine.postprocessor_file_name = "generic_plasma"
+        machine.postprocessor_file_name = "generic_sheet_cutting"
 
         # Add M3/M4 commands to trigger plasma behavior
         plasma_commands = [
@@ -1098,7 +1098,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with no overrides (machine defaults)
             self.job.PostProcessorPropertyOverrides = "{}"
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
@@ -1108,7 +1108,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with pierce_delay override
             self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
@@ -1187,3 +1187,42 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         finally:
             os.unlink(template_path)
+
+    def test_job_property_overrides_beat_merge_machine_config(self):
+        """
+        Regression test: job-level overrides must win even for properties
+        that _merge_machine_config() also sets directly from the live
+        machine model (e.g. f_for_rapid_moves, tool_change).
+        """
+        from Path.Post.Processor import PostProcessor
+        from Machine.models.machine import MachineFactory
+
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        machine = self._create_test_machine()
+        # Machine-level config: opposite of what we will override to.
+        machine.processing.f_for_rapid_moves = True
+        machine.processing.tool_change = True
+
+        original_get_machine = MachineFactory.get_machine
+        MachineFactory.get_machine = lambda name: machine
+
+        try:
+            self.job.PostProcessorPropertyOverrides = (
+                '{"f_for_rapid_moves": false, "tool_change": false}'
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor._machine = machine
+            processor.export2()
+
+            self.assertFalse(
+                processor.values["F_FOR_RAPID_MOVES"],
+                "job override of f_for_rapid_moves must win over machine.processing",
+            )
+            self.assertFalse(
+                processor.values["TOOL_CHANGE"],
+                "job override of tool_change must win over machine.processing",
+            )
+
+        finally:
+            MachineFactory.get_machine = original_get_machine

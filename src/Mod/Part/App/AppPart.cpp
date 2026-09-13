@@ -95,8 +95,14 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "CircularPatternExtension.h"
 #include "LinearPatternExtension.h"
+#include "LinkArray.h"
+#include "LinkArrayCircular.h"
+#include "LinkArrayLinear.h"
+#include "LinkArrayPath.h"
 #include "PolarPatternExtension.h"
+#include "PathPatternExtension.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
 #include "GeometryBoolExtensionPy.h"
@@ -449,9 +455,16 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
     Part::PreviewExtension      ::init();
+    Part::PreviewExtensionPython::init();
     Part::PrismExtension        ::init();
+    Part::CircularPatternExtension::init();
     Part::LinearPatternExtension::init();
     Part::PolarPatternExtension ::init();
+    Part::PathPatternExtension  ::init();
+    Part::LinkArray             ::init();
+    Part::LinkArrayCircular     ::init();
+    Part::LinkArrayLinear       ::init();
+    Part::LinkArrayPath         ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();

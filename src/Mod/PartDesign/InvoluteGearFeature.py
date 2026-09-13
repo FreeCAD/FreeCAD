@@ -244,7 +244,7 @@ class _InvoluteGearTaskPanel:
                 setattr(self.obj, property_name, value)
                 self.obj.Proxy.execute(self.obj)
                 if fitView:
-                    FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+                    FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
             return assigner
 
@@ -281,7 +281,7 @@ class _InvoluteGearTaskPanel:
 
         if mode == 0:  # fresh created
             self.obj.Proxy.execute(self.obj)  # calculate once
-            FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+            FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def assignToolTipsFromPropertyDocs(self):
         def assign(property_name, *widgets):

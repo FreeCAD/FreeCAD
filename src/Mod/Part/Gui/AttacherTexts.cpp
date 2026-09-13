@@ -111,8 +111,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                     qApp->translate("Attacher3D", "Midplane between faces", "Attachment3D mode caption"),
                     qApp->translate(
                         "Attacher3D",
-                        "Plane origin is midway between the centers of two planar faces and its "
-                        "orientation equally bisects their angle.",
+                        "Plane origin is midway between two planar faces and its orientation "
+                        "equally bisects their angle. For non-parallel faces the plane contains "
+                        "their intersection line.",
                         "Attachment3D mode tooltip"
                     )
                 );
@@ -363,8 +364,9 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                     qApp->translate("Attacher2D", "Midplane between faces", "AttachmentPlane mode caption"),
                     qApp->translate(
                         "Attacher2D",
-                        "Plane origin is midway between the centers of two planar faces and its "
-                        "orientation equally bisects their angle.",
+                        "Plane origin is midway between two planar faces and its orientation "
+                        "equally bisects their angle. For non-parallel faces the plane contains "
+                        "their intersection line.",
                         "AttachmentPlane mode tooltip"
                     )
                 );

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+disable_occt8_deprecation_warnings()
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
@@ -105,6 +108,7 @@ SET(FemExamples_SRCS
     femexamples/frequency_beamsimple.py
     femexamples/inductive_heating_axisymmetric.py
     femexamples/magnetic_shielding_2D.py
+    femexamples/magnetization_3D.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py

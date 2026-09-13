@@ -25,11 +25,13 @@
 #pragma once
 
 #include <Base/Converter.h>
+#include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Mod/Part/PartGlobal.h>
 
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
 #include <gp_XYZ.hxx>
 #include <Geom_Surface.hxx>
@@ -122,6 +124,32 @@ struct vec_traits<gp_XYZ>
 private:
     const vec_type& v;
 };
+
+/// Convert an OCCT transformation to a placement using its transformation matrix.
+template<>
+inline Placement convertTo<Placement, gp_Trsf>(const gp_Trsf& transform)
+{
+    Base::Matrix4D matrix(
+        transform.Value(1, 1),
+        transform.Value(1, 2),
+        transform.Value(1, 3),
+        transform.Value(1, 4),
+        transform.Value(2, 1),
+        transform.Value(2, 2),
+        transform.Value(2, 3),
+        transform.Value(2, 4),
+        transform.Value(3, 1),
+        transform.Value(3, 2),
+        transform.Value(3, 3),
+        transform.Value(3, 4),
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    );
+
+    return Base::Placement(matrix);
+}
 }  // namespace Base
 
 namespace Part

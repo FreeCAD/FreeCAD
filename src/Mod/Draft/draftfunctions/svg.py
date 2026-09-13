@@ -1004,51 +1004,51 @@ def get_svg(
                         fill_opacity=fill_opacity,
                         wires=[obj.Proxy.face.OuterWire],
                     )
-            c = utils.get_rgb(vobj.TextColor)
-            n = vobj.FontName
-            a = 0
-            if rotation != 0:
-                a = math.radians(rotation)
 
-            t1 = vobj.Proxy.text1.string.getValues()
-            t2 = vobj.Proxy.text2.string.getValues()
-            scale = vobj.FirstLine.Value / vobj.FontSize.Value
-            f1 = fontsize * scale
+            text1 = vobj.Proxy.text1.string.getValues()  # List with the 1st string.
+            text2 = vobj.Proxy.text2.string.getValues()  # List with the other strings.
+            if text1:
+                tstroke = utils.get_rgb(vobj.TextColor)
+                fontname = vobj.FontName
+                justification = vobj.TextAlign
+                scalefirst = vobj.FirstLine.Value / vobj.FontSize.Value
+                tangle = 0
+                offset_vec = App.Vector(0, linespacing * scalefirst, 0)
+                if rotation != 0:
+                    # Counteract the rotation of the BIMView to keep
+                    # the texts horizontal relative to the page.
+                    tangle = math.radians(-rotation)
+                    offset_vec = App.Rotation(App.Vector(0, 0, 1), -rotation).multVec(offset_vec)
 
-            if round(plane.axis.getAngle(App.Vector(0, 0, 1)), 2) not in [0, 3.14]:
-                # if not in XY view, place the label at center
-                p2 = obj.Shape.CenterOfMass
-            else:
-                _v = vobj.Proxy.coords.translation.getValue().getValue()
-                p2 = obj.Placement.multVec(App.Vector(_v))
+                # Point for 2nd text line:
+                if round(plane.axis.getAngle(App.Vector(0, 0, 1)), 2) not in [0, 3.14]:
+                    # If not in XY view use the center:
+                    tbase2 = obj.Shape.CenterOfMass
+                else:
+                    vec = vobj.Proxy.coords.translation.getValue().getValue()
+                    tbase2 = obj.Placement.multVec(App.Vector(vec))
+                tbase2 = get_proj(tbase2, plane)
 
-            _h = vobj.Proxy.header.translation.getValue().getValue()
-            lspc = App.Vector(_h)
-            p1 = p2 + lspc
-            j = vobj.TextAlign
-            t3 = svgtext.get_text(
-                plane, techdraw, c, f1, n, a, get_proj(p1, plane), t1, linespacing, j, flip=True
-            )
-            svg += t3
-            if t2:
-                ofs = App.Vector(0, -lspc.Length, 0)
-                if a:
-                    Z = App.Vector(0, 0, 1)
-                    ofs = App.Rotation(Z, -rotation).multVec(ofs)
-                t4 = svgtext.get_text(
-                    plane,
-                    techdraw,
-                    c,
-                    fontsize,
-                    n,
-                    a,
-                    get_proj(p1, plane).add(ofs),
-                    t2,
-                    linespacing,
-                    j,
-                    flip=True,
-                )
-                svg += t4
+                # Point for 1st text line:
+                tbase1 = tbase2 + offset_vec
+
+                texts = [text1, text2]
+                sizes = [fontsize * scalefirst, fontsize]
+                tbases = [tbase1, tbase2]
+                for text, size, tbase in zip(texts, sizes, tbases):
+                    svg += svgtext.get_text(
+                        plane,
+                        techdraw,
+                        tstroke,
+                        size,
+                        fontname,
+                        tangle,
+                        tbase,
+                        text,
+                        linespacing,
+                        justification,
+                        flip=True,
+                    )
 
     elif hasattr(obj, "Shape"):
         # In the past we tested for a Part Feature

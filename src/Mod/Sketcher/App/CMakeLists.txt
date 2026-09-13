@@ -165,9 +165,7 @@ if (MSVC)
     target_compile_options(Sketcher PRIVATE /wd4251)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Sketcher)
-endif()
+target_compile_warn_error(Sketcher)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(Sketcher PRIVATE
@@ -185,7 +183,7 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 
-SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
+SET_BIN_DIR(Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)
 
 INSTALL(TARGETS Sketcher DESTINATION ${CMAKE_INSTALL_LIBDIR})

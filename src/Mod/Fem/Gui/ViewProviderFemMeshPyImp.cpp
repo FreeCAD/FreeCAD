@@ -1,4 +1,4 @@
-
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>

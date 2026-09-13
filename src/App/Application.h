@@ -897,6 +897,7 @@ public:
     bool hasLinksTo(const DocumentObject *obj) const;
     /// @}
 
+    static const char* getUserParameterTemplatePath();
 
     friend class App::Document;
 
@@ -997,6 +998,7 @@ private:
 
     /* Private Init, Destruct, and Access methods */
     static void initConfig(int argc, char ** argv);
+    static void initCrashReporter();
     static void initApplication();
     static void logStatus();
     // the one and only pointer to the application object

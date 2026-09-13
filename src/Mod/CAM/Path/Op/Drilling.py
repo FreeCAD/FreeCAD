@@ -1,35 +1,32 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileCopyrightText: 2020 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
-import Path.Base.Generator.drill as drill
-import Path.Base.Generator.tapping as tapping
-import Path.Base.Generator.linking as linking
+from Path.Base.Generator import drill
+from Path.Base.Generator import tapping
+from Path.Base.Generator import linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
@@ -81,7 +78,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -361,10 +358,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 linkingArgs["target_position"] = target_at_safe_height
                 linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                """if linking_moves contains only 2 commands this means
-                it not contains vertical moves to clearance height
-                and this commands should be skipped"""
-                if len(linking_moves) > 2:
+                # linking_moves should be skipped, if first move not vertical
+                if not Path.Geom.isRoughly(linking_moves[0].z, startPoint.z):
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
                     self.commandlist.extend(linking_moves)

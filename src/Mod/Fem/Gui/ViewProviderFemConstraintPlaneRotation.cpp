@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -37,7 +39,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPlaneRotation, FemGui::ViewProv
 ViewProviderFemConstraintPlaneRotation::ViewProviderFemConstraintPlaneRotation()
 {
     sPixmap = "FEM_ConstraintPlaneRotation";
-    loadSymbol((resourceSymbolDir + "ConstraintPlaneRotation.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintPlaneRotation.iv");
     // Note change "planerotation" in line above to new constraint name, make sure it is the same as
     // in taskFem* cpp file
     ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);

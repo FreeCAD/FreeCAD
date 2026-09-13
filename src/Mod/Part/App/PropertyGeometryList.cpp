@@ -275,7 +275,13 @@ void PropertyGeometryList::Restore(Base::XMLReader& reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute<const char*>("type");
         Geometry* newG = static_cast<Geometry*>(Base::Type::fromName(TypeName).createInstance());
-        tryRestoreGeometry(newG, reader);
+        if (newG) {
+            tryRestoreGeometry(newG, reader);
+        }
+        else {
+            Base::Console().log("Geometry within a PropertyGeometryList was skipped.\n");
+            break;
+        }
 
         if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
             Base::Console().error(

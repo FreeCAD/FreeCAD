@@ -21,6 +21,7 @@ list(APPEND PartGui_LIBS
 )
 
 generate_from_py(ViewProviderPartExt)
+generate_from_py(ViewProviderPreviewExtension)
 
 set (Part_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Part_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
@@ -55,6 +56,8 @@ set(PartGui_UIC_SRCS
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
     PatternParametersWidget.ui
+    PatternCircularParametersWidget.ui
+    PatternPointParametersWidget.ui
     SectionCutting.ui
     ShapeFromMesh.ui
     TaskFaceAppearances.ui
@@ -141,9 +144,19 @@ SET(PartGui_SRCS
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
+    PatternCircularParametersWidget.cpp
+    PatternCircularParametersWidget.h
+    PatternCircularParametersWidget.ui
+    PatternPointParametersWidget.cpp
+    PatternPointParametersWidget.h
+    PatternPointParametersWidget.ui
     PatternParametersWidget.cpp
     PatternParametersWidget.h
     PatternParametersWidget.ui
+    PatternReferenceWidget.cpp
+    PatternReferenceWidget.h
+    PatternInstanceControls.cpp
+    PatternInstanceControls.h
     Resources/Part.qrc
     PreCompiled.h
     PreviewUpdateScheduler.cpp
@@ -164,6 +177,8 @@ SET(PartGui_SRCS
     ViewProviderAttachExtension.cpp
     ViewProviderPreviewExtension.h
     ViewProviderPreviewExtension.cpp
+    ViewProviderPreviewExtension.pyi
+    ViewProviderPreviewExtensionPyImp.cpp
     ViewProviderDatum.cpp
     ViewProviderDatum.h
     ViewProviderExt.cpp
@@ -291,12 +306,10 @@ if (MSVC)
     target_compile_options(PartGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartGui)
-endif()
+target_compile_warn_error(PartGui)
 
 
-SET_BIN_DIR(PartGui PartGui /Mod/Part)
+SET_BIN_DIR(PartGui)
 SET_PYTHON_PREFIX_SUFFIX(PartGui)
 
 fc_copy_sources(PartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Part" ${PartGuiIcon_SVG})
