@@ -1510,6 +1510,16 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         //else if (!isCommutative())
         //    needsParens = true;
     }
+    // The grammar's unit_exp rule absorbs '^' when the left is a UNIT expression,
+    // so '5 mm ^ 2' re-parses as '5 (mm^2)' instead of '(5 mm) ^ 2'.
+    else if (op == POW && leftOperator == UNIT)
+        needsParens = true;
+    // Same issue with negated unit: '-5 mm ^ 2' re-parses as '-(5 mm^2)'.
+    else if (op == POW && (leftOperator == NEG || leftOperator == POS)) {
+        auto* inner = freecad_cast<OperatorExpression*>(static_cast<OperatorExpression*>(left)->left);
+        if (inner && inner->op == UNIT)
+            needsParens = true;
+    }
 
     switch (op) {
     case NEG:
