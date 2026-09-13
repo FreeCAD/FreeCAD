@@ -24,6 +24,7 @@
 
 #include <chrono>
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -56,8 +57,14 @@ public:
      *
      * @param crashReportDirectory The path to the new crash reports
      * @param policy A report retention policy that overrides the defaults (optional)
+     * @param osVersion A string description of the version of the current operating system version:
+     * passed in here so that nothing in Base needs to be able to access that information.
      */
-    static void scan(const std::string& crashReportDirectory, RetentionPolicy policy = {});
+    static void scan(
+        const std::string& crashReportDirectory,
+        RetentionPolicy policy = {},
+        const std::string& osVersion = {}
+    );
 
     /**
      * Get the reports that were discovered by the last run of `scan()`.
@@ -97,12 +104,12 @@ private:
      * @param fcrashPath path to the *.fcrash file
      * @param dumpPath path to the *.dmp file
      *
-     * @returns a pair of new path strings pointing to the archived files (the minidump string will
-     * be empty if there was no minidump file).
+     * @returns a pair of new path strings pointing to the archived files (the minidump optional
+     * will be `nullopt` if there was no minidump file).
      */
-    static std::pair<std::string, std::string> archiveFile(
+    static std::pair<std::string, std::optional<std::string>> archiveFile(
         const std::string& fcrashPath,
-        const std::string& dumpPath = {}
+        const std::optional<std::string>& dumpPath = std::nullopt
     );
 };
 
