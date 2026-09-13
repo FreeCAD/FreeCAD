@@ -1,0 +1,2 @@
+# Keep every text file in the repository in the same, platform-independent form.
+* text=auto eol=lf
