@@ -536,6 +536,25 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
 
 void ViewProviderMeasureDistance::positionAnno(const Measure::MeasureBase* measureObject)
 {
-    (void)measureObject;
-    setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
+    const Measure::MeasureBase* measure = measureObject ? measureObject : getMeasureObject();
+    if (!measure) {
+        return;
+    }
+
+    auto prop1 = freecad_cast<App::PropertyVector*>(measure->getPropertyByName("Position1"));
+    auto prop2 = freecad_cast<App::PropertyVector*>(measure->getPropertyByName("Position2"));
+    if (!prop1 || !prop2) {
+        setLabelTranslation(SbVec3f(0, 0.1f * getViewScale(), 0));
+        return;
+    }
+
+    const Base::Vector3d pos1 = prop1->getValue();
+    const Base::Vector3d pos2 = prop2->getValue();
+    const auto length = (pos2 - pos1).Length();
+
+    const float baseOffset = 0.1f * getViewScale();
+    const float dynamicOffset = 0.15f * static_cast<float>(length);
+    const float maxOffset = 2.0f * baseOffset;
+    const float offset = (dynamicOffset > maxOffset ? maxOffset : dynamicOffset);
+    setLabelTranslation(SbVec3f(0, (offset > baseOffset ? offset : baseOffset), 0));
 }
