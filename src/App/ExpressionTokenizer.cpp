@@ -25,10 +25,11 @@
 #include <string>
 #include <tuple>
 
-#include "ExpressionParser.h"
+#include "ExpressionLexer.h"
 #include "ExpressionTokenizer.h"
 
 using namespace App;
+namespace ParserApi = App::ExpressionParser;
 
 
 // Code below inspired by blog entry:
@@ -36,23 +37,27 @@ using namespace App;
 
 QString ExpressionTokenizer::perform(const QString& prefix, int pos)
 {
-    // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
+    using ParserApi::TokenKind;
+
+    // The lexer uses UTF-8 byte offsets but we need QString character offsets.
     // because due to UTF-8 encoding a std::string may be longer than a QString
     // See https://forum.freecad.org/viewtopic.php?f=3&t=69931
     auto tokenizeExpression = [](const QString& expr) {
-        std::vector<std::tuple<int, int, std::string>> result =
-            ExpressionParser::tokenize(expr.toStdString());
-        std::vector<std::tuple<int, int, QString>> tokens;
+        auto result = ParserApi::scanExpressionTokensTolerant(expr.toStdString().c_str());
+        std::vector<std::tuple<TokenKind, int, QString>> tokens;
         std::transform(
             result.cbegin(),
             result.cend(),
             std::back_inserter(tokens),
-            [&](const std::tuple<int, int, std::string>& item) {
+            [&](const ParserApi::Token& item) {
                 return std::make_tuple(
-                    std::get<0>(item),
-                    QString::fromStdString(expr.toStdString().substr(0, std::get<1>(item))).size(),
-                    QString::fromStdString(std::get<2>(item)));
+                    item.kind,
+                    QString::fromStdString(expr.toStdString().substr(0, item.column)).size(),
+                    QString::fromStdString(item.lexeme));
             });
+        if (!tokens.empty() && std::get<0>(tokens.back()) == TokenKind::End) {
+            tokens.pop_back();
+        }
         return tokens;
     };
 
@@ -62,7 +67,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
     // Tokenize prefix
-    std::vector<std::tuple<int, int, QString>> tokens = tokenizeExpression(prefix.mid(start));
+    std::vector<std::tuple<TokenKind, int, QString>> tokens = tokenizeExpression(prefix.mid(start));
 
     // No tokens
     if (tokens.empty()) {
@@ -74,13 +79,13 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     // Pop those trailing tokens depending on the given position, which may be
     // in the middle of a token, and we shall include that token.
     for (auto it = tokens.begin(); it != tokens.end(); ++it) {
-        int tokenType = std::get<0>(*it);
+        TokenKind tokenType = std::get<0>(*it);
         int location = std::get<1>(*it);
         int tokenLength = static_cast<int> (std::get<2>(*it).size());
         if (location >= pos) {
             // Include the immediately followed '.' or '#', because we'll be
             // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if (it != tokens.begin() && tokenType != '.' && tokenType != '#') {
+            if (it != tokens.begin() && tokenType != TokenKind::Dot && tokenType != TokenKind::Hash) {
                 --it;
                 location = std::get<1>(*it);
                 tokenLength = static_cast<int>(std::get<2>(*it).size());
@@ -102,14 +107,14 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     // First, check if we have unclosing string starting from the end
     bool stringing = false;
     for (; i >= 0; --i) {
-        int token = std::get<0>(tokens[i]);
-        if (token == ExpressionParser::STRING) {
+        TokenKind token = std::get<0>(tokens[i]);
+        if (token == TokenKind::String) {
             stringing = false;
             break;
         }
 
-        if (token == ExpressionParser::LT && i > 0
-            && std::get<0>(tokens[i - 1]) == ExpressionParser::LT) {
+        if (token == TokenKind::Less && i > 0
+            && std::get<0>(tokens[i - 1]) == TokenKind::Less) {
             --i;
             stringing = true;
             break;
@@ -125,10 +130,11 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     if (!stringing) {
         i = static_cast<long>(tokens.size()) - 1;
         for (; i >= 0; --i) {
-            int token = std::get<0>(tokens[i]);
-            if (token != '.' && token != '#' && token != ExpressionParser::IDENTIFIER
-                && token != ExpressionParser::INTEGER && token != ExpressionParser::STRING
-                && token != ExpressionParser::UNIT && token != ExpressionParser::ONE) {
+            TokenKind token = std::get<0>(tokens[i]);
+            const bool isOne = token == TokenKind::Number && std::get<2>(tokens[i]) == QStringLiteral("1");
+            if (token != TokenKind::Dot && token != TokenKind::Hash && token != TokenKind::Name
+                && token != TokenKind::Integer && token != TokenKind::String
+                && token != TokenKind::Unit && !isOne) {
                 break;
             }
         }

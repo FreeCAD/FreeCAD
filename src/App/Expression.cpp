@@ -36,10 +36,10 @@
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
-#include <numbers>
+#include <algorithm>
 #include <limits>
+#include <numbers>
 #include <sstream>
-#include <stack>
 #include <string>
 #include <fmt/format.h>
 
@@ -58,6 +58,8 @@
 #include <Base/VectorPy.h>
 #include <Base/Precision.h>
 
+#include "ExpressionNodes.h"
+#include "ExpressionLexer.h"
 #include "ExpressionParser.h"
 
 
@@ -67,7 +69,6 @@ using namespace App;
 FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #if defined(_MSC_VER)
-#define strtoll _strtoi64
 #pragma warning(disable : 4003)
 #pragma warning(disable : 4065)
 #endif
@@ -180,53 +181,6 @@ inline bool asBool(double value) {
     return std::fabs(value) >= Base::Precision::Confusion();
 }
 
-}
-
-std::string unquote(const std::string & input)
-{
-    assert(input.size() >= 4);
-
-    std::string output;
-    std::string::const_iterator cur = input.begin() + 2;
-    std::string::const_iterator end = input.end() - 2;
-
-    output.reserve(input.size());
-
-    bool escaped = false;
-    while (cur != end) {
-        if (escaped) {
-            switch (*cur) {
-            case 't':
-                output += '\t';
-                break;
-            case 'n':
-                output += '\n';
-                break;
-            case 'r':
-                output += '\r';
-                break;
-            case '\\':
-                output += '\\';
-                break;
-            case '\'':
-                output += '\'';
-                break;
-            case '"':
-                output += '"';
-                break;
-            }
-            escaped = false;
-        }
-        else {
-            if (*cur == '\\')
-                escaped = true;
-            else
-                output += *cur;
-        }
-        ++cur;
-    }
-
-    return output;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -3516,132 +3470,11 @@ bool isModuleImported(PyObject *module) {
     return false;
 }
 
-/**
- * @brief Error function for parser.
- *
- * @throws Base::Exception A generic parser error.
- */
-void ExpressionParser_yyerror(const char *errorinfo)
-{
-    (void)errorinfo;
-}
-
-/* helper function for tuning number strings with groups in a locale agnostic way... */
-double num_change(char* yytext,char dez_delim,char grp_delim)
-{
-    double ret_val;
-    char temp[40];
-    int i = 0;
-    for(char* c=yytext;*c!='\0';c++){
-        // skip group delimiter
-        if(*c==grp_delim) continue;
-        // check for a dez delimiter other then dot
-        if(*c==dez_delim && dez_delim !='.')
-             temp[i++] = '.';
-        else
-            temp[i++] = *c;
-        // check buffer overflow
-        if (i>39)
-            return 0.0;
-    }
-    temp[i] = '\0';
-
-    errno = 0;
-    ret_val = strtod( temp, nullptr );
-    if (ret_val == 0 && errno == ERANGE)
-        throw Base::UnderflowError("Number underflow.");
-    if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
-        throw Base::OverflowError("Number overflow.");
-
-    return ret_val;
-}
-
-/// The resulting expression after a successful parsing.
-static ExpressionPtr ScanResult = ExpressionPtr {};
-
-/// The DocumentObject that will own the expression.
-static const App::DocumentObject* DocumentObject = nullptr;
-
-/// Whether the parsed string is a unit only.
-static bool unitExpression = false;
-
-/// Whether the parsed string is a full expression.
-static bool valueExpression = false;
-
-/// Label string primitive.
-static std::stack<std::string> labels;
-
-/// Registered functions during parsing.
 static std::map<std::string, FunctionExpression::Function> registered_functions;
 
-static int last_column;
-static int column;
-
-// show the parser the lexer method
-#define yylex ExpressionParserlex
-int ExpressionParserlex();
-
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wsign-compare"
-# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
-#elif defined (__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic ignored "-Wsign-compare"
-# pragma GCC diagnostic ignored "-Wfree-nonheap-object"
-#endif
-
-// Parser, defined in Expression.y
-# define YYTOKENTYPE
-#include "Expression.tab.c"
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in Expression.l
-#include "Expression.lex.c"
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
-class StringBufferCleaner
-{
-public:
-    explicit StringBufferCleaner(YY_BUFFER_STATE buffer)
-        : my_string_buffer {buffer}
-    {}
-    ~StringBufferCleaner()
-    {
-        // free the scan buffer
-        yy_delete_buffer(my_string_buffer);
-    }
-
-    StringBufferCleaner(const StringBufferCleaner&) = delete;
-    StringBufferCleaner(StringBufferCleaner&&) = delete;
-    StringBufferCleaner& operator=(const StringBufferCleaner&) = delete;
-    StringBufferCleaner& operator=(StringBufferCleaner&&) = delete;
-
-private:
-    YY_BUFFER_STATE my_string_buffer;
-};
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#elif defined (__GNUC__)
-# pragma GCC diagnostic pop
-#endif
-
-#ifdef _MSC_VER
-# define strdup _strdup
-#endif
-
-static void initParser(const App::DocumentObject *owner)
+static void initParser()
 {
     static bool has_registered_functions = false;
-
-    using namespace App::ExpressionParser;
-
-    ScanResult.reset();
-    App::ExpressionParser::DocumentObject = owner;
-    labels = std::stack<std::string>();
-    column = 0;
-    unitExpression = valueExpression = false;
 
     if (!has_registered_functions) {
         registered_functions["abs"] = FunctionExpression::ABS;
@@ -3724,23 +3557,64 @@ static void initParser(const App::DocumentObject *owner)
     }
 }
 
-std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
+namespace
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    ExpressionParser::StringBufferCleaner cleaner(buf);
-    std::vector<std::tuple<int, int, std::string> > result;
-    int token;
+class VectorTokenStream final: public TokenStream
+{
+public:
+    explicit VectorTokenStream(std::vector<Token> tokens)
+        : tokenList(std::move(tokens))
+    {}
 
-    column = 0;
-    try {
-        while ( (token  = ExpressionParserlex()) != 0)
-            result.emplace_back(token, ExpressionParser::last_column, yytext);
-    }
-    catch (...) {
-        // Ignore all exceptions
+    const Token& peek(std::size_t offset = 0) override
+    {
+        const auto requested = cursor + offset;
+        return tokenList[std::min(requested, tokenList.size() - 1)];
     }
 
-    return result;
+    Token take() override
+    {
+        const auto token = peek();
+        if (cursor + 1 < tokenList.size()) {
+            ++cursor;
+        }
+        return token;
+    }
+
+    std::size_t position() const override
+    {
+        return cursor;
+    }
+
+    void rewind(std::size_t position) override
+    {
+        cursor = std::min(position, tokenList.size() - 1);
+    }
+
+private:
+    std::vector<Token> tokenList;
+    std::size_t cursor {0};
+};
+
+}  // namespace
+
+std::vector<Token> scanExpressionTokens(const App::DocumentObject* owner, const char* buffer)
+{
+    (void)owner;
+    initParser();
+    return scanTokens(buffer, [](const std::string& name) {
+        const auto found = registered_functions.find(name);
+        return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
+    });
+}
+
+std::vector<Token> scanExpressionTokensTolerant(const char* buffer)
+{
+    initParser();
+    return scanTokensTolerant(buffer, [](const std::string& name) {
+        const auto found = registered_functions.find(name);
+        return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
+    });
 }
 
 }
@@ -3760,111 +3634,62 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 
 ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
-    // parse from buffer
-    ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
-    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
-
-    initParser(owner);
-
-    // run the parser
-    int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    if (result != 0) {
-        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
-    }
-
-    if (!ScanResult) {
-        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
-    }
-
-    if (!valueExpression) {
-        ScanResult.reset();
-        throw Expression::Exception("Expression can not evaluate to a value.");
-    }
-    return std::exchange(ScanResult, nullptr);
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parse();
 }
 
 std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
     const App::DocumentObject* owner,
-    const char* buffer
-)
+    const char* buffer)
 {
-    // parse from buffer
-    ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
-    ExpressionParser::StringBufferCleaner cleaner(my_string_buffer);
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parseUnit();
+}
 
-    initParser(owner);
-
-    // run the parser
-    int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    if (result != 0)
-        throw ParserError("Failed to parse expression.");
-
-    if (!ScanResult)
-        throw ParserError("Unknown error in expression");
-
-    // Simplify expression
-    ExpressionPtr simplified = ScanResult->simplify();
-
-    if (!unitExpression) {
-        auto* fraction = freecad_cast<OperatorExpression*>(ScanResult.get());
-
-        if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_cast<NumberExpression*>(fraction->getLeft());
-            UnitExpression * denom = freecad_cast<UnitExpression*>(fraction->getRight());
-
-            // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
-            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
-                unitExpression = true;
-        }
-    }
-    ScanResult.reset();
-
-    if (!unitExpression) {
-        throw Expression::Exception("Expression is not a unit.");
-    }
-
-    if (auto num = freecad_cast<NumberExpression*>(simplified.get()); num) {
-        return std::make_unique<UnitExpression>(num->getOwner(), num->getQuantity());
-    }
-    return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified.release()));
+ObjectIdentifier ExpressionParser::parsePath(const App::DocumentObject* owner, const char* buffer)
+{
+    VectorTokenStream stream(scanExpressionTokens(owner, buffer));
+    return Parser(owner, stream).parsePath();
 }
 
 namespace {
-std::tuple<int, int> getTokenAndStatus(const std::string & str)
-{
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser::ExpressionParser_scan_string(str.c_str());
-    ExpressionParser::StringBufferCleaner cleaner(buf);
-    int token = ExpressionParser::ExpressionParserlex();
-    int status = ExpressionParser::ExpressionParserlex();
+using ExpressionToken = App::ExpressionParser::Token;
+using ExpressionTokenKind = App::ExpressionParser::TokenKind;
 
-    return std::make_tuple(token, status);
+std::optional<ExpressionToken> getSingleExpressionToken(const std::string& str)
+{
+    try {
+        auto tokens = App::ExpressionParser::scanExpressionTokens(nullptr, str.c_str());
+        if (tokens.size() == 2 && tokens.back().kind == ExpressionTokenKind::End) {
+            return tokens.front();
+        }
+    }
+    catch (const Base::Exception&) {
+    }
+    return std::nullopt;
 }
 }
 
 bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && (token == IDENTIFIER || token == CELLADDRESS));
+    const auto token = getSingleExpressionToken(str);
+    return token && (token->kind == ExpressionTokenKind::CellAddress
+                     || (token->kind == ExpressionTokenKind::Name && !token->unitCandidate));
 }
 
 bool ExpressionParser::isTokenAConstant(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && token == CONSTANT);
+    const auto token = getSingleExpressionToken(str);
+    return token && token->kind == ExpressionTokenKind::Constant;
 }
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
-    int token{}, status{};
-    std::tie(token, status) = getTokenAndStatus(str);
-    return (status == 0 && token == UNIT);
+    const auto token = getSingleExpressionToken(str);
+    return token && token->kind == ExpressionTokenKind::Name
+        && token->unitCandidate.has_value();
 }
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
-
