@@ -49,6 +49,10 @@ SET(FeaturesTransformed_SRCS
     FeatureMirrored.cpp
     FeatureLinearPattern.h
     FeatureLinearPattern.cpp
+    FeatureCircularPattern.h
+    FeatureCircularPattern.cpp
+    FeaturePathPattern.h
+    FeaturePathPattern.cpp
     FeaturePolarPattern.h
     FeaturePolarPattern.cpp
     FeatureScaled.h
@@ -164,7 +168,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)
+SET_BIN_DIR(PartDesign _PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)
 
 INSTALL(TARGETS PartDesign DESTINATION ${CMAKE_INSTALL_LIBDIR})

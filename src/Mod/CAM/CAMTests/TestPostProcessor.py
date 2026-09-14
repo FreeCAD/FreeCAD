@@ -376,7 +376,7 @@ class TestPostProcessorClassification(unittest.TestCase):
             "centroid",
             "mach3_mach4",
             "opensbp",
-            "generic_plasma",
+            "generic_sheet_cutting",
             "smoothie",
             # "masso_g3", # FIXME: why does this fail?
         ]

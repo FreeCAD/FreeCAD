@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include <boost/core/ignore_unused.hpp>
+#include <algorithm>
 #include <cmath>
 #include <algorithm>
 #include <vector>
@@ -311,6 +312,9 @@ void AssemblyObject::onChanged(const App::Property* prop)
 
 int AssemblyObject::solve(bool enableRedo)
 {
+    // updateSolveStatus() solves on demand; suppress that while a solve is running.
+    Base::StateLocker lock(solveInProgress);
+
     ensureIdentityPlacements();
 
     syncGroundedJoints();
@@ -385,7 +389,9 @@ void AssemblyObject::updateSolveStatus()
     // +1 because the assembly origin is also represented by a solver body.
     lastDoF = (1 + numberOfSolverBodies) * 6;
 
-    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+    // Solve on demand when queried before the system is solved, but not from within
+    // a solve: solve() calls this, so a failed solve would recurse indefinitely.
+    if (!solveInProgress && (!mbdAssembly || !mbdAssembly->mbdSystem)) {
         solve();
     }
 
@@ -538,10 +544,20 @@ bool AssemblyObject::requiresRigidSolveForMove(const std::vector<App::DocumentOb
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
     bundleFixed = true;
-    solve();
+    bool hasUnconnectedDragPart = std::ranges::any_of(dragParts, [this](App::DocumentObject* part) {
+        return part && !isPartConnected(part);
+    });
+
+    if (hasUnconnectedDragPart) {
+        prepareMbdForIslandDrag(dragParts);
+    }
+    else {
+        solve();
+    }
     bundleFixed = false;
 
     draggedParts.clear();
+
     for (auto part : dragParts) {
         const bool isRigidClustered = getRigidRepresentative(part) != nullptr;
 
@@ -550,15 +566,17 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
             continue;
         }
 
-        // Active rigid-cluster members are solver-connected through the shared MbD part.
-        if (!isRigidClustered && !isPartConnected(part)) {
+        // - Free-floating parts should not be added since they are ignored by the solver.
+        // During ungrounded island dragging, prepareMbdForIslandDrag seeds the MBD system from
+        // the dragged parts, so objectPartMap is the source of truth instead.
+        // - Active rigid-cluster members are solver-connected through the shared MbD part.
+        if (!isPartConnected(part) && (!objectPartMap.contains(part) || !isRigidClustered)) {
             continue;
         }
 
         // Rigid-cluster members stay draggable because they share one MbD part.
         if (isRigidClustered) {
             draggedParts.push_back(part);
-            continue;
         }
 
         Base::Placement plc;
@@ -580,8 +598,55 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
     }
 }
 
+void AssemblyObject::prepareMbdForIslandDrag(std::vector<App::DocumentObject*> dragParts)
+{
+    ensureIdentityPlacements();
+    syncGroundedJoints();
+
+    mbdAssembly = makeMbdAssembly();
+    objectPartMap.clear();
+    motions.clear();
+
+    auto seededParts = fixGroundedParts();
+    for (auto* part : dragParts) {
+        if (part) {
+            seededParts.insert(part);
+        }
+    }
+
+    std::vector<App::DocumentObject*> joints = getJoints();
+    removeUnconnectedJoints(joints, seededParts);
+    if (joints.empty()) {
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+
+    jointParts(joints);
+
+    try {
+        mbdAssembly->runPreDrag();
+    }
+    catch (const std::exception& e) {
+        FC_ERR("Drag setup failed: " << e.what());
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+    catch (...) {
+        FC_ERR("Drag setup failed: unhandled exception");
+        objectPartMap.clear();
+        mbdAssembly.reset();
+        return;
+    }
+}
+
 void AssemblyObject::doDragStep()
 {
+    if (!mbdAssembly || draggedParts.empty()) {
+        return;
+    }
+
     try {
         std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
         std::unordered_set<ASMTPart*> seenMbdParts;
@@ -696,6 +761,10 @@ bool AssemblyObject::validateNewPlacements()
 
 void AssemblyObject::postDrag()
 {
+    if (!mbdAssembly) {
+        return;
+    }
+
     mbdAssembly->runPostDrag();  // Do this after last drag
     purgeTouched();
 }
@@ -971,6 +1040,24 @@ void AssemblyObject::updateRigidPlacementCache()
     });
 }
 
+namespace
+{
+// A singular solve can return NaN or infinite placements. NaN coordinates defeat
+// the bounding-box rejection in SoRayPickAction, so writing one into the document
+// makes every ray pick hit everything; reject them at the solver/document boundary.
+bool isFinitePlacement(const Base::Placement& plc)
+{
+    const Base::Vector3d& pos = plc.getPosition();
+    double q0 {};
+    double q1 {};
+    double q2 {};
+    double q3 {};
+    plc.getRotation().getValue(q0, q1, q2, q3);
+    return std::isfinite(pos.x) && std::isfinite(pos.y) && std::isfinite(pos.z) && std::isfinite(q0)
+        && std::isfinite(q1) && std::isfinite(q2) && std::isfinite(q3);
+}
+}  // namespace
+
 void AssemblyObject::setNewPlacements()
 {
     for (auto& pair : objectPartMap) {
@@ -991,6 +1078,14 @@ void AssemblyObject::setNewPlacements()
         Base::Placement newPlacement = getMbdPlacement(mbdPart);
         if (!pair.second.offsetPlc.isIdentity()) {
             newPlacement = newPlacement * pair.second.offsetPlc;
+        }
+        if (!isFinitePlacement(newPlacement)) {
+            Base::Console().warning(
+                "Assembly: solver returned a non-finite placement for '%s'; keeping its "
+                "previous position.\n",
+                obj->getFullName().c_str()
+            );
+            continue;
         }
         if (!propPlacement->getValue().isSame(newPlacement)) {
             propPlacement->setValue(newPlacement);
@@ -1018,25 +1113,32 @@ void AssemblyObject::redrawJointPlacement(App::DocumentObject* joint)
 
     Base::PyGILStateLocker lock;
 
-    App::PropertyPythonObject* proxy = joint
-        ? dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"))
-        : nullptr;
+    try {
+        auto* proxy = dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"));
 
-    if (!proxy) {
-        return;
+        if (!proxy) {
+            return;
+        }
+
+        Py::Object jointPy = proxy->getValue();
+
+        if (!jointPy.hasAttr("redrawJointPlacements")) {
+            return;
+        }
+
+        Py::Object attr = jointPy.getAttr("redrawJointPlacements");
+        if (attr.ptr() && attr.isCallable()) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::asObject(joint->getPyObject()));
+            Py::Callable(attr).apply(args);
+        }
     }
-
-    Py::Object jointPy = proxy->getValue();
-
-    if (!jointPy.hasAttr("redrawJointPlacements")) {
-        return;
-    }
-
-    Py::Object attr = jointPy.getAttr("redrawJointPlacements");
-    if (attr.ptr() && attr.isCallable()) {
-        Py::Tuple args(1);
-        args.setItem(0, Py::asObject(joint->getPyObject()));
-        Py::Callable(attr).apply(args);
+    catch (Py::Exception&) {
+        // Callers run inside Qt event handlers, which cannot propagate C++ exceptions
+        // out of the joint's Python callback. Report the error and keep redrawing the
+        // remaining joints.
+        Base::PyException e;
+        e.reportException();
     }
 }
 
@@ -1090,6 +1192,48 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(
             return joint;
         }
     }
+    return nullptr;
+}
+
+App::DocumentObject* AssemblyObject::getJointOfPartForUngroundedDrag(
+    App::DocumentObject* part,
+    std::string& name
+)
+{
+    if (!part) {
+        return nullptr;
+    }
+
+    std::vector<App::DocumentObject*> joints = getJointsOfPart(part);
+    for (auto* joint : joints) {
+        if (!joint || !isJointTypeConnecting(joint)) {
+            continue;
+        }
+        if (getJointType(joint) == JointType::Fixed) {
+            continue;
+        }
+
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+        if (!part1 || !part2) {
+            continue;
+        }
+
+        std::string refName;
+        if (part == part1) {
+            refName = "Reference1";
+        }
+        else if (part == part2) {
+            refName = "Reference2";
+        }
+        else {
+            continue;
+        }
+
+        name = refName;
+        return joint;
+    }
+
     return nullptr;
 }
 

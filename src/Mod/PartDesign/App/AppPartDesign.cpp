@@ -43,11 +43,13 @@
 #include "FeatureGroove.h"
 #include "FeatureHelix.h"
 #include "FeatureHole.h"
+#include "FeatureCircularPattern.h"
 #include "FeatureLinearPattern.h"
 #include "FeatureLoft.h"
 #include "FeatureMirrored.h"
 #include "FeatureMultiTransform.h"
 #include "FeaturePad.h"
+#include "FeaturePathPattern.h"
 #include "FeaturePipe.h"
 #include "FeaturePocket.h"
 #include "FeaturePolarPattern.h"
@@ -101,7 +103,9 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::ProfileBased                ::init();
     PartDesign::Transformed                 ::init();
     PartDesign::Mirrored                    ::init();
+    PartDesign::CircularPattern             ::init();
     PartDesign::LinearPattern               ::init();
+    PartDesign::PathPattern                 ::init();
     PartDesign::PolarPattern                ::init();
     PartDesign::Scaled                      ::init();
     PartDesign::MultiTransform              ::init();

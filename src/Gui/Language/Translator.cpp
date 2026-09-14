@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <algorithm>
-#include <array>
 #include <QApplication>
 #include <QDir>
 #include <QKeyEvent>
@@ -32,15 +31,14 @@
 #include <QTranslator>
 #include <QWidget>
 
-#include <Base/Tools.h>
+#include <utility>
+
+#include <Base/NumericFormatting.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
+#include "../NumericLocale.h"
 #include "Translator.h"
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
 
 using namespace Gui;
 
@@ -63,18 +61,38 @@ Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int fo
     }
 }
 
-#ifdef FC_OS_WIN32
-QString getWindowsUserDefaultLocaleName()
+struct ResolvedNumericLocale
 {
-    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
-    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
-    if (written <= 0) {
-        return {};
+    QLocale qtLocale;
+    Base::NumericLocaleContext numericContext;
+};
+
+ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const std::string& language)
+{
+    QLocale qtLocale;
+    if (Base::isCLocaleName(language)) {
+        qtLocale = QLocale::c();
+    }
+    else {
+        qtLocale = QLocale::system();
+
+        if (!language.empty()) {
+            const std::string localeName = translator.locale(language);
+
+            if (Base::isCLocaleName(localeName)) {
+                qtLocale = QLocale::c();
+            }
+            else if (!localeName.empty()) {
+                const QLocale candidate(QString::fromStdString(localeName));
+                if (candidate.language() != QLocale::C) {
+                    qtLocale = candidate;
+                }
+            }
+        }
     }
 
-    return QString::fromWCharArray(buffer.data());
+    return {qtLocale, Gui::numericLocaleContextFor(qtLocale)};
 }
-#endif
 }  // namespace
 
 /** \defgroup i18n Internationalization with FreeCAD
@@ -372,44 +390,28 @@ void Translator::applyLocaleFormattingPreference() const
 
 void Translator::setLocale(const std::string& language) const
 {
-    const bool isCLocale = Base::Tools::isCLocaleName(language);
-
-    auto loc = QLocale::system();  // Defaulting to OS locale
-#ifdef FC_OS_WIN32
-    if (language.empty()) {
-        // Local Windows development runs can inherit shell state that makes Qt resolve the
-        // system locale differently from the user's regional format.
-        const auto operatingSystemLocale = getWindowsUserDefaultLocaleName();
-        if (!operatingSystemLocale.isEmpty()) {
-            loc = QLocale(operatingSystemLocale);
-        }
-    }
+    // Resolve Qt and the complete numeric-locale context from the same source
+    // so quantity formatting can match what Qt widgets display.
+    const auto resolved = resolveNumericLocale(*this, language);
+    auto nextContext = resolved.numericContext;
+#ifdef FC_DEBUG
+    const auto previousState = Base::currentNumericLocaleContext();
+    const bool localeChanged = previousState != nextContext;
 #endif
-    if (isCLocale) {
-        loc = QLocale::c();
-    }
-    else {
-        auto bcp47 = locale(language);
-        if (!bcp47.empty()) {
-            loc = QLocale(QString::fromStdString(bcp47));
-        }
-    }
-
-    auto icuLocaleId = loc.name().toStdString();
-    if (language.empty()) {
-        // QLocale keeps the effective numeric separators, but loc.name() may still report LANG.
-        const auto operatingSystemNumericLocale = Base::Tools::getOperatingSystemNumericLocale();
-        if (!operatingSystemNumericLocale.empty()) {
-            icuLocaleId = operatingSystemNumericLocale;
-        }
-    }
-    QLocale::setDefault(loc);
-    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : icuLocaleId);
+    // Complete the fallible ICU operation before publishing Qt and FreeCAD's context. A failure
+    // leaves all three locale consumers unchanged.
+    Base::setIcuDefaultLocale(nextContext.localeId);
+    QLocale::setDefault(resolved.qtLocale);
+    Base::publishNumericLocaleContext(std::move(nextContext));
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console()
-        .log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    if (localeChanged) {
+        const QByteArray bcp47Name = resolved.qtLocale.bcp47Name().toUtf8();
+        const QByteArray localeName = resolved.qtLocale.name().toUtf8();
+        Base::Console()
+            .log("Locale changed to %s => %s\n", bcp47Name.constData(), localeName.constData());
+    }
 #endif
 }
 

@@ -296,6 +296,22 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
                 self.post._expand_prefix([])
                 self.assertEqual(self.post.values["PREAMBLE"], expected)
 
+    def test_tapping_g84_basic(self):
+        """
+        Test G84 tapping F-pitch to F-speed: it calls super() for non-rigid
+        """
+        # Setup - create G84 command with annotation
+        command = Path.Command("G84", {"Z": -10.0, "F": 1.5, "S": 10}, {"operation": "tapping"})
+
+        # Execute
+        result = self.post._convert_drill_cycle(command)
+
+        # pitch->speed: units metric, speeds mm/min
+        expected_f = command.Parameters["F"] * command.Parameters["S"]
+
+        # Verify
+        self.assertEqual(f"G84 Z-10.000 F{expected_f:.3f} S10", result)
+
     def test_rigid_tapping_g84_basic(self):
         """
         Test G84 rigid tapping conversion to G33.1 sequence.

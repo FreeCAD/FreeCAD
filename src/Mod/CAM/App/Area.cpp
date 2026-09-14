@@ -644,16 +644,18 @@ public:
         (void)id;
         (void)center;
 
-        // Compute cw vs ccw
-        const Base::Vector3d vdirect = next - last;
-        const Base::Vector3d vstep = pts[0] - last;
-        const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
+        if (last.z <= maxZ && next.z <= maxZ) {
+            // Compute cw vs ccw
+            const Base::Vector3d vdirect = next - last;
+            const Base::Vector3d vstep = pts[0] - last;
+            const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
 
-        // Add an arc
-        CCurve curve;
-        curve.append(CVertex {{last.x, last.y}});
-        curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
-        pathSegments.append(curve);
+            // Add an arc
+            CCurve curve;
+            curve.append(CVertex {{last.x, last.y}});
+            curve.append(CVertex {ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
+            pathSegments.append(curve);
+        }
     }
 
     void g8x(
