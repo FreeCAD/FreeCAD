@@ -2854,7 +2854,7 @@ def _import_dxf_file(filename, doc_name=None):
         from DxfImportDialog import DxfImportDialog
 
         dlg = DxfImportDialog(entity_counts)
-        FreeCADGui.suspendCursor()
+        FreeCADGui.suspendWaitCursor()
         if dlg.exec_():
             FreeCADGui.resumeCursor()
 
