@@ -122,4 +122,21 @@ TEST(UniqueNameManager, UniqueNameWith9NDigits)
     manager.addExactName("Compound123456789");
     EXPECT_EQ(manager.makeUniqueName("Compound", 3), "Compound123456790");
 }
+
+// NOTE: This test only actually *tests* something in a Windows Debug build: on all other platforms
+// it will pass irrespective of whether the bug is present.
+TEST(UniqueNameManager, NonAsciiNameIsHandled)  // NOLINT
+{
+    // Regression: decomposeName() called std::isdigit() on raw (signed) char bytes. The "é" in
+    // "café" is UTF-8 0xC3 0xA9, which is negative as a signed char, so the unguarded
+    // std::isdigit() was undefined behavior and aborted on the MSVC debug CRT.
+    Base::UniqueNameManager manager;
+    manager.addExactName("café");  // <-- This would crash on Debug MSVC prior to the fix.
+    EXPECT_TRUE(manager.containsName("café"));
+
+    // The non-ASCII bytes must not be mistaken for digits: the base name is preserved and a numeric
+    // suffix is appended when the name conflicts.
+    EXPECT_EQ(manager.makeUniqueName("café", 1), "café1");
+}
+
 // NOLINTEND(cppcoreguidelines-*,readability-*)

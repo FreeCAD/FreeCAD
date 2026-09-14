@@ -38,7 +38,7 @@
 #include "ViewProviderLine.h"
 #include "ViewProviderCoordinateSystem.h"
 
-#include <Gui/SoTextLabel.h>
+#include <Gui/SoLabelNodes.h>
 
 
 using namespace Gui;

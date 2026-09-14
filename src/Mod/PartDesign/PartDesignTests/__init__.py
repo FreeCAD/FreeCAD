@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 from . import TestBoolean
+from . import TestBaseFeature
 from . import TestChamfer
 from . import TestDatum
 from . import TestDraft

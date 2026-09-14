@@ -43,6 +43,7 @@
 #include <QTreeWidgetItem>
 #include <QXmlStreamReader>
 #include <QVector>
+#include <memory>
 #include <sstream>
 
 #include <FCConfig.h>
@@ -494,7 +495,7 @@ bool zipDataIsValid(const QString& fcstdFile)
         auto entries = zf.entries();
         int n = 0;
         for (auto it = entries.begin(); it != entries.end(); ++it) {
-            auto s = zf.getInputStream(*it);
+            std::unique_ptr<std::istream> s(zf.getInputStream(*it));
             if (!s || !(*s)) {
                 return false;
             }
@@ -530,7 +531,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
             return false;
         }
         {
-            auto s = zf.getInputStream(doc);
+            std::unique_ptr<std::istream> s(zf.getInputStream(doc));
             QByteArray bytes;
             bytes.resize(0);
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
@@ -545,7 +546,7 @@ bool xmlFilesAreValid(const QString& fcstdFile)
 
         // GuiDocument.xml is optional, but if it's present it must be well-formed
         if (auto gui = findEntry(zf, "GuiDocument.xml")) {
-            auto s = zf.getInputStream(gui);
+            std::unique_ptr<std::istream> s(zf.getInputStream(gui));
             std::string tmp((std::istreambuf_iterator<char>(*s)), std::istreambuf_iterator<char>());
             QXmlStreamReader xr(QByteArray(tmp.data(), int(tmp.size())));
             while (!xr.atEnd()) {
@@ -648,12 +649,9 @@ void DocumentRecovery::onDeleteSection()
 {
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete the selected transient directories?"));
-    msgBox.setInformativeText(
-        tr("When deleting the selected transient directory it is not possible to recover any files "
-           "afterwards.")
-    );
+    msgBox.setWindowTitle(tr("Delete"));
+    msgBox.setText(tr("Delete the selected recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -685,8 +683,8 @@ void DocumentRecovery::onButtonCleanupClicked()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directories it is not possible to recover any files afterwards."));
+    msgBox.setText(tr("Delete all recovery documents?"));
+    msgBox.setInformativeText(tr("Recovery documents cannot be restored after deletion."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -703,7 +701,7 @@ void DocumentRecovery::onButtonCleanupClicked()
     handler.checkForPreviousCrashes(
         std::bind(&DocumentRecovery::cleanup, this, sp::_1, sp::_2, sp::_3)
     );
-    DlgCheckableMessageBox::showMessage(tr("Delete"), tr("Transient directories deleted."));
+    DlgCheckableMessageBox::showMessage(tr("Cleanup"), tr("Recovery documents deleted."));
     reject();
 }
 

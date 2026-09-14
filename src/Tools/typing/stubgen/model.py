@@ -39,6 +39,10 @@ GENERATE_FROM_PY_CALL_RE = re.compile(r"\bgenerate_from_py_?\s*\(\s*(?P<base>[^\
 #   add_varargs_method("name", &Type::method, "doc")
 ADD_METHOD_RE = re.compile(r"\b(?P<kind>add_(?:varargs|keyword|noargs)_method)\s*\(")
 
+# Match PyCXX sequence protocol opt-in like:
+#   behaviors().supportSequenceType();
+SUPPORT_SEQUENCE_RE = re.compile(r"\bbehaviors\s*\(\s*\)\s*\.\s*supportSequenceType\s*\(\s*\)")
+
 # Match behavior naming such as:
 #   behaviors().name("Vector")
 BEHAVIOR_NAME_RE = re.compile(r"\bbehaviors\s*\(\s*\)\s*\.\s*name\s*\(\s*\"([^\"]+)\"\s*\)")
@@ -135,17 +139,31 @@ GETATTR_MODULE_RE = re.compile(
 # Match class type objects referenced as:
 #   Base::VectorPy::Type
 CPP_TYPE_NAME_RE = re.compile(r"((?:[A-Za-z_]\w*\s*::\s*)*[A-Za-z_]\w*)\s*::\s*Type\b")
+
+# Match PyCXX sequence slot declarations or definitions like:
+#   Py::Object Type::sequence_item(Py_ssize_t)
+#   virtual PyCxx_ssize_t sequence_length() override;
+PYCXX_SEQUENCE_SLOT_RE = re.compile(
+    rf"^[ \t]*(?:virtual\s+)?(?:{CPP_QUALIFIED_NAME}|PyCxx_ssize_t|Py_ssize_t)"
+    rf"(?:\s*[*&])?\s+(?:(?P<owner>{CPP_QUALIFIED_NAME})\s*::\s*)?"
+    r"(?P<slot>sequence_length|sequence_item)\s*\(",
+    re.MULTILINE,
+)
 HELPER_PYI_FILES = {
     "src/Base/Metadata.pyi",
     "src/Base/PyObjectBase.pyi",
+    "src/App/PropertyPythonContracts.pyi",
+    "src/App/FreeCADInit.pyi",
 }
 PUBLIC_STUB_DECORATORS = {
     "classmethod",
+    "deprecated",
     "overload",
+    "property",
     "staticmethod",
 }
 
-BindingFamily: TypeAlias = Literal["pycxx_add_method", "pymethoddef"]
+BindingFamily: TypeAlias = Literal["module_stub", "pycxx_add_method", "pycxx_slot", "pymethoddef"]
 ContextKind: TypeAlias = Literal["pycxx_module", "pymethoddef_table", "python_type", "unknown"]
 MethodKind: TypeAlias = Literal["keyword", "noargs", "varargs"]
 ContextEntry: TypeAlias = tuple[int, ContextKind, str]
@@ -194,6 +212,32 @@ class BindingClass:
     public_names: list[str]
     base_class: str | None
     explicit_export: bool
+    cpp_type_names: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class PublicPythonType:
+    """A normalized public Python module/class name."""
+
+    module_name: str
+    python_name: str
+
+    @property
+    def qualified_name(self) -> str:
+        return f"{self.module_name}.{self.python_name}"
+
+
+@dataclass(frozen=True)
+class PythonObjectType:
+    """A TypeId and the public Python type returned for it."""
+
+    type_id: str
+    python_module: str
+    python_name: str
+
+    @property
+    def qualified_python_name(self) -> str:
+        return f"{self.python_module}.{self.python_name}"
 
 
 @dataclass(frozen=True)
@@ -218,6 +262,7 @@ class StubSignature:
     returns: str
     class_symbol: str | None = None
     doc: str | None = None
+    deprecated_message: str | None = None
 
 
 @dataclass(frozen=True)

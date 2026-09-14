@@ -991,7 +991,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setParameterLabel(
             WParameter::First,
-            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')")
+            QApplication::translate("ToolWidgetManager_p4", "Degree")
         );
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT
@@ -1067,6 +1067,7 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }

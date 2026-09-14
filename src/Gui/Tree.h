@@ -299,6 +299,7 @@ private:
     QTimer visibilityIconDoubleClickTimer;
 
     bool expandIndicatorPressed = false;
+    bool visibilityIconPressed = false;
 
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
@@ -495,7 +496,10 @@ public:
     Gui::ViewProviderDocumentObject* object() const;
     void testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2);
     void testStatus(bool resetStatus);
+    bool isVisibleInTree() const;
     void displayStatusInfo();
+
+    QVariant data(int column, int role) const override;
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant& value) override;
     bool isChildOfItem(DocumentObjectItem*);

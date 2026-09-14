@@ -24,6 +24,7 @@
 #include "UniqueNameManager.h"
 
 #include <algorithm>
+#include <cctype>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -34,7 +35,7 @@ std::tuple<std::string_view, std::string_view, unsigned int, Base::UnlimitedUnsi
 {
     auto suffixStart = getNameSuffixStartPosition(name);
     auto digitsStart = std::find_if_not(suffixStart, name.crend(), [](char c) {
-        return std::isdigit(c);
+        return std::isdigit(static_cast<unsigned char>(c)) != 0;
     });
     unsigned int digitCount = digitsStart - suffixStart;
     return {
@@ -53,10 +54,10 @@ bool Base::UniqueNameManager::haveSameBaseName(std::string_view first, std::stri
         return false;
     }
     auto firstDigitsStart = std::find_if_not(firstSuffixStart, first.crend(), [](char c) {
-        return std::isdigit(c);
+        return std::isdigit(static_cast<unsigned char>(c)) != 0;
     });
     auto secondDigitsStart = std::find_if_not(secondSuffixStart, second.crend(), [](char c) {
-        return std::isdigit(c);
+        return std::isdigit(static_cast<unsigned char>(c)) != 0;
     });
     return std::equal(firstDigitsStart, first.crend(), secondDigitsStart, second.crend());
 }

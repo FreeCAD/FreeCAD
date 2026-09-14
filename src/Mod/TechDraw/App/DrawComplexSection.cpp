@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -191,6 +193,9 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     if (debugSection()) {
         BRepTools::Write(cuttingTool, "DCSmakeCuttingTool_cuttingToo.brep");//debug
     }
+    if (cuttingTool.IsNull()) {
+        return {};
+    }
 
     // save the tool face for shading/hatching of cut surface
     auto extrudeDir = Base::convertTo<gp_Dir>(getReferenceAxis());
@@ -337,7 +342,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
 
     // faceNormals are not in the same order as the faces(sometimes??).
     TopExp_Explorer expFaces(m_toolFaceShape, TopAbs_FACE);
-    for (int iPiece = 0; expFaces.More(); expFaces.Next(), iPiece++) {
+    for (; expFaces.More(); expFaces.Next()) {
         TopoDS_Face face = TopoDS::Face(expFaces.Current());
         if (!isFacePlanar(face)) {
             // TODO: continue blocks curved profile segments (which doesn't work right).
@@ -1034,7 +1039,7 @@ std::vector<TopoDS_Face> DrawComplexSection::faceShapeIntersect(const TopoDS_Fac
     }
     std::vector<TopoDS_Face> intersectFaceList;
     TopExp_Explorer expFaces(intersect, TopAbs_FACE);
-    for (int i = 1; expFaces.More(); expFaces.Next(), i++) {
+    for (; expFaces.More(); expFaces.Next()) {
         intersectFaceList.push_back(TopoDS::Face(expFaces.Current()));
     }
     return intersectFaceList;
@@ -1409,7 +1414,7 @@ DrawComplexSection::getSegmentViewDirections(const TopoDS_Wire& profileWire,
     // are all these shenanigans necessary?
     // no guarantee of order from TopExp_Explorer.  Need to match faces to the profile segment that
     // generated it?
-    for (int iFace = 0; expFaces.More(); expFaces.Next(), iFace++) {
+    for (; expFaces.More(); expFaces.Next()) {
         auto shape = expFaces.Current();
         auto face = TopoDS::Face(shape);
         auto normal = Base::convertTo<Base::Vector3d>(getFaceNormal(face));
@@ -1469,10 +1474,14 @@ TopoDS_Shape DrawComplexSection::profileToSolid(const TopoDS_Wire& closedProfile
     if (!mkFace.IsDone()) {
         throw Base::RuntimeError("Complex section could not create face from closed profile");
     }
+    const TopoDS_Face& face = mkFace.Face();
+    if (face.IsNull()) {
+        return {};
+    }
 
     auto extrudeVector = getReferenceAxis() * dMax * 2;
 
-    BRepPrimAPI_MakePrism mkPrism(mkFace.Face(), Base::convertTo<gp_Vec>(extrudeVector));
+    BRepPrimAPI_MakePrism mkPrism(face, Base::convertTo<gp_Vec>(extrudeVector));
     auto profileSolid = mkPrism.Shape();
 
      return profileSolid;
@@ -1649,6 +1658,9 @@ TopoDS_Shape DrawComplexSection::cuttingToolFromProfile(const TopoDS_Wire& inPro
     }
 
     TopoDS_Shape solid = profileToSolid(profileWireClosed, dMax);
+    if (solid.IsNull()) {
+        return {};
+    }
     solid = ShapeUtils::moveShape(solid, getReferenceAxis() * -dMax);
     return solid;
 }

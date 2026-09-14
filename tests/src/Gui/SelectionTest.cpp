@@ -58,8 +58,8 @@ protected:
 
     void TearDown() override
     {
-        Gui::Selection().rmvSelectionGate(_docName.c_str());
-        Gui::Selection().clearSelection(_docName.c_str());
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().clearSelection();
         if (App::GetApplication().getDocument(_docName.c_str())) {
             App::GetApplication().closeDocument(_docName.c_str());
         }
@@ -99,7 +99,7 @@ TEST_F(SelectionTest, testSelectionUsesActiveGateWithoutKeepingRejectionReason)
 {
     auto* gate = new ObjectNameGate(_allowedObject->getNameInDocument());
     gate->notAllowedReason = "existing reason";
-    Gui::Selection().addSelectionGate(gate, Gui::ResolveMode::NoResolve, _docName.c_str());
+    Gui::Selection().addSelectionGate(gate, Gui::ResolveMode::NoResolve);
 
     EXPECT_TRUE(Gui::Selection().testSelection(_doc, _allowedObject));
     EXPECT_EQ(gate->notAllowedReason, "existing reason");

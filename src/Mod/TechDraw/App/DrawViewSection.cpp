@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -1251,8 +1253,6 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
         }
         return;
     }
-
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as

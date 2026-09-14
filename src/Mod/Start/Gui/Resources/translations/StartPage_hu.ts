@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Open File</source>
       <translation>Fájl megnyitás</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Assembly</source>
       <translation>Összeállítás</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>2D Draft</source>
       <translation>2D tervrajz</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>Creates a 2D Draft document</source>
       <translation>Létrehoz egy 2D tervrajz dokumentumot</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="244"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Építészet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Empty File</source>
       <translation>Üres fájl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Létrehoz egy új FreeCAD fájlt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Megnyit egy meglévő CAD fájlt vagy 3D modellt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="231"/>
       <source>Parametric Body</source>
-      <translation>Változós test</translation>
+      <translation>Parametrikus test</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Létrehoz egy testet az alkatrész tervezés munkafelülettel</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Creates an assembly project</source>
       <translation>Létrehoz egy összeszerelési tervet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>Creates an architectural project</source>
       <translation>Létrehoz egy építészeti tervet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="529"/>
       <source>New File</source>
       <translation>Új fájl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>Példák</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>Első indítási beállítás megnyitása</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Ne jelenítse meg újra ezt a kezdőlapot (üres képernyővel kezdje)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Start</source>
       <translation>Kezdés</translation>
     </message>
@@ -174,29 +174,29 @@
       <translation>FreeCAD világos</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>Téma</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>További témákat keres? Ezeket a &lt;a href="freecad:Std_AddonMgr"&gt;Kiegészítő kezelője&lt;/a&gt; segítségével szerezheti be.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD sötét</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD világos</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD klasszikus</translation>
@@ -261,7 +261,7 @@ Több mappa is hozzáadható a mappák elérési útjainak pontosvesszővel ";;"
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>Kezdés</translation>
     </message>

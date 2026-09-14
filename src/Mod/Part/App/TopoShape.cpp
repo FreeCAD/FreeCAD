@@ -151,8 +151,6 @@
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
 
-#include <BRepAlgoAPI_Defeaturing.hxx>
-
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
@@ -694,8 +692,11 @@ void TopoShape::read(const char* FileName)
     Base::FileInfo File(FileName);
 
     // checking on the file
+    if (!File.exists()) {
+        throw Base::FileNotFoundException(FileName);
+    }
     if (!File.isReadable()) {
-        throw Base::FileException("File to load not existing or not readable", FileName);
+        throw Base::FileReadPermissionException(FileName);
     }
 
     if (File.hasExtension({"igs", "iges"})) {
@@ -710,7 +711,7 @@ void TopoShape::read(const char* FileName)
         importBrep(File.filePath().c_str());
     }
     else {
-        throw Base::FileException("Unknown extension");
+        throw Base::FileFormatException(FileName);
     }
 }
 
@@ -758,7 +759,7 @@ void TopoShape::importIges(const char* FileName)
         // http://www.opencascade.org/org/forum/thread_20603/?forum=3
         aReader.SetReadVisible(Standard_True);
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Error in reading IGES");
+            throw Base::FileReadException(FileName);
         }
 
         // make brep
@@ -777,7 +778,7 @@ void TopoShape::importStep(const char* FileName)
     try {
         STEPControl_Reader aReader;
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Error in reading STEP");
+            throw Base::FileReadException(FileName);
         }
 
         // Root transfers
@@ -866,7 +867,7 @@ void TopoShape::write(const char* FileName) const
         exportStl(File.filePath().c_str(), 0.01);
     }
     else {
-        throw Base::FileException("Unknown extension");
+        throw Base::FileFormatException(FileName);
     }
 }
 
@@ -884,7 +885,7 @@ void TopoShape::exportIges(const char* filename) const
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Writing of IGES failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -901,12 +902,21 @@ void TopoShape::exportStep(const char* filename) const
 
         // write step file
         STEPControl_Writer aWriter;
-
+#if OCC_VERSION_HEX >= 0x070900
+        // Temporary workaround for OCCT 7.9+, see:
+        // https://github.com/Open-Cascade-SAS/OCCT/issues/1327
+        // TODO: Remove or refine the guards or remove when the issue is fixed in OCCT 8.0.1
+        aWriter.SetShapeFixParameters(DESTEP_Parameters::GetDefaultShapeFixParameters());
+        ShapeProcess::OperationsFlags aFlags;
+        aFlags.set(ShapeProcess::Operation::SplitCommonVertex);
+        aFlags.set(ShapeProcess::Operation::DirectFaces);
+        aWriter.SetShapeProcessFlags(aFlags);
+#endif
         const Handle(XSControl_TransferWriter) & hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone) {
-            throw Base::FileException("Error in transferring STEP");
+            throw Base::FileException("Error in transferring STEP", filename);
         }
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
@@ -918,7 +928,7 @@ void TopoShape::exportStep(const char* filename) const
         makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Writing of STEP failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -936,11 +946,11 @@ void TopoShape::exportBrep(const char* filename) const
             Standard_False,
             TopTools_FormatVersion_VERSION_1
         )) {
-        throw Base::FileException("Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #else
     if (!BRepTools::Write(this->_Shape, encodeFilename(filename).c_str())) {
-        throw Base::FileException("Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #endif
 }
@@ -4051,26 +4061,14 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
     if (this->_Shape.IsNull()) {
         throw Standard_Failure("Base shape is null");
     }
-    BRepAlgoAPI_Defeaturing defeat;
-    defeat.SetRunParallel(true);
-    defeat.SetShape(this->_Shape);
+
+    std::vector<TopoShape> faces;
+    faces.reserve(s.size());
     for (const auto& it : s) {
-        defeat.AddFaceToRemove(it);
+        faces.emplace_back(it);
     }
-#if OCC_VERSION_HEX >= 0x070600
-    defeat.Build(std::make_unique<Part::ProgressIndicator>()->Start());
-#else
-    defeat.Build();
-#endif
-    if (!defeat.IsDone()) {
-        // error treatment
-        Standard_SStream aSStream;
-        defeat.DumpErrors(aSStream);
-        const std::string& resultstr = aSStream.str();
-        const char* cstr2 = resultstr.c_str();
-        throw Base::RuntimeError(cstr2);
-    }
-    return defeat.Shape();
+
+    return makeElementDefeaturing(faces).getShape();
 }
 
 /**

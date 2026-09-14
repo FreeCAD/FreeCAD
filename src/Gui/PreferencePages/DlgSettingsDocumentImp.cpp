@@ -135,7 +135,6 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefCheckNewDoc->onSave();
     ui->prefCompression->onSave();
 
-    ui->prefUndoRedo->onSave();
     ui->prefUndoRedoSize->onSave();
     ui->prefSaveTransaction->onSave();
     ui->prefDiscardTransaction->onSave();
@@ -172,7 +171,6 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefCheckNewDoc->onRestore();
     ui->prefCompression->onRestore();
 
-    ui->prefUndoRedo->onRestore();
     ui->prefUndoRedoSize->onRestore();
     ui->prefSaveTransaction->onRestore();
     ui->prefDiscardTransaction->onRestore();

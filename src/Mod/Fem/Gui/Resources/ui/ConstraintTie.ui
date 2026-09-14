@@ -64,6 +64,20 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="ckb_rev_master">
+          <property name="text">
+           <string>Reverse master</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QCheckBox" name="ckb_rev_slave">
+          <property name="text">
+           <string>Reverse slave</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>

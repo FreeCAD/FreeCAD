@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <iomanip>
+#include <string_view>
 
 #include <CXX/WrapPython.h>
 
@@ -30,15 +31,10 @@
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
-#include "UnitsSchemasData.h"
 
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
-
-std::unique_ptr<UnitsSchemas> UnitsApi::schemas = std::make_unique<UnitsSchemas>(
-    UnitsSchemasData::unitSchemasDataPack
-);
 
 std::vector<std::string> UnitsApi::getDescriptions()
 {
@@ -68,11 +64,6 @@ bool UnitsApi::isMultiUnitLength()
 std::string UnitsApi::getBasicLengthUnit()
 {
     return schemas->currentSchema()->getBasicLengthUnit();
-}
-
-std::size_t UnitsApi::getDefSchemaNum()
-{
-    return schemas->spec().num;
 }
 
 void UnitsApi::setDecimals(const int prec)
@@ -137,11 +128,28 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant, double& factor, std
     return schemas->currentSchema()->translate(quant, factor, unitString);
 }
 
+std::string UnitsApi::schemaTranslate(
+    const Quantity& quant,
+    const NumericLocaleContext& formatting,
+    double& factor,
+    std::string& unitString
+)
+{
+    return schemas->currentSchema()->translate(quant, formatting, factor, unitString);
+}
+
 std::string UnitsApi::schemaTranslate(const Quantity& quant)
 {
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
+}
+
+std::string UnitsApi::schemaTranslate(const Quantity& quant, const NumericLocaleContext& formatting)
+{
+    double dummy1 {};  // to satisfy GCC
+    std::string dummy2;
+    return schemas->currentSchema()->translate(quant, formatting, dummy1, dummy2);
 }
 
 std::string UnitsApi::toUnicodeSuperscript(const std::string& str)

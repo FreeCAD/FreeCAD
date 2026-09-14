@@ -34,6 +34,7 @@
 #include <Base/Interpreter.h>
 
 #include "UiLoader.h"
+#include "PySideUicModulePy.h"
 #include "PythonWrapper.h"
 #include "WidgetFactory.h"
 
@@ -106,20 +107,7 @@ Py::Object wrapFromWidgetFactory(
 PySideUicModule::PySideUicModule()
     : Py::ExtensionModule<PySideUicModule>("PySideUic")
 {
-    add_varargs_method(
-        "loadUiType",
-        &PySideUicModule::loadUiType,
-        "PySide lacks the \"loadUiType\" command, so we have to convert the ui file to py code "
-        "in-memory first\n"
-        "and then execute it in a special frame to retrieve the form_class."
-    );
-    add_varargs_method("loadUi", &PySideUicModule::loadUi, "Addition of \"loadUi\" to PySide.");
-    add_varargs_method(
-        "createCustomWidget",
-        &PySideUicModule::createCustomWidget,
-        "Create custom widgets."
-    );
-    initialize("PySideUic helper module");  // register with Python
+    PySideUicModulePy::initialize(*this);
 }
 
 Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)

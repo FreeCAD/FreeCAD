@@ -278,8 +278,8 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
             if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
                 auto shape = feature->AddSubShape.getShape();
 
-                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(
-                    supportTransform.Inverted()
+                gp_Trsf trsf = supportTransform.Inverted().Multiplied(
+                    feature->getLocation().Transformation()
                 );
 
                 if (shape.isNull()) {
@@ -430,7 +430,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
                         QT_TRANSLATE_NOOP("Exception", "Shape of additive/subtractive feature is empty")
                     );
                 }
-                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+                gp_Trsf trsf = trsfInv.Multiplied(feature->getLocation().Transformation());
                 if (!fuseShape.isNull()) {
                     fuseShape = fuseShape.makeElementTransform(trsf);
                 }

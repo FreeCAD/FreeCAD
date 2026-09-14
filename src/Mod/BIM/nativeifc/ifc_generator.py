@@ -362,7 +362,6 @@ def filter_types(elements, obj_ids=[]):
     elements = [e for e in elements if not e.is_a("IfcFeatureElement")]
     elements = [e for e in elements if not e.is_a("IfcOpeningElement")]
     elements = [e for e in elements if not e.is_a("IfcSpace")]
-    elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
     elements = [e for e in elements if not e.id() in obj_ids]
     return elements
 

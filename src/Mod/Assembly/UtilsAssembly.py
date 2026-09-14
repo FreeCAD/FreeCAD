@@ -687,6 +687,20 @@ def getSimulationGroup(assembly):
     return sim_group
 
 
+def getSnapshotGroup(assembly):
+    snapshot_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SnapshotGroup":
+            snapshot_group = obj
+            break
+
+    if not snapshot_group:
+        snapshot_group = assembly.newObject("Assembly::SnapshotGroup", "Snapshots")
+
+    return snapshot_group
+
+
 def isAssemblyGrounded():
     assembly = activeAssembly()
     if not assembly:
@@ -891,7 +905,7 @@ def findCylindersIntersection(obj, surface, edge, elt_index):
     return surface.Center
 
 
-def openEditingPlacementDialog(obj, propName):
+def openEditingPlacementDialog(obj, propName, onChanged=None):
     task_placement = Gui.TaskPlacement()
     dialog = task_placement.form
 
@@ -901,6 +915,9 @@ def openEditingPlacementDialog(obj, propName):
     task_placement.setPropertyName(propName)
     task_placement.bindObject()
     task_placement.setIgnoreTransactions(True)
+
+    if onChanged is not None:
+        dialog.accepted.connect(onChanged)
 
     dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
     dialog.exec_()

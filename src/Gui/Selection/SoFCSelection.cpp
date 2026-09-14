@@ -423,7 +423,7 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
             }
         }
     }  // key press events
-    else if (event->isOfType(SoKeyboardEvent ::getClassTypeId())) {
+    else if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
         auto const e = static_cast<const SoKeyboardEvent*>(event);
         if (SoKeyboardEvent::isKeyPressEvent(e, SoKeyboardEvent::LEFT_SHIFT)
             || SoKeyboardEvent::isKeyPressEvent(e, SoKeyboardEvent::RIGHT_SHIFT)) {
@@ -573,7 +573,14 @@ void SoFCSelection::GLRenderBelowPath(SoGLRenderAction* action)
     }
 
     // check if preselection is active
-    if (this->setOverride(action, ctx)) {
+    if (this->style.getValue() == SoFCSelection::BOX
+        || ViewParams::instance()->getShowSelectionBoundingBox()) {
+        inherited::GLRenderBelowPath(action);
+        if (this->setOverride(action, ctx)) {
+            state->pop();
+        }
+    }
+    else if (this->setOverride(action, ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
     }

@@ -37,9 +37,14 @@
 #endif
 #include <zipios++/zipfile.h>
 
+#include <Inventor/SbBox3f.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+
 #include "Thumbnail.h"
 #include "BitmapFactory.h"
+#include "Camera.h"
 #include "View3DInventorViewer.h"
+#include "ViewProvider.h"
 
 
 using namespace Gui;
@@ -95,15 +100,26 @@ void Thumbnail::SaveDocFile(Base::Writer& writer) const
             qWarning("Cannot create a thumbnail from non-GUI thread");
         }
         else {
-            QColor invalid;
-            this->viewer->imageFromFramebuffer(
-                this->size,
-                this->size,
-                4,
-                invalid,
-                img,
-                View3DInventorViewer::RenderIntent::RasterCapture
-            );
+            // An empty document frames nothing, so it yields a blank thumbnail rather than a
+            // stale one of geometry that has since been deleted.
+            SbBox3f box;
+            this->viewer->getSceneBoundBox(box);
+
+            CoinPtr<SoOrthographicCamera> camera(new SoOrthographicCamera);
+            camera->orientation.setValue(Camera::defaultOrientation());
+            Camera::fitToBox(*camera, box, 1.0F);
+
+            const View3DInventorViewer::RenderImageOptions options {
+                .width = this->size,
+                .height = this->size,
+                .samples = 4,
+                .background = QColor(0, 0, 0, 0),
+                .alphaMode = View3DInventorViewer::AlphaMode::PerPixel,
+                .intent = View3DInventorViewer::RenderIntent::RasterCapture,
+                .includeViewerLighting = true,
+                .camera = camera.get(),
+            };
+            img = this->viewer->renderToImage(options);
             created = !img.isNull();
         }
     }

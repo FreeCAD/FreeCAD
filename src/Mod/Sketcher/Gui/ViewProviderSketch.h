@@ -724,6 +724,7 @@ public:
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+    QString getToolTip() const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
@@ -825,7 +826,17 @@ protected:
     ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
+        bool transform = true,
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        int depth = 0
+    ) const override;
+
 private:
+    bool hasMissingExternalGeometry() const;
+
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
         GeoListFacade& geolist,
@@ -835,10 +846,11 @@ private:
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
+    /// returns false when the input cannot produce finite sketch coordinates
+    bool getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
-    /// give projecting line of position
-    void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
+    /// give projecting line of position, returns false for invalid view projection state
+    bool getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
     //@}
 
     /** @name preselection functions */
@@ -990,6 +1002,7 @@ private:
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);
+    void setOriginPointMarker(bool hollow);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -999,6 +1012,7 @@ private:
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
     void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
     bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines, int activeLineIndex);
     /// draw the edit markers
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,

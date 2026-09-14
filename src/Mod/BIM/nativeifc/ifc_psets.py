@@ -295,7 +295,7 @@ def load_psets(obj):
 
     show_psets(obj)
     if isinstance(obj, FreeCAD.DocumentObject) and hasattr(obj, "Group"):
-        for child in group:
+        for child in obj.Group:
             load_psets(child)
     elif isinstance(obj, FreeCAD.Document):
         for child in obj.Objects:

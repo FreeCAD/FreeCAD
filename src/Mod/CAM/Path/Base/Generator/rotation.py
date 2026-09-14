@@ -578,7 +578,7 @@ def _expand_solution_space(
 
             # Generate k*360° equivalents
             k_min = math.floor((axis.min_limit - base_angle) / 360)
-            k_max = math.ceil((axis.max_limit - base_angle) / 360)
+            k_max = Path.Geom.ceil((axis.max_limit - base_angle) / 360)
 
             for k in range(int(k_min) - 1, int(k_max) + 2):
                 angle = base_angle + k * 360
@@ -589,7 +589,7 @@ def _expand_solution_space(
             if axis.allow_flip:
                 flip_angle = base_angle + 180
                 k_min = math.floor((axis.min_limit - flip_angle) / 360)
-                k_max = math.ceil((axis.max_limit - flip_angle) / 360)
+                k_max = Path.Geom.ceil((axis.max_limit - flip_angle) / 360)
 
                 for k in range(int(k_min) - 1, int(k_max) + 2):
                     angle = flip_angle + k * 360

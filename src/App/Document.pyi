@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
+from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
-from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
-
-if TYPE_CHECKING:
-    from Part import Feature as _PartFeature
+from DocumentSettings import DocumentSettings
+from typing import Final, Literal, Sequence, overload
 
 
 class Document(PropertyContainer):
@@ -146,6 +145,15 @@ class Document(PropertyContainer):
         """
         ...
 
+    @constmethod
+    def settings(self, namespace: str, /) -> DocumentSettings:
+        """
+        Return document-persisted settings for a namespace backed by this document's Meta map.
+
+        The namespace may contain dot-separated identifier segments.
+        """
+        ...
+
     def getUniqueObjectName(self, objName: str, /) -> str:
         """
         Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
@@ -197,36 +205,14 @@ class Document(PropertyContainer):
         """
         ...
 
-    @overload
-    def addObject(
-        self,
-        type: Literal["Part::Feature"],
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
-    ) -> _PartFeature: ...
-
-    @overload
     def addObject(
         self,
         type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
+        name: str = ...,
+        objProxy: object | None = None,
+        viewProxy: object | None = None,
         attach: bool = False,
-        viewType: str = None,
-    ) -> DocumentObject: ...
-
-    def addObject(
-        self,
-        type: str,
-        name: str = None,
-        objProxy: object = None,
-        viewProxy: object = None,
-        attach: bool = False,
-        viewType: str = None,
+        viewType: str = ...,
     ) -> DocumentObject:
         """
         Add an object to document.

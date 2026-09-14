@@ -290,7 +290,7 @@ public:
         StatusBits.set(Immutable);
     }
 
-    bool isConst() {
+    bool isConst() const {
         return StatusBits.test(Immutable);
     }
 

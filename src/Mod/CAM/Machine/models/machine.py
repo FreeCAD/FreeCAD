@@ -169,6 +169,7 @@ class ProcessingOptions:
     tool_change: bool = True  # Enable tool change commands
     translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
+    f_for_rapid_moves = False
     xy_before_z_after_tool_change: bool = (
         False  # Decompose first move after tool change: XY first, then Z
     )

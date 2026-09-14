@@ -2132,15 +2132,16 @@ class SelectionTaskPanel:
         self.baseform.setText(QtGui.QApplication.translate("Arch", "Select a base object", None))
 
     def getStandardButtons(self):
-        """Adds the cancel button."""
-        return QtGui.QDialogButtonBox.Cancel
+        """Adds the close button."""
+        return QtGui.QDialogButtonBox.Close
 
     def reject(self):
-        """The method run when the user selects the cancel button."""
+        """The method run when the user selects the close button."""
 
         if hasattr(FreeCAD, "ArchObserver"):
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
+        FreeCADGui.HintManager.hide()
         return True
 
 

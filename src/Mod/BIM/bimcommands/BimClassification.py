@@ -516,11 +516,10 @@ class BIM_Classification:
         preset = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Classification", system + ".xml")
         if not os.path.exists(preset):
             return None
-        import codecs
         import re
 
         d = Item()
-        with codecs.open(preset, "r", "utf-8") as f:
+        with open(preset, "r", encoding="utf-8") as f:
             currentItem = d
             for l in f:
                 if "<Item>" in l:

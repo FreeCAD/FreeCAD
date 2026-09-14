@@ -102,6 +102,7 @@ private:
     SoSeparator* createGeometry();
     SoSeparator* createAxes();
     SoSeparator* createPlaneIndicator();
+    bool geometryReady {false};
 
     ~SoFCPlacementIndicatorKit() override;
 };

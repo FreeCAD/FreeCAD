@@ -44,6 +44,7 @@
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Inventor/SoAxisCrossKit.h>
+#include <Gui/SoLabelNodes.h>
 #include <Gui/ViewParams.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 

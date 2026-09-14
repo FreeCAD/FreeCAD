@@ -20,6 +20,7 @@
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_BezierCurve.hxx>
@@ -1431,6 +1432,29 @@ TEST_F(TopoShapeExpansionTest, makeElementBooleanCommon)
     EXPECT_EQ(elements.size(), 26);
     EXPECT_EQ(elements.count(IndexedName("Face", 1)), 1);
     EXPECT_EQ(elements[IndexedName("Face", 1)], MappedName("Face3;:M;CMN;:H1:7,F"));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementBooleanCommonWithCompoundTool)
+{
+    // Arrange
+    TopoShape base {BRepPrimAPI_MakeCylinder(1.0, 2.0).Shape(), 1L};
+    auto toolMaker
+        = BRepPrimAPI_MakeCylinder(gp_Ax2(gp_Pnt(1.0, 0.0, 0.0), gp_Dir(0.0, 0.0, 1.0)), 1.2, 1.0);
+    TopoShape tool {toolMaker.Shape(), 2L};
+    TopoShape overlap {3L};
+    overlap.makeElementBoolean(Part::OpCodes::Common, {base, tool});
+    TopoShape remainder {4L};
+    remainder.makeElementBoolean(Part::OpCodes::Cut, {tool, base});
+    TopoShape compound {5L};
+    compound.makeElementCompound({overlap, remainder});
+
+    // Act
+    TopoShape result {6L};
+    result.makeElementBoolean(Part::OpCodes::Common, {base, compound});
+
+    // Assert
+    EXPECT_FALSE(result.isEmpty());
+    EXPECT_FLOAT_EQ(getVolume(result.getShape()), getVolume(overlap.getShape()));
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBooleanCut)
@@ -2965,6 +2989,64 @@ TEST_F(TopoShapeExpansionTest, makeElementFilledFace)
             //                                     "Vertex4;:G;FFC;:H2:7,V",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceFromLooseEdges)
+{
+    // Arrange: four independently-built edges whose endpoints are coincident but are *not* the same
+    // shared vertices. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act: default params force boundary detection from the loose edges
+    auto params = TopoShape::BRepFillingParams();
+    result.makeElementFilledFace(edges, params);
+
+    // Assert: the four disconnected edges were merged into a single closed four-sided boundary and
+    // filled. Under the old requireSharedVertex policy the edges could not be chained and no
+    // boundary face was produced. The filled surface bulges beyond the boundary, so its bounding
+    // box and area are not asserted exactly.
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    // Topological naming survived the tolerance-based wire construction.
+    EXPECT_FALSE(elementMap(result).empty());
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementFilledFaceExplicitBoundaryRange)
+{
+    // Arrange: same disconnected edges as test above, but designate them explicitly as the boundary
+    // range. See issue #31080 and PR #31141.
+    auto [face, wire, edge1, edge2, edge3, edge4] = CreateRectFace(2.0, 3.0);
+    boost::ignore_unused(face, wire);
+    std::vector<TopoShape> edges {
+        TopoShape {edge1, 1L},
+        TopoShape {edge2, 2L},
+        TopoShape {edge3, 3L},
+        TopoShape {edge4, 4L},
+    };
+    TopoShape result;
+
+    // Act
+    auto params = TopoShape::BRepFillingParams();
+    params.boundary_begin = 0;
+    params.boundary_end = 4;
+    result.makeElementFilledFace(edges, params);
+
+    // Assert
+    EXPECT_FALSE(result.isNull());
+    EXPECT_EQ(result.countSubShapes(TopAbs_FACE), 1);
+    EXPECT_EQ(result.countSubShapes(TopAbs_EDGE), 4);
+    EXPECT_GT(getArea(result.getShape()), 0.0);
+    EXPECT_FALSE(elementMap(result).empty());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementBSplineFace)

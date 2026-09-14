@@ -85,7 +85,6 @@ private Q_SLOTS:
     void onLeftHandedChanged(bool);
     void onReversedChanged(bool);
     void onModeChanged(int);
-    void onOutsideChanged(bool);
 
 
 protected:
@@ -106,7 +105,6 @@ protected:
     App::PropertyAngle* propAngle;
     App::PropertyDistance* propGrowth;
     App::PropertyEnumeration* propMode;
-    App::PropertyBool* propOutside;
 
 
 private:

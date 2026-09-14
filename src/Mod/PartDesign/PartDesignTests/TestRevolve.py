@@ -24,6 +24,8 @@
 import unittest
 
 import FreeCAD
+import Part
+import Sketcher
 
 
 class TestRevolve(unittest.TestCase):
@@ -64,6 +66,69 @@ class TestRevolve(unittest.TestCase):
         self.Body.addObject(self.Groove)
         self.Doc.recompute()
         self.assertEqual(len(self.Groove.Shape.Faces), 5)
+
+    def testRevolutionStartOffsetAndReference(self):
+        profile = self.Doc.addObject("Sketcher::SketchObject", "Profile")
+        points = [
+            FreeCAD.Vector(2, 0),
+            FreeCAD.Vector(3, 0),
+            FreeCAD.Vector(3, 1),
+            FreeCAD.Vector(2, 1),
+        ]
+        for start, end in zip(points, points[1:] + points[:1]):
+            profile.addGeometry(Part.LineSegment(start, end), False)
+
+        axis = self.Doc.addObject("Part::Feature", "Axis")
+        axis.Shape = Part.makeLine(FreeCAD.Vector(0, -1, 0), FreeCAD.Vector(0, 2, 0))
+
+        revolution = self.Doc.addObject("PartDesign::Revolution", "OffsetRevolution")
+        revolution.Profile = profile
+        revolution.ReferenceAxis = (axis, ["Edge1"])
+        revolution.Angle = 30
+        revolution.StartType = "Offset"
+        revolution.StartOffset = 105
+        self.Doc.recompute()
+
+        direct_bounds = revolution.AddSubShape.BoundBox
+        direct_values = (
+            direct_bounds.XMin,
+            direct_bounds.XMax,
+            direct_bounds.YMin,
+            direct_bounds.YMax,
+            direct_bounds.ZMin,
+            direct_bounds.ZMax,
+        )
+        self.assertLess(direct_bounds.XMax, -0.5)
+        self.assertLess(direct_bounds.ZMax, -1.4)
+
+        reference = self.Doc.addObject("Part::Feature", "StartReference")
+        reference.Shape = Part.Face(
+            Part.makePolygon(
+                [
+                    FreeCAD.Vector(0, -1, -1),
+                    FreeCAD.Vector(0, 2, -1),
+                    FreeCAD.Vector(0, 2, -4),
+                    FreeCAD.Vector(0, -1, -4),
+                    FreeCAD.Vector(0, -1, -1),
+                ]
+            )
+        )
+        revolution.StartReference = (reference, ["Face1"])
+        revolution.StartType = "Reference"
+        revolution.StartOffset = 15
+        self.Doc.recompute()
+
+        reference_bounds = revolution.AddSubShape.BoundBox
+        reference_values = (
+            reference_bounds.XMin,
+            reference_bounds.XMax,
+            reference_bounds.YMin,
+            reference_bounds.YMax,
+            reference_bounds.ZMin,
+            reference_bounds.ZMax,
+        )
+        for actual, expected in zip(reference_values, direct_values):
+            self.assertAlmostEqual(actual, expected)
 
     def tearDown(self):
         # closing doc

@@ -8,33 +8,51 @@ their source text unchanged while still marking strings for translation tools.
 
 from __future__ import annotations
 
+from Base.Metadata import callback, module
 from typing import TypeVar
 
 _T = TypeVar("_T")
+
+module(
+    Name="Qt",
+    Namespace="Base",
+    Include="Translate.h",
+    Runtime="ExtensionModule",
+    ModuleClass="Translate",
+)
 
 # Translation helpers
 def translate(
     context: str, sourcetext: str, disambiguation: str | None = None, n: int = -1, /
 ) -> str:
-    """Translate one source string in a Qt translation context."""
+    """Translate one source string in a Qt translation context.
+
+    Installed translator files are searched from the most recently installed
+    translator back to the first installed translator.
+    """
     ...
 
+@callback("translateNoop")
 def QT_TRANSLATE_NOOP(context: str, sourcetext: _T, /) -> _T:
     """Return one string unchanged while marking it for contextual translation."""
     ...
 
+@callback("translateNoop3")
 def QT_TRANSLATE_NOOP3(context: str, sourcetext: _T, disambiguation: str, /) -> _T:
     """Return one string unchanged while marking it with disambiguation metadata."""
     ...
 
+@callback("translateNoop")
 def QT_TRANSLATE_NOOP_UTF8(context: str, sourcetext: _T, /) -> _T:
     """Return one UTF-8 string unchanged while marking it for contextual translation."""
     ...
 
+@callback("trNoop")
 def QT_TR_NOOP(sourcetext: _T, /) -> _T:
     """Return one string unchanged while marking it for default-context translation."""
     ...
 
+@callback("trNoop")
 def QT_TR_NOOP_UTF8(sourcetext: _T, /) -> _T:
     """Return one UTF-8 string unchanged while marking it for default-context translation."""
     ...

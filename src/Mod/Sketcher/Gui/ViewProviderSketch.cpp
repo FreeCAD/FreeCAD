@@ -76,6 +76,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -112,6 +113,19 @@ FC_LOG_LEVEL_INIT("Sketch", true, true)
 using namespace SketcherGui;
 using namespace Sketcher;
 namespace sp = std::placeholders;
+
+namespace
+{
+bool isFiniteVector(const SbVec3f& vector)
+{
+    return std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2]);
+}
+
+bool isFiniteVector(const Base::Vector3d& vector)
+{
+    return std::isfinite(vector.x) && std::isfinite(vector.y) && std::isfinite(vector.z);
+}
+}  // namespace
 
 /************** ViewProviderSketch::ParameterObserver *********************/
 
@@ -186,7 +200,7 @@ void ViewProviderSketch::ParameterObserver::updateShapeAppearanceProperty(const 
     auto matProp = static_cast<App::PropertyMaterialList*>(property);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0x54abff40);
+    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0xf59f0040);
     float r = ((shcol >> 24) & 0xff) / 255.0;
     float g = ((shcol >> 16) & 0xff) / 255.0;
     float b = ((shcol >> 8) & 0xff) / 255.0;
@@ -1078,11 +1092,19 @@ void ViewProviderSketch::setAngleSnapping(bool enable, Base::Vector2d referenceP
     snapManager->setAngleSnapping(enable, referencePoint);
 }
 
-void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
+bool ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
                                            const Gui::View3DInventorViewer* viewer,
                                            SbLine& line) const
 {
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return false;
+    }
+
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s viewportPixels = vp.getViewportSizePixels();
+    if (viewportPixels[0] <= 0 || viewportPixels[1] <= 0) {
+        return false;
+    }
 
     short x, y;
     pnt.getValue(x, y);
@@ -1091,8 +1113,13 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
     VPsize.getValue(dX, dY);
 
     float fRatio = vp.getViewportAspectRatio();
-    float pX = (float)x / float(vp.getViewportSizePixels()[0]);
-    float pY = (float)y / float(vp.getViewportSizePixels()[1]);
+    if (!std::isfinite(dX) || !std::isfinite(dY) || !std::isfinite(fRatio)
+        || fRatio <= std::numeric_limits<float>::epsilon()) {
+        return false;
+    }
+
+    float pX = static_cast<float>(x) / static_cast<float>(viewportPixels[0]);
+    float pY = static_cast<float>(y) / static_cast<float>(viewportPixels[1]);
 
     // now calculate the real points respecting aspect ratio information
     //
@@ -1103,12 +1130,19 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
         pY = (pY - 0.5f * dY) / fRatio + 0.5f * dY;
     }
 
+    if (!std::isfinite(pX) || !std::isfinite(pY)) {
+        return false;
+    }
+
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
-    if (!pCam)
-        return;
+    if (!pCam) {
+        return false;
+    }
+
     SbViewVolume vol = pCam->getViewVolume();
 
     vol.projectPointToLine(SbVec2f(pX, pY), line);
+    return isFiniteVector(line.getPosition()) && isFiniteVector(line.getDirection());
 }
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const
@@ -1124,9 +1158,13 @@ Base::Placement ViewProviderSketch::getEditingPlacement() const
     return Base::Placement(editDoc->getEditingTransform());
 }
 
-void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
+bool ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
                                                 double& u, double& v) const
 {
+    if (!isFiniteVector(point) || !isFiniteVector(normal)) {
+        return false;
+    }
+
     // Plane form
     Base::Vector3d R0(0, 0, 0), RN(0, 0, 1), RX(1, 0, 0), RY(0, 1, 0);
 
@@ -1141,16 +1179,36 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVe
 
     // line
     Base::Vector3d R1(point[0], point[1], point[2]), RA(normal[0], normal[1], normal[2]);
-    if (fabs(RN * RA) < std::numeric_limits<float>::epsilon())
-        throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
+    if (!isFiniteVector(R0) || !isFiniteVector(RN) || !isFiniteVector(RX) || !isFiniteVector(RY)
+        || !isFiniteVector(R1) || !isFiniteVector(RA)) {
+        return false;
+    }
+
+    const double denominator = RN * RA;
+    if (!std::isfinite(denominator) || fabs(denominator) < std::numeric_limits<float>::epsilon()) {
+        return false;
+    }
+
     // intersection point on plane
-    Base::Vector3d S = R1 + ((RN * (R0 - R1)) / (RN * RA)) * RA;
+    const double distance = (RN * (R0 - R1)) / denominator;
+    if (!std::isfinite(distance)) {
+        return false;
+    }
+
+    Base::Vector3d S = R1 + distance * RA;
+    if (!isFiniteVector(S)) {
+        return false;
+    }
 
     // distance to x Axle of the sketch
     S.TransformToCoordinateSystem(R0, RX, RY);
+    if (!isFiniteVector(S)) {
+        return false;
+    }
 
     u = S.x;
     v = S.y;
+    return std::isfinite(u) && std::isfinite(v);
 }
 
 bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
@@ -1163,7 +1221,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
     // Calculate 3d point to the mouse position
     SbLine line;
-    getProjectingLine(cursorPos, viewer, line);
+    if (!getProjectingLine(cursorPos, viewer, line)) {
+        return false;
+    }
     SbVec3f point = line.getPosition();
     SbVec3f normal = line.getDirection();
 
@@ -1196,13 +1256,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     const bool hasSelectionPoint = resolvedClickResult.hasPickedPoint() || static_cast<bool>(pp);
 
     std::unique_ptr<SnapManager::SnapHandle> snapHandle;
-    try {
-        getCoordsOnSketchPlane(pos, normal, x, y);
-        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    if (!getCoordsOnSketchPlane(pos, normal, x, y)) {
         return false;
     }
+    snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
     // Left Mouse button ****************************************************
     if (Button == 1) {
@@ -1751,17 +1808,16 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
     // Calculate 3d point to the mouse position
     SbLine line;
-    getProjectingLine(cursorPos, viewer, line);
-
-    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
-    try {
-        double x, y;
-        getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y);
-        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    if (!getProjectingLine(cursorPos, viewer, line)) {
         return false;
     }
+
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
+    double x, y;
+    if (!getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y)) {
+        return false;
+    }
+    snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
     bool preselectChanged = false;
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
@@ -1966,20 +2022,35 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
     dragAutoConstraintHandler->initDragging(drag.Dragged);
 
+    auto cancelDrag = [&]() {
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->clear();
+        }
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+    };
+
     auto setRelative = [&]() {
         drag.relative = true;
 
         // Calculate the click position and use it as the initial point
         SbLine line2;
-        getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
+        if (!getProjectingLine(DoubleClick::prvCursorPos, viewer, line2)) {
+            cancelDrag();
+            return false;
+        }
 
         double x, y;
-        getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y);
+        if (!getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y)) {
+            cancelDrag();
+            return false;
+        }
 
         auto snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
         Base::Vector2d snappedPos = snapHandle->compute();
         drag.xInit = snappedPos.x;
         drag.yInit = snappedPos.y;
+        return true;
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -2056,23 +2127,26 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
             || isEllipse(*geo) || isArcOfEllipse(*geo)
             || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
-            setRelative();
+            if (!setRelative()) {
+                return;
+            }
         }
 
         if (geo->is<Part::GeomBSplineCurve>()) {
             getSketchObject()->initTemporaryBSplinePieceMove(
                 geoId,
                 Sketcher::PointPos::none,
-                Base::Vector3d(drag.xInit, drag.yInit, 0.0),
-                false);
+                Base::Vector3d(drag.xInit, drag.yInit, 0.0));
             return;
         }
     }
     else if (drag.Dragged.size() > 1) {
-        setRelative();
+        if (!setRelative()) {
+            return;
+        }
     }
 
-    getSketchObject()->initTemporaryMove(drag.Dragged, false);
+    getSketchObject()->initTemporaryMove(drag.Dragged);
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)
@@ -2117,7 +2191,7 @@ bool ViewProviderSketch::doDragStep(double x, double y)
         }
     }
 
-    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
+    if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == GCS::SolveStatus::Success) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
         return true;
@@ -2540,6 +2614,98 @@ bool ViewProviderSketch::isSelectable() const
         return false;
     else
         return PartGui::ViewProvider2DObject::isSelectable();
+}
+
+Base::BoundBox3d ViewProviderSketch::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const Gui::View3DInventorViewer* viewer,
+    int depth) const
+{
+    // If not in edit mode, delegate to parent class.
+    if (!isInEditMode()) {
+        return PartGui::ViewProvider2DObject::_getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    // Prepare the transformation matrix
+    Base::Matrix4D m;
+    if (mat) {
+        m = *mat;
+    }
+
+    // In Edit Mode, apply EditPlacement if transformation is requested
+    if (transform) {
+        m = m * getEditingPlacement().toMatrix();
+    }
+
+    Base::BoundBox3d bbox;
+    std::string name(subname ? subname : "");
+
+    // Handle hierarchy or TNP naming (remove prefixes like Body.Sketch.)
+    auto lastDot = name.find_last_of('.');
+    if (lastDot != std::string::npos) {
+        name = name.substr(lastDot + 1);
+    }
+
+    Sketcher::SketchObject* obj = getSketchObject();
+
+    // Helper to merge the bounding box of a specific geometry ID
+    auto addGeometryBBox = [&](int geoId) {
+        if (auto* geo = obj->getGeometry(geoId)) {
+            bbox.Add(geo->getBoundBox());
+        }
+    };
+
+    // Case 1: Whole Sketch (empty) or Axes
+    if (name.empty() || name == "H_Axis" || name == "V_Axis") {
+        // Add Internal Geometry
+        for (int i = 0; i <= obj->getHighestCurveIndex(); ++i) {
+            addGeometryBBox(i);
+        }
+        // Add External Geometry
+        for (int i = 0; i < obj->getExternalGeometryCount(); ++i) {
+            addGeometryBBox(Sketcher::GeoEnum::RefExt - i);
+        }
+        // Add Root Point
+        bbox.Add(Base::Vector3d(0.0, 0.0, 0.0));
+    }
+    // Case 2: Specific sub-element selected
+    else {
+        // Check for "Edge" or "edge"
+        if (name.size() > 4 && (name.compare(0, 4, "Edge") == 0 || name.compare(0, 4, "edge") == 0)) {
+            int geoId = std::atoi(name.substr(4).c_str()) - 1;
+            addGeometryBBox(geoId);
+        }
+        // Check for "ExternalEdge" or "externaledge"
+        else if (name.size() > 12 && (name.compare(0, 12, "ExternalEdge") == 0 || name.compare(0, 12, "externaledge") == 0)) {
+            int idx = std::atoi(name.substr(12).c_str()) - 1;
+            int geoId = Sketcher::GeoEnum::RefExt - idx;
+            addGeometryBBox(geoId);
+        }
+        // Check for "Vertex" or "vertex"
+        else if (name.size() > 6 && (name.compare(0, 6, "Vertex") == 0 || name.compare(0, 6, "vertex") == 0)) {
+            int vtId = std::atoi(name.substr(6).c_str()) - 1;
+            int geoId = Sketcher::GeoEnum::GeoUndef;
+            Sketcher::PointPos posId = Sketcher::PointPos::none;
+
+            obj->getGeoVertexIndex(vtId, geoId, posId);
+            if (geoId != Sketcher::GeoEnum::GeoUndef) {
+                Base::Vector3d pt = obj->getPoint(geoId, posId);
+                bbox.Add(pt);
+            }
+        }
+        else if (name == "RootPoint" || name == "rootpoint") {
+            bbox.Add(Base::Vector3d(0.0, 0.0, 0.0));
+        }
+    }
+
+    // Apply the accumulated transformation
+    if (bbox.IsValid()) {
+        bbox = bbox.Transformed(m);
+    }
+
+    return bbox;
 }
 
 void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -3198,7 +3364,22 @@ bool ViewProviderSketch::isConstructionMode() const
 
 void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
 {
+    if (geometryCreationMode == newMode) {
+        return;
+    }
+
     geometryCreationMode = newMode;
+
+    if (!editCoinManager) {
+        return;
+    }
+
+    editCoinManager->updateEditCurveAppearance(newMode);
+
+    Gui::MDIView* mdi = getActiveView();
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
+        static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
+    }
 }
 
 GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const
@@ -3365,7 +3546,15 @@ bool ViewProviderSketch::selectAll()
 
 bool ViewProviderSketch::doubleClicked()
 {
-    Gui::Application::Instance->activeDocument()->setEdit(this);
+    Gui::Document* document = Gui::Application::Instance->activeDocument();
+    if (document) {
+        if (document->getInEdit() == this && isInEditMode()) {
+            Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ViewSketch");
+        }
+        else {
+            document->setEdit(this);
+        }
+    }
     return true;
 }
 
@@ -3617,6 +3806,14 @@ void ViewProviderSketch::drawLineExtensionAutoConstraintHint(
     editCoinManager->drawLineExtensionAutoConstraintHint(HintCurve);
 }
 
+void ViewProviderSketch::drawParallelPerpendicularHint(
+    const std::vector<Base::Vector2d>& HintLines,
+    int activeLineIndex
+)
+{
+    editCoinManager->drawParallelPerpendicularHint(HintLines, activeLineIndex);
+}
+
 bool ViewProviderSketch::isLineExtensionAutoConstraintHintVisible(
     const std::vector<Base::Vector2d>& HintCurve
 ) const
@@ -3663,6 +3860,10 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
         ViewProvider2DObject::updateData(prop);
     }
 
+    if (prop == &getSketchObject()->ExternalGeo) {
+        signalChangeIcon();
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3698,15 +3899,8 @@ void ViewProviderSketch::slotSolverUpdate()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
 
-        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
-            return editdoc->getEditViewProvider() == this;
-        });
-
-        Gui::MDIView* mdi = nullptr;
-
-        if (editDoc) {
-            mdi = editDoc->getActiveView();
-        }
+        Gui::MDIView* mdi =
+            Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
         }
@@ -3948,7 +4142,8 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit Sketch"), receiver, member);
+    QAction* act = menu->addAction(tr("Edit Sketch"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -4127,11 +4322,19 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // In order to have updated solver information, solve must take "true", this cause the Geometry
     // property to be updated with the solver information, including solver extensions, and triggers
     // a draw(true) via ViewProvider::UpdateData.
-    getSketchObject()->solve(true);
+    try {
+        getSketchObject()->solve(true);
 
-    // Enable solver initial solution update while dragging.
-    getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
-        viewProviderParameters.recalculateInitialSolutionWhileDragging);
+        // Enable solver initial solution update while dragging.
+        getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
+            viewProviderParameters.recalculateInitialSolutionWhileDragging);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().error("ViewProviderSketch::setEdit: %s\n", e.GetMessageString());
+    }
 
     // intercept del key press from main app
     listener = std::make_unique<ShortcutListener>(this);
@@ -4292,7 +4495,7 @@ void ViewProviderSketch::UpdateSolverInformation()
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
-    else if (getSketchObject()->getLastSolverStatus() != 0) {
+    else if (getSketchObject()->getLastSolverStatus() != GCS::SolveStatus::Success) {
         signalSetUp(QStringLiteral("solver_failed"),
                     tr("Solver failed to converge"),
                     QStringLiteral(""),
@@ -4314,6 +4517,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
+
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
     }
 
     setGridEnabled(nullptr);
@@ -4451,21 +4658,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     SoCamera* camera = viewer->getSoRenderManager()->getCamera();
     SbVec3f curdir;// current view direction
     camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
-    SbVec3f focal = camera->position.getValue() + camera->focalDistance.getValue() * curdir;
-
-    SbVec3f newdir;// future view direction
-    rot.multVec(SbVec3f(0, 0, -1), newdir);
-    SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
-
     SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
-    double dist = (plnpos - newpos).dot(newdir);
-    if (dist < 0) {
-        float focalLength = camera->focalDistance.getValue() - dist + 5;
-        camera->position = focal - focalLength * curdir;
-        camera->focalDistance.setValue(focalLength);
-    }
-
+    camera->position.setValue(plnpos - camera->focalDistance.getValue() * curdir);
     viewer->setCameraOrientation(rot);
+    if (getSketchObject()->Geometry.getSize() > 0 || getSketchObject()->ExternalGeometry.getSize() > 0) {
+        std::vector<App::SubObjectT> objs;
+        objs.emplace_back(getObject(), "");
+        viewer->viewObjects(objs);
+    }
 
     viewer->setEditing(true);
     viewer->setSelectionEnabled(false);
@@ -4787,9 +4987,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             }
         }
 
-        int ret = getSketchObject()->solve();
+        const auto status = getSketchObject()->solve();
 
-        if (ret != 0) {
+        if (status == SketchSolveStatus::Success) {
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();
@@ -4823,9 +5023,31 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
+bool ViewProviderSketch::hasMissingExternalGeometry() const
+{
+    const auto& externalGeometry = getSketchObject()->ExternalGeo.getValues();
+    return std::ranges::any_of(externalGeometry, [](const Part::Geometry* geometry) {
+        return ExternalGeometryFacade::getFacade(geometry)->testFlag(
+            ExternalGeometryExtension::Missing);
+    });
+}
+
+QString ViewProviderSketch::getToolTip() const
+{
+    return hasMissingExternalGeometry()
+        ? tr("Missing external geometry")
+        : QString();
+}
+
 QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
+
+    if (hasMissingExternalGeometry()) {
+        static QPixmap warning(Gui::BitmapFactory().pixmapFromSvg("Warning", QSize(10, 10)));
+        mergedicon = Gui::BitmapFactoryInst::mergePixmap(
+            mergedicon, warning, Gui::BitmapFactoryInst::TopRight);
+    }
 
     if (!getSketchObject()->FullyConstrained.getValue()) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("Sketcher_NotFullyConstrained", QSize(10, 10)));
@@ -4848,6 +5070,11 @@ void ViewProviderSketch::slotToolWidgetChanged(QWidget* newwidget)
 void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
 {
     editCoinManager->setConstraintSelectability(enabled);
+}
+
+void ViewProviderSketch::setOriginPointMarker(bool hollow)
+{
+    editCoinManager->setOriginPointMarker(hollow);
 }
 
 void ViewProviderSketch::setPositionText(const Base::Vector2d& Pos, const SbString& text)
@@ -5074,17 +5301,13 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
     if (!pCam)
         return 0;
 
-    try {
-        SbViewVolume vol = pCam->getViewVolume();
-
-        getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0);
-        getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1);
-
-        return Base::toDegrees(-atan2((y1 - y0), (x1 - x0)));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    SbViewVolume vol = pCam->getViewVolume();
+    if (!getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0)
+        || !getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1)) {
         return 0;
     }
+
+    return Base::toDegrees(-atan2((y1 - y0), (x1 - x0)));
 }
 
 

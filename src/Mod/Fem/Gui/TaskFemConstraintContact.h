@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -52,6 +54,8 @@ public:
     bool getFriction() const;
     const std::string getStickSlope() const;
     double getFrictionCoeff() const;
+    const std::vector<bool> getRevMaster() const;
+    const std::vector<bool> getRevSlave() const;
 
 private Q_SLOTS:
     void onReferenceDeletedSlave();

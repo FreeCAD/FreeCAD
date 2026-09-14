@@ -3,34 +3,37 @@ include (CheckCXXSourceRuns)
 # ================================================================================
 # == Macros, mostly for special targets ==========================================
 
-MACRO (fc_copy_sources target_name outpath)
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	if(INSTALL_PREFER_SYMLINKS)
-		set(copy_command create_symlink)
-	else()
-		set(copy_command copy)
-	endif()
+function(fc_copy_sources target_name outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_copy_sources called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    if(INSTALL_PREFER_SYMLINKS)
+        set(copy_command create_symlink)
+    else()
+        set(copy_command copy)
+    endif()
 
-	foreach(it ${ARGN})
-		get_filename_component(infile ${it} ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		# Ensure parent directory exists when copying or creating symlinks
-		get_filename_component(outfile_dir "${outfile}" PATH)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			# Make sure destination directory exists before copy/symlink
-			COMMAND   "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
-			COMMAND   "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_copy_sources)
+    foreach(it ${ARGN})
+        get_filename_component(infile ${it} ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        # Ensure parent directory exists when copying or creating symlinks
+        get_filename_component(outfile_dir "${outfile}" PATH)
+        if(IS_DIRECTORY ${infile} AND NOT INSTALL_PREFER_SYMLINKS)
+            set(copy_command copy_directory)
+        endif()
+        add_custom_command(
+            # Make sure destination directory exists before copy/symlink
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${outfile_dir}"
+            COMMAND "${CMAKE_COMMAND}" -E ${copy_command} "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_copy_sources)
 
 MACRO (fc_copy_file_if_different inputfile outputfile)
     if (EXISTS ${inputfile})
@@ -54,8 +57,7 @@ MACRO (fc_copy_file_if_different inputfile outputfile)
     endif()
 ENDMACRO(fc_copy_file_if_different)
 
-MACRO (fc_target_copy_resource target_name inpath outpath)
-# Macro to copy a list of files into a nested directory structure
+# Function to copy a list of files into a nested directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -66,26 +68,26 @@ MACRO (fc_target_copy_resource target_name inpath outpath)
 #   part will be kept so that the destination file name will be
 #   ${outpath}/foo/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT   "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource)
+function(fc_target_copy_resource target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${outpath}/${it}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource)
 
-MACRO (fc_target_copy_resource_flat target_name inpath outpath)
-# Macro to copy a list of files into a flat directory structure
+# Function to copy a list of files into a flat directory structure
 # Arguments -
 #   target_name - name of the target the files will be added to
 #   inpath      - name of the source directory
@@ -96,24 +98,25 @@ MACRO (fc_target_copy_resource_flat target_name inpath outpath)
 #   part will be removed so that the destination file name will be
 #   ${outpath}/bar.txt
 #
-	if(BUILD_VERBOSE_GENERATION)
-		set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
-	else()
-		set(fc_details "")
-	endif()
-	foreach(it ${ARGN})
-		get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
-		get_filename_component(outfile "${it}" NAME)
-		get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
-		add_file_dependencies("${infile}" "${outfile}")
-		ADD_CUSTOM_COMMAND(
-			COMMAND   "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
-			OUTPUT    "${outfile}"
-			COMMENT "Copying ${infile} to ${outfile}${fc_details}"
-			MAIN_DEPENDENCY "${infile}"
-		)
-	endforeach(it)
-ENDMACRO(fc_target_copy_resource_flat)
+function(fc_target_copy_resource_flat target_name inpath outpath)
+    if(BUILD_VERBOSE_GENERATION)
+        set(fc_details " (fc_target_copy_resource_flat called from ${CMAKE_CURRENT_SOURCE_DIR})")
+    else()
+        set(fc_details "")
+    endif()
+    foreach(it ${ARGN})
+        get_filename_component(infile "${inpath}/${it}" ABSOLUTE)
+        get_filename_component(outfile "${it}" NAME)
+        get_filename_component(outfile "${outpath}/${outfile}" ABSOLUTE)
+        add_custom_command(
+            COMMAND "${CMAKE_COMMAND}" -E copy "${infile}" "${outfile}"
+            OUTPUT  "${outfile}"
+            COMMENT "Copying ${infile} to ${outfile}${fc_details}"
+            MAIN_DEPENDENCY "${infile}"
+        )
+        target_sources(${target_name} PRIVATE "${outfile}")
+    endforeach(it)
+endfunction(fc_target_copy_resource_flat)
 
 # It would be a bit cleaner to generate these files in ${CMAKE_CURRENT_BINARY_DIR}
 
@@ -188,36 +191,66 @@ macro(generate_from_py_ BASE_NAME)
     generate_from_py_impl(${BASE_NAME} "_")
 endmacro(generate_from_py_)
 
-macro(generate_module_from_py BASE_NAME)
-    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
-    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
-    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi" SOURCE_NATIVE_PATH)
+# Generate <OutputName>ModulePy.h/.cpp from a source-owned .module.pyi file.
+# The generated implementation source is returned through OUT_VAR; the header
+# remains a custom-command output for the implementation to include. Both
+# outputs are excluded from Qt autogen processing. Source-owned
+# <OutputName>ModulePyImp.cpp files, when needed, must be listed on
+# the target explicitly; this function never copies or generates implementation
+# skeletons.
+function(generate_module_from_py BASE_NAME OUT_VAR)
+    string(REGEX REPLACE "^.*\\." "" OUTPUT_NAME "${BASE_NAME}")
 
-    set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.cpp")
-    set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}ModulePy.h")
-
-    GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
-    file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
-    if(NOT EXISTS "${SOURCE_CPP_PATH}")
-        message(STATUS "${SOURCE_CPP_PATH}")
-        execute_process(
-            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
-            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-            COMMAND_ERROR_IS_FATAL ANY
-        )
-    endif()
+    set(INPUT_PATH
+        "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
+    )
+    set(OUTPUT_CPP
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.cpp"
+    )
+    set(OUTPUT_H
+        "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_NAME}ModulePy.h"
+    )
+    set(GENERATOR
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py"
+    )
+    set(TEMPLATE
+        "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
+    )
 
     add_custom_command(
-        OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
-        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.module.pyi
-        MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.module.pyi"
+        OUTPUT
+            "${OUTPUT_CPP}"
+            "${OUTPUT_H}"
+        COMMAND
+            "${Python3_EXECUTABLE}"
+            "${GENERATOR}"
+            --outputPath "${CMAKE_CURRENT_BINARY_DIR}"
+            "${INPUT_PATH}"
+        MAIN_DEPENDENCY
+            "${INPUT_PATH}"
         DEPENDS
-            "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateModulePyExport.py"
-            "${TOOL_PATH}"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        COMMENT "Building ${BASE_NAME}ModulePy.h/.cpp out of ${BASE_NAME}.module.pyi"
+            "${GENERATOR}"
+            "${TEMPLATE}"
+        COMMENT
+            "Generating ${OUTPUT_NAME}ModulePy.h/.cpp"
+        VERBATIM
     )
-endmacro(generate_module_from_py)
+
+    # Module wrappers do not contain Qt meta-object code. Skipping Qt autogen
+    # prevents it from scanning the generated source before this command runs.
+    set_source_files_properties(
+        "${OUTPUT_CPP}"
+        "${OUTPUT_H}"
+        PROPERTIES
+            GENERATED TRUE
+            SKIP_AUTOGEN ON
+    )
+
+    set(${OUT_VAR}
+        "${OUTPUT_CPP}"
+        PARENT_SCOPE
+    )
+endfunction(generate_module_from_py)
 
 macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
@@ -233,57 +266,80 @@ macro(generate_embed_from_py BASE_NAME OUTPUT_FILE)
 endmacro(generate_embed_from_py)
 
 macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
-		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
-		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
-		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}" SOURCE_NATIVE_PATH)
-		add_custom_command(
-		 		OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}"
-		 		COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}" "${OUTPUT_FILE}" "${VARIABLE}"
-				MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}"
-				DEPENDS "${TOOL_PATH}"
-				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-				COMMENT "Building files out of ${INPUT_FILE}")
+    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
+    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+    file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}" SOURCE_NATIVE_PATH)
+    set(OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}")
+    add_custom_command(
+            OUTPUT "${OUTPUT_PATH}"
+            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}" "${OUTPUT_FILE}" "${VARIABLE}"
+            MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}"
+            DEPENDS "${TOOL_PATH}"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            COMMENT "Building files out of ${INPUT_FILE}")
+
+    set_source_files_properties(
+        "${OUTPUT_PATH}"
+        PROPERTIES
+            GENERATED TRUE
+            SKIP_AUTOGEN ON
+    )
 endmacro(generate_from_any)
 
 
-# Macro to replace all the binary output locations.  Takes 2 optional parameters.
-# ${ARGVN} is zero based so the 3rd element is ${ARGV2}.  When the 3rd element is missing,
-# Runtime and Lib directories default to /bin and /lib.  When present, the 3rd element
-# specifies both Runtime and Lib directories.  4th specifies linux install path.
-MACRO(SET_BIN_DIR ProjectName OutputName)
+# Function to replace all the binary output locations.
+# SET_BIN_DIR(ProjectName [OutputName])
+#   ProjectName is the name of the target
+#   OutputName will be the name of the file on disk. Optional and defaults to ProjectName
+function(SET_BIN_DIR ProjectName)
+    if(${ARGC} GREATER 1)
+        set(OutputName "${ARGV1}")
+    else()
+        set(OutputName "${ProjectName}")
+    endif()
+
+    get_target_property(SOURCE_DIR ${ProjectName} SOURCE_DIR)
+    file(RELATIVE_PATH SOURCE_DIR "${CMAKE_SOURCE_DIR}" "${SOURCE_DIR}")
+    string(REPLACE "/" ";" DIR_LIST "${SOURCE_DIR}//")
+    list(GET DIR_LIST 0 DIR0)
+    list(GET DIR_LIST 1 DIR1)
+    list(GET DIR_LIST 2 MODULE_NAME)
+    if(DIR0 STREQUAL "src" AND (DIR1 STREQUAL "Mod" OR
+                               (DIR1 STREQUAL "Tools" AND MODULE_NAME STREQUAL "_TEMPLATE_")))
+        set(BIN_DIR "/Mod/${MODULE_NAME}")
+        set(LIB_DIR "/Mod/${MODULE_NAME}")
+    else()
+        set(BIN_DIR "/bin")
+        set(LIB_DIR "/lib")
+    endif()
+
     set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
-    if(${ARGC} GREATER 2)
-        # VS_IDE (and perhaps others) make Release and Debug subfolders.  This removes them.
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
-    else(${ARGC} GREATER 2)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/lib)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/lib)
-    endif(${ARGC} GREATER 2)
+    # VS_IDE (and perhaps others) make Release and Debug subfolders.  This removes them.
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${LIB_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${LIB_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${LIB_DIR})
 
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
-    else(WIN32)
-        # FreeCADBase, SMDS, Driver and MEFISTO2 libs don't depend on parts from CMAKE_INSTALL_LIBDIR
-        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
-            if(${ARGC} STREQUAL 4)
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${ARGV3})
-            elseif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-            else()
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_LIBDIR})
-            endif()
+    elseif(RELATIVE_RPATH)
+        get_target_property(TARGET_TYPE ${ProjectName} TYPE)
+        if(TARGET_TYPE STREQUAL "EXECUTABLE")
+            cmake_path(APPEND CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_LIBDIR}" OUTPUT_VARIABLE LIBPATH)
+            cmake_path(APPEND CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_BINDIR}" OUTPUT_VARIABLE BINPATH)
+            cmake_path(RELATIVE_PATH LIBPATH BASE_DIRECTORY "${BINPATH}" OUTPUT_VARIABLE RPATH)
+        else()
+            set(RPATH "")
         endif()
-    endif(WIN32)
-ENDMACRO(SET_BIN_DIR)
+        set_property(TARGET ${ProjectName} PROPERTY INSTALL_RPATH "$<IF:$<PLATFORM_ID:Darwin>,@loader_path,$ORIGIN>/${RPATH}")
+    elseif(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
+        # FreeCADBase, SMDS, Driver and MEFISTO2 libs don't depend on parts from CMAKE_INSTALL_LIBDIR
+        cmake_path(APPEND CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_LIBDIR}" OUTPUT_VARIABLE RPATH)
+        set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH "${RPATH}")
+    endif()
+endfunction(SET_BIN_DIR)
 
 # Set python prefix & suffix together
 MACRO(SET_PYTHON_PREFIX_SUFFIX ProjectName)
@@ -353,9 +409,32 @@ macro(find_pip_package PACKAGE)
 	endif()
 endmacro()
 
-function(target_compile_warn_error ProjectName)
-    if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-        target_compile_options(${ProjectName} PRIVATE -Werror)
+macro(find_python_runtime_dep PIP_NAME IMPORT_NAME VERSION_VAR MISSING_MESSAGE)
+    find_pip_package(${PIP_NAME})
+    if(${PIP_NAME}_FOUND)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import ${IMPORT_NAME};print(${IMPORT_NAME}.__version__, end='')"
+            RESULT_VARIABLE FAILURE OUTPUT_VARIABLE ${VERSION_VAR})
+        if(FAILURE)
+            message(WARNING "Could not import ${IMPORT_NAME} Python package.")
+            set(${PIP_NAME}_FOUND OFF)
+        endif()
+    else()
+        message(WARNING "Could not find ${PIP_NAME} Python package runtime dependency. ${MISSING_MESSAGE}")
+    endif()
+endmacro()
+
+function(target_compile_warn_error TargetName)
+    if(FREECAD_WARN_ERROR AND (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|MSVC"))
+        target_compile_options(${TargetName} PRIVATE
+            $<$<CXX_COMPILER_ID:MSVC>:/WX>
+            $<$<CXX_COMPILER_ID:GNU,Clang>:-Werror>
+        )
     endif()
 endfunction()
 
+function(disable_occt8_deprecation_warnings)
+    if (OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+        add_compile_definitions(-DOCCT_NO_DEPRECATED)
+    endif()
+endfunction()

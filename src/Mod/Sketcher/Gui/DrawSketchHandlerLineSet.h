@@ -1069,6 +1069,8 @@ private:
                 return false;
             }
 
+            resetParallelPerpendicularHint();
+
             commandAddShapeGeometryAndConstraints();
 
             int geoId = getHighestCurveIndex();
@@ -1392,6 +1394,16 @@ private:
         }
     }
 
+    bool getStartPointOfCurrentSegment(Base::Vector2d& point) const override
+    {
+        if (constructionMethod() == ConstructionMethod::Line && state() == SelectMode::SeekSecond
+            && !points.empty()) {
+            point = points.back();
+            return true;
+        }
+        return false;
+    }
+
 private:
     Base::Vector2d prevCursorPos, center;
 
@@ -1623,8 +1635,9 @@ private:
             int pos1 = 0;
             int pos2 = 0;
             bool reverse = false;
+            Base::Vector3d cornerPoint;
             std::unique_ptr<Part::GeomArcOfCircle> arc(
-                Part::createFilletGeometry(newGeo, prevGeo, refPnt1, refPnt2, radius, pos1, pos2, reverse)
+                Part::createFilletGeometry(newGeo, prevGeo, refPnt1, refPnt2, radius, pos1, pos2, reverse, cornerPoint)
             );
             if (arc) {
                 if (isLineSegment(*newGeo)) {
@@ -1828,6 +1841,7 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 if (handler->constructionMethod() == ConstructionMethod::Arc) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
+                getKeyManager()->resetMode();
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -1966,7 +1980,7 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
-                else if (vec.Length() > Precision::Confusion()) {
+                else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                     double ovpRange = fourthParam->getValue();
 
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
@@ -2057,6 +2071,8 @@ void DSHPolyLineController::doConstructionMethodChanged()
             handler->setConstructionMethod(ConstructionMethod::Line);
             return;
         }
+
+        handler->resetEdge = true;
     }
 
     // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,
@@ -2138,8 +2154,8 @@ void DSHPolyLineController::addStepConstraints()
         if (p4set) {
             if (handler->geoEltIds.size() > 1) {
                 if (!handler->isPreviousArc()) {
-                    int geoId2 = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
-                    Constraint2LinesByAngle(lastCurve, geoId2, Base::toRadians(p4), obj);
+                    int prevCurve = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
+                    Constraint2LinesByAngle(prevCurve, lastCurve, Base::toRadians(p4), obj);
                 }
             }
             else {

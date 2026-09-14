@@ -4,9 +4,6 @@
 #
 # Files updated by this script:
 #   - pixi.toml (workspace version)
-#   - package/rattler-build/pixi.toml (package version, name, description)
-#   - package/rattler-build/recipe.yaml (context version, package name)
-#   - package/WindowsInstaller/include/declarations.nsh (APP_NAME)
 #   - package/fedora/freecad.spec (Version, Name)
 #
 # Usage:
@@ -118,60 +115,6 @@ def sync_workspace_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str,
     return updated, updated != content
 
 
-def sync_rattler_build_pixi_toml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
-    """Sync the rattler-build pixi.toml version, name, and description fields.
-
-    Updates fields under the [package] section.
-    """
-    content = filepath.read_text(encoding="utf-8")
-    updated = content
-    updated = replace_in_toml_section(updated, "[package]", "version", version.conda)
-    updated = replace_in_toml_section(updated, "[package]", "name", version.lowercase_name)
-    updated = replace_in_toml_section(updated, "[package]", "description", version.name)
-    return updated, updated != content
-
-
-def sync_recipe_yaml(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
-    """Sync the rattler-build recipe.yaml version and package name.
-
-    Updates:
-      - context.version (quoted value)
-      - package.name (unquoted value)
-    """
-    content = filepath.read_text(encoding="utf-8")
-    updated = content
-
-    # context:\n  version: "1.2.0dev"
-    updated = re.sub(
-        r'(context:\s*\n\s*version:\s*)"[^"]*"',
-        rf'\g<1>"{version.conda}"',
-        updated,
-    )
-
-    # package:\n  name: freecad
-    updated = re.sub(
-        r"(package:\s*\n\s*name:\s*)\S+",
-        rf"\g<1>{version.lowercase_name}",
-        updated,
-    )
-
-    return updated, updated != content
-
-
-def sync_declarations_nsh(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
-    """Sync the NSIS installer APP_NAME define.
-
-    Updates: !define APP_NAME "FreeCAD"
-    """
-    content = filepath.read_text(encoding="utf-8")
-    updated = re.sub(
-        r'(!define APP_NAME\s+)"[^"]*"',
-        rf'\g<1>"{version.name}"',
-        content,
-    )
-    return updated, updated != content
-
-
 def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
     """Sync the Fedora RPM spec file Name and Version fields.
 
@@ -194,9 +137,6 @@ def sync_fedora_spec(filepath: Path, version: VersionInfo) -> tuple[str, bool]:
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
-    ("package/rattler-build/pixi.toml", sync_rattler_build_pixi_toml),
-    ("package/rattler-build/recipe.yaml", sync_recipe_yaml),
-    ("package/WindowsInstaller/include/declarations.nsh", sync_declarations_nsh),
     ("package/fedora/freecad.spec", sync_fedora_spec),
 ]
 

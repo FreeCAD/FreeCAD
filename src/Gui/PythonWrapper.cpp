@@ -681,6 +681,11 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
 {
 #if defined(HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     auto type = getPyTypeObjectForTypeName<QImage>();
+    if (!type) {
+        // QtWidgets can load the PySide QtGui module without registering the
+        // QImage C++ type for lookup by typeid().
+        type = getPyTypeObjectForPySideTypeName("QImage");
+    }
     if (type) {
         PyObject* pyobj = Shiboken::Conversions::copyToPython(type, const_cast<QImage*>(&img));
         return Py::asObject(pyobj);
@@ -689,7 +694,9 @@ Py::Object PythonWrapper::fromQImage(const QImage& img)
     // Access shiboken/PySide via Python
     Py::Object obj = qt_wrapInstance<const QImage*>(&img, "QImage", "QtGui");
     if (!obj.isNull()) {
-        return obj;
+        // qt_wrapInstance() only borrows img. Return an independent QImage
+        // before that temporary wrapper and the caller's storage go away.
+        return obj.callMemberFunction("copy");
     }
 #endif
     throw Py::RuntimeError("Failed to wrap image");

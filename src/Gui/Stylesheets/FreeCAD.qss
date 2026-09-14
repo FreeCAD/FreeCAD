@@ -1518,20 +1518,8 @@ Gui--TaskView--TaskPanel QSint--ActionPanel {
 QFrame[class="panel"] {}
 QSint--ActionGroup {
 /* if not reset, it might create problems with QPushButtons and other elements */
-/* if not reset, it might create problems with QPushButtons and other elements */
   border-radius: @InputFieldBorderRadius;
 }
-
-/* QSint--ActionGroup QGroupBox {
-  border: 1px solid @GeneralBorderColor;
-  background-color: @ButtonTopBackgroundColor;
-  padding-bottom: 3px;
-} */
-
-/* QSint--ActionGroup QGroupBox::title {
-  top: -18px;
-  left: 3px;
-} */
 
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
@@ -1589,8 +1577,6 @@ QSint--ActionGroup QFrame[class="content"] {
   border-bottom-right-radius: 3px;
 }
 
-/* Fixs for tabs inside Task Panel */
-
 /* Fix for buttons with icons that showed cropped (still not happy with result) */
 QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
   padding: 2px;/* bigger padding crops text and icons... */
@@ -1616,9 +1602,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   border: 1px solid @GeneralBorderColor;
-  padding: 1px 1px;/* different than regular QPushButton */
-/* different than regular QPushButton */
-  min-height: 16px;/* same as QTabBar QPushButton min-width */
+  padding: 1px 1px; /* different than regular QPushButton */
+  min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: @InputFieldBorderRadius;
 }
 
@@ -2719,6 +2704,59 @@ QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horiz
 
 Gui--Dialog--DocumentRecovery QTreeView {
   border: 1px solid @GeneralBorderColor;
+}
+
+/*==================================================================================================
+In-view spreadsheet editor
+==================================================================================================*/
+QTableWidget#spreadsheetViewEditor {
+  background-color: transparent;
+  alternate-background-color: transparent;
+  selection-background-color: transparent;
+  border: none;
+}
+
+QTableWidget#spreadsheetViewEditor::item,
+QTableWidget#spreadsheetViewEditor::item:selected {
+  background-color: transparent;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section,
+QTableWidget#spreadsheetViewEditor QTableCornerButton::section {
+  background-color: rgb(235, 235, 235);
+  color: black;
+  border: 1px solid black;
+}
+
+QTableWidget#spreadsheetViewEditor QHeaderView::section:checked {
+  background-color: rgb(205, 220, 235);
+}
+
+QTableWidget#spreadsheetViewEditor QLineEdit {
+  background-color: white;
+  color: black;
+  selection-background-color: rgb(190, 215, 240);
+  selection-color: black;
+  border: 1px solid black;
+  padding: 0;
+}
+
+/*==================================================================================================
+Overlay controls
+==================================================================================================*/
+QToolButton#overlayButton {
+  background-color: rgba(255, 255, 255, 215);
+  border: 1px solid rgba(40, 40, 40, 120);
+  border-radius: 11px;
+  padding: 2px;
+}
+
+QToolButton#overlayButton:hover {
+  background-color: rgba(255, 255, 255, 245);
+}
+
+QToolButton#overlayButton:pressed {
+  background-color: rgba(232, 232, 232, 245);
 }
 
 /*==================================================================================================

@@ -134,13 +134,9 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
                 // If we are in edit mode then simply ignore the RMB events
                 // to pass the event to the base class.
                 this->button2down = press;
-                if (press) {
-                    mouseDownConsumedEvent = *event;
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                }
 
                 // About to start rotating
-                if (press && (curmode == NavigationStyle::IDLE)) {
+                if (!viewer->isEditing() && press && (curmode == NavigationStyle::IDLE)) {
                     // Use this variable to spot move events
                     saveCursorPosition(ev);
                     this->centerTime = ev->getTime();

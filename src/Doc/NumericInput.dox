@@ -1,0 +1,174 @@
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+/* SPDX-FileCopyrightText: 2026 FreeCAD Project contributors */
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
+/** @page localizednumericinput Localized numeric and quantity input
+
+# Overview
+
+FreeCAD keeps canonical numeric syntax separate from localized user input.
+Canonical parsers are used for persistence, scripting, and internally generated
+expressions. Interactive input boundaries may accept locale-specific digits,
+signs, decimal separators, and grouping, but must normalize that input before
+calling a canonical parser.
+
+This separation prevents the process-wide ICU or Qt locale from silently
+changing the meaning of stored data. It also lets FreeCAD validate grouping
+exactly instead of relying on a locale library's permissive parsing behavior.
+
+# Architecture
+
+Localized quantity input is processed in three layers:
+
+```text
+QLocale and ICU locale metadata
+              |
+              v
+Base::NumericLocaleContext
+              |
+              v
+Base::scanLocalizedNumber()
+              |
+              v
+App::Quantity::parseUserInput()
+App::ExpressionParser::parseUserInput()
+App::interpretQuantityInput()
+              |
+              v
+Gui::InputField and Gui::QuantitySpinBox
+```
+
+The layers have distinct responsibilities:
+
+- **Base** owns immutable locale metadata, exact numeric token scanning,
+  canonicalization, and locale-aware formatting.
+- **App** owns quantity and expression grammar, expression evaluation,
+  default-unit policy, constraints, and structured input diagnostics.
+- **Gui** derives a context from each widget's effective `QLocale`, chooses the
+  input grammar and phase explicitly, and presents translated diagnostics.
+
+# Locale context
+
+Base::NumericLocaleContext is the complete numeric-locale snapshot. It contains
+the locale identity, localized digits, separators, signs, exponent syntax, and
+primary and secondary grouping sizes.
+
+The application publishes the process-wide context as one complete value after
+locale resolution succeeds. Code must not publish or combine individual locale
+fragments. A widget with an explicit `QLocale` derives its complete context from
+that widget locale instead of copying and modifying the global snapshot.
+
+Every parser and formatter receives a context explicitly. Canonical persistence
+and scripting APIs must not acquire localized behavior by reading the published
+context implicitly.
+
+# Exact numeric scanning
+
+Base::scanLocalizedNumber() scans one numeric token. It recognizes the exact
+configured syntax, validates grouping, produces canonical ASCII text, and
+reports how many UTF-8 bytes it consumed. It does not use ICU to decide which
+characters belong to the token; ICU supplies locale metadata only.
+
+Base::LocalizedNumberResult distinguishes complete, incomplete, and invalid
+input. Its diagnostic offsets and lengths are UTF-8 byte ranges. GUI code must
+convert them before using them as indices into a `QString`, whose indices are
+UTF-16 code units.
+
+Grouping depends on Base::NumericSyntaxContext. It is allowed unless the locale
+grouping separator conflicts with a structural separator in the current grammar
+context. Function argument separators are locale-aware and are normalized to
+canonical expression syntax before parsing.
+
+Examples of the intended policy include:
+
+| Locale | Context | Input | Result |
+| --- | --- | --- | --- |
+| `en_US` | standalone quantity | `12,345.67 mm` | `12345.67 mm` |
+| `en_US` | standalone quantity | `12 345 mm` | invalid |
+| `en_IN` | standalone quantity | `12,34,567 mm` | `1234567 mm` |
+| `en_US` | expression | `(12,345.67 mm)` | `12345.67 mm` |
+| `en_US` | function argument | `pow(1,234)` | two arguments |
+| `de_DE` | function argument | `pow(1,234)` | one decimal argument |
+| `de_DE` | function argument | `pow(1;234)` | two arguments |
+
+# Quantity interpretation
+
+App::interpretQuantityInput() is the shared App-level boundary for interactive
+quantity edits. Callers choose App::QuantityInputGrammar explicitly:
+
+- `Quantity` preserves quantity-only syntax, including quantity comments and
+  juxtaposed quantities.
+- `Expression` accepts the localized expression language.
+
+The operation owns localized scanning, parsing, expression evaluation,
+default-unit application, unit compatibility, range validation, and normalized
+value production. It returns an App::QuantityInputResult containing a typed
+status, an optional quantity, an optional expression, and a semantic diagnostic.
+
+App::InputPhase separates the two validation contracts:
+
+- `Editing` permits incomplete text so the user can continue typing. It never
+  commits an incomplete candidate.
+- `Commit` requires complete valid input and reports a diagnostic otherwise.
+
+Default units are applied at additive expression boundaries. Dimensionless
+additive terms acquire the field's default unit while their original expression
+subtrees and dependencies are preserved. Additive expressions nested under
+multiplication, division, or powers are not independently rewritten.
+
+# GUI behavior
+
+Gui::InputField and Gui::QuantitySpinBox use their effective widget locale for
+both formatting and parsing. Bound fields select expression grammar. Unbound
+quantity fields preserve quantity grammar and may fall back to expression
+grammar only when the quantity parser reports expression syntax.
+
+Editing and committing are separate operations:
+
+- Incomplete edits remain editable and do not replace the committed quantity.
+- Valid commits update the quantity and preserve the normal Qt success signals.
+- Invalid commits leave the user's text visible, preserve the last committed
+  quantity, and expose a translated diagnostic.
+- Escape restores the last committed value.
+
+Editable formatting must round-trip without ambiguity. In a locale where the
+grouping character can also be interpreted as a canonical decimal point, GUI
+editable text suppresses grouping rather than producing text such as `1.234`
+whose intended value cannot be recovered reliably.
+
+# Adding an input consumer
+
+When adding a user-facing numeric or quantity input boundary:
+
+1. Derive Base::NumericLocaleContext from the consumer's effective locale.
+2. Pass that context explicitly to parsing and formatting APIs.
+3. Choose quantity or expression grammar explicitly.
+4. Use `Editing` during interactive validation and `Commit` on Return or focus
+   loss.
+5. Keep invalid committed text visible and preserve the previous value.
+6. Translate typed diagnostics in Gui; do not classify errors by message text.
+7. Convert UTF-8 diagnostic byte ranges to UTF-16 before selecting Qt text.
+
+Do not strip separators, rewrite the complete input heuristically, ask ICU to
+infer token boundaries, or add an overload that silently reads global locale
+state.
+
+# Testing
+
+Changes to this path should be tested at the narrowest responsible layer and at
+an interactive boundary:
+
+- **Base:** scanning, exact Unicode symbols, grouping patterns, diagnostics,
+  native digits, signs, exponents, and format-to-parse round trips.
+- **App:** quantity and expression grammar, function arguments, opaque syntax,
+  editing versus commit, constraints, default units, and dependency
+  preservation.
+- **Gui:** effective widget locale, keyboard and focus commits, Qt signals,
+  diagnostic selection, Escape restoration, and editable format round trips.
+- **Consumer integration:** at least one real workflow for behavior involving
+  task panels, property editors, or on-view parameters.
+
+The central invariant is that text produced for an editable quantity parses
+back to the same value and unit under the same explicit locale context.
+
+*/

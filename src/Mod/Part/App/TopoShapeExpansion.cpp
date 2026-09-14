@@ -37,6 +37,7 @@
 # include <BRepAdaptor_HCompCurve.hxx>
 #endif
 
+#include <BRepAlgoAPI_Defeaturing.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -101,6 +102,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "ProgressIndicator.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -461,15 +463,15 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
         case TopAbs_VERTEX:
             // Vertex search will do comparison with tolerance to account for
             // rounding error inccured through transformation.
-            for (auto& shape : getSubTopoShapes(TopAbs_VERTEX)) {
+            for (auto& shape : getSubShapes(TopAbs_VERTEX)) {
                 ++index;
-                if (BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()))
+                if (BRep_Tool::Pnt(TopoDS::Vertex(shape))
                         .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape())))
                     <= tol2) {
                     if (names) {
                         names->push_back(std::string("Vertex") + std::to_string(index));
                     }
-                    res.push_back(shape);
+                    res.push_back(getSubTopoShape(TopAbs_VERTEX, index));
                     if (singleSearch) {
                         return res;
                     }
@@ -3174,7 +3176,7 @@ TopoShape& TopoShape::makeElementWires(
         if (hEdges->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
+        Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
         if (hWires->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
@@ -3885,7 +3887,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_end
             );
             wires = TopoShape(0, Hasher)
-                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                        .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
         }
@@ -3906,7 +3908,7 @@ TopoShape& TopoShape::makeElementFilledFace(
             }
             if (edges.size()) {
                 wires = TopoShape(0, Hasher)
-                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::requireSharedVertex, &output)
+                            .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
         }
@@ -4236,6 +4238,58 @@ TopoShape& TopoShape::makeElementChamfer(
     }
     Part::SignalException sig;
     return makeElementShape(mkChamfer, shape, op);
+}
+
+TopoShape& TopoShape::makeElementDefeaturing(
+    const TopoShape& shape,
+    const std::vector<TopoShape>& faces,
+    const char* op,
+    ElementMapPolicy elementMapPolicy
+)
+{
+    if (!op) {
+        op = Part::OpCodes::Defeaturing;
+    }
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (faces.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+
+    BRepAlgoAPI_Defeaturing mkDefeaturing;
+    mkDefeaturing.SetRunParallel(true);
+    mkDefeaturing.SetToFillHistory(true);
+    mkDefeaturing.SetShape(shape.getShape());
+    for (const auto& face : faces) {
+        if (face.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        const auto& faceShape = face.getShape();
+        if (faceShape.ShapeType() != TopAbs_FACE) {
+            FC_THROWM(Base::CADKernelError, "defeaturing input shape is not a face");
+        }
+        if (!shape.findShape(faceShape)) {
+            FC_THROWM(Base::CADKernelError, "defeaturing face does not belong to the shape");
+        }
+        mkDefeaturing.AddFaceToRemove(faceShape);
+    }
+
+#if OCC_VERSION_HEX >= 0x070600
+    mkDefeaturing.Build(std::make_unique<Part::ProgressIndicator>()->Start());
+#else
+    mkDefeaturing.Build();
+#endif
+    if (!mkDefeaturing.IsDone()) {
+        Standard_SStream ss;
+        mkDefeaturing.DumpErrors(ss);
+        throw Base::RuntimeError(ss.str().c_str());
+    }
+    if (mkDefeaturing.Shape().IsNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    return makeElementShape(mkDefeaturing, shape, op, elementMapPolicy);
 }
 
 TopoShape& TopoShape::makeElementGeneralFuse(
@@ -4839,7 +4893,7 @@ TopoShape& TopoShape::makeElementRevolution(
         op = Part::OpCodes::Revolve;
     }
     if (Mode == RevolMode::None) {
-        Mode = RevolMode::FuseWithBase;
+        Modify = Standard_False;
     }
     TopoShape base(_base);
     if (base.isNull()) {
@@ -4852,14 +4906,18 @@ TopoShape& TopoShape::makeElementRevolution(
         base = base.makeElementFace(nullptr, face_maker, nullptr);
     }
 
+    auto mode = Mode;
     BRepFeat_MakeRevol mkRevol;
     for (TopExp_Explorer xp(profile, TopAbs_FACE); xp.More(); xp.Next()) {
-        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(Mode), Modify);
+        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(mode), Modify);
         mkRevol.Perform(uptoface);
         if (!mkRevol.IsDone()) {
             throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
         }
         base = mkRevol.Shape();
+        if (Mode == RevolMode::None) {
+            mode = RevolMode::FuseWithBase;
+        }
     }
     return makeElementShape(mkRevol, base, op);
 }
@@ -6122,7 +6180,7 @@ TopoShape& TopoShape::makeElementBoolean(
             }
         }
     }
-    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0 || strcmp(maker, Part::OpCodes::Common) == 0) {
         for (unsigned i = 1; i < shapes.size(); ++i) {
             auto& s = shapes[i];
             if (s.isNull()) {
@@ -6132,7 +6190,12 @@ TopoShape& TopoShape::makeElementBoolean(
                 if (_shapes.empty()) {
                     _shapes.insert(_shapes.end(), shapes.begin(), shapes.begin() + i);
                 }
+                const auto sizeBeforeExpansion = _shapes.size();
                 expandCompound(s, _shapes);
+                if (strcmp(maker, Part::OpCodes::Common) == 0
+                    && _shapes.size() == sizeBeforeExpansion) {
+                    _shapes.push_back(s);
+                }
             }
             else if (_shapes.size()) {
                 _shapes.push_back(s);

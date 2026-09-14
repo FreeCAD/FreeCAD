@@ -248,6 +248,13 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj)
         Sketcher::PythonConverter::Mode::OmitInternalGeometry);
 
     // Export constraints of selected geos.
+    // Map each original geo id once; remapping in-place can cascade when new ids overlap old ids.
+    std::unordered_map<int, int> copiedGeoIds;
+    copiedGeoIds.reserve(listOfGeoId.size());
+    for (size_t j = 0; j < listOfGeoId.size(); j++) {
+        copiedGeoIds.emplace(listOfGeoId[j], static_cast<int>(j));
+    }
+
     std::vector<std::unique_ptr<Sketcher::Constraint>> shapeConstraints;
     for (auto constr : obj->Constraints.getValues()) {
 
@@ -274,12 +281,10 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj)
         }
 
         std::unique_ptr<Constraint> temp(constr->copy());
-        for (size_t j = 0; j < listOfGeoId.size(); j++) {
-            for (int i = 0; temp->hasElement(i); ++i) {
-                int geoid = temp->getGeoId(i);
-                if (geoid != GeoEnum::GeoUndef && geoid == listOfGeoId[j]) {
-                    temp->setGeoId(i, j);
-                }
+        for (int i = 0; temp->hasElement(i); ++i) {
+            const auto mappedGeoId = copiedGeoIds.find(temp->getGeoId(i));
+            if (mappedGeoId != copiedGeoIds.end()) {
+                temp->setGeoId(i, mappedGeoId->second);
             }
         }
         shapeConstraints.push_back(std::move(temp));
@@ -909,6 +914,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->FirstPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->First + 1;
                             break;
@@ -928,6 +935,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->SecondPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Second + 1;
                             break;
@@ -948,6 +957,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     ss.str(std::string());
 
                     switch (vals[ConstrId]->ThirdPos) {
+                        case Sketcher::PointPos::NumPointPos:
+                            break;
                         case Sketcher::PointPos::none:
                             ss << "Edge" << vals[ConstrId]->Third + 1;
                             break;
@@ -2505,7 +2516,7 @@ CmdSketcherRotate::CmdSketcherRotate()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Rotate / Polar Transform");
-    sToolTipText = QT_TR_NOOP("Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation");
+    sToolTipText = QT_TR_NOOP("Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation");
     sWhatsThis = "Sketcher_Rotate";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Rotate";
@@ -2573,7 +2584,7 @@ CmdSketcherTranslate::CmdSketcherTranslate()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Move / Array Transform");
-    sToolTipText = QT_TR_NOOP("Translates the selected geometries and enables the creation of 'i' * 'j' copies");
+    sToolTipText = QT_TR_NOOP("Translates the selected geometries and enables the creation of 'i' * 'j' total elements");
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Translate";

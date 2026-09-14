@@ -24,6 +24,8 @@
 
 #include <bitset>
 #include <vector>
+
+#include <QColor>
 #include <QCursor>
 #include <Gui/GLPainter.h>
 #include <Gui/Namespace.h>
@@ -237,7 +239,10 @@ protected:
     void draw() override;
 
 protected:
-    Gui::Rubberband rubberband;
+    QColor rubberbandColor;
+
+    void updateOverlayPosition();
+    void setOverlayVisible(bool visible);
 };
 
 // -----------------------------------------------------------------------------------

@@ -26,9 +26,16 @@
 
 #include <vector>
 
+#include <QTimer>
+
 #include <Mod/Sketcher/App/GeoEnum.h>
 
 #include "DrawSketchHandler.h"
+
+namespace Part
+{
+class Geometry;
+}
 
 namespace SketcherGui
 {
@@ -36,6 +43,8 @@ namespace SketcherGui
 class DrawSketchHandlerDragAutoConstraint final: public DrawSketchHandler
 {
 public:
+    DrawSketchHandlerDragAutoConstraint();
+
     void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
     {}
     bool pressButton(Base::Vector2d /*pos*/) override
@@ -70,16 +79,20 @@ private:
         Sketcher::PointPos posId = Sketcher::PointPos::none
     );
     bool hasMoved(const Base::Vector2d& actualPos) const;
-    Base::Vector2d getDirection(const Sketcher::GeoElementId& dragged, const Base::Vector2d& pos) const;
+    Base::Vector2d getDirection(const Part::Geometry* geometry) const;
     bool isExistingConstraint(
         const Sketcher::GeoElementId& dragged,
         const AutoConstraint& constraint
     ) const;
     void removeInvalidConstraints(const Sketcher::GeoElementId& dragged);
+    void onDwellTimerTimeout();
+    void updateSuggestions();
 
 private:
     std::vector<AutoConstraint> suggestedConstraints;
+    std::vector<Sketcher::GeoElementId> draggedElements;
     Base::Vector2d startPos {0.0, 0.0};
+    QTimer dwellTimer;
 };
 
 }  // namespace SketcherGui

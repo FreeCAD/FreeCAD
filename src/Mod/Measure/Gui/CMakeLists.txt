@@ -17,7 +17,11 @@ set (Measure_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Measure_translation.qr
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Measure_TR_QRC} ${QM_SRCS})
-qt_add_resources(MeasureGui_SRCS Resources/Measure.qrc ${Measure_TR_QRC})
+qt_add_resources(MeasureGui_SRCS
+    Resources/Measure.qrc
+    ${Measure_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(MeasureGui_UIC_SRCS
     DlgPrefsMeasureAppearanceImp.ui
@@ -93,11 +97,9 @@ if (MSVC)
     target_compile_options(MeasureGui PRIVATE /wd4251 /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeasureGui)
-endif()
+target_compile_warn_error(MeasureGui)
 
-SET_BIN_DIR(MeasureGui MeasureGui /Mod/Measure)
+SET_BIN_DIR(MeasureGui)
 SET_PYTHON_PREFIX_SUFFIX(MeasureGui)
 
 fc_copy_sources(MeasureGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Measure/" ${MeasureGuiIcon_SVG})

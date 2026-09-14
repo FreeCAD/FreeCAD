@@ -73,6 +73,12 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry(const DocumentObject* object)
+{
+    auto* geoFeature = freecad_cast<const GeoFeature*>(object);
+    return geoFeature ? geoFeature->getPropertyOfGeometry() : nullptr;
+}
+
 PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {

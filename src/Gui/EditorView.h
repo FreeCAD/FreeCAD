@@ -70,6 +70,8 @@ public:
     void setDisplayName(DisplayName);
     void OnChange(Base::Subject<const char*>& rCaller, const char* rcReason) override;
 
+    void updateInputHints();
+
     const char* getName() const override
     {
         return "EditorView";
@@ -151,6 +153,7 @@ public:
     explicit SearchBar(QWidget* parent = nullptr);
 
     void setEditor(QPlainTextEdit* textEdit);
+    QString getSearchText() const;
 
 protected:
     void keyPressEvent(QKeyEvent*) override;
@@ -162,6 +165,9 @@ public Q_SLOTS:
     void findPrevious();
     void findNext();
     void findCurrent();
+
+Q_SIGNALS:
+    void textChanged(const QString& text);
 
 private:
     void retranslateUi();

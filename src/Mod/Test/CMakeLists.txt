@@ -6,6 +6,7 @@ SET(Test_SRCS
     __init__.py
     Init.py
     BaseTests.py
+    FreeCADInitTests.py
     AutoSaverStress.py
     RunAutoSaverStress.py
     Document.py
@@ -16,6 +17,8 @@ SET(Test_SRCS
     Recompute.py
     GuiRecompute.py
     TestApp.py
+    TestLinkSuppression.py
+    TestIntPairList.py
     TestGui.py
     UnicodeTests.py
     UnitTests.py
@@ -26,9 +29,12 @@ SET(Test_SRCS
     TestPerf.py
     TestTreeSelection.py
     TestGraphicsViewWrapping.py
+    TestMDIView.py
     TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
-    TestCoinSelectionVisual.py
+    TestView3DFramebufferCapture.py
+    TestSelectionVisual.py
+    TestCornerAxisCrossVisual.py
     TestViewProviderLink.py
 )
 
@@ -57,6 +63,10 @@ foreach(test_data_src ${TestData_SRCS})
 endforeach()
 
 add_custom_target(TestSources DEPENDS ${Test_COPY_OUTPUTS})
+
+if(BUILD_MATERIAL AND TARGET MaterialLib)
+    add_dependencies(TestSources MaterialLib)
+endif()
 
 ADD_CUSTOM_TARGET(Test ALL
     DEPENDS TestSources

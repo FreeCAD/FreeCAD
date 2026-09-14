@@ -1202,10 +1202,22 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Calc")
         try:
             sheet.setAlias("A1", "mA")
-        except Exception:
+        except Exception as err:
+            self.assertIn("reserved unit token", str(err))
             self.assertEqual(sheet.getAlias("A1"), None)
         else:
             self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
+
+    def testSetInvalidAliasConstant(self):
+        """Try to use a constant (reserved word) as alias name"""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Calc")
+        try:
+            sheet.setAlias("A1", "pi")
+        except Exception as err:
+            self.assertIn("reserved constant token", str(err))
+            self.assertEqual(sheet.getAlias("A1"), None)
+        else:
+            self.fail("A constant (reserved word) was used as alias which shouldn't be allowed")
 
     def testPlacementName(self):
         """Object name is equal to property name (bug #2389)"""
@@ -1598,7 +1610,6 @@ class SpreadsheetCases(unittest.TestCase):
         """Test deleted aliases by undo remains in database"""
         sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
 
-        self.doc.UndoMode = 1
         self.doc.openTransaction("create alias")
         sheet.setAlias("B2", "test")
         self.doc.commitTransaction()
@@ -1711,7 +1722,6 @@ class SpreadsheetCases(unittest.TestCase):
         )
 
         self.doc.recompute()
-        self.doc.UndoMode = 0
         self.doc.removeObject("Body")
         sheet.clearAll()
 

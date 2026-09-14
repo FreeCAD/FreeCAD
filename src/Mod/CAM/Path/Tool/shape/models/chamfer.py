@@ -22,8 +22,14 @@
 # ***************************************************************************
 
 import FreeCAD
-from typing import Tuple, Mapping
+import math
+from typing import Any, Tuple, Mapping
 from .base import ToolBitShape
+
+
+def _mm(value) -> float:
+    """A parameter's magnitude, whether it arrives as a Quantity or a number."""
+    return float(value.Value if hasattr(value, "Value") else value)
 
 
 class ToolBitShapeChamfer(ToolBitShape):
@@ -60,6 +66,22 @@ class ToolBitShapeChamfer(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Tip diameter"),
                 "App::PropertyLength",
             ),
+        }
+
+    @classmethod
+    def derived_parameters(cls) -> Mapping[str, Any]:
+        """
+        The cutting diameter is where the cone reaches the top of the cutting
+        edge, so it follows from the tip, the angle and the height rather than
+        being something to type in. The sketch is constrained by those three and
+        never by Diameter, so a hand-entered value silently disagrees with the
+        tool it claims to describe.
+        """
+        return {
+            "Diameter": lambda p: _mm(p["TipDiameter"])
+            + 2
+            * _mm(p["CuttingEdgeHeight"])
+            * math.tan(math.radians(_mm(p["CuttingEdgeAngle"]) / 2))
         }
 
     @property

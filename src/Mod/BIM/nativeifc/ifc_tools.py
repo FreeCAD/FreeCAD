@@ -1055,8 +1055,6 @@ def filter_elements(elements, ifcfile, expand=True, spaces=False, assemblies=Tru
         elements = [e for e in elements if not e.is_a("IfcSpace")]
     # skip projects
     elements = [e for e in elements if not e.is_a("IfcProject")]
-    # skip furniture for now, they can be lazy loaded probably
-    elements = [e for e in elements if not e.is_a("IfcFurnishingElement")]
     return elements
 
 

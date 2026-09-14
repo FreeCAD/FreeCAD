@@ -156,9 +156,9 @@ public:
     float inactiveOpacity = 0.5;
     SbVec2s posOffset = SbVec2s(0, 0);
 
-    Base::Color xColor;
-    Base::Color yColor;
-    Base::Color zColor;
+    Base::Color xColor {1.0F, 0.0F, 0.0F};
+    Base::Color yColor {0.0F, 1.0F, 0.0F};
+    Base::Color zColor {0.0F, 0.0F, 1.0F};
 
     bool prepared = false;
     static vector<string> commands;
@@ -375,6 +375,7 @@ void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
 
 NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer)
     : baseColor {226, 232, 239}
+    , emphaseColor {0, 0, 0}
     , hiliteColor {170, 226, 255}
 {
     soNaviCube = new Gui::SoNaviCube();
@@ -770,7 +771,11 @@ void NaviCubeImplementation::createCubeFaceTextures()
 
         // Coin backend: store as a Coin-managed texture (SoTexture2).
         // Mirror to match the OpenGL texture coordinate origin (bottom-left).
+#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
         const QImage rgba = image.mirrored().convertToFormat(QImage::Format_RGBA8888);
+#else
+        const QImage rgba = image.flipped(Qt::Vertical).convertToFormat(QImage::Format_RGBA8888);
+#endif
         const int w = rgba.width();
         const int h = rgba.height();
         std::vector<unsigned char> pixels(static_cast<size_t>(w) * static_cast<size_t>(h) * 4U);

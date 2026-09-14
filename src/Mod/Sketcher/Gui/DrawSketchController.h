@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <cmath>
+
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
@@ -286,16 +288,20 @@ public:
     }
 
     /** @brief function triggered by the handler to ensure its operating position takes into
-     * account widget mandated parameters */
-    void enforceControlParameters(Base::Vector2d& onSketchPos)
+     * account widget mandated parameters. Returns false if the enforced position is not finite. */
+    bool enforceControlParameters(Base::Vector2d& onSketchPos)
     {
-        prevCursorPosition = onSketchPos;
-
         doEnforceControlParameters(onSketchPos);  // specialisation interface
 
+        if (!isFiniteSketchPosition(onSketchPos)) {
+            return false;
+        }
+
+        prevCursorPosition = onSketchPos;
         lastControlEnforcedPosition = onSketchPos;  // store enforced cursor position.
 
         afterEnforceControlParameters();  // NVI
+        return true;
     }
 
     /** function that is called by the handler when the construction mode changed */
@@ -759,12 +765,18 @@ protected:
     void activateOnViewParameter(size_t i)
     {
         if (i < onViewParameters.size()) {
-            onViewParameters[i]->activate();
+            auto* parameter = onViewParameters[i].get();
 
-            // points/value will be overridden by the mouseMove triggered by the mode
-            // change.
-            onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
-            onViewParameters[i]->startEdit(0.0, keymanager.get());
+            if (!parameter->isActive()) {
+                // Set the initial points before making the label visible. The points/value will be
+                // overridden by the mouseMove triggered by the mode change. Seeding at the
+                // previous cursor position prevents a redraw from flashing at the origin.
+                const Base::Vector3d cursorPosition(prevCursorPosition.x, prevCursorPosition.y, 0.0);
+                parameter->setPoints(cursorPosition, cursorPosition);
+                parameter->activate();
+            }
+
+            parameter->startEdit(0.0, keymanager.get());
         }
     }
 
@@ -878,6 +890,11 @@ private:
         return (ovpVisibilityManager.isVisibility(
             OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden
         ));
+    }
+
+    static bool isFiniteSketchPosition(const Base::Vector2d& onSketchPos)
+    {
+        return std::isfinite(onSketchPos.x) && std::isfinite(onSketchPos.y);
     }
     //@}
 

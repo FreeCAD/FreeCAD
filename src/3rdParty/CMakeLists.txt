@@ -5,6 +5,10 @@ if (BUILD_SMESH)
     add_subdirectory(salomesmesh)
 endif()
 
+if(BUILD_MESH)
+    add_subdirectory(WildMagic4)
+endif()
+
 add_subdirectory(lazy_loader)
 
 if(NOT FREECAD_USE_EXTERNAL_E57FORMAT)
@@ -21,6 +25,7 @@ if (BUILD_ASSEMBLY AND NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
         git submodule update --init" )
     endif()
     add_subdirectory(OndselSolver)
+    SET_BIN_DIR(OndselSolver)
 endif()
 
 if (BUILD_TRACY_FRAME_PROFILER)
@@ -31,4 +36,3 @@ if (BUILD_TRACY_FRAME_PROFILER)
     set(TRACY_STATIC OFF)
     add_subdirectory(tracy)
 endif()
-

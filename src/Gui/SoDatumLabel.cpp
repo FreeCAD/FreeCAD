@@ -214,12 +214,15 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(string, (""));
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0F, 1.0F, 1.0F)));
     SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0F, .0F, .0F)));
+    SO_NODE_ADD_FIELD(extensionLines, (SbVec3f(.0F, .0F, .0F)));
+    extensionLines.setNum(0);
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0F, .0F, 1.F)));
     SO_NODE_ADD_FIELD(strikethrough, (false));
 
     SO_NODE_ADD_FIELD(name, ("osifont"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(linePattern, (0b1111111111111111));
     SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
@@ -264,6 +267,7 @@ SoDatumLabel::SoDatumLabel()
     m_Root->addChild(m_GeometryColor);
 
     m_DrawStyle = new SoDrawStyle;
+    m_DrawStyle->linePattern.connectFrom(&this->linePattern);
     m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
     m_Root->addChild(m_DrawStyle);
 
@@ -426,6 +430,12 @@ public:
         }
         else if (label->datumtype.getValue() == SoDatumLabel::ARCLENGTH) {
             corners = computeArcLengthBBox();
+        }
+
+        const int extensionPointCount = label->extensionLines.getNum();
+        if (extensionPointCount > 0) {
+            const SbVec3f* extensionPoints = label->extensionLines.getValues(0);
+            corners.insert(corners.end(), extensionPoints, extensionPoints + extensionPointCount);
         }
 
         getBBox(corners, box, center);
@@ -1242,6 +1252,20 @@ void SoDatumLabel::generatePrimitives(SoAction* action)
             generateArcLengthPrimitives(action, p1, p2, p3);
         }
     }
+
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        const float selectionWidth = (imgHeight / 3.0F) * 0.8F;
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            generateLineSelectionPrimitive(
+                action,
+                extensionPoints[i],
+                extensionPoints[i + 1],
+                selectionWidth
+            );
+        }
+    }
 }
 
 void SoDatumLabel::notify(SoNotList* l)
@@ -1295,6 +1319,16 @@ float SoDatumLabel::getScaleFactor(SoState* state) const
 void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
 {
     point[2] = z;
+}
+
+SoDatumLabel::SelectionPart SoDatumLabel::classifySelectionPoint(const SbVec3f& objectPoint) const
+{
+    // Geometry lies on one of two known Z layers. Coin returns an intersection point rather
+    // than the stored vertex value, so classify it by the nearest layer without an epsilon.
+    constexpr float selectionBoundary = (ZCONSTR + ZARROW_TEXT_OFFSET) * 0.5F;
+
+    return objectPoint[2] > selectionBoundary ? SelectionPart::Annotation
+                                              : SelectionPart::Presentation;
 }
 
 void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
@@ -1507,6 +1541,14 @@ void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
         }
     }
 
+    const int extensionPointCount = extensionLines.getNum();
+    if (extensionPointCount > 0) {
+        const SbVec3f* extensionPoints = extensionLines.getValues(0);
+        for (int i = 0; i + 1 < extensionPointCount; i += 2) {
+            appendLine(lineVertices, lineCounts, extensionPoints[i], extensionPoints[i + 1]);
+        }
+    }
+
     if (!lineVertices.empty()) {
         m_LineVertexProperty->vertex
             .setValues(0, static_cast<int>(lineVertices.size()), lineVertices.data());
@@ -1593,23 +1635,15 @@ void SoDatumLabel::ensureCoinText(SoState* state, int srcw, int srch, float angl
     m_TextSwitch->whichChild.setValue(0);
 }
 
-void SoDatumLabel::GLRender(SoGLRenderAction* action)
+bool SoDatumLabel::prepareRenderScene(SoState* state)
 {
-    SoState* state = action->getState();
-
-    if (!shouldGLRender(action)) {
-        return;
-    }
-    if (action->handleTransparency(true)) {
-        return;
-    }
-
-    const float scale = getScaleFactor(state);
-    bool hasText = hasDatumText();
-
+    const bool hasText = hasDatumText();
     int srcw = 1;
     int srch = 1;
+    float angle = 0.0F;
+    SbVec3f textOffset(0.0F, 0.0F, 0.0F);
 
+    const float scale = getScaleFactor(state);
     if (hasText) {
         getDimension(scale, srcw, srch);
     }
@@ -1619,14 +1653,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         this->imgWidth = scale * 25.0F;
     }
 
-    // Get the points stored in the pnt field
     const SbVec3f* points = this->pnts.getValues(0);
-
-    state->push();
-
-    // Annotation faces should stay visible even when an ancestor enables back-face culling.
-    SoLazyElement::setBackfaceCulling(state, FALSE);
-
     const auto type = static_cast<Type>(datumtype.getValue());
     const int numPoints = this->pnts.getNum();
     const bool isDistance = type == DISTANCE || type == DISTANCEX || type == DISTANCEY;
@@ -1634,18 +1661,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         SoDebugError::postWarning("SoDatumLabel::GLRender", "Too few points to render distance label");
     }
 
-    if (hasText) {
-        // Text labels are rendered as SoTexture2 on a quad. Coin's default texture quality
-        // (0.5) enables mipmaps, which can blur small UI text. Keep linear filtering but
-        // avoid mipmaps for crisper results.
-        SoTextureQualityElement::set(state, this, 0.49F);
-        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
-    }
-
     ensureCoinGeometry(points, numPoints);
 
-    float angle = 0.0F;
-    SbVec3f textOffset;
     if (hasText) {
         if (isDistance && numPoints >= 2) {
             const DistanceGeometry geom = calculateDistanceGeometry(points);
@@ -1662,16 +1679,57 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-        else if (type == ARCLENGTH && this->pnts.getNum() >= 3) {
+        else if (type == ARCLENGTH && numPoints >= 3) {
             const ArcLengthGeometry geom = calculateArcLengthGeometry(points);
             angle = geom.angle;
             textOffset = geom.textOffset;
         }
-
-        ensureCoinText(state, srcw, srch, angle, textOffset);
     }
-    else if (m_TextSwitch) {
-        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+
+    if (m_TextSwitch) {
+        if (hasText) {
+            ensureCoinText(state, srcw, srch, angle, textOffset);
+        }
+        else {
+            m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        }
+    }
+
+    return hasText;
+}
+
+void SoDatumLabel::GLRender(SoGLRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    // Override inherited cull-face state before SoShape::shouldGLRender() decides
+    // whether this label is visible. Otherwise a flipped parent can cull the
+    // whole label before we get to render its two-sided geometry.
+    SoLazyElement::setBackfaceCulling(state, FALSE);
+
+    if (!shouldGLRender(action)) {
+        state->pop();
+        return;
+    }
+    if (action->handleTransparency(true)) {
+        state->pop();
+        return;
+    }
+
+    const bool hasText = prepareRenderScene(state);
+
+    if (hasText) {
+        // Avoid mipmaps for crisper annotation text while retaining linear filtering.
+        SoTextureQualityElement::set(state, this, 0.49F);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
     }
 
     if (m_Root) {

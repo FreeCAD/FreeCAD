@@ -249,6 +249,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -262,10 +263,9 @@ void CmdSketcherNewSketch::activated(int iMsg)
                                                            // on its support
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 
-        Part::Feature* part = static_cast<Part::Feature*>(
-            support.getValue());// if multi-part support, this will return 0
-        if (part) {
-            App::DocumentObjectGroup* grp = part->getGroup();
+        App::DocumentObject* supportObject = support.getValue();
+        if (supportObject) {
+            App::DocumentObjectGroup* grp = supportObject->getGroup();
             if (grp) {
                 doCommand(Doc,
                           "App.activeDocument().%s.addObject(App.activeDocument().%s)",
@@ -299,6 +299,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
+        doCommand(Doc, "App.activeDocument().%s.Label = 'Sketch'", FeatName.c_str());
 
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
@@ -1431,18 +1432,21 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
+        QLatin1String(  "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                        "ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %3)\n");
     Gui::Document* doc = getActiveGuiDocument();
 
-    bool revert = false;
-    if (doc) {
-        SketcherGui::ViewProviderSketch* vp =
-            dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp) {
-            revert = vp->getViewOrientationFactor() < 0 ? true : false;
-        }
+    if (!doc) {
+        return;
     }
-    cmdStr = cmdStr.arg(revert ? QLatin1String("True") : QLatin1String("False"));
+    SketcherGui::ViewProviderSketch* vp =
+        freecad_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    if (!vp) {
+        return;
+    }
+    QLatin1String revert = vp->getViewOrientationFactor() < 0 ? QLatin1String("True") : QLatin1String("False");
+
+    cmdStr = cmdStr.arg(doc->getDocument()->getName(), vp->getSketchObject()->getNameInDocument(), revert);
     doCommand(Doc, cmdStr.toLatin1());
 }
 

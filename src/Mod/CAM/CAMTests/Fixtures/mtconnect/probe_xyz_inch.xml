@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MTConnectDevices xmlns="urn:mtconnect.org:MTConnectDevices:1.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="urn:linuxcnc:mtconnect:1" xsi:schemaLocation="urn:mtconnect.org:MTConnectDevices:1.7 http://schemas.mtconnect.org/schemas/MTConnectDevices_1.7.xsd">
+  <Header creationTime="1970-01-01T00:00:00Z" sender="linuxcnc-mtconnect" instanceId="1" version="1.7" deviceModelChangeTime="1970-01-01T00:00:00Z" assetCount="0" assetBufferSize="1024" bufferSize="131072" />
+  <Devices>
+    <Agent id="agent_LinuxCNC-HAL-SIM-AXIS" name="LinuxCNC-HAL-SIM-AXIS_agent" uuid="linuxcnc-0001_agent" mtconnectVersion="1.7">
+      <Description manufacturer="LinuxCNC">LinuxCNC MTConnect agent</Description>
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="agent_avail" />
+        <DataItem category="EVENT" type="DEVICE_ADDED" id="agent_device_added" />
+        <DataItem category="EVENT" type="DEVICE_REMOVED" id="agent_device_removed" />
+        <DataItem category="EVENT" type="DEVICE_CHANGED" id="agent_device_changed" />
+      </DataItems>
+    </Agent>
+    <Device id="dev_LinuxCNC-HAL-SIM-AXIS" name="LinuxCNC-HAL-SIM-AXIS" uuid="linuxcnc-0001">
+      <Description manufacturer="LinuxCNC">
+        <x:Kinematics module="trivkins" coordinates="XYZ" joints="3" linearUnits="MILLIMETER" nativeLinearUnits="INCH">
+          <x:JointMap>
+            <x:Joint number="0" kind="LINEAR" axis="X" min="-254" max="254" home="0" homeOffset="0" />
+            <x:Joint number="1" kind="LINEAR" axis="Y" min="-254" max="254" home="0" homeOffset="0" />
+            <x:Joint number="2" kind="LINEAR" axis="Z" min="-203.2" max="3.048" home="0" homeOffset="25.4" />
+          </x:JointMap>
+          <x:Axis name="X" kind="LINEAR" vector="1 0 0" min="-254" max="254" />
+          <x:Axis name="Y" kind="LINEAR" vector="0 1 0" min="-254" max="254" />
+          <x:Axis name="Z" kind="LINEAR" vector="0 0 1" min="-203.2" max="3.048" />
+        </x:Kinematics>
+      </Description>
+      <Configuration>
+        <CoordinateSystems>
+          <CoordinateSystem id="world" type="WORLD" name="world" />
+          <CoordinateSystem id="machine" type="MACHINE" name="machine" parentIdRef="world">
+            <Origin>0 0 0</Origin>
+          </CoordinateSystem>
+        </CoordinateSystems>
+      </Configuration>
+      <DataItems>
+        <DataItem category="EVENT" type="AVAILABILITY" id="avail" />
+        <DataItem category="EVENT" type="ASSET_CHANGED" id="assetchg" />
+        <DataItem category="EVENT" type="ASSET_REMOVED" id="assetrm" />
+      </DataItems>
+      <Components>
+        <Controller id="ctrl" name="controller">
+          <DataItems>
+            <DataItem category="EVENT" type="EMERGENCY_STOP" id="estop" />
+            <DataItem category="EVENT" type="CONTROLLER_MODE" id="mode" />
+          </DataItems>
+          <Components>
+            <Path id="path" name="path">
+              <DataItems>
+                <DataItem category="EVENT" type="EXECUTION" id="execution" />
+                <DataItem category="EVENT" type="PROGRAM" id="program" />
+                <DataItem category="EVENT" type="LINE_NUMBER" id="line" subType="ACTUAL" />
+                <DataItem category="SAMPLE" type="PATH_FEEDRATE" id="pathfeed" units="MILLIMETER/SECOND" nativeUnits="INCH/SECOND" />
+                <DataItem category="SAMPLE" type="PATH_FEEDRATE" id="feedovr" subType="OVERRIDE" units="PERCENT" />
+                <DataItem category="EVENT" type="TOOL_NUMBER" id="toolnum" />
+                <DataItem category="EVENT" type="TOOL_ASSET_ID" id="toolasset" />
+                <DataItem category="EVENT" type="WORK_OFFSET" id="workoffset" representation="TABLE" />
+                <DataItem category="EVENT" type="TOOL_OFFSET" id="tooloffset" representation="TABLE" />
+                <DataItem category="SAMPLE" type="x:COORDINATE_ROTATION" id="xyrotation" units="DEGREE" />
+              </DataItems>
+            </Path>
+          </Components>
+        </Controller>
+        <Axes id="axes" name="axes">
+          <Components>
+            <Linear id="axis_x" name="X">
+              <Configuration>
+                <Motion id="motion_x" type="PRISMATIC" actuation="DIRECT" coordinateSystemIdRef="machine">
+                  <Axis>1 0 0</Axis>
+                </Motion>
+                <Specifications>
+                  <Specification id="axis_x_travel" type="POSITION" units="MILLIMETER" name="X travel">
+                    <Maximum>254</Maximum>
+                    <Minimum>-254</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="pos_x" subType="ACTUAL" units="MILLIMETER" nativeUnits="INCH" />
+                <DataItem category="SAMPLE" type="POSITION" id="poscmd_x" subType="COMMANDED" units="MILLIMETER" nativeUnits="INCH" />
+              </DataItems>
+            </Linear>
+            <Linear id="axis_y" name="Y">
+              <Configuration>
+                <Motion id="motion_y" type="PRISMATIC" actuation="DIRECT" coordinateSystemIdRef="machine">
+                  <Axis>0 1 0</Axis>
+                </Motion>
+                <Specifications>
+                  <Specification id="axis_y_travel" type="POSITION" units="MILLIMETER" name="Y travel">
+                    <Maximum>254</Maximum>
+                    <Minimum>-254</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="pos_y" subType="ACTUAL" units="MILLIMETER" nativeUnits="INCH" />
+                <DataItem category="SAMPLE" type="POSITION" id="poscmd_y" subType="COMMANDED" units="MILLIMETER" nativeUnits="INCH" />
+              </DataItems>
+            </Linear>
+            <Linear id="axis_z" name="Z">
+              <Configuration>
+                <Motion id="motion_z" type="PRISMATIC" actuation="DIRECT" coordinateSystemIdRef="machine">
+                  <Axis>0 0 1</Axis>
+                </Motion>
+                <Specifications>
+                  <Specification id="axis_z_travel" type="POSITION" units="MILLIMETER" name="Z travel">
+                    <Maximum>3.048</Maximum>
+                    <Minimum>-203.2</Minimum>
+                  </Specification>
+                </Specifications>
+              </Configuration>
+              <DataItems>
+                <DataItem category="SAMPLE" type="POSITION" id="pos_z" subType="ACTUAL" units="MILLIMETER" nativeUnits="INCH" />
+                <DataItem category="SAMPLE" type="POSITION" id="poscmd_z" subType="COMMANDED" units="MILLIMETER" nativeUnits="INCH" />
+              </DataItems>
+            </Linear>
+            <Rotary id="spindle" name="S">
+              <DataItems>
+                <DataItem category="SAMPLE" type="ROTARY_VELOCITY" id="spdl_speed" subType="ACTUAL" units="REVOLUTION/MINUTE" />
+                <DataItem category="SAMPLE" type="ROTARY_VELOCITY" id="spdl_speed_cmd" subType="COMMANDED" units="REVOLUTION/MINUTE" />
+                <DataItem category="EVENT" type="ROTARY_MODE" id="spdl_mode" />
+                <DataItem category="EVENT" type="DIRECTION" id="spdl_dir" subType="ROTARY" />
+              </DataItems>
+            </Rotary>
+          </Components>
+        </Axes>
+        <Systems id="systems" name="systems">
+          <Components>
+            <Coolant id="coolant" name="coolant">
+              <DataItems>
+                <DataItem category="EVENT" type="x:FLOOD" id="coolant_flood" />
+                <DataItem category="EVENT" type="x:MIST" id="coolant_mist" />
+              </DataItems>
+            </Coolant>
+          </Components>
+        </Systems>
+      </Components>
+    </Device>
+  </Devices>
+</MTConnectDevices>

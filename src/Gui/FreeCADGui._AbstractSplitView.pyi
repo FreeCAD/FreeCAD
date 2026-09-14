@@ -9,7 +9,7 @@ from FreeCADGui import _MDIView, _View3DInventorViewer
 class _AbstractSplitView:
     """Split-view container that manages multiple 3D viewers."""
 
-    def fitAll(self, factor: float = 1.0, /) -> None:
+    def fitAll(self) -> None:
         """Fit all visible content into the active split view."""
         ...
 
@@ -47,6 +47,14 @@ class _AbstractSplitView:
 
     def getViewer(self, index: int, /) -> _View3DInventorViewer:
         """Return one contained viewer by index."""
+        ...
+
+    def __len__(self) -> int:
+        """Return the number of contained 3D viewers."""
+        ...
+
+    def __getitem__(self, index: int, /) -> _View3DInventorViewer:
+        """Return one contained viewer by index using sequence access."""
         ...
 
     def close(self) -> None:

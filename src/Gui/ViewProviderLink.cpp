@@ -57,6 +57,7 @@
 #include <boost/range.hpp>
 #include <App/ElementNamingUtils.h>
 #include <App/Document.h>
+#include <App/SuppressibleExtension.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -90,6 +91,15 @@ using namespace Base;
 
 namespace
 {
+bool isSuppressedLinkElement(const App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto* ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+    return ext && ext->Suppressed.getValue();
+}
+
 void updateWindingOrder(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
 {
     Base::Matrix4D mat = ext->getTransform(false);
@@ -1086,27 +1096,6 @@ void LinkView::setInvalid()
     }
 }
 
-Base::BoundBox3d _getBoundBox(ViewProviderDocumentObject* vpd, SoNode* rootNode)
-{
-    auto doc = vpd->getDocument();
-    if (!doc) {
-        LINK_THROW(Base::RuntimeError, "no document");
-    }
-    Gui::MDIView* view = doc->getViewOfViewProvider(vpd);
-    if (!view) {
-        LINK_THROW(Base::RuntimeError, "no view");
-    }
-
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-    bboxAction.apply(rootNode);
-    auto bbox = bboxAction.getBoundingBox();
-    float minX, minY, minZ, maxX, maxY, maxZ;
-    bbox.getMax().getValue(maxX, maxY, maxZ);
-    bbox.getMin().getValue(minX, minY, minZ);
-    return Base::BoundBox3d(minX, minY, minZ, maxX, maxY, maxZ);
-}
-
 Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject* vpd) const
 {
     if (!vpd) {
@@ -1115,7 +1104,7 @@ Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject* vpd) const
         }
         vpd = linkOwner->pcLinked;
     }
-    return _getBoundBox(vpd, pcLinkRoot);
+    return vpd->getBoundingBox();
 }
 
 ViewProviderDocumentObject* LinkView::getOwner() const
@@ -1982,6 +1971,8 @@ ViewProviderLink::ViewProviderLink()
     ADD_PROPERTY(ChildViewProvider, (""));
     ChildViewProvider.setStatus(App::Property::Hidden, true);
 
+    suppressibleExt.initExtension(this);
+
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
     linkView = new LinkView;
@@ -2421,6 +2412,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
         }
     }
     else if (prop == ext->getVisibilityListProperty()) {
+        if (ext->_getShowElementValue()) {
+            updateElementList(ext);
+            return;
+        }
         const auto& vis = ext->getVisibilityListValue();
         for (size_t i = 0; i < (size_t)linkView->getSize(); ++i) {
             if (vis.size() > i) {
@@ -2459,7 +2454,13 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension* ext)
         OverrideMaterialList.setSize(0);
         MaterialList.setSize(0);
     }
+
     linkView->setChildren(elements, ext->getVisibilityListValue());
+    for (size_t i = 0; i < elements.size(); ++i) {
+        if (!elements[i] || isSuppressedLinkElement(elements[i])) {
+            linkView->setElementVisible(static_cast<int>(i), false);
+        }
+    }
     applyColors();
 }
 
@@ -3318,7 +3319,7 @@ bool ViewProviderLink::initDraggingPlacement()
     // the dragger is meant to change our transformation.
     dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = getBoundingBox(nullptr, false);
+    dragCtx->bbox = getBoundingBox(nullptr, nullptr, false);
     // The returned bounding box is before our own transform, but we still need
     // to scale it to get the correct center.
     auto scale = ext->getScaleVector();
@@ -4118,6 +4119,61 @@ ViewProviderDocumentObject* ViewProviderLink::getLinkedViewProvider(
         return res;
     }
     return self;
+}
+
+Base::BoundBox3d ViewProviderLink::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const View3DInventorViewer* viewer,
+    int depth
+) const
+{
+    Base::BoundBox3d bbox;
+    auto obj = getObject();
+    if (!obj) {
+        return bbox;
+    }
+
+    auto ext = getLinkExtension();
+    if (!ext || isGroup(ext, true) || obj->getLinkedObject(false) == obj || (subname && subname[0])) {
+        return inherited::_getBoundingBox(subname, mat, transform, viewer, depth);
+    }
+
+    Base::Matrix4D smat;
+    if (mat) {
+        smat = *mat;
+    }
+
+    ViewProvider* vp = nullptr;
+    subname = ext->getSubName();
+    if (subname && subname[0]) {
+        auto sobj = obj->getSubObject(subname, 0, &smat, transform, depth);
+        if (!sobj || sobj == obj) {
+            return bbox;
+        }
+        vp = Application::Instance->getViewProvider(sobj);
+    }
+    else {
+        auto linked = obj->getLinkedObject(false, &smat, transform, depth);
+        if (!linked || linked == obj) {
+            return bbox;
+        }
+        vp = Application::Instance->getViewProvider(linked);
+    }
+    if (!vp || vp == this) {
+        return Base::BoundBox3d();
+    }
+
+    const auto& subs = ext->getSubElements();
+    if (subs.empty()) {
+        return vp->getBoundingBox(nullptr, &smat, false, viewer, depth + 1);
+    }
+
+    for (const auto& s : subs) {
+        bbox.Add(vp->getBoundingBox(s.c_str(), &smat, false, viewer, depth + 1));
+    }
+    return bbox;
 }
 
 void ViewProviderLink::setTransformation(const Base::Matrix4D& rcMatrix)

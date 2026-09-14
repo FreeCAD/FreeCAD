@@ -141,6 +141,18 @@ struct ActionDisabler
 };
 
 
+DialogOptions::Backend DialogOptions::fileDialogBackend()
+{
+    if (dontUseNativeFileDialog()) {
+        return Backend::NonNative;
+    }
+#ifdef FC_OS_WIN32
+    return Backend::ViaWin32;
+#else
+    return Backend::ViaQt;
+#endif
+}
+
 bool DialogOptions::dontUseNativeFileDialog()
 {
 #if defined(USE_QT_DIALOGS)
@@ -155,6 +167,14 @@ bool DialogOptions::dontUseNativeFileDialog()
                                      ->GetGroup("Preferences")
                                      ->GetGroup("Dialog");
     return group->GetBool("DontUseNativeDialog", notNativeDialog);
+}
+
+DialogOptions::Backend DialogOptions::colorDialogBackend()
+{
+    if (dontUseNativeColorDialog()) {
+        return Backend::NonNative;
+    }
+    return Backend::ViaQt;
 }
 
 bool DialogOptions::dontUseNativeColorDialog()

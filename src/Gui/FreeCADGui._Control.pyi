@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 from FreeCADGui import Document, _TaskDialog
 
 class _Control:
@@ -25,8 +27,8 @@ class _Control:
         """Close the active task dialog."""
         ...
 
-    def addTaskWatcher(self, watchers: object, /) -> None:
-        """Register one task watcher object."""
+    def addTaskWatcher(self, watchers: Sequence[object], /) -> None:
+        """Register one sequence of task watcher objects."""
         ...
 
     def clearTaskWatcher(self) -> None:

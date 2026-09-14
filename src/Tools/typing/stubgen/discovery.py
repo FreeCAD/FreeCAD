@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 import re
 from typing import Iterable
@@ -38,6 +39,7 @@ from .model import (
     ModuleDef,
     PYMETHODDEF_RE,
     PYMETHOD_ALIAS_RE,
+    PYCXX_SEQUENCE_SLOT_RE,
     PYIMPORT_ADD_MODULE_RE,
     PYMODULEDEF_RE,
     PYMODULE_ADD_FUNCTIONS_RE,
@@ -47,6 +49,7 @@ from .model import (
     PY_OBJECT_WRAPPER_RE,
     PublicTypeGroup,
     PublicTypeTarget,
+    SUPPORT_SEQUENCE_RE,
 )
 from .naming import valid_identifier
 from .parsing import (
@@ -54,12 +57,11 @@ from .parsing import (
     extract_balanced,
     first_string_literal,
     generated_source,
-    iter_source_files,
     line_number,
     normalize_doc,
     normalize_expr,
     split_top_level,
-    strip_comments,
+    SourceFile,
 )
 from .type_context_rules import type_context_internal_reason, type_context_public_targets
 
@@ -82,6 +84,11 @@ KNOWN_PYCXX_MODULE_HINTS: dict[tuple[str, str], str] = {
     ("src/Base/Translate.cpp", "__Translate__"): "FreeCAD.Qt",
     ("src/Gui/UiLoader.cpp", "PySideUic"): "FreeCADGui.PySideUic",
     ("src/Mod/Part/App/AppPartPy.cpp", "ShapeFix"): "Part.ShapeFix",
+}
+
+PYCXX_SEQUENCE_SLOT_BINDINGS: dict[str, tuple[str, MethodKind]] = {
+    "sequence_length": ("__len__", "noargs"),
+    "sequence_item": ("__getitem__", "varargs"),
 }
 
 
@@ -120,17 +127,19 @@ def normalize_table_reference(table: str | None, aliases: dict[str, str]) -> str
     return normalized
 
 
-def module_state_for_source(
+def _apply_module_state_patterns(
     source: str,
-    initial_variables: dict[str, str] | None = None,
-) -> ModuleState:
-    module_vars = dict(initial_variables or {})
-    for match in PYMODULE_IMPORT_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("module")
-    for match in INIT_MODULE_RE.finditer(source):
-        module_vars[match.group("variable")] = match.group("namespace")
+    module_vars: dict[str, str],
+    include_direct_bindings: bool = True,
+) -> None:
+    if include_direct_bindings:
+        for match in PYMODULE_IMPORT_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+        for match in PYIMPORT_ADD_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("module")
+        for match in INIT_MODULE_RE.finditer(source):
+            module_vars[match.group("variable")] = match.group("namespace")
+
     wrappers: dict[str, str] = {}
     for match in PY_OBJECT_WRAPPER_RE.finditer(source):
         source_module = module_vars.get(match.group("source"))
@@ -145,24 +154,48 @@ def module_state_for_source(
         child_module = module_vars.get(match.group("child"))
         if parent_module and child_module:
             module_vars[match.group("child")] = f"{parent_module}.{match.group('name')}"
+
+
+@lru_cache(maxsize=None)
+def _base_module_variables(source: str) -> tuple[tuple[str, str], ...]:
+    module_vars: dict[str, str] = {}
+    _apply_module_state_patterns(source, module_vars)
+    return tuple(module_vars.items())
+
+
+def module_state_for_source(
+    source: str,
+    initial_variables: dict[str, str] | None = None,
+) -> ModuleState:
+    if initial_variables is None:
+        return ModuleState(variables=dict(_base_module_variables(source)))
+
+    module_vars = dict(initial_variables)
+    _apply_module_state_patterns(source, module_vars)
+    return ModuleState(variables=module_vars)
+
+
+def _extend_module_state_for_source(
+    source: str,
+    initial_variables: dict[str, str],
+) -> ModuleState:
+    module_vars = dict(initial_variables)
+    _apply_module_state_patterns(source, module_vars, include_direct_bindings=False)
     return ModuleState(variables=module_vars)
 
 
 def collect_module_definitions(
-    root: Path, files: Iterable[Path]
+    root: Path, files: Iterable[SourceFile]
 ) -> tuple[dict[tuple[str, str], ModuleDef], dict[str, str], dict[tuple[str, str], str]]:
     module_defs: dict[tuple[str, str], ModuleDef] = {}
     aliases: dict[str, str] = {}
     table_modules: dict[tuple[str, str], str] = {}
 
-    file_data: dict[Path, str] = {}
-    for path in files:
-        try:
-            file_data[path] = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+    source_files = tuple(files)
 
-    for path, source in file_data.items():
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         rel = path.relative_to(root).as_posix()
         for match in PYMETHOD_ALIAS_RE.finditer(source):
             table = normalize_expr(match.group("table"))
@@ -188,7 +221,9 @@ def collect_module_definitions(
             if table:
                 table_modules[(rel, table)] = name
 
-    for path, source in file_data.items():
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         rel = path.relative_to(root).as_posix()
         variable_modules = module_state_for_source(source).variables
         variable_tables: dict[str, str] = {}
@@ -202,7 +237,7 @@ def collect_module_definitions(
             if module_def.table:
                 variable_tables[variable] = module_def.table
 
-        variable_modules = module_state_for_source(source, variable_modules).variables
+        variable_modules = _extend_module_state_for_source(source, variable_modules).variables
 
         for match in PYMODULE_ADD_OBJECT_RE.finditer(source):
             public_name = variable_modules.get(match.group("child"))
@@ -259,15 +294,13 @@ def cpp_type_name(expression: str) -> str | None:
     return None
 
 
-def collect_type_registrations(root: Path, files: Iterable[Path]) -> dict[str, list[str]]:
+def collect_type_registrations(root: Path, files: Iterable[SourceFile]) -> dict[str, list[str]]:
     registrations: dict[str, list[str]] = defaultdict(list)
 
-    for path in files:
+    for source_file in files:
+        path = source_file.path
         rel = path.relative_to(root).as_posix()
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+        source = source_file.source
 
         module_vars = module_state_for_source(source).variables
 
@@ -361,6 +394,57 @@ def inferred_pymethoddef_module(
         return next(iter(candidates))
 
     return None
+
+
+def supported_sequence_contexts(source: str, contexts: list[ContextEntry]) -> set[str]:
+    supported: set[str] = set()
+    for match in SUPPORT_SEQUENCE_RE.finditer(source):
+        kind, context = nearest_context(contexts, match.start())
+        if kind == "python_type":
+            supported.add(context)
+    return supported
+
+
+def extract_pycxx_sequence_slots(root: Path, path: Path, source: str) -> list[BindingMethod]:
+    rel = path.relative_to(root).as_posix()
+    contexts = discover_contexts(source)
+    supported_contexts = supported_sequence_contexts(source, contexts)
+    if not supported_contexts:
+        return []
+
+    methods: list[BindingMethod] = []
+    seen: set[tuple[str, str]] = set()
+    for match in PYCXX_SEQUENCE_SLOT_RE.finditer(source):
+        slot_name = match.group("slot")
+        python_name, method_kind = PYCXX_SEQUENCE_SLOT_BINDINGS[slot_name]
+        kind, context = nearest_context(contexts, match.start())
+        if kind != "python_type" or context not in supported_contexts:
+            continue
+        key = (context, python_name)
+        if key in seen:
+            continue
+        seen.add(key)
+        owner = match.group("owner")
+        cxx_callable = f"{normalize_cpp_qualified_name(owner)}::{slot_name}" if owner else slot_name
+        methods.append(
+            BindingMethod(
+                family="pycxx_slot",
+                source=rel,
+                line=line_number(source, match.start()),
+                table=None,
+                context_kind=kind,
+                context_name=context,
+                inferred_module=None,
+                method_kind=method_kind,
+                python_name=python_name,
+                cxx_callable=cxx_callable,
+                flags="",
+                doc="",
+                generated_source=generated_source(rel),
+            )
+        )
+
+    return methods
 
 
 def extract_pycxx_methods(root: Path, path: Path, source: str) -> list[BindingMethod]:
@@ -487,17 +571,16 @@ def flags_to_method_kind(flags: str) -> MethodKind:
             return "varargs"
 
 
-def collect_methods(root: Path, source_dir: Path) -> list[BindingMethod]:
-    files = list(iter_source_files(root, source_dir))
-    _, _, table_modules = collect_module_definitions(root, files)
+def collect_methods(root: Path, files: Iterable[SourceFile]) -> list[BindingMethod]:
+    source_files = tuple(files)
+    _, _, table_modules = collect_module_definitions(root, source_files)
 
     methods: list[BindingMethod] = []
-    for path in files:
-        try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
-        except OSError:
-            continue
+    for source_file in source_files:
+        path = source_file.path
+        source = source_file.source
         methods.extend(extract_pycxx_methods(root, path, source))
+        methods.extend(extract_pycxx_sequence_slots(root, path, source))
         methods.extend(extract_pymethoddef_methods(root, path, source, table_modules))
 
     return sorted(methods, key=lambda method: (method.source, method.line, method.python_name))

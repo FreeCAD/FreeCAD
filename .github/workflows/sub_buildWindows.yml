@@ -91,7 +91,7 @@ jobs:
     steps:
       - name: Harden the runner (Audit all outbound calls)
         if: "!inputs.skipBuild"
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
         with:
           egress-policy: audit
 
@@ -128,7 +128,7 @@ jobs:
       - name: Restore compiler cache
         id: cache-restore
         if: "!inputs.skipBuild"
-        uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -191,7 +191,7 @@ jobs:
       - name: Save Compiler Cache
         id: cache-save
         if: "!inputs.skipBuild"
-        uses: actions/cache/save@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}

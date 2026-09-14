@@ -807,7 +807,7 @@ void SketcherGui::Constraint2LinesByAngle(int geoId1, int geoId2, double angle, 
     else {
         Gui::cmdAppObjectArgs(
             obj,
-            "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+            "addConstraint(Sketcher.Constraint('Angle',%d, 2, %d, 1, %f)) ",
             geoId1,
             geoId2,
             angle

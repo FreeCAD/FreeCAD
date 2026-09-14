@@ -272,3 +272,50 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         obj = Arch.make2DDrawing()
         self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
         self.assertEqual(obj.Label, "Drawing", "Incorrect default label for 2D Drawing")
+
+    def test_make2DDrawing_uses_base_object_label(self):
+        """Test make2DDrawing default label from a base object."""
+        operation = "Testing make2DDrawing label with base object..."
+        self.printTestMessage(operation)
+
+        section = Arch.makeSectionPlane(name="Floor Plan Level 01")
+        obj = Arch.make2DDrawing(baseobj=section)
+
+        self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
+        self.assertEqual(
+            obj.Label,
+            "Floor Plan Level 01 - Drawing",
+            "2D Drawing label should include the base object label",
+        )
+
+    def test_make2DDrawing_uses_base_object_name_without_label(self):
+        """Test make2DDrawing label fallback when base label is unavailable."""
+        operation = "Testing make2DDrawing label fallback..."
+        self.printTestMessage(operation)
+
+        base = App.ActiveDocument.addObject("App::DocumentObject", "BaseSection")
+        base.Label = ""
+        obj = Arch.make2DDrawing(baseobj=base)
+
+        self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
+        self.assertEqual(
+            obj.Label,
+            "BaseSection - Drawing",
+            "2D Drawing label should fall back to the base object name",
+        )
+
+    def test_make2DDrawing_name_overrides_base_object_label(self):
+        """Test explicit make2DDrawing name takes precedence."""
+        operation = "Testing make2DDrawing explicit name..."
+        self.printTestMessage(operation)
+
+        base = App.ActiveDocument.addObject("App::DocumentObject", "BaseSection")
+        base.Label = "Floor Plan Level 01"
+        obj = Arch.make2DDrawing(baseobj=base, name="Custom Drawing")
+
+        self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
+        self.assertEqual(
+            obj.Label,
+            "Custom Drawing",
+            "Explicit 2D Drawing label should override the base object label",
+        )

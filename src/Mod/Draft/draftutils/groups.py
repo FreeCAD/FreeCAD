@@ -193,7 +193,9 @@ def get_windows(obj):
     return out
 
 
-def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, noarchchild=False):
+def get_group_contents(
+    objectslist, walls=False, addgroups=False, spaces=False, noarchchild=False, exclude_names=None
+):
     """Return a list of objects from expanding the input groups.
 
     The function accepts any type of object, although it is most useful
@@ -229,6 +231,11 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
         If it is `True`, the objects inside Building and BuildingParts
         (Arch Workbench) aren't added to the output list.
 
+    exclude_names: list/tuple/set, optional
+        It defaults to `None`.
+        If an iterable of object names is given, any object whose `Name` is
+        in this iterable will be excluded from the output list.
+
     Returns
     -------
     list
@@ -241,12 +248,16 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
 
     for obj in objectslist:
         if obj:
+            if exclude_names and obj.Name in exclude_names:
+                continue
             if is_group(obj):
                 if addgroups or (spaces and utils.get_type(obj) == "Space"):
                     newlist.append(obj)
                 if not (noarchchild and utils.get_type(obj) in ("Building", "BuildingPart")):
                     newlist.extend(
-                        get_group_contents(obj.Group, walls, addgroups, spaces, noarchchild)
+                        get_group_contents(
+                            obj.Group, walls, addgroups, spaces, noarchchild, exclude_names
+                        )
                     )
             else:
                 # print("adding ", obj.Name)

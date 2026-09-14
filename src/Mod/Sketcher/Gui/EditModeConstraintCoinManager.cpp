@@ -857,6 +857,9 @@ Restart:
                     double radius2 = 0.;
                     Base::Vector3d center1(0., 0., 0.);
                     Base::Vector3d center2(0., 0., 0.);
+                    Base::Vector3d lineHelperStart(0., 0., 0.);
+                    Base::Vector3d lineHelperEnd(0., 0., 0.);
+                    bool hasLineHelper = false;
 
                     int numPoints = 2;
 
@@ -878,11 +881,39 @@ Restart:
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
                             Base::Vector3d l2p2 = lineSeg->getEndPoint();
 
+                            const auto setLineHelper = [&](const Base::Vector3d& projection) {
+                                const Base::Vector3d lineDir = l2p2 - l2p1;
+                                const double lineLengthSquared = lineDir.Sqr();
+                                if (lineLengthSquared <= 0.) {
+                                    return;
+                                }
+
+                                const double projectionParameter = ((projection - l2p1) * lineDir)
+                                    / lineLengthSquared;
+                                constexpr double projectionTolerance = 64.
+                                    * std::numeric_limits<double>::epsilon();
+                                if (projectionParameter < -projectionTolerance) {
+                                    lineHelperStart = l2p1;
+                                    lineHelperEnd = projection;
+                                    hasLineHelper = true;
+                                }
+                                else if (projectionParameter > 1. + projectionTolerance) {
+                                    lineHelperStart = l2p2;
+                                    lineHelperEnd = projection;
+                                    hasLineHelper = true;
+                                }
+                            };
+
                             if (Constr->FirstPos != Sketcher::PointPos::none) {
                                 // point to line distance
                                 // calculate the projection of p1 onto lineSeg
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
+
+                                // Point-to-line distance uses the infinite support line. If its
+                                // projection is outside the finite segment, connect the segment
+                                // to that projection so the witness line has no visual gap.
+                                setLineHelper(pnt2);
                             }
                             else if (isCircleOrArc(*geo1)) {
                                 // circular to line distance
@@ -892,6 +923,7 @@ Restart:
                                 Base::Vector3d dir = pnt1;
                                 dir.Normalize();
                                 pnt1 += ct;
+                                setLineHelper(pnt1);
                                 pnt2 = ct + dir * radius;
                             }
                         }
@@ -963,6 +995,14 @@ Restart:
 
                     int index = static_cast<int>(ConstraintNodePosition::DatumLabelIndex);
                     auto* asciiText = static_cast<SoDatumLabel*>(sep->getChild(index));  // NOLINT
+
+                    asciiText->extensionLines.setNum(hasLineHelper ? 2 : 0);
+                    if (hasLineHelper) {
+                        SbVec3f* extensionVerts = asciiText->extensionLines.startEditing();
+                        extensionVerts[0] = SbVec3f(lineHelperStart.x, lineHelperStart.y, zConstrH);
+                        extensionVerts[1] = SbVec3f(lineHelperEnd.x, lineHelperEnd.y, zConstrH);
+                        asciiText->extensionLines.finishEditing();
+                    }
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
@@ -1455,6 +1495,7 @@ Restart:
                     asciiText->param4 = endLineLength1;
                     asciiText->param5 = endLineLength2;
 
+                    p0[2] = zConstrH;
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
 
@@ -1954,7 +1995,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
                 }
                 text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+                text->lineWidth = drawingParameters.DimensionalConstraintLineWidth
+                    * drawingParameters.pixelScalingFactor;
+                text->linePattern = drawingParameters.DimensionalConstraintLinePattern;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
@@ -2181,18 +2224,18 @@ QString EditModeConstraintCoinManager::getPresentationString(
     return fixedValueStr;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SoPickedPoint* Point,
     const SbVec2s& cursorScreenPos
 )
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
     SoPath* path = Point->getPath();
 
     // The picked node must be a child of the main constraint group.
     SoNode* tailFather2 = path->getNode(path->getLength() - 3);
     if (tailFather2 != editModeScenegraphNodes.constrGroup) {
-        return constrIndices;
+        return result;
     }
 
     SoNode* tail = path->getTail();  // This is the SoImage or SoDatumLabel node that was picked.
@@ -2205,24 +2248,29 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
     }
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
-    if (dynamic_cast<SoDatumLabel*>(tail)) {
+    if (auto* datumLabel = dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                constrIndices.insert(i);
+                result.Kind = datumLabel->classifySelectionPoint(Point->getObjectPoint())
+                        == SoDatumLabel::SelectionPart::Annotation
+                    ? ConstraintPreselectionResult::HitKind::DatumAnnotation
+                    : ConstraintPreselectionResult::HitKind::DatumPresentation;
+                result.ConstrIndices.insert(i);
+                result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
             }
         }
     }
 
-    return constrIndices;
+    return result;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SbVec2s& cursorScreenPos,
     Base::Vector3d* pickedPoint
 )
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
 
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
         auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
@@ -2234,10 +2282,9 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                constrIndices
-                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (!constrIndices.empty()) {
-                    return constrIndices;
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
                 }
             }
         }
@@ -2246,16 +2293,15 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                constrIndices
-                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (!constrIndices.empty()) {
-                    return constrIndices;
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
                 }
             }
         }
     }
 
-    return constrIndices;
+    return result;
 }
 
 std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
@@ -2326,7 +2372,7 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     return true;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionIcon(
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
@@ -2334,7 +2380,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     Base::Vector3d* pickedPoint
 ) const
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
     SbVec2f iconScreenCenter;
     SbVec3s iconSize;
     QString constrIdsStr;
@@ -2344,7 +2390,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     if (
         !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
     ) {
-        return constrIndices;
+        return result;
     }
 
     int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
@@ -2359,18 +2405,25 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     if (combinedConstrBoxes.count(constrIdsStr)) {
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
             if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
-                constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+                result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
         }
-        return constrIndices;
+        if (!result.ConstrIndices.empty()) {
+            result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+            result.PickedPoint = *resultPoint;
+        }
+        return result;
     }
 
     QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
     if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
-        return parseConstraintIds(constrIdsStr);
+        result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+        result.ConstrIndices = parseConstraintIds(constrIdsStr);
+        result.PickedPoint = *resultPoint;
+        return result;
     }
 
-    return constrIndices;
+    return result;
 }
 
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) const
@@ -2856,7 +2909,15 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(
     font.setBold(true);
     QFontMetrics qfm = QFontMetrics(font);
 
-    int labelWidth = qfm.boundingRect(labels.join(joinStr)).width();
+    // Measure the right edge at the same positions used to draw each label.
+    // Bounding-box widths omit the left bearing, and advances are rounded per label.
+    int labelWidth = 0;
+    int labelOffset = 0;
+    for (auto it = labels.begin(); it != labels.end(); ++it) {
+        const QString text = (it + 1 == labels.end()) ? *it : *it + joinStr;
+        labelWidth = std::max(labelWidth, labelOffset + qfm.boundingRect(text).right() + 1);
+        labelOffset += Gui::QtTools::horizontalAdvance(qfm, text);
+    }
     // See Qt docs on qRect::bottom() for explanation of the +1
     int pxBelowBase = qfm.boundingRect(labels.join(joinStr)).bottom() + 1;
 
@@ -2971,14 +3032,7 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
 
 void EditModeConstraintCoinManager::sendConstraintIconToCoin(const QImage& icon, SoImage* soImagePtr)
 {
-    SoSFImage icondata = SoSFImage();
-
-    Gui::BitmapFactory().convert(icon, icondata);
-
-    SbVec2s iconSize(icon.width(), icon.height());
-
-    int four = 4;
-    soImagePtr->image.setValue(iconSize, 4, icondata.getValue(iconSize, four));
+    Gui::BitmapFactory().convert(icon, soImagePtr->image);
 
     // Set Image Alignment to Center
     soImagePtr->vertAlignment = SoImage::HALF;

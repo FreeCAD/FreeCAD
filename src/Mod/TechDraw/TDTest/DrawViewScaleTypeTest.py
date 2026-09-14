@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import codecs
 import os
 import tempfile
 import unittest
@@ -31,7 +31,7 @@ class DrawViewScaleTypeTest(unittest.TestCase):
     def _addPageSymbol(self):
         sym = self.document.addObject("TechDraw::DrawViewSymbol", "ScaleSym")
         path = os.path.dirname(os.path.abspath(__file__))
-        with codecs.open(path + "/TestSymbol.svg", "r", encoding="utf-8") as f:
+        with open(path + "/TestSymbol.svg", "r", encoding="utf-8") as f:
             sym.Symbol = f.read()
         self.page.addView(sym)
         sym.ScaleType = "Page"

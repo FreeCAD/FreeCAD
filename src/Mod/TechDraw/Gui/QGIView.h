@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
@@ -23,6 +25,7 @@
 #pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/DrawView.h>
 
 #include <fastsignals/signal.h>
 
@@ -33,8 +36,10 @@
 #include <QPen>
 #include <QPointF>
 
+#include <Base/BaseClass.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Gui/ViewProvider.h>
 
 #include "QGIUserTypes.h"
 
@@ -101,6 +106,11 @@ public:
     const std::string getViewNameAsString() const;
     void setViewFeature(TechDraw::DrawView *obj);
     TechDraw::DrawView * getViewObject() const;
+    template<typename T>
+    T* getViewObject() const
+    {
+        return freecad_cast<T*>(getViewObject());
+    }
     MDIViewPage* getMDIViewPage() const;
 
     double getScale();
@@ -131,7 +141,7 @@ public:
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
-    void updatePositionFromFeatureXY();
+    virtual void updatePositionFromFeatureXY();
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
@@ -154,6 +164,11 @@ public:
     virtual void setStackFromVP();
 
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
+    template<typename T>
+    static T* getViewProvider(App::DocumentObject* obj)
+    {
+        return freecad_cast<T*>(getViewProvider(obj));
+    }
     static ViewProviderPage* getViewProviderPage(TechDraw::DrawView* dView);
 
     static int calculateFontPixelSize(double sizeInMillimetres);
@@ -176,13 +191,12 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     template <typename T>
     std::vector<T> getObjects(std::vector<int> indexes);
 
     bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
-
-    static bool hasSelectedChildren(QGIView* parent);
 
     bool isExporting() const;
 
@@ -205,6 +219,7 @@ protected:
     virtual void updateFrameVisibility();
     bool shouldShowFromViewProvider() const;
     bool shouldShowFrame() const;
+    bool isViewSelected() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 

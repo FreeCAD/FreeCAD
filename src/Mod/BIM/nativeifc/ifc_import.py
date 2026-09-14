@@ -141,7 +141,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     if strategy is None:
         strategy = PARAMS.GetInt("ImportStrategy", 0)
     if shapemode is None:
-        shapemode = PARAMS.GetInt("ShapeMode", 0)
+        shapemode = PARAMS.GetInt("ShapeMode", 1)
     if switchwb is None:
         switchwb = PARAMS.GetBool("SwitchWB", True)
     if silent:
@@ -161,7 +161,13 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         dlg.checkLoadMaterials.setChecked(materials)
         dlg.checkLoadLayers.setChecked(layers)
         dlg.comboSingleDoc.setCurrentIndex(1 - int(singledoc))
+
+        from PySide import QtCore, QtGui
+
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.ArrowCursor)
         result = dlg.exec_()
+        QtGui.QApplication.restoreOverrideCursor()
+
         if not result:
             return None, None, None
         strategy = dlg.comboStrategy.currentIndex()

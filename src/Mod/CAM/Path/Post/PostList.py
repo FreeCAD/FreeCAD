@@ -190,11 +190,12 @@ def _wrap_op(op: Any) -> Postable:
     Data keys populated:
         "tool_controller" (Postable) - Present when the operation has a ToolController.
     """
-    data = {}
+    data = {}  # WHATIF: = op.postable_annotations()
     raw_tc = PathUtil.toolControllerForOp(op)
     if raw_tc is not None:
         data["tool_controller"] = _wrap_tc(raw_tc)
 
+    # For a don't-interpret-text-blob: data={'str': blob}
     return Postable(
         item_type="operation",
         label=op.Label,

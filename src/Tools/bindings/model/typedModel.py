@@ -105,6 +105,14 @@ class Parameter:
 
 
 @dataclass
+class DeprecationLifecycle:
+    DeprecatedIn: str
+    RemovedIn: str
+    Replacement: Optional[str] = None
+    Details: Optional[str] = None
+
+
+@dataclass
 class Method:
     """
     Corresponds to the legacy <Methode> element inside <PythonExport>.
@@ -116,11 +124,14 @@ class Method:
 
     # Attributes
     Name: str = ""
+    Callback: Optional[str] = None
     Const: Optional[bool] = None
     Keyword: bool = False
     NoArgs: bool = False
+    Bootstrap: bool = False
     Class: bool = False
     Static: bool = False
+    Deprecated: Optional[DeprecationLifecycle] = None
 
 
 Methode = Method
@@ -140,6 +151,7 @@ class Attribute:
     # Attributes
     Name: str
     ReadOnly: bool
+    Deprecated: Optional[DeprecationLifecycle] = None
 
 
 @dataclass
@@ -198,6 +210,7 @@ class PythonExport:
     Constructor: bool = False
     NumberProtocol: bool = False
     RichCompare: bool = False
+    Hash: bool = False
     TwinPointer: str = ""
     Delete: bool = False
     Reference: Optional[bool] = None
@@ -220,7 +233,14 @@ class PythonModuleExport:
     ModuleName: str = ""
     Name: str = ""
     Namespace: str = ""
+    Include: str = ""
+    Runtime: str = "PyMethodDef"
+    ModuleClass: str = ""
     IsExplicitlyExported: bool = False
+
+    @property
+    def BootstrapMethods(self) -> list[Method]:
+        return [method for method in self.Method if method.Bootstrap]
 
 
 #

@@ -102,6 +102,10 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.initAreaOp(obj)
 
+    def initAfterBase(self, obj):
+        if hasattr(obj, "Side"):
+            obj.Side = PathOpUtil.getOpSide(obj)
+
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... overwrite if the receiver class needs initialisation.
         Can safely be overwritten by subclasses."""
@@ -133,16 +137,6 @@ class ObjectOp(PathOp.ObjectOp):
         # Path.Log.track(obj.Label, prop)
         if prop in ("AreaParams", "PathParams", "removalshape"):
             obj.setEditorMode(prop, 2)
-
-        if (
-            getattr(self, "init", False)
-            and hasattr(obj, "Side")
-            and prop == "FinalDepth"
-            and obj.Base
-        ):
-            # Offer side only while creating new operation
-            self.init = False
-            self.opSetDefaultSide(obj)
 
         self.areaOpOnChanged(obj, prop)
 
@@ -202,59 +196,11 @@ class ObjectOp(PathOp.ObjectOp):
             )
 
         self.areaOpSetDefaultValues(obj, job)
-        self.init = True  # using for offer 'Side' while creating new operation
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... overwrite to set initial values of operation specific properties.
         Can safely be overwritten by subclasses."""
         pass
-
-    def opSetDefaultSide(self, obj):
-        """setDefaltSide(obj) ...  offer side while creating new operation"""
-        base, subNames = obj.Base[0]
-
-        # find parent boundbox
-        if isinstance(base.Shape, Part.Compound):
-            bbs = [shape.BoundBox for shape in base.Shape.SubShapes]
-        else:
-            bbs = [base.Shape.BoundBox]
-
-        subBb = None
-        if "Face" in subNames[0]:
-            faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
-            vFaces = [f for f in faces if not Path.Geom.isHorizontal(f)]
-            if vFaces:
-                # check if vertical faces creates a closed area
-                fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
-                bottomEdges = [
-                    e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)
-                ]
-                wire = Part.Wire(Part.__sortEdges__(bottomEdges))
-                if not wire.isClosed():
-                    # for open area always offer 'Outside'
-                    obj.Side = "Outside"
-                    return
-            shape = Part.Compound(faces)
-            subBb = shape.BoundBox
-        elif "Edge" in subNames[0]:
-            edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
-            wire = Part.Wire(Part.__sortEdges__(edges))
-            if not wire.isClosed():
-                # for open wire always offer 'Outside'
-                obj.Side = "Outside"
-                return
-            else:
-                subBb = wire.BoundBox
-
-        if subBb:
-            for bb in bbs:
-                if not bb.isInside(subBb):
-                    continue
-                if isRoughly(bb.XLength, subBb.XLength) and isRoughly(bb.YLength, subBb.YLength):
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
-                return
 
     def getMiddlePointLongestEdge(self, shape):
         """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""
@@ -265,8 +211,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         return candidate.discretize(3)[1]
 
-    def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
-        """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
+    def _buildPathArea(self, obj, baseobject, isHole, start):
+        """_buildPathArea(obj, baseobject, isHole, start) ... internal function."""
         Path.Log.track()
         area = Path.Area()
         area.setPlane(PathUtils.makeWorkplane(baseobject))
@@ -346,18 +292,10 @@ class ObjectOp(PathOp.ObjectOp):
         if pp.Size > 0:
             self.endVector = end_vector
 
-        simobj = None
-        if getsim:
-            areaParams["Thicken"] = True
-            areaParams["ToolRadius"] = self.radius - self.radius * 0.005
-            area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+        return pp
 
-        return pp, simobj
-
-    def _buildProfileOpenEdges(self, obj, openWire, start, getsim):
-        """_buildPathArea(obj, openWire, start, getsim) ... internal function."""
+    def _buildProfileOpenEdges(self, obj, openWire, start):
+        """_buildPathArea(obj, openWire, start) ... internal function."""
         Path.Log.track()
 
         paths = []
@@ -407,12 +345,11 @@ class ObjectOp(PathOp.ObjectOp):
             Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
         self.endVector = end_vector
-        simobj = None
 
-        return paths, simobj
+        return paths
 
-    def opExecute(self, obj, getsim=False):
-        """opExecute(obj, getsim=False) ... implementation of Path.Area ops.
+    def opExecute(self, obj):
+        """opExecute(obj) ... implementation of Path.Area ops.
         determines the parameters for _buildPathArea().
         Do not overwrite, implement
             areaOpAreaParams(obj, isHole) ... op specific area param dictionary
@@ -479,7 +416,6 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = collectively
 
-        sims = []
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 
@@ -493,9 +429,9 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    pp, sim = self._buildProfileOpenEdges(obj, shape, start, getsim)
+                    pp = self._buildProfileOpenEdges(obj, shape, start)
                 else:
-                    pp, sim = self._buildPathArea(obj, shape, isHole, start, getsim)
+                    pp = self._buildPathArea(obj, shape, isHole, start)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(
@@ -506,7 +442,6 @@ class ObjectOp(PathOp.ObjectOp):
                 ppCmds = pp if profileEdgesIsOpen else pp.Commands
 
                 self.commandlist.extend(ppCmds)
-                sims.append(sim)
 
             if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
@@ -515,7 +450,6 @@ class ObjectOp(PathOp.ObjectOp):
                 )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
-        return sims
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.

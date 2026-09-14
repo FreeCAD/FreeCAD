@@ -227,7 +227,7 @@ def init_draft_statusbar_scale():
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    scale_widget = QtWidgets.QToolBar()
+    scale_widget = Gui.UiLoader().createWidget("Gui::ToolBar")
     # prevent the widget from showing up in the toolbar area context menu:
     scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
@@ -291,7 +291,7 @@ def init_draft_statusbar_snap():
         return
 
     # snap widget:
-    snap_widget = QtWidgets.QToolBar()
+    snap_widget = Gui.UiLoader().createWidget("Gui::ToolBar")
     # prevent the widget from showing up in the toolbar area context menu:
     snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")

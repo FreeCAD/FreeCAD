@@ -125,6 +125,33 @@ public:
     double getDatumTemporaryScaleFactor() const;
     void setDatumTemporaryScaleFactor(double);
 
+    bool getViewSelectionExtend() const;
+    void setViewSelectionExtend(bool);
+
+    double getViewSelectionExtendFactor() const;
+    void setViewSelectionExtendFactor(double);
+
+    double getSelectionLineThicken() const;
+    void setSelectionLineThicken(double);
+
+    double getSelectionLineMaxWidth() const;
+    void setSelectionLineMaxWidth(double);
+
+    double getSelectionBBoxLineWidth() const;
+    void setSelectionBBoxLineWidth(double);
+
+    long getMaxViewSelections() const;
+    void setMaxViewSelections(long);
+
+    unsigned long getSelectionColor() const;
+    void setSelectionColor(unsigned long);
+
+    bool getUseTightBoundingBox() const;
+    void setUseTightBoundingBox(bool);
+
+    bool getRenderProjectedBBox() const;
+    void setRenderProjectedBBox(bool);
+
 private:
     void setup();
 };

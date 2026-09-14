@@ -140,11 +140,12 @@ class BIMWorkbench(Workbench):
         ]
         self.modify_2d = [
             "BIM_OffsetTools",
-            "Draft_Trimex",
+            "BIM_Trimex",
             "Draft_Join",
             "Draft_Split",
             "Draft_Stretch",
             "Draft_Draft2Sketch",
+            "Draft_Edit",
         ]
         self.modify_obj = [
             "Draft_Upgrade",
@@ -156,6 +157,7 @@ class BIMWorkbench(Workbench):
             "BIM_ArrayTools",
             "Arch_CutPlane",
             "BIM_Extrude",
+            "BIM_ExtrudeFace",
             "BIM_BooleanTools",
         ]
 
@@ -192,12 +194,10 @@ class BIMWorkbench(Workbench):
             "Arch_Check",
             "Arch_ToggleIfcBrepFlag",
             "Arch_ToggleSubs",
-            "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
             "Arch_IfcSpreadsheet",
             "BIM_ImagePlane",
-            "BIM_Unclone",
             "BIM_Rewire",
             "BIM_Glue",
             "BIM_Reextrude",
@@ -285,9 +285,9 @@ class BIMWorkbench(Workbench):
                 # default: Draft_ArrayTools (the main Array UI)
                 return (
                     "Draft_OrthoArray",
-                    "Draft_PathArray",
+                    "Draft_PathLinkArray",
                     "Draft_PolarArray",
-                    "Draft_PointArray",
+                    "Draft_PointLinkArray",
                 )
 
             def GetResources(self):
@@ -330,7 +330,7 @@ class BIMWorkbench(Workbench):
 
         class BIM_ReportTools:
             def GetCommands(self):
-                return ("BIM_Report", "Arch_Schedule")
+                return ("BIM_Report", "Arch_Schedule", "Arch_Survey")
 
             def GetResources(self):
                 label = QT_TRANSLATE_NOOP("BIM_ReportTools", "Report Tools")
@@ -342,7 +342,7 @@ class BIMWorkbench(Workbench):
 
         class BIM_CloneTools:
             def GetCommands(self):
-                return ("BIM_Clone", "BIM_LinkMake")
+                return ("BIM_Clone", "BIM_LinkMake", "BIM_Unclone")
 
             def GetResources(self):
                 label = QT_TRANSLATE_NOOP("BIM_CloneTools", "Cloning Tools")
@@ -376,7 +376,12 @@ class BIMWorkbench(Workbench):
         # create 2D views command
         class BIM_Create2DViews:
             def GetCommands(self):
-                return ("BIM_DrawingView", "BIM_Shape2DView", "BIM_Shape2DCut")
+                return (
+                    "BIM_DrawingView",
+                    "BIM_Shape2DView",
+                    "BIM_Shape2DCut",
+                    "Draft_UpdateShape2DView",
+                )
 
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
@@ -771,8 +776,19 @@ class BIMWorkbench(Workbench):
     def ContextMenu(self, recipient):
 
         import DraftTools
+        from draftutils import utils
 
         translate = FreeCAD.Qt.translate
+
+        if recipient == "View":
+            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
+        if FreeCADGui.Selection.getSelection():
+            for obj in FreeCADGui.Selection.getSelection():
+                if utils.get_type(obj) != "Shape2DView":
+                    break
+            else:
+                self.appendContextMenu("", ["Draft_UpdateShape2DView"])
 
         if recipient == "Tree":
             groups = False
@@ -803,8 +819,7 @@ class BIMWorkbench(Workbench):
                 FreeCADGui.Selection.getSelection()[0].Name == "Trash"
             ):
                 self.appendContextMenu("", ["BIM_EmptyTrash"])
-        elif recipient == "View":
-            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
         if FreeCADGui.Selection.getSelection():
             if FreeCADGui.Selection.getSelection()[0].Name != "Trash":
                 self.appendContextMenu("", ["BIM_Trash"])
