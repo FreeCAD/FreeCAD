@@ -133,7 +133,7 @@ jobs:
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     - if: "!inputs.skipBuild"
-      uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+      uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
       with:
         pixi-version: v0.68.1
         cache: false
