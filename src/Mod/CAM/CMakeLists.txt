@@ -332,6 +332,7 @@ SET(PathPythonPost_SRCS
     Path/Post/PostList.py
     Path/Post/Processor.py
     Path/Post/DrillCycleExpander.py
+    Path/Post/TiltedWorkPlane.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
     Path/Post/UtilsExport.py
@@ -668,6 +669,7 @@ SET(Tests_SRCS
     CAMTests/TestPathVoronoi.py
     CAMTests/TestPathWorkplane.py
     CAMTests/TestPathWorkplaneFrame.py
+    CAMTests/TestPathTiltedWorkPlane.py
     CAMTests/TestPathSharedWorkplane.py
     CAMTests/TestProcessorOptimizations.py
     CAMTests/TestGrblLegacyPost.py

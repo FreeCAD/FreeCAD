@@ -30,6 +30,8 @@ from .machine import (
     OutputUnits,
     OutputOptions,
     ProcessingOptions,
+    RotationStrategy,
+    PlaneCommand,
 )
 
 # Legacy compatibility aliases
@@ -49,4 +51,6 @@ __all__ = [
     "OutputUnits",
     "OutputOptions",
     "ProcessingOptions",
+    "RotationStrategy",
+    "PlaneCommand",
 ]

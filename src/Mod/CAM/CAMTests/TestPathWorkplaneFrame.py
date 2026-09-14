@@ -277,6 +277,7 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
 
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = self.machine
+        processor._merge_machine_config()
         return processor
 
     def _item(self, op):
@@ -300,11 +301,14 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         self.assertEqual(items[0].path.Commands[0].toGCode(), op.Path.Commands[0].toGCode())
 
     def test_planeOperationGetsRotaryMoveAndMachineFrame(self):
-        """Positions first, then the path in the frame the machine reaches.
+        """Retract, positions, then the path in the frame the machine reaches.
 
         The expected coordinates are the world position of each point (the
         placed path) rotated by the machine's rotation for the recorded
         angles - which is what a DWO control expects after that rotary move."""
+        from Machine.models.machine import RotationStrategy
+
+        self.machine.kinematics.rotation_strategy = RotationStrategy.DWO
         n = _tilted()
         origin = Vector(30, 10, 5)
         plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, n, origin=origin)
@@ -324,7 +328,9 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
 
         out = self._processor()._expand_workplane_frames([("Job", [self._item(op)])])
         items = out[0][1]
-        self.assertEqual([i.item_type for i in items], ["rotation", "operation"])
+        self.assertEqual([i.item_type for i in items], ["str", "rotation", "operation"])
+        self.assertEqual(items[0].data["str"], "G53 G0 Z0.000")
+        items = items[1:]
 
         positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
         rotary = items[0].path.Commands[0]
