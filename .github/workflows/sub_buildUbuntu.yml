@@ -118,7 +118,6 @@ jobs:
         uses: ./.github/workflows/actions/linux/generateCacheKey
         with:
           compiler: ${{ env.CXX }}
-          qt_major_version: 5
 
       - name: Restore Compiler Cache
         id: cache-restore
