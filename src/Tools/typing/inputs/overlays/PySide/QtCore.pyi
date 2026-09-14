@@ -8,5 +8,4 @@ from PySide6.QtCore import *
 # so keep this compatibility export explicit.
 from PySide6.QtCore import QTimer as QTimer
 
-
 def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str: ...

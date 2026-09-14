@@ -2372,9 +2372,7 @@ if FreeCAD.GuiUp:
             # --- Build Rules List ---
             self.highlighting_rules = []
 
-            CaseInsensitiveOption = (
-                QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
-            )
+            CaseInsensitiveOption = QtCore.QRegularExpression.PatternOption.CaseInsensitiveOption
 
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
