@@ -232,16 +232,16 @@ def sameWorkplane(a, b, tol=1e-6):
     """sameWorkplane(a, b, tol=1e-6) ... True if two Workplane placements name
     the same frame for the purpose of reusing generated toolpath geometry.
 
-    Today this compares tool axes only, because an operation's path is
-    generated in a frame derived from the machine's solved rotary angles and
-    the Workplane's origin and in-plane X are recorded but not consumed
-    (see the Workplane property documentation). Two operations that share a
-    tool axis therefore share a frame.
-
-    When origins are consumed this has to compare full frames, and callers
-    that reuse geometry between operations - rest machining in particular -
-    become wrong if it is not changed at the same time. That is the reason
-    this is a named predicate rather than an inline comparison."""
+    Compares tool axes only, and that is deliberate even though a work plane's
+    origin is consumed. An operation generates in its plane's frame, but its
+    path is *stored* relative to the Job's zero in the rotated frame, which is
+    the same frame for every operation sharing a tool axis. Two operations on
+    parallel faces at different depths therefore share a stored frame, and
+    rest machining can reuse cleared area between them. The one thing that has
+    to move to make that work is the querying operation's own bounding box,
+    which getClearedAreas() shifts by the plane origin's position in the
+    rotated frame. This is a named predicate so that if the storage convention
+    ever changes, the callers that depend on it change with it."""
     axis_a = FreeCAD.Placement(a).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     axis_b = FreeCAD.Placement(b).Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     return axis_a.isEqual(axis_b, tol)
@@ -272,9 +272,9 @@ def liesInPlanePerpendicularTo(sub, axis, tol=1e-6):
     return False
 
 
-def depthOfFeature(sub, axis):
-    """depthOfFeature(sub, axis) ... the depth named by a selected feature,
-    measured along axis, or None if it does not name one.
+def depthOfFeature(sub, axis, origin=None):
+    """depthOfFeature(sub, axis, origin=None) ... the depth named by a selected
+    feature, measured along axis from origin, or None if it does not name one.
 
     A depth is a coordinate in the frame an operation generates in, and that
     frame's up direction is the tool axis. So the useful selection is a feature
@@ -287,21 +287,23 @@ def depthOfFeature(sub, axis):
     sphere, a surface of revolution - for which a bounding box maximum and a
     maximum over vertices are not the same number, and three-axis behaviour
     must not drift."""
+    base = axis.dot(origin) if origin is not None else 0.0
+
     if "Vertex" == sub.ShapeType:
-        # Identical to sub.Z when the tool axis is +Z.
-        return axis.dot(sub.Point)
+        # Identical to sub.Z when the tool axis is +Z and the origin is zero.
+        return axis.dot(sub.Point) - base
 
     if Path.Geom.isRoughly(axis.z, 1.0):
         if Path.Geom.isHorizontal(sub):
             if "Edge" == sub.ShapeType:
-                return sub.Vertexes[0].Z
+                return sub.Vertexes[0].Z - base
             if "Face" == sub.ShapeType:
-                return sub.BoundBox.ZMax
+                return sub.BoundBox.ZMax - base
         return None
 
     if not liesInPlanePerpendicularTo(sub, axis):
         return None
-    return max(axis.dot(v.Point) for v in sub.Vertexes)
+    return max(axis.dot(v.Point) for v in sub.Vertexes) - base
 
 
 def isPlanarFace(shape):

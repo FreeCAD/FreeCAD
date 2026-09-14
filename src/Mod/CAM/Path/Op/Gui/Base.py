@@ -1363,7 +1363,10 @@ class TaskPanelHeightsPage(TaskPanelPage):
         operation's tool axis. See PathUtil.depthOfFeature()."""
         if len(sel) != 1 or len(sel[0].SubObjects) != 1:
             return None
-        return PathUtil.depthOfFeature(sel[0].SubObjects[0], PathUtil.toolAxisForOp(obj))
+        frame = PathUtil.workplaneForOp(obj)
+        return PathUtil.depthOfFeature(
+            sel[0].SubObjects[0], frame.Rotation.multVec(FreeCAD.Vector(0, 0, 1)), frame.Base
+        )
 
     def updateSelection(self, obj, sel):
         enabled = self.selectionZLevel(obj, sel) is not None

@@ -100,6 +100,20 @@ def createWorkplane(job, base=None, sub=None, label=None, placement=None, check_
     doc.recompute()
     configureView(workplane)
 
+    if base is not None and sub:
+        # FlatFace puts the origin where the global origin projects onto the
+        # face, which for a tilted face is usually off the face entirely. A
+        # machinist sets zero on the feature: default it to the face's
+        # centroid, as an offset in the attached frame so it still follows
+        # the face. Users move it from there with the attachment editor.
+        try:
+            face = model.Shape.getElement(sub)
+            local = workplane.Placement.inverse().multVec(face.CenterOfMass)
+            workplane.AttachmentOffset = FreeCAD.Placement(local, FreeCAD.Rotation())
+            doc.recompute()
+        except Exception as e:
+            Path.Log.warning("Could not place the work plane origin on the face: %s" % e)
+
     if check_machine and not PathUtil.jobHasRotaryMachine(job) and not _parallelToTable(workplane):
         doc.removeObject(workplane.Name)
         raise ValueError(
