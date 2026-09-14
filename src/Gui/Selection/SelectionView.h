@@ -158,6 +158,7 @@ public Q_SLOTS:
     void onHover(QAction*);
 
 protected:
+    void populateMenu(const std::vector<PickData>& sels);
     bool eventFilter(QObject*, QEvent*) override;
     void leaveEvent(QEvent* e) override;
     PickData onPicked(QAction*, const std::vector<PickData>& sels);

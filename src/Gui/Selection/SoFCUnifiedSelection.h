@@ -421,7 +421,16 @@ public:
         return std::dynamic_pointer_cast<T>(getNodeContext2(it->second, node, T::merge));
     }
 
-    static void checkSelection(bool& sel, SbColor& selColor, bool& hl, SbColor& hlColor);
+    static void checkSelection(
+        bool& sel,
+        SbColor& selColor,
+        bool& hl,
+        SbColor& hlColor,
+        HighlightPresentation& hlPresentation
+    );
+
+    static SoFCSelectionContextPtr getCurrentHighlightContext();
+    static SoFCSelectionContextPtr getGlobalHighlightContext();
 
     static void moveActionStack(SoAction* from, SoAction* to, bool erase);
 
@@ -526,6 +535,8 @@ protected:
     public:
         SbColor selColor;
         SbColor hlColor;
+        HighlightPresentation hlPresentation {HighlightPresentation::None};
+        SoFCSelectionContextPtr elementHighlight;
         bool selAll = false;
         bool hlAll = false;
         bool hideAll = false;
@@ -533,8 +544,16 @@ protected:
     };
     using SelContextPtr = std::shared_ptr<SelContext>;
     using ColorStack = std::vector<SbColor>;
+    struct HighlightStackItem
+    {
+        SbColor color;
+        HighlightPresentation presentation {HighlightPresentation::None};
+    };
+    using HighlightStack = std::vector<HighlightStackItem>;
     static ColorStack SelColorStack;
-    static ColorStack HlColorStack;
+    static HighlightStack HlStack;
+    static std::vector<SoFCSelectionContextPtr> HighlightContextStack;
+    static std::weak_ptr<SoFCSelectionContext> GlobalHighlightContext;
     static SoFCSelectionRoot* ShapeColorNode;
     bool overrideColor = false;
     SbColor colorOverride;
@@ -561,6 +580,9 @@ public:
     const SbColor& getColor() const;
     void setElement(const SoDetail*);
     const SoDetail* getElement() const;
+    void setHighlightPresentation(HighlightPresentation presentation);
+    HighlightPresentation getHighlightPresentation() const;
+    bool hasHighlightPresentation(HighlightPresentation presentation) const;
 
     static void initClass();
 
@@ -574,6 +596,7 @@ private:
     SbBool _highlight {false};
     SbColor _color;
     const SoDetail* _det {nullptr};
+    HighlightPresentation _presentation {HighlightPresentation::None};
 };
 
 /**

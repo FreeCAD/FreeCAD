@@ -46,7 +46,8 @@ bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx)
 {
     bool sel = false;
     bool hl = false;
-    SoFCSelectionRoot::checkSelection(sel, selectionColor, hl, highlightColor);
+    HighlightPresentation presentation = HighlightPresentation::None;
+    SoFCSelectionRoot::checkSelection(sel, selectionColor, hl, highlightColor, presentation);
     if (sel) {
         selectionIndex.insert(-1);
     }
@@ -59,10 +60,12 @@ bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx)
     }
     if (hl) {
         highlightAll();
+        highlightPresentation = presentation;
     }
     else if (ctx && sel) {
         highlightIndex = ctx->highlightIndex;
         highlightColor = ctx->highlightColor;
+        highlightPresentation = ctx->highlightPresentation;
     }
     else {
         removeHighlight();
