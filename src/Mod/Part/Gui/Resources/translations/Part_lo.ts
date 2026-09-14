@@ -6073,8 +6073,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>ແກ້ໄຂ %1</translation>
     </message>
@@ -6502,7 +6502,7 @@ Continue?</source>
       <translation>ປ້ອນໄລຍະຫ່າງ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation>ຮູບລັກສະນະແຕ່ລະໜ້າພຽງ</translation>
     </message>
@@ -7323,7 +7323,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>ບໍ່ສາມາດລະບຸສ່ວນຕັດຂອງເສັ້ນໂຄ້ງໄດ້. ລອງເພີ່ມຂໍ້ຈຳກັດ coincident ລະຫວ່າງຈຸດຍອດຂອງເສັ້ນໂຄ້ງທີ່ທ່ານຕ້ອງການເຮັດມຸມມົນ.</translation>
     </message>
