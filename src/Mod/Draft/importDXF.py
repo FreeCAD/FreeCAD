@@ -2856,7 +2856,7 @@ def _import_dxf_file(filename, doc_name=None):
         dlg = DxfImportDialog(entity_counts)
         FreeCADGui.suspendWaitCursor()
         if dlg.exec_():
-            FreeCADGui.resumeCursor()
+            FreeCADGui.resumeWaitCursor()
 
             # Save the integer mode from the pop-up dialog.
             hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
