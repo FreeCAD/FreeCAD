@@ -229,8 +229,11 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
                 ctx->removeHighlight();
-                touch();
             }
+            // Detailed highlight state lives on SoFCSelectionRoot rather than
+            // in this local context, but it still changes this node's transient
+            // render pass and therefore invalidates its render cache.
+            touch();
             return;
         }
 
@@ -253,7 +256,9 @@ void SoBrepFaceSet::doAction(SoAction* action)
             }
             else {
                 // Element details are stored once by SoFCSelectionRoot and
-                // shared by the face and edge renderers below this root.
+                // shared by the face and edge renderers below this root. The
+                // normal-depth face tint changes this node's transient pass.
+                touch();
             }
         }
         return;
@@ -408,10 +413,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, Gui::SoFCSelection
     }
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
 
-    const bool onTop = ctx->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)
-        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
-
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, onTop);
+    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, false);
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
@@ -478,7 +480,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
     }
     const bool hasFaceHighlight = faceDetail && fadedFaceIndex >= 0 && fadedFaceIndex < partCount;
     const bool hasPrimary = (ctx && (ctx->isHighlighted() || !ctx->selectionIndex.empty()))
-        || fadeOtherFaces || hasFaceHighlight;
+        || fadeOtherFaces;
 
     auto* element = SoLazyElement::getInstance(state);
     const SbColor* diffuse = element->getDiffusePointer();
@@ -651,16 +653,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         }
     }
 
-    // A detailed preselection must remain visible over a whole-object
-    // selection. In that case the selected object's uniform-color fast path
-    // would otherwise bypass both the per-face remap and the explicit overlay.
-    if (hasFaceHighlight) {
-        packedColors.push_back(highlightContext->highlightColor.getPackedValue(trans0));
-        perPartMaterialIndex[static_cast<size_t>(fadedFaceIndex)] = static_cast<int32_t>(
-            packedColors.size() - 1
-        );
-    }
-
     if (fadeOtherFaces) {
         std::map<uint32_t, int32_t> fadedMaterialIndex;
         for (int part = 0; part < partCount; ++part) {
@@ -699,14 +691,13 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         return false;
     }
 
-    const size_t num = materialIndex.getNum();
-    if (num != matIndex.size() || materialIndex.getValues(0) != matIndex.data()) {
-        SbBool notify = enableNotify(FALSE);
-        materialIndex.setValuesPointer(matIndex.size(), matIndex.data());
-        if (notify) {
-            enableNotify(notify);
-        }
-    }
+    // matIndex is a reused member buffer, so its address and size can remain
+    // unchanged while its contents move the highlight to another face. Always
+    // edit the Coin field explicitly so render caches observe that change.
+    materialIndex.setNum(static_cast<int>(matIndex.size()));
+    int32_t* indices = materialIndex.startEditing();
+    std::copy(matIndex.begin(), matIndex.end(), indices);
+    materialIndex.finishEditing();
 
     const bool usesTransparencyMask = partialRender;
     const bool hasTransparency = hasBaseTransparency || usesTransparencyMask || fadeOtherFaces;
@@ -785,14 +776,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         }
     }
 
-    // Whole-object selection keeps an emissive override active while the base
-    // face set renders. Draw the detailed highlight afterwards so that it can
-    // replace the selected face's color. Presentation highlights tint faces
-    // through the normal depth-tested material pass; only their boundaries
-    // are scheduled for the delayed overlay.
-    if (highlightContext && highlightIndex >= 0
-        && !highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)
-        && !hasOverlayFields) {
+    // Detailed preselection is transient rendering state. Keep it out of the
+    // persistent materialIndex remap and draw its face tint with normal depth
+    // testing after the base geometry. Clarify boundaries are handled by the
+    // edge set's delayed overlay.
+    if (hasContextHighlight && !hasOverlayFields) {
         renderHighlight(action, highlightContext, highlightIndex);
     }
 
