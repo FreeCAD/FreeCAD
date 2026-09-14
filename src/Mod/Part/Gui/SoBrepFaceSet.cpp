@@ -689,13 +689,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         return false;
     }
 
-    // matIndex is a reused member buffer, so its address and size can remain
-    // unchanged while its contents move the highlight to another face. Always
-    // edit the Coin field explicitly so render caches observe that change.
-    materialIndex.setNum(static_cast<int>(matIndex.size()));
-    int32_t* indices = materialIndex.startEditing();
-    std::copy(matIndex.begin(), matIndex.end(), indices);
-    materialIndex.finishEditing();
+    const size_t num = materialIndex.getNum();
+    if (num != matIndex.size() || materialIndex.getValues(0) != matIndex.data()) {
+        SbBool notify = enableNotify(FALSE);
+        materialIndex.setValuesPointer(matIndex.size(), matIndex.data());
+        if (notify) {
+            enableNotify(notify);
+        }
+    }
 
     const bool usesTransparencyMask = partialRender;
     const bool hasTransparency = hasBaseTransparency || usesTransparencyMask || fadeOtherFaces;
