@@ -77,6 +77,8 @@ struct RenderScene
     CoinRefPtr<SoPath> facePath;
     CoinRefPtr<SoPath> edgePath;
     CoinRefPtr<SoPath> selectionRootPath;
+    CoinRefPtr<SoPath> otherFacePath;
+    CoinRefPtr<SoPath> otherSelectionRootPath;
 };
 
 struct RenderResult
@@ -296,11 +298,29 @@ RenderScene makePartialRenderScene(bool nestUnrelatedObject = false, bool addOcc
         selectionRootPath->ref();
     }
 
+    SoSearchAction otherFaceSearch;
+    otherFaceSearch.setNode(otherObjectFaces);
+    otherFaceSearch.apply(root);
+    SoPath* otherFacePath = otherFaceSearch.getPath();
+    if (otherFacePath) {
+        otherFacePath->ref();
+    }
+
+    SoSearchAction otherSelectionRootSearch;
+    otherSelectionRootSearch.setNode(otherObjectRoot);
+    otherSelectionRootSearch.apply(root);
+    SoPath* otherSelectionRootPath = otherSelectionRootSearch.getPath();
+    if (otherSelectionRootPath) {
+        otherSelectionRootPath->ref();
+    }
+
     return {
         CoinRefPtr<SoSeparator>(root),
         CoinRefPtr<SoPath>(facePath),
         CoinRefPtr<SoPath>(edgePath),
-        CoinRefPtr<SoPath>(selectionRootPath)
+        CoinRefPtr<SoPath>(selectionRootPath),
+        CoinRefPtr<SoPath>(otherFacePath),
+        CoinRefPtr<SoPath>(otherSelectionRootPath)
     };
 }
 
@@ -669,6 +689,49 @@ private Q_SLOTS:
         };
         QVERIFY(countPixelsMatching(second.image, firstBoundary, 6, isAccent) == 0);
         QVERIFY(countPixelsMatching(second.image, secondBoundary, 6, isAccent) > 0);
+    }
+
+    void detailedHighlightReplacementClearsPreviousOwner()
+    {
+        auto scene = makePartialRenderScene();
+        QVERIFY(scene.root);
+        QVERIFY(scene.facePath);
+        QVERIFY(scene.otherFacePath);
+
+        SoFaceDetail faceDetail = makeFirstFaceDetail();
+        applyClarifyHighlightState(scene.facePath.get(), &faceDetail);
+        const auto firstContext = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
+        QVERIFY(firstContext);
+
+        applyClarifyHighlightState(scene.otherFacePath.get(), &faceDetail);
+        const auto secondContext = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
+        QVERIFY(secondContext);
+        QVERIFY(secondContext != firstContext);
+
+        const RenderResult switched = renderWithDelayedClarifyPass(scene.root.get());
+        QVERIFY(!switched.image.isNull());
+        QCOMPARE(switched.delayedPathCount, 1);
+
+        const QColor previousOwnerFace
+            = meanColor(switched.image, QPoint(renderWidth * 3 / 10, renderHeight / 2), 2);
+        const QColor activeOwnerFace
+            = meanColor(switched.image, QPoint(renderWidth * 89 / 100, renderHeight / 2), 1);
+        QVERIFY(previousOwnerFace.green() > 80 && previousOwnerFace.blue() > 140);
+        QVERIFY(activeOwnerFace.red() > 200 && activeOwnerFace.green() < 80);
+
+        for (int i = 0; i < 8; ++i) {
+            SoPath* activePath = i % 2 == 0 ? scene.facePath.get() : scene.otherFacePath.get();
+            applyClarifyHighlightState(activePath, &faceDetail);
+            const RenderResult repeated = renderWithDelayedClarifyPass(scene.root.get());
+            QVERIFY(!repeated.image.isNull());
+            QCOMPARE(repeated.delayedPathCount, 1);
+        }
+
+        clearHighlightState(scene.otherFacePath.get());
+        QVERIFY(!Gui::SoFCSelectionRoot::getGlobalHighlightContext());
+        const RenderResult cleared = renderWithDelayedClarifyPass(scene.root.get());
+        QVERIFY(!cleared.image.isNull());
+        QCOMPARE(cleared.delayedPathCount, 0);
     }
 
     void clarifyHighlightClearsPreselectionAndRestoresScene()

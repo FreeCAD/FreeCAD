@@ -554,6 +554,9 @@ protected:
     static HighlightStack HlStack;
     static std::vector<SoFCSelectionContextPtr> HighlightContextStack;
     static std::weak_ptr<SoFCSelectionContext> GlobalHighlightContext;
+    static std::weak_ptr<SelContext> GlobalHighlightOwnerContext;
+    static SoFCSelectionRoot* GlobalHighlightOwnerRoot;
+    static void clearGlobalHighlightContext(bool touchOwner = true);
     static SoFCSelectionRoot* ShapeColorNode;
     bool overrideColor = false;
     SbColor colorOverride;

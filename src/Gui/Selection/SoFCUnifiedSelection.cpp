@@ -1469,6 +1469,8 @@ SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::HighlightStack SoFCSelectionRoot::HlStack;
 std::vector<SoFCSelectionContextPtr> SoFCSelectionRoot::HighlightContextStack;
 std::weak_ptr<SoFCSelectionContext> SoFCSelectionRoot::GlobalHighlightContext;
+std::weak_ptr<SoFCSelectionRoot::SelContext> SoFCSelectionRoot::GlobalHighlightOwnerContext;
+SoFCSelectionRoot* SoFCSelectionRoot::GlobalHighlightOwnerRoot = nullptr;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot)
@@ -1485,7 +1487,12 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider* vp)
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
-SoFCSelectionRoot::~SoFCSelectionRoot() = default;
+SoFCSelectionRoot::~SoFCSelectionRoot()
+{
+    if (GlobalHighlightOwnerRoot == this) {
+        clearGlobalHighlightContext(false);
+    }
+}
 
 void SoFCSelectionRoot::initClass()
 {
@@ -1879,10 +1886,16 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
         }
     }
 
-    auto highlightContext = ctx ? ctx->elementHighlight : SoFCSelectionContextPtr();
+    const auto activeHighlightContext = getGlobalHighlightContext();
+    auto highlightContext = ctx && ctx->elementHighlight == activeHighlightContext
+        ? ctx->elementHighlight
+        : SoFCSelectionContextPtr();
     const bool isLocalHighlightContext = static_cast<bool>(highlightContext);
     if (!highlightContext) {
-        highlightContext = getCurrentHighlightContext();
+        const auto inheritedHighlightContext = getCurrentHighlightContext();
+        if (inheritedHighlightContext == activeHighlightContext) {
+            highlightContext = inheritedHighlightContext;
+        }
     }
     if (highlightContext && !highlightContext->highlightPathNodes.empty()) {
         const bool pathMatches = matchesHighlightPath(
@@ -2060,6 +2073,21 @@ SoFCSelectionContextPtr SoFCSelectionRoot::getCurrentHighlightContext()
 SoFCSelectionContextPtr SoFCSelectionRoot::getGlobalHighlightContext()
 {
     return GlobalHighlightContext.lock();
+}
+
+void SoFCSelectionRoot::clearGlobalHighlightContext(bool touchOwner)
+{
+    auto ownerContext = GlobalHighlightOwnerContext.lock();
+    auto* ownerRoot = GlobalHighlightOwnerRoot;
+    if (ownerContext) {
+        ownerContext->elementHighlight.reset();
+    }
+    GlobalHighlightContext.reset();
+    GlobalHighlightOwnerContext.reset();
+    GlobalHighlightOwnerRoot = nullptr;
+    if (touchOwner && ownerRoot) {
+        ownerRoot->touch();
+    }
 }
 
 void SoFCSelectionRoot::resetContext()
@@ -2246,6 +2274,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                 const SoDetail* detail = highlightAction->getElement();
                 if (highlightAction->isHighlighted() && detail) {
                     if (isHighlightContextOwner) {
+                        clearGlobalHighlightContext();
                         auto ctx = getActionContext(action, this, SelContextPtr());
                         if (ctx) {
                             auto highlightContext = std::make_shared<SoFCSelectionContext>();
@@ -2272,13 +2301,15 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                                 = highlightAction->getHighlightPresentation();
                             ctx->elementHighlight = std::move(highlightContext);
                             GlobalHighlightContext = ctx->elementHighlight;
+                            GlobalHighlightOwnerContext = ctx;
+                            GlobalHighlightOwnerRoot = this;
                             ctx->hlAll = false;
                             touch();
                         }
                     }
                 }
                 else if (!highlightAction->isHighlighted()) {
-                    GlobalHighlightContext.reset();
+                    clearGlobalHighlightContext();
                     auto ctx = getActionContext(action, this, SelContextPtr(), false);
                     if (ctx && (ctx->elementHighlight || ctx->hlAll)) {
                         ctx->elementHighlight.reset();
