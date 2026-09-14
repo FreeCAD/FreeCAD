@@ -18,6 +18,7 @@ add_executable(Base_tests_run
         Matrix.cpp
         NumericFormatting.cpp
         NumericInput.cpp
+        OkLch.cpp
         Parameter.cpp
         ParameterObserver.cpp
         Placement.cpp

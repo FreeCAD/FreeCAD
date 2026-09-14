@@ -2945,13 +2945,53 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _tapping_to_speed(self, command: Path.Command) -> Path.Command:
+        """Updates F to the speed, not pitch, if appropriate
+        Returns original command, or modified command
+        Override in the PP if the logic is completely different
+        """
+        # Tapping F is pitch, convert to speed
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and "tapping" == command.Annotations.get("operation", "")
+            and "F" in command.Parameters
+        ):
+            # we are still FreeCAD units: mm and secs, so mm/min -> mm/sec
+            spindle_speed = command.Parameters.get("S", None)
+            if spindle_speed is None:
+                raise CAMAttributeError(
+                    translate("CAM", "S parameter is required for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            if spindle_speed <= 0:
+                raise CAMValueError(
+                    translate("CAM", "S parameter must be > 0 for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            f = command.Parameters["F"] * spindle_speed / 60.0
+            new_command = Path.Command(
+                command.Name, {**command.Parameters, "F": f}, command.Annotations
+            )
+            return new_command
+        else:
+            return command
+
     def _convert_drill_cycle(self, command: Path.Command) -> str:
         """
         Converts a drill cycle command to gcode.
 
         This method can be overridden by derived postprocessors to customize drill cycle handling.
         """
-        return self._convert_move(command)
+
+        new_command = self._tapping_to_speed(command)
+
+        return self._convert_move(new_command)
 
     def _convert_probe(self, command: Path.Command) -> str:
         """

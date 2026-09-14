@@ -645,6 +645,8 @@ void QuantitySpinBox::openFormulaDialog()
 {
     Q_ASSERT(isBound());
 
+    Q_EMIT showFormulaDialog(true);
+
     Q_D(const QuantitySpinBox);
     auto box = new Gui::Dialog::DlgExpressionInput(getPath(), getExpression(), d->unit, this);
     if (d->checkRangeInExpression) {
@@ -667,8 +669,6 @@ void QuantitySpinBox::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0, 0));
     box->move(pos - box->expressionPosition());
     Gui::adjustDialogPosition(box);
-
-    Q_EMIT showFormulaDialog(true);
 }
 
 void QuantitySpinBox::handlePendingEmit(bool updateUnit /* = true */)

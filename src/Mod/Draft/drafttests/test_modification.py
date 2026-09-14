@@ -47,6 +47,12 @@ from draftutils.messages import _msg
 class DraftModification(test_base.DraftTestCaseDoc):
     """Test Draft modification tools."""
 
+    def test_trimex_unsupported_reason_compatibility(self):
+        """The legacy subobjects argument remains accepted."""
+        line = Draft.make_line(Vector(), Vector(1, 0, 0))
+        self.doc.recompute()
+        self.assertIsNone(utils.get_trimex_unsupported_reason(line, []))
+
     def test_move(self):
         """Create a line and move it."""
         operation = "Draft Move"

@@ -84,6 +84,9 @@ set(Part_tests
     parttests/TopoShapeTest.py
     parttests/TestTangentMode3-0.21.FCStd
     parttests/TestLinkArrayCircular.py
+    parttests/TestLinkArrayLinear.py
+    parttests/TestLinkArrayPath.py
+    parttests/TestLinkArrayPoint.py
     parttests/TestPartMirror.py
     parttests/TestFaceMakerUnifiedPlanar.py
     parttests/TestFaceMakerUnifiedNonPlanar.py

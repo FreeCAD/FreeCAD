@@ -289,6 +289,7 @@ class PythonExport:
         Constructor=0,
         NumberProtocol=0,
         RichCompare=0,
+        Hash=0,
         TwinPointer="",
         Delete=0,
         Reference=0,
@@ -315,6 +316,7 @@ class PythonExport:
         self.Constructor = Constructor
         self.NumberProtocol = NumberProtocol
         self.RichCompare = RichCompare
+        self.Hash = Hash
         self.TwinPointer = TwinPointer
         self.Delete = Delete
         self.Reference = Reference
@@ -464,6 +466,12 @@ class PythonExport:
     def setRichcompare(self, RichCompare):
         self.RichCompare = RichCompare
 
+    def getHash(self):
+        return self.Hash
+
+    def setHash(self, Hash):
+        self.Hash = Hash
+
     def getTwinpointer(self):
         return self.TwinPointer
 
@@ -531,6 +539,8 @@ class PythonExport:
             outfile.write(' NumberProtocol="%s"' % (self.getNumberprotocol(),))
         if self.getRichcompare() is not None:
             outfile.write(' RichCompare="%s"' % (self.getRichcompare(),))
+        if self.getHash() is not None:
+            outfile.write(' Hash="%s"' % (self.getHash(),))
         outfile.write(' TwinPointer="%s"' % (self.getTwinpointer(),))
         if self.getDelete() is not None:
             outfile.write(' Delete="%s"' % (self.getDelete(),))
@@ -596,6 +606,8 @@ class PythonExport:
         outfile.write('NumberProtocol = "%s",\n' % (self.getNumberprotocol(),))
         showIndent(outfile, level)
         outfile.write('RichCompare = "%s",\n' % (self.getRichcompare(),))
+        showIndent(outfile, level)
+        outfile.write('Hash = "%s",\n' % (self.getHash(),))
         showIndent(outfile, level)
         outfile.write('TwinPointer = "%s",\n' % (self.getTwinpointer(),))
         showIndent(outfile, level)
@@ -700,6 +712,13 @@ class PythonExport:
                 self.RichCompare = 0
             else:
                 raise ValueError("Bad boolean attribute (RichCompare)")
+        if attrs.get("Hash"):
+            if attrs.get("Hash").value in ("true", "1"):
+                self.Hash = 1
+            elif attrs.get("Hash").value in ("false", "0"):
+                self.Hash = 0
+            else:
+                raise ValueError("Bad boolean attribute (Hash)")
         if attrs.get("TwinPointer"):
             self.TwinPointer = attrs.get("TwinPointer").value
         if attrs.get("Delete"):
@@ -2613,6 +2632,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     self.reportError(
                         '"RichCompare" attribute must be boolean ("true", "1", "false", "0")'
                     )
+            val = attrs.get("Hash", None)
+            if val is not None:
+                if val in ("true", "1"):
+                    obj.setHash(1)
+                elif val in ("false", "0"):
+                    obj.setHash(0)
+                else:
+                    self.reportError('"Hash" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get("TwinPointer", None)
             if val is not None:
                 obj.setTwinpointer(val)
