@@ -326,11 +326,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
 
     auto highlightContext = Gui::SoFCSelectionRoot::getCurrentHighlightContext();
-    const auto globalHighlightContext = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
-    const bool fadeOtherElements = globalHighlightContext
-        && globalHighlightContext->hasHighlightPresentation(
-            Gui::HighlightPresentation::FadeOtherElements
-        );
+    const bool fadeOtherElements = highlightContext
+        && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::FadeOtherElements);
     const bool hasContextHighlight = ctx && !ctx->hl.empty();
     const bool hasFaceHighlight = highlightContext && highlightContext->highlightDetail
         && highlightContext->highlightDetail->isOfType(SoFaceDetail::getClassTypeId())

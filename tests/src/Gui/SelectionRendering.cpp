@@ -716,7 +716,10 @@ private Q_SLOTS:
             = meanColor(switched.image, QPoint(renderWidth * 3 / 10, renderHeight / 2), 2);
         const QColor activeOwnerFace
             = meanColor(switched.image, QPoint(renderWidth * 89 / 100, renderHeight / 2), 1);
-        QVERIFY(previousOwnerFace.green() > 80 && previousOwnerFace.blue() > 140);
+        QVERIFY(
+            previousOwnerFace.red() < 80 && previousOwnerFace.green() < 120
+            && previousOwnerFace.blue() > 180
+        );
         QVERIFY(activeOwnerFace.red() > 200 && activeOwnerFace.green() < 80);
 
         for (int i = 0; i < 8; ++i) {
@@ -818,7 +821,7 @@ private Q_SLOTS:
         QVERIFY(distance(fadedFace, darkBackground) < distance(originalFace, darkBackground));
     }
 
-    void clarifyHighlightFadesSeparateSceneObjects()
+    void clarifyHighlightKeepsSeparateSceneObjectsUnfaded()
     {
         auto scene = makePartialRenderScene();
         QVERIFY(scene.root);
@@ -836,15 +839,11 @@ private Q_SLOTS:
 
         const QColor originalFace = meanColor(baseline.image, otherObjectFace, 1);
         const QColor fadedFace = meanColor(result.image, otherObjectFace, 1);
-        QVERIFY(fadedFace.red() > originalFace.red());
-        QVERIFY(fadedFace.green() > originalFace.green());
-        QVERIFY(fadedFace.blue() > originalFace.blue());
+        QCOMPARE(fadedFace, originalFace);
 
         const QColor originalEdge = meanColor(baseline.image, otherObjectEdge, 1);
         const QColor fadedEdge = meanColor(result.image, otherObjectEdge, 1);
-        QVERIFY(fadedEdge.red() > originalEdge.red());
-        QVERIFY(fadedEdge.green() > originalEdge.green());
-        QVERIFY(fadedEdge.blue() > originalEdge.blue());
+        QCOMPARE(fadedEdge, originalEdge);
     }
 
     void clarifyHighlightDoesNotAccentUnrelatedNestedGeometry()

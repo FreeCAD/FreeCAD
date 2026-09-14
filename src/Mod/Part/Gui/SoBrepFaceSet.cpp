@@ -466,11 +466,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         ? static_cast<const SoFaceDetail*>(highlightContext->highlightDetail.get())
         : nullptr;
     const int fadedFaceIndex = faceDetail ? faceDetail->getPartIndex() : -1;
-    const auto globalHighlightContext = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
-    const bool fadeOtherFaces = globalHighlightContext
-        && globalHighlightContext->hasHighlightPresentation(
-            Gui::HighlightPresentation::FadeOtherElements
-        );
+    const bool fadeOtherFaces = highlightContext
+        && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::FadeOtherElements);
     const bool hasSecondary = ctx2 && (!ctx2->colors.empty() || !ctx2->selectionIndex.empty());
     auto* state = action->getState();
     const auto mb = SoMaterialBindingElement::get(state);
