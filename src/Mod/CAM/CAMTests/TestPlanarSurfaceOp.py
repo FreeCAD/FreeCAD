@@ -685,7 +685,11 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
 
     @staticmethod
     def _rotaryMoves(op):
-        return [c for c in op.Path.Commands if c.Name == "G0" and "A" in c.Parameters]
+        """The rotary positioning the op was solved for. The op's own path
+        carries no rotary words - it is generated in its work plane's frame -
+        so this reads the recorded positions the post-processor commands."""
+        positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
+        return [Path.Command("G0", positions)] if positions else []
 
     @staticmethod
     def _cutValues(op, axis):

@@ -34,8 +34,8 @@ things that must not drift:
     in-plane X are recorded, and the frame-equality predicate compares axes
     only. When origins are consumed these expectations change together, which
     is why they are written down;
-  * that an operation's Placement is left alone, because the path viewer
-    already compensates for the rotary words in a rotated path.
+  * that an operation's Placement is its work plane's placement, since its
+    path is stored in that plane's frame.
 """
 
 import math
@@ -260,27 +260,22 @@ class TestWorkplaneOnOperation(PathTestUtils.PathTestBase):
         self.doc.recompute()
         self.assertTrue(op.Placement.isIdentity(1e-9))
 
-    def test_rotatedOpKeepsIdentityPlacement(self):
-        """A rotated operation must not acquire a placement either.
+    def test_rotatedOpPlacementIsItsWorkPlane(self):
+        """A rotated operation's Placement is its work plane's placement.
 
-        A path generated in a rotated workplane carries the rotary A/B/C words
-        that produced it, and Path::PathSegmentWalker applies
-        compensateRotation() to every point when drawing, mapping those
-        rotated-frame coordinates back to world. The toolpath is therefore
-        already drawn on the part. Deriving a Placement from the workplane to
-        "put the path back" applies that compensation a second time and draws
-        the path off the part - so an operation's Placement must stay whatever
-        the user left it, and nothing in execute() may write it."""
+        The path is generated and stored in the plane's own frame, with no
+        rotary words, and Placement positions it - the convention dressups,
+        the simulators and the posts already read through
+        getPathWithPlacement(). The 3D view applies Placement in the scene
+        graph, so the path draws on the part exactly once."""
         self._attachMachine()
         op = self._makeOp("Side")
-        op.Workplane = PathWorkplane.createWorkplaneFromToolAxis(self.job, Vector(0, 1, 0))
+        plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, Vector(0, 1, 0))
+        op.Workplane = plane
         self.doc.recompute()
 
-        self.assertTrue(
-            op.Placement.isIdentity(1e-9),
-            "execute() must not write Placement: the path viewer already "
-            "compensates for the rotary words in the path",
-        )
+        self.assertTrue(op.Placement.isSame(plane.Placement, 1e-9))
+        self.assertIn("ReadOnly", op.getEditorMode("Placement"), "Placement is derived")
 
 
 class TestDepthFromSelection(PathTestUtils.PathTestBase):

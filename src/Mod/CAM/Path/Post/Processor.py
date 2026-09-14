@@ -50,6 +50,7 @@ from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
+import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -1830,6 +1831,90 @@ class PostProcessor:
 
         return self._edit_postable_list(postables, prepend)
 
+    def _expand_workplane_frames(self, postables):
+        """Operations on a work plane: transform into the machine's frame and
+        command the rotary positioning.
+
+        An operation's path is stored in its work plane's frame, with the
+        operation's Placement positioning it in the world and its
+        RotaryPositions recording the rotary angles it was solved for.
+        Generation knows nothing about the machine; this is where the machine
+        comes in.
+
+        This is the dynamic-work-offset shape of output, and for now the only
+        one: the rotaries move by a G0 to the recorded positions, and the
+        path is expressed in the frame the machine reaches after that move -
+        world coordinates rotated by the machine's rotation for those angles,
+        relative to the Job's zero. The control's DWO applies the pivot. A
+        tilted-work-plane strategy would instead declare the plane and leave
+        the coordinates plane-relative; that is selected by the machine in a
+        later step.
+
+        Rotating a world path by the machine's rotation is exact for the path
+        representation, because that rotation is the one that makes the
+        plane's cuts horizontal again: lines stay lines and arcs stay arcs in
+        XY. An operation with no work plane and no recorded positions is left
+        untouched, so a three-axis Job is byte-identical to before.
+        """
+        import Path.Base.Generator.rotation as rotation
+        from Path.Post.PostList import Postable
+
+        machine = self._machine
+        chain = (
+            rotation.build_kinematic_chain(machine)
+            if machine is not None and getattr(machine, "has_rotary_axes", False)
+            else []
+        )
+
+        def frame_of(item):
+            src = item.source
+            if src is None or item.item_type != "operation":
+                return None, None
+            placement = getattr(src, "Placement", None)
+            recorded = dict(getattr(src, "RotaryPositions", {}) or {})
+            positions = {k: float(v) for k, v in recorded.items()}
+            if (placement is None or placement.isIdentity(1e-9)) and not positions:
+                return None, None
+            return placement, positions
+
+        def expand(section_name, item, section_state):
+            placement, positions = frame_of(item)
+            if placement is None and positions is None:
+                return 0, [item]
+
+            new_items = []
+            if positions:
+                if not chain:
+                    Path.Log.warning(
+                        f"{item.label}: recorded rotary positions but the post's "
+                        f"machine has no rotary axes; emitting without positioning"
+                    )
+                    machine_rotation = FreeCAD.Rotation()
+                else:
+                    machine_rotation = rotation.compute_rotation_matrix(chain, positions)
+                    new_items.append(
+                        Postable(
+                            item_type="rotation",
+                            label="Rotary positioning",
+                            path=Path.Path([Path.Command("G0", positions)]),
+                            source=None,
+                        )
+                    )
+            else:
+                machine_rotation = FreeCAD.Rotation()
+
+            if placement is not None and not placement.isIdentity(1e-9):
+                # world = placement * local; machine = R_m * world
+                to_machine = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0), machine_rotation).multiply(
+                    placement
+                )
+                item.path = PathUtils.applyPlacementToPath(to_machine, item.path)
+            new_items.append(item)
+            return 0, new_items
+
+        self._edit_item_list(postables, expand)
+        return postables
+
     def _expand_rotary_move(self, postables):
         """Wrap any commands that have ABC axis
         with PRE_ROTARY_MOVE/POST_ROTARY_MOVE
@@ -2360,6 +2445,11 @@ class PostProcessor:
         # Either a_Postable.item.path of Path.Commands,
         # or a_Postable.item.type == "str" for opaque "blob" of text
         # Path.Commands can become "Non-Conforming"
+
+        # First, before anything reads a coordinate: bring each operation's
+        # path from its work plane's frame into the frame the machine reaches,
+        # and command the rotaries it was solved for.
+        postables = self._expand_workplane_frames(postables)
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
