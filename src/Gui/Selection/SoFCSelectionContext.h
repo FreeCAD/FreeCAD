@@ -45,6 +45,13 @@ enum class HighlightPresentation : unsigned int
     FadeOtherElements = 1u << 1,
 };
 
+enum class HighlightTarget
+{
+    None,
+    WholeObject,
+    Subelement,
+};
+
 inline HighlightPresentation operator|(HighlightPresentation first, HighlightPresentation second)
 {
     return static_cast<HighlightPresentation>(
@@ -82,6 +89,7 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     SbColor selectionColor;
     SbColor highlightColor;
     HighlightPresentation highlightPresentation {HighlightPresentation::None};
+    HighlightTarget highlightTarget {HighlightTarget::None};
     std::shared_ptr<const SoDetail> highlightDetail;
     std::vector<SoNode*> highlightPathNodes;
     std::vector<int> highlightPathIndices;
@@ -120,6 +128,7 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     void highlightAll()
     {
         highlightIndex = std::numeric_limits<int>::max();
+        highlightTarget = HighlightTarget::WholeObject;
         highlightDetail.reset();
         highlightPathNodes.clear();
         highlightPathIndices.clear();
@@ -130,6 +139,7 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     {
         highlightIndex = -1;
         highlightPresentation = HighlightPresentation::None;
+        highlightTarget = HighlightTarget::None;
         highlightDetail.reset();
         highlightPathNodes.clear();
         highlightPathIndices.clear();

@@ -2090,6 +2090,44 @@ void SoFCSelectionRoot::clearGlobalHighlightContext(bool touchOwner)
     }
 }
 
+void SoFCSelectionRoot::installGlobalHighlightContext(
+    SoAction* action,
+    const SoHighlightElementAction* highlightAction,
+    int ownerPathIndex
+)
+{
+    clearGlobalHighlightContext();
+    auto ctx = getActionContext(action, this, SelContextPtr());
+    if (!ctx) {
+        return;
+    }
+
+    const SoDetail* detail = highlightAction->getElement();
+    auto highlightContext = std::make_shared<SoFCSelectionContext>();
+    highlightContext->highlightTarget = detail ? HighlightTarget::Subelement
+                                               : HighlightTarget::WholeObject;
+    if (detail) {
+        highlightContext->highlightDetail = std::shared_ptr<const SoDetail>(detail->copy());
+    }
+    if (auto path = action->getPathAppliedTo()) {
+        highlightContext->highlightPathNodes.reserve(static_cast<size_t>(path->getLength()));
+        highlightContext->highlightPathIndices.reserve(static_cast<size_t>(path->getLength()));
+        for (int i = 0; i < path->getLength(); ++i) {
+            highlightContext->highlightPathNodes.push_back(path->getNode(i));
+            highlightContext->highlightPathIndices.push_back(path->getIndex(i));
+        }
+    }
+    highlightContext->highlightOwnerPathIndex = ownerPathIndex;
+    highlightContext->highlightColor = highlightAction->getColor();
+    highlightContext->highlightPresentation = highlightAction->getHighlightPresentation();
+    ctx->elementHighlight = std::move(highlightContext);
+    GlobalHighlightContext = ctx->elementHighlight;
+    GlobalHighlightOwnerContext = ctx;
+    GlobalHighlightOwnerRoot = this;
+    ctx->hlAll = false;
+    touch();
+}
+
 void SoFCSelectionRoot::resetContext()
 {
     contextMap.clear();
@@ -2263,49 +2301,27 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
             ? static_cast<SoHighlightElementAction*>(action)
             : nullptr;
         const bool isDetailedHighlight = highlightAction && highlightAction->getElement();
+        const bool isPresentationHighlight = highlightAction && highlightAction->isHighlighted()
+            && highlightAction->getHighlightPresentation() != HighlightPresentation::None;
         const bool isClearingHighlight = highlightAction && !highlightAction->isHighlighted();
         // Detail paths commonly end at the view provider's mode switch, which
         // makes this root the path tail. Still capture detailed highlights and
         // their clears here; whole-object highlights continue through the
         // existing tail handling below.
-        if (!isTail || isDetailedHighlight || isClearingHighlight) {
+        if (!isTail || isDetailedHighlight || isPresentationHighlight || isClearingHighlight) {
             if (action->isOfType(SoHighlightElementAction::getClassTypeId())) {
                 auto highlightAction = static_cast<SoHighlightElementAction*>(action);
                 const SoDetail* detail = highlightAction->getElement();
-                if (highlightAction->isHighlighted() && detail) {
+                if (highlightAction->isHighlighted()
+                    && (detail
+                        || highlightAction->getHighlightPresentation()
+                            != HighlightPresentation::None)) {
                     if (isHighlightContextOwner) {
-                        clearGlobalHighlightContext();
-                        auto ctx = getActionContext(action, this, SelContextPtr());
-                        if (ctx) {
-                            auto highlightContext = std::make_shared<SoFCSelectionContext>();
-                            highlightContext->highlightDetail = std::shared_ptr<const SoDetail>(
-                                detail->copy()
-                            );
-                            // The context is owned by a node on this path, so keep non-owning path
-                            // identity.
-                            if (auto path = action->getPathAppliedTo()) {
-                                highlightContext->highlightPathNodes.reserve(
-                                    static_cast<size_t>(path->getLength())
-                                );
-                                highlightContext->highlightPathIndices.reserve(
-                                    static_cast<size_t>(path->getLength())
-                                );
-                                for (int i = 0; i < path->getLength(); ++i) {
-                                    highlightContext->highlightPathNodes.push_back(path->getNode(i));
-                                    highlightContext->highlightPathIndices.push_back(path->getIndex(i));
-                                }
-                            }
-                            highlightContext->highlightOwnerPathIndex = highlightContextOwnerPathIndex;
-                            highlightContext->highlightColor = highlightAction->getColor();
-                            highlightContext->highlightPresentation
-                                = highlightAction->getHighlightPresentation();
-                            ctx->elementHighlight = std::move(highlightContext);
-                            GlobalHighlightContext = ctx->elementHighlight;
-                            GlobalHighlightOwnerContext = ctx;
-                            GlobalHighlightOwnerRoot = this;
-                            ctx->hlAll = false;
-                            touch();
-                        }
+                        installGlobalHighlightContext(
+                            action,
+                            highlightAction,
+                            highlightContextOwnerPathIndex
+                        );
                     }
                 }
                 else if (!highlightAction->isHighlighted()) {
@@ -2404,6 +2420,15 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                 }
             }
             else {
+                if (highlightAction->getHighlightPresentation() != HighlightPresentation::None) {
+                    const auto path = action->getPathAppliedTo();
+                    installGlobalHighlightContext(
+                        action,
+                        highlightAction,
+                        path ? path->getLength() - 1 : -1
+                    );
+                    return false;
+                }
                 auto ctx = getActionContext(action, this, SelContextPtr());
                 assert(ctx);
                 ctx->hlAll = true;

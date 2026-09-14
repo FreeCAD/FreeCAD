@@ -1081,7 +1081,12 @@ private Q_SLOTS:
         QVERIFY(scene.root);
         QVERIFY(scene.selectionRootPath);
 
+        const RenderResult baseline = renderWithDelayedClarifyPass(scene.root.get());
+        QVERIFY(!baseline.image.isNull());
         applyClarifyHighlightState(scene.selectionRootPath.get(), nullptr);
+        const auto context = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
+        QVERIFY(context);
+        QCOMPARE(context->highlightTarget, Gui::HighlightTarget::WholeObject);
 
         const RenderResult result = renderWithDelayedClarifyPass(scene.root.get());
 
@@ -1097,6 +1102,46 @@ private Q_SLOTS:
         const QByteArray accentMessage = "whole-object edge accent pixels: "
             + QByteArray::number(accentPixels);
         QVERIFY2(accentPixels > 0, accentMessage.constData());
+
+        const QColor candidateFace
+            = meanColor(result.image, QPoint(renderWidth * 3 / 10, renderHeight / 2), 2);
+        QVERIFY2(
+            candidateFace.red() > 200 && candidateFace.green() < 80 && candidateFace.blue() < 80,
+            colorMessage("whole-object candidate face", candidateFace).constData()
+        );
+
+        const QPoint unrelatedPoint(renderWidth * 89 / 100, renderHeight / 2);
+        QCOMPARE(
+            meanColor(result.image, unrelatedPoint, 1),
+            meanColor(baseline.image, unrelatedPoint, 1)
+        );
+    }
+
+    void clarifyHighlightSwitchesBetweenObjectAndFacePresentation()
+    {
+        auto scene = makePartialRenderScene();
+        QVERIFY(scene.root);
+        QVERIFY(scene.facePath);
+        QVERIFY(scene.selectionRootPath);
+
+        SoFaceDetail faceDetail = makeFirstFaceDetail();
+        for (int i = 0; i < 6; ++i) {
+            const bool wholeObject = i % 2 == 0;
+            applyClarifyHighlightState(
+                wholeObject ? scene.selectionRootPath.get() : scene.facePath.get(),
+                wholeObject ? nullptr : &faceDetail
+            );
+            const auto context = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
+            QVERIFY(context);
+            QCOMPARE(
+                context->highlightTarget,
+                wholeObject ? Gui::HighlightTarget::WholeObject : Gui::HighlightTarget::Subelement
+            );
+
+            const RenderResult rendered = renderWithDelayedClarifyPass(scene.root.get());
+            QVERIFY(!rendered.image.isNull());
+            QCOMPARE(rendered.delayedPathCount, 1);
+        }
     }
 
     void fullClearRestoresPartialRenderPreview()

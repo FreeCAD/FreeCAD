@@ -467,6 +467,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         : nullptr;
     const int fadedFaceIndex = faceDetail ? faceDetail->getPartIndex() : -1;
     const bool fadeOtherFaces = highlightContext
+        && highlightContext->highlightTarget == Gui::HighlightTarget::Subelement
         && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::FadeOtherElements);
     const bool hasSecondary = ctx2 && (!ctx2->colors.empty() || !ctx2->selectionIndex.empty());
     auto* state = action->getState();
@@ -728,13 +729,19 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
         highlightIndex = static_cast<const SoFaceDetail*>(highlightContext->highlightDetail.get())
                              ->getPartIndex();
     }
+    else if (
+        highlightContext && highlightContext->highlightTarget == Gui::HighlightTarget::WholeObject
+    ) {
+        highlightIndex = std::numeric_limits<int>::max();
+    }
     else if (ctx && ctx->isHighlighted()) {
         highlightContext = ctx;
         highlightIndex = ctx->highlightIndex;
     }
 
-    const bool hasContextHighlight = highlightContext && highlightIndex >= 0
-        && highlightIndex < partIndex.getNum();
+    const bool hasContextHighlight = highlightContext
+        && (highlightIndex == std::numeric_limits<int>::max()
+            || (highlightIndex >= 0 && highlightIndex < partIndex.getNum()));
 
     // An empty secondary context suppresses the base face set for partial-render
     // previews. Detailed preselection is independent transient state, so its

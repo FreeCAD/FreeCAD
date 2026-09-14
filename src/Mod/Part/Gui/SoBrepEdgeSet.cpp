@@ -327,6 +327,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     auto highlightContext = Gui::SoFCSelectionRoot::getCurrentHighlightContext();
     const bool fadeOtherElements = highlightContext
+        && highlightContext->highlightTarget == Gui::HighlightTarget::Subelement
         && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::FadeOtherElements);
     const bool hasContextHighlight = ctx && !ctx->hl.empty();
     const bool hasFaceHighlight = highlightContext && highlightContext->highlightDetail
@@ -439,6 +440,20 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasFaceHighlight) {
         renderFaceHighlight(action, highlightContext);
+    }
+    else if (
+        Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && highlightContext
+        && highlightContext->highlightTarget == Gui::HighlightTarget::WholeObject
+    ) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            coordIndex.getValues(0),
+            coordIndex.getNum(),
+            highlightContext->highlightColor,
+            OverlayDepthMode::DrawOnTop,
+            std::max(1.0F, SoLineWidthElement::get(action->getState()))
+        );
     }
 
     // Workaround for #0000433

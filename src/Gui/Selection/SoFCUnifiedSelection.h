@@ -557,6 +557,11 @@ protected:
     static std::weak_ptr<SelContext> GlobalHighlightOwnerContext;
     static SoFCSelectionRoot* GlobalHighlightOwnerRoot;
     static void clearGlobalHighlightContext(bool touchOwner = true);
+    void installGlobalHighlightContext(
+        SoAction* action,
+        const SoHighlightElementAction* highlightAction,
+        int ownerPathIndex
+    );
     static SoFCSelectionRoot* ShapeColorNode;
     bool overrideColor = false;
     SbColor colorOverride;
