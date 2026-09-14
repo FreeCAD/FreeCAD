@@ -187,9 +187,24 @@ class PathSimulation:
             self.cutTool.ViewObject.show()
             self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
         self.icmd = 0
-        self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
-        self.cutTool.Placement = self.curpos
-        self.opCommands = PathUtils.getPathWithPlacement(self.operation).Commands
+        # An operation's path is stored in its work plane's frame and its
+        # Placement positions it. The boolean simulation works in that frame:
+        # the swept tool solid is built there, where the tool is vertical and
+        # the Z-based radius adjustments in GetPathSolid() hold, and moved by
+        # the frame before it is cut from the stock. Positions are tracked in
+        # the frame too and moved out for the tool display. The voxel
+        # simulation removes material along Z only and cannot represent a
+        # tilted cut, so it keeps the placed path and a vertical tool.
+        if self.isVoxel:
+            self.opFrame = FreeCAD.Placement()
+            self.opCommands = PathUtils.getPathWithPlacement(self.operation).Commands
+            start = self.initialPos
+        else:
+            self.opFrame = FreeCAD.Placement(self.operation.Placement)
+            self.opCommands = list(self.operation.Path.Commands) if self.operation.Path else []
+            start = self.opFrame.inverse().multVec(self.initialPos)
+        self.curpos = FreeCAD.Placement(start, self.stdrot)
+        self.cutTool.Placement = self.toolPlacement(self.curpos)
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
@@ -269,6 +284,8 @@ class PathSimulation:
             self.curpos = self.RapidMove(extendcommand, self.curpos)
         self.skipStep = False
         if pathSolid is not None:
+            if not self.opFrame.isIdentity(1e-9):
+                pathSolid.transformShape(self.opFrame.toMatrix(), False, False)
             if self.debug:
                 self.cutSolid.Shape = pathSolid
             newStock = self.stock.cut([pathSolid], 1e-3)
@@ -279,7 +296,7 @@ class PathSimulation:
                 if self.debug:
                     print("invalid cut at cmd #{}".format(self.icmd))
         if not self.disableAnim:
-            self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
+            self.cutTool.Placement = self.toolPlacement(self.curpos)
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
@@ -374,6 +391,16 @@ class PathSimulation:
             self.PerformCutVoxel()
         else:
             self.PerformCutBoolean()
+
+    def toolPlacement(self, pos):
+        """toolPlacement(pos) ... the tool's placement for a position tracked
+        in the operation's frame: moved into the world by the frame, and
+        standing along the frame's Z - the tool axis - rather than vertical."""
+        base = pos.Base if isinstance(pos, FreeCAD.Placement) else FreeCAD.Vector(pos)
+        frame = getattr(self, "opFrame", None)
+        if frame is None or frame.isIdentity(1e-9):
+            return FreeCAD.Placement(base, self.stdrot)
+        return FreeCAD.Placement(frame.multVec(base), frame.Rotation)
 
     def RapidMove(self, cmd, curpos):
         path = Path.Geom.edgeForCmd(cmd, curpos)  # hack to overcome occ bug
