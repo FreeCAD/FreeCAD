@@ -190,14 +190,76 @@ class BaseFrame:
     orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
 
+class RotationStrategy(Enum):
+    """How the machine handles an operation on a tilted work plane.
+
+    An operation on a work plane is stored plane-relative; the post has to
+    express it in something the control runs. Which of these the control
+    does decides what the post emits. A machine with rotary axes and NONE
+    refuses to post such an operation rather than guess.
+
+    NONE           : not declared; indexed operations cannot be posted.
+    DWO            : dynamic work offset (Haas G254, Fanuc G54.2/G54.4).
+                     The post commands the rotary positions and emits the
+                     path rotated into the frame the machine reaches; the
+                     control applies the pivot offsets.
+    TWP            : tilted work plane (Fanuc G68.2, Haas G268, Heidenhain
+                     PLANE SPATIAL). The post declares the plane and emits
+                     the path in the plane's own coordinates; the control
+                     positions the rotaries and applies the pivot.
+    POST_TRANSFORM : no control support; the post itself would rotate every
+                     coordinate about the machine's measured pivots. Declared
+                     here so a machine can say so; not emitted yet.
+    """
+
+    NONE = "none"
+    DWO = "dwo"
+    TWP = "twp"
+    POST_TRANSFORM = "post_transform"
+
+
+class PlaneCommand(Enum):
+    """The control's tilted-work-plane command family, for RotationStrategy.TWP.
+
+    G68_2         : Fanuc and the many controls that copy it (Mazak, Okuma,
+                    Brother, Mach4 with the option). `G68.2 X Y Z I J K` with
+                    I, J, K the intrinsic Z-X'-Z'' Euler angles; `G53.1`
+                    aligns the tool axis; `G69` cancels.
+    G268          : Haas NGC. Same angles and alignment; `G268` declares,
+                    `G269` cancels.
+    PLANE_SPATIAL : Heidenhain. `PLANE SPATIAL SPA SPB SPC` with the spatial
+                    angles about the fixed machine X, Y, Z axes applied in
+                    that order; `TURN` positions the rotaries; `PLANE RESET`
+                    cancels.
+    """
+
+    G68_2 = "g68.2"
+    G268 = "g268"
+    PLANE_SPATIAL = "plane_spatial"
+
+
 @dataclass
 class Kinematics:
     """Machine kinematics configuration."""
 
     base_frame: BaseFrame = field(default_factory=BaseFrame)
     tcp_supported: bool = False
-    dwo_supported: bool = False
+    rotation_strategy: RotationStrategy = RotationStrategy.NONE
+    # For RotationStrategy.TWP: which plane command the control speaks, and
+    # whether that command positions the rotary axes itself (G53.1, TURN) or
+    # the program has to command them with a rotary move.
+    plane_command: PlaneCommand = PlaneCommand.G68_2
+    control_positions_rotaries: bool = True
+    # Machine-coordinate Z the post retracts to before the rotaries move.
+    # An operation's clearance height is measured in its own work plane and
+    # says nothing about where the tool is safe while the table turns.
+    index_retract_z: float = 0.0
     notes: str = ""
+
+    @property
+    def dwo_supported(self) -> bool:
+        """Older spelling of ``rotation_strategy == DWO``; kept for readers of it."""
+        return self.rotation_strategy == RotationStrategy.DWO
 
 
 @dataclass
@@ -1134,6 +1196,10 @@ class Machine:
                     },
                     "tcp_supported": self.kinematics.tcp_supported,
                     "dwo_supported": self.kinematics.dwo_supported,
+                    "rotation_strategy": self.kinematics.rotation_strategy.value,
+                    "plane_command": self.kinematics.plane_command.value,
+                    "control_positions_rotaries": self.kinematics.control_positions_rotaries,
+                    "index_retract_z": self.kinematics.index_retract_z,
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
@@ -1575,7 +1641,19 @@ class Machine:
                 "orientation_quaternion", [0, 0, 0, 1]
             )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
-            config.kinematics.dwo_supported = kinematics_data.get("dwo_supported", False)
+            # A file from before rotation_strategy existed said only whether
+            # DWO was supported; that flag still selects the strategy.
+            strategy = kinematics_data.get("rotation_strategy")
+            if strategy is None:
+                strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
+            config.kinematics.rotation_strategy = RotationStrategy(strategy)
+            config.kinematics.plane_command = PlaneCommand(
+                kinematics_data.get("plane_command", PlaneCommand.G68_2.value)
+            )
+            config.kinematics.control_positions_rotaries = kinematics_data.get(
+                "control_positions_rotaries", True
+            )
+            config.kinematics.index_retract_z = float(kinematics_data.get("index_retract_z", 0.0))
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility
