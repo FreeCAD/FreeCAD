@@ -64,10 +64,12 @@ class TestSelectionVisual(unittest.TestCase):
         Selection.addSelection(plane)
         self._flush_gui()
         selection_color = self._center_pixel_color()
+        selection_image = self.viewer.grabFramebuffer().copy()
 
         Selection.setPreselection(plane, "Face1")
         self._flush_gui()
         preselection_color = self._center_pixel_color()
+        preselection_image = self.viewer.grabFramebuffer().copy()
 
         self.assertGreater(
             self._color_distance(base_color, selection_color),
@@ -82,7 +84,8 @@ class TestSelectionVisual(unittest.TestCase):
             self._COLOR_DELTA_MIN,
             msg=(
                 "Preselection did not visibly override the selection overlay. "
-                f"selection={selection_color}, preselection={preselection_color}"
+                f"selection={selection_color}, preselection={preselection_color}, "
+                f"changed_pixels={len(self._changed_face_pixels(selection_image, preselection_image))}"
             ),
         )
 
@@ -158,12 +161,33 @@ class TestSelectionVisual(unittest.TestCase):
         with suppress(Exception):
             self.viewer.setEnabledNaviCube(enabled)
 
-    def _flush_gui(self):
+    def _flush_gui(self, view=None):
+        view = view or self.view
         for _ in range(4):
             FreeCADGui.updateGui()
             QtWidgets.QApplication.processEvents()
-            self.view.redraw()
+            view.redraw()
             time.sleep(0.05)
+
+    @staticmethod
+    def _changed_face_pixels(baseline, current):
+        width = min(baseline.width(), current.width())
+        height = min(baseline.height(), current.height())
+        changed = set()
+        for y in range(height):
+            for x in range(width):
+                before = baseline.pixelColor(x, y)
+                after = current.pixelColor(x, y)
+                if (
+                    max(
+                        abs(before.red() - after.red()),
+                        abs(before.green() - after.green()),
+                        abs(before.blue() - after.blue()),
+                    )
+                    > 40
+                ):
+                    changed.add((x, y))
+        return changed
 
     def _center_pixel_color(self):
         image = self.viewer.grabFramebuffer()
