@@ -49,7 +49,7 @@
 #include <string_view>
 
 
-#include <Build/Version.h>
+#include <Base/Version.h>
 #include <FCConfig.h>
 
 #if HAVE_CONFIG_H
@@ -399,15 +399,12 @@ void Writer::prewarm()
 
 void Writer::install(const std::string& crashReportDirectory)
 {
-    header.freecadVersionMajor = extractVersionComponent(FCVersionMajor);
-    header.freecadVersionMinor = extractVersionComponent(FCVersionMinor);
-    header.freecadVersionPatch = extractVersionComponent(FCVersionPoint);
-    header.freecadVersionSuffixStringOffset = addToStringTable(FCVersionSuffix);
-#ifdef FCRepositoryHash
-    header.buildIDStringOffset = addToStringTable(FCRepositoryHash);
-#else
-    header.buildIDStringOffset = addToStringTable(FCRevision);
-#endif
+    header.freecadVersionMajor = extractVersionComponent(FCVersionInfo::VersionMajor());
+    header.freecadVersionMinor = extractVersionComponent(FCVersionInfo::VersionMinor());
+    header.freecadVersionPatch = extractVersionComponent(FCVersionInfo::VersionPoint());
+    header.freecadVersionSuffixStringOffset = addToStringTable(FCVersionInfo::VersionSuffix());
+    const std::string hash = FCVersionInfo::RepositoryHash();
+    header.buildIDStringOffset = addToStringTable(!hash.empty() ? hash : FCVersionInfo::Revision());
 #ifdef FC_CRASHREPORTER_WINDOWS
     header.processID = GetCurrentProcessId();
 #else

@@ -7,7 +7,7 @@
 #include <Base/CrashReporter/Reader.h>
 #include <Base/CrashReporter/Writer.h>
 #include <Base/CrashReporter/Manager.h>
-#include <Build/Version.h>
+#include <Base/Version.h>
 #include <src/TempDirectory.h>
 
 #include <algorithm>
@@ -96,11 +96,8 @@ std::vector<char> CrashReporterTests::createGoodCrashReport()
     header.architectureID = Base::CrashReporter::Architecture::x64;
 
     std::vector<char> stringTable;
-#ifdef FCRepositoryHash
-    header.buildIDStringOffset = addStringToTable(stringTable, FCRepositoryHash);
-#else
-    header.buildIDStringOffset = addStringToTable(stringTable, "R43210");
-#endif
+    const std::string hash = Base::FCVersionInfo::RepositoryHash();
+    header.buildIDStringOffset = addStringToTable(stringTable, !hash.empty() ? hash : "R43210");
     header.exceptionMessageStringOffset = addStringToTable(stringTable, "A bad thing happened");
     header.freecadVersionSuffixStringOffset = addStringToTable(stringTable, "dev");
     header.minidumpPathStringOffset = Base::CrashReporter::NoString;
@@ -244,11 +241,8 @@ TEST_F(CrashReporterTests, parseGoodCrashReportLoads)  // NOLINT
     EXPECT_EQ(report.osID, Base::CrashReporter::OS::Windows);
     EXPECT_EQ(report.architectureID, Base::CrashReporter::Architecture::x64);
     EXPECT_FALSE(report.partialWrite);
-#ifdef FCRepositoryHash
-    EXPECT_EQ(report.buildID, std::string(FCRepositoryHash));
-#else
-    EXPECT_EQ(report.buildID, "R43210");
-#endif
+    const std::string hash = Base::FCVersionInfo::RepositoryHash();
+    EXPECT_EQ(report.buildID, !hash.empty() ? hash : "R43210");
     EXPECT_EQ(report.exceptionMessage, "A bad thing happened");
     EXPECT_TRUE(report.minidumpPath.empty());  // NoString -> empty
     ASSERT_EQ(report.stackFrames.size(), 4U);
@@ -382,8 +376,8 @@ TEST_F(CrashReporterTests, matchingHashAttemptsSymbolication)  // NOLINT
         ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
     }
 
-#if defined(FCRepositoryHash) && defined(FC_HAVE_CPPTRACE)
-    constexpr bool expectedResult = true;
+#if defined(FC_HAVE_CPPTRACE)
+    const bool expectedResult = !std::string(Base::FCVersionInfo::RepositoryHash()).empty();
 #else
     constexpr bool expectedResult = false;
 #endif
