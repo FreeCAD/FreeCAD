@@ -44,7 +44,13 @@ class GCodeEditorDialog(QtGui.QDialog):
 
     def __init__(self, PathObj, parent=None, readOnly=True, raw=None, toolVisibility=None):
         self.pathObj = PathObj
+        # The placed path, in job coordinates: what the tool position in the
+        # 3D view and the formatted listing use. The stored path is kept
+        # separately for Raw, which shows the commands exactly as the
+        # operation wrote them - for an operation on a work plane, that is in
+        # the plane's own frame, before Placement moves it onto the part.
         self.commands = PathUtils.getPathWithPlacement(PathObj).Commands
+        self.rawCommands = list(PathObj.Path.Commands) if PathObj.Path else []
         self.tc = toolControllerForOp(PathObj)
         self.tool = getattr(self.tc, "Tool", None)
         self.toolInitVisibility = getattr(self.tool, "Visibility", False)  # keep tool visibility
@@ -110,7 +116,10 @@ class GCodeEditorDialog(QtGui.QDialog):
             self.chkRaw.setChecked(raw)
         self.chkRaw.setToolTip(
             translate(
-                "CAM_Inspect", "Raw shows original values without rounds and units conversion"
+                "CAM_Inspect",
+                "Raw shows the commands exactly as the operation stored them: no rounding, "
+                "no unit conversion, and no Placement applied. An operation on a work plane "
+                "stores its path in the plane's own frame.",
             )
         )
         bottomFrame.layout().addWidget(self.chkRaw)
@@ -227,10 +236,19 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.setToolTip(toolTipStr.strip())
 
     def toolPlacement(self):
-        """Set tool placement"""
+        """Set tool placement: at the selected line's position, along the
+        operation's tool axis.
+
+        The position comes from the placed path, so it is where the tool
+        really is on the part. The orientation is the operation's Placement
+        rotation: an operation on a tilted work plane cuts with the tool along
+        that plane's +Z, and a tool drawn vertical would stand off the face at
+        the plane's angle."""
         if self.tool is not None and self.tool.Visibility:
             line_number = self.editor.textCursor().blockNumber()
-            self.tool.Placement.Base = self.getPosition(self.commands[line_number::-1])
+            # getPosition() returns an (x, y, z) tuple
+            position = FreeCAD.Vector(*self.getPosition(self.commands[line_number::-1]))
+            self.tool.Placement = FreeCAD.Placement(position, self.pathObj.Placement.Rotation)
 
     def toolVisibility(self):
         """Update tool visibility"""
@@ -275,7 +293,17 @@ class GCodeEditorDialog(QtGui.QDialog):
             % (unitsStr, unitLength, unitLength, unitTime)
         )
         if self.chkRaw.isChecked():
-            self.editor.setPlainText(Path.Path(self.commands).toGCode())
+            if not self.pathObj.Placement.isIdentity(1e-9):
+                self.lab.setText(
+                    self.lab.text()
+                    + translate(
+                        "CAM_Inspect",
+                        "<br><b>Raw</b>: as stored, in the operation's own frame; "
+                        "Placement %s is not applied.",
+                    )
+                    % self.pathObj.Placement.Base
+                )
+            self.editor.setPlainText(Path.Path(self.rawCommands).toGCode())
             self.editor.verticalScrollBar().setValue(scrolBarValue)
             return
 
