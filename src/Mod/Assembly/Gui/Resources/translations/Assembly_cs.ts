@@ -1636,24 +1636,6 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Vyberte alespoň 2 komponenty pro vytvoření pevné skupiny</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Vytvořit pevnou skupinu</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Vytvořit pevnou skupinu.&lt;/p&gt;&lt;p&gt;Vytvoří pevnou skupinu, která trvale uzamkne vybrané komponenty dohromady.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1674,6 +1656,24 @@ Poznámka: V současnosti se zde vybírají pouze nepropojené části, ne zavaz
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Obnovit snímek</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Vyberte alespoň 2 komponenty pro vytvoření pevné skupiny</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Vytvořit pevnou skupinu</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Vytvořit pevnou skupinu.&lt;/p&gt;&lt;p&gt;Vytvoří pevnou skupinu, která trvale uzamkne vybrané komponenty dohromady.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
