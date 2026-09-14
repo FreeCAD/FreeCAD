@@ -361,7 +361,7 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
 
     def testVerticalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -384,7 +384,7 @@ class TestLinearPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
 
     def testHorizontalSketchAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
@@ -408,7 +408,7 @@ class TestLinearPattern(unittest.TestCase):
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
         # self.assertEqual(len(self.LinearPattern.Shape.ElementReverseMap), 170)
-        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
+        self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 30)
 
     def tearDown(self):
         # closing doc

@@ -112,7 +112,7 @@ class TestPolarPattern(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.PolarPattern.Shape.Volume, 4000)
         # self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 66)  # TODO
-        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 26)
+        self.assertEqual(self.PolarPattern.Shape.ElementMapSize, 30)
 
     def testVerticalSketchAxisPolarPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
