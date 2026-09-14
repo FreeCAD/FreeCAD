@@ -718,16 +718,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     const bool hasSecondaryColors = ctx2 && !ctx2->colors.empty();
     const bool hasOverlayFields = (highlightPartIndex.getNum() > 0)
         || (selectionPartIndex.getNum() > 0);
-    if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty() && !hasSecondaryColors) {
-        return;
-    }
-    if (selContext2->checkGlobal(ctx)) {
-        ctx = selContext2;
-    }
-    if (ctx && (ctx->selectionIndex.empty() && ctx->highlightIndex < 0)) {
-        ctx.reset();
-    }
-
     auto state = action->getState();
     selCounter.checkRenderCache(state);
 
@@ -745,6 +735,23 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
 
     const bool hasContextHighlight = highlightContext && highlightIndex >= 0
         && highlightIndex < partIndex.getNum();
+
+    // An empty secondary context suppresses the base face set for partial-render
+    // previews. Detailed preselection is independent transient state, so its
+    // depth-tested tint must still be rendered on Assembly/link paths carrying
+    // such a context.
+    if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty() && !hasSecondaryColors) {
+        if (hasContextHighlight) {
+            renderHighlight(action, highlightContext, highlightIndex);
+        }
+        return;
+    }
+    if (selContext2->checkGlobal(ctx)) {
+        ctx = selContext2;
+    }
+    if (ctx && (ctx->selectionIndex.empty() && ctx->highlightIndex < 0)) {
+        ctx.reset();
+    }
 
     SoMaterialBundle mb(action);
     mb.sendFirst();

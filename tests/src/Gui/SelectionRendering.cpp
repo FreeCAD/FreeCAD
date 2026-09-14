@@ -766,6 +766,28 @@ private Q_SLOTS:
         QVERIFY(secondFace.red() < 80 && secondFace.green() < 120 && secondFace.blue() > 180);
     }
 
+    void clarifyFaceTintSurvivesEmptySecondaryContext()
+    {
+        auto scene = makePartialRenderScene();
+        QVERIFY(scene.root);
+        QVERIFY(scene.facePath);
+
+        SoFaceDetail faceDetail = makeFirstFaceDetail();
+        applyPartialRenderState(scene.facePath.get(), nullptr);
+        applyClarifyHighlightState(scene.facePath.get(), &faceDetail);
+
+        const RenderResult clarified = renderWithDelayedClarifyPass(scene.root.get());
+        QVERIFY(!clarified.image.isNull());
+        QCOMPARE(clarified.delayedPathCount, 1);
+
+        const QColor highlightedFace
+            = meanColor(clarified.image, QPoint(renderWidth * 3 / 10, renderHeight / 2), 2);
+        QVERIFY2(
+            highlightedFace.red() > 200 && highlightedFace.green() < 80 && highlightedFace.blue() < 80,
+            colorMessage("highlighted face with empty secondary context", highlightedFace).constData()
+        );
+    }
+
     void clarifyFaceTintRespectsOccludingGeometry()
     {
         auto scene = makePartialRenderScene(false, true);
