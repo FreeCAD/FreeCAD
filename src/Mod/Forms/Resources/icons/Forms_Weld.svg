@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="Forms_Weld.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="12.9375"
+     inkscape:cx="28.096618"
+     inkscape:cy="43.439614"
+     inkscape:window-width="3000"
+     inkscape:window-height="1960"
+     inkscape:window-x="-12"
+     inkscape:window-y="-12"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="b"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         stop-color="#729fcf"
+         id="stop1" />
+      <stop
+         offset="1"
+         stop-color="#204a87"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#b"
+       id="linearGradient5"
+       x1="39.884602"
+       y1="5.4130182"
+       x2="78.549017"
+       y2="44.077434"
+       gradientTransform="matrix(-0.77328831,0,0,1.2931787,91.583333,0)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <path
+     d="m 6,8 h 19 l 7,12 -7,12 7,12 -7,12 H 6 V 44 32 20 Z"
+     fill="url(#b)"
+     stroke="#0b1521"
+     stroke-width="2"
+     id="path2"
+     sodipodi:nodetypes="ccccccccccc" />
+  <path
+     d="m 32.583333,8 h 26 v 12 12 12 12 h -26 l 7,-12 -7,-12 7,-12 z"
+     fill="url(#b)"
+     stroke="#0b1521"
+     stroke-width="2"
+     id="path3"
+     style="fill:url(#linearGradient5)"
+     sodipodi:nodetypes="ccccccccccc" />
+  <path
+     d="M32 14v36"
+     fill="none"
+     stroke="#8ae234"
+     stroke-width="4"
+     id="path4" />
+  <path
+     d="M14 32h12m-5-5 5 5-5 5M50 32H38m5-5-5 5 5 5"
+     fill="none"
+     stroke="#8ae234"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path5" />
+</svg>
