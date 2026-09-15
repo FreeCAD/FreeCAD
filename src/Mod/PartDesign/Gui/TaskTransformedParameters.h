@@ -82,6 +82,16 @@ public:
     /// Apply changes for python console
     virtual void apply() = 0;
 
+    /// Whether accept/reject must wait for a task-specific async preview.
+    virtual bool hasPendingAsyncAccept() const
+    {
+        return false;
+    }
+    virtual bool deferAsyncReject()
+    {
+        return false;
+    }
+
     /*!
      * \brief setEnabledTransaction
      * The transaction handling of this panel can be disabled if there is another
@@ -123,8 +133,9 @@ protected:
      */
     bool originalSelected(const Gui::SelectionChanges& msg);
 
-    /// Recompute either this feature or the parent MultiTransform feature
-    void recomputeFeature();
+    /// Recompute either this feature or the parent MultiTransform feature.
+    /// Standalone Pattern overrides this to use its existing debounce timer.
+    virtual void recomputeFeature();
 
     /// Hide the top transformed object (see getTopTransformedObject())
     void hideObject();
@@ -136,6 +147,10 @@ protected:
     void showBase();
 
     void addReferenceSelectionGate(AllowSelectionFlags);
+
+    /// Disable only the editable transformed-task controls while a worker
+    /// owns the feature. MultiTransform keeps the legacy synchronous path.
+    void setEditingEnabled(bool enabled);
 
     int getUpdateViewTimeout() const;
 

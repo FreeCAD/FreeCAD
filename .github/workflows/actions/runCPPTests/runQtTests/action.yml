@@ -30,7 +30,12 @@ runs:
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
       run: |
         set -o pipefail
-        ctest --test-dir "$BUILD_DIR" -L Qt --output-on-failure | tee -a "$TEST_LOG_FILE"
+        if [[ "${RUNNER_OS:-}" == "Linux" ]]; then
+          xvfb-run -a -s "-screen 0 1024x768x24 -nolisten tcp" \
+            ctest --test-dir "$BUILD_DIR" -L Qt --output-on-failure | tee -a "$TEST_LOG_FILE"
+        else
+          ctest --test-dir "$BUILD_DIR" -L Qt --output-on-failure | tee -a "$TEST_LOG_FILE"
+        fi
     - name: Parse test results
       if: always()
       id: report
