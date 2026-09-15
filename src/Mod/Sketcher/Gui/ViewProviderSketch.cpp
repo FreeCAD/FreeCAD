@@ -5575,6 +5575,9 @@ void ViewProviderSketch::generateContextMenu(const Gui::View3DInventorViewer* vi
                  << "Separator"
                  << "Std_Delete";
         }
+        if (selectedBlockConstraint(Gui::Application::Instance->activeDocument()) >= 0) {
+            menu << "Separator" << "Sketcher_EditBlock";
+        }
         if (isCreateBlockActive(Gui::Application::Instance->activeDocument())) {
             menu << "Separator" << "Sketcher_CreateBlock";
         }

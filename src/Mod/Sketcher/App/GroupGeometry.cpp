@@ -64,3 +64,25 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
     }
     return result;
 }
+
+std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformFixedGroupGeometry(
+    const std::vector<Part::Geometry*>& geometry,
+    const Base::Vector3d& origin,
+    double angle
+)
+{
+    if (geometry.empty() || !std::isfinite(angle)) {
+        throw Base::ValueError("Invalid block geometry or rotation");
+    }
+    Base::Matrix4D transform;
+    transform.rotZ(angle);
+    transform[0][3] = origin.x;
+    transform[1][3] = origin.y;
+    std::vector<std::unique_ptr<Part::Geometry>> result;
+    for (const auto* geo : geometry) {
+        auto copy = std::unique_ptr<Part::Geometry>(geo->copy());
+        copy->transform(transform);
+        result.push_back(std::move(copy));
+    }
+    return result;
+}

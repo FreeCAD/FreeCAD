@@ -174,9 +174,21 @@ class TestSketchBlocks(unittest.TestCase):
 
     def testLibrary(self):
         directory = Path(App.getResourceDir()) / "Mod/Sketcher/Blocks"
-        files = list(directory.glob("*.txt"))
-        self.assertEqual(len(files), 9)
-        for filename in files:
+        names = (
+            "CE",
+            "FCC",
+            "Open hardware (no text)",
+            "Open hardware",
+            "Recycling",
+            "Sign - Attention",
+            "Sign - High voltage",
+            "Tidyman",
+            "WEEE",
+        )
+        # The default folder may also contain blocks saved by the user.
+        for name in names:
+            filename = directory / (name + ".txt")
+            self.assertTrue(filename.is_file())
             with self.subTest(filename=filename.name):
                 geometry = SketcherBlock.read(filename)
                 self.assertTrue(geometry)

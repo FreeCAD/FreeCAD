@@ -269,6 +269,8 @@ public:
 
     std::string getFile() const;
     void setFile(const std::string& file);
+    double getFileAngle() const;
+    void setFileAngle(double angle);
     bool getFileHeight() const;
     void setFileHeight(bool height);
 

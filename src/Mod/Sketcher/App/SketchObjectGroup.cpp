@@ -19,10 +19,11 @@ int Sketcher::SketchObject::replaceGroupGeometry(
     const auto* group = constraints[constraintId];
     const int handle = group->getGeoId(0);
     const auto* line = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(handle));
+    const auto* point = dynamic_cast<const Part::GeomPoint*>(getGeometry(handle));
     const auto& geometry = getInternalGeometry();
     auto removed = getGroupGeometries(handle);
     removed.erase(GeoEnum::GeoUndef);
-    if (!line || handle < 0 || removed.empty()) {
+    if ((!line && !point) || handle < 0 || removed.empty()) {
         throw Base::ValueError("Invalid group handle or members");
     }
     for (int member : removed) {
@@ -31,12 +32,14 @@ int Sketcher::SketchObject::replaceGroupGeometry(
             throw Base::ValueError("Invalid group member");
         }
     }
-    auto replacements = transformGroupGeometry(
-        source,
-        line->getStartPoint(),
-        line->getEndPoint(),
-        group->getFileHeight()
-    );
+    auto replacements = point
+        ? transformFixedGroupGeometry(source, point->getPoint(), group->getFileAngle())
+        : transformGroupGeometry(
+              source,
+              line->getStartPoint(),
+              line->getEndPoint(),
+              group->getFileHeight()
+          );
 
     // Retain every geometry outside this group, including its handle. Constraint tags
     // are cloned so named dimensions and expressions follow any changed indices.

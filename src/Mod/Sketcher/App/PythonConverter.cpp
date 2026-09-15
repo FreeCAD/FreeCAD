@@ -598,9 +598,12 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
 
             if (constraint->Type == Sketcher::Group) {
                 res = "Group', " + list;
-                if (!constraint->getFile().empty() || !constraint->isActive) {
+                if (!constraint->getFile().empty() || !constraint->isActive
+                    || constraint->getFileAngle() != 0.0) {
                     res += ", \"" + Base::Tools::escapeEncodeString(constraint->getFile()) + "\", "
-                        + (constraint->getFileHeight() ? "True" : "False");
+                        + (constraint->getFileHeight() ? "True" : "False")
+                        + (constraint->isActive ? ", True, " : ", False, ")
+                        + boost::str(boost::format("%.17g") % constraint->getFileAngle());
                 }
             }
             else {
@@ -632,7 +635,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
     }
 
     // Append active/driving flags
-    if (!constraint->isActive || !constraint->isDriving) {
+    if (constraint->Type != Sketcher::Group && (!constraint->isActive || !constraint->isDriving)) {
         res += constraint->isActive ? ", True" : ", False";
         if (constraint->isDimensional()) {
             res += constraint->isDriving ? ", True" : ", False";
