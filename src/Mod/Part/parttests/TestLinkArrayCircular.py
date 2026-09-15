@@ -42,6 +42,24 @@ class TestLinkArrayCircular(unittest.TestCase):
     def tearDown(self):
         App.closeDocument(self.doc.Name)
 
+    def testSuppressionProtectsGeneratedElements(self):
+        source = self.doc.addObject("Part::Box", "SuppressionSource")
+        for kind in ("Polar", "Circular", "Path", "Point"):
+            with self.subTest(kind=kind):
+                array = self.doc.addObject("Part::LinkArray" + kind, "SuppressionArray")
+                array.LinkedObject = source
+                if kind in ("Path", "Point"):
+                    path = self.doc.addObject("Part::Feature", "SuppressionPath")
+                    path.Shape = Part.makePolygon([App.Vector(), App.Vector(20, 0, 0)])
+                    setattr(array, "Path" if kind == "Path" else "PointObject", path)
+                self.doc.recompute()
+                array.ElementList[1].Suppressed = True
+                self.doc.recompute()
+                with self.assertRaises(AttributeError):
+                    array.ShowElement = False
+                self.assertTrue(array.ShowElement)
+                self.assertTrue(array.ElementList[1].Suppressed)
+
     def testExcessiveOccurrenceCountIsRejected(self):
         self.array.NumberCircles = 2
         self.array.RadialDistance = 1000000
