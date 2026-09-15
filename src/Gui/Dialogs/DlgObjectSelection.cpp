@@ -294,6 +294,37 @@ void DlgObjectSelection::updateAllItemState()
     }
 }
 
+void DlgObjectSelection::updateDepSplitter()
+{
+    bool hasDep = ui->depList->topLevelItemCount() > 0;
+    bool hasIn = ui->inList->topLevelItemCount() > 0;
+
+    auto depSizes = ui->splitter->sizes();
+    int total = depSizes[0] + depSizes[1];
+
+    if (hasDep && !hasIn) {
+        depSizes[0] = total;
+        depSizes[1] = 0;
+    }
+    else if (!hasDep && hasIn) {
+        depSizes[0] = 0;
+        depSizes[1] = total;
+    }
+    else if (hasDep && hasIn && (depSizes[0] == 0 || depSizes[1] == 0)) {
+        depSizes[0] = depSizes[1] = total / 2;
+    }
+    // both lists empty - currently show empty lists while dependency checkbox selected
+    else if (!hasDep && !hasIn) {
+        depSizes[0] = depSizes[1] = total / 2;
+    }
+    else {
+        // implicit case where both have content and user has manually
+        // resized, nothing to do
+        return;
+    }
+    ui->splitter->setSizes(depSizes);
+}
+
 void DlgObjectSelection::setItemState(App::DocumentObject* obj, Qt::CheckState state, bool forced)
 {
     std::vector<QTreeWidgetItem*>* items = nullptr;
@@ -719,6 +750,7 @@ void DlgObjectSelection::onItemSelectionChanged()
     if (enabled2) {
         ui->inList->setSortingEnabled(true);
     }
+    updateDepSplitter();
 }
 
 void DlgObjectSelection::onUseOriginalsBtnClicked()
