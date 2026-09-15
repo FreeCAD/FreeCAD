@@ -428,6 +428,8 @@ private Q_SLOTS:
     void clearStatus();
 
 Q_SIGNALS:
+    /// GUI initialization is complete; command-line files have not yet been processed.
+    void guiInitialized();
     void timeEvent();
     void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);

@@ -238,6 +238,7 @@ void StartupPostProcess::execute()
     activateWorkbench();
     checkParameters();
     checkVersionMigration();
+    Q_EMIT mainWindow->guiInitialized();
 }
 
 void StartupPostProcess::setWindowTitle()
