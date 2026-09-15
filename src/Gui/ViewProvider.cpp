@@ -28,6 +28,7 @@
 #include <QTimer>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
@@ -59,6 +60,7 @@
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
 #include "ViewProviderExtension.h"
+#include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
 #include "ViewProviderPy.h"
 
@@ -519,6 +521,73 @@ void ViewProvider::show()
 bool ViewProvider::isShow() const
 {
     return pcModeSwitch->whichChild.getValue() != -1;
+}
+
+bool ViewProvider::isVisibleInScene() const
+{
+    if (!isShow()) {
+        return false;
+    }
+
+    const auto* viewer = getActiveViewer();
+    if (!viewer) {
+        return true;
+    }
+
+    SoSearchAction search;
+    search.setNode(getRoot());
+    search.setInterest(SoSearchAction::ALL);
+    search.apply(viewer->getSceneGraph());
+
+    const SoPathList& paths = search.getPaths();
+    for (int pathIndex = 0; pathIndex < paths.getLength(); ++pathIndex) {
+        const auto* path = paths[pathIndex];
+        bool visible = true;
+        for (int i = 0; i + 1 < path->getLength(); ++i) {
+            auto* switchNode = dynamic_cast<SoSwitch*>(path->getNode(i));
+            if (!switchNode) {
+                continue;
+            }
+
+            const int whichChild = switchNode->whichChild.getValue();
+            if (whichChild == SO_SWITCH_NONE
+                || (whichChild >= 0 && whichChild != path->getIndex(i + 1))) {
+                visible = false;
+                break;
+            }
+        }
+        if (visible) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void ViewProvider::setSceneVisible(bool visible)
+{
+    if (visible) {
+        setModeSwitch();
+    }
+    else {
+        pcModeSwitch->whichChild = SO_SWITCH_NONE;
+        for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
+            ext->extensionModeSwitchChange();
+        }
+    }
+}
+
+int ViewProvider::getSceneVisibilityState() const
+{
+    return pcModeSwitch->whichChild.getValue();
+}
+
+void ViewProvider::setSceneVisibilityState(int state)
+{
+    pcModeSwitch->whichChild = state;
+    for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
+        ext->extensionModeSwitchChange();
+    }
 }
 
 void ViewProvider::setVisible(bool s)
@@ -1136,6 +1205,14 @@ void ViewProvider::setRenderCacheMode(int mode)
 
 void ViewProvider::toggleVisibility()
 {
+    if (auto* viewProvider = freecad_cast<ViewProviderDocumentObject*>(this)) {
+        if (auto* document = viewProvider->getDocumentIfAttached()) {
+            if (document->toggleVisibleSpaceVisibility(viewProvider)) {
+                return;
+            }
+        }
+    }
+
     if (isShow()) {
         hide();
     }
