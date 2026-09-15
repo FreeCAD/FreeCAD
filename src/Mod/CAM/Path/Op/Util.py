@@ -380,23 +380,19 @@ def cAreaToWires(carea, z=0.0, tolerance=0.01):
 
                 radius = (p0 - center).Length
 
-                # Create axis direction: CCW uses +Z, CW uses -Z
-                axis = FreeCAD.Vector(0, 0, 1 if v1.type == 1 else -1)
-
-                # Calculate angles for the arc
-                angle0 = math.atan2(p0.y - center.y, p0.x - center.x)
-                angle1 = math.atan2(p1.y - center.y, p1.x - center.x)
-
-                # Adjust angle1 to agree with arc direction
-                if v1.type == 1:  # CCW: want angle1 > angle0
-                    while angle1 <= angle0:
-                        angle1 += 2 * math.pi
-                else:  # CW: want angle1 < angle0
-                    while angle1 >= angle0:
-                        angle1 -= 2 * math.pi
-
-                # Create circle with center, axis, and radius, then extract arc
+                # Create the circle. For axis direction, CCW is +Z and CW is -Z, matching type
+                axis = FreeCAD.Vector(0, 0, v1.type)
                 circle = Part.Circle(center, axis, radius)
+
+                # Compute start/end angles in the circle's parameterization, and create the arc
+                xdir = circle.XAxis
+                ydir = circle.YAxis
+                d0 = p0 - center
+                d1 = p1 - center
+                angle0 = math.atan2(d0.dot(ydir), d0.dot(xdir))
+                angle1 = math.atan2(d1.dot(ydir), d1.dot(xdir))
+                if angle1 == angle0:
+                    angle1 += 2 * math.pi
                 edge = Part.ArcOfCircle(circle, angle0, angle1).toShape()
 
                 # Set tolerance on arc vertices
