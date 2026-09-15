@@ -15,6 +15,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QGroupBox" name="descriptionGroup">
+     <property name="toolTip">
+      <string>Description is shown in the tooltip when selecting a template during job creation</string>
+     </property>
+     <property name="title">
+      <string>Description</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_description">
+      <item>
+       <widget class="QPlainTextEdit" name="templateDescriptionEdit">
+        <property name="placeholderText">
+         <string>Optional. e.g. &quot;Metric defaults for 3-axis router with 600x900 work area&quot;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="postProcessingGroup">
      <property name="toolTip">
       <string>If enabled, include all post processing settings in the template</string>

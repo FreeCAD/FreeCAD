@@ -890,7 +890,7 @@ NotificationArea::NotificationArea(QWidget* parent)
     : QPushButton(parent)
 {
     // QPushButton appearance
-    setText(QString());
+    setText(QString::number(0));
     setFlat(true);
 
     // Initialisation of pImpl structure

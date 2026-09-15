@@ -51,8 +51,6 @@ else:
 #
 Values = Dict[str, Any]
 
-POST_TYPE = "machine"
-
 
 class Masso_G3(PostProcessor):
     """The Masso G3 post processor class."""

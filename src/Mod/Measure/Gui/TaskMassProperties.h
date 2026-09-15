@@ -24,6 +24,7 @@
 #include <QDialogButtonBox>
 #include <QEvent>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -57,7 +58,7 @@ public:
     bool accept() override;
     bool reject() override;
 
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void update(const Gui::SelectionChanges& msg);
     void tryUpdate();
 
@@ -88,6 +89,7 @@ private:
 
     Base::Placement currentDatumPlacement;
     bool hasCurrentDatumPlacement = false;
+    std::optional<MassPropertiesAxisReference> currentAxisReference;
 
     Gui::Action* deleteAction = nullptr;
     bool deleteActivated = false;

@@ -132,20 +132,6 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     palette.setColor(QPalette::Text, QColor(0, 0, 0));
     ui->cells->setPalette(palette);
 
-    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_BackgroundColor")
-    );
-    if (!bgList.empty()) {
-        bgList[0]->setCurrentColor(palette.color(QPalette::Base));
-    }
-
-    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-        QStringLiteral("Spreadsheet_ForegroundColor")
-    );
-    if (!fgList.empty()) {
-        fgList[0]->setCurrentColor(palette.color(QPalette::Text));
-    }
-
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
     ui->cellAlias->setDocumentObject(sheet);
@@ -297,7 +283,7 @@ void SheetView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);

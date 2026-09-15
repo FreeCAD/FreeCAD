@@ -219,14 +219,6 @@ ViewProviderPartExt::ViewProviderPartExt()
         "Defines the style of the edges in the 3D view."
     );
     DrawStyle.setEnums(DrawStyleEnums);
-    ADD_PROPERTY_TYPE(
-        ShowPlacement,
-        (false),
-        "Display Options",
-        App::Prop_None,
-        "If true, placement of object is additionally rendered."
-    );
-
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
@@ -442,11 +434,6 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             pcLineStyle->linePattern = 0xff88;
         }
     }
-    else if (prop == &ShowPlacement) {
-        pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue())
-            ? SO_SWITCH_ALL
-            : SO_SWITCH_NONE;
-    }
     else {
         // if the object was invisible and has been changed, recreate the visual
         if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
@@ -592,8 +579,17 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
         }
         else if (detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
-            int edge = line_detail->getLineIndex() + 1;
-            str << "Edge" << edge;
+            // The line index is NOT the edge index: the line set omits edges that
+            // produced no polyline, which shifts every later line index down.
+            // SoBrepEdgeSet stores the topological edge in partIndex; fall back to
+            // translating the line index for details built elsewhere.
+            int edge = line_detail->getPartIndex();
+            if (edge < 1 && lineset) {
+                edge = lineset->edgeIndexFromLine(line_detail->getLineIndex());
+            }
+            if (edge >= 1) {
+                str << "Edge" << edge;
+            }
         }
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
@@ -619,8 +615,16 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         return detail;
     }
     else if (element == "Edge") {
+        // Inverse of the mapping used in getElement(). An edge that produced no
+        // polyline has nothing to highlight, so report no detail rather than
+        // guessing a line index that belongs to a different edge.
+        const int line = lineset ? lineset->lineIndexFromEdge(index) : index - 1;
+        if (line == SoBrepEdgeSet::InvalidLine) {
+            return nullptr;
+        }
         SoLineDetail* detail = new SoLineDetail();
-        detail->setLineIndex(index - 1);
+        detail->setLineIndex(line);
+        detail->setPartIndex(index);
         return detail;
     }
     else if (element == "Vertex") {
@@ -1062,6 +1066,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         faceset->coordIndex.setNum(0);
         faceset->partIndex.setNum(0);
         lineset->coordIndex.setNum(0);
+        lineset->setEdgeMapping({});
         nodeset->startIndex.setValue(0);
         return;
     }
@@ -1145,6 +1150,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     // the edges.
     std::map<int, std::vector<int32_t>> lineSetMap;
     std::set<int> edgeIdxSet;
+    std::set<int> edgeFailed;
     std::vector<int32_t> edgeVector;
 
     // count and index the edges
@@ -1321,6 +1327,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                 Handle(Poly_PolygonOnTriangulation)
                     aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                 if (aPoly.IsNull()) {
+                    edgeFailed.insert(edgeIndex);
                     continue;  // polygon does not exist
                 }
 
@@ -1395,12 +1402,14 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
     }
 
+    std::map<int, int> coordsMap;
     nodeset->startIndex.setValue(faceNodeOffset);
     for (int i = 0; i < vertexMap.Extent(); i++) {
         const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i + 1));
         gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
 
         verts[faceNodeOffset + i] = Base::convertTo<SbVec3f>(pnt);
+        coordsMap[i + 1] = faceNodeOffset + i;
     }
 
     // normalize all normals
@@ -1408,11 +1417,45 @@ void ViewProviderPartExt::setupCoinGeometry(
         norms[i].normalize();
     }
 
+    // If no adjacent face has a polygon for an edge, use its endpoint coordinates so that
+    // the edge still has a line entry. Fall back to a zero-length line to preserve the edge
+    // numbering when no usable polygon is available.
+    for (int edgeIndex : edgeFailed) {
+        if (lineSetMap.find(edgeIndex) != lineSetMap.end()) {
+            continue;
+        }
+
+        int indexedPnt1 = faceNodeOffset;
+        int indexedPnt2 = faceNodeOffset;
+        TopoDS_Edge edge = TopoDS::Edge(edgeMap.FindKey(edgeIndex));
+        Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(edge, aLoc);
+        if (!aPoly.IsNull() && aPoly->NbNodes() == 2) {
+            const int v1 = vertexMap.FindIndex(TopExp::FirstVertex(edge));
+            const int v2 = vertexMap.FindIndex(TopExp::LastVertex(edge));
+            const auto it = coordsMap.find(v1);
+            const auto jt = coordsMap.find(v2);
+            if (it != coordsMap.end() && jt != coordsMap.end()) {
+                indexedPnt1 = it->second;
+                indexedPnt2 = jt->second;
+            }
+        }
+
+        lineSetMap[edgeIndex].push_back(indexedPnt1);
+        lineSetMap[edgeIndex].push_back(indexedPnt2);
+    }
+
+    // lineSetMap may omit edges that produced no usable polyline. The emitted polyline order
+    // can therefore have gaps with respect to the topological edge numbering, so record the
+    // real edge index of each polyline rather than inferring it from the line index later.
     std::vector<int32_t> lineSetCoords;
+    std::vector<int> lineToEdge;
+    lineToEdge.reserve(lineSetMap.size());
     for (const auto& it : lineSetMap) {
         lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
         lineSetCoords.push_back(-1);
+        lineToEdge.push_back(it.first);
     }
+    lineset->setEdgeMapping(std::move(lineToEdge));
 
     // preset the index vector size
     numLines = lineSetCoords.size();
@@ -1473,6 +1516,15 @@ void ViewProviderPartExt::updateVisual()
     TopoDS_Shape shape = getRenderedShape().getShape();
 
     if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
+        // shape unchanged so do not rebuild geometry
+        // but still re-apply materials in case colors changed
+        Gui::SoHighlightElementAction haction;
+        haction.apply(this->faceset);
+        haction.apply(this->lineset);
+        haction.apply(this->nodeset);
+        setHighlightedFaces(ShapeAppearance.getValues());
+        setHighlightedEdges(LineColorArray.getValues());
+        setHighlightedPoints(PointColorArray.getValue());
         return;
     }
 
@@ -1546,7 +1598,7 @@ void ViewProviderPartExt::handleChangedPropertyName(
 )
 {
     if (strcmp(PropName, "DiffuseColor") == 0
-        && strcmp(TypeName, App::PropertyColorList::getClassTypeId().getName()) == 0) {
+        && TypeName == App::PropertyColorList::getClassTypeId().getName()) {
 
         // PropertyColorLists are loaded asynchronously as they're stored in separate files
         _diffuseColor.Restore(reader);

@@ -26,9 +26,6 @@
      <property name="toolTip">
       <string>Start depth of the operation. The highest point in Z-axis the operation needs to process.</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
      <property name="minimum">
       <double>-999999999.000000000000000</double>
      </property>
@@ -62,9 +59,6 @@
     <widget class="Gui::QuantitySpinBox" name="maxDiameter">
      <property name="toolTip">
       <string>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="minimum">
       <double>-999999999.000000000000000</double>
@@ -101,7 +95,7 @@
      </property>
     </spacer>
    </item>
-  <item row="3" column="0" colspan="3">
+   <item row="3" column="0" colspan="3">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -114,7 +108,7 @@
      </property>
     </spacer>
    </item>
-   </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

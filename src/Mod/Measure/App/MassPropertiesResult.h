@@ -56,11 +56,17 @@ struct MeasureExport MassPropertiesData
     Base::Vector3d inertiaJCross {0.0, 0.0, 0.0};
     Base::Vector3d inertiaJ {0.0, 0.0, 0.0};
 
-    Base::Vector3d principalAxisX {0.0, 0.0, 0.0};
-    Base::Vector3d principalAxisY {0.0, 0.0, 0.0};
-    Base::Vector3d principalAxisZ {0.0, 0.0, 0.0};
+    Base::Vector3d principalAxis1 {0.0, 0.0, 0.0};
+    Base::Vector3d principalAxis2 {0.0, 0.0, 0.0};
+    Base::Vector3d principalAxis3 {0.0, 0.0, 0.0};
 
-    double axisInertia;
+    double axisInertia = 0.0;
+};
+
+struct MeasureExport MassPropertiesAxisReference
+{
+    Base::Vector3d origin {0.0, 0.0, 0.0};
+    Base::Vector3d direction {0.0, 0.0, 0.0};
 };
 
 struct MeasureExport MassPropertiesInput
@@ -80,5 +86,6 @@ MeasureExport MassPropertiesData CalculateMassProperties(
     const std::vector<MassPropertiesInput>& objects,
     MassPropertiesMode mode,
     App::DocumentObject const* referenceDatum,
-    const Base::Placement* referencePlacement = nullptr
+    const Base::Placement* referencePlacement = nullptr,
+    const MassPropertiesAxisReference* referenceAxis = nullptr
 );

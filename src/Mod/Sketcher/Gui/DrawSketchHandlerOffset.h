@@ -43,6 +43,7 @@
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
 #include <gp_Pln.hxx>
 
 #include <Base/Exception.h>
@@ -59,7 +60,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
@@ -67,8 +67,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerOffset;
 
@@ -707,9 +705,9 @@ private:
                                         << getHighestCurveIndex() + newCurveCounter << ", "
                                         << curve[j] << "))\n";
                                     newLinesStream
-                                        << "conList2.append(Sketcher.Constraint('PointOnObject',"
+                                        << "conList2.append(Sketcher.Constraint('Coincident',"
                                         << getHighestCurveIndex() + newCurveCounter << ",1, "
-                                        << curve[j] << "))\n";
+                                        << curve[j] << ",1))\n";
                                     newLinesStream
                                         << "conList2.append(Sketcher.Constraint('PointOnObject',"
                                         << getHighestCurveIndex() + newCurveCounter << ",2, "

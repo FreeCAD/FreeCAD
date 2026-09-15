@@ -38,7 +38,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Define mesh element size based on distance to chosen reference geometries.</string>
+      <string>Define mesh element size based on the distance to the chosen reference geometries.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -65,7 +65,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Mesh size when distance &lt; DistanceMinimum</string>
+        <string>Mesh size when distance = DistanceMaximum</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -175,7 +175,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Mesh size when distance = DistanceMaximum</string>
+        <string>Mesh size when distance &lt; DistanceMinimum</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -301,7 +301,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Number of sampling points used to discretize curves and surfaces. For surface it is the sampling size per direction.</string>
+         <string>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</string>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>

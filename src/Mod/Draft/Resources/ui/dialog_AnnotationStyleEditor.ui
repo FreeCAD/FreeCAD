@@ -248,12 +248,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::InputField" name="FontSize">
+           <widget class="Gui::QuantitySpinBox" name="FontSize">
             <property name="toolTip">
              <string>The font size in system units</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -416,12 +416,12 @@
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="Gui::InputField" name="ArrowSizeStart">
+           <widget class="Gui::QuantitySpinBox" name="ArrowSizeStart">
             <property name="toolTip">
              <string>The size of the starting arrows or markers in system units</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -495,12 +495,12 @@
            </widget>
           </item>
           <item row="6" column="1">
-           <widget class="Gui::InputField" name="ArrowSizeEnd">
+           <widget class="Gui::QuantitySpinBox" name="ArrowSizeEnd">
             <property name="toolTip">
              <string>The size of the ending arrows or markers in system units</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -607,12 +607,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="Gui::InputField" name="DimOvershoot">
+           <widget class="Gui::QuantitySpinBox" name="DimOvershoot">
             <property name="toolTip">
              <string>The distance the dimension line is additionally extended</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -627,12 +627,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::InputField" name="ExtLines">
+           <widget class="Gui::QuantitySpinBox" name="ExtLines">
             <property name="toolTip">
              <string>The length of the extension lines</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -647,12 +647,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="Gui::InputField" name="ExtOvershoot">
+           <widget class="Gui::QuantitySpinBox" name="ExtOvershoot">
             <property name="toolTip">
              <string>The distance the extension lines are additionally extended beyond the dimension line</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -667,12 +667,12 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="Gui::InputField" name="TextSpacing">
+           <widget class="Gui::QuantitySpinBox" name="TextSpacing">
             <property name="toolTip">
              <string>The distance between the dimension text and the dimension line</string>
             </property>
             <property name="unit" stdset="0">
-             <string notr="true"/>
+             <string notr="true">mm</string>
             </property>
            </widget>
           </item>
@@ -697,9 +697,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
    <class>Gui::ColorButton</class>

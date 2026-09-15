@@ -23,7 +23,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Global refinement preview settings:</string>
+      <string>Global refinement preview settings</string>
      </property>
     </widget>
    </item>

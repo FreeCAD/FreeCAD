@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
@@ -1658,7 +1660,10 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1706,7 +1711,10 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1959,7 +1967,7 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Horizontal Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_HorizontalExtentDimension";
@@ -1998,7 +2006,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("No view of a part in selection."));
         cmd->abortCommand();
         return;
@@ -2014,7 +2022,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         for (auto& ref : references2d) {
             if (!ref.getSubName().empty()) {
                 QMessageBox::warning(Gui::getMainWindow(),
-                    QObject::tr("Incorrect selection"),
+                    QObject::tr("Incorrect Selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
                 cmd->abortCommand();
                 return;
@@ -2084,7 +2092,7 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Vertical Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_VerticalExtentDimension";
@@ -2136,7 +2144,7 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
     TechDraw::DrawViewDimension* dim = nullptr;
     if (dimObjs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("There is no dimension in your selection"));
         return;
     } else {
@@ -2188,7 +2196,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Incorrect selection"),
+            QObject::tr("Incorrect Selection"),
             QObject::tr("No view of a part in selection."));
         return;
     }
@@ -2203,7 +2211,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Incorrect selection"),
+            QObject::tr("Incorrect Selection"),
             QObject::tr("Cannot make 2D dimension from selection"));
         return;
     }
@@ -2331,6 +2339,17 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
     dim->setReferences2d(references2d);
     dim->setReferences3d(references3d);
 
+    if (auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim))) {
+        if (dimType == "Diameter") {
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
+                vp->StandardAndStyle.setValue(ViewProviderDimension::STD_STYLE_ASME_REFERENCING);
+            }
+            if (vp->StandardAndStyle.getValue() == ViewProviderDimension::STD_STYLE_ASME_REFERENCING) {
+                vp->RenderingExtent.setValue(ViewProviderDimension::REND_EXTENT_REDUCED);
+            }
+        }
+    }
+
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.activeDocument().%s.addView(App.activeDocument().%s)",
                             PageName.c_str(),
@@ -2361,7 +2380,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Select an object first"));
         return false;
     }
@@ -2369,7 +2388,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() > maxObjs) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Too many objects selected"));
         return false;
     }
@@ -2378,7 +2397,7 @@ bool _checkSelection(Gui::Command* cmd, unsigned maxObjs)
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Create a page first."));
         return false;
     }

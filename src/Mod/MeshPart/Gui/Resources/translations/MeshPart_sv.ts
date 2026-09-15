@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Trim with plane</source>
-      <translation>Trimma med hyvel</translation>
+      <translation>Trimma med plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation>Styrande flygplan</translation>
+      <translation>Styrande plan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -383,11 +383,6 @@ Det minsta värdet är 0.</translation>
       <translation>Använd Netgen-meshern</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finhet:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Väldigt grov</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 Ett värde i intervallet 0,1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finhet</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,7 +490,7 @@ Ett värde i intervallet 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Inget aktivt dokument</translation>
     </message>
     <message>

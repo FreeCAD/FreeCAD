@@ -45,8 +45,7 @@ class BIM_TDPage:
         }
 
     def IsActive(self):
-        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-        return v
+        return FreeCADGui.ActiveDocument is not None
 
     def Activated(self):
         from PySide import QtGui

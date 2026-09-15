@@ -105,7 +105,7 @@ def getPreferences():
         "FITVIEW_ONIMPORT": params.get_param_arch("ifcFitViewOnImport"),
         "ALLOW_INVALID": params.get_param_arch("ifcAllowInvalid"),
         "REPLACE_PROJECT": params.get_param_arch("ifcReplaceProject"),
-        "MULTICORE": params.get_param_arch("ifcMulticore"),
+        "MULTICORE": max(1, params.get_param_arch("ifcMulticore")),
         "IMPORT_LAYER": params.get_param_arch("ifcImportLayer"),
     }
 

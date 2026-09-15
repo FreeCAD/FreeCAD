@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, sequence_protocol
 from Base.Vector import Vector
+from Point import Point
 from TopoShape import TopoShape
-from typing import Final
+from typing import Final, overload
 
 @export(
     Twin="TopoShape",
@@ -13,6 +14,20 @@ from typing import Final
     FatherInclude="Mod/Part/App/TopoShapePy.h",
     Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
+    RichCompare=True,
+    Hash=True,
+)
+@sequence_protocol(
+    sq_length=True,
+    sq_concat=False,
+    sq_repeat=False,
+    sq_item=True,
+    mp_subscript=False,
+    sq_ass_item=False,
+    mp_ass_subscript=False,
+    sq_contains=False,
+    sq_inplace_concat=False,
+    sq_inplace_repeat=False,
 )
 class TopoShapeVertex(TopoShape):
     """
@@ -20,6 +35,17 @@ class TopoShapeVertex(TopoShape):
 
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     """
+
+    @overload
+    def __init__(self, x: float = ..., y: float = ..., z: float = ..., /) -> None: ...
+    @overload
+    def __init__(self, coordinates: Vector, /) -> None: ...
+    @overload
+    def __init__(self, coordinates: tuple[float, float, float], /) -> None: ...
+    @overload
+    def __init__(self, point: Point, /) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
 
     X: Final[float] = ...
     """X component of this Vertex."""

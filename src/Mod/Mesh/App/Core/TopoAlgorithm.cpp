@@ -32,7 +32,7 @@
 
 
 #include <Base/Console.h>
-#include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+#include <Wm4MeshCurvature.h>
 
 #include "Evaluation.h"
 #include "Iterator.h"

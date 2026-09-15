@@ -581,6 +581,27 @@ int FeaturePythonImp::canLoadPartial() const
     }
 }
 
+FeaturePythonImp::ValueT FeaturePythonImp::supportsAsyncRecompute() const
+{
+    _FC_PY_CALL_CHECK(supportsAsyncRecompute, return (NotImplemented));
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_supportsAsyncRecompute.ptr(), args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+        return Rejected;
+    }
+}
+
 FeaturePythonImp::ValueT FeaturePythonImp::redirectSubName(std::ostringstream& ss,
                                                            App::DocumentObject* topParent,
                                                            App::DocumentObject* child) const

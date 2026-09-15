@@ -240,7 +240,7 @@
         <item row="3" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_use_iterations_param">
           <property name="text">
-           <string>Use non ccx defaults</string>
+           <string>Overwrite CCX defaults</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -263,7 +263,7 @@
         <item row="9" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_BeamShellOutput">
           <property name="text">
-           <string>3D Output, unchecked for 2D</string>
+           <string>3D output, unchecked for 2D output</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -347,7 +347,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="l_non_lin_geom">
           <property name="text">
-           <string>Non-linear geometry</string>
+           <string>Geometrical nonlinearity</string>
           </property>
          </widget>
         </item>
@@ -423,7 +423,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="l_use_iterations_param">
           <property name="text">
-           <string>Time incrementation control parameter</string>
+           <string>Advanced solver controls</string>
           </property>
          </widget>
         </item>
@@ -501,7 +501,7 @@
         <item row="2" column="2">
          <widget class="Gui::PrefCheckBox" name="cb_ccx_non_lin_geom">
           <property name="text">
-           <string>Use non-linear geometry</string>
+           <string>Use geometrical nonlinearity</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -548,7 +548,7 @@
         <item row="9" column="0">
          <widget class="QLabel" name="l_BeamShellOutput">
           <property name="text">
-           <string>Beam, shell element 3D output format</string>
+           <string>1D and 2D element output format</string>
           </property>
          </widget>
         </item>
@@ -594,7 +594,7 @@
         <item row="10" column="2">
          <widget class="Gui::PrefCheckBox" name="ckb_pipeline_result">
           <property name="text">
-           <string>Pipeline only</string>
+           <string>No legacy results (use enhanced solver)</string>
           </property>
           <property name="toolTip">
            <string>Load results as pipeline instead of CCX_Results objects.
@@ -715,14 +715,14 @@ Only takes effect if 'Pipeline only' is enabled</string>
         <item row="2" column="0">
          <widget class="QLabel" name="l_eigenmode_high_limit">
           <property name="text">
-           <string>High frequency limit</string>
+           <string>Upper frequency bound</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="l_eigenmode_number">
           <property name="text">
-           <string>Eigenmode number</string>
+           <string>Number of eigenmodes</string>
           </property>
          </widget>
         </item>
@@ -776,7 +776,7 @@ Only takes effect if 'Pipeline only' is enabled</string>
         <item row="3" column="0">
          <widget class="QLabel" name="l_eigenmode_low_limit">
           <property name="text">
-           <string>Low frequency limit</string>
+           <string>Lower frequency bound</string>
           </property>
          </widget>
         </item>

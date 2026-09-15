@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
@@ -154,12 +156,12 @@ def setup(doc=None, solvertype="ccxtools"):
     # check solver attributes, Nonlinearity needs to be set to nonlinear
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face4")]
     analysis.addObject(con_fixed)
 
     # pressure constraint
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "Pressure")
     con_pressure.References = [(geom_obj, "Face2")]
     con_pressure.Pressure = "130.0 MPa"
     con_pressure.Reversed = True

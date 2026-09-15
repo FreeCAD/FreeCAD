@@ -267,10 +267,10 @@ class BIM_Library_TaskPanel:
                         FreeCAD.newDocument(self.previewDocName)
                         FreeCAD.setActiveDocument(self.previewDocName)
                         Part.show(Part.read(self.path))
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                     elif self.path.lower().endswith(".fcstd"):
                         openedDoc = FreeCAD.openDocument(self.path)
-                        FreeCADGui.SendMsgToActiveView("ViewFit")
+                        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
                         self.previewDocName = FreeCAD.ActiveDocument.Name
                         thumbnailSave = PARAMS.GetBool("SaveThumbnails", False)
                         if thumbnailSave == True:
@@ -616,7 +616,7 @@ class BIM_Library_TaskPanel:
         for o in FreeCAD.ActiveDocument.Objects:
             if not o in before:
                 FreeCADGui.Selection.addSelection(o)
-        FreeCADGui.SendMsgToActiveView("ViewSelection")
+        FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewSelection")
 
     def download(self, url):
 
@@ -663,9 +663,25 @@ class BIM_Library_TaskPanel:
                 movecallback=self.mouseMove,
                 callback=self.mouseClick,
                 extradlg=self.origin,
+                hints=self.get_hints(),
             )
         else:
             Part.show(self.shape)
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("BIM", "%1 pick insertion point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def makeOriginWidget(self):
 

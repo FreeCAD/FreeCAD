@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -442,7 +444,6 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     }
 
     sectionExec(baseShape);
-    addPoints();
 
     return DrawView::execute();     //NOLINT
 }
@@ -1231,7 +1232,7 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
     if (prop == &SectionOrigin) {
         // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
@@ -1243,7 +1244,7 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
     if (prop == &SectionNormal) {
         // Radius was PropertyVector, then briefly PropertyDirection, then PropertyVector
         App::PropertyDirection tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
@@ -1252,8 +1253,6 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
         }
         return;
     }
-
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as

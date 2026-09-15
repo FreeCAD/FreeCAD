@@ -131,7 +131,7 @@ class FaceData:
 
     @property
     def IsAutomatic(self):
-        # Automatic Surface is invalid for face, as it can only be created automaticall by volume automation
+        # Automatic Surface is invalid for face, as it can only be created automatically by volume automation
         return self.Creation == Creation.AutomaticVolume
 
 
@@ -270,7 +270,7 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
     # edges_map:    The map of all edge keys to edge data
     # shape:        The shape all faces and edges belong
     # faces:        All faces that should be made transfinite
-    # edge_key:     The edge key which shal be propagaed
+    # edge_key:     The edge key which shall be propagated
     # origin_face:  The face the propagated edge was itself propagated from (to not go backwards)
 
     # 1. Get all faces the edge belongs to (from user provided list)
@@ -291,17 +291,17 @@ def _propagate_edge(surfaces_map, edges_map, shape, faces, edge_key, origin_face
 
         opposite_key = Key(opposite)
         if edges_map[opposite_key].IsDefined:
-            # check if compatibel, and raise error if not
+            # check if compatible, and raise error if not
             if edges_map[opposite_key].Data.Nodes != edges_map[edge_key].Data.Nodes:
                 raise Exception(
-                    "Transfinite curve data is inconsitent, cannot apply automatic algorithm"
+                    "Transfinite curve data is inconsistent, cannot apply automatic algorithm"
                 )
 
             # and go on to the next face
             continue
 
         else:
-            # check if we propagate a Progression edge, and if we need to change the invertion
+            # check if we propagate a Progression edge, and if we need to change the inversion
             data = edges_map[edge_key].Data
             if data.Distribution == "Progression":
                 # progression goes towards edge.V0. Therefore, we may need to invert
@@ -331,7 +331,7 @@ def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_
     # edges_map:    The map of all edge keys to edge data
     # shape:        The shape all faces and edges belong
     # faces:        All faces that should be made transfinite
-    # edge_key:     The edge key which shal be propagaed
+    # edge_key:     The edge key which shall be propagated
     # origin_face:  The face the propagated edge was itself propagated from (to not go backwards)
 
     # 1. Get all faces the edge belongs to (from user provided list)
@@ -391,12 +391,12 @@ def _propagate_surface(surfaces_map, edges_map, shape, solids, face_key, origin_
                     raise Exception("Unable to popagate guiding vertex")
 
                 if surfaces_map[opposite_key].GuideVertex != guide_vertex_idx - 1:
-                    # the opposite surface requries a non-default guide vertex
+                    # the opposite surface requires a non-default guide vertex
                     # including the new VertexIdx to support this
 
                     surfaces_map[opposite_key].GuideVertex = guide_vertex_idx - 1
 
-                    # build the VertexIdx for the opposite if requried
+                    # build the VertexIdx for the opposite if required
                     data = surfaces_map[face_key].Data
 
                     # build the new vertex idx (in shape, not face!)
@@ -473,7 +473,7 @@ def _get_automatic_transfinite_edges(
     # tf_curve_objects: The transfinite curve document objects governing the faces
     # auto_curve_data: A TFCurveDefinition object which will be applied on all undefined edges
 
-    # 1. add all new edges not yet defined (careful to not doulbe add edges)
+    # 1. add all new edges not yet defined (careful to not double add edges)
     for face in faces:
         for edge in face.Edges:
             if not Key(edge) in edge_map:
@@ -497,12 +497,12 @@ def _get_automatic_transfinite_edges(
         _propagate_edge(surfaces_map, edge_map, shape, faces, user_edge, None, creator)
 
     # 3. Propagate all already auto-surface defined values through the map (lower prio then user defined)
-    #    Requried when there are multiple transfinite surface objects with automation
+    #    Required when there are multiple transfinite surface objects with automation
     for surf_edge in surf_edges:
         _propagate_edge(surfaces_map, edge_map, shape, faces, surf_edge, None, creator)
 
     # 4. Propagate all already auto-volume defined values through the map (lower prio then surface defined)
-    #    Requried when there are multiple transfinite surface objects with automation
+    #    Required when there are multiple transfinite surface objects with automation
     for vol_edge in vol_edges:
         _propagate_edge(surfaces_map, edge_map, shape, faces, vol_edge, None, creator)
 
@@ -522,7 +522,7 @@ def _get_automatic_transfinite_surfaces(
     # solids: A list of solids which shall be transfinite
     # auto_surface_data: The transfinite surface data to apply on non defined or porpagated surfaces
 
-    # 1. add all new surfaces not yet defined (careful to not doulbe add edges)
+    # 1. add all new surfaces not yet defined (careful to not double add edges)
     for solid in solids:
         for face in solid.Faces:
             if not Key(face) in surfaces_map:
@@ -543,7 +543,7 @@ def _get_automatic_transfinite_surfaces(
         _propagate_surface(surfaces_map, edge_map, shape, solids, user_surface, None, creator)
 
     # 4. Propagate all already auto-volume defined values through the map (lower prio then surface defined)
-    #    Requried when there are multiple transfinite surface objects with automation
+    #    Required when there are multiple transfinite surface objects with automation
     for vol_surface in vol_surfaces:
         _propagate_edge(surfaces_map, edge_map, shape, solids, vol_surfaces, None, creator)
 
@@ -641,7 +641,7 @@ def setup_transfinite_surface_map(shape, tf_surface_objs):
         # ########################
 
         if vertices:
-            # we need to be more carefull. user could have selected different scenarios:
+            # we need to be more careful. user could have selected different scenarios:
             # Single face:
             #    - single vertex as corner for 3-sided face
             #    - 3 or 4 corner points

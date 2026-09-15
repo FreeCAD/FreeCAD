@@ -64,6 +64,7 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
     sWhatsThis = "Spreadsheet_MergeCells";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetMergeCells";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetMergeCells::activated(int iMsg)
@@ -125,6 +126,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
     sWhatsThis = "Spreadsheet_SplitCell";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetSplitCell";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetSplitCell::activated(int iMsg)
@@ -194,16 +196,15 @@ CmdSpreadsheetImport::CmdSpreadsheetImport()
 void CmdSpreadsheetImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QString selectedFilter;
-    QStringList formatList;
-    formatList << QObject::tr("CSV (*.csv *.CSV)");
-    formatList << QObject::tr("All (*)");
+    const Gui::FileDialog::FilterList formatList {
+        {QStringLiteral("CSV"), {"*.csv"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(),
         QObject::tr("Import file"),
         QString(),
-        formatList,
-        &selectedFilter
+        formatList
     );
     if (!fileName.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Spreadsheet");
@@ -245,6 +246,7 @@ CmdSpreadsheetExport::CmdSpreadsheetExport()
     sWhatsThis = "Spreadsheet_Export";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetExport";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetExport::activated(int iMsg)
@@ -290,6 +292,7 @@ CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
     sWhatsThis = "Spreadsheet_AlignLeft";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignLeft";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignLeft::activated(int iMsg)
@@ -347,6 +350,7 @@ CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
     sWhatsThis = "Spreadsheet_AlignCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignCenter";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignCenter::activated(int iMsg)
@@ -404,6 +408,7 @@ CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
     sWhatsThis = "Spreadsheet_AlignRight";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignRight";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignRight::activated(int iMsg)
@@ -461,6 +466,7 @@ CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
     sWhatsThis = "Spreadsheet_AlignTop";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignTop";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignTop::activated(int iMsg)
@@ -518,6 +524,7 @@ CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
     sWhatsThis = "Spreadsheet_AlignBottom";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignBottom";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignBottom::activated(int iMsg)
@@ -575,6 +582,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sWhatsThis = "Spreadsheet_AlignVCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignVCenter";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetAlignVCenter::activated(int iMsg)
@@ -633,6 +641,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleBold";
     sAccel = "Ctrl+B";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleBold::activated(int iMsg)
@@ -718,6 +727,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleItalic";
     sAccel = "Ctrl+I";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleItalic::activated(int iMsg)
@@ -803,6 +813,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleUnderline";
     sAccel = "Ctrl+U";
+    eType = AlterNone;
 }
 
 void CmdSpreadsheetStyleUnderline::activated(int iMsg)

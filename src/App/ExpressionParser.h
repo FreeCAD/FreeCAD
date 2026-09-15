@@ -31,6 +31,11 @@
 #include <Base/Quantity.h>
 #include <Base/Vector3D.h>
 
+namespace Base
+{
+struct NumericLocaleContext;
+}
+
 namespace App
 {
 
@@ -239,6 +244,24 @@ public:
         return right;
     }
 
+    void setLeft(Expression* expression)
+    {
+        if (left == expression) {
+            return;
+        }
+        delete left;
+        left = expression;
+    }
+
+    void setRight(Expression* expression)
+    {
+        if (right == expression) {
+            return;
+        }
+        delete right;
+        right = expression;
+    }
+
 protected:
     Expression* _copy() const override;
 
@@ -368,6 +391,8 @@ public:
         TRANSLATIONM,  // Create translation matrix object.
         TUPLE,         // Create Python tuple.
         VECTOR,        // Create vector object.
+
+        ADDRESS,    // Format a cell address string from row and column
 
         HIDDENREF,  // hidden reference that has no dependency check
         HREF,       // deprecated alias of HIDDENREF
@@ -630,6 +655,12 @@ protected:
 namespace ExpressionParser
 {
 AppExport ExpressionPtr parse(const App::DocumentObject* owner, const char* buffer);
+/// Parse user-entered expression text using the supplied numeric-locale context.
+AppExport ExpressionPtr parseUserInput(
+    const App::DocumentObject* owner,
+    const char* buffer,
+    const Base::NumericLocaleContext& locale
+);
 AppExport std::unique_ptr<UnitExpression> parseUnit(const App::DocumentObject* owner, const char* buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string& str);

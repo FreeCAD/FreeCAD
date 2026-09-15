@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD EnhedsTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>Vælg testnavn</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>Fejl</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="235"/>
@@ -91,12 +91,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>Resterende</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>Fejl og Svigt</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="288"/>
@@ -122,10 +122,10 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>Indtast navnet på et kaldbart objekt, som, når det kaldes, vil returnere et TestCase. 
+Klik på 'start', og den test, der derved genereres, vil blive kørt.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+Dobbeltklik på en fejl i trævisningen for at se mere information om den, herunder staksporingen.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="187"/>
@@ -137,14 +137,14 @@ Double click on an error in the tree view to see more information about it, incl
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer 
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD EnhedsTest er en del af FreeCAD og understøtter skrivning af EnhedsTests til ens egne moduler.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>Fejl kopieret til udklipsholder</translation>
     </message>
   </context>
 </TS>

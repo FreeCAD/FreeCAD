@@ -59,10 +59,7 @@ class Z88Tools(ObjectTools):
     def prepare(self):
         self._clear_results()
 
-        mesh_obj, msg = membertools.get_mesh_to_solve(self.analysis)
-        if mesh_obj is None:
-            raise RuntimeError(msg)
-
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)
         meshdatagetter = meshsetsgetter.MeshSetsGetter(
             self.analysis,
             self.obj,

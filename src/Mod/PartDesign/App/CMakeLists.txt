@@ -2,7 +2,7 @@
 
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 generate_from_py(Body)
@@ -49,6 +49,10 @@ SET(FeaturesTransformed_SRCS
     FeatureMirrored.cpp
     FeatureLinearPattern.h
     FeatureLinearPattern.cpp
+    FeatureCircularPattern.h
+    FeatureCircularPattern.cpp
+    FeaturePathPattern.h
+    FeaturePathPattern.cpp
     FeaturePolarPattern.h
     FeaturePolarPattern.cpp
     FeatureScaled.h
@@ -69,6 +73,8 @@ SET(FeaturesDressUp_SRCS
     FeatureDraft.h
     FeatureThickness.cpp
     FeatureThickness.h
+    FeatureDefeaturing.cpp
+    FeatureDefeaturing.h
 )
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
@@ -113,6 +119,8 @@ SET(Module_SRCS
     PreCompiled.h
     Measure.cpp
     Measure.h
+    PartDesignParameter.cpp
+    PartDesignParameter.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 
@@ -152,9 +160,7 @@ if (MSVC)
     target_compile_options(PartDesign PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PartDesign)
-endif()
+target_compile_warn_error(PartDesign)
 
 if(FREECAD_USE_PCH)
     target_precompile_headers(PartDesign PRIVATE
@@ -162,7 +168,7 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
-SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)
+SET_BIN_DIR(PartDesign _PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)
 
 INSTALL(TARGETS PartDesign DESTINATION ${CMAKE_INSTALL_LIBDIR})

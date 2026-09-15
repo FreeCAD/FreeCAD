@@ -618,17 +618,17 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 
 void SketchAnalysis::solveSketch(const char* errorText)
 {
-    int status {};
+    SketchSolveStatus status;
     int dofs {};
     solvesketch(status, dofs, true);
 
-    if (status == int(Solver::RedundantConstraints)) {
+    if (status == SketchSolveStatus::RedundantConstraints) {
         sketch->autoRemoveRedundants(DeleteOption::NoFlag);
 
         solvesketch(status, dofs, false);
     }
 
-    if (status) {
+    if (status != SketchSolveStatus::Success) {
         THROWMT(Base::RuntimeError, errorText);
     }
 }
@@ -711,6 +711,18 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
                 verthorizConstraints.push_back(id);
             }
         }
+    }
+
+    // Only propose constraints that are not already active in the sketch.
+    for (const auto* constraint : sketch->Constraints.getValues()) {
+        if (!constraint->isActive) {
+            continue;
+        }
+        std::erase_if(verthorizConstraints, [constraint](const ConstraintIds& id) {
+            return constraint->Type == id.Type && constraint->First == id.First
+                && constraint->FirstPos == id.FirstPos && constraint->Second == id.Second
+                && constraint->SecondPos == id.SecondPos;
+        });
     }
 
     return int(verthorizConstraints.size());
@@ -832,7 +844,7 @@ void SketchAnalysis::makeMissingEqualityOneByOne()
     radiusequalityConstraints.clear();
 }
 
-void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
+void SketchAnalysis::solvesketch(SketchSolveStatus& status, int& dofs, bool updategeo)
 {
     status = sketch->solve(updategeo);
 
@@ -844,14 +856,14 @@ void SketchAnalysis::solvesketch(int& status, int& dofs, bool updategeo)
     }
 
     if (sketch->getLastHasRedundancies()) {
-        status = int(Solver::RedundantConstraints);
+        status = SketchSolveStatus::RedundantConstraints;
     }
 
     if (dofs < 0) {
-        status = int(Solver::OverConstrained);
+        status = SketchSolveStatus::Overconstrained;
     }
     else if (sketch->getLastHasConflicts()) {
-        status = int(Solver::ConflictingConstraints);
+        status = SketchSolveStatus::ConflictingConstraints;
     }
 }
 

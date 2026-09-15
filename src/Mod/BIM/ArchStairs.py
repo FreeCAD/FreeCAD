@@ -910,12 +910,12 @@ class _Stairs(ArchComponent.Component):
                 railWireR, NU = _Stairs.returnOutlineWireFace(
                     obj.OutlineRightAll, self.OutlineRailArcRightAll, mode="notFaceAlso"
                 )
-            elif obj.OutlineLeft:
+            elif obj.OutlineRight:
                 railWireR, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeft, self.OutlineRailArcRight, mode="notFaceAlso"
+                    obj.OutlineRight, self.OutlineRailArcRight, mode="notFaceAlso"
                 )
             else:
-                print(" No obj.OutlineRightAll or obj.OutlineLeft")
+                print(" No obj.OutlineRightAll or obj.OutlineRight")
 
             if railWireR:
                 if (
@@ -930,7 +930,7 @@ class _Stairs(ArchComponent.Component):
                 # update the Base object shape
                 railingRightObject.Base.Shape = railWireR
             else:
-                print(" No railWireL created ")
+                print(" No railWireR created ")
 
         # compute step data
         if obj.NumberOfSteps > 1:
@@ -2466,10 +2466,16 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
         if not obj:
             return
 
+        self._setRailingsVisibility(obj, vobj.Visibility)
+
+    def _setRailingsVisibility(self, obj, visible):
         for railing_name in ("RailingLeft", "RailingRight"):
             railing = getattr(obj, railing_name, None)
             if railing and hasattr(railing, "ViewObject"):
-                railing.ViewObject.Visibility = vobj.Visibility
+                railing.ViewObject.Visibility = visible
+        for child in getattr(obj, "Additions", []):
+            if Draft.getType(child) == "Stairs":
+                self._setRailingsVisibility(child, visible)
 
     def claimChildren(self):
         "Define which objects will appear as children in the tree view"

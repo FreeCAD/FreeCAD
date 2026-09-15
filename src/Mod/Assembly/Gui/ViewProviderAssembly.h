@@ -127,10 +127,6 @@ public:
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     bool isInEditMode() const;
 
-    void setActive(bool active) override;
-    void setupActiveAndInEdit();
-    void unsetupActiveAndInEdit();
-
     /// Ask the view provider if it accepts object deletions while in edit
     bool acceptDeletionsInEdit() override
     {
@@ -231,6 +227,8 @@ public:
     bool moveOnlyPreselected;
     bool moveInCommand;
     bool ctrlPressed;
+    bool forceSolveOnMoveForRigid;
+    bool ungroundedJointDrag;
 
     long lastClickTime;  // Store last click time as milliseconds
 
@@ -238,6 +236,7 @@ public:
     Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
     Base::Vector3d initialPositionRot;
+    Base::Vector3d initialUngroundedDragPosition;
     Base::Placement jcsPlc;
     Base::Placement jcsGlobalPlc;
     Base::Placement draggerInitPlc;
@@ -269,6 +268,8 @@ private:
     );
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
+    void slotStartSave(const App::Document& doc, const std::string& filename);
+    void slotDeletedObject(const App::DocumentObject& obj);
     void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     void onWorkbenchActivated(const QString& name);
@@ -304,6 +305,8 @@ private:
     fastsignals::connection connectActivatedVP;
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
+    fastsignals::scoped_connection m_startSaveConn;
+    fastsignals::scoped_connection m_deletedObjectConn;
 };
 
 }  // namespace AssemblyGui

@@ -29,12 +29,13 @@
 
 from typing import Any, Dict
 
-from Path.Post.Processor import PostProcessor
-
-import Path
 import FreeCAD
 
 translate = FreeCAD.Qt.translate
+import Path
+from Path.Post.Processor import PostProcessor, SCOPE_JOB
+import Constants
+from Machine.models.machine import OutputUnits
 
 DEBUG = False
 if DEBUG:
@@ -87,6 +88,7 @@ class Linuxcnc(PostProcessor):
         return [
             {
                 "name": "blend_mode",
+                "scope": SCOPE_JOB,
                 "type": "choice",
                 "label": translate("CAM", "Path Blending Mode"),
                 "default": "BLEND",
@@ -99,6 +101,7 @@ class Linuxcnc(PostProcessor):
             },
             {
                 "name": "blend_tolerance",
+                "scope": SCOPE_JOB,
                 "type": "float",
                 "label": translate("CAM", "Blend Tolerance"),
                 "default": 0.0,
@@ -142,36 +145,9 @@ class Linuxcnc(PostProcessor):
         #
         # linuxcnc doesn't want K properties on XY plane; Arcs need work.
         #
-        values["PARAMETER_ORDER"] = [
-            "X",
-            "Y",
-            "Z",
-            "A",
-            "B",
-            "C",
-            "I",
-            "J",
-            "F",
-            "S",
-            "T",
-            "Q",
-            "R",
-            "L",
-            "H",
-            "D",
-            "P",
-        ]
+        values["PARAMETER_ORDER"] = "XYZABCIJFSTQRLHDP"
 
-        values["MACHINE_NAME"] = "LinuxCNC"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
         # Path blending mode configuration (LinuxCNC-specific)
         # Load from machine configuration if available, otherwise use defaults
@@ -185,52 +161,26 @@ class Linuxcnc(PostProcessor):
             values["BLEND_MODE"] = "BLEND"
             values["BLEND_TOLERANCE"] = 0.0
 
-        # Add blend command to PREAMBLE
-        blend_cmd = self._get_blend_command()
-        if values["PREAMBLE"]:
-            values["PREAMBLE"] += f"\n{blend_cmd}"
-        else:
-            values["PREAMBLE"] = blend_cmd
+    def _expand_prefix(self, postables):
+        """inject blend command"""
+        blend = self._get_blend_command()
 
-    def export2(self):
-        """Override export2 to inject blend command before parent processing.
+        preamble = self.values["PREAMBLE"] or ""
+        # Separate the blend command from whatever the preamble ends with,
+        # otherwise "... G80 G90" + "G64 P0.0010" runs together as "G90G64".
+        if preamble and not preamble[-1].isspace():
+            preamble += " "
+        self.values["PREAMBLE"] = preamble + blend
 
-        apply_configuration_bundle() (called by parent export2) populates
-        self.values with the final overridden blend settings.  We apply
-        the bundle first, inject the blend G-code into the preamble, then
-        let the parent finish.
-        """
-        # Build and apply the full configuration bundle (unless dialog already did it)
-        if not getattr(self, "_bundle_applied", False):
-            self.apply_configuration_bundle()
-
-        # Inject blend command into preamble using the now-final values
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            blend_cmd = self._get_blend_command()
-            props = self._machine.postprocessor_properties
-            current_preamble = props.get("preamble", "")
-            if current_preamble:
-                props["preamble"] = f"{current_preamble}\n{blend_cmd}"
-            else:
-                props["preamble"] = blend_cmd
-
-        # Parent export2 will call apply_configuration_bundle again (idempotent)
-        return super().export2()
+        super()._expand_prefix(postables)
 
     def _get_blend_command(self) -> str:
         """Generate the path blending G-code command based on current settings.
 
         Reads from postprocessor_properties if available, otherwise falls back to values dict.
         """
-        # Try to read from postprocessor_properties first (for export2)
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            mode = props.get("blend_mode", "BLEND")
-            tolerance = props.get("blend_tolerance", 0.0)
-        else:
-            # Fallback to values dict (for legacy export)
-            mode = self.values.get("BLEND_MODE", "BLEND")
-            tolerance = self.values.get("BLEND_TOLERANCE", 0.0)
+        mode = self.values["BLEND_MODE"]
+        tolerance = self.values["BLEND_TOLERANCE"]
 
         if mode == "EXACT_PATH":
             return "G61"
@@ -251,92 +201,90 @@ class Linuxcnc(PostProcessor):
         For G84/G74 tapping cycles, check for 'rigid' annotation and convert
         to G33.1 rigid tapping if present. Otherwise use standard conversion.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Check if this is a tapping cycle with rigid annotation
-        if command.Name in ["G84", "G74"]:
+
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and command.Annotations.get("rigid", "False") == "True"
+        ):
+            # Rigid tapping - convert to G33.1, K is pitch
             annotations = command.Annotations
-            is_rigid = annotations.get("rigid", "False") == "True"
 
-            if is_rigid:
-                # Rigid tapping - convert to G33.1
-                params = command.Parameters.copy()
+            params = command.Parameters.copy()
 
-                # Extract pitch from F parameter
-                if "F" not in params:
-                    Path.Log.warning(f"Rigid tapping {command.Name} missing F (pitch) parameter")
-                    return super()._convert_drill_cycle(command)
+            if "F" not in params:
+                Path.Log.warning(f"Rigid tapping {command.Name} missing F (pitch) parameter")
+                return super()._convert_drill_cycle(command)
 
-                pitch = params["F"]
+            # Extract pitch from F parameter
+            pitch = params["F"]
 
-                # Get unit conversion function
-                def get_value(val):
-                    if self._machine and hasattr(self._machine, "output"):
-                        from Machine.models.machine import OutputUnits
+            # Get unit conversion function
+            def get_value(val):
+                if self.values["OUTPUT_UNITS"] == OutputUnits.IMPERIAL:
+                    return val / 25.4
+                return val
 
-                        if self._machine.output.units == OutputUnits.IMPERIAL:
-                            return val / 25.4
-                    return val
+            pitch = get_value(pitch)
 
-                pitch = get_value(pitch)
+            # Build output commands
+            output = []
+            block_delete = "/" if annotations.get("blockdelete") else ""
 
-                # Build output commands
-                output = []
-                block_delete = "/" if annotations.get("blockdelete") else ""
+            # Initial G33.1 command (in)
+            cmd_line = ["G33.1"]
+            cmd_line.append(f"K{pitch:.4f}")
 
-                # Initial G33.1 command (in)
-                cmd_line = ["G33.1"]
-                cmd_line.append(f"K{pitch:.4f}")
+            if "Z" in params:
+                z_val = get_value(params["Z"])
+                cmd_line.append(f"Z{z_val:.4f}")
 
-                if "Z" in params:
-                    z_val = get_value(params["Z"])
-                    cmd_line.append(f"Z{z_val:.4f}")
+            if "X" in params:
+                x_val = get_value(params["X"])
+                cmd_line.append(f"X{x_val:.4f}")
 
-                if "X" in params:
-                    x_val = get_value(params["X"])
-                    cmd_line.append(f"X{x_val:.4f}")
+            if "Y" in params:
+                y_val = get_value(params["Y"])
+                cmd_line.append(f"Y{y_val:.4f}")
 
-                if "Y" in params:
-                    y_val = get_value(params["Y"])
-                    cmd_line.append(f"Y{y_val:.4f}")
+            output.append(f"{block_delete}{' '.join(cmd_line)}")
 
-                output.append(f"{block_delete}{' '.join(cmd_line)}")
+            # Handle dwell if P parameter present
+            if "P" in params:
+                output.append(f"{block_delete}M5")
+                output.append(f"{block_delete}G04 P{params['P']:.2f}")
 
-                # Handle dwell if P parameter present
-                if "P" in params:
-                    output.append(f"{block_delete}M5")
-                    output.append(f"{block_delete}G04 P{params['P']:.2f}")
+            # Reverse out
+            if command.Name == "G84":
+                # Right-hand tap: reverse spindle (M4), retract, restore (M3)
+                output.append(f"{block_delete}M4")
 
-                # Reverse out
-                if command.Name == "G84":
-                    # Right-hand tap: reverse spindle (M4), retract, restore (M3)
-                    output.append(f"{block_delete}M4")
+                # Retract to R height
+                retract_line = ["G33.1", f"K{pitch:.4f}"]
+                if "R" in params:
+                    r_val = get_value(params["R"])
+                    retract_line.append(f"Z{r_val:.4f}")
+                output.append(f"{block_delete}{' '.join(retract_line)}")
 
-                    # Retract to R height
-                    retract_line = ["G33.1", f"K{pitch:.4f}"]
-                    if "R" in params:
-                        r_val = get_value(params["R"])
-                        retract_line.append(f"Z{r_val:.4f}")
-                    output.append(f"{block_delete}{' '.join(retract_line)}")
+                output.append(f"{block_delete}M3")
 
-                    output.append(f"{block_delete}M3")
+            elif command.Name == "G74":
+                # Left-hand tap: forward spindle (M3), retract, restore (M4)
+                output.append(f"{block_delete}M3")
 
-                elif command.Name == "G74":
-                    # Left-hand tap: forward spindle (M3), retract, restore (M4)
-                    output.append(f"{block_delete}M3")
+                # Retract to R height
+                retract_line = ["G33.1", f"K{pitch:.4f}"]
+                if "R" in params:
+                    r_val = get_value(params["R"])
+                    retract_line.append(f"Z{r_val:.4f}")
+                output.append(f"{block_delete}{' '.join(retract_line)}")
 
-                    # Retract to R height
-                    retract_line = ["G33.1", f"K{pitch:.4f}"]
-                    if "R" in params:
-                        r_val = get_value(params["R"])
-                        retract_line.append(f"Z{r_val:.4f}")
-                    output.append(f"{block_delete}{' '.join(retract_line)}")
+                output.append(f"{block_delete}M4")
 
-                    output.append(f"{block_delete}M4")
+            return "\n".join(output)
 
-                return "\n".join(output)
-
-        # Not rigid tapping or not a tapping cycle - use parent implementation
+        # Not rigid tapping use parent implementation
         return super()._convert_drill_cycle(command)
 
     def _convert_modal_command(self, command):

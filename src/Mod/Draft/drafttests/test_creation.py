@@ -326,6 +326,17 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
 
+    def test_label_custom_text_updates_text_immediately(self):
+        """Change label custom text without waiting for recompute."""
+        operation = "Draft Label custom text update"
+        _msg("  Test '{}'".format(operation))
+        obj = Draft.make_label(custom_text="Original")
+        self.doc.recompute()
+        self.assertEqual(list(obj.Text), ["Original"], "'{}' setup failed".format(operation))
+
+        obj.CustomText = ["Foo"]
+        self.assertEqual(list(obj.Text), ["Foo"], "'{}' failed".format(operation))
+
     def test_layer(self):
         """Create a layer, and add a rectangle to it."""
         operation = "Draft Layer"

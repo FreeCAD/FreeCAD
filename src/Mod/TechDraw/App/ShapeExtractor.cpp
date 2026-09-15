@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -417,8 +419,8 @@ bool ShapeExtractor::isDraftPoint(const App::DocumentObject* obj)
 
 bool ShapeExtractor::isDatumPoint(const App::DocumentObject* obj)
 {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string pointToken("Point");
+    const auto objTypeName = obj->getTypeId().getName();
+    constexpr std::string_view pointToken {"Point"};
     if (objTypeName.find(pointToken) != std::string::npos) {
         return true;
     }

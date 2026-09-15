@@ -45,7 +45,9 @@ class SpreadsheetGuiExport WorkbenchHelper: public QObject
 
 public Q_SLOTS:
     void setForegroundColor(const QColor& color);
+    void clearForegroundColor();
     void setBackgroundColor(const QColor& color);
+    void clearBackgroundColor();
 };
 
 class SpreadsheetGuiExport Workbench: public Gui::StdWorkbench

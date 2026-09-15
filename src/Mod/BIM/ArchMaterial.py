@@ -822,6 +822,15 @@ if FreeCAD.GuiUp:
                 if obj.isDerivedFrom("App::MaterialObject"):
                     self.mats.append(obj)
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            self._editor_height = self._get_editor_height()
+
+        @staticmethod
+        def _get_editor_height():
+            editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            editor.ensurePolished()
+            height = max(editor.sizeHint().height(), editor.minimumSizeHint().height())
+            editor.deleteLater()
+            return height
 
         def createEditor(self, parent, option, index):
             if index.column() == 0:
@@ -832,7 +841,6 @@ if FreeCAD.GuiUp:
             elif index.column() == 2:
                 ui = FreeCADGui.UiLoader()
                 editor = ui.createWidget("Gui::InputField")
-                editor.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Minimum)
                 editor.setParent(parent)
             else:
                 editor = QtGui.QLineEdit(parent)
@@ -867,6 +875,12 @@ if FreeCAD.GuiUp:
             else:
                 QtGui.QStyledItemDelegate.setModelData(self, editor, model, index)
 
+        def sizeHint(self, option, index):
+            size = QtGui.QStyledItemDelegate.sizeHint(self, option, index)
+            if index.column() == 2:
+                size.setHeight(max(size.height(), self._editor_height))
+            return size
+
 
 class _ArchMultiMaterialTaskPanel:
     """The editmode TaskPanel for MultiMaterial objects"""
@@ -885,7 +899,6 @@ class _ArchMultiMaterialTaskPanel:
         )
         self.form.tree.setRootIsDecorated(False)  # remove 1st column's extra left margin
         self.form.tree.setModel(self.model)
-        self.form.tree.setUniformRowHeights(True)
         self.form.tree.setItemDelegate(MultiMaterialDelegate())
         self.form.chooseCombo.currentIndexChanged.connect(self.fromExisting)
         self.form.addButton.pressed.connect(self.addLayer)

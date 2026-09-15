@@ -24,7 +24,7 @@
 
 #pragma once
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 class Texture
@@ -55,5 +55,4 @@ protected:
     unsigned int mTextureId = 0;
 };
 
-
-}  // namespace MillSim
+}  // namespace CAMSimulator

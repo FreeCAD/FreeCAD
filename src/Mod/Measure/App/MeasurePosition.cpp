@@ -27,6 +27,8 @@
 #include <App/MeasureManager.h>
 #include <App/Document.h>
 
+#include <fmt/format.h>
+
 #include "MeasurePosition.h"
 
 
@@ -123,22 +125,19 @@ void MeasurePosition::onChanged(const App::Property* prop)
 }
 
 
-QString MeasurePosition::getResultString()
+std::string MeasurePosition::getResultString()
 {
     App::Property* prop = this->getResultProp();
     if (prop == nullptr) {
         return {};
     }
-
+    Base::Unit unit = Position.getUnit();
     Base::Vector3d value = Position.getValue();
-    QString unit = QString::fromStdString(Position.getUnit().getString());
-    int precision = 2;
-    QString text;
+    Base::Quantity qx(value.x, unit);
+    Base::Quantity qy(value.y, unit);
+    Base::Quantity qz(value.z, unit);
 
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
-    return text;
+    return fmt::format("X: {}\nY: {}\nZ: {}", formatQuantity(qx), formatQuantity(qy), formatQuantity(qz));
 }
 
 

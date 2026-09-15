@@ -38,7 +38,7 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
 __created__ = "2014"
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -161,8 +161,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             Path.Log.debug("base items exist.  Processing... ")
-            for base in obj.Base:
-                Path.Log.debug("obj.Base item: {}".format(base))
+            for base in self.baseShapes(obj):
+                Path.Log.debug("baseShapes item: {}".format(base))
 
                 # Check if all subs are faces
                 allSubsFaceType = True
@@ -263,7 +263,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
         obj.HandleMultipleFeatures = "Collectively"
         obj.AdaptivePocketStart = False
         obj.AdaptivePocketFinish = False

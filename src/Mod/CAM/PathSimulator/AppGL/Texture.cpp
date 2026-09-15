@@ -27,8 +27,9 @@
 // include this last as the defines can mess up other includes
 #include "OpenGlWrapper.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
+
 Texture::~Texture()
 {
     DestroyTexture();
@@ -68,4 +69,4 @@ bool Texture::unbind()
     return true;
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

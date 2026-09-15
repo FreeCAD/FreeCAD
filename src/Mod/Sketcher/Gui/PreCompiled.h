@@ -37,6 +37,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <string_view>
 #include <vector>
 
 // Boost

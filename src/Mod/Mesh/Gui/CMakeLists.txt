@@ -90,7 +90,11 @@ set (Mesh_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Mesh_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Mesh_TR_QRC} ${QM_SRCS})
-qt_add_resources(resource_SRCS Resources/Mesh.qrc ${Mesh_TR_QRC})
+qt_add_resources(resource_SRCS
+    Resources/Mesh.qrc
+    ${Mesh_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(resource_SRCS
     ${QM_SRCS}
@@ -171,12 +175,10 @@ if (MSVC)
     target_compile_options(MeshGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(MeshGui)
-endif()
+target_compile_warn_error(MeshGui)
 
 
-SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
+SET_BIN_DIR(MeshGui)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})

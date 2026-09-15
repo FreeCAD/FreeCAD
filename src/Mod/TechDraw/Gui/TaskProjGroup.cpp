@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Joe Dowsett <dowsettjoe[at]yahoo[dot]co[dot]uk>    *
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -885,10 +887,12 @@ void TaskDlgProjGroup::open()
 {
     if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
         if (dynamic_cast<TechDraw::DrawProjGroup*>(view)) {
-            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Projection Group", .temporary=true});
+            App::GetApplication().setActiveTransaction(
+                App::TransactionName {.name = "Edit Projection Group", .temporary = false});
         }
         else {
-            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Part View", .temporary=true});
+            App::GetApplication().setActiveTransaction(
+                App::TransactionName {.name = "Edit Part View", .temporary = false});
         }
     }
 }

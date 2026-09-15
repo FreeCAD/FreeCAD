@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include <QDir>
 #include <QByteArray>
 #include <QString>
 

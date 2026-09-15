@@ -36,14 +36,25 @@
 
 #include <functional>
 
+#include <QPointer>
+
+#include <Inventor/SbLinear.h>
+#include <Inventor/SbTime.h>
+
 #include <Mod/Part/PartGlobal.h>
 
 class Ui_TaskAttacher;
 class QLineEdit;
+class SoEventCallback;
 
 namespace App
 {
 class Property;
+}
+
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
 namespace Gui
@@ -242,6 +253,13 @@ protected:
     std::function<void()> onReject;
     bool accepted;
     int tid;
+
+private:
+    // Double-click accept
+    static void handleMouseButtonCB(void* userdata, SoEventCallback* cb);
+    QPointer<Gui::View3DInventorViewer> dblClickViewer;
+    SbTime lastClickTime;
+    SbVec2s lastClickPos = SbVec2s(-16000, -16000);
 };
 
 }  // namespace PartGui

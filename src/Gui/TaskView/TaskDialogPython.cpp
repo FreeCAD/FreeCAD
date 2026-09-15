@@ -130,6 +130,7 @@ void ControlPy::init_type()
         "show the Model panel\n"
         "showModelView()"
     );
+    behaviors().readyType();
 }
 
 ControlPy::ControlPy() = default;
@@ -450,6 +451,16 @@ void TaskDialogPy::init_type()
         "Checks if the task dialog will be closed when the active transaction has changed -> bool"
     );
     add_varargs_method(
+        "setAutoCloseOnResetEdit",
+        &TaskDialogPy::setAutoCloseOnResetEdit,
+        "Defines whether a task dialog must be closed if the document exits edit mode"
+    );
+    add_varargs_method(
+        "isAutoCloseOnResetEdit",
+        &TaskDialogPy::isAutoCloseOnResetEdit,
+        "Checks if the task dialog will be closed when the document exits edit mode -> bool"
+    );
+    add_varargs_method(
         "setAutoCloseOnDeletedDocument",
         &TaskDialogPy::setAutoCloseOnDeletedDocument,
         "Defines whether a task dialog must be closed if the document is deleted"
@@ -494,6 +505,7 @@ void TaskDialogPy::init_type()
     );
     add_varargs_method("accept", &TaskDialogPy::accept, "Accept the task dialog");
     add_varargs_method("reject", &TaskDialogPy::reject, "Reject the task dialog");
+    behaviors().readyType();
 }
 
 TaskDialogPy::TaskDialogPy(TaskDialog* dlg)
@@ -584,6 +596,21 @@ Py::Object TaskDialogPy::isAutoCloseOnTransactionChange(const Py::Tuple& args)
         throw Py::Exception();
     }
     return Py::Boolean(dialog->isAutoCloseOnTransactionChange());
+}
+
+Py::Object TaskDialogPy::setAutoCloseOnResetEdit(const Py::Tuple& args)
+{
+    Py::Boolean value(args[0]);
+    dialog->setAutoCloseOnResetEdit(static_cast<bool>(value));
+    return Py::None();
+}
+
+Py::Object TaskDialogPy::isAutoCloseOnResetEdit(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+    return Py::Boolean(dialog->isAutoCloseOnResetEdit());
 }
 
 Py::Object TaskDialogPy::setAutoCloseOnDeletedDocument(const Py::Tuple& args)
@@ -1029,6 +1056,22 @@ void TaskDialogPython::autoClosedOnTransactionChange()
     try {
         if (dlg.hasAttr(std::string("autoClosedOnTransactionChange"))) {
             Py::Callable method(dlg.getAttr(std::string("autoClosedOnTransactionChange")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e;  // extract the Python error text
+        e.reportException();
+    }
+}
+
+void TaskDialogPython::autoClosedOnResetEdit()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (dlg.hasAttr(std::string("autoClosedOnResetEdit"))) {
+            Py::Callable method(dlg.getAttr(std::string("autoClosedOnResetEdit")));
             Py::Tuple args;
             method.apply(args);
         }

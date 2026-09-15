@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -119,7 +121,6 @@ public:
 
     std::vector<QGIView*> getViews() const;
 
-    int addQView(QGIView* view);
     int removeQView(QGIView* view);
     int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView* view);

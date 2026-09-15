@@ -37,6 +37,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderSpreadsheetPy.h"
@@ -78,12 +79,7 @@ bool ViewProviderSheet::setEdit(int ModNum)
 bool ViewProviderSheet::doubleClicked()
 {
     // assure the SpreadSheet workbench
-    if (App::GetApplication()
-            .GetUserParameter()
-            .GetGroup("BaseApp")
-            ->GetGroup("Preferences")
-            ->GetGroup("Mod/Spreadsheet")
-            ->GetBool("SwitchToWB", true)) {
+    if (SheetParameter::instance()->getSwitchToWorkbench()) {
         Gui::Command::assureWorkbench("SpreadsheetWorkbench");
     }
 
@@ -103,16 +99,15 @@ void ViewProviderSheet::showSheetMdi()
 void ViewProviderSheet::exportAsFile()
 {
     auto* sheet = getObject<Spreadsheet::Sheet>();
-    QString selectedFilter;
-    QStringList formatList;
-    formatList << QObject::tr("CSV (*.csv *.CSV)");
-    formatList << QObject::tr("All (*)");
+    const Gui::FileDialog::FilterList formatList {
+        {QStringLiteral("CSV"), {"*.csv", "*.CSV"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export File"),
         QString(),
-        formatList,
-        &selectedFilter
+        formatList
     );
     if (!fileName.isEmpty()) {
         if (sheet) {

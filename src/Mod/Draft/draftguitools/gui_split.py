@@ -66,6 +66,8 @@ class Split(gui_base_original.Modifier):
         _toolmsg(translate("draft", "Click anywhere on a line to split it"))
         self.view.graphicsView().setFocus()  # Make sure using Esc works.
         self.call = self.view.addEventCallback("SoEvent", self.action)
+        self.selection_done = True
+        self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -114,6 +116,13 @@ class Split(gui_base_original.Modifier):
         """Terminate the operation."""
         self.end_callbacks(self.call)
         super().finish()
+
+    def get_action_hints(self):
+        return [
+            Gui.InputHint(
+                translate("draft", "%1 click on a line to split it"), Gui.UserInput.MouseLeft
+            ),
+        ]
 
 
 Gui.addCommand("Draft_Split", Split())

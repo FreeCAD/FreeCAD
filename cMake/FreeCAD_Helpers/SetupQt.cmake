@@ -1,6 +1,17 @@
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+
+if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
+    message(WARNING [[
+
+     ******************************************************************
+        Qt5 support is deprecated: please update your builds to Qt6.
+                  Support will be removed in August 2026.
+     ******************************************************************
+    ]])
+endif()
+
 if (FREECAD_QT_MAJOR_VERSION EQUAL 6)
     set (Qt6Core_MOC_EXECUTABLE Qt6::moc)
 endif()
@@ -29,15 +40,65 @@ endif ()
 
 foreach(COMPONENT IN LISTS FREECAD_QT_COMPONENTS)
     find_package(Qt${FREECAD_QT_MAJOR_VERSION} REQUIRED COMPONENTS ${COMPONENT})
-    set(Qt${COMPONENT}_LIBRARIES ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_LIBRARIES})
-    set(Qt${COMPONENT}_INCLUDE_DIRS ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_INCLUDE_DIRS})
+    if(TARGET Qt${FREECAD_QT_MAJOR_VERSION}::${COMPONENT})
+        set(Qt${COMPONENT}_LIBRARIES Qt${FREECAD_QT_MAJOR_VERSION}::${COMPONENT})
+        get_target_property(Qt${COMPONENT}_INCLUDE_DIRS Qt${FREECAD_QT_MAJOR_VERSION}::${COMPONENT} INTERFACE_INCLUDE_DIRECTORIES)
+        if(NOT Qt${COMPONENT}_INCLUDE_DIRS)
+            set(Qt${COMPONENT}_INCLUDE_DIRS "")
+        endif()
+    else()
+        set(Qt${COMPONENT}_LIBRARIES ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_LIBRARIES})
+        set(Qt${COMPONENT}_INCLUDE_DIRS ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_INCLUDE_DIRS})
+    endif()
     set(Qt${COMPONENT}_FOUND ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_FOUND})
     set(Qt${COMPONENT}_VERSION ${Qt${FREECAD_QT_MAJOR_VERSION}${COMPONENT}_VERSION})
 endforeach()
 
+if(Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION VERSION_LESS 5.13.0)
+    message(FATAL_ERROR [[
+     ******************************************************************
+        Qt 5 versions below 5.13 are no longer supported as its `rcc`
+         resource compiler tool does not support modern compression
+                    formats and options. More generally,
+       Qt 5 support is deprecated: please update your builds to Qt 6.
+                  Support will be removed in August 2026.
+     ******************************************************************
+    ]])
+endif()
+
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(QtCore_MOC_EXECUTABLE ${Qt${FREECAD_QT_MAJOR_VERSION}Core_MOC_EXECUTABLE})
+
+# These if statements can be removed when the policy CMP0126 is set to NEW.
+if(NOT DEFINED FREECAD_RCC_COMPRESSION_ALGO)
+    # zstd was added as default to rcc in qtbase#2c9ac4fc3fe0b8f39e7f7a93894b56e49fd3d887,
+    # circa 2018, and landed in Qt 5.13.
+    set(FREECAD_RCC_COMPRESSION_ALGO "zstd" CACHE STRING
+        "Compression algorithm to use for Qt resource files.")
+    set_property(CACHE FREECAD_RCC_COMPRESSION_ALGO PROPERTY STRINGS "zstd" "zlib" "none")
+    mark_as_advanced(FREECAD_RCC_COMPRESSION_ALGO)
+endif()
+if(NOT DEFINED FREECAD_RCC_COMPRESSION_LEVEL)
+    # Equal to rcc 6.11's "best" compression option (picking zstd), the implicit default.
+    # CONSTANT_ZSTDCOMPRESSLEVEL_STORE is otherwise 14, and is what's used if you explicitly
+    # pass `--compress-algo zstd` without `--compress` level.
+    set(FREECAD_RCC_COMPRESSION_LEVEL 19 CACHE STRING
+        "Compression strength to use for Qt resource files.")
+    mark_as_advanced(FREECAD_RCC_COMPRESSION_LEVEL)
+endif()
+if(NOT DEFINED FREECAD_RCC_COMPRESSION_THRESHOLD)
+    # Equal to rcc 6.11's CONSTANT_COMPRESSTHRESHOLD_DEFAULT.
+    set(FREECAD_RCC_COMPRESSION_THRESHOLD 70 CACHE STRING
+        [[For each file in Qt resource files, threshold (% of original size) at which to start
+ storing said files in compressed form.]])
+    mark_as_advanced(FREECAD_RCC_COMPRESSION_THRESHOLD)
+endif()
+set(FREECAD_RCC_OPTIONS
+    "--compress-algo" "${FREECAD_RCC_COMPRESSION_ALGO}"
+    "--compress" "${FREECAD_RCC_COMPRESSION_LEVEL}"
+    "--threshold" "${FREECAD_RCC_COMPRESSION_THRESHOLD}"
+)
 
 add_definitions(-DQT_NO_KEYWORDS)
 
@@ -84,7 +145,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/QtWidgets.h.cmake ${CMAKE_BINARY_DIR}/src
 function(qt_find_and_add_translation _qm_files _tr_dir _qm_dir)
     file(GLOB _ts_files ${_tr_dir})
     set_source_files_properties(${_ts_files} PROPERTIES OUTPUT_LOCATION ${_qm_dir})
-    qt_add_translation("${_qm_files}" ${_ts_files})
+    qt_add_translation("${_qm_files}" ${_ts_files} OPTIONS -silent)
     set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
 endfunction()
 

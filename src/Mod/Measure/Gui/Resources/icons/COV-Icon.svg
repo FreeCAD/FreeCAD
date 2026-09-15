@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933333"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (1:1.2.2+202305151914+b0a8486541)"
+   sodipodi:docname="COV-Icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="true"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="19.02887"
+     inkscape:cx="55.389521"
+     inkscape:cy="29.66545"
+     inkscape:window-width="2560"
+     inkscape:window-height="1368"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid132" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#0000ff;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4.23333, 2.11667"
+       id="rect290"
+       width="15.875"
+       height="15.875"
+       x="0.52916664"
+       y="0.52916664" />
+    <rect
+       style="fill:#ffff00;stroke-width:0.529166;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4.23333, 2.11667"
+       id="rect398"
+       width="13.758333"
+       height="13.758334"
+       x="1.5875"
+       y="1.5875" />
+    <rect
+       style="fill:#0000ff;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4.23333, 2.11667"
+       id="rect452"
+       width="5.8208332"
+       height="5.8208332"
+       x="2.6458333"
+       y="2.6458333" />
+    <rect
+       style="fill:#0000ff;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4.23333, 2.11667"
+       id="rect454"
+       width="5.8208332"
+       height="5.8208332"
+       x="8.4666662"
+       y="8.4666662" />
+  </g>
+</svg>

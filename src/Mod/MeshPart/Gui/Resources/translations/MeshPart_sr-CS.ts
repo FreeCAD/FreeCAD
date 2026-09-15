@@ -254,7 +254,7 @@ Ova komanda radi samo sa objektom koji je mreža, a ne sa običnom stranicom ili
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation>Kontinualnost</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
@@ -383,11 +383,6 @@ Najmanja vrednost je 0.</translation>
       <translation>Koristi Netgen generator mreže</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finoća:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Veoma grubo</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 Vrednost u opsegu od 0,1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,7 +490,7 @@ Vrednost u opsegu od 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>

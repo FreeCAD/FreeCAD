@@ -125,11 +125,9 @@ class BezCurve(gui_lines.Line):
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                if not self._append_point(self.point):
+                    return
                 self.pos = arg["Position"]
-                self.node.append(self.point)  # add point to "clicked list"
-                # sb add a control point,
-                # if mod(len(cpoints), 2) == 0
-                # then create 2 handle points?
                 self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
@@ -502,14 +500,14 @@ class CubicBezCurve(gui_lines.Line):
         if len(self.node) < 2:
             return [
                 Gui.InputHint(
-                    translate("draft", "%1 click and drag to define first point and knot"),
-                    Gui.UserInput.MouseLeft,
+                    translate("draft", "%1 define first point and knot"),
+                    Gui.UserInput.MouseMoveLeft,
                 )
             ]
         return [
             Gui.InputHint(
-                translate("draft", "%1 click and drag to define next point and knot"),
-                Gui.UserInput.MouseLeft,
+                translate("draft", "%1 define next point and knot"),
+                Gui.UserInput.MouseMoveLeft,
             )
         ]
 

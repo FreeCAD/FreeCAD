@@ -65,6 +65,7 @@ DressUp::DressUp()
     );
 
     AddSubShape.setStatus(App::Property::Output, true);
+    Operation.setStatus(App::Property::Hidden, true);
 }
 
 short DressUp::mustExecute() const
@@ -275,18 +276,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape& shape)
 
 void DressUp::onChanged(const App::Property* prop)
 {
-    // the BaseFeature property should track the Base and vice-versa as long as
-    // the feature is inside a body (aka BaseFeature is nonzero)
-    if (prop == &BaseFeature) {
-        if (BaseFeature.getValue() && Base.getValue() && Base.getValue() != BaseFeature.getValue()) {
-
-            auto subs = Base.getSubValues(false);
-            auto shadows = Base.getShadowSubs();
-            Base.setValue(BaseFeature.getValue(), std::move(subs), std::move(shadows));
-        }
-    }
-    else if (prop == &Base) {
-        // track the vice-versa changes
+    if (prop == &Base) {
         if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
             BaseFeature.setValue(Base.getValue());
         }
@@ -294,16 +284,18 @@ void DressUp::onChanged(const App::Property* prop)
     else if (prop == &Shape || prop == &SupportTransform) {
         if (!getDocument()->testStatus(App::Document::Restoring)
             && !getDocument()->isPerformingTransaction()) {
-            // AddSubShape in DressUp acts as a shape cache. And here we shall
-            // invalidate the cache upon changes in Shape. Other features
-            // (currently only feature Transformed) shall call getAddSubShape()
-            // to rebuild the cache. This allow us to perform expensive
-            // calculation of AddSubShape only when necessary.
+            // AddSubShape acts as a shape cache; invalidate so Transformed
+            // can rebuild it lazily via getAddSubShape().
             AddSubShape.setValue(Part::TopoShape());
         }
     }
 
     Feature::onChanged(prop);
+}
+
+void DressUp::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase)
+{
+    relinkToMatchingSubelements(Base, oldBase, newBase);
 }
 
 void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
@@ -340,7 +332,7 @@ void DressUp::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShap
             if (base) {
                 baseShape = base->getBaseTopoShape(true);
                 baseShape.move(base->getLocation().Inverted());
-                if (base->getAddSubType() == Additive) {
+                if (base->getAddSubType() == Type::Additive) {
                     if (!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID)) {
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
                     }

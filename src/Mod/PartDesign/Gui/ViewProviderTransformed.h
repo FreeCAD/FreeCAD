@@ -29,6 +29,11 @@
 
 #include <Inventor/nodes/SoMultipleCopy.h>
 
+namespace Gui
+{
+class View3DInventorViewer;
+}
+
 namespace PartDesign
 {
 class Transformed;
@@ -66,6 +71,8 @@ public:
     {
         return diagMessage;
     }
+
+    Gui::View3DInventorViewer* getViewer();
 
 protected:
     bool setEdit(int ModNum) override;

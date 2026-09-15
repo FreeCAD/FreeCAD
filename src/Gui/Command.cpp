@@ -23,6 +23,8 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
+#include <xercesc/util/XMLException.hpp>
+#include <xercesc/util/XMLString.hpp>
 #include <sstream>
 #include <QApplication>
 #include <QByteArray>
@@ -495,8 +497,8 @@ void Command::_invoke(int id, bool disablelog)
 
             getMainWindow()->updateActions();
         }
-        // here we assume that the overriden activated() function
-        // commited, aborted or gave the transaction id to a dialog
+        // here we assume that the overridden activated() function
+        // committed, aborted or gave the transaction id to a dialog
         currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
@@ -516,6 +518,11 @@ void Command::_invoke(int id, bool disablelog)
         e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
+    }
+    catch (const XERCES_CPP_NAMESPACE::XMLException& e) {
+        char* message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
+        Base::Console().error("XML exception thrown (%s)\n", message);
+        XERCES_CPP_NAMESPACE::XMLString::release(&message);
     }
     catch (std::exception& e) {
         Base::Console().error("C++ exception thrown (%s)\n", e.what());

@@ -80,7 +80,7 @@ MeasureHandler MeasureManager::getMeasureHandler(const App::MeasureSelectionItem
         sub = link->getLinkedObject(true);
     }
 
-    const char* className = sub->getTypeId().getName();
+    const auto className = sub->getTypeId().getName();
     std::string mod = Base::Type::getModuleName(className);
 
     return getMeasureHandler(mod.c_str());
@@ -155,7 +155,7 @@ Py::Tuple MeasureManager::getSelectionPy(const App::MeasureSelection& selection)
 
 
 std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelection selection,
-                                                               std::string mode)
+                                                               std::string modeIdentifier)
 {
     Base::PyGILStateLocker lock;
 
@@ -170,7 +170,7 @@ std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelec
     // Loop through measure types and check if they work with given selection
     for (App::MeasureType* mType : getMeasureTypes()) {
 
-        if (mode != "" && mType->label != mode) {
+        if (!modeIdentifier.empty() && mType->identifier != modeIdentifier) {
             continue;
         }
 
