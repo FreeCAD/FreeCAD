@@ -71,6 +71,12 @@ public:
         : Py::ExtensionModule<Module>("SketcherGui")
     {
         add_varargs_method(
+            "hasModelTreeWidget",
+            &Module::hasModelTreeWidgetPy,
+            "Returns True if the Model TreeWidget exists"
+        );
+
+        add_varargs_method(
             "getActiveSketchPreselection",
             &Module::getActiveSketchPreselection,
             "getActiveSketchPreselection(tuple(int,int)) -> dictionary or None\n"
@@ -86,6 +92,11 @@ public:
     {}
 
 private:
+    Py::Object hasModelTreeWidgetPy(const Py::Tuple&)
+    {
+        return Py::Boolean(SketcherGui::hasModelTreeWidget());
+    }
+
     Py::Object getActiveSketchPreselection(const Py::Tuple& args)
     {
         PyObject* object;

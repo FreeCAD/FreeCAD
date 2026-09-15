@@ -23,6 +23,7 @@ set(Sketcher_TestScripts
     SketcherTests/TestSketchCarbonCopyReverseMapping.py
     SketcherTests/TestSketchCarbonCopyReverseMapping.FCStd
     SketcherTests/TestSketchInternalFaces.py
+    SketcherTests/TestSketcherGuiModelTreeWidget.py
     SketcherTests/TestSketcherEllipse.py
 )
 
