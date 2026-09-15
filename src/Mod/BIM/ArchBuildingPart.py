@@ -851,6 +851,7 @@ class ViewProviderBuildingPart:
     def attach(self, vobj):
 
         self.Object = vobj.Object
+        self.clip = None
         from pivy import coin
 
         self.sep = coin.SoGroup()
@@ -1064,11 +1065,7 @@ class ViewProviderBuildingPart:
             if hasattr(vobj, "CutView") and hasattr(vobj, "CutMargin"):
                 from ArchSectionPlane import _handle_view_clipping
 
-                _handle_view_clipping(
-                    vobj,
-                    vobj.Object.Group,
-                    vobj.Object.Placement.multVec(FreeCAD.Vector(0, 0, 1)),
-                )
+                _handle_view_clipping(vobj, vobj.Object.Group)
         elif prop == "Visibility":
             # turn clipping off when turning the object off
             if hasattr(vobj, "Visibility") and not (vobj.Visibility) and hasattr(vobj, "CutView"):

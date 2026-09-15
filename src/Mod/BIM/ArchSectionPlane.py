@@ -1022,7 +1022,7 @@ def closeViewer(name):
             sw.close()
 
 
-def _handle_view_clipping(vobj, group, normal):
+def _handle_view_clipping(vobj, group):
     """
     Helper function also used for BuildingParts.
     CutView and CutMargin properties must be available.
@@ -1034,9 +1034,12 @@ def _handle_view_clipping(vobj, group, normal):
     for o in Draft.get_group_contents(group, walls=True):
         if hasattr(o.ViewObject, "Lighting"):
             o.ViewObject.Lighting = lighting
+    clip_old = vobj.Proxy.clip
+    clip_new = None
     if vobj.CutView:
         clip_new = coin.SoClipPlane()
         clip_new.on.setValue(True)
+        normal = vobj.Object.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
         mp = vobj.Object.Placement.Base
         mp = DraftVecUtils.project(mp, normal)
         dist = mp.Length  # - 0.1 # to not clip exactly on the section object
@@ -1051,12 +1054,11 @@ def _handle_view_clipping(vobj, group, normal):
         clip_new.plane.setValue(plane)
     for view in views:
         sg = view.getSceneGraph()
-        clip_old = gui_utils.find_coin_node(sg, coin.SoClipPlane)
-        # Always remove existing clip:
         if clip_old is not None:
             sg.removeChild(clip_old)
-        if vobj.CutView:
+        if clip_new is not None:
             sg.insertChild(clip_new, 0)
+    vobj.Proxy.clip = clip_new
 
 
 class _SectionPlane:
@@ -1179,10 +1181,6 @@ class _SectionPlane:
         obj.Shape = p
         self.svgcache = None
         self.shapecache = None
-
-    def getNormal(self, obj):
-
-        return obj.Shape.Faces[0].normalAt(0, 0)
 
     def dumps(self):
 
@@ -1344,6 +1342,7 @@ class _ViewProviderSectionPlane:
     def attach(self, vobj):
 
         self.Object = vobj.Object
+        self.clip = None
         self.main_transform = gui_utils.find_coin_node(vobj.RootNode, coin.SoTransform)
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
@@ -1545,11 +1544,7 @@ class _ViewProviderSectionPlane:
             self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["CutView", "CutMargin"]:
             if hasattr(vobj, "CutView") and hasattr(vobj, "CutMargin"):
-                _handle_view_clipping(
-                    vobj,
-                    vobj.Object.Objects,
-                    vobj.Object.Proxy.getNormal(vobj.Object),
-                )
+                _handle_view_clipping(vobj, vobj.Object.Objects)
         elif prop == "ShowLabel":
             if vobj.ShowLabel:
                 self.txt.string = vobj.Object.Label or " "
