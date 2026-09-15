@@ -225,12 +225,15 @@ class DressupPathBoundaryViewProvider(object):
         return True
 
     def setEdit(self, vobj, mode=0):
-        panel = TaskPanel(vobj.Object, self)
-        self.setupTaskPanel(panel)
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            panel = TaskPanel(vobj.Object, self)
+            self.setupTaskPanel(panel)
         return True
 
     def unsetEdit(self, vobj, mode=0):
-        if self.panel:
+        if mode == 0 and self.panel:
             self.panel.abort()
 
     def setupTaskPanel(self, panel):
