@@ -71,21 +71,6 @@ using namespace PartGui;
 
 namespace
 {
-QString translate(const char* text)
-{
-    return QCoreApplication::translate("PartGui::TaskLinkArrayParameters", text);
-}
-
-QString objectLabel(App::DocumentObject* obj)
-{
-    QString label = QString::fromUtf8(obj->Label.getValue());
-    if (label.isEmpty()) {
-        label = QString::fromLatin1(obj->getNameInDocument());
-    }
-
-    return label;
-}
-
 std::string stripToSelectableSubName(std::string subName)
 {
     if (!subName.empty() && subName.back() == '.') {
@@ -116,64 +101,10 @@ std::vector<std::string> cleanSubNames(std::vector<std::string> subNames)
     return subNames;
 }
 
-QString taskTitle(Part::LinkArray* array)
-{
-    if (freecad_cast<Part::LinkArrayCircular*>(array)) {
-        return translate("Circular Link Array");
-    }
-    if (freecad_cast<Part::LinkArrayPath*>(array)) {
-        return translate("Path Link Array");
-    }
-    if (freecad_cast<Part::LinkArrayPoint*>(array)) {
-        return translate("Point Link Array");
-    }
-
-    if (freecad_cast<Part::LinkArrayPolar*>(array)) {
-        return translate("Polar Link Array");
-    }
-
-    return translate("Linear Link Array");
-}
-
-const char* taskIcon(Part::LinkArray* array)
-{
-    if (freecad_cast<Part::LinkArrayCircular*>(array)) {
-        return "Part_CircularLinkArray";
-    }
-    if (freecad_cast<Part::LinkArrayPath*>(array)) {
-        return "Part_PathLinkArray";
-    }
-    if (freecad_cast<Part::LinkArrayPoint*>(array)) {
-        return "Part_PointLinkArray";
-    }
-    if (freecad_cast<Part::LinkArrayPolar*>(array)) {
-        return "Part_PolarLinkArray";
-    }
-    return "LinkArray";
-}
-
-Base::Placement arrayGlobalPlacement(const Part::LinkArray* array)
-{
-    if (!array) {
-        return {};
-    }
-
-    return App::GeoFeature::getGlobalPlacement(array);
-}
-
-void hideArraySource(App::DocumentObject* obj)
-{
-    if (obj) {
-        obj->Visibility.setValue(false);
-    }
-}
-
 Gui::View3DInventorViewer* active3DViewer()
 {
-    if (auto* view = Gui::getMainWindow()->activeWindow()) {
-        if (view->isDerivedFrom<Gui::View3DInventor>()) {
-            return static_cast<Gui::View3DInventor*>(view)->getViewer();
-        }
+    if (auto* view = freecad_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow())) {
+        return view->getViewer();
     }
 
     return nullptr;
@@ -181,7 +112,7 @@ Gui::View3DInventorViewer* active3DViewer()
 
 bool isSuppressed(App::DocumentObject* obj)
 {
-    auto* suppressible = obj ? obj->getExtensionByType<App::SuppressibleExtension>(true) : nullptr;
+    auto* suppressible = obj ? obj->getExtension<App::SuppressibleExtension>() : nullptr;
     return suppressible && suppressible->Suppressed.getValue();
 }
 
@@ -241,34 +172,45 @@ void showLinkArrayTask(App::DocumentObject* object)
     Gui::Control().showDialog(new PartGui::TaskDlgLinkArrayParameters(array));
 }
 
-void showLinkArrayLinearTask(App::DocumentObject* object)
-{
-    showLinkArrayTask(object);
-}
-
-void showLinkArrayPathTask(App::DocumentObject* object)
-{
-    showLinkArrayTask(object);
-}
-
-void showLinkArrayPointTask(App::DocumentObject* object)
-{
-    showLinkArrayTask(object);
-}
-
-void showLinkArrayCircularTask(App::DocumentObject* object)
-{
-    showLinkArrayTask(object);
-}
-
-void showLinkArrayPolarTask(App::DocumentObject* object)
-{
-    showLinkArrayTask(object);
-}
-
 }  // namespace PartGui
 
 /* TRANSLATOR PartGui::TaskLinkArrayParameters */
+
+QString TaskLinkArrayParameters::taskTitle(Part::LinkArray* array)
+{
+    if (array->isDerivedFrom<Part::LinkArrayCircular>()) {
+        return tr("Circular Link Array");
+    }
+    if (array->isDerivedFrom<Part::LinkArrayPath>()) {
+        return tr("Path Link Array");
+    }
+    if (array->isDerivedFrom<Part::LinkArrayPoint>()) {
+        return tr("Point Link Array");
+    }
+
+    if (array->isDerivedFrom<Part::LinkArrayPolar>()) {
+        return tr("Polar Link Array");
+    }
+
+    return tr("Linear Link Array");
+}
+
+const char* TaskLinkArrayParameters::taskIcon(Part::LinkArray* array)
+{
+    if (array->isDerivedFrom<Part::LinkArrayCircular>()) {
+        return "Part_CircularLinkArray";
+    }
+    if (array->isDerivedFrom<Part::LinkArrayPath>()) {
+        return "Part_PathLinkArray";
+    }
+    if (array->isDerivedFrom<Part::LinkArrayPoint>()) {
+        return "Part_PointLinkArray";
+    }
+    if (array->isDerivedFrom<Part::LinkArrayPolar>()) {
+        return "Part_PolarLinkArray";
+    }
+    return "LinkArray";
+}
 
 TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)), taskTitle(array), true, parent)
@@ -283,14 +225,12 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget
     applyInitialSelection();
     Gui::View3DInventorViewer* viewer = active3DViewer();
 
-    if (freecad_cast<Part::LinkArrayCircular*>(array)) {
+    if (auto* circular = freecad_cast<Part::LinkArrayCircular*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
-        auto* circular = static_cast<Part::LinkArrayCircular*>(array);
         setupCircularPatternParameterUI(
             proxy,
             ui->parametersWidgetPlaceholder,
             this,
-            500,
             &circular->Axis,
             &circular->RadialDistance,
             &circular->TangentialDistance,
@@ -300,14 +240,12 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget
         setupInstanceControls(viewer);
         return;
     }
-    if (freecad_cast<Part::LinkArrayPath*>(array)) {
+    if (auto* path = freecad_cast<Part::LinkArrayPath*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
-        auto* path = static_cast<Part::LinkArrayPath*>(array);
         setupPathPatternParameterUI(
             proxy,
             ui->parametersWidgetPlaceholder,
             this,
-            500,
             &path->Path,
             &path->Count,
             &path->SpacingMode,
@@ -320,9 +258,8 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget
         setupInstanceControls(viewer);
         return;
     }
-    if (freecad_cast<Part::LinkArrayPoint*>(array)) {
+    if (auto* point = freecad_cast<Part::LinkArrayPoint*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
-        auto* point = static_cast<Part::LinkArrayPoint*>(array);
         setupPointPatternParameterUI(proxy, ui->parametersWidgetPlaceholder, this, &point->PointObject);
         setupInstanceControls(viewer);
         return;
@@ -333,10 +270,9 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget
         ui->parametersWidgetPlaceholder,
         ui->parametersWidgetPlaceholder2,
         viewer,
-        this,
-        500
+        this
     );
-    if (!freecad_cast<Part::LinkArrayLinear*>(array)) {
+    if (!array->isDerivedFrom<Part::LinkArrayLinear>()) {
         ui->parametersWidgetPlaceholder2->hide();
     }
     updatePatternSpacingLabels();
@@ -376,12 +312,14 @@ void TaskLinkArrayParameters::setupLinkedObjectButton()
 void TaskLinkArrayParameters::updateLinkedObjectButton()
 {
     if (linkedObjectSelectionMode) {
-        ui->linkedObjectButton->setText(translate("Selecting…"));
+        ui->linkedObjectButton->setText(tr("Selecting…"));
         return;
     }
 
     App::DocumentObject* linked = getSelectedLinkedObject();
-    ui->linkedObjectButton->setText(linked ? objectLabel(linked) : translate("Select Object"));
+    ui->linkedObjectButton->setText(
+        linked ? QString::fromUtf8(linked->getLabelOrName()) : tr("Select Object")
+    );
 }
 
 void TaskLinkArrayParameters::enterLinkedObjectSelectionMode()
@@ -398,7 +336,7 @@ void TaskLinkArrayParameters::enterLinkedObjectSelectionMode()
     attachSelection();
     Gui::Selection().clearSelection();
     updateLinkedObjectButton();
-    Gui::getMainWindow()->showMessage(translate("Select an object to link"));
+    Gui::getMainWindow()->showMessage(tr("Select an object to link"));
 }
 
 void TaskLinkArrayParameters::exitLinkedObjectSelectionMode()
@@ -429,7 +367,7 @@ void TaskLinkArrayParameters::applyLinkedObjectSelection(App::DocumentObject* li
 
     setupPatternTransaction();
     array->LinkedObject.setValue(linked);
-    hideArraySource(linked);
+    linked->Visibility.setValue(false);
     recomputePatternFeature();
     updatePatternSpacingLabels();
     updateLinkedObjectButton();
@@ -556,7 +494,7 @@ void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
         return;
     }
 
-    auto* suppressible = elements[idx]->getExtensionByType<App::SuppressibleExtension>(true);
+    auto* suppressible = elements[idx]->getExtension<App::SuppressibleExtension>();
     if (!suppressible || suppressible->Suppressed.getValue() == suppress) {
         return;
     }
@@ -582,25 +520,21 @@ void TaskLinkArrayParameters::fillDirectionCombo(
     combo.clear();
 
     App::PropertyLinkSub defaultAxis;
-    const bool isLinear = freecad_cast<Part::LinkArrayLinear*>(array);
+    const bool isLinear = array->isDerivedFrom<Part::LinkArrayLinear>();
     const bool isSecondDirection = direction == Part::LinearPatternDirection::Second;
 
     if (isLinear && !isSecondDirection) {
-        combo.addLink(
-            defaultAxis,
-            translate("Object X-axis"),
-            PatternParametersWidget::DefaultDirectionUserData
-        );
+        combo.addLink(defaultAxis, tr("Object X-axis"), PatternParametersWidget::DefaultDirectionUserData);
         combo.addLink(
             nullptr,
             "Y_Axis",
-            translate("Object Y-axis"),
+            tr("Object Y-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
         combo.addLink(
             nullptr,
             "Z_Axis",
-            translate("Object Z-axis"),
+            tr("Object Z-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
     }
@@ -608,18 +542,14 @@ void TaskLinkArrayParameters::fillDirectionCombo(
         combo.addLink(
             nullptr,
             "X_Axis",
-            translate("Object X-axis"),
+            tr("Object X-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
-        combo.addLink(
-            defaultAxis,
-            translate("Object Y-axis"),
-            PatternParametersWidget::DefaultDirectionUserData
-        );
+        combo.addLink(defaultAxis, tr("Object Y-axis"), PatternParametersWidget::DefaultDirectionUserData);
         combo.addLink(
             nullptr,
             "Z_Axis",
-            translate("Object Z-axis"),
+            tr("Object Z-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
     }
@@ -627,26 +557,22 @@ void TaskLinkArrayParameters::fillDirectionCombo(
         combo.addLink(
             nullptr,
             "X_Axis",
-            translate("Object X-axis"),
+            tr("Object X-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
         combo.addLink(
             nullptr,
             "Y_Axis",
-            translate("Object Y-axis"),
+            tr("Object Y-axis"),
             PatternParametersWidget::ObjectDirectionUserData
         );
-        combo.addLink(
-            defaultAxis,
-            translate("Object Z-axis"),
-            PatternParametersWidget::DefaultDirectionUserData
-        );
+        combo.addLink(defaultAxis, tr("Object Z-axis"), PatternParametersWidget::DefaultDirectionUserData);
     }
 
     combo.addLink(
         nullptr,
         std::string(),
-        translate("Select reference…"),
+        tr("Select reference…"),
         PatternParametersWidget::SelectReferenceUserData
     );
 }
@@ -669,18 +595,17 @@ void TaskLinkArrayParameters::setupPatternTransaction()
 
 void TaskLinkArrayParameters::recomputePatternFeature()
 {
-    if (array && array->getDocument()) {
-        if (array->getDocument()->recomputeFeature(array)) {
-            array->purgeTouched();
-        }
+    if (array && array->getDocument() && array->getDocument()->recomputeFeature(array)) {
+        array->purgeTouched();
     }
+    // vector<bool> does not satisfy the C++20 output_range requirements of ranges::fill.
     std::fill(instanceControlCentersValid.begin(), instanceControlCentersValid.end(), false);
     updateInstanceControls();
 }
 
 Base::Vector3d TaskLinkArrayParameters::getPatternStartPoint() const
 {
-    return arrayGlobalPlacement(array).getPosition();
+    return array ? App::GeoFeature::getGlobalPlacement(array).getPosition() : Base::Vector3d();
 }
 
 Base::Vector3d TaskLinkArrayParameters::getLinearPatternFallbackDirection(
@@ -719,14 +644,19 @@ Base::Vector3d TaskLinkArrayParameters::transformLinearPatternDirection(
     const Base::Vector3d& direction
 ) const
 {
+    if (!array) {
+        return direction;
+    }
     Base::Vector3d transformed;
-    arrayGlobalPlacement(array).getRotation().multVec(direction, transformed);
+    App::GeoFeature::getGlobalPlacement(array).getRotation().multVec(direction, transformed);
     return transformed;
 }
 
 void TaskLinkArrayParameters::transformPolarPatternAxis(gp_Ax2& axis) const
 {
-    axis.Transform(Part::TopoShape::convert(arrayGlobalPlacement(array).toMatrix()));
+    if (array) {
+        axis.Transform(Part::TopoShape::convert(App::GeoFeature::getGlobalPlacement(array).toMatrix()));
+    }
 }
 
 void TaskLinkArrayParameters::onReferenceSelectionRequested()
@@ -743,15 +673,20 @@ void TaskLinkArrayParameters::enterReferenceSelectionMode()
     referenceSelectionMode = true;
     attachSelection();
     Gui::Selection().clearSelection();
-    Gui::getMainWindow()->showMessage(
-        freecad_cast<Part::LinkArrayPath*>(array)
-            ? translate("Select connected path edges")
-            : (freecad_cast<Part::LinkArrayPoint*>(array)
-                   ? translate("Select a sketch or shape containing points")
-                   : (freecad_cast<Part::LinkArrayPolar*>(array)
-                          ? translate("Select a rotation axis")
-                          : translate("Select a direction reference")))
-    );
+    const QString message = [this]() {
+        if (array->isDerivedFrom<Part::LinkArrayPath>()) {
+            return tr("Select connected path edges");
+        }
+        if (array->isDerivedFrom<Part::LinkArrayPoint>()) {
+            return tr("Select a sketch or shape containing points");
+        }
+        if (array->isDerivedFrom<Part::LinkArrayPolar>()
+            || array->isDerivedFrom<Part::LinkArrayCircular>()) {
+            return tr("Select a rotation axis");
+        }
+        return tr("Select a direction reference");
+    }();
+    Gui::getMainWindow()->showMessage(message);
 }
 
 void TaskLinkArrayParameters::onPatternParametersChanged()
@@ -799,12 +734,12 @@ void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& ms
     else {
         App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
         obj = doc ? doc->getObject(msg.pObjectName) : nullptr;
-        if (msg.pSubName && msg.pSubName[0] != '\0') {
+        if (!Base::Tools::isNullOrEmpty(msg.pSubName)) {
             subNames.emplace_back(msg.pSubName);
         }
     }
 
-    if (!obj) {
+    if (!obj || obj == array || obj->isInOutListRecursive(array)) {
         return;
     }
 
@@ -878,22 +813,24 @@ bool TaskLinkArrayParameters::accept()
     try {
         App::DocumentObject* linked = getSelectedLinkedObject();
         if (!linked) {
-            QMessageBox::warning(this, translate("Input Error"), translate("Select an object to link."));
+            QMessageBox::warning(this, tr("Input Error"), tr("Select an object to link."));
             return false;
         }
 
+        setupPatternTransaction();
         array->LinkedObject.setValue(linked);
-        hideArraySource(linked);
+        linked->Visibility.setValue(false);
         applyPatternParameters(array);
-        consumePendingUpdate();
-        recomputePatternFeature();
+        if (!consumePendingUpdate()) {
+            recomputePatternFeature();
+        }
         array->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-        array->getDocument()->abortTransaction();
+        // Keep the creation transaction and its array alive so the user can correct the input.
         QMessageBox::warning(
             this,
-            translate("Input Error"),
+            tr("Input Error"),
             QCoreApplication::translate("Exception", e.what())
         );
         return false;
@@ -904,6 +841,7 @@ bool TaskLinkArrayParameters::accept()
 
 bool TaskLinkArrayParameters::reject()
 {
+    cancelPendingUpdate();
     if (array && array->getDocument()) {
         array->getDocument()->abortTransaction();
         Gui::Command::updateActive();
@@ -936,3 +874,5 @@ bool TaskDlgLinkArrayParameters::reject()
     parameter->exitReferenceSelectionMode();
     return parameter->reject();
 }
+
+#include "moc_TaskLinkArrayParameters.cpp"

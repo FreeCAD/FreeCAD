@@ -55,12 +55,16 @@ class View3DInventorViewer;
 namespace PartGui
 {
 
+void showLinkArrayTask(App::DocumentObject* object);
+
 class PatternInstanceControls;
 
 class PartGuiExport TaskLinkArrayParameters: public Gui::TaskView::TaskBox,
                                              public Gui::SelectionObserver,
                                              protected PartGui::TaskPatternParameters
 {
+    Q_OBJECT
+
 public:
     explicit TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent = nullptr);
     ~TaskLinkArrayParameters() override;
@@ -74,6 +78,9 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
+    static QString taskTitle(Part::LinkArray* array);
+    static const char* taskIcon(Part::LinkArray* array);
+
     App::DocumentObject* getPatternObject() const override;
     void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) override;
     void onReferenceSelectionRequested() override;

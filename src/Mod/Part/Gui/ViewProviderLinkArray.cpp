@@ -30,10 +30,7 @@
 #include <Mod/Part/App/LinkArrayPoint.h>
 #include <Mod/Part/App/LinkArrayPolar.h>
 
-namespace PartGui
-{
-void showLinkArrayTask(App::DocumentObject* object);
-}
+#include "TaskLinkArrayParameters.h"
 
 using namespace PartGui;
 
@@ -51,16 +48,16 @@ bool ViewProviderLinkArray::doubleClicked()
 
 QIcon ViewProviderLinkArray::getIcon() const
 {
-    if (freecad_cast<Part::LinkArrayCircular*>(getObject())) {
+    if (getObject()->isDerivedFrom<Part::LinkArrayCircular>()) {
         return Gui::BitmapFactory().pixmap("Part_CircularLinkArray");
     }
-    if (freecad_cast<Part::LinkArrayPath*>(getObject())) {
+    if (getObject()->isDerivedFrom<Part::LinkArrayPath>()) {
         return Gui::BitmapFactory().pixmap("Part_PathLinkArray");
     }
-    if (freecad_cast<Part::LinkArrayPoint*>(getObject())) {
+    if (getObject()->isDerivedFrom<Part::LinkArrayPoint>()) {
         return Gui::BitmapFactory().pixmap("Part_PointLinkArray");
     }
-    if (freecad_cast<Part::LinkArrayPolar*>(getObject())) {
+    if (getObject()->isDerivedFrom<Part::LinkArrayPolar>()) {
         return Gui::BitmapFactory().pixmap("Part_PolarLinkArray");
     }
     return Gui::BitmapFactory().pixmap("LinkArray");

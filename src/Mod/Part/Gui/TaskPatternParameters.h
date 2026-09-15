@@ -84,14 +84,12 @@ protected:
         QWidget* firstPlaceholder,
         QWidget* secondPlaceholder,
         Gui::View3DInventorViewer* viewer,
-        QObject* signalContext,
-        int updateViewTimeout
+        QObject* signalContext
     );
     void setupCircularPatternParameterUI(
         QWidget* parent,
         QWidget* placeholder,
         QObject* signalContext,
-        int updateViewTimeout,
         App::PropertyLinkSub* axis,
         App::PropertyLength* radialDistance,
         App::PropertyLength* tangentialDistance,
@@ -102,7 +100,6 @@ protected:
         QWidget* parent,
         QWidget* placeholder,
         QObject* signalContext,
-        int updateViewTimeout,
         App::PropertyLinkSub* path,
         App::PropertyIntegerConstraint* count,
         App::PropertyEnumeration* spacingMode,
@@ -123,6 +120,7 @@ protected:
     void updatePatternSpacingLabels();
     void kickUpdateViewTimer() const;
     bool consumePendingUpdate();
+    void cancelPendingUpdate();
 
     void applyPatternParameters(App::DocumentObject* pattern) const;
 
@@ -158,6 +156,7 @@ protected:
 private:
     void bindPatternProperties();
     void onUpdateViewTimer();
+    void setupUpdateViewTimer(QObject* signalContext);
 
 private:
     PatternParametersWidget* parametersWidget = nullptr;
