@@ -124,6 +124,12 @@ class Constraint(Persistence):
     Name: str = ""
     """Name of the constraint"""
 
+    File: str = ""
+    """Optional source file of a Group constraint."""
+
+    FileHeight: bool = False
+    """Whether the source file is fitted to the handle by height instead of width."""
+
     Driving: Final[bool] = False
     """Driving Constraint"""
 

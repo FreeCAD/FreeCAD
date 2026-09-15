@@ -653,6 +653,47 @@ void Constraint::truncateElements(size_t newSize)
     }
 }
 
+std::string Constraint::getFile() const
+{
+    const auto data = nlohmann::json::parse(MetaData, nullptr, false);
+    if (data.is_object() && data.contains("File") && data["File"].is_string()) {
+        return data["File"].get<std::string>();
+    }
+    return {};
+}
+
+void Constraint::setFile(const std::string& file)
+{
+    auto data = nlohmann::json::parse(MetaData, nullptr, false);
+    if (!data.is_object()) {
+        data = nlohmann::json::object();
+    }
+    if (file.empty()) {
+        data.erase("File");
+        data.erase("FileHeight");
+    }
+    else {
+        data["File"] = file;
+    }
+    MetaData = data.empty() ? std::string() : data.dump();
+}
+
+bool Constraint::getFileHeight() const
+{
+    const auto data = nlohmann::json::parse(MetaData, nullptr, false);
+    return data.is_object() && data.contains("FileHeight") && data["FileHeight"] == true;
+}
+
+void Constraint::setFileHeight(bool height)
+{
+    auto data = nlohmann::json::parse(MetaData, nullptr, false);
+    if (!data.is_object()) {
+        data = nlohmann::json::object();
+    }
+    data["FileHeight"] = height;
+    MetaData = data.dump();
+}
+
 std::string Constraint::getText() const
 {
     if (MetaData.empty()) {

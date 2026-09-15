@@ -657,6 +657,17 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
+    if (it && items.size() == 1) {
+        const auto* constraint = it->sketch->Constraints[it->ConstraintNbr];
+        if (constraint && constraint->Type == Sketcher::Group && !constraint->getFile().empty()) {
+            auto* view = dynamic_cast<ViewProviderSketch*>(doc->getViewProvider(it->sketch));
+            const int index = it->ConstraintNbr;
+            menu.addAction(tr("Reload From File"), this, [view, index]() {
+                SketcherGui::reloadFileGroup(view, index);
+            });
+        }
+    }
+
     QAction* driven =
         menu.addAction(tr("Toggle Driving/Reference"), this, &ConstraintView::updateDrivingStatus);
     driven->setEnabled(isToggleDriving);

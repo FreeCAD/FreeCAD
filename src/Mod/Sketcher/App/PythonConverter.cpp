@@ -26,6 +26,7 @@
 #include <boost/format.hpp>
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -106,7 +107,7 @@ std::string PythonConverter::convert(
         return command;
     };
 
-    std::string command = boost::str(boost::format("lastGeoId = len(ActiveSketch.Geometry)\n"));
+    std::string command = boost::str(boost::format("lastGeoId = len(%s.Geometry)\n") % doc);
 
     // Adds a list of consecutive geometries of a same construction type to the generating command
     auto addToCommands = [&command,
@@ -600,6 +601,10 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
 
             if (constraint->Type == Sketcher::Group) {
                 res = "Group', " + list;
+                if (!constraint->getFile().empty() || !constraint->isActive) {
+                    res += ", \"" + Base::Tools::escapeEncodeString(constraint->getFile()) + "\", "
+                        + (constraint->getFileHeight() ? "True" : "False");
+                }
             }
             else {
                 auto escapeForPython = [](const std::string& input) {
