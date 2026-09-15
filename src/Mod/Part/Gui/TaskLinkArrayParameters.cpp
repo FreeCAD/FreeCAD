@@ -47,7 +47,6 @@
 #include <Gui/ComboLinks.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Tree.h>
 #include <Gui/MDIView.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
@@ -141,7 +140,7 @@ std::optional<Base::Vector3d> viewProviderCenter(
 namespace PartGui
 {
 
-void showLinkArrayTask(App::DocumentObject* object)
+void showLinkArrayTask(App::DocumentObject* object, const App::SubObjectT& reference)
 {
     auto* array = freecad_cast<Part::LinkArray*>(object);
     if (!array) {
@@ -151,7 +150,7 @@ void showLinkArrayTask(App::DocumentObject* object)
         return;
     }
 
-    Gui::Control().showDialog(new PartGui::TaskDlgLinkArrayParameters(array));
+    Gui::Control().showDialog(new PartGui::TaskDlgLinkArrayParameters(array, reference));
 }
 
 }  // namespace PartGui
@@ -887,27 +886,12 @@ bool TaskLinkArrayParameters::reject()
 
 /* TRANSLATOR PartGui::TaskDlgLinkArrayParameters */
 
-TaskDlgLinkArrayParameters::TaskDlgLinkArrayParameters(Part::LinkArray* array)
+TaskDlgLinkArrayParameters::TaskDlgLinkArrayParameters(
+    Part::LinkArray* array,
+    const App::SubObjectT& reference
+)
 {
-    // Preserve the selected occurrence before the editor changes the selection.
-    App::DocumentObject* root = array;
-    std::string sub;
-    const auto links = App::GetApplication().getLinksTo(array, App::GetLinkRecursive);
-    for (const auto& selection : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
-        if (!selection.pObject) {
-            continue;
-        }
-        auto* selected = selection.pObject->getSubObject(selection.SubName);
-        if (selected == array || links.contains(selected)) {
-            root = selection.pObject;
-            sub = selection.SubName;
-            break;
-        }
-    }
-    Gui::TreeWidget::checkTopParent(root, sub);
-    const App::SubObjectT reference(root, sub.c_str());
-
-    associateToObject3dView(root);
+    associateToObject3dView(reference.getObject());
     setAutoCloseOnDeletedDocument(true);
     setAutoCloseOnTransactionChange(true);
     parameter = new TaskLinkArrayParameters(array, reference);
