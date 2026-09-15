@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """
 Zigzag facing toolpath generator.
 
@@ -30,7 +28,7 @@ across the polygon in alternating directions, creating a continuous zigzag patte
 
 import FreeCAD
 import Path
-from . import facing_common
+import math
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -58,7 +56,6 @@ def _create_link(
     Returns:
         List of Path.Command objects for the link
     """
-    import math
 
     P = prev_seg["end"]
     Q = next_seg["start"]
@@ -205,11 +202,10 @@ def zigzag(
     link_mode="arc",
     link_radius=None,
 ):
+    from . import facing_common
 
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5
-
-    import math
 
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
     primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
@@ -239,21 +235,6 @@ def zigzag(
     tool_radius = tool_diameter / 2.0
     stepover_distance = tool_diameter * (stepover_percent / 100.0)
 
-    # Guarantee full coverage at high stepover – identical to bidirectional/directional
-    if stepover_percent >= 99.9 and step_positions:
-        min_covered = min(step_positions) - tool_radius
-        max_covered = max(step_positions) + tool_radius
-
-        added = False
-        if max_covered < max_t - 1e-4:
-            step_positions.append(step_positions[-1] + stepover_distance)
-            added = True
-        if min_covered > min_t + 1e-4:
-            step_positions.insert(0, step_positions[0] - stepover_distance)
-            added = True
-        if added:
-            Path.Log.info("Zigzag: Added extra pass(es) for full coverage at ≥100% stepover")
-
     # Reverse only reverses traversal order (same positions set as reverse=False, identical coverage)
     if reverse:
         step_positions = step_positions[::-1]
@@ -267,14 +248,13 @@ def zigzag(
         milling_direction == "climb"
     ) ^ reverse  # True → negative primary for first pass
 
-    total_extension = (
-        pass_extension
-        + tool_radius
-        + facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
-    )
+    total_extension = pass_extension + tool_radius
     start_s = min_s - total_extension
     end_s = max_s + total_extension
+
     s_mid = (min_s + max_s) / 2.0
+    if start_s > s_mid or end_s < s_mid:
+        step_positions = []
 
     segments = []
 
