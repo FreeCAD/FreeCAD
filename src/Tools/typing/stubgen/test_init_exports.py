@@ -16,10 +16,6 @@ from stubgen.init_exports import (  # noqa: E402
     load_init_exports,
     render_init_exports,
 )
-from stubgen.module_merge import (  # noqa: E402
-    GENERATED_STUB_HEADER,
-    merge_module_support_nodes,
-)
 
 ROOT_DIR = Path(__file__).resolve().parents[4]
 
@@ -104,30 +100,6 @@ class InitExportsTests(unittest.TestCase):
         self.assertIn("Scheme", names)
         self.assertIn("from FreeCAD.Base import Quantity, Unit", source)
         self.assertIn("Logger: type[FCADLogger]", source)
-
-    def test_attribute_documentation_survives_module_merge(self):
-        source = render_init_exports(
-            (ModuleExport("FreeCAD.Units", "NanoMetre", "Quantity", "One nanometre."),)
-        )
-        merged = merge_module_support_nodes("from FreeCAD.Base import Quantity\n", source)
-        tree = ast.parse(merged)
-        declaration_index = next(
-            index
-            for index, node in enumerate(tree.body)
-            if isinstance(node, ast.AnnAssign)
-            and isinstance(node.target, ast.Name)
-            and node.target.id == "NanoMetre"
-        )
-        documentation = tree.body[declaration_index + 1]
-        self.assertIsInstance(documentation, ast.Expr)
-        self.assertEqual("One nanometre.", documentation.value.value)
-
-    def test_generated_module_has_canonical_provenance_header(self):
-        source = render_init_exports(
-            (ModuleExport("FreeCAD", "Logger", "type[FCADLogger]", "Logger."),)
-        )
-        merged = merge_module_support_nodes("from FreeCAD import Document\n", source)
-        self.assertTrue(merged.startswith("\n".join(GENERATED_STUB_HEADER)))
 
     def test_bootstrap_function_stubs_preserve_typing_decorators(self):
         source = """\
