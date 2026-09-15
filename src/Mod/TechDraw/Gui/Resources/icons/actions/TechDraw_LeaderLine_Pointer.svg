@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="58.703045"
+   height="58.790672"
+   id="svg5821"
+   version="1.1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><defs
+     id="defs5823" /><metadata
+     id="metadata5826"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:creator><cc:Agent><dc:title>[WandererFan]</dc:title></cc:Agent></dc:creator><dc:date>2016-04-27</dc:date><dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation><dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher><dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension_Diameter.svg</dc:identifier><dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights><cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license><dc:contributor><cc:Agent><dc:title>[agryson] Alexander Gryson</dc:title></cc:Agent></dc:contributor><dc:subject><rdf:Bag><rdf:li>double arrow</rdf:li><rdf:li>circle</rdf:li></rdf:Bag></dc:subject></cc:Work></rdf:RDF></metadata><g
+     id="layer1"
+     transform="translate(-0.1784387,-0.18587361)"><g
+       id="crosshair"
+       style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+       transform="translate(-0.8215613,-0.81412639)"><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path9"
+         style="stroke:#2e3436;stroke-width:4;stroke-dasharray:none" /><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path7"
+         style="stroke:#eeeeec;stroke-width:2;stroke-dasharray:none" /></g><g
+       id="g3"
+       transform="matrix(0.72539562,0,0,0.72245666,8.7605835,2.426107)"
+       style="stroke-width:0.999994"><path
+         style="fill:none;stroke:#0b1521;stroke-width:7.99996;stroke-dasharray:none"
+         d="M 9,63.796199 32.290565,40.68676 h 15.999952"
+         id="path2" /><path
+         style="display:inline;fill:#3465a4;stroke:#0b1521;stroke-width:1.99999;stroke-linejoin:round;stroke-dasharray:none"
+         d="M 3.5811389,69.57704 5,56.796232 16,67.79618 Z"
+         id="path1" /><path
+         style="display:inline;fill:none;stroke:#0b1521;stroke-width:7.99996;stroke-linecap:round;stroke-dasharray:none"
+         d="m 58.290487,30.686844 -9.99997,9.999916 9.99997,9.999916"
+         id="path3" /><path
+         style="display:inline;fill:none;stroke:#3465a4;stroke-width:3.99997;stroke-linecap:round;stroke-dasharray:none"
+         d="M 9.1435549,63.768554 32,40.796309 h 16.290517"
+         id="path6" /><path
+         style="fill:none;stroke:#3465a4;stroke-width:3.99997;stroke-linecap:round;stroke-dasharray:none"
+         d="m 58.290487,30.686844 -9.999726,9.999916 9.999726,9.999916"
+         id="path7-9" /><path
+         style="fill:none;stroke:#729fcf;stroke-width:1.99999;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="M 9.3644222,62.012639 30.999635,39.796771 h 16.290517"
+         id="path4" /><path
+         style="fill:none;stroke:#729fcf;stroke-width:1.99999;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 57.290202,29.686856 -9.999726,9.999916 9.999726,9.999916"
+         id="path5" /></g></g></svg>
