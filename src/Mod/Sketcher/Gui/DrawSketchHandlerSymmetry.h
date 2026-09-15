@@ -226,10 +226,9 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         return {
-            {tr("%1 pick axis, edge, or point", "Sketcher Symmetry: hint"), {MouseLeft}},
+            {tr("%1 pick axis, edge, or point", "Sketcher Symmetry: hint"),
+             {{Gui::MouseInput::MouseLeft}}},
         };
     }
 
