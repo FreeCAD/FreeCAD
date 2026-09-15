@@ -242,12 +242,17 @@ void GeneralSettingsWidget::retranslateUi()
     ParameterGrp::handle hGrpNav = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    auto navStyleName
-        = hGrpNav->GetASCII("NavigationStyle", Gui::CADNavigationStyle::getClassTypeId().getName());
+    auto navStyleName = hGrpNav->GetASCII(
+        "NavigationStyle",
+        std::string {Gui::CADNavigationStyle::getClassTypeId().getName()}.c_str()
+    );
     std::map<Base::Type, std::string> styles = Gui::UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
         QByteArray data(style.first.getName());
-        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
+        QString name = QApplication::translate(
+            std::string {style.first.getName()}.c_str(),
+            style.second.c_str()
+        );
         _navigationStyleComboBox->addItem(name, data);
         if (navStyleName == style.first.getName()) {
             _navigationStyleComboBox->setCurrentIndex(_navigationStyleComboBox->count() - 1);

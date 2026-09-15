@@ -459,7 +459,7 @@ void MeshObject::save(
     aWriter.SaveFormat(str, f);
 }
 
-bool MeshObject::load(const char* file, MeshCore::Material* mat)
+bool MeshObject::load(const char* file, MeshCore::Material* mat, std::string* name)
 {
     MeshCore::MeshKernel kernel;
     MeshCore::MeshInput aReader(kernel, mat);
@@ -468,10 +468,20 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
     }
 
     swapKernel(kernel, aReader.GetGroupNames());
+
+    if (name) {
+        *name = aReader.GetObjectName();
+    }
+
     return true;
 }
 
-bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::Material* mat)
+bool MeshObject::load(
+    std::istream& str,
+    MeshCore::MeshIO::Format f,
+    MeshCore::Material* mat,
+    std::string* name
+)
 {
     MeshCore::MeshKernel kernel;
     MeshCore::MeshInput aReader(kernel, mat);
@@ -480,6 +490,11 @@ bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::M
     }
 
     swapKernel(kernel, aReader.GetGroupNames());
+
+    if (name) {
+        *name = aReader.GetObjectName();
+    }
+
     return true;
 }
 

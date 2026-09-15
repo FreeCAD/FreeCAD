@@ -381,11 +381,6 @@ The smallest value is 0.</source>
       <translation>Netgen メッシャーを使用</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>細かさ:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>非常に粗い</translation>
@@ -438,6 +433,11 @@ A value in the range of 0.1-1.</source>
 値の範囲は0.1-1です。</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>細かさ</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -488,7 +488,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>

@@ -44,6 +44,7 @@ from .calculixutils import define_masks
 
 from femmesh import meshsetsgetter
 from femtools import membertools
+from femtools.checksanalysis import check_member_for_solver_calculix
 from femtools.objecttools import ObjectTools
 
 
@@ -56,18 +57,17 @@ class CalculiXTools(ObjectTools):
         self.model_file = ""
 
     def prepare(self):
-        from femtools.checksanalysis import check_member_for_solver_calculix
 
         self._clear_results()
 
+        mesh_obj = membertools.get_mesh_to_solve(self.analysis)
         message = check_member_for_solver_calculix(
             self.analysis,
             self.obj,
-            membertools.get_mesh_to_solve(self.analysis)[0],
+            mesh_obj,
             membertools.AnalysisMember(self.analysis),
         )
 
-        mesh_obj = membertools.get_mesh_to_solve(self.analysis)[0]
         meshdatagetter = meshsetsgetter.MeshSetsGetter(
             self.analysis,
             self.obj,

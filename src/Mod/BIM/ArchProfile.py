@@ -114,21 +114,22 @@ class _Profile(Draft._DraftObject):
         """Rename property OutDiameter to OutsideDiameter and rename property group Draft to Profile"""
 
         if hasattr(obj, "OutDiameter"):
-            # 1v1 to 1v2 changes.
+            # 1v1 to 26v3 changes.
             obj.setPropertyStatus("OutDiameter", "-LockDynamic")
             obj.renameProperty("OutDiameter", "OutsideDiameter")
             obj.setPropertyStatus("OutsideDiameter", "LockDynamic")
             if obj.getGroupOfProperty("OutsideDiameter") == "Draft":
-                self._update_propgroup_1v1_to_1v2(obj)
+                self._update_propgroup_1v1_to_26v3(obj)
             self.execute(obj)  # To use Part::FaceMakerCheese for the face.
             return
         for prop in ("Height", "Size"):
             # Profiles other than the circular tubeprofile have either a Height or Size property.
             if hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Draft":
-                self._update_propgroup_1v1_to_1v2(obj)
+                self._update_propgroup_1v1_to_26v3(obj)
                 return
 
-    def _update_propgroup_1v1_to_1v2(self, obj):
+    def _update_propgroup_1v1_to_26v3(self, obj):
+        # Version 1.1 was followed by version 26.3.
         """Helper function to rename property group Draft to Profile"""
 
         for prop in obj.PropertiesList:
@@ -220,18 +221,28 @@ class _ProfileH(_Profile):
         p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
         p3 = Vector(obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
         p4 = Vector(
-            obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+            obj.WebThickness.Value / 2,
+            (-obj.Height.Value / 2) + obj.FlangeThickness.Value,
+            0,
         )
-        p5 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p5 = Vector(
+            obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
+        )
         p6 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
         p7 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p9 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
         p10 = Vector(
-            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
         )
         p11 = Vector(
-            -obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            (-obj.Height.Value / 2) + obj.FlangeThickness.Value,
+            0,
         )
         p12 = Vector(-obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1])
@@ -320,7 +331,9 @@ class _ProfileRH(_Profile):
             0,
         )
         q3 = Vector(
-            obj.Width.Value / 2 - obj.Thickness.Value, obj.Height.Value / 2 - obj.Thickness.Value, 0
+            obj.Width.Value / 2 - obj.Thickness.Value,
+            obj.Height.Value / 2 - obj.Thickness.Value,
+            0,
         )
         q4 = Vector(
             -obj.Width.Value / 2 + obj.Thickness.Value,
@@ -480,13 +493,19 @@ class _ProfileT(_Profile):
 
         pl = obj.Placement
         p1 = Vector(obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
-        p2 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p2 = Vector(
+            obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
+        )
         p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
         p4 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p5 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p6 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
         p7 = Vector(
-            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
         )
         p8 = Vector(-obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
@@ -603,6 +622,7 @@ class _ProfileTSLOT(_Profile):
             templist2.append(Vector(vec.x * -1, vec.y, vec.z))
         templist = templist + templist2
         templist.append(templist[0])
+        templist.reverse()  # Points need to be in CCW order to get a correct face normal.
         poly = Part.makePolygon(templist)
         hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
         obj.Shape = Part.makeFace([poly, hole], "Part::FaceMakerCheese").Faces[0]
@@ -672,10 +692,14 @@ class ProfileTaskPanel:
         self.comboProfile = QtGui.QComboBox(self.form)
         layout.addWidget(self.comboProfile)
         QtCore.QObject.connect(
-            self.comboCategory, QtCore.SIGNAL("currentTextChanged(QString)"), self.changeCategory
+            self.comboCategory,
+            QtCore.SIGNAL("currentTextChanged(QString)"),
+            self.changeCategory,
         )
         QtCore.QObject.connect(
-            self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile
+            self.comboProfile,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.changeProfile,
         )
         # Read preset profiles and add relevant ones
         self.categories = []

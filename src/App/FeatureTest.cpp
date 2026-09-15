@@ -24,6 +24,8 @@
 
 
 #include <boost/core/ignore_unused.hpp>
+#include <condition_variable>
+#include <mutex>
 #include <sstream>
 
 #include <Base/Console.h>
@@ -42,6 +44,25 @@
 #endif
 
 using namespace App;
+
+namespace
+{
+
+struct AsyncBlockerState
+{
+    std::mutex mutex;
+    std::condition_variable changed;
+    bool started = false;
+    bool proceed = false;
+};
+
+AsyncBlockerState& getAsyncBlockerState()
+{
+    static AsyncBlockerState state;
+    return state;
+}
+
+}  // namespace
 
 
 PROPERTY_SOURCE(App::FeatureTest, App::DocumentObject)
@@ -368,5 +389,49 @@ DocumentObjectExecReturn* FeatureTestAttribute::execute()
         str << "No such attribute '" << Attribute.getValue() << "'";
         throw Base::AttributeError(str.str());
     }
+    return StdReturn;
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(App::FeatureTestAsyncBlocker, App::DocumentObject)
+
+
+FeatureTestAsyncBlocker::FeatureTestAsyncBlocker() = default;
+
+FeatureTestAsyncBlocker::~FeatureTestAsyncBlocker() = default;
+
+void FeatureTestAsyncBlocker::resetBlocker()
+{
+    auto& state = getAsyncBlockerState();
+    std::lock_guard<std::mutex> lock(state.mutex);
+    state.started = false;
+    state.proceed = false;
+}
+
+bool FeatureTestAsyncBlocker::waitUntilStarted(std::chrono::milliseconds timeout)
+{
+    auto& state = getAsyncBlockerState();
+    std::unique_lock<std::mutex> lock(state.mutex);
+    return state.changed.wait_for(lock, timeout, [&state] { return state.started; });
+}
+
+void FeatureTestAsyncBlocker::releaseBlocker()
+{
+    auto& state = getAsyncBlockerState();
+    {
+        std::lock_guard<std::mutex> lock(state.mutex);
+        state.proceed = true;
+    }
+    state.changed.notify_all();
+}
+
+DocumentObjectExecReturn* FeatureTestAsyncBlocker::execute()
+{
+    auto& state = getAsyncBlockerState();
+    std::unique_lock<std::mutex> lock(state.mutex);
+    state.started = true;
+    state.changed.notify_all();
+    state.changed.wait(lock, [&state] { return state.proceed; });
     return StdReturn;
 }

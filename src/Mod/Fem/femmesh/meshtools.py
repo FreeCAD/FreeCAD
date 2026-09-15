@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -277,6 +279,23 @@ def get_element_faces_elements_from_binary_search(bit_pattern_dict):
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append(ele)
     return faces
+
+
+def get_element_edges_elements_from_binary_search(bit_pattern_dict):
+    """get edge element by coincident nodes"""
+    mask_seg2 = {0b11: 1}
+    mask_seg3 = {0b111: 1}
+    vol_dict = {
+        2: mask_seg2,
+        3: mask_seg3,
+    }
+    edges = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                edges.append(ele)
+    return edges
 
 
 def get_element_edges_from_binary_search(
@@ -1576,6 +1595,8 @@ def get_elements_by_references(sets_getter, femobj_ref):
             elem = get_element_volumes_elements_from_binary_search(bit_pattern_dict)
         elif sh.ShapeType == "Face":
             elem = get_element_faces_elements_from_binary_search(bit_pattern_dict)
+        elif sh.ShapeType == "Edge":
+            elem = get_element_edges_elements_from_binary_search(bit_pattern_dict)
 
         result = (sub, elem)
 

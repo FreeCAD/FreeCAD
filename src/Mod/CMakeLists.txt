@@ -14,10 +14,6 @@ if(BUILD_ASSEMBLY)
   add_subdirectory(Assembly)
 endif(BUILD_ASSEMBLY)
 
-if(BUILD_CLOUD)
-    add_subdirectory(Cloud)
-endif(BUILD_CLOUD)
-
 if(BUILD_DRAFT)
   add_subdirectory(Draft)
 endif(BUILD_DRAFT)
@@ -89,10 +85,6 @@ if(BUILD_ROBOT)
       MESSAGE("Due to the missing Eigen3 library the Robot module won't be built")
     endif(EIGEN3_FOUND)
 endif(BUILD_ROBOT)
-
-if(BUILD_SANDBOX)
-    add_subdirectory(Sandbox)
-endif(BUILD_SANDBOX)
 
 if(BUILD_SHOW)
     add_subdirectory(Show)

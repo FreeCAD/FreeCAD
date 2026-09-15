@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2020 Sudhanshu Dubey <sudhanshu.thethunder@gmail.com    *
@@ -173,7 +175,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint displacement
-    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement")
+    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "Displacement")
     con_displacement.References = [
         (lower_tube, "Edge2"),
         (upper_tube, "Edge3"),
@@ -184,7 +186,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_displacement)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     # TODO use point of tube boolean fragment
     con_force.References = [(force_point, "Vertex1")]
     con_force.Force = "5000.0 N"
@@ -193,7 +195,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint contact
-    con_contact = ObjectsFem.makeConstraintContact(doc, "ConstraintContact")
+    con_contact = ObjectsFem.makeConstraintContact(doc, "Contact")
     con_contact.References = [
         (lower_tube, "Face1"),
         (upper_tube, "Face1"),

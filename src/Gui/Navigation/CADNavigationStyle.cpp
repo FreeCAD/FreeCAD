@@ -48,9 +48,9 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
         case NavigationStyle::SELECTION:
             return QT_TR_NOOP("Press left mouse button");
         case NavigationStyle::PANNING:
-            return QT_TR_NOOP("Press middle mouse button");
+            return QT_TR_NOOP("Press middle or ctrl+right mouse button");
         case NavigationStyle::DRAGGING:
-            return QT_TR_NOOP("Press middle+left or middle+right mouse button");
+            return QT_TR_NOOP("Press middle+left, middle+right or shift+right mouse button");
         case NavigationStyle::ZOOMING:
             return QT_TR_NOOP(
                 "Scroll mouse wheel or keep middle button depressed\n"
@@ -82,6 +82,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -115,6 +116,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -208,7 +210,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto* const event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode, this->ctrldown);
+        }
+        else if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }
@@ -267,6 +273,10 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
             }
             break;
         case BUTTON1DOWN:
+        case CTRLDOWN | BUTTON1DOWN:
+            if (newmode == NavigationStyle::INTERACT) {
+                break;
+            }
             // make sure not to change the selection when stopping spinning
             if (curmode == NavigationStyle::SPINNING
                 || (this->lockButton1 && curmode != NavigationStyle::SELECTION)) {
@@ -323,6 +333,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Process when selection button is pressed together with other buttons that could trigger
     // different actions.
     if (this->button1down && (this->button2down || this->button3down)) {
+        clearSelectionStartPosition();
         this->lockButton1 = true;
         processed = true;
     }
@@ -347,7 +358,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
 

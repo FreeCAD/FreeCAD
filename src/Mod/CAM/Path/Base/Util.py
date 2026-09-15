@@ -82,6 +82,8 @@ def setProperty(obj, prop, value):
             value = value.lower() in ["true", "1", "yes", "ok"]
         elif isinstance(attr, int):
             value = int(value, 0)
+    elif isinstance(attr, int) and isinstance(value, float) and value.is_integer():
+        value = int(value)
     if o and name:
         setattr(o, name, value)
 

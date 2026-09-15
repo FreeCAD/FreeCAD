@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -60,6 +62,8 @@ ViewProviderViewSection::ViewProviderViewSection()
     static const char *hgroup = "Surface Hatch";
     static const char *lgroup = "Section Line";
     sPixmap = "TechDraw_TreeSection";
+
+    KeepLabel.setValue(true);
 
     ADD_PROPERTY_TYPE(CutSurfaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
                       fgroup, App::Prop_None, "Set color of the cut surface");

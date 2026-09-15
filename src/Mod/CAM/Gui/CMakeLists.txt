@@ -10,7 +10,11 @@ set (Path_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/Path_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${Path_TR_QRC} ${QM_SRCS})
-qt_add_resources(PathResource_SRCS Resources/Path.qrc ${Path_TR_QRC})
+qt_add_resources(PathResource_SRCS
+    Resources/Path.qrc
+    ${Path_TR_QRC}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
 
@@ -84,11 +88,9 @@ if (MSVC)
     target_compile_options(PathGui PRIVATE /wd4273)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(PathGui)
-endif()
+target_compile_warn_error(PathGui)
 
-SET_BIN_DIR(PathGui PathGui /Mod/CAM)
+SET_BIN_DIR(PathGui)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/CAM" ${PathGuiIcon_SVG})

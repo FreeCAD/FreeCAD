@@ -251,6 +251,73 @@ class TestDraftGeomUtils(test_base.DraftTestCaseNoDoc):
         wire.Orientation = "Reversed"
         self.check_wire(wire)
 
+    def test_make_segment_face_repairs_crossed_connectors(self):
+        """The segment face builder should retry with the alternate endpoint pairing."""
+        operation = "DraftGeomUtils._make_segment_face crossed connectors"
+        _msg("  Test '{}'".format(operation))
+
+        edge1 = Part.makeLine(Vector(10369.55, 6924.675, 0), Vector(10077.45, 6924.675, 0))
+        edge2 = Part.makeLine(Vector(10175.875, 7118.35, 0), Vector(10271.125, 7118.35, 0))
+
+        default_start = Part.LineSegment(edge1.Vertexes[0].Point, edge2.Vertexes[0].Point).toShape()
+        default_end = Part.LineSegment(edge1.Vertexes[-1].Point, edge2.Vertexes[-1].Point).toShape()
+        default_face = Part.Face(
+            Part.Wire(edge1.Edges + [default_start] + edge2.Edges + [default_end])
+        )
+        self.assertTrue(
+            default_start.section(default_end).Vertexes,
+            "The default connector pairing should reproduce the crossed-strip case.",
+        )
+        self.assertFalse(default_face.isValid(), "The default face should be invalid.")
+
+        fixed_face = DraftGeomUtils.bind(edge1, edge2)
+        self.assertIsNotNone(fixed_face, "The repaired segment face should be created.")
+        self.assertTrue(fixed_face.isValid(), "The repaired segment face should be valid.")
+        self.assertAlmostEqual(
+            fixed_face.Area,
+            37510.005625,
+            places=2,
+            msg="The repaired segment face area is incorrect.",
+        )
+
+    def test_bind_repairs_collinear_segment_face_for_extrusion(self):
+        """A segment-bound face should produce a valid solid."""
+        points = [
+            Vector(0.0, y, 0.0)
+            for y in (
+                -11969.75,
+                -10979.15,
+                -9201.15,
+                -6902.45,
+                -5734.05,
+                -4514.85,
+                -2870.2,
+                -1092.2,
+                0.0,
+            )
+        ]
+        wire = Part.Wire([Part.makeLine(start, end) for start, end in zip(points[:-1], points[1:])])
+        width = 120.65
+        offset = Vector(-width, 0.0, 0.0)
+        offset_args = {
+            "widthList": [width] * len(wire.Edges),
+            "alignList": ["Right"] * len(wire.Edges),
+            "normal": Vector(0.0, 0.0, 1.0),
+            "basewireOffset": [0.0] * len(wire.Edges),
+            "wireNedge": True,
+        }
+        outer_wire = DraftGeomUtils.offsetWire(
+            wire, offset, bind=False, occ=False, offsetMode=None, **offset_args
+        )[0]
+        base_wire = DraftGeomUtils.offsetWire(
+            wire, offset, bind=False, occ=False, offsetMode="BasewireMode", **offset_args
+        )[0]
+
+        face = DraftGeomUtils.bind(base_wire, outer_wire, per_segment=True)
+
+        self.assertIsNotNone(face)
+        self.assertTrue(face.extrude(Vector(0.0, 0.0, 3000.0)).isValid())
+
 
 # suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestDraftGeomUtils)
 # unittest.TextTestRunner().run(suite)

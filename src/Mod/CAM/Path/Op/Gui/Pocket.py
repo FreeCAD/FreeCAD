@@ -29,7 +29,7 @@ import Path.Op.Pocket as PathPocket
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

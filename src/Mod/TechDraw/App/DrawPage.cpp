@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -314,6 +316,10 @@ void DrawPage::requestPaint(void) { signalGuiPaint(this); }
 void DrawPage::onDocumentRestored()
 {
     if (canUpdate()) {
+        TechDraw::DrawTemplate* tmplte = dynamic_cast<TechDraw::DrawTemplate*>(Template.getValue());
+        if (tmplte) {
+            tmplte->recomputeFeature();
+        }
         updateAllViews();
     }
 
@@ -464,7 +470,7 @@ void DrawPage::handleChangedPropertyType(Base::XMLReader& reader, const char* Ty
 {
     if (prop == &Scale) {
         App::PropertyFloat tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName) == 0) {//property in file is Float
+        if (tmp.getTypeId().getName() == TypeName) {  // property in file is Float
             tmp.setContainer(this);
             tmp.Restore(reader);
             double tmpValue = tmp.getValue();

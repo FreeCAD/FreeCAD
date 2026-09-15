@@ -22,9 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <unicode/unistr.h>
 #include <unicode/uchar.h>
-#include <unicode/locid.h>
+#include <unicode/utf8.h>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -44,7 +43,6 @@
 namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
-
 bool isValidFirstChar(UChar32 c)
 {
     auto category = static_cast<UCharCategory>(u_charType(c));
@@ -66,53 +64,55 @@ bool isValidSubsequentChar(UChar32 c)
             || category == U_COMBINING_SPACING_MARK || category == U_CONNECTOR_PUNCTUATION);
 }
 
-std::string unicodeCharToStdString(UChar32 c)
-{
-    icu::UnicodeString uChar(c);
-    std::string utf8Char;
-    return uChar.toUTF8String(utf8Char);
-}
-
 };  // namespace
 
-std::string Base::Tools::getIdentifier(const std::string& name)
+// Silence the linter complaining about ICU's U8_NEXT macros
+// NOLINTBEGIN(bugprone-inc-dec-in-conditions,readability-function-cognitive-complexity)
+std::string Base::Tools::getIdentifier(std::string_view name)
 {
     if (name.empty()) {
         return "_";
     }
 
-    icu::UnicodeString uName = icu::UnicodeString::fromUTF8(name);
-    std::stringstream result;
+    const char* bytes = name.data();
+    const size_t length = name.length();
+    size_t inOffset = 0;
+    size_t outOffset = 0;
+    // The resulting identifier can't ever be longer than the input + 1 as all codepoints are
+    // either added as-is or replaced with '_' which is a single byte, the smallest quantum a
+    // codepoint can occupy in UTF-8; the +1 coming from the initial '_' that can be prepended.
+    // This allows for bypassing bounds checks when appending (U8_APPEND_UNSAFE), only shrinking
+    // the string at the end.
+    std::string result(length + 1, '\0');
 
     // Handle the first character independently, prepending an underscore if it is not a valid
     // first character, but *is* a valid later character
-    UChar32 firstChar = uName.char32At(0);
-    const int32_t firstCharLength = U16_LENGTH(firstChar);
-    if (!isValidFirstChar(firstChar)) {
-        result << "_";
-        if (isValidSubsequentChar(firstChar)) {
-            result << unicodeCharToStdString(firstChar);
-        }
+    UChar32 firstChar = 0;
+    U8_NEXT(bytes, inOffset, length, firstChar);
+    const bool firstCharValid = isValidFirstChar(firstChar);
+    if (!firstCharValid) {
+        result[outOffset++] = '_';
     }
-    else {
-        result << unicodeCharToStdString(firstChar);
+    if (firstCharValid || isValidSubsequentChar(firstChar)) {
+        U8_APPEND_UNSAFE(result, outOffset, firstChar);
     }
 
-    for (int32_t i = firstCharLength; i < uName.length(); /* will increment by char length */) {
-        UChar32 c = uName.char32At(i);
-        int32_t charLength = U16_LENGTH(c);
-        i += charLength;
+    while (inOffset < length) {
+        UChar32 c = 0;
+        U8_NEXT(bytes, inOffset, length, c);
 
         if (isValidSubsequentChar(c)) {
-            result << unicodeCharToStdString(c);
+            U8_APPEND_UNSAFE(result, outOffset, c);
         }
         else {
-            result << "_";
+            result[outOffset++] = '_';
         }
     }
 
-    return result.str();
+    result.resize(outOffset);
+    return result;
 }
+// NOLINTEND(bugprone-inc-dec-in-conditions,readability-function-cognitive-complexity)
 
 std::wstring Base::Tools::widen(const std::string& str)
 {
@@ -235,6 +235,12 @@ std::string Base::Tools::escapeEncodeString(const std::string& s)
             case '\'':
                 result += "\\\'";
                 break;
+            case '\n':
+                result += "\\n";
+                break;
+            case '\r':
+                result += "\\r";
+                break;
             default:
                 result += s.at(i);
                 break;
@@ -301,26 +307,6 @@ std::string Base::Tools::currentDateTimeString()
     std::ostringstream out;
     out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
     return out.str();
-}
-
-bool Base::Tools::isCLocaleName(std::string_view localeName)
-{
-    return localeName == "C" || localeName == "c" || localeName == "C.UTF-8" || localeName == "C.utf8"
-        || localeName == "c.utf8" || localeName == "POSIX" || localeName == "posix";
-}
-
-void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)
-{
-    UErrorCode status = U_ZERO_ERROR;
-
-    if (icuLocaleId.empty() || isCLocaleName(icuLocaleId)) {
-        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
-        return;
-    }
-
-    const std::string localeId(icuLocaleId);
-    const icu::Locale locale = icu::Locale::createFromName(localeId.c_str());
-    icu::Locale::setDefault(locale, status);
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)

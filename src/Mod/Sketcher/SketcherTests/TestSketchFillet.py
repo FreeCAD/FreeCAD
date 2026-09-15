@@ -81,7 +81,7 @@ class TestSketchFillet(unittest.TestCase):
         SketchFeature.fillet(0, 2, 0.25, True, True)
         self.assertAlmostEqual(SketchFeature.Geometry[4].Radius, 0.25)
 
-    # Fillets can be made even between unconnected lines
+    # Fillets cannot be made even between unconnected lines
     def testUnconnected(self):
         SketchFeature = self.Doc.addObject("Sketcher::SketchObject", "Unconnected")
         # Inverted open V
@@ -98,17 +98,24 @@ class TestSketchFillet(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(SketchFeature.Geometry[2].length(), math.sqrt(2))
 
-        SketchFeature.fillet(
-            0, 1, App.Vector(0.5, 0.5, 0), App.Vector(2.55, 0.5, 0), 0.25, True, True
-        )
-        # Make sure a fillet was created
-        self.assertAlmostEqual(SketchFeature.Geometry[3].Radius, 0.25)
+        with self.assertRaises(ValueError):
+            SketchFeature.fillet(
+                0,
+                1,
+                App.Vector(0.5, 0.5, 0),
+                App.Vector(2.55, 0.5, 0),
+                0.25,
+                True,
+                True,
+            )
 
-        self.Doc.recompute()
-        # Third line's length shouldn't have changed
+        # Make sure no fillet was created
+        self.assertEqual(len(SketchFeature.Geometry), 3)
+
+        # Original geometry should remain unchanged
+        self.assertAlmostEqual(SketchFeature.Geometry[0].length(), math.sqrt(2))
+        self.assertAlmostEqual(SketchFeature.Geometry[1].length(), math.sqrt(0.9**2 + 1))
         self.assertAlmostEqual(SketchFeature.Geometry[2].length(), math.sqrt(2))
-        # First line should be shorter
-        self.assertNotAlmostEqual(SketchFeature.Geometry[0].length(), math.sqrt(2))
 
     # Curved lines can also be filleted
     def testCurve(self):
@@ -152,10 +159,26 @@ class TestSketchFillet(unittest.TestCase):
         SketchFeature = self.Doc.addObject("Sketcher::SketchObject", "OriginalCorner")
         VShape(SketchFeature)
         self.Doc.recompute()
-        # If fillet() ever gets refactored such that the corner gets added after
-        # the arc, then getPoint(3,1) might break.  A more general approach would
-        # be to iterate over the geometry list and find the bare vertex.
-        self.assertAlmostEqual(App.Vector(1, 1, 0), SketchFeature.getPoint(3, 1))
+
+        corner = App.Vector(1, 1, 0)
+        cornerFound = False
+        # we iterate over the geometry and check if any LineSegment that is construction geometry has an endpoint at that position since the fillet tool now preserves the corner by keeping the original geometry as construction
+        for index, geometry in enumerate(SketchFeature.Geometry):
+            if not SketchFeature.getConstruction(index):
+                continue
+
+            if not isinstance(geometry, Part.LineSegment):
+                continue
+
+            for point in (geometry.StartPoint, geometry.EndPoint):
+                if (point - corner).Length < 1e-7:
+                    cornerFound = True
+                    break
+
+            if cornerFound:
+                break
+
+        self.assertTrue(cornerFound, "Original corner was not preserved")
 
     # Make sure coincident constraints get moved to the old corner location
     def testCoincident(self):
@@ -187,24 +210,16 @@ class TestSketchFillet(unittest.TestCase):
 
         SketchFeature.fillet(0, 2, 0.25, True, True)
 
-        # Verify the constraint moved to the original corner
+        # Verify the constraints are still present
         found_horizontal = False
         found_vertical = False
         for c in SketchFeature.Constraints:
-            if (
-                c.Type == "Horizontal"
-                and c.First == 5
-                and c.FirstPos == 1
-                and c.Second == 2
-                and c.SecondPos == 1
+            if c.Type == "Horizontal" and (
+                SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second)
             ):
                 found_horizontal = True
-            elif (
-                c.Type == "Vertical"
-                and c.First == 5
-                and c.FirstPos == 1
-                and c.Second == 3
-                and c.SecondPos == 1
+            elif c.Type == "Vertical" and (
+                SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second)
             ):
                 found_vertical = True
 
@@ -267,31 +282,86 @@ class TestSketchFillet(unittest.TestCase):
         SketchFeature.addGeometry(Part.LineSegment(App.Vector(2, 2, 0), App.Vector(3, 3, 0)))
         SketchFeature.addConstraint(Sketcher.Constraint("Tangent", tangent_line, first_line))
         SketchFeature.addConstraint(Sketcher.Constraint("Distance", tangent_line, 1.41421356237))
+
         SketchFeature.fillet(first_line, 2, 0.25, True, True)
+        fillet_arc_index = tangent_line + 1
+        fillet_arc = SketchFeature.Geometry[fillet_arc_index]
+        # Some ids have changed at this point:
+        # tangent_line is still the same
+        # fillet_arc_index is the one after tangent_line
+        # first_line and second_line might have switched to first_line + 4 and second_line + 4 respectively
 
         self.Doc.recompute()
-        # Move the tangent line and see if it's aimed right
-        SketchFeature.addConstraint(Sketcher.Constraint("DistanceX", tangent_line, 1, -1, 1, -4))
-        self.Doc.recompute()
 
-        # The first endpoint should now be at 4,4
-        self.assertAlmostEqual(
-            App.Vector(4, 4, 0).distanceToPoint(SketchFeature.getPoint(tangent_line, 1)),
-            0.0,
+        # Make sure a tangent constraint between two non-construction
+        # geometries was preserved.
+        tangent_constraint_found = False
+        for constraint in SketchFeature.Constraints:
+            if constraint.Type != "Tangent":
+                continue
+
+            if not SketchFeature.getConstruction(
+                constraint.First
+            ) and not SketchFeature.getConstruction(constraint.Second):
+                tangent_constraint_found = True
+                break
+
+        self.assertTrue(
+            tangent_constraint_found,
+            "Tangent constraint between first_line and tangent_line was not preserved",
         )
 
-        # We expect the other end of the tangent line to be at 5,5, but I think 3,3 also satisfies
-        # the collinearity constraint
-        try:
-            self.assertAlmostEqual(
-                App.Vector(3, 3, 0).distanceToPoint(SketchFeature.getPoint(tangent_line, 2)),
-                0.0,
-            )
-        except AssertionError:
-            self.assertAlmostEqual(
-                App.Vector(5, 5, 0).distanceToPoint(SketchFeature.getPoint(tangent_line, 2)),
-                0.0,
-            )
+        # Make sure there are two tangent constraints between construction
+        # and non-construction LineSegments (that form the edge connection)
+        construction_line_tangents = 0
+        for constraint in SketchFeature.Constraints:
+            if constraint.Type != "Tangent":
+                continue
+
+            first_geometry = SketchFeature.Geometry[constraint.First]
+            second_geometry = SketchFeature.Geometry[constraint.Second]
+
+            if not (
+                isinstance(first_geometry, Part.LineSegment)
+                and isinstance(second_geometry, Part.LineSegment)
+            ):
+                continue
+
+            first_construction = SketchFeature.getConstruction(constraint.First)
+            second_construction = SketchFeature.getConstruction(constraint.Second)
+
+            if first_construction != second_construction:
+                construction_line_tangents += 1
+
+        self.assertEqual(
+            construction_line_tangents,
+            2,
+            "Expected two tangent constraints between construction and non-construction LineSegments",
+        )
+
+        # Make sure the arc has tangent constraints to two LineSegments.
+        arc_line_tangents = 0
+        for constraint in SketchFeature.Constraints:
+            if constraint.Type != "Tangent":
+                continue
+
+            first_geometry = SketchFeature.Geometry[constraint.First]
+            second_geometry = SketchFeature.Geometry[constraint.Second]
+
+            if isinstance(first_geometry, Part.ArcOfCircle) and isinstance(
+                second_geometry, Part.LineSegment
+            ):
+                arc_line_tangents += 1
+            elif isinstance(first_geometry, Part.LineSegment) and isinstance(
+                second_geometry, Part.ArcOfCircle
+            ):
+                arc_line_tangents += 1
+
+        self.assertEqual(
+            arc_line_tangents,
+            2,
+            "Expected two tangent constraints between the fillet arc and LineSegments",
+        )
 
     def testSymmetric(self):
         SketchFeature = self.Doc.addObject("Sketcher::SketchObject", "Symmetric")

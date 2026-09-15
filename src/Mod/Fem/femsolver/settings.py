@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -270,6 +272,11 @@ _SOLVER_PARAM = {
         default="ElmerGrid",
         param_path=_PARAM_PATH + "Elmer",
         custom_path="gridBinaryPath",
+    ),
+    "MPIElmer": _SolverDlg(
+        default="mpiexec",
+        param_path=_PARAM_PATH + "Elmer",
+        custom_path="mpiBinaryPath",
     ),
     "Mystran": _SolverDlg(
         default="mystran",

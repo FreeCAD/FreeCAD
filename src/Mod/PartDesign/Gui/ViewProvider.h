@@ -82,8 +82,8 @@ public:
     // Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    /// Provides preview shape
-    Part::TopoShape getPreviewShape() const override;
+    void toggleVisibility() override;
+
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 
@@ -121,6 +121,8 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    void updatePreviewColor();
+
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 

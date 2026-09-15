@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 
 lib_LTLIBRARIES=libDrawing.la Drawing.la
 

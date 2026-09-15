@@ -59,6 +59,7 @@ struct ProgressBarPrivate
     QTimer* delayShowTimer;
     int minimumDuration;
     int observeEventFilter;
+    bool userEnabled {true};
 
     bool isModalDialog(QObject* o) const
     {
@@ -167,6 +168,11 @@ void SequencerBar::startStep()
         d->bar->enterControlEvents(d->guiThread);
         d->bar->aboutToShow();
     }
+}
+
+void SequencerBar::stopStep()
+{
+    QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
 }
 
 void SequencerBar::checkAbort()
@@ -431,12 +437,44 @@ ProgressBar::ProgressBar(SequencerBar* s, QWidget* parent)
     d->delayShowTimer->setSingleShot(true);
     connect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     d->observeEventFilter = 0;
+    // Visibility is owned by MainWindow's status-bar registry, which sets
+    // userEnabled from the persisted value after registration.
 
     setFixedWidth(120);
 
     // write percentage to the center
     setAlignment(Qt::AlignHCenter);
+    //: A context menu action used to show or hide the progress indicator in the status bar
+    setWindowTitle(tr("Progress Indicator"));
     hide();
+}
+
+bool ProgressBar::isUserEnabled() const
+{
+    return d->userEnabled;
+}
+
+void ProgressBar::setUserEnabled(bool enabled)
+{
+    if (d->userEnabled == enabled) {
+        return;
+    }
+    d->userEnabled = enabled;
+    if (!enabled) {
+        QProgressBar::setVisible(false);
+    }
+    else if (sequencer->isRunning() && !sequencer->wasCanceled()) {
+        QProgressBar::setVisible(true);
+    }
+}
+
+void ProgressBar::setVisible(bool visible)
+{
+    // Block every show() the sequencer fires when the user has disabled the bar.
+    if (visible && !d->userEnabled) {
+        return;
+    }
+    QProgressBar::setVisible(visible);
 }
 
 ProgressBar::~ProgressBar()

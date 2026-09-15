@@ -350,6 +350,70 @@ def get_type(obj):
 getType = get_type
 
 
+def get_trimex_unsupported_reason(obj, subobjects=None):
+    """Return a translated Trimex error message for unsupported objects.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        Object that Trimex should operate on.
+    subobjects : list, optional
+        Retained for compatibility.
+
+    Returns
+    -------
+    str or None
+        `None` if the object is supported by Trimex, otherwise
+        a translated error message explaining why it is rejected.
+    """
+    import Part
+
+    def edge_geom_type(edge):
+        if isinstance(edge.Curve, (Part.LineSegment, Part.Line)):
+            return "Line"
+        if isinstance(edge.Curve, Part.Circle):
+            return "Circle"
+        return "Unknown"
+
+    if not hasattr(obj, "Shape"):
+        return translate("draft", "This object is not supported")
+
+    shape = obj.Shape
+    if shape.Faces:
+        return translate("draft", "Trimex does not support this object type")
+
+    if obj.isDerivedFrom("Sketcher::SketchObject"):
+        return translate("draft", "Trimex does not support this object type")
+
+    if len(shape.Wires) > 1:
+        return translate("draft", "Trimex does not support this object type")
+
+    if shape.Wires:
+        edges = shape.Wires[0].Edges
+    else:
+        if len(shape.Edges) != 1:
+            return translate("draft", "Trimex does not support this object type")
+        edges = shape.Edges
+
+    for edge in edges:
+        if edge_geom_type(edge) not in {"Line", "Circle"}:
+            return translate("draft", "Trimex does not support this object type")
+
+    obj_type = get_type(obj)
+    if obj_type in {"Wire", "Part::Line", "Circle"}:
+        return None
+
+    if obj.TypeId in {"Part::Feature", "Part::Part2DObject"}:
+        return None
+
+    if obj.TypeId in {"Part::FeaturePython", "Part::Part2DObjectPython"}:
+        proxy = getattr(obj, "Proxy", None)
+        if proxy is None or not hasattr(proxy, "execute"):
+            return None
+
+    return translate("draft", "Trimex does not support this object type")
+
+
 def get_objects_of_type(objects, typ):
     """Return only the objects that match the type in the list of objects.
 
@@ -542,14 +606,9 @@ def shapify(obj, delete=True):
     elif len(shape.Wires) == 1:
         name = "Wire"
     elif len(shape.Edges) == 1:
-        import DraftGeomUtils
-
-        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
-            name = "Line"
-        else:
-            name = "Circle"
+        name = "Edge"
     else:
-        name = getRealName(obj.Name)
+        name = get_real_name(obj.Name)
 
     if delete:
         App.ActiveDocument.removeObject(obj.Name)
@@ -728,7 +787,7 @@ def get_rgb(color, testbw=True):
     ----------
     color : list or tuple with RGB values
         The values must be in the 0.0-1.0 range.
-    testwb : bool (default = True)
+    testbw : bool (default = True)
         Pure white will be converted into pure black.
     """
     r = str(hex(int(color[0] * 255)))[2:].zfill(2)
@@ -806,6 +865,8 @@ def _modifiers_process_subselection(sels, copy):
             if copy and "Vertex" in sub:
                 continue
             obj = sel.Object.getSubObject(sub, 1)
+            if get_type(obj) != "Wire":
+                continue
             pla = sel.Object.getSubObject(sub, 3)
             if "Vertex" in sub:
                 vert_idx = int(sub.rpartition("Vertex")[2]) - 1

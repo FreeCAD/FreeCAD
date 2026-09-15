@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -52,7 +54,7 @@ public:
     TechDraw::DrawProjGroupItem* getViewObject() const override;
     TechDraw::DrawProjGroupItem* getObject() const;
     void unsetEdit(int ModNum) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
 protected:

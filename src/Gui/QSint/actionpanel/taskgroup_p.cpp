@@ -85,24 +85,24 @@ QPixmap TaskGroup::transparentRender()
 
 void TaskGroup::keyPressEvent ( QKeyEvent * event )
 {
-  switch (event->key())
-  {
-    case Qt::Key_Down:
-    {
-      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
-      QApplication::sendEvent(this, &ke);
-      return;
-    }
-
-    case Qt::Key_Up:
-    {
-      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
-      QApplication::sendEvent(this, &ke);
-      return;
-    }
-
-    default:;
-  }
+//  switch (event->key())
+//  {
+//    case Qt::Key_Down:
+//    {
+//      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier);
+//      QApplication::sendEvent(this, &ke);
+//      return;
+//    }
+//
+//    case Qt::Key_Up:
+//    {
+//      QKeyEvent ke(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier);
+//      QApplication::sendEvent(this, &ke);
+//      return;
+//    }
+//
+//    default:;
+//  }
 
   BaseClass::keyPressEvent(event);
 }

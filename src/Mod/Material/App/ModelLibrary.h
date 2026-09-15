@@ -25,7 +25,6 @@
 
 #include <memory>
 
-#include <QDir>
 #include <QString>
 
 #include <Base/BaseClass.h>

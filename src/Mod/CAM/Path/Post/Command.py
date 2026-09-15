@@ -90,9 +90,12 @@ class DlgSelectPostProcessor:
         if item.text() in self.tooltips:
             tooltip = self.tooltips[item.text()]
         else:
-            processor = PostProcessor.load(item.text())
-            self.tooltips[item.text()] = processor.tooltip
-            tooltip = processor.tooltip
+            try:
+                processor = PostProcessorFactory.get_post_processor(None, item.text())
+                tooltip = processor.tooltip if processor else ""
+            except Exception:
+                tooltip = ""
+            self.tooltips[item.text()] = tooltip
         self.dialog.lwPostProcessor.setToolTip(tooltip)
 
     def exec_(self):
@@ -201,11 +204,18 @@ class CommandPathPost:
         """
         Path.Log.debug(self.candidate.Name)
 
-        # Show the unified post-processing dialog before starting any work.
-        if FreeCAD.GuiUp:
+        self.operations = getattr(self, "operations", None)
+
+        # Determine if we use new flow (machine-based) or old flow (legacy)
+        # New flow: Job has Machine property -> get postprocessor from machine config -> use export2()
+        # Old flow: Job lacks Machine -> get postprocessor from job property -> use export()
+        use_new_flow = hasattr(self.candidate, "Machine") and self.candidate.Machine
+
+        # Show the unified post-processing dialog only for the new machine-based flow.
+        if use_new_flow and FreeCAD.GuiUp:
             from Path.Post.Gui.DlgPostProcess import PostProcessDialog
 
-            dlg = PostProcessDialog(self.candidate)
+            dlg = PostProcessDialog(self.candidate, self.operations)
             if dlg.exec_() != QtGui.QDialog.DialogCode.Accepted:
                 return
             # Files were written by the dialog's Save button; record the transaction and return.
@@ -214,11 +224,6 @@ class CommandPathPost:
             return
 
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
-
-        # Determine if we use new flow (machine-based) or old flow (legacy)
-        # New flow: Job has Machine property -> get postprocessor from machine config -> use export2()
-        # Old flow: Job lacks Machine -> get postprocessor from job property -> use export()
-        use_new_flow = hasattr(self.candidate, "Machine") and self.candidate.Machine
 
         if use_new_flow:
             Path.Log.debug("Using new flow (machine-based)")
@@ -241,7 +246,12 @@ class CommandPathPost:
         else:
             Path.Log.debug("Using old flow (legacy)")
             # Old flow: Get postprocessor from job property
-            postprocessor_name = _resolve_post_processor_name(self.candidate)
+            try:
+                postprocessor_name = _resolve_post_processor_name(self.candidate)
+            except ValueError as e:
+                FreeCAD.Console.PrintError(f"{e}\n")
+                FreeCAD.ActiveDocument.abortTransaction()
+                return
 
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
@@ -250,10 +260,15 @@ class CommandPathPost:
             return
 
         # Get postprocessor (same factory for both flows)
-        postprocessor = PostProcessorFactory.get_post_processor(
-            self.candidate,
-            postprocessor_name,
-        )
+        if self.operations:
+            postprocessor = PostProcessorFactory.get_post_processor(
+                self.operations, postprocessor_name
+            )
+        else:
+            postprocessor = PostProcessorFactory.get_post_processor(
+                self.candidate,
+                postprocessor_name,
+            )
 
         # Call appropriate export method
         if use_new_flow:
@@ -303,9 +318,10 @@ class CommandPathPost:
             # a file.  There may be other uses found for this capability over time.
             #
             if gcode is not None:
-                # Show editor if user preference is enabled and GUI is available
                 final_gcode = gcode
-                if FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
+                # Show editor only for the new flow; legacy scripts
+                # handle their own editor dialog inside export().
+                if use_new_flow and FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
                     if len(gcode) > 100000:
                         FreeCAD.Console.PrintWarning(
                             "Skipping editor since output is greater than 100kb\n"
@@ -363,9 +379,10 @@ class CommandPathPostSelected(CommandPathPost):
             # find 'job' for operation inside 'Array' with multi tool controller
             baseOp = FreeCAD.ActiveDocument.getObject(selection[0].Base[0])
             job = PathUtils.findParentJob(baseOp)
+        self.candidate = job
 
         opCandidates = [op for op in selection if hasattr(op, "Path") and "Job" not in op.Name]
-        operations = []
+        self.operations = None
         if opCandidates and job.Operations.Group != opCandidates:
             msgBox = QtGui.QMessageBox()
             msgBox.setWindowTitle("Post Process")
@@ -383,65 +400,9 @@ class CommandPathPostSelected(CommandPathPost):
                 print(
                     f"Post process only selected operations: {', '.join([op.Name for op in opCandidates])}"
                 )
-                operations = opCandidates
+                self.operations = {"job": job, "operations": opCandidates}
 
-        postprocessor_name = _resolve_post_processor_name(job)
-        Path.Log.debug(f"Post Processor: {postprocessor_name}")
-
-        if not postprocessor_name:
-            FreeCAD.ActiveDocument.abortTransaction()
-            return
-
-        # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(
-            {"job": job, "operations": operations}, postprocessor_name
-        )
-
-        post_data = postprocessor.export()
-        # None is returned if there was an error during argument processing
-        # otherwise the "usual" post_data data structure is returned.
-        if not post_data:
-            FreeCAD.ActiveDocument.abortTransaction()
-            return
-
-        policy = Path.Preferences.defaultOutputPolicy()
-        generator = FilenameGenerator(job=job)
-        generated_filename = generator.generate_filenames()
-
-        for item in post_data:
-            subpart, gcode = item
-
-            # get a name for the file
-            subpart = "" if subpart == "allitems" else subpart
-            Path.Log.debug(subpart)
-            generator.set_subpartname(subpart)
-            fname = next(generated_filename)
-
-            if gcode is not None:
-                # Show editor if user preference is enabled and GUI is available
-                final_gcode = gcode
-                if FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
-                    if len(gcode) > 100000:
-                        FreeCAD.Console.PrintWarning(
-                            "Skipping editor since output is greater than 100kb\n"
-                        )
-                    else:
-                        dia = GCodeEditorDialog(gcode, refactored=True)
-                        # Enable OK button so user can accept without editing
-                        dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
-                        editor_result = dia.exec_()
-                        if editor_result == 1:  # User clicked OK
-                            final_gcode = dia.editor.toPlainText()
-                        else:
-                            # User cancelled - skip writing this file
-                            FreeCAD.Console.PrintMessage(f"Post-processing cancelled for {fname}\n")
-                            continue
-
-                # write the results to the file
-                self._write_file(fname, final_gcode, policy)
-
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        super().Activated()
 
 
 if FreeCAD.GuiUp:

@@ -1,0 +1,11 @@
+{
+    "include": [
+        "smoke.py"
+    ],
+    "extraPaths": [
+        "../generated/stubs"
+    ],
+    "reportMissingImports": "error",
+    "reportMissingModuleSource": "none",
+    "typeCheckingMode": "basic"
+}

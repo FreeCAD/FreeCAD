@@ -30,12 +30,16 @@
 
 #include "ViewProviderPreviewExtension.h"
 #include "ViewProviderExt.h"
+#include "ViewProviderPreviewExtensionPy.h"
 
 #include <App/Document.h>
+#include <App/ExtensionPython.h>
+#include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/PreviewExtension.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/TopoShapePy.h>
 
 using namespace PartGui;
 
@@ -147,6 +151,17 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
 
     attachPreview();
 
+    if (!freecad_cast<ViewProviderPartExt*>(getExtendedViewProvider())) {
+        Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+        App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+        Base::Console().userTranslatedNotification(
+            tr("Preview requires a Part-based view provider; none found for %1.")
+                .arg(object ? QString::fromUtf8(object->getFullName().c_str()) : tr("unknown object"))
+                .toUtf8()
+        );
+    }
+
     auto document = documentObject->getDocument();
     if (!document->testStatus(App::Document::Restoring)) {
         updatePreview();
@@ -158,6 +173,14 @@ void ViewProviderPreviewExtension::extensionBeforeDelete()
     ViewProviderExtension::extensionBeforeDelete();
 
     showPreview(false);
+}
+
+PyObject* ViewProviderPreviewExtension::getExtensionPyObject()
+{
+    if (ExtensionPythonObject.is(Py::_None())) {
+        ExtensionPythonObject = Py::Object(new ViewProviderPreviewExtensionPy(this), true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
 }
 
 void ViewProviderPreviewExtension::showPreview(bool enable)
@@ -174,7 +197,7 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
 
     _isPreviewEnabled = enable;
 
-    auto annotationRoot = getExtendedViewProvider()->getAnnotation();
+    auto annotationRoot = getExtendedViewProvider()->getOrCreateAnnotation();
     if (enable) {
         previewExtension->updatePreview();
 
@@ -194,6 +217,50 @@ void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
     }
 
     ViewProviderExtension::extensionOnChanged(prop);
+}
+
+void ViewProviderPreviewExtension::extensionUpdateData(const App::Property* prop)
+{
+    Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+    App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+    if (!object) {
+        ViewProviderExtension::extensionUpdateData(prop);
+        return;
+    }
+
+    if (auto* previewExtension = object->getExtensionByType<Part::PreviewExtension>(true)) {
+        if (prop == &previewExtension->PreviewShape) {
+            updatePreview();
+        }
+        else if (isPreviewEnabled()) {
+            // Properties can be updated in batches, where some properties trigger other updates.
+            // We don't need to compute the preview for intermediate steps. Instead of updating
+            // the preview immediately (and potentially doing it multiple times in a row), we
+            // schedule the update to happen at a more convenient time.
+            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
+                scheduler->schedulePreviewRecompute(object);
+            }
+        }
+    }
+
+    ViewProviderExtension::extensionUpdateData(prop);
+}
+
+Part::TopoShape ViewProviderPreviewExtension::getPreviewShape()
+{
+    const Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+    const App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+    if (!object) {
+        return {};
+    }
+
+    if (auto* previewExtension = object->getExtensionByType<Part::PreviewExtension>(true)) {
+        return previewExtension->PreviewShape.getShape();
+    }
+
+    return {};
 }
 
 void ViewProviderPreviewExtension::attachPreview()
@@ -260,6 +327,43 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoP
     }
 }
 
+namespace PartGui
+{
+
+template<typename ExtensionT>
+void ViewProviderPreviewExtensionPythonT<ExtensionT>::attachPreview()
+{
+    ExtensionT::attachPreview();
+
+    EXTENSION_PROXY_NOARG(attachPreview)
+    (void)result;
+}
+
+template<typename ExtensionT>
+void ViewProviderPreviewExtensionPythonT<ExtensionT>::updatePreview()
+{
+    ExtensionT::updatePreview();
+
+    EXTENSION_PROXY_NOARG(updatePreview)
+    (void)result;
+}
+
+template<typename ExtensionT>
+Part::TopoShape ViewProviderPreviewExtensionPythonT<ExtensionT>::getPreviewShape()
+{
+    EXTENSION_PROXY_NOARG(getPreviewShape)
+
+    if (!result.isNone() && PyObject_TypeCheck(result.ptr(), &Part::TopoShapePy::Type)) {
+        return *static_cast<Part::TopoShapePy*>(result.ptr())->getTopoShapePtr();
+    }
+
+    return ExtensionT::getPreviewShape();
+}
+
+template class PartGuiExport ViewProviderPreviewExtensionPythonT<ViewProviderPreviewExtension>;
+
+}  // namespace PartGui
+
 namespace Gui
 {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(
@@ -268,5 +372,6 @@ EXTENSION_PROPERTY_SOURCE_TEMPLATE(
 )
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderPreviewExtension>;
+template class PartGuiExport ViewProviderExtensionPythonT<
+    PartGui::ViewProviderPreviewExtensionPythonT<PartGui::ViewProviderPreviewExtension>>;
 }  // namespace Gui

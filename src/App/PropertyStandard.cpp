@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Parameter.h>
 #include <Base/ProgramVersion.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
@@ -49,6 +50,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "Expression.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
 
@@ -925,6 +927,95 @@ unsigned int PropertyIntegerList::getMemSize() const
 
 //**************************************************************************
 //**************************************************************************
+// PropertyIntPairList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyIntPairList, App::PropertyLists)
+
+PyObject* PropertyIntPairList::getPyObject()
+{
+    Py::List result(getSize());
+    for (int i = 0; i < getSize(); ++i) {
+        Py::Tuple pair(2);
+        pair.setItem(0, Py::Long(_lValueList[i].first));
+        pair.setItem(1, Py::Long(_lValueList[i].second));
+        result.setItem(i, pair);
+    }
+    return Py::new_reference_to(result);
+}
+
+void PropertyIntPairList::setPyObject(PyObject* value)
+{
+    // The outer sequence always represents the list, even when it has two entries.
+    PropertyLists::setPyObject(value);
+}
+
+PropertyIntPairList::IntPair PropertyIntPairList::getPyValue(PyObject* item) const
+{
+    if ((!PyTuple_Check(item) && !PyList_Check(item)) || PySequence_Size(item) != 2) {
+        throw Base::TypeError("Expected a pair of integers");
+    }
+    Py::Sequence pair(item);
+    if (!PyLong_Check(pair[0].ptr()) || !PyLong_Check(pair[1].ptr())) {
+        throw Base::TypeError("Pair components must be integers");
+    }
+    int firstOverflow = 0;
+    int secondOverflow = 0;
+    const long first = PyLong_AsLongAndOverflow(pair[0].ptr(), &firstOverflow);
+    const long second = PyLong_AsLongAndOverflow(pair[1].ptr(), &secondOverflow);
+    if (firstOverflow || secondOverflow) {
+        throw Py::OverflowError("Pair component is outside the range of a C++ long");
+    }
+    return {first, second};
+}
+
+void PropertyIntPairList::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind() << "<IntPairList count=\"" << getSize() << "\">" << endl;
+    writer.incInd();
+    for (const auto& [first, second] : _lValueList) {
+        writer.Stream() << writer.ind() << "<Pair first=\"" << first << "\" second=\"" << second
+                        << "\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</IntPairList>" << endl;
+}
+
+void PropertyIntPairList::Restore(Base::XMLReader& reader)
+{
+    reader.readElement("IntPairList");
+    const int count = reader.getAttribute<int>("count");
+    if (count < 0) {
+        throw Base::ValueError("Integer pair list size must not be negative");
+    }
+    std::vector<IntPair> values;
+    values.reserve(count);
+    for (int i = 0; i < count; ++i) {
+        reader.readElement("Pair");
+        values.emplace_back(reader.getAttribute<long>("first"), reader.getAttribute<long>("second"));
+    }
+    reader.readEndElement("IntPairList");
+    setValues(values);
+}
+
+Property* PropertyIntPairList::Copy() const
+{
+    auto* copy = new PropertyIntPairList();
+    copy->_lValueList = _lValueList;
+    return copy;
+}
+
+void PropertyIntPairList::Paste(const Property& from)
+{
+    setValues(dynamic_cast<const PropertyIntPairList&>(from)._lValueList);
+}
+
+unsigned int PropertyIntPairList::getMemSize() const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(IntPair));
+}
+
+//**************************************************************************
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1617,7 +1708,15 @@ void PropertyString::Save(Base::Writer& writer) const
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
     if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
-        if (obj->allowDuplicateLabel()) {
+        static ParameterGrp::handle documentPrefs;
+        if (!documentPrefs) {
+            documentPrefs =
+                GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+        }
+
+        const bool preserveDuplicateLabels =
+            obj->allowDuplicateLabel() || documentPrefs->GetBool("DuplicateLabels");
+        if (preserveDuplicateLabels) {
             writer.Stream() << "restore=\"1\" ";
         }
         else if (_cValue == obj->getNameInDocument()) {
@@ -1681,30 +1780,11 @@ unsigned int PropertyString::getMemSize() const
 void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
-    if (value.type() == typeid(bool)) {
-        setValue(boost::any_cast<bool>(value) ? "True" : "False");
-    }
-    else if (value.type() == typeid(int)) {
-        setValue(std::to_string(boost::any_cast<int>(value)));
-    }
-    else if (value.type() == typeid(long)) {
-        setValue(std::to_string(boost::any_cast<long>(value)));
-    }
-    else if (value.type() == typeid(double)) {
-        setValue(std::to_string(App::any_cast<double>(value)));
-    }
-    else if (value.type() == typeid(float)) {
-        setValue(std::to_string(App::any_cast<float>(value)));
-    }
-    else if (value.type() == typeid(Quantity)) {
-        setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
-    }
-    else if (value.type() == typeid(std::string)) {
+    if (value.type() == typeid(std::string)) {
         setValue(boost::any_cast<const std::string &>(value));
     }
     else {
-        Base::PyGILStateLocker lock;
-        setValue(pyObjectFromAny(value).as_string());
+        setValue(anyToString(value));
     }
 }
 
@@ -1959,6 +2039,69 @@ int PropertyMap::getSize() const
     return static_cast<int>(_lValueList.size());
 }
 
+const std::map<std::string, std::string>& PropertyMap::getValue() const
+{
+    return _lValueList;
+}
+
+void PropertyMap::setValue()
+{
+    aboutToSetValue();
+
+    auto docObj = freecad_cast<DocumentObject*>(getContainer());
+    if (docObj) {
+        // Remove all expressions bound to keys in the map
+        for (const auto &kv : _lValueList) {
+            docObj->clearExpression(getItemPath(kv.first));
+        }
+    }
+
+    _lValueList.clear();
+    hasSetValue();
+}
+
+void PropertyMap::setValue(const std::map<std::string, std::string>& map)
+{
+    aboutToSetValue();
+
+    auto docObj = freecad_cast<DocumentObject*>(getContainer());
+    if (docObj) {
+        // Remove expressions bound to keys no longer present in the new map
+        for (const auto &kv : _lValueList) {
+            if (map.find(kv.first) == map.end()) {
+                docObj->clearExpression(getItemPath(kv.first));
+            }
+        }
+    }
+
+    _lValueList = map;
+    hasSetValue();
+}
+
+void PropertyMap::setValue(std::map<std::string, std::string>&& map)
+{
+    aboutToSetValue();
+
+    auto docObj = freecad_cast<DocumentObject*>(getContainer());
+    if (docObj) {
+        // Remove expressions bound to keys no longer present in the new map
+        for (const auto &kv : _lValueList) {
+            if (map.find(kv.first) == map.end()) {
+                docObj->clearExpression(getItemPath(kv.first));
+            }
+        }
+    }
+
+    _lValueList = std::move(map);
+    hasSetValue();
+}
+
+std::string PropertyMap::getValue(const std::string& key) const
+{
+    auto it = _lValueList.find(key);
+    return it == _lValueList.end() ? std::string() : it->second;
+}
+
 void PropertyMap::setValue(const std::string& key, const std::string& value)
 {
     aboutToSetValue();
@@ -1966,61 +2109,79 @@ void PropertyMap::setValue(const std::string& key, const std::string& value)
     hasSetValue();
 }
 
+bool PropertyMap::deleteValue(const std::string& key)
+{
+    if (_lValueList.find(key) == _lValueList.end()) {
+        return false;
+    }
+
+    aboutToSetValue();
+
+    auto docObj = freecad_cast<DocumentObject*>(getContainer());
+    if (docObj) {
+        // Remove expressions bound to the deleted key
+        docObj->clearExpression(getItemPath(key));
+    }
+
+    _lValueList.erase(key);
+    hasSetValue();
+    return true;
+}
+
 void PropertyMap::setValue(const char* key, const char* value)
 {
     if (!key) {
         return;
     }
-    if (!value) {
-        auto it = _lValueList.find(key);
-        if (it == _lValueList.end()) {
+
+    if (value) {
+        setValue(std::string(key), std::string(value));
+    }
+    else {
+        deleteValue(key);
+    }
+}
+
+const boost::any PropertyMap::getPathValue(const ObjectIdentifier& path) const
+{
+    if (path.numSubComponents() > 1) {
+        const App::ObjectIdentifier::Component& comp = path.getPropertyComponent(1);
+        if (comp.isMap()) {
+            auto it = _lValueList.find(comp.getName());
+            if (it == _lValueList.end()) {
+                return std::string();
+            }
+
+            return it->second;
+        }
+    }
+
+    return Property::getPathValue(path);
+}
+
+void PropertyMap::setPathValue(const ObjectIdentifier& path, const boost::any& value)
+{
+    if (path.numSubComponents() > 1) {
+        const App::ObjectIdentifier::Component& comp = path.getPropertyComponent(1);
+        if (comp.isMap()) {
+            if (value.type() == typeid(std::string)) {
+                setValue(comp.getName(), boost::any_cast<const std::string &>(value));
+            }
+            else {
+                setValue(comp.getName(), anyToString(value));
+            }
             return;
         }
-        aboutToSetValue();
-        _lValueList.erase(it);
-        hasSetValue();
-        return;
     }
 
-    aboutToSetValue();
-    _lValueList[key] = value;
-    hasSetValue();
+    Property::setPathValue(path, value);
 }
 
-void PropertyMap::setValues(const std::map<std::string, std::string>& map)
+ObjectIdentifier PropertyMap::getItemPath(const std::string& key) const
 {
-    aboutToSetValue();
-    _lValueList = map;
-    hasSetValue();
-}
-
-void PropertyMap::setValues(std::map<std::string, std::string>&& map)
-{
-    aboutToSetValue();
-    _lValueList = std::move(map);
-    hasSetValue();
-}
-
-const char* PropertyMap::getValue(const char* key) const
-{
-    if (!key) {
-        return nullptr;
-    }
-    auto it = _lValueList.find(key);
-    if (it == _lValueList.end()) {
-        return nullptr;
-    }
-    return it->second.c_str();
-}
-
-const std::string& PropertyMap::operator[](const std::string& key) const
-{
-    static std::string empty;
-    auto it = _lValueList.find(key);
-    if (it != _lValueList.end()) {
-        return it->second;
-    }
-    return empty;
+    App::ObjectIdentifier result(*this);
+    result.addComponent(ObjectIdentifier::Component::MapComponent(ObjectIdentifier::String(key, true)));
+    return result;
 }
 
 PyObject* PropertyMap::getPyObject()

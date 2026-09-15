@@ -48,6 +48,7 @@ FitBSplineCurveWidget::FitBSplineCurveWidget(const App::DocumentObjectT& obj, QW
 {
     Q_UNUSED(parent);
     d->ui.setupUi(this);
+    setParametrizationTypes();
     d->obj = obj;
 
     // clang-format off
@@ -61,6 +62,19 @@ FitBSplineCurveWidget::FitBSplineCurveWidget(const App::DocumentObjectT& obj, QW
 FitBSplineCurveWidget::~FitBSplineCurveWidget()
 {
     delete d;
+}
+
+void FitBSplineCurveWidget::setParametrizationTypes()
+{
+    d->ui.paramType->setItemData(0, QStringLiteral("ChordLength"));
+    d->ui.paramType->setItemData(1, QStringLiteral("Centripetal"));
+    d->ui.paramType->setItemData(2, QStringLiteral("Uniform"));
+}
+
+QString FitBSplineCurveWidget::getCurrentParametrizationType() const
+{
+    int index = d->ui.paramType->currentIndex();
+    return d->ui.paramType->itemData(index).toString();
 }
 
 void FitBSplineCurveWidget::toggleParametrizationType(bool on)
@@ -86,7 +100,7 @@ bool FitBSplineCurveWidget::accept()
     }
     catch (const Base::Exception& e) {
         d->obj.getDocument()->abortTransaction();
-        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -112,8 +126,8 @@ void FitBSplineCurveWidget::tryAccept()
         arguments.append(QStringLiteral("Closed = False"));
     }
     if (d->ui.checkBox->isChecked()) {
-        int index = d->ui.paramType->currentIndex();
-        arguments.append(QStringLiteral("ParametrizationType = %1").arg(index));
+        QString type = getCurrentParametrizationType();
+        arguments.append(QStringLiteral("ParametrizationType = \"%1\"").arg(type));
     }
     if (d->ui.groupBoxSmooth->isChecked()) {
         arguments.append(QStringLiteral("Weight1 = %1").arg(d->ui.curveLength->value()));

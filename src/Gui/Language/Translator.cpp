@@ -31,14 +31,69 @@
 #include <QTranslator>
 #include <QWidget>
 
-#include <Base/Tools.h>
+#include <utility>
+
+#include <Base/NumericFormatting.h>
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>
+#include "../NumericLocale.h"
 #include "Translator.h"
 
-
 using namespace Gui;
+
+namespace
+{
+Translator::LocaleFormattingPreference toLocaleFormattingPreference(const int format)
+{
+    switch (format) {
+        case static_cast<int>(Translator::LocaleFormattingPreference::OperatingSystem):
+            return Translator::LocaleFormattingPreference::OperatingSystem;
+        case static_cast<int>(Translator::LocaleFormattingPreference::SelectedLanguage):
+            return Translator::LocaleFormattingPreference::SelectedLanguage;
+        case static_cast<int>(Translator::LocaleFormattingPreference::CLocale):
+            return Translator::LocaleFormattingPreference::CLocale;
+        default:
+            throw Base::ValueError(
+                "Parameter \"UseLocaleFormatting\" value out of bounds for "
+                "Translator::formattingOptions"
+            );
+    }
+}
+
+struct ResolvedNumericLocale
+{
+    QLocale qtLocale;
+    Base::NumericLocaleContext numericContext;
+};
+
+ResolvedNumericLocale resolveNumericLocale(const Translator& translator, const std::string& language)
+{
+    QLocale qtLocale;
+    if (Base::isCLocaleName(language)) {
+        qtLocale = QLocale::c();
+    }
+    else {
+        qtLocale = QLocale::system();
+
+        if (!language.empty()) {
+            const std::string localeName = translator.locale(language);
+
+            if (Base::isCLocaleName(localeName)) {
+                qtLocale = QLocale::c();
+            }
+            else if (!localeName.empty()) {
+                const QLocale candidate(QString::fromStdString(localeName));
+                if (candidate.language() != QLocale::C) {
+                    qtLocale = candidate;
+                }
+            }
+        }
+    }
+
+    return {qtLocale, Gui::numericLocaleContextFor(qtLocale)};
+}
+}  // namespace
 
 /** \defgroup i18n Internationalization with FreeCAD
  *  \ingroup GUI
@@ -112,7 +167,7 @@ public:
     std::string activatedLanguage; /**< Active language */
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
     TStringMap mapSupportedLocales;
-    std::list<QTranslator*> translators; /**< A list of all created translators */
+    std::vector<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
 }  // namespace Gui
@@ -135,21 +190,7 @@ public:
 
         std::string_view reason = creason;
         if (reason == "UseLocaleFormatting") {
-            int format = hGrp->GetInt("UseLocaleFormatting");
-            if (format == 0) {
-                client->setLocale();  // Defaults to system locale
-            }
-            else if (format == 1) {
-                // Language must need to be set before locale. How do we ensure this?
-                std::string language = hGrp->GetASCII("Language");
-                client->setLocale(language);
-            }
-            else if (format == 2) {
-                client->setLocale("C");
-            }
-            else {
-                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
-            }
+            client->applyLocaleFormattingPreference();
         }
         else if (reason == "SubstituteDecimalSeparator") {
             bool value = hGrp->GetBool("SubstituteDecimalSeparator");
@@ -224,7 +265,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"             )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"               )] = "es-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish (Argentina)"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"               )] = "tr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"             )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
@@ -232,6 +273,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Malay")] = "ms";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Tamil")] = "ta";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Irish")] = "ga-IE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lao")] = "lo";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hebrew")] = "he";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
@@ -260,14 +303,14 @@ Translator::~Translator()
     delete d;
 }
 
-TStringList Translator::supportedLanguages() const
+TLanguageList Translator::supportedLanguages() const
 {
-    TStringList languages;
-    TStringMap locales = supportedLocales();
+    TLanguageList languages;
+    const TStringMap locales = supportedLocales();
+    languages.reserve(locales.size());
     for (const auto& it : locales) {
-        languages.push_back(it.first);
+        languages.emplace_back(it.first);
     }
-
     return languages;
 }
 
@@ -277,15 +320,21 @@ TStringMap Translator::supportedLocales() const
         return d->mapSupportedLocales;
     }
 
-    // List all .qm files
-    for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
-        for (const auto& directoryName : std::as_const(d->paths)) {
-            QDir dir(directoryName);
-            QString filter = QStringLiteral("*_%1.qm").arg(QString::fromStdString(domainMap.second));
-            QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-            if (!fileNames.isEmpty()) {
-                d->mapSupportedLocales[domainMap.first] = domainMap.second;
-                break;
+    // List all *_*.qm files, and if any match a known locale,
+    // report that locale as supported.
+    const QStringList qmFilter(QStringLiteral("*_*.qm"));
+    for (const auto& directoryName : std::as_const(d->paths)) {
+        const QDir dir(directoryName);
+        const QStringList fileNames = dir.entryList(qmFilter, QDir::Files);
+        for (const auto& file : fileNames) {
+            const auto lang
+                = file.mid(file.lastIndexOf('_') + 1).chopped(sizeof(".qm") - 1).toStdString();
+            for (const auto& domainMap : d->mapLanguageTopLevelDomain) {
+                if (lang == domainMap.second) {
+                    // Emplace only inserts if no element exists at the key yet,
+                    // avoiding string copies here.
+                    d->mapSupportedLocales.emplace(domainMap.first, domainMap.second);
+                }
             }
         }
     }
@@ -297,7 +346,7 @@ void Translator::activateLanguage(const char* lang)
 {
     removeTranslators();  // remove the currently installed translators
     d->activatedLanguage = lang;
-    TStringList languages = supportedLanguages();
+    const TLanguageList languages = supportedLanguages();
     if (std::ranges::find(languages, lang) != languages.end()) {
         refresh();
     }
@@ -319,27 +368,50 @@ std::string Translator::locale(const std::string& lang) const
     return loc;
 }
 
+void Translator::applyLocaleFormattingPreference() const
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    const auto format = toLocaleFormattingPreference(hGrp->GetInt("UseLocaleFormatting", 0));
+    switch (format) {
+        case LocaleFormattingPreference::OperatingSystem:
+            setLocale();  // Defaults to system locale.
+            break;
+        case LocaleFormattingPreference::SelectedLanguage:
+            // Language must be activated before locale changes can follow it.
+            setLocale(hGrp->GetASCII("Language", activeLanguage().c_str()));
+            break;
+        case LocaleFormattingPreference::CLocale:
+            setLocale("C");
+            break;
+    }
+}
+
 void Translator::setLocale(const std::string& language) const
 {
-    const bool isCLocale = Base::Tools::isCLocaleName(language);
-
-    auto loc = QLocale::system();  // Defaulting to OS locale
-    if (isCLocale) {
-        loc = QLocale::c();
-    }
-    else {
-        auto bcp47 = locale(language);
-        if (!bcp47.empty()) {
-            loc = QLocale(QString::fromStdString(bcp47));
-        }
-    }
-    QLocale::setDefault(loc);
-    Base::Tools::setIcuDefaultLocale(isCLocale ? "C" : loc.name().toStdString());
+    // Resolve Qt and the complete numeric-locale context from the same source
+    // so quantity formatting can match what Qt widgets display.
+    const auto resolved = resolveNumericLocale(*this, language);
+    auto nextContext = resolved.numericContext;
+#ifdef FC_DEBUG
+    const auto previousState = Base::currentNumericLocaleContext();
+    const bool localeChanged = previousState != nextContext;
+#endif
+    // Complete the fallible ICU operation before publishing Qt and FreeCAD's context. A failure
+    // leaves all three locale consumers unchanged.
+    Base::setIcuDefaultLocale(nextContext.localeId);
+    QLocale::setDefault(resolved.qtLocale);
+    Base::publishNumericLocaleContext(std::move(nextContext));
     updateLocaleChange();
 
 #ifdef FC_DEBUG
-    Base::Console()
-        .log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
+    if (localeChanged) {
+        const QByteArray bcp47Name = resolved.qtLocale.bcp47Name().toUtf8();
+        const QByteArray localeName = resolved.qtLocale.name().toUtf8();
+        Base::Console()
+            .log("Locale changed to %s => %s\n", bcp47Name.constData(), localeName.constData());
+    }
 #endif
 }
 
@@ -375,14 +447,13 @@ void Translator::addPath(const QString& path)
 
 void Translator::installQMFiles(const QDir& dir, const char* locale)
 {
-    QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
-    QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+    const QString filter = QStringLiteral("*_%1.qm").arg(QLatin1String(locale));
+    const QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
+    d->translators.reserve(fileNames.size());
     for (const auto& it : fileNames) {
         bool ok = false;
-        for (std::list<QTranslator*>::const_iterator tt = d->translators.begin();
-             tt != d->translators.end();
-             ++tt) {
-            if ((*tt)->objectName() == it) {
+        for (const auto translator : d->translators) {
+            if (translator->objectName() == it) {
                 ok = true;  // this file is already installed
                 break;
             }

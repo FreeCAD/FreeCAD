@@ -38,12 +38,14 @@ import Draft
 
 from . import ifc_import
 from . import ifc_tools
+from . import ifc_export
 from . import ifc_geometry
 from . import ifc_materials
 from . import ifc_layers
 from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
+from . import ifc_types
 
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
@@ -90,6 +92,18 @@ def compare(file1, file2):
     return res
 
 
+def get_schema_descendant_names(schema_name, root_name):
+    schema = ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema_name)
+    declaration = schema.declaration_by_name(root_name)
+    descendants = []
+    stack = list(declaration.subtypes())
+    while stack:
+        current = stack.pop()
+        descendants.append(current.name())
+        stack.extend(current.subtypes())
+    return sorted(set(descendants))
+
+
 class NativeIFCTest(unittest.TestCase):
 
     def setUp(self):
@@ -104,6 +118,13 @@ class NativeIFCTest(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("IfcTest")
         pass
+
+    def assertClassEnumMatchesFamily(self, obj, root_name):
+        ifcfile = ifc_tools.get_ifcfile(obj)
+        schema_name = ifcfile.wrapped_data.schema_name()
+        expected = get_schema_descendant_names(schema_name, root_name)
+        actual = sorted(obj.getEnumerationsOfProperty("Class"))
+        self.assertEqual(actual, expected)
 
     def test01_ImportCoinSingle(self):
         FreeCAD.Console.PrintMessage("NativeIFC 01: Importing single object, coin mode...")
@@ -225,6 +246,56 @@ class NativeIFCTest(unittest.TestCase):
         FreeCAD.getDocument("IfcTest").recompute()
         self.assertTrue(obj.StepId != oldid, "ChangeIFCSchema failed")
 
+    def test08b_ClassListUsesActiveSchema(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08b: IFC class list uses full schema...")
+        clearObjects()
+        fp = getIfcFilePath()
+        ifc_import.insert(
+            fp,
+            "IfcTest",
+            strategy=2,
+            shapemode=0,
+            switchwb=0,
+            silent=True,
+            singledoc=SINGLEDOC,
+        )
+        wall = next(
+            o
+            for o in FreeCAD.getDocument("IfcTest").Objects
+            if getattr(o, "IfcClass", "") in ("IfcWall", "IfcWallStandardCase")
+        )
+        self.assertClassEnumMatchesFamily(wall, "IfcProduct")
+
+    def test08c_IFC2X3TypeClassListUsesTypeFamily(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 08c: IFC2X3 type class list uses full schema...")
+        clearObjects()
+        doc = FreeCAD.ActiveDocument
+        proj = ifc_tools.create_document(doc, silent=True)
+        proj.Proxy.silent = True
+        proj.Schema = "IFC2X3"
+        doc.recompute()
+        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+        building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+        storey = ifc_tools.aggregate(Arch.makeFloor(), building)
+        wall = Arch.makeWall(None, 200, 400, 20)
+        wall = ifc_tools.aggregate(wall, storey)
+        doc.recompute()
+        self.assertTrue(ifc_types.is_typable(wall), "IFC2X3 wall should be typable")
+        ask_again = PARAMS.GetBool("ConvertTypeAskAgain", True)
+        keep_original = PARAMS.GetBool("ConvertTypeKeepOriginal", False)
+        try:
+            PARAMS.SetBool("ConvertTypeAskAgain", False)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", True)
+            ifc_types.convert_to_type(wall, keep_object=True)
+            doc.recompute()
+        finally:
+            PARAMS.SetBool("ConvertTypeAskAgain", ask_again)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", keep_original)
+        self.assertTrue(
+            getattr(wall, "Type", None), "Wall type conversion did not create a type object"
+        )
+        self.assertClassEnumMatchesFamily(wall.Type, "IfcTypeProduct")
+
     def test09_CreateBIMObjects(self):
         FreeCAD.Console.PrintMessage("NativeIFC 09: Creating BIM objects...")
         doc = FreeCAD.ActiveDocument
@@ -252,6 +323,72 @@ class NativeIFCTest(unittest.TestCase):
         ifco = len(proj.Proxy.ifcfile.by_type("IfcRoot"))
         print(ifco, "IFC objects created")
         self.assertTrue(fco == 8 - SDU and ifco == 12, "CreateDocument failed")
+
+    def test09b_AggregatedStoreyKeepsLevelData(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 09b: Aggregated storey keeps level data...")
+        clearObjects()
+        doc = FreeCAD.ActiveDocument
+        proj = ifc_tools.create_document(doc, silent=True)
+        site = ifc_tools.aggregate(Arch.makeSite(), proj)
+        building = ifc_tools.aggregate(Arch.makeBuilding(), site)
+        source_storey = Arch.makeFloor(name="AggregatedLevel")
+        source_storey.Height = 3000
+        source_storey.Placement.move(FreeCAD.Vector(0, 0, 6000))
+        storey = ifc_tools.aggregate(source_storey, building)
+        doc.recompute()
+        self.assertTrue("Height" in storey.PropertiesList, "Storey height property missing")
+        self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
+        self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
+        self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
+        element = proj.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=0.000001)
+        if element.ObjectPlacement:
+            placement = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(placement[2][3], 6.0, delta=0.000001)
+        pset = ifc_psets.get_pset("FreeCADPropertySet", element)
+        self.assertIsNotNone(pset, "Storey FreeCADPropertySet missing")
+        prop_values = {
+            prop.Name: prop.NominalValue.wrappedValue
+            for prop in getattr(pset, "HasProperties", []) or []
+            if getattr(prop, "NominalValue", None)
+        }
+        self.assertAlmostEqual(prop_values["FreeCAD_Height"], 3.0, delta=0.000001)
+        storey.Placement.move(FreeCAD.Vector(0, 0, 500))
+        doc.recompute()
+        self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
+
+    def test09c_DirectConversionStoreyKeepsLevelData(self):
+        FreeCAD.Console.PrintMessage("NativeIFC 09c: Direct conversion keeps level data...")
+        clearObjects()
+        doc = FreeCAD.ActiveDocument
+        source_storey = Arch.makeFloor(name="ConvertedLevel")
+        source_storey.Height = 3000
+        source_storey.Placement.move(FreeCAD.Vector(0, 0, 6000))
+        load_orphans = PARAMS.GetBool("LoadOrphans", True)
+        try:
+            PARAMS.SetBool("LoadOrphans", True)
+            ifc_export.direct_conversion([source_storey], doc)
+            doc.recompute()
+        finally:
+            PARAMS.SetBool("LoadOrphans", load_orphans)
+        converted = [
+            obj for obj in doc.Objects if getattr(obj, "IfcClass", "") == "IfcBuildingStorey"
+        ]
+        self.assertEqual(len(converted), 1, "Direct conversion did not recreate a single storey")
+        storey = converted[0]
+        self.assertTrue("Height" in storey.PropertiesList, "Converted storey height missing")
+        self.assertAlmostEqual(storey.Height.Value, 3000, delta=0.001)
+        self.assertAlmostEqual(storey.Placement.Base.z, 6000, delta=0.001)
+        self.assertAlmostEqual(storey.Elevation.Value, 6000, delta=0.001)
+        element = doc.Proxy.ifcfile[storey.StepId]
+        self.assertAlmostEqual(element.Elevation, 6.0, delta=0.000001)
+        if element.ObjectPlacement:
+            placement = ifcopenshell.util.placement.get_local_placement(element.ObjectPlacement)
+            self.assertAlmostEqual(placement[2][3], 6.0, delta=0.000001)
+        self.assertAlmostEqual(ifc_tools.get_quantity_value(element, "Height"), 3.0, delta=0.000001)
+        storey.Placement.move(FreeCAD.Vector(0, 0, 500))
+        doc.recompute()
+        self.assertAlmostEqual(storey.Elevation.Value, 6500, delta=0.001)
 
     def test10_ChangePlacement(self):
         FreeCAD.Console.PrintMessage("NativeIFC 10: Changing Placement...")

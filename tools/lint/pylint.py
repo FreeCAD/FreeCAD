@@ -22,10 +22,10 @@ def get_enabled_checks(log_dir: str) -> str:
     return enabled_log_path
 
 
-def run_pylint(files: str, disable: str, log_dir: str) -> str:
+def run_pylint(files: list, disable: str, log_dir: str) -> str:
     """Run pylint on the provided files and log the output."""
     pylint_log_path = os.path.join(log_dir, "pylint.log")
-    cmd = ["pylint", f"--disable={disable}"] + files.split()
+    cmd = ["pylint", f"--disable={disable}"] + files
     stdout, stderr, _ = run_command(cmd, check=False)
     combined_output = stdout + "\n" + stderr
     write_file(pylint_log_path, combined_output)
@@ -63,9 +63,7 @@ def parse_pylint_output(log_path: str) -> dict:
     }
 
 
-def generate_markdown_report(
-    pylint_counts: dict, enabled_checks_log: str, pylint_log: str
-) -> str:
+def generate_markdown_report(pylint_counts: dict, enabled_checks_log: str, pylint_log: str) -> str:
     """Generate a Markdown-formatted report based on pylint results and logs."""
 
     def generate_summary(counts: dict) -> str:
@@ -102,9 +100,7 @@ def generate_markdown_report(
     summary = generate_summary(pylint_counts)
     report_lines.append(f"<details><summary>{summary}</summary>")
     report_lines.append("")
-    report_lines.append(
-        "<details><summary>:information_source: Enabled checks</summary>"
-    )
+    report_lines.append("<details><summary>:information_source: Enabled checks</summary>")
     report_lines.append("")
     report_lines.append("````")
     report_lines.append(read_file_contents(enabled_checks_log))

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -88,6 +90,13 @@ void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removabl
              }
         }
     }
+}
+
+void CosmeticExtension::refreshAllCosmetic()
+{
+    refreshCEGeoms();
+    refreshCLGeoms();
+    refreshCVGeoms();
 }
 
 //==============================================================================

@@ -384,11 +384,10 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(
         ui->parameterSet->itemData(itemPos).toByteArray()
     );
-    if (!rcParMngr) {
+    if (!rcParMngr || !rcParMngr->CheckDocument()) {
         return;
     }
 
-    rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
@@ -609,7 +608,7 @@ void ParameterGroup::onExportToFile()
         this,
         tr("Export Parameter to File"),
         QString(),
-        QStringLiteral("XML (*.FCParam)")
+        FileDialog::FilterList {{"XML", {"*.FCParam"}}}
     );
     if (!file.isEmpty()) {
         QTreeWidgetItem* item = currentItem();
@@ -627,7 +626,7 @@ void ParameterGroup::onImportFromFile()
         this,
         tr("Import Parameter From File"),
         QString(),
-        QStringLiteral("XML (*.FCParam)")
+        FileDialog::FilterList {{"XML", {"*.FCParam"}}}
     );
     if (!file.isEmpty()) {
         QTreeWidgetItem* item = currentItem();

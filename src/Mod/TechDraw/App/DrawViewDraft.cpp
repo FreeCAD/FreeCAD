@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -27,6 +29,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include "DrawViewDraft.h"
 
@@ -98,7 +101,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute()
                  << ", fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
                  << ", direction=FreeCAD.Vector(" << Direction.getValue().x << ", " << Direction.getValue().y << ", " << Direction.getValue().z << ")"
-                 << ", linestyle=\"" << LineStyle.getValue() << "\""
+                 << ", linestyle=\"" << Base::Tools::escapeEncodeString(LineStyle.getStrValue()) << "\""
                  << ", color=\"" << col.asHexString() << "\""
                  << ", linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing

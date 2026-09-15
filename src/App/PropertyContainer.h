@@ -70,6 +70,8 @@ enum PropertyType
     Prop_NoRecompute = 16,
     /// The property won't be saved to file at all.
     Prop_NoPersist   = 32,
+    /// The property is a true input property.
+    Prop_Input   = 64,
 };
 // clang-format on
 
@@ -493,7 +495,7 @@ public:
    * as when the name is invalid.
    */
   virtual App::Property* addDynamicProperty(
-        const char* type, const char* name=nullptr,
+        std::string_view type, const char* name=nullptr,
         const char* group=nullptr, const char* doc=nullptr,
         short attr=0, bool ro=false, bool hidden=false);
 
@@ -518,7 +520,7 @@ public:
    * @return `true` if the update was successful; `false` otherwise.
    */
   bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
-      return dynamicProps.changeDynamicProperty(prop,group,doc);
+      return dynamicProps.changeDynamicProperty(prop, group, doc);
   }
 
   /**
@@ -531,7 +533,7 @@ public:
    * @throw Base::NameError If the new name is invalid or already exists.
    */
   virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop,name);
+      return dynamicProps.renameDynamicProperty(prop, name);
   }
 
   /**

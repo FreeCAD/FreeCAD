@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
@@ -57,15 +59,17 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
 
     elif heatflux_obj.ConstraintType == "Radiation":
         heatflux_facetype = "R"
+        amb_temp = heatflux_obj.AmbientTemp.getValueAs("K").Value
         if heatflux_obj.CavityRadiation:
             heatflux_key_word = f"RADIATE, CAVITY={heatflux_obj.CavityName}"
             heatflux_facesubtype = "CR"
+            # set negative temperature for closed cavity
+            if heatflux_obj.ClosedCavity:
+                amb_temp = -1.0
         else:
             heatflux_key_word = "RADIATE"
             heatflux_facesubtype = ""
-        heatflux_values = "{:.13G},{:.13G}".format(
-            heatflux_obj.AmbientTemp.getValueAs("K").Value, heatflux_obj.Emissivity
-        )
+        heatflux_values = "{:.13G},{:.13G}".format(amb_temp, heatflux_obj.Emissivity)
 
     elif heatflux_obj.ConstraintType == "Flux":
         heatflux_key_word = "DFLUX"

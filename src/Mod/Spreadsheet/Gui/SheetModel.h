@@ -26,6 +26,7 @@
 
 #include "fastsignals/connection.h"
 #include <QAbstractTableModel>
+#include <boost/signals2.hpp>
 
 #include <App/Range.h>
 

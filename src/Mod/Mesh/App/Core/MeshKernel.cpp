@@ -191,25 +191,36 @@ void MeshKernel::AddFacets(const std::vector<MeshGeomFacet>& rclFAry)
 
 unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool checkManifolds)
 {
+    // if the manifold check shouldn't be done then just add all faces
+    if (!checkManifolds) {
+        return AddFacets(rclFAry);
+    }
+
+    return AddFacetsIfValid(rclFAry);
+}
+
+
+unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry)
+{
+    FacetIndex countFacets = CountFacets();
+    FacetIndex countValid = rclFAry.size();
+    _aclFacetArray.reserve(countFacets + countValid);
+
+    // just add all faces now
+    for (const auto& pF : rclFAry) {
+        _aclFacetArray.push_back(pF);
+    }
+
+    RebuildNeighbours(countFacets);
+    return _aclFacetArray.size();
+}
+
+unsigned long MeshKernel::AddFacetsIfValid(const std::vector<MeshFacet>& rclFAry)
+{
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
     [[maybe_unused]] unsigned long countPoints = CountPoints();
 #endif
-
-    // if the manifold check shouldn't be done then just add all faces
-    if (!checkManifolds) {
-        FacetIndex countFacets = CountFacets();
-        FacetIndex countValid = rclFAry.size();
-        _aclFacetArray.reserve(countFacets + countValid);
-
-        // just add all faces now
-        for (const auto& pF : rclFAry) {
-            _aclFacetArray.push_back(pF);
-        }
-
-        RebuildNeighbours(countFacets);
-        return _aclFacetArray.size();
-    }
 
     this->_aclPointArray.ResetInvalid();
     FacetIndex k = CountFacets();

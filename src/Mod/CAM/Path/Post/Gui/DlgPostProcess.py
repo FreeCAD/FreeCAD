@@ -32,7 +32,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Preferences as PathPref
+from Path.Main.Gui.Editor import CodeEditor
 from PySide import QtCore, QtGui
+import os
 
 translate = FreeCAD.Qt.translate
 
@@ -52,7 +54,7 @@ _TAB_WARNINGS = 4
 
 
 def _parse_cycle_time(ct_str):
-    """Convert 'HH:MM:SS' string to total seconds, or None if unparseable."""
+    """Convert 'HH:MM:SS' string to total seconds, or None if unparsable."""
     try:
         parts = ct_str.strip().split(":")
         if len(parts) == 3:
@@ -89,8 +91,9 @@ class PostProcessDialog:
         config = dlg.config()
     """
 
-    def __init__(self, job):
+    def __init__(self, job, operations=None):
         self.job = job
+        self.operations = operations
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgPostProcess.ui")
         if self.dialog is None:
             raise RuntimeError(
@@ -102,10 +105,10 @@ class PostProcessDialog:
         # Post-processor parameter widgets (from get_property_schema)
         self._post_param_widgets = (
             {}
-        )  # runtime params on Overview: {param_name: (widget, schema_entry)}
+        )  # "run"-scoped params on Overview: {param_name: (widget, schema_entry)}
         self._post_config_widgets = (
             {}
-        )  # non-runtime params on Options: {param_name: (widget, schema_entry)}
+        )  # "job"-scoped params on Options: {param_name: (widget, schema_entry)}
         # Stores generated G-code: {full_path_filename: gcode_string}
         self._generated_outputs = {}
         # Original (subpart, gcode) sections — used to regenerate filenames
@@ -143,6 +146,11 @@ class PostProcessDialog:
         )
         dlg.buttonSaveOutput.clicked.connect(self._save_output_files)
 
+        self.gcodeEditor = CodeEditor()
+        self.gcodeEditor.setToolTip(dlg.plainTextEditGcode.toolTip())
+        dlg.plainTextEditGcode.hide()
+        dlg.splitterOutput.addWidget(self.gcodeEditor)
+
     # ------------------------------------------------------------------
     # Population
     # ------------------------------------------------------------------
@@ -153,6 +161,7 @@ class PostProcessDialog:
         self._populate_fixtures()
         self._populate_job_details()
         self._populate_operations()
+        self._populate_output()
         self._populate_warnings()  # must be last — updates tab badge
 
     def _populate_title(self):
@@ -191,7 +200,11 @@ class PostProcessDialog:
         self._rebuild_machine_output_section()
 
     def _rebuild_machine_output_section(self):
-        """Clear and rebuild the dynamic machine-output option groups in the Output tab."""
+        """Clear and rebuild the dynamic machine-output option groups in the Output tab.
+
+        Uses the shared ``build_output_options`` helper so the layout stays
+        consistent with the Machine Editor dialog.
+        """
         dlg = self.dialog
         scroll_layout = dlg.scrollContentsOutput.layout()
 
@@ -222,101 +235,62 @@ class PostProcessDialog:
             return
 
         try:
-            from Machine.ui.editor.machine_editor import DataclassGUIGenerator
+            from Machine.ui.editor.output_options_layout import build_output_options
         except Exception as e:
-            Path.Log.warning(f"Could not import DataclassGUIGenerator: {e}")
+            Path.Log.warning(f"Could not import build_output_options: {e}")
             self._rebuild_post_params_section(machine)
             return
 
-        # Insertion point: append before the last item (spacer) in the scroll area
+        # Build all output + processing widgets into a temporary container,
+        # then transplant each top-level group into the scroll layout.
+        container = QtGui.QWidget()
+        container_layout = QtGui.QVBoxLayout(container)
+        container_layout.setContentsMargins(0, 0, 0, 0)
+
+        section_widgets = build_output_options(machine, container_layout, context="CAM_Post")
+
+        # Flatten section_widgets into _machine_output_field_widgets
+        self._machine_output_field_widgets = dict(section_widgets)
+
+        # Move the generated group boxes from the container into the real
+        # scroll layout (inserted before the trailing spacer).
         insert_idx = max(0, scroll_layout.count() - 1)
+        while container_layout.count():
+            item = container_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                scroll_layout.insertWidget(insert_idx, widget)
+                self._dynamic_output_groups.append(widget)
+                insert_idx += 1
 
-        # --- Main output options (units + top-level booleans) ---
-        main_group = QtGui.QGroupBox(translate("CAM_Post", "Main Options"))
-        main_layout = QtGui.QFormLayout(main_group)
+        container.deleteLater()
 
-        units_combo = QtGui.QComboBox()
-        units_combo.addItem(translate("CAM_Post", "Metric"), "metric")
-        units_combo.addItem(translate("CAM_Post", "Imperial"), "imperial")
-        try:
-            units_val = machine.output.units.value
-            idx = units_combo.findData(units_val)
-            if idx >= 0:
-                units_combo.setCurrentIndex(idx)
-        except Exception:
-            pass
-        main_layout.addRow(translate("CAM_Post", "Units"), units_combo)
-        units_combo.value_getter = lambda: units_combo.itemData(units_combo.currentIndex())
-
-        main_widgets = {"units": units_combo}
-        for field_name, label in [
-            ("output_header", translate("CAM_Post", "Output Header")),
-            ("output_tool_length_offset", translate("CAM_Post", "Output Tool Length Offset (G43)")),
-            ("remote_post", translate("CAM_Post", "Enable Remote Posting")),
-        ]:
-            cb = QtGui.QCheckBox()
-            cb.setChecked(bool(getattr(getattr(machine, "output", None), field_name, False)))
-            cb.value_getter = lambda w=cb: w.isChecked()
-            main_layout.addRow(label, cb)
-            main_widgets[field_name] = cb
-
-        scroll_layout.insertWidget(insert_idx, main_group)
-        self._dynamic_output_groups.append(main_group)
-        self._machine_output_field_widgets["main"] = main_widgets
-        insert_idx += 1
-
-        # --- Sub-dataclass groups ---
-        output = getattr(machine, "output", None)
-        if output is None:
-            return
-
-        sub_sections = [
-            ("header", translate("CAM_Post", "Header Options")),
-            ("comments", translate("CAM_Post", "Comment Options")),
-            ("formatting", translate("CAM_Post", "Formatting Options")),
-            ("precision", translate("CAM_Post", "Precision Options")),
-            ("duplicates", translate("CAM_Post", "Duplicate Output Options")),
-        ]
-        for attr_name, title in sub_sections:
-            dc_instance = getattr(output, attr_name, None)
-            if dc_instance is None:
-                continue
-            try:
-                group, widgets = DataclassGUIGenerator.create_group_for_dataclass(
-                    dc_instance, title
-                )
-            except Exception as e:
-                Path.Log.warning(f"Could not build group for {attr_name}: {e}")
-                continue
-            scroll_layout.insertWidget(insert_idx, group)
-            self._dynamic_output_groups.append(group)
-            self._machine_output_field_widgets[attr_name] = widgets
-            insert_idx += 1
-
-        # Populate non-runtime post-processor config on this (Options) tab
+        # Populate "job"-scoped post-processor properties on the Options tab,
+        # after the machine output groups and before the trailing spacer.
         self._rebuild_post_config_section(machine, scroll_layout, insert_idx)
 
-        # Populate runtime post-processor params on Overview tab
+        # Populate "run"-scoped post-processor params on Overview tab
         self._rebuild_post_params_section(machine)
 
     def _rebuild_post_config_section(self, machine, scroll_layout, insert_idx):
-        """Build non-runtime postprocessor property widgets on the Options tab.
+        """Build the "job"-scoped postprocessor property widgets on the Options tab.
 
-        These mirror the same properties shown in the machine editor and allow
+        These mirror properties the machine editor also shows, and allow
         per-run overrides of machine-config values like pierce_delay, cooling_delay, etc.
         """
-        # Clear previous non-runtime config widgets
-        for name, (widget, _schema) in self._post_config_widgets.items():
-            # The widget is inside a group box tracked by _dynamic_output_groups
-            pass
+        # Clear previous job-scoped config widgets.  The widgets themselves live
+        # in a group box tracked by _dynamic_output_groups, which the caller
+        # removes and deletes before this runs, so only the map needs clearing.
         self._post_config_widgets.clear()
 
         if machine is None:
+            Path.Log.warning(f"No machine for job <{self.job.Label}> : {__file__}")
             return
 
         # Resolve postprocessor class
         post_class = None
         postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+        Path.Log.debug(f"Machine for job <{self.job.Label}> {postprocessor_name}: {__file__}")
         if postprocessor_name:
             try:
                 from Path.Post.Processor import PostProcessorFactory
@@ -331,26 +305,40 @@ class PostProcessDialog:
             return
 
         try:
-            schema = post_class.get_property_schema()
+            schema = post_class.get_full_property_schema()
         except Exception:
             return
 
-        non_runtime = [e for e in schema if not e.get("runtime", False)] if schema else []
-        if not non_runtime:
+        # "machine" and "internal" properties are not offered here: the former
+        # are machine-editor-only by declaration, the latter are never shown.
+        from Path.Post.Processor import SCOPE_JOB, properties_in_scope
+
+        job_scoped = properties_in_scope(schema, SCOPE_JOB)
+        if not job_scoped:
             return
 
-        # Build the configuration bundle to get values with job overrides applied
+        # Build the configuration bundle to get values with job overrides applied.
+        # The postprocessor resolved its own machine from the job, but the combo
+        # box may point somewhere else; the dialog's selection wins, matching
+        # what _apply_options_to_machine() does before export.  The bundle
+        # dereferences _machine, which is None when the job names a machine the
+        # factory cannot find, so fall back to the raw properties in that case.
         bundle = {}
         if post_obj is not None and hasattr(post_obj, "build_configuration_bundle"):
-            bundle = post_obj.build_configuration_bundle()
-            Path.Log.debug(f"Post config bundle for dialog: {bundle}")
+            try:
+                post_obj._machine = machine
+                bundle = post_obj.build_configuration_bundle()
+                Path.Log.debug(f"Post config bundle for dialog: {bundle}")
+            except Exception as e:
+                Path.Log.warning(f"Could not build post config bundle for dialog: {e}")
+                bundle = {}
 
         pp_props = bundle if bundle else (getattr(machine, "postprocessor_properties", {}) or {})
 
         group = QtGui.QGroupBox(translate("CAM_Post", "Postprocessor Properties"))
         form = QtGui.QFormLayout(group)
 
-        for entry in non_runtime:
+        for entry in job_scoped:
             name = entry.get("name", "")
             param_type = entry.get("type", "string")
             label_text = entry.get("label", name)
@@ -404,21 +392,14 @@ class PostProcessDialog:
                 widget.setToolTip(help_text)
                 widget.value_getter = lambda w=widget: w.text()
 
-            # if widget is not None:
-            #     # Connect signal to recompute warnings when value changes
-            #     if isinstance(widget, (QtGui.QCheckBox, QtGui.QLineEdit, QtGui.QPlainTextEdit)):
-            #         (
-            #             widget.textChanged.connect(self._recompute_warnings)
-            #             if hasattr(widget, "textChanged")
-            #             else widget.stateChanged.connect(self._recompute_warnings)
-            #         )
-            #     elif isinstance(widget, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)):
-            #         widget.valueChanged.connect(self._recompute_warnings)
-            #     elif isinstance(widget, QtGui.QComboBox):
-            #         widget.currentIndexChanged.connect(self._recompute_warnings)
-
-            #     form.addRow(label_text, widget)
-            #     self._post_config_widgets[name] = (widget, entry)
+            if widget is not None:
+                # No change signals are connected here.  _recompute_warnings()
+                # runs a full CAMSanity.validate_job(), which is far too costly
+                # to fire per keystroke, and the Overview tab's widgets are
+                # likewise unconnected.  Values are read on demand by
+                # _collect_post_param_values() via each widget's value_getter.
+                form.addRow(label_text, widget)
+                self._post_config_widgets[name] = (widget, entry)
 
         scroll_layout.insertWidget(insert_idx, group)
         self._dynamic_output_groups.append(group)
@@ -453,8 +434,7 @@ class PostProcessDialog:
                 try:
                     from Path.Post.Processor import PostProcessorFactory
 
-                    # Pass None as job to get the class for schema inspection
-                    post_obj = PostProcessorFactory.get_post_processor(None, postprocessor_name)
+                    post_obj = PostProcessorFactory.get_post_processor(self.job, postprocessor_name)
                     if post_obj is not None:
                         post_class = type(post_obj)
                 except Exception as e:
@@ -466,16 +446,18 @@ class PostProcessDialog:
 
         # Get the property schema
         try:
-            schema = post_class.get_property_schema()
+            schema = post_class.get_full_property_schema()
         except Exception as e:
             Path.Log.warning(f"Could not get property schema: {e}")
             placeholder.setVisible(True)
             return
 
-        # Only runtime parameters are shown on the Overview tab
-        runtime_schema = [e for e in schema if e.get("runtime", False)] if schema else []
+        # Only "run"-scoped parameters are shown on the Overview tab
+        from Path.Post.Processor import SCOPE_RUN, properties_in_scope
 
-        if not runtime_schema:
+        run_scoped = properties_in_scope(schema, SCOPE_RUN)
+
+        if not run_scoped:
             placeholder.setVisible(True)
             return
 
@@ -484,7 +466,7 @@ class PostProcessDialog:
         # Get current machine postprocessor_properties for initial values
         pp_props = getattr(machine, "postprocessor_properties", {}) or {}
 
-        for entry in runtime_schema:
+        for entry in run_scoped:
 
             name = entry.get("name", "")
             param_type = entry.get("type", "string")
@@ -552,17 +534,17 @@ class PostProcessDialog:
                 self._post_param_widgets[name] = (widget, entry)
 
     def _collect_post_param_values(self):
-        """Read current values from all post-parameter widgets (runtime + non-runtime).
+        """Read current values from all post-parameter widgets ("job" + "run" scoped).
 
         Returns:
             dict: {param_name: value} for all post-processor parameters.
         """
         values = {}
-        # Non-runtime config from Options tab
+        # "job"-scoped config from Options tab
         for name, (widget, _schema) in self._post_config_widgets.items():
             if hasattr(widget, "value_getter"):
                 values[name] = widget.value_getter()
-        # Runtime params from Overview tab (override if same key exists)
+        # "run"-scoped params from Overview tab (override if same key exists)
         for name, (widget, _schema) in self._post_param_widgets.items():
             if hasattr(widget, "value_getter"):
                 values[name] = widget.value_getter()
@@ -597,28 +579,70 @@ class PostProcessDialog:
         dlg.plainTextEditComment.setPlainText(getattr(self.job, "Description", "") or "")
 
     def _populate_operations(self):
+        from Path.Base.Util import toolControllerForOp, coolantModeForOp
+
+        col_num = 0
+        col_op_label = 1
+        col_tool_number = 2
+        col_tc = 3
+        col_coolant = 4
+        col_time = 5
         dlg = self.dialog
         tree = dlg.treeWidgetOperations
         tree.blockSignals(True)
+        tree.setTextElideMode(QtCore.Qt.ElideMiddle)
+        tree.setWordWrap(False)
         tree.clear()
 
-        for op in self._get_active_operations():
+        for index, op in enumerate(self._get_active_operations(), 1):
             item = QtGui.QTreeWidgetItem(tree)
-            item.setText(0, op.Label)
-            ct = getattr(op, "CycleTime", None)
-            item.setText(1, ct if ct else "-")
-            item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+            if not self.operations or op in self.operations["operations"]:
+                item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+            else:
+                item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             item.setFlags(
                 item.flags()
                 | QtCore.Qt.ItemFlag.ItemIsUserCheckable
                 | QtCore.Qt.ItemFlag.ItemIsEnabled
             )
 
+            item.setText(col_num, str(index))
+            item.setText(col_op_label, op.Label)
+            if tc := toolControllerForOp(op):
+                tcLabel = tc.Label
+                toolNumber = str(tc.ToolNumber)
+            else:
+                tcLabel = "???"
+                toolNumber = ""
+            item.setText(col_tool_number, toolNumber)
+            item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
+            item.setText(col_tc, tcLabel)
+            coolant = coolantModeForOp(op)
+            coolantString = coolant if coolant != "None" else ""
+            item.setText(col_coolant, coolantString)
+            item.setText(col_time, getattr(op, "CycleTime", ""))
+
+        for column in range(tree.columnCount()):
+            tree.resizeColumnToContents(column)
+
         tree.resizeColumnToContents(0)
-        tree.header().setStretchLastSection(True)
         tree.blockSignals(False)
         self._update_ops_tab_label()
-        self._update_total_time()
+
+    def _populate_output(self):
+        """Set fields of Output tab while init dialog"""
+        from Path.Post.Utils import FilenameGenerator
+
+        # set Output folder
+        generator = FilenameGenerator(job=self.job)
+        gen_filenames = generator.generate_filenames()
+        resolved_dir = os.path.dirname(next(gen_filenames))
+        self.dialog.lineEditOutputLocation.setText(resolved_dir)
+
+        # set Filename template
+        jobPostProcessorOutputFile = getattr(self.job, "PostProcessorOutputFile", "") or ""
+        default_template = os.path.basename(jobPostProcessorOutputFile)
+        self.dialog.lineEditFilenameTemplate.setText(default_template)
 
     def _get_dialog_overrides(self):
         """Collect current dialog widget values as an overrides dict.
@@ -752,27 +776,8 @@ class PostProcessDialog:
         """Return only active operations, matching what the tree widget displays."""
         return [op for op in self._get_operations() if getattr(op, "Active", True)]
 
-    def _update_total_time(self):
-        tree = self.dialog.treeWidgetOperations
-        total_secs = 0
-        has_any = False
-        for i in range(tree.topLevelItemCount()):
-            item = tree.topLevelItem(i)
-            if item.checkState(0) != QtCore.Qt.CheckState.Checked:
-                continue
-            secs = _parse_cycle_time(item.text(1))
-            if secs is not None:
-                total_secs += secs
-                has_any = True
-        self.dialog.labelTotalTime.setText(
-            translate("CAM_Post", "Total: {}").format(
-                _format_seconds(total_secs) if has_any else "-"
-            )
-        )
-
     def _on_ops_changed(self, _item, _col=None):
         self._update_ops_tab_label()
-        self._update_total_time()
 
     def _select_all_ops(self):
         tree = self.dialog.treeWidgetOperations
@@ -829,12 +834,12 @@ class PostProcessDialog:
         dlg.exec_()
 
     def _format_workplan(self, processor):
-        """Format the workplan text similar to the export function provided."""
+        """Format the workplan text with per-item cycle times and a grand total."""
         from Path.Post.PostList import buildPostList
 
         lines = []
         lines.append("=" * 80)
-        lines.append("POSTABLES LIST")
+        lines.append("WORKPLAN")
         lines.append("=" * 80)
         lines.append("")
         lines.append(f"Job: {processor._job.Label}")
@@ -844,6 +849,8 @@ class PostProcessDialog:
         lines.append("")
 
         postables = buildPostList(processor)
+        total_secs = 0
+        has_any_time = False
 
         for idx, postable in enumerate(postables, 1):
             group_key = postable[0]
@@ -855,6 +862,9 @@ class PostProcessDialog:
             else:
                 display_key = f'"{group_key}"'
 
+            group_secs = 0
+            group_has_time = False
+
             lines.append(f"[{idx}] Postable Group: {display_key}")
             lines.append(f"    Objects: {len(objects)}")
             lines.append("")
@@ -862,8 +872,9 @@ class PostProcessDialog:
             for obj_idx, obj in enumerate(objects, 1):
                 lines.append(f"    [{obj_idx}] {obj.Label}")
 
-                # Determine object type/role
+                # Determine object type/role and extract cycle time
                 obj_type = None
+                cycle_time_str = None
                 if hasattr(obj, "item_type"):
                     # Postable object
                     obj_type = obj.item_type.title()
@@ -882,7 +893,13 @@ class PostProcessDialog:
                                 f"        ToolController: {tc.Label} (T{tc.data.get('tool_number', '?')})"
                             )
                         else:
-                            lines.append(f"        ToolController: None")
+                            lines.append("        ToolController: None")
+                        # Cycle time from postable operation data
+                        src = getattr(obj, "source", None)
+                        if src is not None:
+                            cycle_time_str = getattr(src, "CycleTime", None)
+                        if cycle_time_str is None and hasattr(obj, "data"):
+                            cycle_time_str = obj.data.get("cycle_time")
                 else:
                     # Legacy object
                     if type(obj).__name__ == "_TempObject":
@@ -908,11 +925,25 @@ class PostProcessDialog:
                                 )
                             elif hasattr(obj, "ToolController"):
                                 lines.append("        ToolController: None")
+                            cycle_time_str = getattr(obj, "CycleTime", None)
                     else:
                         obj_type = type(obj).__name__
 
                 if obj_type:
                     lines.append(f"        Type: {obj_type}")
+
+                # Show cycle time for this item
+                if cycle_time_str:
+                    lines.append(f"        Cycle Time: {cycle_time_str}")
+                    secs = _parse_cycle_time(cycle_time_str)
+                    if secs is not None:
+                        group_secs += secs
+                        group_has_time = True
+
+            if group_has_time:
+                total_secs += group_secs
+                has_any_time = True
+                lines.append(f"    Group Time: {_format_seconds(group_secs)}")
 
             lines.append("")
 
@@ -920,6 +951,10 @@ class PostProcessDialog:
         lines.append(f"Total Groups: {len(postables)}")
         total_objects = sum(len(p[1]) for p in postables)
         lines.append(f"Total Objects: {total_objects}")
+        if has_any_time:
+            lines.append(f"Total Estimated Time: {_format_seconds(total_secs)}")
+        else:
+            lines.append("Total Estimated Time: -")
         lines.append("=" * 80)
 
         return "\n".join(lines)
@@ -972,6 +1007,14 @@ class PostProcessDialog:
                     if hasattr(widget, "value_getter") and hasattr(sub, field_name):
                         setattr(sub, field_name, widget.value_getter())
 
+            elif section == "processing":
+                sub = getattr(machine, "processing", None)
+                if sub is None:
+                    continue
+                for field_name, widget in widgets.items():
+                    if hasattr(widget, "value_getter") and hasattr(sub, field_name):
+                        setattr(sub, field_name, widget.value_getter())
+
     def _reset_output_tab(self):
         """Clear all generated output and reset the Output tab to its initial state."""
         self._generated_outputs = {}
@@ -980,7 +1023,7 @@ class PostProcessDialog:
         dlg.listWidgetOutputFiles.blockSignals(True)
         dlg.listWidgetOutputFiles.clear()
         dlg.listWidgetOutputFiles.blockSignals(False)
-        dlg.plainTextEditGcode.setPlainText("")
+        self.gcodeEditor.setPlainText("")
         dlg.labelOutputStatus.setVisible(True)
         dlg.buttonSaveOutput.setEnabled(False)
         dlg.buttonApplyTemplate.setEnabled(False)
@@ -1180,7 +1223,7 @@ class PostProcessDialog:
         if lw.count() > 0:
             lw.setCurrentRow(0)  # triggers _on_output_file_selected
         else:
-            dlg.plainTextEditGcode.setPlainText("")
+            self.gcodeEditor.setPlainText("")
 
         n = len(self._generated_outputs)
         dlg.labelOutputStatus.setVisible(n == 0)
@@ -1193,11 +1236,11 @@ class PostProcessDialog:
         if previous is not None:
             prev_fname = previous.data(QtCore.Qt.ItemDataRole.UserRole)
             if prev_fname in self._generated_outputs:
-                self._generated_outputs[prev_fname] = dlg.plainTextEditGcode.toPlainText()
+                self._generated_outputs[prev_fname] = self.gcodeEditor.toPlainText()
 
         if current is not None:
             fname = current.data(QtCore.Qt.ItemDataRole.UserRole)
-            dlg.plainTextEditGcode.setPlainText(self._generated_outputs.get(fname, ""))
+            self.gcodeEditor.setPlainText(self._generated_outputs.get(fname, ""))
 
     def _on_output_files_context_menu(self, pos):
         """Show rename context menu on right-click."""
@@ -1241,7 +1284,7 @@ class PostProcessDialog:
         if current is not None:
             fname = current.data(QtCore.Qt.ItemDataRole.UserRole)
             if fname in self._generated_outputs:
-                self._generated_outputs[fname] = dlg.plainTextEditGcode.toPlainText()
+                self._generated_outputs[fname] = self.gcodeEditor.toPlainText()
 
     def _regenerate_filenames(self):
         """Re-apply the filename template to rename all items in the output list."""
@@ -1289,7 +1332,9 @@ class PostProcessDialog:
 
     def _browse_output_location(self):
         dlg = self.dialog
-        current = dlg.lineEditOutputLocation.text().strip() or ""
+        current = dlg.lineEditOutputLocation.text().strip()
+        if not os.path.exists(os.path.dirname(current)) and not os.path.exists(current):
+            current = os.path.dirname(FreeCAD.activeDocument().FileName)
         folder = QtGui.QFileDialog.getExistingDirectory(
             dlg,
             translate("CAM_Post", "Select Output Folder"),

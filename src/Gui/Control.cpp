@@ -254,7 +254,7 @@ void ControlSingleton::closeDialog(App::Document* attachedTo)
     }
 }
 
-void ControlSingleton::closedDialog(App::Document* attachedTo)
+void ControlSingleton::closedDialog(App::Document* /*attachedTo*/)
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
     assert(taskView);

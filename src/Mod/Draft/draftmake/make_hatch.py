@@ -32,24 +32,60 @@ if FreeCAD.GuiUp:
     import draftutils.gui_utils as gui_utils
 
 
-def make_hatch(baseobject, filename, pattern, scale, rotation, translate=True):
-    """make_hatch(baseobject, filename, pattern, scale, rotation, translate): Creates and returns a
-    hatch object made by applying the given pattern of the given PAT file to the faces of
-    the given base object. Given scale, rotation and translate factors are applied to the hatch object.
-    The result is a Part-based object created in the active document."""
+def make_hatch(selection, filename, pattern, scale, rotation, translate=True):
+    """make_hatch(selection, filename, pattern, scale, rotation, translate)
+
+    Creates a hatch object by applying a pattern from a PAT file to faces.
+
+    Parameters
+    ----------
+    selection: single object / list of objects / selection set / LinkSubList-like iterable
+        Examples:
+        App.ActiveDocument.Box
+        Gui.Selection.getSelection()
+        Gui.Selection.getSelectionEx("", 0)
+        [(App.ActiveDocument.Box, ("Face1",))]
+        [[App.ActiveDocument.Box, ["Face1", "Face2"]]]
+
+    filename: string
+        Filename of the PAT file with relative or absolute path.
+        To use a relative path the FreeCAD document must have been saved.
+
+    pattern: string
+        Case-sensitive name of the hatch pattern. Must exist in the PAT file.
+
+    scale: float
+        The pattern scale.
+
+    rotation: float
+        The pattern rotation in degrees.
+
+    translate: Bool
+        Specifies if the faces are temporarily translated to the global
+        XY-plane during the hatching process. Setting it to `False` may
+        give wrong results for non-XY faces.
+        See https://wiki.freecad.org/Draft_Hatch.
+
+    Returns
+    -------
+    Part::FeaturePython object
+        A scripted object of the Proxy type `"Hatch"`.
+    """
 
     if not FreeCAD.ActiveDocument:
         return
+    if not isinstance(selection, list):
+        selection = [selection]
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Hatch")
     Hatch(obj)
-    obj.Base = baseobject
     obj.File = filename
     obj.Pattern = pattern
     obj.Scale = scale
     obj.Rotation = rotation
     obj.Translate = translate
+    obj.Proxy.add_faces(obj, selection)
     if FreeCAD.GuiUp:
         ViewProviderDraftHatch(obj.ViewObject)
         gui_utils.format_object(obj)
-        gui_utils.autogroup(obj)
+        gui_utils.select(obj)
     return obj

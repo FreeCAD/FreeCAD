@@ -174,7 +174,7 @@
       <location filename="../../InitGui.py" line="137"/>
       <location filename="../../InitGui.py" line="150"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation>若OpenSCAD引擎加载临时文件失败，请前往FreeCAD首选项 → OpenSCAD工作台 → 更改通信方式。‌。</translation>
+      <translation>若OpenSCAD引擎加载临时文件失败，请前往FreeCAD偏好设置 → OpenSCAD工作台 → 更改通信方式。‌</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="145"/>

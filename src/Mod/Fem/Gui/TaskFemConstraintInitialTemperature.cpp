@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -118,7 +120,7 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
     catch (const Base::Exception& e) {
         ConstraintView->getDocument()->abortCommand();  // Opened in
                                                         // ViewProviderDocumentObject::startDefaultEditMode()
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

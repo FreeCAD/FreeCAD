@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Datums.h>
 #include <App/Origin.h>

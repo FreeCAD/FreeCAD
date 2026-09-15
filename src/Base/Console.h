@@ -641,8 +641,6 @@ public:
     // retrieval of an observer by name
     ILogger* get(const char* Name) const;
 
-    static PyMethodDef Methods[];
-
     void refresh() const;
     void enableRefresh(bool enable);
     void setBridge(const Bridge* bridge);
@@ -653,24 +651,26 @@ public:
     constexpr FreeCAD_ConsoleMsgType getConsoleMsg(LogStyle style);
 
 private:
+    friend class ConsoleModulePy;
+
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     // static python wrapper of the exported functions
-    static PyObject* sPyLog(PyObject* self, PyObject* args);
-    static PyObject* sPyMessage(PyObject* self, PyObject* args);
-    static PyObject* sPyWarning(PyObject* self, PyObject* args);
-    static PyObject* sPyDeveloperWarning(PyObject* self, PyObject* args);
-    static PyObject* sPyUserWarning(PyObject* self, PyObject* args);
-    static PyObject* sPyTranslatedUserWarning(PyObject* self, PyObject* args);
-    static PyObject* sPyError(PyObject* self, PyObject* args);
-    static PyObject* sPyDeveloperError(PyObject* self, PyObject* args);
-    static PyObject* sPyUserError(PyObject* self, PyObject* args);
-    static PyObject* sPyTranslatedUserError(PyObject* self, PyObject* args);
-    static PyObject* sPyCritical(PyObject* self, PyObject* args);
-    static PyObject* sPyNotification(PyObject* self, PyObject* args);
-    static PyObject* sPyTranslatedNotification(PyObject* self, PyObject* args);
-    static PyObject* sPySetStatus(PyObject* self, PyObject* args);
-    static PyObject* sPyGetStatus(PyObject* self, PyObject* args);
-    static PyObject* sPyGetObservers(PyObject* self, PyObject* args);
+    static PyObject* sPrintLog(PyObject* self, PyObject* args);
+    static PyObject* sPrintMessage(PyObject* self, PyObject* args);
+    static PyObject* sPrintWarning(PyObject* self, PyObject* args);
+    static PyObject* sPrintDeveloperWarning(PyObject* self, PyObject* args);
+    static PyObject* sPrintUserWarning(PyObject* self, PyObject* args);
+    static PyObject* sPrintTranslatedUserWarning(PyObject* self, PyObject* args);
+    static PyObject* sPrintError(PyObject* self, PyObject* args);
+    static PyObject* sPrintDeveloperError(PyObject* self, PyObject* args);
+    static PyObject* sPrintUserError(PyObject* self, PyObject* args);
+    static PyObject* sPrintTranslatedUserError(PyObject* self, PyObject* args);
+    static PyObject* sPrintCritical(PyObject* self, PyObject* args);
+    static PyObject* sPrintNotification(PyObject* self, PyObject* args);
+    static PyObject* sPrintTranslatedNotification(PyObject* self, PyObject* args);
+    static PyObject* sSetStatus(PyObject* self, PyObject* args);
+    static PyObject* sGetStatus(PyObject* self, PyObject* args);
+    static PyObject* sGetObservers(PyObject* self, PyObject* args);
 
     bool _bCanRefresh {true};
     ConnectionMode connectionMode {Direct};

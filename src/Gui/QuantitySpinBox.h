@@ -125,7 +125,7 @@ public:
 
     /// Returns if automatic width adjustment is enabled for this input
     bool autoAdjustWidth() const;
-    /// Enables or disables automatic width adjustement
+    /// Enables or disables automatic width adjustment
     void setAutoAdjustWidth(bool adjust);
 
     /// Returns if icon space is added for this input
@@ -161,7 +161,6 @@ public:
     void stepBy(int steps) override;
     void clear() override;
     QValidator::State validate(QString& input, int& pos) const override;
-    void fixup(QString& str) const override;
 
     /// This is a helper function to determine the size this widget requires to fully display the text
     QSize sizeForText(const QString&) const;
@@ -191,6 +190,7 @@ protected:
     void showEvent(QShowEvent* event) override;
     void hideEvent(QHideEvent* event) override;
     void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
@@ -198,7 +198,6 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    void clampCursorBeforeUnit();
     void validateInput() override;
     void updateText(const Base::Quantity&);
     void updateEdit(const QString& text);
@@ -233,6 +232,15 @@ Q_SIGNALS:
      *  focus out.
      */
     void returnPressed();
+    /** Reports that the user cleared the editor; valueChanged() is reserved for actual values. */
+    void inputCleared();
+    /**
+     * Reports a rejected committed edit and its diagnostic range.
+     *
+     * @a errorStartUtf16 and @a errorLengthUtf16 are QString indices measured in UTF-16 code
+     * units. They identify the text that should be selected or highlighted for the user.
+     */
+    void inputRejected(const QString& message, int errorStartUtf16, int errorLengthUtf16);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

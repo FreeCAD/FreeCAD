@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # **************************************************************************
 #   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
 #                                                                         *
@@ -27,4 +29,5 @@ from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
 from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
 from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
 from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401
+from TDTest.DrawViewScaleTypeTest import DrawViewScaleTypeTest  # noqa: F401
 

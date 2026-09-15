@@ -36,7 +36,7 @@ def selection(verbose=False):
         selected = FreeCADGui.Selection.getSelection()
         if len(selected) != 1:
             if verbose:
-                Path.Log.warning(translate("CAM_Dressup", "Please select one toolpath object\n"))
+                Path.Log.warning(translate("CAM_Dressup", "Select one toolpath object\n"))
             return None
         if not selected[0].isDerivedFrom("Path::Feature"):
             if verbose:
@@ -60,9 +60,7 @@ def isOp(obj):
     if not getattr(obj, "Proxy", None):
         return False
     proxy = obj.Proxy.__module__
-    if "Path.Op" not in proxy and "Path.Dressup" not in proxy:
-        return False
-    return True
+    return "Path.Op" in proxy or "Path.Dressup" in proxy
 
 
 def baseOp(path):
@@ -72,6 +70,6 @@ def baseOp(path):
     return path
 
 
-def toolController(path):
+def toolController(path, default=None):
     """toolController(path) ... return the tool controller from the base op."""
-    return baseOp(path).ToolController
+    return getattr(baseOp(path), "ToolController", default)

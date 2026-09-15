@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -73,6 +75,7 @@ public:
     void toggleCosmeticLines(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     void updateView(bool update = false) override;
+    void updateFrameVisibility() override;
     void tidy();
     QRectF boundingRect() const override;
 

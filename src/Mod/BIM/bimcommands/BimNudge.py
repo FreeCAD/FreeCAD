@@ -151,7 +151,7 @@ class BIM_Nudge_Up(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Up", "Nudge Up"),
-            "Accel": "Alt+Up",
+            "Accel": "Alt+'",
         }
 
     def Activated(self):
@@ -171,7 +171,7 @@ class BIM_Nudge_Down(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Down", "Nudge Down"),
-            "Accel": "Alt+Down",
+            "Accel": "Alt+;",
         }
 
     def Activated(self):
@@ -191,7 +191,7 @@ class BIM_Nudge_Left(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Left", "Nudge Left"),
-            "Accel": "Alt+Left",
+            "Accel": "Alt+[",
         }
 
     def Activated(self):
@@ -211,7 +211,7 @@ class BIM_Nudge_Right(BIM_Nudge):
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Right", "Nudge Right"),
-            "Accel": "Alt+Right",
+            "Accel": "Alt+]",
         }
 
     def Activated(self):

@@ -1,6 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_library(FreeCADBase SHARED)
+add_dependencies(FreeCADBase fc_version)
+
+check_cxx_source_compiles(
+    "#include <charconv>
+int main()
+{
+    double value {};
+    const auto result = std::from_chars(\"\", \"\", value, std::chars_format::general);
+    return result.ec == std::errc {};
+}"
+    FREECAD_HAS_FLOATING_POINT_FROM_CHARS
+)
+
+if(FREECAD_HAS_FLOATING_POINT_FROM_CHARS)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=1)
+else()
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=0)
+endif()
 
 if(WIN32)
     add_definitions(-DFCBase)
@@ -51,6 +69,7 @@ if(MSVC)
         optimized MSVCPRT.LIB
         Rpcrt4.lib
         version.lib
+        dbghelp.lib
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
@@ -87,6 +106,15 @@ endif()
 
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
+if(cpptrace_FOUND)
+    list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
+    # The CrashReporter Reader uses this to reduce the absolute source paths recorded in the
+    # debug info to paths relative to the source root, so a crash report cannot leak the
+    # build machine's directory layout.
+    target_compile_definitions(FreeCADBase PRIVATE FC_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+endif()
+
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
@@ -109,7 +137,19 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
-generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
+generate_module_from_py(
+    FreeCAD.Qt
+    Qt_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Units
+    Units_MODULE_GENERATED_SRCS
+)
+generate_from_any(Resources/schemas/Parameter.xsd ParameterSchema.h ParameterSchema)
 
 if(SWIG_FOUND)
     # Create the file swigpyrun.hh and then compare with the file swigpyrun.h.
@@ -140,6 +180,9 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Qt.module.pyi
+    FreeCAD.Console.module.pyi
+    FreeCAD.Units.module.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADBase_Pyi_SRCS})
 
@@ -147,6 +190,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    ${Units_MODULE_GENERATED_SRCS}
     UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
@@ -154,6 +198,10 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemas.h
     UnitsSchemasData.h
     UnitsSchemasSpecs.h
+    NumericInput.h
+    NumericInput.cpp
+    NumericInputLocale.h
+    NumericInputLocale.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp
@@ -162,6 +210,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     Unit.h
     Unit.cpp
     UnitPyImp.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/ParameterSchema.h
 )
 SOURCE_GROUP("Units" FILES ${FreeCADBase_UNITAPI_SRCS})
 
@@ -179,8 +228,10 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
+    OkLch.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     DualQuaternion.cpp
@@ -196,16 +247,17 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     Observer.cpp
-    Parameter.xsd
+    Resources/schemas/Parameter.xsd
     Parameter.cpp
+    ParameterObserver.cpp
     ParameterPy.cpp
     Persistence.cpp
     PersistencePyImp.cpp
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
-    ProgressIndicator.cpp
     ProgressIndicatorPy.cpp
+    PyException.cpp
     PyExport.cpp
     PyObjectBase.cpp
     PythonTypeExt.cpp
@@ -216,13 +268,16 @@ SET(FreeCADBase_CPP_SRCS
     ServiceProvider.cpp
     SmartPtrPy.cpp
     Stream.cpp
+    StringUtils.cpp
     Swap.cpp
+    NumericFormatting.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
     Translation.cpp
+    ${Qt_MODULE_GENERATED_SRCS}
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -233,6 +288,7 @@ SET(FreeCADBase_CPP_SRCS
     ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
+    XMLParser.cpp
     ZipHeader.cpp
 )
 
@@ -253,6 +309,7 @@ SET(FreeCADBase_HPP_SRCS
     ConsoleObserver.h
     Converter.h
     Color.h
+    OkLch.h
     CoordinateSystem.h
     DualNumber.h
     DualQuaternion.h
@@ -266,13 +323,15 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    NumericFormatting.h
     Observer.h
     Parameter.h
+    ParameterObserver.h
     Persistence.h
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
-    ProgressIndicator.h
+    PyException.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h
@@ -283,6 +342,7 @@ SET(FreeCADBase_HPP_SRCS
     Sequencer.h
     SmartPtrPy.h
     Stream.h
+    StringUtils.h
     Swap.h
     ${SWIG_HEADERS}
     SystemHandler.h
@@ -300,7 +360,18 @@ SET(FreeCADBase_HPP_SRCS
     ViewProj.h
     Writer.h
     XMLTools.h
+    XMLParser.h
     ZipHeader.h
+)
+
+SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/Format.h
+    CrashReporter/Manager.h
+    CrashReporter/Manager.cpp
+    CrashReporter/Reader.h
+    CrashReporter/Reader.cpp
+    CrashReporter/Writer.h
+    CrashReporter/Writer.cpp
 )
 
 SET(FreeCADBase_SRCS
@@ -309,6 +380,7 @@ SET(FreeCADBase_SRCS
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
+    ${FreeCADBase_CrashReporter_SRCS}
     PyTools.c
     PyTools.h
     PreCompiled.h
@@ -319,7 +391,10 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
+        CrashReporter/WindowsCrashReporter.cpp
+        CrashReporter/WindowsCrashReporter.h
     )
+
 ENDIF(MSVC)
 
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
@@ -342,11 +417,9 @@ if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(FreeCADBase)
-endif()
+target_compile_warn_error(FreeCADBase)
 
-SET_BIN_DIR(FreeCADBase FreeCADBase)
+SET_BIN_DIR(FreeCADBase)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase

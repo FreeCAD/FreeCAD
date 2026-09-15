@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -56,7 +58,7 @@ SymbolChooser::~SymbolChooser()
 void SymbolChooser::setUiPrimary()
 {
     // Base::Console().message("SC::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Select a symbol"));
+    setWindowTitle(QObject::tr("Select a Symbol"));
     resize(QSize(700, 500));
     if (!m_symbolDir.isEmpty()) {
         ui->fcSymbolDir->setFileName(m_symbolDir);

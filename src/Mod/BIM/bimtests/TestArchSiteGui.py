@@ -36,7 +36,7 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         """Test: creating a new Site adds the view properties and sets defaults."""
         site = Arch.makeSite()
         self.assertIsNotNone(site, "makeSite() returned None")
-        FreeCAD.ActiveDocument.recompute()
+        self.document.recompute()
         # Wait briefly so the document loader can attach the ViewObject and let the view provider's
         # queued restore/migration callbacks (setProperties, migration, restoreConstraints) run on
         # the GUI event loop before we inspect properties.
@@ -71,14 +71,14 @@ class TestArchSiteGui(TestArchBaseGui.TestArchBaseGui):
         """Test: save document and reopen; view properties must be present and constrained."""
         self.printTestMessage("Save and reopen new Site...")
         site = Arch.makeSite()
-        FreeCAD.ActiveDocument.recompute()
+        self.document.recompute()
 
         # Save to a temporary file
         tf = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")
         tf.close()
         path = tf.name
         try:
-            FreeCAD.ActiveDocument.saveAs(path)
+            self.document.saveCopy(path)
 
             # Open the saved document (this returns a new Document instance)
             reopened = FreeCAD.openDocument(path)

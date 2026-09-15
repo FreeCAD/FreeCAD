@@ -35,7 +35,6 @@
 #include "MainWindow.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 
 
 using namespace Gui;
@@ -201,7 +200,6 @@ bool MacroOutputOption::isAppCommand(int type)
 // ----------------------------------------------------------------------------
 
 MacroManager::MacroManager()
-    : pyDebugger(new PythonDebugger())
 {
     // Attach to the Parametergroup regarding macros
     this->params = App::GetApplication().GetParameterGroupByPath(
@@ -213,7 +211,6 @@ MacroManager::MacroManager()
 
 MacroManager::~MacroManager()
 {
-    delete pyDebugger;
     this->params->Detach(this);
 }
 
@@ -393,8 +390,13 @@ void MacroManager::run(MacroType eType, const char* sName)
                                         .GetGroup("BaseApp")
                                         ->GetGroup("Preferences")
                                         ->GetGroup("OutputWindow");
-        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
-        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        PyObject* pyout {nullptr};
+        PyObject* pyerr {nullptr};
+        {
+            Base::PyGILStateLocker lock;
+            pyout = hGrp->GetBool("RedirectPythonOutput", true) ? new OutputStdout : nullptr;
+            pyerr = hGrp->GetBool("RedirectPythonErrors", true) ? new OutputStderr : nullptr;
+        }
         PythonRedirector std_out("stdout", pyout);
         PythonRedirector std_err("stderr", pyerr);
         // The given path name is expected to be Utf-8
@@ -409,9 +411,4 @@ void MacroManager::run(MacroType eType, const char* sName)
     catch (const Base::Exception& e) {
         qWarning("%s", e.what());
     }
-}
-
-PythonDebugger* MacroManager::debugger() const
-{
-    return pyDebugger;
 }

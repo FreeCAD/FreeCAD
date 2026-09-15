@@ -68,6 +68,8 @@ public:
 
     static void addDelayedPath(SoState* state, SoPath* path, int priority = 0);
 
+    static bool hasDelayedPaths(SoState* state);
+
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
@@ -85,6 +87,8 @@ public:
     }
 
 private:
+    static SoDelayedAnnotationsElement* getElement(SoState* state);
+
     std::vector<PriorityPath> paths;
 };
 

@@ -27,6 +27,8 @@
 #include <IGESControl_Controller.hxx>
 #include <STEPControl_Controller.hxx>
 #include <Standard_Version.hxx>
+#include <Message.hxx>
+#include <Message_Messenger.hxx>
 
 #include <FCConfig.h>
 
@@ -67,6 +69,8 @@
 #include "FaceMakerBullseye.h"
 #include "FaceMakerBuildFace.h"
 #include "FaceMakerCheese.h"
+#include "FaceMakerUnified.h"
+#include "WireJoiner.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
 #include "FeatureExtrusion.h"
@@ -91,6 +95,17 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "CircularPatternExtension.h"
+#include "LinearPatternExtension.h"
+#include "LinkArray.h"
+#include "LinkArrayCircular.h"
+#include "LinkArrayLinear.h"
+#include "LinkArrayPath.h"
+#include "LinkArrayPolar.h"
+#include "LinkArrayPoint.h"
+#include "PointPatternExtension.h"
+#include "PolarPatternExtension.h"
+#include "PathPatternExtension.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
 #include "GeometryBoolExtensionPy.h"
@@ -131,6 +146,7 @@
 #include "TopoShapeWirePy.h"
 #include "ToroidPy.h"
 #include "OCCError.h"
+#include "OCCTMessagePrinter.h"
 #include "PrismExtension.h"
 #include "PropertyGeometryList.h"
 #include "PropertyTopoShapeList.h"
@@ -431,6 +447,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerBullseye     ::init();
     Part::FaceMakerRing         ::init();
     Part::FaceMakerBuildFace    ::init();
+    Part::FaceMakerUnified      ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
@@ -441,7 +458,19 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
     Part::PreviewExtension      ::init();
+    Part::PreviewExtensionPython::init();
     Part::PrismExtension        ::init();
+    Part::CircularPatternExtension::init();
+    Part::LinearPatternExtension::init();
+    Part::PolarPatternExtension ::init();
+    Part::PathPatternExtension  ::init();
+    Part::LinkArray             ::init();
+    Part::LinkArrayCircular     ::init();
+    Part::LinkArrayLinear       ::init();
+    Part::LinkArrayPath         ::init();
+    Part::LinkArrayPolar        ::init();
+    Part::LinkArrayPoint        ::init();
+    Part::PointPatternExtension ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
@@ -588,6 +617,10 @@ PyMOD_INIT_FUNC(Part)
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
     Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
     Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
+
+    Handle(OCCTMessagePrinter) printer = new OCCTMessagePrinter();
+    printer->SetTraceLevel(Message_Trace);
+    Message::DefaultMessenger()->AddPrinter(printer);
 
     PyMOD_Return(partModule);
 }

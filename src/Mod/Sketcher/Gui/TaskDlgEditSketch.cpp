@@ -43,6 +43,8 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     , sketchView(sketchView)
 {
     assert(sketchView);
+    roleOnEscape = QDialogButtonBox::ButtonRole::AcceptRole;
+
     ToolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
@@ -53,9 +55,10 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
     );
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
+    setAutoCloseOnResetEdit(true);
 
-    Content.push_back(ToolSettings);
     Content.push_back(Messages);
+    Content.push_back(ToolSettings);
 
     if (hGrp->GetBool("ShowSolverAdvancedWidget", false)) {
         Content.push_back(SolverAdvanced);
@@ -116,15 +119,33 @@ void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 void TaskDlgEditSketch::open()
 {}
 
+void TaskDlgEditSketch::closed()
+{}
+
 void TaskDlgEditSketch::clicked(int)
 {}
 
-bool TaskDlgEditSketch::accept()
+bool TaskDlgEditSketch::reject()
 {
+    ViewProviderSketch* view = sketchView;
+    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
+    view->editingCancelled = true;
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
+    view->editingCancelled = false;
+
     return true;
 }
 
-bool TaskDlgEditSketch::reject()
+bool TaskDlgEditSketch::accept()
+{
+    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", document.c_str());
+
+    return true;
+}
+
+void TaskDlgEditSketch::saveDialogState() const
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
@@ -133,21 +154,16 @@ bool TaskDlgEditSketch::reject()
     hGrp->SetBool("ExpandedSolverAdvancedWidget", SolverAdvanced->isGroupVisible());
     hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isGroupVisible());
     hGrp->SetBool("ExpandedElementsWidget", Elements->isGroupVisible());
-
-    if (sketchView && sketchView->getSketchMode() != ViewProviderSketch::STATUS_NONE) {
-        sketchView->purgeHandler();
-    }
-
-    std::string document = getDocumentName();  // needed because resetEdit() deletes this instance
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.getDocument('%s').resetEdit()", document.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.getDocument('%s').recompute()", document.c_str());
-
-    return true;
 }
 
 QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
 {
-    return QDialogButtonBox::Close;
+    return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+}
+
+void TaskDlgEditSketch::autoClosedOnResetEdit()
+{
+    saveDialogState();
 }
 
 void TaskDlgEditSketch::autoClosedOnClosedView()

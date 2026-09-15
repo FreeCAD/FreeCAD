@@ -36,14 +36,25 @@
 
 #include <functional>
 
+#include <QPointer>
+
+#include <Inventor/SbLinear.h>
+#include <Inventor/SbTime.h>
+
 #include <Mod/Part/PartGlobal.h>
 
 class Ui_TaskAttacher;
 class QLineEdit;
+class SoEventCallback;
 
 namespace App
 {
 class Property;
+}
+
+namespace Gui
+{
+class View3DInventorViewer;
 }
 
 namespace Gui
@@ -155,6 +166,12 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    /**
+     * @brief applyBoldMode Sets bold font on the enabled list item matching boldMode,
+     * clears bold on all others.
+     */
+    void applyBoldMode(Attacher::eMapMode boldMode);
+
     void showPlacementUtilities();
 
 protected:
@@ -175,6 +192,7 @@ private:
                                                   // into listOfModes widget.
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
+    bool userSelectedMode;  // true when the user has explicitly clicked a mode in the list
 
     using Connection = fastsignals::connection;
     Connection connectDelObject;
@@ -235,6 +253,13 @@ protected:
     std::function<void()> onReject;
     bool accepted;
     int tid;
+
+private:
+    // Double-click accept
+    static void handleMouseButtonCB(void* userdata, SoEventCallback* cb);
+    QPointer<Gui::View3DInventorViewer> dblClickViewer;
+    SbTime lastClickTime;
+    SbVec2s lastClickPos = SbVec2s(-16000, -16000);
 };
 
 }  // namespace PartGui

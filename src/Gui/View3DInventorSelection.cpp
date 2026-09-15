@@ -211,7 +211,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             return;
         }
         SoSelectionElementAction action(SoSelectionElementAction::All);
-        action.setColor(selectionRoot->colorHighlight.getValue());
+        action.setColor(selectionRoot->colorSelection.getValue());
         action.apply(pcGroupOnTopSel);
     }
     if (onTop == 2 || onTop == 3) {

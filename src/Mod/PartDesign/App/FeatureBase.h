@@ -38,6 +38,12 @@ class PartDesignExport FeatureBase: public PartDesign::Feature
 public:
     FeatureBase();
 
+    /**
+     * Compatibility property to preserve restored files that relied on the source
+     * object's placement being applied inside FeatureBase.
+     */
+    App::PropertyBool UseLegacyBaseFeaturePlacement;
+
     short int mustExecute() const override;
 
     Part::Feature* getBaseObject(bool silent = false) const override;

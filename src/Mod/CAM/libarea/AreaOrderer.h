@@ -34,6 +34,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <list>
 #include <set>
 
+namespace heeks
+{
+
 class CArea;
 class CCurve;
 
@@ -68,3 +71,5 @@ public:
     void Insert(std::shared_ptr<CCurve> pcurve);
     CArea ResultArea() const;
 };
+
+}  // namespace heeks

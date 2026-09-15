@@ -188,5 +188,6 @@ AssemblyExport std::vector<std::string> getSubAsList(
     const char* propName
 );
 AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
+AssemblyExport double getJointCurrentValue(App::DocumentObject* joint, bool isAngle);
 
 }  // namespace Assembly

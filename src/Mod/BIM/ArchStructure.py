@@ -236,7 +236,6 @@ class _CommandStructure:
         self.Profile = None
         self.bpoint = None
         self.precastvalues = None
-        self.wp = None
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel, "Structure")
@@ -262,6 +261,7 @@ class _CommandStructure:
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -281,14 +281,33 @@ class _CommandStructure:
             movecallback=self.update,
             extradlg=[self.taskbox(), self.precast.form, self.dents.form],
             title=title,
+            hints=self.get_hints(),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if self.mode == StructureMode.BEAM and (self.bpoint is None):
+            label = translate("Arch", "%1 pick first point")
+        elif self.mode == StructureMode.BEAM:
+            label = translate("Arch", "%1 pick next point")
+        else:
+            label = translate("Arch", "%1 pick base point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         "this function is called by the snapper when it has a 3D point"
 
         self.mode = StructureMode.BEAM if self.modeb.isChecked() else StructureMode.COLUMN
         if point is None:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
@@ -307,8 +326,10 @@ class _CommandStructure:
                 extradlg=[self.taskbox(), self.precast.form, self.dents.form],
                 title=translate("Arch", "Next Point") + ":",
                 mode="line",
+                hints=self.get_hints(),
             )
             return
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()

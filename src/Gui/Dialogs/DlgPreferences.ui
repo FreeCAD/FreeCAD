@@ -230,7 +230,7 @@
                </size>
               </property>
               <property name="placeholderText">
-               <string>Search preferences...</string>
+               <string>Search preferences…</string>
               </property>
               <property name="clearButtonEnabled">
                <bool>true</bool>

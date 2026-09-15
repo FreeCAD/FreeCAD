@@ -27,6 +27,7 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
@@ -44,7 +45,9 @@
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 
+#include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
+#include "AutoConstraint.h"
 
 #include "ShortcutListener.h"
 #include "Utils.h"
@@ -58,6 +61,7 @@ class TopoDS_Face;
 class SoSeparator;
 class SbLine;
 class SbVec2f;
+class SbVec2s;
 class SbVec3f;
 class SoCoordinate3;
 class SoInfo;
@@ -66,6 +70,7 @@ class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
 class SoPickedPoint;
+class SoPickedPointList;
 class SoRayPickAction;
 
 class SoImage;
@@ -100,6 +105,8 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class DrawSketchHandlerDragAutoConstraint;
+class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -477,6 +484,9 @@ private:
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
+        bool hasLastPreselectionResult = false;
+        SbVec2s lastPreselectionCursorPos;
+        EditModeCoinManager::PreselectionResult lastPreselectionResult;
 
         int stdCountSegments = 50;  // preferences controlled default geometry sampling for selection
     };
@@ -549,6 +559,13 @@ public:
     void purgeHandler();
     //@}
 
+    bool isConstructionMode() const;
+
+    // set the current GeometryCreationMode mode
+    void setGeometryCreationMode(GeometryCreationMode geometryCreationMode);
+
+    // gets the GeometryCreationMode
+    GeometryCreationMode getGeometryCreationMode() const;
 
     // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
     // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
@@ -707,6 +724,7 @@ public:
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
+    QString getToolTip() const override;
 
     /** @name Signals for controlling information in Task dialogs */
     //@{
@@ -729,12 +747,23 @@ public:
     }
     //@}
 
+    bool getPreselectionAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer,
+        std::vector<std::string>& subElementNames,
+        Base::Vector3d& pickedPoint
+    );
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
+    friend class ViewProviderSketchCommandConstraintsAttorney;
     //@}
+
+    bool editingCancelled;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -791,9 +820,23 @@ protected:
     void finishRestoring() override;
 
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
+        bool transform = true,
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        int depth = 0
+    ) const override;
+
 private:
+    bool hasMissingExternalGeometry() const;
+
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
         GeoListFacade& geolist,
@@ -803,16 +846,34 @@ private:
     /** @name geometry and coordinates auxiliary functions */
     //@{
     /// give the coordinates of a line on the sketch plane in sketcher (2D) coordinates
-    void getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
+    /// returns false when the input cannot produce finite sketch coordinates
+    bool getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal, double& u, double& v) const;
 
-    /// give projecting line of position
-    void getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
+    /// give projecting line of position, returns false for invalid view projection state
+    bool getProjectingLine(const SbVec2s&, const Gui::View3DInventorViewer* viewer, SbLine&) const;
     //@}
 
     /** @name preselection functions */
     //@{
+    SoPickedPointList getPickedPointsOnRay(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    void cachePreselectionResult(
+        const SbVec2s& pos,
+        const EditModeCoinManager::PreselectionResult& result
+    );
+    EditModeCoinManager::PreselectionResult resolveClickPreselectionResult(
+        const EditModeCoinManager::PreselectionResult& clickResult,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(const EditModeCoinManager::PreselectionResult& result);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -827,10 +888,13 @@ private:
     //@{
     /// dragging helpers
     void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
-    void doDragStep(double x, double y);
+    bool doDragStep(double x, double y);
     void commitDragMove(double x, double y);
 
     //@}
+
+    // the active sketch GeometryCreationMode
+    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 
     /** @name Selection functions */
     //@{
@@ -845,11 +909,7 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    void preselectToSelection(
-        const std::stringstream& ss,
-        boost::scoped_ptr<SoPickedPoint>& pp,
-        bool toggle
-    );
+    void preselectToSelection(const std::stringstream& ss, const Base::Vector3d& pickedPoint, bool toggle);
     //@}
 
     /** @name miscelanea utilities */
@@ -877,6 +937,7 @@ private:
     void slotToolWidgetChanged(QWidget* newwidget);
 
     void updateColorPropertiesVisibility();
+    void updateAutomaticColorProperties();
 
     /** @name Attorney functions*/
     //@{
@@ -907,6 +968,7 @@ private:
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
+    SbVec2f getScreenCoordinates(SbVec3f sketchcoordinates) const;
 
     QFont getApplicationFont() const;
 
@@ -940,6 +1002,7 @@ private:
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
     void setConstraintSelectability(bool enabled = true);
+    void setOriginPointMarker(bool hollow);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -947,6 +1010,9 @@ private:
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines, int activeLineIndex);
     /// draw the edit markers
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
@@ -1015,6 +1081,8 @@ private:
 
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
+    std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
+
     ViewProviderParameters viewProviderParameters;
 
     using Connection = fastsignals::connection;
@@ -1024,6 +1092,7 @@ private:
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    std::stringstream sketchBackup;
 };
 
 }  // namespace SketcherGui

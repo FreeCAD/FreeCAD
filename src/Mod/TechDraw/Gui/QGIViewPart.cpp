@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -524,8 +526,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected() ||
-                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
+                item->setVisible(shouldShowFrame());
             }
         }
     }
@@ -749,8 +750,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroupWithoutUpdate(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-        Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
-        sectionLine->setSectionColor(color.asValue<QColor>());
         sectionLine->setPathMode(false);
 
         //make the section line a little longer
@@ -793,6 +792,9 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         } else {
             sectionLine->setShowLine(false);
         }
+
+        Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+        sectionLine->setSectionColor(color.asValue<QColor>());
 
         auto font = sectionVp->SectionLineFont.getValue();
         auto fontSize = sectionVp->SectionLineFontsize.getValue();
@@ -856,8 +858,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroupWithoutUpdate(sectionLine);
     sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
-    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
-    sectionLine->setSectionColor(color.asValue<QColor>());
+
     sectionLine->setPathMode(true);
     sectionLine->setPath(wirePath);
     sectionLine->setEnds(vStart, vEnd);
@@ -884,6 +885,9 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     } else {
         sectionLine->setShowLine(false);
     }
+
+    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+    sectionLine->setSectionColor(color.asValue<QColor>());
 
     auto font = sectionVp->SectionLineFont.getValue();
     auto fontSize = sectionVp->SectionLineFontsize.getValue();
@@ -915,6 +919,7 @@ void QGIViewPart::drawCenterLines(bool b)
     if (b) {
         bool horiz = vp->HorizCenterLine.getValue();
         bool vert = vp->VertCenterLine.getValue();
+        const QColor centerColor = PreferencesGui::getAccessibleQColor(PreferencesGui::centerQColor());
 
         QGICenterLine* centerLine;
         double sectionSpan;
@@ -933,7 +938,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::green);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -950,7 +955,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::red);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -995,8 +1000,6 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         scene()->addItem(highlight);
         highlight->setReference(viewDetail->Reference.getValue());
 
-        Base::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
-        highlight->setColor(color.asValue<QColor>());
         highlight->setFeatureName(viewDetail->getNameInDocument());
 
         highlight->setInteractive(false);
@@ -1015,8 +1018,10 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
                              vp->IsoWidth.getValue()));
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(getFont(), fontSize);
+        Base::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
+        highlight->setColor(color.asValue<QColor>());
         highlight->setZValue(ZVALUE::HIGHLIGHT);
-        highlight->setReferenceAngle(vpDetail->HighlightAdjust.getValue());
+        highlight->setReferenceAngle(vp->HighlightAdjust.getValue());
 
         //handle conversion of apparent X,Y to rotated
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
@@ -1109,7 +1114,7 @@ void QGIViewPart::drawBreakLines()
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
         breakLine->setBreakType(breakType);
         breakLine->setZValue(ZVALUE::SECTIONLINE);
-        Base::Color color = prefBreaklineColor();
+        Base::Color color = vp->BreakLineColor.getValue();
         breakLine->setBreakColor(color.asValue<QColor>());
         breakLine->setRotation(-dbv->Rotation.getValue());
         breakLine->draw();
@@ -1377,22 +1382,36 @@ double QGIViewPart::getVertexSize() {
     return getLineWidth() * Preferences::vertexScale();
 }
 
+void QGIViewPart::updateFrameVisibility()
+{
+    QGIView::updateFrameVisibility();
+
+    bool showDecorations = shouldShowFrame();
+    
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations || child->isSelected());
+        }
+        if (child->type() == UserType::QGICMark) {
+            child->setVisible(showDecorations || child->isSelected() || !hideCenterMarks());
+        }
+    }
+}
 void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverEnterEvent(event);
 
+    bool showDecorations = shouldShowFrame();
+
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
-            child->show();
+        if (child->type() == UserType::QGIVertex) {
+            child->setVisible(showDecorations);
             continue;
         }
-        if (child->type() == UserType::QGICMark &&
-            !hideCenterMarks()) {
+        if (child->type() == UserType::QGICMark && !hideCenterMarks()) {
             child->show();
         }
-
     }
-
     update();
 }
 
@@ -1400,33 +1419,18 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView::hoverLeaveEvent(event);
 
-    if (isSelected()) {
-        // if the view is selected, we should leave things alone.
-        return;
-    }
-
-    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-    ViewProviderPage* vpPage = vp->getViewProviderPage();
-    if (vpPage->getFrameState() &&
-        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
-        return;
-    }
-
-    bool hideCenters = hideCenterMarks();
+    bool showDecorations = shouldShowFrame();
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex &&
-            !child->isSelected()) {
-            child->hide();
+        if (child->type() == UserType::QGIVertex) {
+            if (child->isSelected()) continue;
+            child->setVisible(showDecorations);
             continue;
         }
 
         if (child->type() == UserType::QGICMark) {
-            if (child->isSelected()) {
-                continue;
-            }
-
-            if (hideCenters) {
+            if (child->isSelected()) continue;
+            if (hideCenterMarks() || !showDecorations) {
                 child->hide();
             }
         }

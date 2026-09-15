@@ -30,14 +30,15 @@
 #include "Quantity.h"
 
 using PyObject = struct _object;
-using PyMethodDef = struct PyMethodDef;
 
 namespace Base
 {
-
-
+class UnitsSchemas;
+struct NumericLocaleContext;
 class BaseExport UnitsApi
 {
+    friend class UnitsModulePy;
+
 public:
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
     static void setSchema(const std::string& name);
@@ -45,7 +46,16 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant, double& factor, std::string& unitString);
 
+    static std::string schemaTranslate(
+        const Quantity& quant,
+        const NumericLocaleContext& formatting,
+        double& factor,
+        std::string& unitString
+    );
+
     static std::string schemaTranslate(const Quantity& quant);
+
+    static std::string schemaTranslate(const Quantity& quant, const NumericLocaleContext& formatting);
 
     static std::string toUnicodeSuperscript(const std::string& str);
 
@@ -70,8 +80,6 @@ public:
     {
         return schemas->spec().num;
     }
-    // Python interface
-    static PyMethodDef Methods[];
 
 protected:
     static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);

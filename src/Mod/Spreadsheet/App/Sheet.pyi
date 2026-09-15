@@ -113,12 +113,20 @@ class Sheet(DocumentObject):
         """Set foreground color of the cell"""
         ...
 
+    def clearForeground(self) -> Any:
+        """Clears foreground color of the cell"""
+        ...
+
     def getForeground(self) -> Any:
         """Get foreground color of the cell"""
         ...
 
     def setBackground(self) -> Any:
         """Set background color of the cell"""
+        ...
+
+    def clearBackground(self) -> Any:
+        """Clears background color of the cell"""
         ...
 
     def getBackground(self) -> Any:

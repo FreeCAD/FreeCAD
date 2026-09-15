@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
@@ -259,9 +261,9 @@ protected:
     void onChanged(const App::Property* prop) override;
     void unsetupObject() override;
 
-    virtual TechDraw::GeometryObjectPtr buildGeometryObject(TopoDS_Shape& shape,
+    virtual TechDraw::GeometryObjectPtr buildGeometryObject(const TopoDS_Shape& shape,
                                                             const gp_Ax2& viewAxis);
-    virtual TechDraw::GeometryObjectPtr makeGeometryForShape(TopoDS_Shape& shape);//const??
+    virtual TechDraw::GeometryObjectPtr makeGeometryForShape(const TopoDS_Shape& shape);//const??
     void partExec(TopoDS_Shape& shape);
     virtual void addPoints(void);
 

@@ -28,6 +28,9 @@
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
+#include <Gui/MainWindow.h>
+#include <QApplication>
+#include <QCoreApplication>
 
 #include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
@@ -36,6 +39,29 @@
 using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
+
+namespace
+{
+QString aliasHelpTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Allows referring to a cell by an alias name, for example\n"
+        "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
+    );
+}
+
+QColor defaultTextColor(const QWidget* widget)
+{
+    return QApplication::palette(widget).color(QPalette::Text);
+}
+
+QColor invalidTextColor(const QWidget* widget)
+{
+    const QColor normal = defaultTextColor(widget);
+    return normal.lightness() < 128 ? QColor(255, 90, 90) : QColor(200, 0, 0);
+}
+}  // namespace
 
 PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ranges, QWidget* parent)
     : QDialog(parent)
@@ -46,9 +72,13 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
     , displayUnitOk(true)
     , aliasOk(true)
 {
+    QPalette palette = Gui::getMainWindow()->palette();
+
     ui->setupUi(this);
     ui->foregroundColor->setStandardColors();
+    ui->foregroundColor->setDefaultColor(palette.color(QPalette::WindowText));
     ui->backgroundColor->setStandardColors();
+    ui->backgroundColor->setDefaultColor(palette.color(QPalette::Base));
 
     assert(ranges.size() > 0);
     Range range = ranges[0];
@@ -57,26 +87,42 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     assert(cell);
 
-    (void)cell->getForeground(foregroundColor);
-    (void)cell->getBackground(backgroundColor);
+    foregroundColorSet = cell->getForeground(foregroundColor);
+    backgroundColorSet = cell->getBackground(backgroundColor);
     (void)cell->getAlignment(alignment);
     (void)cell->getStyle(style);
     (void)cell->getDisplayUnit(displayUnit);
     (void)cell->getAlias(alias);
 
     orgForegroundColor = foregroundColor;
+    orgForegroundColorSet = foregroundColorSet;
     orgBackgroundColor = backgroundColor;
+    orgBackgroundColorSet = backgroundColorSet;
     orgAlignment = alignment;
     orgStyle = style;
     orgDisplayUnit = displayUnit;
     orgAlias = alias;
 
-    ui->foregroundColor->setCurrentColor(
-        QColor::fromRgbF(foregroundColor.r, foregroundColor.g, foregroundColor.b, foregroundColor.a)
-    );
-    ui->backgroundColor->setCurrentColor(
-        QColor::fromRgbF(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a)
-    );
+    if (foregroundColorSet) {
+        ui->foregroundColor->setCurrentColor(
+            QColor::fromRgbF(
+                foregroundColor.r,
+                foregroundColor.g,
+                foregroundColor.b,
+                foregroundColor.a
+            )
+        );
+    }
+    if (backgroundColorSet) {
+        ui->backgroundColor->setCurrentColor(
+            QColor::fromRgbF(
+                backgroundColor.r,
+                backgroundColor.g,
+                backgroundColor.b,
+                backgroundColor.a
+            )
+        );
+    }
 
     if (alignment & Cell::ALIGNMENT_LEFT) {
         ui->alignLeft->setChecked(true);
@@ -120,10 +166,22 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
         &PropertiesDialog::foregroundColorChanged
     );
     connect(
+        ui->foregroundColor,
+        &QtColorPicker::colorCleared,
+        this,
+        &PropertiesDialog::foregroundColorCleared
+    );
+    connect(
         ui->backgroundColor,
         &QtColorPicker::colorChanged,
         this,
         &PropertiesDialog::backgroundColorChanged
+    );
+    connect(
+        ui->backgroundColor,
+        &QtColorPicker::colorCleared,
+        this,
+        &PropertiesDialog::backgroundColorCleared
     );
 
     // Alignment
@@ -147,20 +205,37 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     // Alias
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
+    ui->aliasStatus->setVisible(false);
+    QPalette statusPalette = ui->aliasStatus->palette();
+    statusPalette.setColor(QPalette::WindowText, invalidTextColor(ui->aliasStatus));
+    ui->aliasStatus->setPalette(statusPalette);
+    ui->alias->setToolTip(aliasHelpTooltip());
 
     ui->tabWidget->setCurrentIndex(0);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
 {
     foregroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    foregroundColorSet = true;
+}
+
+void PropertiesDialog::foregroundColorCleared()
+{
+    foregroundColorSet = false;
 }
 
 void PropertiesDialog::backgroundColorChanged(const QColor& color)
 {
     backgroundColor = Base::Color(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    backgroundColorSet = true;
 }
+
+void PropertiesDialog::backgroundColorCleared()
+{
+    backgroundColorSet = false;
+}
+
 
 void PropertiesDialog::alignmentChanged()
 {
@@ -228,18 +303,25 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 
         if (expr) {
             displayUnit = DisplayUnit(text.toStdString(), expr->getUnit(), expr->getScaler());
-            palette.setColor(QPalette::Text, Qt::black);
+            palette.setColor(QPalette::Text, defaultTextColor(ui->displayUnit));
             displayUnitOk = true;
         }
         else {
             displayUnit = DisplayUnit();
-            palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+            palette.setColor(
+                QPalette::Text,
+                text.size() == 0 ? defaultTextColor(ui->displayUnit)
+                                 : invalidTextColor(ui->displayUnit)
+            );
             displayUnitOk = false;
         }
     }
     catch (...) {
         displayUnit = DisplayUnit();
-        palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+        palette.setColor(
+            QPalette::Text,
+            text.size() == 0 ? defaultTextColor(ui->displayUnit) : invalidTextColor(ui->displayUnit)
+        );
         displayUnitOk = false;
     }
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
@@ -249,12 +331,48 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
+    const std::string aliasText = text.toStdString();
+    QString tooltip = aliasHelpTooltip();
+    QString statusText;
 
-    aliasOk = text.isEmpty() || sheet->isValidAlias(text.toStdString());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
+    if (!text.isEmpty() && !aliasOk) {
+        const auto reservedToken = Sheet::classifyReservedAliasName(aliasText);
+        if (reservedToken == Sheet::ReservedAliasToken::Unit) {
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
+            statusText = tr("Invalid: reserved unit token");
+        }
+        else if (reservedToken == Sheet::ReservedAliasToken::Constant) {
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
+            statusText = tr("Invalid: reserved constant token");
+        }
+        else if (!sheet->getAddressFromAlias(aliasText).empty()) {
+            tooltip = tr("Alias already defined");
+            statusText = tr("Invalid: alias already exists");
+        }
+        else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
+            tooltip = tr("Alias cannot look like a cell address such as A1 or C12");
+            statusText = tr("Invalid: alias matches cell address pattern");
+        }
+        else if (sheet->getPropertyByName(aliasText.c_str())) {
+            tooltip = tr("Alias conflicts with an existing spreadsheet property name");
+            statusText = tr("Invalid: conflicts with existing property name");
+        }
+        else {
+            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'");
+            statusText = tr("Invalid: bad alias syntax");
+        }
+    }
 
-    alias = aliasOk ? text.toStdString() : "";
-    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
+    alias = aliasOk ? aliasText : "";
+    palette.setColor(
+        QPalette::Text,
+        aliasOk ? defaultTextColor(ui->alias) : invalidTextColor(ui->alias)
+    );
     ui->alias->setPalette(palette);
+    ui->alias->setToolTip(tooltip);
+    ui->aliasStatus->setText(statusText);
+    ui->aliasStatus->setVisible(!statusText.isEmpty());
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
@@ -289,7 +407,12 @@ void PropertiesDialog::apply()
                 );
                 changes = true;
             }
-            if (orgForegroundColor != foregroundColor) {
+            if (orgForegroundColorSet && !foregroundColorSet) {
+                Gui::cmdAppObjectArgs(sheet, "clearForeground('%s')", i->rangeString().c_str());
+                changes = true;
+            }
+            if ((!orgForegroundColorSet && foregroundColorSet)
+                || (foregroundColorSet && orgForegroundColor != foregroundColor)) {
                 Gui::cmdAppObjectArgs(
                     sheet,
                     "setForeground('%s', (%f,%f,%f,%f))",
@@ -301,7 +424,12 @@ void PropertiesDialog::apply()
                 );
                 changes = true;
             }
-            if (orgBackgroundColor != backgroundColor) {
+            if (orgBackgroundColorSet && !backgroundColorSet) {
+                Gui::cmdAppObjectArgs(sheet, "clearBackground('%s')", i->rangeString().c_str());
+                changes = true;
+            }
+            if ((!orgBackgroundColorSet && backgroundColorSet)
+                || (backgroundColorSet && orgBackgroundColor != backgroundColor)) {
                 Gui::cmdAppObjectArgs(
                     sheet,
                     "setBackground('%s', (%f,%f,%f,%f))",

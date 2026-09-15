@@ -44,7 +44,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Iso-Parametric</string>
+          <string>Equidistant</string>
          </property>
         </item>
        </widget>

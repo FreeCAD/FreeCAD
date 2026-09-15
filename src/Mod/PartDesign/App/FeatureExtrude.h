@@ -54,13 +54,20 @@ public:
     App::PropertyBool UseCustomVector;
     App::PropertyVector Direction;
     App::PropertyBool AlongSketchNormal;
+    App::PropertyEnumeration StartType;
+    App::PropertyLength StartOffset;
+    App::PropertyLinkSub StartReference;
     App::PropertyLength Offset;
     App::PropertyLength Offset2;
     App::PropertyLinkSub ReferenceAxis;
+    /** Compatibility property preserving profile-copy behavior in restored documents. */
+    App::PropertyBool UseLegacyTaperDirection;
 
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
     static App::PropertyAngle::Constraints floatAngle;
+
+    double getStartOffset() const;
 
     /** @name methods override feature */
     //@{
@@ -76,6 +83,7 @@ public:
     static const char* SideTypesEnums[];
 
 protected:
+    void Restore(Base::XMLReader& reader) override;
     void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
     bool hasTaperedAngle() const;

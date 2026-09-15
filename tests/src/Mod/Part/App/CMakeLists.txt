@@ -4,6 +4,8 @@ add_executable(Part_tests_run
         Attacher.cpp
         AttachExtension.cpp
         BRepMesh.cpp
+        FaceMakerBullseye.cpp
+        FaceMakerUnified.cpp
         FeatureChamfer.cpp
         FeatureCompound.cpp
         FeatureExtrusion.cpp
@@ -17,9 +19,11 @@ add_executable(Part_tests_run
         FeatureRevolution.cpp
         FuzzyBoolean.cpp
         Geometry.cpp
+        LinkArrayPolar.cpp
         PartFeature.cpp
         PartFeatures.cpp
         PartTestHelpers.cpp
+        PreviewExtension.cpp
         PropertyTopoShape.cpp
         TopoDS_Shape.cpp
         TopoShape.cpp

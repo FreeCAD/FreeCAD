@@ -27282,8 +27282,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 13,
 14,
 15,
@@ -27649,16 +27649,16 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** Force
 *CLOAD
 ** node loads on shape: Box1:Face6
 17,3,-0
@@ -29191,7 +29191,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

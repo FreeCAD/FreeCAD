@@ -27,6 +27,10 @@
 #include "FaceMaker.h"
 
 #include <gp_Pln.hxx>
+#include <TopTools_ListOfShape.hxx>
+#include <TopoDS_Face.hxx>
+
+#include <vector>
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -53,7 +57,17 @@ public:
 protected:
     void Build_Essence() override;
 
-private:
+    // Helpers exposed to subclasses (e.g. FaceMakerUnified) so the planar
+    // pipeline can be reused without duplicating the implementation.
+    TopTools_ListOfShape collectEdgesFromWires() const;
+    bool findPlane(const TopTools_ListOfShape& edges, gp_Pln& plane) const;
+    TopTools_ListOfShape splitAtIntersections(const TopTools_ListOfShape& edges);
+    TopTools_ListOfShape splitSelfIntersecting(const TopTools_ListOfShape& edges, const gp_Pln& plane);
+
+    /// Run BOPAlgo_BuilderFace on `edges` against a large base face in `plane`
+    /// and return the bounded inner faces (outer/degenerate areas filtered).
+    std::vector<TopoDS_Face> collectBoundedFaces(const TopTools_ListOfShape& edges, const gp_Pln& plane);
+
     gp_Pln myPlane;
     bool planeSupplied = false;
 };

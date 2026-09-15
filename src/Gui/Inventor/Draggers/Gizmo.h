@@ -23,9 +23,12 @@
 
 #pragma once
 
+#include <functional>
 #include <initializer_list>
 #include <memory>
 #include <vector>
+
+#include <QtCore/Qt>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -35,6 +38,7 @@
 
 #include <Base/Placement.h>
 #include <Gui/DocumentObserver.h>
+#include <Gui/InputHint.h>
 
 #include <FCGlobal.h>
 
@@ -88,9 +92,17 @@ protected:
     bool visible = true;
 };
 
+enum class LinearDraggerStyle
+{
+    Arrow,
+    Sphere,
+};
+
 class GuiExport LinearGizmo: public Gizmo
 {
 public:
+    using ClickCallback = std::function<void()>;
+
     LinearGizmo(QuantitySpinBox* property);
     ~LinearGizmo() override = default;
 
@@ -111,6 +123,8 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setDraggerStyle(LinearDraggerStyle style);
+    void setClickCallback(ClickCallback callback);
     void setVisibility(bool visible);
 
 private:
@@ -118,6 +132,9 @@ private:
     SoLinearDraggerContainer* draggerContainer = nullptr;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
+    LinearDraggerStyle draggerStyle = LinearDraggerStyle::Arrow;
+    bool hasDragged = false;
+    ClickCallback clickCallback;
 
     void draggingStarted();
     void draggingFinished();
@@ -129,6 +146,8 @@ private:
 class GuiExport RotationGizmo: public Gizmo
 {
 public:
+    using ClickCallback = std::function<void()>;
+
     RotationGizmo(QuantitySpinBox* property);
     ~RotationGizmo() override;
 
@@ -159,6 +178,7 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setClickCallback(ClickCallback callback);
     void setVisibility(bool visible);
 
 private:
@@ -168,6 +188,9 @@ private:
     LinearGizmo* linearGizmo = nullptr;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
+    double lastDragOffset = 0.0;
+    bool hasDragged = false;
+    ClickCallback clickCallback;
 
     void draggingStarted();
     void draggingFinished();
@@ -238,6 +261,15 @@ public:
 
     // Checks if the gizmos are enabled in the preferences
     static bool isEnabled();
+    // Checks if coarse snapping is enabled in the preferences
+    static bool isCoarseSnapEnabled();
+    // Returns the modifier key used for fine snapping (Shift or Ctrl)
+    static Qt::KeyboardModifier getFineSnapModifier();
+    // Returns the InputHint key for the fine snap modifier
+    static InputHint::UserInput getFineSnapKey();
+    // Returns true when coarse dragging is the default behavior
+    static bool isCoarseByDefault();
+
     static std::unique_ptr<GizmoContainer> create(
         std::initializer_list<Gui::Gizmo*> gizmos,
         ViewProviderDragger* vp

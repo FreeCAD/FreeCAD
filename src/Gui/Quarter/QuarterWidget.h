@@ -107,6 +107,7 @@ public:
   Q_PROPERTY(TransparencyType transparencyType READ transparencyType WRITE setTransparencyType) // clazy:exclude=qproperty-without-notify
   Q_PROPERTY(RenderMode renderMode READ renderMode WRITE setRenderMode) // clazy:exclude=qproperty-without-notify
   Q_PROPERTY(StereoMode stereoMode READ stereoMode WRITE setStereoMode) // clazy:exclude=qproperty-without-notify
+  Q_PROPERTY(int maxFrameRate READ maxFrameRate WRITE setMaxFrameRate) // clazy:exclude=qproperty-without-notify
   Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio NOTIFY devicePixelRatioChanged)
 
   Q_ENUM(TransparencyType)
@@ -147,6 +148,9 @@ public:
 
   bool clearWindow() const;
   void setClearWindow(bool onoff);
+
+  int maxFrameRate() const;
+  void setMaxFrameRate(int fps);
 
   bool interactionModeEnabled() const;
   void setInteractionModeEnabled(bool onoff);

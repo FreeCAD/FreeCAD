@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -76,7 +78,7 @@ void TaskDimRepair::setUiPrimary()
     fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     QStringList headers;
-    headers << tr("Object name") << tr("Object label") << tr("Sub-element");
+    headers << tr("Object") << tr("Label") << tr("Sub-Element");
     ui->twReferences3d->setHorizontalHeaderLabels(headers);
 
     ReferenceVector references3d = m_dim->getReferences3d();
@@ -134,7 +136,7 @@ void TaskDimRepair::slotUseSelection()
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make dimension from selection"));
         return;
     }
@@ -145,7 +147,7 @@ void TaskDimRepair::slotUseSelection()
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
         if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect selection"),
+                                 QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make dimension from selection"));
             return;
         }

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2001 Juergen Riegel <juergen.riegel@web.de>             *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
@@ -107,7 +109,7 @@ FreeCAD.addImportType("FEM result Z88 displacements (*.txt *.TXT)", "feminout.im
 
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType(
-        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm *.VTM, *.pvd)",
+        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm *.VTM *.pvd *.PVD)",
         "feminout.importVTKResults",
     )
     FreeCAD.addTranslatableExportType(

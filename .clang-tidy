@@ -1,5 +1,5 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
+Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-use-to-string,bugprone-*,
 performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,google-explicit-constructor,
 concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,-readability-identifier-length,
 -readability-redundant-access-specifiers,-readability-qualified-auto,-readability-implicit-bool-conversion,

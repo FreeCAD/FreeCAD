@@ -301,11 +301,12 @@ QString ButtonModel::getLabel(const int& number) const
 
 void ButtonModel::loadConfig(const char* RequiredDeviceName)
 {
-    goClear();
-    if (!RequiredDeviceName) {
-        return;
+    beginResetModel();
+    spaceballButtonGroup()->Clear();
+    if (RequiredDeviceName) {
+        load3DConnexionButtons(RequiredDeviceName);
     }
-    load3DConnexionButtons(RequiredDeviceName);
+    endResetModel();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

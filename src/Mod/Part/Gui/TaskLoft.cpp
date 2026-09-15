@@ -23,10 +23,11 @@
  ***************************************************************************/
 
 
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTreeWidget>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -44,6 +45,9 @@
 #include <Gui/ViewProvider.h>
 
 #include <Mod/Part/App/PartFeature.h>
+
+#include <BRep_Tool.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include "TaskLoft.h"
 #include "ui_TaskLoft.h"
@@ -112,45 +116,30 @@ void LoftWidget::findShapes()
             continue;
         }
 
-        // also allow compounds with a single face, wire or vertex or
-        // if there are only edges building one wire
-        if (shape.ShapeType() == TopAbs_COMPOUND) {
-            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
-            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-
-            TopoDS_Iterator it(shape);
-            int numChilds = 0;
-            TopoDS_Shape child;
-            for (; it.More(); it.Next(), numChilds++) {
-                if (!it.Value().IsNull()) {
-                    child = it.Value();
-                    if (child.ShapeType() == TopAbs_EDGE) {
-                        hEdges->Append(child);
-                    }
-                }
+        bool viable = false;
+        TopExp_Explorer xp(shape, TopAbs_WIRE);
+        int wireCount = 0;
+        bool allClosed = true;
+        for (; xp.More() && wireCount <= 1; xp.Next(), wireCount++) {
+            if (!BRep_Tool::IsClosed(TopoDS::Wire(xp.Current()))) {
+                allClosed = false;
+                break;
             }
-
-            // a single child
-            if (numChilds == 1) {
-                shape = child;
-            }
-            // or all children are edges
-            else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
-                    hEdges,
-                    Precision::Confusion(),
-                    Standard_False,
-                    hWires
-                );
-                if (hWires->Length() == 1) {
-                    shape = hWires->Value(1);
-                }
+        }
+        if (wireCount == 1 && allClosed) {
+            viable = true;
+        }
+        else if (!wireCount) {
+            int vertexCount = 0;
+            TopExp_Explorer xp(shape, TopAbs_VERTEX);
+            for (; xp.More() && vertexCount <= 1; xp.Next(), vertexCount++)
+                ;
+            if (vertexCount == 1) {
+                viable = true;
             }
         }
 
-        if (!shape.Infinite()
-            && (shape.ShapeType() == TopAbs_FACE || shape.ShapeType() == TopAbs_WIRE
-                || shape.ShapeType() == TopAbs_EDGE || shape.ShapeType() == TopAbs_VERTEX)) {
+        if (viable) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());
             QTreeWidgetItem* child = new QTreeWidgetItem();
@@ -163,7 +152,7 @@ void LoftWidget::findShapes()
             }
             d->ui.selector->availableTreeWidget()->addTopLevelItem(child);
         }
-    }
+    }  // end for objs
 }
 
 bool LoftWidget::accept()
@@ -196,7 +185,7 @@ bool LoftWidget::accept()
     if (count < 2) {
         QMessageBox::critical(
             this,
-            tr("Too few elements"),
+            tr("Too Few Elements"),
             tr("At least 2 vertices, edges, wires, or faces are required.")
         );
         return false;
@@ -216,14 +205,14 @@ bool LoftWidget::accept()
                   "App.getDocument('%5').ActiveObject.Ruled=%3\n"
                   "App.getDocument('%5').ActiveObject.Closed=%4\n"
         )
-                  .arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
+                  .arg(list, solid, ruled, closed, d->document.c_str());
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
             throw Base::RuntimeError("Document doesn't exist anymore");
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {

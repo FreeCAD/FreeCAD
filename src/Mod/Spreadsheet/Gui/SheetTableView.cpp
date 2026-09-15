@@ -47,11 +47,13 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 
 
 using namespace SpreadsheetGui;
@@ -245,11 +247,10 @@ void SheetTableView::onBind()
 void SheetTableView::onConfSetup()
 {
     auto ranges = selectedRanges();
-    if (ranges.empty()) {
-        return;
+    if (ranges.size() == 1 && ranges.back().size() > 1) {
+        DlgSheetConf dlg {sheet, ranges.back()};
+        dlg.exec();
     }
-    DlgSheetConf dlg {sheet, ranges.back()};
-    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
@@ -488,7 +489,7 @@ bool SheetTableView::event(QEvent* event)
                 break;
         }
         if (kevent->matches(QKeySequence::SelectAll)) {
-            QTableView::selectAll();
+            selectAll();
             return true;
         }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
@@ -994,6 +995,20 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
     );
 }
 
+void SheetTableView::selectAll()
+{
+    auto* sheetModel = qobject_cast<SheetModel*>(model());
+    if (!sheetModel) {
+        return;
+    }
+
+    auto* param = SheetParameter::instance();
+    if (sheetModel->rowCount() <= param->getMaximumRowCount()
+        && sheetModel->columnCount() <= param->getMaximumColumnCount()) {
+        QTableView::selectAll();
+    }
+}
+
 void SheetTableView::mergeCells()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_MergeCells");
@@ -1052,6 +1067,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
 
     auto ranges = selectedRanges();
     actionBind->setEnabled(!ranges.empty() && ranges.size() <= 2);
+    actionConf->setEnabled(ranges.size() == 1 && ranges.back().size() > 1);
 
     contextMenu.exec(QCursor::pos());
 }

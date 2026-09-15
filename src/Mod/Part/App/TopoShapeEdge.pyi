@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
+from Geometry import Geometry
 from Wire import Wire
 from Vertex import Vertex
 from TopoShape import TopoShape
@@ -23,6 +24,15 @@ class TopoShapeEdge(TopoShape):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     Licence: LGPL
     """
+
+    @overload
+    def __init__(self) -> None: ...
+    @overload
+    def __init__(self, curve: Geometry, first: float = ..., last: float = ..., /) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
+    @overload
+    def __init__(self, start: Vertex, end: Vertex, /) -> None: ...
 
     Tolerance: float = 0.0
     """Set or get the tolerance of the vertex"""

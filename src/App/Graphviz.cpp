@@ -23,8 +23,10 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <boost/graph/graphviz.hpp>
 #include <random>
+#include <App/Application.h>
 
 #include "Application.h"
 #include "Document.h"
@@ -73,8 +75,128 @@ void Document::writeDependencyGraphViz(std::ostream& out)
     out << "}" << std::endl;
 }
 
+enum class PropType
+{
+    PROP_REGULAR,
+    PROP_INPUT,
+    PROP_OUTPUT
+};
+
+static PropType getPropType(DocumentObject* obj, const std::string& propName)
+{
+    if (obj->isInputProperty(propName)) {
+        return PropType::PROP_INPUT;
+    }
+    else if (obj->isOutputProperty(propName)) {
+        return PropType::PROP_OUTPUT;
+    }
+    return PropType::PROP_REGULAR;
+}
+
+static void exportProp(const char* objName, const char* propName, PropType propType, std::ostream& out)
+{
+    const char* color = propType == PropType::PROP_INPUT ? ", color=blue, fontcolor=blue" : "";
+    out << "    " << objName << "_" << propName <<
+        " [label=\"" << propName << "\"" << color << "];\n";
+}
+
+static std::map<std::string, PropType> getSubGraphNodes(DocumentObject* obj)
+{
+    std::map<std::string, PropType> nodes;
+    nodes["HEAD"] = PropType::PROP_REGULAR;
+
+    for (const auto& [objFrom, propFrom, objTo, propTo] : obj->getOutListProp()) {
+        if (!nodes.contains(propFrom)) {
+            nodes[propFrom] = getPropType(objFrom, propFrom);
+        }
+    }
+
+    for (const auto& [objFrom, propFrom, objTo, propTo] : obj->getInListProp()) {
+        if (!propTo.empty() && !nodes.contains(propTo)) {
+            nodes[propTo] = getPropType(objTo, propTo);
+        }
+    }
+
+    return nodes;
+}
+
+static void exportSubGraphNodes(DocumentObject* obj, std::ostream& out)
+{
+    const char* name = obj->getNameInDocument();
+    std::map<std::string, PropType> nodes = getSubGraphNodes(obj);
+    for (const auto& [propName, propType] : nodes) {
+        exportProp(name, propName.c_str(), propType, out);
+    }
+}
+
+static void exportSubGraph(DocumentObject* obj, std::ostream& out)
+{
+    const char* name = obj->getNameInDocument();
+    out << "  subgraph cluster_" << name << " {\n";
+    out << "    label = \"" << name << " (" << obj->Label.getValue() << ")\";\n";
+    out << "    style=dashed;\n\n";
+
+    exportSubGraphNodes(obj, out);
+    out << "  }\n\n";
+}
+
+static void exportEdge(std::string& from, std::string& to, std::ostream& out)
+{
+    out << "  " << from << " -> " << to << ";\n";
+}
+
+static void exportEdges(DocumentObject* objTo, std::ostream& out)
+{
+    const char* nameObjTo = objTo->getNameInDocument();
+
+    std::map<std::string, PropType> subgraphNodes = getSubGraphNodes(objTo);
+    // create edges from the first node (HEAD) to all other nodes in the subgraph
+    std::string from = nameObjTo + std::string("_HEAD");
+    for (const auto& [propName, propType] : subgraphNodes) {
+        if (propName != "HEAD") {
+            std::string to = nameObjTo + ("_" + propName);
+            if (propType == PropType::PROP_OUTPUT) {
+                exportEdge(to, from, out);
+            }
+            else {
+                exportEdge(from, to, out);
+            }
+        }
+    }
+
+    for (const auto& [objFrom, propFrom, objTo, propTo] : objTo->getInListProp()) {
+        const char* nameObjFrom = objFrom->getNameInDocument();
+        std::string from = nameObjFrom + ("_" + propFrom);
+        std::string to = nameObjTo + ("_" + (propTo == "" ? "HEAD" : propTo));
+        exportEdge(from,to, out);
+    }
+    out << "\n";
+}
+
+void Document::exportGraphvizProp(std::ostream& out) const
+{
+    out << "digraph G {\n";
+    out << "  rankdir=TB;\n";
+    out << "  node [shape=ellipse, color=black];\n\n";
+
+    for (auto* obj : getDependingObjects()) {
+        exportSubGraph(obj, out);
+    }
+
+    for (auto* obj : getDependingObjects()) {
+        exportEdges(obj, out);
+    }
+
+    out << "}\n";
+}
+
 void Document::exportGraphviz(std::ostream& out) const
 {
+    if (GetApplication().isFineGrainedRecomputeEnabled()) {
+        exportGraphvizProp(out);
+        return;
+    }
+
     /* Type defs for a graph with graphviz attributes */
     using GraphvizAttributes = std::map<std::string, std::string>;
     using Graph = boost::subgraph<adjacency_list<
@@ -325,24 +447,16 @@ void Document::exportGraphviz(std::ostream& out) const
             GlobalVertexList[getId(docObj)] = vertex_no++;
 
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
+            auto& props = get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]];
             if (!GraphList[docObj]) {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
-                // Set node label
-                if (name == label) {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
-                }
-                else {
-                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] =
-                        name + "&#92;n(" + label + ")";
-                }
+                props["style"] = "rounded,filled";
+                props["shape"] = "box";
+                props["label"] = name == label ? name : name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] =
-                    "true";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
+                props["style"] = "invis";
+                props["shape"] = "point";
+                props["margin"] = "0";
             }
 
             // Add expressions and its dependencies

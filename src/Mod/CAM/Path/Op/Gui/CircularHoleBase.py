@@ -28,6 +28,7 @@ import Path
 import Path.Op.Gui.Base as PathOpGui
 import PathGui
 
+from Path.Base import Drillable
 from Path.Base.Gui.Util import NaturalSortTableWidgetItem
 from PySide import QtCore, QtGui
 
@@ -49,6 +50,9 @@ else:
 COL_ORDER = 0
 COL_FEATURE = 1
 COL_DIAMETER = 2
+COL_X = 3
+COL_Y = 4
+COL_BLIND = 5
 
 
 class RowMoveTableWidget(QtGui.QTableWidget):
@@ -247,14 +251,51 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_FEATURE, item)
 
-                dia = obj.Proxy.holeDiameter(base, sub)
-                diameterQty = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
-                displayString = diameterQty.getUserPreferred("Length")[0]
-                item = NaturalSortTableWidgetItem(displayString)
+                pos = obj.Proxy.holePosition(base, sub)
+                if pos:
+                    dia = obj.Proxy.holeDiameter(base, sub)
+                    diameterQty = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
+                    diaString = diameterQty.getUserPreferred("Length")[0]
+                    posXQty = FreeCAD.Units.Quantity(pos[0], FreeCAD.Units.Length)
+                    posXString = posXQty.getUserPreferred("Length")[0]
+                    posYQty = FreeCAD.Units.Quantity(pos[1], FreeCAD.Units.Length)
+                    posYString = posYQty.getUserPreferred("Length")[0]
+                else:
+                    diaString = "---"
+                    posXString = "---"
+                    posYString = "---"
+
+                blind = Drillable.isBlind(base, sub)
+                if blind is None:
+                    blindString = "---"
+                elif blind:
+                    blindString = "Yes"
+                else:
+                    blindString = "No"
+
+                item = NaturalSortTableWidgetItem(diaString)
                 item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_DIAMETER, item)
+
+                item = NaturalSortTableWidgetItem(posXString)
+                item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
+                self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_X, item)
+
+                item = NaturalSortTableWidgetItem(posYString)
+                item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
+                self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_Y, item)
+
+                item = NaturalSortTableWidgetItem(blindString)
+                item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
+                item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
+                self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_BLIND, item)
 
         # Ensure the combo box reflects the current SortingMode
         idx = self.form.sortMode.findText(obj.SortingMode)
@@ -273,6 +314,9 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         header.setSectionResizeMode(COL_ORDER, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_FEATURE, QtGui.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(COL_DIAMETER, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_X, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_Y, QtGui.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(COL_BLIND, QtGui.QHeaderView.ResizeToContents)
 
         self.form.baseList.resizeColumnToContents(0)
         self.form.baseList.blockSignals(False)
@@ -495,6 +539,9 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 order_item = self.form.baseList.item(row, COL_ORDER)
                 feature_item = self.form.baseList.item(row, COL_FEATURE)
                 diameter_item = self.form.baseList.item(row, COL_DIAMETER)
+                posX_item = self.form.baseList.item(row, COL_X)
+                posY_item = self.form.baseList.item(row, COL_Y)
+                blind_item = self.form.baseList.item(row, COL_BLIND)
                 try:
                     order = int(order_item.text())
                 except (ValueError, AttributeError):
@@ -506,6 +553,9 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                             order_item.clone() if order_item else None,
                             feature_item.clone() if feature_item else None,
                             diameter_item.clone() if diameter_item else None,
+                            posX_item.clone() if posX_item else None,
+                            posY_item.clone() if posY_item else None,
+                            blind_item.clone() if blind_item else None,
                         ],
                     )
                 )

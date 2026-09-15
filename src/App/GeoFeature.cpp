@@ -73,6 +73,12 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry(const DocumentObject* object)
+{
+    auto* geoFeature = freecad_cast<const GeoFeature*>(object);
+    return geoFeature ? geoFeature->getPropertyOfGeometry() : nullptr;
+}
+
 PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
@@ -218,6 +224,26 @@ bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::V
     Q_UNUSED(directionZ)
     Q_UNUSED(directionX)
     return false;
+}
+
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ,
+                                             const std::vector<std::string>& subnames) const
+{
+    Base::Vector3d sum(0, 0, 0);
+    int count = 0;
+    for (const auto& sub : subnames) {
+        Base::Vector3d z(0, 0, 0);
+        Base::Vector3d x(0, 0, 0);
+        if (getCameraAlignmentDirection(z, x, sub.c_str())) {
+            sum += z;
+            ++count;
+        }
+    }
+    if (count == 0) {
+        return false;
+    }
+    directionZ = sum.Normalize();
+    return true;
 }
 
 bool GeoFeature::hasMissingElement(const char* subname)
