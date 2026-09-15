@@ -82,7 +82,7 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
             return QApplication::sendEvent(vpViewer, keyEvent);
         }
         const int key = keyEvent->key();
-        if (key == Qt::Key_Enter || key == Qt::Key_Return || key == Qt::Key_Tab) {
+        if (key == Qt::Key_Enter || key == Qt::Key_Return) {
             // This keys switch to camera control but are sent to the widget
             keyMode = KeyboardEventHandlingMode::ViewProvider;
             return false;
@@ -103,6 +103,12 @@ DrawSketchKeyboardManager::KeyboardEventHandlingMode DrawSketchKeyboardManager::
     QKeyEvent* keyEvent
 )
 {
+    // Tab must be delivered to vpViewer
+    // otherwise the next value change refocuses the previously active parameter.
+    if (keyEvent->key() == Qt::Key_Tab) {
+        return KeyboardEventHandlingMode::ViewProvider;
+    }
+
     // Detect if the user wants to start editing the input
 
     if (keyEvent->matches(QKeySequence::Paste)) {
