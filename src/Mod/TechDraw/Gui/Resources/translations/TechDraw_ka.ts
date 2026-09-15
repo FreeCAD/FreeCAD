@@ -76,12 +76,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="702"/>
+      <location filename="../../Command.cpp" line="704"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="703"/>
+      <location filename="../../Command.cpp" line="705"/>
       <source>Active View</source>
       <translation>აქტიური ხედი</translation>
     </message>
@@ -125,17 +125,17 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
+      <location filename="../../Command.cpp" line="1675"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1674"/>
+      <location filename="../../Command.cpp" line="1676"/>
       <source>BIM View</source>
       <translation>BIM ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1677"/>
       <source>Inserts a view of a BIM section plane</source>
       <translation>ჩასვამს BIM კვეთის სიბრტყის ხედს</translation>
     </message>
@@ -143,17 +143,17 @@
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1283"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1282"/>
+      <location filename="../../Command.cpp" line="1284"/>
       <source>Balloon Annotation</source>
       <translation>სქოლიოს ანოტაცია</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1283"/>
+      <location filename="../../Command.cpp" line="1285"/>
       <source>Inserts a new balloon annotation in the selected view</source>
       <translation>ჩასვამს ახალ სქოლიო ანოტაციას მონიშნულ ხედში</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1345"/>
+      <location filename="../../Command.cpp" line="1347"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1346"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Clip Group</source>
       <translation>კვეთების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1347"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Inserts a new clip group for the selected view</source>
       <translation>ჩასვამს ახალ კვეთების ჯგუფს მონიშნული ხედისთვის</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1382"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1383"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Add View To Clip Group</source>
       <translation>ხედის ჩამატება კვეთების ჯგუფში</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1384"/>
+      <location filename="../../Command.cpp" line="1386"/>
       <source>Adds the selected view to a clip group</source>
       <translation>ამატებს მონიშნულ ხედს კვეთების ჯგუფში</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1468"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1469"/>
       <source>Remove From Clip Group</source>
       <translation>წაშლა კვეთების ჯგუფიდან</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1468"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Removes a view based on the selected clip group</source>
       <translation>შლის ხედს მონიშნული კვეთების ჯგუფზე დაყრდნობით</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="890"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="891"/>
       <source>Complex Section View</source>
       <translation>კომპლექსური ჭრილის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
+      <location filename="../../Command.cpp" line="892"/>
       <source>Inserts a complex section view based on the selected view in the current page</source>
       <translation type="unfinished">Inserts a complex section view based on the selected view in the current page</translation>
     </message>
@@ -329,17 +329,17 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1014"/>
+      <location filename="../../Command.cpp" line="1016"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="1017"/>
       <source>Detail View</source>
       <translation>დეტალური ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1016"/>
+      <location filename="../../Command.cpp" line="1018"/>
       <source>Inserts a new detail view based on the selected view in the current page</source>
       <translation type="unfinished">Inserts a new detail view based on the selected view in the current page</translation>
     </message>
@@ -387,17 +387,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1606"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1607"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Draft View</source>
       <translation>ესკიზის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1611"/>
       <source>Inserts a view of a Draft object</source>
       <extracomment>&quot;Draft&quot; is a workbench and should not be translated</extracomment>
       <translation>ჩასვამს მონახაზის ობიექტის ხედს</translation>
@@ -406,17 +406,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1864"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>File</source>
       <translation>ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1865"/>
+      <location filename="../../Command.cpp" line="1886"/>
       <source>Export Page as DXF</source>
       <translation>გვერდის DXF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1887"/>
       <source>Exports the current page as a DXF</source>
       <translation>გაიტანს მიმდინარე გვერდს DXF ფორმატში</translation>
     </message>
@@ -424,17 +424,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1821"/>
+      <location filename="../../Command.cpp" line="1842"/>
       <source>File</source>
       <translation>ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1822"/>
+      <location filename="../../Command.cpp" line="1843"/>
       <source>Export Page as SVG</source>
       <translation>გვერდის SVG ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1823"/>
+      <location filename="../../Command.cpp" line="1844"/>
       <source>Exports the current page as an SVG</source>
       <translation>გაიტანს მიმდინარე გვერდს SVG ფორმატში</translation>
     </message>
@@ -1665,17 +1665,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawPageDefault</name>
     <message>
-      <location filename="../../Command.cpp" line="108"/>
+      <location filename="../../Command.cpp" line="110"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="109"/>
+      <location filename="../../Command.cpp" line="111"/>
       <source>New Page</source>
       <translation>ახალი გვერდი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Creates a new page with the default template</source>
       <translation>ქმნის ახალ გვერდს ნაგულისხმევი შაბლონით</translation>
     </message>
@@ -1683,17 +1683,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>New Page From Template</source>
       <translation>ახალი გვერდი შაბლონიდან</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="170"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Creates a new page from a custom template</source>
       <translation>ქმნის ახალ გვერდს მორგებული შაბლონიდან</translation>
     </message>
@@ -1701,17 +1701,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="276"/>
       <source>Print All Pages</source>
       <translation>ყველა გვერდის დაბეჭდვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Prints all pages with the print dialog</source>
       <translation>დაბეჭდავს ყველა გვერდს ბეჭდვის დიალოგით</translation>
     </message>
@@ -1719,17 +1719,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1988"/>
+      <location filename="../../Command.cpp" line="2009"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1989"/>
+      <location filename="../../Command.cpp" line="2010"/>
       <source>Project Shape</source>
       <translation>პროექტის მოხაზულობა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1990"/>
+      <location filename="../../Command.cpp" line="2011"/>
       <source>Creates a projected geometry of the selected object in the 3D view from the current camera angle</source>
       <translation type="unfinished">Creates a projected geometry of the selected object in the 3D view from the current camera angle</translation>
     </message>
@@ -1737,17 +1737,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1058"/>
+      <location filename="../../Command.cpp" line="1060"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1059"/>
+      <location filename="../../Command.cpp" line="1061"/>
       <source>Projection Group</source>
       <translation>პროექციების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1060"/>
+      <location filename="../../Command.cpp" line="1062"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
       <translation type="unfinished">Inserts multiple new linked views of the selected objects in the current page</translation>
     </message>
@@ -1791,17 +1791,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Redraw Page</source>
       <translation>გვერდის თავიდან დახატვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Redraws the current page</source>
       <translation>თავიდან დახაზავს მიმდინარე გვერდს</translation>
     </message>
@@ -1827,27 +1827,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="733"/>
+      <location filename="../../Command.cpp" line="735"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="734"/>
+      <location filename="../../Command.cpp" line="736"/>
       <source>Section View (Simple or Complex)</source>
       <translation>ჭრილის ხედი (მარტივი ან კომპლექსური)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="737"/>
       <source>Inserts a simple or complex section view in the current page</source>
       <translation type="unfinished">Inserts a simple or complex section view in the current page</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Section View</source>
       <translation>სექციის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Complex Section View</source>
       <translation>კომპლექსური ჭრილის ხედი</translation>
     </message>
@@ -1855,17 +1855,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="825"/>
+      <location filename="../../Command.cpp" line="827"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="826"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Section View</source>
       <translation>ჭრილის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="829"/>
       <source>Inserts a new section view based on the selected view in the current page</source>
       <translation type="unfinished">Inserts a new section view based on the selected view in the current page</translation>
     </message>
@@ -1891,17 +1891,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1749"/>
       <source>Spreadsheet View</source>
       <translation>ელცხრილის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1750"/>
       <source>Inserts a view of a spreadsheet in the current page</source>
       <translation>ჩასვამს ელცხრილის ხედს მიმდინარე გვერდში</translation>
     </message>
@@ -2037,17 +2037,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1539"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1540"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Insert SVG</source>
       <translation>SVG-ის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1541"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Inserts a symbol from an SVG file</source>
       <translation>ჩასვამს სიმბოლოს SVG ფაილიდან</translation>
     </message>
@@ -2091,17 +2091,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="298"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>New View</source>
       <translation>ახალი ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="302"/>
       <source>Inserts a new view into the current page based on the selected object in the tree view or 3D view.
 If no object is selected, a file browser opens to select an SVG or image file.</source>
       <translation type="unfinished">Inserts a new view into the current page based on the selected object in the tree view or 3D view.
@@ -2129,72 +2129,76 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="126"/>
+      <location filename="../../Command.cpp" line="195"/>
       <source>Drawing create page</source>
       <translation>ნახატის გვერდის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="363"/>
-      <location filename="../../Command.cpp" line="1720"/>
+      <location filename="../../Command.cpp" line="365"/>
+      <location filename="../../Command.cpp" line="1722"/>
       <source>Create BIM view</source>
       <translation>BIM ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Create image</source>
       <translation>გამოსახულების შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="503"/>
+      <location filename="../../Command.cpp" line="505"/>
       <source>Create view</source>
       <translation>ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Create broken view</source>
       <translation>გაფუჭებული ხედის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1907"/>
       <location filename="../../PagePrinter.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="1928"/>
       <source>Save page to DXF</source>
       <translation>გვერდის DXF-ში შენახვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="463"/>
-      <location filename="../../Command.cpp" line="1570"/>
+      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="1572"/>
       <source>Create Symbol</source>
       <translation>სიმბოლოს შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../Command.cpp" line="1144"/>
       <source>Create projection group</source>
       <translation>პროექციის ჯგუფის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1365"/>
       <source>Create clip</source>
       <translation>კვეთის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1435"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Add clip group</source>
       <translation>კვეთების ჯგუფის დამატება</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1508"/>
       <source>Remove clip group</source>
       <translation>კვეთების ჯგუფის წაშლა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1644"/>
+      <location filename="../../Command.cpp" line="1646"/>
       <source>Create DraftView</source>
       <translation>DraftView-ის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
       <location filename="../../Command.cpp" line="1772"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Create spreadsheet view</source>
       <translation>ელცხრილის შექმნა</translation>
     </message>
@@ -3050,26 +3054,25 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../Command.cpp" line="864"/>
+      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="993"/>
+      <location filename="../../Command.cpp" line="1031"/>
+      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1419"/>
+      <location filename="../../Command.cpp" line="1428"/>
+      <location filename="../../Command.cpp" line="1481"/>
+      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1625"/>
+      <location filename="../../Command.cpp" line="1703"/>
+      <location filename="../../Command.cpp" line="1709"/>
       <location filename="../../CommandHelpers.cpp" line="87"/>
       <location filename="../../CommandHelpers.cpp" line="100"/>
-      <location filename="../../Command.cpp" line="635"/>
-      <location filename="../../Command.cpp" line="645"/>
-      <location filename="../../Command.cpp" line="862"/>
-      <location filename="../../Command.cpp" line="979"/>
-      <location filename="../../Command.cpp" line="986"/>
-      <location filename="../../Command.cpp" line="991"/>
-      <location filename="../../Command.cpp" line="1029"/>
-      <location filename="../../Command.cpp" line="1128"/>
-      <location filename="../../Command.cpp" line="1395"/>
-      <location filename="../../Command.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="1417"/>
-      <location filename="../../Command.cpp" line="1426"/>
-      <location filename="../../Command.cpp" line="1479"/>
-      <location filename="../../Command.cpp" line="1498"/>
-      <location filename="../../Command.cpp" line="1623"/>
-      <location filename="../../Command.cpp" line="1701"/>
-      <location filename="../../Command.cpp" line="1707"/>
-      <location filename="../../Command.cpp" line="1766"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3101,92 +3104,81 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</source>
       <translation type="unfinished">To insert a view from existing objects, select them before invoking this tool. Without a selection, a file browser will open to insert an SVG or image file.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Do not show this message again</source>
       <translation>ეს შეტყობინება აღარ მაჩვენო</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Select a SVG or Image file to open</source>
       <translation>აირჩიეთ SVG ან გამოსახულების ფაილი გასახსნელად</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="451"/>
       <source>SVG or Image files</source>
       <translation>SVG ან გამოსახულების ფაილები</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="182"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Select a template file</source>
       <translation>აირჩიეთ შაბლონის ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="183"/>
+      <location filename="../../Command.cpp" line="185"/>
       <source>Template</source>
       <translation>შაბლონი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="598"/>
       <source>Empty Selection</source>
       <translation>არაფერია მონიშნული</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="992"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>No profile object found in selection</source>
       <translation>მონიშნულში პროფილის ობექტი ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Select exactly one view to add to clip group</source>
       <translation type="unfinished">Select exactly one view to add to clip group</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1480"/>
+      <location filename="../../Command.cpp" line="1482"/>
       <source>Select exactly one view to remove from clip group</source>
       <translation type="unfinished">Select exactly one view to remove from clip group</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>FreeCAD could not find a page to export</source>
       <translation>FreeCAD-მა გასატანი გვერდი ვერ იპოვა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1899"/>
-      <source>Save DXF file</source>
-      <translation>DXF ფაილის შენახვა</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2151"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2156"/>
-      <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="597"/>
+      <location filename="../../Command.cpp" line="599"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation type="unfinished">Select objects to break or a base view and break definition objects</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="636"/>
+      <location filename="../../Command.cpp" line="638"/>
       <source>No break objects found in this selection</source>
       <translation>ამ მონიშნულში გაფუჭებული ობიექტები ვერ ვიპოვე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>No shapes, groups, or links in this selection</source>
       <translation>მონიშნულში არც მონახაზებია, არც ჯგუფები და არც ბმულები</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
       <location filename="../../CommandExtensionDims.cpp" line="326"/>
       <location filename="../../CommandExtensionDims.cpp" line="535"/>
       <location filename="../../CommandExtensionDims.cpp" line="823"/>
@@ -3194,29 +3186,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1522"/>
       <location filename="../../CommandExtensionDims.cpp" line="1891"/>
       <location filename="../../CommandExtensionDims.cpp" line="2129"/>
-      <location filename="../../CommandCreateDims.cpp" line="1499"/>
-      <location filename="../../CommandCreateDims.cpp" line="1547"/>
-      <location filename="../../CommandCreateDims.cpp" line="1595"/>
-      <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1694"/>
-      <location filename="../../CommandCreateDims.cpp" line="1744"/>
-      <location filename="../../CommandCreateDims.cpp" line="1791"/>
-      <location filename="../../CommandCreateDims.cpp" line="1838"/>
-      <location filename="../../CommandCreateDims.cpp" line="1885"/>
-      <location filename="../../CommandCreateDims.cpp" line="1981"/>
-      <location filename="../../CommandCreateDims.cpp" line="2106"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="747"/>
+      <location filename="../../Command.cpp" line="840"/>
+      <location filename="../../Command.cpp" line="903"/>
       <location filename="../../CommandExtensionPack.cpp" line="302"/>
       <location filename="../../CommandExtensionPack.cpp" line="605"/>
       <location filename="../../CommandExtensionPack.cpp" line="1225"/>
       <location filename="../../CommandExtensionPack.cpp" line="1470"/>
       <location filename="../../CommandExtensionPack.cpp" line="1768"/>
-      <location filename="../../Command.cpp" line="745"/>
-      <location filename="../../Command.cpp" line="838"/>
-      <location filename="../../Command.cpp" line="901"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3232,6 +3209,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1262"/>
       <location filename="../../CommandAnnotate.cpp" line="1343"/>
       <location filename="../../CommandAnnotate.cpp" line="1409"/>
+      <location filename="../../CommandCreateDims.cpp" line="1499"/>
+      <location filename="../../CommandCreateDims.cpp" line="1547"/>
+      <location filename="../../CommandCreateDims.cpp" line="1595"/>
+      <location filename="../../CommandCreateDims.cpp" line="1643"/>
+      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1981"/>
+      <location filename="../../CommandCreateDims.cpp" line="2106"/>
       <source>Task in progress</source>
       <translation>მიმდინარეობს ამოცანის შესრულება</translation>
     </message>
@@ -3243,9 +3231,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionDims.cpp" line="1523"/>
       <location filename="../../CommandExtensionDims.cpp" line="1892"/>
       <location filename="../../CommandExtensionDims.cpp" line="2130"/>
-      <location filename="../../Command.cpp" line="746"/>
-      <location filename="../../Command.cpp" line="839"/>
-      <location filename="../../Command.cpp" line="902"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3265,95 +3253,105 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>დახურეთ აქტიური ამოცანის ფანჯარა და თავიდან სცადეთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="863"/>
-      <location filename="../../Command.cpp" line="1030"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="1032"/>
       <source>Select at least 1 DrawViewPart object as base</source>
       <translation>საბაზისოდ 1 DrawViewPart ობიექტი მაინც მონიშნეთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="980"/>
+      <location filename="../../Command.cpp" line="982"/>
       <source>No base view selected</source>
       <translation>საბაზისო ხედი არჩეული არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="989"/>
       <source>No base view, shapes, groups, or links in this selection</source>
       <translation>მონიშნულში არც საბაზისო ხედებია, არც მონახაზები, არც ჯგუფები და არც ბმულები</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1200"/>
       <location filename="../../CommandCreateDims.cpp" line="2371"/>
-      <location filename="../../Command.cpp" line="1198"/>
       <source>Select an object first</source>
       <translation>ჯერ აირჩიეთ ობიექტი</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../CommandCreateDims.cpp" line="2379"/>
-      <location filename="../../Command.cpp" line="1205"/>
       <source>Too many objects selected</source>
       <translation>მონიშნულია მეტისმეტად ბევრი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1215"/>
       <source>Create a page first</source>
       <translation>ჯერ შექმენით გვერდი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1227"/>
       <source>No view of a part in selection</source>
       <translation>მონიშნულში ნაწილის ხედი არ არსებობს</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1396"/>
+      <location filename="../../Command.cpp" line="1398"/>
       <source>Select one clip group and one view</source>
       <translation>მონიშნეთ ერთი კვეთების ჯგუფი და ერთი ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1885"/>
+      <location filename="../../Command.cpp" line="1906"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation type="unfinished">Page contains a BIM view which will not be exported. Continue?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
+      <location filename="../../Command.cpp" line="1920"/>
+      <source>Save DXF file</source>
+      <translation>DXF ფაილის შენახვა</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2172"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2177"/>
+      <source>Direction is close to standard</source>
+      <translation type="unfinished">Direction is close to standard</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1420"/>
       <source>Select exactly one clip group</source>
       <translation>აირჩიეთ მხოლოდ ერთი კვეთების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1427"/>
+      <location filename="../../Command.cpp" line="1429"/>
       <source>Clip and view must be from same page</source>
       <translation>კვეთი და ხედი ერთ გვერდზე უნდა იყვნენ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1499"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>View does not belong to a clip</source>
       <translation>ხედი არ მიეკუთვნება კვეთს</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1624"/>
+      <location filename="../../Command.cpp" line="1626"/>
       <source>Select at least one object</source>
       <translation>ერთი ობიექტი მაინც მონიშნეთ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1704"/>
       <source>Select only 1 BIM section plane</source>
       <translation>მონიშნეთ, მხოლოდ, 1 BIM კვეთის სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1708"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>No BIM section plane in selection</source>
       <translation>მონიშნულში BIM კვეთის სიბრტყე აღმოჩენილი არაა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1767"/>
-      <source>Select exactly one spreadsheet object</source>
-      <translation>აირჩიეთ ელცხრილის ზუსტად ერთი ობიექტი</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1869"/>
       <source>No drawing page</source>
       <translation>ნახაზის გვერდის გარეშე</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1905"/>
       <source>Cannot export selection</source>
       <translation>მონიშნულის გატანა შეუძლებელია</translation>
     </message>
@@ -3434,11 +3432,24 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ჯერ შექმენით გვერდი.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1562"/>
+      <location filename="../../Command.cpp" line="1564"/>
       <source>Choose an SVG file to open</source>
       <translation>აირჩიეთ გასახსნელი SVG ფაილი</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="418"/>
+      <location filename="../../CommandDecorate.cpp" line="425"/>
+      <location filename="../../CommandDecorate.cpp" line="432"/>
+      <location filename="../../CommandDecorate.cpp" line="439"/>
+      <location filename="../../CommandDecorate.cpp" line="445"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1206"/>
+      <location filename="../../Command.cpp" line="1214"/>
+      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1881"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2005"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandCreateDims.cpp" line="2007"/>
@@ -3453,19 +3464,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2370"/>
       <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../CommandDecorate.cpp" line="418"/>
-      <location filename="../../CommandDecorate.cpp" line="425"/>
-      <location filename="../../CommandDecorate.cpp" line="432"/>
-      <location filename="../../CommandDecorate.cpp" line="439"/>
-      <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1881"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2005"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1204"/>
-      <location filename="../../Command.cpp" line="1212"/>
-      <location filename="../../Command.cpp" line="1224"/>
       <source>Incorrect Selection</source>
       <translation>არასწორი არჩევანი</translation>
     </message>
@@ -3822,9 +3820,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderPage.cpp" line="219"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
+      <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ გააგრძელოთ?</translation>
     </message>
@@ -3957,8 +3955,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>ნაწილის ხედის შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <location filename="../../ViewProviderDimension.cpp" line="139"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
       <translation>%1-ის ჩასწორება</translation>
     </message>
@@ -4285,14 +4283,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>დაფორმატებული ტექსტის შემქმნელი</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="56"/>
-      <source>Updates the text</source>
-      <translation>განაახლებს ტექსტს</translation>
-    </message>
-    <message>
       <location filename="../../QGIRichAnno.cpp" line="400"/>
       <source>Resize Rich Annotation</source>
       <translation>მდიდარი ანოტაციის ზომის შეცვლა</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="56"/>
+      <source>Updates the text</source>
+      <translation>განაახლებს ტექსტს</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
@@ -4320,18 +4318,18 @@ it has a weld symbol that would become broken.</source>
       <translation>თქვენ არ შეგიძლიათ ამ ხედის წაშლა იმიტომ, რომ მას გააჩნია ერთი ან მეტი დამოკიდებული ხედი, რომელიც გაფუჭდებოდა.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="422"/>
+      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <source>Object dependencies</source>
       <translation>ობიექტის დამოკიდებულებები</translation>
     </message>
@@ -9945,17 +9943,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="555"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="556"/>
       <source>Broken View</source>
       <translation>გაფუჭებული ხედი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="557"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
       <translation type="unfinished">Inserts a new broken view for the selected objects or base view and break definition objects</translation>
     </message>
@@ -10169,7 +10167,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="800"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Inserts a simple section view</source>
       <translation>ჩასვამს მარტივ ჭრილის ხედს</translation>
     </message>
@@ -10177,7 +10175,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="805"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Inserts a complex section view</source>
       <translation>ჩასვამს კომპლექსურ ჭრილის ხედს</translation>
     </message>
@@ -10318,11 +10316,101 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <name>TaskSpreadsheetView</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="456"/>
-      <source>Restore Invisible Lines</source>
-      <translation>უხილავი ხაზების აღდგენა</translation>
+      <location filename="../../TaskSpreadsheetView.ui" line="14"/>
+      <source>Spreadsheet View Parameters</source>
+      <translation type="unfinished">Spreadsheet View Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="20"/>
+      <source>Range:</source>
+      <translation type="unfinished">Range:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="27"/>
+      <source>Enter the top-left cell of the range (e.g., A1)</source>
+      <translation type="unfinished">Enter the top-left cell of the range (e.g., A1)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="30"/>
+      <source>A1</source>
+      <translation>A1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="37"/>
+      <source> to </source>
+      <translation type="unfinished"> to </translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="44"/>
+      <source>Enter the bottom-right cell of the range (e.g., B2)</source>
+      <translation type="unfinished">Enter the bottom-right cell of the range (e.g., B2)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="47"/>
+      <source>B2</source>
+      <translation type="unfinished">B2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="54"/>
+      <source>View Appearance</source>
+      <translation type="unfinished">View Appearance</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="60"/>
+      <source>Scale:</source>
+      <translation type="unfinished">Scale:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="67"/>
+      <source>Scale of the view. Let you adjust the overall size of the table.</source>
+      <translation type="unfinished">Scale of the view. Let you adjust the overall size of the table.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="83"/>
+      <source>Font:</source>
+      <translation type="unfinished">Font:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="93"/>
+      <source>Text Size:</source>
+      <translation type="unfinished">Text Size:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="100"/>
+      <source>Font size in points</source>
+      <translation type="unfinished">Font size in points</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="119"/>
+      <source>Text Color:</source>
+      <translation type="unfinished">Text Color:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="126"/>
+      <source>Line color</source>
+      <translation>ხაზის ფერი</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="140"/>
+      <source>Line Width:</source>
+      <translation type="unfinished">Line Width:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="147"/>
+      <source>Width of the cell border lines</source>
+      <translation type="unfinished">Width of the cell border lines</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="172"/>
+      <source>Claim spreadsheet as child</source>
+      <translation type="unfinished">Claim spreadsheet as child</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.ui" line="175"/>
+      <source>If checked, this view will claim the associated spreadsheet as child in the tree.</source>
+      <translation type="unfinished">If checked, this view will claim the associated spreadsheet as child in the tree.</translation>
     </message>
   </context>
   <context>
@@ -10364,17 +10452,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExportPagePDF</name>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>File</source>
       <translation>ფაილი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>Export Page as PDF</source>
       <translation>გვერდის PDF ფაილად გატანა</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1928"/>
+      <location filename="../../Command.cpp" line="1949"/>
       <source>Exports the current page as a PDF</source>
       <translation type="unfinished">Exports the current page as a PDF</translation>
     </message>
@@ -10382,14 +10470,22 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExportGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1956"/>
+      <location filename="../../Command.cpp" line="1977"/>
       <source>TechDraw</source>
       <translation>ტექნიკური ნახაზი</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1957"/>
+      <location filename="../../Command.cpp" line="1978"/>
       <source>Print All Pages</source>
       <translation>ყველა გვერდის დაბეჭდვა</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgLineDecor</name>
+    <message>
+      <location filename="../../TaskLineDecor.cpp" line="456"/>
+      <source>Restore Invisible Lines</source>
+      <translation>უხილავი ხაზების აღდგენა</translation>
     </message>
   </context>
   <context>
@@ -10406,6 +10502,45 @@ there is an open task dialog.</source>
       <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline Between 2 Points</source>
       <translation>ცენტრის ხაზის გავლება 2 წერტილს შუა</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::QGIViewSpreadsheet</name>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="428"/>
+      <source>Add row</source>
+      <translation type="unfinished">Add row</translation>
+    </message>
+    <message>
+      <location filename="../../QGIViewSpreadsheet.cpp" line="429"/>
+      <source>Add column</source>
+      <translation>სვეტის დამატება</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="185"/>
+      <source>Invalid Range</source>
+      <translation type="unfinished">Invalid Range</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="185"/>
+      <source>The specified cell range is invalid. Please correct it.</source>
+      <translation type="unfinished">The specified cell range is invalid. Please correct it.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskDlgSpreadsheetView</name>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="725"/>
+      <source>Create Spreadsheet View</source>
+      <translation type="unfinished">Create Spreadsheet View</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSpreadsheetView.cpp" line="726"/>
+      <source>Edit Spreadsheet View</source>
+      <translation type="unfinished">Edit Spreadsheet View</translation>
     </message>
   </context>
 </TS>

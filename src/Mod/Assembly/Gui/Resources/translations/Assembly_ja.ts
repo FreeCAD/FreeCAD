@@ -182,7 +182,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1420"/>
       <source>Update Stored Positions</source>
-      <translation type="unfinished">Update Stored Positions</translation>
+      <translation>保存された位置を更新</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1859"/>
@@ -529,7 +529,7 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>不明なビデオエクスポート形式</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="169"/>
@@ -569,7 +569,7 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     <message>
       <location filename="../../../CommandCreateView.py" line="394"/>
       <source>Radial Translation</source>
-      <translation type="unfinished">Radial Translation</translation>
+      <translation>放射状の移動</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="397"/>
@@ -584,17 +584,17 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     <message>
       <location filename="../../../CommandCreateView.py" line="988"/>
       <source>Angle of this exploded-view move</source>
-      <translation type="unfinished">Angle of this exploded-view move</translation>
+      <translation>この分解ビュー移動の角度</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="998"/>
       <source>Distance of this exploded-view move</source>
-      <translation type="unfinished">Distance of this exploded-view move</translation>
+      <translation>この分解ビュー移動の距離</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="1038"/>
       <source>Edit placement</source>
-      <translation type="unfinished">Edit placement</translation>
+      <translation>配置を編集</translation>
     </message>
   </context>
   <context>
@@ -719,7 +719,7 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     <message>
       <location filename="../../../JointObject.py" line="1284"/>
       <source>List of references to compnents to group together</source>
-      <translation type="unfinished">List of references to compnents to group together</translation>
+      <translation>グループ化するコンポーネントの参照リスト</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1443"/>
@@ -1632,24 +1632,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation type="unfinished">Select at least 2 components to create a rigid group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation type="unfinished">Create Rigid Group</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1670,6 +1652,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>スナップショットを復元</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>リジッドグループを作成するために少なくとも2つのコンポーネントを選択してください</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>リジッドグループを作成</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;リジッドグループを作成してください。&lt;/p&gt;&lt;p&gt;選択したコンポーネントを恒久的に一体化するリジッドグループを作成します。&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

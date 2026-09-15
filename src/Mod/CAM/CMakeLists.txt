@@ -81,6 +81,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/LeadInOut.py
     Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
+    Path/Dressup/Gui/PlungeMilling.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
@@ -353,7 +354,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/fangling_legacy_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
-    Path/Post/scripts/generic_plasma_post.py
+    Path/Post/scripts/generic_sheet_cutting_post.py
     Path/Post/scripts/grbl_post.py
     Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
@@ -406,6 +407,7 @@ SET(PathPythonOp_SRCS
     Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
+    Path/Op/PlanarSurface.py
     Path/Op/SurfaceSupport.py
     Path/Op/Tapping.py
     Path/Op/ThreadMilling.py
@@ -443,6 +445,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Slot.py
     Path/Op/Gui/Stop.py
     Path/Op/Gui/Surface.py
+    Path/Op/Gui/PlanarSurface.py
     Path/Op/Gui/Tapping.py
     Path/Op/Gui/ThreadMilling.py
     Path/Op/Gui/Vcarve.py
@@ -566,6 +569,7 @@ SET(Tests_SRCS
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestAreaOperations.py
+    CAMTests/TestArcFitting.py
     CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
@@ -573,7 +577,7 @@ SET(Tests_SRCS
     CAMTests/TestDxfPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
-    CAMTests/TestGenericPlasma.py
+    CAMTests/TestGenericSheetCutting.py
     CAMTests/TestGrblPost.py
     CAMTests/TestKineticNCBeamicon2LegacyPost.py
     CAMTests/TestLinuxCNCPost.py
@@ -663,6 +667,7 @@ SET(Tests_SRCS
     CAMTests/TestPostGCodes.py
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
+    CAMTests/TestPostTapping.py
     CAMTests/TestPostToolProcessing.py
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
@@ -676,6 +681,7 @@ SET(Tests_SRCS
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
     CAMTests/TestAdaptiveCommonGenerator.py
+    CAMTests/TestPlanarSurfaceOp.py
     CAMTests/TestSurfaceGenerator.py
     CAMTests/TestSurfaceCommonGenerator.py
     CAMTests/TestSurfacePostprocessGenerator.py

@@ -709,10 +709,10 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>所有对象将使用相同的操作属性进行处理</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
       <location filename="../panels/PropertyBag.ui" line="62"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="157"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -722,10 +722,10 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>当前作业中包含基础几何的操作列表</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
       <location filename="../panels/PropertyBag.ui" line="48"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="167"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
       <source>Remove</source>
       <translation>删除</translation>
     </message>
@@ -734,32 +734,6 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <location filename="../panels/PageOpPocketExtEdit.ui" line="149"/>
       <source>Clear</source>
       <translation>清除</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
-      <source>Feature</source>
-      <translation>特征</translation>
-    </message>
-    <message>
-      <location filename="../panels/ToolEditor.ui" line="96"/>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
-      <source>Diameter</source>
-      <translation>直径</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
-      <source>Sorting</source>
-      <translation>排序</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="39"/>
-      <source>Automatic</source>
-      <translation>自动</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="44"/>
-      <source>Manual</source>
-      <translation>手动</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
@@ -787,6 +761,17 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="119"/>
       <source>#</source>
       <translation>#</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="124"/>
+      <source>Feature</source>
+      <translation>特征</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="129"/>
+      <location filename="../panels/ToolEditor.ui" line="96"/>
+      <source>Diameter</source>
+      <translation>直径</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="144"/>
@@ -829,16 +814,16 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>要处理的位置列表</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="26"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="26"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="43"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="43"/>
+      <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -903,6 +888,51 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>将所选特征的 Z 值作为操作的最终深度</translation>
     </message>
     <message>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
+      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
+      <source>Step down</source>
+      <translation>下切步距</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
+      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
+      <translation>操作在层间沿 Z 轴向下移动的深度。该值取决于所使用的刀具、要切割的材料、可用冷却以及许多其他因素。请查阅刀具制造商的数据表以获取正确的值。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
+      <source>Finish step down</source>
+      <translation>精加工下切步距</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
+      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
+      <translation>加工的最终切割深度。可用于生产更清洁的表面。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
+      <source>Min Diameter</source>
+      <translation>最小直径</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="318"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
+      <source>Max diameter</source>
+      <translation>最大直径</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
+      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
+      <translation>将所选特征的 Z 值作为操作的最终深度。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
+      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
+      <translation>可安全地快速移动刀头的高度。在该高度以下，所有横向和向下运动都以进给速度进行。</translation>
+    </message>
+    <message>
       <location filename="../panels/PageHeightsEdit.ui" line="126"/>
       <source>Start</source>
       <translation>开始</translation>
@@ -916,25 +946,6 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageHeightsEdit.ui" line="146"/>
       <source>Transfer the Z value of the selected feature as the start height for the operation</source>
       <translation>将所选特征的 Z 值传递为操作的起始高度</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="131"/>
-      <source>Step down</source>
-      <translation>下切步距</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="138"/>
-      <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
-      <translation>操作在层间沿 Z 轴向下移动的深度。该值取决于所使用的刀具、要切割的材料、可用冷却以及许多其他因素。请查阅刀具制造商的数据表以获取正确的值。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
-      <location filename="../panels/PageDepthsEdit.ui" line="163"/>
-      <source>Finish step down</source>
-      <translation>精加工下切步距</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="211"/>
@@ -996,32 +1007,6 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
       <translation>在连接移动期间，刀具与任何实体之间的最小安全距离。此设置适用于所有连接模式。</translation>
     </message>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="170"/>
-      <source>Depth of the final cut of the operation. Can be used to produce a cleaner finish.</source>
-      <translation>加工的最终切割深度。可用于生产更清洁的表面。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="20"/>
-      <source>Min Diameter</source>
-      <translation>最小直径</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="318"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
-      <source>Max diameter</source>
-      <translation>最大直径</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
-      <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
-      <translation>将所选特征的 Z 值作为操作的最终深度。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
-      <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation>可安全地快速移动刀头的高度。在该高度以下，所有横向和向下运动都以进给速度进行。</translation>
-    </message>
-    <message>
       <location filename="../panels/PageHeightsEdit.ui" line="69"/>
       <source>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</source>
       <translation>刀具的横向移动不受任何夹具或零件/原材料本身阻碍的高度。</translation>
@@ -1081,6 +1066,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>刀具控制器</translation>
     </message>
     <message>
+      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
+      <source>The coolant mode to be used for this operation</source>
+      <translation>此工序要使用的冷却液模式</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="38"/>
       <source>Accuracy vs performance</source>
       <translation>精度与性能</translation>
@@ -1094,17 +1084,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="110"/>
       <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
       <translation>切削刀具在连续路径之间移动的侧向距离，以刀具直径的百分比表示。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="366"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="145"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
-      <source>%</source>
-      <translation>%</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="135"/>
@@ -1130,24 +1109,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="260"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation>&lt;b&gt;螺旋铣参数&lt;/b&gt;</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="95"/>
-      <source>Max pitch</source>
-      <translation>最大螺距</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="108"/>
-      <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
-      <translation>螺旋每旋转一周允许的最大下降深度。设置为零则不限制螺距。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="115"/>
-      <source>Max ramp angle</source>
-      <translation>最大斜切角度</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="291"/>
@@ -1200,9 +1161,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
       <source>Direction</source>
       <translation>方向</translation>
     </message>
@@ -1242,10 +1203,10 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/ToolEditor.ui" line="223"/>
       <location filename="../panels/ToolEditor.ui" line="240"/>
       <location filename="../panels/ToolEditor.ui" line="280"/>
-      <location filename="../panels/PageOpFluteEdit.ui" line="80"/>
-      <location filename="../panels/PageOpFluteEdit.ui" line="173"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="116"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="143"/>
+      <location filename="../panels/PageOpFluteEdit.ui" line="80"/>
+      <location filename="../panels/PageOpFluteEdit.ui" line="173"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1300,8 +1261,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>啄钻</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="91"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="81"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="91"/>
       <source>Extend depth</source>
       <translation>延伸深度</translation>
     </message>
@@ -1331,8 +1292,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>断屑</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="131"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="48"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="131"/>
       <source>Dwell</source>
       <translation>驻留</translation>
     </message>
@@ -1342,15 +1303,15 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>窗体</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="84"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="41"/>
-      <source>Time</source>
-      <translation>时间</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
       <source>⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</source>
       <translation>⚠ 已弃用：攻丝加工已被弃用，并将在未来的版本中移除。请改用钻孔加工，并将策略设置为攻丝。现有的攻丝操作仍可继续使用，但您无法再创建新的此类操作。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpTappingEdit.ui" line="41"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="84"/>
+      <source>Time</source>
+      <translation>时间</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="61"/>
@@ -1363,8 +1324,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>2倍丝锥尖部</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="106"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="56"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="106"/>
       <source>None</source>
       <translation>无</translation>
     </message>
@@ -1421,15 +1382,27 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>圆切削的方向</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="95"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
+      <source>Max pitch</source>
+      <translation>最大螺距</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="108"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
+      <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
+      <translation>螺旋每旋转一周允许的最大下降深度。设置为零则不限制螺距。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="115"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
+      <source>Max ramp angle</source>
+      <translation>最大斜切角度</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="128"/>
       <source>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</source>
       <translation>允许的最大斜切切入角度。设置为零则不限制斜切角度。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="142"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
-      <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
-      <translation>切削刀具在连续切削之间移动的侧向距离*（*占刀具直径的百分比）。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="164"/>
@@ -1528,14 +1501,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>切割模式</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="82"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="56"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="82"/>
       <source>Climb</source>
       <translation>顺铣</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="61"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <source>Conventional</source>
       <translation>逆铣</translation>
     </message>
@@ -1550,15 +1523,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>用于此操作的刀具及其设置</translation>
     </message>
     <message>
-      <location filename="../panels/PageToolControllerEdit.ui" line="47"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="47"/>
       <source>Coolant mode</source>
       <translation>冷却模式</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
-      <source>The coolant mode to be used for this operation</source>
-      <translation>此工序要使用的冷却液模式</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="52"/>
@@ -1624,6 +1592,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>切削刀具在连续切削之间移动的侧向距离*（*占刀具直径的百分比）。</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="160"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="145"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="366"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="186"/>
       <source>The amount of material that should be left by this operation in relation to the target shape</source>
       <translation>此加工相对于目标形状应保留的材料量</translation>
@@ -1666,8 +1645,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>选中可跳过先前加工已清除的加工区域</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="241"/>
       <source>Use rest machining</source>
       <translation>使用剩余加工</translation>
     </message>
@@ -1735,8 +1714,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="179"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
       <source>Radial stock to leave</source>
       <translation>径向预留余量</translation>
@@ -1749,8 +1728,8 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="75"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="193"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
       <source>Retract threshold</source>
       <translation>退刀门槛值</translation>
     </message>
@@ -1923,26 +1902,16 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>延伸路径起点</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="306"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="62"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="51"/>
-      <source>Layer mode</source>
-      <translation>分层模式</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="313"/>
       <source>Set the cut pattern for the operation</source>
       <translation>设定该加工的切削图样</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
-      <source>Directional</source>
-      <translation>单向</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="322"/>
-      <source>Bidirectional</source>
-      <translation>双向</translation>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="62"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="51"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="306"/>
+      <source>Layer mode</source>
+      <translation>分层模式</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="330"/>
@@ -2023,10 +1992,52 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>平面：平坦的 3D 表面扫描。旋转：第 4 轴旋转扫描。</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="23"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="81"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="65"/>
       <source>Cut pattern</source>
       <translation>切削模式</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="31"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="322"/>
+      <source>Bidirectional</source>
+      <translation>双向</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
+      <source>Directional</source>
+      <translation>单向</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="44"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
+      <source>Sorting</source>
+      <translation>排序</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="52"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="39"/>
+      <source>Automatic</source>
+      <translation>自动</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="44"/>
+      <source>Manual</source>
+      <translation>手动</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="79"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
+      <source>Reverse</source>
+      <translation>反转</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="86"/>
+      <source>Approximation</source>
+      <translation>近似</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="93"/>
@@ -2078,6 +2089,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>创建的Dropcutter线与该轴平行。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="142"/>
+      <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
+      <translation>切削刀具在连续切削之间移动的侧向距离*（*占刀具直径的百分比）。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="113"/>
@@ -2149,11 +2166,11 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <translation>边界调整</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="135"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="150"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="123"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="135"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
       <source>Step over</source>
       <translation>步距</translation>
     </message>
@@ -2225,8 +2242,8 @@ Default: OpToolDiameter</source>
       <translation>偏移</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="62"/>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="62"/>
       <source>Clearance</source>
       <translation>净空</translation>
     </message>
@@ -2307,8 +2324,8 @@ Default: 3 mm</source>
       <translation>方向</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="40"/>
       <location filename="../panels/ToolEditor.ui" line="43"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="40"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
@@ -2343,8 +2360,8 @@ Default: 3 mm</source>
       <translation>TPI(螺纹数/英寸)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
       <source>Operation</source>
       <translation>加工</translation>
     </message>
@@ -2567,173 +2584,9 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation>标记生成</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="65"/>
       <source>Start at vertex</source>
       <translation>从顶点开始</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="30"/>
-      <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
-      <translation>指定底层形状字符串的顶点编号，雕刻应从此处开始</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="20"/>
-      <source>Post Process Output</source>
-      <translation>后处理输出</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="23"/>
-      <source>Post processing can reformat G-code added in custom operations.
-This includes reordering parameters, stripping unsupported parameters,
-changing the number of decimals behind numbers
-and converting feed rate from an internal system to the current units.
-
-Post processing the commands is useful for freecad macros and using similar code on multiple machines.
-Use ! at the start of the line to individually disable post processing on a given line. Eg.
-!#101 = 2</source>
-      <translation>后处理可以对自定义操作中添加的 G 代码重新格式化。
-这包括重新排列参数、去除不支持的参数、
-更改数字的小数位数，
-以及将进给率从系统内部单位转换为当前单位。
-
-对命令进行后处理有助于在 FreeCAD 宏以及多台机床上使用类似的代码。
-在行首使用 ! 可以单独对该行禁用后处理。例如：
-!#101 = 2</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="40"/>
-      <source>G-code source</source>
-      <translation>G 代码来源</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="47"/>
-      <source>Select source of the G-code</source>
-      <translation>选择 G 代码的来源</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="51"/>
-      <source>Text</source>
-      <translation>文本</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="56"/>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="86"/>
-      <source>Enter the filename containing the G-code</source>
-      <translation>输入包含 G 代码的文件名</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
-      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation>顺铣：第四轴沿正方向推进。逆铣：第四轴沿负方向推进。影响切削移动中 A 轴的正负号；请根据您的机器上刀具切入材料的方式进行选择。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
-      <source>Cut Pattern</source>
-      <translation>切削策略</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
-      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation>螺旋：连续螺旋扫描 —— 最快、表面连续性最好。平行：沿轴向往复切削并在角度上进行步进。圆环：整周环形切削并在轴向上进行步进。这三种方式均能产生连续的 4 轴 XYZA 联动。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
-      <source>Feed Mode</source>
-      <translation>进给模式</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
-      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation>如何解析刀具控制器的水平进给率 (HorizFeed)。仅轴向：在每次切削移动中输出 F=HorizFeed；控制器自身的进给算法决定第四轴如何跟进 — G 代码中的 F 值是恒定的。表面速度：按每次移动缩放 F 值，使刀具接触点沿表面保持水平进给率 (mm/min) — F = HorizFeed × 360 / (2π·r)。F 值随半径变化，并受最大进给率限制。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
-      <source>Start X</source>
-      <translation>起始 X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
-      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
-      <translation>沿旋转轴的轴向起始位置（mm）。定义加工区域的下限。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
-      <source>Stop X</source>
-      <translation>终止 X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
-      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
-      <translation>沿旋转轴的轴向终止位置（mm）。必须大于起始 X。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
-      <source>Start Angle</source>
-      <translation>起始角度</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
-      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
-      <translation>角位移起始位置（度，未展开）。旋转轴开始的位置；允许进行非整周的表面加工。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
-      <source>Stop Angle</source>
-      <translation>终止角度</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
-      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
-      <translation>角位移终止位置（度，未展开）。360 度代表整周旋转；如果超过机器旋转轴的限制，在执行时会发出警告。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
-      <source>Step Over</source>
-      <translation>步距</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
-      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation>每转一整周的轴向推进量（mm）。螺旋：螺距。圆环：环间距。平行：同时驱动角度步进，计算公式为 步距 / 最大半径。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
-      <source>Angular Resolution</source>
-      <translation>角度分辨率</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
-      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
-      <translation>沿切削方向的角度采样密度（度）。值越小 = 表面越光滑，但 G 代码越多；典型值为 5-15°。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
-      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
-      <translation>此工序在侧壁保留的余量。输入较小的正值作为精加工余量；输入 0 则直接切削至目标表面。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
-      <source>Max Feed</source>
-      <translation>最大进给率</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
-      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
-      <translation>切削移动中输出的有效旋转进给率的上限（mm/min）。防止在切削接近中心线时旋转轴转速过快。0 = 未设置；将退回到 max(HorizRapid, VertRapid, 1000)。当 进给模式 = 表面速度 时，表面进给将按比例缩小以使旋转速度保持在此上限内；限速事件将在路径结束时的日志中进行汇总。</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
-      <source>Restrict to Selected Faces</source>
-      <translation>仅限于选定面</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
-      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
-      <translation>勾选时，将刀具路径限制在零件上选定面的投影（轴向、角度）区域内。未勾选时，刀具路径将覆盖整个 起始 X...终止 X / 起始角度...终止角度 窗口。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpFluteEdit.ui" line="37"/>
@@ -2851,6 +2704,116 @@ Use ! at the start of the line to individually disable post processing on a give
       <translation>翻转起点</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
+      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
+      <translation>顺铣：第四轴沿正方向推进。逆铣：第四轴沿负方向推进。影响切削移动中 A 轴的正负号；请根据您的机器上刀具切入材料的方式进行选择。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
+      <source>Cut Pattern</source>
+      <translation>切削策略</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
+      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
+      <translation>螺旋：连续螺旋扫描 —— 最快、表面连续性最好。平行：沿轴向往复切削并在角度上进行步进。圆环：整周环形切削并在轴向上进行步进。这三种方式均能产生连续的 4 轴 XYZA 联动。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
+      <source>Feed Mode</source>
+      <translation>进给模式</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
+      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
+      <translation>如何解析刀具控制器的水平进给率 (HorizFeed)。仅轴向：在每次切削移动中输出 F=HorizFeed；控制器自身的进给算法决定第四轴如何跟进 — G 代码中的 F 值是恒定的。表面速度：按每次移动缩放 F 值，使刀具接触点沿表面保持水平进给率 (mm/min) — F = HorizFeed × 360 / (2π·r)。F 值随半径变化，并受最大进给率限制。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
+      <source>Start X</source>
+      <translation>起始 X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
+      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
+      <translation>沿旋转轴的轴向起始位置（mm）。定义加工区域的下限。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
+      <source>Stop X</source>
+      <translation>终止 X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
+      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
+      <translation>沿旋转轴的轴向终止位置（mm）。必须大于起始 X。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
+      <source>Start Angle</source>
+      <translation>起始角度</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
+      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
+      <translation>角位移起始位置（度，未展开）。旋转轴开始的位置；允许进行非整周的表面加工。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
+      <source>Stop Angle</source>
+      <translation>终止角度</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
+      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
+      <translation>角位移终止位置（度，未展开）。360 度代表整周旋转；如果超过机器旋转轴的限制，在执行时会发出警告。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
+      <source>Step Over</source>
+      <translation>步距</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
+      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
+      <translation>每转一整周的轴向推进量（mm）。螺旋：螺距。圆环：环间距。平行：同时驱动角度步进，计算公式为 步距 / 最大半径。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
+      <source>Angular Resolution</source>
+      <translation>角度分辨率</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
+      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
+      <translation>沿切削方向的角度采样密度（度）。值越小 = 表面越光滑，但 G 代码越多；典型值为 5-15°。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
+      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
+      <translation>此工序在侧壁保留的余量。输入较小的正值作为精加工余量；输入 0 则直接切削至目标表面。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
+      <source>Max Feed</source>
+      <translation>最大进给率</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
+      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
+      <translation>切削移动中输出的有效旋转进给率的上限（mm/min）。防止在切削接近中心线时旋转轴转速过快。0 = 未设置；将退回到 max(HorizRapid, VertRapid, 1000)。当 进给模式 = 表面速度 时，表面进给将按比例缩小以使旋转速度保持在此上限内；限速事件将在路径结束时的日志中进行汇总。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
+      <source>Restrict to Selected Faces</source>
+      <translation>仅限于选定面</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
+      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
+      <translation>勾选时，将刀具路径限制在零件上选定面的投影（轴向、角度）区域内。未勾选时，刀具路径将覆盖整个 起始 X...终止 X / 起始角度...终止角度 窗口。</translation>
+    </message>
+    <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
       <source>Clearing Pattern</source>
       <translation>清除模式</translation>
@@ -2869,11 +2832,6 @@ Use ! at the start of the line to individually disable post processing on a give
       <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
       <source>Rotation angle for angled facing operations</source>
       <translation>斜面铣操作的旋转角度</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
-      <source>Reverse</source>
-      <translation>反转</translation>
     </message>
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
@@ -2909,6 +2867,55 @@ Use ! at the start of the line to individually disable post processing on a give
       <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
       <source>How much stock to leave on the floor for this operation</source>
       <translation>此工序在底面保留的余量</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="20"/>
+      <source>Post Process Output</source>
+      <translation>后处理输出</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="23"/>
+      <source>Post processing can reformat G-code added in custom operations.
+This includes reordering parameters, stripping unsupported parameters,
+changing the number of decimals behind numbers
+and converting feed rate from an internal system to the current units.
+
+Post processing the commands is useful for freecad macros and using similar code on multiple machines.
+Use ! at the start of the line to individually disable post processing on a given line. Eg.
+!#101 = 2</source>
+      <translation>后处理可以对自定义操作中添加的 G 代码重新格式化。
+这包括重新排列参数、去除不支持的参数、
+更改数字的小数位数，
+以及将进给率从系统内部单位转换为当前单位。
+
+对命令进行后处理有助于在 FreeCAD 宏以及多台机床上使用类似的代码。
+在行首使用 ! 可以单独对该行禁用后处理。例如：
+!#101 = 2</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="40"/>
+      <source>G-code source</source>
+      <translation>G 代码来源</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="47"/>
+      <source>Select source of the G-code</source>
+      <translation>选择 G 代码的来源</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="51"/>
+      <source>Text</source>
+      <translation>文本</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="56"/>
+      <source>File</source>
+      <translation>文件</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="86"/>
+      <source>Enter the filename containing the G-code</source>
+      <translation>输入包含 G 代码的文件名</translation>
     </message>
   </context>
   <context>
@@ -3202,92 +3209,137 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>GUI</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="70"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="36"/>
+      <source>Tool Bit Shape Drawing</source>
+      <translation>刀头形状绘制</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="48"/>
+      <source>Dimension color (light theme)</source>
+      <translation>标注颜色（浅色主题）</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="55"/>
+      <source>Color of the dimension lines and labels on a light theme</source>
+      <translation>浅色主题下尺寸标注线和标签的颜色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="81"/>
+      <source>Dimension color (dark theme)</source>
+      <translation>标注颜色（深色主题）</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="88"/>
+      <source>Color of the dimension lines and labels on a dark theme</source>
+      <translation>深色主题下尺寸标注线和标签的颜色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="114"/>
+      <source>Dimension highlight color</source>
+      <translation>标注高亮显示颜色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="121"/>
+      <source>Color of the dimension the mouse is pointing at</source>
+      <translation>鼠标悬停指向时尺寸标注的颜色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="147"/>
+      <source>Tool artwork brightness (dark theme)</source>
+      <translation>刀具图案亮度（深色主题）</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="154"/>
+      <source>How brightly the tool itself is drawn on a dark theme. The artwork is drawn for a white page, so it is dimmed to keep it from glaring.</source>
+      <translation>在深色主题下绘制刀具本身的亮度。该图案原本是为白色背景设计的，因此会适度降低亮度以防刺眼。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsPathColor.ui" line="216"/>
       <source>Path highlight color</source>
       <translation>刀轨高亮颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="83"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="229"/>
       <source>Default normal path color</source>
       <translation>默认普通刀轨颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="116"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="262"/>
       <source>Bounding box normal color</source>
       <translation>边界框常规颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="123"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="269"/>
       <source>The default color for new shapes</source>
       <translation>新造型的的默认颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="169"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="315"/>
       <source>Probe path color</source>
       <translation>探测路径颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="215"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="361"/>
       <source>Bounding box selection color</source>
       <translation>边界框选中颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="261"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="407"/>
       <source>Default pathline width</source>
       <translation>默认刀轨线条宽度</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="326"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="472"/>
       <source>Path selection style</source>
       <translation>路径选择样式</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="354"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="500"/>
       <source>Bounding box</source>
       <translation>边界框</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="367"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="513"/>
       <source>Task panel layout</source>
       <translation>任务面板布局</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="391"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="537"/>
       <source>Multi-panel</source>
       <translation>多面板</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="396"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="542"/>
       <source>Multi-panel - reversed</source>
       <translation>多面板 - 反转</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="404"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="550"/>
       <source>Hide the initial rapid move in path visualization by setting the start index to the first feed move</source>
       <translation>通过将起始索引设置为第一个进给移动，在路径可视化中隐藏初始的快速移动</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="407"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="553"/>
       <source>Hide first rapid move</source>
       <translation>隐藏首次快速移动</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="420"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="566"/>
       <source>Pop up the G-code editor for review and editing before writing the output file</source>
       <translation>在写入输出文件之前，弹出 G 代码编辑器以供检查和编辑</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="423"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="569"/>
       <source>Show editor before writing G-code</source>
       <translation>写入 G 代码前显示编辑器</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="436"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="582"/>
       <source>Maximum lines of G-code to use highlighter</source>
       <translation>使用高亮显示的 G 代码最大行数</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="443"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="589"/>
       <source>Limits lines of G-code which will allow to use highlighter.
 Decrease value if gets perfomance problem in Inspect or export G-code windows.
 Set to zero to disable G-code highlighter.</source>
@@ -3296,62 +3348,62 @@ Set to zero to disable G-code highlighter.</source>
 设置为零可禁用 G 代码高亮显示。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="42"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="188"/>
       <source>The default line thickness for new shapes</source>
       <translation>新造型的的默认线条宽度</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="228"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="374"/>
       <source>Default path marker color</source>
       <translation>默认刀轨标记颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="90"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="143"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="189"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="235"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="268"/>
-      <location filename="../../DlgSettingsPathColor.ui" line="288"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="236"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="289"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="335"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="381"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="414"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="434"/>
       <source>The default line color for new shapes</source>
       <translation>新造型的的默认线条颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="36"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="182"/>
       <source>Default Path Colors</source>
       <translation>默认路径颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="182"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="328"/>
       <source>Rapid path color</source>
       <translation>快速移动刀轨颜色</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="317"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="463"/>
       <source>UI Settings</source>
       <translation>UI设置</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="339"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="485"/>
       <source>Default path shape selection behavior in 3D viewer</source>
       <translation>3D查看器中的默认刀轨形状选择行为</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="349"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="495"/>
       <source>Shape</source>
       <translation>形状</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="359"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="505"/>
       <source>None</source>
       <translation>无</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="381"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="527"/>
       <source>Classic</source>
       <translation>经典</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsPathColor.ui" line="386"/>
+      <location filename="../../DlgSettingsPathColor.ui" line="532"/>
       <source>Classic - reversed</source>
       <translation>经典 - 反转</translation>
     </message>
@@ -3450,8 +3502,8 @@ Set to zero to disable G-code highlighter.</source>
       <translation>AxisMap Dressup</translation>
     </message>
     <message>
-      <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="288"/>
+      <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
@@ -3516,8 +3568,8 @@ Set to zero to disable G-code highlighter.</source>
       <translation>狗骨圆角</translation>
     </message>
     <message>
-      <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
+      <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <source>Dressup</source>
       <translation>修饰</translation>
     </message>
@@ -3820,39 +3872,29 @@ Set to zero to disable G-code highlighter.</source>
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>刀轨模拟器</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <source>Accuracy</source>
       <translation>精度</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
       <source>Job</source>
       <translation>作业</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="103"/>
       <source>Activate/resume simulation</source>
       <translation>激活/继续模拟</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
-      <source>Set default state in accordance with operations visibility</source>
-      <translation>根据操作的可见性设置默认状态</translation>
-    </message>
-    <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
-      <source>Follow operations visibility</source>
-      <translation>跟随操作可见性</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
@@ -3865,8 +3907,8 @@ Set to zero to disable G-code highlighter.</source>
       <translation>停止</translation>
     </message>
     <message>
-      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
+      <location filename="../panels/TaskCAMSimulator.ui" line="106"/>
       <source>Play</source>
       <translation>播放</translation>
     </message>
@@ -3929,6 +3971,16 @@ Set to zero to disable G-code highlighter.</source>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>
       <source>New CAMotics File</source>
       <translation>新建 CAMotics 文件</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="127"/>
+      <source>Set default state in accordance with operations visibility</source>
+      <translation>根据操作的可见性设置默认状态</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskCAMSimulator.ui" line="130"/>
+      <source>Follow operations visibility</source>
+      <translation>跟随操作可见性</translation>
     </message>
   </context>
   <context>
@@ -4820,34 +4872,34 @@ Default: 3 mm</source>
       <translation>CAMotics 项目 (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="812"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="813"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>水平</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="815"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="816"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>垂直</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="818"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="819"/>
       <source>Tool number</source>
       <translation>刀具编号</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="821"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="822"/>
       <source>Horizontal feedrate</source>
       <translation>水平进给速度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="824"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="825"/>
       <source>Vertical feedrate</source>
       <translation>垂直进给速度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="827"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="828"/>
       <source>Spindle RPM</source>
       <translation>主轴转速(转/分)</translation>
     </message>
@@ -4998,8 +5050,8 @@ Default: 3 mm</source>
       <translation>新建操作的默认碰撞避免策略。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
       <location filename="../../../Path/Dressup/Tags.py" line="936"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>要修改的基础刀轨</translation>
@@ -5128,9 +5180,9 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="43"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="60"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="61"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="49"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
       <source>The base toolpath to modify</source>
       <translation>要修改的基础刀具路径</translation>
     </message>
@@ -5717,7 +5769,7 @@ Set to zero to disable limitation by ramp angle</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1724"/>
-      <location filename="../../../Path/Op/PocketShape.py" line="82"/>
+      <location filename="../../../Path/Op/PocketShape.py" line="80"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>使用基础几何图形的轮廓铣。</translation>
     </message>
@@ -5877,10 +5929,10 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
       <translation>此刀轨的起点</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="223"/>
-      <location filename="../../../Path/Op/Base.py" line="421"/>
       <location filename="../../../Path/Op/Waterline.py" line="463"/>
+      <location filename="../../../Path/Op/Slot.py" line="223"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
+      <location filename="../../../Path/Op/Base.py" line="421"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>如果指定起点，则设为True</translation>
     </message>
@@ -6028,37 +6080,37 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
       <translation>钻孔深度延长了多远</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="72"/>
       <location filename="../../../Path/Op/Vcarve.py" line="409"/>
+      <location filename="../../../Path/Op/Engrave.py" line="108"/>
       <source>Additional base objects to be engraved</source>
       <translation>额外的蚀刻基对象</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="82"/>
+      <location filename="../../../Path/Op/Engrave.py" line="118"/>
       <source>The vertex index to start the toolpath from</source>
       <translation>刀具路径起始的顶点索引</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="89"/>
-      <location filename="../../../Path/Op/Engrave.py" line="150"/>
+      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="183"/>
       <source>Reverse milling direction</source>
       <translation>反转铣削方向</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="95"/>
-      <location filename="../../../Path/Op/Engrave.py" line="157"/>
+      <location filename="../../../Path/Op/Engrave.py" line="131"/>
+      <location filename="../../../Path/Op/Engrave.py" line="190"/>
       <source>Set the cut pattern for the operation</source>
       <translation>设定该加工的切削图样</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="106"/>
-      <location filename="../../../Path/Op/Engrave.py" line="168"/>
+      <location filename="../../../Path/Op/Engrave.py" line="137"/>
+      <location filename="../../../Path/Op/Engrave.py" line="201"/>
       <source>Approximate complex curves to arcs and lines</source>
       <translation>将复杂曲线拟合为圆弧和直线</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="117"/>
-      <location filename="../../../Path/Op/Engrave.py" line="180"/>
+      <location filename="../../../Path/Op/Engrave.py" line="148"/>
+      <location filename="../../../Path/Op/Engrave.py" line="213"/>
       <source>Order processing of the wires
 
 Manual - Using order from selection without sorting
@@ -6069,20 +6121,20 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
 自动 - 使用最近邻法排序导线，并结合 2-opt 算法进一步优化</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="125"/>
-      <location filename="../../../Path/Op/Engrave.py" line="188"/>
+      <location filename="../../../Path/Op/Engrave.py" line="155"/>
+      <location filename="../../../Path/Op/Engrave.py" line="221"/>
       <source>The start point for sorting</source>
       <translation>排序起点</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="131"/>
-      <location filename="../../../Path/Op/Engrave.py" line="196"/>
+      <location filename="../../../Path/Op/Engrave.py" line="161"/>
+      <location filename="../../../Path/Op/Engrave.py" line="229"/>
       <source>The end point for sorting</source>
       <translation>排序终点</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="137"/>
-      <location filename="../../../Path/Op/Engrave.py" line="204"/>
+      <location filename="../../../Path/Op/Engrave.py" line="167"/>
+      <location filename="../../../Path/Op/Engrave.py" line="237"/>
       <source>Use end point for sorting</source>
       <translation>使用终点进行排序</translation>
     </message>
@@ -6122,10 +6174,10 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <translation>不包括铣削面内的凸起区域。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
-      <location filename="../../../Path/Op/Surface.py" line="240"/>
+      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
+      <location filename="../../../Path/Op/Surface.py" line="240"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>选择如何处理多个基础几何体特征。</translation>
     </message>
@@ -6797,154 +6849,16 @@ If selection without sub elements:
       <translation>将用于计算刀具路径的刀具控制器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
-      <location filename="../../../Path/Op/Gui/PathShape.py" line="80"/>
-      <source>Operations cycle time estimation</source>
-      <translation>操作周期时间估算</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Comment.py" line="42"/>
-      <source>Comment or note for CNC program</source>
-      <translation>CNC程序注释</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="308"/>
-      <source>The unique ID of the tool shape (.fcstd)</source>
-      <translation>刀具形状的唯一ID (.fcstd)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="318"/>
-      <source>The tool shape type</source>
-      <translation>刀具形状类型</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="331"/>
-      <source>The parametrized body representing the tool bit</source>
-      <translation>代表刀头的参数化主体</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="338"/>
-      <source>The unique ID of the toolbit</source>
-      <translation>刀具的唯一ID</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="355"/>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="840"/>
-      <source>Measurement units for the tool bit</source>
-      <translation>刀具刀头的测量单位</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="373"/>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="876"/>
-      <source>Tool material</source>
-      <translation>刀具材料</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="816"/>
-      <source>Custom property from shape: {name}</source>
-      <translation>来自形状的自定义属性：{name}</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="145"/>
-      <source>The active tool</source>
-      <translation>活动刀具</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="152"/>
-      <source>The speed of the cutting spindle in RPM</source>
-      <translation>切割主轴的速度（RPM）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="158"/>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="364"/>
-      <location filename="../../../Path/Tool/toolbit/models/base.py" line="857"/>
-      <source>Direction of spindle rotation</source>
-      <translation>主轴旋转方向</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="164"/>
-      <source>Feed rate for vertical moves in Z</source>
-      <translation>Z方向垂直移动的进给速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="170"/>
-      <source>Feed rate for horizontal moves</source>
-      <translation>水平移动的进给速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="176"/>
-      <source>Rapid rate for vertical moves in Z</source>
-      <translation>Z方向垂直快速移动速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="182"/>
-      <source>Rapid rate for horizontal moves</source>
-      <translation>水平快速移动速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="189"/>
-      <location filename="../../../Path/Tool/Controller.py" line="285"/>
-      <source>Feed rate for ramp moves</source>
-      <translation>斜向进给速率</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="200"/>
-      <location filename="../../../Path/Tool/Controller.py" line="319"/>
-      <source>Feed rate used when the tool is not engaged in material, but is also not retracted</source>
-      <translation>刀具未切削材料且未退刀时使用的进给率</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="207"/>
-      <location filename="../../../Path/Tool/Controller.py" line="296"/>
-      <source>Feed rate for lead-in moves</source>
-      <translation>驶入移动进给率</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="215"/>
-      <location filename="../../../Path/Tool/Controller.py" line="306"/>
-      <source>Feed rate for lead-out moves</source>
-      <translation>驶出移动进给率</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Controller.py" line="464"/>
-      <source>The tool used by this controller</source>
-      <translation>用于该控制器的刀具</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Copy.py" line="42"/>
-      <source>The toolpath to be copied</source>
-      <translation>要复制的刀具路径</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="104"/>
-      <source>The time to dwell at bottom of tapping cycle</source>
-      <translation>攻丝循环底部停留时间</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="125"/>
-      <source>Controls how tool retracts Default=G98</source>
-      <translation>控制刀具回缩方式 默认=G98</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="134"/>
-      <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
-      <translation>在啄击操作中路径完成时进给开始的高度和回缩刀具时的高度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="140"/>
-      <source>How far the tap depth is extended</source>
-      <translation>攻丝深度延伸的距离</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="62"/>
       <source>Make &apos;False&apos; to prevent operation from generating code</source>
       <translation>设为 &apos;False&apos; 以阻止操作生成代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PathShape.py" line="74"/>
-      <source>An optional comment for this operation</source>
-      <translation>此操作的可选注释</translation>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="80"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
+      <source>Operations cycle time estimation</source>
+      <translation>操作周期时间估算</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShape.py" line="104"/>
@@ -7167,6 +7081,144 @@ this gives the pause of the next move</source>
 此项提供下一次移动的暂停高度</translation>
     </message>
     <message>
+      <location filename="../../../Path/Op/Gui/Comment.py" line="42"/>
+      <source>Comment or note for CNC program</source>
+      <translation>CNC程序注释</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="306"/>
+      <source>The unique ID of the tool shape (.fcstd)</source>
+      <translation>刀具形状的唯一ID (.fcstd)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="316"/>
+      <source>The tool shape type</source>
+      <translation>刀具形状类型</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="329"/>
+      <source>The parametrized body representing the tool bit</source>
+      <translation>代表刀头的参数化主体</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="336"/>
+      <source>The unique ID of the toolbit</source>
+      <translation>刀具的唯一ID</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="353"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="859"/>
+      <source>Measurement units for the tool bit</source>
+      <translation>刀具刀头的测量单位</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="371"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="895"/>
+      <source>Tool material</source>
+      <translation>刀具材料</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="835"/>
+      <source>Custom property from shape: {name}</source>
+      <translation>来自形状的自定义属性：{name}</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="145"/>
+      <source>The active tool</source>
+      <translation>活动刀具</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="152"/>
+      <source>The speed of the cutting spindle in RPM</source>
+      <translation>切割主轴的速度（RPM）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="158"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="362"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="876"/>
+      <source>Direction of spindle rotation</source>
+      <translation>主轴旋转方向</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="164"/>
+      <source>Feed rate for vertical moves in Z</source>
+      <translation>Z方向垂直移动的进给速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="170"/>
+      <source>Feed rate for horizontal moves</source>
+      <translation>水平移动的进给速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="176"/>
+      <source>Rapid rate for vertical moves in Z</source>
+      <translation>Z方向垂直快速移动速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="182"/>
+      <source>Rapid rate for horizontal moves</source>
+      <translation>水平快速移动速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="189"/>
+      <location filename="../../../Path/Tool/Controller.py" line="285"/>
+      <source>Feed rate for ramp moves</source>
+      <translation>斜向进给速率</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="200"/>
+      <location filename="../../../Path/Tool/Controller.py" line="319"/>
+      <source>Feed rate used when the tool is not engaged in material, but is also not retracted</source>
+      <translation>刀具未切削材料且未退刀时使用的进给率</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="207"/>
+      <location filename="../../../Path/Tool/Controller.py" line="296"/>
+      <source>Feed rate for lead-in moves</source>
+      <translation>驶入移动进给率</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="215"/>
+      <location filename="../../../Path/Tool/Controller.py" line="306"/>
+      <source>Feed rate for lead-out moves</source>
+      <translation>驶出移动进给率</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Controller.py" line="464"/>
+      <source>The tool used by this controller</source>
+      <translation>用于该控制器的刀具</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Copy.py" line="42"/>
+      <source>The toolpath to be copied</source>
+      <translation>要复制的刀具路径</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="104"/>
+      <source>The time to dwell at bottom of tapping cycle</source>
+      <translation>攻丝循环底部停留时间</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="125"/>
+      <source>Controls how tool retracts Default=G98</source>
+      <translation>控制刀具回缩方式 默认=G98</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="134"/>
+      <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
+      <translation>在啄击操作中路径完成时进给开始的高度和回缩刀具时的高度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="140"/>
+      <source>How far the tap depth is extended</source>
+      <translation>攻丝深度延伸的距离</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="74"/>
+      <source>An optional comment for this operation</source>
+      <translation>此操作的可选注释</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="41"/>
       <source>Add an optional or mandatory stop to the program</source>
       <translation>向程序添加可选或强制停止</translation>
@@ -7175,6 +7227,93 @@ this gives the pause of the next move</source>
       <location filename="../../../Path/Tool/toolbit/mixins/cutting.py" line="40"/>
       <source>Chipload per tooth</source>
       <translation>每齿切屑负荷</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="104"/>
+      <source>JSON-encoded list of feeds &amp; speeds presets</source>
+      <translation>JSON 编码的进给和转速预设列表</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
+      <source>Hint indicating which op category this TC is intended for</source>
+      <translation>提示该 TC 适用于哪种操作类别</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
+      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
+      <translation>每字段出处：哪个源设置了 HorizFeed/VertFeed/SpindleSpeed</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="126"/>
+      <source>Axial start position along the rotary axis.</source>
+      <translation>沿旋转轴的轴向起始位置。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="134"/>
+      <source>Axial stop position along the rotary axis.</source>
+      <translation>沿旋转轴的轴向终止位置。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="140"/>
+      <source>Angular start position (degrees).</source>
+      <translation>角位移起始位置（度）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="146"/>
+      <source>Angular stop position (degrees).</source>
+      <translation>角位移终止位置（度）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="155"/>
+      <source>Axial advance per full revolution of the rotary axis (spiral pitch).</source>
+      <translation>旋转轴每转一整周的轴向推进量（螺旋螺距）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="164"/>
+      <source>Angular spacing between sampled toolpath points (degrees).</source>
+      <translation>采样刀具路径点之间的角度间距（度）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
+      <location filename="../../../Path/Op/Profile.py" line="145"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1603"/>
+      <source>Set how much stock to leave on the walls for the operation.</source>
+      <translation>设置此工序在侧壁保留的余量。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="180"/>
+      <source>Climb or Conventional cutting direction.</source>
+      <translation>顺铣或逆铣切削方向。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="189"/>
+      <source>Toolpath pattern. Supports Spiral, Parallel, Rings.</source>
+      <translation>刀具路径策略。支持螺旋、平行、圆环。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="195"/>
+      <source>Feed-rate strategy.</source>
+      <translation>进给率策略。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="206"/>
+      <source>Effective feed clamp (mm/min); used to handle the centerline singularity as r approaches zero. 0 means fall back to the tool controller rapid rate.</source>
+      <translation>有效进给限制（mm/min）；用于在半径 r 接近零时处理中心线奇异性。0 意味着退回到刀具控制器的快速定位速率。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="216"/>
+      <source>If true and Base is populated, restrict the toolpath to the projected (axial, angular) extents of selected faces.</source>
+      <translation>如果为真且填入了基础几何体，则将刀具路径限制在选定面的投影（轴向、角度）范围内。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="225"/>
+      <source>Tessellation linear deflection. Smaller = finer mesh.</source>
+      <translation>细分曲面线性偏差。值越小 = 网格越精细。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="234"/>
+      <source>Tessellation angular deflection. Smaller = finer mesh.</source>
+      <translation>细分曲面角度偏差。值越小 = 网格越精细。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFacing.py" line="131"/>
@@ -7216,83 +7355,6 @@ this gives the pause of the next move</source>
       <location filename="../../../Path/Op/MillFacing.py" line="194"/>
       <source>Reverse the cutting direction for the selected pattern.</source>
       <translation>反转所选模式的切削方向。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="126"/>
-      <source>Axial start position along the rotary axis.</source>
-      <translation>沿旋转轴的轴向起始位置。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="134"/>
-      <source>Axial stop position along the rotary axis.</source>
-      <translation>沿旋转轴的轴向终止位置。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="140"/>
-      <source>Angular start position (degrees).</source>
-      <translation>角位移起始位置（度）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="146"/>
-      <source>Angular stop position (degrees).</source>
-      <translation>角位移终止位置（度）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="155"/>
-      <source>Axial advance per full revolution of the rotary axis (spiral pitch).</source>
-      <translation>旋转轴每转一整周的轴向推进量（螺旋螺距）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="164"/>
-      <source>Angular spacing between sampled toolpath points (degrees).</source>
-      <translation>采样刀具路径点之间的角度间距（度）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1603"/>
-      <location filename="../../../Path/Op/Profile.py" line="145"/>
-      <source>Set how much stock to leave on the walls for the operation.</source>
-      <translation>设置此工序在侧壁保留的余量。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="180"/>
-      <source>Climb or Conventional cutting direction.</source>
-      <translation>顺铣或逆铣切削方向。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="189"/>
-      <source>Toolpath pattern. Supports Spiral, Parallel, Rings.</source>
-      <translation>刀具路径策略。支持螺旋、平行、圆环。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="195"/>
-      <source>Feed-rate strategy.</source>
-      <translation>进给率策略。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="206"/>
-      <source>Effective feed clamp (mm/min); used to handle the centerline singularity as r approaches zero. 0 means fall back to the tool controller rapid rate.</source>
-      <translation>有效进给限制（mm/min）；用于在半径 r 接近零时处理中心线奇异性。0 意味着退回到刀具控制器的快速定位速率。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="216"/>
-      <source>If true and Base is populated, restrict the toolpath to the projected (axial, angular) extents of selected faces.</source>
-      <translation>如果为真且填入了基础几何体，则将刀具路径限制在选定面的投影（轴向、角度）范围内。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="225"/>
-      <source>Tessellation linear deflection. Smaller = finer mesh.</source>
-      <translation>细分曲面线性偏差。值越小 = 网格越精细。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="234"/>
-      <source>Tessellation angular deflection. Smaller = finer mesh.</source>
-      <translation>细分曲面角度偏差。值越小 = 网格越精细。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="94"/>
-      <source>Close open area formed by edges or vertical faces by straight line.</source>
-      <translation>用直线封闭由边或垂直面构成的开放区域。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Flute.py" line="1438"/>
@@ -7355,19 +7417,9 @@ this gives the pause of the next move</source>
       <translation>粗加工通道在逐层切深中的分布方式。等角度：每道加工保持相同的斜切坡度 —— 切入点偏移，路径缩短（降低峰值切屑负荷）。变角度：每道加工均为全路径长度 —— 随着切深加大斜角变陡（XY 切削参与度均匀，加工周期较长）。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/FeedsSpeeds/presets.py" line="104"/>
-      <source>JSON-encoded list of feeds &amp; speeds presets</source>
-      <translation>JSON 编码的进给和转速预设列表</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="74"/>
-      <source>Hint indicating which op category this TC is intended for</source>
-      <translation>提示该 TC 适用于哪种操作类别</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="86"/>
-      <source>Per-field provenance: which source set HorizFeed/VertFeed/SpindleSpeed</source>
-      <translation>每字段出处：哪个源设置了 HorizFeed/VertFeed/SpindleSpeed</translation>
+      <location filename="../../../Path/Op/PocketShape.py" line="92"/>
+      <source>Close open area formed by edges or vertical faces by straight line.</source>
+      <translation>用直线封闭由边或垂直面构成的开放区域。</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Mirror.py" line="42"/>
@@ -8038,22 +8090,22 @@ Aborting op creation</source>
       <translation>无法解析第 %s 行的表达式：%s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="227"/>
+      <location filename="../../../Path/Op/Custom.py" line="228"/>
       <source>Pass Custom G-code through Post Processor should be enabled for legacy post processor</source>
       <translation>对于旧版后处理器，应启用“将自定义 G 代码传递给后处理器”</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="244"/>
+      <location filename="../../../Path/Op/Custom.py" line="245"/>
       <source>Total invalid lines in Custom G-code: %s</source>
       <translation>自定义 G 代码中的无效行总数：%s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="248"/>
+      <location filename="../../../Path/Op/Custom.py" line="249"/>
       <source>Check lines: %s</source>
       <translation>检查行数: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="234"/>
+      <location filename="../../../Path/Op/Custom.py" line="235"/>
       <source>Custom file %s could not be found.</source>
       <translation>找不到自定义文件 %s 。</translation>
     </message>
@@ -8588,7 +8640,7 @@ Without sub selection:
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/UpdateDocumentToolsDlg.py" line="346"/>
-      <location filename="../../../Path/Main/Gui/Job.py" line="374"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="375"/>
       <source>Update Tools from Library</source>
       <translation>从刀具库更新刀具</translation>
     </message>
@@ -8624,87 +8676,87 @@ Without sub selection:
       <translation>多轴</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="370"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="371"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="390"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="391"/>
       <source>Assign Stock Material</source>
       <translation>指定毛坯材料</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="693"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="694"/>
       <source>Stock not a cylinder!</source>
       <translation>毛坯不是一个圆柱体!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="902"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="903"/>
       <source>(none assigned)</source>
       <translation>(未指定)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1195"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1196"/>
       <source>Select Output File</source>
       <translation>选择输出文件</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1197"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1198"/>
       <source>All Files (*)</source>
       <translation>所有文件 (*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1331"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1332"/>
       <source>Tool Number In Use</source>
       <translation>刀具编号已在使用中</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1332"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1333"/>
       <source>Tool number {} is already used by {}.</source>
       <translation>刀具编号 {} 已被 {} 使用。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1983"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1981"/>
       <source>Add one.</source>
       <translation>添加一个。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1650"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1651"/>
       <source>Unsupported stock object %s</source>
       <translation>不支持的毛坯对象 %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1666"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>不支持的毛坯类型 %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1755"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1756"/>
       <source>Model Selection</source>
       <translation>模型选择</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1982"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1980"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1984"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1982"/>
       <source>Ok</source>
       <translation>确定</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1986"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1984"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1997"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1995"/>
       <source>This job has no base model.</source>
       <translation>该作业没有基础模型。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="2004"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="2002"/>
       <source>This job has no tool.</source>
       <translation>该作业没有刀具。</translation>
     </message>
@@ -9227,8 +9279,8 @@ G-code under the cursor defines tool shape placement</source>
       <translation>旧版 CAM 模拟器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Simulator.py" line="603"/>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/Simulator.py" line="603"/>
       <source>Simulates G-code on stock</source>
       <translation>在毛坯上模拟 G 代码</translation>
     </message>
@@ -9393,9 +9445,9 @@ G-code under the cursor defines tool shape placement</source>
       <translation>非平面自适应启动也不可用。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="78"/>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="124"/>
       <location filename="../../../Path/Op/Gui/Probe.py" line="59"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="124"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="78"/>
       <source>No valid toolcontroller</source>
       <translation>没有有效的刀具控制器</translation>
     </message>
@@ -9405,8 +9457,8 @@ G-code under the cursor defines tool shape placement</source>
       <translation>此操作需要带有 V 形刀的刀具控制器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="73"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="70"/>
       <source>Base shape %s already in the list</source>
       <translation>基础形状%s已在列表中</translation>
     </message>
@@ -9441,7 +9493,7 @@ G-code under the cursor defines tool shape placement</source>
       <translation>SVG 后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="66"/>
+      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="85"/>
       <source>Camotics Tool Library</source>
       <translation>Camotics 刀具库</translation>
     </message>
@@ -9526,32 +9578,32 @@ G-code under the cursor defines tool shape placement</source>
       <translation>FreeCAD 刀具</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="84"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="86"/>
       <source>Toolbit</source>
       <translation>刀具</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="86"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="88"/>
       <source>Label:</source>
       <translation>标签：</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="87"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="89"/>
       <source>Toolbit Type:</source>
       <translation>刀头类型：</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="400"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="436"/>
       <source>Feeds &amp;&amp; Speeds</source>
       <translation>进给和转速</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="94"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="96"/>
       <source>Tool Number:</source>
       <translation>刀具编号：</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="99"/>
+      <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="101"/>
       <source>Properties</source>
       <translation>属性</translation>
     </message>
@@ -9698,266 +9750,24 @@ This will not delete the toolbits contained within it.</source>
       <translation>{diameter} {pitch} {rotation} 丝锥，{flutes} 刃，{cutting_edge_length} 切削刃</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="320"/>
-      <source>File Extension</source>
-      <translation>文件扩展名</translation>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation>{diameter}刀尖，{taper_angle}锥度，{flutes}刃锥度球头铣刀，{cutting_edge_height}切削刃高度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="326"/>
-      <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
-      <translation>输出文件的默认扩展名（不带点）。常见的扩展名有：nc、gcode、tap、ngc、sbp 等。</translation>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="922"/>
+      <source>Exceeded length in cutTravelEnd</source>
+      <translation>切削行程终点超出长度限制</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="331"/>
-      <source>Tool Radius Compensation (G41/G42)</source>
-      <translation>刀具半径补偿 (G41/G42)</translation>
+      <location filename="../../../Path/Base/Generator/leadinout.py" line="943"/>
+      <source>Exceeded length in cutTravelBegin</source>
+      <translation>切削行程起点超出长度限制</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="337"/>
-      <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
-      <translation>如果此后处理器支持 G41/G42 刀具半径补偿指令，请启用此项。启用后，后处理器即可输出刀具补偿代码。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="342"/>
-      <source>Supported G-code Commands</source>
-      <translation>支持的 G 代码指令</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="348"/>
-      <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
-      <translation>此后处理器支持的 G 代码指令列表（每行一个）。凡是不在这个列表中的指令，将会被过滤掉或者引发警告。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="353"/>
-      <source>Drill Cycles to Translate</source>
-      <translation>要转换的钻孔循环</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="360"/>
-      <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
-      <translation>要转换为 G0/G1 移动指令的钻孔循环命令列表（每行一个）。标准钻孔循环包括：{&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}。如果后处理器原生支持钻孔循环，请留空。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="365"/>
-      <source>Preamble</source>
-      <translation>程序头</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="369"/>
-      <source>G-code commands inserted at the start of the program after the header.</source>
-      <translation>在程序头部之后、程序主体开始之前插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="374"/>
-      <source>Postamble</source>
-      <translation>程序尾</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="376"/>
-      <source>G-code commands inserted at the end of the program.</source>
-      <translation>在程序末尾插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="381"/>
-      <source>Safety Block</source>
-      <translation>安全代码块</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="386"/>
-      <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
-      <translation>用于将机床重置为已知安全状态的指令（例如：G40, G49, G80）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="391"/>
-      <source>Pre-Job</source>
-      <translation>作业前</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="393"/>
-      <source>G-code commands inserted before each Job.</source>
-      <translation>在每个作业开始前插入的 G 代码命令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="398"/>
-      <source>Post-Job</source>
-      <translation>作业后</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="400"/>
-      <source>G-code commands inserted after each Job.</source>
-      <translation>在每个作业结束后插入的 G 代码命令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="405"/>
-      <source>Pre-Fixture</source>
-      <translation>夹具前</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="407"/>
-      <source>G-code commands inserted before fixture change.</source>
-      <translation>在更换夹具之前插入的 G 代码命令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="412"/>
-      <source>Post-Fixture</source>
-      <translation>夹具后</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="414"/>
-      <source>G-code commands inserted after fixture change.</source>
-      <translation>在更换夹具之后插入的 G 代码命令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="419"/>
-      <source>Pre-Operation</source>
-      <translation>工序启动代码</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="421"/>
-      <source>G-code commands inserted before each operation.</source>
-      <translation>在每个加工工序之前插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
-      <source>Post-Operation</source>
-      <translation>工序结束代码</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="428"/>
-      <source>G-code commands inserted after each operation.</source>
-      <translation>在每个加工工序之后插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="433"/>
-      <source>Pre-Tool Change</source>
-      <translation>换刀前代码</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="435"/>
-      <source>G-code commands inserted before tool changes.</source>
-      <translation>在换刀之前插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="440"/>
-      <source>Post-Tool Change</source>
-      <translation>换刀后代码</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="442"/>
-      <location filename="../../../Path/Post/Processor.py" line="449"/>
-      <source>G-code commands inserted after tool changes.</source>
-      <translation>在换刀之后插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="447"/>
-      <source>Tool Return after tool changes</source>
-      <translation>换刀后刀具返回</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="454"/>
-      <source>Pre-Rotary Move</source>
-      <translation>旋转轴运动前处理</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="456"/>
-      <source>G-code commands inserted before rotary axis moves.</source>
-      <translation>在旋转轴运动前插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="461"/>
-      <source>Post-Rotary Move</source>
-      <translation>旋转轴运动后处理</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="463"/>
-      <source>G-code commands inserted after rotary axis moves.</source>
-      <translation>在旋转轴运动后插入的 G 代码指令。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="468"/>
-      <source>Show Pre-processing Dialogs</source>
-      <translation>显示预处理对话框</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="474"/>
-      <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
-      <translation>在后处理期间显示交互式对话框。如果是自动化操作或测试，请禁用此选项。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="479"/>
-      <source>Generated Parameter Order for GCode</source>
-      <translation>G 代码生成参数顺序</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="481"/>
-      <source>Generated Parameter Order for GCode for output</source>
-      <translation>用于输出的 G 代码生成参数顺序</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="486"/>
-      <source>TLO after tool-change</source>
-      <translation>换刀后的 TLO</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="491"/>
-      <source>Output a G43 TLO after tool-change</source>
-      <translation>换刀后输出 G43 TLO</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="496"/>
-      <source>Allow tool-change</source>
-      <translation>允许换刀</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="501"/>
-      <source>Unchecked to suppress tool-change (M6)</source>
-      <translation>取消勾选以抑制换刀 (M6)</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="506"/>
-      <location filename="../../../Path/Post/Processor.py" line="511"/>
-      <source>Unit-command in output</source>
-      <translation>输出中的单位命令</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="516"/>
-      <source>Axis precision in output</source>
-      <translation>输出中的轴精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="521"/>
-      <source>Decimals of precision for axis motion</source>
-      <translation>轴运动的小数精度位数</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="526"/>
-      <source>Feedrate precision in output</source>
-      <translation>输出中的进给率精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="531"/>
-      <source>Decimals of precision for feedrate (F)</source>
-      <translation>进给率 (F) 的小数精度位数</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="536"/>
-      <source>Spindle-speed precision in output</source>
-      <translation>输出中的主轴转速精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="541"/>
-      <source>Decimals of precision for spindle-speed</source>
-      <translation>主轴转速的小数精度位数</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="546"/>
-      <source>Output F parameter for G0 (rapid)</source>
-      <translation>输出 G0（快速）的 F 参数</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Post/Processor.py" line="551"/>
-      <source>Whether to output the F parameter for G0 (rapid moves)</source>
-      <translation>是否输出 G0（快速移动）的 F 参数</translation>
+      <location filename="../../../Path/Op/Adaptive.py" line="377"/>
+      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
+      <translation>自适应操作无法确定边界线。您是否选择了基础几何体？</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Utils.py" line="194"/>
@@ -9981,125 +9791,282 @@ This will not delete the toolbits contained within it.</source>
       <translation>中止</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
-      <source>Mach3_Mach4 post processor</source>
-      <translation>Mach3_Mach4 后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="404"/>
+      <source>File Extension</source>
+      <extracomment>Scope assumed when a schema entry declares none.  Matches the historical behaviour of postprocessor-specific properties without a &quot;runtime&quot; key.</extracomment>
+      <translation>文件扩展名</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="165"/>
-      <source>Automatic Tool Changer</source>
-      <translation>自动换刀装置</translation>
+      <location filename="../../../Path/Post/Processor.py" line="410"/>
+      <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
+      <translation>输出文件的默认扩展名（不带点）。常见的扩展名有：nc、gcode、tap、ngc、sbp 等。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="171"/>
-      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
-      <translation>如果机器配备了自动换刀装置，请启用此选项。若禁用，换刀时将暂停并等待人工干预。</translation>
+      <location filename="../../../Path/Post/Processor.py" line="416"/>
+      <source>Tool Radius Compensation (G41/G42)</source>
+      <translation>刀具半径补偿 (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="176"/>
-      <source>Automatic Spindle Control</source>
-      <translation>主轴自动控制</translation>
+      <location filename="../../../Path/Post/Processor.py" line="422"/>
+      <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
+      <translation>如果此后处理器支持 G41/G42 刀具半径补偿指令，请启用此项。启用后，后处理器即可输出刀具补偿代码。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="182"/>
-      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
-      <translation>如果机器具备主轴转速自动控制功能，请启用此选项。若禁用，主轴指令将提示进行手动调整。</translation>
+      <location filename="../../../Path/Post/Processor.py" line="428"/>
+      <source>Supported G-code Commands</source>
+      <translation>支持的 G 代码指令</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="188"/>
-      <source>Suppressed (tolerated) G-code Commands</source>
-      <translation>被抑制（容许）的 G 代码命令</translation>
+      <location filename="../../../Path/Post/Processor.py" line="434"/>
+      <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
+      <translation>此后处理器支持的 G 代码指令列表（每行一个）。凡是不在这个列表中的指令，将会被过滤掉或者引发警告。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="194"/>
-      <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
-      <translation>此后处理器容许但会抑制的 G 代码命令列表（每行一个）。
-此列表中的指令将被过滤掉</translation>
+      <location filename="../../../Path/Post/Processor.py" line="440"/>
+      <source>Ignore G-code Commands</source>
+      <translation>忽略 G 代码指令</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="201"/>
-      <source>OpenSBP post processor for ShopBot controllers</source>
-      <translation>适用于 ShopBot 控制器的 OpenSBP 后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="447"/>
+      <source>List of G-code commands, tolerated but ignored by this post-processor (one per line). Commands in this list will be filtered out.</source>
+      <translation>后处理器可容忍但会忽略的 G 代码指令列表（每行一个）。此列表中的指令将被过滤掉。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
-      <source>Test post processor</source>
-      <translation>测试后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="453"/>
+      <source>Drill Cycles to Translate</source>
+      <translation>要转换的钻孔循环</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
-      <source>Centroid post processor</source>
-      <translation>Centroid 后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="460"/>
+      <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
+      <translation>要转换为 G0/G1 移动指令的钻孔循环命令列表（每行一个）。标准钻孔循环包括：{&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}。如果后处理器原生支持钻孔循环，请留空。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="91"/>
-      <source>Pierce Delay</source>
-      <translation>穿孔延时</translation>
+      <location filename="../../../Path/Post/Processor.py" line="466"/>
+      <source>Preamble</source>
+      <translation>程序头</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="98"/>
-      <source>Pierce delay in milliseconds to wait after torch ignites (M3) before starting movement</source>
-      <translation>在切割炬点火（M3）之后、开始移动之前，需要等待的穿孔延时时间（单位为毫秒）</translation>
+      <location filename="../../../Path/Post/Processor.py" line="470"/>
+      <source>G-code commands inserted at the start of the program after the header.</source>
+      <translation>在程序头部之后、程序主体开始之前插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="103"/>
-      <source>Cooling Delay</source>
-      <translation>冷却延时</translation>
+      <location filename="../../../Path/Post/Processor.py" line="476"/>
+      <source>Postamble</source>
+      <translation>程序尾</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="110"/>
-      <source>Cooling delay in milliseconds to wait after torch extinguishes (M5) before movement</source>
-      <translation>在切割炬熄灭（M5）之后、（进行下一次）移动之前，需要等待的冷却延时时间（单位为毫秒）</translation>
+      <location filename="../../../Path/Post/Processor.py" line="478"/>
+      <source>G-code commands inserted at the end of the program.</source>
+      <translation>在程序末尾插入的 G 代码指令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="115"/>
-      <source>Marking Delay</source>
-      <translation>标记延时</translation>
+      <location filename="../../../Path/Post/Processor.py" line="484"/>
+      <source>Safety Block</source>
+      <translation>安全代码块</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="122"/>
-      <source>Marking delay in milliseconds to wait after torch ignites (M3) when making a mark</source>
-      <translation>在进行标记操作时，切割炬点火（M3）之后需要等待的标记延时时间（单位为毫秒）</translation>
+      <location filename="../../../Path/Post/Processor.py" line="489"/>
+      <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
+      <translation>用于将机床重置为已知安全状态的指令（例如：G40, G49, G80）。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="127"/>
-      <source>Torch Z-Axis Control</source>
-      <translation>切割炬 Z 轴控制</translation>
+      <location filename="../../../Path/Post/Processor.py" line="495"/>
+      <source>Pre-Job</source>
+      <translation>作业前</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="133"/>
-      <source>Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement. When disabled, any M3/M5 commands are output as-is.</source>
-      <translation>当 Z 轴向下移动（Z-）时，割炬点火（M3）；当 Z 轴向上移动（Z+）时，割炬熄灭（M5）。如果禁用此功能，所有的 M3/M5 指令将按原样输出（不做任何自动处理）。</translation>
+      <location filename="../../../Path/Post/Processor.py" line="497"/>
+      <source>G-code commands inserted before each Job.</source>
+      <translation>在每个作业开始前插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="138"/>
-      <source>Force Rapid Feeds</source>
-      <translation>强制快速进给</translation>
+      <location filename="../../../Path/Post/Processor.py" line="503"/>
+      <source>Post-Job</source>
+      <translation>作业后</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="145"/>
-      <source>Force rapid-feed speeds for all feed specified commands. Useful for dry runs to verify paths without cutting.</source>
-      <translation>强制将所有指定了进给速度的指令都改为快速进给速度。这对于‘空跑’非常有用，可以在不进行实际切割的情况下验证路径。</translation>
+      <location filename="../../../Path/Post/Processor.py" line="505"/>
+      <source>G-code commands inserted after each Job.</source>
+      <translation>在每个作业结束后插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="150"/>
-      <source>Mark Entry Points Only</source>
-      <translation>仅标记入口点</translation>
+      <location filename="../../../Path/Post/Processor.py" line="511"/>
+      <source>Pre-Fixture</source>
+      <translation>夹具前</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="157"/>
-      <source>Mark first entry points only (for drilling prep). Skips cutting moves and only marks where the torch would pierce.</source>
-      <translation>仅标记起始入口点（用于钻孔准备）。它会跳过所有的切割移动，只在割炬原本应该穿孔的位置进行标记。</translation>
+      <location filename="../../../Path/Post/Processor.py" line="513"/>
+      <source>G-code commands inserted before fixture change.</source>
+      <translation>在更换夹具之前插入的 G 代码命令。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="164"/>
-      <source>Generic Plasma post processor</source>
-      <translation>通用等离子后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="519"/>
+      <source>Post-Fixture</source>
+      <translation>夹具后</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
-      <source>Marlin post processor</source>
-      <translation>Marlin 后处理器</translation>
+      <location filename="../../../Path/Post/Processor.py" line="521"/>
+      <source>G-code commands inserted after fixture change.</source>
+      <translation>在更换夹具之后插入的 G 代码命令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="527"/>
+      <source>Pre-Operation</source>
+      <translation>工序启动代码</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="529"/>
+      <source>G-code commands inserted before each operation.</source>
+      <translation>在每个加工工序之前插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="535"/>
+      <source>Post-Operation</source>
+      <translation>工序结束代码</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="537"/>
+      <source>G-code commands inserted after each operation.</source>
+      <translation>在每个加工工序之后插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="543"/>
+      <source>Pre-Tool Change</source>
+      <translation>换刀前代码</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="545"/>
+      <source>G-code commands inserted before tool changes.</source>
+      <translation>在换刀之前插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="551"/>
+      <source>Post-Tool Change</source>
+      <translation>换刀后代码</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="553"/>
+      <location filename="../../../Path/Post/Processor.py" line="561"/>
+      <source>G-code commands inserted after tool changes.</source>
+      <translation>在换刀之后插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="559"/>
+      <source>Tool Return after tool changes</source>
+      <translation>换刀后刀具返回</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="567"/>
+      <source>Pre-Rotary Move</source>
+      <translation>旋转轴运动前处理</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="569"/>
+      <source>G-code commands inserted before rotary axis moves.</source>
+      <translation>在旋转轴运动前插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="575"/>
+      <source>Post-Rotary Move</source>
+      <translation>旋转轴运动后处理</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="577"/>
+      <source>G-code commands inserted after rotary axis moves.</source>
+      <translation>在旋转轴运动后插入的 G 代码指令。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="583"/>
+      <source>Show Pre-processing Dialogs</source>
+      <translation>显示预处理对话框</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="589"/>
+      <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
+      <translation>在后处理期间显示交互式对话框。如果是自动化操作或测试，请禁用此选项。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="595"/>
+      <source>Generated Parameter Order for GCode</source>
+      <translation>G 代码生成参数顺序</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="597"/>
+      <source>Generated Parameter Order for GCode for output</source>
+      <translation>用于输出的 G 代码生成参数顺序</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="603"/>
+      <source>TLO after tool-change</source>
+      <translation>换刀后的 TLO</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="608"/>
+      <source>Output a G43 TLO after tool-change</source>
+      <translation>换刀后输出 G43 TLO</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="614"/>
+      <source>Allow tool-change</source>
+      <translation>允许换刀</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="619"/>
+      <source>Unchecked to suppress tool-change (M6)</source>
+      <translation>取消勾选以抑制换刀 (M6)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="625"/>
+      <location filename="../../../Path/Post/Processor.py" line="630"/>
+      <source>Unit-command in output</source>
+      <translation>输出中的单位命令</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="636"/>
+      <source>Axis precision in output</source>
+      <translation>输出中的轴精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="641"/>
+      <source>Decimals of precision for axis motion</source>
+      <translation>轴运动的小数精度位数</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="647"/>
+      <source>Feedrate precision in output</source>
+      <translation>输出中的进给率精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="652"/>
+      <source>Decimals of precision for feedrate (F)</source>
+      <translation>进给率 (F) 的小数精度位数</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="658"/>
+      <source>Spindle-speed precision in output</source>
+      <translation>输出中的主轴转速精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="663"/>
+      <source>Decimals of precision for spindle-speed</source>
+      <translation>主轴转速的小数精度位数</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="669"/>
+      <source>Output F parameter for G0 (rapid)</source>
+      <translation>输出 G0（快速）的 F 参数</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="674"/>
+      <source>Whether to output the F parameter for G0 (rapid moves)</source>
+      <translation>是否输出 G0（快速移动）的 F 参数</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="2640"/>
+      <source> (in the Custom op, uncheck Post Process Output, or put &apos;!&apos; in front of specific command)</source>
+      <translation>（在自定义操作中，取消勾选“后处理输出”，或在特定指令前加上 &apos;!&apos;）</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/masso_g3_post.py" line="61"/>
@@ -10107,14 +10074,14 @@ This will not delete the toolbits contained within it.</source>
       <translation>Masso G3 后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
-      <source>Refactored SmoothieBoard post processor</source>
-      <translation>重构后的 SmoothieBoard 后置处理器</translation>
+      <location filename="../../../Path/Post/scripts/mach3_mach4_post.py" line="59"/>
+      <source>Mach3_Mach4 post processor</source>
+      <translation>Mach3_Mach4 后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
-      <source>Grbl post processor</source>
-      <translation>Grbl 后处理器</translation>
+      <location filename="../../../Path/Post/scripts/marlin_post.py" line="85"/>
+      <source>Marlin post processor</source>
+      <translation>Marlin 后处理器</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
@@ -10142,29 +10109,119 @@ This will not delete the toolbits contained within it.</source>
       <translation>LinuxCNC后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="377"/>
-      <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation>自适应操作无法确定边界线。您是否选择了基础几何体？</translation>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="92"/>
+      <source>Pierce Delay</source>
+      <translation>穿孔延时</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="53"/>
-      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
-      <translation>{diameter}刀尖，{taper_angle}锥度，{flutes}刃锥度球头铣刀，{cutting_edge_height}切削刃高度</translation>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="99"/>
+      <source>Pierce delay in milliseconds to wait after torch ignites (M3) before starting movement</source>
+      <translation>在切割炬点火（M3）之后、开始移动之前，需要等待的穿孔延时时间（单位为毫秒）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="105"/>
+      <source>Cooling Delay</source>
+      <translation>冷却延时</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="112"/>
+      <source>Cooling delay in milliseconds to wait after torch extinguishes (M5) before movement</source>
+      <translation>在切割炬熄灭（M5）之后、（进行下一次）移动之前，需要等待的冷却延时时间（单位为毫秒）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="118"/>
+      <source>Marking Delay</source>
+      <translation>标记延时</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="125"/>
+      <source>Marking delay in milliseconds to wait after torch ignites (M3) when making a mark</source>
+      <translation>在进行标记操作时，切割炬点火（M3）之后需要等待的标记延时时间（单位为毫秒）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="131"/>
+      <source>Torch Z-Axis Control</source>
+      <translation>切割炬 Z 轴控制</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="137"/>
+      <source>Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement. When disabled, any M3/M5 commands are output as-is.</source>
+      <translation>当 Z 轴向下移动（Z-）时，割炬点火（M3）；当 Z 轴向上移动（Z+）时，割炬熄灭（M5）。如果禁用此功能，所有的 M3/M5 指令将按原样输出（不做任何自动处理）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="143"/>
+      <source>Force Rapid Feeds</source>
+      <translation>强制快速进给</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="149"/>
+      <source>Force rapid-feed speeds for all feed specified commands. Useful for dry runs to verify paths without cutting.</source>
+      <translation>强制将所有指定了进给速度的指令都改为快速进给速度。这对于‘空跑’非常有用，可以在不进行实际切割的情况下验证路径。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="155"/>
+      <source>Mark Entry Points Only</source>
+      <translation>仅标记入口点</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="161"/>
+      <source>Mark first entry points only (for drilling prep). Skips cutting moves and only marks where the torch would pierce.</source>
+      <translation>仅标记起始入口点（用于钻孔准备）。它会跳过所有的切割移动，只在割炬原本应该穿孔的位置进行标记。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/generic_plasma_post.py" line="168"/>
+      <source>Generic Plasma post processor</source>
+      <translation>通用等离子后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/test_post.py" line="57"/>
+      <source>Test post processor</source>
+      <translation>测试后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/grbl_post.py" line="64"/>
+      <source>Grbl post processor</source>
+      <translation>Grbl 后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="168"/>
+      <source>Automatic Tool Changer</source>
+      <translation>自动换刀装置</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="174"/>
+      <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
+      <translation>如果机器配备了自动换刀装置，请启用此选项。若禁用，换刀时将暂停并等待人工干预。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="180"/>
+      <source>Automatic Spindle Control</source>
+      <translation>主轴自动控制</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="186"/>
+      <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
+      <translation>如果机器具备主轴转速自动控制功能，请启用此选项。若禁用，主轴指令将提示进行手动调整。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="193"/>
+      <source>OpenSBP post processor for ShopBot controllers</source>
+      <translation>适用于 ShopBot 控制器的 OpenSBP 后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/centroid_post.py" line="87"/>
+      <source>Centroid post processor</source>
+      <translation>Centroid 后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/smoothie_post.py" line="64"/>
+      <source>Refactored SmoothieBoard post processor</source>
+      <translation>重构后的 SmoothieBoard 后置处理器</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="43"/>
       <source>CAM Inspect</source>
       <translation>CAM 检查</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Base/Generator/leadinout.py" line="922"/>
-      <source>Exceeded length in cutTravelEnd</source>
-      <translation>切削行程终点超出长度限制</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Base/Generator/leadinout.py" line="943"/>
-      <source>Exceeded length in cutTravelBegin</source>
-      <translation>切削行程起点超出长度限制</translation>
     </message>
   </context>
   <context>
@@ -10918,26 +10975,36 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Engrave</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="157"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="193"/>
       <source>Engrave</source>
       <translation>雕刻</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="160"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="196"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
       <translation>围绕草图字符串形状工具创建雕刻刀具路径</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="98"/>
-      <location filename="../../../Path/Op/Engrave.py" line="160"/>
+      <location filename="../../../Path/Op/Engrave.py" line="63"/>
+      <location filename="../../../Path/Op/Engrave.py" line="194"/>
+      <source>Bidirectional</source>
+      <translation>双向</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="64"/>
+      <location filename="../../../Path/Op/Engrave.py" line="193"/>
       <source>Directional</source>
       <translation>单向</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="99"/>
-      <location filename="../../../Path/Op/Engrave.py" line="161"/>
-      <source>Bidirectional</source>
-      <translation>双向</translation>
+      <location filename="../../../Path/Op/Engrave.py" line="67"/>
+      <source>Automatic</source>
+      <translation>自动</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="68"/>
+      <source>Manual</source>
+      <translation>手动</translation>
     </message>
   </context>
   <context>
@@ -11043,12 +11110,12 @@ Several operations can be used with identical tool controller and coolant mode</
     </message>
     <message>
       <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="127"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1064"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1077"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1091"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1101"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1141"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1179"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1076"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1089"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1103"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1113"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1153"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1191"/>
       <source>Generate Output</source>
       <translation>生成输出</translation>
     </message>
@@ -11063,90 +11130,90 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>（无）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="321"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="338"/>
       <source>Postprocessor Properties</source>
       <translation>后处理器属性</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="548"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="560"/>
       <source>(no fixtures defined)</source>
       <translation>（未定义夹具）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="678"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="690"/>
       <source>No issues found.</source>
       <translation>未发现问题。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="711"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="723"/>
       <source>{} critical issue(s) — review before machining.</source>
       <translation>{} 个严重问题 — 请在加工前检查。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="718"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="730"/>
       <source>{} advisory notice(s) found.</source>
       <translation>发现 {} 条建议性通知。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="738"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="750"/>
       <source>Operations ({}/{})</source>
       <translation>加工 ({}/{})</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="744"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="756"/>
       <source>Warnings (!) {}</source>
       <translation>警告 (!) {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="747"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="759"/>
       <source>Warnings {}</source>
       <translation>警告 {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="750"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="762"/>
       <source>Warnings</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="805"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="817"/>
       <source>Workplan</source>
       <translation>工作计划</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1067"/>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1080"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1079"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1092"/>
       <source>The selected machine has no post-processor configured.</source>
       <translation>所选的机床未配置后处理器。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1092"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1104"/>
       <source>No post-processor configured for this job.</source>
       <translation>此任务未配置后处理器。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1142"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1154"/>
       <source>Post-processor returned no output.</source>
       <translation>后处理器未返回任何输出。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1180"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1192"/>
       <source>Error during generation:
 {}</source>
       <translation>生成期间发生错误：
 {}</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1240"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1252"/>
       <source>Rename</source>
       <translation>重命名</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1328"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1340"/>
       <source>Select Output Folder</source>
       <translation>选择输出文件夹</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1363"/>
+      <location filename="../../../Path/Post/Gui/DlgPostProcess.py" line="1375"/>
       <source>{} error(s) while saving:
 {}</source>
       <translation>保存时发生了 {} 个错误：
@@ -11435,7 +11502,7 @@ Tool number for {}:</source>
   <context>
     <name>Param1</name>
     <message>
-      <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="37"/>
+      <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="38"/>
       <source>Parameter 1</source>
       <translation>参数 1</translation>
     </message>
@@ -11443,7 +11510,7 @@ Tool number for {}:</source>
   <context>
     <name>Param2</name>
     <message>
-      <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="41"/>
+      <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="42"/>
       <source>Parameter 2</source>
       <translation>参数 2</translation>
     </message>
@@ -11506,41 +11573,51 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="114"/>
+      <source>Import...</source>
+      <translation>导入...</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
+      <source>Create a machine from the probe document of an MTConnect agent</source>
+      <translation>从 MTConnect 代理的 probe 文档中创建机床</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="121"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="115"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="122"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="131"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="139"/>
       <source>Check for tool updates from the library when opening a document</source>
       <translation>打开文档时检查刀具库是否有更新</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="153"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="162"/>
       <source>Select Asset Directory</source>
       <translation>选择资源目录</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="172"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="181"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="173"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="182"/>
       <source>The selected asset path is not writable.</source>
       <translation>所选资源路径不可写。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="233"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="261"/>
       <source>Delete Machine</source>
       <translation>删除设备</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="236"/>
+      <location filename="../../../Path/Tool/assets/ui/preferences.py" line="264"/>
       <source>Are you sure you want to delete this machine file?</source>
       <translation>你确定要删除这个数控设备文件吗？</translation>
     </message>
@@ -11563,77 +11640,77 @@ Tool number for {}:</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="34"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="36"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="46"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="44"/>
       <source>Cutting edge height</source>
       <translation>切削刃高度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="38"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="50"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="36"/>
       <source>Diameter</source>
       <translation>直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="42"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="50"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="54"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="44"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="40"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="44"/>
       <source>Flutes</source>
       <translation>刃数</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="46"/>
-      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="44"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="56"/>
-      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="54"/>
-      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="58"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/threadmill.py" line="48"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/drill.py" line="44"/>
       <source>Overall tool length</source>
       <translation>刀具总长度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="50"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="48"/>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
-      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="62"/>
+      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/ballend.py" line="52"/>
+      <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="52"/>
       <source>Shank diameter</source>
       <translation>刀柄直径</translation>
     </message>
@@ -11644,19 +11721,19 @@ Tool number for {}:</source>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="36"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="36"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="42"/>
       <source>Cutting edge angle</source>
       <translation>切削刃角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="60"/>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="66"/>
       <source>Tip diameter</source>
       <translation>刀尖直径</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/chamfer.py" line="90"/>
       <source>Chamfer</source>
       <translation>倒角</translation>
     </message>
@@ -12014,6 +12091,1428 @@ Tool number for {}:</source>
     </message>
   </context>
   <context>
+    <name>CAM_FeedsSpeeds</name>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="220"/>
+      <source>e.g. &apos;Aluminum aggressive&apos;</source>
+      <translation>例如 &apos;铝合金强力加工&apos;</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="248"/>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="613"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="360"/>
+      <source>(any)</source>
+      <translation>（任意）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="443"/>
+      <source>(none)</source>
+      <translation>（无）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="449"/>
+      <source>Name required</source>
+      <translation>请输入名称</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="450"/>
+      <source>Give the preset a name.</source>
+      <translation>为预设指定一个名称。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="457"/>
+      <source>Duplicate preset</source>
+      <translation>重复的预设</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="462"/>
+      <source>This tool already has a preset named &apos;%s&apos; for this material and op type.</source>
+      <translation>此刀具在该材料和操作类型下已存在名为 &apos;%s&apos; 的预设。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="562"/>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="563"/>
+      <source>Material</source>
+      <translation>材质</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="564"/>
+      <source>Op type</source>
+      <translation>操作类型</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="565"/>
+      <source>Surface speed</source>
+      <translation>切削速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="566"/>
+      <source>Chipload</source>
+      <translation>每齿切入量</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="567"/>
+      <source>Notes</source>
+      <translation>备注</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="579"/>
+      <source>Add preset</source>
+      <translation>添加预设</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="583"/>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="587"/>
+      <source>Copy</source>
+      <translation>复制</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="591"/>
+      <source>Delete</source>
+      <translation>删除</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="610"/>
+      <source>(any material)</source>
+      <translation>（任何材料）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
+      <source>Choose material</source>
+      <translation>选择材料</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="330"/>
+      <source>Suggest Feeds &amp; Speeds</source>
+      <translation>推荐进给和转速</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="352"/>
+      <source>(no tool)</source>
+      <translation>（无工具）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="353"/>
+      <source>Tool:</source>
+      <translation>工具：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <source>(none — generic resolution)</source>
+      <translation>（无 — 通用解析）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <source>Material:</source>
+      <translation>材质：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
+      <source>Op type:</source>
+      <translation>操作类型：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="377"/>
+      <source>Apply preset:</source>
+      <translation>应用预设：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="381"/>
+      <source>Suggestion</source>
+      <translation>推荐</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="385"/>
+      <source>Source:</source>
+      <translation>来源：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="391"/>
+      <source>Confidence:</source>
+      <translation>置信度：</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="396"/>
+      <source>Current</source>
+      <translation>当前</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="398"/>
+      <source>Suggested</source>
+      <translation>已推荐</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="400"/>
+      <source>Δ</source>
+      <translation>Δ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="436"/>
+      <source>Auto (use resolver)</source>
+      <translation>自动（使用解算器）</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="530"/>
+      <source>No suggestion available</source>
+      <translation>无可用推荐</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="541"/>
+      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
+      <translation>此工具上没有匹配的预设。从库中打开该工具以添加预设。</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathHelix</name>
+    <message>
+      <location filename="../../../Path/Op/Helix.py" line="752"/>
+      <source>Skipped hole at position %s</source>
+      <translation>在位置 %s 处跳过了孔</translation>
+    </message>
+  </context>
+  <context>
+    <name>Waterline</name>
+    <message>
+      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
+      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
+      <translation>：只有位于模型顶面下方的台阶（或层级）才会被处理。</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_RotarySurface</name>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="112"/>
+      <source>New property added to</source>
+      <translation>新建属性添加到</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="114"/>
+      <source>Check default value(s).</source>
+      <translation>检查默认值。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="243"/>
+      <source>Climb</source>
+      <translation>攀登</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="244"/>
+      <source>Conventional</source>
+      <translation>常用</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="247"/>
+      <source>Spiral</source>
+      <translation>螺旋线</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="248"/>
+      <source>Parallel</source>
+      <translation>平行</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="249"/>
+      <source>Rings</source>
+      <translation>圆环</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="252"/>
+      <source>Surface Speed</source>
+      <translation>表面速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/RotarySurface.py" line="253"/>
+      <source>Axial Only</source>
+      <translation>仅轴向</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="155"/>
+      <source>Rotary Surface</source>
+      <translation>第四轴曲面加工</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="159"/>
+      <source>Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</source>
+      <translation>在安装于单旋转轴上的零件上进行连续 4 轴联动旋转曲面加工。</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MIllFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
+      <source>New property added to</source>
+      <translation>新建属性添加到</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MillFacing</name>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
+      <source>Check default value(s).</source>
+      <translation>检查默认值。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
+      <source>Climb</source>
+      <translation>攀登</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
+      <source>Conventional</source>
+      <translation>常用</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
+      <source>ZigZag</source>
+      <translation>之字形</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
+      <source>Bidirectional</source>
+      <translation>双向</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
+      <source>Directional</source>
+      <translation>单向</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
+      <source>Spiral</source>
+      <translation>螺旋线</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="159"/>
+      <source>Mill Facing</source>
+      <translation>端面铣</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="162"/>
+      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
+      <translation>创建一个铣削面加工工序，以加工毛坯的顶面</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_Flute</name>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="293"/>
+      <source>Face appears to be a single wall of a V-groove (its centerline coincides with a face edge). Select both walls of the groove, or select the valley edge directly.
+</source>
+      <translation>平面似乎是 V 型槽的单个侧壁（其中心线与平面的边缘重合）。请同时选择沟槽的两侧侧壁，或直接选择谷线（底部边缘）。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="601"/>
+      <source>CAM_Flute: tool diameter ({}) exceeds groove width ({}) - path may overcut.
+</source>
+      <translation>CAM_Flute：刀具直径 ({}) 超过了沟槽宽度 ({}) - 路径可能会导致过切。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="630"/>
+      <source>CAM_Flute: V-bit half-angle ({:.1f}°) exceeds groove half-angle ({:.1f}°) - flanks may contact walls before reaching depth.
+</source>
+      <translation>CAM_Flute：V 刀半角 ({:.1f}°) 超过了沟槽半角 ({:.1f}°) - 在达到设定深度前，刀具侧刃可能会先接触槽壁。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="950"/>
+      <source>Selected edges do not form a single connected wire.
+</source>
+      <translation>所选边缘未能构成单条连接的线段（Wire）。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="1760"/>
+      <location filename="../../../Path/Op/Flute.py" line="1853"/>
+      <source>No depth to cut for: {}
+</source>
+      <translation>没有可切削的深度：{}
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="1790"/>
+      <source>No passes computed for: {}
+</source>
+      <translation>未计算出切削通道：{}
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="1998"/>
+      <source>No base geometry selected for Flute operation.
+</source>
+      <translation>未为开槽（Flute）操作选择基础几何图形。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="2005"/>
+      <source>StepDown must be greater than zero.
+</source>
+      <translation>下刀量（StepDown）必须大于零。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="2038"/>
+      <source>No valid faces or edges found in base geometry.
+</source>
+      <translation>在基础几何图形中未找到有效的面或边。
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Flute.py" line="2125"/>
+      <source>Could not determine centerline for: {}
+</source>
+      <translation>无法确定以下项的中心线：{}
+</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Flute.py" line="104"/>
+      <source>Force-reverse this segment&apos;s direction (2D wires only).</source>
+      <translation>强制反转该线段的方向（仅限 2D 线段）。</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Flute.py" line="380"/>
+      <source>Flute</source>
+      <translation>开槽</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Flute.py" line="389"/>
+      <source>Create a ramping flute toolpath from a selected bottom face or flat wire.
+
+For a 3D face (or pair of faces forming a V-bottom), the path follows
+the face centerline.  For a flat (2D) wire, the path follows the wire
+itself, with its Z ramp shaped by the Fluting/Ramp Type settings.
+Both cases step down in multiple passes to final depth.
+
+Supported tool types: flat, bull-nose, V-bit.</source>
+      <translation>根据所选的底面或平面线段创建斜切开槽刀具路径。
+
+对于 3D 平面（或构成 V 型底的两个面），路径将沿平面的中心线走刀。对于平面 (2D) 线段，路径将沿线段本身走刀，其 Z 轴斜切形态由开槽/斜切类型设置控制。
+两种情况均支持通过多道下刀分层切削至最终深度。
+
+支持的刀具类型：平底刀、牛鼻刀（圆角刀）、V 型刀。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Pocket_Shape</name>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="162"/>
+      <source>Pocket_Shape can not process open wire.
+You can enable feature Close Open Path</source>
+      <translation>Pocket_Shape 无法处理开放线段。
+您可以启用“封闭开放路径”功能</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="352"/>
+      <source>Processing vertical faces was failed</source>
+      <translation>处理垂直面失败</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/PocketShape.py" line="360"/>
+      <source>Processing vertical faces was failed.
+You can enable feature Close Open Path</source>
+      <translation>处理垂直面失败。
+您可以启用“封闭开放路径”功能</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathShape</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
+      <source>Tool controller not selected for operation %s</source>
+      <translation>操作 %s 未选择刀具控制器</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_PathShape</name>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="674"/>
+      <source>Path from Shape</source>
+      <translation>根据形状创建路径</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/PathShape.py" line="677"/>
+      <source>Creates path from selected shapes with tool controller</source>
+      <translation>使用刀具控制器根据所选形状创建路径</translation>
+    </message>
+  </context>
+  <context>
+    <name>MirrorDressup</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
+      <source>No base operation</source>
+      <translation>无基础操作</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="125"/>
+      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
+      <translation>基础对象 &apos;%s&apos; 并非源自 Path::Feature</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="132"/>
+      <source>Base operation &apos;%s&apos; with empty path</source>
+      <translation>基础操作 &apos;%s&apos; 的路径为空</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_DressupMirror</name>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="275"/>
+      <source>Mirror</source>
+      <translation>镜像</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
+      <source>Creates mirror of a selected path</source>
+      <translation>创建所选路径的镜像</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="306"/>
+      <source>The selected object is not a path</source>
+      <translation>所选对象不是一个刀轨</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="310"/>
+      <source>Select a profile object</source>
+      <translation>选择一个轮廓对象</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAMSimulator::GuiDisplay</name>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
+      <source>Play simulation</source>
+      <translation>播放模拟</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
+      <source>Single step simulation</source>
+      <translation>单步模拟</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
+      <source>Decrease simulation speed</source>
+      <translation>降低模拟速度</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
+      <source>Increase simulation speed</source>
+      <translation>提高模拟速度</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
+      <source>x1</source>
+      <translation>x1</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
+      <source>Reset camera</source>
+      <translation>重置相机</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
+      <source>Toggle view simulation/model</source>
+      <translation>切换视图模拟/模型</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
+      <source>Toggle turn table animation</source>
+      <translation>切换转台动画</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
+      <source>Show/hide tool path</source>
+      <translation>显示/隐藏刀具路径</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
+      <source>Toggle ambient occlusion</source>
+      <translation>切换环境光遮蔽</translation>
+    </message>
+    <message>
+      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
+      <source>x%1</source>
+      <translation>x%1</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MachineImport</name>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="77"/>
+      <source>Only http and https URLs are supported.</source>
+      <translation>仅支持 http 和 https 网址。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="88"/>
+      <source>Import Machine from MTConnect</source>
+      <translation>从 MTConnect 导入机床</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="100"/>
+      <source>Enter the URL of the machine&apos;s MTConnect agent (for example http://machine:5000/probe) or select a saved probe XML file.</source>
+      <translation>输入机床 MTConnect 代理的网址（例如 http://machine:5000/probe）或选择已保存的 probe XML 文件。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="110"/>
+      <source>Select a probe XML file</source>
+      <translation>选择 probe XML 文件</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="116"/>
+      <source>Import</source>
+      <translation>导入</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="126"/>
+      <source>Select Probe XML File</source>
+      <translation>选择 Probe XML 文件</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="128"/>
+      <source>XML files (*.xml);;All files (*)</source>
+      <translation>XML 文件 (*.xml);;所有文件 (*)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="145"/>
+      <source>Select Device</source>
+      <translation>选择设备</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="146"/>
+      <source>This agent describes several machines:</source>
+      <translation>此代理描述了多台机床：</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="159"/>
+      <source>Import Failed</source>
+      <translation>导入失败</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="174"/>
+      <source>Machine Imported</source>
+      <translation>机床已导入</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/mtconnect_import_dialog.py" line="178"/>
+      <source>The machine was imported. Review it in the editor.
+
+{summary}</source>
+      <translation>机床已导入。请在编辑器中进行检查。
+
+{summary}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="106"/>
+      <source>Imported:</source>
+      <translation>已导入：</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="109"/>
+      <source>Assumed (please review):</source>
+      <translation>默认假设（请检查）：</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="112"/>
+      <source>Not imported:</source>
+      <translation>未导入：</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="321"/>
+      <source>Rotary axes wired as a {label} configuration; the probe does not describe rotary mounting. Review roles and chain order.</source>
+      <translation>旋转轴配置为 {label} 结构；probe 未描述旋转安装方式。请检查角色和链顺序。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="332"/>
+      <source>Rotary axis {letter} assumed to be a table rotary. Review its role.</source>
+      <translation>旋转轴 {letter} 被假设为转台。请检查其角色。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="340"/>
+      <source>Rotary axes {letters} have no default chain wiring; assign roles and parents in the editor.</source>
+      <translation>旋转轴 {letters} 没有默认链接；请在编辑器中分配角色和父节点。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="388"/>
+      <source>Imported from MTConnect probe</source>
+      <translation>从 MTConnect probe 导入</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="410"/>
+      <source>Linear component &apos;{name}&apos; is not a recognized axis.</source>
+      <translation>直线组件 &apos;{name}&apos; 并非可识别的轴。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="430"/>
+      <source>Linear axis {letter}{detail}</source>
+      <translation>直线轴 {letter}{detail}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="441"/>
+      <source>Rotary component &apos;{name}&apos; is neither an A/B/C axis nor a spindle.</source>
+      <translation>旋转组件 &apos;{name}&apos; 既不是 A/B/C 轴，也不是主轴。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="455"/>
+      <source>Rotary axis {letter}{detail}</source>
+      <translation>旋转轴 {letter}{detail}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="485"/>
+      <source>Spindle{detail}</source>
+      <translation>主轴{detail}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="492"/>
+      <source>Additional spindles found; only the first was imported.</source>
+      <translation>检测到多个主轴；仅导入了第一个。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="499"/>
+      <source>No spindle described by the probe; a default rotary toolhead was added.</source>
+      <translation>probe 未描述主轴；已添加默认旋转动力头。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="508"/>
+      <source>Axis velocities are not published by this machine; defaults were used.</source>
+      <translation>此机床未发布轴运动速度；已使用默认值。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/models/mtconnect_import.py" line="512"/>
+      <source>Import assumptions:</source>
+      <translation>导入假设：</translation>
+    </message>
+  </context>
+  <context>
+    <name>CAM_MachineEditor</name>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="94"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
+      <source>Include Blank Lines</source>
+      <translation>包含空白行</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="95"/>
+      <source>Path Labels</source>
+      <translation>路径标签</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="144"/>
+      <source>Include Machine Name</source>
+      <translation>包含设备名称</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
+      <source>Output Duplicate Axis Values</source>
+      <translation>输出重复的轴数值</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
+      <source>Adaptive Output</source>
+      <translation>自适应输出</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
+      <source>Axis Precision</source>
+      <translation>轴精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="164"/>
+      <source>Feed Precision</source>
+      <translation>进给精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
+      <source>Toolhead Decimals</source>
+      <translation>刀头小数位</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="103"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
+      <source>Comment Symbol</source>
+      <translation>注释符号</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="104"/>
+      <source>Modal Output (Suppress Repeats)</source>
+      <translation>模态输出（抑制重复）</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
+      <source>Translate Drill Cycles</source>
+      <translation>转换钻孔循环</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
+      <source>Translate Rapid Moves</source>
+      <translation>转换快速移动</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
+      <source>Split Arcs</source>
+      <translation>拆分圆弧</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="110"/>
+      <source>XY Before Z After Tool Change</source>
+      <translation>换刀后先走 XY 再走 Z</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="111"/>
+      <source>Show Editor After Generation</source>
+      <translation>生成后显示编辑器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
+      <source>List Tools in Preamble</source>
+      <translation>在文件头列出刀具清单</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
+      <source>Show Machine Units</source>
+      <translation>显示设备单位</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
+      <source>Show Operation Labels</source>
+      <translation>显示加工标签</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
+      <source>Output T Before M6</source>
+      <translation>在 M6 之前输出 T</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="116"/>
+      <source>Chipbreaking Amount (mm)</source>
+      <translation>啄钻深度（mm）</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="117"/>
+      <source>Toolhead Wait Time (seconds)</source>
+      <translation>主轴等待时间 （秒）</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
+      <source>Post Processor</source>
+      <translation>后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
+      <source>Post Processor Arguments</source>
+      <translation>后处理器参数</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="120"/>
+      <source>Use Tool Length Offset</source>
+      <translation>使用刀具长度</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
+      <source>Output Tool Length Offset (G43)</source>
+      <translation>输出刀具长度补偿 (G43)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="124"/>
+      <source>Enable Remote Posting</source>
+      <translation>启用远程后处理</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="127"/>
+      <source>Stop Toolhead for Tool Change</source>
+      <translation>换刀时停止主轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
+      <source>Enable Coolant</source>
+      <translation>启用冷却液</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
+      <source>Enable Machine-Specific Commands</source>
+      <translation>启用机床特定指令</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
+      <source>Output Units</source>
+      <translation>输出单位</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
+      <source>Header Options</source>
+      <translation>文件头选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="135"/>
+      <source>Comment Options</source>
+      <translation>注释选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
+      <source>Formatting Options</source>
+      <translation>格式化选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
+      <source>Precision Options</source>
+      <translation>精度选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
+      <source>Duplicate Output Options</source>
+      <translation>重复输出选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
+      <source>Output Header</source>
+      <translation>输出文件头</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
+      <source>Include Date</source>
+      <translation>包含日期</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
+      <source>Include Description</source>
+      <translation>包含描述</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
+      <source>Include Document Name</source>
+      <translation>包含文档名称</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
+      <source>Include Project File</source>
+      <translation>包含项目文件</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
+      <source>Include Units</source>
+      <translation>包含单位</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
+      <source>Include Tool List</source>
+      <translation>包含刀具清单</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
+      <source>Include Fixture List</source>
+      <translation>包含夹具清单</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="150"/>
+      <source>Enable Comments</source>
+      <translation>启用注释</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
+      <source>Include Operation Labels</source>
+      <translation>包含工序标签</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
+      <source>Output bCNC Comments</source>
+      <translation>输出 bCNC 注释</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
+      <source>Line Numbers</source>
+      <translation>行号</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="157"/>
+      <source>Line Number Start</source>
+      <translation>起始行号</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
+      <source>Line Number Prefix</source>
+      <translation>行号前缀</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
+      <source>Line Increment</source>
+      <translation>行号增量</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
+      <source>Command Space</source>
+      <translation>指令空格</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="161"/>
+      <source>End of Line Chars</source>
+      <translation>行尾字符</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
+      <source>Toolhead Precision</source>
+      <translation>刀头精度</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
+      <source>Duplicate Commands</source>
+      <translation>重复指令</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
+      <source>Duplicate Parameters</source>
+      <translation>重复参数</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="997"/>
+      <source>Kinematics</source>
+      <translation>运动方式</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
+      <source>Base Frame</source>
+      <translation>基座坐标系</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="172"/>
+      <source>Origin</source>
+      <translation>原点</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
+      <source>Orientation Quaternion</source>
+      <translation>方向四元数</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1006"/>
+      <source>TCP Supported</source>
+      <translation>支持刀尖跟随</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1014"/>
+      <source>DWO Supported</source>
+      <translation>支持动态工件偏移</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
+      <source>Kinematics Notes</source>
+      <translation>运动方式备注</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1168"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1317"/>
+      <source>Role</source>
+      <translation>角色</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="179"/>
+      <source>Parent Axis</source>
+      <translation>父轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1192"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
+      <source>Sequence</source>
+      <translation>序列</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="181"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1279"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1421"/>
+      <source>Joint Origin</source>
+      <translation>关节原点</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="182"/>
+      <source>Joint Axis</source>
+      <translation>关节轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="183"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1434"/>
+      <source>Solution Preference</source>
+      <translation>解算偏好</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="184"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1442"/>
+      <source>Allow Flip</source>
+      <translation>允许翻转</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="185"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1464"/>
+      <source>Wrap Strategy</source>
+      <translation>包络策略</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="350"/>
+      <source>Custom Machine</source>
+      <translation>自定义设备</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="355"/>
+      <source>2-Axis Lathe (X, Z)</source>
+      <translation>两轴车床 (X , Z)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="360"/>
+      <source>3-Axis Mill (XYZ)</source>
+      <translation>三轴铣床 (XYZ)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="365"/>
+      <source>4-Axis Mill (XYZ + A)</source>
+      <translation>四轴铣床 (XYZ + A)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="370"/>
+      <source>4-Axis Mill (XYZ + B)</source>
+      <translation>四轴铣床 (XYZ + B)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="375"/>
+      <source>5-Axis Mill (XYZ + A, C)</source>
+      <translation>五轴铣床 (XYZ + A, C)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="380"/>
+      <source>5-Axis Mill (XYZ + B, C)</source>
+      <translation>五轴铣床 (XYZ + B, C)</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="417"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="621"/>
+      <source>Machine Editor</source>
+      <translation>设备编辑器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="433"/>
+      <source>Machine</source>
+      <translation>机器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="438"/>
+      <source>Toolheads</source>
+      <translation>主轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="443"/>
+      <source>Postprocessor</source>
+      <translation>后处理器</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="448"/>
+      <source>Options</source>
+      <translation>选项</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="475"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2253"/>
+      <source>Edit as Text</source>
+      <translation>以文本形式编辑</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="485"/>
+      <source>Save</source>
+      <translation>保存</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="488"/>
+      <source>Close</source>
+      <translation>关闭</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="790"/>
+      <source>Remove Toolhead</source>
+      <translation>移除主轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="791"/>
+      <source>Remove toolhead? This action cannot be undone.</source>
+      <translation>要移除主轴吗？此操作无法撤销。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="860"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="938"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="968"/>
+      <source>Custom</source>
+      <translation>自定义</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="868"/>
+      <source>Template Load Error</source>
+      <translation>模板加载错误</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="869"/>
+      <source>Could not load template</source>
+      <translation>无法加载模板</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="918"/>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="973"/>
+      <source>Load settings from an existing machine template</source>
+      <translation>现有的设备模板加载设置</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
+      <source>Template</source>
+      <translation>模板</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="978"/>
+      <source>Manufacturer</source>
+      <translation>制造商</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="982"/>
+      <source>Description</source>
+      <translation>说明</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="985"/>
+      <source>Metric</source>
+      <translation>公制</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
+      <source>Imperial</source>
+      <translation>英制</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="988"/>
+      <source>Units</source>
+      <translation>单位</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="994"/>
+      <source>Type</source>
+      <translation>类型</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1023"/>
+      <source>Notes</source>
+      <translation>备注</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1029"/>
+      <source>Axes</source>
+      <translation>轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1057"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1058"/>
+      <source>Add Toolhead</source>
+      <translation>添加主轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1183"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1332"/>
+      <source>Parent</source>
+      <translation>父级</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1210"/>
+      <source>Direction</source>
+      <translation>方向</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1221"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1349"/>
+      <source>Min Limit</source>
+      <translation>最小限制</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1231"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1356"/>
+      <source>Max Limit</source>
+      <translation>最大限制</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1241"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1365"/>
+      <source>Max Velocity</source>
+      <translation>最大速度</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1383"/>
+      <source>Rotation Axis</source>
+      <translation>旋转轴</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1452"/>
+      <source>Prefer Positive</source>
+      <translation>优先正向</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1829"/>
+      <source>Postprocessor Selection</source>
+      <translation>后处理器选择</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1839"/>
+      <source>Select the postprocessor file for this machine</source>
+      <translation>为此设备选择后处理器文件</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1865"/>
+      <source>Post Processor:</source>
+      <translation>后处理器：</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1871"/>
+      <source>Postprocessor Configuration</source>
+      <translation>后处理器配置</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2258"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
+      <source>JSON Error</source>
+      <translation>JSON错误</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2259"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2349"/>
+      <source>Invalid JSON: {}</source>
+      <translation>无效JSON：{}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2264"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2283"/>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2355"/>
+      <source>Error</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2265"/>
+      <source>Failed to parse data: {}</source>
+      <translation>解析数据失败：{}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2278"/>
+      <source>Edit as Form</source>
+      <translation>以表单形式编辑</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2284"/>
+      <source>Failed to generate JSON: {}</source>
+      <translation>生成JSON失败：{}</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2322"/>
+      <source>Duplicate Machine Name</source>
+      <translation>设备名称重复</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2326"/>
+      <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
+      <translation>名为&apos;{}&apos;的设备已存在。请选择其他名称。</translation>
+    </message>
+    <message>
+      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2356"/>
+      <source>Failed to save: {}</source>
+      <translation>保存失败：{}</translation>
+    </message>
+  </context>
+  <context>
+    <name>FeedsSpeedsPresetEdit</name>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
+      <source>Edit preset</source>
+      <translation>编辑预设</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
+      <source>Name:</source>
+      <translation>名称：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
+      <source>Material:</source>
+      <translation>材质：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
+      <source>(none)</source>
+      <translation>（无）</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
+      <source>Browse…</source>
+      <translation>浏览…</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
+      <source>Generic (any material)</source>
+      <translation>通用（任何材料）</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
+      <source>Op type:</source>
+      <translation>操作类型：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
+      <source>Surface speed:</source>
+      <translation>切削速度：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
+      <source>Chipload (per tooth):</source>
+      <translation>每齿切入量（每齿）：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
+      <source>Vert feed ratio:</source>
+      <translation>垂直进给比率：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
+      <source>Direct feed and speed</source>
+      <translation>直接进给和转速</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
+      <source>Horiz feed:</source>
+      <translation>水平进给：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
+      <source>Spindle speed:</source>
+      <translation>主轴转速：</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
+      <source>Notes</source>
+      <translation>备注</translation>
+    </message>
+    <message>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="201"/>
+      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
+      <translation>缺少刀具直径和/或刃数 — 切削速度和每齿切入量将无法与直接进给/转速自动同步。</translation>
+    </message>
+  </context>
+  <context>
     <name>DlgPostProcess</name>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="14"/>
@@ -12267,1281 +13766,6 @@ Tool number for {}:</source>
       <location filename="../panels/DlgPostProcess.ui" line="561"/>
       <source>Note</source>
       <translation>备注</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeedsSpeedsPresetEdit</name>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="14"/>
-      <source>Edit preset</source>
-      <translation>编辑预设</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="22"/>
-      <source>Name:</source>
-      <translation>名称：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="32"/>
-      <source>Material:</source>
-      <translation>材质：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="41"/>
-      <source>(none)</source>
-      <translation>（无）</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="48"/>
-      <source>Browse…</source>
-      <translation>浏览…</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="55"/>
-      <source>Generic (any material)</source>
-      <translation>通用（任何材料）</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="64"/>
-      <source>Op type:</source>
-      <translation>操作类型：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="74"/>
-      <source>Surface speed:</source>
-      <translation>切削速度：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
-      <source>Chipload (per tooth):</source>
-      <translation>每齿切入量（每齿）：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
-      <source>Vert feed ratio:</source>
-      <translation>垂直进给比率：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
-      <source>Direct feed and speed</source>
-      <translation>直接进给和转速</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
-      <source>Horiz feed:</source>
-      <translation>水平进给：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
-      <source>Spindle speed:</source>
-      <translation>主轴转速：</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
-      <source>Notes</source>
-      <translation>备注</translation>
-    </message>
-    <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="201"/>
-      <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
-      <translation>缺少刀具直径和/或刃数 — 切削速度和每齿切入量将无法与直接进给/转速自动同步。</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MachineEditor</name>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="89"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="148"/>
-      <source>Include Blank Lines</source>
-      <translation>包含空白行</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="90"/>
-      <source>Path Labels</source>
-      <translation>路径标签</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="91"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="139"/>
-      <source>Include Machine Name</source>
-      <translation>包含设备名称</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="92"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="93"/>
-      <source>Output Duplicate Axis Values</source>
-      <translation>输出重复的轴数值</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="94"/>
-      <source>Adaptive Output</source>
-      <translation>自适应输出</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="95"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="158"/>
-      <source>Axis Precision</source>
-      <translation>轴精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="96"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="159"/>
-      <source>Feed Precision</source>
-      <translation>进给精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="97"/>
-      <source>Toolhead Decimals</source>
-      <translation>刀头小数位</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="98"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="146"/>
-      <source>Comment Symbol</source>
-      <translation>注释符号</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="99"/>
-      <source>Modal Output (Suppress Repeats)</source>
-      <translation>模态输出（抑制重复）</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="100"/>
-      <source>Translate Drill Cycles</source>
-      <translation>转换钻孔循环</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="101"/>
-      <source>Translate Rapid Moves</source>
-      <translation>转换快速移动</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="102"/>
-      <source>Split Arcs</source>
-      <translation>拆分圆弧</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="105"/>
-      <source>XY Before Z After Tool Change</source>
-      <translation>换刀后先走 XY 再走 Z</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="106"/>
-      <source>Show Editor After Generation</source>
-      <translation>生成后显示编辑器</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="107"/>
-      <source>List Tools in Preamble</source>
-      <translation>在文件头列出刀具清单</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="108"/>
-      <source>Show Machine Units</source>
-      <translation>显示设备单位</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="109"/>
-      <source>Show Operation Labels</source>
-      <translation>显示加工标签</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="110"/>
-      <source>Output T Before M6</source>
-      <translation>在 M6 之前输出 T</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="111"/>
-      <source>Chipbreaking Amount (mm)</source>
-      <translation>啄钻深度（mm）</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="112"/>
-      <source>Toolhead Wait Time (seconds)</source>
-      <translation>主轴等待时间 （秒）</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="113"/>
-      <source>Post Processor</source>
-      <translation>后处理器</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="114"/>
-      <source>Post Processor Arguments</source>
-      <translation>后处理器参数</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="115"/>
-      <source>Use Tool Length Offset</source>
-      <translation>使用刀具长度</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="118"/>
-      <source>Output Tool Length Offset (G43)</source>
-      <translation>输出刀具长度补偿 (G43)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="119"/>
-      <source>Enable Remote Posting</source>
-      <translation>启用远程后处理</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="122"/>
-      <source>Stop Toolhead for Tool Change</source>
-      <translation>换刀时停止主轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="123"/>
-      <source>Enable Coolant</source>
-      <translation>启用冷却液</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="126"/>
-      <source>Enable Machine-Specific Commands</source>
-      <translation>启用机床特定指令</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="128"/>
-      <source>Output Units</source>
-      <translation>输出单位</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="129"/>
-      <source>Header Options</source>
-      <translation>文件头选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="130"/>
-      <source>Comment Options</source>
-      <translation>注释选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="131"/>
-      <source>Formatting Options</source>
-      <translation>格式化选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="132"/>
-      <source>Precision Options</source>
-      <translation>精度选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="133"/>
-      <source>Duplicate Output Options</source>
-      <translation>重复输出选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="134"/>
-      <source>Output Header</source>
-      <translation>输出文件头</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="136"/>
-      <source>Include Date</source>
-      <translation>包含日期</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="137"/>
-      <source>Include Description</source>
-      <translation>包含描述</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="138"/>
-      <source>Include Document Name</source>
-      <translation>包含文档名称</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="140"/>
-      <source>Include Project File</source>
-      <translation>包含项目文件</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
-      <source>Include Units</source>
-      <translation>包含单位</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
-      <source>Include Tool List</source>
-      <translation>包含刀具清单</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="143"/>
-      <source>Include Fixture List</source>
-      <translation>包含夹具清单</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="145"/>
-      <source>Enable Comments</source>
-      <translation>启用注释</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="147"/>
-      <source>Include Operation Labels</source>
-      <translation>包含工序标签</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="149"/>
-      <source>Output bCNC Comments</source>
-      <translation>输出 bCNC 注释</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="151"/>
-      <source>Line Numbers</source>
-      <translation>行号</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="152"/>
-      <source>Line Number Start</source>
-      <translation>起始行号</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="153"/>
-      <source>Line Number Prefix</source>
-      <translation>行号前缀</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="154"/>
-      <source>Line Increment</source>
-      <translation>行号增量</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="155"/>
-      <source>Command Space</source>
-      <translation>指令空格</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="156"/>
-      <source>End of Line Chars</source>
-      <translation>行尾字符</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="160"/>
-      <source>Toolhead Precision</source>
-      <translation>刀头精度</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="162"/>
-      <source>Duplicate Commands</source>
-      <translation>重复指令</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="163"/>
-      <source>Duplicate Parameters</source>
-      <translation>重复参数</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="165"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="989"/>
-      <source>Kinematics</source>
-      <translation>运动方式</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="166"/>
-      <source>Base Frame</source>
-      <translation>基座坐标系</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="167"/>
-      <source>Origin</source>
-      <translation>原点</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="168"/>
-      <source>Orientation Quaternion</source>
-      <translation>方向四元数</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="169"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="998"/>
-      <source>TCP Supported</source>
-      <translation>支持刀尖跟随</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="170"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1006"/>
-      <source>DWO Supported</source>
-      <translation>支持动态工件偏移</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="171"/>
-      <source>Kinematics Notes</source>
-      <translation>运动方式备注</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="173"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1160"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1309"/>
-      <source>Role</source>
-      <translation>角色</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="174"/>
-      <source>Parent Axis</source>
-      <translation>父轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="175"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1184"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1333"/>
-      <source>Sequence</source>
-      <translation>序列</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="176"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1271"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1413"/>
-      <source>Joint Origin</source>
-      <translation>关节原点</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="177"/>
-      <source>Joint Axis</source>
-      <translation>关节轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="178"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1426"/>
-      <source>Solution Preference</source>
-      <translation>解算偏好</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="179"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1434"/>
-      <source>Allow Flip</source>
-      <translation>允许翻转</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="180"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1456"/>
-      <source>Wrap Strategy</source>
-      <translation>包络策略</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="345"/>
-      <source>Custom Machine</source>
-      <translation>自定义设备</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="350"/>
-      <source>2-Axis Lathe (X, Z)</source>
-      <translation>两轴车床 (X , Z)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="355"/>
-      <source>3-Axis Mill (XYZ)</source>
-      <translation>三轴铣床 (XYZ)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="360"/>
-      <source>4-Axis Mill (XYZ + A)</source>
-      <translation>四轴铣床 (XYZ + A)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="365"/>
-      <source>4-Axis Mill (XYZ + B)</source>
-      <translation>四轴铣床 (XYZ + B)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="370"/>
-      <source>5-Axis Mill (XYZ + A, C)</source>
-      <translation>五轴铣床 (XYZ + A, C)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="375"/>
-      <source>5-Axis Mill (XYZ + B, C)</source>
-      <translation>五轴铣床 (XYZ + B, C)</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="409"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="613"/>
-      <source>Machine Editor</source>
-      <translation>设备编辑器</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="425"/>
-      <source>Machine</source>
-      <translation>机器</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="430"/>
-      <source>Toolheads</source>
-      <translation>主轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="435"/>
-      <source>Postprocessor</source>
-      <translation>后处理器</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="440"/>
-      <source>Options</source>
-      <translation>选项</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="467"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2245"/>
-      <source>Edit as Text</source>
-      <translation>以文本形式编辑</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="477"/>
-      <source>Save</source>
-      <translation>保存</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="480"/>
-      <source>Close</source>
-      <translation>关闭</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="782"/>
-      <source>Remove Toolhead</source>
-      <translation>移除主轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="783"/>
-      <source>Remove toolhead? This action cannot be undone.</source>
-      <translation>要移除主轴吗？此操作无法撤销。</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="852"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="930"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="960"/>
-      <source>Custom</source>
-      <translation>自定义</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="860"/>
-      <source>Template Load Error</source>
-      <translation>模板加载错误</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="861"/>
-      <source>Could not load template</source>
-      <translation>无法加载模板</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="910"/>
-      <source>Name</source>
-      <translation>名称</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="965"/>
-      <source>Load settings from an existing machine template</source>
-      <translation>现有的设备模板加载设置</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="966"/>
-      <source>Template</source>
-      <translation>模板</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="970"/>
-      <source>Manufacturer</source>
-      <translation>制造商</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="974"/>
-      <source>Description</source>
-      <translation>说明</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="977"/>
-      <source>Metric</source>
-      <translation>公制</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="978"/>
-      <source>Imperial</source>
-      <translation>英制</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="980"/>
-      <source>Units</source>
-      <translation>单位</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="986"/>
-      <source>Type</source>
-      <translation>类型</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1015"/>
-      <source>Notes</source>
-      <translation>备注</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1021"/>
-      <source>Axes</source>
-      <translation>轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1049"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1050"/>
-      <source>Add Toolhead</source>
-      <translation>添加主轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1175"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1324"/>
-      <source>Parent</source>
-      <translation>父级</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1202"/>
-      <source>Direction</source>
-      <translation>方向</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1213"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1341"/>
-      <source>Min Limit</source>
-      <translation>最小限制</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1223"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1348"/>
-      <source>Max Limit</source>
-      <translation>最大限制</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1233"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1357"/>
-      <source>Max Velocity</source>
-      <translation>最大速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1375"/>
-      <source>Rotation Axis</source>
-      <translation>旋转轴</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1444"/>
-      <source>Prefer Positive</source>
-      <translation>优先正向</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1821"/>
-      <source>Postprocessor Selection</source>
-      <translation>后处理器选择</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1831"/>
-      <source>Select the postprocessor file for this machine</source>
-      <translation>为此设备选择后处理器文件</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1857"/>
-      <source>Post Processor:</source>
-      <translation>后处理器：</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="1863"/>
-      <source>Postprocessor Configuration</source>
-      <translation>后处理器配置</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2250"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2340"/>
-      <source>JSON Error</source>
-      <translation>JSON错误</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2251"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2341"/>
-      <source>Invalid JSON: {}</source>
-      <translation>无效JSON：{}</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2256"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2275"/>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2347"/>
-      <source>Error</source>
-      <translation>错误</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2257"/>
-      <source>Failed to parse data: {}</source>
-      <translation>解析数据失败：{}</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2270"/>
-      <source>Edit as Form</source>
-      <translation>以表单形式编辑</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2276"/>
-      <source>Failed to generate JSON: {}</source>
-      <translation>生成JSON失败：{}</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2314"/>
-      <source>Duplicate Machine Name</source>
-      <translation>设备名称重复</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2318"/>
-      <source>A machine with the name &apos;{}&apos; already exists. Please choose a different name.</source>
-      <translation>名为&apos;{}&apos;的设备已存在。请选择其他名称。</translation>
-    </message>
-    <message>
-      <location filename="../../../Machine/ui/editor/machine_editor.py" line="2348"/>
-      <source>Failed to save: {}</source>
-      <translation>保存失败：{}</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MIllFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="102"/>
-      <source>New property added to</source>
-      <translation>新建属性添加到</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_MillFacing</name>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="104"/>
-      <source>Check default value(s).</source>
-      <translation>检查默认值。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="212"/>
-      <source>Climb</source>
-      <translation>攀登</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="213"/>
-      <source>Conventional</source>
-      <translation>常用</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="216"/>
-      <source>ZigZag</source>
-      <translation>之字形</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="217"/>
-      <source>Bidirectional</source>
-      <translation>双向</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="218"/>
-      <source>Directional</source>
-      <translation>单向</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="219"/>
-      <source>Spiral</source>
-      <translation>螺旋线</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="159"/>
-      <source>Mill Facing</source>
-      <translation>端面铣</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="162"/>
-      <source>Create a Mill Facing Operation to machine the top surface of stock</source>
-      <translation>创建一个铣削面加工工序，以加工毛坯的顶面</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_RotarySurface</name>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="112"/>
-      <source>New property added to</source>
-      <translation>新建属性添加到</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="114"/>
-      <source>Check default value(s).</source>
-      <translation>检查默认值。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="243"/>
-      <source>Climb</source>
-      <translation>攀登</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="244"/>
-      <source>Conventional</source>
-      <translation>常用</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="247"/>
-      <source>Spiral</source>
-      <translation>螺旋线</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="248"/>
-      <source>Parallel</source>
-      <translation>平行</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="249"/>
-      <source>Rings</source>
-      <translation>圆环</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="252"/>
-      <source>Surface Speed</source>
-      <translation>表面速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="253"/>
-      <source>Axial Only</source>
-      <translation>仅轴向</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="155"/>
-      <source>Rotary Surface</source>
-      <translation>第四轴曲面加工</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="159"/>
-      <source>Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</source>
-      <translation>在安装于单旋转轴上的零件上进行连续 4 轴联动旋转曲面加工。</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathHelix</name>
-    <message>
-      <location filename="../../../Path/Op/Helix.py" line="752"/>
-      <source>Skipped hole at position %s</source>
-      <translation>在位置 %s 处跳过了孔</translation>
-    </message>
-  </context>
-  <context>
-    <name>Pocket_Shape</name>
-    <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="163"/>
-      <source>Pocke_Shape can not process open wire.
-You can enable feature Close Open Path</source>
-      <translation>Pocke_Shape 无法处理开放路径。
-您可以启用“封闭开放路径”功能</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="346"/>
-      <source>Processing vertical faces was failed</source>
-      <translation>处理垂直面失败</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/PocketShape.py" line="354"/>
-      <source>Processing vertical faces was failed.
-You can enable feature Close Open Path</source>
-      <translation>处理垂直面失败。
-您可以启用“封闭开放路径”功能</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_Flute</name>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="293"/>
-      <source>Face appears to be a single wall of a V-groove (its centerline coincides with a face edge). Select both walls of the groove, or select the valley edge directly.
-</source>
-      <translation>平面似乎是 V 型槽的单个侧壁（其中心线与平面的边缘重合）。请同时选择沟槽的两侧侧壁，或直接选择谷线（底部边缘）。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="601"/>
-      <source>CAM_Flute: tool diameter ({}) exceeds groove width ({}) - path may overcut.
-</source>
-      <translation>CAM_Flute：刀具直径 ({}) 超过了沟槽宽度 ({}) - 路径可能会导致过切。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="630"/>
-      <source>CAM_Flute: V-bit half-angle ({:.1f}°) exceeds groove half-angle ({:.1f}°) - flanks may contact walls before reaching depth.
-</source>
-      <translation>CAM_Flute：V 刀半角 ({:.1f}°) 超过了沟槽半角 ({:.1f}°) - 在达到设定深度前，刀具侧刃可能会先接触槽壁。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="950"/>
-      <source>Selected edges do not form a single connected wire.
-</source>
-      <translation>所选边缘未能构成单条连接的线段（Wire）。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="1760"/>
-      <location filename="../../../Path/Op/Flute.py" line="1853"/>
-      <source>No depth to cut for: {}
-</source>
-      <translation>没有可切削的深度：{}
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="1790"/>
-      <source>No passes computed for: {}
-</source>
-      <translation>未计算出切削通道：{}
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="1998"/>
-      <source>No base geometry selected for Flute operation.
-</source>
-      <translation>未为开槽（Flute）操作选择基础几何图形。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="2005"/>
-      <source>StepDown must be greater than zero.
-</source>
-      <translation>下刀量（StepDown）必须大于零。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="2038"/>
-      <source>No valid faces or edges found in base geometry.
-</source>
-      <translation>在基础几何图形中未找到有效的面或边。
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Flute.py" line="2125"/>
-      <source>Could not determine centerline for: {}
-</source>
-      <translation>无法确定以下项的中心线：{}
-</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Flute.py" line="104"/>
-      <source>Force-reverse this segment&apos;s direction (2D wires only).</source>
-      <translation>强制反转该线段的方向（仅限 2D 线段）。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Flute.py" line="380"/>
-      <source>Flute</source>
-      <translation>开槽</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Flute.py" line="389"/>
-      <source>Create a ramping flute toolpath from a selected bottom face or flat wire.
-
-For a 3D face (or pair of faces forming a V-bottom), the path follows
-the face centerline.  For a flat (2D) wire, the path follows the wire
-itself, with its Z ramp shaped by the Fluting/Ramp Type settings.
-Both cases step down in multiple passes to final depth.
-
-Supported tool types: flat, bull-nose, V-bit.</source>
-      <translation>根据所选的底面或平面线段创建斜切开槽刀具路径。
-
-对于 3D 平面（或构成 V 型底的两个面），路径将沿平面的中心线走刀。对于平面 (2D) 线段，路径将沿线段本身走刀，其 Z 轴斜切形态由开槽/斜切类型设置控制。
-两种情况均支持通过多道下刀分层切削至最终深度。
-
-支持的刀具类型：平底刀、牛鼻刀（圆角刀）、V 型刀。</translation>
-    </message>
-  </context>
-  <context>
-    <name>Waterline</name>
-    <message>
-      <location filename="../../../Path/Op/Waterline.py" line="1385"/>
-      <source>: Steps below the model&apos;s top Face will be the only ones processed.</source>
-      <translation>：只有位于模型顶面下方的台阶（或层级）才会被处理。</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathShape</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShape.py" line="417"/>
-      <source>Tool controller not selected for operation %s</source>
-      <translation>操作 %s 未选择刀具控制器</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_PathShape</name>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShape.py" line="674"/>
-      <source>Path from Shape</source>
-      <translation>根据形状创建路径</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/PathShape.py" line="677"/>
-      <source>Creates path from selected shapes with tool controller</source>
-      <translation>使用刀具控制器根据所选形状创建路径</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_FeedsSpeeds</name>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="330"/>
-      <source>Suggest Feeds &amp; Speeds</source>
-      <translation>推荐进给和转速</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="352"/>
-      <source>(no tool)</source>
-      <translation>（无工具）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="353"/>
-      <source>Tool:</source>
-      <translation>工具：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
-      <source>(none — generic resolution)</source>
-      <translation>（无 — 通用解析）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
-      <source>Material:</source>
-      <translation>材质：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="360"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="248"/>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="613"/>
-      <source>(any)</source>
-      <translation>（任意）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
-      <source>Op type:</source>
-      <translation>操作类型：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="377"/>
-      <source>Apply preset:</source>
-      <translation>应用预设：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="381"/>
-      <source>Suggestion</source>
-      <translation>推荐</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="385"/>
-      <source>Source:</source>
-      <translation>来源：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="391"/>
-      <source>Confidence:</source>
-      <translation>置信度：</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="396"/>
-      <source>Current</source>
-      <translation>当前</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="398"/>
-      <source>Suggested</source>
-      <translation>已推荐</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="400"/>
-      <source>Δ</source>
-      <translation>Δ</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="436"/>
-      <source>Auto (use resolver)</source>
-      <translation>自动（使用解算器）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="530"/>
-      <source>No suggestion available</source>
-      <translation>无可用推荐</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="541"/>
-      <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
-      <translation>此工具上没有匹配的预设。从库中打开该工具以添加预设。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/Gui/MaterialPicker.py" line="58"/>
-      <source>Choose material</source>
-      <translation>选择材料</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="220"/>
-      <source>e.g. &apos;Aluminum aggressive&apos;</source>
-      <translation>例如 &apos;铝合金强力加工&apos;</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="443"/>
-      <source>(none)</source>
-      <translation>（无）</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="449"/>
-      <source>Name required</source>
-      <translation>请输入名称</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="450"/>
-      <source>Give the preset a name.</source>
-      <translation>为预设指定一个名称。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="457"/>
-      <source>Duplicate preset</source>
-      <translation>重复的预设</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="462"/>
-      <source>This tool already has a preset named &apos;%s&apos; for this material and op type.</source>
-      <translation>此刀具在该材料和操作类型下已存在名为 &apos;%s&apos; 的预设。</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="562"/>
-      <source>Name</source>
-      <translation>名称</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="563"/>
-      <source>Material</source>
-      <translation>材质</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="564"/>
-      <source>Op type</source>
-      <translation>操作类型</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="565"/>
-      <source>Surface speed</source>
-      <translation>切削速度</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="566"/>
-      <source>Chipload</source>
-      <translation>每齿切入量</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="567"/>
-      <source>Notes</source>
-      <translation>备注</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="579"/>
-      <source>Add preset</source>
-      <translation>添加预设</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="583"/>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="587"/>
-      <source>Copy</source>
-      <translation>复制</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="591"/>
-      <source>Delete</source>
-      <translation>删除</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="610"/>
-      <source>(any material)</source>
-      <translation>（任何材料）</translation>
-    </message>
-  </context>
-  <context>
-    <name>MirrorDressup</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="118"/>
-      <source>No base operation</source>
-      <translation>无基础操作</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="125"/>
-      <source>Base object &apos;%s&apos; is not derived from Path::Feature</source>
-      <translation>基础对象 &apos;%s&apos; 并非源自 Path::Feature</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="132"/>
-      <source>Base operation &apos;%s&apos; with empty path</source>
-      <translation>基础操作 &apos;%s&apos; 的路径为空</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAM_DressupMirror</name>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="275"/>
-      <source>Mirror</source>
-      <translation>镜像</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="277"/>
-      <source>Creates mirror of a selected path</source>
-      <translation>创建所选路径的镜像</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="306"/>
-      <source>The selected object is not a path</source>
-      <translation>所选对象不是一个刀轨</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/Mirror.py" line="310"/>
-      <source>Select a profile object</source>
-      <translation>选择一个轮廓对象</translation>
-    </message>
-  </context>
-  <context>
-    <name>CAMSimulator::GuiDisplay</name>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="39"/>
-      <source>Play simulation</source>
-      <translation>播放模拟</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="53"/>
-      <source>Single step simulation</source>
-      <translation>单步模拟</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="67"/>
-      <source>Decrease simulation speed</source>
-      <translation>降低模拟速度</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="81"/>
-      <source>Increase simulation speed</source>
-      <translation>提高模拟速度</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="98"/>
-      <source>x1</source>
-      <translation>x1</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="105"/>
-      <source>Reset camera</source>
-      <translation>重置相机</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="119"/>
-      <source>Toggle view simulation/model</source>
-      <translation>切换视图模拟/模型</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="136"/>
-      <source>Toggle turn table animation</source>
-      <translation>切换转台动画</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="153"/>
-      <source>Show/hide tool path</source>
-      <translation>显示/隐藏刀具路径</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.ui" line="170"/>
-      <source>Toggle ambient occlusion</source>
-      <translation>切换环境光遮蔽</translation>
-    </message>
-    <message>
-      <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="99"/>
-      <source>x%1</source>
-      <translation>x%1</translation>
     </message>
   </context>
   <context>

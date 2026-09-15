@@ -6101,8 +6101,8 @@ in the 3D view for the sweep path.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Επεξεργασία %1</translation>
     </message>
@@ -6530,7 +6530,7 @@ Continue?</translation>
       <translation type="unfinished">Enter distance:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="994"/>
+      <location filename="../../ViewProviderExt.cpp" line="1011"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -7352,7 +7352,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6723"/>
+      <location filename="../../../App/Geometry.cpp" line="6726"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Το πρόγραμμα δεν μπορεί να βρει πού ενώνονται οι γραμμές. Βεβαιωθείτε ότι οι άκρες τους συμπίπτουν ακριβώς στο ίδιο σημείο (χρησιμοποιώντας τον περιορισμό "Σύμπτωσης").</translation>
     </message>

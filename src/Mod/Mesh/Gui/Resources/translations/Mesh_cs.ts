@@ -2263,8 +2263,8 @@ Navštivte https://openscad.org/ a nainstalujte ho.</translation>
       <translation>Zobrazit barvy</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="475"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>Opustit informační režim</translation>
     </message>

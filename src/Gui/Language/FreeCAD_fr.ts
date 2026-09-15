@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <source>Enum</source>
       <translation>Énumération</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Paramètres de la transformation</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <location filename="../TaskView/TaskImage.cpp" line="342"/>
+      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Modifier une image</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>Activer/désactiver la suppression</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="426"/>
+      <location filename="../CommandFeat.cpp" line="390"/>
       <source>Skip recomputes</source>
       <translation>Ignorer les recalculs</translation>
     </message>
@@ -8877,8 +8877,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <location filename="../MainWindow.cpp" line="1015"/>
+      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>Appliquer à tout</translation>
     </message>
@@ -9178,14 +9178,14 @@ manière récursive ?</translation>
       <translation>Pièce</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="301"/>
-      <source>All Files</source>
-      <translation>Tous les fichiers</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
       <translation>Modifier le plan d'image</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="301"/>
+      <source>All Files</source>
+      <translation>Tous les fichiers</translation>
     </message>
   </context>
   <context>
@@ -9675,8 +9675,8 @@ manière récursive ?</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="300"/>
-      <source>Sends the selected object to the Python console</source>
-      <translation>Affiche l'objet sélectionné vers la console Python</translation>
+      <source>Sends the selected objects to the Python console</source>
+      <translation>Transmet les objets sélectionnés à la console Python.</translation>
     </message>
   </context>
   <context>
@@ -13206,12 +13206,12 @@ Proceed?</source>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="399"/>
+      <location filename="../CommandFeat.cpp" line="363"/>
       <source>Skip Recomputes</source>
       <translation>Ignorer les récalculs</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="401"/>
+      <location filename="../CommandFeat.cpp" line="365"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>Active/désactive les recalculs du document.</translation>
     </message>
@@ -14698,14 +14698,6 @@ sont obstrués dans la vue 3D.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::TaskCommandLinkDialog</name>
-    <message>
-      <location filename="../TaskCommandLink.ui" line="14"/>
-      <source>Insert</source>
-      <translation>Insérer</translation>
-    </message>
-  </context>
-  <context>
     <name>FileFormat</name>
     <message>
       <location filename="../FreeCADGuiInit.py" line="567"/>
@@ -14714,46 +14706,11 @@ sont obstrués dans la vue 3D.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
+    <name>Gui::TaskCommandLinkDialog</name>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Objet</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Filtrer par type</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Synchronise la sélection de la vue 3D avec la hiérarchie complète des objets.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Synchroniser la sélection des sous-objets</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Rechercher</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Un modèle de recherche pour filtrer les résultats ci-dessus</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Réinitialiser</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Supprimer</translation>
+      <location filename="../TaskCommandLink.ui" line="14"/>
+      <source>Insert</source>
+      <translation>Insérer</translation>
     </message>
   </context>
   <context>
@@ -14859,6 +14816,75 @@ cela sera considéré comme la séquence de raccourci « F, F ».</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Objet</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Filtrer par type</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Synchronise la sélection de la vue 3D avec la hiérarchie complète des objets.</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Synchroniser la sélection des sous-objets</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Rechercher</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Un modèle de recherche pour filtrer les résultats ci-dessus</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Réinitialiser</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Supprimer</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3861"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Activer/désactiver les panneaux inférieurs</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3862"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Active/désactive les panneaux ancrables inférieurs</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>Activer/désactiver l'état supprimé</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>Active ou désactive l'état supprimé des objets sélectionnés. Un objet supprimé se comporte comme s'il avait été réellement supprimé.</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdHelpGroup</name>
     <message>
       <location filename="../CommandStd.cpp" line="322"/>
@@ -14887,46 +14913,6 @@ cela sera considéré comme la séquence de raccourci « F, F ».</translation>
       <location filename="../CommandStd.cpp" line="1026"/>
       <source>Creates a new annotation label at the picked location in the 3D view</source>
       <translation>Crée une nouvelle étiquette d'annotation à l'emplacement choisi dans la vue 3D.</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>Enregistrer sous</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>Ouvrir</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3861"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Activer/désactiver les panneaux inférieurs</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3862"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Active/désactive les panneaux ancrables inférieurs</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>Activer/désactiver l'état supprimé</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>Active ou désactive l'état supprimé des objets sélectionnés. Un objet supprimé se comporte comme s'il avait été réellement supprimé.</translation>
     </message>
   </context>
   <context>
@@ -14966,6 +14952,28 @@ cela sera considéré comme la séquence de raccourci « F, F ».</translation>
       <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>Valeur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>Enregistrer sous</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>Ouvrir</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui</name>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation>Nouveau paramètre…</translation>
     </message>
   </context>
   <context>
@@ -15050,14 +15058,6 @@ valeurs faibles créent des reflets larges et flous. Notez que l'intensité des 
       <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Carte</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui</name>
-    <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation>Nouveau paramètre…</translation>
     </message>
   </context>
 </TS>

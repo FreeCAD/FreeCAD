@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
@@ -36,7 +38,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintContact, FemGui::ViewProviderFe
 ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
 {
     sPixmap = "FEM_ConstraintContact";
-    loadSymbol((resourceSymbolDir + "ConstraintContact.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintContact.iv");
     ShapeAppearance.setDiffuseColor(0.2f, 0.3f, 0.2f);
 }
 

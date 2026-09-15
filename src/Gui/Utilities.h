@@ -23,7 +23,11 @@
 #pragma once
 
 #include <vector>
+#include <QBrush>
 #include <QColor>
+#include <QLinearGradient>
+#include <QMarginsF>
+#include <QRadialGradient>
 #include <App/Material.h>
 #include <Base/Converter.h>
 #include <Base/ViewProj.h>
@@ -33,6 +37,9 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
+#include <StyleParameters/Gradient.h>
+#include <StyleParameters/Insets.h>
+#include <StyleParameters/Value.h>
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -440,6 +447,76 @@ inline Base::Matrix4D convertTo<Base::Matrix4D, SbMatrix>(const SbMatrix& vec2)
     }
     return mat;
 }
+
+template<>
+inline QMarginsF convertTo<QMarginsF, Gui::StyleParameters::Insets>(
+    const Gui::StyleParameters::Insets& insets
+)
+{
+    return {
+        insets.left().value,
+        insets.top().value,
+        insets.right().value,
+        insets.bottom().value,
+    };
+}
+
+template<>
+inline QLinearGradient convertTo<QLinearGradient, Gui::StyleParameters::LinearGradient>(
+    const Gui::StyleParameters::LinearGradient& gradient
+)
+{
+    QLinearGradient qGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2());
+    qGradient.setCoordinateMode(QGradient::ObjectMode);
+    for (const auto& stop : gradient.colorStops()) {
+        qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+    }
+    return qGradient;
+}
+
+template<>
+inline QRadialGradient convertTo<QRadialGradient, Gui::StyleParameters::RadialGradient>(
+    const Gui::StyleParameters::RadialGradient& gradient
+)
+{
+    QRadialGradient
+        qGradient(gradient.cx(), gradient.cy(), gradient.radius(), gradient.fx(), gradient.fy());
+    qGradient.setCoordinateMode(QGradient::ObjectMode);
+    for (const auto& stop : gradient.colorStops()) {
+        qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+    }
+    return qGradient;
+}
+
+template<>
+inline QBrush convertTo<QBrush, Gui::StyleParameters::Value>(const Gui::StyleParameters::Value& value)
+{
+    using namespace Gui::StyleParameters;
+
+    if (const Color* color = value.tryGet<Color>()) {
+        return color->asValue<QColor>();
+    }
+
+    const Tuple* tuple = value.tryGet<Tuple>();
+    if (!tuple) {
+        return Qt::NoBrush;
+    }
+
+    if (tuple->kind == TupleKind::LinearGradient) {
+        if (const auto gradient = LinearGradient::tryFrom(value)) {
+            return convertTo<QLinearGradient>(*gradient);
+        }
+    }
+
+    if (tuple->kind == TupleKind::RadialGradient) {
+        if (const auto gradient = RadialGradient::tryFrom(value)) {
+            return convertTo<QRadialGradient>(*gradient);
+        }
+    }
+
+    return Qt::NoBrush;
+}
+
 }  // namespace Base
 
 namespace App

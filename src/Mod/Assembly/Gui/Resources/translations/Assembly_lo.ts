@@ -1632,24 +1632,6 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>ເລືອກຢ່າງໜ້ອຍ 2 ສ່ວນປະກອບ ເພື່ອສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ.&lt;/p&gt;&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ ທີ່ລັອກສ່ວນປະກອບທີ່ເລືອກໄວ້ເຂົ້າກັນແບບຖາວອນ.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1670,6 +1652,24 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>ກູ້ຄືນພາບບັນທຶກສະຖານະ</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>ເລືອກຢ່າງໜ້ອຍ 2 ສ່ວນປະກອບ ເພື່ອສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ.&lt;/p&gt;&lt;p&gt;ສ້າງກຸ່ມທີ່ຍຶດແໜ້ນ ທີ່ລັອກສ່ວນປະກອບທີ່ເລືອກໄວ້ເຂົ້າກັນແບບຖາວອນ.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

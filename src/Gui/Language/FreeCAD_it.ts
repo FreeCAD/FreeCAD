@@ -26,8 +26,8 @@
       <translation>Posizione</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -134,9 +134,9 @@
     </message>
     <message>
       <location filename="../Transform.cpp" line="108"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="514"/>
       <source>Transform</source>
       <translation>Trasforma</translation>
     </message>
@@ -146,8 +146,8 @@
       <translation>Attiva/Disattiva elementi array</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <location filename="../TaskView/TaskImage.cpp" line="342"/>
+      <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Modifica immagine</translation>
     </message>
@@ -167,7 +167,7 @@
       <translation>Attiva/disattiva soppressione</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="426"/>
+      <location filename="../CommandFeat.cpp" line="390"/>
       <source>Skip recomputes</source>
       <translation>Salta il ricalcolo</translation>
     </message>
@@ -5821,32 +5821,32 @@ Salvare tutte le modifiche?</translation>
     <message>
       <location filename="../EditorView.cpp" line="693"/>
       <source>(%1) %2 (un)indent</source>
-      <translation type="unfinished">(%1) %2 (un)indent</translation>
+      <translation>(%1) %2 (non) indentare</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="698"/>
       <source>%1 / %2 (un)comment</source>
-      <translation type="unfinished">%1 / %2 (un)comment</translation>
+      <translation>%1 / %2 (non) commentare</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="702"/>
       <source>%1 execute selection</source>
-      <translation type="unfinished">%1 execute selection</translation>
+      <translation>%1 esegui selezione</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="709"/>
       <source>%1 auto-complete</source>
-      <translation type="unfinished">%1 auto-complete</translation>
+      <translation>%1 completamento automatico</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="719"/>
       <source>%1 next result</source>
-      <translation type="unfinished">%1 next result</translation>
+      <translation>%1 prossimo risultato</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="722"/>
       <source>%1 close search</source>
-      <translation type="unfinished">%1 close search</translation>
+      <translation>%1 chiudi ricerca</translation>
     </message>
   </context>
   <context>
@@ -6886,7 +6886,7 @@ Uscire senza salvare tutti i dati?</translation>
     <message>
       <location filename="../EditorView.cpp" line="809"/>
       <source>Find in document...</source>
-      <translation type="unfinished">Find in document...</translation>
+      <translation>Trova nel documento...</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="875"/>
@@ -8882,8 +8882,8 @@ Scegliere 'Annulla' per interrompere</translation>
       <translation>Trascinamento della selezione non riuscito</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <location filename="../MainWindow.cpp" line="1015"/>
+      <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>Applica a tutti</translation>
     </message>
@@ -9183,14 +9183,14 @@ the current copy will be lost.
       <translation>Parte</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="301"/>
-      <source>All Files</source>
-      <translation>Tutti i file</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
       <source>Edit Image Plane</source>
       <translation>Modifica piano immagine</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="301"/>
+      <source>All Files</source>
+      <translation>Tutti i file</translation>
     </message>
   </context>
   <context>
@@ -9680,8 +9680,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="300"/>
-      <source>Sends the selected object to the Python console</source>
-      <translation>Invia l'oggetto selezionato alla console Python</translation>
+      <source>Sends the selected objects to the Python console</source>
+      <translation>Invia gli oggetti selezionati alla console Python</translation>
     </message>
   </context>
   <context>
@@ -11403,13 +11403,13 @@ visualizzerà la schermata iniziale.</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="363"/>
       <source>Prevent the mouse wheel from changing the value of combo boxes,
 and spin boxes with hover focus</source>
-      <translation type="unfinished">Prevent the mouse wheel from changing the value of combo boxes,
-and spin boxes with hover focus</translation>
+      <translation>Impedisci alla rotellina del mouse di modificare il valore delle caselle combinate,
+fa ruotare le caselle al passaggio del mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="367"/>
       <source>Ignore mouse wheel on hover focused input fields</source>
-      <translation type="unfinished">Ignore mouse wheel on hover focused input fields</translation>
+      <translation>Ignora l'effetto della rotellina del mouse sui campi di input selezionati al passaggio del mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="383"/>
@@ -13215,12 +13215,12 @@ Procedere?</translation>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="399"/>
+      <location filename="../CommandFeat.cpp" line="363"/>
       <source>Skip Recomputes</source>
       <translation>Salta i ricalcoli</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="401"/>
+      <location filename="../CommandFeat.cpp" line="365"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>Abilita o disabilita i ricalcoli del documento</translation>
     </message>
@@ -14704,14 +14704,6 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::TaskCommandLinkDialog</name>
-    <message>
-      <location filename="../TaskCommandLink.ui" line="14"/>
-      <source>Insert</source>
-      <translation>Inserimento</translation>
-    </message>
-  </context>
-  <context>
     <name>FileFormat</name>
     <message>
       <location filename="../FreeCADGuiInit.py" line="567"/>
@@ -14720,46 +14712,11 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::Dialog::DlgDocumentObject</name>
+    <name>Gui::TaskCommandLinkDialog</name>
     <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
-      <source>Object</source>
-      <translation>Oggetto</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Filtra per tipo</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Sincronizza la selezione della vista 3D con la gerarchia degli oggetti</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Sincronizza la selezione dei sotto-oggetti</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
-      <source>Search</source>
-      <translation>Trova</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Un modello di ricerca per filtrare i risultati di cui sopra</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Ripristina</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Pulisci</translation>
+      <location filename="../TaskCommandLink.ui" line="14"/>
+      <source>Insert</source>
+      <translation>Inserimento</translation>
     </message>
   </context>
   <context>
@@ -14864,6 +14821,75 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Oggetto</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Filtra per tipo</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Sincronizza la selezione della vista 3D con la gerarchia degli oggetti</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Sincronizza la selezione dei sotto-oggetti</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Trova</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Un modello di ricerca per filtrare i risultati di cui sopra</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Reset</source>
+      <translation>Ripristina</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="119"/>
+      <source>Clear</source>
+      <translation>Pulisci</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3861"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Attiva/disattiva i pannelli inferiori</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3862"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Attiva/disattiva i pannelli agganciabili inferiori</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>Attiva/disattiva soppresso</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>Attiva/Disattiva la soppressione dello stato degli oggetti selezionati. Un oggetto soppresso si comporta come se fosse stato eliminato.</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdHelpGroup</name>
     <message>
       <location filename="../CommandStd.cpp" line="322"/>
@@ -14892,46 +14918,6 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
       <location filename="../CommandStd.cpp" line="1026"/>
       <source>Creates a new annotation label at the picked location in the 3D view</source>
       <translation>Crea una nuova etichetta di annotazione nella posizione selezionata nella vista 3D</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>Salva come</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>Apri</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3861"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Attiva/disattiva i pannelli inferiori</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3862"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Attiva/disattiva i pannelli agganciabili inferiori</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation>Attiva/disattiva soppresso</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation>Attiva/Disattiva la soppressione dello stato degli oggetti selezionati. Un oggetto soppresso si comporta come se fosse stato eliminato.</translation>
     </message>
   </context>
   <context>
@@ -14971,6 +14957,28 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
       <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>Valore</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>Salva come</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>Apri</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui</name>
+    <message>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
+      <source>New parameter…</source>
+      <translation>Nuovo parametro…</translation>
     </message>
   </context>
   <context>
@@ -15045,14 +15053,6 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
       <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Mappa</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui</name>
-    <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="284"/>
-      <source>New parameter…</source>
-      <translation>Nuovo parametro…</translation>
     </message>
   </context>
 </TS>
