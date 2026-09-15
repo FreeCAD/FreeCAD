@@ -200,6 +200,20 @@ public:
         bool normalsFromUV = false
     );
 
+    /// Compute the tessellation facet budget for a single Part view provider.
+    ///
+    /// The budget is derived from the global limit MaxFacetsForDisplay (parameter
+    /// BaseApp/Preferences/Mod/Part) and is shared among all currently visible Part
+    /// view providers of all open documents, so that the total number of displayed
+    /// triangles stays bounded even in huge assemblies. Returns 0 if the limit is
+    /// disabled (MaxFacetsForDisplay <= 0).
+    static int getFacetBudget();
+
+    /// Re-tessellate all visible Part view providers of all open documents. Used when
+    /// the global facet budget parameter has changed and the existing meshes should be
+    /// rebuilt with the new limit.
+    static void updateVisualOfAllParts();
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;

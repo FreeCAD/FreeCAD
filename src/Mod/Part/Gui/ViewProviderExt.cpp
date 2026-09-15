@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
@@ -77,7 +79,9 @@
 #include <Base/Tools.h>
 
 #include <Gui/BitmapFactory.h>
+#include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/ViewParams.h>
@@ -87,6 +91,7 @@
 #include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderExt.h"
+#include "ViewProvider.h"
 #include "ViewProviderPartExtPy.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
@@ -1048,6 +1053,58 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
     }
 }
 
+int ViewProviderPartExt::getFacetBudget()
+{
+    const ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part"
+    );
+
+    // MaxFacetsForDisplay is the total triangle budget for all visible Part objects of
+    // all open documents. A value of 0 disables the tessellation limit.
+    const int globalBudget = hGrp->GetInt("MaxFacetsForDisplay", 2000000);
+    if (globalBudget <= 0) {
+        return 0;
+    }
+
+    // Count the visible Part view providers that share the budget. Hidden objects do
+    // not consume rendering capacity and therefore do not reduce the budget of the
+    // visible ones.
+    int count = 0;
+    for (const auto doc : App::GetApplication().getDocuments()) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc);
+        if (!guiDoc) {
+            continue;
+        }
+        for (const auto vp : guiDoc->getViewProvidersOfType(ViewProviderPart::getClassTypeId())) {
+            if (vp->isVisible()) {
+                count++;
+            }
+        }
+    }
+
+    // Split the global budget evenly among the visible objects. Keep a reasonable
+    // minimum so that objects of huge assemblies are not reduced below a recognizable
+    // level, and a maximum so that a single visible pathological shape (e.g. a long
+    // ball screw with hundreds of thousands of facets) does not consume the meshing
+    // time of the whole global budget by itself.
+    return std::clamp(globalBudget / std::max(count, 1), 5000, 100000);
+}
+
+void ViewProviderPartExt::updateVisualOfAllParts()
+{
+    for (const auto doc : App::GetApplication().getDocuments()) {
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc);
+        if (!guiDoc) {
+            continue;
+        }
+        for (const auto vp : guiDoc->getViewProvidersOfType(ViewProviderPart::getClassTypeId())) {
+            if (vp->isVisible()) {
+                static_cast<ViewProviderPartExt*>(vp)->updateVisual();
+            }
+        }
+    }
+}
+
 void ViewProviderPartExt::setupCoinGeometry(
     TopoDS_Shape shape,
     SoCoordinate3* coords,
@@ -1104,14 +1161,155 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.InParallel = Standard_True;
     meshParams.AllowQualityDecrease = Standard_True;
 
-    // Clear triangulation and PCurves from geometry which can slow down the process
+    // Tessellation facet budget. Some shapes (e.g. long helical surfaces such as ball
+    // screws, or B-spline surfaces with thousands of control points) can produce an
+    // enormous number of triangles when tessellated with a small deviation. The meshing
+    // itself can then take many minutes and the resulting multi-million triangle meshes
+    // make the 3D view unusably slow when rendering, orbiting or pre-selecting objects.
+    //
+    // To keep the GUI responsive the tessellation is limited by a facet budget that is
+    // shared among all visible Part objects (see getFacetBudget()). To avoid ever
+    // starting an extremely expensive fine mesh, the shape is first meshed once at a
+    // coarse "probe" deflection, which is cheap for any shape (at most a few thousand
+    // triangles). The facet count of the probe mesh is then used to compute the
+    // deflection that will hit the budget: for meshes of the same shape the triangle
+    // count grows roughly quadratically with the inverse deflection, so the deflection
+    // of the final mesh follows directly from the measured count. If after meshing the
+    // budget is still exceeded, both the linear and the angular deflection are scaled
+    // by the same factor and the shape is re-meshed (at most a few iterations). Set
+    // MaxFacetsForDisplay to 0 to disable the limit.
+    const int maxFacets = getFacetBudget();
+
+    // Limit the number of warning messages so that opening an assembly with hundreds of
+    // objects does not flood the report view.
+    static int budgetWarningCount = 0;
+    const bool doWarn = maxFacets > 0 && budgetWarningCount < 10;
+
+    // Coarse deflection used for the probe mesh. A deflection of the bounding box
+    // diagonal / 100 keeps the probe at a few thousand triangles even for very large
+    // shapes. The angular deflection is scaled by the same factor, otherwise the probe
+    // of shapes with fine features (threads, ball screw grooves) would still discretize
+    // their high-pole-count curves at the requested angular tolerance and remain
+    // expensive.
+    double probeDeflection = deflection;
+    if (maxFacets > 0) {
+        const Bnd_Box bounds = Part::Tools::getBounds(shape);
+        double xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+        const double diag = std::sqrt(
+            (xMax - xMin) * (xMax - xMin) + (yMax - yMin) * (yMax - yMin)
+            + (zMax - zMin) * (zMax - zMin)
+        );
+        probeDeflection = std::max(deflection, diag / 100.0);
+        if (probeDeflection > deflection) {
+            const double probeScale = probeDeflection / deflection;
+            meshParams.Deflection = probeDeflection;
+            meshParams.Angle *= probeScale;
+        }
+    }
+
+    for (int attempt = 0; attempt < 4; attempt++) {
+        // Clear triangulation and PCurves from geometry which can slow down the process.
+        // This must be done before each meshing attempt, otherwise OCCT keeps the finer
+        // mesh of a previous attempt when asked for a coarser one.
 #if OCC_VERSION_HEX < 0x070600
-    BRepTools::Clean(shape);
+        BRepTools::Clean(shape);
 #else
-    BRepTools::Clean(shape, Standard_True);
+        BRepTools::Clean(shape, Standard_True);
 #endif
 
-    BRepMesh_IncrementalMesh(shape, meshParams);
+        BRepMesh_IncrementalMesh(shape, meshParams);
+
+        if (maxFacets <= 0) {
+            break;
+        }
+
+        // count the triangles of the produced mesh
+        TopTools_IndexedMapOfShape budgetFaceMap;
+        TopExp::MapShapes(shape, TopAbs_FACE, budgetFaceMap);
+        int count = 0;
+        for (int i = 1; i <= budgetFaceMap.Extent(); i++) {
+            TopLoc_Location budgetLoc;
+            Handle(Poly_Triangulation)
+                mesh = BRep_Tool::Triangulation(TopoDS::Face(budgetFaceMap(i)), budgetLoc);
+            if (mesh.IsNull()) {
+                mesh = Part::Tools::triangulationOfFace(TopoDS::Face(budgetFaceMap(i)));
+            }
+            if (!mesh.IsNull()) {
+                count += mesh->NbTriangles();
+            }
+        }
+
+        if (attempt == 0) {
+            // The first mesh is the probe. Predict the triangle count at the requested
+            // deflection from the measured count.
+            const double growth = (probeDeflection / deflection) * (probeDeflection / deflection);
+            const double predicted = static_cast<double>(count) * growth;
+            if (predicted > maxFacets) {
+                // The requested deflection would exceed the budget. Mesh directly at a
+                // deflection derived from the measured count, so that the expensive fine
+                // mesh is never attempted. This target is never finer than the requested
+                // deflection: target <= deflection would imply predicted <= maxFacets.
+                const double target = std::max(
+                    deflection,
+                    probeDeflection * std::sqrt(static_cast<double>(count) / maxFacets)
+                );
+                const double scale = target / meshParams.Deflection;
+                meshParams.Deflection = target;
+                meshParams.Angle *= scale;
+                if (doWarn) {
+                    budgetWarningCount++;
+                    FC_WARN(
+                        "Part tessellation probe of "
+                        << count << " triangles predicts " << static_cast<long>(predicted)
+                        << " at the requested deflection, which exceeds the facet budget of "
+                        << maxFacets << ". Increasing linear deflection to " << target
+                        << " and angular deflection to " << meshParams.Angle << " rad."
+                        << (budgetWarningCount == 10 ? " Further messages suppressed." : "")
+                    );
+                }
+                continue;
+            }
+            if (probeDeflection > deflection) {
+                // The probe predicts the requested deflection fits the budget; mesh
+                // again at the requested deflection.
+                meshParams.Deflection = deflection;
+                meshParams.Angle = AngDeflectionRads;
+                continue;
+            }
+            // The probe was already meshed at the requested deflection and fits the
+            // budget.
+            break;
+        }
+
+        if (count <= maxFacets || attempt == 3) {
+            if (count > maxFacets) {
+                if (doWarn) {
+                    budgetWarningCount++;
+                    FC_WARN(
+                        "Part tessellation still exceeds the facet budget after adaptive "
+                        "deflection scaling: "
+                        << count << " triangles (budget " << maxFacets
+                        << "). Consider raising the object's Deviation property."
+                    );
+                }
+            }
+            break;
+        }
+
+        const double scale = std::sqrt(static_cast<double>(count) / maxFacets);
+        meshParams.Deflection *= scale;
+        meshParams.Angle *= scale;
+        if (doWarn) {
+            budgetWarningCount++;
+            FC_WARN(
+                "Part tessellation exceeds the facet budget ("
+                << count << " > " << maxFacets << " triangles). Increasing linear deflection to "
+                << meshParams.Deflection << " and angular deflection to " << meshParams.Angle
+                << " rad and re-tessellating."
+            );
+        }
+    }
 
     // We must reset the location here because the transformation data
     // are set in the placement property
