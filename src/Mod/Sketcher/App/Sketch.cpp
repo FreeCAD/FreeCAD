@@ -53,6 +53,7 @@
 
 #include "Constraint.h"
 #include "GeometryFacade.h"
+#include "GroupHierarchy.h"
 #include "Sketch.h"
 #include "SolverGeometryExtension.h"
 
@@ -262,14 +263,18 @@ int Sketch::setUpSketch(
     clear();
 
     // The geometries that are in groups are going to be ignored by the solver.
-    std::set<int> inGroupGeoIds;
-    for (const auto& c : ConstraintList) {
-        if (c->Type == Group || c->Type == Text) {
-            // Start from index 1, as 0 is the frame.
-            for (int i = 1; c->hasElement(i); ++i) {
-                inGroupGeoIds.insert(c->getGeoId(i));
+    const GroupHierarchy hierarchy(ConstraintList);
+    if (!hierarchy.valid) {
+        for (size_t i = 0; i < ConstraintList.size(); ++i) {
+            if (ConstraintList[i]->Type == Group || ConstraintList[i]->Type == Text) {
+                MalformedConstraints.push_back(static_cast<int>(i) + 1);
             }
         }
+        return 0;
+    }
+    std::set<int> inGroupGeoIds;
+    for (const auto& [member, parent] : hierarchy.parents) {
+        inGroupGeoIds.insert(member);
     }
 
     std::vector<Part::Geometry*> intGeoList, extGeoList;
@@ -2598,8 +2603,20 @@ int Sketch::addConstraint(const Constraint* constraint)
                 return -1;
             }
             // Check that the first element is correctly the group construction line
-            if (Geoms[checkGeoId(constraint->getGeoId(0))].type != Line) {
+            const int handle = constraint->getGeoId(0);
+            if (handle < 0 || handle >= static_cast<int>(Geoms.size())
+                || !Geoms[handle].geo->is<Part::GeomLineSegment>()) {
                 return -1;
+            }
+
+            for (int i = 1; constraint->hasElement(i); ++i) {
+                const int member = constraint->getGeoId(i);
+                if (member == GeoEnum::GeoUndef) {
+                    continue;
+                }
+                if (member < 0 || member >= static_cast<int>(Geoms.size()) || Geoms[member].external) {
+                    return -1;
+                }
             }
 
             rtn = ++ConstraintsCounter;
@@ -5737,8 +5754,11 @@ void Sketch::captureGroupStates()
 {
     preSolveGroupStates.clear();
 
-    // A set to keep track of which parameters we've already moved.
-    std::set<double*> movedParams;
+    std::vector<Constraint*> constraints;
+    for (const auto& def : Constrs) {
+        constraints.push_back(def.constr);
+    }
+    const GroupHierarchy hierarchy(constraints);
 
     for (const auto& constrDef : Constrs) {
         const Constraint* c = constrDef.constr;
@@ -5749,6 +5769,9 @@ void Sketch::captureGroupStates()
 
         // --- Capture Frame State ---
         int frameGeoId = c->getGeoId(0);
+        if (hierarchy.parents.contains(frameGeoId)) {
+            continue;
+        }
         preSolveGroupStates[frameGeoId] = getGroupLineState(frameGeoId);
     }
 }
@@ -5759,6 +5782,12 @@ void Sketch::applyGroupTransformations()
         return;
     }
 
+    std::vector<Constraint*> constraints;
+    for (const auto& def : Constrs) {
+        constraints.push_back(def.constr);
+    }
+    const GroupHierarchy hierarchy(constraints);
+
     for (const auto& constrDef : Constrs) {
         const Constraint* c = constrDef.constr;
         if ((c->Type != Group && c->Type != Text) || !c->hasElement(1)) {
@@ -5766,6 +5795,9 @@ void Sketch::applyGroupTransformations()
         }
 
         int frameGeoId = c->getGeoId(0);
+        if (!preSolveGroupStates.contains(frameGeoId)) {
+            continue;
+        }
 
         // Get the "before" and "after" states of the frame line
         GroupLineState preSolveFrame = preSolveGroupStates.at(frameGeoId);
@@ -5796,13 +5828,12 @@ void Sketch::applyGroupTransformations()
         // 3. R: Matrix for rotation
         Base::Matrix4D R;  // Identity
         if (preLen > Precision::Confusion()) {
-            // We can get the axis and angle from the two vectors and use rotLine
-            Base::Vector3d rotationAxis = preVec.Cross(postVec);
-            double rotationAngle = preVec.GetAngle(postVec);
-            // Only apply rotation if the vectors are not collinear
-            if (rotationAxis.Length() > Precision::Confusion()) {
-                R.rotLine(rotationAxis, rotationAngle);
-            }
+            // Signed planar angle also handles a 180-degree turn (zero cross product).
+            const double angle = std::atan2(
+                preVec.x * postVec.y - preVec.y * postVec.x,
+                preVec.x * postVec.x + preVec.y * postVec.y
+            );
+            R.rotZ(angle);
         }
 
         // 4. T2: Matrix to translate the group to its new final position
@@ -5815,12 +5846,7 @@ void Sketch::applyGroupTransformations()
         Base::Matrix4D transform = T2 * R * S * T1;
 
         // --- Loop through grouped elements and apply the transform ---
-        for (int i = 1; c->hasElement(i); ++i) {
-            int groupedGeoId = c->getGeoId(i);
-            if (groupedGeoId == GeoEnum::GeoUndef) {
-                continue;
-            }
-
+        for (int groupedGeoId : hierarchy.descendants(frameGeoId)) {
             // Get the slave's current (pre-solve) state
             Part::Geometry* groupedGeo = Geoms[checkGeoId(groupedGeoId)].geo;
 
