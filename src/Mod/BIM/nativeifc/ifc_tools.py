@@ -32,6 +32,7 @@ import FreeCAD
 import Arch
 import ArchBuildingPart
 import Draft
+from . import backend
 from . import report_missing_ifcopenshell
 
 from draftviewproviders import view_layer
@@ -41,15 +42,7 @@ translate = FreeCAD.Qt.translate
 # heavyweight libraries - ifc_tools should always be lazy loaded
 
 try:
-    import ifcopenshell
-    import ifcopenshell.api
-    import ifcopenshell.geom
-    import ifcopenshell.util.attribute
-    import ifcopenshell.util.element
-    import ifcopenshell.util.placement
-    import ifcopenshell.util.schema
-    import ifcopenshell.util.unit
-    import ifcopenshell.entity_instance
+    ifcopenshell = backend.get_backend()
 except ImportError:
     report_missing_ifcopenshell()
     raise
