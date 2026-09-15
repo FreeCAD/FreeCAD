@@ -50,8 +50,6 @@
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
 
-#include <QObject>
-
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
@@ -63,6 +61,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Translation.h>
 #include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/Precision.h>
@@ -575,7 +574,8 @@ static inline bool anyToDouble(double &res, const App::any &value) {
 
 std::string anyToString(const App::any &value) {
     if (is_type(value, typeid(bool))) {
-        return (cast<bool>(value) ? QObject::tr("True") : QObject::tr("False")).toStdString();
+        return cast<bool>(value) ? Base::Translation::translate("QObject", "True")
+                                 : Base::Translation::translate("QObject", "False");
     }
     else if (is_type(value, typeid(int))) {
         return std::to_string(cast<int>(value));
@@ -593,7 +593,7 @@ std::string anyToString(const App::any &value) {
     }
     else if (is_type(value, typeid(const char*))) {
         const char* p = cast<const char*>(value);
-        return p ? std::string(p) : QObject::tr("Null").toStdString();
+        return p ? std::string(p) : Base::Translation::translate("QObject", "Null");
     }
     else if (is_type(value, typeid(std::string))) {
         return cast<std::string>(value);

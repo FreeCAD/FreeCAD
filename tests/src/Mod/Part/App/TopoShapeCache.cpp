@@ -65,7 +65,7 @@ protected:
 private:
     std::string _docName;
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids = nullptr;
+    Data::ElementIDRefs* _sids = nullptr;
     App::StringHasherRef _hasher;
 };
 
