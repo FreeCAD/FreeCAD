@@ -50,9 +50,33 @@ the first and last angle is defined. FreeCAD puts it all in one of them, which
 every control accepts.
 """
 
+from enum import Enum
+
 import FreeCAD
 
-from Machine.models.machine import PlaneCommand
+
+class PlaneCommand(Enum):
+    """The control's tilted-work-plane command family.
+
+    A post-processor names its family in ``PostProcessor.PLANE_COMMAND``;
+    selecting the post selects the dialect. Which strategy the machine can
+    run at all is declared on the machine (``Kinematics.rotation_strategy``).
+
+    G68_2         : Fanuc and the many controls that copy it (Mazak, Okuma,
+                    Brother, Mach4 with the option). `G68.2 X Y Z I J K` with
+                    I, J, K the intrinsic Z-X'-Z'' Euler angles; `G53.1`
+                    aligns the tool axis; `G69` cancels.
+    G268          : Haas NGC. Same angles and alignment; `G268` declares,
+                    `G269` cancels.
+    PLANE_SPATIAL : Heidenhain. `PLANE SPATIAL SPA SPB SPC` with the spatial
+                    angles about the fixed machine X, Y, Z axes applied in
+                    that order; `TURN` positions the rotaries; `PLANE RESET`
+                    cancels.
+    """
+
+    G68_2 = "g68.2"
+    G268 = "g268"
+    PLANE_SPATIAL = "plane_spatial"
 
 
 def euler_zxz(rotation):
@@ -74,30 +98,27 @@ def _clean(angle):
 
 # One entry per PlaneCommand. ``angles`` maps a Rotation to the three angles
 # in the order the template names them; the templates take the plane origin
-# as x, y, z and the angles as a1, a2, a3, all pre-formatted strings, and the
-# retract height as z. ``align`` is what makes the tool axis follow the
-# declared plane on a control that positions the rotaries itself.
+# as x, y, z and the angles as a1, a2, a3, all pre-formatted strings.
+# ``align`` is what makes the tool axis follow the declared plane on a
+# control that positions the rotaries itself.
 DIALECTS = {
     PlaneCommand.G68_2: {
         "angles": euler_zxz,
         "declare": "G68.2 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}",
         "align": "G53.1",
         "cancel": "G69",
-        "retract": "G53 G0 Z{z}",
     },
     PlaneCommand.G268: {
         "angles": euler_zxz,
         "declare": "G268 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}",
         "align": "G53.1",
         "cancel": "G269",
-        "retract": "G53 G0 Z{z}",
     },
     PlaneCommand.PLANE_SPATIAL: {
         "angles": spatial_abc,
         "declare": "PLANE SPATIAL SPA{a1} SPB{a2} SPC{a3} TURN FMAX",
         "align": "",
         "cancel": "PLANE RESET STAY",
-        "retract": "L Z{z} R0 FMAX M91",
     },
 }
 

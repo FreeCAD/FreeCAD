@@ -301,7 +301,7 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
         self.assertEqual(items[0].path.Commands[0].toGCode(), op.Path.Commands[0].toGCode())
 
     def test_planeOperationGetsRotaryMoveAndMachineFrame(self):
-        """Retract, positions, then the path in the frame the machine reaches.
+        """Positions first, then the path in the frame the machine reaches.
 
         The expected coordinates are the world position of each point (the
         placed path) rotated by the machine's rotation for the recorded
@@ -328,9 +328,7 @@ class TestPostWorkplaneFrames(PathTestUtils.PathTestBase):
 
         out = self._processor()._expand_workplane_frames([("Job", [self._item(op)])])
         items = out[0][1]
-        self.assertEqual([i.item_type for i in items], ["str", "rotation", "operation"])
-        self.assertEqual(items[0].data["str"], "G53 G0 Z0.000")
-        items = items[1:]
+        self.assertEqual([i.item_type for i in items], ["rotation", "operation"])
 
         positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
         rotary = items[0].path.Commands[0]

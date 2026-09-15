@@ -218,42 +218,16 @@ class RotationStrategy(Enum):
     POST_TRANSFORM = "post_transform"
 
 
-class PlaneCommand(Enum):
-    """The control's tilted-work-plane command family, for RotationStrategy.TWP.
-
-    G68_2         : Fanuc and the many controls that copy it (Mazak, Okuma,
-                    Brother, Mach4 with the option). `G68.2 X Y Z I J K` with
-                    I, J, K the intrinsic Z-X'-Z'' Euler angles; `G53.1`
-                    aligns the tool axis; `G69` cancels.
-    G268          : Haas NGC. Same angles and alignment; `G268` declares,
-                    `G269` cancels.
-    PLANE_SPATIAL : Heidenhain. `PLANE SPATIAL SPA SPB SPC` with the spatial
-                    angles about the fixed machine X, Y, Z axes applied in
-                    that order; `TURN` positions the rotaries; `PLANE RESET`
-                    cancels.
-    """
-
-    G68_2 = "g68.2"
-    G268 = "g268"
-    PLANE_SPATIAL = "plane_spatial"
-
-
 @dataclass
 class Kinematics:
     """Machine kinematics configuration."""
 
     base_frame: BaseFrame = field(default_factory=BaseFrame)
     tcp_supported: bool = False
+    # Which strategy the control can run is the machine's to declare; how the
+    # strategy is spelled (the plane command, whether it positions the
+    # rotaries) is the post-processor's, since that is the control family.
     rotation_strategy: RotationStrategy = RotationStrategy.NONE
-    # For RotationStrategy.TWP: which plane command the control speaks, and
-    # whether that command positions the rotary axes itself (G53.1, TURN) or
-    # the program has to command them with a rotary move.
-    plane_command: PlaneCommand = PlaneCommand.G68_2
-    control_positions_rotaries: bool = True
-    # Machine-coordinate Z the post retracts to before the rotaries move.
-    # An operation's clearance height is measured in its own work plane and
-    # says nothing about where the tool is safe while the table turns.
-    index_retract_z: float = 0.0
     notes: str = ""
 
     @property
@@ -1197,9 +1171,6 @@ class Machine:
                     "tcp_supported": self.kinematics.tcp_supported,
                     "dwo_supported": self.kinematics.dwo_supported,
                     "rotation_strategy": self.kinematics.rotation_strategy.value,
-                    "plane_command": self.kinematics.plane_command.value,
-                    "control_positions_rotaries": self.kinematics.control_positions_rotaries,
-                    "index_retract_z": self.kinematics.index_retract_z,
                     "notes": self.kinematics.notes,
                 },
                 "axes": axes,
@@ -1647,13 +1618,6 @@ class Machine:
             if strategy is None:
                 strategy = "dwo" if kinematics_data.get("dwo_supported", False) else "none"
             config.kinematics.rotation_strategy = RotationStrategy(strategy)
-            config.kinematics.plane_command = PlaneCommand(
-                kinematics_data.get("plane_command", PlaneCommand.G68_2.value)
-            )
-            config.kinematics.control_positions_rotaries = kinematics_data.get(
-                "control_positions_rotaries", True
-            )
-            config.kinematics.index_retract_z = float(kinematics_data.get("index_retract_z", 0.0))
             config.kinematics.notes = kinematics_data.get("notes", "")
 
         # Determine primary/secondary rotary axes for legacy compatibility

@@ -24,13 +24,13 @@
 An operation on a work plane stores its path plane-relative. The machine's
 rotation strategy decides what the post makes of it: DWO commands the
 rotaries and rotates the path into the frame the machine reaches; TWP
-declares the plane in the control's own command and leaves the path alone.
+declares the plane in the post's plane command and leaves the path alone.
 These tests pin the emitted lines for each dialect, the sequencing between
-operations, tool changes and the return to the table-parallel pose, and the
-refusals for a machine that declares nothing this post can emit.
+operations, tool changes and the return to the table-parallel pose, the
+pre- and post-rotary blocks around every rotary move, the refusals, and the
+sanity warning for a machine whose block is empty.
 """
 
-import math
 import random
 import unittest
 
@@ -43,15 +43,10 @@ import Path.Base.Generator.rotation as rotation
 import CAMTests.PathTestUtils as PathTestUtils
 import PathScripts.PathUtils as PathUtils
 from Path.Post import TiltedWorkPlane
+from Path.Post.TiltedWorkPlane import PlaneCommand
 from Path.Post.CAMErrors import CAMValueError
 from Path.Post.PostList import Postable
-from Machine.models.machine import (
-    Machine,
-    RotaryAxis,
-    AxisRole,
-    RotationStrategy,
-    PlaneCommand,
-)
+from Machine.models.machine import Machine, RotaryAxis, AxisRole, RotationStrategy
 
 from FreeCAD import Rotation, Vector
 
@@ -110,7 +105,7 @@ class TestPlaneAngles(unittest.TestCase):
             self.assertTrue(zyx.isSame(r, 1e-9), "spatial rebuild differs for %s" % r)
 
 
-def _machineCA(strategy, plane_command=PlaneCommand.G68_2, control_positions=True, retract=0.0):
+def _machineCA(strategy):
     m = Machine(name="Test CA Machine")
     m.rotary_axes["C"] = RotaryAxis(
         name="C", rotation_vector=Vector(0, 0, 1), role=AxisRole.TABLE_ROTARY, sequence=0
@@ -125,16 +120,12 @@ def _machineCA(strategy, plane_command=PlaneCommand.G68_2, control_positions=Tru
         sequence=1,
     )
     m.kinematics.rotation_strategy = strategy
-    m.kinematics.plane_command = plane_command
-    m.kinematics.control_positions_rotaries = control_positions
-    m.kinematics.index_retract_z = retract
     return m
 
 
 def _tiltedAboutX(degrees=45):
     """The tool axis of a plane tilted about X: Rotation(X, degrees) applied to Z."""
-    a = math.radians(degrees)
-    return Vector(0, -math.sin(a), math.cos(a))
+    return Rotation(X, degrees).multVec(Z)
 
 
 PATH = [
@@ -143,14 +134,12 @@ PATH = [
     Path.Command("G2", {"X": 20, "Y": 10, "Z": -2, "I": 10, "J": 0}),
 ]
 
+DECLARE = "G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000"
+CLEAR = "G53 G0 Z0\nG53 G0 X-300 Y0"
+
 
 def _gcode(path):
     return [c.toGCode() for c in path.Commands]
-
-
-def _text(item):
-    """The line(s) of a str postable."""
-    return item.data["str"]
 
 
 class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
@@ -169,13 +158,20 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
 
     # helpers
 
-    def _processor(self, machine=None):
+    def _processor(self, machine=None, plane_command=None, pre=None, post=None, **values):
         from Path.Post.Processor import PostProcessor
 
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = self.machine if machine is None else machine
         if processor._machine is not None:
             processor._merge_machine_config()
+        if plane_command is not None:
+            processor.PLANE_COMMAND = plane_command
+        if pre is not None:
+            processor.values["PRE_ROTARY_MOVE"] = pre
+        if post is not None:
+            processor.values["POST_ROTARY_MOVE"] = post
+        processor.values.update(values)
         return processor
 
     def _plane(self, axis=None, origin=Vector(30, 10, 5), x=None):
@@ -183,9 +179,8 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         plane = PathWorkplane.createWorkplaneFromToolAxis(self.job, axis, origin=origin)
         if x is not None:
             placement = plane.Placement
-            placement.Rotation = Rotation(
-                x, placement.Rotation.multVec(Z).cross(x), placement.Rotation.multVec(Z)
-            )
+            normal = placement.Rotation.multVec(Z)
+            placement.Rotation = Rotation(x, normal.cross(x), normal)
             plane.Placement = placement
         return plane
 
@@ -224,7 +219,7 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         out = []
         for item in items:
             if item.item_type == "str":
-                out.append(_text(item))
+                out.append(item.data["str"])
             elif item.item_type == "rotation":
                 out.append("rotation:" + item.path.Commands[0].toGCode())
             else:
@@ -236,87 +231,111 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
     def test_fanucDeclaresThePlaneAndLeavesThePathInPlaneCoordinates(self):
         op = self._op("Tilted", self._plane())
         items = self._expand([self._item(op)])
-        self.assertEqual(
-            self._shape(items),
-            [
-                "G53 G0 Z0.000",
-                "G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
-                "G53.1",
-                "operation",
-                "G69",
-            ],
-        )
-        self.assertEqual(_gcode(items[3].path), _gcode(op.Path), "path emitted as stored")
+        self.assertEqual(self._shape(items), [DECLARE, "G53.1", "operation", "G69"])
+        self.assertEqual(_gcode(items[2].path), _gcode(op.Path), "path emitted as stored")
 
     def test_haasDialect(self):
-        self.machine = _machineCA(RotationStrategy.TWP, PlaneCommand.G268)
         op = self._op("Tilted", self._plane())
+        items = self._expand([self._item(op)], self._processor(plane_command=PlaneCommand.G268))
         self.assertEqual(
-            self._shape(self._expand([self._item(op)])),
-            [
-                "G53 G0 Z0.000",
-                "G268 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
-                "G53.1",
-                "operation",
-                "G269",
-            ],
+            self._shape(items),
+            ["G268 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000", "G53.1", "operation", "G269"],
         )
 
     def test_heidenhainDialect(self):
-        self.machine = _machineCA(RotationStrategy.TWP, PlaneCommand.PLANE_SPATIAL, retract=-1.5)
         op = self._op("Tilted", self._plane())
+        items = self._expand(
+            [self._item(op)], self._processor(plane_command=PlaneCommand.PLANE_SPATIAL)
+        )
         self.assertEqual(
-            self._shape(self._expand([self._item(op)])),
+            self._shape(items),
             [
-                "L Z-1.500 R0 FMAX M91",
                 "PLANE SPATIAL SPA45.000 SPB0.000 SPC0.000 TURN FMAX",
                 "operation",
                 "PLANE RESET STAY",
             ],
         )
 
-    def test_retractHeightAndOriginFollowTheOutputUnits(self):
+    def test_theOriginFollowsTheOutputUnits(self):
         from Machine.models.machine import OutputUnits
 
-        self.machine = _machineCA(RotationStrategy.TWP, retract=25.4)
         self.machine.output.units = OutputUnits.IMPERIAL
         op = self._op("Tilted", self._plane(origin=Vector(25.4, 50.8, 0)))
-        processor = self._processor()
-        processor.values["AXIS_PRECISION"] = 4
+        processor = self._processor(AXIS_PRECISION=4)
         shape = self._shape(self._expand([self._item(op)], processor))
-        self.assertEqual(shape[0], "G53 G0 Z1.0000")
-        self.assertEqual(shape[1], "G68.2 X1.0000 Y2.0000 Z0.0000 I0.0000 J45.0000 K0.0000")
+        self.assertEqual(shape[0], "G68.2 X1.0000 Y2.0000 Z0.0000 I0.0000 J45.0000 K0.0000")
 
-    def test_theMachinePropertiesReplaceAnyLine(self):
+    def test_thePostPropertiesReplaceAnyLine(self):
         op = self._op("Tilted", self._plane())
-        processor = self._processor()
-        processor.values["TWP_DECLARE"] = "G68.2 P0 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}"
-        processor.values["TWP_ALIGN"] = ""  # empty: the dialect's own line
-        processor.values["INDEX_RETRACT"] = "G53 G0 Z{z} (home)"
+        processor = self._processor(
+            TWP_DECLARE="G68.2 P0 X{x} Y{y} Z{z} I{a1} J{a2} K{a3}",
+            TWP_ALIGN="",  # empty: the dialect's own line
+            TWP_CANCEL="G69 (plane off)",
+        )
         self.assertEqual(
             self._shape(self._expand([self._item(op)], processor)),
             [
-                "G53 G0 Z0.000 (home)",
                 "G68.2 P0 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
                 "G53.1",
                 "operation",
-                "G69",
+                "G69 (plane off)",
             ],
         )
 
     def test_theProgramPositionsTheRotariesWhenTheControlDoesNot(self):
-        self.machine = _machineCA(RotationStrategy.TWP, control_positions=False)
         op = self._op("Tilted", self._plane())
-        items = self._expand([self._item(op)])
+        items = self._expand(
+            [self._item(op)], self._processor(TWP_CONTROL_POSITIONS_ROTARIES=False)
+        )
         shape = self._shape(items)
-        self.assertEqual(shape[0], "G53 G0 Z0.000")
-        self.assertTrue(shape[1].startswith("rotation:G0"), shape)
-        self.assertTrue(shape[2].startswith("G68.2"), shape)
-        self.assertEqual(shape[3:], ["operation", "G69"])
+        self.assertTrue(shape[0].startswith("rotation:G0"), shape)
+        self.assertEqual(shape[1:], [DECLARE, "operation", "G69"])
         positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
-        rotary = items[1].path.Commands[0]
+        rotary = items[0].path.Commands[0]
         for axis, angle in positions.items():
             self.assertAlmostEqual(rotary.Parameters[axis], angle, places=6)
+
+    # the rotary blocks
+
+    def test_theBlocksWrapTheWholePoseChange(self):
+        op = self._op("Tilted", self._plane())
+        shape = self._shape(self._expand([self._item(op)], self._processor(pre=CLEAR, post="M11")))
+        self.assertEqual(shape, [CLEAR, DECLARE, "G53.1", "M11", "operation", "G69"])
+
+    def test_theBlocksWrapAProgramCommandedRotaryMoveOnce(self):
+        """_expand_rotary_move wraps rotary words it finds; the move emitted
+        here is already wrapped and must not be wrapped again."""
+        op = self._op("Tilted", self._plane())
+        processor = self._processor(pre=CLEAR, post="M11", TWP_CONTROL_POSITIONS_ROTARIES=False)
+        postables = processor._expand_workplane_frames([("Job", [self._item(op)])])
+        processor._expand_rotary_move(postables)
+        shape = self._shape(postables[0][1])
+        self.assertEqual(shape.count(CLEAR), 1, shape)
+        self.assertEqual(shape.count("M11"), 1, shape)
+        self.assertEqual(shape[0], CLEAR)
+        self.assertTrue(shape[1].startswith("rotation:G0"), shape)
+        self.assertEqual(shape[2:], [DECLARE, "M11", "operation", "G69"])
+
+    def test_rotaryWordsInsideAPathAreStillWrapped(self):
+        """A wrapped fourth-axis path carries A on its own moves; those keep
+        the blocks _expand_rotary_move always gave them."""
+        op = PathCustom.Create("Wrapped", parentJob=self.job)
+        self.doc.recompute()
+        op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 0, "Y": 0, "Z": 5}),
+                Path.Command("G1", {"X": 10, "A": 90}),
+                Path.Command("G1", {"X": 20, "A": 180}),
+            ]
+        )
+        op.RotaryPositions = {}
+        processor = self._processor(machine=Machine(name="3 axis"), pre="M10", post="M11")
+        postables = processor._expand_workplane_frames([("Job", [self._item(op)])])
+        processor._expand_rotary_move(postables)
+        kinds = [i.item_type for i in postables[0][1]]
+        texts = [i.data.get("str") for i in postables[0][1] if i.item_type == "str"]
+        self.assertEqual(texts, ["M10", "M11"])
+        self.assertEqual(kinds, ["command", "str", "command", "str"])
 
     # sequencing
 
@@ -325,30 +344,28 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         a, b = self._op("A", plane), self._op("B", plane)
         self.assertEqual(
             self._shape(self._expand([self._item(a), self._item(b)])),
-            [
-                "G53 G0 Z0.000",
-                "G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
-                "G53.1",
-                "operation",
-                "operation",
-                "G69",
-            ],
+            [DECLARE, "G53.1", "operation", "operation", "G69"],
         )
 
     def test_aToolChangeCancelsThePlaneAndItIsDeclaredAgainAfter(self):
         plane = self._plane()
         a, b = self._op("A", plane), self._op("B", plane)
+        shape = self._shape(
+            self._expand(
+                [self._item(a), self._tool_change(), self._item(b)], self._processor(pre=CLEAR)
+            )
+        )
         self.assertEqual(
-            self._shape(self._expand([self._item(a), self._tool_change(), self._item(b)])),
+            shape,
             [
-                "G53 G0 Z0.000",
-                "G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
+                CLEAR,
+                DECLARE,
                 "G53.1",
                 "operation",
                 "G69",
                 "tool_controller",
-                "G53 G0 Z0.000",
-                "G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000",
+                CLEAR,
+                DECLARE,
                 "G53.1",
                 "operation",
                 "G69",
@@ -359,18 +376,16 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         tilted = self._op("Tilted", self._plane())
         plain = self._op("Plain", None)
         self.assertTrue(dict(plain.RotaryPositions), "a rotary machine records zeros too")
-        shape = self._shape(self._expand([self._item(tilted), self._item(plain)]))
-        self.assertEqual(shape[3], "operation")
-        self.assertEqual(shape[4], "G53 G0 Z0.000")
+        items = self._expand([self._item(tilted), self._item(plain)], self._processor(pre=CLEAR))
+        shape = self._shape(items)
+        self.assertEqual(shape[:5], [CLEAR, DECLARE, "G53.1", "operation", CLEAR])
         self.assertEqual(shape[5], "G69")
         self.assertTrue(shape[6].startswith("rotation:G0"), shape)
-        self.assertEqual(shape[7], "operation")
-        self.assertEqual(len(shape), 8, shape)
-        rotary = self._expand([self._item(tilted), self._item(plain)])[6].path.Commands[0]
-        for angle in rotary.Parameters.values():
+        self.assertEqual(shape[7:], ["operation"])
+        for angle in items[6].path.Commands[0].Parameters.values():
             self.assertAlmostEqual(angle, 0.0, places=6)
 
-    def test_aTurnedXOnTheSameTiltRedeclaresWithoutRetracting(self):
+    def test_aTurnedXOnTheSameTiltRedeclaresWithoutMovingTheRotaries(self):
         axis = _tiltedAboutX()
         first = self._plane(axis)
         turned = self._plane(axis, x=Vector(-1, 0, 0))
@@ -378,29 +393,31 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.assertEqual(
             dict(a.RotaryPositions), dict(b.RotaryPositions), "same tool axis, same angles"
         )
-        shape = self._shape(self._expand([self._item(a), self._item(b)]))
-        self.assertEqual(shape[3], "operation")
+        shape = self._shape(
+            self._expand([self._item(a), self._item(b)], self._processor(pre=CLEAR))
+        )
+        self.assertEqual(shape[:4], [CLEAR, DECLARE, "G53.1", "operation"])
         self.assertEqual(shape[4], "G69", "the first plane is cancelled")
         self.assertTrue(shape[5].startswith("G68.2"), "the turned plane is declared")
         self.assertEqual(shape[6:], ["G53.1", "operation", "G69"])
-        self.assertNotIn("G53 G0 Z0.000", shape[4:], "the rotaries do not move")
+        self.assertNotIn(CLEAR, shape[4:], "no rotary move, so no block")
 
     # the other strategies
 
-    def test_dwoRetractsThenCommandsTheRotariesAndRotatesThePath(self):
+    def test_dwoCommandsTheRotariesAndRotatesThePath(self):
         self.machine = _machineCA(RotationStrategy.DWO)
         op = self._op("Tilted", self._plane())
-        items = self._expand([self._item(op)])
+        items = self._expand([self._item(op)], self._processor(pre=CLEAR, post="M11"))
         shape = self._shape(items)
-        self.assertEqual(shape[0], "G53 G0 Z0.000")
+        self.assertEqual(shape[0], CLEAR)
         self.assertTrue(shape[1].startswith("rotation:G0"), shape)
-        self.assertEqual(shape[2:], ["operation"])
+        self.assertEqual(shape[2:], ["M11", "operation"])
         positions = {k: float(v) for k, v in dict(op.RotaryPositions).items()}
         chain = rotation.build_kinematic_chain(self.machine)
         R = rotation.compute_rotation_matrix(chain, positions)
         world = PathUtils.getPathWithPlacement(op)
         expected = PathUtils.applyPlacementToPath(FreeCAD.Placement(Vector(), R), world)
-        self.assertEqual(_gcode(items[2].path), _gcode(expected))
+        self.assertEqual(_gcode(items[3].path), _gcode(expected))
 
     def test_aMachineWithNoStrategyRefusesATiltedOperation(self):
         self.machine = _machineCA(RotationStrategy.NONE)
@@ -445,59 +462,102 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         self.assertEqual(self._shape(items), ["operation"])
         self.assertEqual(_gcode(items[0].path), _gcode(op.Path))
 
+    # legacy posts
+
+    def test_aLegacyPostRefusesATiltedOperation(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self._op("Tilted", self._plane())
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
+        with self.assertRaises(CAMValueError) as raised:
+            post.export()
+        self.assertIn("Legacy post-processor", str(raised.exception))
+
+    def test_aLegacyPostStillPostsAPlainJob(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self._op("Plain", None)
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
+        sections = post.export()
+        self.assertTrue(sections and sections[0][1])
+
     # end to end
 
     def test_aRealPostEmitsTheProgram(self):
-        """Through export2 with a shipped post: the plane lines land in the
-        program, the cut is in plane coordinates, and the rotary move that
-        PRE_ROTARY_MOVE wraps does not trip on a missing value."""
+        """Through export2 with a shipped post: the block, the plane lines and
+        the cut in plane coordinates land in the program, with the post's
+        properties read from the machine."""
         from Path.Post.Processor import PostProcessorFactory
 
-        self.machine = _machineCA(RotationStrategy.TWP, control_positions=False)
         self.machine.output.comments.enabled = False
         self.machine.output.output_header = False
+        self.machine.postprocessor_properties = {
+            "pre_rotary_move": "G53 G0 Z0",
+            "twp_control_positions_rotaries": False,
+        }
         op = self._op("Tilted", self._plane())
         post = PostProcessorFactory.get_post_processor(self.job, "generic")
         post.reinitialize()
         post._machine = self.machine
-        post._merge_machine_config()
         sections = post.export2()
         gcode = "\n".join(g for _, g in sections)
         lines = [line.strip() for line in gcode.splitlines()]
-        self.assertIn("G53 G0 Z0.000", lines)
-        self.assertIn("G68.2 X30.000 Y10.000 Z5.000 I0.000 J45.000 K0.000", lines)
+        self.assertIn("G53 G0 Z0", lines)
+        self.assertIn(DECLARE, lines)
         self.assertIn("G69", lines)
         self.assertTrue(any(line.startswith("G0 ") and "A" in line for line in lines), lines)
         self.assertIn("G1 X10.000 Y0.000 Z-2.000", lines)
+        self.assertLess(lines.index("G53 G0 Z0"), lines.index(DECLARE))
+
+    # the sanity warning
+
+    def _sanity_post(self, pre):
+        from Path.Post.Processor import PostProcessorFactory
+
+        self.machine.postprocessor_properties = {"pre_rotary_move": pre}
+        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+        post._machine = self.machine
+        post.apply_configuration_bundle()
+        return post
+
+    def test_sanityWarnsWhenTheRotariesMoveAndTheBlockIsEmpty(self):
+        self._op("A", self._plane(_tiltedAboutX(45)))
+        self._op("B", self._plane(_tiltedAboutX(-45)))
+        squawks = self._sanity_post("").get_sanity_checks(self.job)
+        self.assertEqual([s["squawkType"] for s in squawks], ["WARNING"])
+        self.assertIn("Pre-Rotary Move", squawks[0]["Note"])
+
+    def test_sanityIsQuietWithABlock(self):
+        self._op("A", self._plane(_tiltedAboutX(45)))
+        self._op("B", self._plane(_tiltedAboutX(-45)))
+        self.assertEqual(self._sanity_post("G53 G0 Z0").get_sanity_checks(self.job), [])
+
+    def test_sanityIsQuietWhenThePoseNeverChanges(self):
+        plane = self._plane()
+        self._op("A", plane)
+        self._op("B", plane)
+        self.assertEqual(self._sanity_post("").get_sanity_checks(self.job), [])
+
+    def test_sanityIsQuietOnAThreeAxisMachine(self):
+        self._op("A", None)
+        self.machine = Machine(name="3 axis")
+        self.assertEqual(self._sanity_post("").get_sanity_checks(self.job), [])
 
 
 class TestMachineRotationStrategy(unittest.TestCase):
     def test_defaultsDeclareNothing(self):
         k = Machine().kinematics
         self.assertEqual(k.rotation_strategy, RotationStrategy.NONE)
-        self.assertEqual(k.plane_command, PlaneCommand.G68_2)
-        self.assertTrue(k.control_positions_rotaries)
-        self.assertEqual(k.index_retract_z, 0.0)
         self.assertFalse(k.dwo_supported)
 
     def test_roundTrip(self):
-        m = _machineCA(RotationStrategy.TWP, PlaneCommand.PLANE_SPATIAL, False, -12.5)
-        k = Machine.from_dict(m.to_dict()).kinematics
+        k = Machine.from_dict(_machineCA(RotationStrategy.TWP).to_dict()).kinematics
         self.assertEqual(k.rotation_strategy, RotationStrategy.TWP)
-        self.assertEqual(k.plane_command, PlaneCommand.PLANE_SPATIAL)
-        self.assertFalse(k.control_positions_rotaries)
-        self.assertEqual(k.index_retract_z, -12.5)
 
     def test_anOlderFileWithDwoSupportedSelectsDwo(self):
         data = Machine(name="old").to_dict()
         kin = data["machine"]["kinematics"]
-        for key in (
-            "rotation_strategy",
-            "plane_command",
-            "control_positions_rotaries",
-            "index_retract_z",
-        ):
-            del kin[key]
+        del kin["rotation_strategy"]
         kin["dwo_supported"] = True
         k = Machine.from_dict(data).kinematics
         self.assertEqual(k.rotation_strategy, RotationStrategy.DWO)
@@ -508,8 +568,9 @@ class TestMachineRotationStrategy(unittest.TestCase):
         )
 
     def test_dwoSupportedIsWrittenForOlderReaders(self):
-        m = _machineCA(RotationStrategy.DWO)
-        self.assertTrue(m.to_dict()["machine"]["kinematics"]["dwo_supported"])
+        self.assertTrue(
+            _machineCA(RotationStrategy.DWO).to_dict()["machine"]["kinematics"]["dwo_supported"]
+        )
         self.assertFalse(
             _machineCA(RotationStrategy.TWP).to_dict()["machine"]["kinematics"]["dwo_supported"]
         )
