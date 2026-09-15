@@ -20,8 +20,8 @@ class Measurement(BaseClass):
     License: LGPL-2.1-or-later
     """
 
-    def addReference3D(self) -> Any:
-        """add a geometric reference"""
+    def addReference3D(self, object_name: str, sub_name: str, /) -> None:
+        """add a geometric reference to a subelement of a named object in the active document"""
         ...
 
     def has3DReferences(self) -> Any:
