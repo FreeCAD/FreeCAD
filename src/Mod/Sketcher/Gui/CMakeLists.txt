@@ -103,6 +103,8 @@ SET(SketcherGui_SRCS
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
     SketcherToolDefaultWidget.ui
+    SketcherBlockWidget.cpp
+    SketcherBlockWidget.h
     SketcherToolDefaultWidget.cpp
     SketcherToolDefaultWidget.h
     TaskSketcherTool.cpp
