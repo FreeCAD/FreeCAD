@@ -57,6 +57,9 @@ private:
                               const std::string& ext) const;
     bool checkDigits(const std::string& cmpl) const;
     bool renameFileNoErase(Base::FileInfo fi, const std::string& newName);
+    static std::string getBackupDirectoryPath(const Base::FileInfo& target);
+    static std::string getBackupFilePath(const std::string& backupDir, const std::string& fileName);
+    static std::string ensureBackupDirectory(const Base::FileInfo& target);
 
 private:
     Policy policy {Standard};
