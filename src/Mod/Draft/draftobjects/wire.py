@@ -38,6 +38,7 @@ import DraftVecUtils
 from draftgeoutils import faces as geo_faces
 from draftgeoutils import fillets as geo_fillets
 from draftobjects.base import DraftObject
+from draftobjects import base as draft_base
 from draftutils import gui_utils
 from draftutils import params
 from draftutils.messages import _log
@@ -91,9 +92,11 @@ class Wire(DraftObject):
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
+        draft_base.assure_point_attachment_properties(obj)
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
+        draft_base.assure_point_attachment_properties(obj)
         gui_utils.restore_view_object(obj, vp_module="view_wire", vp_class="ViewProviderWire")
 
         vobj = getattr(obj, "ViewObject", None)
@@ -122,7 +125,7 @@ class Wire(DraftObject):
         _log("v1.1, " + obj.Name + ", migrated view properties")
 
     def execute(self, obj):
-        if self.props_changed_placement_only(
+        if self.props_changed_placement_only(obj) and not draft_base.has_point_attachments(
             obj
         ):  # Supplying obj is required because of `Base` and `Tool`.
             obj.positionBySupport()
@@ -131,6 +134,12 @@ class Wire(DraftObject):
             return
 
         import Part
+
+        obj.positionBySupport()
+        if obj.Points:
+            attached_points = draft_base.apply_point_attachments(obj, obj.Points)
+            if attached_points != obj.Points:
+                obj.Points = attached_points
 
         plm = obj.Placement
         if obj.Base and (not obj.Tool):
