@@ -25,6 +25,7 @@
 
 #include <App/DocumentObject.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Tree.h>
 #include <Mod/Part/App/LinkArrayCircular.h>
 #include <Mod/Part/App/LinkArrayPath.h>
 #include <Mod/Part/App/LinkArrayPoint.h>
@@ -42,7 +43,16 @@ ViewProviderLinkArray::~ViewProviderLinkArray() = default;
 
 bool ViewProviderLinkArray::doubleClicked()
 {
-    PartGui::showLinkArrayTask(getObject());
+    // A direct API call edits the array in its owning hierarchy.
+    auto* root = getObject();
+    std::string subname;
+    Gui::TreeWidget::checkTopParent(root, subname);
+    return doubleClickedObject(App::SubObjectT(root, subname.c_str()));
+}
+
+std::optional<bool> ViewProviderLinkArray::doubleClickedOccurrence(const App::SubObjectT& reference)
+{
+    PartGui::showLinkArrayTask(getObject(), reference);
     return true;
 }
 

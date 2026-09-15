@@ -2604,7 +2604,22 @@ void activateLinkArrayCommand(
         array->purgeTouched();
     }
 
-    PartGui::showLinkArrayTask(array);
+    App::SubObjectT reference(array);
+    auto* view = Gui::Application::Instance->activeView();
+    for (const char* key : {ASSEMBLYKEY, PARTKEY}) {
+        App::DocumentObject* root = nullptr;
+        std::string subname;
+        if (!view->getActiveObject<App::DocumentObject*>(key, &root, &subname)) {
+            continue;
+        }
+        subname += std::string(array->getNameInDocument()) + '.';
+        // Use the active container occurrence that actually received the new array.
+        if (root && root->getSubObject(subname.c_str()) == array) {
+            reference = App::SubObjectT(root, subname.c_str());
+            break;
+        }
+    }
+    PartGui::showLinkArrayTask(array, reference);
 }
 }  // namespace
 

@@ -40,6 +40,7 @@ public:
     ~ViewProviderLinkArray() override;
 
     bool doubleClicked() override;
+    std::optional<bool> doubleClickedOccurrence(const App::SubObjectT& reference) override;
     QIcon getIcon() const override;
 };
 

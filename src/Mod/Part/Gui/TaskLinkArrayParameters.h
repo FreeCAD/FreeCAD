@@ -57,7 +57,7 @@ class View3DInventorViewer;
 namespace PartGui
 {
 
-void showLinkArrayTask(App::DocumentObject* object);
+void showLinkArrayTask(App::DocumentObject* object, const App::SubObjectT& reference);
 
 class PatternInstanceControls;
 
@@ -131,7 +131,7 @@ private:
 class PartGuiExport TaskDlgLinkArrayParameters: public Gui::TaskView::TaskDialog
 {
 public:
-    explicit TaskDlgLinkArrayParameters(Part::LinkArray* array);
+    TaskDlgLinkArrayParameters(Part::LinkArray* array, const App::SubObjectT& reference);
 
     bool accept() override;
     bool reject() override;
