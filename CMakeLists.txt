@@ -145,6 +145,10 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     endif()
 endif()
 
+if(BUILD_QTTESTING)
+    SetupQtTesting()
+endif(BUILD_QTTESTING)
+
 SetLibraryVersions()
 SetGlobalCompilerAndLinkerSettings()
 
