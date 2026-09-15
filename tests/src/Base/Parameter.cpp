@@ -250,20 +250,31 @@ TEST_F(ParameterTest, TestString)
 {
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
-    grp->SetASCII("Parameter1", "Value1");
-    grp->SetASCII("Parameter2", "Value2");
-    EXPECT_EQ(grp->GetASCII("Parameter1", "Value3"), "Value1");
-    EXPECT_EQ(grp->GetASCII("Parameter3", "Value3"), "Value3");
-    EXPECT_EQ(grp->GetASCII("Parameter3", "Value4"), "Value4");
+    grp->setString("Parameter1", "Value1");
+    grp->setString("Parameter2", "Value2");
+    EXPECT_EQ(grp->getString("Parameter1", "Value3"), "Value1");
+    EXPECT_EQ(grp->getString("Parameter3", "Value3"), "Value3");
+    EXPECT_EQ(grp->getString("Parameter3", "Value4"), "Value4");
 
-    EXPECT_TRUE(grp->GetASCIIs("Test").empty());
-    EXPECT_EQ(grp->GetASCIIs().size(), 2);
-    EXPECT_EQ(grp->GetASCIIs().at(0), "Value1");
-    EXPECT_EQ(grp->GetASCIIs().at(1), "Value2");
-    EXPECT_EQ(grp->GetASCIIMap().size(), 2);
+    EXPECT_TRUE(grp->getAllStrings("Test").empty());
+    EXPECT_EQ(grp->getAllStrings().size(), 2);
+    EXPECT_EQ(grp->getAllStrings().at(0), "Value1");
+    EXPECT_EQ(grp->getAllStrings().at(1), "Value2");
+    EXPECT_EQ(grp->getAllStringsMap().size(), 2);
 
-    grp->RemoveASCII("Parameter1");
-    EXPECT_EQ(grp->GetASCIIs().size(), 1);
+    grp->removeString("Parameter1");
+    EXPECT_EQ(grp->getAllStrings().size(), 1);
+}
+
+TEST_F(ParameterTest, TestStringEmbeddedNulls)
+{
+    using namespace std::literals::string_view_literals;
+    auto cfg = getCreateConfig();
+    auto grp = cfg->GetGroup("TopLevelGroup");
+    grp->setString("Parameter1"sv, "Value1"sv);
+    EXPECT_THROW(grp->setString("Param\0eter1"sv, "Value1"sv), Base::ValueError);
+    EXPECT_THROW(grp->setString("Parameter1"sv, "Va\0lue1"sv), Base::ValueError);
+    EXPECT_THROW(grp->setString("Param\0eter1"sv, "Va\0lue1"sv), Base::ValueError);
 }
 
 TEST_F(ParameterTest, TestColor)
@@ -396,7 +407,7 @@ TEST_F(ParameterTest, TestSaveRestoreRef)
     grp->SetInt("Int", -42);
     grp->SetColor("Color", Base::Color(1.0, 0.5, 0.3));
     grp->SetUnsigned("Unsigned", 42);
-    grp->SetASCII("String", "param");
+    grp->setString("String", "param");
     cfg->CheckDocument();
 
     std::string fn = getFileName();
@@ -409,7 +420,7 @@ TEST_F(ParameterTest, TestSaveRestoreRef)
     EXPECT_EQ(grp->GetInt("Int"), -42);
     EXPECT_EQ(grp->GetColor("Color"), Base::Color(1.0, 0.5, 0.3));
     EXPECT_EQ(grp->GetUnsigned("Unsigned"), 42);
-    EXPECT_EQ(grp->GetASCII("String"), "param");
+    EXPECT_EQ(grp->getString("String"), "param");
 
     grp2->SetFloat("Float", 2.0);
     cfg->exportTo(fn.c_str());
@@ -439,14 +450,14 @@ TEST_F(ParameterTest, TestClear)
 {
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
-    grp->SetASCII("String", "str");
+    grp->setString("String", "str");
     auto subGrp = grp->GetGroup("Sub");
     subGrp->SetUnsigned("Value", 41);
     grp->Clear();
 
     // Group is still referenced, not deleted
     EXPECT_TRUE(grp->HasGroup("Sub"));
-    EXPECT_EQ(grp->GetASCII("String", "default"), "default");
+    EXPECT_EQ(grp->getString("String", "default"), "default");
     EXPECT_EQ(subGrp->GetUnsigned("Value", 1), 1);
 
     // Remove reference
@@ -477,7 +488,7 @@ TEST_F(ParameterTest, TestGetSetAttribute)
     EXPECT_EQ(mapGrp[0].second, "");
 
     grp->SetAttribute(ParameterGrp::ParamType::FCText, "String1", "myString");
-    EXPECT_EQ(grp->GetASCII("String1"), "myString");
+    EXPECT_EQ(grp->getString("String1"), "myString");
     grp->GetAttribute(ParameterGrp::ParamType::FCText, "String1", value, "default");
     EXPECT_EQ(value, "myString");
 
@@ -506,7 +517,7 @@ TEST_F(ParameterTest, TestGetParameterNames)
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
 
-    grp->SetASCII("String", "test");
+    grp->setString("String", "test");
     grp->SetFloat("Float", 1.0);
     auto names = grp->GetParameterNames();
     EXPECT_EQ(names.size(), 2);
@@ -589,7 +600,7 @@ TEST_F(ParameterTest, TestNotifyAll)
 {
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup/Sub1/Sub2");
-    grp->SetASCII("String", "str");
+    grp->setString("String", "str");
     grp->SetFloat("Float", 2.0);
 
     auto& obs = getObserver();

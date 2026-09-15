@@ -81,7 +81,7 @@ void DlgSettingsMacroImp::saveSettings()
     ui->MacroPath_2->onSave();
     ui->RecentMacros->onSave();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
-    hGrp->SetASCII("ShortcutModifiers", qPrintable(ui->ShortcutModifiers->text()));
+    hGrp->setString("ShortcutModifiers", ui->ShortcutModifiers->text().toStdString());
     ui->ShortcutCount->onSave();
     setRecentMacroSize();
 }
@@ -98,7 +98,7 @@ void DlgSettingsMacroImp::loadSettings()
     ui->RecentMacros->onRestore();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
     ui->ShortcutModifiers->setText(
-        QString::fromStdString(hGrp->GetASCII("ShortcutModifiers", "Ctrl+Shift+"))
+        QString::fromStdString(hGrp->getString("ShortcutModifiers", "Ctrl+Shift+"))
     );
     ui->ShortcutCount->onRestore();
 }
@@ -108,7 +108,7 @@ void DlgSettingsMacroImp::resetSettingsToDefaults()
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("RecentMacros");
     // reset "ShortcutModifiers" parameter
-    hGrp->RemoveASCII("ShortcutModifiers");
+    hGrp->removeString("ShortcutModifiers");
 
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();

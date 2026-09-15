@@ -76,7 +76,7 @@ public:
     //@}
 
     /** Activates the specified language \a lang if available. */
-    void activateLanguage(const char* lang);
+    void activateLanguage(std::string lang);
     /* Reloads the translators */
     void refresh();
     /** Returns the currently installed language. If no language is installed an empty string is
