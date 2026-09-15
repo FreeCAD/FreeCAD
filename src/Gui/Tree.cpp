@@ -1987,19 +1987,21 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
     }
 
     else if (event->key() == Qt::Key_Space && event->modifiers() == Qt::NoModifier) {
-        // Toggle each selected feature's own visibility directly
+        // Toggle each selected feature's visibility (element VisibilityList when
+        // applicable, otherwise object Visibility — same as the tree eyeball).
         for (auto* raw : selectedItems()) {
             if (raw->type() != ObjectType) {
                 continue;
             }
-            auto* vp = static_cast<DocumentObjectItem*>(raw)->object();
+            auto* item = static_cast<DocumentObjectItem*>(raw);
+            auto* vp = item->object();
             if (!vp || !vp->canToggleVisibility()) {
                 continue;
             }
             auto* appObj = vp->getObject();
-            vp->Gui::ViewProvider::toggleVisibility();
+            item->toggleVisibilityInTree();
             Selection().updateSelection(
-                vp->isShow(),
+                item->isVisibleInTree(),
                 appObj->getDocument()->getName(),
                 appObj->getNameInDocument()
             );
@@ -2045,24 +2047,9 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
 
             // If the visibility icon was clicked, toggle the DocumentObject visibility
             if (iconRect.contains(mousePos)) {
-                auto obj = objitem->object()->getObject();
-                char const* objname = obj->getNameInDocument();
-
-                App::DocumentObject* parent = nullptr;
-                std::ostringstream subName;
-                objitem->getSubName(subName, parent);
-
-                // Try the ElementVisible API, if that is not supported toggle the Visibility property
-                int visible = -1;
-                if (parent) {
-                    visible = parent->isElementVisible(objname);
-                }
-                if (parent && visible >= 0) {
-                    parent->setElementVisible(objname, !visible);
-                }
-                else {
-                    visible = obj->Visibility.getValue();
-                    obj->Visibility.setValue(!visible);
+                auto* vp = objitem->object();
+                if (vp && vp->canToggleVisibility()) {
+                    objitem->toggleVisibilityInTree();
                 }
                 visibilityIconDoubleClickTimer.start();
                 visibilityIconPressed = true;
@@ -6457,38 +6444,68 @@ QIcon DocumentObjectItem::getVisibilityIcon(int currentStatus, QIcon& original_i
     return new_icon;
 }
 
+bool DocumentObjectItem::getElementVisibilityParent(
+    App::DocumentObject*& visParent,
+    std::string& elementName
+) const
+{
+    visParent = nullptr;
+    elementName.clear();
+
+    auto* obj = object()->getObject();
+    if (!obj || !obj->isAttachedToDocument()) {
+        return false;
+    }
+
+    App::DocumentObject* topParent = nullptr;
+    std::ostringstream ss;
+    getSubName(ss, topParent);
+    if (!topParent || !topParent->isAttachedToDocument()) {
+        return false;
+    }
+
+    // Full subname relative to topParent, matching Selection::setVisible.
+    ss << obj->getNameInDocument() << '.';
+    App::DocumentObject* parent = nullptr;
+    auto* resolved = topParent->resolve(ss.str().c_str(), &parent, &elementName);
+    if (!resolved || !resolved->isAttachedToDocument() || !parent || !parent->isAttachedToDocument()) {
+        return false;
+    }
+    if (parent->isElementVisible(elementName.c_str()) < 0) {
+        return false;
+    }
+
+    visParent = parent;
+    return true;
+}
+
+void DocumentObjectItem::toggleVisibilityInTree()
+{
+    auto* obj = object()->getObject();
+    if (!obj || !obj->isAttachedToDocument()) {
+        return;
+    }
+
+    App::DocumentObject* visParent = nullptr;
+    std::string elementName;
+    if (getElementVisibilityParent(visParent, elementName)) {
+        int visible = visParent->isElementVisible(elementName.c_str());
+        visParent->setElementVisible(elementName.c_str(), !visible);
+        return;
+    }
+
+    obj->Visibility.setValue(!obj->Visibility.getValue());
+}
+
 bool DocumentObjectItem::isVisibleInTree() const
 {
-    App::DocumentObject* pObject = object()->getObject();
-
-    int visible = -1;
-    auto parentItem = getParentItem();
-    if (parentItem) {
-        auto parent = parentItem->object()->getObject();
-        auto ext = parent->getExtensionByType<App::GroupExtension>(true, false);
-        if (!ext) {
-            visible = parent->isElementVisible(pObject->getNameInDocument());
-        }
-        else {
-            // We are dealing with a plain group. It has special handling when
-            // linked, which allows it to have indpenedent visibility control.
-            // We need to go up the hierarchy and see if there is any link to
-            // it.
-            for (auto pp = parentItem->getParentItem(); pp; pp = pp->getParentItem()) {
-                auto obj = pp->object()->getObject();
-                if (!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
-                    visible = pp->object()->getObject()->isElementVisible(pObject->getNameInDocument());
-                    break;
-                }
-            }
-        }
+    App::DocumentObject* visParent = nullptr;
+    std::string elementName;
+    if (getElementVisibilityParent(visParent, elementName)) {
+        return visParent->isElementVisible(elementName.c_str()) != 0;
     }
 
-    if (visible < 0) {
-        visible = object()->isShow() ? 1 : 0;
-    }
-
-    return visible != 0;
+    return object()->isShow();
 }
 
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)

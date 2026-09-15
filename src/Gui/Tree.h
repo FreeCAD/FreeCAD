@@ -497,6 +497,9 @@ public:
     void testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2);
     void testStatus(bool resetStatus);
     bool isVisibleInTree() const;
+    /** Toggle visibility the same way as Selection::setVisible: prefer the
+     *  element's VisibilityList owner (via resolve), else object Visibility. */
+    void toggleVisibilityInTree();
     void displayStatusInfo();
 
     QVariant data(int column, int role) const override;
@@ -563,6 +566,10 @@ private:
         const std::vector<bool>& snapshot,
         std::vector<bool>::const_iterator& from
     );
+
+    /** If this item is a link/array element, set visParent and elementName to
+     *  the object that owns isElementVisible/setElementVisible. */
+    bool getElementVisibilityParent(App::DocumentObject*& visParent, std::string& elementName) const;
 
     void setIconOverlays(int currentStatus, QPixmap& overlays) const;
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
