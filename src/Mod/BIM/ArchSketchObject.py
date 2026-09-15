@@ -25,6 +25,49 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
+def getSketchDefiningEdges(sketch, selected_edges=None, supported_geometry=None):
+    import Part
+    import Sketcher
+
+    if supported_geometry is None:
+        supported_geometry = (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse)
+
+    selected_edges = {str(edge) for edge in selected_edges or []}
+    edges = []
+
+    for index, facade in enumerate(sketch.GeometryFacadeList):
+        if selected_edges:
+            if str(index) not in selected_edges:
+                continue
+        elif facade.Construction:
+            continue
+
+        if isinstance(facade.Geometry, supported_geometry):
+            edges.append(facade.Geometry.toShape())
+
+    external_geometry = list(getattr(sketch, "ExternalGeo", []))
+    for index, geometry in enumerate(external_geometry[2:], start=2):
+        facade = Sketcher.ExternalGeometryFacade(geometry)
+        geo_id = -index - 1
+
+        if not facade.Ref:
+            continue
+
+        if facade.testFlag("Missing"):
+            continue
+
+        if selected_edges:
+            if str(geo_id) not in selected_edges:
+                continue
+        elif not facade.testFlag("Defining"):
+            continue
+
+        if isinstance(facade.Geometry, supported_geometry):
+            edges.append(facade.Geometry.toShape())
+
+    return edges
+
+
 class ArchSketchObject:
     def __init__(self, obj):
         pass
