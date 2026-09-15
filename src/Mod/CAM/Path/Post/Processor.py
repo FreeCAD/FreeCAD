@@ -302,6 +302,15 @@ def properties_in_scope(schema, *scopes) -> List[Dict[str, Any]]:
     return [prop for prop in schema if property_scope(prop) in wanted]
 
 
+def _tool_axis_tilted(placement):
+    """Whether a work plane's tool axis leaves Z: what needs rotary axes.
+
+    A plane with its Z up but an origin elsewhere, or a turned X, is not
+    tilted; any three-axis machine cuts it from world coordinates."""
+    z_up = FreeCAD.Vector(0, 0, 1)
+    return not placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6)
+
+
 class PostProcessorFactory:
     """Factory class for creating post processors."""
 
@@ -2109,10 +2118,7 @@ class PostProcessor:
                 return None, None
             return placement or FreeCAD.Placement(), positions
 
-        z_up = FreeCAD.Vector(0, 0, 1)
-
-        def tool_axis_tilted(placement):
-            return not placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6)
+        tool_axis_tilted = _tool_axis_tilted
 
         def pose_of(placement, positions):
             frame = tuple(round(v, 6) for v in placement.toMatrix().A)
@@ -3761,6 +3767,7 @@ class WrapperPost(PostProcessor):
 
         self._refuse_tilted_operations()
         postables = self._buildPostList()
+        self._place_operations(postables)
         Path.Log.debug(f"postables count: {len(postables)}")
 
         g_code_sections = []
@@ -3776,13 +3783,14 @@ class WrapperPost(PostProcessor):
         """Legacy posts read world coordinates and never position a rotary
         machine. Multi-axis output is for post-processors of the current
         kind; an operation on a tilted work plane is refused here rather
-        than posted unpositioned."""
+        than posted unpositioned. A plane parallel to the table - a datum, a
+        turned X - is fine: world coordinates are all it needs."""
         import Path.Dressup.Utils as PathDressup
 
         for op in self._job.Operations.Group:
             base = PathDressup.baseOp(op)
             placement = getattr(base, "Placement", None)
-            if placement is not None and not placement.isIdentity(1e-9):
+            if placement is not None and _tool_axis_tilted(placement):
                 raise CAMValueError(
                     translate(
                         "CAM",
@@ -3792,6 +3800,19 @@ class WrapperPost(PostProcessor):
                     job=self._job,
                     operation=base,
                 )
+
+    @staticmethod
+    def _place_operations(postables):
+        """An operation on a work plane stores its path in the plane's frame;
+        a legacy script reads the path it is given as world coordinates. Place
+        each one, as the current posts do in _expand_workplane_frames."""
+        for _, items in postables:
+            for item in items:
+                if item.item_type != "operation" or item.source is None:
+                    continue
+                placement = getattr(item.source, "Placement", None)
+                if placement is not None and not placement.isIdentity(1e-9):
+                    item.path = PathUtils.applyPlacementToPath(placement, item.path)
 
     @property
     def tooltip(self):

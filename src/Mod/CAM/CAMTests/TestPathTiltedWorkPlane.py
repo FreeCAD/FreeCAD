@@ -500,14 +500,19 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         # Below zero on purpose: a Path's bounding box includes its implicit
         # start at the origin, so a datum above zero never lowers the minimum.
         op = self._op("Datum", self._plane(Z, origin=Vector(30, 10, -5)))
-        with tempfile.TemporaryDirectory() as tmpdir:
-            sanity = object.__new__(CAMSanity)
-            sanity.job = self.job
-            sanity.output_file = tmpdir + "/dummy.html"
-            sanity.filelocation = tmpdir
-            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
-            sanity.data = {}
-            data = sanity._runData()
+        schema = FreeCAD.Units.getSchema()
+        FreeCAD.Units.setSchema(0)  # mm: an imperial schema rounds the report to fractions
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                sanity = object.__new__(CAMSanity)
+                sanity.job = self.job
+                sanity.output_file = tmpdir + "/dummy.html"
+                sanity.filelocation = tmpdir
+                sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+                sanity.data = {}
+                data = sanity._runData()
+        finally:
+            FreeCAD.Units.setSchema(schema)
         opdata = [o for o in data["operations"] if o["opName"] == op.Label][0]
         self.assertAlmostEqual(_mm(opdata["minZ"]), -7, places=3)
         self.assertAlmostEqual(_mm(opdata["maxZ"]), 0, places=3)
@@ -532,6 +537,18 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
         with self.assertRaises(CAMValueError) as raised:
             post.export()
         self.assertIn("Legacy post-processor", str(raised.exception))
+
+    def test_aLegacyPostPostsADatumPlaneInWorldCoordinates(self):
+        from Path.Post.Processor import PostProcessorFactory
+
+        datum = self._op("Datum", self._plane(Z, origin=Vector(30, 10, -5)))
+        self._op("Turned", self._plane(Z, origin=Vector(0, 0, 0), x=Vector(0, 1, 0)))
+        datum.Path = Path.Path(list(PATH))  # the second op's recompute rebuilt the first
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
+        sections = post.export()
+        gcode = sections[0][1]
+        self.assertIn("X40.000 Y10.000 Z-7.000", gcode, "the datum's offset applied")
+        self.assertIn("X0.000 Y10.000 Z-2.000", gcode, "the turned X applied")
 
     def test_aLegacyPostStillPostsAPlainJob(self):
         from Path.Post.Processor import PostProcessorFactory
