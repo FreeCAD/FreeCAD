@@ -178,6 +178,14 @@ void Property::getPaths(std::vector<ObjectIdentifier>& paths) const
     paths.emplace_back(getContainer(), getName());
 }
 
+void Property::getPathsForCompletion(
+    std::vector<ObjectIdentifier>& paths,
+    const std::string&
+) const
+{
+    getPaths(paths);
+}
+
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier& p) const
 {
     return p;

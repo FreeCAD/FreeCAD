@@ -325,6 +325,21 @@ public:
      */
     virtual void getPaths(std::vector<App::ObjectIdentifier>& paths) const;
 
+    /**
+     * @brief Get completion paths for an explicitly entered property member.
+     *
+     * The default implementation returns getPaths(). Overrides may add paths for
+     * indexed members without enumerating all elements of a collection.
+     *
+     * @param[out] paths Valid paths, including the property component.
+     * @param[in] subPath Member path relative to this property, such as ".Edge5",
+     * excluding the final separator and the member currently being completed.
+     */
+    virtual void getPathsForCompletion(
+        std::vector<App::ObjectIdentifier>& paths,
+        const std::string& subPath
+    ) const;
+
     /** @brief Callback for after document restore.
      *
      * This function is called at the beginning of Document::afterRestore().
