@@ -31,12 +31,16 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QTimer>
 
+#include <algorithm>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/Link.h>
+#include <App/ObjectIdentifier.h>
 #include <App/Part.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
@@ -112,6 +116,46 @@ public:
     }
 };
 
+namespace
+{
+template<typename PropertyT>
+void copyParameter(
+    App::DocumentObject* fromObj,
+    PropertyT& fromProp,
+    App::DocumentObject* toObj,
+    PropertyT& toProp
+)
+{
+    if (fromObj == toObj) {
+        return;
+    }
+
+    App::ObjectIdentifier fromPath(fromProp);
+    auto info = fromObj->getExpression(fromPath);
+    App::ObjectIdentifier toPath(toProp);
+    if (info.expression) {
+        try {
+            auto parsed = App::Expression::parse(toObj, info.expression->toString());
+            if (parsed) {
+                parsed->comment = info.expression->comment;
+            }
+            toObj->setExpression(toPath, std::shared_ptr<App::Expression>(std::move(parsed)));
+        }
+        catch (const Base::Exception& e) {
+            FC_ERR(
+                "Failed to mirror expression from " << fromObj->getFullName() << " to "
+                                                    << toObj->getFullName() << ": " << e.what()
+            );
+            toObj->clearExpression(toPath);
+        }
+    }
+    else {
+        toObj->clearExpression(toPath);
+    }
+    toProp.setValue(fromProp.getValue());
+}
+}  // namespace
+
 DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , ui(new Ui_DlgExtrusion)
@@ -137,6 +181,16 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
     sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
+    if (ensureTransaction()) {
+        updateFeatures();
+        connect(
+            ui->treeWidget,
+            &QTreeWidget::itemSelectionChanged,
+            this,
+            &DlgExtrusion::onTreeSelectionChanged
+        );
+    }
+
     this->onDirModeChanged();
     ui->spinLenFwd->selectAll();
     // Make sure that the spin box has the focus to get key events
@@ -156,6 +210,10 @@ DlgExtrusion::~DlgExtrusion()
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
         filterSelection = false;
+    }
+
+    if (transactionOpen) {
+        abortTransaction();
     }
 
     // no need to delete child widgets, Qt does it all for us
@@ -478,87 +536,72 @@ bool DlgExtrusion::canExtrude(const TopoDS_Shape& shape) const
 
 void DlgExtrusion::accept()
 {
-    try {
-        apply();
+    if (applyInternal()) {
         QDialog::accept();
     }
-    catch (Base::AbortException&) {
-    };
 }
 
-void DlgExtrusion::apply()
+bool DlgExtrusion::apply()
 {
+    if (!applyInternal()) {
+        return false;
+    }
+
+    ensureTransaction();
+    return true;
+}
+
+bool DlgExtrusion::applyInternal()
+{
+    if (filter) {  // if still selecting edge - stop. This is important for visibility automation.
+        this->onSelectEdgeClicked();
+    }
+
+    if (!validate()) {
+        return false;
+    }
+
+    Gui::WaitCursor wc;
+    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+    if (!activeDoc) {
+        QMessageBox::critical(
+            this,
+            windowTitle(),
+            tr("The document '%1' doesn't exist.").arg(QString::fromUtf8(this->label.c_str()))
+        );
+        return false;
+    }
+
     try {
-        if (!validate()) {
-            throw Base::AbortException();
+        if (!ensureTransaction()) {
+            return false;
         }
 
-        if (filter) {  // if still selecting edge - stop. This is important for visibility automation.
-            this->onSelectEdgeClicked();
-        }
-
-        Gui::WaitCursor wc;
-        App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
-        if (!activeDoc) {
+        refreshFeatures();
+        if (extrusions.empty()) {
             QMessageBox::critical(
                 this,
                 windowTitle(),
-                tr("The document '%1' doesn't exist.").arg(QString::fromUtf8(this->label.c_str()))
+                tr("Creating extrusion failed.\nNo shape could be extruded.")
             );
-            return;
-        }
-        activeDoc->openTransaction("Extrude");
-
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                                 .GetUserParameter()
-                                                 .GetGroup("BaseApp")
-                                                 ->GetGroup("Preferences")
-                                                 ->GetGroup("Mod/Part");
-        bool addBaseName = hGrp->GetBool("AddBaseObjectName", false);
-
-        std::vector<App::DocumentObject*> objects = this->getShapesToExtrude();
-        for (App::DocumentObject* sourceObj : objects) {
-            assert(sourceObj);
-
-            if (Part::Feature::getTopoShape(
-                    sourceObj,
-                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-                )
-                    .isNull()) {
-                FC_ERR(
-                    "Object " << sourceObj->getFullName() << " is not a Part object because it has no OCC shape. Extrusion is not possible."
-                );
-
-                continue;
-            }
-
-            std::string name;
-            name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
-            if (addBaseName) {
-                // FIXME: implement
-                // QString baseName = QStringLiteral("Extrude_%1").arg(sourceObjectName);
-                // label = QStringLiteral("%1_Extrude").arg((*it)->text(0));
-            }
-
-            FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
-            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
-
-            this->writeParametersToFeature(*newObj, sourceObj);
-
-            if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
-                Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
-                Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
-                Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
-            }
-
-            FCMD_OBJ_HIDE(sourceObj);
+            return false;
         }
 
-        activeDoc->commitTransaction();
+        applyBoundParameters();
+
+        for (Part::Extrusion* feature : extrusions) {
+            this->writeParametersToFeature(*feature, feature->Base.getValue());
+        }
+        syncLinearParameters();
+
+        for (Part::Extrusion* feature : extrusions) {
+            FCMD_OBJ_HIDE(feature->Base.getValue());
+        }
+
+        activeDoc->recompute();
         Gui::Command::updateActive();
-    }
-    catch (Base::AbortException&) {
-        throw;
+        commitTransaction();
+        return true;
     }
     catch (Base::Exception& err) {
         QMessageBox::critical(
@@ -566,7 +609,7 @@ void DlgExtrusion::apply()
             windowTitle(),
             tr("Creating extrusion failed.\n%1").arg(QCoreApplication::translate("Exception", err.what()))
         );
-        return;
+        return false;
     }
     catch (...) {
         QMessageBox::critical(
@@ -574,7 +617,7 @@ void DlgExtrusion::apply()
             windowTitle(),
             tr("Creating Extrusion failed.\n%1").arg(QStringLiteral("Unknown error"))
         );
-        return;
+        return false;
     }
 }
 
@@ -583,6 +626,8 @@ void DlgExtrusion::reject()
     if (filter) {  // if still selecting edge - stop.
         this->onSelectEdgeClicked();
     }
+
+    abortTransaction();
 
     QDialog::reject();
 }
@@ -818,6 +863,309 @@ bool DlgExtrusion::validate()
     return true;
 }
 
+Part::Extrusion* DlgExtrusion::createFeatureFor(App::DocumentObject* sourceObj)
+{
+    if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
+            .isNull()) {
+        FC_ERR(
+            "Object " << sourceObj->getFullName()
+                      << " is not a Part object because it has no OCC"
+                         " shape. Extrusion is not possible."
+        );
+
+        return nullptr;
+    }
+
+    std::string name;
+    name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
+
+    FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
+    auto newObj = sourceObj->getDocument()->getObject(name.c_str());
+    auto* feature = static_cast<Part::Extrusion*>(newObj);
+
+    try {
+        this->writeParametersToFeature(*feature, sourceObj);
+
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "f.LengthFwd = %.15f",
+            ui->spinLenFwd->value().getValue()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "f.LengthRev = %.15f",
+            ui->spinLenRev->value().getValue()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "f.TaperAngle = %.15f",
+            ui->spinTaperAngle->value().getValue()
+        );
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "f.TaperAngleRev = %.15f",
+            ui->spinTaperAngleRev->value().getValue()
+        );
+
+        if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
+            Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
+            Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
+        }
+    }
+    catch (...) {
+        feature->getDocument()->removeObject(name.c_str());
+        throw;
+    }
+
+    extrusions.push_back(feature);
+    return feature;
+}
+
+void DlgExtrusion::updateFeatures()
+{
+    if (!ensureTransaction()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> selected;
+    try {
+        selected = this->getShapesToExtrude();
+    }
+    catch (const Base::Exception&) {
+        return;
+    }
+
+    for (App::DocumentObject* sourceObj : selected) {
+        bool has = std::any_of(extrusions.begin(), extrusions.end(), [sourceObj](Part::Extrusion* f) {
+            return f->Base.getValue() == sourceObj;
+        });
+        if (has) {
+            continue;
+        }
+        try {
+            createFeatureFor(sourceObj);
+        }
+        catch (const Base::Exception& e) {
+            FC_ERR("Failed to create extrusion for " << sourceObj->getFullName() << ": " << e.what());
+        }
+        catch (...) {
+            FC_ERR("Failed to create extrusion for " << sourceObj->getFullName());
+        }
+    }
+
+    updateBinding();
+}
+
+void DlgExtrusion::reconcileFeatures()
+{
+    if (!ensureTransaction()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> selected;
+    try {
+        selected = this->getShapesToExtrude();
+    }
+    catch (const Base::Exception&) {
+        return;
+    }
+
+    auto isSelected = [&selected](Part::Extrusion* feature) {
+        return std::find(selected.begin(), selected.end(), feature->Base.getValue())
+            != selected.end();
+    };
+
+    if (boundFeature && !isSelected(boundFeature)) {
+        auto newMaster = std::find_if(
+            extrusions.begin(),
+            extrusions.end(),
+            [this, &isSelected](Part::Extrusion* feature) {
+                return feature != boundFeature && isSelected(feature);
+            }
+        );
+        if (newMaster != extrusions.end()) {
+            copyParameter(boundFeature, boundFeature->LengthFwd, *newMaster, (*newMaster)->LengthFwd);
+            copyParameter(boundFeature, boundFeature->LengthRev, *newMaster, (*newMaster)->LengthRev);
+            copyParameter(boundFeature, boundFeature->TaperAngle, *newMaster, (*newMaster)->TaperAngle);
+            copyParameter(
+                boundFeature,
+                boundFeature->TaperAngleRev,
+                *newMaster,
+                (*newMaster)->TaperAngleRev
+            );
+        }
+    }
+
+    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+    if (!activeDoc) {
+        return;
+    }
+
+    for (auto it = extrusions.begin(); it != extrusions.end();) {
+        if (isSelected(*it)) {
+            ++it;
+            continue;
+        }
+        if (*it == boundFeature) {
+            boundFeature = nullptr;
+        }
+        activeDoc->removeObject((*it)->getNameInDocument());
+        it = extrusions.erase(it);
+    }
+}
+
+void DlgExtrusion::refreshFeatures()
+{
+    try {
+        updateFeatures();
+        reconcileFeatures();
+        updateBinding();
+    }
+    catch (const Base::Exception& e) {
+        FC_ERR("Failed to update extrusion features: " << e.what());
+    }
+    catch (...) {
+        FC_ERR("Failed to update extrusion features");
+    }
+}
+
+void DlgExtrusion::updateBinding()
+{
+    Part::Extrusion* target = extrusions.empty() ? nullptr : extrusions.front();
+    if (target == boundFeature) {
+        return;
+    }
+    boundFeature = target;
+
+    if (!target) {
+        ui->spinLenFwd->unbind();
+        ui->spinLenRev->unbind();
+        ui->spinTaperAngle->unbind();
+        ui->spinTaperAngleRev->unbind();
+        return;
+    }
+
+    ui->spinLenFwd->bind(target->LengthFwd);
+    ui->spinLenRev->bind(target->LengthRev);
+    ui->spinTaperAngle->bind(target->TaperAngle);
+    ui->spinTaperAngleRev->bind(target->TaperAngleRev);
+
+    // The expression-icon space is added by bind() after the widget has already
+    // been laid out, so re-run the layout to reposition the icons.
+    QTimer::singleShot(0, this, [this] {
+        ui->spinLenFwd->updateGeometry();
+        ui->spinLenRev->updateGeometry();
+        ui->spinTaperAngle->updateGeometry();
+        ui->spinTaperAngleRev->updateGeometry();
+        layout()->activate();
+    });
+}
+
+void DlgExtrusion::onTreeSelectionChanged()
+{
+    refreshFeatures();
+}
+
+void DlgExtrusion::applyBoundParameters()
+{
+    if (!boundFeature || !ui->spinLenFwd->isBound()) {
+        return;
+    }
+
+    ui->spinLenFwd->apply();
+    ui->spinLenRev->apply();
+    ui->spinTaperAngle->apply();
+    ui->spinTaperAngleRev->apply();
+}
+
+void DlgExtrusion::syncLinearParameters()
+{
+    if (extrusions.size() < 2) {
+        return;
+    }
+
+    auto* first = extrusions.front();
+    for (size_t i = 1; i < extrusions.size(); ++i) {
+        auto* other = extrusions[i];
+        copyParameter(first, first->LengthFwd, other, other->LengthFwd);
+        copyParameter(first, first->LengthRev, other, other->LengthRev);
+        copyParameter(first, first->TaperAngle, other, other->TaperAngle);
+        copyParameter(first, first->TaperAngleRev, other, other->TaperAngleRev);
+    }
+}
+
+bool DlgExtrusion::ensureTransaction()
+{
+    if (transactionOpen) {
+        return true;
+    }
+
+    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+    if (!activeDoc) {
+        return false;
+    }
+
+    if (activeDoc->getBookedTransactionID() == 0) {
+        activeDoc->openTransaction("Extrude");
+        ownsTransaction = true;
+    }
+    else {
+        ownsTransaction = false;
+    }
+    transactionOpen = true;
+    return true;
+}
+
+void DlgExtrusion::commitTransaction()
+{
+    if (!transactionOpen) {
+        return;
+    }
+
+    if (ownsTransaction) {
+        if (App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str())) {
+            activeDoc->commitTransaction();
+        }
+    }
+    transactionOpen = false;
+    ownsTransaction = false;
+}
+
+void DlgExtrusion::abortTransaction()
+{
+    if (!transactionOpen) {
+        return;
+    }
+
+    if (ownsTransaction) {
+        if (App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str())) {
+            activeDoc->abortTransaction();
+        }
+        extrusions.clear();
+        boundFeature = nullptr;
+    }
+    else {
+        removeCreatedFeatures();
+    }
+    transactionOpen = false;
+    ownsTransaction = false;
+}
+
+void DlgExtrusion::removeCreatedFeatures()
+{
+    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+    if (activeDoc) {
+        for (Part::Extrusion* feature : extrusions) {
+            if (feature && feature->isAttachedToDocument()) {
+                activeDoc->removeObject(feature->getNameInDocument());
+            }
+        }
+    }
+    extrusions.clear();
+    boundFeature = nullptr;
+}
+
 void DlgExtrusion::writeParametersToFeature(App::DocumentObject& feature, App::DocumentObject* base) const
 {
     Gui::Command::doCommand(
@@ -868,9 +1216,6 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject& feature, App::D
     }
     Gui::Command::doCommand(Gui::Command::Doc, "f.DirLink = %s", linkstr.str().c_str());
 
-    Gui::Command::doCommand(Gui::Command::Doc, "f.LengthFwd = %.15f", ui->spinLenFwd->value().getValue());
-    Gui::Command::doCommand(Gui::Command::Doc, "f.LengthRev = %.15f", ui->spinLenRev->value().getValue());
-
     Gui::Command::doCommand(
         Gui::Command::Doc,
         "f.Solid = %s",
@@ -885,16 +1230,6 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject& feature, App::D
         Gui::Command::Doc,
         "f.Symmetric = %s",
         ui->chkSymmetric->isChecked() ? "True" : "False"
-    );
-    Gui::Command::doCommand(
-        Gui::Command::Doc,
-        "f.TaperAngle = %.15f",
-        ui->spinTaperAngle->value().getValue()
-    );
-    Gui::Command::doCommand(
-        Gui::Command::Doc,
-        "f.TaperAngleRev = %.15f",
-        ui->spinTaperAngleRev->value().getValue()
     );
 }
 void DlgExtrusion::setSelectionGate()
@@ -929,11 +1264,7 @@ bool TaskExtrusion::reject()
 void TaskExtrusion::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {
-        try {
-            widget->apply();
-        }
-        catch (Base::AbortException&) {
-        };
+        widget->apply();
     }
 }
 
