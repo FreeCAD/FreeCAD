@@ -256,7 +256,6 @@ SET(bimtests_SRCS
     bimtests/TestArchProfile.py
     bimtests/TestArchProject.py
     bimtests/TestArchSectionPlane.py
-    bimtests/TestArchSectionPlaneGui.py
     bimtests/TestArchRebar.py
     bimtests/TestArchGrid.py
     bimtests/TestArchFence.py
