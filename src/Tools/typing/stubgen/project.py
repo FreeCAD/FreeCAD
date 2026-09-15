@@ -1,15 +1,17 @@
 from pathlib import Path
-from dataclasses import dataclass
-from functools import cached_property
+from dataclasses import dataclass, field
 import json
 
 
 @dataclass
 class Project:
     root: Path
+    version_override: str | None = field(default=None, kw_only=True)
 
-    @cached_property
+    @property
     def version(self) -> str:
+        if self.version_override is not None:
+            return self.version_override
         version_file = self.root / "version.json"
         with open(version_file, encoding="utf-8") as f:
             data = json.load(f)
