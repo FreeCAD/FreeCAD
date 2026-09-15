@@ -114,46 +114,6 @@ class _TransformedShapeProxy:
         return hash(object.__getattribute__(self, "_real_obj"))
 
 
-def _transform_shape_with_arc_fix(shape, matrix):
-    """Transform *shape* by *matrix* and recover arcs degraded to BSplines.
-
-    ``transformShape()`` can turn circles/arcs into BSplineCurves.
-    This attempts to convert them back via ``toBiArcs()`` so that
-    downstream operations (e.g. Deburr) still see native arc geometry.
-
-    Returns the (possibly fixed) transformed ``Part.Shape``.
-    """
-    transformed = shape.copy().transformShape(matrix, False, False)
-
-    if transformed.Faces:
-        return transformed
-
-    fixed_edges = []
-    any_converted = False
-    for edge in transformed.Edges:
-        try:
-            curve = edge.Curve
-        except TypeError:
-            fixed_edges.append(edge)
-            continue
-        if type(curve).__name__ == "BSplineCurve":
-            try:
-                arcs = curve.toBiArcs(0.001)
-                if arcs and len(arcs) == 1:
-                    fixed_edges.append(Part.Edge(arcs[0]))
-                    any_converted = True
-                    continue
-            except Exception:
-                # Biarc conversion can fail for degenerate or unsupported
-                # B-spline geometry; fall back to keeping the original edge.
-                pass
-        fixed_edges.append(edge)
-
-    if any_converted:
-        return Part.makeCompound(fixed_edges)
-    return transformed
-
-
 class ObjectOp(object):
     """
     Base class for proxy objects of all Path operations.
@@ -716,7 +676,11 @@ class ObjectOp(object):
             key = id(base_obj)
             if key not in proxy_cache:
                 if hasattr(base_obj, "Shape") and base_obj.Shape:
-                    shape = _transform_shape_with_arc_fix(base_obj.Shape, matrix)
+                    # checkScale=False keeps this on the gp_Trsf path, which
+                    # preserves analytic curve types. Do not pass True here:
+                    # it routes to BRepBuilderAPI_GTransform and turns
+                    # circles/arcs into BSplines.
+                    shape = base_obj.Shape.copy().transformShape(matrix, False, False)
 
                     # Validate the shape before creating proxy
                     Path.Log.debug(f"  Final shape type: {type(shape).__name__}")
@@ -1180,7 +1144,8 @@ class ObjectOp(object):
             def transform_shape(obj):
                 if not hasattr(obj, "Shape") or not obj.Shape:
                     return obj
-                final_shape = _transform_shape_with_arc_fix(obj.Shape, matrix)
+                # See baseShapes(): checkScale=False preserves arcs/circles.
+                final_shape = obj.Shape.copy().transformShape(matrix, False, False)
                 return _TransformedShapeProxy(obj, final_shape)
 
             self.model = [transform_shape(m) for m in self.model]
