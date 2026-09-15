@@ -1911,6 +1911,21 @@ class PostProcessor:
             return None
         return machine.kinematics.rotation_strategy
 
+    def _refuse_without_rotary_axes(self, item):
+        machine = getattr(self._machine, "name", None)
+        raise CAMValueError(
+            translate(
+                "CAM",
+                "{op} is on a tilted work plane, and {machine} has no rotary axes to point the "
+                "tool along it. Without rotary axes a work plane must be parallel to the table.",
+            ).format(
+                op=item.label,
+                machine=("machine '%s'" % machine) if machine else translate("CAM", "the Job"),
+            ),
+            job=self._job,
+            operation=item.source,
+        )
+
     def _check_rotation_strategy(self, strategy, item):
         """Refuse a tilted operation the machine or this post cannot express."""
         from Machine.models.machine import RotationStrategy
@@ -2068,11 +2083,13 @@ class PostProcessor:
         state is not assumed.
 
         A tilted operation on a rotary machine that declares no strategy, or
-        one this post cannot emit, refuses to post. An operation with no
-        plane and no recorded positions is left untouched, so a three-axis
-        Job is byte-identical to before. Without a rotary machine a plane
-        operation is placed into world coordinates, which is all a three-axis
-        post can do with it.
+        one this post cannot emit, refuses to post, and so does a tilted
+        operation without a rotary machine at all. An operation with no plane
+        and no recorded positions is left untouched, so a three-axis Job is
+        byte-identical to before. A plane parallel to the table - a datum for
+        depths, a turned X - is placed into world coordinates without a
+        rotary machine, and under a strategy the machine has not declared:
+        rotating a 2.5D path about Z keeps it 2.5D, and any machine cuts it.
         """
         import Path.Base.Generator.rotation as rotation
         from Machine.models.machine import RotationStrategy
@@ -2091,6 +2108,11 @@ class PostProcessor:
             if (placement is None or placement.isIdentity(1e-9)) and not positions:
                 return None, None
             return placement or FreeCAD.Placement(), positions
+
+        z_up = FreeCAD.Vector(0, 0, 1)
+
+        def tool_axis_tilted(placement):
+            return not placement.Rotation.multVec(z_up).isEqual(z_up, 1e-6)
 
         def pose_of(placement, positions):
             frame = tuple(round(v, 6) for v in placement.toMatrix().A)
@@ -2115,15 +2137,18 @@ class PostProcessor:
                 if placement is None:
                     new_items.append(item)
                     continue
-                tilted = not placement.isIdentity(1e-9)
+                framed = not placement.isIdentity(1e-9)
+                tilted = tool_axis_tilted(placement)
 
                 if strategy is None:
+                    if tilted:
+                        self._refuse_without_rotary_axes(item)
                     if positions:
                         Path.Log.warning(
                             f"{item.label}: recorded rotary positions but the post's "
                             f"machine has no rotary axes; emitting without positioning"
                         )
-                    if tilted:
+                    if framed:
                         item.path = PathUtils.applyPlacementToPath(placement, item.path)
                     new_items.append(item)
                     continue
@@ -2140,7 +2165,7 @@ class PostProcessor:
                         )
                     )
                     pose = (frame, angles)
-                    declared = strategy == RotationStrategy.TWP and tilted
+                    declared = strategy == RotationStrategy.TWP and framed
 
                 if strategy != RotationStrategy.TWP:
                     # world = placement * local; machine = R_m * world
