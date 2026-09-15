@@ -77,15 +77,7 @@
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-namespace PartGui
-{
-void showLinkArrayTask(App::DocumentObject* object);
-void showLinkArrayCircularTask(App::DocumentObject* object);
-void showLinkArrayLinearTask(App::DocumentObject* object);
-void showLinkArrayPathTask(App::DocumentObject* object);
-void showLinkArrayPointTask(App::DocumentObject* object);
-void showLinkArrayPolarTask(App::DocumentObject* object);
-}  // namespace PartGui
+#include "TaskLinkArrayParameters.h"
 
 //===========================================================================
 // Part_PickCurveNet
@@ -2531,21 +2523,18 @@ QString getAutoAssemblyOrPartGroupCommandStr()
 // Helper function to add the newly created object to the active Assembly or Part if present.
 // Link arrays are App::Link objects and are not valid children of PartDesign Bodies.
 {
-    return QStringLiteral(
-               "activePart = Gui.activeView().getActiveObject('%1')\n"
-               "activeAsm = Gui.activeView().getActiveObject('%2')\n"
-               "if activePart and not activeAsm:\n"
-               "    activePart.addObject(obj)\n"
-               "elif not activePart and activeAsm:\n"
-               "    activeAsm.addObject(obj)\n"
-               "elif activePart and activeAsm:\n"
-               "    if activePart.hasObject(activeAsm, True):\n"
-               "        activeAsm.addObject(obj)\n"
-               "    elif activeAsm.hasObject(activePart, True):\n"
-               "        activePart.addObject(obj)\n"
-               "else:\n"
-               "    pass\n"
-    )
+    return QStringLiteral(R"PY(activePart = Gui.activeView().getActiveObject('%1')
+activeAsm = Gui.activeView().getActiveObject('%2')
+if activePart and not activeAsm:
+    activePart.addObject(obj)
+elif not activePart and activeAsm:
+    activeAsm.addObject(obj)
+elif activePart and activeAsm:
+    if activePart.hasObject(activeAsm, True):
+        activeAsm.addObject(obj)
+    elif activeAsm.hasObject(activePart, True):
+        activePart.addObject(obj)
+)PY")
         .arg(PARTKEY, ASSEMBLYKEY);
 }
 
@@ -2553,8 +2542,7 @@ void activateLinkArrayCommand(
     Gui::Command& command,
     const char* transactionName,
     const char* objectType,
-    const char* objectName,
-    void (*showTask)(App::DocumentObject*)
+    const char* objectName
 )
 {
     auto selection = Gui::Command::getSelection().getSelectionEx();
@@ -2616,7 +2604,7 @@ void activateLinkArrayCommand(
         array->purgeTouched();
     }
 
-    showTask(array);
+    PartGui::showLinkArrayTask(array);
 }
 }  // namespace
 
@@ -2646,8 +2634,7 @@ void CmdPartLinkArrayCircular::activated(int iMsg)
         *this,
         QT_TRANSLATE_NOOP("Command", "Circular Link Array"),
         "Part::LinkArrayCircular",
-        "CircularLinkArray",
-        PartGui::showLinkArrayCircularTask
+        "CircularLinkArray"
     );
 }
 
@@ -2682,8 +2669,7 @@ void CmdPartLinkArrayPath::activated(int iMsg)
         *this,
         QT_TRANSLATE_NOOP("Command", "Path Link Array"),
         "Part::LinkArrayPath",
-        "PathLinkArray",
-        PartGui::showLinkArrayPathTask
+        "PathLinkArray"
     );
 }
 
@@ -2718,8 +2704,7 @@ void CmdPartLinkArrayPoint::activated(int iMsg)
         *this,
         QT_TRANSLATE_NOOP("Command", "Point Link Array"),
         "Part::LinkArrayPoint",
-        "PointLinkArray",
-        PartGui::showLinkArrayPointTask
+        "PointLinkArray"
     );
 }
 
@@ -2754,8 +2739,7 @@ void CmdPartLinkArrayLinear::activated(int iMsg)
         *this,
         QT_TRANSLATE_NOOP("Command", "Linear Link Array"),
         "Part::LinkArrayLinear",
-        "LinearLinkArray",
-        PartGui::showLinkArrayLinearTask
+        "LinearLinkArray"
     );
 }
 
@@ -2790,8 +2774,7 @@ void CmdPartLinkArrayPolar::activated(int iMsg)
         *this,
         QT_TRANSLATE_NOOP("Command", "Polar Link Array"),
         "Part::LinkArrayPolar",
-        "PolarLinkArray",
-        PartGui::showLinkArrayPolarTask
+        "PolarLinkArray"
     );
 }
 
