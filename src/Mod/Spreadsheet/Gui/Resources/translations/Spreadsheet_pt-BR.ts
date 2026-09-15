@@ -382,6 +382,11 @@
       <translation>Limpar cor de fundo</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Recalcular células</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Inserir linhas</translation>
@@ -392,35 +397,20 @@
       <translation>Remover linhas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <source>Insert Columns</source>
-      <translation>Inserir colunas</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Recalcular células</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Remover colunas</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
+      <translation>Inserir colunas</translation>
+    </message>
+    <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
       <translation>Limpar células</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Bind cells</source>
-      <translation>Vincular células</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="297"/>
-      <source>Unbind cells</source>
-      <translation>Desvincular células</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="228"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation>Remover tabela de configuração</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Vincular células</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Desvincular células</translation>
     </message>
   </context>
   <context>

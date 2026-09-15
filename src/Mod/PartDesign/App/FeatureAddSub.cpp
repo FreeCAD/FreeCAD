@@ -180,8 +180,7 @@ void FeatureAddSub::updatePreviewShape()
                            "removed or a problem with the model.")
                     );
                 }
-                // Common keeps the overlap, so its removed-volume preview is outside the tool.
-                PreviewShape.setValue(keepCommon ? cut : common);
+                PreviewShape.setValue(common);
                 return;
             }
             catch (Standard_Failure& e) {

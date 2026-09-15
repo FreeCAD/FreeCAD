@@ -113,7 +113,7 @@ jobs:
       - name: Compiling sources
         run: |
           cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false
+          msbuild ALL_BUILD.vcxproj /m:3 /p:Configuration=Release /p:TrackFileAccess=false
 
       - name: Installing to staging tree
         run: |
@@ -123,7 +123,7 @@ jobs:
       # x64 SDK is requested on every runner and the signer runs under x64 emulation on ARM64.
       # Authenticode does not care about the host architecture: an x64 signer signs ARM64 binaries.
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: '10.0.103'
           architecture: 'x64'
@@ -154,7 +154,7 @@ jobs:
       # primary conda release uses (package/rattler-build/pixi.toml: nsis build "*_log*").
       - name: Setup pixi (for log-enabled NSIS)
         if: inputs.makeInstaller == 'true'
-        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        uses: prefix-dev/setup-pixi@d3f436a425481402e6a95a1d1fc10331c708cd9e # v0.10.2
         with:
           pixi-version: v0.68.1
           cache: false

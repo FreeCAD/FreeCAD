@@ -21,22 +21,24 @@
  ***************************************************************************/
 
 #include <limits>
+#include <optional>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QPixmapCache>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
+#include <App/QuantityInput.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 
 #include "InputField.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "NumericLocale.h"
 #include "QuantitySpinBox_p.h"
 
 
@@ -54,7 +56,6 @@ public:
     explicit InputValidator(InputField* parent);
     ~InputValidator() override;
 
-    void fixup(QString& input) const override;
     State validate(QString& input, int& pos) const override;
 
 private:
@@ -186,12 +187,50 @@ void InputField::updateText(const Base::Quantity& quant)
 
     double dFactor;
     std::string unitStr;
-    std::string txt = quant.getUserString(dFactor, unitStr);
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    auto displayQuantity = quant;
+    displayQuantity.setFormat(Gui::editableQuantityFormat(quant.getFormat(), formatting));
+    std::string txt = Base::UnitsApi::schemaTranslate(displayQuantity, formatting, dFactor, unitStr);
     actUnitValue = quant.getValue() / dFactor;
     // Block signals to prevent newInput from re-parsing the display text
     // and overwriting actQuantity with a precision-truncated value.
     QSignalBlocker blocker(this);
     setText(QString::fromStdString(txt));
+}
+
+App::QuantityInputResult InputField::interpretInput(const QString& input, const App::InputPhase phase) const
+{
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    App::QuantityConstraints constraints;
+    if (actUnit != Unit::One) {
+        constraints.requiredUnit = actUnit;
+    }
+    constraints.minimum = Minimum;
+    constraints.maximum = Maximum;
+
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
+    const auto parse = [&](const App::QuantityInputGrammar selectedGrammar) {
+        return App::interpretQuantityInput(
+            input.toUtf8().toStdString(),
+            selectedGrammar,
+            getPath(),
+            actUnit,
+            formatting,
+            phase,
+            constraints
+        );
+    };
+
+    auto result = parse(grammar);
+    // Keep quantity-only syntax on the quantity parser, but preserve the established arithmetic
+    // behavior of unbound fields when the quantity grammar reports a syntax failure.
+    if (grammar == App::QuantityInputGrammar::Quantity && result.status == App::InputStatus::Invalid
+        && result.diagnostic
+        && result.diagnostic->kind == App::InputDiagnosticKind::ExpressionSyntax) {
+        result = parse(App::QuantityInputGrammar::Expression);
+    }
+    return result;
 }
 
 void InputField::notifyValueChanged()
@@ -205,6 +244,14 @@ void InputField::resizeEvent(QResizeEvent* /*event*/)
 {
     QSize iconSize = iconLabel->sizeHint();
     iconLabel->move(width() - (iconSize.width() + 2 * getMargin()), (height() - iconSize.height()) / 2);
+}
+
+void InputField::changeEvent(QEvent* event)
+{
+    QLineEdit::changeEvent(event);
+    if (event->type() == QEvent::LocaleChange && validInput) {
+        updateText(actQuantity);
+    }
 }
 
 void InputField::updateIconLabel(const QString& text)
@@ -264,77 +311,61 @@ void InputField::contextMenuEvent(QContextMenuEvent* event)
 
 void InputField::newInput(const QString& text)
 {
-    Quantity res;
-    try {
-        QString input = text;
-        fixup(input);
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    const auto result = interpretInput(text, App::InputPhase::Editing);
 
-        if (isBound()) {
-            std::shared_ptr<Expression> e(
-                ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8())
-            );
-
-            setExpression(e);
-
-            std::unique_ptr<Expression> evalRes(getExpression()->eval());
-
-            auto* value = freecad_cast<NumberExpression*>(evalRes.get());
-            if (value) {
-                res.setValue(value->getValue());
-                res.setUnit(value->getUnit());
-            }
-        }
-        else {
-            res = Quantity::parse(input.toStdString());
-        }
-    }
-    catch (Base::Exception& e) {
-        QString errorText = QString::fromLatin1(e.what());
-        if (iconLabel->isHidden()) {
-            iconLabel->setVisible(true);
-        }
-        Q_EMIT parseError(errorText);
+    if (result.status != App::InputStatus::Acceptable) {
         validInput = false;
+        if (result.status == App::InputStatus::Invalid && result.diagnostic) {
+            Q_EMIT parseError(Gui::numericInputDiagnosticText(result.diagnostic->kind));
+        }
         return;
     }
 
-    if (res.isDimensionless()) {
-        res.setUnit(this->actUnit);
-    }
+    Quantity res = *result.quantity;
 
-    // check if unit fits!
-    if (actUnit != Unit::One && !res.isDimensionless() && actUnit != res.getUnit()) {
-        if (iconLabel->isHidden()) {
-            iconLabel->setVisible(true);
-        }
-        Q_EMIT parseError(QStringLiteral("Wrong unit"));
-        validInput = false;
-        return;
+    double dFactor;
+    std::string unitStr;
+    Base::UnitsApi::schemaTranslate(res, formatting, dFactor, unitStr);
+    actUnitValue = res.getValue() / dFactor;
+    // Preserve previous format
+    res.setFormat(this->actQuantity.getFormat());
+
+    // Commit the expression and value only after parsing, evaluation, unit validation, and range
+    // handling have all succeeded.
+    if (result.expression) {
+        setExpression(result.expression);
     }
+    actQuantity = res;
 
     if (iconLabel->isVisible()) {
         iconLabel->setVisible(false);
     }
     validInput = true;
 
-    if (res.getValue() > Maximum) {
-        res.setValue(Maximum);
-    }
-    if (res.getValue() < Minimum) {
-        res.setValue(Minimum);
-    }
-
-    double dFactor;
-    std::string unitStr;
-    res.getUserString(dFactor, unitStr);
-    actUnitValue = res.getValue() / dFactor;
-    // Preserve previous format
-    res.setFormat(this->actQuantity.getFormat());
-    actQuantity = res;
-
     // signaling
     Q_EMIT valueChanged(res);
     Q_EMIT valueChanged(res.getValue());
+}
+
+void InputField::commitInput()
+{
+    const auto result = interpretInput(text(), App::InputPhase::Commit);
+    if (result.status != App::InputStatus::Acceptable) {
+        validInput = false;
+        if (result.diagnostic) {
+            Q_EMIT parseError(Gui::numericInputDiagnosticText(result.diagnostic->kind));
+        }
+        return;
+    }
+
+    if (result.expression) {
+        setExpression(result.expression);
+    }
+    auto quantity = *result.quantity;
+    quantity.setFormat(actQuantity.getFormat());
+    actQuantity = quantity;
+    validInput = true;
 }
 
 void InputField::pushToHistory(const QString& valueq)
@@ -402,13 +433,8 @@ void InputField::setToLastUsedValue()
 
 void InputField::pushToSavedValues(const QString& valueq)
 {
-    std::string value;
-    if (valueq.isEmpty()) {
-        value = this->text().toUtf8().constData();
-    }
-    else {
-        value = valueq.toUtf8().constData();
-    }
+    const QByteArray valueUtf8 = valueq.isEmpty() ? this->text().toUtf8() : valueq.toUtf8();
+    std::string value(valueUtf8.constData(), valueUtf8.size());
 
     if (_handle.isValid()) {
         char hist1[21];
@@ -506,7 +532,12 @@ const Base::Unit& InputField::getUnit() const
 /// get stored, valid quantity as a string
 QString InputField::getQuantityString() const
 {
-    return QString::fromStdString(actQuantity.getUserString());
+    double factor;
+    std::string unitString;
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    return QString::fromStdString(
+        Base::UnitsApi::schemaTranslate(actQuantity, formatting, factor, unitString)
+    );
 }
 
 /// set, validate and display quantity from a string. Must match existing units.
@@ -523,7 +554,8 @@ QString InputField::rawText() const
     double factor;
     std::string unit;
     double value = actQuantity.getValue();
-    actQuantity.getUserString(factor, unit);
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    Base::UnitsApi::schemaTranslate(actQuantity, formatting, factor, unit);
     return QStringLiteral("%1 %2").arg(value / factor).arg(QString::fromStdString(unit));
 }
 
@@ -646,15 +678,10 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber()
 {
-    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
-                       .arg(locale().negativeSign())
-                       .arg(locale().positiveSign())
-                       .arg(locale().groupSeparator())
-                       .arg(locale().decimalPoint())
-                       .arg(locale().exponential());
-    auto rmatch = QRegularExpression(expr).match(text());
-    if (rmatch.hasMatch()) {
-        setSelection(0, rmatch.capturedLength());
+    const auto length
+        = Gui::numericInputSelectionLengthUtf16(text(), Gui::numericLocaleContextFor(locale()));
+    if (length > 0) {
+        setSelection(0, length);
     }
 }
 
@@ -683,20 +710,10 @@ void InputField::focusInEvent(QFocusEvent* event)
 
 void InputField::focusOutEvent(QFocusEvent* event)
 {
-    try {
-        if (Quantity::parse(this->text().toStdString()).isDimensionless()) {
-            // if user didn't enter a unit, we virtually compensate
-            // the multiplication factor induced by user unit system
-            double factor;
-            std::string unitStr;
-            actQuantity.getUserString(factor, unitStr);
-            actQuantity = actQuantity * factor;
-        }
+    commitInput();
+    if (validInput) {
+        updateText(actQuantity);
     }
-    catch (const Base::ParserError&) {
-        // do nothing, let apply the last known good value
-    }
-    this->setText(QString::fromStdString(actQuantity.getUserString()));
     QLineEdit::focusOutEvent(event);
 }
 
@@ -704,6 +721,28 @@ void InputField::keyPressEvent(QKeyEvent* event)
 {
     if (isReadOnly()) {
         QLineEdit::keyPressEvent(event);
+        return;
+    }
+
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        commitInput();
+        if (validInput) {
+            // Return is handled here so invalid text can suppress successful signals. Keep the
+            // normal QLineEdit editingFinished() contract for valid commits.
+            Q_EMIT returnPressed();
+            Q_EMIT editingFinished();
+            event->ignore();
+        }
+        else {
+            event->accept();
+        }
+        return;
+    }
+    if (event->key() == Qt::Key_Escape) {
+        QSignalBlocker blocker(this);
+        updateText(actQuantity);
+        validInput = true;
+        event->ignore();
         return;
     }
 
@@ -729,7 +768,8 @@ void InputField::keyPressEvent(QKeyEvent* event)
 
     double dFactor;
     std::string unitStr;
-    actQuantity.getUserString(dFactor, unitStr);
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    Base::UnitsApi::schemaTranslate(actQuantity, formatting, dFactor, unitStr);
     this->setText(QStringLiteral("%L1 %2").arg(val).arg(QString::fromStdString(unitStr)));
     event->accept();
 }
@@ -757,55 +797,20 @@ void InputField::wheelEvent(QWheelEvent* event)
 
     double dFactor;
     std::string unitStr;
-    actQuantity.getUserString(dFactor, unitStr);
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    Base::UnitsApi::schemaTranslate(actQuantity, formatting, dFactor, unitStr);
 
     this->setText(QStringLiteral("%L1 %2").arg(val).arg(QString::fromStdString(unitStr)));
     selectNumber();
     event->accept();
 }
 
-void InputField::fixup(QString& input) const
-{
-    input.remove(locale().groupSeparator());
-
-    QString asciiMinus(QStringLiteral("-"));
-    QString localeMinus(locale().negativeSign());
-    if (localeMinus != asciiMinus) {
-        input.replace(localeMinus, asciiMinus);
-    }
-
-    QString asciiPlus(QStringLiteral("+"));
-    QString localePlus(locale().positiveSign());
-    if (localePlus != asciiPlus) {
-        input.replace(localePlus, asciiPlus);
-    }
-}
-
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     Q_UNUSED(pos);
-    try {
-        Quantity res;
-        QString text = input;
-        fixup(text);
-        res = Quantity::parse(text.toStdString());
-
-        double factor;
-        std::string unitStr;
-        res.getUserString(factor, unitStr);
-        double value = res.getValue() / factor;
-        // disallow one to enter numbers out of range
-        if (value > this->Maximum || value < this->Minimum) {
-            return QValidator::Invalid;
-        }
-    }
-    catch (Base::Exception&) {
-        // Actually invalid input but the newInput slot gives
-        // some feedback
-        return QValidator::Intermediate;
-    }
-
-    return QValidator::Acceptable;
+    const auto result = interpretInput(input, App::InputPhase::Editing);
+    return result.status == App::InputStatus::Acceptable ? QValidator::Acceptable
+                                                         : QValidator::Intermediate;
 }
 
 // --------------------------------------------------------------------
@@ -816,11 +821,6 @@ InputValidator::InputValidator(InputField* parent)
 {}
 
 InputValidator::~InputValidator() = default;
-
-void InputValidator::fixup(QString& input) const
-{
-    dptr->fixup(input);
-}
 
 QValidator::State InputValidator::validate(QString& input, int& pos) const
 {

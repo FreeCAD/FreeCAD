@@ -550,7 +550,10 @@ class PostProcessor:
                 "type": "text",
                 "label": translate("CAM", "Post-Tool Change"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after a tool change (M6), before the spindle is turned on. Use for a custom tool length offset routine, custom cutter compensation, or a return motion before the spindle starts.",
+                ),
             },
             {
                 "name": "tool_return",
@@ -558,7 +561,10 @@ class PostProcessor:
                 "type": "text",
                 "label": translate("CAM", "Tool Return after tool changes"),
                 "default": "",
-                "help": translate("CAM", "G-code commands inserted after tool changes."),
+                "help": translate(
+                    "CAM",
+                    "G-code to execute immediately after the spindle is turned on after a tool change.",
+                ),
             },
             {
                 "name": "pre_rotary_move",
@@ -1576,34 +1582,50 @@ class PostProcessor:
         Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
         return [Path.Command("G43", {"H": tool_num}, {Constants.ANNOT_ADDED_TLO: True})]
 
-    def _expand_tool_length_offset(self, postables):
-        """Inject or remove G43 tool length offset commands.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is True, adds G43 commands after M6
-        tool change commands in operations and tool change items.
-
-        When OUTPUT_TOOL_LENGTH_OFFSET is False, removes any existing G43
-        commands from operation paths.
-
-        Simplified single-pass implementation.
+    def _expand_tool_change(self, postables):
+        """Expand what follows a tool change (M6).
+        Immediately after each M6, inserts in order:
+          1. POST_TOOL_CHANGE lines, verbatim, if non-empty
+          2. G43 H<tool>, if OUTPUT_TOOL_LENGTH_OFFSET
+        When OUTPUT_TOOL_LENGTH_OFFSET is off, existing G43 commands are
+        replaced with a comment.
         """
+
         output_tool_length_offset = self.values["OUTPUT_TOOL_LENGTH_OFFSET"]
         Path.Log.debug(f"OUTPUT_TOOL_LENGTH_OFFSET value: {output_tool_length_offset}")
 
         def edit(section_name, item, cmd, section_state):
-            # suppress
-            if not output_tool_length_offset:
-                if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+            # suppress G43
+            if cmd.Name in Constants.GCODE_TOOL_LENGTH_OFFSET:
+                if not output_tool_length_offset:
                     return 0, [Path.Command(f"(TLO suppressed {cmd.toGCode()})")]
                 else:
                     return None, None
 
-            # add
-            else:
-                if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
-                    return 1, self._expand_tool_length_offset_post_command(item, cmd)
+            # append things after M6
+            elif cmd.Name in Constants.MCODE_TOOL_CHANGE:
+                # accumulate changes
+                changes = []
+
+                # POST_TOOL_CHANGE
+                if (block := self.values["POST_TOOL_CHANGE"]) != "":
+                    # instead of inserting an item of type=='str'
+                    for l in block.split("\n"):
+                        if l != "":
+                            changes.append(Path.Command("", {}, {Constants.ANNOT_AS_IS: l}))
+
+                # add G43
+                if output_tool_length_offset and "T" in cmd.Parameters:
+                    tool_num = cmd.Parameters["T"]
+                    Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
+                    changes.extend(self._expand_tool_length_offset_post_command(item, cmd))
+
+                if changes:
+                    return 1, changes
                 else:
                     return None, None
+            else:
+                return None, None
 
         self._edit_command_list(postables, edit)
 
@@ -1761,7 +1783,7 @@ class PostProcessor:
 
         self._edit_item_list(postables, wrap_rotary)
 
-    def _expand_tool_change(self, postables):
+    def _suppress_tool_change(self, postables):
         """Suppress M6 if not TOOL_CHANGE"""
 
         def suppress_m6(section_name: str, item, section_state: dict):
@@ -1871,7 +1893,7 @@ class PostProcessor:
 
             # item -> 'str' Postable's
             if item.item_type == "tool_controller":
-                return 1, [pblock("POST_TOOL_CHANGE"), pblock("TOOL_RETURN")]
+                return 1, [pblock("TOOL_RETURN")]
             elif item.item_type == "fixture":
                 return 1, [pblock("POST_FIXTURE_CHANGE")]
             elif item.item_type == "operation":
@@ -2254,11 +2276,11 @@ class PostProcessor:
         self._expand_translate_rapids(postables)
         self._expand_xy_before_z(postables)
         self._expand_bcnc_commands(postables)
-        self._expand_tool_length_offset(postables)
+        self._expand_tool_change(postables)
+        self._suppress_tool_change(postables)
 
         postables = self._expand_post_item(postables)
         self._expand_trailing_lines(postables)
-        self._expand_tool_change(postables)
         self._expand_rotary_move(postables)
 
         # must be last expansion
@@ -2596,6 +2618,8 @@ class PostProcessor:
 
         # Pass through G-code as-is
         if "as-is" in command.Annotations:
+            # and we no longer know the MachineState
+            self.machine_state.setState(None)
             return command.Annotations[Constants.ANNOT_AS_IS]
 
         # "ignored" commands need not be in "SUPPORTED_COMMANDS"
@@ -2945,13 +2969,53 @@ class PostProcessor:
         """
         return self._convert_move(command)
 
+    def _tapping_to_speed(self, command: Path.Command) -> Path.Command:
+        """Updates F to the speed, not pitch, if appropriate
+        Returns original command, or modified command
+        Override in the PP if the logic is completely different
+        """
+        # Tapping F is pitch, convert to speed
+        if (
+            command.Name in Constants.GCODE_MOVE_TAP
+            and "tapping" == command.Annotations.get("operation", "")
+            and "F" in command.Parameters
+        ):
+            # we are still FreeCAD units: mm and secs, so mm/min -> mm/sec
+            spindle_speed = command.Parameters.get("S", None)
+            if spindle_speed is None:
+                raise CAMAttributeError(
+                    translate("CAM", "S parameter is required for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            if spindle_speed <= 0:
+                raise CAMValueError(
+                    translate("CAM", "S parameter must be > 0 for a tapping operation"),
+                    job=self._job,
+                    operation=self._operation,
+                    command=command,
+                    pp=self.values["MACHINE_NAME"],
+                )
+            f = command.Parameters["F"] * spindle_speed / 60.0
+            new_command = Path.Command(
+                command.Name, {**command.Parameters, "F": f}, command.Annotations
+            )
+            return new_command
+        else:
+            return command
+
     def _convert_drill_cycle(self, command: Path.Command) -> str:
         """
         Converts a drill cycle command to gcode.
 
         This method can be overridden by derived postprocessors to customize drill cycle handling.
         """
-        return self._convert_move(command)
+
+        new_command = self._tapping_to_speed(command)
+
+        return self._convert_move(new_command)
 
     def _convert_probe(self, command: Path.Command) -> str:
         """

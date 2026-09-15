@@ -101,6 +101,7 @@ protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void updateData(const App::Property* prop) override;
 
     void attachPreview() override;
     void updatePreview() override;
@@ -120,6 +121,8 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    void updatePreviewColor();
+
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 

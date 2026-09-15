@@ -149,14 +149,22 @@ static std::size_t indexOfFile(const std::vector<FileStats>& fileInfoCache, cons
     return std::distance(fileInfoCache.begin(), it);
 }
 
+/// Should we show this file? Don't show files that no longer exist, or that FreeCAD can't open.
+static bool shouldShow(const QFileInfo& qfi)
+{
+    if (!qfi.exists()) {
+        return false;
+    }
+    if (!freecadCanOpen(qfi.suffix())) {
+        return false;
+    }
+    return true;
+}
+
 void DisplayedFilesModel::addFile(const QString& filePath)
 {
     const QFileInfo qfi(filePath);
-    if (!qfi.isReadable()) {
-        return;
-    }
-
-    if (!freecadCanOpen(qfi.suffix())) {
+    if (!shouldShow(qfi)) {
         return;
     }
 
@@ -195,10 +203,7 @@ void DisplayedFilesModel::addFile(const QString& filePath)
 void DisplayedFilesModel::modifiedFile(const QString& filePath)
 {
     const QFileInfo qfi(filePath);
-    if (!qfi.isReadable()) {
-        return;
-    }
-    if (!freecadCanOpen(qfi.suffix())) {
+    if (!shouldShow(qfi)) {
         return;
     }
 

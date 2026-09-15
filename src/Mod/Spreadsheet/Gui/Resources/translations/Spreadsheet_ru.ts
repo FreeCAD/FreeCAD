@@ -382,6 +382,11 @@
       <translation>Очистить цвет фона</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Пересчитать ячейки</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Вставка строк</translation>
@@ -392,35 +397,20 @@
       <translation>Удаление строк</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <source>Insert Columns</source>
-      <translation>Вставка столбцов</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Пересчитать ячейки</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Удалить столбцы</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
+      <translation>Вставка столбцов</translation>
+    </message>
+    <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
       <translation>Очистка ячеек</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Bind cells</source>
-      <translation>Связать ячейки</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="297"/>
-      <source>Unbind cells</source>
-      <translation>Отвязать ячейку</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="228"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgSheetConf.cpp" line="391"/>
       <source>Unsetup conf table</source>
       <translation>Отключить таблицу конфигурации</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>Связать ячейки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>Отвязать ячейку</translation>
     </message>
   </context>
   <context>

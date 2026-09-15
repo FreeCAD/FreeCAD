@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cmath>
 #include <limits>
 
 #include <Inventor/nodes/SoCamera.h>
@@ -342,10 +343,11 @@ void GridExtensionP::createGridPart(
     grid->vertexProperty = vts;
 
     float gridDimension = 1.5 * camMaxDimension;
-    int vlines = static_cast<int>(gridDimension / computedGridValue);  // total number of vertical lines
-    int nlines = 2 * vlines;                                           // total number of lines
+    // Use a double here: casting an infinite or oversized division result to int is undefined.
+    double requestedLines = 2.0 * gridDimension / computedGridValue;
+    constexpr double maxNumberOfLines = 2000.0;
 
-    if (nlines > 2000) {
+    if (!std::isfinite(requestedLines) || requestedLines > maxNumberOfLines) {
         if (!isTooManySegmentsNotified) {
             Base::Console().warning(
                 "The grid is too dense, so it is being disabled. Consider zooming in or changing "
@@ -360,6 +362,9 @@ void GridExtensionP::createGridPart(
     else {
         isTooManySegmentsNotified = false;
     }
+
+    int vlines = static_cast<int>(gridDimension / computedGridValue);  // total number of vertical lines
+    int nlines = 2 * vlines;                                           // total number of lines
 
     // set the grid indices
     grid->numVertices.setNum(nlines);

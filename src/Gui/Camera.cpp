@@ -26,7 +26,13 @@
 
 #include <App/Application.h>
 
+#include <algorithm>
 #include <cmath>
+
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
 
 using namespace Gui;
 
@@ -191,6 +197,35 @@ bool Camera::rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float 
     // against the closer sign.
     const float squaredDistance = 2.0F * (1.0F - absDot);
     return squaredDistance <= squaredTolerance;
+}
+
+void Camera::fitToBox(SoOrthographicCamera& camera, const SbBox3f& box, float aspect)
+{
+    if (box.isEmpty()) {
+        return;
+    }
+
+    SbMatrix intoCameraSpace;
+    intoCameraSpace.setRotate(camera.orientation.getValue().inverse());
+
+    // Only the rotated size matters here; viewBoundingBox below places the camera.
+    SbBox3f projected = box;
+    projected.transform(intoCameraSpace);
+    const SbVec3f half = projected.getSize() * 0.5F;
+
+    const float halfExtent = std::max(half[1], half[0] / aspect);
+    if (halfExtent <= 0.0F) {
+        // A box that projects to a point would leave the view volume degenerate.
+        return;
+    }
+
+    // Geometry outside the bounding box is still rendered - a sketch's edit-mode cross axes,
+    // for one - so the planes Coin puts tangent to the bounding sphere at a slack of 1 would
+    // clip it. Orthographic projection is happy with the negative near distance a slack of 2 gives.
+    camera.viewBoundingBox(box, aspect, 2.0F);
+
+    // Coin sizes the frame from the circumscribing sphere, which leaves the image mostly empty.
+    camera.height = 2.0F * halfExtent * fitMargin;
 }
 
 Base::Rotation Camera::convert(Camera::Orientation view)
