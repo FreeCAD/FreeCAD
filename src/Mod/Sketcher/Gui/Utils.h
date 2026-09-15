@@ -188,6 +188,8 @@ bool isSketchInEdit(Gui::Document* doc);
 bool isCommandActive(Gui::Document* doc);
 bool isCommandNeedingConstraintActive(Gui::Document* doc);
 bool isCommandNeedingGeometryActive(Gui::Document* doc);
+/// True when at least two distinct edges of the sketch in edit are selected.
+bool isCreateBlockActive(Gui::Document* doc);
 bool isCommandNeedingBSplineActive(Gui::Document* doc);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
@@ -233,6 +235,10 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 
 // Model TreeWidget helpers
 Gui::TreeWidget* findModelTreeWidget();
+
+QMap<QString, QString> findAvailableBlockFiles();
+std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(const std::string& filename);
+void reloadFileGroup(ViewProviderSketch* view, int constraintId);
 
 }  // namespace SketcherGui
 
