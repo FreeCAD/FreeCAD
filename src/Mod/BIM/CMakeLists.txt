@@ -1,5 +1,3 @@
-find_package(PythonInterp REQUIRED)
-
 # ==============================================================================
 # File Management
 # Define the source files and resources of the BIM workbench
@@ -304,7 +302,7 @@ set(BIM_GENERATED_PARSER ${CMAKE_BINARY_DIR}/Mod/BIM/generated_sql_parser.py)
 
 add_custom_command(
     OUTPUT ${BIM_GENERATED_PARSER}
-    COMMAND ${PYTHON_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
+    COMMAND ${Python3_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
     DEPENDS ${BIM_LARK_GRAMMAR} ${BIM_PARSER_GENERATOR}
     COMMENT "Generating Arch SQL parser..."
 )
