@@ -270,6 +270,11 @@ public:
     bool getIsTextHeight() const;
     void setIsTextHeight(bool val);
 
+    std::string getFile() const;
+    void setFile(const std::string& file);
+    bool getFileHeight() const;
+    void setFileHeight(bool height);
+
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Deprecated, use getElement/setElement instead
     int First {GeoEnum::GeoUndef};

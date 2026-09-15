@@ -69,6 +69,9 @@ SET(Features_SRCS
     SketchObject.cpp
     SketchObject.h
     SketchObjectGeometry.cpp
+    SketchObjectGroup.cpp
+    GroupGeometry.cpp
+    GroupGeometry.h
     SketchObjectExternal.cpp
     SketchObjectConstraints.cpp
     SketchObjectOperations.cpp

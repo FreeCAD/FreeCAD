@@ -444,7 +444,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
-    geom << "Sketcher_CreateText"
+    geom << "Sketcher_CompCreateOutlines"
          << "Separator"
          << "Sketcher_ToggleConstruction";
     /*<< "Sketcher_CreateText"*/
@@ -579,7 +579,8 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
               << "Separator"
               << "Sketcher_CopyClipboard"
               << "Sketcher_Cut"
-              << "Sketcher_Paste";
+              << "Sketcher_Paste"
+              << "Sketcher_CreateBlock";
 }
 
 template<>

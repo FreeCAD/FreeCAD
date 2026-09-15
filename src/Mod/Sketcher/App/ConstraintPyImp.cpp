@@ -68,7 +68,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // A simple but effective rule: if it's not a list or a bool, it must be a number for now.
         // The most critical check is for non-numeric types being passed for an index.
         if (Py_TYPE(current_arg)->tp_as_number == NULL && !PyBool_Check(current_arg)
-            && !PyList_Check(current_arg)) {
+            && !PyList_Check(current_arg)
+            && !(
+                PyUnicode_Check(current_arg)
+                && (PyUnicode_CompareWithASCIIString(typeObj, "Text") == 0
+                    || PyUnicode_CompareWithASCIIString(typeObj, "Group") == 0)
+            )) {
             PyErr_Format(
                 PyExc_TypeError,
                 "Invalid argument type for Constraint. "
@@ -146,13 +151,32 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return true;  // Success
     };
 
-    // Attempt to parse (string, list) for 'Group'
-    if (PyArg_ParseTuple(args, "sO!", &ConstraintType, &PyList_Type, &py_elements_list)) {
+    // File metadata is optional, so existing Group records remain valid.
+    const char* file = "";
+    PyObject* fileHeight = Py_False;
+    PyObject* groupActive = Py_True;
+    if (PyArg_ParseTuple(
+            args,
+            "sO!|sO!O!",
+            &ConstraintType,
+            &PyList_Type,
+            &py_elements_list,
+            &file,
+            &PyBool_Type,
+            &fileHeight,
+            &PyBool_Type,
+            &groupActive
+        )) {
         if (strcmp(ConstraintType, "Group") == 0) {
             constraint->Type = Sketcher::Group;
             if (!parseElementsList(py_elements_list, constraint)) {
                 return -1;  // The lambda set the Python error, so just return.
             }
+            constraint->setFile(file);
+            if (*file) {
+                constraint->setFileHeight(fileHeight == Py_True);
+            }
+            constraint->isActive = groupActive == Py_True;
             return 0;  // Success!
         }
     }
@@ -1189,6 +1213,26 @@ void ConstraintPy::setThirdPos(Py::Long arg)
 Py::String ConstraintPy::getName() const
 {
     return Py::String(this->getConstraintPtr()->Name);
+}
+
+Py::String ConstraintPy::getFile() const
+{
+    return Py::String(getConstraintPtr()->getFile());
+}
+
+void ConstraintPy::setFile(Py::String file)
+{
+    getConstraintPtr()->setFile(file);
+}
+
+Py::Boolean ConstraintPy::getFileHeight() const
+{
+    return Py::Boolean(getConstraintPtr()->getFileHeight());
+}
+
+void ConstraintPy::setFileHeight(Py::Boolean height)
+{
+    getConstraintPtr()->setFileHeight(static_cast<bool>(height));
 }
 
 void ConstraintPy::setName(Py::String arg)

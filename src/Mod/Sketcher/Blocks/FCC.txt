@@ -1,0 +1,35 @@
+# Copied from sketcher. From:
+lastGeoId = len(ActiveSketch.Geometry)
+
+geoList = []
+geoList.append(Part.BSplineCurve([App.Vector(56.59702083, -24.77029167), App.Vector(25.80348958, -55.48444792), App.Vector(56.51764583, -86.27797917), App.Vector(87.23180208, -117.07151042), App.Vector(118.02533333, -86.35735417)], [3, 2, 3], [2.35490400, 3.92570033, 5.49649666], False, 2, [1.00000000, 0.70710678, 1.00000000, 0.70710678, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(118.02533333, -24.77029167), App.Vector(87.31117708, 6.04869870), App.Vector(56.59702083, -24.77029167)], [3, 3], [0.78369446, 2.35789819], False, 2, [1.00000000, 0.70590106, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(122.65025000, -30.26039583), App.Vector(120.55870675, -27.32924276), App.Vector(118.02533333, -24.77029167)], [3, 3], [0.61976644, 0.78037542], False, 2, [1.00000000, 0.99677733, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(122.65025000, -30.26039583), App.Vector(132.29166667, -23.12987500)], [2, 2], [0.00000000, 45.32301954], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(132.29166667, -23.12987500), App.Vector(115.74850047, -0.00457869), App.Vector(87.31514583, 0.00000000)], [3, 3], [0.62096775, 1.57063529], False, 2, [1.00000000, 0.88936873, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(87.31514583, 0.00000000), App.Vector(58.70575000, 0.00000000), App.Vector(35.17635417, -21.72758333), App.Vector(32.21037500, -49.61995833)], [4, 4], [0.00000000, 1.00000000], False, 3, [1.00000000, 1.00000000, 1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(32.21037500, -49.61995833), App.Vector(11.15747917, -49.61995833)], [2, 2], [0.00000000, 79.57000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(11.15747917, -49.61995833), App.Vector(11.15747917, -13.27150000)], [2, 2], [0.00000000, 137.38000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(11.15747917, -13.27150000), App.Vector(37.37504167, -13.27150000)], [2, 2], [0.00000000, 99.09000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(37.37504167, -13.27150000), App.Vector(46.90004167, 0.00000000)], [2, 2], [0.00000000, 61.74160348], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(46.90004167, 0.00000000), App.Vector(0.00000000, 0.00000000)], [2, 2], [0.00000000, 177.26000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(0.00000000, 0.00000000), App.Vector(0.00000000, -111.12500000)], [2, 2], [0.00000000, 420.00000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(0.00000000, -111.12500000), App.Vector(11.15747917, -102.92291667)], [2, 2], [0.00000000, 52.33840750], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(11.15747917, -102.92291667), App.Vector(11.15747917, -61.51297917)], [2, 2], [0.00000000, 156.51000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(11.15747917, -61.51297917), App.Vector(32.21037500, -61.51297917)], [2, 2], [0.00000000, 79.57000000], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(32.21037500, -61.51297917), App.Vector(35.17635417, -89.40006250), App.Vector(58.70575000, -111.12500000), App.Vector(87.31514583, -111.12500000)], [4, 4], [0.00000000, 1.00000000], False, 3, [1.00000000, 1.00000000, 1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(87.31514583, -111.12500000), App.Vector(115.75327071, -111.13045146), App.Vector(132.29431250, -87.99777083)], [3, 3], [4.71219728, 5.66242939], False, 2, [1.00000000, 0.88923964, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(132.29431250, -87.99777083), App.Vector(122.65289583, -80.85402083)], [2, 2], [0.00000000, 45.35276838], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(118.02533333, -86.35735417), App.Vector(120.56081040, -83.79210384), App.Vector(122.65289583, -80.85402083)], [3, 3], [5.50362414, 5.66441250], False, 2, [1.00000000, 0.99677013, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(103.69285417, -44.28331250), App.Vector(97.78274921, -35.64375046), App.Vector(87.31514583, -35.61820833)], [3, 3], [0.59995762, 1.56835622], False, 2, [1.00000000, 0.88504796, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(103.69285417, -44.28331250), App.Vector(113.34485417, -37.13956250)], [2, 2], [0.00000000, 45.38491379], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(113.34485417, -37.13956250), App.Vector(103.84700811, -23.60836098), App.Vector(87.31514583, -23.60347917)], [3, 3], [0.61201463, 1.57050103], False, 2, [1.00000000, 0.88734414, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(87.31514583, -23.60347917), App.Vector(69.70712500, -23.60347917), App.Vector(55.44079167, -37.90950000), App.Vector(55.44079167, -55.56250000)], [4, 4], [0.00000000, 1.00000000], False, 3, [1.00000000, 1.00000000, 1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(55.44079167, -55.56250000), App.Vector(55.44079167, -73.21550000), App.Vector(69.70712500, -87.51093750), App.Vector(87.31514583, -87.51622917)], [4, 4], [0.00000000, 1.00000000], False, 3, [1.00000000, 1.00000000, 1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(87.31514583, -87.51622917), App.Vector(103.84836473, -87.51660176), App.Vector(113.34485417, -73.98279167)], [3, 3], [4.71236644, 5.67132848], False, 2, [1.00000000, 0.88723446, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(113.34485417, -73.98279167), App.Vector(103.69285417, -66.83904167)], [2, 2], [0.00000000, 45.38491379], False, 1, [1.00000000, 1.00000000], False))
+geoList.append(Part.BSplineCurve([App.Vector(87.31514583, -35.61820833), App.Vector(54.41571845, -35.63124975), App.Vector(69.69881032, -64.76541518), App.Vector(84.98190218, -93.89958061), App.Vector(103.69285417, -66.83904167)], [3, 2, 3], [1.57119273, 3.62470742, 5.67822212], False, 2, [1.00000000, 0.51759606, 1.00000000, 0.51759606, 1.00000000], False))
+objectStr.addGeometry(geoList,False)
+del geoList
+
+constraintList = []
