@@ -375,8 +375,9 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
 
 bool ViewProvider::showPreselectPreview(bool on)
 {
-    // the task dialog owns the preview while editing, so do not take it over
-    if (on && isEditing()) {
+    // the task dialog owns the preview while editing, so don't take it over or end it;
+    // setEdit() clears the selection first, releasing a hovered preview before it claims one
+    if (isEditing()) {
         return false;
     }
     // a visible feature already shows itself and is highlighted normally
