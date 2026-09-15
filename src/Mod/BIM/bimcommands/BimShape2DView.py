@@ -42,7 +42,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d["Accel"] = "V, V"
         d["ToolTip"] = QT_TRANSLATE_NOOP(
             "BIM_Shape2DView",
-            "Creates a 2d projection of the selected objects on the XY-plane. The initial projection direction is the opposite of the current active view direction",
+            "Creates a 2D projection of the selected objects on the XY-plane. The initial projection direction is the opposite of the current active view direction",
         )
         return d
 
