@@ -29,8 +29,6 @@ used by the execute() method of ifc_objects"""
 import multiprocessing
 import re
 
-import ifcopenshell
-import ifcopenshell.util.element
 from pivy import coin
 from PySide import QtCore
 
@@ -40,8 +38,11 @@ import Part
 
 from FreeCAD import Base
 
+from . import backend
 from . import ifc_tools
 from . import ifc_export
+
+ifcopenshell = backend.get_backend()
 
 
 def generate_geometry(obj, cached=False):

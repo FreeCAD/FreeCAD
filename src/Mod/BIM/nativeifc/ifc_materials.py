@@ -24,12 +24,12 @@
 
 """This NativeIFC module deals with materials"""
 
-import ifcopenshell
-import ifcopenshell.util.element
-
 import FreeCAD
 
+from . import backend
 from . import ifc_tools
+
+ifcopenshell = backend.get_backend()
 
 
 def create_material(element, parent, recursive=False):
