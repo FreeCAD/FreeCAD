@@ -48,6 +48,7 @@ enum class InteractiveScaleState
 
 class View3DInventorViewer;
 class ViewProvider;
+class ViewProviderImagePlane;
 class InteractiveScale: public QObject
 {
     Q_OBJECT
@@ -123,6 +124,13 @@ private:
 
     void onInteractiveScale();
     View3DInventorViewer* getViewer() const;
+    ViewProviderImagePlane* getViewProvider() const;
+    /// The crop preview's transparency default: the saved preference value if the user has
+    /// accepted a dialog with a custom value before, otherwise the built-in fallback. Queried
+    /// directly rather than via spinBoxCropPreview->onRestore(), since PrefSpinBox falls back
+    /// to the spin box's *current* value (not its .ui-declared default) when nothing is saved
+    /// yet, which would make Reset a no-op once the value has drifted from the default.
+    int cropPreviewTransparencyDefault() const;
     void scaleImage(double);
     void startScale();
     void acceptScale();
@@ -144,12 +152,19 @@ private:
     void changeTransparency(int val);
     void changeWidth();
     void changeHeight();
+    void changeCropLeft();
+    void changeCropRight();
+    void changeCropTop();
+    void changeCropBottom();
+    void changeCropPreviewTransparency(int val);
+    void resetCrop();
 
 private:
     std::unique_ptr<Ui_TaskImage> ui;
     QPointer<InteractiveScale> scale;
     App::WeakPtrT<Image::ImagePlane> feature;
     double aspectRatio;
+    void updateCropLimits();
 };
 
 class TaskImageDialog: public Gui::TaskView::TaskDialog
