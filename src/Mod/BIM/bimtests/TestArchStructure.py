@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
 import unittest
 import FreeCAD as App
 from FreeCAD import Vector
@@ -291,3 +292,16 @@ class TestArchStructure(TestArchBase.TestArchBase):
         self.assertEqual(
             placement.Rotation.Angle, 0.0, "Zero-length edge should result in identity rotation"
         )
+
+    def test_column_flip_v1_0_v1_1(self):
+        """Columns based on sketches can have flippped automatic normals in v1.1.
+        This test checks if the workaround (explicitly setting normals) is effective."""
+        self.printTestMessage("v1.1 column flip workaround")
+        path = os.path.join(os.path.dirname(__file__), "test_structure_column_flip_v1_0_v1_1.FCStd")
+        test_doc = App.openDocument(path)
+        test_doc.recompute()
+        self.assertAlmostEqual(test_doc.Structure.Shape.BoundBox.ZMin, 0)
+        self.assertAlmostEqual(test_doc.Structure001.Shape.BoundBox.ZMax, 0)
+        self.assertAlmostEqual(test_doc.Structure002.Shape.BoundBox.ZMin, 0)
+        self.assertAlmostEqual(test_doc.Structure003.Shape.BoundBox.ZMax, 0)
+        App.closeDocument(test_doc.Name)
