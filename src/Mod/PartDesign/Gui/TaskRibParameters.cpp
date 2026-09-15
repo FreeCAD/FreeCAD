@@ -23,7 +23,7 @@
 #include <Mod/Part/App/Tools.h>
 #include <Precision.hxx>
 #include <gp_Ax3.hxx>
-#include <Mod/Part/App/Part2DObject.h>
+#include <Base/Type.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/FeatureRib.h>
 
@@ -31,7 +31,7 @@ namespace PartDesignGui
 {
 namespace
 {
-// Keep the picker limited to sketch-like objects or edges, excluding dependency cycles.
+// Accept sketches or their edges only, excluding dependency cycles.
 class RibProfileSelection: public NoDependentsSelection
 {
 public:
@@ -46,8 +46,8 @@ public:
             return false;
         }
         const std::string name = subname ? subname : "";
-        return name.empty() ? object->isDerivedFrom<Part::Part2DObject>()
-                            : object->isDerivedFrom<Part::Feature>() && name.starts_with("Edge");
+        return object->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))
+            && (name.empty() || name.starts_with("Edge"));
     }
 
 private:
@@ -74,8 +74,6 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribThickness->setValue(rib->Thickness.getQuantityValue());
     ui->ribThickness->bind(rib->Thickness);
 
-    // Distance is currently a PropertyFloat in the model (millimetres), not a
-    // PropertyLength. Display user units but write the numeric internal-unit value.
     ui->ribLength->setUnit(Base::Unit::Length);
     ui->ribLength->setMinimum(0.0);
     ui->ribLength->setMaximum(1e9);
@@ -87,8 +85,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribDraftAngle->setMaximum(89.0);
     ui->ribDraftAngle->setValue(rib->DraftAngle.getQuantityValue());
     ui->ribDraftAngle->bind(rib->DraftAngle);
-
-    // FilletRadius is a PropertyFloat in millimetres, not a PropertyLength.
+    
     ui->ribFilletRadius->setUnit(Base::Unit::Length);
     ui->ribFilletRadius->setMinimum(0.0);
     ui->ribFilletRadius->setMaximum(1e9);
@@ -97,7 +94,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
 
     updateVisibility();
 
-    // Connect after initialization so opening the dialog does not alter the feature.
+    // init the nconnect
     connect(ui->ribSelectProfile, &QToolButton::toggled, this, &TaskRibParameters::selectProfile);
     connect(ui->ribClearProfile, &QToolButton::clicked, this, [this]() {
         finishSelection();
@@ -105,6 +102,8 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         refreshProfile();
         updateRib();
     });
+
+    
     const auto connectEnum = [this](QComboBox* combo, App::PropertyEnumeration& property) {
         connect(
             combo,
@@ -121,14 +120,18 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             }
         );
     };
+
+    
     connectEnum(ui->ribExtension, rib->ExtendType);
     connectEnum(ui->ribPlacement, rib->PlacementType);
     connectEnum(ui->ribExtent, rib->ExtentType);
     connectEnum(ui->ribDraftReference, rib->DraftReference);
+    
     connect(ui->ribReversed, &QCheckBox::toggled, this, [this](bool reversed) {
         getObject<PartDesign::Rib>()->Reversed.setValue(reversed);
         updateRib();
     });
+
     connect(
         ui->ribThickness,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -138,6 +141,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             updateRib();
         }
     );
+
     connect(
         ui->ribDraftAngle,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -147,6 +151,8 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             updateRib();
         }
     );
+
+    
     connect(
         ui->ribFilletRadius,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -156,6 +162,8 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             updateRib();
         }
     );
+
+    
     connect(
         ui->ribLength,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -165,6 +173,8 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
             updateRib();
         }
     );
+
+    
     setupGizmos();
 }
 
@@ -208,6 +218,8 @@ void TaskRibParameters::refreshEnums()
         }
         return QString::fromStdString(value);
     };
+
+    
     const auto populate = [&caption](QComboBox* combo, const App::PropertyEnumeration& property) {
         const QSignalBlocker blocker(combo);
         combo->clear();
@@ -216,6 +228,8 @@ void TaskRibParameters::refreshEnums()
         }
         combo->setCurrentIndex(combo->findData(QString::fromUtf8(property.getValueAsString())));
     };
+
+    
     if (auto rib = getObject<PartDesign::Rib>()) {
         populate(ui->ribExtension, rib->ExtendType);
         populate(ui->ribPlacement, rib->PlacementType);
@@ -242,7 +256,7 @@ void TaskRibParameters::refreshProfile()
         }
         ui->ribProfile->setText(text);
         ui->ribProfile->setPlaceholderText(
-            pickingProfile ? tr("Selecting…") : tr("Select a sketch or edges")
+            pickingProfile ? tr("Selecting…") : tr("Select a sketch or sketch edges")
         );
         ui->ribClearProfile->setEnabled(rib->Profile.getValue() != nullptr);
     }
@@ -254,6 +268,7 @@ void TaskRibParameters::updateVisibility()
     ui->ribLengthLabel->setVisible(distance);
     ui->ribLength->setVisible(distance);
 }
+
 
 void TaskRibParameters::selectProfile(bool enabled)
 {
@@ -280,6 +295,7 @@ void TaskRibParameters::selectProfile(bool enabled)
     refreshProfile();
 }
 
+
 void TaskRibParameters::finishSelection()
 {
     if (!pickingProfile) {
@@ -303,18 +319,21 @@ void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (!pickingProfile || msg.Type != Gui::SelectionChanges::AddSelection) {
         return;
     }
+    
     auto rib = getObject<PartDesign::Rib>();
     if (!rib || std::string(msg.pDocName) != rib->getDocument()->getName()) {
         return;
     }
+    
     auto raw = rib->getDocument()->getObject(msg.pObjectName);
     RibProfileSelection gate(rib);
     if (!gate.allow(rib->getDocument(), raw, msg.pSubName)) {
         return;
     }
+    
     const bool add = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (add && !selectedSource.empty() && selectedSource != raw->getNameInDocument()) {
-        return;  // A Profile link can hold multiple edges, but only from one object.
+        return;  
     }
 
     // Resolve an external object once per picking session. Copy the whole source
@@ -440,8 +459,8 @@ void TaskRibParameters::setGizmoPositions()
             return;
         }
         gp_Pnt center(centerValue.x, centerValue.y, centerValue.z);
-        const auto plane = rib->getRibProfilePlane();
-        const gp_Vec normal(plane.Axis().Direction());
+        const auto sketchNormal = rib->getProfileNormal();
+        const gp_Vec normal(sketchNormal.x, sketchNormal.y, sketchNormal.z);
         const auto direction = rib->Direction.getValue();
         gp_Vec travel(direction.x, direction.y, direction.z);
         if (travel.Magnitude() <= Precision::Confusion()) {
@@ -456,7 +475,7 @@ void TaskRibParameters::setGizmoPositions()
             const auto value = rib->PullDirection.getValue();
             pull = gp_Vec(value.x, value.y, value.z);
         }
-        // Properties are Rib-local; the scene graph and selected profile are world-space.
+        // Properties local; others global
         travel.Transform(rib->getLocation().Transformation());
         pull.Transform(rib->getLocation().Transformation());
         if (pull.Magnitude() <= Precision::Confusion()) {

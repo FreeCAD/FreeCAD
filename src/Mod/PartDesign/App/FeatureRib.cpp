@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 #include "FeatureRib.h"
 
+#include <Base/Type.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <BRepAdaptor_Curve.hxx>
@@ -10,12 +11,14 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
+
 #include <BRepTools_History.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <BRep_Builder.hxx>
@@ -36,6 +39,7 @@
 
 #include <algorithm>
 #include <cmath>
+
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -160,7 +164,7 @@ Rib::Rib()
 
     ADD_PROPERTY_TYPE(
         FilletRadius,
-        (0.0),
+        (0.0), // default to no fillet
         "Rib",
         App::Prop_None,
         "Fillet radius for the rib-body intersection"
@@ -184,6 +188,9 @@ Part::TopoShape Rib::getRibProfileWire() const
 {
     if (!Profile.getValue()) {
         throw std::runtime_error("No profile selected");
+    }
+    if (!Profile.getValue()->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+        throw std::runtime_error("Rib profile must be a sketch");
     }
 
     // one connected wire only for rib
@@ -309,6 +316,8 @@ void extendRibCurveEnd(
     }
 }
 
+
+
 void requireRibExtensionContact(
     const TopoDS_Shape& body,
     const Handle(Geom_BoundedCurve)& curve,
@@ -317,6 +326,7 @@ void requireRibExtensionContact(
     const char* endName
 )
 {
+    // must have an intersection with the body from both extensions (or we can't build a rib)
     // locate endpoints (in case of change)
     GeomAPI_ProjectPointOnCurve projection(originalEndpoint, curve);
     if (projection.NbPoints() == 0 || projection.LowerDistance() > Precision::Confusion()) {
@@ -331,8 +341,6 @@ void requireRibExtensionContact(
     }
 
     // test the extension for contact with the body
-    // we created a point along tangent and then used that to make the c2 curve
-    // so we need to test the actual curve for contact, not that tangent
     BRepExtrema_DistShapeShape contact(body, extension.Edge());
     if (!contact.IsDone()) {
         throw std::runtime_error("Failed to check rib extension contact with the body");
@@ -344,6 +352,8 @@ void requireRibExtensionContact(
         );
     }
 }
+
+
 
 TopoDS_Edge extendRibTerminalEdge(
     const TopoDS_Edge& edge,
@@ -398,7 +408,7 @@ TopoDS_Edge extendRibTerminalEdge(
         history->AddModified(lastVertex, newLast);
     }
 
-    // Reuse unextended vertices so neighboring edges remain topologically joined.
+    // reuse unextended vertices so neighboring edges remain topologically joined.
     BRepBuilderAPI_MakeEdge maker(
         curve, newFirst, newLast, curve->FirstParameter(), curve->LastParameter()
     );
@@ -410,7 +420,9 @@ TopoDS_Edge extendRibTerminalEdge(
     history->AddModified(edge, replacement);
     return replacement;
 }
-} // namespace
+}
+
+
 
 Part::TopoShape Rib::extendRibProfile(
     const Part::TopoShape& body,
@@ -419,6 +431,7 @@ Part::TopoShape Rib::extendRibProfile(
     long continuity
 ) const
 {
+    // extend each of the open profile edges with specified continuity
     if (continuity == 0) {
         return profile; // Off: preserve the shape and its FreeCAD element map.
     }
@@ -435,17 +448,17 @@ Part::TopoShape Rib::extendRibProfile(
         throw std::runtime_error("Rib extension requires a wire");
     }
 
-    // step 1 - check that we have one open chain and find the free edges
+    // check that we have one open chain and find the free edges
     const TopoDS_Wire wire = TopoDS::Wire(profile.getShape());
     const RibProfileEnds ends = findRibProfileEnds(wire);
     const int curveContinuity = static_cast<int>(continuity);
 
-    // step 2 - extend the terminal edges and check each new portion against the body
-    // GeomLib has no topology history, so our helper records replacements for FreeCAD
+    // extend the terminal edges and check each new portion against the body
     Handle(BRepTools_History) history = new BRepTools_History;
     const TopoDS_Edge extendedStart = extendRibTerminalEdge(
         ends.startEdge, ends, body.getShape(), reach, curveContinuity, history
     );
+
     TopoDS_Edge extendedEnd = extendedStart;
     if (!ends.startEdge.IsSame(ends.endEdge)) {
         extendedEnd = extendRibTerminalEdge(
@@ -453,7 +466,7 @@ Part::TopoShape Rib::extendRibProfile(
         );
     }
 
-    // 3. Rebuild in connected order. Interior edges are reused unchanged.
+    // rebuild in connected order - interior edges are reused unchanged
     BRep_Builder builder;
     TopoDS_Wire extendedWire;
     builder.MakeWire(extendedWire);
@@ -473,69 +486,40 @@ Part::TopoShape Rib::extendRibProfile(
         throw std::runtime_error("Extended rib profile is not a valid wire");
     }
 
-    // 4. FreeCAD bridge: carry the profile's element names through the OCCT history.
+    // fc naming history
     Part::TopoShape result(0, profile.Hasher);
     result.makeShapeWithElementMap(
         extendedWire, Part::MapperHistory(history), {profile},
-        continuity == 1 ? "RibExtendC1" : "RibExtendC2"
+        "RibExtend" // Continuity changes geometry, not the identity of this operation.
     );
     return result;
 }
 
 
-gp_Pln Rib::getRibProfilePlane() const
-{
-    // This public query also anchors the task-panel draggers. Return the world
-    // plane; execute() transforms it together with the profile and body below.
-    const auto profile = getRibProfileWire();
-    const auto points = findRibProfileEnds(TopoDS::Wire(profile.getShape()));
-    const gp_Pnt origin = BRep_Tool::Pnt(points.startVertex);
-    if (Profile.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        const auto normal = getProfileNormal();
-        return gp_Pln(origin, gp_Dir(normal.x, normal.y, normal.z));
-    }
 
-    gp_Pln plane;
-    if (profile.findPlane(plane)) {
-        return plane;
-    }
-    // A straight edge does not determine a unique plane. The edge plus the
-    // selected fill vector does; a parallel vector cannot generate a rib.
-    const auto direction = Direction.getValue();
-    gp_Vec travel(direction.x, direction.y, direction.z);
-    travel.Transform(getLocation().Transformation());
-    BRepAdaptor_Curve curve(points.startEdge);
-    gp_Pnt point;
-    gp_Vec tangent;
-    curve.D1(curve.FirstParameter(), point, tangent);
-    const gp_Vec normal = tangent.Crossed(travel);
-    if (normal.Magnitude() <= Precision::Confusion()) {
-        throw std::runtime_error("Rib direction must not be parallel to its profile");
-    }
-    return gp_Pln(origin, gp_Dir(normal));
-}
 
-gp_Vec Rib::getRibTravel(const gp_Pln& plane, double reach) const
+gp_Vec Rib::makeSweepVector(const gp_Pln& plane, double reach) const
 {
+    // Direction sets orientation only; its magnitude must not change the sweep length.
     const auto value = Direction.getValue();
-    gp_Vec travel(value.x, value.y, value.z);
-    if (!std::isfinite(travel.Magnitude()) || travel.Magnitude() <= gp::Resolution()) {
+    gp_Vec direction(value.x, value.y, value.z);
+    const double magnitude = direction.Magnitude();
+    if (!std::isfinite(magnitude) || magnitude <= gp::Resolution()) {
         throw std::runtime_error("Rib direction must be nonzero and finite");
     }
-    travel.Normalize();
-    const gp_Vec normal(plane.Axis().Direction());
-    const double component = travel.Dot(normal);
-    if (std::abs(component) > Precision::Angular()) {
+    direction.Normalize();
+    if (std::abs(direction.Dot(gp_Vec(plane.Axis().Direction()))) > Precision::Angular()) {
         throw std::runtime_error("Rib direction must lie in the sketch plane");
     }
-    travel -= normal * component; // Remove round-off, not an intentional normal component.
-    travel.Normalize();
-    const double distance = ExtentType.isValue("Shape") ? reach : Distance.getValue();
-    if (!std::isfinite(distance) || distance <= Precision::Confusion()) {
+
+    const double length = ExtentType.isValue("Shape") ? reach : Distance.getValue();
+    if (!std::isfinite(length) || length <= Precision::Confusion()) {
         throw std::runtime_error("Rib distance must be positive and finite");
     }
-    return travel * (Reversed.getValue() ? -distance : distance);
+    return direction * (Reversed.getValue() ? -length : length);
 }
+
+
 
 Part::TopoShape Rib::makeRibSurface(
     const Part::TopoShape& profile, const gp_Vec& travel, const gp_Pln& plane
@@ -595,33 +579,31 @@ Part::TopoShape Rib::makeRibSurface(
     return surface;
 }
 
+
+
 Part::TopoShape Rib::makeRibTool(
-    const Part::TopoShape& surface, const gp_Dir& normal, double thickness, long placement
+    const Part::TopoShape& surface,
+    const gp_Dir& normal,
+    double thickness,
+    long placement
 ) const
 {
-    // Placement changes only the neutral-section offset, never the meaning of
-    // Thickness: the entered value is always the complete width.
-    const double offset = placement == 0 ? 0.0 : (placement == 1 ? -thickness : -thickness/2);
+    // creat the rib tool
     auto tool = surface.makeElementPrism(gp_Vec(normal) * thickness, "RibThickness");
+
+    // move to set the rib on either side or centered on the profile
+    const double offset = placement == 0 ? 0.0 : (placement == 1 ? -thickness : -thickness/2);
+
     gp_Trsf move;
     move.SetTranslation(gp_Vec(normal) * offset);
     tool = tool.makeElementTransform(move, "RibThicknessPlacement");
+
     requireSolid(tool, "Rib thickness did not produce a valid solid");
     return tool;
 }
 
-Part::TopoShape Rib::makeProfileReference(
-    const Part::TopoShape& profile, const gp_Dir& normal, double width
-) const
-{
-    // A narrow centreline is not a reliable seed after one-sided inward draft:
-    // it can lie outside the material. The roof ribbon spans the tool width;
-    // retained solids must share roof AREA, rather than just a touching vertex.
-    gp_Trsf shift;
-    shift.SetTranslation(gp_Vec(normal) * (-width/2));
-    return profile.makeElementPrism(gp_Vec(normal) * width, "RibRoofReference")
-        .makeElementTransform(shift, "RibRoofReferencePlacement");
-}
+
+
 
 Part::TopoShape Rib::cutRibTool(const Part::TopoShape& tool, const Part::TopoShape& base) const
 {
@@ -630,25 +612,31 @@ Part::TopoShape Rib::cutRibTool(const Part::TopoShape& tool, const Part::TopoSha
     return cut;
 }
 
+
+
 Part::TopoShape Rib::selectRibMaterial(
-    const Part::TopoShape& cutResult, const Part::TopoShape& roof,
-    const gp_Vec& travel, bool requireBodyTermination
+    const Part::TopoShape& cutResult, const Part::TopoShape& profile,
+    const Part::TopoShape& farLimit
 ) const
 {
-    gp_Trsf translation;
-    translation.SetTranslation(travel);
-    const auto farRoof = roof.moved(TopLoc_Location(translation));
     std::vector<Part::TopoShape> kept;
     for (const auto& solid : cutResult.getSubTopoShapes(TopAbs_SOLID)) {
-        Part::TopoShape contact(0, roof.Hasher);
-        contact.makeElementBoolean(Part::OpCodes::Common, {solid, roof});
-        if (area(contact.getShape()) <= Precision::SquareConfusion()) {
-            continue; // This is a remote piece on the other side of the body.
+        // test for contact between original profile and solid(s) after the rib tool cut
+        BRepExtrema_DistShapeShape distance(profile.getShape(), solid.getShape());
+        if (!distance.IsDone()) {
+            throw std::runtime_error("Cannot measure rib-profile contact");
         }
-        if (requireBodyTermination) {
-            contact.makeElementBoolean(Part::OpCodes::Common, {solid, farRoof});
-            if (area(contact.getShape()) > Precision::SquareConfusion()) {
-                throw std::runtime_error("Rib did not terminate at the body across its full width");
+        if (distance.Value() > Precision::Confusion()) {
+            continue;
+        }
+        // if a solid also touches the far limit, reject it (for up to shape)
+        if (!farLimit.isNull()) {
+            BRepExtrema_DistShapeShape contact(solid.getShape(), farLimit.getShape());
+            if (!contact.IsDone()) {
+                throw std::runtime_error("Cannot check rib termination");
+            }
+            if (contact.Value() <= Precision::Confusion()) {
+                throw std::runtime_error("Rib did not terminate at the body");
             }
         }
         kept.push_back(solid);
@@ -657,9 +645,14 @@ Part::TopoShape Rib::selectRibMaterial(
         throw std::runtime_error("No rib material remains connected to the profile");
     }
     Part::TopoShape result(0, cutResult.Hasher);
-    result.makeElementCompound(kept, "RibRetained");
+    // Selection changes membership, not the identities of the retained elements.
+    result.makeElementCompound(
+        kept, "", Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+    );
     return result;
 }
+
+
 
 Part::TopoShape Rib::makeDraftedRibTool(
     const Part::TopoShape& surface, const Part::TopoShape& retained,
@@ -762,16 +755,18 @@ Part::TopoShape Rib::fuseRibWithBase(
     return result;
 }
 
+
+
 Part::TopoShape Rib::filletIntersectingEdges(
     const Part::TopoShape& fused, const Part::TopoShape& body
 ) const
 {
-    if (FilletRadius.getValue() == 0) {
+    // skip if fillet radius is zero
+    if (FilletRadius.getValue() < Precision::Approximation()) {
         return fused;
     }
-    // Boolean intersections classify the ACTUAL fused faces, including pieces
-    // split from cylindrical/spline support faces. Surface type or edge numbers
-    // cannot reliably identify a body/rib junction.
+
+    // find the intersecting edges from common faces between the fused shape and the body
     TopTools_MapOfShape bodyFaces;
     for (const auto& face : fused.getSubTopoShapes(TopAbs_FACE)) {
         Part::TopoShape common(0, fused.Hasher);
@@ -780,8 +775,16 @@ Part::TopoShape Rib::filletIntersectingEdges(
             bodyFaces.Add(face.getShape());
         }
     }
+
+
     TopTools_IndexedDataMapOfShapeListOfShape edgeFaces;
-    TopExp::MapShapesAndAncestors(fused.getShape(), TopAbs_EDGE, TopAbs_FACE, edgeFaces);
+    TopExp::MapShapesAndAncestors(
+        fused.getShape(),
+        TopAbs_EDGE,
+        TopAbs_FACE,
+        edgeFaces
+    );
+
     std::vector<Part::TopoShape> junctions;
     for (int i=1; i<=edgeFaces.Extent(); ++i) {
         const auto& faces = edgeFaces.FindFromIndex(i);
@@ -790,14 +793,24 @@ Part::TopoShape Rib::filletIntersectingEdges(
             junctions.emplace_back(edgeFaces.FindKey(i));
         }
     }
+
     if (junctions.empty()) {
         throw std::runtime_error("No wall-to-body junction edges are available for the fillet");
     }
-    auto result = fused.makeElementFillet(junctions, FilletRadius.getValue(),
-                                          FilletRadius.getValue(), "RibJunctionFillet");
+
+    // fillet
+    auto result = fused.makeElementFillet(
+        junctions,
+        FilletRadius.getValue(),
+        FilletRadius.getValue(),
+        "RibJunctionFillet"
+    );
+
     requireSolid(result, "Requested rib junction fillet could not be constructed");
+
     return result;
 }
+
 
 void Rib::publishRib(const Part::TopoShape& result, const Part::TopoShape& body)
 {
@@ -809,62 +822,89 @@ void Rib::publishRib(const Part::TopoShape& result, const Part::TopoShape& body)
     Shape.setValue(result);
 }
 
+
 App::DocumentObjectExecReturn* Rib::execute()
 {
     try {
-        // 1. Read inputs and bring body, profile and plane into the Rib-local
-        // frame. Never mix sketch coordinates with world-space OCCT operands.
+
+        // -------
+        // Step 0: we need a solid body to build the rib against
         positionByPrevious();
-        auto profile = getRibProfileWire();
         auto body = getBaseTopoShape();
-        auto plane = getRibProfilePlane();
+        requireSolid(body, "Rib requires an existing solid body");
+
+        // -------
+        // Step 1: common coordinate system
+        auto profile = getRibProfileWire();
+
+        // get the sketch plane which is how we define the rib
+        const auto origin = getVerifiedSketch()->Placement.getValue().getPosition();
+        const auto normal = getProfileNormal();
+        gp_Pln plane(
+            gp_Pnt(origin.x, origin.y, origin.z),
+            gp_Dir(normal.x, normal.y, normal.z)
+        );
+
+        // coordinate systems
         const auto inverse = getLocation().Inverted();
         profile.move(inverse);
         body.move(inverse);
         plane.Transform(inverse.Transformation());
-        requireSolid(body, "Rib requires an existing solid body");
-        if (!std::isfinite(Thickness.getValue()) || Thickness.getValue() <= Precision::Confusion()
-            || !std::isfinite(DraftAngle.getValue()) || std::abs(DraftAngle.getValue()) >= 89
-            || !std::isfinite(FilletRadius.getValue()) || FilletRadius.getValue() < 0) {
-            throw std::runtime_error("Rib requires positive thickness, a draft between -89 and 89 degrees, and nonnegative fillet radius");
-        }
 
-        // 2. Extend the terminal curves and form the undrafted tool. A finite
-        // reach derived from BOTH inputs keeps all temporary boundaries remote.
+        // -------
+        // step 2. extend the open ends of the profile
+        // sweep and thickness to create the rib tool
         Bnd_Box bounds;
         BRepBndLib::Add(profile.getShape(), bounds);
         BRepBndLib::Add(body.getShape(), bounds);
-        const double reach = 2*std::sqrt(bounds.SquareExtent());
-        const auto travel = getRibTravel(plane, reach);
+
+        // reach is how far we will extend the ends of the profile and sweep
+        // to create an intentionally oversized rib tool
+        const double reach = 2 * std::sqrt(bounds.SquareExtent());
+
+        // how far to sweep
+        const auto travel = makeSweepVector(plane, reach);
+
+        // extend the profile ends to create the rib tool
         const auto extended = extendRibProfile(body, profile, reach, ExtendType.getValue());
+
+        // form the rib surface
         const auto surface = makeRibSurface(extended, travel, plane);
-        const auto tool = makeRibTool(surface, plane.Axis().Direction(),
-                                      Thickness.getValue(), PlacementType.getValue());
 
-        // 3. The first body cut measures the useful height BEFORE drafting.
-        // Use a roof ribbon rather than a centreline to seed retained material.
-        const double roofWidth = 4*(Thickness.getValue()
-            + reach*std::abs(std::tan(DraftAngle.getValue()*std::acos(-1.0)/180)));
-        const auto roof = makeProfileReference(profile, plane.Axis().Direction(), roofWidth);
-        auto retained = selectRibMaterial(cutRibTool(tool, body), roof, travel,
-                                         ExtentType.isValue("Shape"));
+        // create the rib tool
+        const auto tool = makeRibTool(
+            surface,
+            plane.Axis().Direction(),
+            Thickness.getValue(),
+            PlacementType.getValue()
+        );
 
-        // 4. Draft a simple envelope, clip it with the profile, then repeat the
-        // body cut/selection. This order keeps the drafted walls in body contact.
+        // -------
+        // step 3; the first body cut measures the useful rib region before drafting.
+        Part::TopoShape farLimit;
+        if (ExtentType.isValue("Shape")) {
+            gp_Trsf translation;
+            translation.SetTranslation(travel);
+            farLimit = profile.moved(TopLoc_Location(translation));
+        }
+        auto retained = selectRibMaterial(cutRibTool(tool, body), profile, farLimit);
+
+        // -------
+        // step 4; draft the box envelope, clip it with the profile, then repeat
+        // the body cut and selection. The neutral reference uses the useful rib region.
         if (std::abs(DraftAngle.getValue()) > Precision::Angular()) {
-            // The full-reach surface is independent of thickness and draft width.
-            // Reuse it; only the thickness/draft tool and its body cut change.
             const auto drafted = makeDraftedRibTool(surface, retained, body, plane, travel);
-            retained = selectRibMaterial(cutRibTool(drafted, body), roof, travel,
-                                         ExtentType.isValue("Shape"));
+            retained = selectRibMaterial(cutRibTool(drafted, body), profile, farLimit);
         }
 
-        // 5. Finish only after selection: fuse, optionally fillet the junction,
-        // refine redundant faces, and publish the body plus preview addition.
+        // -------
+        // 5. fillet if fillet radius is non-zero
         auto result = filletIntersectingEdges(fuseRibWithBase(body, retained), body);
         if (Refine.getValue()) {
             result = result.makeElementRefine("RibFinalRefine");
         }
+
+        // done
         publishRib(result, body);
         return App::DocumentObject::StdReturn;
     }

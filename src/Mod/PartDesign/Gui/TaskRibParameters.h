@@ -4,6 +4,7 @@
 
 #include "TaskSketchBasedParameters.h"
 #include <Gui/Inventor/Draggers/Gizmo.h>
+#include <gp_Ax3.hxx>
 
 #include <string>
 
@@ -30,6 +31,8 @@ protected:
 private:
     void selectProfile(bool enabled);
     void refreshProfile();
+    gp_Ax3 sweepFrame() const;
+    void refreshSweepAngle();
     void refreshEnums();
     void updateVisibility();
     void updateRib();
@@ -46,6 +49,8 @@ private:
     Gui::LinearGizmo* thicknessGizmo = nullptr;
     Gui::LinearGizmo* lengthGizmo = nullptr;
     Gui::RotationGizmo* draftGizmo = nullptr;
+    Gui::RotationGizmo* sweepGizmo = nullptr;
+    Gui::QuantitySpinBox* sweepDragAngle = nullptr;
 };
 
 class TaskDlgRibParameters: public TaskDlgSketchBasedParameters

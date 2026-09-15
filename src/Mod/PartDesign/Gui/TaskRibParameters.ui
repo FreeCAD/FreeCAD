@@ -30,7 +30,7 @@
       <item>
        <widget class="QToolButton" name="ribSelectProfile">
         <property name="toolTip">
-         <string>Select a sketch or edges. Hold Ctrl to add edges from the same object.</string>
+         <string>Select a sketch or its edges. Hold Ctrl to add edges from the same sketch.</string>
         </property>
         <property name="text">
          <string>Select Profile</string>
@@ -43,7 +43,7 @@
       <item>
        <widget class="QLineEdit" name="ribProfile">
         <property name="toolTip">
-         <string>Select a sketch or edges. Hold Ctrl to add edges from the same object.</string>
+         <string>Select a sketch or its edges. Hold Ctrl to add edges from the same sketch.</string>
         </property>
         <property name="readOnly">
          <bool>true</bool>
@@ -138,6 +138,29 @@
     </widget>
    </item>
    <item row="5" column="0">
+    <widget class="QLabel" name="ribLengthLabel">
+     <property name="text">
+      <string>Distance</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribLength</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribLength" native="true">
+     <property name="toolTip">
+      <string>Distance along the extent direction</string>
+     </property>
+     <property name="keyboardTracking" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <widget class="QLabel" name="ribDraftAngleLabel">
      <property name="text">
       <string>Draft Angle</string>
@@ -147,7 +170,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="Gui::PrefQuantitySpinBox" name="ribDraftAngle" native="true">
      <property name="toolTip">
       <string>Draft angle of the rib, from -89 to 89 degrees</string>
@@ -166,7 +189,22 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
+    <widget class="QLabel" name="ribDraftReferenceLabel">
+     <property name="text">
+      <string>Draft Reference</string>
+     </property>
+     <property name="buddy">
+      <cstring>ribDraftReference</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QComboBox" name="ribDraftReference">
+     <property name="toolTip"><string>Preserve the entered thickness at the free end or at the root of the undrafted rib.</string></property>
+    </widget>
+   </item>
+   <item row="8" column="0">
     <widget class="QLabel" name="ribFilletRadiusLabel">
      <property name="text">
       <string>Fillet Radius</string>
@@ -176,7 +214,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="Gui::PrefQuantitySpinBox" name="ribFilletRadius" native="true">
      <property name="toolTip">
       <string>Fillet radius of the rib; zero disables the fillet</string>
@@ -195,45 +233,22 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="ribLengthLabel">
-     <property name="text">
-      <string>Distance</string>
-     </property>
-     <property name="buddy">
-      <cstring>ribLength</cstring>
-     </property>
+   <item row="9" column="0">
+    <widget class="QLabel" name="ribSweepAngleLabel">
+     <property name="text"><string>Sweep Angle</string></property>
+     <property name="buddy"><cstring>ribSweepAngle</cstring></property>
     </widget>
    </item>
-   <item row="7" column="1">
-    <widget class="Gui::PrefQuantitySpinBox" name="ribLength" native="true">
-     <property name="toolTip">
-      <string>Distance along the extent direction</string>
-     </property>
-     <property name="keyboardTracking" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="unit" stdset="0">
-      <string notr="true">mm</string>
-     </property>
+   <item row="9" column="1">
+    <widget class="Gui::PrefQuantitySpinBox" name="ribSweepAngle" native="true">
+     <property name="toolTip"><string>Direction within the profile plane: 0° along sketch X, 90° along sketch Y. For other planar geometry, use the profile plane axes. Reversed flips this direction.</string></property>
+     <property name="unit" stdset="0"><string notr="true">deg</string></property>
+     <property name="minimum" stdset="0"><double>0.000000000000000</double></property>
+     <property name="maximum" stdset="0"><double>360.000000000000000</double></property>
+     <property name="keyboardTracking" stdset="0"><bool>false</bool></property>
     </widget>
    </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="ribDraftReferenceLabel">
-     <property name="text">
-      <string>Draft Reference</string>
-     </property>
-     <property name="buddy">
-      <cstring>ribDraftReference</cstring>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QComboBox" name="ribDraftReference">
-     <property name="toolTip"><string>Preserve the entered thickness at the free end or at the root of the undrafted rib.</string></property>
-    </widget>
-   </item>
-   <item row="9" column="0" colspan="2">
+   <item row="10" column="0" colspan="2">
     <widget class="QCheckBox" name="ribReversed">
      <property name="text"><string>Reversed</string></property>
      <property name="toolTip"><string>Reverse the fill direction. Signed draft angles independently control widening and narrowing.</string></property>
@@ -261,9 +276,12 @@
   <tabstop>ribThickness</tabstop>
   <tabstop>ribPlacement</tabstop>
   <tabstop>ribExtent</tabstop>
-  <tabstop>ribDraftAngle</tabstop>
-  <tabstop>ribFilletRadius</tabstop>
   <tabstop>ribLength</tabstop>
+  <tabstop>ribDraftAngle</tabstop>
+  <tabstop>ribDraftReference</tabstop>
+  <tabstop>ribFilletRadius</tabstop>
+  <tabstop>ribSweepAngle</tabstop>
+  <tabstop>ribReversed</tabstop>
  </tabstops>
  <resources/>
  <connections/>

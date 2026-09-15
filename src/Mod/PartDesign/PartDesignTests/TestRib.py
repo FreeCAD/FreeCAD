@@ -123,6 +123,60 @@ class TestRib(unittest.TestCase):
                     self.assertLess(forward.cut(self.rib.Shape).Volume, 1e-6)
                     self.assertLess(self.rib.Shape.cut(forward).Volume, 1e-6)
 
+    def testDistanceExtentAllowsFreeEnd(self):
+        for profile in ("Line", "Spline"):
+            with self.subTest(profile=profile):
+                self.makeRib("L", profile)
+                self.rib.ExtentType = "Distance"
+                self.rib.Distance = 10
+                self.assertRib()
+                farProfile = self.profile.Shape.copy()
+                farProfile.translate(App.Vector(0, 0, -10))
+                # The retained rib reaches its intentional free end, unlike Shape extent.
+                self.assertLess(self.rib.AddSubShape.distToShape(farProfile)[0], 1e-7)
+
+    def testProfileMustBeSketch(self):
+        self.makeRib("L", "Line")
+        other = self.doc.addObject("Part::Feature", "NonSketchProfile")
+        other.Shape = self.profile.Shape.copy()
+        for subnames in ([""], ["Edge1"]):
+            with self.subTest(subnames=subnames):
+                self.rib.Profile = (other, subnames)
+                self.doc.recompute()
+                self.assertIn("Invalid", self.rib.State)
+                self.assertIn("Rib profile must be a sketch", self.rib.getStatusString())
+
+    def testSketchEdgeProfile(self):
+        self.makeRib("L", "Line")
+        self.rib.Profile = (self.profile, ["Edge1"])
+        self.assertRib()
+
+    def testSweepDirectionMagnitudeDoesNotChangeLength(self):
+        self.makeRib("L", "Line")
+        self.rib.Direction = App.Vector(0, 0, -1)
+        self.assertRib()
+        expected = self.rib.Shape.copy()
+        self.rib.Direction = App.Vector(0, 0, -17)
+        self.assertRib()
+        self.assertLess(expected.cut(self.rib.Shape).Volume, 1e-6)
+        self.assertLess(self.rib.Shape.cut(expected).Volume, 1e-6)
+
+    def testSweepVectorRejectsInvalidInputs(self):
+        self.makeRib("L", "Line")
+        self.rib.ExtentType = "Distance"
+        for direction, distance, message in (
+            (App.Vector(), 10, "Rib direction must be nonzero and finite"),
+            (App.Vector(0, 1, 0), 10, "Rib direction must lie in the sketch plane"),
+            (App.Vector(0, 0, -1), 0, "Rib distance must be positive and finite"),
+            (App.Vector(0, 0, -1), -1, "Rib distance must be positive and finite"),
+        ):
+            with self.subTest(direction=direction, distance=distance):
+                self.rib.Direction = direction
+                self.rib.Distance = distance
+                self.doc.recompute()
+                self.assertIn("Invalid", self.rib.State)
+                self.assertIn(message, self.rib.getStatusString())
+
     def mappedElements(self, shape):
         if not shape.ElementMapVersion:
             self.skipTest("Element maps are disabled in this build")
@@ -160,6 +214,58 @@ class TestRib(unittest.TestCase):
                 # Resolution must not silently swap the two broad sides.
                 for name, normal in normals.items():
                     self.assertGreater(self.rib.Shape.getElement(name).normalAt(0, 0).dot(normal), 0.9)
+
+    def testReferencesAcrossDraftToggle(self):
+        """A lost face link must not silently become a link to the whole rib."""
+        for profile in ("Line", "Spline"):
+            for initialAngle in (0, 3):
+                with self.subTest(profile=profile, initialAngle=initialAngle):
+                    self.makeRib("L", profile)
+                    self.rib.DraftAngle = initialAngle
+                    self.assertRib()
+                    names = self.mappedElements(self.rib.Shape)
+                    references = []
+                    for index, face in enumerate(self.rib.Shape.Faces, 1):
+                        if abs(face.normalAt(0, 0).y) < 0.9:
+                            continue
+                        if face.common(self.base.Shape).Area > 1e-6:
+                            continue
+                        element = f"Face{index}"
+                        reference = self.doc.addObject("PartDesign::SubShapeBinder", "DraftReference")
+                        reference.Support = [(self.rib, [element])]
+                        references.append((reference.Name, names[element], face.normalAt(0, 0)))
+                    self.assertEqual(len(references), 2)
+                    self.doc.recompute()
+
+                    # Restore before toggling: identities must not depend on an
+                    # in-memory cache of the previous draft operation.
+                    ribName, baseName = self.rib.Name, self.base.Name
+                    with tempfile.TemporaryDirectory() as directory:
+                        path = os.path.join(directory, "DraftReferences.FCStd")
+                        self.doc.saveAs(path)
+                        App.closeDocument(self.doc.Name)
+                        self.doc = App.openDocument(path)
+                        self.rib = self.doc.getObject(ribName)
+                        self.base = self.doc.getObject(baseName)
+                        for angle, thickness, continuity in (
+                            (3, 4, "C1"), (0, 4, "C1"), (0, 4, "C2"),
+                            (-2, 5, "C2"), (3, 5, "C2"), (0, 4, "C1"),
+                        ):
+                            self.rib.DraftAngle = angle
+                            self.rib.Thickness = thickness
+                            self.rib.ExtendType = continuity
+                            self.assertRib()
+                            for referenceName, name, originalNormal in references:
+                                reference = self.doc.getObject(referenceName)
+                                self.assertNotIn("Invalid", reference.State)
+                                self.assertEqual(len(reference.Shape.Faces), 1)
+                                self.assertTrue(reference.Support[0][1][0])
+                                expected = self.rib.Shape.getElement(name)
+                                actual = reference.Shape.Faces[0]
+                                self.assertAlmostEqual(actual.Area, expected.Area, places=6)
+                                self.assertLess((actual.CenterOfMass - expected.CenterOfMass).Length, 1e-6)
+                                self.assertGreater(actual.normalAt(0, 0).dot(expected.normalAt(0, 0)), 0.99)
+                                self.assertGreater(actual.normalAt(0, 0).dot(originalNormal), 0.99)
 
     def testNamingDownstreamReferenceAndRestore(self):
         self.makeRib("Boss", "Spline")
