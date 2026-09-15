@@ -144,6 +144,7 @@ private:
     QMenu* setupExpansionSubmenu(QWidget* parent);
     void collapseAll();
     void setEditorMode(const QModelIndex& parent, int start, int end);
+    void releaseEditorFocus();
     void closeTransaction();
     void recomputeDocument(App::Document*);
     std::unordered_set<App::Property*> acquireSelectedProperties() const;
@@ -183,6 +184,7 @@ private:
     bool binding;
     bool checkDocument;
     bool closingEditor;
+    bool recomputing;
     bool dragInProgress;
 
     // max distance between mouse and a cell, small enough to trigger resize
