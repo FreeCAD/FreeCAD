@@ -28,6 +28,7 @@
 #include <memory>
 #include <vector>
 
+#include <App/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -66,7 +67,11 @@ class PartGuiExport TaskLinkArrayParameters: public Gui::TaskView::TaskBox,
     Q_OBJECT
 
 public:
-    explicit TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent = nullptr);
+    TaskLinkArrayParameters(
+        Part::LinkArray* array,
+        const App::SubObjectT& reference,
+        QWidget* parent = nullptr
+    );
     ~TaskLinkArrayParameters() override;
 
     bool accept();
@@ -80,6 +85,7 @@ protected:
 private:
     static QString taskTitle(Part::LinkArray* array);
     static const char* taskIcon(Part::LinkArray* array);
+    Base::Placement getArrayPlacement() const;
 
     App::DocumentObject* getPatternObject() const override;
     void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) override;
@@ -111,6 +117,7 @@ private:
     QWidget* proxy = nullptr;
     QPointer<Gui::View3DInventorViewer> instanceControlsViewer;
     Part::LinkArray* array = nullptr;
+    App::SubObjectT arrayReference;
     bool blockUpdate = false;
     bool linkedObjectSelectionMode = false;
     bool referenceSelectionMode = false;

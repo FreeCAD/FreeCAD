@@ -47,6 +47,7 @@
 #include <Gui/ComboLinks.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tree.h>
 #include <Gui/MDIView.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
@@ -212,10 +213,15 @@ const char* TaskLinkArrayParameters::taskIcon(Part::LinkArray* array)
     return "LinkArray";
 }
 
-TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent)
+TaskLinkArrayParameters::TaskLinkArrayParameters(
+    Part::LinkArray* array,
+    const App::SubObjectT& reference,
+    QWidget* parent
+)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)), taskTitle(array), true, parent)
     , Gui::SelectionObserver(false, Gui::ResolveMode::OldStyleElement)
     , array(array)
+    , arrayReference(reference)
 {
     proxy = new QWidget(this);
     ui = std::make_unique<Ui_TaskLinkArrayParameters>();
@@ -603,9 +609,18 @@ void TaskLinkArrayParameters::recomputePatternFeature()
     updateInstanceControls();
 }
 
+Base::Placement TaskLinkArrayParameters::getArrayPlacement() const
+{
+    return App::GeoFeature::getGlobalPlacement(
+        array,
+        arrayReference.getObject(),
+        arrayReference.getSubName()
+    );
+}
+
 Base::Vector3d TaskLinkArrayParameters::getPatternStartPoint() const
 {
-    return array ? App::GeoFeature::getGlobalPlacement(array).getPosition() : Base::Vector3d();
+    return array ? getArrayPlacement().getPosition() : Base::Vector3d();
 }
 
 Base::Vector3d TaskLinkArrayParameters::getLinearPatternFallbackDirection(
@@ -648,14 +663,14 @@ Base::Vector3d TaskLinkArrayParameters::transformLinearPatternDirection(
         return direction;
     }
     Base::Vector3d transformed;
-    App::GeoFeature::getGlobalPlacement(array).getRotation().multVec(direction, transformed);
+    getArrayPlacement().getRotation().multVec(direction, transformed);
     return transformed;
 }
 
 void TaskLinkArrayParameters::transformPolarPatternAxis(gp_Ax2& axis) const
 {
     if (array) {
-        axis.Transform(Part::TopoShape::convert(App::GeoFeature::getGlobalPlacement(array).toMatrix()));
+        axis.Transform(Part::TopoShape::convert(getArrayPlacement().toMatrix()));
     }
 }
 
@@ -854,10 +869,28 @@ bool TaskLinkArrayParameters::reject()
 
 TaskDlgLinkArrayParameters::TaskDlgLinkArrayParameters(Part::LinkArray* array)
 {
-    associateToObject3dView(array);
+    // Preserve the selected occurrence before the editor changes the selection.
+    App::DocumentObject* root = array;
+    std::string sub;
+    const auto links = App::GetApplication().getLinksTo(array, App::GetLinkRecursive);
+    for (const auto& selection : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
+        if (!selection.pObject) {
+            continue;
+        }
+        auto* selected = selection.pObject->getSubObject(selection.SubName);
+        if (selected == array || links.contains(selected)) {
+            root = selection.pObject;
+            sub = selection.SubName;
+            break;
+        }
+    }
+    Gui::TreeWidget::checkTopParent(root, sub);
+    const App::SubObjectT reference(root, sub.c_str());
+
+    associateToObject3dView(root);
     setAutoCloseOnDeletedDocument(true);
     setAutoCloseOnTransactionChange(true);
-    parameter = new TaskLinkArrayParameters(array);
+    parameter = new TaskLinkArrayParameters(array, reference);
     Content.push_back(parameter);
 }
 
