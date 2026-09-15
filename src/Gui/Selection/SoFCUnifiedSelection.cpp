@@ -25,6 +25,7 @@
 
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPath.h>
 
 #include "SoFullPathHelper.h"
 #include <Inventor/actions/SoCallbackAction.h>
@@ -35,6 +36,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -76,6 +78,8 @@
 
 #include <QOpenGLWidget>
 
+#include <algorithm>
+
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
@@ -96,6 +100,69 @@
 
 
 FC_LOG_LEVEL_INIT("SoFCUnifiedSelection", false, true, true)
+
+namespace
+{
+
+bool matchesHighlightPath(
+    const SoPath* currentPath,
+    const Gui::SoFCSelectionContext& highlightContext,
+    bool allowOwnerPrefix = false
+)
+{
+    const auto& targetNodes = highlightContext.highlightPathNodes;
+    const auto& targetIndices = highlightContext.highlightPathIndices;
+    if (!currentPath || targetNodes.empty() || targetNodes.size() != targetIndices.size()) {
+        return false;
+    }
+
+    // ViewProvider::getDetailPath() may start below the scene graph root, so
+    // match the applied path as a relative segment. getIndex(i) is the
+    // incoming child index for node i; the index for the segment head belongs
+    // to its parent and is not part of the path created at that head node.
+    const size_t currentLength = static_cast<size_t>(currentPath->getLength());
+    for (size_t start = 0; start < currentLength; ++start) {
+        if (currentPath->getNode(static_cast<int>(start)) != targetNodes.front()) {
+            continue;
+        }
+
+        const size_t comparedLength = std::min(currentLength - start, targetNodes.size());
+        bool matches = true;
+        for (size_t i = 0; i < comparedLength; ++i) {
+            const size_t currentIndex = start + i;
+            const bool nodeMatches = currentPath->getNode(static_cast<int>(currentIndex))
+                == targetNodes[i];
+            const bool indexMatches = i == 0
+                || currentPath->getIndex(static_cast<int>(currentIndex)) == targetIndices[i];
+            if (!nodeMatches || !indexMatches) {
+                matches = false;
+                break;
+            }
+        }
+        if (!matches) {
+            continue;
+        }
+
+        // A truncated prefix can be shared by unrelated instances in an
+        // assembly. Require the entire detail path except when the prefix
+        // reaches its owning selection root or a descendant on the selected
+        // path. In that case the current path tail anchors this traversal.
+        if (comparedLength < targetNodes.size()) {
+            const size_t ownerPrefixLength = highlightContext.highlightOwnerPathIndex < 0
+                ? targetNodes.size()
+                : static_cast<size_t>(highlightContext.highlightOwnerPathIndex + 1);
+            if (allowOwnerPrefix && comparedLength >= ownerPrefixLength
+                && start + comparedLength == currentLength) {
+                return true;
+            }
+            continue;
+        }
+        return true;
+    }
+    return false;
+}
+
+}  // namespace
 
 using namespace Gui;
 
@@ -542,7 +609,9 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 && (useNewSelection.getValue() || vp->useNewSelectionModel()) && vp->isSelectable()) {
 
                 // get proper detail path for sub-objects (like Assembly parts)
-                if (!subName || !subName[0] || vp->getDetailPath(subName, detailPath, true, detail)) {
+                const bool gotDetailPath = !subName || !subName[0]
+                    || vp->getDetailPath(subName, detailPath, true, detail);
+                if (gotDetailPath) {
                     if (detailPath->getLength()) {
                         pathToHighlight = detailPath;
                     }
@@ -566,6 +635,11 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 highlightAction.setHighlighted(true);
                 highlightAction.setColor(this->colorHighlight.getValue());
                 highlightAction.setElement(detail);
+                if (Gui::Selection().isClarifySelectionActive()) {
+                    highlightAction.setHighlightPresentation(
+                        HighlightPresentation::DrawOnTop | HighlightPresentation::FadeOtherElements
+                    );
+                }
                 highlightAction.apply(pathToHighlight);
 
                 currentHighlightPath = Gui::toFullPath(pathToHighlight->copy());
@@ -1145,6 +1219,21 @@ const SoDetail* SoHighlightElementAction::getElement() const
     return this->_det;
 }
 
+void SoHighlightElementAction::setHighlightPresentation(HighlightPresentation presentation)
+{
+    this->_presentation = presentation;
+}
+
+HighlightPresentation SoHighlightElementAction::getHighlightPresentation() const
+{
+    return this->_presentation;
+}
+
+bool SoHighlightElementAction::hasHighlightPresentation(HighlightPresentation presentation) const
+{
+    return Gui::hasHighlightPresentation(this->_presentation, presentation);
+}
+
 // ---------------------------------------------------------------
 
 SO_ACTION_SOURCE(SoSelectionElementAction)
@@ -1377,7 +1466,11 @@ static void so_bbox_cleanup()
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
 std::unordered_map<SoAction*, SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
-SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
+SoFCSelectionRoot::HighlightStack SoFCSelectionRoot::HlStack;
+std::vector<SoFCSelectionContextPtr> SoFCSelectionRoot::HighlightContextStack;
+std::weak_ptr<SoFCSelectionContext> SoFCSelectionRoot::GlobalHighlightContext;
+std::weak_ptr<SoFCSelectionRoot::SelContext> SoFCSelectionRoot::GlobalHighlightOwnerContext;
+SoFCSelectionRoot* SoFCSelectionRoot::GlobalHighlightOwnerRoot = nullptr;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot)
@@ -1394,7 +1487,12 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider* vp)
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
-SoFCSelectionRoot::~SoFCSelectionRoot() = default;
+SoFCSelectionRoot::~SoFCSelectionRoot()
+{
+    if (GlobalHighlightOwnerRoot == this) {
+        clearGlobalHighlightContext(false);
+    }
+}
 
 void SoFCSelectionRoot::initClass()
 {
@@ -1788,6 +1886,37 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
         }
     }
 
+    const auto activeHighlightContext = getGlobalHighlightContext();
+    auto highlightContext = ctx && ctx->elementHighlight == activeHighlightContext
+        ? ctx->elementHighlight
+        : SoFCSelectionContextPtr();
+    const bool isLocalHighlightContext = static_cast<bool>(highlightContext);
+    if (!highlightContext) {
+        const auto inheritedHighlightContext = getCurrentHighlightContext();
+        if (inheritedHighlightContext == activeHighlightContext) {
+            highlightContext = inheritedHighlightContext;
+        }
+    }
+    if (highlightContext && !highlightContext->highlightPathNodes.empty()) {
+        const bool pathMatches = matchesHighlightPath(
+            action->getCurPath(),
+            *highlightContext,
+            isLocalHighlightContext || !HighlightContextStack.empty()
+        );
+        if (!pathMatches) {
+            highlightContext.reset();
+        }
+    }
+    HighlightContextStack.push_back(highlightContext);
+    struct HighlightContextGuard
+    {
+        std::vector<SoFCSelectionContextPtr>& stack;
+        ~HighlightContextGuard()
+        {
+            stack.pop_back();
+        }
+    } highlightContextGuard {HighlightContextStack};
+
     // Here, we are not setting (pre)selection color override here.
     // Instead, we are checking and setting up for any secondary context
     // color override.
@@ -1847,7 +1976,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
         }
 
         if ((hlPushed = ctx->hlAll)) {
-            HlColorStack.push_back(ctx->hlColor);
+            HlStack.push_back({ctx->hlColor, ctx->hlPresentation});
         }
 
         if (inPath) {
@@ -1865,7 +1994,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             }
         }
         if (hlPushed) {
-            HlColorStack.pop_back();
+            HlStack.pop_back();
         }
     }
 
@@ -1873,7 +2002,6 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
         ShapeColorNode = nullptr;
         state->pop();
     }
-
     return false;
 }
 
@@ -1914,16 +2042,90 @@ bool SoFCSelectionRoot::checkColorOverride(SoState* state)
     return false;
 }
 
-void SoFCSelectionRoot::checkSelection(bool& sel, SbColor& selColor, bool& hl, SbColor& hlColor)
+void SoFCSelectionRoot::checkSelection(
+    bool& sel,
+    SbColor& selColor,
+    bool& hl,
+    SbColor& hlColor,
+    HighlightPresentation& hlPresentation
+)
 {
     sel = false;
     hl = false;
+    hlPresentation = HighlightPresentation::None;
     if ((sel = !SelColorStack.empty())) {
         selColor = SelColorStack.back();
     }
-    if ((hl = !HlColorStack.empty())) {
-        hlColor = HlColorStack.back();
+    if ((hl = !HlStack.empty())) {
+        hlColor = HlStack.back().color;
+        hlPresentation = HlStack.back().presentation;
     }
+}
+
+SoFCSelectionContextPtr SoFCSelectionRoot::getCurrentHighlightContext()
+{
+    if (HighlightContextStack.empty()) {
+        return {};
+    }
+    return HighlightContextStack.back();
+}
+
+SoFCSelectionContextPtr SoFCSelectionRoot::getGlobalHighlightContext()
+{
+    return GlobalHighlightContext.lock();
+}
+
+void SoFCSelectionRoot::clearGlobalHighlightContext(bool touchOwner)
+{
+    auto ownerContext = GlobalHighlightOwnerContext.lock();
+    auto* ownerRoot = GlobalHighlightOwnerRoot;
+    if (ownerContext) {
+        ownerContext->elementHighlight.reset();
+    }
+    GlobalHighlightContext.reset();
+    GlobalHighlightOwnerContext.reset();
+    GlobalHighlightOwnerRoot = nullptr;
+    if (touchOwner && ownerRoot) {
+        ownerRoot->touch();
+    }
+}
+
+void SoFCSelectionRoot::installGlobalHighlightContext(
+    SoAction* action,
+    const SoHighlightElementAction* highlightAction,
+    int ownerPathIndex
+)
+{
+    clearGlobalHighlightContext();
+    auto ctx = getActionContext(action, this, SelContextPtr());
+    if (!ctx) {
+        return;
+    }
+
+    const SoDetail* detail = highlightAction->getElement();
+    auto highlightContext = std::make_shared<SoFCSelectionContext>();
+    highlightContext->highlightTarget = detail ? HighlightTarget::Subelement
+                                               : HighlightTarget::WholeObject;
+    if (detail) {
+        highlightContext->highlightDetail = std::shared_ptr<const SoDetail>(detail->copy());
+    }
+    if (auto path = action->getPathAppliedTo()) {
+        highlightContext->highlightPathNodes.reserve(static_cast<size_t>(path->getLength()));
+        highlightContext->highlightPathIndices.reserve(static_cast<size_t>(path->getLength()));
+        for (int i = 0; i < path->getLength(); ++i) {
+            highlightContext->highlightPathNodes.push_back(path->getNode(i));
+            highlightContext->highlightPathIndices.push_back(path->getIndex(i));
+        }
+    }
+    highlightContext->highlightOwnerPathIndex = ownerPathIndex;
+    highlightContext->highlightColor = highlightAction->getColor();
+    highlightContext->highlightPresentation = highlightAction->getHighlightPresentation();
+    ctx->elementHighlight = std::move(highlightContext);
+    GlobalHighlightContext = ctx->elementHighlight;
+    GlobalHighlightOwnerContext = ctx;
+    GlobalHighlightOwnerRoot = this;
+    ctx->hlAll = false;
+    touch();
 }
 
 void SoFCSelectionRoot::resetContext()
@@ -2053,12 +2255,37 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
     SelContextPtr ctx2;
     bool ctx2Searched = false;
     bool isTail = false;
+    bool isHighlightContextOwner = false;
+    SoNode* highlightContextOwner = nullptr;
+    int highlightContextOwnerPathIndex = -1;
     if (action->getCurPathCode() == SoAction::IN_PATH) {
         auto path = action->getPathAppliedTo();
         if (path) {
             isTail = path->getTail() == this
                 || (path->getLength() > 1 && path->getNodeFromTail(1) == this
                     && path->getTail()->isOfType(SoSwitch::getClassTypeId()));
+            SoNode* fallbackRoot = nullptr;
+            int fallbackRootPathIndex = -1;
+            SoNode* lastNonTailRoot = nullptr;
+            int lastNonTailRootPathIndex = -1;
+            for (int i = 0; i < path->getLength(); ++i) {
+                auto node = path->getNode(i);
+                if (node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+                    fallbackRoot = node;
+                    fallbackRootPathIndex = i;
+                    const bool isPathTail = path->getTail() == node
+                        || (path->getLength() > 1 && path->getNodeFromTail(1) == node
+                            && path->getTail()->isOfType(SoSwitch::getClassTypeId()));
+                    if (!isPathTail) {
+                        lastNonTailRoot = node;
+                        lastNonTailRootPathIndex = i;
+                    }
+                }
+            }
+            highlightContextOwner = lastNonTailRoot ? lastNonTailRoot : fallbackRoot;
+            highlightContextOwnerPathIndex = lastNonTailRoot ? lastNonTailRootPathIndex
+                                                             : fallbackRootPathIndex;
+            isHighlightContextOwner = highlightContextOwner == this;
         }
 
         if (!action->isOfType(SoSelectionElementAction::getClassTypeId())) {
@@ -2070,7 +2297,44 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                 return false;
             }
         }
-        if (!isTail) {
+        const auto* highlightAction = action->isOfType(SoHighlightElementAction::getClassTypeId())
+            ? static_cast<SoHighlightElementAction*>(action)
+            : nullptr;
+        const bool isDetailedHighlight = highlightAction && highlightAction->getElement();
+        const bool isPresentationHighlight = highlightAction && highlightAction->isHighlighted()
+            && highlightAction->getHighlightPresentation() != HighlightPresentation::None;
+        const bool isClearingHighlight = highlightAction && !highlightAction->isHighlighted();
+        // Detail paths commonly end at the view provider's mode switch, which
+        // makes this root the path tail. Still capture detailed highlights and
+        // their clears here; whole-object highlights continue through the
+        // existing tail handling below.
+        if (!isTail || isDetailedHighlight || isPresentationHighlight || isClearingHighlight) {
+            if (action->isOfType(SoHighlightElementAction::getClassTypeId())) {
+                auto highlightAction = static_cast<SoHighlightElementAction*>(action);
+                const SoDetail* detail = highlightAction->getElement();
+                if (highlightAction->isHighlighted()
+                    && (detail
+                        || highlightAction->getHighlightPresentation()
+                            != HighlightPresentation::None)) {
+                    if (isHighlightContextOwner) {
+                        installGlobalHighlightContext(
+                            action,
+                            highlightAction,
+                            highlightContextOwnerPathIndex
+                        );
+                    }
+                }
+                else if (!highlightAction->isHighlighted()) {
+                    clearGlobalHighlightContext();
+                    auto ctx = getActionContext(action, this, SelContextPtr(), false);
+                    if (ctx && (ctx->elementHighlight || ctx->hlAll)) {
+                        ctx->elementHighlight.reset();
+                        ctx->hlAll = false;
+                        ctx->hlPresentation = HighlightPresentation::None;
+                        touch();
+                    }
+                }
+            }
             return true;
         }
     }
@@ -2156,10 +2420,20 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                 }
             }
             else {
+                if (highlightAction->getHighlightPresentation() != HighlightPresentation::None) {
+                    const auto path = action->getPathAppliedTo();
+                    installGlobalHighlightContext(
+                        action,
+                        highlightAction,
+                        path ? path->getLength() - 1 : -1
+                    );
+                    return false;
+                }
                 auto ctx = getActionContext(action, this, SelContextPtr());
                 assert(ctx);
                 ctx->hlAll = true;
                 ctx->hlColor = highlightAction->getColor();
+                ctx->hlPresentation = highlightAction->getHighlightPresentation();
                 touch();
                 return false;
             }
@@ -2168,6 +2442,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
             auto ctx = getActionContext(action, this, SelContextPtr(), false);
             if (ctx && ctx->hlAll) {
                 ctx->hlAll = false;
+                ctx->hlPresentation = HighlightPresentation::None;
                 touch();
                 return false;
             }
@@ -2359,10 +2634,12 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 bool hl = false;
                 float trans = 0.0F;
                 SbColor selColor, hlColor;
-                SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor);
+                HighlightPresentation hlPresentation = HighlightPresentation::None;
+                SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor, hlPresentation);
                 if (!sel && !hl) {
                     selColor.setPackedValue(ViewParams::instance()->getSelectionColor(), trans);
                 }
+                const SbColor& bboxColor = (hl && !sel) ? hlColor : selColor;
 
                 // SoFCSwitch not ported from RealThunder's linkstage.
                 // push a null entry to skip SoFCSwitch manipulation in
@@ -2370,14 +2647,14 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 // SoFCSwitch::pushSwitchPath(nullptr);
 
                 if (!viewProvider || det) {
-                    SoFCSelectionRoot::renderBBox(action, this, hl ? hlColor : selColor);
+                    SoFCSelectionRoot::renderBBox(action, this, bboxColor);
                 }
                 else {
                     auto state = action->getState();
 
                     if (ViewParams::instance()->getRenderProjectedBBox()) {
                         if (!ViewParams::instance()->getUseTightBoundingBox()) {
-                            SoFCSelectionRoot::renderBBox(action, this, hl ? hlColor : selColor);
+                            SoFCSelectionRoot::renderBBox(action, this, bboxColor);
                         }
                         else {
                             Base::Matrix4D mat = ViewProvider::convert(
@@ -2393,7 +2670,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                                 fcbox.MaxY,
                                 fcbox.MaxZ
                             );
-                            SoFCSelectionRoot::renderBBox(action, this, bbox, hl ? hlColor : selColor);
+                            SoFCSelectionRoot::renderBBox(action, this, bbox, bboxColor);
                         }
                     }
                     else {
@@ -2409,7 +2686,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                                     SoFCSelectionRoot::renderBBox(
                                         action,
                                         vp->getRoot(),
-                                        hl ? hlColor : selColor,
+                                        bboxColor,
                                         &matrix
                                     );
                                 }
@@ -2423,13 +2700,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                                         fcbox.MaxY,
                                         fcbox.MaxZ
                                     );
-                                    SoFCSelectionRoot::renderBBox(
-                                        action,
-                                        this,
-                                        bbox,
-                                        hl ? hlColor : selColor,
-                                        &matrix
-                                    );
+                                    SoFCSelectionRoot::renderBBox(action, this, bbox, bboxColor, &matrix);
                                 }
                             }
                         }

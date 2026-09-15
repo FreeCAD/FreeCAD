@@ -50,6 +50,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <algorithm>
 #include <sstream>
 
 #include <Inventor/SoPickedPoint.h>
@@ -222,7 +223,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
-    faceset->setViewProvider(this);
     faceset->ref();
     norm = new SoNormal;
     norm->ref();
@@ -230,7 +230,6 @@ ViewProviderPartExt::ViewProviderPartExt()
     normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     normb->ref();
     lineset = new SoBrepEdgeSet();
-    lineset->setViewProvider(this);
     lineset->ref();
     nodeset = new SoBrepPointSet();
     nodeset->setViewProvider(this);
@@ -1067,6 +1066,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         faceset->partIndex.setNum(0);
         lineset->coordIndex.setNum(0);
         lineset->setEdgeMapping({});
+        lineset->faceEdgeIndex.setNum(0);
         nodeset->startIndex.setValue(0);
         return;
     }
@@ -1151,7 +1151,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     std::map<int, std::vector<int32_t>> lineSetMap;
     std::set<int> edgeIdxSet;
     std::set<int> edgeFailed;
-    std::vector<int32_t> edgeVector;
+    std::vector<int32_t> faceEdgeTopoIndex;
 
     // count and index the edges
     for (int i = 1; i <= edgeMap.Extent(); i++) {
@@ -1319,7 +1319,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             const TopoDS_Edge& curEdge = TopoDS::Edge(Exp.Current());
             // get the overall index of this edge
             int edgeIndex = edgeMap.FindIndex(curEdge);
-            edgeVector.push_back((int32_t)edgeIndex - 1);
+            faceEdgeTopoIndex.push_back((int32_t)edgeIndex);
             // already processed this index ?
             if (edgeIdxSet.find(edgeIndex) != edgeIdxSet.end()) {
 
@@ -1359,7 +1359,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             }
         }
 
-        edgeVector.push_back(-1);
+        faceEdgeTopoIndex.push_back(-1);
 
         // counting up the per Face offsets
         faceNodeOffset += nbNodesInFace;
@@ -1450,22 +1450,44 @@ void ViewProviderPartExt::setupCoinGeometry(
     std::vector<int32_t> lineSetCoords;
     std::vector<int> lineToEdge;
     lineToEdge.reserve(lineSetMap.size());
+    std::map<int, int32_t> edgeLineIndex;
+    int32_t lineSection = 0;
     for (const auto& it : lineSetMap) {
+        edgeLineIndex[it.first] = lineSection++;
         lineSetCoords.insert(lineSetCoords.end(), it.second.begin(), it.second.end());
         lineSetCoords.push_back(-1);
         lineToEdge.push_back(it.first);
     }
     lineset->setEdgeMapping(std::move(lineToEdge));
 
+    std::vector<int32_t> faceEdgeSections;
+    faceEdgeSections.reserve(faceEdgeTopoIndex.size());
+    for (const int32_t edgeIndex : faceEdgeTopoIndex) {
+        if (edgeIndex < 0) {
+            faceEdgeSections.push_back(-1);
+            continue;
+        }
+        const auto it = edgeLineIndex.find(edgeIndex);
+        if (it != edgeLineIndex.end()) {
+            faceEdgeSections.push_back(it->second);
+        }
+        else {
+            faceEdgeSections.push_back(-1);
+        }
+    }
+
     // preset the index vector size
     numLines = lineSetCoords.size();
     lineset->coordIndex.setNum(numLines);
+    lineset->faceEdgeIndex.setNum(faceEdgeSections.size());
     int32_t* lines = lineset->coordIndex.startEditing();
+    int32_t* faceEdgeValues = lineset->faceEdgeIndex.startEditing();
 
     int l = 0;
     for (auto it = lineSetCoords.begin(); it != lineSetCoords.end(); ++it, l++) {
         lines[l] = *it;
     }
+    std::copy(faceEdgeSections.begin(), faceEdgeSections.end(), faceEdgeValues);
 
     // end the editing of the nodes
     coords->point.finishEditing();
@@ -1473,6 +1495,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     faceset->coordIndex.finishEditing();
     faceset->partIndex.finishEditing();
     lineset->coordIndex.finishEditing();
+    lineset->faceEdgeIndex.finishEditing();
 
 #ifdef FC_DEBUG
     Base::Console().log(

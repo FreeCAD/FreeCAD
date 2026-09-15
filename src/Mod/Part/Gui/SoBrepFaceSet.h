@@ -35,8 +35,6 @@
 namespace PartGui
 {
 
-class ViewProviderPartExt;
-
 /**
  * First some words to the history and the reason why we have this class:
  * In older FreeCAD versions we had an own Inventor node for each sub-element of a shape with its
@@ -85,11 +83,6 @@ public:
     static void initClass();
     SoBrepFaceSet();
 
-    void setViewProvider(ViewProviderPartExt* vp)
-    {
-        viewProvider = vp;
-    }
-
     SoMFInt32 partIndex;
     // Optional overlay rendering for deterministic tests (and programmatic usage).
     // These fields do not participate in the normal selection/highlight pipeline unless set.
@@ -130,10 +123,19 @@ private:
     using SelContext = Gui::SoFCSelectionContextEx;
     using SelContextPtr = Gui::SoFCSelectionContextExPtr;
 
-    void renderHighlight(SoGLRenderAction* action, SelContextPtr);
+    void renderHighlight(
+        SoGLRenderAction* action,
+        Gui::SoFCSelectionContextPtr context,
+        int highlightIndex
+    );
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
 
-    bool overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2);
+    bool overrideMaterialBinding(
+        SoGLRenderAction* action,
+        SelContextPtr ctx,
+        SelContextPtr ctx2,
+        Gui::SoFCSelectionContextPtr highlightContext
+    );
 
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();
@@ -154,9 +156,6 @@ private:
 
     SoIndexedFaceSet* overlayFaceSet {nullptr};
     std::vector<int32_t> overlayCoordIndex;
-
-    // backreference to viewprovider that owns this node
-    ViewProviderPartExt* viewProvider = nullptr;
 };
 
 }  // namespace PartGui

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cmath>
 #include <cstdint>
 
 #include <Inventor/SbColor.h>
@@ -39,6 +41,12 @@ inline SbColor selectionFallbackColor()
 {
     // Keep this aligned with the generic Selection preferences page defaults.
     return SbColor(0.0f, 171.0f / 255.0f, 1.0f);
+}
+
+inline SbColor backgroundFallbackColor()
+{
+    // Keep this aligned with the generic View preferences page defaults.
+    return SbColor(234.0f / 255.0f, 229.0f / 255.0f, 220.0f / 255.0f);
 }
 
 inline SbColor viewPreferenceColor(const char* key, const SbColor& fallback)
@@ -60,5 +68,66 @@ inline SbColor defaultHighlightColor()
 inline SbColor defaultSelectionColor()
 {
     return viewPreferenceColor("SelectionColor", selectionFallbackColor());
+}
+
+inline SbColor defaultBackgroundColor()
+{
+    return viewPreferenceColor("BackgroundColor", backgroundFallbackColor());
+}
+
+inline float linearizeSrgb(float value)
+{
+    value = std::clamp(value, 0.0f, 1.0f);
+    if (value <= 0.04045f) {
+        return value / 12.92f;
+    }
+    return std::pow((value + 0.055f) / 1.055f, 2.4f);
+}
+
+inline float relativeLuminance(const SbColor& color)
+{
+    return 0.2126f * linearizeSrgb(color[0]) + 0.7152f * linearizeSrgb(color[1])
+        + 0.0722f * linearizeSrgb(color[2]);
+}
+
+inline float contrastRatio(const SbColor& first, const SbColor& second)
+{
+    const float firstLuminance = relativeLuminance(first);
+    const float secondLuminance = relativeLuminance(second);
+    const float lighter = std::max(firstLuminance, secondLuminance);
+    const float darker = std::min(firstLuminance, secondLuminance);
+    return (lighter + 0.05f) / (darker + 0.05f);
+}
+
+inline SbColor contrastOutlineColor(const SbColor& first, const SbColor& second)
+{
+    const SbColor black(0.0f, 0.0f, 0.0f);
+    const SbColor white(1.0f, 1.0f, 1.0f);
+
+    const float blackScore = std::min(contrastRatio(black, first), contrastRatio(black, second));
+    const float whiteScore = std::min(contrastRatio(white, first), contrastRatio(white, second));
+    return blackScore >= whiteScore ? black : white;
+}
+
+struct HighlightOutlineStyle
+{
+    SbColor haloColor;
+    float lineWidth;
+    float haloLineWidth;
+};
+
+inline HighlightOutlineStyle highlightOutlineStyle(const SbColor& color, float sourceLineWidth)
+{
+    const float width = std::max(2.0f, std::max(1.0f, sourceLineWidth) + 1.0f);
+    return {
+        contrastOutlineColor(color, defaultBackgroundColor()),
+        width,
+        width + 1.0f,
+    };
+}
+
+inline constexpr float highlightFadeTransparency()
+{
+    return 0.35f;
 }
 }  // namespace Gui::SelectionColors

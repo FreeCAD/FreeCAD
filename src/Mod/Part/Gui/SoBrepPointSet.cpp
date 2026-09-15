@@ -34,12 +34,14 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoIndexedPointSet.h>
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Selection/SelectionColors.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "ViewProviderExt.h"
@@ -199,15 +201,21 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     }
 
 
-    bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
-        && ctx->highlightIndex >= 0;
-    // for clarifyselection, add this node to delayed path if it is highlighted and render it on
-    // top of everything else (highest priority)
-    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
+    auto highlightContext = Gui::SoFCSelectionRoot::getCurrentHighlightContext();
+    int highlightIndex = -1;
+    if (highlightContext && highlightContext->highlightDetail
+        && highlightContext->highlightDetail->isOfType(SoPointDetail::getClassTypeId())) {
+        highlightIndex = static_cast<const SoPointDetail*>(highlightContext->highlightDetail.get())
+                             ->getCoordinateIndex();
+    }
+    else if (ctx && ctx->isHighlighted()) {
+        highlightContext = ctx;
+        highlightIndex = ctx->highlightIndex;
+    }
+    const bool hasContextHighlight = highlightContext && highlightIndex >= 0;
+    if (hasContextHighlight
+        && highlightContext->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)
         && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-        if (viewProvider) {
-            viewProvider->setFaceHighlightActive(true);
-        }
         Gui::SoDelayedAnnotationsElement::addDelayedPath(
             action->getState(),
             action->getCurPath()->copy(),
@@ -216,14 +224,14 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         return;
     }
 
-    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max() && !ctx->isSelectAll()) {
+    if (highlightIndex == std::numeric_limits<int>::max() && ctx && !ctx->isSelectAll()) {
         if (ctx->selectionIndex.empty()) {
             if (ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action, ctx2);
             }
             else {
-                renderHighlight(action, ctx);
+                renderHighlight(action, highlightContext, highlightIndex);
             }
         }
         else {
@@ -235,7 +243,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
                 renderSelection(action, ctx2);
             }
             else {
-                renderHighlight(action, ctx);
+                renderHighlight(action, highlightContext, highlightIndex);
             }
             if (action->isRenderingDelayedPaths()) {
                 renderSelection(action, ctx);
@@ -245,7 +253,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     }
 
     if (!action->isRenderingDelayedPaths()) {
-        renderHighlight(action, ctx);
+        renderHighlight(action, highlightContext, highlightIndex);
     }
     if (ctx && !ctx->selectionIndex.empty()) {
         if (ctx->isSelectAll()) {
@@ -257,7 +265,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
                 renderSelection(action, ctx);
             }
             if (action->isRenderingDelayedPaths()) {
-                renderHighlight(action, ctx);
+                renderHighlight(action, highlightContext, highlightIndex);
             }
             return;
         }
@@ -268,26 +276,62 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
-    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-        state->push();
-        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-        inherited::GLRender(action);
-        state->pop();
-    }
     else {
-        inherited::GLRender(action);
+        const auto globalHighlightContext = Gui::SoFCSelectionRoot::getGlobalHighlightContext();
+        const bool fadeOtherElements = globalHighlightContext
+            && globalHighlightContext->hasHighlightPresentation(
+                Gui::HighlightPresentation::FadeOtherElements
+            );
+        auto renderPoints = [&]() {
+            if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+                state->push();
+                SoDepthBufferElement::set(
+                    state,
+                    FALSE,
+                    FALSE,
+                    SoDepthBufferElement::ALWAYS,
+                    SbVec2f(0.0f, 1.0f)
+                );
+                inherited::GLRender(action);
+                state->pop();
+            }
+            else {
+                inherited::GLRender(action);
+            }
+        };
+        if (fadeOtherElements) {
+            const auto* current = SoLazyElement::getInstance(state);
+            const float* currentTransparency = current->getTransparencyPointer();
+            const int transparencyCount = std::max(current->getNumTransparencies(), 1);
+            std::vector<float> fadedTransparency(static_cast<size_t>(transparencyCount));
+            const float fade = Gui::SelectionColors::highlightFadeTransparency();
+            for (int i = 0; i < transparencyCount; ++i) {
+                const float base = currentTransparency ? currentTransparency[i] : 0.0F;
+                fadedTransparency[static_cast<size_t>(i)] = 1.0F - (1.0F - base) * (1.0F - fade);
+            }
+
+            state->push();
+            SoLazyElement::setTransparency(state, this, transparencyCount, fadedTransparency.data(), nullptr);
+            SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+            SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+            renderPoints();
+            state->pop();
+        }
+        else {
+            renderPoints();
+        }
     }
 
     // Workaround for #0000433
     // #if !defined(FC_OS_WIN32)
     if (!action->isRenderingDelayedPaths()) {
-        renderHighlight(action, ctx);
+        renderHighlight(action, highlightContext, highlightIndex);
     }
     if (ctx && !ctx->selectionIndex.empty()) {
         renderSelection(action, ctx);
     }
     if (action->isRenderingDelayedPaths()) {
-        renderHighlight(action, ctx);
+        renderHighlight(action, highlightContext, highlightIndex);
     }
     // #endif
 
@@ -352,9 +396,9 @@ void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction* action)
     }
 }
 
-void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
+void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx, int id)
 {
-    if (!ctx || ctx->highlightIndex < 0) {
+    if (!ctx || id < 0) {
         return;
     }
 
@@ -363,7 +407,6 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx
         return;
     }
 
-    int id = ctx->highlightIndex;
     if (id == std::numeric_limits<int>::max()) {
         std::vector<int32_t> pointIndices;
         pointIndices.reserve(coords->getNum() - startIndex.getValue());
@@ -461,31 +504,29 @@ void SoBrepPointSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 touch();
             }
             return;
         }
-        SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
         const SoDetail* detail = hlaction->getElement();
         if (!detail) {
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
             ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->highlightColor = hlaction->getColor();
+            ctx->highlightPresentation = hlaction->getHighlightPresentation();
             touch();
             return;
         }
         else if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
-            ctx->highlightIndex = -1;
-            touch();
-            return;
+            SelContextPtr ctx
+                = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
+            if (ctx) {
+                ctx->removeHighlight();
+                touch();
+            }
         }
-
-        int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-        if (index != ctx->highlightIndex) {
-            ctx->highlightIndex = index;
-            ctx->highlightColor = hlaction->getColor();
-            touch();
-        }
+        // Detailed point highlights live in the common selection context.
         return;
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
