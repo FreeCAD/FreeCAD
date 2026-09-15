@@ -27,10 +27,12 @@ class TestRib(unittest.TestCase):
         if bodyType == "L":
             support = floor.fuse(Part.makeBox(5, 30, 40))
         else:
-            support = floor.fuse([
-                Part.makeCylinder(8, 40, v(0, 15, 0)),
-                Part.makeCylinder(10, 25, v(42, 15, 0)),
-            ])
+            support = floor.fuse(
+                [
+                    Part.makeCylinder(8, 40, v(0, 15, 0)),
+                    Part.makeCylinder(10, 25, v(42, 15, 0)),
+                ]
+            )
         self.base.Shape = support.removeSplitter()
         self.profile = self.body.newObject("Sketcher::SketchObject", "Profile")
         self.profile.Placement = App.Placement(v(0, 15, 0), App.Rotation(v(1, 0, 0), 90))
@@ -49,13 +51,19 @@ class TestRib(unittest.TestCase):
 
             def point(x, y):
                 x, y = x - 8, y - 30
-                return v(8 + x * math.cos(angle) - y * math.sin(angle),
-                         30 + x * math.sin(angle) + y * math.cos(angle), 0)
+                return v(
+                    8 + x * math.cos(angle) - y * math.sin(angle),
+                    30 + x * math.sin(angle) + y * math.cos(angle),
+                    0,
+                )
 
             geometry = [
                 Part.LineSegment(point(8, 30), point(26, 30)),
-                Part.Arc(point(26, 30), point(26 + 12 / math.sqrt(2), 18 + 12 / math.sqrt(2)),
-                         point(38, 18)),
+                Part.Arc(
+                    point(26, 30),
+                    point(26 + 12 / math.sqrt(2), 18 + 12 / math.sqrt(2)),
+                    point(38, 18),
+                ),
                 Part.LineSegment(point(38, 18), point(38, 9)),
             ]
         self.profile.addGeometry(geometry, False)
@@ -94,12 +102,17 @@ class TestRib(unittest.TestCase):
         """A multi-edge rib can reach either flange or the back of a C bracket."""
         v = App.Vector
         self.makeRib("L", "Line")
-        self.base.Shape = self.base.Shape.fuse(Part.makeBox(55, 30, 5, v(0, 0, 35))).removeSplitter()
+        self.base.Shape = self.base.Shape.fuse(
+            Part.makeBox(55, 30, 5, v(0, 0, 35))
+        ).removeSplitter()
         self.profile.delGeometry(0)
-        self.profile.addGeometry([
-            Part.LineSegment(v(12, 16, 0), v(24, 19, 0)),
-            Part.LineSegment(v(24, 19, 0), v(36, 25, 0)),
-        ], False)
+        self.profile.addGeometry(
+            [
+                Part.LineSegment(v(12, 16, 0), v(24, 19, 0)),
+                Part.LineSegment(v(24, 19, 0), v(36, 25, 0)),
+            ],
+            False,
+        )
         self.rib.ExtendType = "Off"
         directions = (v(0, 0, -1), v(0, 0, 1), v(0.2, 0, 1), v(-1, 0, 0))
         sketchPlacement = self.profile.Placement
@@ -180,10 +193,15 @@ class TestRib(unittest.TestCase):
     def mappedElements(self, shape):
         if not shape.ElementMapVersion:
             self.skipTest("Element maps are disabled in this build")
-        elements = [f"{kind}{index + 1}"
-                    for kind, shapes in (("Face", shape.Faces), ("Edge", shape.Edges),
-                                         ("Vertex", shape.Vertexes))
-                    for index in range(len(shapes))]
+        elements = [
+            f"{kind}{index + 1}"
+            for kind, shapes in (
+                ("Face", shape.Faces),
+                ("Edge", shape.Edges),
+                ("Vertex", shape.Vertexes),
+            )
+            for index in range(len(shapes))
+        ]
         # Every selectable element must have an identity which resolves back
         # to that element. Validity and element-map size alone do not prove this.
         result = {}
@@ -198,9 +216,16 @@ class TestRib(unittest.TestCase):
         self.makeRib()
         self.assertRib()
         names = self.mappedElements(self.rib.Shape)
-        normals = {names[f"Face{i + 1}"]: face.normalAt(0, 0)
-                   for i, face in enumerate(self.rib.Shape.Faces)}
-        for angle, thickness, continuity in ((3, 4, "C1"), (4, 5, "C2"), (-2, 5, "C2"), (0, 4, "C1")):
+        normals = {
+            names[f"Face{i + 1}"]: face.normalAt(0, 0)
+            for i, face in enumerate(self.rib.Shape.Faces)
+        }
+        for angle, thickness, continuity in (
+            (3, 4, "C1"),
+            (4, 5, "C2"),
+            (-2, 5, "C2"),
+            (0, 4, "C1"),
+        ):
             with self.subTest(angle=angle, thickness=thickness, continuity=continuity):
                 self.rib.DraftAngle = angle
                 self.rib.Thickness = thickness
@@ -209,11 +234,15 @@ class TestRib(unittest.TestCase):
                 self.mappedElements(self.rib.Shape)
                 self.mappedElements(self.rib.AddSubShape)
                 for oldElement, name in names.items():
-                    self.assertTrue(self.rib.Shape.getElementIndexedName(name),
-                                    f"Lost {oldElement} at draft {angle}: {name}")
+                    self.assertTrue(
+                        self.rib.Shape.getElementIndexedName(name),
+                        f"Lost {oldElement} at draft {angle}: {name}",
+                    )
                 # Resolution must not silently swap the two broad sides.
                 for name, normal in normals.items():
-                    self.assertGreater(self.rib.Shape.getElement(name).normalAt(0, 0).dot(normal), 0.9)
+                    self.assertGreater(
+                        self.rib.Shape.getElement(name).normalAt(0, 0).dot(normal), 0.9
+                    )
 
     def testReferencesAcrossDraftToggle(self):
         """A lost face link must not silently become a link to the whole rib."""
@@ -231,7 +260,9 @@ class TestRib(unittest.TestCase):
                         if face.common(self.base.Shape).Area > 1e-6:
                             continue
                         element = f"Face{index}"
-                        reference = self.doc.addObject("PartDesign::SubShapeBinder", "DraftReference")
+                        reference = self.doc.addObject(
+                            "PartDesign::SubShapeBinder", "DraftReference"
+                        )
                         reference.Support = [(self.rib, [element])]
                         references.append((reference.Name, names[element], face.normalAt(0, 0)))
                     self.assertEqual(len(references), 2)
@@ -248,8 +279,12 @@ class TestRib(unittest.TestCase):
                         self.rib = self.doc.getObject(ribName)
                         self.base = self.doc.getObject(baseName)
                         for angle, thickness, continuity in (
-                            (3, 4, "C1"), (0, 4, "C1"), (0, 4, "C2"),
-                            (-2, 5, "C2"), (3, 5, "C2"), (0, 4, "C1"),
+                            (3, 4, "C1"),
+                            (0, 4, "C1"),
+                            (0, 4, "C2"),
+                            (-2, 5, "C2"),
+                            (3, 5, "C2"),
+                            (0, 4, "C1"),
                         ):
                             self.rib.DraftAngle = angle
                             self.rib.Thickness = thickness
@@ -263,8 +298,12 @@ class TestRib(unittest.TestCase):
                                 expected = self.rib.Shape.getElement(name)
                                 actual = reference.Shape.Faces[0]
                                 self.assertAlmostEqual(actual.Area, expected.Area, places=6)
-                                self.assertLess((actual.CenterOfMass - expected.CenterOfMass).Length, 1e-6)
-                                self.assertGreater(actual.normalAt(0, 0).dot(expected.normalAt(0, 0)), 0.99)
+                                self.assertLess(
+                                    (actual.CenterOfMass - expected.CenterOfMass).Length, 1e-6
+                                )
+                                self.assertGreater(
+                                    actual.normalAt(0, 0).dot(expected.normalAt(0, 0)), 0.99
+                                )
                                 self.assertGreater(actual.normalAt(0, 0).dot(originalNormal), 0.99)
 
     def testNamingDownstreamReferenceAndRestore(self):
@@ -274,9 +313,11 @@ class TestRib(unittest.TestCase):
         self.assertRib()
         names = self.mappedElements(self.rib.Shape)
         # Pick a generated broad side geometrically, rather than assuming FaceN.
-        candidates = [(face.Area, i + 1) for i, face in enumerate(self.rib.Shape.Faces)
-                      if abs(face.normalAt(0, 0).y) > 0.9
-                      and face.common(self.base.Shape).Area < 1e-6]
+        candidates = [
+            (face.Area, i + 1)
+            for i, face in enumerate(self.rib.Shape.Faces)
+            if abs(face.normalAt(0, 0).y) > 0.9 and face.common(self.base.Shape).Area < 1e-6
+        ]
         index = max(candidates)[1]
         mapped = names[f"Face{index}"]
         reference = self.doc.addObject("PartDesign::SubShapeBinder", "Reference")
@@ -291,7 +332,9 @@ class TestRib(unittest.TestCase):
             face = self.rib.Shape.getElement(mapped)
             self.assertAlmostEqual(reference.Shape.Area, face.Area, places=6)
             self.assertEqual(len(reference.Shape.Faces), 1)
-            self.assertLess((reference.Shape.Faces[0].CenterOfMass - face.CenterOfMass).Length, 1e-6)
+            self.assertLess(
+                (reference.Shape.Faces[0].CenterOfMass - face.CenterOfMass).Length, 1e-6
+            )
         with tempfile.TemporaryDirectory() as directory:
             path = os.path.join(directory, "Rib.FCStd")
             self.doc.saveAs(path)
@@ -303,4 +346,6 @@ class TestRib(unittest.TestCase):
             face = self.rib.Shape.getElement(mapped)
             self.assertAlmostEqual(self.doc.Reference.Shape.Area, face.Area, places=6)
             self.assertEqual(len(self.doc.Reference.Shape.Faces), 1)
-            self.assertLess((self.doc.Reference.Shape.Faces[0].CenterOfMass - face.CenterOfMass).Length, 1e-6)
+            self.assertLess(
+                (self.doc.Reference.Shape.Faces[0].CenterOfMass - face.CenterOfMass).Length, 1e-6
+            )

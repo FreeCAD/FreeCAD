@@ -20,8 +20,9 @@ class TestRibReferenceSelection(unittest.TestCase):
             Gui.activateWorkbench("PartDesignWorkbench")
             fixture.makeRib("L", "Line")
             fixture.profile.delGeometry(0)
-            fixture.profile.addGeometry(Part.LineSegment(App.Vector(20, 14, 0),
-                                                        App.Vector(20, 27, 0)), False)
+            fixture.profile.addGeometry(
+                Part.LineSegment(App.Vector(20, 14, 0), App.Vector(20, 27, 0)), False
+            )
             fixture.rib.ExtendType = "Off"
             fixture.rib.Direction = App.Vector(-1, 0, 0)
             fixture.assertRib()
@@ -33,12 +34,14 @@ class TestRibReferenceSelection(unittest.TestCase):
             self.assertLess((fixture.rib.Direction - original).Length, 1e-10)
             angle.setProperty("rawValue", 190.0)
             Gui.updateGui()
-            expected = App.Vector(math.cos(math.radians(-170)), 0,
-                                  math.sin(math.radians(-170)))
+            expected = App.Vector(math.cos(math.radians(-170)), 0, math.sin(math.radians(-170)))
             self.assertLess((fixture.rib.Direction - expected).Length, 1e-10)
             fixture.assertRib()
-            if App.ParamGet("User parameter:BaseApp/Preferences/Gui/Gizmos").GetBool("EnableGizmos", True):
+            if App.ParamGet("User parameter:BaseApp/Preferences/Gui/Gizmos").GetBool(
+                "EnableGizmos", True
+            ):
                 from pivy import coin
+
                 search = coin.SoSearchAction()
                 search.setName("RibSweepAngleDragger")
                 search.setSearchingAll(True)

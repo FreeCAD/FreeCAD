@@ -68,7 +68,7 @@ void requireSolid(const Part::TopoShape& shape, const char* message)
         throw std::runtime_error(message);
     }
 }
-}
+}  // namespace
 
 Rib::Rib()
 {
@@ -84,13 +84,7 @@ Rib::Rib()
     ExtendType.setEnums(extendTypes);
     ExtendType.setValue("C1");
 
-    ADD_PROPERTY_TYPE(
-        Thickness,
-        (1.0),
-        "Rib",
-        App::Prop_None,
-        "Thickness of the rib"
-    );
+    ADD_PROPERTY_TYPE(Thickness, (1.0), "Rib", App::Prop_None, "Thickness of the rib");
 
     ADD_PROPERTY_TYPE(
         PlacementType,
@@ -128,13 +122,7 @@ Rib::Rib()
         "Sweep direction in Rib-local coordinates, for both Shape and Distance extents"
     );
 
-    ADD_PROPERTY_TYPE(
-        DraftAngle,
-        (0.0),
-        "Rib",
-        App::Prop_None,
-        "Draft angle for the rib."
-    );
+    ADD_PROPERTY_TYPE(DraftAngle, (0.0), "Rib", App::Prop_None, "Draft angle for the rib.");
 
     ADD_PROPERTY_TYPE(
         UseCustomPullDirection,
@@ -164,7 +152,7 @@ Rib::Rib()
 
     ADD_PROPERTY_TYPE(
         FilletRadius,
-        (0.0), // default to no fillet
+        (0.0),  // default to no fillet
         "Rib",
         App::Prop_None,
         "Fillet radius for the rib-body intersection"
@@ -175,9 +163,8 @@ short Rib::mustExecute() const
 {
     if (ExtendType.isTouched() || Thickness.isTouched() || DraftAngle.isTouched()
         || Direction.isTouched() || ExtentType.isTouched() || Distance.isTouched()
-        || UseCustomPullDirection.isTouched() || PullDirection.isTouched()
-        || FilletRadius.isTouched() || PlacementType.isTouched() || DraftReference.isTouched()
-        || Reversed.isTouched()) {
+        || UseCustomPullDirection.isTouched() || PullDirection.isTouched() || FilletRadius.isTouched()
+        || PlacementType.isTouched() || DraftReference.isTouched() || Reversed.isTouched()) {
         return 1;
     }
 
@@ -283,8 +270,8 @@ RibProfileEnds findRibProfileEnds(const TopoDS_Wire& wire)
 
 
 void extendRibCurveEnd(
-    Handle(Geom_BoundedCurve)& curve,
-    const Handle(Geom_TrimmedCurve)& original,
+    Handle(Geom_BoundedCurve) & curve,
+    const Handle(Geom_TrimmedCurve) & original,
     double reach,
     int continuity,
     bool after,
@@ -301,7 +288,7 @@ void extendRibCurveEnd(
     }
     tangent.Normalize();
     if (!after) {
-        tangent.Reverse(); // at the curve start, outward is opposite increasing parameters.
+        tangent.Reverse();  // at the curve start, outward is opposite increasing parameters.
     }
 
     if (isLine) {
@@ -317,10 +304,9 @@ void extendRibCurveEnd(
 }
 
 
-
 void requireRibExtensionContact(
     const TopoDS_Shape& body,
-    const Handle(Geom_BoundedCurve)& curve,
+    const Handle(Geom_BoundedCurve) & curve,
     const gp_Pnt& originalEndpoint,
     bool after,
     const char* endName
@@ -347,12 +333,10 @@ void requireRibExtensionContact(
     }
     if (contact.Value() > Precision::Confusion()) {
         throw std::runtime_error(
-            std::string("Rib profile ") + endName +
-            " extension does not intersect the body within reach"
+            std::string("Rib profile ") + endName + " extension does not intersect the body within reach"
         );
     }
 }
-
 
 
 TopoDS_Edge extendRibTerminalEdge(
@@ -361,7 +345,7 @@ TopoDS_Edge extendRibTerminalEdge(
     const TopoDS_Shape& body,
     double reach,
     int continuity,
-    const Handle(BRepTools_History)& history
+    const Handle(BRepTools_History) & history
 )
 {
     // restrict the underlying geometry to the portion used by this edge.
@@ -378,7 +362,8 @@ TopoDS_Edge extendRibTerminalEdge(
     TopoDS_Vertex firstVertex;
     TopoDS_Vertex lastVertex;
     TopExp::Vertices(edge, firstVertex, lastVertex, false);
-    const bool extendFirst = firstVertex.IsSame(ends.startVertex) || firstVertex.IsSame(ends.endVertex);
+    const bool extendFirst = firstVertex.IsSame(ends.startVertex)
+        || firstVertex.IsSame(ends.endVertex);
     const bool extendLast = lastVertex.IsSame(ends.startVertex) || lastVertex.IsSame(ends.endVertex);
     const bool isLine = BRepAdaptor_Curve(edge).GetType() == GeomAbs_Line;
 
@@ -409,9 +394,8 @@ TopoDS_Edge extendRibTerminalEdge(
     }
 
     // reuse unextended vertices so neighboring edges remain topologically joined.
-    BRepBuilderAPI_MakeEdge maker(
-        curve, newFirst, newLast, curve->FirstParameter(), curve->LastParameter()
-    );
+    BRepBuilderAPI_MakeEdge
+        maker(curve, newFirst, newLast, curve->FirstParameter(), curve->LastParameter());
     if (!maker.IsDone()) {
         throw std::runtime_error("Failed to build extended rib edge");
     }
@@ -420,8 +404,7 @@ TopoDS_Edge extendRibTerminalEdge(
     history->AddModified(edge, replacement);
     return replacement;
 }
-}
-
+}  // namespace
 
 
 Part::TopoShape Rib::extendRibProfile(
@@ -433,7 +416,7 @@ Part::TopoShape Rib::extendRibProfile(
 {
     // extend each of the open profile edges with specified continuity
     if (continuity == 0) {
-        return profile; // Off: preserve the shape and its FreeCAD element map.
+        return profile;  // Off: preserve the shape and its FreeCAD element map.
     }
     if (body.isNull()) {
         throw std::runtime_error("Rib extension requires a body");
@@ -455,15 +438,13 @@ Part::TopoShape Rib::extendRibProfile(
 
     // extend the terminal edges and check each new portion against the body
     Handle(BRepTools_History) history = new BRepTools_History;
-    const TopoDS_Edge extendedStart = extendRibTerminalEdge(
-        ends.startEdge, ends, body.getShape(), reach, curveContinuity, history
-    );
+    const TopoDS_Edge extendedStart
+        = extendRibTerminalEdge(ends.startEdge, ends, body.getShape(), reach, curveContinuity, history);
 
     TopoDS_Edge extendedEnd = extendedStart;
     if (!ends.startEdge.IsSame(ends.endEdge)) {
-        extendedEnd = extendRibTerminalEdge(
-            ends.endEdge, ends, body.getShape(), reach, curveContinuity, history
-        );
+        extendedEnd
+            = extendRibTerminalEdge(ends.endEdge, ends, body.getShape(), reach, curveContinuity, history);
     }
 
     // rebuild in connected order - interior edges are reused unchanged
@@ -489,13 +470,13 @@ Part::TopoShape Rib::extendRibProfile(
     // fc naming history
     Part::TopoShape result(0, profile.Hasher);
     result.makeShapeWithElementMap(
-        extendedWire, Part::MapperHistory(history), {profile},
-        "RibExtend" // Continuity changes geometry, not the identity of this operation.
+        extendedWire,
+        Part::MapperHistory(history),
+        {profile},
+        "RibExtend"  // Continuity changes geometry, not the identity of this operation.
     );
     return result;
 }
-
-
 
 
 gp_Vec Rib::makeSweepVector(const gp_Pln& plane, double reach) const
@@ -520,9 +501,10 @@ gp_Vec Rib::makeSweepVector(const gp_Pln& plane, double reach) const
 }
 
 
-
 Part::TopoShape Rib::makeRibSurface(
-    const Part::TopoShape& profile, const gp_Vec& travel, const gp_Pln& plane
+    const Part::TopoShape& profile,
+    const gp_Vec& travel,
+    const gp_Pln& plane
 ) const
 {
     // Close the profile against its translated copy. Building a planar face
@@ -574,11 +556,14 @@ Part::TopoShape Rib::makeRibSurface(
         history->AddGenerated(it.Current(), face.Face());
     }
     Part::TopoShape surface(0, profile.Hasher);
-    surface.makeShapeWithElementMap(face.Face(), Part::MapperHistory(history),
-                                   {profile, far}, "RibProfileSurface");
+    surface.makeShapeWithElementMap(
+        face.Face(),
+        Part::MapperHistory(history),
+        {profile, far},
+        "RibProfileSurface"
+    );
     return surface;
 }
-
 
 
 Part::TopoShape Rib::makeRibTool(
@@ -592,7 +577,7 @@ Part::TopoShape Rib::makeRibTool(
     auto tool = surface.makeElementPrism(gp_Vec(normal) * thickness, "RibThickness");
 
     // move to set the rib on either side or centered on the profile
-    const double offset = placement == 0 ? 0.0 : (placement == 1 ? -thickness : -thickness/2);
+    const double offset = placement == 0 ? 0.0 : (placement == 1 ? -thickness : -thickness / 2);
 
     gp_Trsf move;
     move.SetTranslation(gp_Vec(normal) * offset);
@@ -603,8 +588,6 @@ Part::TopoShape Rib::makeRibTool(
 }
 
 
-
-
 Part::TopoShape Rib::cutRibTool(const Part::TopoShape& tool, const Part::TopoShape& base) const
 {
     Part::TopoShape cut(0, tool.Hasher);
@@ -613,9 +596,9 @@ Part::TopoShape Rib::cutRibTool(const Part::TopoShape& tool, const Part::TopoSha
 }
 
 
-
 Part::TopoShape Rib::selectRibMaterial(
-    const Part::TopoShape& cutResult, const Part::TopoShape& profile,
+    const Part::TopoShape& cutResult,
+    const Part::TopoShape& profile,
     const Part::TopoShape& farLimit
 ) const
 {
@@ -646,17 +629,17 @@ Part::TopoShape Rib::selectRibMaterial(
     }
     Part::TopoShape result(0, cutResult.Hasher);
     // Selection changes membership, not the identities of the retained elements.
-    result.makeElementCompound(
-        kept, "", Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-    );
+    result.makeElementCompound(kept, "", Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
     return result;
 }
 
 
-
 Part::TopoShape Rib::makeDraftedRibTool(
-    const Part::TopoShape& surface, const Part::TopoShape& retained,
-    const Part::TopoShape& body, const gp_Pln& plane, const gp_Vec& travel
+    const Part::TopoShape& surface,
+    const Part::TopoShape& retained,
+    const Part::TopoShape& body,
+    const gp_Pln& plane,
+    const gp_Vec& travel
 ) const
 {
     // Frame: Y is thickness, Z is pull (root towards free end), X completes the
@@ -678,33 +661,36 @@ Part::TopoShape Rib::makeDraftedRibTool(
     const gp_Trsf fromFrame = toFrame.Inverted();
     const auto bounds = retained.moved(TopLoc_Location(toFrame)).getBoundBoxOptimal();
     const auto bodyBounds = body.moved(TopLoc_Location(toFrame)).getBoundBoxOptimal();
-    const double angle = DraftAngle.getValue() * std::acos(-1.0)/180;
+    const double angle = DraftAngle.getValue() * std::acos(-1.0) / 180;
     const double slope = std::tan(angle);
     const double thickness = Thickness.getValue();
     const double neutral = DraftReference.isValue("Root") ? bounds.MinZ : bounds.MaxZ;
     const double height = bounds.MaxZ - bounds.MinZ;
 
     // bbox already include a tolerance gap
-    const double tolerance = Precision::Confusion(); // 10*Precision::Confusion();
+    const double tolerance = Precision::Confusion();  // 10*Precision::Confusion();
 
     // The preliminary cut tells us the REQUIRED draft height. Extra tool below
     // a curved root is useful for a later trim, but must not create an artificial
     // face-crossing failure beneath a perfectly valid root.
-    double bottom = bounds.MinZ; // - std::max(tolerance, height*.2);
-    double top = bounds.MaxZ; // + tolerance;
-    const auto widthAt = [&](double z) { return thickness + 2*(neutral-z)*slope; };
+    double bottom = bounds.MinZ;  // - std::max(tolerance, height*.2);
+    double top = bounds.MaxZ;     // + tolerance;
+    const auto widthAt = [&](double z) {
+        return thickness + 2 * (neutral - z) * slope;
+    };
     if (widthAt(bounds.MinZ) <= tolerance || widthAt(bounds.MaxZ) <= tolerance) {
         throw std::runtime_error("Draft closes the rib before its required extent; reduce the angle");
     }
     if (slope < 0) {
-        bottom = std::max(bottom, bounds.MinZ - widthAt(bounds.MinZ)/(-4*slope));
+        bottom = std::max(bottom, bounds.MinZ - widthAt(bounds.MinZ) / (-4 * slope));
     }
     if (slope > 0) {
-        top = std::min(top, bounds.MaxZ + widthAt(bounds.MaxZ)/(4*slope));
+        top = std::min(top, bounds.MaxZ + widthAt(bounds.MaxZ) / (4 * slope));
     }
 
-    const double y0 = PlacementType.isValue("Side A") ? 0.0
-        : (PlacementType.isValue("Side B") ? -thickness : -thickness/2);
+    const double y0 = PlacementType.isValue("Side A")
+        ? 0.0
+        : (PlacementType.isValue("Side B") ? -thickness : -thickness / 2);
     // A wider drafted rib meets a curved boss farther along X than the narrow
     // preliminary rib. Include the body's X range, not just the retained rib,
     // otherwise the envelope itself creates triangular cut-offs at the bosses.
@@ -712,8 +698,9 @@ Part::TopoShape Rib::makeDraftedRibTool(
     const double xmax = std::max(bounds.MaxX, bodyBounds.MaxX) + tolerance;
     // End walls remain outside the retained profile. We select ONLY the two
     // broad faces, so unlike MakeDraft those end walls are never tapered.
-    Part::TopoShape envelope(BRepPrimAPI_MakeBox(
-        gp_Pnt(xmin, y0, bottom), xmax-xmin, thickness, top-bottom).Shape());
+    Part::TopoShape envelope(
+        BRepPrimAPI_MakeBox(gp_Pnt(xmin, y0, bottom), xmax - xmin, thickness, top - bottom).Shape()
+    );
     std::vector<Part::TopoShape> sides;
     for (const auto& face : envelope.getSubTopoShapes(TopAbs_FACE)) {
         gp_Pln facePlane;
@@ -727,14 +714,20 @@ Part::TopoShape Rib::makeDraftedRibTool(
     }
     // FreeCAD's existing wrapper calls BRepOffsetAPI_DraftAngle and carries its
     // history. retry=false is essential: a failed face must never be skipped.
-    envelope = envelope.makeElementDraft(sides, gp::DZ(), angle,
-        gp_Pln(gp_Pnt(0,0,neutral), gp::DZ()), false, "RibDraftEnvelope");
+    envelope = envelope.makeElementDraft(
+        sides,
+        gp::DZ(),
+        angle,
+        gp_Pln(gp_Pnt(0, 0, neutral), gp::DZ()),
+        false,
+        "RibDraftEnvelope"
+    );
     requireSolid(envelope, "Draft could not create a valid envelope");
     envelope = envelope.makeElementTransform(fromFrame, "RibDraftEnvelopePlacement");
 
     // Re-form a sufficiently wide profile prism: intersecting with the original
     // thin tool would accidentally discard all outward-drafted material.
-    const double wide = 2*(thickness + std::max(widthAt(bottom), widthAt(top)));
+    const double wide = 2 * (thickness + std::max(widthAt(bottom), widthAt(top)));
     const auto profileTool = makeRibTool(surface, normal, wide, 2);
     Part::TopoShape drafted(0, surface.Hasher);
     drafted.makeElementBoolean(Part::OpCodes::Common, {profileTool, envelope}, "RibDraftProfileClip");
@@ -742,9 +735,7 @@ Part::TopoShape Rib::makeDraftedRibTool(
     return drafted;
 }
 
-Part::TopoShape Rib::fuseRibWithBase(
-    const Part::TopoShape& base, const Part::TopoShape& retained
-) const
+Part::TopoShape Rib::fuseRibWithBase(const Part::TopoShape& base, const Part::TopoShape& retained) const
 {
     Part::TopoShape result(0, base.Hasher);
     result.makeElementBoolean(Part::OpCodes::Fuse, {base, retained}, "RibFinalFuse");
@@ -756,10 +747,7 @@ Part::TopoShape Rib::fuseRibWithBase(
 }
 
 
-
-Part::TopoShape Rib::filletIntersectingEdges(
-    const Part::TopoShape& fused, const Part::TopoShape& body
-) const
+Part::TopoShape Rib::filletIntersectingEdges(const Part::TopoShape& fused, const Part::TopoShape& body) const
 {
     // skip if fillet radius is zero
     if (FilletRadius.getValue() < Precision::Approximation()) {
@@ -778,15 +766,10 @@ Part::TopoShape Rib::filletIntersectingEdges(
 
 
     TopTools_IndexedDataMapOfShapeListOfShape edgeFaces;
-    TopExp::MapShapesAndAncestors(
-        fused.getShape(),
-        TopAbs_EDGE,
-        TopAbs_FACE,
-        edgeFaces
-    );
+    TopExp::MapShapesAndAncestors(fused.getShape(), TopAbs_EDGE, TopAbs_FACE, edgeFaces);
 
     std::vector<Part::TopoShape> junctions;
-    for (int i=1; i<=edgeFaces.Extent(); ++i) {
+    for (int i = 1; i <= edgeFaces.Extent(); ++i) {
         const auto& faces = edgeFaces.FindFromIndex(i);
         if (faces.Extent() == 2
             && bodyFaces.Contains(faces.First()) != bodyFaces.Contains(faces.Last())) {
@@ -840,10 +823,7 @@ App::DocumentObjectExecReturn* Rib::execute()
         // get the sketch plane which is how we define the rib
         const auto origin = getVerifiedSketch()->Placement.getValue().getPosition();
         const auto normal = getProfileNormal();
-        gp_Pln plane(
-            gp_Pnt(origin.x, origin.y, origin.z),
-            gp_Dir(normal.x, normal.y, normal.z)
-        );
+        gp_Pln plane(gp_Pnt(origin.x, origin.y, origin.z), gp_Dir(normal.x, normal.y, normal.z));
 
         // coordinate systems
         const auto inverse = getLocation().Inverted();
@@ -917,4 +897,4 @@ App::DocumentObjectExecReturn* Rib::execute()
         return new App::DocumentObjectExecReturn(error.what());
     }
 }
-} // namespace PartDesign
+}  // namespace PartDesign

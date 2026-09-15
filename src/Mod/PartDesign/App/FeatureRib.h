@@ -70,10 +70,7 @@ private:
 
 
     /// Cut the rib tool with the body
-    Part::TopoShape cutRibTool(
-        const Part::TopoShape& tool,
-        const Part::TopoShape& base
-    ) const;
+    Part::TopoShape cutRibTool(const Part::TopoShape& tool, const Part::TopoShape& base) const;
 
     /// Keep solids touching the original profile, but not the translated farLimit wire.
     /// A null farLimit permits free ends for Distance extent.
@@ -84,10 +81,7 @@ private:
     ) const;
 
     /// Transform into the common draft frame: X=reach, Y=thickness, Z=pull.
-    gp_Trsf getDraftFrame(
-        const gp_Pln& plane,
-        const gp_Vec& travel
-    ) const;
+    gp_Trsf getDraftFrame(const gp_Pln& plane, const gp_Vec& travel) const;
 
     /// Get the extension width
     double getExtensionWidth(
@@ -114,10 +108,7 @@ private:
     ) const;
 
     /// Fuse the rib tool with the base
-    Part::TopoShape fuseRibWithBase(
-        const Part::TopoShape& base,
-        const Part::TopoShape& retained
-    ) const;
+    Part::TopoShape fuseRibWithBase(const Part::TopoShape& base, const Part::TopoShape& retained) const;
 
     /// Fillet the intersecting edges of the fused rib tool
     Part::TopoShape filletIntersectingEdges(
@@ -126,10 +117,7 @@ private:
     ) const;
 
     /// Publish the rib result
-    void publishRib(
-        const Part::TopoShape& result,
-        const Part::TopoShape& body
-    );
+    void publishRib(const Part::TopoShape& result, const Part::TopoShape& body);
 };
 
 }  // namespace PartDesign

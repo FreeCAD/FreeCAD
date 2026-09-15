@@ -85,7 +85,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
     ui->ribDraftAngle->setMaximum(89.0);
     ui->ribDraftAngle->setValue(rib->DraftAngle.getQuantityValue());
     ui->ribDraftAngle->bind(rib->DraftAngle);
-    
+
     ui->ribFilletRadius->setUnit(Base::Unit::Length);
     ui->ribFilletRadius->setMinimum(0.0);
     ui->ribFilletRadius->setMaximum(1e9);
@@ -103,7 +103,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         updateRib();
     });
 
-    
+
     const auto connectEnum = [this](QComboBox* combo, App::PropertyEnumeration& property) {
         connect(
             combo,
@@ -121,12 +121,12 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         );
     };
 
-    
+
     connectEnum(ui->ribExtension, rib->ExtendType);
     connectEnum(ui->ribPlacement, rib->PlacementType);
     connectEnum(ui->ribExtent, rib->ExtentType);
     connectEnum(ui->ribDraftReference, rib->DraftReference);
-    
+
     connect(ui->ribReversed, &QCheckBox::toggled, this, [this](bool reversed) {
         getObject<PartDesign::Rib>()->Reversed.setValue(reversed);
         updateRib();
@@ -152,7 +152,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         }
     );
 
-    
+
     connect(
         ui->ribFilletRadius,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -163,7 +163,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         }
     );
 
-    
+
     connect(
         ui->ribLength,
         qOverload<double>(&Gui::PrefQuantitySpinBox::valueChanged),
@@ -174,7 +174,7 @@ TaskRibParameters::TaskRibParameters(ViewProviderRib* view)
         }
     );
 
-    
+
     setupGizmos();
 }
 
@@ -219,7 +219,7 @@ void TaskRibParameters::refreshEnums()
         return QString::fromStdString(value);
     };
 
-    
+
     const auto populate = [&caption](QComboBox* combo, const App::PropertyEnumeration& property) {
         const QSignalBlocker blocker(combo);
         combo->clear();
@@ -229,7 +229,7 @@ void TaskRibParameters::refreshEnums()
         combo->setCurrentIndex(combo->findData(QString::fromUtf8(property.getValueAsString())));
     };
 
-    
+
     if (auto rib = getObject<PartDesign::Rib>()) {
         populate(ui->ribExtension, rib->ExtendType);
         populate(ui->ribPlacement, rib->PlacementType);
@@ -319,21 +319,21 @@ void TaskRibParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (!pickingProfile || msg.Type != Gui::SelectionChanges::AddSelection) {
         return;
     }
-    
+
     auto rib = getObject<PartDesign::Rib>();
     if (!rib || std::string(msg.pDocName) != rib->getDocument()->getName()) {
         return;
     }
-    
+
     auto raw = rib->getDocument()->getObject(msg.pObjectName);
     RibProfileSelection gate(rib);
     if (!gate.allow(rib->getDocument(), raw, msg.pSubName)) {
         return;
     }
-    
+
     const bool add = QApplication::keyboardModifiers().testFlag(Qt::ControlModifier);
     if (add && !selectedSource.empty() && selectedSource != raw->getNameInDocument()) {
-        return;  
+        return;
     }
 
     // Resolve an external object once per picking session. Copy the whole source
