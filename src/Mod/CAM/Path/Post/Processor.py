@@ -51,7 +51,6 @@ from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
-import PathScripts.PathUtils as PathUtils
 
 translate = FreeCAD.Qt.translate
 
@@ -2105,6 +2104,10 @@ class PostProcessor:
         import Path.Base.Generator.rotation as rotation
         from Machine.models.machine import RotationStrategy
 
+        # Imported here, not at module level: PathUtils imports the Job, and
+        # the Job imports this module.
+        import PathScripts.PathUtils as PathUtils
+
         machine = self._machine
         strategy = self._rotation_strategy()
         chain = rotation.build_kinematic_chain(machine) if strategy is not None else []
@@ -3815,6 +3818,8 @@ class WrapperPost(PostProcessor):
         """An operation on a work plane stores its path in the plane's frame;
         a legacy script reads the path it is given as world coordinates. Place
         each one, as the current posts do in _expand_workplane_frames."""
+        import PathScripts.PathUtils as PathUtils
+
         for _, items in postables:
             for item in items:
                 if item.item_type != "operation" or item.source is None:
