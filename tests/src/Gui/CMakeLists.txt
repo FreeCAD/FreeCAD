@@ -24,6 +24,7 @@ add_executable(Gui_tests_run
         StyleParameters/GradientTest.cpp
         StyleParameters/ColorShadingTest.cpp
         InputHintTest.cpp
+        ViewProviderDoubleClick.cpp
         SelectionTest.cpp
 )
 
