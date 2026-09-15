@@ -100,6 +100,11 @@ private Q_SLOTS:
         Base::UnitsApi::setSchema("Internal");
     }
 
+    void cleanup()
+    {
+        Base::UnitsApi::setSchema("Internal");
+    }
+
     void test_MismatchedFormatterAndWidgetLocaleEditPreservesEnteredValue()  // NOLINT
     {
         tests::ScopedLocaleEnvironment localeState {
@@ -245,6 +250,35 @@ private Q_SLOTS:
 
         QVERIFY(input.hasValidInput());
         QCOMPARE(input.rawValue(), 3.0);
+    }
+
+    void test_BareValueUsesDisplayedUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("ImperialDecimal");
+
+        Gui::InputField input;
+        input.setUnit(Base::Unit::Length);
+        input.setText(QStringLiteral("5"));
+
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 127.0);
+
+        input.setText(QStringLiteral("5 mm"));
+        QCOMPARE(input.rawValue(), 5.0);
+    }
+
+    void test_BareValueUsesCurrentMagnitudeDependentDisplayUnit()  // NOLINT
+    {
+        Base::UnitsApi::setSchema("Internal");
+
+        Gui::InputField input;
+        input.setUnit(Base::Unit::Length);
+        input.setValue(Base::Quantity(20000.0, "mm"));
+
+        QCOMPARE(input.text(), QStringLiteral("20.0 m"));
+        input.setText(QStringLiteral("3"));
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 3000.0);
     }
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT

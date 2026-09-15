@@ -72,7 +72,7 @@ public:
         , adjustableWidth(false)
         , maxExpectedDigits(4)
         , addIconSpace(false)
-        , unitValue(0)
+        , displayUnit(Base::Unit::One)
         , maximum(std::numeric_limits<double>::max())
         , minimum(-std::numeric_limits<double>::max())
         , singleStep(1.0)
@@ -99,7 +99,7 @@ public:
                 input.toUtf8().toStdString(),
                 selectedGrammar,
                 path,
-                unit,
+                displayUnit,
                 Gui::numericLocaleContextFor(q->locale()),
                 phase,
                 constraints
@@ -133,8 +133,7 @@ public:
     Base::Quantity quantity;
     Base::Quantity cached;
     Base::Unit unit;
-    double unitValue;
-    QString unitStr;
+    App::QuantityInputUnit displayUnit;
     double maximum;
     double minimum;
     double singleStep;
@@ -251,8 +250,7 @@ void QuantitySpinBox::evaluateExpression()
 
 void Gui::QuantitySpinBox::setNumberExpression(App::NumberExpression* expr)
 {
-    updateEdit(getUserString(expr->getQuantity()));
-    handlePendingEmit();
+    commitQuantity(expr->getQuantity(), TextPolicy::ReformatEditor, false);
 }
 
 bool QuantitySpinBox::apply(const std::string& propName)
@@ -325,18 +323,63 @@ void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
     drawControl(opt);
 }
 
+void QuantitySpinBox::commitQuantity(Base::Quantity quantity, const TextPolicy textPolicy, const bool notify)
+{
+    Q_D(QuantitySpinBox);
+
+    quantity.setFormat(d->quantity.getFormat());
+
+    // Limits are stored in canonical units, just like Base::Quantity values.
+    if (quantity.getValue() > d->maximum) {
+        quantity.setValue(d->maximum);
+    }
+    if (quantity.getValue() < d->minimum) {
+        quantity.setValue(d->minimum);
+    }
+
+    d->quantity = quantity;
+    d->cached = quantity;
+    d->pendingEmit = false;
+    d->validInput = true;
+    d->lastRejectedText.clear();
+    lineEdit()->setToolTip(QString());
+    lineEdit()->setProperty("numericInputInvalid", false);
+
+    if (textPolicy == TextPolicy::ReformatEditor) {
+        updateText(quantity);
+    }
+    else {
+        // The editor contains the user's candidate text. It is already known to represent the
+        // committed quantity, so keep it verbatim while making it the validated text.
+        d->validStr = lineEdit()->text();
+    }
+
+    if (notify) {
+        Q_EMIT valueChanged(quantity);
+        Q_EMIT valueChanged(quantity.getValue());
+
+        // Preserve QuantitySpinBox's custom textChanged signal without sending generated text
+        // back through userInput(). Rendering and semantic commits are deliberately separate.
+        QScopedValueRollback<bool> updatingGuard(d->updatingText, true);
+        Q_EMIT textChanged(lineEdit()->text());
+    }
+}
+
 void QuantitySpinBox::updateText(const Quantity& quant)
 {
     Q_D(QuantitySpinBox);
 
-    double dFactor;
-    QString txt = getUserString(quant, dFactor, d->unitStr);
-    d->unitValue = quant.getValue() / dFactor;
+    // Rendering updates the editor and the paired displayed-unit state only. It must never use
+    // the generated text as a way to mutate or notify the semantic quantity.
+    double displayFactor;
+    QString displayUnit;
+    QString txt = getUserString(quant, displayFactor, displayUnit);
+    Q_UNUSED(displayFactor);
+    d->displayUnit = App::QuantityInputUnit(quant.getUnit(), displayUnit.toStdString());
     updateEdit(txt);
     d->validStr = txt;
     d->validInput = true;
     d->lastRejectedText.clear();
-    handlePendingEmit();
 }
 
 void QuantitySpinBox::updateEdit(const QString& text)
@@ -355,7 +398,8 @@ void QuantitySpinBox::updateEdit(const QString& text)
     QScopedValueRollback<bool> updatingGuard(d->updatingText, true);
     edit->setText(text);
 
-    int maxPos = qMax(0, edit->displayText().size() - d->unitStr.size());
+    const QString displayUnit = QString::fromStdString(d->displayUnit.getSymbol());
+    int maxPos = qMax(0, edit->displayText().size() - displayUnit.size());
 
     int newCursor = qBound(0, cursor, maxPos);
 
@@ -382,17 +426,12 @@ void QuantitySpinBox::validateInput()
                                    : App::QuantityInputGrammar::Quantity;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
     if (result.status == App::InputStatus::Acceptable) {
-        auto quantity = *result.quantity;
-        quantity.setFormat(d->quantity.getFormat());
         const bool needsEmit = !d->validInput || d->validStr != text || d->pendingEmit;
-        d->cached = quantity;
-        d->pendingEmit = needsEmit;
-        d->validInput = true;
-        d->validStr = text;
-        d->lastRejectedText.clear();
-        lineEdit()->setToolTip(QString());
-        lineEdit()->setProperty("numericInputInvalid", false);
-        handlePendingEmit();
+        commitQuantity(
+            *result.quantity,
+            keyboardTracking() ? TextPolicy::PreserveEditorText : TextPolicy::ReformatEditor,
+            needsEmit
+        );
         return;
     }
 
@@ -524,18 +563,11 @@ bool QuantitySpinBox::isNormalized()
 void QuantitySpinBox::setValue(const Base::Quantity& value)
 {
     Q_D(QuantitySpinBox);
-    d->quantity = value;
-    // check limits
-    if (d->quantity.getValue() > d->maximum) {
-        d->quantity.setValue(d->maximum);
-    }
-    if (d->quantity.getValue() < d->minimum) {
-        d->quantity.setValue(d->minimum);
-    }
-
     d->unit = value.getUnit();
-
-    updateText(value);
+    // Preserve the format supplied by programmatic callers. Parsed and stepped values instead
+    // inherit the format of the already committed quantity in commitQuantity().
+    d->quantity.setFormat(value.getFormat());
+    commitQuantity(value, TextPolicy::ReformatEditor, false);
 }
 
 void QuantitySpinBox::setValue(double value)
@@ -626,13 +658,15 @@ void QuantitySpinBox::userInput(const QString& text)
     if (result.status == App::InputStatus::Acceptable) {
         auto quantity = *result.quantity;
         quantity.setFormat(d->quantity.getFormat());
-        d->cached = quantity;
-        d->pendingEmit = true;
-        d->validStr = text;
-        d->validInput = true;
 
         if (keyboardTracking()) {
-            handlePendingEmit(false);
+            commitQuantity(quantity, TextPolicy::PreserveEditorText, true);
+        }
+        else {
+            d->cached = quantity;
+            d->pendingEmit = true;
+            d->validStr = text;
+            d->validInput = true;
         }
     }
     else {
@@ -680,26 +714,11 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
 {
     Q_D(QuantitySpinBox);
     if (d->pendingEmit) {
-        double factor;
-        const Base::Quantity& res = d->cached;
-        auto tmpUnit(d->unitStr);
-        QString text = getUserString(res, factor, updateUnit ? d->unitStr : tmpUnit);
-        d->unitValue = res.getValue() / factor;
-        d->quantity = res;
-
-        // signaling
-        if (notify) {
-            d->pendingEmit = false;
-            Q_EMIT valueChanged(res);
-            Q_EMIT valueChanged(res.getValue());
-            // While keyboard tracking is active, keep the user's exact text in the line edit.
-            // Re-emitting a schema-formatted string here can switch units at a threshold and
-            // feed a rounded display value back through the parser on the next keystroke.
-            const QString emittedText = updateUnit ? text : lineEdit()->text();
-            d->updatingText = true;
-            Q_EMIT textChanged(emittedText);
-            d->updatingText = false;
-        }
+        commitQuantity(
+            d->cached,
+            updateUnit ? TextPolicy::ReformatEditor : TextPolicy::PreserveEditorText,
+            notify
+        );
     }
 }
 
@@ -714,8 +733,9 @@ void QuantitySpinBox::setUnit(const Base::Unit& unit)
     Q_D(QuantitySpinBox);
 
     d->unit = unit;
-    d->quantity.setUnit(unit);
-    updateText(d->quantity);
+    auto quantity = d->quantity;
+    quantity.setUnit(unit);
+    commitQuantity(quantity, TextPolicy::ReformatEditor, false);
 }
 
 void QuantitySpinBox::setUnitText(const QString& str)
@@ -731,7 +751,7 @@ void QuantitySpinBox::setUnitText(const QString& str)
 QString QuantitySpinBox::unitText()
 {
     Q_D(QuantitySpinBox);
-    return d->unitStr;
+    return QString::fromStdString(d->displayUnit.getSymbol());
 }
 
 double QuantitySpinBox::singleStep() const
@@ -870,21 +890,24 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
-    updateFromCache(false);
 
-    double step = d->singleStep * steps;
-    double val = d->unitValue + step;
-    if (val > d->maximum) {
-        val = d->maximum;
-    }
-    else if (val < d->minimum) {
-        val = d->minimum;
-    }
+    // A valid pending edit is the user's intended current value. Invalid and incomplete edits do
+    // not set pendingEmit, so they naturally fall back to the last committed quantity.
+    const Base::Quantity base = d->pendingEmit ? d->cached : d->quantity;
 
-    Quantity quant(val, d->unitStr.toStdString());
-    quant.setFormat(d->quantity.getFormat());
-    updateText(quant);
-    updateFromCache(true);
+    // Re-select the display unit for the value being stepped. A pending edit can cross a
+    // magnitude-dependent schema threshold, in which case the cached display unit is stale.
+    double displayFactor;
+    QString displaySymbol;
+    getUserString(base, displayFactor, displaySymbol);
+    const App::QuantityInputUnit steppingUnit {base.getUnit(), displaySymbol.toStdString()};
+    Q_UNUSED(displayFactor);
+
+    const double displayScale = steppingUnit.getScale().getValue();
+    const double displayedValue = base.getValue() / displayScale;
+    const double steppedValue = displayedValue + steps * d->singleStep;
+    Quantity quant(steppedValue * displayScale, steppingUnit.getUnit());
+    commitQuantity(quant, TextPolicy::ReformatEditor, true);
     update();
     selectNumber();
 }
