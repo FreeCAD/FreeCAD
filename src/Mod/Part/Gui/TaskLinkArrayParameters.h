@@ -26,6 +26,7 @@
 #include <QPointer>
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include <App/DocumentObserver.h>
@@ -110,6 +111,8 @@ private:
     void enterReferenceSelectionMode();
     void setupInstanceControls(Gui::View3DInventorViewer* viewer);
     void updateInstanceControls();
+    std::optional<Base::Vector3d> getInstanceCenter(int index) const;
+    std::optional<Base::Vector3d> estimateInstanceCenter(int index) const;
     void setInstanceSuppressed(int index, bool suppress);
 
     std::unique_ptr<Ui_TaskLinkArrayParameters> ui;

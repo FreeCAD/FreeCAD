@@ -136,25 +136,6 @@ std::optional<Base::Vector3d> viewProviderCenter(
     return bbox.GetCenter();
 }
 
-std::optional<Base::Vector3d> estimateElementCenter(
-    Part::LinkArray* array,
-    int index,
-    Gui::View3DInventorViewer* viewer
-)
-{
-    if (!array || index < 0) {
-        return std::nullopt;
-    }
-
-    auto localCenter = viewProviderCenter(array->getTrueLinkedObject(false), viewer, false);
-    if (!localCenter) {
-        return std::nullopt;
-    }
-
-    Base::Vector3d center;
-    array->getPlacementOf(std::to_string(index), nullptr).multVec(*localCenter, center);
-    return center;
-}
 }  // namespace
 
 namespace PartGui
@@ -287,6 +268,7 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(
 
 TaskLinkArrayParameters::~TaskLinkArrayParameters()
 {
+    cancelPendingUpdate();
     instanceControls.reset();
     array = nullptr;
     exitLinkedObjectSelectionMode();
@@ -437,6 +419,40 @@ void TaskLinkArrayParameters::setupInstanceControls(Gui::View3DInventorViewer* v
     updateInstanceControls();
 }
 
+std::optional<Base::Vector3d> TaskLinkArrayParameters::getInstanceCenter(int index) const
+{
+    auto* root = arrayReference.getObject();
+    auto* viewProvider = root ? Gui::Application::Instance->getViewProvider(root) : nullptr;
+    if (!viewProvider || index < 0) {
+        return std::nullopt;
+    }
+
+    std::string sub = arrayReference.getSubNameNoElement();
+    if (!sub.empty() && sub.back() != '.') {
+        sub += '.';
+    }
+    sub += std::to_string(index) + '.';
+    const auto bbox = viewProvider->getBoundingBox(sub.c_str(), nullptr, true, instanceControlsViewer);
+    return bbox.IsValid() ? std::optional<Base::Vector3d>(bbox.GetCenter()) : std::nullopt;
+}
+
+std::optional<Base::Vector3d> TaskLinkArrayParameters::estimateInstanceCenter(int index) const
+{
+    auto localCenter
+        = viewProviderCenter(array->getTrueLinkedObject(false), instanceControlsViewer, false);
+    if (!localCenter) {
+        return std::nullopt;
+    }
+
+    // getPlacementOf includes the array's own placement; replace it with the edited occurrence.
+    const auto localPlacement = App::GeoFeature::getGlobalPlacement(array, array, "");
+    const auto placement = getArrayPlacement() * localPlacement.inverse()
+        * array->getPlacementOf(std::to_string(index), nullptr);
+    Base::Vector3d center;
+    placement.multVec(*localCenter, center);
+    return center;
+}
+
 void TaskLinkArrayParameters::updateInstanceControls()
 {
     if (!instanceControls || !instanceControlsViewer) {
@@ -465,7 +481,7 @@ void TaskLinkArrayParameters::updateInstanceControls()
         const bool suppressed = isSuppressed(element);
         std::optional<Base::Vector3d> center;
         if (!suppressed) {
-            center = viewProviderCenter(element, instanceControlsViewer, true);
+            center = getInstanceCenter(static_cast<int>(i));
         }
         if (center) {
             instanceControlCenters[i] = *center;
@@ -475,7 +491,7 @@ void TaskLinkArrayParameters::updateInstanceControls()
             center = instanceControlCenters[i];
         }
         else {
-            center = estimateElementCenter(array, static_cast<int>(i), instanceControlsViewer);
+            center = estimateInstanceCenter(static_cast<int>(i));
         }
 
         if (!center) {
@@ -506,7 +522,7 @@ void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
     }
 
     if (suppress) {
-        auto center = viewProviderCenter(elements[idx], instanceControlsViewer, true);
+        auto center = getInstanceCenter(index);
         if (center && idx < instanceControlCenters.size()) {
             instanceControlCenters[idx] = *center;
             instanceControlCentersValid[idx] = true;
@@ -627,13 +643,16 @@ Base::Vector3d TaskLinkArrayParameters::getLinearPatternFallbackDirection(
     Part::LinearPatternDirection direction
 ) const
 {
+    Base::Vector3d fallback = TaskPatternParameters::getLinearPatternFallbackDirection(direction);
     auto* linear = freecad_cast<Part::LinkArrayLinear*>(array);
-    const auto* directionProp = linear
-        ? (direction == Part::LinearPatternDirection::Second ? &linear->Direction2
-                                                             : &linear->Direction)
-        : nullptr;
-    if (directionProp && !directionProp->getValue()) {
-        const auto& subValues = directionProp->getSubValues();
+    if (!linear) {
+        return fallback;
+    }
+
+    const bool second = direction == Part::LinearPatternDirection::Second;
+    const auto& directionProp = second ? linear->Direction2 : linear->Direction;
+    if (!directionProp.getValue()) {
+        const auto& subValues = directionProp.getSubValues();
         if (!subValues.empty()) {
             std::string role = subValues.front();
             const auto dot = role.rfind('.');
@@ -641,18 +660,19 @@ Base::Vector3d TaskLinkArrayParameters::getLinearPatternFallbackDirection(
                 role = role.substr(dot + 1);
             }
             if (role == "X_Axis") {
-                return Base::Vector3d::UnitX;
+                fallback = Base::Vector3d::UnitX;
             }
-            if (role == "Y_Axis") {
-                return Base::Vector3d::UnitY;
+            else if (role == "Y_Axis") {
+                fallback = Base::Vector3d::UnitY;
             }
-            if (role == "Z_Axis") {
-                return Base::Vector3d::UnitZ;
+            else if (role == "Z_Axis") {
+                fallback = Base::Vector3d::UnitZ;
             }
         }
     }
 
-    return TaskPatternParameters::getLinearPatternFallbackDirection(direction);
+    const auto& reversed = second ? linear->Reversed2 : linear->Reversed;
+    return reversed.getValue() ? -fallback : fallback;
 }
 
 Base::Vector3d TaskLinkArrayParameters::transformLinearPatternDirection(
