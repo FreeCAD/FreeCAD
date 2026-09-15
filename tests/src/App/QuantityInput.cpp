@@ -2,6 +2,7 @@
 
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -55,6 +56,105 @@ namespace App::QuantityInputTest
 {
 
 const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+
+TEST(QuantityInput, QuantityInputUnitUsesDisplayedScaleAndSafeFallbacks)
+{
+    const QuantityInputUnit base {Base::Unit::Length};
+    EXPECT_EQ(base.getUnit(), Base::Unit::Length);
+    EXPECT_DOUBLE_EQ(base.getScale().getValue(), 1.0);
+    EXPECT_EQ(base.getSymbol(), "mm");
+
+    const QuantityInputUnit inch {Base::Unit::Length, "in"};
+    EXPECT_EQ(inch.getUnit(), Base::Unit::Length);
+    EXPECT_DOUBLE_EQ(inch.getScale().getValue(), 25.4);
+    EXPECT_EQ(inch.getSymbol(), "in");
+
+    for (const auto& displaySymbol : {std::string {}, std::string {"bogus"}, std::string {"kg"}}) {
+        const QuantityInputUnit fallback {Base::Unit::Length, displaySymbol};
+        EXPECT_EQ(fallback.getUnit(), Base::Unit::Length);
+        EXPECT_DOUBLE_EQ(fallback.getScale().getValue(), 1.0);
+        EXPECT_EQ(fallback.getSymbol(), "mm");
+    }
+
+    const QuantityInputUnit dimensionless {Base::Unit::One, "in"};
+    EXPECT_TRUE(dimensionless.isDimensionless());
+    EXPECT_TRUE(dimensionless.getSymbol().empty());
+}
+
+TEST(QuantityInput, AppliesDisplayedScaleToQuantitiesAndExpressions)
+{
+    tests::initApplication();
+    ScopedExpressionOwner owner;
+    const auto path = owner.path();
+    QuantityConstraints constraints;
+    constraints.requiredUnit = Base::Unit::Length;
+    const QuantityInputUnit inch {Base::Unit::Length, "in"};
+    const QuantityInputUnit millimetre {Base::Unit::Length, "mm"};
+
+    for (const auto& [input, expected] :
+         {std::pair {"3", 76.2}, std::pair {"3 mm", 3.0}, std::pair {"3 in", 76.2}}) {
+        const auto result = App::interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Quantity,
+            path,
+            inch,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected) << input;
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+    }
+
+    const auto interpret = [&](const std::string_view input, const QuantityInputUnit& implicitUnit) {
+        return App::interpretQuantityInput(
+            input,
+            QuantityInputGrammar::Expression,
+            path,
+            implicitUnit,
+            enUs,
+            InputPhase::Commit,
+            constraints
+        );
+    };
+
+    for (const auto& [input, expected, expectedExpression] :
+         {std::tuple {"1", 25.4, "1 in"},
+          std::tuple {"1 + 2", 76.2, "1 in + 2 in"},
+          std::tuple {"1 + 25.4 mm", 50.8, "1 in + 25.4 mm"},
+          std::tuple {"2 * 3", 152.4, "(2 * 3) in"},
+          std::tuple {"(1 + 2) mm", 3.0, "(1 + 2) mm"}}) {
+        const auto result = interpret(input, inch);
+        ASSERT_EQ(result.status, InputStatus::Acceptable) << input;
+        ASSERT_TRUE(result.quantity);
+        ASSERT_TRUE(result.expression);
+        EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected) << input;
+        EXPECT_EQ(result.quantity->getUnit(), Base::Unit::Length);
+        EXPECT_EQ(result.expression->toString(), expectedExpression) << input;
+
+        const auto retainedEvaluation = result.expression->eval();
+        const auto* retainedQuantity = freecad_cast<App::NumberExpression*>(retainedEvaluation.get());
+        ASSERT_NE(retainedQuantity, nullptr) << input;
+        EXPECT_DOUBLE_EQ(retainedQuantity->getValue(), result.quantity->getValue()) << input;
+        EXPECT_EQ(retainedQuantity->getUnit(), result.quantity->getUnit()) << input;
+
+        const auto serialized = result.expression->toString();
+        const auto reparsed
+            = App::ExpressionParser::parse(path.getDocumentObject(), serialized.c_str());
+        const auto evaluated = reparsed->eval();
+        const auto* reparsedQuantity = freecad_cast<App::NumberExpression*>(evaluated.get());
+        ASSERT_NE(reparsedQuantity, nullptr) << serialized;
+        EXPECT_DOUBLE_EQ(reparsedQuantity->getValue(), result.quantity->getValue()) << serialized;
+        EXPECT_EQ(reparsedQuantity->getUnit(), result.quantity->getUnit()) << serialized;
+    }
+
+    const auto explicitInches = interpret("1 in", millimetre);
+    ASSERT_EQ(explicitInches.status, InputStatus::Acceptable);
+    ASSERT_TRUE(explicitInches.quantity);
+    EXPECT_DOUBLE_EQ(explicitInches.quantity->getValue(), 25.4);
+}
 
 TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
 {
