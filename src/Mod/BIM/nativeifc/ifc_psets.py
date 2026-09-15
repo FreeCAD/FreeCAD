@@ -65,10 +65,32 @@ def get_psets(element):
         pset_dict = {}
         if pset.is_a("IfcPropertySet") and pset.HasProperties:
             for prop in pset.HasProperties:
-                pset_dict[prop.Name] = str(prop.NominalValue)
+                if hasattr(prop, "NominalValue") and prop.NominalValue is not None:
+                    pset_dict[prop.Name] = str(
+                        prop.NominalValue.wrappedValue
+                        if hasattr(prop.NominalValue, "wrappedValue")
+                        else prop.NominalValue
+                    )
+                elif hasattr(prop, "EnumerationValues") and prop.EnumerationValues:
+                    extracted_values = []
+                    for v in prop.EnumerationValues:
+                        val = v.wrappedValue if hasattr(v, "wrappedValue") else v
+                        extracted_values.append(str(val))
+                    pset_dict[prop.Name] = ", ".join(extracted_values)
         if pset.is_a("IfcMaterialProperties") and pset.Properties:
             for prop in pset.Properties:
-                pset_dict[prop.Name] = str(prop.NominalValue)
+                if hasattr(prop, "NominalValue") and prop.NominalValue is not None:
+                    pset_dict[prop.Name] = str(
+                        prop.NominalValue.wrappedValue
+                        if hasattr(prop.NominalValue, "wrappedValue")
+                        else prop.NominalValue
+                    )
+                elif hasattr(prop, "EnumerationValues") and prop.EnumerationValues:
+                    extracted_values = []
+                    for v in prop.EnumerationValues:
+                        val = v.wrappedValue if hasattr(v, "wrappedValue") else v
+                        extracted_values.append(str(val))
+                    pset_dict[prop.Name] = ", ".join(extracted_values)
         elif pset.is_a("IfcElementQuantity"):
             # TODO implement quantities
             pass
