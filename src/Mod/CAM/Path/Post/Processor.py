@@ -2033,7 +2033,7 @@ class PostProcessor:
 
         items = []
         twp = strategy == RotationStrategy.TWP
-        tilted = not placement.isIdentity(1e-9)
+        tilted = _tool_axis_tilted(placement)
         control_positions = (
             twp and tilted and self.values.get("TWP_CONTROL_POSITIONS_ROTARIES", True)
         )
@@ -2081,7 +2081,9 @@ class PostProcessor:
         own command and the path is emitted exactly as stored, in plane
         coordinates. The control positions the rotaries and applies the
         pivot. The plane is cancelled before a tool or fixture change and at
-        the end of the section.
+        the end of the section. Only a tilted plane is declared: a datum
+        plane or a turned X is a shift and a turn about Z, which world
+        coordinates carry exactly, and is emitted as under DWO.
 
         Whenever the rotaries move, the machine's pre- and post-rotary blocks
         wrap the move: that is where the user puts the moves that bring the
@@ -2162,7 +2164,11 @@ class PostProcessor:
                 if tilted:
                     self._check_rotation_strategy(strategy, item)
 
-                frame, angles = pose_of(placement, positions)
+                # A plane that will not be declared has no pose of its own
+                # beyond the rotary angles: two datum planes at different
+                # heights share one, and nothing moves between them.
+                declares = strategy == RotationStrategy.TWP and tilted
+                frame, angles = pose_of(placement if declares else FreeCAD.Placement(), positions)
                 if (frame, angles) != pose:
                     rotaries_move = pose is None or angles != pose[1]
                     new_items.extend(
@@ -2171,9 +2177,12 @@ class PostProcessor:
                         )
                     )
                     pose = (frame, angles)
-                    declared = strategy == RotationStrategy.TWP and framed
+                    declared = strategy == RotationStrategy.TWP and tilted
 
-                if strategy != RotationStrategy.TWP:
+                if strategy != RotationStrategy.TWP or not tilted:
+                    # A datum plane under TWP is not declared: its frame is
+                    # a shift and a turn about Z, which world coordinates
+                    # carry exactly, with nothing for the control to solve.
                     # world = placement * local; machine = R_m * world
                     machine_rotation = (
                         rotation.compute_rotation_matrix(chain, positions)

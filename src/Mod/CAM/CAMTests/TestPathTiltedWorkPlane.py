@@ -484,6 +484,19 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
                 self._expand([self._item(op)], processor)
             self.assertIn("rotary axes", str(raised.exception))
 
+    def test_twpDoesNotDeclareADatumPlane(self):
+        """A shift and a turn about Z need no plane command: the path goes
+        out in world coordinates, and nothing is cancelled after it."""
+        datum = self._op("Datum", self._plane(Z, origin=Vector(30, 10, 5)))
+        turned = self._op("Turned", self._plane(Z, origin=Vector(0, 0, 0), x=Vector(0, 1, 0)))
+        datum.Path = Path.Path(list(PATH))
+        items = self._expand([self._item(datum), self._item(turned)])
+        shape = self._shape(items)
+        self.assertTrue(shape[0].startswith("rotation:G0"), shape)
+        self.assertEqual(shape[1:], ["operation", "operation"], shape)
+        self.assertEqual(_xyz(items[1].path.Commands[1]), (40, 10, 3))
+        self.assertEqual(_xyz(items[2].path.Commands[1]), (0, 10, -2))
+
     def test_aMachineWithNoStrategyStillPostsADatumPlane(self):
         self.machine = _machineCA(RotationStrategy.NONE)
         op = self._op("Datum", self._plane(Z, origin=Vector(30, 10, 5)))
