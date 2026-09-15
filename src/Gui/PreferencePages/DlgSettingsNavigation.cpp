@@ -183,7 +183,7 @@ void DlgSettingsNavigation::loadSettings()
     }
 
     int orbitStyle = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
-    orbitStyle = Base::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
+    orbitStyle = std::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
     ui->comboOrbitStyle->setCurrentIndex(ui->comboOrbitStyle->findData(orbitStyle));
 
     index = hGrp->GetInt("RotationMode", 0);

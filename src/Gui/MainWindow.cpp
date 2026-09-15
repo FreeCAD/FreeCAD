@@ -2252,7 +2252,7 @@ void MainWindowP::restoreWindowState(const QByteArray& windowState)
         getMainWindow()->restoreState(windowState);
     }
 
-    Base::ConnectionBlocker block(connParam);
+    fastsignals::shared_connection_block blocker(connParam);
     // as a notification for user code on window state restore
     hGrp->SetBool("WindowStateRestored", !hGrp->GetBool("WindowStateRestored", false));
 }
@@ -2268,7 +2268,7 @@ void MainWindow::saveWindowSettings(bool canDelay)
         return;
     }
 
-    Base::ConnectionBlocker block(d->connParam);
+    fastsignals::shared_connection_block blocker(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
     d->hGrp->SetASCII("MainWindowState", this->saveState().toBase64().constData());
