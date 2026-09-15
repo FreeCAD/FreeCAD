@@ -37,7 +37,6 @@ from Machine.models.machine import (
     AxisRole,
     WrapStrategy,
     RotationStrategy,
-    PlaneCommand,
 )
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import (
@@ -176,9 +175,6 @@ class DataclassGUIGenerator:
         "orientation_quaternion": translate("CAM_MachineEditor", "Orientation Quaternion"),
         "tcp_supported": translate("CAM_MachineEditor", "TCP Supported"),
         "rotation_strategy": translate("CAM_MachineEditor", "Rotation Strategy"),
-        "plane_command": translate("CAM_MachineEditor", "Plane Command"),
-        "control_positions_rotaries": translate("CAM_MachineEditor", "Control Positions Rotaries"),
-        "index_retract_z": translate("CAM_MachineEditor", "Retract Z Before Indexing"),
         "notes": translate("CAM_MachineEditor", "Kinematics Notes"),
         # Axis field labels
         "role": translate("CAM_MachineEditor", "Role"),
@@ -723,13 +719,6 @@ class MachineEditorDialog(QtGui.QDialog):
                 self.machine.kinematics.tcp_supported = value
             elif field_name == "rotation_strategy":
                 self.machine.kinematics.rotation_strategy = value
-                self._update_twp_fields_enabled()
-            elif field_name == "plane_command":
-                self.machine.kinematics.plane_command = value
-            elif field_name == "control_positions_rotaries":
-                self.machine.kinematics.control_positions_rotaries = value
-            elif field_name == "index_retract_z":
-                self.machine.kinematics.index_retract_z = value
             elif field_name == "notes":
                 self.machine.kinematics.notes = value
 
@@ -1048,7 +1037,8 @@ class MachineEditorDialog(QtGui.QDialog):
                 "How the control runs an operation on a tilted work plane. DWO: the post "
                 "commands the rotary axes and the control applies its pivot offsets. TWP: "
                 "the post declares the plane and the control positions the rotary axes. "
-                "A machine with rotary axes and no strategy cannot post such an operation.",
+                "A machine with rotary axes and no strategy cannot post such an operation. "
+                "The command the plane is declared with comes from the post-processor.",
             )
         )
         self.rotation_strategy_combo.currentIndexChanged.connect(
@@ -1058,58 +1048,6 @@ class MachineEditorDialog(QtGui.QDialog):
         )
         kinematics_layout.addRow(
             translate("CAM_MachineEditor", "Rotation Strategy"), self.rotation_strategy_combo
-        )
-
-        self.plane_command_combo = QtGui.QComboBox()
-        for member, label in (
-            (PlaneCommand.G68_2, "G68.2 (Fanuc and compatible)"),
-            (PlaneCommand.G268, "G268 (Haas)"),
-            (PlaneCommand.PLANE_SPATIAL, "PLANE SPATIAL (Heidenhain)"),
-        ):
-            self.plane_command_combo.addItem(label, member)
-        self.plane_command_combo.setToolTip(
-            translate("CAM_MachineEditor", "The tilted-work-plane command the control speaks.")
-        )
-        self.plane_command_combo.currentIndexChanged.connect(
-            lambda i: self._on_kinematics_field_changed(
-                "plane_command", self.plane_command_combo.itemData(i)
-            )
-        )
-        kinematics_layout.addRow(
-            translate("CAM_MachineEditor", "Plane Command"), self.plane_command_combo
-        )
-
-        self.control_positions_rotaries_check = QtGui.QCheckBox()
-        self.control_positions_rotaries_check.setToolTip(
-            translate(
-                "CAM_MachineEditor",
-                "The plane command positions the rotary axes itself (G53.1, TURN). "
-                "Unchecked, the program commands them with a rotary move.",
-            )
-        )
-        self.control_positions_rotaries_check.toggled.connect(
-            lambda v: self._on_kinematics_field_changed("control_positions_rotaries", v)
-        )
-        kinematics_layout.addRow(
-            translate("CAM_MachineEditor", "Control Positions Rotaries"),
-            self.control_positions_rotaries_check,
-        )
-
-        self.index_retract_z_spin = QtGui.QDoubleSpinBox()
-        self.index_retract_z_spin.setRange(-10000.0, 10000.0)
-        self.index_retract_z_spin.setDecimals(3)
-        self.index_retract_z_spin.setToolTip(
-            translate(
-                "CAM_MachineEditor",
-                "Machine-coordinate Z the tool retracts to before the rotary axes move. "
-                "0 is home on most controls.",
-            )
-        )
-        self.index_retract_z_spin.valueChanged.connect(
-            lambda v: self._on_kinematics_field_changed("index_retract_z", v)
-        )
-        kinematics_layout.addRow(
-            translate("CAM_MachineEditor", "Retract Z Before Indexing"), self.index_retract_z_spin
         )
 
         # Notes
@@ -2247,14 +2185,6 @@ class MachineEditorDialog(QtGui.QDialog):
             Path.Log.warning(f"Failed to load postprocessor properties for {post_name}: {e}")
             self.post_properties_group.setVisible(False)
 
-    def _update_twp_fields_enabled(self):
-        """The plane command and who positions the rotaries only mean something for TWP."""
-        if not self.machine:
-            return
-        is_twp = self.machine.kinematics.rotation_strategy == RotationStrategy.TWP
-        self.plane_command_combo.setEnabled(is_twp)
-        self.control_positions_rotaries_check.setEnabled(is_twp)
-
     def populate_kinematics_fields(self):
         """Populate kinematics fields from machine object."""
         if not self.machine:
@@ -2265,12 +2195,6 @@ class MachineEditorDialog(QtGui.QDialog):
         self.rotation_strategy_combo.setCurrentIndex(
             max(0, self.rotation_strategy_combo.findData(kinematics.rotation_strategy))
         )
-        self.plane_command_combo.setCurrentIndex(
-            max(0, self.plane_command_combo.findData(kinematics.plane_command))
-        )
-        self.control_positions_rotaries_check.setChecked(kinematics.control_positions_rotaries)
-        self.index_retract_z_spin.setValue(kinematics.index_retract_z)
-        self._update_twp_fields_enabled()
 
         # Notes
         self.kinematics_notes_edit.setText(self.machine.kinematics.notes)
