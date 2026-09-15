@@ -1,28 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2016 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful,            *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Lesser General Public License for more details.                   *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with FreeCAD; if not, write to the Free Software        *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """
 This file has utilities for checking and catching common errors in FreeCAD
@@ -31,14 +27,14 @@ to make sure tools are selected and configured and defaults have been revised
 """
 
 from collections import Counter
-from datetime import datetime
+import datetime
 import FreeCAD
 import Path
 import Path.Log
-import Path.Main.Sanity.ImageBuilder as ImageBuilder
-import Path.Main.Sanity.ReportGenerator as ReportGenerator
-import os
+from Path.Main.Sanity import ImageBuilder
+from Path.Main.Sanity import ReportGenerator
 import Path.Dressup.Utils as PathDressup
+import os
 
 translate = FreeCAD.Qt.translate
 
@@ -92,7 +88,7 @@ class CAMSanity:
 
         return data
 
-    def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
+    def squawk(self, operator, note, date=None, squawkType="NOTE"):
         squawkType = squawkType if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP") else "NOTE"
 
         if squawkType == "TIP":
@@ -106,6 +102,7 @@ class CAMSanity:
 
         path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
 
+        date = datetime.datetime.now(tz=datetime.timezone.utc) if date is None else date
         local_date_str = date.strftime("%c")
         squawk = {
             "Date": local_date_str,
@@ -157,7 +154,9 @@ class CAMSanity:
         if lastmod:
             try:
                 # Parse ISO 8601 string and format
-                data["LastModifiedDate"] = datetime.fromisoformat(str(lastmod)).strftime("%c")
+                data["LastModifiedDate"] = datetime.datetime.fromisoformat(str(lastmod)).strftime(
+                    "%c"
+                )
             except Exception:
                 data["LastModifiedDate"] = str(lastmod)
         else:
@@ -168,11 +167,10 @@ class CAMSanity:
         n = 0
         m = 0
         for i in obj.Document.Objects:
-            if hasattr(i, "Proxy"):
-                if isinstance(i.Proxy, Path.Main.Job.ObjectJob):
-                    m += 1
-                    if i is obj:
-                        n = m
+            if hasattr(i, "Proxy") and isinstance(i.Proxy, Path.Main.Job.ObjectJob):
+                m += 1
+                if i is obj:
+                    n = m
         data["Sequence"] = "{} of {}".format(n, m)
         data["JobType"] = "2.5D Milling"  # improve after job types added
 
@@ -233,7 +231,9 @@ class CAMSanity:
         else:
             if os.path.isfile(obj.LastPostProcessOutput):
                 data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
-                data["linecount"] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+                with open(obj.LastPostProcessOutput, "rb") as f:
+                    num_lines = sum(1 for _ in f)
+                data["linecount"] = str(num_lines)
             else:
                 data["filesize"] = str(0.0)
                 data["linecount"] = str(0)
@@ -277,7 +277,11 @@ class CAMSanity:
             cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
 
             o = op
-            while "Dressup" in o.Name:
+            while (
+                getattr(o, "Proxy", None)
+                and o.Proxy.__module__.startswith("Path.Dressup")
+                and getattr(o, "Base", None)
+            ):
                 oplabel = "{}:{}".format(oplabel, o.Base.Label)
                 o = o.Base
                 if hasattr(o, "CycleTime"):
@@ -562,7 +566,7 @@ class CAMSanity:
                     # a missing machine means "don't do sanity"
                     Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
                 else:
-                    raise e
+                    raise
 
         critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
         Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
