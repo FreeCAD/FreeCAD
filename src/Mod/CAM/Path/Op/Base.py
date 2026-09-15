@@ -692,12 +692,6 @@ class ObjectOp(object):
                     elif hasattr(shape, "Volume") and shape.Volume < 1e-9:
                         Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
 
-                    # Check if we have faces
-                    if hasattr(shape, "Faces"):
-                        Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
-                        if len(shape.Faces) == 0:
-                            Path.Log.warning("  Transformed shape has no faces!")
-
                     proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
                 else:
                     proxy_cache[key] = base_obj
