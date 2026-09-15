@@ -30,28 +30,46 @@ import Draft
 import Arch
 import Part
 import WorkingPlane
+from types import SimpleNamespace
 from bimtests import TestArchBaseGui
-from bimcommands.BimWall import Arch_Wall
+from bimcommands.BimWall import Arch_Wall, WallBaselineMode
 from unittest.mock import patch
 
 
 class MockTracker:
     """A dummy tracker to absorb GUI calls during logic tests."""
 
+    def __init__(self):
+        self.off_calls = 0
+        self.on_calls = 0
+        self.finalize_calls = 0
+        self.updated_points = []
+
     def off(self):
-        pass
+        self.off_calls += 1
 
     def on(self):
-        pass
+        self.on_calls += 1
 
     def finalize(self):
-        pass
+        self.finalize_calls += 1
+        self.off()
 
     def update(self, points):
-        pass
+        self.updated_points.append(points)
 
     def setorigin(self, arg):
         pass
+
+
+class RecordingSnapper:
+    """Capture the active command state at Snapper teardown time."""
+
+    def __init__(self):
+        self.active_commands_at_cancel = []
+
+    def cancelPointRequest(self):
+        self.active_commands_at_cancel.append(FreeCAD.activeDraftCommand)
 
 
 class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
@@ -458,6 +476,82 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
             # We put this here to ensure cleanup even if the wall creation fails
             if FreeCAD.activeDraftCommand is cmd:
                 FreeCAD.activeDraftCommand = None
+
+    def _make_teardown_case(self):
+        """Create a wall command with recording doubles for teardown tests."""
+        cmd = Arch_Wall()
+        tracker = MockTracker()
+        snapper = RecordingSnapper()
+        cmd.tracker = tracker
+        FreeCAD.activeDraftCommand = cmd
+        return cmd, tracker, snapper
+
+    def _assert_snapper_teardown_order(self, snapper):
+        """Assert snapper teardown runs after the wall command deactivates."""
+        self.assertEqual(
+            snapper.active_commands_at_cancel,
+            [None],
+            "Snapper teardown should run only after the wall command is deactivated.",
+        )
+        self.assertIsNone(FreeCAD.activeDraftCommand)
+
+    def _assert_tracker_teardown(self, cmd, tracker):
+        """Assert tracker-owned state is cleared during teardown."""
+        self.assertEqual(tracker.off_calls, 1)
+        self.assertEqual(tracker.finalize_calls, 1)
+        self.assertIsNone(cmd.tracker)
+
+    def test_cancel_interactive_deactivates_before_snapper_teardown(self):
+        """Verify interactive cancel clears the active command before snapper teardown."""
+        cmd, tracker, snapper = self._make_teardown_case()
+
+        with patch.object(FreeCADGui, "Snapper", snapper):
+            cmd.getPoint(None)
+
+        self._assert_snapper_teardown_order(snapper)
+        self._assert_tracker_teardown(cmd, tracker)
+        self.assertEqual(cmd.points, [])
+        self.assertEqual(cmd.existing, [])
+        self.assertIsNone(cmd.Length)
+
+    def test_finish_deactivates_before_snapper_teardown(self):
+        """Verify explicit finish uses the same teardown ordering as cancellation."""
+        cmd, tracker, snapper = self._make_teardown_case()
+
+        with patch.object(FreeCADGui, "Snapper", snapper):
+            cmd.finish()
+
+        self._assert_snapper_teardown_order(snapper)
+        self._assert_tracker_teardown(cmd, tracker)
+
+    def test_create_wall_deactivates_before_snapper_teardown(self):
+        """Verify successful wall creation uses the same teardown ordering."""
+        cmd = Arch_Wall()
+        tracker = MockTracker()
+        snapper = RecordingSnapper()
+        cmd.doc = self.document
+        cmd.Align = "Center"
+        cmd.Width = 200.0
+        cmd.Height = 2500.0
+        cmd.MultiMat = None
+        cmd.existing = []
+        cmd.tracker = tracker
+        cmd.wp = WorkingPlane.get_working_plane()
+        cmd.points = [FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1000, 0, 0)]
+        cmd.baseline_mode = WallBaselineMode.NONE
+        FreeCAD.activeDraftCommand = cmd
+
+        toolbar = SimpleNamespace(continueMode=False)
+        initial_object_count = len(self.document.Objects)
+
+        with (
+            patch.object(FreeCADGui, "Snapper", snapper),
+            patch.object(FreeCADGui, "draftToolBar", toolbar),
+        ):
+            cmd.create_wall()
+
+        self._assert_snapper_teardown_order(snapper)
+        self.assertEqual(len(self.document.Objects), initial_object_count + 1)
 
     # Section 1: Baseless wall joining
 
