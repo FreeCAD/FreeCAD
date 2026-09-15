@@ -34,7 +34,7 @@ using namespace App;
 // Code below inspired by blog entry:
 // https://john.nachtimwald.com/2009/07/04/qcompleter-and-comma-separated-tags/
 
-QString ExpressionTokenizer::perform(const QString& prefix, int pos)
+QString ExpressionTokenizer::extractCompletionPrefix(const QString& prefix, int pos)
 {
     // ExpressionParser::tokenize() only supports std::string but we need a tuple QString
     // because due to UTF-8 encoding a std::string may be longer than a QString
@@ -154,4 +154,70 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
     }
 
     return completionPrefix;
+}
+
+namespace
+{
+bool isCompletionPathComponent(int token)
+{
+    return token == ExpressionParser::IDENTIFIER || token == ExpressionParser::INTEGER
+        || token == ExpressionParser::STRING || token == ExpressionParser::UNIT
+        || token == ExpressionParser::ONE || token == ExpressionParser::CELLADDRESS;
+}
+}  // namespace
+
+QStringList ExpressionTokenizer::splitCompletionPath(const QString& path) const
+{
+    QStringList result;
+    if (path.isEmpty()) {
+        return result;
+    }
+
+    // Only token types and text are needed here, not the byte-offset to QString-offset
+    // conversion that perform() does, so use ExpressionParser::tokenize() directly.
+    std::vector<std::tuple<int, int, std::string>> tokens =
+        ExpressionParser::tokenize(path.toStdString());
+    if (tokens.empty()) {
+        return result;
+    }
+
+    QString segment;
+    bool sawSeparator = false;
+    for (const auto& tokenTuple : tokens) {
+        const int token = std::get<0>(tokenTuple);
+
+        if (token == '.' || token == '#') {
+            if (token == '#' && sawSeparator) {
+                // '#' is only valid as the first separator (document#object)
+                return {};
+            }
+            if (segment.isEmpty()) {
+                if (token == '.' && !sawSeparator) {
+                    // leading '.' means current-object property access
+                    sawSeparator = true;
+                    continue;
+                }
+                return {};
+            }
+            result << segment;
+            segment.clear();
+            sawSeparator = true;
+            continue;
+        }
+
+        if (!isCompletionPathComponent(token)) {
+            return {};
+        }
+
+        segment += QString::fromStdString(std::get<2>(tokenTuple));
+    }
+
+    if (!segment.isEmpty()) {
+        result << segment;
+    }
+    else if (sawSeparator) {
+        result << QString();
+    }
+
+    return result;
 }
