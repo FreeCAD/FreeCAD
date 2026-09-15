@@ -1162,7 +1162,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
         Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
     }
-    PropertyLinkBase::updateAllElementReferences();
+    PropertyLinkBase::updateAllElementReferences(openedDocs);
     _isRestoring = false;
 
     signalFinishOpenDocument();
