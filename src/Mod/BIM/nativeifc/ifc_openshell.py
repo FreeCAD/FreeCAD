@@ -29,6 +29,8 @@ from packaging.version import Version
 import FreeCAD
 import FreeCADGui
 from addonmanager_utilities import create_pip_call
+
+from . import backend
 from . import has_ifcopenshell
 from . import invalidate_ifcopenshell_cache
 
@@ -158,19 +160,17 @@ class IFC_UpdateIOS:
     def get_current_version(self):
         """Retrieves the current ifcopenshell version"""
 
-        import addonmanager_utilities as utils
         from packaging.version import InvalidVersion
 
-        try:
-            import ifcopenshell
-
-            version = ifcopenshell.version
+        status = backend.get_status()
+        if status.available:
+            version = status.version
             try:
                 Version(version)
             except InvalidVersion:
                 FreeCAD.Console.PrintWarning(f"Invalid IfcOpenShell version: {version}\n")
                 version = ""
-        except:
+        else:
             version = ""
 
         return version

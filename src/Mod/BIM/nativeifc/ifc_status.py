@@ -362,7 +362,6 @@ def lock_document():
     """Locks the active document"""
 
     from . import ifc_tools  # lazy loading
-    from importers import exportIFC
     from . import ifc_geometry
     from . import ifc_export
     from PySide import QtCore
@@ -387,8 +386,7 @@ def lock_document():
             if rest:
                 # 1b some objects are outside
                 objs = find_toplevel(rest)
-                prefs, context = ifc_export.get_export_preferences(ifcfile)
-                products = exportIFC.export(objs, ifcfile, preferences=prefs)
+                products = ifc_export.export_objects(objs, ifcfile)
                 for product in products.values():
                     if not getattr(product, "ContainedInStructure", None):
                         if not getattr(product, "FillsVoids", None):

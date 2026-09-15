@@ -22,11 +22,37 @@
 # *                                                                         *
 # ***************************************************************************
 
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
+
 import Arch
+import ArchReference
 from bimtests import TestArchBase
+from nativeifc import backend
 
 
 class TestArchReference(TestArchBase.TestArchBase):
+
+    def test_ifc_reference_uses_validated_backend(self):
+        proxy = object.__new__(ArchReference.ArchReference)
+        expected = object()
+        ifcopenshell = SimpleNamespace(open=Mock(return_value=expected))
+
+        with patch.object(backend, "get_backend", return_value=ifcopenshell) as get_backend:
+            result = proxy.getIfcFile("reference.ifc")
+
+        self.assertIs(result, expected)
+        get_backend.assert_called_once_with(capability=backend.READ)
+        ifcopenshell.open.assert_called_once_with("reference.ifc")
+
+    def test_ifc_reference_handles_unavailable_backend(self):
+        proxy = object.__new__(ArchReference.ArchReference)
+        error = backend.IfcOpenShellUnavailable("missing required API")
+
+        with patch.object(backend, "get_backend", side_effect=error):
+            result = proxy.getIfcFile("reference.ifc")
+
+        self.assertIsNone(result)
 
     def test_makeReference(self):
         """Test the makeReference function."""

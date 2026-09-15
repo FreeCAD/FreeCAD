@@ -33,6 +33,92 @@ from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
 
+_PROPERTY_TYPES = {
+    "App::PropertyBool": "IfcBoolean",
+    "App::PropertyInteger": "IfcInteger",
+    "App::PropertyFloat": "IfcReal",
+    "App::PropertyString": "IfcLabel",
+}
+
+
+def _export_name_and_type(obj, prop):
+    """Recover an imported IFC name/type stored in a property tooltip."""
+
+    documentation = obj.getDocumentationOfProperty(prop)
+    if documentation.startswith("Ifc") and ":" in documentation:
+        ifc_type, name = documentation.split(":", 1)
+        return name, ifc_type
+    return prop.rstrip("_"), None
+
+
+def _quantity_value(value, ifcfile):
+    """Convert a FreeCAD quantity to the length units declared by an IFC file."""
+
+    scale = ifc_tools.get_scale(ifcfile)
+    unit_type = value.Unit.Type
+    if unit_type == "Length":
+        return value.getValueAs("mm").Value * scale, "IfcLengthMeasure"
+    if unit_type == "Area":
+        return value.getValueAs("mm^2").Value * scale**2, "IfcAreaMeasure"
+    if unit_type == "Volume":
+        return value.getValueAs("mm^3").Value * scale**3, "IfcVolumeMeasure"
+    if unit_type == "Angle":
+        return value.getValueAs("rad").Value, "IfcPlaneAngleMeasure"
+    return None, None
+
+
+def _property_value(obj, prop, ifcfile, ifc_type=None):
+    value = obj.getPropertyByName(prop)
+    if isinstance(value, FreeCAD.Units.Quantity):
+        value, quantity_type = _quantity_value(value, ifcfile)
+        if value is None:
+            return None
+        if not ifc_type:
+            ifc_type = quantity_type
+    elif isinstance(value, (list, tuple)):
+        value = "::".join(str(item) for item in value)
+    elif not isinstance(value, (bool, int, float, str)):
+        return None
+
+    if not ifc_type:
+        ifc_type = _PROPERTY_TYPES.get(obj.getTypeIdOfProperty(prop))
+    if ifc_type:
+        try:
+            return ifcfile.create_entity(ifc_type, value)
+        except (RuntimeError, TypeError, ValueError):
+            return None
+    return value
+
+
+def export_psets(obj, product, ifcfile):
+    """Export explicit IFC property and quantity groups from a FreeCAD object."""
+
+    groups = {}
+    for prop in obj.PropertiesList:
+        group = obj.getGroupOfProperty(prop)
+        if group.startswith(("Pset_", "Qto_")):
+            groups.setdefault(group, []).append(prop)
+
+    result = []
+    for group, props in groups.items():
+        values = {}
+        for prop in props:
+            name, ifc_type = _export_name_and_type(obj, prop)
+            value = _property_value(obj, prop, ifcfile, ifc_type)
+            if value is not None:
+                values[name] = value
+        if not values:
+            continue
+        if group.startswith("Qto_"):
+            qto = ifc_tools.api_run("pset.add_qto", ifcfile, product=product, name=group)
+            ifc_tools.api_run("pset.edit_qto", ifcfile, qto=qto, properties=values)
+            result.append(qto)
+        else:
+            pset = ifc_tools.api_run("pset.add_pset", ifcfile, product=product, name=group)
+            ifc_tools.api_run("pset.edit_pset", ifcfile, pset=pset, properties=values)
+            result.append(pset)
+    return result
+
 
 def has_psets(obj):
     """Returns True if an object has attached psets"""

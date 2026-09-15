@@ -25,10 +25,8 @@
 import json
 import math
 
-import ifcopenshell
-from ifcopenshell import guid
-
 import FreeCAD
+from nativeifc import backend
 
 # import Draft
 
@@ -121,10 +119,10 @@ def writeQuantities(ifcfile, obj, product, history, scale, ifctype=None):
             )
         if quantities:
             eltq = ifcfile.createIfcElementQuantity(
-                ifcopenshell.guid.new(), history, "ElementQuantities", None, "FreeCAD", quantities
+                backend.new_guid(), history, "ElementQuantities", None, "FreeCAD", quantities
             )
             ifcfile.createIfcRelDefinesByProperties(
-                ifcopenshell.guid.new(), history, None, None, [product], eltq
+                backend.new_guid(), history, None, None, [product], eltq
             )
 
 
@@ -302,7 +300,7 @@ class ContextCreator:
     def getProjectGUID(self):
         # TODO: Do not generate a new one each time, but at least this one
         # conforms to the community consensus on how a GUID is generated.
-        return ifcopenshell.guid.new()
+        return backend.new_guid()
 
     def getProjectObject(self):
         try:

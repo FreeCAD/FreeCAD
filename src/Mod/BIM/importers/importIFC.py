@@ -53,12 +53,14 @@ from draftutils.messages import _msg, _err
 
 from importers import importIFCHelper
 from importers import importIFCmulticore
+from nativeifc import backend
 
 if FreeCAD.GuiUp:
     import FreeCADGui as Gui
 
 DEBUG = False  # Set to True to see debug messages. Otherwise, totally silent
 ZOOMOUT = True  # Set to False to not zoom extents after import
+
 
 # Templates and other definitions ****
 # which IFC type must create which FreeCAD type
@@ -161,20 +163,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
         for example, `'ifcProduct'
     """
     try:
-        import ifcopenshell
-        from ifcopenshell import geom
-
-        # Sometimes there is an error importing `geom` in this way
-        # import ifcopenshell.geom
-        #
-        # therefore we must use the `from x import y` way.
-        #
-        # For some reason this works; see the bug report
-        # https://github.com/IfcOpenShell/IfcOpenShell/issues/689
-    except ModuleNotFoundError:
+        ifcopenshell = backend.get_backend(capability=backend.IMPORT)
+        geom = backend.get_module("ifcopenshell.geom", capability=backend.IMPORT)
+    except backend.IfcOpenShellUnavailable as exc:
         _err(
-            "IfcOpenShell was not found on this system. "
-            "IFC support is disabled.\n"
+            f"IfcOpenShell is unavailable or cannot import IFC geometry: {exc}\n"
             "Visit https://wiki.freecad.org/IfcOpenShell "
             "to learn about installing it."
         )
@@ -238,14 +231,11 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
     #         ctx.Precision = ctx.Precision/100
 
     # Set default ifcopenshell options to work in brep mode
-    settings = geom.settings()
-    settings.set(settings.USE_BREP_DATA, True)
-    settings.set(settings.SEW_SHELLS, True)
-    settings.set(settings.USE_WORLD_COORDS, True)
-    if preferences["SEPARATE_OPENINGS"]:
-        settings.set(settings.DISABLE_OPENING_SUBTRACTIONS, True)
-    if preferences["SPLIT_LAYERS"] and hasattr(settings, "APPLY_LAYERSETS"):
-        settings.set(settings.APPLY_LAYERSETS, True)
+    settings = backend.create_geometry_settings(
+        backend.IMPORT,
+        disable_opening_subtractions=preferences["SEPARATE_OPENINGS"],
+        apply_layersets=preferences["SPLIT_LAYERS"],
+    )
 
     # build all needed tables
     if preferences["DEBUG"]:
