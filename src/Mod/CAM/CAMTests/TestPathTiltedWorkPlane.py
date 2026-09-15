@@ -142,6 +142,18 @@ def _gcode(path):
     return [c.toGCode() for c in path.Commands]
 
 
+def _xyz(command):
+    return tuple(round(command.Parameters[k], 3) for k in "XYZ")
+
+
+def _mm(user_string):
+    """A sanity report value, in mm whatever unit schema the report used."""
+    quantity = FreeCAD.Units.Quantity(user_string)
+    if quantity.Unit.Type == "":
+        return quantity.Value  # a bare zero carries no unit
+    return quantity.getValueAs("mm").Value
+
+
 class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathTiltedWorkPlane")
@@ -447,11 +459,59 @@ class TestTiltedWorkPlanePost(PathTestUtils.PathTestBase):
             self._expand([self._item(op)], processor)
         self.assertIn("TWP", str(raised.exception))
 
-    def test_withoutARotaryMachineThePathIsPlacedIntoTheWorld(self):
-        op = self._op("Tilted", self._plane())
+    # planes parallel to the table need no rotary axes
+
+    def test_withoutARotaryMachineADatumPlaneIsPlacedIntoTheWorld(self):
+        op = self._op("Datum", self._plane(Z, origin=Vector(30, 10, 5)))
         items = self._expand([self._item(op)], self._processor(machine=Machine(name="3 axis")))
         self.assertEqual(self._shape(items), ["operation"])
         self.assertEqual(_gcode(items[0].path), _gcode(PathUtils.getPathWithPlacement(op)))
+        self.assertEqual(_xyz(items[0].path.Commands[1]), (40, 10, 3))
+
+    def test_withoutARotaryMachineATurnedXIsPlacedIntoTheWorld(self):
+        op = self._op("Turned", self._plane(Z, origin=Vector(0, 0, 0), x=Vector(0, 1, 0)))
+        items = self._expand([self._item(op)], self._processor(machine=Machine(name="3 axis")))
+        self.assertEqual(self._shape(items), ["operation"])
+        self.assertEqual(_xyz(items[0].path.Commands[1]), (0, 10, -2))
+
+    def test_withoutARotaryMachineATiltedPlaneIsRefused(self):
+        op = self._op("Tilted", self._plane())
+        three_axis = self._processor(machine=Machine(name="3 axis"))
+        no_machine = self._processor(machine=Machine(name="3 axis"))
+        no_machine._machine = None
+        for processor in (three_axis, no_machine):
+            with self.assertRaises(CAMValueError) as raised:
+                self._expand([self._item(op)], processor)
+            self.assertIn("rotary axes", str(raised.exception))
+
+    def test_aMachineWithNoStrategyStillPostsADatumPlane(self):
+        self.machine = _machineCA(RotationStrategy.NONE)
+        op = self._op("Datum", self._plane(Z, origin=Vector(30, 10, 5)))
+        items = self._expand([self._item(op)])
+        shape = self._shape(items)
+        self.assertTrue(shape[0].startswith("rotation:G0"), shape)
+        self.assertEqual(_xyz(items[1].path.Commands[1]), (40, 10, 3))
+
+    def test_sanityReportsDepthsInJobCoordinates(self):
+        from Path.Main.Sanity.Sanity import CAMSanity
+        from Path.Main.Sanity import ImageBuilder
+        import tempfile
+
+        # Below zero on purpose: a Path's bounding box includes its implicit
+        # start at the origin, so a datum above zero never lowers the minimum.
+        op = self._op("Datum", self._plane(Z, origin=Vector(30, 10, -5)))
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sanity = object.__new__(CAMSanity)
+            sanity.job = self.job
+            sanity.output_file = tmpdir + "/dummy.html"
+            sanity.filelocation = tmpdir
+            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+            sanity.data = {}
+            data = sanity._runData()
+        opdata = [o for o in data["operations"] if o["opName"] == op.Label][0]
+        self.assertAlmostEqual(_mm(opdata["minZ"]), -7, places=3)
+        self.assertAlmostEqual(_mm(opdata["maxZ"]), 0, places=3)
+        self.assertEqual(data["jobMinZ"], opdata["minZ"])
 
     def test_aThreeAxisJobIsUntouched(self):
         op = PathCustom.Create("Plain", parentJob=self.job)
