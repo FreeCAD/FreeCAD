@@ -1,16 +1,14 @@
-specfile_path: package/fedora/freecad.spec
+specfile_path: .packit_rpm/freecad.spec
 files_to_sync:
     - .packit.yaml
+    - src: .packit_rpm/freecad.spec
+      dest: freecad.spec
 actions:
   post-upstream-clone:
-    - bash -c '/usr/bin/python3 package/scripts/write_version_info.py freecad_version.txt'
-    - rm -f freecad-sources.tar.gz
-  changelog-entry:
-    - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
+    - rm -rf .packit_rpm
+    - git clone -b dev https://github.com/filippor/FreeCAD-fedora-packaging.git .packit_rpm
   create-archive:
-    - git submodule update --init
-    - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
-    - echo -n 'freecad-sources.tar.gz'
+    - bash -c '.packit_rpm/scripts/create-archive.sh'
 downstream_package_name: freecad
 upstream_tag_exclude: '.*'
 notifications:
@@ -23,10 +21,15 @@ jobs:
 - job: copr_build
   identifier: pull_request
   trigger: pull_request
+  notifications:
+    pull_request:
+      successful_build: false
   branch: main
-  manual_trigger: true
   targets:
-    fedora-latest-stable:
+    fedora-latest-stable-x86_64:
+      without_opts:
+      - debug_info
+    fedora-latest-stable-aarch64:
       without_opts:
       - debug_info
 
@@ -34,17 +37,20 @@ jobs:
   identifier: pull_request
   trigger: pull_request
   branch: main
-  manual_trigger: true
   targets:
-    fedora-latest-stable:
+    fedora-latest-stable-x86_64:
       without_opts:
       - debug_info
-  fmf_path: package/fedora/tests
+    fedora-latest-stable-aarch64:
+      without_opts:
+      - debug_info
+  fmf_url: https://github.com/filippor/FreeCAD-fedora-packaging.git
+  fmf_ref: dev
+  
 
 - job: copr_build
   identifier: main
   trigger: commit
-  manual_trigger: true
   branch: main
   owner: '@freecad'
   project: nightly
@@ -52,18 +58,21 @@ jobs:
   identifier: main
   trigger: commit
   branch: main
-  manual_trigger: true
   targets:
     fedora-latest-stable:
       without_opts:
       - debug_info
-  fmf_path: package/fedora/tests
+  fmf_url: https://github.com/filippor/FreeCAD-fedora-packaging.git
+  fmf_ref: dev
   owner: '@freecad'
   project: nightly
 
 - job: copr_build
   identifier: release
   trigger: release
+  actions:
+    run-condition:
+      - bash -c '! git tag --points-at HEAD | grep -q "^weekly"'
   owner: '@freecad'
   project: freecad
   targets:
