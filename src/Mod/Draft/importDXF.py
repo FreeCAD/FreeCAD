@@ -2889,6 +2889,7 @@ def _import_dxf_file(filename, doc_name=None):
 
     # --- Core Import Execution ---
     processing_start_time = time.perf_counter()
+    FreeCADGui.suspendWaitCursor()
 
     # Take snapshot of objects before import
     objects_before = set(doc.Objects)
