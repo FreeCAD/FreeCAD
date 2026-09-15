@@ -81,7 +81,7 @@ class PathDressupTagTaskPanel:
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
             self.getFields()
-            self.obj.Proxy.execute(self.obj)
+            self.obj.Proxy.doExecute(self.obj, False)
             self.isDirty = False
 
     def modifyStandardButtons(self, buttonBox):
@@ -101,14 +101,14 @@ class PathDressupTagTaskPanel:
         self.cleanup(True)
         if self.isDirty:
             self.getFields()
-            FreeCAD.ActiveDocument.recompute()
+            # FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self, gui):
         self.viewProvider.clearTaskPanel()
         if gui:
             FreeCADGui.ActiveDocument.resetEdit()
             FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.recompute()
+            # FreeCAD.ActiveDocument.recompute()
             if self.jvoVisible:
                 self.jvo.show()
 
@@ -204,7 +204,7 @@ class PathDressupTagTaskPanel:
     def generateNewTags(self):
         self.getFields()
         if not self.obj.Proxy.generateTags(self.obj):
-            self.obj.Proxy.execute(self.obj)
+            self.obj.Proxy.doExecute(self.obj, False)
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
@@ -221,7 +221,7 @@ class PathDressupTagTaskPanel:
         if r:
             index = form.uiToolController.currentIndex()
             if not self.obj.Proxy.copyTags(self.obj, tags[index]):
-                self.obj.Proxy.execute(self.obj)
+                self.obj.Proxy.doExecute(self.obj, False)
             self.Positions = self.obj.Positions
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
