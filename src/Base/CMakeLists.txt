@@ -284,6 +284,7 @@ SET(FreeCADBase_CPP_SRCS
     UniqueNameManager.cpp
     Uuid.cpp
     Vector3D.cpp
+    Version.cpp
     VectorPyImp.cpp
     ViewProj.cpp
     Writer.cpp
@@ -357,6 +358,7 @@ SET(FreeCADBase_HPP_SRCS
     UniqueNameManager.h
     Uuid.h
     Vector3D.h
+    Version.h
     ViewProj.h
     Writer.h
     XMLTools.h

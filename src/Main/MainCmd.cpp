@@ -28,7 +28,7 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
-#include <Build/Version.h>  // For FCCopyrightYear
+#include <Base/Version.h>
 
 #include <cstdio>
 #include <ostream>
@@ -50,7 +50,7 @@ using Base::Console;
 const auto sBanner = fmt::format(
     "(C) 2001-{} FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
-    FCCopyrightYear
+    Base::FCVersionInfo::CopyrightYear()
 );
 
 int main(int argc, char** argv)
