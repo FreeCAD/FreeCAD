@@ -625,7 +625,7 @@ QGIViewDimension::computeLineStrikeFactor(const Base::BoundBox2d& labelRectangle
     }
 
     std::vector<Base::Vector2d> intersectionPoints;
-    unsigned int startIndex = 0;
+    unsigned int startIndex = 0;   
     unsigned int currentIndex = 1;
 
     while (currentIndex < drawMarking.size()) {
@@ -1695,6 +1695,8 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             labelPosition = -cos(devAngle) * ((labelCenter - arcPoint).Length());
         }
 
+        m_cachedDiameterLineAngle = lineAngle;  // cache for label snap
+
         drawDimensionLine(radiusPath, arcPoint, lineAngle,
                           // If not reduced rendering and at least in one arc wedge, draw to center
                           angleFactor && renderExtent >= ViewProviderDimension::REND_EXTENT_NORMAL
@@ -1729,6 +1731,8 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             labelPosition = -labelDirection.Length();
         }
 
+        m_cachedDiameterLineAngle = lineAngle;  // cache for label snap
+
         drawDimensionLine(radiusPath, arcPoint, lineAngle,
                           // If not reduced rendering and at least in one arc wedge, draw to center
                           angleFactor && renderExtent >= ViewProviderDimension::REND_EXTENT_NORMAL
@@ -1741,7 +1745,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: %d\n",
             standardStyle);
     }
-
+    
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(radiusPath);
@@ -1985,12 +1989,24 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
         }
         else if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
             // We may rotate the label so no reference line is needed
-            double lineAngle;
-            double devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
-                                                        labelRectangle.Height() * 0.5
-                                                            + getIsoDimensionLineSpacing(),
-                                                        lineAngle, labelAngle);
+            double lineAngle = 0.0;
+            double devAngle = 0.0;
 
+            const double lineLabelDistance = labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing();
+            
+            constexpr double maxRatio = 0.5;
+            devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
+                                                     lineLabelDistance, lineAngle, labelAngle);
+
+            if ((labelCenter - curveCenter).Length() * maxRatio <= lineLabelDistance 
+                && m_cachedDiameterLineAngle.has_value()) {
+                lineAngle = m_cachedDiameterLineAngle.value();
+                labelAngle = m_cachedDiameterLabelAngle.value(); 
+            } else {               
+                m_cachedDiameterLineAngle = lineAngle; // cache for label snap
+                m_cachedDiameterLabelAngle = labelAngle;
+            }
+ 
             // Correct the label center distance projected on the leader line and subtract radius
             double labelPosition =
                 cos(devAngle) * ((labelCenter - curveCenter).Length()) - curveRadius;
@@ -1998,16 +2014,25 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
             drawDimensionLine(diameterPath,
                               curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle),
                               lineAngle, -curveRadius * 2.0, labelPosition, labelRectangle, 2,
-                              standardStyle, flipArrows);
+                              standardStyle, flipArrows); 
         }
         else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
             // Text must remain horizontal, but it may split the leader line
             double lineAngle = (labelCenter - curveCenter).Angle();
             //Base::Vector2d lineDirection(Base::Vector2d::FromPolar(1.0, lineAngle));
+            double rawDistance = (labelCenter - curveCenter).Length();
+
+            if (rawDistance < Precision::Confusion() && m_cachedDiameterLineAngle.has_value())
+            {
+                lineAngle = m_cachedDiameterLineAngle.value();
+            }
+            else {
+                m_cachedDiameterLineAngle = lineAngle; // cache for label snap
+            }
 
             drawDimensionLine(
                 diameterPath, curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle),
-                lineAngle, -curveRadius * 2.0, (labelCenter - curveCenter).Length() - curveRadius,
+                lineAngle, -curveRadius * 2.0, rawDistance - curveRadius,
                 labelRectangle, 2, standardStyle, flipArrows);
         }
         else {
@@ -2170,6 +2195,8 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         arcRadius = arcRadii[selected];
         startRotation = copysign(startRotation, -handednessFactor);
 
+        m_cachedAngleLabelArcOffset = jointDirections[selected].Length() - arcRadius;
+
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation,
                          jointAngles[selected], labelRectangle, arrowCount, standardStyle,
                          flipArrows);
@@ -2194,6 +2221,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         arcRadius = labelDirection.Length()
             - placementFactor
                 * (labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing());
+
+        m_cachedAngleLabelArcOffset = labelDirection.Length() - arcRadius;
+
         if (arcRadius < 0.0) {
             arcRadius = labelDirection.Length();
         }
@@ -2205,6 +2235,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         // Text must remain horizontal, but it may split the leader line
         Base::Vector2d labelDirection(labelCenter - angleVertex);
         arcRadius = labelDirection.Length();
+        m_cachedAngleLabelArcOffset = labelDirection.Length() - arcRadius;
 
         drawDimensionArc(anglePath, angleVertex, arcRadius, endAngle, startRotation,
                          labelDirection.Angle(), labelRectangle, arrowCount, standardStyle,
@@ -2252,6 +2283,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(anglePath);
+
+    // cache arc radius to be used for snapping dim label
+    m_cachedAngleArcRadius = arcRadius;
 }
 
 void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
