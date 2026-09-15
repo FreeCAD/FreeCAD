@@ -1112,26 +1112,6 @@ std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(cons
     }
 }
 
-QMap<QString, QString> SketcherGui::findAvailableBlockFiles()
-{
-    QMap<QString, QString> blocks;
-    const QStringList paths {
-        QString::fromStdString(App::Application::getResourceDir() + "Mod/Sketcher/Blocks/"),
-        QString::fromStdString(App::Application::getUserAppDataDir() + "Mod/Sketcher/Blocks/")
-    };
-    for (const auto& path : paths) {
-        QDir directory(path);
-        QDirIterator it(path, {QStringLiteral("*.txt")}, QDir::Files, QDirIterator::Subdirectories);
-        while (it.hasNext()) {
-            const QString file = it.next();
-            QString name = directory.relativeFilePath(file);
-            name.chop(4);
-            blocks[name] = file;
-        }
-    }
-    return blocks;
-}
-
 void SketcherGui::reloadFileGroup(ViewProviderSketch* view, int constraintId)
 {
     if (!view) {
@@ -1161,5 +1141,65 @@ void SketcherGui::reloadFileGroup(ViewProviderSketch* view, int constraintId)
     catch (const Base::Exception& error) {
         doc->abortCommand();
         Gui::NotifyError(view, QT_TRANSLATE_NOOP("Notifications", "Cannot reload group"), error.what());
+    }
+}
+
+int SketcherGui::selectedBlockConstraint(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return -1;
+    }
+    auto* sketch = static_cast<ViewProviderSketch*>(doc->getInEdit())->getSketchObject();
+    const auto selection = Gui::Selection().getSelectionEx(
+        doc->getDocument()->getName(),
+        Sketcher::SketchObject::getClassTypeId()
+    );
+    if (selection.size() != 1 || selection[0].getObject() != sketch) {
+        return -1;
+    }
+    std::set<int> candidates;
+    const auto& constraints = sketch->Constraints.getValues();
+    for (const auto& name : selection[0].getSubNames()) {
+        int geoId = GeoEnum::GeoUndef;
+        PointPos posId = PointPos::none;
+        getIdsFromName(name, sketch, geoId, posId);
+        for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
+            const auto* c = constraints[i];
+            if (c->Type != Sketcher::Group
+                || QFileInfo(QString::fromStdString(c->getFile()))
+                        .suffix()
+                        .compare(QStringLiteral("txt"), Qt::CaseInsensitive)
+                    != 0) {
+                continue;
+            }
+            if (name == "Constraint" + std::to_string(i + 1)) {
+                candidates.insert(i);
+            }
+            for (int j = 0; c->hasElement(j); ++j) {
+                if (geoId != GeoEnum::GeoUndef && c->getGeoId(j) == geoId) {
+                    candidates.insert(i);
+                }
+            }
+        }
+    }
+    return candidates.size() == 1 ? *candidates.begin() : -1;
+}
+
+void SketcherGui::editFileBlock(ViewProviderSketch* view, int constraintId)
+{
+    if (!view) {
+        return;
+    }
+    try {
+        Gui::Command::doCommand(Gui::Command::App, "import SketcherBlock");
+        Gui::Command::doCommand(
+            Gui::Command::App,
+            "SketcherBlock.edit(%s, %d)",
+            Gui::Command::getObjectCmd(view->getSketchObject()).c_str(),
+            constraintId
+        );
+    }
+    catch (const Base::Exception& error) {
+        Gui::NotifyError(view, QT_TRANSLATE_NOOP("Notifications", "Cannot edit block"), error.what());
     }
 }

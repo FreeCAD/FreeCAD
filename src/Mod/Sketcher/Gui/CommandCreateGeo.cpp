@@ -1457,37 +1457,6 @@ bool CmdSketcherInsertBlock::isActive()
 // ======================================================================================
 // Comp for outline tools =============================================
 
-class CmdSketcherCompCreateOutlines: public Gui::GroupCommand
-{
-public:
-    CmdSketcherCompCreateOutlines()
-        : GroupCommand("Sketcher_CompCreateOutlines")
-    {
-        sAppModule = "Sketcher";
-        sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Outlines");
-        sToolTipText = QT_TR_NOOP("Creates grouped geometries");
-        sWhatsThis = "Sketcher_CompCreateOutlines";
-        sStatusTip = sToolTipText;
-        eType = ForEdit;
-
-        setCheckable(false);
-
-        addCommand("Sketcher_CreateText");
-        addCommand("Sketcher_InsertBlock");
-    }
-
-    const char* className() const override
-    {
-        return "CmdSketcherCompCreateOutlines";
-    }
-
-    bool isActive() override
-    {
-        return isCommandActive(getActiveGuiDocument());
-    }
-};
-
 // B-spline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
@@ -2093,5 +2062,4 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
     rcCmdMgr.addCommand(new CmdSketcherCompExternal());
-    rcCmdMgr.addCommand(new CmdSketcherCompCreateOutlines());
 }

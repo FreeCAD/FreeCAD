@@ -155,9 +155,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     const char* file = "";
     PyObject* fileHeight = Py_False;
     PyObject* groupActive = Py_True;
+    double fileAngle = 0.0;
     if (PyArg_ParseTuple(
             args,
-            "sO!|sO!O!",
+            "sO!|sO!O!d",
             &ConstraintType,
             &PyList_Type,
             &py_elements_list,
@@ -165,7 +166,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             &PyBool_Type,
             &fileHeight,
             &PyBool_Type,
-            &groupActive
+            &groupActive,
+            &fileAngle
         )) {
         if (strcmp(ConstraintType, "Group") == 0) {
             constraint->Type = Sketcher::Group;
@@ -176,6 +178,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             if (*file) {
                 constraint->setFileHeight(fileHeight == Py_True);
             }
+            constraint->setFileAngle(fileAngle);
             constraint->isActive = groupActive == Py_True;
             return 0;  // Success!
         }
@@ -1223,6 +1226,16 @@ Py::String ConstraintPy::getFile() const
 void ConstraintPy::setFile(Py::String file)
 {
     getConstraintPtr()->setFile(file);
+}
+
+Py::Float ConstraintPy::getFileAngle() const
+{
+    return Py::Float(getConstraintPtr()->getFileAngle());
+}
+
+void ConstraintPy::setFileAngle(Py::Float angle)
+{
+    getConstraintPtr()->setFileAngle(static_cast<double>(angle));
 }
 
 Py::Boolean ConstraintPy::getFileHeight() const

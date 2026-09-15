@@ -9,6 +9,12 @@
 
 namespace Sketcher
 {
+SketcherExport std::vector<std::unique_ptr<Part::Geometry>> transformFixedGroupGeometry(
+    const std::vector<Part::Geometry*>& geometry,
+    const Base::Vector3d& origin,
+    double angle
+);
+
 /// Fit a snapshot of geometry to the position, direction and length of a group handle.
 SketcherExport std::vector<std::unique_ptr<Part::Geometry>> transformGroupGeometry(
     const std::vector<Part::Geometry*>& geometry,
