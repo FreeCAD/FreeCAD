@@ -131,6 +131,8 @@ public:
     void zoomIn();
     void zoomOut();
 
+    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
+
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 
@@ -152,8 +154,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
     QColor getBackgroundColor();
-
-    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;
 
