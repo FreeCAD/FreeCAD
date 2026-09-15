@@ -49,7 +49,7 @@ class Points(object):
         ...
 
     def addPoints(self, points: Sequence[Vector | tuple[float, float, float]], /) -> None:
-        """Add one or more points or lists of points to the object"""
+        """Add one or more points to the object"""
         ...
 
     @constmethod

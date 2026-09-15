@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Any, Final, Sequence
 
 from Base.BaseClass import PyObjectBase
 from Base.Metadata import constmethod, export
+from Base.Vector import Vector
 
 @export(
     Include="Mod/Surface/App/Blending/BlendPoint.h",
@@ -29,18 +30,15 @@ class BlendPoint(PyObjectBase):
         """Return BlendPoint first derivative length."""
         ...
 
-    def setSize(self) -> Any:
+    def setSize(self, size: float, /) -> None:
         """
-        Resizes the BlendPoint vectors,
-        by setting the length of the first derivative.
-        theBlendPoint.setSize(new_size)
+        Resizes the BlendPoint vectors by setting the length of the first derivative.
         """
         ...
 
-    def setvectors(self) -> Any:
+    def setvectors(self, vectors: Sequence[Vector], /) -> None:
         """
         Set the vectors of BlendPoint.
-        BlendPoint.setvectors([Point, D1, D2, ..., DN])
         """
         ...
     Vectors: Final[list]
