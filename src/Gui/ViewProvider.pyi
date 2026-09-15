@@ -5,7 +5,8 @@ from __future__ import annotations
 from Base.Metadata import constmethod
 from Base.BoundBox import BoundBox
 from App.ExtensionContainer import ExtensionContainer
-from typing import Any, Final, List, Optional
+from App.DocumentObject import DocumentObject
+from typing import Any, Final, List, Optional, overload
 import enum
 
 class ViewProvider(ExtensionContainer):
@@ -168,9 +169,12 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def doubleClicked(self) -> bool:
+    @overload
+    def doubleClicked(self) -> bool: ...
+    @overload
+    def doubleClicked(self, root: DocumentObject, subname: str = "") -> bool:
         """
-        Trigger double clicking the corresponding tree item of this view object.
+        Trigger double clicking this view object, optionally specifying its root and subobject path.
         """
         ...
 
