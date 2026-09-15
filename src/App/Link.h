@@ -503,7 +503,9 @@ public:
 
     PyObject* getExtensionPyObject() override;
 
-    Property* extensionGetPropertyByName(const char* name) const override;
+    Property* extensionGetPropertyByName(
+        const char* name,
+        PropertyLookupMode mode = PropertyLookupMode::WithAliases) const override;
 
     /**
      * @brief Get the array index from a subname.

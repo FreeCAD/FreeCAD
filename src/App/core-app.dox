@@ -473,6 +473,88 @@
  *   reader.readEndElement("Properties");
  * }
  * @endcode
+ *
+ * @section PropertyRenaming Renaming a property
+ *
+ * Renaming a property breaks every Python add-on and macro that referenced the old
+ * name. The property alias mechanism keeps the old name working so the rename can be
+ * made without a coordinated flag day.
+ *
+ * @subsection PropertyRenamingCpp Renaming a static C++ property
+ *
+ * Rename the member, then declare an alias for the old name in the constructor:
+ *
+ * @code
+ * // in the header
+ * App::PropertyString Description;
+ *
+ * // in the constructor
+ * ADD_PROPERTY_TYPE(Description, (""), group, App::Prop_None, "Object description");
+ * ADD_PROPERTY_DEPRECATED_ALIAS(Description, "Label2", "1.1");
+ * @endcode
+ *
+ * The third argument is the FreeCAD version introducing the alias. It appears in the
+ * deprecation warning and makes it possible to audit which aliases are old enough to
+ * retire.
+ *
+ * No handleChangedPropertyName() override is needed. Restore() resolves aliases, so a
+ * document saved under the old name restores into the renamed property, silently.
+ *
+ * @subsection PropertyRenamingPython Renaming a Python property
+ *
+ * Python objects have no static properties, so both steps happen at runtime:
+ *
+ * @code{.py}
+ * obj.addPropertyAlias("SurfaceArea", "Area", deprecated=True, since="1.1")
+ * obj.addProperty("App::PropertyArea", "SurfaceArea", "Geometry")
+ * @endcode
+ *
+ * The order matters: addPropertyAlias() must run first, while "SurfaceArea" does not yet
+ * exist, so it can find the leftover "Area" from an older document and migrate it. Calling
+ * addProperty() first creates a fresh "SurfaceArea" with a default value, so
+ * addPropertyAlias() then finds the canonical name already taken and declines to migrate,
+ * silently orphaning the user's value under the old name.
+ *
+ * Both calls are safe to make unconditionally on every load. addProperty() returns the
+ * existing property rather than raising if the name is already taken, and
+ * addPropertyAlias() renames a leftover "Area" from an older document to "SurfaceArea",
+ * preserving its value.
+ *
+ * Aliases are runtime state and are not saved, so registration must run every time the
+ * object is created — from the Proxy constructor and from onDocumentRestored().
+ *
+ * @subsection PropertyRenamingLimits What aliases do not do
+ *
+ * @li <b>Forward compatibility is broken.</b> A renamed static property is written to
+ *     the file under its new name, so an older FreeCAD cannot read it. This is a
+ *     deliberate trade: the alternative is never being able to rename anything.
+ *
+ * @li <b>Aliases can reach documents.</b> An expression referring to an alias persists
+ *     that name into the .FCStd, because the expression stores the text the user typed.
+ *     For a static (C++) alias, Document::afterRestore() rewrites such references to the
+ *     canonical name, so files heal on the next save. A runtime alias registered from
+ *     Python is not covered by that rewrite, because it runs before Python gets a chance
+ *     to register anything: it heals only the properties it migrates at registration time,
+ *     not expressions written against the alias afterwards. An alias cannot be retired
+ *     until the documents in circulation have been through the applicable healing cycle.
+ *
+ * @li <b>Aliases are not properties.</b> They are absent from PropertiesList, from the
+ *     property editor, and from dir(). Use getPropertyAliases() to enumerate them.
+ *
+ * @li <b>Declaring an alias claims that name.</b> If a dynamic property already exists
+ *     under the alias name, registration renames it to the canonical name, whether or not
+ *     the property is locked. This matches what renameProperty() already does for
+ *     unlocked properties, and additionally unblocks locked ones, which renameProperty()
+ *     refuses.
+ *
+ * @subsection PropertyRenamingDesign Why the new name is canonical
+ *
+ * An alternative would be to keep the original name canonical and treat the new name as
+ * the preferred alias, so that a second rename would replace the alias rather than adding
+ * another. That was considered and rejected: it means the name in the file, in the
+ * property editor, and in the code never converges on the one developers actually use,
+ * and every reader must learn the historical name to understand the class. Carrying a
+ * second name for a deprecation window is the cheaper cost.
  */
 
 /**
