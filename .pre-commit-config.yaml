@@ -30,6 +30,7 @@ files: |
         src/Mod/Robot|
         src/Mod/Show|
         src/Mod/Sketcher|
+        src/Mod/Sketcher3D|
         src/Mod/Spreadsheet|
         src/Mod/Start|
         src/Mod/Surface|
