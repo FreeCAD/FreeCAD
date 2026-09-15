@@ -77,11 +77,11 @@ class BIM_DrawingView:
             FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         if section:
-            FreeCADGui.doCommand("vobj = Draft.make_shape2dview(" + section_object + ")")
+            FreeCADGui.doCommand("vobj = Draft.make_shape_2d_view(" + section_object + ")")
             FreeCADGui.doCommand("vobj.Label = " + repr(translate("BIM", "Viewed lines")))
             FreeCADGui.doCommand("vobj.InPlace = False")
             FreeCADGui.doCommand("obj.addObject(vobj)")
-            FreeCADGui.doCommand("cobj = Draft.make_shape2dview(" + section_object + ")")
+            FreeCADGui.doCommand("cobj = Draft.make_shape_2d_view(" + section_object + ")")
             FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
             FreeCADGui.doCommand("cobj.InPlace = False")
             FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')

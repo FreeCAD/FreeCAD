@@ -31,25 +31,25 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.shape2dview import Shape2DView
+from draftutils import gui_utils
+from freecad.deprecation import deprecated
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
 
 
-def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
-    """make_shape2dview(object, [projectionVector], [facenumbers])
+def make_shape_2d_view(baseobj, projection=None, facenumbers=[]):
+    """make_shape_2d_view(baseobj, [projection], [facenumbers])
 
     Add a 2D shape to the document, which is a 2D projection of the given object.
 
     Parameters
     ----------
-    object :
+    baseobj :
         TODO: Describe
 
-    projectionVector : Base.Vector
+    projection : Base.Vector
         Custom vector for the projection
 
     facenumbers : [] TODO: Describe
@@ -63,8 +63,8 @@ def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     if App.GuiUp:
         ViewProviderDraftAlt(obj.ViewObject)
     obj.Base = baseobj
-    if projectionVector:
-        obj.Projection = projectionVector
+    if projection:
+        obj.Projection = projection
     if facenumbers:
         obj.FaceNumbers = facenumbers
     gui_utils.select(obj)
@@ -72,6 +72,24 @@ def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     return obj
 
 
-makeShape2DView = make_shape2dview
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shape_2d_view()",
+)
+def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
+    """DEPRECATED. Use 'make_shape_2d_view'."""
+    return make_shape_2d_view(baseobj, projection=projectionVector, facenumbers=facenumbers)
+
+
+@deprecated(
+    deprecated_in="26.3",
+    removed_in="28.3",
+    replacement="Draft.make_shape_2d_view()",
+)
+def makeShape2DView(baseobj, projectionVector=None, facenumbers=[]):
+    """DEPRECATED. Use 'make_shape_2d_view'."""
+    return make_shape_2d_view(baseobj, projection=projectionVector, facenumbers=facenumbers)
+
 
 ## @}

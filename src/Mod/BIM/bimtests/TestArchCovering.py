@@ -208,7 +208,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         """Verify that open wires are rejected as base objects."""
         self.printTestMessage("open wire guard...")
         # Create an open Draft Line
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(500, 0, 0))
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(500, 0, 0))
         self.document.recompute()
 
         covering = Arch.makeCovering(line)
