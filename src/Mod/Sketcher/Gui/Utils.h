@@ -192,6 +192,8 @@ bool isSketchInEdit(Gui::Document* doc);
 bool isCommandActive(Gui::Document* doc);
 bool isCommandNeedingConstraintActive(Gui::Document* doc);
 bool isCommandNeedingGeometryActive(Gui::Document* doc);
+/// True when at least two distinct edges of the sketch in edit are selected.
+bool isCreateBlockActive(Gui::Document* doc);
 bool isCommandNeedingBSplineActive(Gui::Document* doc);
 
 SketcherGui::ViewProviderSketch* getInactiveHandlerEditModeSketchViewProvider(Gui::Document* doc);
@@ -236,6 +238,10 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 }
 
 QMap<QString, QString> findAvailableFontFiles();
+std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(const std::string& filename);
+int selectedBlockConstraint(Gui::Document* doc);
+void editFileBlock(ViewProviderSketch* view, int constraintId);
+void reloadFileGroup(ViewProviderSketch* view, int constraintId);
 
 }  // namespace SketcherGui
 

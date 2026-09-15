@@ -29,6 +29,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMessageBox>
+#include <QSaveFile>
 
 #include <Inventor/SbString.h>
 
@@ -41,6 +42,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
 #include <Gui/View3DInventor.h>
@@ -210,10 +212,10 @@ Sketcher::SketchObject* getSketchObject()
 
 // Copy
 
-bool copySelectionToClipboard(Sketcher::SketchObject* obj)
+static std::string selectedGeometryText(Sketcher::SketchObject* obj)
 {
     std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
-    if (listOfGeoId.empty()) { return false; }
+    if (listOfGeoId.empty()) { return {}; }
 
     // If a group handle is selected, ensure all its grouped geometries are copied too.
     std::vector<int> groupMembersToAdd;
@@ -306,12 +308,105 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj)
     exportedData.append("\n");
     exportedData.append(cstrAsStr);
 
+    return exportedData;
+}
+
+bool copySelectionToClipboard(Sketcher::SketchObject* obj)
+{
+    const std::string exportedData = selectedGeometryText(obj);
     if (!exportedData.empty()) {
         QClipboard* clipboard = QGuiApplication::clipboard();
         clipboard->setText(QString::fromStdString(exportedData));
         return true;
     }
     return false;
+}
+
+class CmdSketcherCompBlocks: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompBlocks()
+        : GroupCommand("Sketcher_CompBlocks")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Blocks");
+        sToolTipText = QT_TR_NOOP("Inserts, creates, edits, and reloads blocks");
+        sWhatsThis = "Sketcher_CompBlocks";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_InsertBlock");
+        addCommand("Sketcher_CreateBlock");
+        addCommand("Sketcher_EditBlock");
+        addCommand("Sketcher_ReloadBlock");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompBlocks";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
+};
+
+DEF_STD_CMD_A(CmdSketcherEditBlock)
+
+CmdSketcherEditBlock::CmdSketcherEditBlock() : Command("Sketcher_EditBlock")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Edit Block");
+    sToolTipText = QT_TR_NOOP("Edits the source geometry of the selected block");
+    sPixmap = "Sketcher_InsertBlock";
+    sWhatsThis = "Sketcher_EditBlock";
+    eType = ForEdit;
+}
+
+void CmdSketcherEditBlock::activated(int)
+{
+    auto* doc = Gui::Application::Instance->activeDocument();
+    const int index = selectedBlockConstraint(doc);
+    if (index >= 0) {
+        editFileBlock(static_cast<ViewProviderSketch*>(doc->getInEdit()), index);
+    }
+}
+
+bool CmdSketcherEditBlock::isActive()
+{
+    return selectedBlockConstraint(Gui::Application::Instance->activeDocument()) >= 0;
+}
+
+DEF_STD_CMD_A(CmdSketcherReloadBlock)
+
+CmdSketcherReloadBlock::CmdSketcherReloadBlock() : Command("Sketcher_ReloadBlock")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Reload From File");
+    sToolTipText = QT_TR_NOOP("Reloads the selected block from its source file");
+    sPixmap = "Sketcher_InsertBlock";
+    sWhatsThis = "Sketcher_ReloadBlock";
+    eType = ForEdit;
+}
+
+void CmdSketcherReloadBlock::activated(int)
+{
+    auto* doc = Gui::Application::Instance->activeDocument();
+    const int index = selectedBlockConstraint(doc);
+    if (index >= 0) {
+        reloadFileGroup(static_cast<ViewProviderSketch*>(doc->getInEdit()), index);
+    }
+}
+
+bool CmdSketcherReloadBlock::isActive()
+{
+    return selectedBlockConstraint(Gui::Application::Instance->activeDocument()) >= 0;
 }
 
 DEF_STD_CMD_A(CmdSketcherCopyClipboard)
@@ -339,6 +434,58 @@ void CmdSketcherCopyClipboard::activated(int iMsg)
 bool CmdSketcherCopyClipboard::isActive()
 {
     return isCommandNeedingGeometryActive(getActiveGuiDocument());
+}
+
+// ================================================================================
+
+DEF_STD_CMD_A(CmdSketcherCreateBlock)
+
+CmdSketcherCreateBlock::CmdSketcherCreateBlock()
+    : Command("Sketcher_CreateBlock")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create Block");
+    sToolTipText = QT_TR_NOOP("Saves the selected geometry as a block text file (select at least two edges)");
+    sWhatsThis = "Sketcher_CreateBlock";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherCreateBlock::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (!isActive()) {
+        return;
+    }
+    auto* sketch = getSketchObject();
+    const QByteArray data = QByteArray::fromStdString(selectedGeometryText(sketch));
+    if (data.isEmpty()) {
+        return;
+    }
+    const QString path = Gui::FileDialog::getSaveFileName(
+        Gui::getMainWindow(),
+        QObject::tr("Create Block"),
+        QString::fromStdString(App::Application::getResourceDir() + "Mod/Sketcher/Blocks/"),
+        {{QObject::tr("Sketcher block files"), {QStringLiteral("*.txt")}}}
+    );
+    if (path.isEmpty()) {
+        return;
+    }
+
+    QSaveFile file(path);
+    if (!file.open(QIODevice::WriteOnly) || file.write(data) != data.size() || !file.commit()) {
+        Gui::TranslatedUserError(
+            sketch,
+            QObject::tr("Failed to create block"),
+            QObject::tr("Could not save %1: %2").arg(path, file.errorString())
+        );
+    }
+}
+
+bool CmdSketcherCreateBlock::isActive()
+{
+    return isCreateBlockActive(getActiveGuiDocument());
 }
 
 // ================================================================================
@@ -2636,9 +2783,13 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
     rcCmdMgr.addCommand(new CmdSketcherRemoveAxesAlignment());
+    rcCmdMgr.addCommand(new CmdSketcherEditBlock());
+    rcCmdMgr.addCommand(new CmdSketcherReloadBlock());
     rcCmdMgr.addCommand(new CmdSketcherCopyClipboard());
+    rcCmdMgr.addCommand(new CmdSketcherCreateBlock());
     rcCmdMgr.addCommand(new CmdSketcherCut());
     rcCmdMgr.addCommand(new CmdSketcherPaste());
+    rcCmdMgr.addCommand(new CmdSketcherCompBlocks());
 }
 // clang-format on
 
