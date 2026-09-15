@@ -31,6 +31,9 @@
 #include "FeatureMultiTransform.h"
 #include "FeatureAddSub.h"
 #include "FeatureScaled.h"
+#include "FeaturePointPattern.h"
+
+#include <cmath>
 
 
 using namespace PartDesign;
@@ -76,125 +79,135 @@ short MultiTransform::mustExecute() const
     return Transformed::mustExecute();
 }
 
+bool MultiTransform::isTransformationSuppressed(int index) const
+{
+    return Transformed::isTransformationSuppressed(index)
+        || (index >= 0 && static_cast<std::size_t>(index) < generatedSuppression.size()
+            && generatedSuppression[index]);
+}
+
 const std::list<gp_Trsf> MultiTransform::getTransformations(
     const std::vector<App::DocumentObject*> originals
 )
 {
-    std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
+    generatedSuppression.clear();
+    originalTransformation = true;
+    const auto transFeatures = Transformations.getValues();
+    if (transFeatures.empty()) {
+        return {};
+    }
 
     gp_Pnt cog;
     if (!originals.empty()) {
-        // Find centre of gravity of first original
-        // FIXME: This method will NOT give the expected result for more than one original!
-        if (auto addFeature = freecad_cast<PartDesign::FeatureAddSub*>(originals.front())) {
-            TopoDS_Shape original = addFeature->AddSubShape.getShape().getShape();
-
+        if (auto* feature = freecad_cast<PartDesign::FeatureAddSub*>(originals.front())) {
             GProp_GProps props;
-            BRepGProp::VolumeProperties(original, props);
+            BRepGProp::VolumeProperties(feature->AddSubShape.getShape().getShape(), props);
             cog = props.CentreOfMass();
         }
     }
 
-    std::list<gp_Trsf> result;
-    std::list<gp_Pnt> cogs;
-
-    for (auto const& f : transFeatures) {
-        auto transFeature = freecad_cast<PartDesign::Transformed*>(f);
-        if (!transFeature) {
+    struct Instance
+    {
+        gp_Trsf transform;
+        gp_Pnt center;
+        bool suppressed;
+    };
+    std::vector<Instance> instances;
+    bool firstFeature = true;
+    for (auto* feature : transFeatures) {
+        auto* transformed = freecad_cast<PartDesign::Transformed*>(feature);
+        if (!transformed) {
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
 
-        std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
-        // Computing transformations can update derived helper properties such as Spacings and
-        // Offset. The helper is not executed independently, so do not let those updates schedule
-        // the parent MultiTransform for a second document recompute pass.
-        transFeature->purgeTouched();
-        if (result.empty()) {
-            // First transformation Feature
-            result = newTransformations;
-            for (auto nt : newTransformations) {
-                cogs.push_back(cog.Transformed(nt));
+        // A standalone point pattern puts its first point in Placement. Helpers must
+        // carry that translation in the transformations instead, since they are not executed.
+        auto* points = freecad_cast<PartDesign::PointPattern*>(transformed);
+        const auto transformations = points ? points->calculateTransformations(false)
+                                            : transformed->getTransformations(originals);
+        transformed->purgeTouched();
+        if (firstFeature) {
+            int index = 0;
+            for (const auto& transform : transformations) {
+                instances.push_back(
+                    {transform,
+                     cog.Transformed(transform),
+                     transformed->isTransformationSuppressed(index++)}
+                );
+            }
+            firstFeature = false;
+            continue;
+        }
+
+        std::vector<Instance> previous;
+        previous.swap(instances);
+        if (previous.empty()) {
+            continue;  // An empty product must not restart at the next helper.
+        }
+        if (transformed->is<PartDesign::Scaled>()) {
+            if (transformations.empty() || previous.size() % transformations.size() != 0) {
+                throw Base::ValueError(
+                    "Number of occurrences must be a divisor of previous number of occurrences"
+                );
+            }
+            const std::size_t sliceLength = previous.size() / transformations.size();
+            std::size_t oldIndex = 0;
+            int index = 0;
+            for (const auto& transform : transformations) {
+                const bool suppressed = transformed->isTransformationSuppressed(index++);
+                for (std::size_t slice = 0; slice < sliceLength; ++slice) {
+                    const auto& old = previous[oldIndex++];
+                    gp_Trsf combined;
+                    gp_Pnt center = old.center;
+                    const double factor = transform.ScaleFactor();
+                    if (factor > Precision::Confusion()) {
+                        combined.SetScale(center, factor);
+                        combined.Multiply(old.transform);
+                    }
+                    else {
+                        combined = transform * old.transform;
+                        center.Transform(transform);
+                    }
+                    instances.push_back({combined, center, old.suppressed || suppressed});
+                }
             }
         }
         else {
-            // Retain a copy of the first set of transformations for iterator ot
-            // We can't iterate through result if we are also adding elements with push_back()!
-            std::list<gp_Trsf> oldTransformations;
-            result.swap(oldTransformations);  // empty result to receive new transformations
-            std::list<gp_Pnt> oldCogs;
-            cogs.swap(oldCogs);  // empty cogs to receive new cogs
-
-            if (transFeature->is<PartDesign::Scaled>()) {
-                // Diagonal method
-                // Multiply every element in the old transformations' slices with the corresponding
-                // element in the newTransformations. Example:
-                // a11 a12 a13 a14          b1    a11*b1 a12*b1 a13*b1 a14*b1
-                // a21 a22 a23 a24   diag   b2  = a21*b2 a22*b2 a23*b2 a24*b1
-                // a31 a23 a33 a34          b3    a31*b3 a23*b3 a33*b3 a34*b1
-                // In other words, the length of the result vector is equal to the length of the
-                // oldTransformations vector
-
-                if (newTransformations.empty()) {
-                    throw Base::ValueError(
-                        "Number of occurrences must be a divisor of previous "
-                        "number of occurrences"
+            int index = 0;
+            for (const auto& transform : transformations) {
+                const bool suppressed = transformed->isTransformationSuppressed(index++);
+                for (const auto& old : previous) {
+                    instances.push_back(
+                        {transform * old.transform,
+                         old.center.Transformed(transform),
+                         old.suppressed || suppressed}
                     );
                 }
-                if (oldTransformations.size() % newTransformations.size() != 0) {
-                    throw Base::ValueError(
-                        "Number of occurrences must be a divisor of previous "
-                        "number of occurrences"
-                    );
-                }
-
-                unsigned sliceLength = oldTransformations.size() / newTransformations.size();
-                auto ot = oldTransformations.begin();
-                auto oc = oldCogs.begin();
-
-                for (auto const& nt : newTransformations) {
-                    for (unsigned s = 0; s < sliceLength; s++) {
-                        gp_Trsf trans;
-                        double factor = nt.ScaleFactor();  // extract scale factor
-
-                        if (factor > Precision::Confusion()) {
-                            trans.SetScale(*oc, factor);  // recreate the scaled transformation to
-                                                          // use the correct COG
-                            trans = trans * (*ot);
-                            cogs.push_back(*oc);  // Scaling does not affect the COG
-                        }
-                        else {
-                            trans = nt * (*ot);
-                            cogs.push_back(oc->Transformed(nt));
-                        }
-                        result.push_back(trans);
-                        ++ot;
-                        ++oc;
-                    }
-                }
             }
-            else {
-                // Multiplication method: Combine the new transformations with the old ones.
-                // All old transformations are multiplied with all new ones, so that the length of
-                // the result vector is the length of the old and new transformations multiplied.
-                // a11 a12         b1    a11*b1 a12*b1 a11*b2 a12*b2 a11*b3 a12*b3
-                // a21 a22   mul   b2  = a21*b1 a22*b1 a21*b2 a22*b2 a21*b3 a22*b3
-                //                 b3
-                for (auto const& nt : newTransformations) {
-                    auto oc = oldCogs.begin();
-
-                    for (auto const& ot : oldTransformations) {
-                        result.push_back(nt * ot);
-                        cogs.push_back(oc->Transformed(nt));
-                        ++oc;
-                    }
-                }
-            }
-            // What about the Additive method: Take the last (set of) transformations and use them
-            // as "originals" for the next transformationFeature, so that something similar to a
-            // sweep for transformations could be put together?
         }
     }
 
+    if (instances.empty()) {
+        // Keep an explicitly suppressed identity so execute() removes the original
+        // material rather than treating an empty list as an unfinished feature.
+        generatedSuppression.push_back(true);
+        return {gp_Trsf()};
+    }
+    const auto& first = instances.front().transform;
+    for (int row = 1; row <= 3; ++row) {
+        for (int column = 1; column <= 4; ++column) {
+            if (std::abs(first.Value(row, column) - (row == column ? 1.0 : 0.0))
+                > Precision::Confusion()) {
+                originalTransformation = false;
+            }
+        }
+    }
+
+    std::list<gp_Trsf> result;
+    for (const auto& instance : instances) {
+        result.push_back(instance.transform);
+        generatedSuppression.push_back(instance.suppressed);
+    }
     return result;
 }
 

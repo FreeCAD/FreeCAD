@@ -87,6 +87,26 @@ class AssemblyTestBase(unittest.TestCase):
 
 
 class TestCore(AssemblyTestBase):
+    def test_component_count_for_link_array(self):
+        source = self.doc.addObject("Part::Box", "ArraySource")
+        array = self.assembly.newObject("App::Link", "Array")
+        array.LinkedObject = source
+        array.ElementCount = 3
+        array.ShowElement = False
+        self.doc.recompute()
+        self.assertEqual(len(array.ElementList), 0)
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
+        array.ShowElement = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+        array.ElementList[1].Suppressed = True
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 2)
+        array.ElementList[1].Suppressed = False
+        self.doc.recompute()
+        self.assertEqual(UtilsAssembly.number_of_components_in(self.assembly), 3)
+
     def test_create_assembly(self):
         """Create an assembly."""
         operation = "Create Assembly Object"

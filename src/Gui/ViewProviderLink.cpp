@@ -75,6 +75,7 @@
 #include "Selection.h"
 #include "SoFCUnifiedSelection.h"
 #include "TaskTransform.h"
+#include "Tree.h"
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
@@ -2995,9 +2996,20 @@ bool ViewProviderLink::linkEdit(const App::LinkBaseExtension* ext) const
 bool ViewProviderLink::doubleClicked()
 {
     if (linkEdit()) {
-        return linkView->getLinkedView()->doubleClicked();
+        auto* root = getObject();
+        std::string subname;
+        TreeWidget::checkTopParent(root, subname);
+        return linkView->getLinkedView()->doubleClickedObject(App::SubObjectT(root, subname.c_str()));
     }
     return getDocument()->setEdit(this, ViewProvider::Transform);
+}
+
+std::optional<bool> ViewProviderLink::doubleClickedOccurrence(const App::SubObjectT& reference)
+{
+    if (linkEdit()) {
+        return linkView->getLinkedView()->doubleClickedObject(reference);
+    }
+    return std::nullopt;
 }
 
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

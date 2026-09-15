@@ -74,8 +74,7 @@ void TaskPatternParameters::setupPatternParameterUI(
     QWidget* firstPlaceholder,
     QWidget* secondPlaceholder,
     Gui::View3DInventorViewer* viewer,
-    QObject* signalContext,
-    int updateViewTimeout
+    QObject* signalContext
 )
 {
     auto* pattern = getPatternObject();
@@ -146,19 +145,13 @@ void TaskPatternParameters::setupPatternParameterUI(
 
     bindPatternProperties();
 
-    updateViewTimer = new QTimer(signalContext);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(updateViewTimeout);
-    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
-        onUpdateViewTimer();
-    });
+    setupUpdateViewTimer(signalContext);
 }
 
 void TaskPatternParameters::setupCircularPatternParameterUI(
     QWidget* parent,
     QWidget* placeholder,
     QObject* signalContext,
-    int updateViewTimeout,
     App::PropertyLinkSub* axis,
     App::PropertyLength* radialDistance,
     App::PropertyLength* tangentialDistance,
@@ -191,19 +184,13 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
         [this]() { onPatternParametersChanged(); }
     );
 
-    updateViewTimer = new QTimer(signalContext);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(updateViewTimeout);
-    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
-        onUpdateViewTimer();
-    });
+    setupUpdateViewTimer(signalContext);
 }
 
 void TaskPatternParameters::setupPathPatternParameterUI(
     QWidget* parent,
     QWidget* placeholder,
     QObject* signalContext,
-    int updateViewTimeout,
     App::PropertyLinkSub* path,
     App::PropertyIntegerConstraint* count,
     App::PropertyEnumeration* spacingMode,
@@ -238,12 +225,7 @@ void TaskPatternParameters::setupPathPatternParameterUI(
         [this]() { onPatternParametersChanged(); }
     );
 
-    updateViewTimer = new QTimer(signalContext);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(updateViewTimeout);
-    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
-        onUpdateViewTimer();
-    });
+    setupUpdateViewTimer(signalContext);
 }
 
 void TaskPatternParameters::setupPointPatternParameterUI(
@@ -342,6 +324,17 @@ void TaskPatternParameters::updatePatternParameterUI()
     }
 }
 
+void TaskPatternParameters::setupUpdateViewTimer(QObject* signalContext)
+{
+    constexpr int previewDebounceIntervalMs = 500;
+    updateViewTimer = new QTimer(signalContext);
+    updateViewTimer->setSingleShot(true);
+    updateViewTimer->setInterval(previewDebounceIntervalMs);
+    QObject::connect(updateViewTimer, &QTimer::timeout, signalContext, [this]() {
+        onUpdateViewTimer();
+    });
+}
+
 void TaskPatternParameters::onUpdateViewTimer()
 {
     setupPatternTransaction();
@@ -354,6 +347,13 @@ void TaskPatternParameters::kickUpdateViewTimer() const
 {
     if (updateViewTimer) {
         updateViewTimer->start();
+    }
+}
+
+void TaskPatternParameters::cancelPendingUpdate()
+{
+    if (updateViewTimer) {
+        updateViewTimer->stop();
     }
 }
 
