@@ -140,7 +140,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     import ArchPrecast
     import draftguitools.gui_trackers as DraftTrackers
-    from draftguitools.gui_insertion_point import InsertionPointCycler, insertion_point_offset
+    from draftguitools.gui_insertion_point import (
+        InsertionPointCycler,
+        insertion_point_offset,
+        placement_hints,
+    )
     from draftutils.translate import translate
 else:
     # \cond
@@ -362,6 +366,7 @@ class _CommandStructure:
         )
         FreeCADGui.draftToolBar.continueCmd.show()
         self.cycler.install()
+        QtCore.QTimer.singleShot(0, self.update_hints)
 
     def _refresh_preview(self):
         """Called by the cycler whenever the insertion point index changes."""
@@ -370,20 +375,23 @@ class _CommandStructure:
 
     def get_hints(self):
         "returns status bar input hints for the current tool state"
-        from draftguitools import gui_tool_utils
-
-        if self.mode == StructureMode.BEAM and (self.bpoint is None):
+        no_anchor_yet = self.mode == StructureMode.BEAM and self.bpoint is None
+        if no_anchor_yet:
             label = translate("Arch", "%1 pick first point")
         elif self.mode == StructureMode.BEAM:
             label = translate("Arch", "%1 pick next point")
         else:
             label = translate("Arch", "%1 pick base point")
-        return (
-            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
-            + gui_tool_utils._get_hint_xyz_constrain()
-            + gui_tool_utils._get_hint_mod_constrain()
-            + gui_tool_utils._get_hint_mod_snap()
-        )
+        action_hint = FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)
+        return placement_hints(action_hint, cycler_active=not no_anchor_yet)
+
+    def update_hints(self):
+        "refreshes the status bar input hints for the current tool state"
+        FreeCADGui.HintManager.show(*self.get_hints())
+
+    def hide_hints(self):
+        "hides the status bar input hints, once the command is no longer active"
+        QtCore.QTimer.singleShot(0, FreeCADGui.HintManager.hide)
 
     def _resolve_placement(self, point, include_shape_origin):
         """Resolve the rotation and insertion point offset for the current
@@ -435,6 +443,7 @@ class _CommandStructure:
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
             self.cycler.remove()
+            self.hide_hints()
             return
         if self.mode == StructureMode.BEAM and (self.bpoint is None):
             self.bpoint = point
@@ -443,6 +452,7 @@ class _CommandStructure:
             self.precast = ArchPrecast._PrecastTaskPanel()
             self.dents = ArchPrecast._DentsTaskPanel()
             self.precast.Dents = self.dents
+            self.update_hints()
             FreeCADGui.Snapper.getPoint(
                 last=point,
                 callback=self.getPoint,
@@ -536,6 +546,7 @@ class _CommandStructure:
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         self.cycler.remove()
+        self.hide_hints()
         if FreeCADGui.draftToolBar.continueMode:
             self.Activated()
 
@@ -571,6 +582,8 @@ class _CommandStructure:
         grid.addWidget(labelmode, 0, 0, 1, 2)
         grid.addWidget(self.modeb, 1, 0, 1, 1)
         grid.addWidget(self.modec, 1, 1, 1, 1)
+        self.modeb.toggled.connect(lambda checked: self.update_hints())
+        self.modec.toggled.connect(lambda checked: self.update_hints())
 
         # categories box
         labelc = QtGui.QLabel(translate("Arch", "Category"))
