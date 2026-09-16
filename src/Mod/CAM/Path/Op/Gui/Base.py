@@ -312,8 +312,7 @@ class ViewProvider:
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
 
-        # Add "Set Workplane from Face" action
-        action = QtGui.QAction(translate("PathOp", "Set Workplane from Face"), menu)
+        action = QtGui.QAction(translate("PathOp", "Set Work Plane from Face"), menu)
         action.triggered.connect(self._setWorkplaneFromFaceTriggered)
         menu.addAction(action)
 
@@ -321,63 +320,55 @@ class ViewProvider:
         self.setEdit()
 
     def _setWorkplaneFromFaceTriggered(self, checked):
-        """Activate face selection mode to set workplane."""
-        # Store reference to the operation
-        self._workplaneOperation = self.Object
+        """Pick a planar face; create a shared work plane from it and link the
+        operation to it. The same result as the CAM_Workplane command followed
+        by choosing the plane on the Heights page."""
+        operation = self.Object
 
-        # Create selection observer
         class FaceSelectionObserver:
-            def __init__(self, operation, viewprovider):
+            def __init__(self, operation):
                 self.operation = operation
-                self.viewprovider = viewprovider
                 self.active = True
 
-            def addSelection(self, doc, obj, sub, pnt):
-                """Called when user selects something."""
-                if not self.active:
+            def addSelection(self, doc, objName, sub, pnt):
+                if not self.active or not sub or not sub.startswith("Face"):
                     return
+                try:
+                    picked = FreeCAD.getDocument(doc).getObject(objName)
+                    face = picked.Shape.getElement(sub)
+                    if not PathUtil.isPlanarFace(face):
+                        FreeCAD.Console.PrintWarning(
+                            translate("PathOp", "Select a planar face to set a work plane from.")
+                            + "\n"
+                        )
+                        return
 
-                # Check if it's a face
-                if sub and sub.startswith("Face"):
-                    try:
-                        # Get the face object
-                        selected_obj = FreeCAD.ActiveDocument.getObject(obj)
-                        if selected_obj and hasattr(selected_obj, "Shape"):
-                            # Get the face
-                            face = selected_obj.Shape.getElement(sub)
+                    import Path.Main.Workplane as PathWorkplane
 
-                            # Extract the normal vector at the center of the face
-                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                            normal = face.normalAt(u_mid, v_mid)
+                    job = PathUtils.findParentJob(self.operation)
+                    workplane = PathWorkplane.createWorkplane(
+                        job, picked, sub, label="%s.%s" % (picked.Label, sub)
+                    )
+                    self.operation.Workplane = workplane
+                    FreeCAD.ActiveDocument.recompute()
+                    FreeCAD.Console.PrintMessage(
+                        translate("PathOp", "Set %s to work plane %s")
+                        % (self.operation.Label, workplane.Label)
+                        + "\n"
+                    )
+                except Exception as e:
+                    FreeCAD.Console.PrintError("Error setting work plane: %s\n" % e)
+                finally:
+                    self.active = False
+                    FreeCADGui.Selection.removeObserver(self)
 
-                            # Normalize the vector
-                            normal.normalize()
-
-                            # Store the face normal as the workplane orientation
-                            self.operation.Workplane = normal
-                            FreeCAD.ActiveDocument.recompute()
-
-                            FreeCAD.Console.PrintMessage(
-                                f"Set {self.operation.Label} workplane to {normal} from {selected_obj.Label}.{sub}\n"
-                            )
-
-                            # Deactivate and remove observer
-                            self.active = False
-                            FreeCADGui.Selection.removeObserver(self)
-
-                    except Exception as e:
-                        FreeCAD.Console.PrintError(f"Error setting workplane: {e}\n")
-                        self.active = False
-                        FreeCADGui.Selection.removeObserver(self)
-
-        # Create and add the observer
-        observer = FaceSelectionObserver(self._workplaneOperation, self)
-        FreeCADGui.Selection.addObserver(observer)
-
-        # Clear current selection and provide user feedback
+        FreeCADGui.Selection.addObserver(FaceSelectionObserver(operation))
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.Console.PrintMessage(f"Click on a face to set workplane for {self.Object.Label}\n")
+        FreeCAD.Console.PrintMessage(
+            translate("PathOp", "Click on a planar face to set the work plane for %s")
+            % operation.Label
+            + "\n"
+        )
 
 
 class TaskPanelPage:
@@ -1196,7 +1187,32 @@ class TaskPanelHeightsPage(TaskPanelPage):
         else:
             self.form.groupBoxLinking.hide()
 
+        # Whether this page offers the work plane selector. An explicit flag,
+        # not a question to Qt about the widget being visible: isVisible() is
+        # false whenever any ancestor is not shown, which a task panel page
+        # can be at the moment a signal fires, and a guard on it silently
+        # drops the write. Every Job offers the selector; what a plane may be
+        # on a machine without rotary axes is decided where it is created.
+        self.hasWorkplaneSelector = True
+        self.populateWorkplanes(obj)
         self.updateHeightsDiagram()
+
+    def populateWorkplanes(self, obj):
+        """Fill the work plane selector with the Job's named work planes.
+
+        The data carried by each entry is the object Name, not the Label, so a
+        rename does not break the association."""
+        combo = self.form.workplane
+        combo.blockSignals(True)
+        try:
+            combo.clear()
+            combo.addItem(translate("CAM_Operation", "None (Job XY)"), "")
+            job = PathUtils.findParentJob(obj)
+            group = getattr(job, "Workplanes", None) if job else None
+            for workplane in getattr(group, "Group", []) or []:
+                combo.addItem(workplane.Label, workplane.Name)
+        finally:
+            combo.blockSignals(False)
 
     def updateHeightsDiagram(self):
         """Render the Clearance/Retract/Start/StepDown/FinishStepDown/Final callout graphic as
@@ -1220,6 +1236,19 @@ class TaskPanelHeightsPage(TaskPanelPage):
         return translate("PathOp", "Heights")
 
     def getFields(self, obj):
+        # The work plane first. Every property assignment below fires
+        # updateData() synchronously, and pageUpdateData() answers it with
+        # setFields(), which repopulates the selector from the model. Read
+        # and write the selection before anything can reset it.
+        if hasattr(obj, "Workplane") and getattr(self, "hasWorkplaneSelector", False):
+            name = self.form.workplane.currentData()
+            selected = obj.Document.getObject(name) if name else None
+            current = obj.Workplane
+            if (selected is None) != (current is None) or (
+                selected is not None and current is not None and selected.Name != current.Name
+            ):
+                obj.Workplane = selected
+
         self.safeHeight.updateProperty()
         self.clearanceHeight.updateProperty()
         if self.haveStartDepth():
@@ -1254,6 +1283,15 @@ class TaskPanelHeightsPage(TaskPanelPage):
                 self.form.CollisionAvoidanceStrategy.blockSignals(True)
                 self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
                 self.form.CollisionAvoidanceStrategy.blockSignals(False)
+        if hasattr(obj, "Workplane") and getattr(self, "hasWorkplaneSelector", False):
+            self.populateWorkplanes(obj)
+            linked = obj.Workplane
+            index = self.form.workplane.findData(linked.Name if linked else "")
+            if index >= 0:
+                self.form.workplane.blockSignals(True)
+                self.form.workplane.setCurrentIndex(index)
+                self.form.workplane.blockSignals(False)
+
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
@@ -1271,6 +1309,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
         if PathOp.FeatureLinking & self.features:
             signals.append(self.form.CollisionClearance.editingFinished)
             signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
+        signals.append(self.form.workplane.currentIndexChanged)
         return signals
 
     def pageUpdateData(self, obj, prop):
@@ -1283,6 +1322,7 @@ class TaskPanelHeightsPage(TaskPanelPage):
             "FinishDepth",
             "CollisionAvoidanceStrategy",
             "CollisionClearance",
+            "Workplane",
         ]:
             self.setFields(obj)
 
@@ -1295,9 +1335,18 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.form.finalDepthSet.clicked.connect(
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
+        self.form.resetDefaults.clicked.connect(lambda: self.resetDefaults(obj))
+
+    def resetDefaults(self, obj):
+        """Re-derive every height and depth for the operation's current work
+        plane, stock and model, restoring the SetupSheet expressions so the
+        fields track later changes as well."""
+        if obj.Proxy.resetDepthDefaults(obj):
+            self.setFields(obj)
+            self.setDirty()
 
     def depthSet(self, obj, spinbox, prop):
-        z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
+        z = self.selectionZLevel(obj, FreeCADGui.Selection.getSelectionEx())
         if z is not None:
             Path.Log.debug(f"depthSet({obj.Label}, {prop}, {z:.2f})")
             if spinbox.expression():
@@ -1309,25 +1358,17 @@ class TaskPanelHeightsPage(TaskPanelPage):
         else:
             Path.Log.info("depthSet(-)")
 
-    def selectionZLevel(self, sel):
-        if len(sel) == 1 and len(sel[0].SubObjects) == 1:
-            sub = sel[0].SubObjects[0]
-            if "Vertex" == sub.ShapeType:
-                return sub.Z
-            if Path.Geom.isHorizontal(sub):
-                if "Edge" == sub.ShapeType:
-                    return sub.Vertexes[0].Z
-                if "Face" == sub.ShapeType:
-                    return sub.BoundBox.ZMax
-        return None
+    def selectionZLevel(self, obj, sel):
+        """Depth named by the current selection, measured along this
+        operation's tool axis. See PathUtil.depthOfFeature()."""
+        if len(sel) != 1 or len(sel[0].SubObjects) != 1:
+            return None
+        return PathUtil.depthOfFeature(sel[0].SubObjects[0], PathUtil.toolAxisForOp(obj))
 
     def updateSelection(self, obj, sel):
-        if self.selectionZLevel(sel) is not None:
-            self.form.startDepthSet.setEnabled(True)
-            self.form.finalDepthSet.setEnabled(True)
-        else:
-            self.form.startDepthSet.setEnabled(False)
-            self.form.finalDepthSet.setEnabled(False)
+        enabled = self.selectionZLevel(obj, sel) is not None
+        self.form.startDepthSet.setEnabled(enabled)
+        self.form.finalDepthSet.setEnabled(enabled)
 
 
 class TaskPanelToolControllerPage(TaskPanelPage):
