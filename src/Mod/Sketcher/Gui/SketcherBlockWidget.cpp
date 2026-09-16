@@ -101,7 +101,7 @@ SketcherBlockWidget::SketcherBlockWidget(QWidget* parent)
     layout->addLayout(form);
     auto emitPlacement = [this]() {
         Q_EMIT placementChanged(
-            method->currentIndex(),
+            method->isEnabled() ? method->currentIndex() : 0,
             fixedSize->isChecked(),
             fixedOrientation->isChecked()
         );
@@ -139,10 +139,17 @@ QString SketcherBlockWidget::selectedFile() const
 {
     return filename;
 }
-void SketcherBlockWidget::setPlacementOptions(int mode, bool size, bool orientation)
+void SketcherBlockWidget::setPlacementOptions(int mode, bool size, bool orientation, bool customHandle)
 {
     const QSignalBlocker modeBlock(method), sizeBlock(fixedSize), orientationBlock(fixedOrientation);
-    method->setCurrentIndex(mode);
+    if (customHandle && method->count() == 2) {
+        method->addItem(tr("Handle Length"));
+    }
+    else if (!customHandle && method->count() > 2) {
+        method->removeItem(2);
+    }
+    method->setCurrentIndex(customHandle ? 2 : mode);
+    method->setEnabled(!customHandle);
     fixedSize->setChecked(size);
     fixedOrientation->setChecked(orientation);
 }

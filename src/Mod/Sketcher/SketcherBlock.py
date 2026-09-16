@@ -36,6 +36,7 @@ _GEOMETRY_TYPES = tuple(value for name, value in _CONSTRUCTORS.items() if name.s
 
 
 _METADATA_PREFIX = "# Sketcher block fixed size: "
+_HANDLE_PREFIX = "# Sketcher block handle: "
 
 
 def _fixed_size(text):
@@ -48,9 +49,32 @@ def _fixed_size(text):
     return False
 
 
+def _handle(text):
+    for line in text.splitlines():
+        if line.startswith(_HANDLE_PREFIX):
+            values = tuple(float(value) for value in line[len(_HANDLE_PREFIX) :].split())
+            if (
+                len(values) != 2
+                or not all(math.isfinite(value) for value in values)
+                or math.hypot(*values) < 1e-7
+            ):
+                raise ValueError("Invalid block line handle")
+            return values
+    return (0.0, 0.0)
+
+
+def _handle_comment(handle):
+    return (
+        _HANDLE_PREFIX + " ".join(format(value, ".17g") for value in handle) + "\n"
+        if any(handle)
+        else ""
+    )
+
+
 def metadata(filename):
-    """Read per-block insertion defaults; legacy and stock blocks are scalable."""
-    return {"fixed_size": _fixed_size(Path(filename).read_text(encoding="utf-8-sig"))}
+    """Read insertion defaults and the handle endpoint relative to the source origin."""
+    text = Path(filename).read_text(encoding="utf-8-sig")
+    return {"fixed_size": _fixed_size(text), "handle": _handle(text)}
 
 
 def read(filename, with_constraints=False):
@@ -159,7 +183,10 @@ def insert_geometry(sketch, geometry, filename, fixed_size=False, origin=None, a
     bounds = Part.makeCompound([geo.toShape() for geo in geometry]).BoundBox
     height = bounds.XLength < 1e-7
     size = bounds.YLength if height else bounds.XLength
-    if not math.isfinite(size) or size < 1e-7:
+    source_handle = (
+        metadata(filename)["handle"] if Path(filename).suffix.lower() == ".txt" else (0.0, 0.0)
+    )
+    if not any(source_handle) and (not math.isfinite(size) or size < 1e-7):
         raise ValueError("The group width or height must be greater than zero")
     if abs(bounds.ZMin) > 1e-7 or abs(bounds.ZMax) > 1e-7:
         raise ValueError("Group geometry must lie in the sketch XY plane")
@@ -168,7 +195,11 @@ def insert_geometry(sketch, geometry, filename, fixed_size=False, origin=None, a
         if Path(filename).suffix.lower() == ".txt"
         else App.Vector(bounds.XMin, bounds.YMin, 0)
     )
-    end = start + (App.Vector(0, size, 0) if height else App.Vector(size, 0, 0))
+    if any(source_handle):
+        height = False
+        end = start + App.Vector(*source_handle, 0)
+    else:
+        end = start + (App.Vector(0, size, 0) if height else App.Vector(size, 0, 0))
     elements = []
     for geo in geometry:
         index = sketch.addGeometry(geo, Sketcher.GeometryFacade(geo).Construction)
@@ -186,7 +217,9 @@ def reload(sketch, constraint_index):
     group = sketch.Constraints[constraint_index]
     if group.Type != "Group" or not group.File:
         raise ValueError("The selected group has no source file")
-    return sketch.replaceGroupGeometry(constraint_index, read(group.File))
+    return sketch.replaceGroupGeometry(
+        constraint_index, read(group.File), App.Vector(*metadata(group.File)["handle"], 0)
+    )
 
 
 # Keep observers alive until their edit documents have been closed.
@@ -234,6 +267,7 @@ class _BlockEditor:
         self.original_sketch = original.Name
         self.original_bytes = Path(filename).read_bytes()
         self.fixed_size = _fixed_size(self.original_bytes.decode("utf-8-sig"))
+        self.source_handle = _handle(self.original_bytes.decode("utf-8-sig"))
         self.error = None
         self.closing = False
         geometry, constraints = read(filename, with_constraints=True)
@@ -294,6 +328,7 @@ class _BlockEditor:
                 + _METADATA_PREFIX
                 + ("true" if self.fixed_size else "false")
                 + "\n"
+                + _handle_comment(self.source_handle)
                 + "\n".join(
                     line.replace("ActiveSketch", "objectStr")
                     for line in commands
@@ -336,7 +371,9 @@ class _BlockEditor:
                             and group.File
                             and _file_key(group.File) == _file_key(self.filename)
                         ):
-                            index = sketch.replaceGroupGeometry(index, geometry)
+                            index = sketch.replaceGroupGeometry(
+                                index, geometry, App.Vector(*self.source_handle, 0)
+                            )
                         index -= 1
                     if sketch.solve() != 0:
                         raise ValueError("A block instance could not be updated: " + sketch.Label)

@@ -21,6 +21,7 @@ SketcherExport std::vector<std::unique_ptr<Part::Geometry>> transformGroupGeomet
     const Base::Vector3d& start,
     const Base::Vector3d& end,
     bool height,
-    bool useOrigin = false
+    bool useOrigin = false,
+    const Base::Vector3d& sourceHandle = Base::Vector3d()
 );
 }  // namespace Sketcher

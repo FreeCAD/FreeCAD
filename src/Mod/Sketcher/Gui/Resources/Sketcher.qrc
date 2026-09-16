@@ -193,6 +193,9 @@
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateBlock.svg</file>
+        <file>icons/geometry/Sketcher_EditBlock.svg</file>
+        <file>icons/geometry/Sketcher_ReloadBlock.svg</file>
         <file>icons/geometry/Sketcher_InsertBlock.svg</file>
         <file>icons/geometry/Sketcher_InsertBlock_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
