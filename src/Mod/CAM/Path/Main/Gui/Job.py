@@ -298,6 +298,8 @@ class ViewProvider:
             children.append(self.obj.SetupSheet)
         if hasattr(self.obj, "Tools"):
             children.append(self.obj.Tools)
+        if getattr(self.obj, "Workplanes", None):
+            children.append(self.obj.Workplanes)
         return children
 
     def onDelete(self, vobj, arg2=None):
