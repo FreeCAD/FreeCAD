@@ -65,6 +65,7 @@
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "EditModeConstraintCoinManager.h"
@@ -111,8 +112,12 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
         SbBool* sws = editModeScenegraphNodes.constrGroup->enable.startEditing();
 
         for (size_t i = 0; i < constrlist.size(); i++) {
+            const auto* constraint = constrlist[i];
+            const bool nestedGroup = (constraint->Type == Group || constraint->Type == Text)
+                && viewProvider.getSketchObject()->isInGroup(constraint->getGeoId(0), false);
             sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace)
-                && constrlist[i]->isVisible;  // XOR of constraint mode and VP mode
+                && constrlist[i]->isVisible
+                && !nestedGroup;
         }
 
 
@@ -769,23 +774,21 @@ Restart:
                     }
 
                     Bnd_Box totalBBox;
-                    int elementIndex = 0;
-                    while (Constr->hasElement(elementIndex)) {
-                        auto element = Constr->getElement(elementIndex);
-                        if (element.GeoId < -extGeoCount || element.GeoId >= intGeoCount) {
-                            elementIndex++;
+                    const int handle = Constr->getGeoId(0);
+                    auto members = viewProvider.getSketchObject()->getGroupGeometries(handle);
+                    members.insert(handle);
+                    for (int geoId : members) {
+                        if (geoId < -extGeoCount || geoId >= intGeoCount) {
                             continue;
                         }
-                        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(element.GeoId);
+                        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(geoId);
                         if (!geo) {
-                            elementIndex++;
                             continue;
                         }
                         TopoDS_Shape shape = geo->toShape();
                         if (!shape.IsNull()) {
                             BRepBndLib::Add(shape, totalBBox, false);
                         }
-                        elementIndex++;
                     }
 
                     if (!totalBBox.HasFinitePart() || totalBBox.IsVoid()) {
