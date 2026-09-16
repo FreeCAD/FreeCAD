@@ -81,11 +81,7 @@ private:
 
     void executeCommands() override
     {
-        saveBlock(
-            Base::Vector3d(origin.x, origin.y, 0),
-            Base::Vector3d(endpoint.x, endpoint.y, 0),
-            fixedSizeBox()->isChecked()
-        );
+        saveBlock(toVector3d(origin), toVector3d(endpoint), fixedSizeBox()->isChecked());
     }
 
     std::list<Gui::InputHint> getToolHints() const override

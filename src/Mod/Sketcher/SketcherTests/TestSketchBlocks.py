@@ -283,3 +283,13 @@ class TestSketchBlocks(unittest.TestCase):
             ).Length,
             1e-6,
         )
+
+    def testFixedBlockRejectsNonPlanarReload(self):
+        index = SketcherBlock.insert_geometry(
+            self.sketch, SketcherBlock.read(self.file), self.file, fixed_size=True
+        )
+        before = self.snapshot()
+        invalid = [Part.Circle(App.Vector(0, 0, 4), App.Vector(0, 0, 1), 2)]
+        with self.assertRaises(ValueError):
+            self.sketch.replaceGroupGeometry(index, invalid)
+        self.assertEqual(self.snapshot(), before)

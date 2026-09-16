@@ -41,6 +41,7 @@ private:
     bool selectFile(const QString& path);
     bool selectFirstFile(QTreeWidgetItem* item);
     void setFile(const QString& path);
+    void updateFileButton(bool picked);
     QString selectedDirectory() const;
     void saveFolders();
     void chooseFolder();
