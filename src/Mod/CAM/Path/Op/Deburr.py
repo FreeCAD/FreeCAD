@@ -1,40 +1,36 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2020-2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020-2021 Schildkroet                                   *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
+import Part
 import Path
+from Path.Base.Drillable import isDrillableFace
 import Path.Op.Base as PathOp
 import Path.Op.EngraveBase as PathEngraveBase
 import Path.Op.Util as PathOpUtil
+from PathScripts import PathUtils
 import math
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "CAM Deburr Operation"
 __author__ = "sliptonic (Brad Collette), Schildkroet"
@@ -49,58 +45,6 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
-
-
-def toolDepthAndOffset(width, extraDepth, tool, printInfo):
-    """toolDepthAndOffset(width, extraDepth, tool) ... return tuple for given\n
-    parameters."""
-
-    if not hasattr(tool, "Diameter"):
-        raise ValueError("Deburr requires tool with diameter\n")
-
-    suppressInfo = False
-    if hasattr(tool, "CuttingEdgeAngle"):
-        angle = float(tool.CuttingEdgeAngle)
-        if Path.Geom.isRoughly(angle, 180) or Path.Geom.isRoughly(angle, 0):
-            angle = 180
-            toolOffset = float(tool.Diameter) / 2
-        else:
-            if hasattr(tool, "TipDiameter"):
-                toolOffset = float(tool.TipDiameter) / 2
-            elif hasattr(tool, "FlatRadius"):
-                toolOffset = float(tool.FlatRadius)
-            else:
-                toolOffset = 0.0
-                if printInfo and not suppressInfo:
-                    FreeCAD.Console.PrintMessage(
-                        translate(
-                            "PathDeburr",
-                            "The selected tool has no FlatRadius and no TipDiameter property. Assuming {}\n".format(
-                                "Endmill" if angle == 180 else "V-Bit"
-                            ),
-                        )
-                    )
-                suppressInfo = True
-    else:
-        angle = 180
-        toolOffset = float(tool.Diameter) / 2
-        if printInfo:
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "PathDeburr",
-                    "The selected tool has no CuttingEdgeAngle property. Assuming Endmill\n",
-                )
-            )
-        suppressInfo = True
-
-    tan = math.tan(math.radians(angle / 2))
-
-    toolDepth = 0 if Path.Geom.isRoughly(tan, 0) else width / tan
-    depth = toolDepth + extraDepth
-    extraOffset = -width if angle == 180 else (extraDepth * tan)
-    offset = toolOffset + extraOffset
-
-    return (depth, offset, extraOffset, suppressInfo)
 
 
 class ObjectDeburr(PathEngraveBase.ObjectOp):
@@ -119,52 +63,134 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         )
 
     def initOperation(self, obj):
+        """initOperation(obj) ... Initialize the operation by
+        managing property creation and property editor status."""
         Path.Log.track(obj.Label)
-        obj.addProperty(
-            "App::PropertyDistance",
-            "Width",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "The desired width of the chamfer"),
-        )
-        obj.addProperty(
-            "App::PropertyDistance",
-            "ExtraDepth",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "The additional depth of the toolpath"),
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Join",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "How to join chamfer segments"),
-        )
-        # obj.Join = ["Round", "Miter"]
-        obj.setEditorMode("Join", 2)  # hide for now
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Direction",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
-        )
-        # obj.Direction = ["CW", "CCW"]
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Side",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Side of base object"),
-        )
-        obj.Side = ["Outside", "Inside"]
-        obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
-        obj.addProperty(
-            "App::PropertyInteger",
-            "EntryPoint",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "The segment where the toolpath starts"),
-        )
+        self.propertiesReady = False
+        self.initOpProperties(obj)  # Initialize operation-specific properties
 
-        ENUMS = self.propertyEnumerations()
-        for n in ENUMS:
-            setattr(obj, n[0], n[1])
+    def initOpProperties(self, obj, warn=False):
+        """initOpProperties(obj) ... create operation specific properties"""
+        Path.Log.track()
+        self.addNewProps = []
+
+        for prtyp, nm, grp, tt in self.opPropertyDefinitions():
+            if not hasattr(obj, nm):
+                obj.addProperty(prtyp, nm, grp, tt)
+                self.addNewProps.append(nm)
+
+        # Set enumeration lists for enumeration properties
+        if len(self.addNewProps) > 0:
+            ENUMS = self.propertyEnumerations()
+            for n in ENUMS:
+                if n[0] in self.addNewProps:
+                    setattr(obj, n[0], n[1])
+            if warn:
+                newPropMsg = translate("CAM_Deburr", "New property added to")
+                newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
+                newPropMsg += translate("CAM_Deburr", "Check default value(s).")
+                FreeCAD.Console.PrintWarning(newPropMsg + "\n")
+
+        self.propertiesReady = True
+
+    def opPropertyDefinitions(self):
+        """opPropertyDefinitions(obj) ... Store operation specific properties"""
+        return [
+            (
+                "App::PropertyDistance",
+                "Width",
+                "Deburr",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "V-Bit:"
+                    "\n  Control desired width of the chamfer"
+                    "\n\nOther tools:"
+                    "\n  Control horizontal offset"
+                    "\n\nBall End, Bull Nose and Radius mill:"
+                    "\n  Zero values of Width and ExtraDepth provides touching the shape"
+                    "\n\nSet zero for horizontal face, which already have a chamfer",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "ExtraDepth",
+                "Deburr",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "V-Bit:"
+                    "\n  Control additional depth with ensuring the desired width"
+                    "\n\nOther tools:"
+                    "\n  Control vertical offset"
+                    "\n\nBall End, Bull Nose and Radius mill:"
+                    "\n  Zero values of Width and ExtraDepth provides touching the shape",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "Direction",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of toolpath"),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "Side",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "Side of base object"),
+            ),
+            (
+                "App::PropertyIntegerConstraint",
+                "EntryPoint",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "The segment where the toolpath starts"),
+            ),
+            (
+                "App::PropertyBool",
+                "ProcessCircles",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "Process round holes of horizontal faces"),
+            ),
+            (
+                "App::PropertyBool",
+                "ProcessHoles",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "Process holes of horizontal faces"),
+            ),
+            (
+                "App::PropertyBool",
+                "ProcessPerimeter",
+                "Deburr",
+                QT_TRANSLATE_NOOP("App::Property", "Process the outline of horizontal faces"),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the wires\n"
+                    "\nManual - Using order from selection without sorting"
+                    "\nAutomatic - Sorting wires by the nearest neighbour method, further improved with 2-opt",
+                ),
+            ),
+            (
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The start point for sorting"),
+            ),
+            (
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The end point for sorting"),
+            ),
+            (
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Use end point for sorting"),
+            ),
+        ]
 
     @classmethod
     def propertyEnumerations(self, dataType="data"):
@@ -180,19 +206,23 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "Direction": [
-                (translate("Path", "CW"), "CW"),
-                (translate("Path", "CCW"), "CCW"),
+                (translate("CAM_Deburr", "CW"), "CW"),
+                (translate("CAM_Deburr", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
-            "Join": [
-                (translate("PathDeburr", "Round"), "Round"),
-                (translate("PathDeburr", "Miter"), "Miter"),
+            "Side": [
+                (translate("CAM_Deburr", "Outside"), "Outside"),
+                (translate("CAM_Deburr", "Inside"), "Inside"),
             ],  # this is the direction that the profile runs
+            "SortingMode": [
+                (translate("CAM_Deburr", "Automatic"), "Automatic"),
+                (translate("CAM_Deburr", "Manual"), "Manual"),
+            ],  # sorting wires
         }
 
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -204,8 +234,53 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
         return data
 
+    def opPropertyDefaults(self, obj, job):
+        """opPropertyDefaults(obj, job) ... returns a dictionary of default values
+        for the operation's properties."""
+        defaults = {
+            "EntryPoint": (0, 0, 999999, 1),
+            "ExtraDepth": 1.0,
+            "Direction": "CW",
+            "ProcessPerimeter": True,
+            "SortingMode": "Automatic",
+            "StepDown": 0.0,
+            "Side": "Outside",
+            "Width": 1.0,
+        }
+
+        return defaults
+
+    def opApplyPropertyDefaults(self, obj, job, propList):
+        # Set standard property defaults
+        PROP_DFLTS = self.opPropertyDefaults(obj, job)
+        for name in PROP_DFLTS:
+            if name in propList:
+                obj.clearExpression(name)
+                val = PROP_DFLTS[name]
+                setattr(obj, name, val)
+
+    def opSetDefaultValues(self, obj, job):
+        if self.addNewProps and self.addNewProps.__len__() > 0:
+            self.opApplyPropertyDefaults(obj, job, self.addNewProps)
+
+    def setOpEditorProperties(self, obj):
+        SortingMode = 0 if obj.SortingMode == "Automatic" else 2
+        obj.setEditorMode("StartPoint", SortingMode)
+        obj.setEditorMode("EndPoint", SortingMode)
+        obj.setEditorMode("UseEndPoint", SortingMode)
+
     def opOnDocumentRestored(self, obj):
-        obj.setEditorMode("Join", 2)  # hide for now
+        self.propertiesReady = False
+        self.initOpProperties(obj, warn=True)
+        self.opSetDefaultValues(obj, PathUtils.findParentJob(obj))
+        self.setOpEditorProperties(obj)
+
+    def opOnChanged(self, obj, prop):
+        """opOnChanged(obj, prop) ... Called when a property changes"""
+        if hasattr(self, "propertiesReady") and self.propertiesReady:
+            self.setOpEditorProperties(obj)
+
+        super().opOnChanged(obj, prop)
 
     def opExecute(self, obj):
         Path.Log.track(obj.Label)
@@ -213,267 +288,192 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if not obj.Base:
             return
 
-        if not hasattr(self, "printInfo"):
-            self.printInfo = True
-        try:
-            depth, offset, extraOffset, suppressInfo = toolDepthAndOffset(
-                obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo
-            )
-            self.printInfo = not suppressInfo
-        except ValueError as e:
-            msg = "{} \n No path will be generated".format(e)
-            raise ValueError(msg)
-            # QtGui.QMessageBox.information(None, "Tool Error", msg)
-            # return
+        tol = self.job.GeometryTolerance.Value or 0.01
+        solids = [base.Shape for base in self.model if base.Shape.Faces]
+        depth, offset = self.toolDepthAndOffset(obj.Width.Value, obj.ExtraDepth.Value, self.tool)
 
         Path.Log.track(obj.Label, depth, offset)
 
-        self.basewires = []
-        self.adjusted_basewires = []
+        edges = []
         wires = []
-
-        for base, subs in self.baseShapes(obj):
-            Path.Log.debug(f"Processing base {base.Label} with {len(subs)} subs")
-            # Debug: check if this is a proxy and what the shape looks like
-            if hasattr(base, "_real_obj"):
-                Path.Log.debug(f"  Using proxy wrapper for {base._real_obj.Label}")
-            if hasattr(base, "Shape") and base.Shape:
-                Path.Log.debug(
-                    f"  Base shape has {len(base.Shape.Edges)} edges, {len(base.Shape.Faces)} faces"
-                )
-                # Check shape orientation
-                if hasattr(base.Shape, "BoundBox"):
-                    bbox = base.Shape.BoundBox
-                    Path.Log.debug(
-                        f"  Shape bbox: ({bbox.XMin:.3f},{bbox.YMin:.3f},{bbox.ZMin:.3f}) to ({bbox.XMax:.3f},{bbox.YMax:.3f},{bbox.ZMax:.3f})"
-                    )
-            edges = []
-            basewires = []
-            max_h = -99999
-            radius_top = 0
-            radius_bottom = 0
-
-            for f in subs:
-                Path.Log.debug(f"  Sub: {f}")
-                sub = base.Shape.getElement(f)
-
-                if type(sub) == Part.Edge:  # Edge
-                    # Debug: examine the edge geometry
-                    if hasattr(sub, "Curve") and sub.Curve:
-                        Path.Log.debug(f"    Edge type: {type(sub.Curve).__name__}")
-                        if hasattr(sub.Curve, "Center"):
-                            Path.Log.debug(f"    Edge center: {sub.Curve.Center}")
-                        if hasattr(sub.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge radius: {sub.Curve.Radius}")
-                        # Check if BSpline came from a circle
-                        if type(sub.Curve).__name__ == "BSplineCurve":
-                            try:
-                                arcs = sub.Curve.toBiArcs(0.001)
-                                if (
-                                    arcs
-                                    and len(arcs) == 1
-                                    and hasattr(arcs[0], "Center")
-                                    and hasattr(arcs[0], "Radius")
-                                ):
-                                    Path.Log.debug(
-                                        f"    BSpline approximates circle with center {arcs[0].Center} and radius {arcs[0].Radius}"
-                                    )
-                                else:
-                                    Path.Log.debug(
-                                        f"    BSpline toBiArcs returned {len(arcs) if arcs else 0} segment(s)"
-                                    )
-                            except Exception:
-                                Path.Log.debug(f"    BSpline cannot be converted to arc/circle")
-                    # Check edge vertices
-                    for i, v in enumerate(sub.Vertexes):
-                        Path.Log.debug(f"    Vertex {i}: {v.Point}")
+        faces = []
+        for base, subsList in self.baseShapes(obj):
+            for subName in subsList:
+                sub = getattr(base.Shape, subName)
+                if isinstance(sub, Part.Edge):
                     edges.append(sub)
+                elif isinstance(sub, Part.Face):
+                    faces.append(sub)
 
-                elif type(sub) == Part.Face and sub.normalAt(0, 0) != FreeCAD.Vector(
-                    0, 0, 1
-                ):  # Angled face
-                    # If an angled face is selected, the lower edge is projected to the height of the upper edge,
-                    # to simulate an edge
+        holes = []  # inner wires of horizontal faces
+        for face in faces:
+            if Path.Geom.isHorizontal(face):
+                outerWire, innerHoles, innerCircles = self.separateFaceWires(face, offset)
+                if obj.ProcessPerimeter:
+                    wires.append(outerWire)
+                if obj.ProcessHoles:
+                    holes.extend(innerHoles)
+                if obj.ProcessCircles:
+                    holes.extend(innerCircles)
+            else:  # angled face
+                fbb = face.BoundBox
+                bottom_edges = [
+                    e
+                    for e in face.Edges
+                    if Path.Geom.isHorizontal(e) and Path.Geom.isRoughly(e.BoundBox.ZMax, fbb.ZMin)
+                ]
+                for edge in bottom_edges:
+                    edge.translate(FreeCAD.Vector(0, 0, fbb.ZMax - bottom_edges[0].BoundBox.ZMax))
+                edges.extend(bottom_edges)
 
-                    # Find z value of upper edge
-                    for edge in sub.Edges:
-                        for p0 in edge.Vertexes:
-                            if p0.Point.z > max_h:
-                                max_h = p0.Point.z
+        wires3d = []
+        for se in Part.sortEdges(edges):
+            wire = Part.Wire(se)
+            if all(Path.Geom.isHorizontal(e) for e in wire.Edges):
+                wires.append(wire)
+            else:
+                wires3d.append(wire)
 
-                    # Find biggest radius for top/bottom
-                    for edge in sub.Edges:
-                        if Part.Circle == type(edge.Curve):
-                            if edge.Vertexes[0].Point.z == max_h:
-                                if edge.Curve.Radius > radius_top:
-                                    radius_top = edge.Curve.Radius
-                            else:
-                                if edge.Curve.Radius > radius_bottom:
-                                    radius_bottom = edge.Curve.Radius
+        if not wires and not holes and not wires3d:
+            return
 
-                    # Search for lower edge and raise it to height of upper edge
-                    for edge in sub.Edges:
-                        if Part.Circle == type(edge.Curve):  # Edge is a circle
-                            if edge.Vertexes[0].Point.z < max_h:
+        index = obj.Side == "Inside"
+        owires = []
+        for wire in wires:
+            owires.extend(PathOpUtil.offsetWire(wire, solids, offset, tol)[index])
 
-                                if edge.Closed:  # Circle
-                                    # New center
-                                    center = FreeCAD.Vector(
-                                        edge.Curve.Center.x, edge.Curve.Center.y, max_h
-                                    )
-                                    new_edge = Part.makeCircle(
-                                        edge.Curve.Radius,
-                                        center,
-                                        FreeCAD.Vector(0, 0, 1),
-                                    )
-                                    edges.append(new_edge)
-
-                                    # Modify offset for inner angled faces
-                                    if radius_bottom < radius_top:
-                                        offset -= 2 * extraOffset
-
-                                    break
-
-                                else:  # Arc
-                                    if edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z:
-                                        # Arc vertexes are on same layer
-                                        l1 = math.sqrt(
-                                            (edge.Vertexes[0].Point.x - edge.Curve.Center.x) ** 2
-                                            + (edge.Vertexes[0].Point.y - edge.Curve.Center.y) ** 2
-                                        )
-                                        l2 = math.sqrt(
-                                            (edge.Vertexes[1].Point.x - edge.Curve.Center.x) ** 2
-                                            + (edge.Vertexes[1].Point.y - edge.Curve.Center.y) ** 2
-                                        )
-
-                                        # New center
-                                        center = FreeCAD.Vector(
-                                            edge.Curve.Center.x,
-                                            edge.Curve.Center.y,
-                                            max_h,
-                                        )
-
-                                        # Calculate angles based on x-axis (0 - PI/2)
-                                        start_angle = math.acos(
-                                            (edge.Vertexes[0].Point.x - edge.Curve.Center.x) / l1
-                                        )
-                                        end_angle = math.acos(
-                                            (edge.Vertexes[1].Point.x - edge.Curve.Center.x) / l2
-                                        )
-
-                                        # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
-                                        if edge.Vertexes[0].Point.y < edge.Curve.Center.y:
-                                            start_angle *= -1
-                                        if edge.Vertexes[1].Point.y < edge.Curve.Center.y:
-                                            end_angle *= -1
-
-                                        # Create new arc
-                                        new_edge = Part.ArcOfCircle(
-                                            Part.Circle(
-                                                center,
-                                                FreeCAD.Vector(0, 0, 1),
-                                                edge.Curve.Radius,
-                                            ),
-                                            start_angle,
-                                            end_angle,
-                                        ).toShape()
-                                        edges.append(new_edge)
-
-                                        # Modify offset for inner angled faces
-                                        if radius_bottom < radius_top:
-                                            offset -= 2 * extraOffset
-
-                                        break
-
-                        else:  # Line
-                            if (
-                                edge.Vertexes[0].Point.z == edge.Vertexes[1].Point.z
-                                and edge.Vertexes[0].Point.z < max_h
-                            ):
-                                new_edge = Part.Edge(
-                                    Part.LineSegment(
-                                        FreeCAD.Vector(
-                                            edge.Vertexes[0].Point.x,
-                                            edge.Vertexes[0].Point.y,
-                                            max_h,
-                                        ),
-                                        FreeCAD.Vector(
-                                            edge.Vertexes[1].Point.x,
-                                            edge.Vertexes[1].Point.y,
-                                            max_h,
-                                        ),
-                                    )
-                                )
-                                edges.append(new_edge)
-
-                elif sub.Wires:
-                    basewires.extend(sub.Wires)
-
-                else:  # Flat face
-                    basewires.append(Part.Wire(sub.Edges))
-
-            self.edges = edges
-            Path.Log.debug(f"  Found {len(edges)} edges")
-            for edgelist in Part.sortEdges(edges):
-                basewires.append(Part.Wire(edgelist))
-
-            self.basewires.extend(basewires)
-            Path.Log.debug(f"  Total basewires: {len(basewires)}")
-
-            # Set default side
-            side = ["Outside"]
-
-            for w in basewires:
-                self.adjusted_basewires.append(w)
-                tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
-                wires.extend(PathOpUtil.offsetWireCompat(w, base.Shape, offset, side, tol))
-
-        # Set direction of op
-        forward = obj.Direction == "CW"
-
-        # Set value of side
-        obj.Side = side[0]
-        # Check side extra for angled faces
-        if radius_top > radius_bottom:
-            obj.Side = "Inside"
+        for wire in holes:
+            # inner wires of horizontal faces should be processed at opposite side
+            candidates = PathOpUtil.offsetWire(wire, None, offset, tol)
+            owires.extend(candidates[not index])
 
         zValues = []
         z = 0
         if obj.StepDown.Value != 0:
             while z + obj.StepDown.Value < depth:
-                z = z + obj.StepDown.Value
+                z += obj.StepDown.Value
                 zValues.append(z)
-
         zValues.append(depth)
         Path.Log.track(obj.Label, depth, zValues)
 
-        if obj.EntryPoint < 0:
-            obj.EntryPoint = 0
+        forward = obj.Direction == "CW"
+        start_idx = max(0, obj.EntryPoint)
 
-        Path.Log.debug(f"Generated {len(wires)} wires for toolpath")
-        self.wires = wires
-        self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
+        self.buildpathocc(obj, owires, zValues, relZ=True, forward=forward, start_idx=start_idx)
 
-    def opRejectAddBase(self, obj, base, sub):
-        """The chamfer op can only deal with features of the base model, all others are rejected."""
-        return base not in self.model
+        if not wires3d:
+            return
 
-    def opSetDefaultValues(self, obj, job):
-        Path.Log.track(obj.Label, job.Label)
-        obj.Width = "1 mm"
-        obj.ExtraDepth = "0.5 mm"
-        obj.Join = "Round"
-        obj.setExpression("StepDown", "0 mm")
-        obj.StepDown = "0 mm"
-        obj.Direction = "CW"
-        obj.Side = "Outside"
-        obj.EntryPoint = 0
+        # experimental way for wires not in XY plane
+        pathParams = {
+            "shapes": None,
+            "start": None,
+            "return_end": True,
+            "sort_mode": 1,
+            "min_dist": 0,
+            "orientation": obj.getEnumerationsOfProperty("Direction").index(obj.Direction),
+            "threshold": 0,
+            "retraction": obj.ClearanceHeight.Value,
+            "resume_height": obj.SafeHeight.Value,
+            "feedrate": self.horizFeed,
+            "feedrate_v": self.vertFeed,
+            "verbose": True,
+            "preamble": False,
+        }
+        startPoint = FreeCAD.Vector()
+        walloffset = offset if obj.Side == "Outside" else -offset
+        for wire3d in wires3d:
+            dwire3d = PathOpUtil.discretizeWire(wire3d)
+            dwire3d = PathOpUtil.orientWire(dwire3d, True)
+            wall = dwire3d.extrude(FreeCAD.Vector(0, 0, 10))
+            owall = wall.makeOffsetShape(walloffset, tolerance=tol, join=2)
+
+            edges = [e for e in owall.Edges if not Path.Geom.isVertical(e)]
+            owire3d = Part.Wire(Part.__sortEdges__(edges))
+            diffz = wire3d.BoundBox.ZMax - owire3d.BoundBox.ZMax - depth
+            owire3d.translate(FreeCAD.Vector(0, 0, diffz))
+
+            pathParams["shapes"] = [owire3d]
+            pathParams["start"] = startPoint
+            pp, startPoint = Path.fromShapes(**pathParams)
+            self.commandlist.extend(pp.Commands)
+
+    def toolDepthAndOffset(self, width, extraDepth, tool):
+        """getOffset(width, extraDepth, tool)
+        Returns offset and depth for given tool and chamfer width
+
+        width: needed chamfer width
+        extraDepth: place tool tip lower than chamfer bottom edge, but keep needed chamfer width
+        tool: Part::Feature object with Proxy Path.Tool.toolbit"""
+
+        if not hasattr(tool, "Diameter"):
+            raise ValueError("Deburr requires tool with diameter\n")
+
+        rextradepth = 0  # extra depth for ball/bull tool
+        if hasattr(tool, "CuttingRadius") and hasattr(tool, "TipDiameter"):  # Radius mill
+            cuttingRadius = float(tool.CuttingRadius)
+            tipRadius = float(tool.TipDiameter) / 2
+            toolOffset = tipRadius + cuttingRadius * (1 - math.sqrt(3) / 2)
+            rextradepth = cuttingRadius / 2
+        elif hasattr(tool, "TipDiameter"):  # V-Bit
+            toolOffset = float(tool.TipDiameter) / 2
+        elif hasattr(tool, "CornerRadius"):  # Bull Nose
+            radius = float(tool.CornerRadius)
+            hypot = math.hypot(radius, radius)
+            r = hypot - radius
+            rextradepth = r / math.sqrt(2)
+            toolOffset = float(tool.Diameter) / 2 - rextradepth
+        elif tool.ShapeID.casefold() == "ballend":  # Ball End
+            radius = float(tool.Diameter) / 2
+            hypot = math.hypot(radius, radius)
+            r = hypot - radius
+            rextradepth = r / math.sqrt(2)
+            toolOffset = float(tool.Diameter) / 2 - rextradepth
+        else:  # Endmill
+            toolOffset = float(tool.Diameter) / 2
+
+        angle = float(getattr(tool, "CuttingEdgeAngle", 180))
+        if Path.Geom.isRoughly(angle, 180) or Path.Geom.isRoughly(angle, 0):
+            angle = 180
+
+        tan = math.tan(math.radians(angle / 2))
+        toolDepth = 0 if Path.Geom.isRoughly(tan, 0) else width / tan
+        depth = toolDepth + extraDepth + rextradepth
+        extraOffset = -width if angle == 180 else (extraDepth * tan)
+        offset = toolOffset + extraOffset
+
+        return depth, offset
+
+    def separateFaceWires(self, face, offset):
+        """separateFaceWires(face) ... return outerWire, innerHoles and innerCircles of face"""
+        outerWire = face.OuterWire
+        outerIndex = [w.hashCode() for w in face.Wires].index(outerWire.hashCode())
+
+        innerWires = face.Wires
+        del innerWires[outerIndex]
+
+        innerHoles = []
+        innerCircles = []
+        for w in innerWires:
+            f = Part.makeFace(w, "Part::FaceMakerSimple")
+            if isDrillableFace(f, tooldiameter=2 * offset, vector=None):
+                innerCircles.append(w)
+            else:
+                innerHoles.append(w)
+
+        return outerWire, innerHoles, innerCircles
 
 
 def SetupProperties():
-    setup = PathOp.SetupPropertiesLinking()
-    setup.append("Width")
+    setup = []
+    setup.append("Direction")
+    setup.append("EntryPoint")
     setup.append("ExtraDepth")
+    setup.append("ProcessHoles")
+    setup.append("ProcessPerimeter")
+    setup.append("Side")
+    setup.append("SortingMode")
+    setup.append("Width")
     return setup
 
 
