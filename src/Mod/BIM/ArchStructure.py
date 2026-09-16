@@ -59,6 +59,20 @@ class StructureMode(enum.Enum):
     BEAM = "Beam"
 
 
+class ShapeKind(enum.Enum):
+    """Kind of shape used for the Structure's geometry, determined by the
+    selected profile in the interactive Structure command's task panel.
+
+    PLAIN: a plain box, with no profile selected.
+    PROFILE: a metal or timber structural profile, from profiles.csv.
+    PRECAST: a precast concrete element, from the ArchPrecast module.
+    """
+
+    PLAIN = "Plain"
+    PROFILE = "Profile"
+    PRECAST = "Precast"
+
+
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -232,6 +246,7 @@ class _CommandStructure:
         self.doc = FreeCAD.ActiveDocument
         self._loadDimensions()
         self.Profile = None
+        self.shape_kind = ShapeKind.PLAIN
         self.bpoint = None
         self.precastvalues = None
         sel = FreeCADGui.Selection.getSelection()
@@ -338,12 +353,12 @@ class _CommandStructure:
         if self.mode == StructureMode.BEAM:
             self.Length = point.sub(self.bpoint).Length
             params.set_param_arch("BeamLength", self.Length)
-        if self.Profile is not None:
+        if self.shape_kind != ShapeKind.PLAIN:
             try:  # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
             except Exception:
                 pass
-            if ("Precast" in self.Profile) and self.precastvalues:
+            if self.shape_kind == ShapeKind.PRECAST and self.precastvalues:
                 # precast concrete
                 self.precastvalues["PrecastType"] = self.Profile.split("_")[1]
                 self.precastvalues["Length"] = self.Length
@@ -602,11 +617,13 @@ class _CommandStructure:
     def setPreset(self, i):
 
         self.Profile = None
+        self.shape_kind = ShapeKind.PLAIN
         elt = self.pSelect[i]
         if elt:
             if elt in self.precast.PrecastTypes:
                 self.precast.setPreset(elt)
                 self.Profile = "Precast_" + elt
+                self.shape_kind = ShapeKind.PRECAST
                 if elt in ["Pillar", "Beam"]:
                     self.dents.form.show()
                 else:
@@ -634,6 +651,7 @@ class _CommandStructure:
                 self.vWidth.setText(FreeCAD.Units.Quantity(width, FreeCAD.Units.Length).UserString)
                 self.setWidth(width)
                 self.Profile = elt
+                self.shape_kind = ShapeKind.PROFILE
                 params.set_param_arch("StructurePreset", ";".join([str(i) for i in self.Profile]))
 
     def switchLH(self, beam_toggled):
