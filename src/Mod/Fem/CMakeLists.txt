@@ -419,6 +419,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_open.py
     femtest/app/test_result.py
     femtest/app/test_solver_codeaster.py
+    femtest/app/test_security.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
