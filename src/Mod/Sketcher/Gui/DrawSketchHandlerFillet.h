@@ -31,6 +31,8 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "DrawSketchControllableHandler.h"
+#include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchHandler.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -52,31 +54,28 @@ public:
 
     bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName) override
     {
+        const auto* sketch = static_cast<Sketcher::SketchObject*>(object);
         if (pObj != this->object) {
             return false;
         }
         if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
-        std::string element(sSubName);
-        if (element.substr(0, 4) == "Edge") {
-            int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
-            Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
-            const Part::Geometry* geom = Sketch->getGeometry(GeoId);
+
+        if (const auto edgeId = getEdgeId(sSubName)) {
+            const Part::Geometry* geom = sketch->getGeometry(edgeId.value());
             if (geom->isDerivedFrom<Part::GeomBoundedCurve>()) {
                 return true;
             }
         }
-        if (element.substr(0, 6) == "Vertex") {
-            int VtId = std::atoi(element.substr(6, 4000).c_str()) - 1;
-            Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
-            std::vector<int> GeoIdList;
-            std::vector<Sketcher::PointPos> PosIdList;
-            Sketch->getDirectlyCoincidentPoints(VtId, GeoIdList, PosIdList);
-            GeoIdList = Sketch->chooseFilletsEdges(GeoIdList);
-            if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
-                const Part::Geometry* geom1 = Sketch->getGeometry(GeoIdList[0]);
-                const Part::Geometry* geom2 = Sketch->getGeometry(GeoIdList[1]);
+        else if (const auto vertexId = getVertexId(sSubName)) {
+            std::vector<int> geoIdList;
+            std::vector<Sketcher::PointPos> posIdList;
+            sketch->getDirectlyCoincidentPoints(vertexId.value(), geoIdList, posIdList);
+            geoIdList = sketch->chooseFilletsEdges(geoIdList);
+            if (geoIdList.size() == 2 && geoIdList[0] >= 0 && geoIdList[1] >= 0) {
+                const Part::Geometry* geom1 = sketch->getGeometry(geoIdList[0]);
+                const Part::Geometry* geom2 = sketch->getGeometry(geoIdList[1]);
                 if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
