@@ -1063,7 +1063,10 @@ Gui::TreeWidget* SketcherGui::findModelTreeWidget()
     return nullptr;
 }
 
-std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(const std::string& filename)
+std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(
+    const std::string& filename,
+    bool* fixedSize
+)
 {
     Base::PyGILStateLocker lock;
     try {
@@ -1071,6 +1074,10 @@ std::vector<std::unique_ptr<Part::Geometry>> SketcherGui::readBlockGeometry(cons
         Py::Tuple args(1);
         args.setItem(0, Py::String(filename));
         Py::List list(blocks.callMemberFunction("read", args));
+        if (fixedSize) {
+            Py::Dict options(blocks.callMemberFunction("metadata", args));
+            *fixedSize = Py::Boolean(options.getItem("fixed_size")).isTrue();
+        }
         std::vector<std::unique_ptr<Part::Geometry>> result;
         for (const auto& item : list) {
             if (!PyObject_TypeCheck(item.ptr(), &Part::GeometryPy::Type)) {

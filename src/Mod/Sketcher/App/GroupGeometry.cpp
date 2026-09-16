@@ -12,7 +12,8 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
     const std::vector<Part::Geometry*>& geometry,
     const Base::Vector3d& start,
     const Base::Vector3d& end,
-    bool height
+    bool height,
+    bool useOrigin
 )
 {
     Bnd_Box bounds;
@@ -52,8 +53,8 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
     matrix[1][0] = s;
     matrix[1][1] = c;
     matrix[2][2] = scale;
-    matrix[0][3] = start.x - c * xmin + s * ymin;
-    matrix[1][3] = start.y - s * xmin - c * ymin;
+    matrix[0][3] = useOrigin ? start.x : start.x - c * xmin + s * ymin;
+    matrix[1][3] = useOrigin ? start.y : start.y - s * xmin - c * ymin;
 
     std::vector<std::unique_ptr<Part::Geometry>> result;
     result.reserve(geometry.size());
