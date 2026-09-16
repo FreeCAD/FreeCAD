@@ -45,6 +45,9 @@ rm -rf ${conda_env}/share/perl5
 rm -rf ${conda_env}/share/swig
 rm -rf ${conda_env}/share/vim
 
+# Also delete symlinks whose target no longer exists
+find ${conda_env} -type l ! -exec test -e {} \; -delete
+
 mv ${conda_env}/bin ${conda_env}/bin_tmp
 mkdir ${conda_env}/bin
 cp ${conda_env}/bin_tmp/freecad ${conda_env}/bin/
