@@ -182,7 +182,7 @@ std::string PythonConverter::convert(
         auto cg = process(constraints[0], geoIdMode);
         
         std::string command = "c = " + cg;
-        if (!constraints[0]->Name.empty()) {
+        if (constraints[0]->Name.size()) {
             command += "\nc.Name = '" + constraints[0]->Name + "'";
         }
         command += "\n" + doc + ".addConstraint(c)\n";
@@ -197,7 +197,7 @@ std::string PythonConverter::convert(
 
         // Create the object, set the name if it exists, then append it
         constraintlist += "\nc = " + cg;
-        if (!constraint->Name.empty()) {
+        if (constraint->Name.size()) {
             constraintlist += "\nc.Name = '" + constraint->Name + "'";
         }
         constraintlist += "\nconstraintList.append(c)";
