@@ -365,10 +365,15 @@ class _CommandStructure:
                 self.precastvalues["Width"] = self.Width
                 self.precastvalues["Height"] = self.Height
                 argstring = ""
-                # fix for precast placement, since their (0,0) point is the lower left corner
+                # Precast shapes are built from a corner, not the center, so shift the
+                # clicked point by half the relevant dimensions to center the insertion
+                # point.
                 if self.mode == StructureMode.BEAM:
-                    delta = FreeCAD.Vector(0, 0 - self.Width / 2, 0)
+                    # Beam cross-section is Width x Height; shift both to reach its center.
+                    delta = FreeCAD.Vector(0, -self.Width / 2, -self.Height / 2)
                 else:
+                    # Column footprint is Length x Width; its local origin is already at the
+                    # base in Z, so only the footprint needs shifting.
                     delta = FreeCAD.Vector(-self.Length / 2, -self.Width / 2, 0)
                 delta = self.wp.get_global_coords(delta, as_vector=True)
                 point = point.add(delta)
