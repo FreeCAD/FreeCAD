@@ -6,7 +6,6 @@
 
 class QCheckBox;
 class QComboBox;
-class QLabel;
 class QPushButton;
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -33,7 +32,7 @@ private:
     QCheckBox* fixedSize;
     QCheckBox* fixedOrientation;
     QPushButton* removeFolder;
-    QLabel* selectedLabel;
+    QPushButton* chooseFileButton;
     QString filename;
     QStringList customFolders;
     void refresh();
