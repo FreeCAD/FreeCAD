@@ -87,6 +87,16 @@ bool isSpaceChar(char character)
     return std::isspace(static_cast<unsigned char>(character)) != 0;
 }
 
+/// Describes the character at pos for parser diagnostics, naming end of input
+/// explicitly: input[input.size()] is '\0', which would truncate what().
+std::string describeAt(const std::string& input, size_t pos)
+{
+    if (pos >= input.size()) {
+        return "end of input";
+    }
+    return fmt::format("'{}'", input[pos]);
+}
+
 int parseIntOrThrow(const std::string& text, int base = 10)  // NOLINT(*-magic-numbers)
 {
     try {
@@ -630,7 +640,10 @@ std::unique_ptr<Expr> Parser::parseFactor()
             else {
                 // If followed by `)` → grouped expression (backward compatible)
                 if (!match(')')) {
-                    THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+                    THROWM(
+                        Base::ParserError,
+                        fmt::format("Expected ')', got {}", describeAt(input, pos))
+                    );
                 }
             }
         }
@@ -700,24 +713,33 @@ std::unique_ptr<Expr> Parser::parseColor()
 
         int r = parseInt();
         if (!match(',')) {
-            THROWM(Base::ParserError, fmt::format("Expected ',' after red, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' after red, got {}", describeAt(input, pos))
+            );
         }
         int g = parseInt();
         if (!match(',')) {
-            THROWM(Base::ParserError, fmt::format("Expected ',' after green, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' after green, got {}", describeAt(input, pos))
+            );
         }
         int b = parseInt();
         int a = 255;  // NOLINT(*-magic-numbers)
         if (hasAlpha) {
             if (!match(',')) {
-                THROWM(Base::ParserError, fmt::format("Expected ',' after blue, got '{}'", input[pos]));
+                THROWM(
+                    Base::ParserError,
+                    fmt::format("Expected ',' after blue, got {}", describeAt(input, pos))
+                );
             }
             a = parseInt();
         }
         if (!match(')')) {
             THROWM(
                 Base::ParserError,
-                fmt::format("Expected ')' after color arguments, got '{}'", input[pos])
+                fmt::format("Expected ')' after color arguments, got {}", describeAt(input, pos))
             );
         }
         return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0));
@@ -746,7 +768,10 @@ std::unique_ptr<Expr> Parser::parseParameter()
 {
     skipWhitespace();
     if (!match('@')) {
-        THROWM(Base::ParserError, fmt::format("Expected '@' for parameter, got '{}'", input[pos]));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Expected '@' for parameter, got {}", describeAt(input, pos))
+        );
     }
     size_t start = pos;
     while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
@@ -755,7 +780,7 @@ std::unique_ptr<Expr> Parser::parseParameter()
     if (start == pos) {
         THROWM(
             Base::ParserError,
-            fmt::format("Expected parameter name after '@', got '{}'", input[pos])
+            fmt::format("Expected parameter name after '@', got {}", describeAt(input, pos))
         );
     }
     return std::make_unique<ParameterReference>(input.substr(start, pos - start));
@@ -777,7 +802,10 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
     std::string functionName = input.substr(start, pos - start);
 
     if (!match('(')) {
-        THROWM(Base::ParserError, fmt::format("Expected '(' after function name, got '{}'", input[pos]));
+        THROWM(
+            Base::ParserError,
+            fmt::format("Expected '(' after function name, got {}", describeAt(input, pos))
+        );
     }
 
     auto arguments = parseTuple();
@@ -853,7 +881,10 @@ std::unique_ptr<TupleLiteral> Parser::parseTuple(std::optional<TupleLiteral::Ele
             if (pos >= input.size()) {
                 THROWM(Base::ParserError, "Expected ')' to close tuple");
             }
-            THROWM(Base::ParserError, fmt::format("Expected ',' or ')' in tuple, got '{}'", input[pos]));
+            THROWM(
+                Base::ParserError,
+                fmt::format("Expected ',' or ')' in tuple, got {}", describeAt(input, pos))
+            );
         }
 
         tuple->elements.push_back(parseElement());

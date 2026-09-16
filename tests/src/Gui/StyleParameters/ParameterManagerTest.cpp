@@ -839,3 +839,24 @@ TEST_F(ParameterManagerTest, TokenThatFailsToEvaluateSubstitutesItsLiteralText)
     );
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("Broken")));
 }
+
+TEST_F(ParameterManagerTest, ParseErrorAtEndOfInputIsNamedNotTruncated)
+{
+    DiagnosticsCapture capture;
+
+    // "black" at the end is read as a function name with no '(' following. The parser used
+    // to format input[input.size()] ('\0') into the message, which truncated what() mid-quote.
+    // The value is not a bare word, so it is still reported.
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "Trailing", .value = "@BaseSize + black"}},
+        ParameterSource::Metadata {.name = "Trailing Identifier Source"}
+    );
+    manager.addSource(&source);
+
+    manager.resolve("Trailing");
+
+    EXPECT_THAT(
+        capture.messages(),
+        Contains(HasSubstr("Expected '(' after function name, got end of input"))
+    );
+}
