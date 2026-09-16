@@ -1,33 +1,30 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2018 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Gui.Util as PathGuiUtil
+from Path.Base.Gui.Util import QuantitySpinBox
 import Path.Op.Deburr as PathDeburr
 import Path.Op.Gui.Base as PathOpGui
-from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "CAM Deburr Operation UI"
@@ -46,86 +43,87 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
-    """Enhanced base geometry page to also allow special base objects."""
-
-    def super(self):
-        return super(TaskPanelBaseGeometryPage, self)
-
-    def addBaseGeometry(self, selection):
-        self.super().addBaseGeometry(selection)
-
-
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the Deburr operation."""
 
-    _ui_form = ":/panels/PageOpDeburrEdit.ui"
+    def initPage(self, obj):
+        self.chamferWidthSpinBox = QuantitySpinBox(self.form.chamferWidth, obj, "Width")
+        self.extraDepthSpinBox = QuantitySpinBox(self.form.extraDepth, obj, "ExtraDepth")
+
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("chamferWidth", "Width"))
+        tuples.append(("direction", "Direction"))
+        tuples.append(("extraDepth", "ExtraDepth"))
+        tuples.append(("processCircles", "ProcessCircles"))
+        tuples.append(("processHoles", "ProcessHoles"))
+        tuples.append(("processPerimeter", "ProcessPerimeter"))
+        tuples.append(("side", "Side"))
+        tuples.append(("sorting", "SortingMode"))
+
+        return tuples
 
     def getForm(self):
-        form = FreeCADGui.PySideUic.loadUi(self._ui_form)
-        comboToPropertyMap = [("direction", "Direction")]
-        enumTups = PathDeburr.ObjectDeburr.propertyEnumerations(dataType="raw")
+        """getForm() ... returns UI"""
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
 
+        comboToPropertyMap = [
+            ("direction", "Direction"),
+            ("side", "Side"),
+            ("sorting", "SortingMode"),
+        ]
+        enumTups = PathDeburr.ObjectDeburr.propertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
         return form
 
-    def initPage(self, obj):
-        self.opImagePath = "{}Mod/CAM/Images/Ops/{}".format(FreeCAD.getHomePath(), "chamfer.svg")
-        self.opImage = QtGui.QPixmap(self.opImagePath)
-        self.form.opImage.setPixmap(self.opImage)
-        iconMiter = QtGui.QIcon(":/icons/edge-join-miter-not.svg")
-        iconMiter.addFile(":/icons/edge-join-miter.svg", state=QtGui.QIcon.On)
-        iconRound = QtGui.QIcon(":/icons/edge-join-round-not.svg")
-        iconRound.addFile(":/icons/edge-join-round.svg", state=QtGui.QIcon.On)
-        self.form.joinMiter.setIcon(iconMiter)
-        self.form.joinRound.setIcon(iconRound)
+    def updateQuantitySpinBoxes(self, index=None):
+        self.chamferWidthSpinBox.updateWidget()
+        self.extraDepthSpinBox.updateWidget()
 
     def getFields(self, obj):
-        PathGuiUtil.updateInputField(obj, "Width", self.form.value_W)
-        PathGuiUtil.updateInputField(obj, "ExtraDepth", self.form.value_h)
-        if self.form.joinRound.isChecked():
-            obj.Join = "Round"
-        elif self.form.joinMiter.isChecked():
-            obj.Join = "Miter"
+        """getFields(obj) ... transfers values from UI to obj's properties"""
+        self.chamferWidthSpinBox.updateProperty()
+        self.extraDepthSpinBox.updateProperty()
 
         if obj.Direction != str(self.form.direction.currentData()):
             obj.Direction = str(self.form.direction.currentData())
+        if obj.ProcessCircles != self.form.processCircles.isChecked():
+            obj.ProcessCircles = self.form.processCircles.isChecked()
+        if obj.ProcessHoles != self.form.processHoles.isChecked():
+            obj.ProcessHoles = self.form.processHoles.isChecked()
+        if obj.ProcessPerimeter != self.form.processPerimeter.isChecked():
+            obj.ProcessPerimeter = self.form.processPerimeter.isChecked()
+        if obj.Side != str(self.form.side.currentData()):
+            obj.Side = str(self.form.side.currentData())
+        if obj.SortingMode != str(self.form.sorting.currentData()):
+            obj.SortingMode = str(self.form.sorting.currentData())
 
     def setFields(self, obj):
-        self.form.value_W.setText(
-            FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString
-        )
-        self.form.value_h.setText(
-            FreeCAD.Units.Quantity(obj.ExtraDepth.Value, FreeCAD.Units.Length).UserString
-        )
-        self.form.joinRound.setChecked("Round" == obj.Join)
-        self.form.joinMiter.setChecked("Miter" == obj.Join)
-        self.form.joinFrame.hide()
+        """setFields(obj) ... transfers obj's property values to UI"""
+        self.updateQuantitySpinBoxes()
+
         self.selectInComboBox(obj.Direction, self.form.direction)
-
-    def updateWidth(self):
-        PathGuiUtil.updateInputField(self.obj, "Width", self.form.value_W)
-
-    def updateExtraDepth(self):
-        PathGuiUtil.updateInputField(self.obj, "ExtraDepth", self.form.value_h)
+        self.selectInComboBox(obj.Side, self.form.side)
+        self.selectInComboBox(obj.SortingMode, self.form.sorting)
+        self.form.processCircles.setChecked(obj.ProcessCircles)
+        self.form.processHoles.setChecked(obj.ProcessHoles)
+        self.form.processPerimeter.setChecked(obj.ProcessPerimeter)
 
     def getSignalsForUpdate(self, obj):
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        signals.append(self.form.joinMiter.clicked)
-        signals.append(self.form.joinRound.clicked)
+        signals.append(self.form.chamferWidth.valueChanged)
         signals.append(self.form.direction.currentIndexChanged)
-        signals.append(self.form.value_W.valueChanged)
-        signals.append(self.form.value_h.valueChanged)
+        signals.append(self.form.extraDepth.valueChanged)
+        signals.append(self.form.processCircles.checkStateChanged)
+        signals.append(self.form.processHoles.checkStateChanged)
+        signals.append(self.form.processPerimeter.checkStateChanged)
+        signals.append(self.form.side.currentIndexChanged)
+        signals.append(self.form.sorting.currentIndexChanged)
+
         return signals
-
-    def registerSignalHandlers(self, obj):
-        self.form.value_W.editingFinished.connect(self.updateWidth)
-        self.form.value_h.editingFinished.connect(self.updateExtraDepth)
-
-    def taskPanelBaseGeometryPage(self, obj, features):
-        """taskPanelBaseGeometryPage(obj, features) ... return page for adding base geometries."""
-        return TaskPanelBaseGeometryPage(obj, features)
 
 
 Command = PathOpGui.SetupOperation(
@@ -134,7 +132,11 @@ Command = PathOpGui.SetupOperation(
     TaskPanelOpPage,
     "CAM_Deburr",
     QT_TRANSLATE_NOOP("CAM_Deburr", "Deburr"),
-    QT_TRANSLATE_NOOP("CAM_Deburr", "Creates a Deburr toolpath along Edges or around Faces"),
+    QT_TRANSLATE_NOOP(
+        "CAM_Deburr",
+        "Creates a Deburr toolpath along Edges or around Faces"
+        "\n\nSelect horizontal edges\nor horizontal face from shape\nor angled face of chamfer",
+    ),
     PathDeburr.SetupProperties,
 )
 
