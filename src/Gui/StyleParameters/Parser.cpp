@@ -48,7 +48,7 @@ namespace
 {
 /// Returns the named argument of type T, throwing Base::ExpressionError when it is not.
 template<typename T>
-const T& requireArgument(const Tuple& args, const std::string& name, const char* function)
+const T& requireArgument(const Tuple& args, std::string_view name, std::string_view function)
 {
     if (const T* value = args.tryGet<T>(name)) {
         return *value;
