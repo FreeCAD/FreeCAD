@@ -207,10 +207,10 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
             return
 
     FreeCADGui.doCommand(
-      "for obj in f.ViewObject.Proxy.claimChildren():\n"
-      "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
-      "        obj.ViewObject.hide()"
-  )
+        "for obj in f.ViewObject.Proxy.claimChildren():\n"
+        "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
+        "        obj.ViewObject.hide()"
+    )
 
     FreeCAD.ActiveDocument.commitTransaction()
 
@@ -414,10 +414,10 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
             return False
 
     FreeCADGui.doCommand(
-      "for obj in f.ViewObject.Proxy.claimChildren():\n"
-      "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
-      "        obj.ViewObject.hide()"
-  )
+        "for obj in f.ViewObject.Proxy.claimChildren():\n"
+        "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
+        "        obj.ViewObject.hide()"
+    )
 
     if transaction:
         FreeCAD.ActiveDocument.commitTransaction()
@@ -657,10 +657,10 @@ def cmdCreateXORFeature(name):
             return
 
     FreeCADGui.doCommand(
-      "for obj in f.ViewObject.Proxy.claimChildren():\n"
-      "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
-      "        obj.ViewObject.hide()"
-  )
+        "for obj in f.ViewObject.Proxy.claimChildren():\n"
+        "    if not any(obj.isDerivedFrom(t) for t in ['Part::Datum', 'PartDesign::CoordinateSystem', 'App::OriginFeature']):\n"
+        "        obj.ViewObject.hide()"
+    )
 
     FreeCAD.ActiveDocument.commitTransaction()
 
