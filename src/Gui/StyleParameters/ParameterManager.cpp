@@ -33,7 +33,10 @@
 
 #include <QRegularExpression>
 #include <QString>
+#include <algorithm>
+#include <cctype>
 #include <ranges>
+#include <string_view>
 #include <utility>
 #include <variant>
 
@@ -77,6 +80,16 @@ std::string yamlNodeToExpression(const YAML::Node& node)
     }
 
     return "";
+}
+
+/// True when a parameter value is a single bare word (e.g. "black", "images_classic").
+/// Such values are not expressions; they are meant for resolve()'s generic-string
+/// fallback, so a failed parse of them is expected and not worth a diagnostic.
+bool isPlainWord(std::string_view text)
+{
+    return !text.empty() && std::ranges::all_of(text, [](unsigned char character) {
+        return std::isalnum(character) != 0 || character == '_' || character == '-';
+    });
 }
 
 /// Formats a gradient tuple as QSS qlineargradient() or qradialgradient().
@@ -496,11 +509,16 @@ std::optional<Value> ParameterManager::resolve(const std::string& name, ResolveC
                 _resolved[token.name] = evaluate(token.value, context);
             }
             catch (const Base::Exception& exception) {
-                Diagnostics::report(
-                    "Style parameter '{}' could not be evaluated: {}",
-                    token.name,
-                    exception.what()
-                );
+                // Bare words such as "black" or "images_classic" are not expressions and are
+                // expected to fail parsing; they resolve through the generic-string fallback
+                // below. Only report values that look like an attempted expression.
+                if (!isPlainWord(token.value)) {
+                    Diagnostics::report(
+                        "Style parameter '{}' could not be evaluated: {}",
+                        token.name,
+                        exception.what()
+                    );
+                }
                 // Fall back to treating the value as a generic string.
                 try {
                     _resolved[token.name] = replacePlaceholders(token.value, context);

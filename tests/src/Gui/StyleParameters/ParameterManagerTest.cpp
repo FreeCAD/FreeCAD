@@ -840,6 +840,56 @@ TEST_F(ParameterManagerTest, TokenThatFailsToEvaluateSubstitutesItsLiteralText)
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("Broken")));
 }
 
+TEST_F(ParameterManagerTest, BareWordValuesFallBackToStringsSilently)
+{
+    DiagnosticsCapture capture;
+
+    // Theme values such as icon color names or folder names are plain words, not expressions.
+    // They are expected to fail parsing and resolve through the generic string fallback, so
+    // that path must not produce a diagnostic, see github issue: #32689
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "IconsColor", .value = "black"},
+            {.name = "IconsFolder", .value = "images_classic"},
+        },
+        ParameterSource::Metadata {.name = "Bare Word Source"}
+    );
+    manager.addSource(&source);
+
+    auto color = manager.resolve("IconsColor");
+    ASSERT_TRUE(color.has_value());
+    ASSERT_TRUE(color->holds<std::string>());
+    EXPECT_EQ(color->get<std::string>(), "black");
+
+    auto folder = manager.resolve("IconsFolder");
+    ASSERT_TRUE(folder.has_value());
+    ASSERT_TRUE(folder->holds<std::string>());
+    EXPECT_EQ(folder->get<std::string>(), "images_classic");
+
+    EXPECT_THAT(capture.messages(), testing::IsEmpty());
+}
+
+TEST_F(ParameterManagerTest, BareWordValuesSubstituteIntoQssPaths)
+{
+    DiagnosticsCapture capture;
+
+    // Mirrors how FreeCAD.qss builds icon paths from bare word parameters.
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "IconsColor", .value = "black"},
+            {.name = "IconsFolder", .value = "images_classic"},
+        },
+        ParameterSource::Metadata {.name = "Bare Word Source"}
+    );
+    manager.addSource(&source);
+
+    EXPECT_EQ(
+        manager.replacePlaceholders("image: url(qss:@IconsFolder/check-mark-@IconsColor.svg);"),
+        "image: url(qss:images_classic/check-mark-black.svg);"
+    );
+    EXPECT_THAT(capture.messages(), testing::IsEmpty());
+}
+
 TEST_F(ParameterManagerTest, ParseErrorAtEndOfInputIsNamedNotTruncated)
 {
     DiagnosticsCapture capture;
