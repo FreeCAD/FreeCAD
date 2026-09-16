@@ -211,8 +211,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         return candidate.discretize(3)[1]
 
-    def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
-        """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
+    def _buildPathArea(self, obj, baseobject, isHole, start):
+        """_buildPathArea(obj, baseobject, isHole, start) ... internal function."""
         Path.Log.track()
         area = Path.Area()
         area.setPlane(PathUtils.makeWorkplane(baseobject))
@@ -292,18 +292,10 @@ class ObjectOp(PathOp.ObjectOp):
         if pp.Size > 0:
             self.endVector = end_vector
 
-        simobj = None
-        if getsim:
-            areaParams["Thicken"] = True
-            areaParams["ToolRadius"] = self.radius - self.radius * 0.005
-            area.setParams(**areaParams)
-            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
-            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+        return pp
 
-        return pp, simobj
-
-    def _buildProfileOpenEdges(self, obj, openWire, start, getsim):
-        """_buildPathArea(obj, openWire, start, getsim) ... internal function."""
+    def _buildProfileOpenEdges(self, obj, openWire, start):
+        """_buildPathArea(obj, openWire, start) ... internal function."""
         Path.Log.track()
 
         paths = []
@@ -353,12 +345,11 @@ class ObjectOp(PathOp.ObjectOp):
             Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
         self.endVector = end_vector
-        simobj = None
 
-        return paths, simobj
+        return paths
 
-    def opExecute(self, obj, getsim=False):
-        """opExecute(obj, getsim=False) ... implementation of Path.Area ops.
+    def opExecute(self, obj):
+        """opExecute(obj) ... implementation of Path.Area ops.
         determines the parameters for _buildPathArea().
         Do not overwrite, implement
             areaOpAreaParams(obj, isHole) ... op specific area param dictionary
@@ -425,7 +416,6 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = collectively
 
-        sims = []
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 
@@ -439,9 +429,9 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    pp, sim = self._buildProfileOpenEdges(obj, shape, start, getsim)
+                    pp = self._buildProfileOpenEdges(obj, shape, start)
                 else:
-                    pp, sim = self._buildPathArea(obj, shape, isHole, start, getsim)
+                    pp = self._buildPathArea(obj, shape, isHole, start)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(
@@ -452,7 +442,6 @@ class ObjectOp(PathOp.ObjectOp):
                 ppCmds = pp if profileEdgesIsOpen else pp.Commands
 
                 self.commandlist.extend(ppCmds)
-                sims.append(sim)
 
             if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
@@ -461,7 +450,6 @@ class ObjectOp(PathOp.ObjectOp):
                 )
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
-        return sims
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.
