@@ -377,7 +377,7 @@ CmdSketcherEditBlock::CmdSketcherEditBlock() : Command("Sketcher_EditBlock")
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Edit Block");
     sToolTipText = QT_TR_NOOP("Edits the source geometry of the selected block");
-    sPixmap = "Sketcher_EditBlock";
+    sPixmap = "Sketcher_BlockEdit";
     sWhatsThis = "Sketcher_EditBlock";
     eType = ForEdit;
 }
@@ -404,7 +404,7 @@ CmdSketcherReloadBlock::CmdSketcherReloadBlock() : Command("Sketcher_ReloadBlock
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Reload From File");
     sToolTipText = QT_TR_NOOP("Reloads the selected block from its source file");
-    sPixmap = "Sketcher_ReloadBlock";
+    sPixmap = "Sketcher_BlockReload";
     sWhatsThis = "Sketcher_ReloadBlock";
     eType = ForEdit;
 }
@@ -462,7 +462,7 @@ CmdSketcherCreateBlock::CmdSketcherCreateBlock()
     sMenuText = QT_TR_NOOP("Create Block");
     sToolTipText = QT_TR_NOOP("Defines a handle and saves the selected geometry as a block (select at least two edges)");
     sWhatsThis = "Sketcher_CreateBlock";
-    sPixmap = "Sketcher_CreateBlock";
+    sPixmap = "Sketcher_BlockCreate";
     sStatusTip = sToolTipText;
     eType = ForEdit;
 }

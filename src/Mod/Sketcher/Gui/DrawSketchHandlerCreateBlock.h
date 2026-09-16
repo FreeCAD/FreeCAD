@@ -114,7 +114,7 @@ private:
 
     QPixmap getToolIcon() const override
     {
-        return Gui::BitmapFactory().pixmap("Sketcher_CreateBlock");
+        return Gui::BitmapFactory().pixmap("Sketcher_BlockCreate");
     }
 
     QString getToolWidgetText() const override
