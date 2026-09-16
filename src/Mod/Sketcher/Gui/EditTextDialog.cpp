@@ -33,6 +33,7 @@
 
 #include "CommandConstraints.h"
 #include "EditTextDialog.h"
+#include "FontProvider.h"
 #include "ViewProviderSketch.h"
 #include "Utils.h"
 #include "ui_EditTextDialog.h"
