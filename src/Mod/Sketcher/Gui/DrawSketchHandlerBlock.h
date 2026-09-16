@@ -357,7 +357,13 @@ private:
         if (hasSourceHandle()) {
             return sourceHandle.Length();
         }
-        return constructionMethod() == ConstructionMethod::Height ? sourceHeight : sourceWidth;
+        const double size = constructionMethod() == ConstructionMethod::Height ? sourceHeight
+                                                                               : sourceWidth;
+        // A fixed-size block uses this line only to preview its rotation. Points
+        // and vertical outlines still need a nonzero ray even with zero width.
+        return fixedSize && size < Precision::Confusion()
+            ? std::max({sourceWidth, sourceHeight, 1.0})
+            : size;
     }
 
     Base::Vector2d originalDirection() const
@@ -419,10 +425,7 @@ private:
         if (fileName.empty()) {
             return;
         }
-        std::vector<Part::Geometry*> source;
-        for (const auto& geo : cachedGeometry) {
-            source.push_back(geo.get());
-        }
+        const auto source = toPointerVector(cachedGeometry);
         if (fixedSize) {
             const double angle = vecL.Angle() - originalDirection().Angle();
             ShapeGeometry
