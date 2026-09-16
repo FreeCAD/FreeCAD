@@ -193,11 +193,11 @@
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateBlock.svg</file>
-        <file>icons/geometry/Sketcher_EditBlock.svg</file>
-        <file>icons/geometry/Sketcher_ReloadBlock.svg</file>
-        <file>icons/geometry/Sketcher_InsertBlock.svg</file>
-        <file>icons/geometry/Sketcher_InsertBlock_Constr.svg</file>
+        <file>icons/geometry/Sketcher_BlockCreate.svg</file>
+        <file>icons/geometry/Sketcher_BlockEdit.svg</file>
+        <file>icons/geometry/Sketcher_BlockInsert.svg</file>
+        <file>icons/geometry/Sketcher_BlockInsert_Constr.svg</file>
+        <file>icons/geometry/Sketcher_BlockReload.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
         <file>icons/geometry/Sketcher_CreateText_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
