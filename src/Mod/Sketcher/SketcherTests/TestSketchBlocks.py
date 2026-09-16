@@ -191,5 +191,53 @@ class TestSketchBlocks(unittest.TestCase):
             self.assertTrue(filename.is_file())
             with self.subTest(filename=filename.name):
                 geometry = SketcherBlock.read(filename)
+                self.assertFalse(SketcherBlock.metadata(filename)["fixed_size"])
                 self.assertTrue(geometry)
                 self.assertTrue(all(geo.toShape().isValid() for geo in geometry))
+
+    def testBlockInsertionDefaults(self):
+        self.assertFalse(SketcherBlock.metadata(self.file)["fixed_size"])
+        for value in ("true", "false"):
+            self.write()
+            text = self.file.read_text(encoding="utf-8")
+            text = text.replace(
+                "# Copied from sketcher. From:",
+                "# Copied from sketcher. From:\n# Sketcher block fixed size: " + value,
+            )
+            self.file.write_text(text, encoding="utf-8")
+            self.assertEqual(SketcherBlock.metadata(self.file)["fixed_size"], value == "true")
+            self.assertEqual(len(SketcherBlock.read(self.file)), 2)
+
+    def testScaledBlockReloadUsesSourceOrigin(self):
+        self.file.write_text(
+            "# Copied from sketcher.\n"
+            "objectStr.addGeometry([Part.Circle(App.Vector(-2,3,0),App.Vector(0,0,1),5)],False)\n",
+            encoding="utf-8",
+        )
+        index = self.insert()
+        group = self.sketch.Constraints[index]
+        handle = self.sketch.Geometry[group.First]
+        self.assertLess(handle.StartPoint.Length, 1e-7)
+        self.sketch.moveGeometry(group.First, 1, App.Vector(20, 30, 0), 0)
+        self.sketch.moveGeometry(group.First, 2, App.Vector(40, 30, 0), 0)
+        self.assertEqual(self.sketch.solve(), 0)
+        index = SketcherBlock.reload(self.sketch, index)
+        circle = self.sketch.Geometry[self.sketch.Constraints[index].Second]
+        self.assertLess((circle.Center - App.Vector(16, 36, 0)).Length, 1e-6)
+        self.assertAlmostEqual(circle.Radius, 10, places=6)
+
+    def testNonBlockGroupKeepsBoundsOrigin(self):
+        geometry = [Part.Circle(App.Vector(-2, 3, 0), App.Vector(0, 0, 1), 5)]
+        index = SketcherBlock.insert_geometry(self.sketch, geometry, self.file.with_suffix(".svg"))
+        group = self.sketch.Constraints[index]
+        self.assertLess(
+            (self.sketch.Geometry[group.First].StartPoint - App.Vector(-7, -2, 0)).Length, 1e-6
+        )
+        index = self.sketch.replaceGroupGeometry(index, geometry)
+        self.assertLess(
+            (
+                self.sketch.Geometry[self.sketch.Constraints[index].Second].Center
+                - App.Vector(-2, 3, 0)
+            ).Length,
+            1e-6,
+        )

@@ -86,7 +86,7 @@ SketcherBlockWidget::SketcherBlockWidget(QWidget* parent)
     layout->addWidget(selectedLabel);
     fixedSize = new QCheckBox(tr("Fixed Size"), this);
     fixedSize->setObjectName(QStringLiteral("blockFixedSize"));
-    fixedSize->setChecked(true);
+    fixedSize->setChecked(false);
     fixedSize->setToolTip(tr("Preserves the size from the block file"));
     fixedOrientation = new QCheckBox(tr("Fixed Orientation"), this);
     fixedOrientation->setObjectName(QStringLiteral("blockFixedOrientation"));

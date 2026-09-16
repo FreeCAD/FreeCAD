@@ -35,6 +35,7 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Gui/Action.h>
@@ -57,6 +58,7 @@
 
 #include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
+#include "DrawSketchHandlerCreateBlock.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -212,9 +214,12 @@ Sketcher::SketchObject* getSketchObject()
 
 // Copy
 
-static std::string selectedGeometryText(Sketcher::SketchObject* obj)
+static std::string selectedGeometryText(
+    Sketcher::SketchObject* obj,
+    std::vector<int> listOfGeoId = {},
+    const Base::Vector3d* blockOrigin = nullptr)
 {
-    std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
+    if (listOfGeoId.empty()) { listOfGeoId = getListOfSelectedGeoIds(true); }
     if (listOfGeoId.empty()) { return {}; }
 
     // If a group handle is selected, ensure all its grouped geometries are copied too.
@@ -237,6 +242,11 @@ static std::string selectedGeometryText(Sketcher::SketchObject* obj)
     shapeGeometry.reserve(listOfGeoId.size());
     for (auto geoId : listOfGeoId) {
         shapeGeometry.emplace_back(obj->getGeometry(geoId)->copy());
+        if (blockOrigin) {
+            Base::Matrix4D translation;
+            translation.move(-*blockOrigin);
+            shapeGeometry.back()->transform(translation);
+        }
     }
     std::vector<Part::Geometry*> rawGeos;
     rawGeos.reserve(shapeGeometry.size());
@@ -266,9 +276,13 @@ static std::string selectedGeometryText(Sketcher::SketchObject* obj)
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };
 
-        bool skip = false;
+        // A block is independent of the source sketch's axes and positional constraints.
+        bool skip = blockOrigin && (constr->Type == DistanceX || constr->Type == DistanceY)
+            && constr->Second == GeoEnum::GeoUndef && constr->FirstPos != PointPos::none;
         for (int i = 0; constr->hasElement(i); ++i) {
-            if (!isSelectedGeoOrAxis(listOfGeoId, constr->getGeoId(i))) {
+            if (!isSelectedGeoOrAxis(listOfGeoId, constr->getGeoId(i))
+                || (blockOrigin && constr->getGeoId(i) < 0
+                    && constr->getGeoId(i) != GeoEnum::GeoUndef)) {
                 skip = true;
                 break;
             }
@@ -446,7 +460,7 @@ CmdSketcherCreateBlock::CmdSketcherCreateBlock()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create Block");
-    sToolTipText = QT_TR_NOOP("Saves the selected geometry as a block text file (select at least two edges)");
+    sToolTipText = QT_TR_NOOP("Selects an origin and saves the selected geometry as a block (select at least two edges)");
     sWhatsThis = "Sketcher_CreateBlock";
     sStatusTip = sToolTipText;
     eType = ForEdit;
@@ -459,28 +473,35 @@ void CmdSketcherCreateBlock::activated(int iMsg)
         return;
     }
     auto* sketch = getSketchObject();
-    const QByteArray data = QByteArray::fromStdString(selectedGeometryText(sketch));
-    if (data.isEmpty()) {
-        return;
-    }
-    const QString path = Gui::FileDialog::getSaveFileName(
-        Gui::getMainWindow(),
-        QObject::tr("Create Block"),
-        QString::fromStdString(App::Application::getResourceDir() + "Mod/Sketcher/Blocks/"),
-        {{QObject::tr("Sketcher block files"), {QStringLiteral("*.txt")}}}
-    );
-    if (path.isEmpty()) {
-        return;
-    }
+    const auto selected = getListOfSelectedGeoIds(true);
+    if (selected.empty()) { return; }
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerCreateBlock>(
+        [sketch, selected](const Base::Vector3d& origin, bool fixedSize) {
+            QByteArray data = QByteArray::fromStdString(selectedGeometryText(sketch, selected, &origin));
+            if (data.isEmpty()) {
+                return;
+            }
+            data.insert(data.indexOf('\n') + 1,
+                fixedSize ? "# Sketcher block fixed size: true\n" : "# Sketcher block fixed size: false\n");
+            const QString path = Gui::FileDialog::getSaveFileName(
+                Gui::getMainWindow(),
+                QObject::tr("Create Block"),
+                QString::fromStdString(App::Application::getResourceDir() + "Mod/Sketcher/Blocks/"),
+                {{QObject::tr("Sketcher block files"), {QStringLiteral("*.txt")}}}
+            );
+            if (path.isEmpty()) {
+                return;
+            }
 
-    QSaveFile file(path);
-    if (!file.open(QIODevice::WriteOnly) || file.write(data) != data.size() || !file.commit()) {
-        Gui::TranslatedUserError(
-            sketch,
-            QObject::tr("Failed to create block"),
-            QObject::tr("Could not save %1: %2").arg(path, file.errorString())
-        );
-    }
+            QSaveFile file(path);
+            if (!file.open(QIODevice::WriteOnly) || file.write(data) != data.size() || !file.commit()) {
+                Gui::TranslatedUserError(
+                    sketch,
+                    QObject::tr("Failed to create block"),
+                    QObject::tr("Could not save %1: %2").arg(path, file.errorString())
+                );
+            }
+        }));
 }
 
 bool CmdSketcherCreateBlock::isActive()
