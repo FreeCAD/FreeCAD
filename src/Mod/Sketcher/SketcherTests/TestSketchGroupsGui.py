@@ -10,6 +10,66 @@ from SketcherTests.GuiTestCase import FreeCADGui as Gui, SketcherGuiTestCase
 
 
 class TestSketchGroupsGui(SketcherGuiTestCase):
+    def testNestedGroupBoundsAndUngroup(self):
+        from pivy import coin
+
+        Gui.activateWorkbench("SketcherWorkbench")
+        self.doc = App.newDocument("NestedGroupBounds")
+        s = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        for x in (-40, 60):
+            s.addGeometry(Part.Circle(App.Vector(x, 5, 0), App.Vector(0, 0, 1), 10))
+        for x in (0, 10, 20):
+            s.addGeometry(Part.LineSegment(App.Vector(x, 0, 0), App.Vector(x, 10, 0)), True)
+        # Define the parent first so drawing cannot depend on constraint order.
+        s.addConstraint(
+            [
+                Sketcher.Constraint("Group", [4, 0, 2, 0, 3, 0]),
+                Sketcher.Constraint("Group", [2, 0, 0, 0]),
+                Sketcher.Constraint("Group", [3, 0, 1, 0]),
+            ]
+        )
+        self.doc.recompute()
+        self.assertTrue(Gui.activeDocument().setEdit(s.Name))
+        self.flush_gui(50)
+
+        def constraint_nodes():
+            search = coin.SoSearchAction()
+            search.setName("ConstraintGroup")
+            search.setSearchingAll(True)
+            search.apply(Gui.activeDocument().activeView().getSceneGraph())
+            path = search.getPath()
+            self.assertIsNotNone(path)
+            return path.getTail()
+
+        nodes = constraint_nodes()
+        corners = nodes.getChild(0).getChild(2).point.getValues()
+        self.assertLess(corners[0][0], -50)
+        self.assertGreater(corners[2][0], 70)
+        self.assertLess(corners[0][1], -5)
+        self.assertGreater(corners[2][1], 15)
+        self.assertEqual(list(nodes.getField("enable").getValues()), [True, False, False])
+
+        # Deactivating the parent must make both child boxes available again.
+        s.toggleActive(0)
+        self.flush_gui(50)
+        self.assertTrue(all(constraint_nodes().getField("enable").getValues()))
+        s.toggleActive(0)
+
+        # Delete the bounding-box constraint to explode only the outer level.
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(s, "Constraint1")
+        Gui.runCommand("Std_Delete", 0)
+        self.assertEqual((s.GeometryCount, s.ConstraintCount), (4, 2))
+        self.assertEqual(s.solve(), 0)
+        self.flush_gui(50)
+        self.assertTrue(all(constraint_nodes().getField("enable").getValues()))
+        self.doc.undo()
+        self.assertEqual((s.GeometryCount, s.ConstraintCount), (5, 3))
+        self.flush_gui(50)
+        self.assertEqual(
+            list(constraint_nodes().getField("enable").getValues()), [True, False, False]
+        )
+
     def testGroupOnlySelectedGeometry(self):
         Gui.activateWorkbench("SketcherWorkbench")
         self.doc = App.newDocument("GroupSelection")
