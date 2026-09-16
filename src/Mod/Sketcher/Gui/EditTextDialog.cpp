@@ -29,6 +29,7 @@
 #endif
 
 #include <Gui/CommandT.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "CommandConstraints.h"
@@ -40,7 +41,7 @@
 using namespace SketcherGui;
 
 EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintIndex, QWidget* parent)
-    : QDialog(parent)
+    : QDialog(parent ? parent : Gui::getMainWindow())
     , ui(new Ui::EditTextDialog)
     , sketchView(viewProvider)
     , constrIndex(constraintIndex)
@@ -76,6 +77,9 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
             );
         }
     }
+
+    // This compact form has no content that can use additional vertical space.
+    setFixedHeight(sizeHint().height());
 }
 
 EditTextDialog::~EditTextDialog()
