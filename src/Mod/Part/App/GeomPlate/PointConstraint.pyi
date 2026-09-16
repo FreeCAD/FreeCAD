@@ -22,42 +22,42 @@ class PointConstraint(PyObjectBase):
     Licence: LGPL
     """
 
-    def setOrder(self, order: str, /) -> None:
+    def setOrder(self, order: int, /) -> None:
         """
         Allows you to set the order of continuity required for
-        the constraints: G0, G1, and G2, controlled
+        the constraints: G0, G1, and G2 (as 0, 1 and 2), controlled
         respectively by G0Criterion G1Criterion and G2Criterion.
         """
         ...
 
-    def order(self) -> str:
+    def order(self) -> int:
         """
-        Returns the order of constraint, one of G0, G1 or G2
-        """
-        ...
-
-    def G0Criterion(self, U: float, /) -> float:
-        """
-        Returns the G0 criterion at the parametric point U on
-        the curve. This is the greatest distance allowed between
-        the constraint and the target surface at U.
+        Returns the order of constraint (0, 1 or 2 for G0, G1 or G2)
         """
         ...
 
-    def G1Criterion(self, U: float, /) -> float:
+    def G0Criterion(self) -> float:
         """
-        Returns the G1 criterion at the parametric point U on
-        the curve. This is the greatest angle allowed between
-        the constraint and the target surface at U.
+        Returns the G0 criterion.
+        This is the greatest distance allowed between
+        the constraint and the target surface.
+        """
+        ...
+
+    def G1Criterion(self) -> float:
+        """
+        Returns the G1 criterion.
+        This is the greatest angle allowed between
+        the constraint and the target surface.
         Raises an exception if  the  curve  is  not  on  a  surface.
         """
         ...
 
-    def G2Criterion(self, U: float, /) -> float:
+    def G2Criterion(self) -> float:
         """
-        Returns the G2 criterion at the parametric point U on
-        the curve. This is the greatest difference in curvature
-        allowed between the constraint and the target surface at U.
+        Returns the G2 criterion.
+        This is the greatest difference in curvature
+        allowed between the constraint and the target surface.
         Raises an exception if  the  curve  is  not  on  a  surface.
         """
         ...
