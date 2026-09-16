@@ -677,7 +677,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
             const bool isBlock = QFileInfo(QString::fromStdString(constraint->getFile()))
                                      .suffix().compare(QStringLiteral("txt"), Qt::CaseInsensitive) == 0;
             if (isBlock) {
-                menu.addAction(Gui::BitmapFactory().iconFromTheme("Sketcher_EditBlock"),
+                menu.addAction(Gui::BitmapFactory().iconFromTheme("Sketcher_BlockEdit"),
                                tr("Edit Block"), this, [view, index]() {
                     SketcherGui::editFileBlock(view, index);
                 });
@@ -686,7 +686,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
                 SketcherGui::reloadFileGroup(view, index);
             });
             if (isBlock) {
-                reload->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ReloadBlock"));
+                reload->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_BlockReload"));
             }
         }
     }

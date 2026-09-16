@@ -1436,12 +1436,12 @@ CmdSketcherInsertBlock::CmdSketcherInsertBlock()
     );
     sWhatsThis = "Sketcher_InsertBlock";
     sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_InsertBlock";
+    sPixmap = "Sketcher_BlockInsert";
     sAccel = "G, U";
     eType = ForEdit;
 }
 
-CONSTRUCTION_UPDATE_ACTION(CmdSketcherInsertBlock, "Sketcher_InsertBlock")
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherInsertBlock, "Sketcher_BlockInsert")
 
 void CmdSketcherInsertBlock::activated(int iMsg)
 {
