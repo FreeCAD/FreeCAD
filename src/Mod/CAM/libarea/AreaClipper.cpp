@@ -659,6 +659,94 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
         }
     }
 
+    // Simplify the path to eliminate colinear segments and ~adjacent points
+
+    // For closed paths, temporarily add the start point to the end, and then handle as open
+    if (curve.IsClosed() && !result.empty()) {
+        result.push_back(result.front());
+    }
+
+    // Save the original path for later use
+    const Path64 origPath = result;
+
+    // Remove collinear and near-adjacent points
+    const double cleanDist = 1.5;  // Chosen to be longer than dx = dy = 1
+    result = SimplifyPath(result, cleanDist, /*isClosedPath=*/false);
+
+    // Fix up metadata as needed -- if the path now contains segments that don't map onto a
+    // CVertex, determine the most appropriate CVertex and add it to the metadata
+    size_t zPos = 0;
+    for (size_t i = 0; i + 1 < result.size(); i++) {
+        // Loop over the filtered points
+        const Point64& v0 = result[i];
+        const Point64& v1 = result[i + 1];
+
+        assert(origPath[zPos].z == v0.z);
+        const size_t spanStart = zPos;
+
+        // Advance through original path until we reach v1
+        while (origPath[zPos].z != v1.z && zPos < origPath.size()) {
+            zPos++;
+        }
+
+        assert(zPos < origPath.size());
+        const size_t spanEnd = zPos;
+
+        // Check if the segment is missing edge metadata
+        const auto key = [&](size_t z1, size_t z2) {
+            return std::make_pair(std::min(z1, z2), std::max(z1, z2));
+        };
+        if (metadata.edgeData.count(key(v0.z, v1.z))) {
+            continue;
+        }
+
+        // Loop over the filtered section of the original path to find the most appropriate
+        // edge metadata: the longest segment that lies entirely within cleanDist of
+        // the v0/v1 line, or the closest segment if none are that close.
+        auto getLenSq = [&](size_t from, size_t to) -> int64_t {
+            int64_t dx = origPath[to].x - origPath[from].x;
+            int64_t dy = origPath[to].y - origPath[from].y;
+            return dx * dx + dy * dy;
+        };
+        const double cleanDistSq = cleanDist * cleanDist;
+
+        size_t bestIdx = spanStart;
+        int64_t bestLenSq = -1;
+        double bestMaxDist = std::numeric_limits<double>::max();
+
+        for (size_t j = spanStart; j < spanEnd; j++) {
+            const double d0 = PerpendicDistFromLineSqrd(origPath[j], v0, v1);
+            const double d1 = PerpendicDistFromLineSqrd(origPath[j + 1], v0, v1);
+            const double maxDist = std::max(d0, d1);
+            const int64_t lenSq = getLenSq(j, j + 1);
+            if ((maxDist < bestMaxDist && bestMaxDist >= cleanDistSq)
+                || (maxDist < cleanDistSq && lenSq > bestLenSq)) {
+                bestIdx = j;
+                bestLenSq = lenSq;
+                bestMaxDist = maxDist;
+            }
+        }
+
+        // Construct the replacement edgeData using the best CVertex, but with the m_p for v1
+        const auto lastKey = key(origPath[spanEnd - 1].z, origPath[spanEnd].z);
+        const auto lastIt = metadata.edgeData.find(lastKey);
+        assert(lastIt != metadata.edgeData.end());
+
+        const auto bestKey = key(origPath[bestIdx].z, origPath[bestIdx + 1].z);
+        const auto bestIt = metadata.edgeData.find(bestKey);
+        assert(bestIt != metadata.edgeData.end());
+
+        // Save the new edge metadata
+        SegmentData edgeData = bestIt->second;
+        edgeData.orig.m_p = lastIt->second.orig.m_p;
+        metadata.edgeData[key(v0.z, v1.z)] = edgeData;
+    }
+
+    // If it's a closed path, remove the explicit endpoint
+    if (curve.IsClosed() && !result.empty()) {
+        result.pop_back();
+    }
+
     return result;
 }
 

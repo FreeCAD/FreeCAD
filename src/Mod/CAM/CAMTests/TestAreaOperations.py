@@ -467,12 +467,12 @@ class TestAreaOperations(unittest.TestCase):
         self.assert_areas_equal(neg, expected_neg, tol=expected_accuracy)
 
     def test_open_offset_colinear(self):
-        """Test that colinear points are not removed while offsetting"""
+        """Test that colinear points are removed while offsetting"""
         a = make_area(make_curve([(0, 0), (0, 1), (0, 2)]))
         neg = a.OpenOffset(1)
 
-        expected_pos = make_area(make_curve([(1, 0), (1, 1), (1, 2)]))
-        expected_neg = make_area(make_curve([(-1, 0), (-1, 1), (-1, 2)]))
+        expected_pos = make_area(make_curve([(1, 0), (1, 2)]))
+        expected_neg = make_area(make_curve([(-1, 0), (-1, 2)]))
 
         self.assert_areas_equal(a, expected_pos)
         self.assert_areas_equal(neg, expected_neg)
