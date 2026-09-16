@@ -191,6 +191,13 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
   // can be a lot lower
   this->wheel->setDelta(event->angleDelta().y());
 
+  const QPoint pixels = event->pixelDelta();
+  const SbVec2f widgetDelta(static_cast<float>(pixels.x()), static_cast<float>(pixels.y()));
+  this->wheel->setPixelDelta(
+    SoMouseWheelEvent::toGlPixelDelta(widgetDelta,
+                                      static_cast<float>(publ->quarter->devicePixelRatio())),
+    SoMouseWheelEvent::isPreciseScroll(!pixels.isNull(), event->phase() != Qt::NoScrollPhase));
+
   return this->wheel;
 }
 
