@@ -33,30 +33,30 @@ class GeometrySurface(Geometry):
     """Returns a rotation object to describe the orientation for surface that supports it"""
 
     @constmethod
-    def toShape(self) -> Any:
+    def toShape(self, u1: float = ..., u2: float = ..., v1: float = ..., v2: float = ..., /) -> Any:
         """
-        Return the shape for the geometry.
+        Return the shape for the geometry, optionally within the given parametric bounds.
         """
         ...
 
     @constmethod
-    def toShell(self, Bounds: object, Segment: object) -> Any:
+    def toShell(self, Bounds: tuple = ..., Segment: bool = ...) -> Any:
         """
         Make a shell of the surface.
         """
         ...
 
     @constmethod
-    def getD0(self, param: float, /) -> Vector:
+    def getD0(self, u: float, v: float, /) -> Vector:
         """
-        Returns the point of given parameter
+        Returns the point at the given parameters (u, v)
         """
         ...
 
     @constmethod
-    def getDN(self, n: int, /) -> Any:
+    def getDN(self, u: float, v: float, nu: int, nv: int, /) -> Any:
         """
-        Returns the n-th derivative
+        Returns the derivative of order (nu, nv) at the given parameters (u, v)
         """
         ...
 
@@ -162,14 +162,14 @@ class GeometrySurface(Geometry):
         ...
 
     @constmethod
-    def uIso(self, u: Tuple, /) -> Union[GeometryCurve, Line]:
+    def uIso(self, u: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the U isoparametric curve
         """
         ...
 
     @constmethod
-    def vIso(self, v: Tuple, /) -> Union[GeometryCurve, Line]:
+    def vIso(self, v: float, /) -> Union[GeometryCurve, Line]:
         """
         Builds the V isoparametric curve
         """
@@ -218,7 +218,7 @@ class GeometrySurface(Geometry):
         ...
 
     @constmethod
-    def parameter(self) -> float:
+    def parameter(self, point: Vector, precision: float = ..., /) -> float:
         """
         Returns the parameter on the curve
         of the nearest orthogonal projection of the point.
@@ -262,18 +262,18 @@ class GeometrySurface(Geometry):
         ...
 
     @constmethod
-    def intersect(self) -> Any:
+    def intersect(self, other: object, precision: float = ..., /) -> Any:
         """
         Returns all intersection points/curves between the surface and the curve/surface.
         """
         ...
 
     @constmethod
-    def intersectSS(self, SecondSurface: Any, precision_code: int = 0, /) -> Any:
+    def intersectSS(self, second_surface: Any, precision: float = ..., /) -> Any:
         """
         Returns all intersection curves of this surface and the given surface.
         The required arguments are:
-        * Second surface
-        * precision code (optional, default=0)
+        * second_surface
+        * precision (optional, default=0)
         """
         ...
