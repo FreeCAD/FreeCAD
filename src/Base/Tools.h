@@ -437,11 +437,6 @@ BaseExport std::string joinList(const std::vector<std::string>& vec, const std::
  */
 BaseExport std::string currentDateTimeString();
 
-BaseExport bool isCLocaleName(std::string_view localeName);
-BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
-BaseExport std::string getOperatingSystemNumericLocale();
-BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
-
 BaseExport std::vector<std::string> splitSubName(const std::string& subname);
 
 }  // namespace Tools
@@ -481,5 +476,27 @@ struct Overloads: Ts...
 
 template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
+
+
+#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
+[[deprecated("Replace with std::to_underlying() now that C++23 is required")]]
+#endif
+template<typename E>
+constexpr auto to_underlying(E e) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(e);
+}
+
+#if MINIMUM_CPLUSPLUS_VERSION >= 202302L
+[[deprecated("Replace with std::unreachable() now that C++23 is required")]]
+#endif
+[[noreturn]] inline void unreachable()
+{
+#if defined(_MSC_VER) && !defined(__clang__)
+    __assume(false);
+#else
+    __builtin_unreachable();
+#endif
+}
 
 }  // namespace Base

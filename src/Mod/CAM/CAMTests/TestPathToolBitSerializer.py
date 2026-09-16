@@ -15,6 +15,7 @@ from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.serializer import AssetSerializer
 from Path.Tool.assets.uri import AssetUri
 from Path.Tool.shape import ToolBitShapeEndmill
+from Path.Tool.toolbit.util import setToolBitSchema
 from typing import Mapping
 
 
@@ -111,6 +112,128 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
             FreeCAD.Units.Quantity(data.get("parameter", {}).get("Length")),
             FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
         )
+
+    def test_serialize_uses_the_bits_own_units(self):
+        """A bit stores itself in the units it is specified in, not the ones on screen."""
+        self.test_tool_bit.obj.Units = "Imperial"
+        self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+
+        for active in ("Metric", "Imperial"):
+            setToolBitSchema(active)
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            diameter = data["parameter"]["Diameter"]
+            self.assertEqual(diameter, "0.3750 in", f"with the {active} schema active")
+        setToolBitSchema("Metric")
+
+    def test_serialize_keeps_tool_precision(self):
+        """Two decimals would save a 0.375" tap as 0.37" - 0.127mm out."""
+        cases = (("Metric", "9.525 mm"), ("Imperial", "0.3750 in"))
+        for units, expected in cases:
+            self.test_tool_bit.obj.Units = units
+            self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            stored = data["parameter"]["Diameter"]
+            self.assertEqual(stored, expected)
+            self.assertAlmostEqual(
+                FreeCAD.Units.Quantity(stored).Value,
+                self.test_tool_bit.obj.Diameter.Value,
+                places=6,
+            )
+
+    def test_extract_dependencies(self):
+        """Test dependency extraction."""
+        # This test assumes that the serializers don't have dependencies
+        # and can be overridden in subclasses if needed.
+        serialized_data = self.serializer_class.serialize(self.test_tool_bit)
+        dependencies = self.serializer_class.extract_dependencies(serialized_data)
+        self.assertIsInstance(dependencies, list)
+        self.assertEqual(len(dependencies), 0)
+
+
+class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
+    serializer_class = CamoticsToolBitSerializer
+
+    def test_serialize(self):
+        super().test_serialize()
+        serialized_data = self.serializer_class.serialize(self.test_tool_bit)
+        # Camotics specific assertions
+        expected_substrings = [
+            b'"units": "metric"',
+            b'"shape": "Cylindrical"',
+            b'"length": 15',
+            b'"diameter": 4.12',
+            b'"description": "Test Tool"',
+        ]
+        for substring in expected_substrings:
+            self.assertIn(substring, serialized_data)
+
+    def test_deserialize(self):
+        # Create a known serialized data string based on the Camotics format
+        camotics_data = (
+            b'{"units": "metric", "shape": "Cylindrical", "length": 15, '
+            b'"diameter": 4.12, "description": "Test Tool"}'
+        )
+        deserialized_bit = cast(
+            ToolBitEndmill,
+            self.serializer_class.deserialize(camotics_data, id="test_id", dependencies=None),
+        )
+
+        self.assertIsInstance(deserialized_bit, ToolBit)
+        self.assertEqual(deserialized_bit.label, "Test Tool")
+        self.assertEqual(
+            deserialized_bit.get_diameter(), FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length)
+        )
+        self.assertEqual(
+            deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
+        )
+        self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
+
+
+class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
+    serializer_class = FCTBSerializer
+
+    def test_serialize(self):
+        super().test_serialize()
+        serialized_data = self.serializer_class.serialize(self.test_tool_bit)
+        # FCTB specific assertions (JSON format)
+        data = json.loads(serialized_data.decode("utf-8"))
+        self.assertEqual(data.get("name"), "Test Tool")
+        self.assertEqual(data.get("shape"), "endmill.fcstd")
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Diameter")),
+            FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length),
+        )
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Length")),
+            FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
+        )
+
+    def test_serialize_uses_the_bits_own_units(self):
+        """A bit stores itself in the units it is specified in, not the ones on screen."""
+        self.test_tool_bit.obj.Units = "Imperial"
+        self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+
+        for active in ("Metric", "Imperial"):
+            setToolBitSchema(active)
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            diameter = data["parameter"]["Diameter"]
+            self.assertEqual(diameter, "0.3750 in", f"with the {active} schema active")
+        setToolBitSchema("Metric")
+
+    def test_serialize_keeps_tool_precision(self):
+        """Two decimals would save a 0.375" tap as 0.37" - 0.127mm out."""
+        cases = (("Metric", "9.525 mm"), ("Imperial", "0.3750 in"))
+        for units, expected in cases:
+            self.test_tool_bit.obj.Units = units
+            self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("0.375 in"))
+            data = json.loads(self.serializer_class.serialize(self.test_tool_bit).decode("utf-8"))
+            stored = data["parameter"]["Diameter"]
+            self.assertEqual(stored, expected)
+            self.assertAlmostEqual(
+                FreeCAD.Units.Quantity(stored).Value,
+                self.test_tool_bit.obj.Diameter.Value,
+                places=6,
+            )
 
     def test_extract_dependencies(self):
         """Test dependency extraction for FCTB."""

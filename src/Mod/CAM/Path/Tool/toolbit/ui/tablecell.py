@@ -144,7 +144,7 @@ class TwoLineTableCell(QtGui.QWidget):
         icon = shape.get_icon()
         if not icon:
             return
-        pixmap = icon.get_qpixmap(self.icon_size)
+        pixmap = icon.get_qpixmap(self.icon_size, dimensions=False)
         if pixmap:
             pixmap.setDevicePixelRatio(self.devicePixelRatioF())
             self.set_icon(pixmap)

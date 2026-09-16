@@ -79,11 +79,9 @@ if (MSVC)
     target_compile_options(ReverseEngineeringGui PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(ReverseEngineeringGui)
-endif()
+target_compile_warn_error(ReverseEngineeringGui)
 
-SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
+SET_BIN_DIR(ReverseEngineeringGui)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
 
 fc_copy_sources(ReverseEngineeringGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/ReverseEngineering" ${ReverseEngineeringGuiIcon_SVG})

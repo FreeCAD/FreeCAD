@@ -64,32 +64,32 @@
     <message>
       <location filename="../../Exception.cpp" line="323"/>
       <source>No permission to read the file</source>
-      <translation type="unfinished">No permission to read the file</translation>
+      <translation>Sem permissão para ler o arquivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="325"/>
       <source>No write permission for the file or the file is read-only</source>
-      <translation type="unfinished">No write permission for the file or the file is read-only</translation>
+      <translation>Sem permissão de escrita no arquivo ou o arquivo é somente leitura</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="326"/>
       <source>File format not supported</source>
-      <translation type="unfinished">File format not supported</translation>
+      <translation>Formato de arquivo não suportado</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="327"/>
       <source>Error reading from file</source>
-      <translation type="unfinished">Error reading from file</translation>
+      <translation>Erro ao ler o arquivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="328"/>
       <source>Error writing to file</source>
-      <translation type="unfinished">Error writing to file</translation>
+      <translation>Erro ao escrever no arquivo</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="330"/>
       <source>Directory does not exist</source>
-      <translation type="unfinished">Directory does not exist</translation>
+      <translation>O diretório não existe</translation>
     </message>
   </context>
 </TS>

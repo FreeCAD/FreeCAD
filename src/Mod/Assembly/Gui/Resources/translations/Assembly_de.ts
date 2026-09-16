@@ -1634,24 +1634,6 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Mindestens zwei Komponenten auswählen, um eine starr verbundene Gruppe zu erstellen</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Starr verbundene Gruppe erstellen</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Eine starr verbundene Gruppe erstellen.&lt;/p&gt;&lt;p&gt;Erstellt eine starr verbundene Gruppe, die die ausgewählten Komponenten dauerhaft miteinander verbindet.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1672,6 +1654,24 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Momentaufnahme wiederherstellen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Mindestens zwei Komponenten auswählen, um eine starr verbundene Gruppe zu erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Starr verbundene Gruppe erstellen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Eine starr verbundene Gruppe erstellen.&lt;/p&gt;&lt;p&gt;Erstellt eine starr verbundene Gruppe, die die ausgewählten Komponenten dauerhaft miteinander verbindet.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

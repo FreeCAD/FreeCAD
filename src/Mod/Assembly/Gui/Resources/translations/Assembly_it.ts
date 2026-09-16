@@ -1633,24 +1633,6 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
     </message>
   </context>
   <context>
-    <name>Assembly_CreateJointRigidGroup</name>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="413"/>
-      <source>Select at least 2 components to create a rigid group</source>
-      <translation>Seleziona almeno 2 componenti per creare un gruppo rigido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="536"/>
-      <source>Create Rigid Group</source>
-      <translation>Crea gruppo rigido</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="542"/>
-      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Crea un gruppo rigido.&lt;/p&gt;&lt;p&gt;Crea un gruppo rigido che blocca permanentemente insieme i componenti selezionati.&lt;/p&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>Assembly_Snapshot</name>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
@@ -1671,6 +1653,24 @@ Nota: al momento questa funzione seleziona solo le parti non collegate, non quel
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
       <source>Restore Snapshot</source>
       <translation>Ripristina snapshot</translation>
+    </message>
+  </context>
+  <context>
+    <name>Assembly_CreateJointRigidGroup</name>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="413"/>
+      <source>Select at least 2 components to create a rigid group</source>
+      <translation>Seleziona almeno 2 componenti per creare un gruppo rigido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="536"/>
+      <source>Create Rigid Group</source>
+      <translation>Crea gruppo rigido</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateJoint.py" line="542"/>
+      <source>&lt;p&gt;Create a rigid group.&lt;/p&gt;&lt;p&gt;Creates a rigid group that permanently locks the selected components together.&lt;/p&gt;</source>
+      <translation>&lt;p&gt;Crea un gruppo rigido.&lt;/p&gt;&lt;p&gt;Crea un gruppo rigido che blocca permanentemente insieme i componenti selezionati.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

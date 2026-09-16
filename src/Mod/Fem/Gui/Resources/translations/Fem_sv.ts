@@ -2763,9 +2763,9 @@ att "MAXGS" behöver ökas.</translation>
       <translation>Inloppstryck</translation>
     </message>
     <message>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Tryck</translation>
     </message>
@@ -2905,12 +2905,12 @@ att "MAXGS" behöver ökas.</translation>
       <translation>Varvtal per sekund</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -3067,18 +3067,18 @@ Obs: har ingen effekt om en solid har valts</translation>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="113"/>
       <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Verklig</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="123"/>
       <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginär</translation>
     </message>
@@ -3220,14 +3220,14 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Bredd</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3248,11 +3248,59 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Yttre diameter</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>Definiera nätstorlek inuti och utanför formen, med valfri tjocklek på övergångsskiktet</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>Nätstorlek inuti formen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>Storlek inuti</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>Nätstorlek utanför formen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>Storlek utanför</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation>Tjocklek på övergångsskiktet mellan inre och yttre nätstorlek (läggs till utanför formen)</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <source>Thickness</source>
       <translation>Tjocklek</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Låda</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
@@ -3329,13 +3377,13 @@ Obs: har ingen effekt om en solid har valts</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Egenskaper för analysfunktion</translation>
     </message>
@@ -3345,9 +3393,9 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Värmekälla</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="29"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <source>Mode</source>
       <translation>Läge</translation>
     </message>
@@ -3362,8 +3410,8 @@ Obs: har ingen effekt om en solid har valts</translation>
       <translation>Förlusthastighet</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>Imaginärdelen används endast för ekvationer
@@ -3436,11 +3484,194 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Välj anpassat läge för att aktivera vektorströmdensitet</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <source>Icon</source>
+      <translation>Ikon</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>Dra den förfining som ska ändras till objektet Manipulera i dokumentträdet</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>Begränsa</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>Tröskelvärde</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>Medelvärde</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>Gradient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>Krökning</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>Laplacian</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>Begränsa tillämpningen av den underordnade förfiningen till de valda referenselementen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>Inkludera randen för de valda referenselementen</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>Inkludera rand</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>Tillämpa ett tröskelvärde på den underordnade förfiningens värde</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>Nätstorlek när avstånd = DistanceMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>Avstånd där nätstorleken ska vara SizeMaximum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>Utdatastorlek</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>Nätstorlek när avstånd &lt; DistanceMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>Indatavärde</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>Avstånd upp till vilket nätstorleken ska vara SizeMinimum</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <source>Diagram</source>
+      <translation>Diagram</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>Linjär interpolering</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>Anger om interpoleringen av nätstorleken mellan SizeMinimum och SizeMaximum ska vara en linjär funktion eller en sigmoidfunktion</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>Stoppa vid största indata</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>Beräknar medelvärdet för den underordnade förfiningen G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>Delta</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>Delta i ovanstående ekvation</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>Beräkna den finita differensgradienten för den underordnade förfiningen G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Magnetization.ui" line="56"/>
-      <location filename="../ui/MeshManipulate.ui" line="594"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3455,11 +3686,11 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens x-komponent</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Magnetization.ui" line="107"/>
-      <location filename="../ui/MeshManipulate.ui" line="599"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3474,11 +3705,11 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Imaginär del av strömtäthetens y-komponent</translation>
     </message>
     <message>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Magnetization.ui" line="158"/>
-      <location filename="../ui/MeshManipulate.ui" line="604"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3518,79 +3749,32 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Maximal elementstorlek</translation>
     </message>
     <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <location filename="../ui/MeshPreview.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreview.ui" line="96"/>
-      <location filename="../ui/MeshPreview.ui" line="109"/>
-      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation>Den minsta nätstorleken i förfiningen, markerad med grönt i nätförhandsgranskningen.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min</source>
-      <translation>Min</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="112"/>
-      <source>1.00e+02</source>
-      <translation>1.00e+02</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="138"/>
-      <location filename="../ui/MeshPreview.ui" line="151"/>
-      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation>Den största nätstorleken i förfiningen, markerad med rött i nätförhandsgranskningen.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max</source>
-      <translation>Max</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="154"/>
-      <source>1.00e+03</source>
-      <translation>1.00e+03</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualiserar förfiningens utdata för nätstorlek – nätstorlekarna som förfiningen ger visas som färger på ett förhandsgranskningsnät. Observera att förhandsgranskningen utvärderar förfiningen på ett grovt nät; detaljer som är mindre än nätstorleken kanske därför inte syns.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="187"/>
-      <source>Visualize</source>
-      <translation>Visualisera</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>Fält</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <source>Frames</source>
       <translation>Ramar</translation>
     </message>
@@ -3600,8 +3784,8 @@ med harmonisk/oscillerande drivström</translation>
       <translation>Ett fält för varje ram</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <source>Index</source>
       <translation>Index</translation>
     </message>
@@ -3611,8 +3795,8 @@ med harmonisk/oscillerande drivström</translation>
       <translation>X fält</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
       <source>Y field</source>
       <translation>Y fält</translation>
     </message>
@@ -3620,335 +3804,6 @@ med harmonisk/oscillerande drivström</translation>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
       <source>One Y field for each frame</source>
       <translation>Ett Y-fält för varje bildruta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation>Skapa ett angivet antal nätnoder på kanter med en strukturerad algoritm.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation>Antal noder på kanten</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <source>Progression</source>
-      <translation>Progression</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>Invertera</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <source>Nodes</source>
-      <translation>Noder</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <source>Bump</source>
-      <translation>Bula</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <source>Constant</source>
-      <translation>Konstant</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <source>Diagram</source>
-      <translation>Diagram</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation>Koefficient</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation>Koefficient för tillväxthastighet för bula/progression</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation>Definiera nätstorlek inuti och utanför formen, med valfri tjocklek på övergångsskiktet</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation>Nätstorlek inuti formen</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation>Storlek inuti</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation>Nätstorlek utanför formen</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation>Storlek utanför</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation>Tjocklek på övergångsskiktet mellan inre och yttre nätstorlek (läggs till utanför formen)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Låda</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>Sfär</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>Cylinder</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
-      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation>Välj flera ytor med 3 eller 4 kanter, eventuellt även hörn för tresidiga ytor.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;eller&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Välj en enda yta med fler än 4 kanter och välj dessutom de 3 eller 4 hörnnoderna.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <source>Icon</source>
-      <translation>Ikon</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
-      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation>Motsatta kanter (eller trådar mellan hörnpunkter) måste ha lika många nätnoder. Det enklaste sättet att uppnå detta är med transfinita kurvor.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
-      <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation>Ange om trianglarna på ytan ska kombineras om till fyrhörningar</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <source>Recombine</source>
-      <translation>Kombinera om</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
-      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation>Ange hur trianglarna orienteras i det transfinita nätet (om de inte kombineras om)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
-      <source>Triangle Orientation</source>
-      <translation>Triangelorientering</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
-      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
-
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </source>
-      <translation>Om detta aktiveras blir alla kanter på de valda ytorna som ännu inte har en definierad transfinita kurva automatiskt transfinita.
-Använd strategiskt placerade definitioner av transfinita kurvor för att styra den automatiska algoritmen.
-
-Anmärkningar:
-1. Användardefinierade kurvor fortplantas till motsatta kanter på ytor över alla valda ytor.
-2. Fungerar endast för 3- eller 4-sidiga ytor. Flersidiga ytor måste hanteras manuellt.
-3. Fungerar med de flesta ytor, både anslutna och frånkopplade</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
-      <source>Auto apply transfinite curves</source>
-      <translation>Tillämpa transfinita kurvor automatiskt</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <source>Distribution</source>
-      <translation>Fördelning</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <source>Bump Inverted</source>
-      <translation>Inverterad bula</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <source>Progression Inverted</source>
-      <translation>Inverterad progression</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>Skapar ett strukturerat nät i en volym som styrs av dess transfinita ytor.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>Välj valfritt antal 5- eller 6-sidiga volymer</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>Alla volymytor måste vara transfinita. Om ytorna har olika nättyper (fyrhörningar respektive trianglar) måste volymen också nätindelas med blandade element aktiverade.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>Blandade nätelement</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>Om detta aktiveras blir alla kanter och ytor som hör till de valda volymerna och ännu inte har en transfinita definition automatiskt transfinita.
-Använd strategiskt placerade definitioner av transfinita kurvor och ytor för att styra den automatiska algoritmen.
-
-Anmärkningar:
-1. Användardefinierade kurvor fortplantas till motsatta kanter på ytor över alla valda ytor.
-2. Fungerar med valfritt antal volymer, både anslutna och frånkopplade</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>Tillämpa transfinita ytor och kurvor automatiskt</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Yta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>Definiera nätelementens storlek utifrån avståndet till de valda referensgeometrierna.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Nätstorlek när avstånd = DistanceMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>Avstånd där nätstorleken ska vara SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Storlek</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Nätstorlek när avstånd &lt; DistanceMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <source>Distance</source>
-      <translation>Distans</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>Avstånd upp till vilket nätstorleken ska vara SizeMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>Interpolering</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>Samplingsstorlek</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>Antal samplingspunkter som används för att diskretisera kurvor och ytor. För ytor är det samplingsstorleken per riktning.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>Anger om interpoleringen av nätstorleken mellan SizeMinimum och SizeMaximum ska vara en linjär funktion eller en sigmoidfunktion</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>Linjär</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type</source>
-      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -3964,6 +3819,13 @@ Anmärkningar:
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
       <translation>MathEvalAniso</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <source>Distance</source>
+      <translation>Distans</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="68"/>
@@ -4103,124 +3965,145 @@ Exempel: ”F2 + Sin(z)”</translation>
       <translation>Använder ett datafält från en FEM-efterbehandlingspipeline som nätstorlek. Därmed kan nätet anpassas efter resultatets fysikaliska beteende.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>Dra den förfining som ska ändras till objektet Manipulera i dokumentträdet</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
+      <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
+      <translation>Välj flera ytor med 3 eller 4 kanter, eventuellt även hörn för tresidiga ytor.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>Begränsa</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;eller&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>Tröskelvärde</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Välj en enda yta med fler än 4 kanter och välj dessutom de 3 eller 4 hörnnoderna.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>Medelvärde</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
+      <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
+      <translation>Motsatta kanter (eller trådar mellan hörnpunkter) måste ha lika många nätnoder. Det enklaste sättet att uppnå detta är med transfinita kurvor.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>Gradient</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
+      <source>Define if the triangles on the surface shall be recombined into quads</source>
+      <translation>Ange om trianglarna på ytan ska kombineras om till fyrhörningar</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>Krökning</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <source>Recombine</source>
+      <translation>Kombinera om</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>Laplacian</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
+      <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
+      <translation>Ange hur trianglarna orienteras i det transfinita nätet (om de inte kombineras om)</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>Begränsa tillämpningen av den underordnade förfiningen till de valda referenselementen.</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
+      <source>Triangle Orientation</source>
+      <translation>Triangelorientering</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>Inkludera randen för de valda referenselementen</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>Inkludera rand</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>Tillämpa ett tröskelvärde på den underordnade förfiningens värde</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>Utdatastorlek</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>Indatavärde</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>Linjär interpolering</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>Stoppa vid största indata</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
+      <source>If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
+Use strategically placed transfinite curve definitions to guide the automatic algorithm.
 
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>Beräknar medelvärdet för den underordnade förfiningen G:
+Notes:
+1. User defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
+3. Works with most faces, either connected or unconnected </source>
+      <translation>Om detta aktiveras blir alla kanter på de valda ytorna som ännu inte har en definierad transfinita kurva automatiskt transfinita.
+Använd strategiskt placerade definitioner av transfinita kurvor för att styra den automatiska algoritmen.
 
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
+Anmärkningar:
+1. Användardefinierade kurvor fortplantas till motsatta kanter på ytor över alla valda ytor.
+2. Fungerar endast för 3- eller 4-sidiga ytor. Flersidiga ytor måste hanteras manuellt.
+3. Fungerar med de flesta ytor, både anslutna och frånkopplade</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>Delta</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
+      <source>Auto apply transfinite curves</source>
+      <translation>Tillämpa transfinita kurvor automatiskt</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>Delta i ovanstående ekvation</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <source>Nodes</source>
+      <translation>Noder</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>Beräkna den finita differensgradienten för den underordnade förfiningen G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <source>Distribution</source>
+      <translation>Fördelning</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>Typ</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <source>Constant</source>
+      <translation>Konstant</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <source>Bump</source>
+      <translation>Bula</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <source>Bump Inverted</source>
+      <translation>Inverterad bula</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <source>Progression</source>
+      <translation>Progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <source>Progression Inverted</source>
+      <translation>Inverterad progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>Definiera nätelementens storlek utifrån avståndet till de valda referensgeometrierna.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Storlek</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>Interpolering</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>Samplingsstorlek</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>Antal samplingspunkter som används för att diskretisera kurvor och ytor. För ytor är det samplingsstorleken per riktning.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>Linjär</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
@@ -4247,6 +4130,123 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
       <source>Preview mesh fineness</source>
       <translation>Förhandsgranskningsnätets finhet</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation>Den minsta nätstorleken i förfiningen, markerad med grönt i nätförhandsgranskningen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min</source>
+      <translation>Min</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation>1.00e+02</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation>Den största nätstorleken i förfiningen, markerad med rött i nätförhandsgranskningen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max</source>
+      <translation>Max</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation>1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualiserar förfiningens utdata för nätstorlek – nätstorlekarna som förfiningen ger visas som färger på ett förhandsgranskningsnät. Observera att förhandsgranskningen utvärderar förfiningen på ett grovt nät; detaljer som är mindre än nätstorleken kanske därför inte syns.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation>Visualisera</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation>Skapa ett angivet antal nätnoder på kanter med en strukturerad algoritm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation>Antal noder på kanten</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>Invertera</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>Koefficient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation>Koefficient för tillväxthastighet för bula/progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>Skapar ett strukturerat nät i en volym som styrs av dess transfinita ytor.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>Välj valfritt antal 5- eller 6-sidiga volymer</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>Alla volymytor måste vara transfinita. Om ytorna har olika nättyper (fyrhörningar respektive trianglar) måste volymen också nätindelas med blandade element aktiverade.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>Blandade nätelement</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>Om detta aktiveras blir alla kanter och ytor som hör till de valda volymerna och ännu inte har en transfinita definition automatiskt transfinita.
+Använd strategiskt placerade definitioner av transfinita kurvor och ytor för att styra den automatiska algoritmen.
+
+Anmärkningar:
+1. Användardefinierade kurvor fortplantas till motsatta kanter på ytor över alla valda ytor.
+2. Fungerar med valfritt antal volymer, både anslutna och frånkopplade</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>Tillämpa transfinita ytor och kurvor automatiskt</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Yta</translation>
     </message>
   </context>
   <context>
@@ -5022,12 +5022,12 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Välj huvudgeometri av typen kant eller yta och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
-      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
+      <translation>Välj slavgeometri av typen kant eller yta och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -6718,8 +6718,8 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Vilken del av Y-fältvektorn som ska användas för Y-axeln</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Ange om fältet ska extraheras för varje tillgänglig bildruta</translation>
     </message>
@@ -6739,14 +6739,14 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Redigera {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
       <translation>Visa tomt</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
       <source>Show Data</source>
       <translation>Visa data</translation>
     </message>
@@ -7425,11 +7425,11 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <translation>Radera element</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="244"/>
       <location filename="../../TaskCreateElementSet.cpp" line="255"/>
       <location filename="../../TaskCreateElementSet.cpp" line="515"/>
       <location filename="../../TaskCreateElementSet.cpp" line="612"/>
+      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
@@ -7839,9 +7839,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <name>TaskPostGlyph</name>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Glyfens form</translation>
     </message>
@@ -7883,10 +7883,10 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Vilket vektorfält används för att orientera glyferna</translation>
     </message>
@@ -7897,9 +7897,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
@@ -7921,9 +7921,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>En konstant multiplikator som glyferna skalas med</translation>
     </message>
@@ -7939,8 +7939,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Om skalningsdata är en vektor avgör denna egenskap om glyfen skalas med vektorstorleken eller med de enskilda komponenterna</translation>
     </message>
@@ -8527,35 +8527,35 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Stil för konturritning (None ritar inte konturer)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Bredd på alla linjer (kontur och skraffering)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>Skrafferingsmönster</translation>
     </message>
@@ -8575,8 +8575,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Staplar</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>Historia</translation>
     </message>
@@ -8586,8 +8586,8 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
       <translation>Färg på alla linjer (balkkontur och skraffering)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>Färg på staplarna i histogrammet</translation>
     </message>
@@ -8747,118 +8747,6 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
-    <name>SolverZ88</name>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>Styrning av Z88-lösare</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Arbetskatalog</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>Skriv</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Redigera</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Sökväg till arbetskatalog. Lämna tomt för att använda användarinställningarna</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametrar för lösare</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>Lösartyp</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>Tid</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Version av lösare</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverElmer</name>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>Styrning av Elmer-lösare</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Arbetskatalog</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>Skriv</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Redigera</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Sökväg till arbetskatalog. Lämna tomt för att använda användarinställningarna</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Parametrar för lösare</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>Simulationstyp</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>Tid</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Version av lösare</translation>
-    </message>
-  </context>
-  <context>
-    <name>self.sel_master</name>
-    <message>
-      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
-      <source>Master Geometry Reference Selector</source>
-      <translation>Väljare för huvudgeometrireferens</translation>
-    </message>
-  </context>
-  <context>
-    <name>self.sel_slave</name>
-    <message>
-      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
-      <source>Slave Geometry Reference Selector</source>
-      <translation>Väljare för underordnad geometrireferens</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ConstraintElectromagnetic</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="268"/>
@@ -9005,6 +8893,22 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
+    <name>self.sel_master</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
+      <source>Master Geometry Reference Selector</source>
+      <translation>Väljare för huvudgeometrireferens</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_slave</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
+      <source>Slave Geometry Reference Selector</source>
+      <translation>Väljare för underordnad geometrireferens</translation>
+    </message>
+  </context>
+  <context>
     <name>FemToolsCcx</name>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="421"/>
@@ -9028,9 +8932,105 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgPost</name>
+    <name>SolverElmer</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>Styrning av Elmer-lösare</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Arbetskatalog</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>Skriv</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Sökväg till arbetskatalog. Lämna tomt för att använda användarinställningarna</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametrar för lösare</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>Simulationstyp</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>Tid</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Version av lösare</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>Styrning av Z88-lösare</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Arbetskatalog</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Skriv</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Redigera</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Sökväg till arbetskatalog. Lämna tomt för att använda användarinställningarna</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Parametrar för lösare</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>Lösartyp</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Tid</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Version av lösare</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
       <source>Input Error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -9044,49 +9044,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
       <source>Input Error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -9108,22 +9068,6 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::DlgSettingsFemInOutVtkImp</name>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
@@ -9137,6 +9081,38 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
@@ -9145,9 +9121,9 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
       <source>Input Error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -9156,6 +9132,30 @@ Lämna tomt för att använda standard Python-körbar fil</translation>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
       <source>Input Error</source>
       <translation>Inmatningsfel</translation>
     </message>

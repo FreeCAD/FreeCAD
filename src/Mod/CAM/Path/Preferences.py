@@ -55,6 +55,11 @@ PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 PostProcessorShowEditor = "PostProcessorShowEditor"
 
+ToolBitDimensionColorLight = "ToolBitDimensionColorLight"
+ToolBitDimensionColorDark = "ToolBitDimensionColorDark"
+ToolBitDimensionHighlightColor = "ToolBitDimensionHighlightColor"
+ToolBitArtworkBrightness = "ToolBitArtworkBrightness"
+
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
@@ -88,6 +93,36 @@ def _emit_change(group, *args):
 
 def preferences():
     return FreeCAD.ParamGet(PreferencesGroup)
+
+
+def _color_as_hex(name, default):
+    """Read a color preference, returning it as an "#rrggbb" string.
+
+    Color preferences are stored packed as ((R * 256 + G) * 256 + B) * 256 + A.
+    """
+    red, green, blue = (int(default[i : i + 2], 16) for i in (1, 3, 5))
+    packed = preferences().GetUnsigned(name, ((red * 256 + green) * 256 + blue) * 256 + 255)
+    return "#%02x%02x%02x" % ((packed >> 24) & 0xFF, (packed >> 16) & 0xFF, (packed >> 8) & 0xFF)
+
+
+def toolBitDimensionColor(dark: bool) -> str:
+    """Color of the dimensioning in the tool bit shape drawings."""
+    if dark:
+        return _color_as_hex(ToolBitDimensionColorDark, "#23818d")
+    return _color_as_hex(ToolBitDimensionColorLight, "#111111")
+
+
+def toolBitDimensionHighlightColor() -> str:
+    """Color of the one dimension the user is pointing at."""
+    return _color_as_hex(ToolBitDimensionHighlightColor, "#ff8c00")
+
+
+def toolBitArtworkBrightness() -> float:
+    """
+    How brightly to draw the tool artwork on a dark theme, as a factor of its
+    drawn-for-white-paper colors. Stored as a percentage.
+    """
+    return min(max(preferences().GetInt(ToolBitArtworkBrightness, 85), 10), 100) / 100.0
 
 
 def tool_preferences():

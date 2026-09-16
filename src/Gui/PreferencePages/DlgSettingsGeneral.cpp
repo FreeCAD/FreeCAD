@@ -253,6 +253,7 @@ void DlgSettingsGeneral::saveSettings()
         requireRestart();
     }
     ui->FineGrainedRecompute->onSave();
+    ui->ComboBoxWheelEventFilter->onSave();
 
     setRecentFileSize();
     bool force = setLanguage();
@@ -307,6 +308,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->ActivateOverlay->onRestore();
     setProperty("ActivateOverlay", ui->ActivateOverlay->isChecked());
     ui->FineGrainedRecompute->onRestore();
+    ui->ComboBoxWheelEventFilter->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");

@@ -446,6 +446,12 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         ret.push_back(info);
     }
 
+    // A selection gate rejected every hit. Treat this like an empty pick so the event can reach
+    // the active view provider without a rejected-selection notification.
+    if (!canFinalizeSinglePick(ret)) {
+        return {};
+    }
+
     if (ret.size() <= 1) {
         return ret;
     }
@@ -865,7 +871,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());
     static char buf[513];
     auto subName = info.element;
-
     if (ctrlDown) {
         if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
             Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
@@ -890,7 +895,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             if (guard.expired()) {
                 return false;
             }
-
             if (ok && preselectionMode == OFF) {
                 snprintf(
                     buf,

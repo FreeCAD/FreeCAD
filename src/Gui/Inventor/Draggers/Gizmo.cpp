@@ -528,6 +528,7 @@ void RotationGizmo::draggingStarted()
 {
     initialValue = property->value().getValue();
     lastDragOffset = 0.0;
+    hasDragged = false;
     dragger->rotationIncrementCount.setValue(0);
 
     if (isDelayedUpdateEnabled()) {
@@ -542,12 +543,17 @@ void RotationGizmo::draggingFinished()
         property->valueChanged(property->value().getValue());
     }
 
+    if (!hasDragged && clickCallback) {
+        clickCallback();
+    }
+
     property->setFocus();
     property->selectAll();
 }
 
 void RotationGizmo::draggingContinued()
 {
+    hasDragged = true;
     const double period = getRotationPeriod(multFactor);
     double dragOffset = getClosestEquivalentAngle(getRotAngle(), lastDragOffset, period);
     lastDragOffset = dragOffset;
@@ -622,6 +628,11 @@ void RotationGizmo::setAddFactor(const double val)
 {
     addFactor = val;
     setRotAngle(property->value().getValue());
+}
+
+void RotationGizmo::setClickCallback(ClickCallback callback)
+{
+    clickCallback = std::move(callback);
 }
 
 void RotationGizmo::setVisibility(bool visible)

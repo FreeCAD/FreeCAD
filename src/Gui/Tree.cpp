@@ -6559,6 +6559,17 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     this->setIcon(0, icon);
 }
 
+QVariant DocumentObjectItem::data(int column, int role) const
+{
+    if (column == 0 && role == Qt::ToolTipRole && object()) {
+        const QString tip = object()->getToolTip();
+        if (!tip.isEmpty()) {
+            return tip;
+        }
+    }
+    return QTreeWidgetItem::data(column, role);
+}
+
 void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();

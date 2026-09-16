@@ -49,6 +49,109 @@ import FreeCADGui
 Gui = FreeCADGui
 App = FreeCAD
 
+
+# --- BEGIN external workbench icon central patch ---
+def _fc_external_workbench_icon(fallback_path):
+    try:
+        _os = __import__("os")
+        _fc = __import__("FreeCAD")
+
+        path = ""
+        enabled = False
+        prefer_external = True
+
+        try:
+            group = _fc.ParamGet("User parameter:BaseApp/Preferences/Bitmaps/ExternalTheme")
+            enabled = group.GetBool("Enabled", False)
+            prefer_external = group.GetBool("PreferExternal", True)
+            path = group.GetString("Path", "")
+        except Exception:
+            pass
+
+        env_enabled = _os.environ.get("FREECAD_EXTERNAL_ICON_THEME_ENABLED")
+        enabled_override_set = env_enabled is not None
+        if enabled_override_set:
+            enabled = env_enabled.strip().lower() not in ("0", "false", "no", "off")
+
+        env_prefer = _os.environ.get("FREECAD_EXTERNAL_ICON_THEME_PREFER_EXTERNAL")
+        if env_prefer is not None:
+            prefer_external = env_prefer.strip().lower() not in ("0", "false", "no", "off")
+
+        env_path = _os.environ.get("FREECAD_EXTERNAL_ICON_THEME")
+        if env_path is not None:
+            path = env_path
+            if not enabled_override_set and path:
+                enabled = True
+
+        if enabled and prefer_external and path and fallback_path:
+            fallback_str = str(fallback_path)
+            base = _os.path.splitext(_os.path.basename(fallback_str))[0]
+            candidates = []
+            for ext in (".svg", ".png", ".xpm"):
+                candidates.append(_os.path.join(path, base + ext))
+                candidates.append(_os.path.join(path, "icons", base + ext))
+
+            for candidate in candidates:
+                if _os.path.isfile(candidate):
+                    return candidate
+
+            for root, _dirs, files in _os.walk(path):
+                for ext in (".svg", ".png", ".xpm"):
+                    name = base + ext
+                    if name in files:
+                        return _os.path.join(root, name)
+    except Exception:
+        pass
+
+    return fallback_path
+
+
+def _fc_patch_workbench_icon_object(workbench_obj):
+    try:
+        if hasattr(workbench_obj, "Icon") and workbench_obj.Icon:
+            resolved = _fc_external_workbench_icon(workbench_obj.Icon)
+            try:
+                workbench_obj.__dict__["Icon"] = resolved
+            except Exception:
+                try:
+                    setattr(workbench_obj, "Icon", resolved)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return workbench_obj
+
+
+def _fc_install_add_workbench_icon_wrapper(gui_module):
+    try:
+        current = getattr(gui_module, "addWorkbench", None)
+        if current is None:
+            return
+        if getattr(current, "__name__", "") == "_fc_add_workbench_with_external_icon":
+            return
+
+        original_add_workbench = current
+
+        def _fc_add_workbench_with_external_icon(*args, **kwargs):
+            if args:
+                patched_first = _fc_patch_workbench_icon_object(args[0])
+                if len(args) == 1:
+                    args = (patched_first,)
+                else:
+                    args = (patched_first,) + tuple(args[1:])
+            return original_add_workbench(*args, **kwargs)
+
+        try:
+            _fc_add_workbench_with_external_icon.__name__ = "_fc_add_workbench_with_external_icon"
+        except Exception:
+            pass
+        gui_module.addWorkbench = _fc_add_workbench_with_external_icon
+    except Exception:
+        pass
+
+
+# --- END external workbench icon central patch ---
+
 translate = FreeCAD.Qt.translate
 
 App.Console.PrintLog("Init: Running FreeCADGuiInit.py start script...\n")
@@ -433,7 +536,7 @@ def GeneratePackageIcon(
         Log(f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
             in class {workbench_metadata.Classname}")
         Log(" ... replacing with icon from package.xml data.\n")
-    wb_handle.__dict__["Icon"] = str(absolute_filename.resolve())
+    wb_handle.__dict__["Icon"] = _fc_external_workbench_icon(str(absolute_filename.resolve()))
 
 
 # signal that the gui is up
@@ -441,8 +544,9 @@ App.GuiUp = 1
 App.Gui = FreeCADGui
 FreeCADGui.Workbench = Workbench
 
-Gui.addWorkbench(NoneWorkbench())
+_fc_install_add_workbench_icon_wrapper(Gui)
 
+Gui.addWorkbench(_fc_patch_workbench_icon_object(NoneWorkbench()))
 # init modules
 InitApplications()
 

@@ -548,22 +548,22 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <translation>Bezwładność</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <location filename="../../TaskMassProperties.cpp" line="434"/>
       <source>Close</source>
       <translation>Zamknij</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <location filename="../../TaskMassProperties.cpp" line="437"/>
       <source>Save</source>
       <translation>Zapisz</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <location filename="../../TaskMassProperties.cpp" line="441"/>
       <source>Reset</source>
       <translation>Reset</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <location filename="../../TaskMassProperties.cpp" line="1218"/>
       <source> (Average)</source>
       <translation>(Przeciętne)</translation>
     </message>

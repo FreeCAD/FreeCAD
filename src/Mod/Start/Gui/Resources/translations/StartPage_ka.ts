@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Open File</source>
       <translation>ფაილის გახსნა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Assembly</source>
       <translation>აწყობა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>2D Draft</source>
       <translation>2D მონახაზი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="232"/>
+      <location filename="../../StartView.cpp" line="241"/>
       <source>Creates a 2D Draft document</source>
       <translation>შექმნის 2D მონახაზის დოკუმენტს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="235"/>
+      <location filename="../../StartView.cpp" line="244"/>
       <source>BIM/Architecture</source>
       <translation>BIM/არქიტექტურა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Empty File</source>
       <translation>ცარიელი ფაილი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="213"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>ქმნის ცარიელ FreeCAD-ის ფაილს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>გახსნის არსებულ CAD ფაილს ან 3D მოდელს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="231"/>
       <source>Parametric Body</source>
       <translation>პარამეტრული სხეული</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>შექმნის სხეულს ნაწილის დიზაინის სამუშაო მაგიდით</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="237"/>
       <source>Creates an assembly project</source>
       <translation>აწყობის პროექტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="236"/>
+      <location filename="../../StartView.cpp" line="245"/>
       <source>Creates an architectural project</source>
       <translation>ქმნის არქიტექტურულ პროექტს</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="520"/>
+      <location filename="../../StartView.cpp" line="529"/>
       <source>New File</source>
       <translation>ახალი ფაილი</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="531"/>
       <source>Examples</source>
       <translation>მაგალითები</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="524"/>
+      <location filename="../../StartView.cpp" line="533"/>
       <source>Recent Files</source>
       <translation>ბოლო ფაილები</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="539"/>
+      <location filename="../../StartView.cpp" line="548"/>
       <source>Open First Start Setup</source>
       <translation>მორგების ფაჯრის გახსნა პირველი გაშვების</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="540"/>
+      <location filename="../../StartView.cpp" line="549"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>აღარ მაჩვენო საწყისი გვერდი (დაწყება ცარიელი ეკრანით)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="514"/>
+      <location filename="../../StartView.cpp" line="523"/>
       <source>Start</source>
       <translation>დაწყება</translation>
     </message>
@@ -261,7 +261,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="139"/>
+      <location filename="../../AppStartGui.cpp" line="140"/>
       <source>Start</source>
       <translation>დაწყება</translation>
     </message>

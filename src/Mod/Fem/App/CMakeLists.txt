@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # Many warnings caused by vtk
 if(CMAKE_COMPILER_IS_CLANGXX)
@@ -234,9 +235,7 @@ if (MSVC)
     target_compile_options(Fem PRIVATE /wd4275)
 endif()
 
-if (FREECAD_WARN_ERROR)
-    target_compile_warn_error(Fem)
-endif()
+target_compile_warn_error(Fem)
 
 find_package(OpenMP 4.0)
 if(OpenMP_CXX_FOUND)
@@ -244,7 +243,7 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 
-SET_BIN_DIR(Fem Fem /Mod/Fem)
+SET_BIN_DIR(Fem)
 SET_PYTHON_PREFIX_SUFFIX(Fem)
 
 

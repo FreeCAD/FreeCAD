@@ -6,6 +6,7 @@ from Metadata import (
     export,
 )
 from Base.BaseClass import BaseClass
+from Material.App.MaterialFilter import MaterialFilter
 
 
 @export(
@@ -42,14 +43,14 @@ class MaterialTreeWidget(BaseClass):
     IncludeLegacy: bool = ...
     """Include legacy materials in the material list."""
 
-    def setFilter(self) -> None:
+    def setFilter(self, filter: MaterialFilter | list[MaterialFilter], /) -> None:
         """
         Set the material filter or list of filters.
         """
         ...
 
-    def selectFilter(self) -> None:
+    def selectFilter(self, name: str, /) -> None:
         """
-        Set the current material filter.
+        Set the current material filter. Currently has no effect.
         """
         ...
