@@ -65,7 +65,9 @@ class SketchObject(Part2DObject):
     MalformedConstraints: Final[List] = ...
     """Return a list of integers indicating the constraints detected as malformed"""
 
-    def replaceGroupGeometry(self, constraintId: int, geometry: List[Geometry], /) -> int:
+    def replaceGroupGeometry(
+        self, constraintId: int, geometry: List[Geometry], sourceHandle: Vector = ..., /
+    ) -> int:
         """Fit new geometry to a Group's existing handle and return its new constraint index."""
         ...
 

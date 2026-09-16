@@ -181,8 +181,7 @@ private:
                 elts.push_back(Sketcher::GeoElementId(i));
             }
             if (fixedSize) {
-                const double angle = (endPoint - startPoint).Angle()
-                    - (constructionMethod() == ConstructionMethod::Height ? M_PI * 0.5 : 0.0);
+                const double angle = (endPoint - startPoint).Angle() - originalDirection().Angle();
                 Gui::Command::doCommand(Gui::Command::App, "import SketcherBlock");
                 Gui::cmdAppObjectArgs(
                     getSketchObject(),
@@ -346,14 +345,26 @@ private:
     bool fixedOrientation = false;
     double sourceWidth = 0.0;
     double sourceHeight = 0.0;
+    Base::Vector3d sourceHandle;
+
+    bool hasSourceHandle() const
+    {
+        return sourceHandle.Length() > Precision::Confusion();
+    }
 
     double nativeLength() const
     {
+        if (hasSourceHandle()) {
+            return sourceHandle.Length();
+        }
         return constructionMethod() == ConstructionMethod::Height ? sourceHeight : sourceWidth;
     }
 
     Base::Vector2d originalDirection() const
     {
+        if (hasSourceHandle()) {
+            return Base::Vector2d(sourceHandle.x, sourceHandle.y).Normalize();
+        }
         return constructionMethod() == ConstructionMethod::Height ? Base::Vector2d(0.0, 1.0)
                                                                   : Base::Vector2d(1.0, 0.0);
     }
@@ -366,12 +377,13 @@ private:
         fileName.clear();
         cachedGeometry.clear();
         sourceWidth = sourceHeight = 0.0;
+        sourceHandle = Base::Vector3d();
         fixedSize = false;
         if (path.isEmpty()) {
             return;
         }
         try {
-            cachedGeometry = readBlockGeometry(path.toStdString(), &fixedSize);
+            cachedGeometry = readBlockGeometry(path.toStdString(), &fixedSize, &sourceHandle);
             Bnd_Box bounds;
             for (const auto& geo : cachedGeometry) {
                 BRepBndLib::AddOptimal(geo->toShape(), bounds, false, false);
@@ -412,8 +424,7 @@ private:
             source.push_back(geo.get());
         }
         if (fixedSize) {
-            const double angle = vecL.Angle()
-                - (constructionMethod() == ConstructionMethod::Height ? M_PI * 0.5 : 0.0);
+            const double angle = vecL.Angle() - originalDirection().Angle();
             ShapeGeometry
                 = Sketcher::transformFixedGroupGeometry(source, toVector3d(startPoint), angle);
         }
@@ -423,7 +434,8 @@ private:
                 toVector3d(startPoint),
                 toVector3d(endPoint),
                 constructionMethod() == ConstructionMethod::Height,
-                true
+                true,
+                sourceHandle
             );
         }
         // 3. Set construction mode on the newly created geometry
@@ -436,6 +448,16 @@ private:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
+        if (hasSourceHandle()) {
+            if (state() == SelectMode::SeekFirst) {
+                return {{QObject::tr("%1 place block origin"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+            return {
+                {fixedSize ? QObject::tr("%1 set orientation")
+                           : QObject::tr("%1 place the end of the block handle"),
+                 {Gui::InputHint::UserInput::MouseLeft}}
+            };
+        }
         if (state() == SelectMode::SeekFirst && fixedSize && !fixedOrientation) {
             return {
                 {QObject::tr("%1 place block origin"), {Gui::InputHint::UserInput::MouseLeft}},
@@ -532,7 +554,8 @@ void DSHBlockController::configureToolWidget()
     toolWidget->setPlacementOptions(
         static_cast<int>(handler->constructionMethod()),
         handler->fixedSize,
-        handler->fixedOrientation
+        handler->fixedOrientation,
+        handler->hasSourceHandle()
     );
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
@@ -605,9 +628,7 @@ void DSHBlockControllerBase::doEnforceControlParameters(Base::Vector2d& onSketch
 
             if (fourthParam->isSet && !handler->fixedOrientation) {
                 double angle = Base::toRadians(fourthParam->getValue());
-                if (handler->constructionMethod() == ConstructionMethod::Height) {
-                    angle += M_PI * 0.5;
-                }
+                angle += handler->originalDirection().Angle();
                 Base::Vector2d dir(cos(angle), sin(angle));
                 if (handler->fixedSize) {
                     onSketchPos = handler->startPoint + handler->nativeLength() * dir;
@@ -671,15 +692,9 @@ void DSHBlockController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
-            double range;
-            if (handler->constructionMethod() == ConstructionMethod::Height) {
-                Base::Vector2d norm(vec.y, -vec.x);
-                Base::Vector2d textAlignPoint = handler->startPoint + norm;
-                range = (textAlignPoint - handler->startPoint).Angle();
-            }
-            else {
-                range = (handler->endPoint - handler->startPoint).Angle();
-            }
+            const double angle = (handler->endPoint - handler->startPoint).Angle()
+                - handler->originalDirection().Angle();
+            const double range = std::atan2(std::sin(angle), std::cos(angle));
 
 
             if (!fourthParam->isSet) {
@@ -780,9 +795,7 @@ void DSHBlockController::addConstraints()
 
     auto constraintp4angle = [&]() {
         double angle = Base::toRadians(p4);
-        if (handler->constructionMethod() == ConstructionMethod::Height) {
-            angle += M_PI * 0.5;
-        }
+        angle += handler->originalDirection().Angle();
 
         ConstraintLineByAngle(firstCurve, angle, obj);
     };

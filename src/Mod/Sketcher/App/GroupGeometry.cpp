@@ -13,7 +13,8 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
     const Base::Vector3d& start,
     const Base::Vector3d& end,
     bool height,
-    bool useOrigin
+    bool useOrigin,
+    const Base::Vector3d& sourceHandle
 )
 {
     Bnd_Box bounds;
@@ -35,7 +36,11 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
     }
     double xmin, ymin, zmin, xmax, ymax, zmax;
     bounds.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-    const double size = height ? ymax - ymin : xmax - xmin;
+    const bool customHandle = sourceHandle != Base::Vector3d();
+    const double size = customHandle ? sourceHandle.Length() : (height ? ymax - ymin : xmax - xmin);
+    if (!std::isfinite(size) || std::abs(sourceHandle.z) > Precision::Confusion()) {
+        throw Base::ValueError("Invalid block source handle");
+    }
     const auto direction = end - start;
     if (size < Precision::Confusion() || direction.Length() < Precision::Confusion()) {
         throw Base::ValueError("The group width or height must be greater than zero");
@@ -44,7 +49,9 @@ std::vector<std::unique_ptr<Part::Geometry>> Sketcher::transformGroupGeometry(
         throw Base::ValueError("Group geometry must lie in the sketch XY plane");
     }
     const double scale = direction.Length() / size;
-    const double angle = std::atan2(direction.y, direction.x) - (height ? M_PI / 2 : 0);
+    const double sourceAngle = customHandle ? std::atan2(sourceHandle.y, sourceHandle.x)
+                                            : (height ? M_PI / 2 : 0);
+    const double angle = std::atan2(direction.y, direction.x) - sourceAngle;
     const double c = scale * std::cos(angle);
     const double s = scale * std::sin(angle);
     Base::Matrix4D matrix;

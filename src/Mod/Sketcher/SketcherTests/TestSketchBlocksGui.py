@@ -324,6 +324,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         path = Path(self.directory.name) / "editor.txt"
         path.write_text(
             "# Copied from sketcher.\n# Sketcher block fixed size: true\n"
+            "# Sketcher block handle: 6 8\n"
             "geoList = [Part.Circle(App.Vector(5,9,0),App.Vector(0,0,1),2)]\n"
             "objectStr.addGeometry(geoList,False)\n",
             encoding="utf-8",
@@ -336,6 +337,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             SketcherBlock.insert_geometry(
                 other_sketch, SketcherBlock.read(path), path, True, App.Vector(x, 0, 0)
             )
+        SketcherBlock.insert_geometry(other_sketch, SketcherBlock.read(path), path)
         other.recompute()
         App.setActiveDocument(self.doc.Name)
         clipboard = QtWidgets.QApplication.clipboard()
@@ -370,6 +372,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             self.assertIsNone(session.error)
             self.assertAlmostEqual(SketcherBlock.read(path)[0].Radius, 4)
             self.assertTrue(SketcherBlock.metadata(path)["fixed_size"])
+            self.assertEqual(SketcherBlock.metadata(path)["handle"], (6, 8))
             _, source_constraints = SketcherBlock.read(path, with_constraints=True)
             self.assertEqual(len(source_constraints), 1)
             self.assertEqual(source_constraints[0].Type, "Radius")
@@ -499,7 +502,6 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         self.library_preferences.SetString("LastFile", "")
         Gui.runCommand("Sketcher_InsertBlock", 0)
         self.flush_gui(100)
-        main = Gui.getMainWindow()
         tree = self.visible_widget(QtWidgets.QTreeWidget, "blockLibraryTree")
         self.assertEqual(tree.topLevelItem(0).text(0), "Built-in Blocks")
         self.assertTrue(tree.findItems("CE", QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive))
@@ -570,7 +572,10 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         self.visible_widget(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
         view = Gui.activeDocument().activeView()
         viewport = view.graphicsView().viewport()
-        point = self.viewport_to_qpoint(view, viewport, view.getPointOnScreen(App.Vector(3, 4, 0)))
+        # Reentering an empty sketch can reset the camera. This test checks the
+        # selected library file, so place it inside the current viewport directly.
+        self.flush_gui(100)
+        point = viewport.rect().center()
         self.move(viewport, point)
         self.click(viewport, point)
         group = next(c for c in self.sketch.Constraints if c.Type == "Group")
@@ -594,7 +599,6 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         self.flush_gui(100)
         Gui.runCommand("Sketcher_InsertBlock", 0)
         self.flush_gui(100)
-        combos = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QComboBox) if w.isVisible()]
         self.selectLibraryBlock("CE")
         viewport = view.graphicsView().viewport()
         for x, y in ((-20, -10), (20, -10)):
@@ -627,7 +631,6 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         )
         self.flush_gui(100)
         Gui.runCommand("Sketcher_InsertBlock", 0)
-        combos = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QComboBox) if w.isVisible()]
         choose_file = self.visible_widget(QtWidgets.QPushButton, "chooseBlockFile")
         errors = []
 
@@ -750,8 +753,6 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                 self.assertEqual(found, [expected])
 
     def checkCreateBlock(self, fixed_size):
-        import Part
-
         self.prepareBlockSelection()
         # Anchors to the source sketch must not pull the exported geometry back
         # after its coordinates are translated to the chosen block origin.
@@ -774,12 +775,23 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         )
         viewport = view.graphicsView().viewport()
 
-        def choose_origin():
+        def choose_handle(fixed):
             point = self.viewport_to_qpoint(
                 view, viewport, view.getPointOnScreen(App.Vector(3, 4, 0))
             )
             self.move(viewport, point)
             self.click(viewport, point)
+            if not fixed:
+                self.assertIsNone(QtWidgets.QApplication.activeModalWidget())
+                # A zero-length handle must not finish the command.
+                self.click(viewport, point)
+                self.assertIsNone(QtWidgets.QApplication.activeModalWidget())
+                self.assertIsNotNone(self.visible_widget(QtWidgets.QWidget, "CreateBlockWidget"))
+                end = self.viewport_to_qpoint(
+                    view, viewport, view.getPointOnScreen(App.Vector(-9, 16, 0))
+                )
+                self.move(viewport, end)
+                self.click(viewport, end)
 
         def choose_save():
             dialog = QtWidgets.QApplication.activeModalWidget()
@@ -827,7 +839,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             box.setChecked(fixed_size)
             self.assertFalse(path.exists())
             self.when_popup_visible(QtWidgets.QFileDialog, choose_save)
-            choose_origin()
+            choose_handle(fixed_size)
             self.flush_gui(100)
             self.assertFalse(errors, errors)
             self.assertFalse(widget.isVisible())
@@ -841,6 +853,12 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             self.assertAlmostEqual(geometry[1].StartPoint.x - geometry[0].Center.x, 10)
             self.assertEqual([c.Type for c in constraints], ["Radius"])
             self.assertEqual(SketcherBlock.metadata(path)["fixed_size"], fixed_size)
+            source_handle = SketcherBlock.metadata(path)["handle"]
+            if fixed_size:
+                self.assertEqual(source_handle, (0, 0))
+            else:
+                self.assertAlmostEqual(source_handle[0], -12, delta=0.4)
+                self.assertAlmostEqual(source_handle[1], 12, delta=0.4)
             self.assertEqual(clipboard.text(), "Preserve the clipboard")
             self.assertEqual([geo.Content for geo in self.sketch.Geometry], before)
             self.assertEqual([str(c) for c in self.sketch.Constraints], constraints_before)
@@ -854,7 +872,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             self.when_popup_visible(
                 QtWidgets.QFileDialog, lambda: QtWidgets.QApplication.activeModalWidget().reject()
             )
-            choose_origin()
+            choose_handle(False)
             self.assertEqual(path.read_bytes(), saved)
             self.assertEqual([geo.Content for geo in self.sketch.Geometry], before)
 
@@ -882,8 +900,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             group = next(c for c in self.sketch.Constraints if c.Type == "Group")
             handle = self.sketch.Geometry[group.First]
             placed_origin = App.Vector(handle.X, handle.Y, 0) if fixed_size else handle.StartPoint
-            native_width = Part.makeCompound([g.toShape() for g in geometry]).BoundBox.XLength
-            scale = 1 if fixed_size else handle.length() / native_width
+            scale = 1 if fixed_size else handle.length() / App.Vector(*source_handle, 0).Length
             center = self.sketch.Geometry[group.Second].Center
             self.assertLess((center - (placed_origin + geometry[0].Center * scale)).Length, 1e-5)
             SketcherBlock.reload(

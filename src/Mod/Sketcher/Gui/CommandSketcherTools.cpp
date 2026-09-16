@@ -377,7 +377,7 @@ CmdSketcherEditBlock::CmdSketcherEditBlock() : Command("Sketcher_EditBlock")
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Edit Block");
     sToolTipText = QT_TR_NOOP("Edits the source geometry of the selected block");
-    sPixmap = "Sketcher_InsertBlock";
+    sPixmap = "Sketcher_EditBlock";
     sWhatsThis = "Sketcher_EditBlock";
     eType = ForEdit;
 }
@@ -404,7 +404,7 @@ CmdSketcherReloadBlock::CmdSketcherReloadBlock() : Command("Sketcher_ReloadBlock
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Reload From File");
     sToolTipText = QT_TR_NOOP("Reloads the selected block from its source file");
-    sPixmap = "Sketcher_InsertBlock";
+    sPixmap = "Sketcher_ReloadBlock";
     sWhatsThis = "Sketcher_ReloadBlock";
     eType = ForEdit;
 }
@@ -460,8 +460,9 @@ CmdSketcherCreateBlock::CmdSketcherCreateBlock()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create Block");
-    sToolTipText = QT_TR_NOOP("Selects an origin and saves the selected geometry as a block (select at least two edges)");
+    sToolTipText = QT_TR_NOOP("Defines a handle and saves the selected geometry as a block (select at least two edges)");
     sWhatsThis = "Sketcher_CreateBlock";
+    sPixmap = "Sketcher_CreateBlock";
     sStatusTip = sToolTipText;
     eType = ForEdit;
 }
@@ -476,13 +477,19 @@ void CmdSketcherCreateBlock::activated(int iMsg)
     const auto selected = getListOfSelectedGeoIds(true);
     if (selected.empty()) { return; }
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerCreateBlock>(
-        [sketch, selected](const Base::Vector3d& origin, bool fixedSize) {
+        [sketch, selected](const Base::Vector3d& origin, const Base::Vector3d& endpoint, bool fixedSize) {
             QByteArray data = QByteArray::fromStdString(selectedGeometryText(sketch, selected, &origin));
             if (data.isEmpty()) {
                 return;
             }
             data.insert(data.indexOf('\n') + 1,
                 fixedSize ? "# Sketcher block fixed size: true\n" : "# Sketcher block fixed size: false\n");
+            if (!fixedSize) {
+                const auto handle = endpoint - origin;
+                data.insert(data.indexOf('\n') + 1,
+                    QStringLiteral("# Sketcher block handle: %1 %2\n")
+                        .arg(handle.x, 0, 'g', 17).arg(handle.y, 0, 'g', 17).toUtf8());
+            }
             const QString path = Gui::FileDialog::getSaveFileName(
                 Gui::getMainWindow(),
                 QObject::tr("Create Block"),

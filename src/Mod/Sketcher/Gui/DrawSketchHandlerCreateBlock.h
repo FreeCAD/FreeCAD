@@ -3,6 +3,7 @@
 #pragma once
 
 #include <functional>
+#include <Precision.hxx>
 #include <QCheckBox>
 #include <QLabel>
 #include <QVBoxLayout>
@@ -15,19 +16,24 @@ namespace SketcherGui
 {
 class DrawSketchHandlerCreateBlock;
 using DrawSketchHandlerCreateBlockBase
-    = DrawSketchDefaultHandler<DrawSketchHandlerCreateBlock, StateMachines::OneSeekEnd, 1>;
+    = DrawSketchDefaultHandler<DrawSketchHandlerCreateBlock, StateMachines::TwoSeekEnd, 2>;
 
 class DrawSketchHandlerCreateBlock: public DrawSketchHandlerCreateBlockBase
 {
 public:
-    using SaveBlock = std::function<void(const Base::Vector3d&, bool)>;
+    using SaveBlock = std::function<void(const Base::Vector3d&, const Base::Vector3d&, bool)>;
     explicit DrawSketchHandlerCreateBlock(SaveBlock save)
         : saveBlock(std::move(save))
     {}
 
 private:
     SaveBlock saveBlock;
-    Base::Vector2d origin;
+    Base::Vector2d origin, endpoint;
+
+    QCheckBox* fixedSizeBox() const
+    {
+        return toolwidget->findChild<QCheckBox*>(QStringLiteral("createBlockFixedSize"));
+    }
 
     void activated() override
     {
@@ -43,18 +49,55 @@ private:
             origin = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint : position;
             drawPositionAtCursor(origin);
         }
+        else if (state() == SelectMode::SeekSecond) {
+            seekAndRenderAutoConstraint(sugConstraints[1], position, position - origin);
+            Base::Vector2d snapPoint;
+            endpoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint : position;
+            drawDirectionAtCursor(endpoint, origin);
+            drawEdit(std::vector<Base::Vector2d> {origin, endpoint});
+        }
+    }
+
+    void onButtonPressed(Base::Vector2d position) override
+    {
+        updateDataAndDrawToPosition(position);
+        if (state() == SelectMode::SeekFirst && fixedSizeBox()->isChecked()) {
+            endpoint = origin;
+            setState(SelectMode::End);
+        }
+        else if (state() == SelectMode::SeekFirst) {
+            fixedSizeBox()->setEnabled(false);
+            moveToNextMode();
+        }
+        else if ((endpoint - origin).Length() > Precision::Confusion()) {
+            moveToNextMode();
+        }
+    }
+
+    void angleSnappingControl() override
+    {
+        setAngleSnapping(state() == SelectMode::SeekSecond, origin);
     }
 
     void executeCommands() override
     {
-        auto* fixedSize = toolwidget->findChild<QCheckBox*>(QStringLiteral("createBlockFixedSize"));
-        saveBlock(Base::Vector3d(origin.x, origin.y, 0), fixedSize->isChecked());
+        saveBlock(
+            Base::Vector3d(origin.x, origin.y, 0),
+            Base::Vector3d(endpoint.x, endpoint.y, 0),
+            fixedSizeBox()->isChecked()
+        );
     }
 
     std::list<Gui::InputHint> getToolHints() const override
     {
+        if (state() == SelectMode::SeekSecond) {
+            return {
+                {QObject::tr("%1 choose the end of the block's line handle"),
+                 {Gui::InputHint::UserInput::MouseLeft}}
+            };
+        }
         return {
-            {QObject::tr("%1 choose the origin of the selected block geometry"),
+            {QObject::tr("%1 choose the block origin and start of its handle"),
              {Gui::InputHint::UserInput::MouseLeft}}
         };
     }
@@ -71,7 +114,7 @@ private:
 
     QPixmap getToolIcon() const override
     {
-        return Gui::BitmapFactory().pixmap("Sketcher_InsertBlock");
+        return Gui::BitmapFactory().pixmap("Sketcher_CreateBlock");
     }
 
     QString getToolWidgetText() const override
@@ -89,7 +132,12 @@ private:
         auto widget = std::make_unique<QWidget>();
         widget->setObjectName(QStringLiteral("CreateBlockWidget"));
         auto* layout = new QVBoxLayout(widget.get());
-        auto* hint = new QLabel(QObject::tr("Click in the sketch to choose the block origin."));
+        auto* hint = new QLabel(
+            QObject::tr(
+                "Choose the block origin, then the end of its line handle. "
+                "Fixed-size blocks need only the origin."
+            )
+        );
         hint->setWordWrap(true);
         layout->addWidget(hint);
         auto* fixedSize = new QCheckBox(QObject::tr("Fixed Size"));
