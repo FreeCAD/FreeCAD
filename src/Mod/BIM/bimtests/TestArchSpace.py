@@ -26,14 +26,22 @@
 # Unit tests for the Arch space module
 
 import os
+import unittest
 import Arch
 import Draft
 import Part
 import FreeCAD as App
 from FreeCAD import Units
 from bimtests import TestArchBase
-from importers import exportIFC
 import WorkingPlane
+
+# The IFC exporter needs ifcopenshell, which is an optional dependency
+try:
+    from importers import exportIFC
+
+    _HAS_IFCOPENSHELL = True
+except ImportError:
+    _HAS_IFCOPENSHELL = False
 
 
 def like(a, b):
@@ -63,6 +71,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
         s = Arch.makeSpace([b])
         self.assertTrue(s, "Arch Space failed")
 
+    @unittest.skipUnless(_HAS_IFCOPENSHELL, "ifcopenshell not available")
     def testElevationWithFlooringIsNotInferred(self):
         """Do not infer the finished floor elevation from the space geometry."""
         shape = Part.makeBox(1, 1, 1, App.Vector(0, 0, 100))
