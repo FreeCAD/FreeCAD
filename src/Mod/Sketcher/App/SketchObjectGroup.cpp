@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include "GeometryFacade.h"
 #include "GroupGeometry.h"
@@ -38,7 +39,8 @@ int Sketcher::SketchObject::replaceGroupGeometry(
               source,
               line->getStartPoint(),
               line->getEndPoint(),
-              group->getFileHeight()
+              group->getFileHeight(),
+              Base::FileInfo(group->getFile()).hasExtension("txt")
           );
 
     // Retain every geometry outside this group, including its handle. Constraint tags

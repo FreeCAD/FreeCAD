@@ -35,6 +35,24 @@ _LISTS = {"geoList", "constrGeoList", "constraintList"}
 _GEOMETRY_TYPES = tuple(value for name, value in _CONSTRUCTORS.items() if name.startswith("Part."))
 
 
+_METADATA_PREFIX = "# Sketcher block fixed size: "
+
+
+def _fixed_size(text):
+    for line in text.splitlines():
+        if line.startswith(_METADATA_PREFIX):
+            value = line[len(_METADATA_PREFIX) :].strip()
+            if value not in ("true", "false"):
+                raise ValueError("Invalid block fixed size setting")
+            return value == "true"
+    return False
+
+
+def metadata(filename):
+    """Read per-block insertion defaults; legacy and stock blocks are scalable."""
+    return {"fixed_size": _fixed_size(Path(filename).read_text(encoding="utf-8-sig"))}
+
+
 def read(filename, with_constraints=False):
     """Read a .txt block as Part geometry, including construction flags."""
     text = Path(filename).read_text(encoding="utf-8-sig")
@@ -145,7 +163,11 @@ def insert_geometry(sketch, geometry, filename, fixed_size=False, origin=None, a
         raise ValueError("The group width or height must be greater than zero")
     if abs(bounds.ZMin) > 1e-7 or abs(bounds.ZMax) > 1e-7:
         raise ValueError("Group geometry must lie in the sketch XY plane")
-    start = App.Vector(bounds.XMin, bounds.YMin, 0)
+    start = (
+        App.Vector()
+        if Path(filename).suffix.lower() == ".txt"
+        else App.Vector(bounds.XMin, bounds.YMin, 0)
+    )
     end = start + (App.Vector(0, size, 0) if height else App.Vector(size, 0, 0))
     elements = []
     for geo in geometry:
@@ -211,6 +233,7 @@ class _BlockEditor:
         self.original_document = original.Document.Name
         self.original_sketch = original.Name
         self.original_bytes = Path(filename).read_bytes()
+        self.fixed_size = _fixed_size(self.original_bytes.decode("utf-8-sig"))
         self.error = None
         self.closing = False
         geometry, constraints = read(filename, with_constraints=True)
@@ -268,6 +291,9 @@ class _BlockEditor:
             commands = self.sketch.toPythonCommands()
             text = (
                 "# Copied from sketcher.\n"
+                + _METADATA_PREFIX
+                + ("true" if self.fixed_size else "false")
+                + "\n"
                 + "\n".join(
                     line.replace("ActiveSketch", "objectStr")
                     for line in commands

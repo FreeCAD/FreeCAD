@@ -3,8 +3,12 @@
 Each `.txt` file is a geometry snapshot in the format produced by Sketcher's
 **Copy Elements** command. To create a block, select at least two edges while
 editing a sketch, then choose **Create Block** from the right-click menu or
-the Blocks menu. Choose a name in the save dialog, which starts in the
-default block library folder. The sketch and clipboard remain unchanged.
+the Blocks menu. In the tool widget, optionally enable **Fixed Size** as the
+block's insertion default, then click in the sketch to choose the block origin.
+Choose a name in the save dialog, which starts in the default block library folder.
+Geometry is saved relative to the chosen origin. Internal constraints are kept;
+constraints anchoring the selection to the source sketch axes are omitted.
+The sketch and clipboard remain unchanged.
 Alternatively, save Copy Elements clipboard text as UTF-8. Insert Block can
 browse to that file.
 Files in the user's `Mod/Sketcher/Blocks` directory also appear in the library;
@@ -25,12 +29,17 @@ The stored geometry remains usable when the source file is unavailable.
 
 ## Placement
 
-**Fixed Size** is checked by default and preserves the dimensions in the source
-file. Click once for the bottom-left point, then again to choose the orientation.
-**Fixed Orientation** preserves the source orientation. With both options checked,
-one click places the block. With only Fixed Orientation checked, the second click
-sets the size. Uncheck both to set size and orientation together with the second
-click. Fixed-size blocks have a point handle at the source origin. Moving this point
+**Fixed Size** defaults to unchecked for stock blocks and Copy Elements files.
+Create Block saves its checkbox choice in a `# Sketcher block fixed size: true`
+or `false` comment. Insert Block loads that default whenever a file is selected.
+You can override it for an insertion, and the block editor preserves the saved setting.
+
+The first click places the source origin, including for scaled blocks.
+With **Fixed Size** checked, dimensions stay at source size and the second click
+sets orientation. **Fixed Orientation** preserves the source orientation; with
+both checked, one click places the block. With only Fixed Orientation checked,
+the second click sets size. Uncheck both to set size and orientation together.
+Fixed-size blocks have a point handle at the source origin. Moving this point
 translates the block without changing its size. Reload keeps the placement rotation.
 
 ## Bundled marks

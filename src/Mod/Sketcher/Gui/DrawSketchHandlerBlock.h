@@ -342,7 +342,7 @@ private:
     Base::Vector2d startPoint, endPoint;
     double length;
     int handleId;
-    bool fixedSize = true;
+    bool fixedSize = false;
     bool fixedOrientation = false;
     double sourceWidth = 0.0;
     double sourceHeight = 0.0;
@@ -366,11 +366,12 @@ private:
         fileName.clear();
         cachedGeometry.clear();
         sourceWidth = sourceHeight = 0.0;
+        fixedSize = false;
         if (path.isEmpty()) {
             return;
         }
         try {
-            cachedGeometry = readBlockGeometry(path.toStdString());
+            cachedGeometry = readBlockGeometry(path.toStdString(), &fixedSize);
             Bnd_Box bounds;
             for (const auto& geo : cachedGeometry) {
                 BRepBndLib::AddOptimal(geo->toShape(), bounds, false, false);
@@ -421,7 +422,8 @@ private:
                 source,
                 toVector3d(startPoint),
                 toVector3d(endPoint),
-                constructionMethod() == ConstructionMethod::Height
+                constructionMethod() == ConstructionMethod::Height,
+                true
             );
         }
         // 3. Set construction mode on the newly created geometry
@@ -498,6 +500,10 @@ void DSHBlockController::doInitControls(QWidget* widget)
             toolWidget,
             [this](const QString& path) {
                 handler->loadFile(path);
+                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                configureToolWidget();
+                handler->updateHint();
+                onHandlerModeChanged();
                 finishControlsChanged();
             }
         )
@@ -860,19 +866,17 @@ DrawSketchHandlerBlock::HintTable DrawSketchHandlerBlock::getBlockHintTable()
         // Structure: {constructionMethod, state, {hints...}}
         {static_cast<int>(ConstructionMethod::Height),
          0,
-         {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+         {{QObject::tr("%1 place block origin"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
         {static_cast<int>(ConstructionMethod::Height),
          1,
-         {{QObject::tr("%1 pick top-left point"), {Gui::InputHint::UserInput::MouseLeft}},
+         {{QObject::tr("%1 set height and orientation"), {Gui::InputHint::UserInput::MouseLeft}},
           switchHint}},
         {static_cast<int>(ConstructionMethod::Width),
          0,
-         {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
+         {{QObject::tr("%1 place block origin"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
         {static_cast<int>(ConstructionMethod::Width),
          1,
-         {{QObject::tr("%1 pick bottom-right point"), {Gui::InputHint::UserInput::MouseLeft}},
+         {{QObject::tr("%1 set width and orientation"), {Gui::InputHint::UserInput::MouseLeft}},
           switchHint}}
     };
 }

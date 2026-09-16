@@ -237,7 +237,10 @@ inline void scrollTo(QListWidget* list, int i, bool select)
     }
 }
 
-std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(const std::string& filename);
+std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(
+    const std::string& filename,
+    bool* fixedSize = nullptr
+);
 int selectedBlockConstraint(Gui::Document* doc);
 void editFileBlock(ViewProviderSketch* view, int constraintId);
 void reloadFileGroup(ViewProviderSketch* view, int constraintId);

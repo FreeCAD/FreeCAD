@@ -13,6 +13,16 @@ from SketcherTests.GuiTestCase import FreeCADGui as Gui, SketcherGuiTestCase
 class TestSketchBlocksGui(SketcherGuiTestCase):
     def setUp(self):
         super().setUp()
+        # These tests exercise mouse placement, not the editable on-view controls.
+        # Those controls can cover the click target depending on the platform's fonts.
+        tools = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher/Tools")
+        visibility = tools.GetInt("OnViewParameterVisibility", 1)
+        self.addCleanup(tools.SetInt, "OnViewParameterVisibility", visibility)
+        tools.SetInt("OnViewParameterVisibility", 0)
+        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Sketcher")
+        continuous = params.GetBool("ContinuousCreationMode", True)
+        self.addCleanup(params.SetBool, "ContinuousCreationMode", continuous)
+        params.SetBool("ContinuousCreationMode", True)
         self.directory = tempfile.TemporaryDirectory()
         self.library_preferences = App.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/BlockLibrary"
@@ -25,12 +35,59 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         self.sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
         self.doc.recompute()
         Gui.activeDocument().setEdit(self.sketch.Name)
+        view = Gui.activeDocument().activeView()
+        view.setCamera(
+            "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
+            "orientation 0 0 1 0 focalDistance 100 height 160 }"
+        )
+        self.flush_gui(100)
 
     def tearDown(self):
         super().tearDown()
         self.directory.cleanup()
         self.library_preferences.SetString("Folders", self.saved_folders)
         self.library_preferences.SetString("LastFile", self.saved_file)
+
+    def visible_widget(self, kind, name):
+        widgets = []
+
+        def find_visible():
+            widgets[:] = [
+                widget
+                for widget in Gui.getMainWindow().findChildren(kind, name)
+                if widget.isVisible()
+            ]
+            return len(widgets) == 1
+
+        self.assertTrue(self.wait_until(find_visible, timeout_ms=3000), name)
+        return widgets[0]
+
+    def when_popup_visible(self, kind, callback):
+        # A fixed delay can expire while a slow runner is still rendering the view,
+        # before the mouse event has opened the menu or file dialog.
+        timer = QtCore.QTimer(Gui.getMainWindow())
+        timer.setInterval(25)
+
+        def check():
+            widgets = (
+                QtWidgets.QApplication.activePopupWidget(),
+                QtWidgets.QApplication.activeModalWidget(),
+            )
+            if any(isinstance(widget, kind) and widget.isVisible() for widget in widgets):
+                timer.stop()
+                callback()
+
+        timer.timeout.connect(check)
+        self.addCleanup(timer.deleteLater)
+        self.addCleanup(timer.stop)
+        timer.start()
+
+    def click(self, widget, pos):
+        # Settle task-panel layout changes and restore focus after file dialogs.
+        widget.setFocus(QtCore.Qt.OtherFocusReason)
+        self.flush_gui(50)
+        self.assertTrue(widget.rect().contains(pos), "Click must lie inside the viewport")
+        super().click(widget, pos)
 
     def block(self, circle=False):
         path = Path(self.directory.name) / "block 'é.txt"
@@ -73,8 +130,9 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             clipboard.setText(saved)
 
     def selectLibraryBlock(self, name):
-        tree = Gui.getMainWindow().findChild(QtWidgets.QTreeWidget, "blockLibraryTree")
+        tree = self.visible_widget(QtWidgets.QTreeWidget, "blockLibraryTree")
         self.assertIsNotNone(tree)
+        tree.topLevelItem(0).setExpanded(True)
         items = tree.findItems(name, QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)
         self.assertTrue(items, name)
         tree.setCurrentItem(items[0])
@@ -87,12 +145,12 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         view = Gui.activeDocument().activeView()
         view.setCamera(
             "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
-            "orientation 0 0 1 0 focalDistance 100 height 100 }"
+            "orientation 0 0 1 0 focalDistance 100 height 160 }"
         )
         self.flush_gui(100)
         Gui.runCommand("Sketcher_InsertBlock", 0)
         self.flush_gui(100)
-        combos = Gui.getMainWindow().findChildren(QtWidgets.QComboBox)
+        combos = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QComboBox) if w.isVisible()]
         self.selectLibraryBlock("CE")
         method = next(
             combo
@@ -100,10 +158,10 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             if combo.findText("Width") >= 0 and combo.findText("Height") >= 0
         )
         method.setCurrentIndex(method.findText("Height" if height else "Width"))
-        boxes = Gui.getMainWindow().findChildren(QtWidgets.QCheckBox)
+        boxes = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QCheckBox) if w.isVisible()]
         size_box = next(box for box in boxes if box.text() == "Fixed Size")
         orientation_box = next(box for box in boxes if box.text() == "Fixed Orientation")
-        self.assertTrue(size_box.isChecked())
+        self.assertFalse(size_box.isChecked())
         self.assertFalse(orientation_box.isChecked())
         size_box.setChecked(fixed_size)
         orientation_box.setChecked(fixed_orientation)
@@ -254,7 +312,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             )
         self.doc.recompute()
         self.flush_gui(100)
-        listing = Gui.getMainWindow().findChild(QtWidgets.QListWidget, "listWidgetConstraints")
+        listing = self.visible_widget(QtWidgets.QListWidget, "listWidgetConstraints")
         labels = [listing.item(i).text() for i in range(listing.count())]
         self.assertTrue(any("Group" in label for label in labels), labels)
         self.assertTrue(any("SVG" in label for label in labels), labels)
@@ -265,7 +323,8 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
 
         path = Path(self.directory.name) / "editor.txt"
         path.write_text(
-            "# Copied from sketcher.\ngeoList = [Part.Circle(App.Vector(5,9,0),App.Vector(0,0,1),2)]\n"
+            "# Copied from sketcher.\n# Sketcher block fixed size: true\n"
+            "geoList = [Part.Circle(App.Vector(5,9,0),App.Vector(0,0,1),2)]\n"
             "objectStr.addGeometry(geoList,False)\n",
             encoding="utf-8",
         )
@@ -310,6 +369,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
             self.assertTrue(self.wait_until(lambda: name not in App.listDocuments(), 3000))
             self.assertIsNone(session.error)
             self.assertAlmostEqual(SketcherBlock.read(path)[0].Radius, 4)
+            self.assertTrue(SketcherBlock.metadata(path)["fixed_size"])
             _, source_constraints = SketcherBlock.read(path, with_constraints=True)
             self.assertEqual(len(source_constraints), 1)
             self.assertEqual(source_constraints[0].Type, "Radius")
@@ -334,7 +394,8 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
 
         path = Path(self.directory.name) / "failed-save.txt"
         path.write_text(
-            "# Copied from sketcher.\ngeoList = [Part.Circle(App.Vector(5,9,0),App.Vector(0,0,1),2)]\n"
+            "# Copied from sketcher.\n# Sketcher block fixed size: true\n"
+            "geoList = [Part.Circle(App.Vector(5,9,0),App.Vector(0,0,1),2)]\n"
             "objectStr.addGeometry(geoList,False)\n",
             encoding="utf-8",
         )
@@ -439,10 +500,10 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         Gui.runCommand("Sketcher_InsertBlock", 0)
         self.flush_gui(100)
         main = Gui.getMainWindow()
-        tree = main.findChild(QtWidgets.QTreeWidget, "blockLibraryTree")
+        tree = self.visible_widget(QtWidgets.QTreeWidget, "blockLibraryTree")
         self.assertEqual(tree.topLevelItem(0).text(0), "Built-in Blocks")
         self.assertTrue(tree.findItems("CE", QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive))
-        button = main.findChild(QtWidgets.QPushButton, "addBlockFolder")
+        button = self.visible_widget(QtWidgets.QPushButton, "addBlockFolder")
         preferences = App.ParamGet("User parameter:BaseApp/Preferences/Dialog")
         old_native = preferences.GetBool("DontUseNativeDialog")
         preferences.SetBool("DontUseNativeDialog", True)
@@ -466,7 +527,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                 dialog.reject()
 
         try:
-            QtCore.QTimer.singleShot(100, choose)
+            self.when_popup_visible(QtWidgets.QFileDialog, choose)
             button.click()
         finally:
             preferences.SetBool("DontUseNativeDialog", old_native)
@@ -496,16 +557,17 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         Gui.activeDocument().resetEdit()
         Gui.activeDocument().setEdit(self.sketch.Name)
         Gui.runCommand("Sketcher_InsertBlock", 0)
-        tree = main.findChild(QtWidgets.QTreeWidget, "blockLibraryTree")
+        tree = self.visible_widget(QtWidgets.QTreeWidget, "blockLibraryTree")
         self.assertEqual(Path(tree.currentItem().data(0, QtCore.Qt.UserRole)), source)
         added = nested / "New Block.txt"
         added.write_bytes(source.read_bytes())
-        main.findChild(QtWidgets.QPushButton, "refreshBlockLibrary").click()
+        self.visible_widget(QtWidgets.QPushButton, "refreshBlockLibrary").click()
         self.assertTrue(
             tree.findItems("New Block", QtCore.Qt.MatchExactly | QtCore.Qt.MatchRecursive)
         )
         # Select and insert the nested block, despite its duplicate built-in name.
-        main.findChild(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
+        self.visible_widget(QtWidgets.QCheckBox, "blockFixedSize").setChecked(True)
+        self.visible_widget(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
         view = Gui.activeDocument().activeView()
         viewport = view.graphicsView().viewport()
         point = self.viewport_to_qpoint(view, viewport, view.getPointOnScreen(App.Vector(3, 4, 0)))
@@ -514,10 +576,10 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         group = next(c for c in self.sketch.Constraints if c.Type == "Group")
         self.assertEqual(Path(group.File), source)
         # Removing a root affects preferences, never the files themselves.
-        tree = main.findChild(QtWidgets.QTreeWidget, "blockLibraryTree")
+        tree = self.visible_widget(QtWidgets.QTreeWidget, "blockLibraryTree")
         custom = tree.topLevelItem(tree.topLevelItemCount() - 1)
         tree.setCurrentItem(custom)
-        main.findChild(QtWidgets.QPushButton, "removeBlockFolder").click()
+        self.visible_widget(QtWidgets.QPushButton, "removeBlockFolder").click()
         self.assertEqual(json.loads(self.library_preferences.GetString("Folders")), [])
         self.assertTrue(source.is_file())
         self.assertTrue(added.is_file())
@@ -527,12 +589,12 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         view = Gui.activeDocument().activeView()
         view.setCamera(
             "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
-            "orientation 0 0 1 0 focalDistance 100 height 100 }"
+            "orientation 0 0 1 0 focalDistance 100 height 160 }"
         )
         self.flush_gui(100)
         Gui.runCommand("Sketcher_InsertBlock", 0)
         self.flush_gui(100)
-        combos = Gui.getMainWindow().findChildren(QtWidgets.QComboBox)
+        combos = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QComboBox) if w.isVisible()]
         self.selectLibraryBlock("CE")
         viewport = view.graphicsView().viewport()
         for x, y in ((-20, -10), (20, -10)):
@@ -561,12 +623,12 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         view = Gui.activeDocument().activeView()
         view.setCamera(
             "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
-            "orientation 0 0 1 0 focalDistance 100 height 100 }"
+            "orientation 0 0 1 0 focalDistance 100 height 160 }"
         )
         self.flush_gui(100)
         Gui.runCommand("Sketcher_InsertBlock", 0)
-        combos = Gui.getMainWindow().findChildren(QtWidgets.QComboBox)
-        choose_file = Gui.getMainWindow().findChild(QtWidgets.QPushButton, "chooseBlockFile")
+        combos = [w for w in Gui.getMainWindow().findChildren(QtWidgets.QComboBox) if w.isVisible()]
+        choose_file = self.visible_widget(QtWidgets.QPushButton, "chooseBlockFile")
         errors = []
 
         def choose():
@@ -583,7 +645,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                 dialog.reject()
 
         try:
-            QtCore.QTimer.singleShot(100, choose)
+            self.when_popup_visible(QtWidgets.QFileDialog, choose)
             choose_file.click()
         finally:
             preferences.SetBool("DontUseNativeDialog", old_native)
@@ -605,7 +667,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         SketcherBlock.insert_geometry(self.sketch, SketcherBlock.read(path), path)
         self.block(True)
         self.flush_gui(100)
-        constraints = Gui.getMainWindow().findChild(QtWidgets.QListWidget, "listWidgetConstraints")
+        constraints = self.visible_widget(QtWidgets.QListWidget, "listWidgetConstraints")
         constraints.setCurrentRow(0)
         errors = []
 
@@ -622,7 +684,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                 if menu:
                     menu.close()
 
-        QtCore.QTimer.singleShot(100, reload_action)
+        self.when_popup_visible(QtWidgets.QMenu, reload_action)
         point = QtCore.QPoint(5, 5)
         event = QtGui.QContextMenuEvent(
             QtGui.QContextMenuEvent.Mouse, point, constraints.viewport().mapToGlobal(point)
@@ -683,12 +745,19 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                     if menu:
                         menu.close()
 
-                QtCore.QTimer.singleShot(100, inspect_menu)
-                self.right_click(viewport, QtCore.QPoint(20, 20))
+                self.when_popup_visible(QtWidgets.QMenu, inspect_menu)
+                self.right_click(viewport, QtCore.QPoint(40, viewport.height() - 40))
                 self.assertEqual(found, [expected])
 
-    def testCreateBlockSaveAndCancel(self):
+    def checkCreateBlock(self, fixed_size):
+        import Part
+
         self.prepareBlockSelection()
+        # Anchors to the source sketch must not pull the exported geometry back
+        # after its coordinates are translated to the chosen block origin.
+        self.sketch.addConstraint(Sketcher.Constraint("DistanceX", 0, 3, 0.0))
+        self.sketch.addConstraint(Sketcher.Constraint("Radius", 0, 5.0))
+        self.doc.recompute()
         clipboard = QtWidgets.QApplication.clipboard()
         previous = clipboard.text()
         preferences = App.ParamGet("User parameter:BaseApp/Preferences/Dialog")
@@ -697,6 +766,20 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
         path = Path(self.directory.name) / "created 'é.txt"
         errors = []
         before = [geo.Content for geo in self.sketch.Geometry]
+        constraints_before = [str(c) for c in self.sketch.Constraints]
+        view = Gui.activeDocument().activeView()
+        view.setCamera(
+            "#Inventor V2.1 ascii\nOrthographicCamera { position 0 0 100 "
+            "orientation 0 0 1 0 focalDistance 100 height 160 }"
+        )
+        viewport = view.graphicsView().viewport()
+
+        def choose_origin():
+            point = self.viewport_to_qpoint(
+                view, viewport, view.getPointOnScreen(App.Vector(3, 4, 0))
+            )
+            self.move(viewport, point)
+            self.click(viewport, point)
 
         def choose_save():
             dialog = QtWidgets.QApplication.activeModalWidget()
@@ -722,7 +805,7 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                 self.assertIsInstance(menu, QtWidgets.QMenu)
                 action = Gui.Command.get("Sketcher_CreateBlock").getAction()[0]
                 self.assertIn(action, menu.actions())
-                QtCore.QTimer.singleShot(100, choose_save)
+                self.assertTrue(self.wait_until(action.isEnabled), "Create Block action is enabled")
                 action.trigger()
             except Exception as error:
                 errors.append(error)
@@ -731,33 +814,93 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
                     menu.close()
 
         try:
-            Gui.runCommand("Sketcher_CopyClipboard", 0)
-            expected = clipboard.text()
             clipboard.setText("Preserve the clipboard")
-            QtCore.QTimer.singleShot(100, create_from_menu)
-            viewport = Gui.activeDocument().activeView().graphicsView().viewport()
-            self.right_click(viewport, QtCore.QPoint(20, 20))
+            self.when_popup_visible(QtWidgets.QMenu, create_from_menu)
+            self.right_click(viewport, QtCore.QPoint(40, viewport.height() - 40))
+            self.flush_gui(100)
             self.assertFalse(errors, errors)
-            self.assertEqual(path.read_text(encoding="utf-8"), expected)
-            geometry = SketcherBlock.read(path)
+            self.assertIsNone(QtWidgets.QApplication.activeModalWidget())
+            widget = self.visible_widget(QtWidgets.QWidget, "CreateBlockWidget")
+            self.assertIsNotNone(widget)
+            box = widget.findChild(QtWidgets.QCheckBox, "createBlockFixedSize")
+            self.assertFalse(box.isChecked())
+            box.setChecked(fixed_size)
+            self.assertFalse(path.exists())
+            self.when_popup_visible(QtWidgets.QFileDialog, choose_save)
+            choose_origin()
+            self.flush_gui(100)
+            self.assertFalse(errors, errors)
+            self.assertFalse(widget.isVisible())
+            geometry, constraints = SketcherBlock.read(path, with_constraints=True)
             self.assertEqual(len(geometry), 2)
             self.assertEqual(
                 [Sketcher.GeometryFacade(geo).Construction for geo in geometry], [False, True]
             )
+            self.assertAlmostEqual(geometry[0].Center.x, -3, delta=0.4)
+            self.assertAlmostEqual(geometry[0].Center.y, -4, delta=0.4)
+            self.assertAlmostEqual(geometry[1].StartPoint.x - geometry[0].Center.x, 10)
+            self.assertEqual([c.Type for c in constraints], ["Radius"])
+            self.assertEqual(SketcherBlock.metadata(path)["fixed_size"], fixed_size)
             self.assertEqual(clipboard.text(), "Preserve the clipboard")
             self.assertEqual([geo.Content for geo in self.sketch.Geometry], before)
+            self.assertEqual([str(c) for c in self.sketch.Constraints], constraints_before)
+            saved = path.read_bytes()
 
-            def cancel_save():
-                dialog = QtWidgets.QApplication.activeModalWidget()
-                if dialog:
-                    dialog.reject()
-
-            QtCore.QTimer.singleShot(100, cancel_save)
+            # Cancelling the save dialog must leave the source and existing file intact.
+            Gui.Selection.clearSelection()
+            for edge in ("Edge1", "Edge2"):
+                Gui.Selection.addSelection(self.sketch, edge)
             Gui.runCommand("Sketcher_CreateBlock", 0)
-            self.assertEqual(list(Path(self.directory.name).iterdir()), [path])
-            self.assertEqual(path.read_text(encoding="utf-8"), expected)
-            self.assertEqual(clipboard.text(), "Preserve the clipboard")
+            self.when_popup_visible(
+                QtWidgets.QFileDialog, lambda: QtWidgets.QApplication.activeModalWidget().reject()
+            )
+            choose_origin()
+            self.assertEqual(path.read_bytes(), saved)
             self.assertEqual([geo.Content for geo in self.sketch.Geometry], before)
+
+            # The insertion tool restores the file's default, including when a tool is reopened.
+            import json
+
+            self.library_preferences.SetString("Folders", json.dumps([str(path.parent)]))
+            self.library_preferences.SetString("LastFile", str(path))
+            Gui.runCommand("Sketcher_InsertBlock", 0)
+            self.flush_gui(100)
+            box = self.visible_widget(QtWidgets.QCheckBox, "blockFixedSize")
+            self.assertEqual(box.isChecked(), fixed_size)
+            self.visible_widget(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
+
+            def place(x, y):
+                point = self.viewport_to_qpoint(
+                    view, viewport, view.getPointOnScreen(App.Vector(x, y, 0))
+                )
+                self.move(viewport, point)
+                self.click(viewport, point)
+
+            place(30, 20)
+            if not fixed_size:
+                place(60, 20)
+            group = next(c for c in self.sketch.Constraints if c.Type == "Group")
+            handle = self.sketch.Geometry[group.First]
+            placed_origin = App.Vector(handle.X, handle.Y, 0) if fixed_size else handle.StartPoint
+            native_width = Part.makeCompound([g.toShape() for g in geometry]).BoundBox.XLength
+            scale = 1 if fixed_size else handle.length() / native_width
+            center = self.sketch.Geometry[group.Second].Center
+            self.assertLess((center - (placed_origin + geometry[0].Center * scale)).Length, 1e-5)
+            SketcherBlock.reload(
+                self.sketch,
+                next(i for i, c in enumerate(self.sketch.Constraints) if c.Type == "Group"),
+            )
+            group = next(c for c in self.sketch.Constraints if c.Type == "Group")
+            self.assertLess((self.sketch.Geometry[group.Second].Center - center).Length, 1e-5)
+            box.setChecked(True)
+            self.selectLibraryBlock("CE")
+            self.assertFalse(box.isChecked())
         finally:
             clipboard.setText(previous)
             preferences.SetBool("DontUseNativeDialog", old_native)
+
+    def testCreateBlockSaveAndCancel(self):
+        self.checkCreateBlock(False)
+
+    def testCreateBlockFixedSizeDefault(self):
+        self.checkCreateBlock(True)
