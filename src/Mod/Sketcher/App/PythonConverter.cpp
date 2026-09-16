@@ -180,13 +180,13 @@ std::string PythonConverter::convert(
 {
     if (constraints.size() == 1) {
         auto cg = process(constraints[0], geoIdMode);
-        
+
         std::string command = "c = " + cg;
         if (constraints[0]->Name.size()) {
             command += "\nc.Name = '" + constraints[0]->Name + "'";
         }
         command += "\n" + doc + ".addConstraint(c)\n";
-        
+
         return command;
     }
 
@@ -645,7 +645,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
             res += constraint->isDriving ? ", True" : ", False";
         }
     }
-    
+
     // Encapsulate everything correctly
     return "Sketcher.Constraint('" + res + ")";
 }
