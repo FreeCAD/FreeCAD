@@ -116,8 +116,7 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
             const bool nestedGroup = (constraint->Type == Group || constraint->Type == Text)
                 && viewProvider.getSketchObject()->isInGroup(constraint->getGeoId(0), false);
             sws[i] = !(constrlist[i]->isInVirtualSpace != isshownvirtualspace)
-                && constrlist[i]->isVisible
-                && !nestedGroup;
+                && constrlist[i]->isVisible && !nestedGroup;
         }
 
 
