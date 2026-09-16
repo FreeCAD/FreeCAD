@@ -24,6 +24,9 @@
 
 #pragma once
 
+#include <optional>
+#include <string_view>
+
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
@@ -107,10 +110,10 @@ bool ReleaseHandler(Gui::Document* doc);
 std::string getStrippedPythonExceptionString(const Base::Exception&);
 
 void getIdsFromName(
-    const std::string& name,
-    const Sketcher::SketchObject* Obj,
-    int& GeoId,
-    Sketcher::PointPos& PosId
+    std::string_view name,
+    const Sketcher::SketchObject* obj,
+    int& geoId,
+    Sketcher::PointPos& posId
 );
 
 /// Returns ONLY the geometry elements when the "Edge" is selected (including GeomPoints)
@@ -126,10 +129,6 @@ bool isPointOrSegmentFixed(const Sketcher::SketchObject* Obj, int GeoId);
 bool areBothPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2);
 
 bool areAllPointsOrSegmentsFixed(const Sketcher::SketchObject* Obj, int GeoId1, int GeoId2, int GeoId3);
-
-bool inline isVertex(int GeoId, Sketcher::PointPos PosId);
-
-bool inline isEdge(int GeoId, Sketcher::PointPos PosId);
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, Sketcher::PointPos PosId);
 
@@ -159,15 +158,98 @@ bool checkConstraint(
     Sketcher::PointPos pos
 );
 
-inline bool isVertex(int GeoId, Sketcher::PointPos PosId)
+inline namespace
 {
-    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId != Sketcher::PointPos::none);
+using namespace std::string_view_literals;
+
+namespace
+{
+inline std::optional<int> extractId(size_t prefixLength, std::string_view name, int add, bool neg = false)
+{
+    const auto digits = name.substr(prefixLength);
+    int id = 0;
+    const auto [ptr, ec] = std::from_chars(digits.begin(), digits.end(), id);
+    if (ec == std::errc()) {
+        return (neg ? -id : id) + add;
+    }
+    return std::nullopt;
+}
+}  // namespace
+
+constexpr bool isVertex(int geoId, Sketcher::PointPos posId)
+{
+    return geoId != Sketcher::GeoEnum::GeoUndef && posId != Sketcher::PointPos::none;
 }
 
-inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
+/** Check if a sketcher name belongs to a vertex. */
+constexpr bool isVertex(std::string_view name)
 {
-    return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::PointPos::none);
+    return name.starts_with("Vertex"sv);
 }
+
+/**
+ * @brief Get the ID of a vertex from its name.
+ * @returns Vertex ID, or `std::nullopt` if the ID failed to parse or isn't from a vertex.
+ */
+inline std::optional<int> getVertexId(std::string_view name)
+{
+    return isVertex(name) ? extractId("Vertex"sv.length(), name, -1) : std::nullopt;
+}
+
+constexpr bool isEdge(int geoId, Sketcher::PointPos posId)
+{
+    return geoId != Sketcher::GeoEnum::GeoUndef && posId == Sketcher::PointPos::none;
+}
+
+/** Check if a sketcher name belongs to an edge. */
+constexpr bool isEdge(std::string_view name)
+{
+    return name.starts_with("Edge"sv);
+}
+
+/**
+ * @brief Get the ID of an edge from its name.
+ * @returns Edge ID, or `std::nullopt` if the ID failed to parse or isn't from an edge.
+ */
+inline std::optional<int> getEdgeId(std::string_view name)
+{
+    return isEdge(name) ? extractId("Edge"sv.length(), name, -1) : std::nullopt;
+}
+
+/** Check if a sketcher name belongs to an external edge. */
+constexpr bool isExternalEdge(std::string_view name)
+{
+    return name.starts_with("ExternalEdge"sv);
+}
+
+/**
+ * @brief Get the ID of an external edge from its name.
+ * @returns External edge ID, or `std::nullopt` if the ID failed to parse or isn't from
+ *          an external edge.
+ */
+inline std::optional<int> getExternalEdgeId(std::string_view name)
+{
+    return isExternalEdge(name)
+        ? extractId("ExternalEdge"sv.length(), name, Sketcher::GeoEnum::RefExt + 1, true)
+        : std::nullopt;
+}
+
+/** Check if a sketcher name belongs to a constraint. */
+constexpr bool isConstraint(std::string_view name)
+{
+    return name.starts_with("Constraint"sv);
+}
+
+/**
+ * @brief Get the ID of a constraint from its name.
+ * @returns Constraint ID, or `std::nullopt` if the ID failed to parse or isn't from a constraint.
+ */
+inline std::optional<int> getConstraintId(std::string_view name)
+{
+    return isConstraint(name) ? extractId("Constraint"sv.length(), name, -1) : std::nullopt;
+}
+
+}  // namespace
 
 /* helper functions ======================================================*/
 

@@ -74,58 +74,6 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
-bool isVertex(std::string_view name)
-{
-    const std::string_view vertex("Vertex");
-    return (name.size() > vertex.size() && name.substr(0, vertex.size()) == vertex);
-}
-
-int getVertexId(std::string_view name)
-{
-    const std::size_t maxlen = 4000;
-    const std::string_view vertex("Vertex");
-    return std::atoi(name.substr(vertex.size(), maxlen).data()) - 1;
-}
-
-bool isEdge(std::string_view name)
-{
-    const std::string_view edge("Edge");
-    return (name.size() > edge.size() && name.substr(0, edge.size()) == edge);
-}
-
-int getEdgeId(std::string_view name)
-{
-    const std::size_t maxlen = 4000;
-    const std::string_view edge("Edge");
-    return std::atoi(name.substr(edge.size(), maxlen).data()) - 1;
-}
-
-bool isExternalEdge(std::string_view name)
-{
-    const std::string_view extEdge("ExternalEdge");
-    return (name.size() > extEdge.size() && name.substr(0, extEdge.size()) == extEdge);
-}
-
-int getExternalEdgeId(std::string_view name)
-{
-    const std::size_t maxlen = 4000;
-    const std::string_view extEdge("ExternalEdge");
-    return -std::atoi(name.substr(extEdge.size(), maxlen).data()) - 2;
-}
-
-bool isConstraint(std::string_view name)
-{
-    const std::string_view constr("Constraint");
-    return (name.size() > constr.size() && name.substr(0, constr.size()) == constr);
-}
-
-int getConstraintId(std::string_view name)
-{
-    const std::size_t maxlen = 4000;
-    const std::string_view constr("Constraint");
-    return std::atoi(name.substr(constr.size(), maxlen).data()) - 1;
-}
-
 std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
 {
     std::vector<int> listOfGeoIds = {};
@@ -148,20 +96,17 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     if (!subNames.empty()) {
 
         for (auto& name : subNames) {
-            if (isEdge(name)) {
-                int geoId = getEdgeId(name);
-                listOfGeoIds.push_back(geoId);
+            if (const auto geoId = getEdgeId(name)) {
+                listOfGeoIds.push_back(geoId.value());
             }
-            else if (isExternalEdge(name)) {
-                int geoId = getExternalEdgeId(name);
-                listOfGeoIds.push_back(geoId);
+            else if (const auto geoId = getExternalEdgeId(name)) {
+                listOfGeoIds.push_back(geoId.value());
             }
-            else if (isVertex(name)) {
+            else if (const auto vertexId = getVertexId(name)) {
                 // only if it is a GeomPoint
-                int VtId = getVertexId(name);
                 int geoId {};
-                Sketcher::PointPos PosId {};
-                Obj->getGeoVertexIndex(VtId, geoId, PosId);
+                Sketcher::PointPos posId {};
+                Obj->getGeoVertexIndex(vertexId.value(), geoId, posId);
                 if (isPoint(*Obj->getGeometry(geoId))) {
                     if (geoId >= 0) {
                         listOfGeoIds.push_back(geoId);
@@ -906,8 +851,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle constraints
-        if (isConstraint(*it)) {
-            int ConstrId = getConstraintId(*it);
+        if (const auto maybeConstId = getConstraintId(*it)) {
+            int ConstrId = maybeConstId.value();
 
             if (ConstrId < static_cast<int>(vals.size())) {
                 if (vals[ConstrId]->First != GeoEnum::GeoUndef) {
@@ -1473,8 +1418,8 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (isEdge(*it)) {
-            LastGeoId = getEdgeId(*it);
+        if (const auto geoId = getEdgeId(*it)) {
+            LastGeoId = geoId.value();
             LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
             // lines to copy
@@ -1483,12 +1428,11 @@ void SketcherCopy::activate(SketcherCopy::Op op)
                 stream << LastGeoId << ",";
             }
         }
-        else if (isVertex(*it)) {
+        else if (const auto vertexId = getVertexId(*it)) {
             // only if it is a GeomPoint
-            int VtId = getVertexId(*it);
             int GeoId {};
             Sketcher::PointPos PosId {};
-            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            Obj->getGeoVertexIndex(vertexId.value(), GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::PointPos::start;
@@ -1502,11 +1446,10 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     }
 
     // check if last selected element is a Vertex, not being a GeomPoint
-    if (isVertex(SubNames.back())) {
-        int VtId = getVertexId(SubNames.back());
+    if (const auto vertexId = getVertexId(SubNames.back())) {
         int GeoId {};
         Sketcher::PointPos PosId {};
-        Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+        Obj->getGeoVertexIndex(vertexId.value(), GeoId, PosId);
         if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
@@ -2078,8 +2021,8 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (isEdge(*it)) {
-            LastGeoId = getEdgeId(*it);
+        if (const auto geoId = getEdgeId(*it)) {
+            LastGeoId = geoId.value();
             LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
 
@@ -2089,12 +2032,11 @@ void CmdSketcherRectangularArray::activated(int iMsg)
                 stream << LastGeoId << ",";
             }
         }
-        else if (isVertex(*it)) {
+        else if (const auto vertexId = getVertexId(*it)) {
             // only if it is a GeomPoint
-            int VtId = getVertexId(*it);
             int GeoId {};
             Sketcher::PointPos PosId {};
-            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            Obj->getGeoVertexIndex(vertexId.value(), GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::PointPos::start;
@@ -2108,11 +2050,10 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 
     // check if last selected element is a Vertex, not being a GeomPoint
-    if (isVertex(SubNames.back())) {
-        int VtId = getVertexId(SubNames.back());
+    if (const auto vertexId = getVertexId(SubNames.back())) {
         int GeoId {};
         Sketcher::PointPos PosId {};
-        Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+        Obj->getGeoVertexIndex(vertexId.value(), GeoId, PosId);
         if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
             LastPointPos = PosId;
@@ -2360,8 +2301,8 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (isEdge(*it)) {
-            LastGeoId = getEdgeId(*it);
+        if (const auto edgeId = getEdgeId(*it)) {
+            LastGeoId = edgeId.value();
 
             // lines to copy
             if (LastGeoId >= 0) {
@@ -2369,12 +2310,11 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
                 stream << LastGeoId << ",";
             }
         }
-        else if (isVertex(*it)) {
+        else if (const auto vertexId = getVertexId(*it)) {
             // only if it is a GeomPoint
-            int VtId = getVertexId(*it);
             int GeoId {};
             Sketcher::PointPos PosId {};
-            Obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            Obj->getGeoVertexIndex(vertexId.value(), GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 // points to copy
@@ -2465,11 +2405,11 @@ void CmdSketcherOffset::activated(int iMsg)
     if (!subNames.empty()) {
         for (auto& name : subNames) {
             int geoId {};
-            if (isEdge(name)) {
-                geoId = getEdgeId(name);
+            if (const auto edgeId = getEdgeId(name)) {
+                geoId = edgeId.value();
             }
-            else if (isExternalEdge(name)) {
-                geoId = getExternalEdgeId(name);
+            else if (const auto edgeId = getExternalEdgeId(name)) {
+                geoId = edgeId.value();
             }
             else {
                 continue;
