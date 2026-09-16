@@ -3901,6 +3901,16 @@ void ViewProviderSketch::slotSolverUpdate()
 
         Gui::MDIView* mdi =
             Gui::Application::Instance->editViewOfNode(editCoinManager->getRootEditNode());
+        if (!mdi) {
+            // During setEdit() the edit root is still hidden until setEditViewer().
+            // Initialize its geometry using the editing document's active view.
+            auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* doc) {
+                return doc->getEditViewProvider() == this;
+            });
+            if (editDoc) {
+                mdi = editDoc->getActiveView();
+            }
+        }
         if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
         }

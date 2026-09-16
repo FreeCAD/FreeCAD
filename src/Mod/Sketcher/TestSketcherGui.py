@@ -5,6 +5,7 @@ from SketcherTests.TestConstraintCommandsGui import TestConstraintCommandsGui
 from SketcherTests.TestCoincidentCommandGui import TestCoincidentCommandGui
 from SketcherTests.TestOnViewParameterGui import TestOnViewParameterGui
 from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
+from SketcherTests.TestSolverUpdateGui import TestSolverUpdateGui
 from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
 
 # Use the module so that code checkers don't complain (flake8)
@@ -15,6 +16,7 @@ from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselect
     and TestConstraintCommandsGui
     and TestCoincidentCommandGui
     and TestSketchPlacementUpdate
+    and TestSolverUpdateGui
     and TestOnViewParameterGui
     and TestExternalFacePreselection
     else False
