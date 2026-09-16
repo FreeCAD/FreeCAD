@@ -219,7 +219,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
     ShapeValidator validator;
     for (const auto& set : boundary) {
         if (set.first->isDerivedFrom<Part::Feature>()) {
-            const Part::TopoShape ts = getTopoShapeInGlobalCoordinates(set.first);
+            const Part::TopoShape ts = getTopoShapeInFeatureCoordinates(set.first, this);
             for (const auto& jt : set.second) {
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }

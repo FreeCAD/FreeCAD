@@ -28,7 +28,7 @@ class TestGeomFillSurface(unittest.TestCase):
         self.assertAlmostEqual(surface.Shape.BoundBox.XMin, 20)
         self.assertAlmostEqual(surface.Shape.BoundBox.XMax, 30)
 
-    def testBoundaryListUsesParentGroupPlacement(self):
+    def testBoundaryListUsesParentGroupPlacementInLocalCoordinates(self):
         container = self.Doc.addObject("App::Part", "Part")
         container.Placement.Base = App.Vector(20, 0, 0)
 
@@ -42,10 +42,11 @@ class TestGeomFillSurface(unittest.TestCase):
 
         surface = self.Doc.addObject("Surface::GeomFillSurface", "Surface")
         surface.BoundaryList = [(line1, "Edge1"), (line2, "Edge1")]
+        container.addObject(surface)
         self.Doc.recompute()
 
-        self.assertAlmostEqual(surface.Shape.BoundBox.XMin, 20)
-        self.assertAlmostEqual(surface.Shape.BoundBox.XMax, 30)
+        self.assertAlmostEqual(surface.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(surface.Shape.BoundBox.XMax, 10)
 
     def tearDown(self):
         if hasattr(App, "KeepTestDoc") and App.KeepTestDoc:
