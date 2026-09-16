@@ -170,7 +170,7 @@ std::list<Parameter> InMemoryParameterSource::all() const
 {
     auto values = parameters | std::ranges::views::values;
 
-    return std::list<Parameter>(values.begin(), values.end());
+    return {values.begin(), values.end()};
 }
 
 std::optional<Parameter> InMemoryParameterSource::get(const std::string& name) const
@@ -466,7 +466,7 @@ std::list<Parameter> ParameterManager::parameters() const
         }
     }
 
-    return std::list(result.begin(), result.end());
+    return {result.begin(), result.end()};
 }
 
 std::optional<std::string> ParameterManager::expression(const std::string& name) const

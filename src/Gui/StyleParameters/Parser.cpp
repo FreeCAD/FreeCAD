@@ -226,7 +226,7 @@ Value lightenOrDarken(const Tuple& args, bool lighten)
 {
     const char* functionName = lighten ? "lighten" : "darken";
 
-    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
     // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
     // we, however, want users to pass only the relative difference, hence we need to add the
@@ -271,7 +271,7 @@ Value darken(const Tuple& args)
 
 Value blend(const Tuple& args)
 {
-    auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
+    auto resolved = ArgumentParser {{.name = "from"}, {.name = "to"}, {.name = "amount"}}.resolve(args);
 
     auto amount = Base::fromPercent(
         static_cast<long>(requireArgument<Numeric>(resolved, "amount", "blend").value)
@@ -280,9 +280,9 @@ Value blend(const Tuple& args)
     const auto blendColors =
         [amount](const Base::Color& first, const Base::Color& second) -> Base::Color {
         return Base::Color(
-            (1 - amount) * first.r + amount * second.r,
-            (1 - amount) * first.g + amount * second.g,
-            (1 - amount) * first.b + amount * second.b
+            ((1 - amount) * first.r) + (amount * second.r),
+            ((1 - amount) * first.g) + (amount * second.g),
+            ((1 - amount) * first.b) + (amount * second.b)
         );
     };
 
@@ -335,11 +335,11 @@ Value shade(const Tuple& args)
     auto resolved = ArgumentParser {
         {.name = "color"},
         {.name = "lightness"},
-        {.name = "range", .defaultValue = Numeric {0.8, ""}},
-        {.name = "min", .defaultValue = Numeric {0.17, ""}},
-        {.name = "max", .defaultValue = Numeric {0.97, ""}},
-        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
-        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        {.name = "range", .defaultValue = Numeric {.value=0.8, .unit=""}},
+        {.name = "min", .defaultValue = Numeric {.value=0.17, .unit=""}},
+        {.name = "max", .defaultValue = Numeric {.value=0.97, .unit=""}},
+        {.name = "pivot", .defaultValue = Numeric {.value=0.5, .unit=""}},
+        {.name = "q", .defaultValue = Numeric {.value=0.1, .unit=""}},
     }.resolve(args);
 
     auto position = asPercent(requireArgument<Numeric>(resolved, "lightness", "shade"));
@@ -367,11 +367,11 @@ Value shades(const Tuple& args)
     auto resolved = ArgumentParser {
         {.name = "color"},
         {.name = "shades"},
-        {.name = "range", .defaultValue = Numeric {0.8, ""}},
-        {.name = "min", .defaultValue = Numeric {0.17, ""}},
-        {.name = "max", .defaultValue = Numeric {0.97, ""}},
-        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
-        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        {.name = "range", .defaultValue = Numeric {.value=0.8, .unit=""}},
+        {.name = "min", .defaultValue = Numeric {.value=0.17, .unit=""}},
+        {.name = "max", .defaultValue = Numeric {.value=0.97, .unit=""}},
+        {.name = "pivot", .defaultValue = Numeric {.value=0.5, .unit=""}},
+        {.name = "q", .defaultValue = Numeric {.value=0.1, .unit=""}},
     }.resolve(args);
 
     const auto& shadesSpec = requireArgument<Tuple>(resolved, "shades", "shades");
@@ -466,7 +466,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         }
         for (const auto& element : arguments.elements) {
             Value result = element.expression->evaluate(context);
-            if (!result.holds<std::string>() || !result.get<std::string>().starts_with("@")) {
+            if (!result.holds<std::string>() || !result.get<std::string>().starts_with('@')) {
                 return result;
             }
         }
@@ -508,7 +508,8 @@ Value TupleLiteral::evaluate(const EvaluationContext& context) const
     Tuple tuple;
     for (const auto& elem : elements) {
         tuple.elements.push_back(
-            {elem.name, std::make_shared<const Value>(elem.expression->evaluate(context))}
+            {.name = elem.name,
+             .value = std::make_shared<const Value>(elem.expression->evaluate(context))}
         );
     }
     return tuple;
