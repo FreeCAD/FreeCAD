@@ -950,7 +950,7 @@ class _Structure(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
         if (
-            FreeCAD.ActiveDocument.getProgramVersion().split()[0] < "1.1"
+            obj.Document.getProgramVersion().split()[0] < "1.1"
             and obj.Base is not None
             and obj.Base.isDerivedFrom("Sketcher::SketchObject")
             and obj.Normal.Length == 0  # Automatic normal.
