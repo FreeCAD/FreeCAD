@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from Base.Metadata import export
-from typing import Tuple
+from typing import Tuple, overload
 
 from Base.PyObjectBase import PyObjectBase
 
@@ -23,23 +23,32 @@ class ChFi2d_ChamferAPI(PyObjectBase):
     Licence: LGPL
     """
 
-    def init(self) -> None:
+    @overload
+    def __init__(self, wire: object) -> None: ...
+    @overload
+    def __init__(self, edge1: object, edge2: object) -> None: ...
+    @overload
+    def init(self, wire: object, /) -> None: ...
+    @overload
+    def init(self, edge1: object, edge2: object, /) -> None: ...
+    def init(self, *args) -> None:
         """
-        Initializes a chamfer algorithm: accepts a wire consisting of two edges in a plane
+        Initializes a chamfer algorithm: accepts a wire consisting of two edges in a plane,
+        or a pair of edges.
         """
         ...
 
-    def perform(self, radius: float, /) -> bool:
+    def perform(self) -> bool:
         """
-        perform(radius) -> bool
+        perform() -> bool
 
         Constructs a chamfer edge
         """
         ...
 
-    def result(self, point: object, solution: int = -1, /) -> Tuple[object, object, object]:
+    def result(self, length1: float, length2: float, /) -> Tuple[object, object, object]:
         """
-        result(point, solution=-1)
+        result(length1, length2)
 
         Returns result (chamfer edge, modified edge1, modified edge2)
         """
