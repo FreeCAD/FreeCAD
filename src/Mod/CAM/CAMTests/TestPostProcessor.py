@@ -1292,6 +1292,33 @@ class TestSpindleSpeedSanityCheck(unittest.TestCase):
         self.assertEqual(len(squawks), 1)
         self.assertIn("Profile", squawks[0]["Note"])
 
+    def test219b_min_above_max_reports_both(self):
+        """A machine misconfigured with min > max reports both violations."""
+        pp = self._make_postprocessor([self._rotary_toolhead(min_rpm=24000, max_rpm=6000)])
+        pp._merge_toolhead_limits()
+
+        squawks = pp._sanity_spindle_speed(self._job_with_speeds([12000]))
+
+        self.assertEqual(len(squawks), 2)
+        self.assertIn("below", squawks[0]["Note"])
+        self.assertIn("above", squawks[1]["Note"])
+
+    def test219_multiple_toolheads_squawk_note(self):
+        """With several toolheads the skipped check says so with a NOTE."""
+        pp = self._make_postprocessor(
+            [
+                self._rotary_toolhead(min_rpm=6000, max_rpm=24000),
+                self._rotary_toolhead(min_rpm=100, max_rpm=3000),
+            ]
+        )
+        pp._merge_toolhead_limits()
+
+        squawks = pp._sanity_spindle_speed(self._job_with_speeds([1000000]))
+
+        self.assertEqual(len(squawks), 1)
+        self.assertEqual(squawks[0]["squawkType"], "NOTE")
+        self.assertIn("2 toolheads", squawks[0]["Note"])
+
     def test218_check_runs_from_get_sanity_checks(self):
         """The check is wired into the base get_sanity_checks() composition."""
         pp = self._make_postprocessor([self._rotary_toolhead(max_rpm=24000)])
@@ -1304,7 +1331,36 @@ class TestSpindleSpeedSanityCheck(unittest.TestCase):
 
 
 class TestAddSpindleHelper(unittest.TestCase):
-    """Machine.add_spindle() must not shift its arguments onto the wrong fields."""
+    """Toolhead construction must not shift values onto the wrong fields."""
+
+    def test221_from_dict_sets_named_fields(self):
+        toolhead = Toolhead.from_dict(
+            {
+                "name": "Spindle",
+                "toolhead_type": "rotary",
+                "id": "th1",
+                "max_power_kw": 3.0,
+                "max_rpm": 24000,
+                "min_rpm": 6000,
+                "tool_change": "auto",
+                "coolant_flood": True,
+                "toolhead_wait": 2.5,
+                "plasma_amperage": 45,
+            }
+        )
+
+        self.assertEqual(toolhead.name, "Spindle")
+        self.assertEqual(toolhead.toolhead_type, ToolheadType.ROTARY)
+        self.assertEqual(toolhead.id, "th1")
+        self.assertEqual(toolhead.max_power_kw, 3.0)
+        self.assertEqual(toolhead.max_rpm, 24000)
+        self.assertEqual(toolhead.min_rpm, 6000)
+        self.assertEqual(toolhead.tool_change, "auto")
+        self.assertTrue(toolhead.coolant_flood)
+        self.assertFalse(toolhead.coolant_mist)
+        self.assertEqual(toolhead.toolhead_wait, 2.5)
+        self.assertIsNone(toolhead.laser_wavelength)
+        self.assertEqual(toolhead.plasma_amperage, 45)
 
     def test220_add_spindle_sets_named_fields(self):
         machine = Machine.create_3axis_config()

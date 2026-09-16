@@ -2665,8 +2665,9 @@ class PostProcessor:
         Squawk for commanded spindle speeds outside the machine's range.
 
         The limits come from the machine's toolhead by way of
-        _merge_toolhead_limits().  When neither limit is known the check does
-        nothing, so a machine that has not specified them is not squawked at.
+        _merge_toolhead_limits().  When neither limit is known the speeds are
+        not checked, so a machine that has not specified them is not squawked
+        at.  A machine whose limits could not be resolved gets a NOTE instead.
 
         Args:
             job: FreeCAD CAM job object to validate
@@ -2677,7 +2678,7 @@ class PostProcessor:
         min_speed = self.values.get("MIN_SPINDLE_SPEED")
         max_speed = self.values.get("MAX_SPINDLE_SPEED")
         if min_speed is None and max_speed is None:
-            return []
+            return self._sanity_spindle_speed_unresolved()
 
         squawks = []
         for label, speed in self._commanded_spindle_speeds(job):
@@ -2695,7 +2696,9 @@ class PostProcessor:
                         ).format(label, f"{speed:g}", f"{min_speed:g}"),
                     )
                 )
-            elif max_speed is not None and speed > max_speed:
+            # Not elif: a machine misconfigured with min_rpm > max_rpm
+            # should report both violations, not hide the second.
+            if max_speed is not None and speed > max_speed:
                 squawks.append(
                     self._create_squawk(
                         "WARNING",
@@ -2706,6 +2709,30 @@ class PostProcessor:
                     )
                 )
         return squawks
+
+    def _sanity_spindle_speed_unresolved(self):
+        """
+        Squawk when spindle speed limits exist but could not be applied.
+
+        With several toolheads there is no rule for which one a job uses, so
+        _merge_toolhead_limits() leaves the limits unset.  Say so, rather
+        than let the check silently do nothing.
+
+        Returns:
+            list: List of squawk dictionaries.
+        """
+        toolheads = getattr(getattr(self, "_machine", None), "toolheads", None) or []
+        if len(toolheads) > 1:
+            return [
+                self._create_squawk(
+                    "NOTE",
+                    translate(
+                        "CAM_Post",
+                        "Machine defines {} toolheads; spindle speed was not checked against their limits",
+                    ).format(len(toolheads)),
+                )
+            ]
+        return []
 
     def _commanded_spindle_speeds(self, job):
         """
