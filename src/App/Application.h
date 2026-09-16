@@ -97,11 +97,31 @@ struct DocumentInitFlags {
 };
 
 /**
+ * @brief Cooperative cancellation state owned by one recompute request.
+ *
+ * The state is deliberately separate from RecomputeRequest so callers can
+ * retain the exact cancellation identity while the request is queued or
+ * executing on the worker.
+ */
+class AppExport RecomputeCancellationState
+{
+public:
+    void cancel() noexcept;
+    bool isCanceled() const noexcept;
+
+private:
+    std::atomic_bool _canceled {false};
+};
+
+using RecomputeCancellationHandle = std::shared_ptr<RecomputeCancellationState>;
+
+/**
  * @brief Failure category for async recompute processing.
  */
 enum class RecomputeFailure
 {
     None,
+    Canceled,
     DependencyCycle,
     Exception
 };
@@ -136,9 +156,16 @@ struct AppExport RecomputeRequest
     bool force {false};
     int options {0};
     bool recursive {false};
+    RecomputeCancellationHandle cancellation {std::make_shared<RecomputeCancellationState>()};
     // Callback to be invoked when recompute is complete.
     std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
 };
+
+/// Returns whether the currently executing recompute request was canceled.
+AppExport bool currentRecomputeWasCanceled() noexcept;
+
+/// Throws a cooperative abort exception when the current request was canceled.
+AppExport void throwIfRecomputeCanceled();
 
 /**
  * @brief The class that represents the whole application.
@@ -398,6 +425,10 @@ public:
 
     // Adds a recompute request to the processing queue.
     void queueRecomputeRequest(RecomputeRequest req);
+    // Cancels exactly the request represented by this token, if it is queued
+    // or currently executing. The request callback still runs once with a
+    // Canceled result.
+    bool cancelRecomputeRequest(const RecomputeCancellationHandle& cancellation);
 
     // NOLINTBEGIN
     // clang-format off
@@ -1054,6 +1085,7 @@ private:
     // Protects the queued/in-progress recompute state below
     std::mutex _recomputeMutex;
     std::deque<RecomputeRequest> _recomputeRequests;
+    std::optional<RecomputeRequest> _recomputeRequestInProgress;
     std::set<std::string> _recomputeDocumentsInProgress;
     std::condition_variable _recomputeRequestAvailable;
     std::condition_variable _recomputeStateChanged;

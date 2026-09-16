@@ -40,7 +40,10 @@ protected:
     static void SetUpTestSuite()
     {
         tests::initApplication();
-        app = new Application(true);
+        // These tests exercise style parameter substitution only.  Keep the
+        // application non-GUI because Gui_tests_run uses QCoreApplication and
+        // does not create a MainWindow.
+        app = new Application(false);
     }
 
     void SetUp() override
