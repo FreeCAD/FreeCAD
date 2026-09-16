@@ -132,6 +132,7 @@
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
+#include "Inventor/SoMouseWheelEvent.h"
 #include "MainWindow.h"
 #include "Multisample.h"
 #include "NaviCube.h"
@@ -799,7 +800,11 @@ private:
 
     static bool isUnwantedHorizontalScroll(const QWheelEvent* event)
     {
-        if (!event->pixelDelta().isNull() && NavigationStyle::touchpadScrollPans()) {
+        const bool touchpad = SoMouseWheelEvent::isPreciseScroll(
+            !event->pixelDelta().isNull(),
+            event->phase() != Qt::NoScrollPhase
+        );
+        if (touchpad && NavigationStyle::touchpadScrollPans()) {
             return false;
         }
         return qAbs(event->angleDelta().x()) > qAbs(event->angleDelta().y());

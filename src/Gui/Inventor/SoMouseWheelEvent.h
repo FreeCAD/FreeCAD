@@ -77,6 +77,10 @@ public:  // methods
     {
         return precise;
     }
+    static bool isPreciseScroll(bool hasPixelDelta, bool hasScrollPhase)
+    {
+        return hasPixelDelta && hasScrollPhase;
+    }
     ~SoMouseWheelEvent() override = default;
 
 private:  // data

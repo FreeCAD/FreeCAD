@@ -196,7 +196,7 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
   this->wheel->setPixelDelta(
     SoMouseWheelEvent::toGlPixelDelta(widgetDelta,
                                       static_cast<float>(publ->quarter->devicePixelRatio())),
-    !pixels.isNull());
+    SoMouseWheelEvent::isPreciseScroll(!pixels.isNull(), event->phase() != Qt::NoScrollPhase));
 
   return this->wheel;
 }
