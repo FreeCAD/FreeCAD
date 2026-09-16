@@ -116,6 +116,8 @@ class GCodeEditorDialog(QtGui.QDialog):
         bottomFrame.layout().addWidget(self.chkRaw)
 
         self.chkTool = QtGui.QCheckBox("Show tool")
+        self.chkTool.setSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Preferred)
+        self.chkTool.setMinimumSize(200, 0)
         if self.tool is not None:
             self.chkTool.setText(translate("CAM_Inspect", "Show tool: %s") % self.tool.Label)
             self.chkTool.setToolTip(
@@ -129,6 +131,8 @@ class GCodeEditorDialog(QtGui.QDialog):
             else:
                 self.chkTool.setChecked(self.tool.Visibility)
             bottomFrame.layout().addWidget(self.chkTool)
+
+        bottomFrame.layout().setStretchFactor(self.chkTool, 1)
 
         self.buttons = QtGui.QDialogButtonBox(
             QtGui.QDialogButtonBox.Close,
@@ -144,6 +148,8 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.chkRaw.checkStateChanged.connect(self.updateText)
         self.chkTool.checkStateChanged.connect(self.toolVisibility)
 
+        self.show()  # needed here to get correct widget size and elide label of chkTool
+
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         Xpos = int(prefs.GetString("inspecteditorX", "0"))
         Ypos = int(prefs.GetString("inspecteditorY", "0"))
@@ -153,6 +159,25 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.resize(width, height)
 
         self.updateText()
+
+    def resizeEvent(self, event):
+        """Change widgets width with a dialog window"""
+        super().resizeEvent(event)
+        if self.tool is None:
+            return
+
+        text = translate("CAM_Inspect", "Show tool: %s") % self.tool.Label
+        opt = QtGui.QStyleOptionButton()
+        self.chkTool.initStyleOption(opt)
+        indent = (
+            self.chkTool.style()
+            .subElementRect(QtGui.QStyle.SE_CheckBoxContents, opt, self.chkTool)
+            .x()
+        )
+        width = self.chkTool.width() - indent
+        fm = self.chkTool.fontMetrics()
+        elided_text = fm.elidedText(text, QtCore.Qt.ElideMiddle, width)
+        self.chkTool.setText(elided_text)
 
     def cleanup(self):
         """Prepare for exit from Inspect"""
