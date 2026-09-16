@@ -339,7 +339,7 @@ class TestArchStructure(TestArchBase.TestArchBase):
                 Vector(100, 100, 0),
                 Vector(0, 100, 0),
             )
-            for start, end in zip(points, points[1:]  points[:1]):
+            for start, end in zip(points, points[1:] + points[:1]):
                 sketch.addGeometry(Part.LineSegment(start, end), False)
             structure = Arch.makeStructure(sketch, height=1000)
             test_doc.recompute()
