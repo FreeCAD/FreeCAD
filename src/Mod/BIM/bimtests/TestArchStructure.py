@@ -23,10 +23,13 @@
 # ***************************************************************************
 
 import os
+import tempfile
 import unittest
 import FreeCAD as App
 from FreeCAD import Vector
 import Arch
+import Part
+import Sketcher
 from bimtests import TestArchBase
 
 
@@ -299,9 +302,60 @@ class TestArchStructure(TestArchBase.TestArchBase):
         self.printTestMessage("v1.1 column flip workaround")
         path = os.path.join(os.path.dirname(__file__), "test_structure_column_flip_v1_0_v1_1.FCStd")
         test_doc = App.openDocument(path)
-        test_doc.recompute()
-        self.assertAlmostEqual(test_doc.Structure.Shape.BoundBox.ZMin, 0)
-        self.assertAlmostEqual(test_doc.Structure001.Shape.BoundBox.ZMax, 0)
-        self.assertAlmostEqual(test_doc.Structure002.Shape.BoundBox.ZMin, 0)
-        self.assertAlmostEqual(test_doc.Structure003.Shape.BoundBox.ZMax, 0)
-        App.closeDocument(test_doc.Name)
+        try:
+            test_doc.recompute()
+            structures = (
+                test_doc.Structure,
+                test_doc.Structure001,
+                test_doc.Structure002,
+                test_doc.Structure003,
+            )
+            for structure in structures:
+                expected_normal = structure.Nodes[1] - structure.Nodes[0]
+                expected_normal.normalize()
+                self.assertTrue(structure.Normal.isEqual(expected_normal, 1e-7))
+                self.assertFalse(structure.Shape.isNull())
+                self.assertGreater(structure.Shape.Volume, 0)
+
+            self.assertAlmostEqual(test_doc.Structure.Shape.BoundBox.ZMin, 0)
+            self.assertAlmostEqual(test_doc.Structure.Shape.BoundBox.ZMax, 2000)
+            self.assertAlmostEqual(test_doc.Structure001.Shape.BoundBox.ZMin, -1000)
+            self.assertAlmostEqual(test_doc.Structure001.Shape.BoundBox.ZMax, 0)
+            self.assertAlmostEqual(test_doc.Structure002.Shape.BoundBox.ZMin, 0)
+            self.assertAlmostEqual(test_doc.Structure002.Shape.BoundBox.ZMax, 2000)
+            self.assertAlmostEqual(test_doc.Structure003.Shape.BoundBox.ZMin, -1000)
+            self.assertAlmostEqual(test_doc.Structure003.Shape.BoundBox.ZMax, 0)
+        finally:
+            App.closeDocument(test_doc.Name)
+
+    def test_current_structure_normal_is_not_migrated(self):
+        """The compatibility migration must not change current documents."""
+        test_doc = App.newDocument("CurrentStructureMigrationTest")
+        try:
+            sketch = test_doc.addObject("Sketcher::SketchObject", "StructureBase")
+            points = (
+                Vector(0, 0, 0),
+                Vector(100, 0, 0),
+                Vector(100, 100, 0),
+                Vector(0, 100, 0),
+            )
+            for start, end in zip(points, points[1:]  points[:1]):
+                sketch.addGeometry(Part.LineSegment(start, end), False)
+            structure = Arch.makeStructure(sketch, height=1000)
+            test_doc.recompute()
+            structure.Normal = Vector()
+            structure.Nodes = [Vector(), Vector(0, 0, -1000)]
+
+            self.assertTrue(structure.Base.isDerivedFrom("Sketcher::SketchObject"))
+            self.assertEqual(structure.Length, 0)
+
+            with tempfile.TemporaryDirectory() as temp_dir:
+                path = os.path.join(temp_dir, "current_structure.FCStd")
+                test_doc.saveAs(path)
+                App.closeDocument(test_doc.Name)
+                test_doc = App.openDocument(path)
+                self.assertGreaterEqual(test_doc.getProgramVersion().split()[0], "1.1")
+                self.assertEqual(test_doc.Structure.Normal.Length, 0)
+        finally:
+            if test_doc.Name in App.listDocuments():
+                App.closeDocument(test_doc.Name)
