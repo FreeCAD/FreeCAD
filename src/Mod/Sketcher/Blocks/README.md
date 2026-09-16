@@ -5,6 +5,8 @@ Each `.txt` file is a geometry snapshot in the format produced by Sketcher's
 editing a sketch, then choose **Create Block** from the right-click menu or
 the Blocks menu. In the tool widget, optionally enable **Fixed Size** as the
 block's insertion default, then click in the sketch to choose the block origin.
+For adjustable blocks, click a second point to define the end of the line handle.
+The two points must differ. Fixed-size blocks need only the origin click.
 Choose a name in the save dialog, which starts in the default block library folder.
 Geometry is saved relative to the chosen origin. Internal constraints are kept;
 constraints anchoring the selection to the source sketch axes are omitted.
@@ -33,6 +35,10 @@ The stored geometry remains usable when the source file is unavailable.
 Create Block saves its checkbox choice in a `# Sketcher block fixed size: true`
 or `false` comment. Insert Block loads that default whenever a file is selected.
 You can override it for an insertion, and the block editor preserves the saved setting.
+Adjustable blocks created with two points store a `# Sketcher block handle: x y`
+comment: the handle endpoint relative to the origin. Its length and direction
+control placement and reload independently of the geometry's bounding box.
+The block editor preserves this handle. Older files retain width/height placement.
 
 The first click places the source origin, including for scaled blocks.
 With **Fixed Size** checked, dimensions stay at source size and the second click

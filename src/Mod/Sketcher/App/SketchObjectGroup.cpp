@@ -9,7 +9,8 @@
 
 int Sketcher::SketchObject::replaceGroupGeometry(
     int constraintId,
-    const std::vector<Part::Geometry*>& source
+    const std::vector<Part::Geometry*>& source,
+    const Base::Vector3d& sourceHandle
 )
 {
     const auto& constraints = Constraints.getValues();
@@ -40,7 +41,8 @@ int Sketcher::SketchObject::replaceGroupGeometry(
               line->getStartPoint(),
               line->getEndPoint(),
               group->getFileHeight(),
-              Base::FileInfo(group->getFile()).hasExtension("txt")
+              Base::FileInfo(group->getFile()).hasExtension("txt"),
+              sourceHandle
           );
 
     // Retain every geometry outside this group, including its handle. Constraint tags

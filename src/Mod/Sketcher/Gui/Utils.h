@@ -240,7 +240,8 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 QMap<QString, QString> findAvailableFontFiles();
 std::vector<std::unique_ptr<Part::Geometry>> readBlockGeometry(
     const std::string& filename,
-    bool* fixedSize = nullptr
+    bool* fixedSize = nullptr,
+    Base::Vector3d* sourceHandle = nullptr
 );
 int selectedBlockConstraint(Gui::Document* doc);
 void editFileBlock(ViewProviderSketch* view, int constraintId);

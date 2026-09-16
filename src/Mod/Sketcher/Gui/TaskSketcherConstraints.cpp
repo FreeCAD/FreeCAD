@@ -674,15 +674,20 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
         if (constraint && constraint->Type == Sketcher::Group && !constraint->getFile().empty()) {
             auto* view = dynamic_cast<ViewProviderSketch*>(doc->getViewProvider(it->sketch));
             const int index = it->ConstraintNbr;
-            if (QFileInfo(QString::fromStdString(constraint->getFile())).suffix().compare(
-                    QStringLiteral("txt"), Qt::CaseInsensitive) == 0) {
-                menu.addAction(tr("Edit Block"), this, [view, index]() {
+            const bool isBlock = QFileInfo(QString::fromStdString(constraint->getFile()))
+                                     .suffix().compare(QStringLiteral("txt"), Qt::CaseInsensitive) == 0;
+            if (isBlock) {
+                menu.addAction(Gui::BitmapFactory().iconFromTheme("Sketcher_EditBlock"),
+                               tr("Edit Block"), this, [view, index]() {
                     SketcherGui::editFileBlock(view, index);
                 });
             }
-            menu.addAction(tr("Reload From File"), this, [view, index]() {
+            auto* reload = menu.addAction(tr("Reload From File"), this, [view, index]() {
                 SketcherGui::reloadFileGroup(view, index);
             });
+            if (isBlock) {
+                reload->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ReloadBlock"));
+            }
         }
     }
 

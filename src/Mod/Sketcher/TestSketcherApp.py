@@ -38,3 +38,18 @@ from SketcherTests.TestSketchBlocks import TestSketchBlocks
 from SketcherTests.TestSketcherSolver import CreateCircleSketch
 from SketcherTests.TestSketcherSolver import CreateRectangleSketch
 from SketcherTests.TestSketcherSolver import CreateSlotPlateSet
+
+# Export test cases for unittest discovery and the legacy sketch helpers.
+__all__ = [
+    "TestSketcherSolver",
+    "TestSketchFillet",
+    "TestSketchExpression",
+    "TestSketchValidateCoincidents",
+    "TestSketchCarbonCopyReverseMapping",
+    "TestSketchInternalFaces",
+    "TestSketcherEllipse",
+    "TestSketchBlocks",
+    "CreateCircleSketch",
+    "CreateRectangleSketch",
+    "CreateSlotPlateSet",
+]

@@ -19,7 +19,7 @@ class SketcherBlockWidget: public QWidget
 public:
     explicit SketcherBlockWidget(QWidget* parent = nullptr);
     QString selectedFile() const;
-    void setPlacementOptions(int method, bool fixedSize, bool fixedOrientation);
+    void setPlacementOptions(int method, bool fixedSize, bool fixedOrientation, bool customHandle = false);
     void toggleFixedSize();
     void toggleFixedOrientation();
 

@@ -766,7 +766,10 @@ PyObject* SketchObjectPy::replaceGroupGeometry(PyObject* args)
 {
     int index;
     PyObject* values;
-    if (!PyArg_ParseTuple(args, "iO!", &index, &PyList_Type, &values)) {
+    PyObject* handle = nullptr;
+    if (
+        !PyArg_ParseTuple(args, "iO!|O!", &index, &PyList_Type, &values, &Base::VectorPy::Type, &handle)
+    ) {
         return nullptr;
     }
     try {
@@ -779,7 +782,13 @@ PyObject* SketchObjectPy::replaceGroupGeometry(PyObject* args)
             geometry.push_back(static_cast<Part::GeometryPy*>(item.ptr())->getGeometryPtr());
         }
         return Py::new_reference_to(
-            Py::Long(getSketchObjectPtr()->replaceGroupGeometry(index, geometry))
+            Py::Long(
+                getSketchObjectPtr()->replaceGroupGeometry(
+                    index,
+                    geometry,
+                    handle ? static_cast<Base::VectorPy*>(handle)->value() : Base::Vector3d()
+                )
+            )
         );
     }
     catch (const Base::Exception& error) {
