@@ -179,9 +179,15 @@ std::string PythonConverter::convert(
 )
 {
     if (constraints.size() == 1) {
-        auto cg = convert(constraints[0], geoIdMode);
-
-        return boost::str(boost::format("%s.%s\n") % doc % cg);
+        auto cg = process(constraints[0], geoIdMode);
+        
+        std::string command = "c = " + cg;
+        if (!constraints[0]->Name.empty()) {
+            command += "\nc.Name = '" + constraints[0]->Name + "'";
+        }
+        command += "\n" + doc + ".addConstraint(c)\n";
+        
+        return command;
     }
 
     std::string constraintlist = "constraintList = []";
@@ -189,9 +195,12 @@ std::string PythonConverter::convert(
     for (auto constraint : constraints) {
         auto cg = process(constraint, geoIdMode);
 
-        constraintlist = boost::str(
-            boost::format("%s\nconstraintList.append(%s)") % constraintlist % cg
-        );
+        // Create the object, set the name if it exists, then append it
+        constraintlist += "\nc = " + cg;
+        if (!constraint->Name.empty()) {
+            constraintlist += "\nc.Name = '" + constraint->Name + "'";
+        }
+        constraintlist += "\nconstraintList.append(c)";
     }
 
     if (!constraints.empty()) {
@@ -636,7 +645,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
             res += constraint->isDriving ? ", True" : ", False";
         }
     }
-
+    
     // Encapsulate everything correctly
     return "Sketcher.Constraint('" + res + ")";
 }
