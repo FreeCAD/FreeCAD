@@ -10,7 +10,6 @@
 #include <QHBoxLayout>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QLabel>
 #include <QPushButton>
 #include <QSignalBlocker>
 #include <QTreeWidget>
@@ -77,13 +76,9 @@ SketcherBlockWidget::SketcherBlockWidget(QWidget* parent)
     folders->addWidget(removeFolder);
     folders->addWidget(refreshButton);
     layout->addLayout(folders);
-    auto* choose = new QPushButton(tr("Choose File…"), this);
-    choose->setObjectName(QStringLiteral("chooseBlockFile"));
-    layout->addWidget(choose);
-    selectedLabel = new QLabel(this);
-    selectedLabel->setTextFormat(Qt::PlainText);
-    selectedLabel->setWordWrap(true);
-    layout->addWidget(selectedLabel);
+    chooseFileButton = new QPushButton(tr("Choose File…"), this);
+    chooseFileButton->setObjectName(QStringLiteral("chooseBlockFile"));
+    layout->addWidget(chooseFileButton);
     fixedSize = new QCheckBox(tr("Fixed Size"), this);
     fixedSize->setObjectName(QStringLiteral("blockFixedSize"));
     fixedSize->setChecked(false);
@@ -112,7 +107,7 @@ SketcherBlockWidget::SketcherBlockWidget(QWidget* parent)
     connect(add, &QPushButton::clicked, this, &SketcherBlockWidget::chooseFolder);
     connect(removeFolder, &QPushButton::clicked, this, &SketcherBlockWidget::removeSelectedFolder);
     connect(refreshButton, &QPushButton::clicked, this, &SketcherBlockWidget::refresh);
-    connect(choose, &QPushButton::clicked, this, &SketcherBlockWidget::chooseFile);
+    connect(chooseFileButton, &QPushButton::clicked, this, &SketcherBlockWidget::chooseFile);
     connect(tree, &QTreeWidget::itemExpanded, this, &SketcherBlockWidget::populate);
     connect(tree, &QTreeWidget::currentItemChanged, this, [this](QTreeWidgetItem* item) {
         auto* root = item;
@@ -300,8 +295,8 @@ void SketcherBlockWidget::refresh()
 void SketcherBlockWidget::setFile(const QString& path)
 {
     filename = path;
-    selectedLabel->setText(path.isEmpty() ? tr("Select a block") : QFileInfo(path).fileName());
-    selectedLabel->setToolTip(QDir::toNativeSeparators(path));
+    chooseFileButton->setText(tr("Choose File…"));
+    chooseFileButton->setToolTip(QString());
     if (!path.isEmpty()) {
         preferences()->SetASCII("LastFile", path.toUtf8().constData());
     }
@@ -390,4 +385,9 @@ void SketcherBlockWidget::chooseFile()
         removeFolder->setEnabled(false);
         setFile(path);
     }
+    chooseFileButton->setText(
+        tr("%1 selected, choose another…")
+            .arg(QFileInfo(path).fileName().replace(QStringLiteral("&"), QStringLiteral("&&")))
+    );
+    chooseFileButton->setToolTip(QDir::toNativeSeparators(path));
 }
