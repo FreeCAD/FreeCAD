@@ -284,6 +284,12 @@ void SketcherBlockWidget::refresh()
     if (selectFile(previous)) {
         return;
     }
+    const QFileInfo previousFile(previous);
+    if (previousFile.isFile()
+        && previousFile.suffix().compare(QStringLiteral("txt"), Qt::CaseInsensitive) == 0) {
+        setFile(previous);
+        return;
+    }
     for (int i = 0; i < tree->topLevelItemCount(); ++i) {
         if (selectFirstFile(tree->topLevelItem(i))) {
             return;
@@ -295,8 +301,7 @@ void SketcherBlockWidget::refresh()
 void SketcherBlockWidget::setFile(const QString& path)
 {
     filename = path;
-    chooseFileButton->setText(tr("Choose File…"));
-    chooseFileButton->setToolTip(QString());
+    updateFileButton(!path.isEmpty() && !tree->currentItem());
     if (!path.isEmpty()) {
         preferences()->SetASCII("LastFile", path.toUtf8().constData());
     }
@@ -310,6 +315,9 @@ QString SketcherBlockWidget::selectedDirectory() const
         if (QFileInfo(path).exists()) {
             return item->data(0, folderRole).toBool() ? path : QFileInfo(path).absolutePath();
         }
+    }
+    if (QFileInfo(filename).isFile()) {
+        return QFileInfo(filename).absolutePath();
     }
     return builtInFolder();
 }
@@ -385,9 +393,16 @@ void SketcherBlockWidget::chooseFile()
         removeFolder->setEnabled(false);
         setFile(path);
     }
+    updateFileButton(true);
+}
+
+void SketcherBlockWidget::updateFileButton(bool picked)
+{
     chooseFileButton->setText(
-        tr("%1 selected, choose another…")
-            .arg(QFileInfo(path).fileName().replace(QStringLiteral("&"), QStringLiteral("&&")))
+        picked
+            ? tr("%1 selected, choose another…")
+                  .arg(QFileInfo(filename).fileName().replace(QStringLiteral("&"), QStringLiteral("&&")))
+            : tr("Choose File…")
     );
-    chooseFileButton->setToolTip(QDir::toNativeSeparators(path));
+    chooseFileButton->setToolTip(picked ? QDir::toNativeSeparators(filename) : QString());
 }

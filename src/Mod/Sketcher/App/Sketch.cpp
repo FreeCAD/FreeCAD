@@ -5732,9 +5732,8 @@ Sketch::GroupLineState Sketch::getGroupLineState(int geoId) const
 {
     GroupLineState state;
     state.startPoint = getPoint(geoId, PointPos::start);
-    state.endPoint = Geoms[checkGeoId(geoId)].type == Point
-        ? state.startPoint + Base::Vector3d(1, 0, 0)
-        : getPoint(geoId, PointPos::end);
+    state.endPoint = Geoms[checkGeoId(geoId)].type == Point ? state.startPoint + Base::Vector3d::UnitX
+                                                            : getPoint(geoId, PointPos::end);
     return state;
 }
 

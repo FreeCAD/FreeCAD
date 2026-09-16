@@ -1431,7 +1431,8 @@ CmdSketcherInsertBlock::CmdSketcherInsertBlock()
     sMenuText = QT_TR_NOOP("Insert Block");
     sToolTipText = QT_TR_NOOP(
         "Inserts a block from a Sketcher geometry text file as a Group.\n"
-        "Position and size are controlled by constraints on the group's construction line.\n"
+        "Position is controlled by the group handle; line handles also control size and "
+        "orientation.\n"
         "Constraints on grouped geometry are ignored while the Group is active."
     );
     sWhatsThis = "Sketcher_InsertBlock";
@@ -1453,9 +1454,6 @@ bool CmdSketcherInsertBlock::isActive()
 {
     return isCommandActive(getActiveGuiDocument());
 }
-
-// ======================================================================================
-// Comp for outline tools =============================================
 
 // B-spline ================================================================
 

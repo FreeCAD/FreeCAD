@@ -921,3 +921,54 @@ class TestSketchBlocksGui(SketcherGuiTestCase):
 
     def testCreateBlockFixedSizeDefault(self):
         self.checkCreateBlock(True)
+
+    def testStandaloneBlockFileSurvivesRefreshAndReopen(self):
+        path = Path(self.directory.name) / "standalone.txt"
+        path.write_text(
+            "# Copied from sketcher.\n# Sketcher block fixed size: true\n"
+            "objectStr.addGeometry([Part.Circle(App.Vector(0,0,0),App.Vector(0,0,1),2)],False)\n",
+            encoding="utf-8",
+        )
+        self.library_preferences.SetString("Folders", "[]")
+        self.library_preferences.SetString("LastFile", str(path))
+        for reopen in (False, True):
+            with self.subTest(reopen=reopen):
+                if reopen:
+                    Gui.activeDocument().resetEdit()
+                    Gui.activeDocument().setEdit(self.sketch.Name)
+                Gui.runCommand("Sketcher_InsertBlock", 0)
+                choose = self.visible_widget(QtWidgets.QPushButton, "chooseBlockFile")
+                self.assertIn(path.name, choose.text())
+                self.assertEqual(Path(choose.toolTip()), path)
+                self.visible_widget(QtWidgets.QPushButton, "refreshBlockLibrary").click()
+                self.assertIn(path.name, choose.text())
+                self.assertEqual(Path(self.library_preferences.GetString("LastFile")), path)
+                self.visible_widget(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
+                viewport = Gui.activeDocument().activeView().graphicsView().viewport()
+                self.move(viewport, viewport.rect().center())
+                self.click(viewport, viewport.rect().center())
+                groups = [c for c in self.sketch.Constraints if c.Type == "Group"]
+                self.assertEqual(Path(groups[-1].File), path)
+
+    def testFixedSizeVerticalBlockUsesPointHandle(self):
+        import json
+        import Part
+
+        path = Path(self.directory.name) / "vertical.txt"
+        path.write_text(
+            "# Copied from sketcher.\n# Sketcher block fixed size: true\n"
+            "objectStr.addGeometry([Part.LineSegment(App.Vector(0,0,0),App.Vector(0,10,0))],False)\n",
+            encoding="utf-8",
+        )
+        self.library_preferences.SetString("Folders", json.dumps([str(path.parent)]))
+        self.library_preferences.SetString("LastFile", str(path))
+        Gui.runCommand("Sketcher_InsertBlock", 0)
+        self.assertTrue(self.visible_widget(QtWidgets.QCheckBox, "blockFixedSize").isChecked())
+        self.visible_widget(QtWidgets.QCheckBox, "blockFixedOrientation").setChecked(True)
+        viewport = Gui.activeDocument().activeView().graphicsView().viewport()
+        self.move(viewport, viewport.rect().center())
+        self.click(viewport, viewport.rect().center())
+        groups = [c for c in self.sketch.Constraints if c.Type == "Group"]
+        self.assertEqual(len(groups), 1)
+        self.assertIsInstance(self.sketch.Geometry[groups[0].First], Part.Point)
+        self.assertAlmostEqual(self.sketch.Geometry[groups[0].Second].length(), 10)
