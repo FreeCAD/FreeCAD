@@ -23,6 +23,8 @@
 # ***************************************************************************
 
 from math import pi
+from pathlib import Path
+import tempfile
 import unittest
 
 import FreeCAD
@@ -191,6 +193,141 @@ class TestHelix(unittest.TestCase):
         self.assertLess(helix.Shape.BoundBox.YMin, 0)
         self.assertGreater(helix.Shape.BoundBox.YMax, 0)
         self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 3, places=2)
+
+    def testFlatSpiralKeepsPerTurnFaces(self):
+        """Preserve the per-turn sweep used by existing zero-angle spirals."""
+        body = self.Doc.addObject("PartDesign::Body", "SpiralBody")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        TestSketcherApp.CreateRectangleSketch(sketch, (10, 0), (1, 1))
+        sketch.AttachmentSupport = body.Origin.OriginFeatures[4]
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+        helix = body.newObject("PartDesign::AdditiveHelix", "Helix")
+        helix.Profile = sketch
+        helix.ReferenceAxis = (sketch, "V_Axis")
+        helix.Mode = 3
+        helix.Height = 0
+        helix.Turns = 2.5
+        helix.Growth = 2
+        helix.Angle = 0
+        self.Doc.recompute()
+
+        self.assertNotIn("Invalid", helix.State)
+        self.assertTrue(helix.Shape.isValid())
+        self.assertEqual(len(helix.Shape.Solids), 1)
+        # Three path segments sweep four profile edges each, plus the two end faces.
+        # Removing the breaks changes existing faces and their downstream references.
+        self.assertEqual(len(helix.AddSubShape.Faces), 14)
+
+    def checkTwoSidedHelixAtScale(self, operation):
+        """Extend the AIRCAP tolerance regressions to both new direction modes."""
+        occVersion = tuple(int(v) for v in Part.OCC_VERSION.split(".")[:2])
+        # Retain the smaller boolean-test scale used below for OCCT 7.3 and older.
+        largestExponent = 6 if occVersion > (7, 3) else 5
+        for sideType in ("Two sides", "Symmetric"):
+            for exponent in (-1, 0, 3, largestExponent):
+                with self.subTest(operation=operation, sideType=sideType, exponent=exponent):
+                    scale = 10**exponent
+                    body = self.Doc.addObject("PartDesign::Body", "ScaledBody")
+                    sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+                    TestSketcherApp.CreateRectangleSketch(sketch, (10 * scale, 0), (scale, scale))
+                    sketch.AttachmentSupport = body.Origin.OriginFeatures[4]
+                    sketch.MapMode = "FlatFace"
+                    if operation != "standalone":
+                        cylinder = body.newObject("PartDesign::AdditiveCylinder", "Cylinder")
+                        cylinder.Radius = (10 if operation == "add" else 11) * scale
+                        cylinder.Height = 20 * scale
+                        cylinder.Placement.Base.z = -10 * scale
+                    self.Doc.recompute()
+
+                    featureType = (
+                        "PartDesign::SubtractiveHelix"
+                        if operation == "cut"
+                        else "PartDesign::AdditiveHelix"
+                    )
+                    helix = body.newObject(featureType, "Helix")
+                    helix.Profile = sketch
+                    helix.ReferenceAxis = (sketch, "V_Axis")
+                    helix.SideType = sideType
+                    helix.Pitch = 2 * scale
+                    helix.Height = 5 * scale
+                    helix.Height2 = 3 * scale
+                    helix.Angle = 0
+                    helix.Mode = 0
+                    helix.Tolerance = 0.12 if operation == "add" else 0.1
+                    self.Doc.recompute()
+
+                    self.assertNotIn("Invalid", helix.State)
+                    self.assertTrue(helix.Shape.isValid())
+                    self.assertEqual(len(helix.Shape.Solids), 1)
+                    # Annular area times profile height times the total turn count.
+                    totalTurns = 4 if sideType == "Two sides" else 2.5
+                    expected = pi * (11**2 - 10**2) * totalTurns
+                    if operation == "add":
+                        expected = pi * 10**2 * 20 + expected
+                    elif operation == "cut":
+                        expected = pi * 11**2 * 20 - expected
+                    # Normalize to unit scale and allow for the approximated sweep/boolean.
+                    self.assertAlmostEqual(
+                        helix.Shape.Volume / scale**3, expected, delta=expected * 1e-5
+                    )
+                    if operation == "standalone":
+                        zMin = -3 if sideType == "Two sides" else -2.5
+                        zMax = 6 if sideType == "Two sides" else 3.5
+                    else:
+                        zMin, zMax = -10, 10
+                    self.assertAlmostEqual(helix.Shape.BoundBox.ZMin / scale, zMin, places=5)
+                    self.assertAlmostEqual(helix.Shape.BoundBox.ZMax / scale, zMax, places=5)
+
+    def testTwoSidedHelixAtScale(self):
+        self.checkTwoSidedHelixAtScale("standalone")
+
+    def testTwoSidedHelixAdditiveAtScale(self):
+        self.checkTwoSidedHelixAtScale("add")
+
+    def testTwoSidedHelixSubtractiveAtScale(self):
+        self.checkTwoSidedHelixAtScale("cut")
+
+    def testTwoSidedOverlappingHeights(self):
+        """Signed heights pointing the same way must produce a union."""
+        helix = self.createRectangleHelix("OverlappingBody")
+        helix.SideType = "Two sides"
+        helix.Height = 150
+        helix.Height2 = -100
+        self.Doc.recompute()
+
+        self.assertNotIn("Invalid", helix.State)
+        self.assertEqual(len(helix.Shape.Solids), 1)
+        self.assertAlmostEqual(helix.Shape.Volume, pi * 25 * 5 * 3, delta=0.01)
+        self.assertAlmostEqual(helix.Shape.BoundBox.YMin, 0, places=5)
+        self.assertAlmostEqual(helix.Shape.BoundBox.YMax, 155, places=5)
+
+    def testTwoSidedSaveRestore(self):
+        """Retain direction, signed heights and recomputation after reopening."""
+        helix = self.createRectangleHelix("SavedBody")
+        helix.SideType = "Two sides"
+        helix.Height = -150
+        helix.Height2 = -100
+        helix.Reversed = True
+        self.Doc.recompute()
+        self.assertNotIn("Invalid", helix.State)
+        expectedVolume = helix.Shape.Volume
+        helixName = helix.Name
+        with tempfile.TemporaryDirectory() as directory:
+            filename = str(Path(directory) / "TwoSidedHelix.FCStd")
+            self.Doc.saveAs(filename)
+            FreeCAD.closeDocument(self.Doc.Name)
+            self.Doc = FreeCAD.openDocument(filename)
+            restored = self.Doc.getObject(helixName)
+            self.assertEqual(restored.SideType, "Two sides")
+            self.assertEqual(restored.Height.Value, -150)
+            self.assertEqual(restored.Height2.Value, -100)
+            self.assertTrue(restored.Reversed)
+            restored.touch()
+            self.Doc.recompute()
+            self.assertNotIn("Invalid", restored.State)
+            self.assertEqual(len(restored.Shape.Solids), 1)
+            self.assertAlmostEqual(restored.Shape.Volume, expectedVolume, delta=0.01)
 
     def testCircleQ1(self):
         """Test helix based on circle in Quadrant 1"""
@@ -549,4 +686,4 @@ class TestHelix(unittest.TestCase):
         self.assertAlmostEqual(helix.Shape.Volume / 1e5, 6.0643, places=4)
 
     def tearDown(self):
-        FreeCAD.closeDocument("PartDesignTestHelix")
+        FreeCAD.closeDocument(self.Doc.Name)
