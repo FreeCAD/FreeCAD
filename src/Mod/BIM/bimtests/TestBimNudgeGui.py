@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-
 from bimcommands import BimNudge
 from bimtests.TestArchBaseGui import TestArchBaseGui
 
