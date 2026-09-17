@@ -486,7 +486,9 @@ def generate(
     # -- Unpack parameters --
     tool_diam = float(radius) * 2.0
     op_type = str(adaptive_params.get("op_type", "ClearingInside"))
-    adaptive_accuracy = max(float(adaptive_params.get("adaptive_accuracy", 0.1)), 0.01)  # Adaptive2d minimum
+    adaptive_accuracy = max(
+        float(adaptive_params.get("adaptive_accuracy", 0.1)), 0.01
+    )  # Adaptive2d minimum
     stock_to_leave = float(adaptive_params.get("stock_to_leave", 0.0))
     force_insideout = bool(adaptive_params.get("force_insideout", True))
     finishing_profile = bool(adaptive_params.get("finishing_profile", True))
