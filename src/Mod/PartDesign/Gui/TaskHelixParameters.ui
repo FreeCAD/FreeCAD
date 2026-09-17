@@ -37,7 +37,7 @@
      <item>
       <widget class="QLabel" name="labelSideMode">
        <property name="text">
-        <string>Sides</string>
+        <string>Direction</string>
        </property>
       </widget>
      </item>
