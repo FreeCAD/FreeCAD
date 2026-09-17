@@ -1505,9 +1505,10 @@ class TestPathPocket(PathTestBase):
 
         tc = PathToolController.Create(name="TC: 3mm Endmill")
         job.Proxy.addToolController(tc)
-        tc.Tool.Diameter = 3.0
+        tc.Tool.Diameter = 10
         op.ToolController = tc
         op.BoundaryShape = "Face Region"
+        op.ExtraOffset = 6
 
         top_z = solid.BoundBox.ZMax
         top_faces = [
