@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShape import TopoShape
 
 @export(
     PythonName="Part.ShapeUpgrade.UnifySameDomain",
@@ -27,7 +28,7 @@ class UnifySameDomain(PyObjectBase):
         """
         ...
 
-    def allowInternalEdges(self) -> None:
+    def allowInternalEdges(self, allow: bool, /) -> None:
         """
         Sets the flag defining whether it is allowed to create
         internal edges inside merged faces in the case of non-manifold
@@ -36,19 +37,19 @@ class UnifySameDomain(PyObjectBase):
         """
         ...
 
-    def keepShape(self) -> None:
+    def keepShape(self, shape: TopoShape, /) -> None:
         """
         Sets the shape for avoid merging of the faces/edges.
         """
         ...
 
-    def keepShapes(self) -> None:
+    def keepShapes(self, shapes: list[TopoShape], /) -> None:
         """
         Sets the map of shapes for avoid merging of the faces/edges.
         """
         ...
 
-    def setSafeInputMode(self) -> None:
+    def setSafeInputMode(self, mode: bool, /) -> None:
         """
         Sets the flag defining the behavior of the algorithm regarding
         modification of input shape.
@@ -57,13 +58,13 @@ class UnifySameDomain(PyObjectBase):
         """
         ...
 
-    def setLinearTolerance(self) -> None:
+    def setLinearTolerance(self, tolerance: float, /) -> None:
         """
         Sets the linear tolerance
         """
         ...
 
-    def setAngularTolerance(self) -> None:
+    def setAngularTolerance(self, tolerance: float, /) -> None:
         """
         Sets the angular tolerance
         """
