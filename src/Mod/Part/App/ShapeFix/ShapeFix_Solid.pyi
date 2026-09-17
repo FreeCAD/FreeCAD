@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
+from Part.TopoShape import TopoShape
+from Part.TopoShapeShell import TopoShapeShell
+from Part.TopoShapeSolid import TopoShapeSolid
 
 @export(
     PythonName="Part.ShapeFix.Solid",
@@ -33,7 +36,7 @@ class ShapeFix_Solid(ShapeFix_Root):
     CreateOpenSolidMode: bool = ...
     """Mode for creation of solids"""
 
-    def init(self) -> None:
+    def init(self, solid: TopoShapeSolid, /) -> None:
         """
         Initializes by solid
         """
@@ -45,7 +48,7 @@ class ShapeFix_Solid(ShapeFix_Root):
         """
         ...
 
-    def solidFromShell(self) -> None:
+    def solidFromShell(self, shell: TopoShapeShell, /) -> TopoShape:
         """
         Calls MakeSolid and orients the solid to be not infinite
         """
