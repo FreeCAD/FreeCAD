@@ -411,8 +411,14 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
                 FreeCAD.ActiveDocument.abortTransaction()
             return False
 
+    
+    
     FreeCADGui.doCommand(
-        "for obj in f.ViewObject.Proxy.claimChildren():\n" "    obj.ViewObject.hide()"
+        "for obj in f.ViewObject.Proxy.claimChildren():\n"
+        "    if not (obj.isDerivedFrom('App::Plane') or "
+        "obj.isDerivedFrom('PartDesign::CoordinateSystem') or "
+        "'LCS' in obj.TypeId or 'Plane' in obj.TypeId):\n"
+        "        obj.ViewObject.hide()"
     )
 
     if transaction:
