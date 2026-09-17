@@ -50,10 +50,13 @@ using namespace std;
 #include <BRepLib_MakeFace.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <BRepTools_WireExplorer.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_QuasiUniformDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <gp_Circ.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_Algo.hxx>
@@ -75,7 +78,9 @@ using namespace std;
 #include <App/Document.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/BSplineCurveBiArcs.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -436,6 +441,7 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 }
                 break;
             }
+
             case GeomAbs_Circle: {
                 double first = curve.FirstParameter();
                 double last = curve.LastParameter();
@@ -470,6 +476,80 @@ void Area::addWire(CArea& area, const TopoDS_Wire& wire, const gp_Trsf* trsf, do
                 }
                 break;
             }
+
+            case GeomAbs_BSplineCurve:
+            case GeomAbs_BezierCurve:
+            case GeomAbs_Ellipse:
+            case GeomAbs_Hyperbola:
+            case GeomAbs_Parabola: {
+                // Approximate as circular arc segments (bi-arcs) and line segments.
+                // BSplineCurveBiArcs operates on any Geom_Curve via D0/D1, so no
+                // pre-conversion to BSpline is required.
+                double curveLen = GCPnts_AbscissaPoint::Length(
+                    curve,
+                    curve.FirstParameter(),
+                    curve.LastParameter()
+                );
+                gp_Pnt ptStart = curve.Value(curve.FirstParameter());
+                gp_Pnt ptEnd = curve.Value(curve.LastParameter());
+                // std::cerr << "\nbiarc input: type=" << curve.GetType()
+                //     << " len=" << curveLen
+                //     << " start=(" << ptStart.X() << "," << ptStart.Y() << ")"
+                //     << " end=(" << ptEnd.X() << "," << ptEnd.Y() << ")\n";
+                if (curveLen < gp::Resolution()) {
+                    //     std::cerr << "\nbiarc input: SKIPPING ZERO-LENGTH CURVE\n";
+                    break;
+                }
+
+                Handle(Geom_TrimmedCurve) trimmed = new Geom_TrimmedCurve(
+                    curve.Curve().Curve(),
+                    curve.FirstParameter(),
+                    curve.LastParameter()
+                );
+                trimmed->Transform(curve.Trsf());
+
+                Part::BSplineCurveBiArcs biarcs(trimmed);
+                auto segments = biarcs.toBiArcs(deflection);
+
+                for (Part::Geometry* seg : segments) {
+                    if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(seg)) {
+                        Handle(Geom_TrimmedCurve)
+                            tc = Handle(Geom_TrimmedCurve)::DownCast(arc->handle());
+                        Handle(Geom_Circle) gcircle = Handle(Geom_Circle)::DownCast(tc->BasisCurve());
+                        gp_Pnt center = gcircle->Location();
+                        gp_Dir dir = gcircle->Axis().Direction();
+                        int type = dir.Z() < 0 ? -1 : 1;
+                        if (reversed) {
+                            type = -type;
+                        }
+                        gp_Pnt endPt;
+                        tc->D0(tc->LastParameter(), endPt);
+                        // std::cerr << "biarc arc: type=" << type
+                        //     << " end=(" << endPt.X() << "," << endPt.Y() << ")"
+                        //     << " center=(" << center.X() << "," << center.Y() << ")\n";
+                        ccurve.append(
+                            CVertex(type, Point(endPt.X(), endPt.Y()), Point(center.X(), center.Y()))
+                        );
+                        if (to_edges) {
+                            // TODO: same discretize-and-split logic as GeomAbs_Circle
+                        }
+                    }
+                    else {
+                        // GeomLineSegment
+                        auto* line = static_cast<Part::GeomLineSegment*>(seg);
+                        Base::Vector3d ep = line->getEndPoint();
+                        // std::cerr << "biarc line: end=(" << ep.x << "," << ep.y << ")\n";
+                        ccurve.append(CVertex(Point(ep.x, ep.y)));
+                        if (to_edges) {
+                            area.append(ccurve);
+                            ccurve.m_vertices.pop_front();
+                        }
+                    }
+                    delete seg;
+                }
+                break;
+            }
+
             default: {
                 // Discretize all other type of curves
                 const auto& pts = discretize(edge, deflection);
@@ -2686,10 +2766,22 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
             gp_Pnt center(v.m_c.x, v.m_c.y, 0);
             double r = center.Distance(pt);
             double r2 = center.Distance(pnext);
+
+            // If the arc deviates from its chord by a tiny amount, replace it with the chord
+            // Exact formula: r - sqrt(r² - d²/4)
+            // Approximation for small d: d²/(8r)
+            double d = pt.Distance(pnext);
+            double deviation = d * d / (8.0 * r);
+            if (deviation < Precision::Confusion()) {
+                auto edge = BRepBuilderAPI_MakeEdge(pt, pnext).Edge();
+                hEdges->Append(edge);
+                pt = pnext;
+                continue;
+            }
+
             bool fix_arc = fabs(r - r2) > Precision::Confusion();
             while (true) {
                 if (fix_arc) {
-                    double d = pt.Distance(pnext);
                     double rr = r * r;
                     double dd = d * d * 0.25;
                     double q = rr <= dd ? 0 : sqrt(rr - dd);
