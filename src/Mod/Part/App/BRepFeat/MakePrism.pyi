@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShape import TopoShape
 from typing import List
 
 @export(
@@ -62,7 +63,7 @@ class MakePrism(PyObjectBase):
         """
         ...
 
-    def performFromEnd(self) -> None:
+    def performFromEnd(self, until: TopoShape, /) -> None:
         """
         Realizes a semi-infinite prism, limited by the face Funtil.
         """
@@ -74,7 +75,7 @@ class MakePrism(PyObjectBase):
         """
         ...
 
-    def performUntilHeight(self) -> None:
+    def performUntilHeight(self, until: TopoShape, length: float, /) -> None:
         """
         Assigns both a limiting shape, Until from TopoDS_Shape
         and a height, Length at which to stop generation of the prism feature.
