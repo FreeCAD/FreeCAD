@@ -92,7 +92,7 @@ class TopoShapeWire(TopoShape):
 
     @constmethod
     @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="makeOffset2D")
-    def makeOffset(self) -> object:
+    def makeOffset(self, dist: float, /) -> TopoShape:
         """
         Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.
         """
