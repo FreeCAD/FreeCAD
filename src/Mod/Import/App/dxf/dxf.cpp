@@ -466,7 +466,9 @@ void CDxfWrite::makeBlockRecordTableHead()
     (*m_ssBlkRecord) << "100" << endl;
     (*m_ssBlkRecord) << "AcDbSymbolTable" << endl;
     (*m_ssBlkRecord) << "  70" << endl;
-    (*m_ssBlkRecord) << (m_blockList.size() + 5) << endl;
+    // 2 fixed entries (*MODEL_SPACE, *PAPER_SPACE) below, plus one per
+    // m_blockList entry written later in makeBlockRecordTableBody().
+    (*m_ssBlkRecord) << (m_blockList.size() + 2) << endl;
 
     m_saveModelSpaceHandle = getBlkRecordHandle();
     (*m_ssBlkRecord) << "  0" << endl;
