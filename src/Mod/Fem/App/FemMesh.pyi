@@ -257,7 +257,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> None:
+    def addGroup(self, name: str, group_type: str, group_id: int = -1, /) -> int:
         """
         Add a group to mesh with specific name and type
 
@@ -290,7 +290,7 @@ class FemMesh(ComplexGeoData):
         ...
 
     @constmethod
-    def renameGroup(self) -> Any:
+    def renameGroup(self, group_id: int, name: str, /) -> None:
         """Rename a group with a given group ID
         renameGroup(id, name)
         groupid: int
