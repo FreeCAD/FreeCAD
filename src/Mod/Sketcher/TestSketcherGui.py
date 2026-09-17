@@ -6,7 +6,7 @@ from SketcherTests.TestCoincidentCommandGui import TestCoincidentCommandGui
 from SketcherTests.TestOnViewParameterGui import TestOnViewParameterGui
 from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
 from SketcherTests.TestExternalFacePreselection import TestExternalFacePreselection
-from SketcherTests.TestSketcherGuiModelTreeWidget import TestSketcherGuiModelTreeWidget
+from SketcherTests.TestCarbonCopyModelTreeDragging import TestCarbonCopyModelTreeDragging
 
 # Use the module so that code checkers don't complain (flake8)
 (
@@ -18,6 +18,6 @@ from SketcherTests.TestSketcherGuiModelTreeWidget import TestSketcherGuiModelTre
     and TestSketchPlacementUpdate
     and TestOnViewParameterGui
     and TestExternalFacePreselection
-    and TestSketcherGuiModelTreeWidget
+    and TestCarbonCopyModelTreeDragging
     else False
 )
