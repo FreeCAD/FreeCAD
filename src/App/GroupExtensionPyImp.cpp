@@ -51,10 +51,8 @@ PyObject* GroupExtensionPy::newObject(PyObject* args)
     if (object) {
         return object->getPyObject();
     }
-    else {
-        PyErr_Format(PyExc_TypeError, "Cannot create object of type '%s'", sType);
-        return nullptr;
-    }
+    PyErr_Format(PyExc_TypeError, "Cannot create object of type '%s'", sType);
+    return nullptr;
 }
 
 PyObject* GroupExtensionPy::addObject(PyObject* args)
@@ -274,9 +272,7 @@ PyObject* GroupExtensionPy::getObject(PyObject* args)
     if (obj) {
         return obj->getPyObject();
     }
-    else {
-        Py_Return;
-    }
+    Py_Return;
 }
 
 PyObject* GroupExtensionPy::getObjectsOfType(PyObject* args)

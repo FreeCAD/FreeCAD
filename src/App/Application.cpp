@@ -729,12 +729,7 @@ Document* Application::getDocument(const char *Name) const
 }
 Document* Application::getDocumentOrActive(const char *Name) const
 {
-    if (!Base::Tools::isNullOrEmpty(Name)) {
-        return getDocument(Name);
-    }
-    else {
-        return getActiveDocument();
-    }
+    return !Base::Tools::isNullOrEmpty(Name) ? getDocument(Name) : getActiveDocument();
 }
 
 const char * Application::getDocumentName(const Document* doc) const

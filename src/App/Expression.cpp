@@ -529,15 +529,20 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
 Quantity anyToQuantity(const App::any &value, const char *msg) {
     if (is_type(value,typeid(Quantity))) {
         return cast<Quantity>(value);
-    } else if (is_type(value,typeid(bool))) {
+    }
+    if (is_type(value,typeid(bool))) {
         return Quantity(cast<bool>(value)?1.0:0.0);
-    } else if (is_type(value,typeid(int))) {
+    }
+    if (is_type(value,typeid(int))) {
         return Quantity(cast<int>(value));
-    } else if (is_type(value,typeid(long))) {
+    }
+    if (is_type(value,typeid(long))) {
         return Quantity(cast<long>(value));
-    } else if (is_type(value,typeid(float))) {
+    }
+    if (is_type(value,typeid(float))) {
         return Quantity(cast<float>(value));
-    } else if (is_type(value,typeid(double))) {
+    }
+    if (is_type(value,typeid(double))) {
         return Quantity(cast<double>(value));
     }
     if(!msg)
@@ -577,31 +582,29 @@ std::string anyToString(const App::any &value) {
     if (is_type(value, typeid(bool))) {
         return (cast<bool>(value) ? QObject::tr("True") : QObject::tr("False")).toStdString();
     }
-    else if (is_type(value, typeid(int))) {
+    if (is_type(value, typeid(int))) {
         return std::to_string(cast<int>(value));
     }
-    else if (is_type(value, typeid(long))) {
+    if (is_type(value, typeid(long))) {
         return std::to_string(cast<long>(value));
     }
-    else if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
+    if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
         Quantity q(is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value));
         return q.getUserString();
     }
-    else if (is_type(value, typeid(Quantity))) {
+    if (is_type(value, typeid(Quantity))) {
         const Quantity& q = cast<Quantity>(value);
         return q.getUserString();
     }
-    else if (is_type(value, typeid(const char*))) {
+    if (is_type(value, typeid(const char*))) {
         const char* p = cast<const char*>(value);
         return p ? std::string(p) : QObject::tr("Null").toStdString();
     }
-    else if (is_type(value, typeid(std::string))) {
+    if (is_type(value, typeid(std::string))) {
         return cast<std::string>(value);
     }
-    else {
-        Base::PyGILStateLocker lock;
-        return pyObjectFromAny(value).as_string();
-    }
+    Base::PyGILStateLocker lock;
+    return pyObjectFromAny(value).as_string();
 }
 
 bool isAnyEqual(const App::any &v1, const App::any &v2) {
@@ -621,7 +624,8 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
             if (v1_string && v2_charptr) {
                 auto c = cast<const char*>(v2);
                 return c && cast<std::string>(v1) == c;
-            } else if (v2_string && v1_charptr) {
+            }
+            if (v2_string && v1_charptr) {
                 auto c = cast<const char*>(v1);
                 return c && cast<std::string>(v2) == c;
             }
@@ -687,23 +691,22 @@ ExpressionPtr expressionFromPy(const DocumentObject* owner, const Py::Object& va
         return std::make_unique<PyObjectExpression>(owner);
     if(value.isString()) {
         return std::make_unique<StringExpression>(owner, value.as_string());
-    } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
+    }
+    if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
         return std::make_unique<NumberExpression>(
             owner,
             *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr()
         );
-    } else if (value.isBoolean()) {
+    }
+    if (value.isBoolean()) {
         if (value.isTrue()) {
             return std::make_unique<ConstantExpression>(owner, "True", Quantity(1.0));
         }
-        else {
-            return std::make_unique<ConstantExpression>(owner, "False", Quantity(0.0));
-        }
-    } else {
-        Quantity q;
-        if (pyToQuantity(q, value)) {
-            return std::make_unique<NumberExpression>(owner, q);
-        }
+        return std::make_unique<ConstantExpression>(owner, "False", Quantity(0.0));
+    }
+    Quantity q;
+    if (pyToQuantity(q, value)) {
+        return std::make_unique<NumberExpression>(owner, q);
     }
     return std::make_unique<PyObjectExpression>(owner, value.ptr());
 }
@@ -769,22 +772,21 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
             if(!res.ptr())
                 throw Py::Exception();
             return res;
-        }else{
-            Py::Object v1,v2,v3;
-            if(e1) v1 = e1->getPyValue();
-            if(e2) v2 = e2->getPyValue();
-            if(e3) v3 = e3->getPyValue();
-            PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
-                                      e2?v2.ptr():nullptr,
-                                      e3?v3.ptr():nullptr);
-            if(!s)
-                throw Py::Exception();
-            Py::Object slice(s,true);
-            PyObject *res = PyObject_GetItem(pyobj.ptr(),slice.ptr());
-            if(!res)
-                throw Py::Exception();
-            return Py::asObject(res);
         }
+        Py::Object v1,v2,v3;
+        if(e1) v1 = e1->getPyValue();
+        if(e2) v2 = e2->getPyValue();
+        if(e3) v3 = e3->getPyValue();
+        PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
+                                  e2?v2.ptr():nullptr,
+                                  e3?v3.ptr():nullptr);
+        if(!s)
+            throw Py::Exception();
+        Py::Object slice(s,true);
+        PyObject *res = PyObject_GetItem(pyobj.ptr(),slice.ptr());
+        if(!res)
+            throw Py::Exception();
+        return Py::asObject(res);
     }catch(Py::Exception &) {
         EXPR_PY_THROW(owner);
     }
@@ -1499,8 +1501,7 @@ ExpressionPtr OperatorExpression::simplify() const
     if (freecad_cast<NumberExpression*>(v1.get()) && freecad_cast<NumberExpression*>(v2.get())) {
         return eval();
     }
-    else
-        return std::make_unique<OperatorExpression>(owner, v1.release(), op, v2.release());
+    return std::make_unique<OperatorExpression>(owner, v1.release(), op, v2.release());
 }
 
 void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
@@ -2117,11 +2118,13 @@ Py::Object FunctionExpression::transformFirstArgument(
     if (PyObject_TypeCheck(target.ptr(), &Base::MatrixPy::Type)) {
         Base::Matrix4D matrix = static_cast<Base::MatrixPy*>(target.ptr())->value();
         return Py::asObject(new Base::MatrixPy(*transformationMatrix * matrix));
-    } else if (PyObject_TypeCheck(target.ptr(), &Base::PlacementPy::Type)) {
+    }
+    if (PyObject_TypeCheck(target.ptr(), &Base::PlacementPy::Type)) {
         Base::Matrix4D placementMatrix =
             static_cast<Base::PlacementPy*>(target.ptr())->getPlacementPtr()->toMatrix();
         return Py::asObject(new Base::PlacementPy(Base::Placement(*transformationMatrix * placementMatrix)));
-    } else if (PyObject_TypeCheck(target.ptr(), &Base::RotationPy::Type)) {
+    }
+    if (PyObject_TypeCheck(target.ptr(), &Base::RotationPy::Type)) {
         Base::Matrix4D rotatioMatrix;
         static_cast<Base::RotationPy*>(target.ptr())->getRotationPtr()->getValue(rotatioMatrix);
         return Py::asObject(new Base::RotationPy(Base::Rotation(*transformationMatrix * rotatioMatrix)));
@@ -2211,10 +2214,12 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
                 _EXPR_THROW("Cannot invert singular matrix.", expr);
             m.inverseGauss();
             return Py::asObject(new Base::MatrixPy(m));
-        } else if (PyObject_TypeCheck(pyobj.ptr(), &Base::PlacementPy::Type)) {
+        }
+        if (PyObject_TypeCheck(pyobj.ptr(), &Base::PlacementPy::Type)) {
             const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
             return Py::asObject(new Base::PlacementPy(pla.inverse()));
-        } else if (PyObject_TypeCheck(pyobj.ptr(), &Base::RotationPy::Type)) {
+        }
+        if (PyObject_TypeCheck(pyobj.ptr(), &Base::RotationPy::Type)) {
             const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
             return Py::asObject(new Base::RotationPy(rot.inverse()));
         }
@@ -2696,13 +2701,12 @@ ExpressionPtr FunctionExpression::simplify() const
 
         return eval();
     }
-    else
-        return std::make_unique<FunctionExpression>(
-            owner,
-            f,
-            std::string(fname),
-            std::move(simplifiedArgs)
-        );
+    return std::make_unique<FunctionExpression>(
+        owner,
+        f,
+        std::string(fname),
+        std::move(simplifiedArgs)
+    );
 }
 
 void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
@@ -2940,7 +2944,8 @@ void VariableExpression::addComponent(Component *c) {
             if(!c->comp.isRange()) {
                 var << ObjectIdentifier::ArrayComponent(l1);
                 return;
-            } else if(!c->e2) {
+            }
+            if(!c->e2) {
                 var << ObjectIdentifier::RangeComponent(l1,l2,l3);
                 return;
             }
@@ -3238,14 +3243,10 @@ ExpressionPtr ConditionalExpression::simplify() const
             falseExpr->simplify().release()
         );
     }
-    else {
-        if (fabs(v->getValue()) >= Base::Precision::Confusion()) {
-            return trueExpr->simplify();
-        }
-        else {
-            return falseExpr->simplify();
-        }
+    if (fabs(v->getValue()) >= Base::Precision::Confusion()) {
+        return trueExpr->simplify();
     }
+    return falseExpr->simplify();
 }
 
 void ConditionalExpression::_toString(std::ostream &ss, bool persistent,int) const
