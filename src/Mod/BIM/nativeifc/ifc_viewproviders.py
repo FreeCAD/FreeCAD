@@ -511,6 +511,12 @@ class ifc_vp_group:
     def attach(self, vobj):
         self.Object = vobj.Object
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
     def getIcon(self):
         from PySide import QtGui  # lazy loading
         import Draft_rc
