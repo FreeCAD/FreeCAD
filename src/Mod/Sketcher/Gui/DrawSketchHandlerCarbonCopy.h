@@ -130,7 +130,7 @@ class CarbonCopyTreeWidgetFilter: public QObject
 {
     Q_OBJECT
 public:
-    CarbonCopyTreeWidgetFilter(QObject* parent = nullptr)
+    explicit CarbonCopyTreeWidgetFilter(QObject* parent = nullptr)
         : QObject(parent)
     {}
 

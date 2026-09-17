@@ -93,13 +93,13 @@ public:
     {}
 
 private:
-    Py::Object findModelTreeWidgetPy(const Py::Tuple&)
+    Py::Object findModelTreeWidgetPy(const Py::Tuple& /*args*/)
     {
         auto tree = SketcherGui::findModelTreeWidget();
 
         Gui::PythonWrapper wrap;
-        if (wrap.loadCoreModule()) {
-            return Py::Object(wrap.fromQWidget(tree));
+        if (wrap.loadCoreModule() && tree) {
+            return wrap.fromQWidget(tree);
         }
 
         PyErr_SetString(PyExc_TypeError, "finding the Model TreeWidget failed");
