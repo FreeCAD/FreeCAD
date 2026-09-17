@@ -24,14 +24,19 @@ bool CArea::HolesLinked()
 
 double CArea::m_clipper_scale = 10000.0;
 
-static const int min_arc_points = 4;
+static const int min_arc_points = 1;
 
 // Convert between PointD (double) and Point64 (int64) with scaling
+//
+// Clipper seems to silently remove adjacent points during clipping operations. To
+// prevent this from ruining the map from clipper edges back to CVertex edges,
+// this function rounds all points to an even number, so no distinct points are
+// adjacent
 static Point64 ToPoint64(const PointD& p)
 {
     return Point64(
-        (int64_t)(floor(p.x * CArea::m_clipper_scale + 0.5)),
-        (int64_t)(floor(p.y * CArea::m_clipper_scale + 0.5)),
+        (int64_t)(floor(p.x * CArea::m_clipper_scale / 2 + 0.5)) * 2,
+        (int64_t)(floor(p.y * CArea::m_clipper_scale / 2 + 0.5)) * 2,
         p.z
     );
 }
@@ -539,12 +544,105 @@ void CArea::NaiveOffset(double offset)
     m_curves = std::move(offset_curves);
 }
 
+// Remove CVertex segments shorter than minLen, keeping m_edgeTags in sync.
+static CCurve filterShortSegments(const CCurve& in, double minLen)
+{
+    if (in.m_vertices.size() <= 1) {
+        return in;
+    }
+
+    const bool isClosed = in.IsClosed();
+    const bool hasTags = !in.m_edgeTags.empty();
+
+    // Build a doubly-linked list of (CVertex, tag) pairs from the input vertices/tags.
+    // For closed curves, omit the dummy start-position node
+    std::list<std::pair<CVertex, int>> edges;
+    if (!isClosed) {
+        edges.push_back({in.m_vertices.front(), 1});
+    }
+
+    {
+        auto tagIt = in.m_edgeTags.cbegin();
+        for (auto vIt = std::next(in.m_vertices.cbegin()); vIt != in.m_vertices.cend(); ++vIt) {
+            const int tag = (hasTags && tagIt != in.m_edgeTags.cend()) ? *tagIt++ : 1;
+            edges.push_back({*vIt, tag});
+        }
+    }
+
+    // Loop through the list, deleting short edges
+    auto cursor = edges.begin();
+    while (cursor != edges.end()) {
+        // Never delete the first edge of an open curve
+        if (!isClosed && cursor == edges.begin()) {
+            ++cursor;
+            continue;
+        }
+
+        // Compute the edge length
+        const auto pred = (cursor == edges.begin()) ? std::prev(edges.end()) : std::prev(cursor);
+        const heeks::Point& prevPt = pred->first.m_p;
+        const CVertex& v = cursor->first;
+
+        const double segdx = v.m_p.x - prevPt.x;
+        const double segdy = v.m_p.y - prevPt.y;
+        double len = sqrt(segdx * segdx + segdy * segdy);
+
+        if (v.m_type != 0 && len < minLen) {
+            // Chord is short; compute exact arc length = radius * |sweep|
+            const double dx = prevPt.x - v.m_c.x;
+            const double dy = prevPt.y - v.m_c.y;
+            const double radius = sqrt(dx * dx + dy * dy);
+            const double phi0 = atan2(prevPt.y - v.m_c.y, prevPt.x - v.m_c.x);
+            double phi1 = atan2(v.m_p.y - v.m_c.y, v.m_p.x - v.m_c.x);
+            if (v.m_type == -1 && phi1 > phi0) {
+                phi1 -= 2 * M_PI;
+            }
+            else if (v.m_type == 1 && phi1 < phi0) {
+                phi1 += 2 * M_PI;
+            }
+            len = radius * std::abs(phi1 - phi0);
+        }
+
+        // If the edge is short, delete it. Expand the previous edge to end at its end point
+        if (len < minLen) {
+            std::cerr << "filterShortSegments: skipping short segment len=" << len << "\n";
+            pred->first.m_p = v.m_p;
+            cursor = edges.erase(cursor);
+        }
+        else {
+            // Otherwise advance
+            ++cursor;
+        }
+    }
+
+    // For closed curves, add back the dummy start-position node
+    if (isClosed) {
+        edges.push_front({CVertex(0, edges.back().first.m_p, {0, 0}), 1});
+    }
+
+    // Reconstruct: first node has no incoming tag, the rest do.
+    CCurve out;
+    bool first = true;
+    for (const auto& [vertex, tag] : edges) {
+        out.m_vertices.push_back(vertex);
+        if (hasTags && !first) {
+            out.m_edgeTags.push_back(tag);
+        }
+        first = false;
+    }
+    return out;
+}
+
 // Convert the input CCurve to clipper, populating metadata.
 //
 // Edge tags are read from curve.m_edgeTags. If that list is empty, all edges
 // are treated as if they were tagged 1 (positive offset edge).
-Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
+Path64 CArea::MakePoly(const CCurve& rawCurve, ConversionMetadata& metadata) const
 {
+    // filter out all segment shorter than the diagonal of a 2x2 square, to ensure there is a pixel
+    // available in the middle of every edge
+    const CCurve curve = filterShortSegments(rawCurve, 2.0 * sqrt(2) / CArea::m_clipper_scale);
+
     if (!curve.m_vertices.size()) {
         return {};
     }
@@ -659,93 +757,140 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
         }
     }
 
-    // Simplify the path to eliminate colinear segments and ~adjacent points
+    // // Simplify the path to eliminate colinear segments and ~adjacent points
 
-    // For closed paths, temporarily add the start point to the end, and then handle as open
-    if (curve.IsClosed() && !result.empty()) {
-        result.push_back(result.front());
-    }
+    // // For closed paths, temporarily add the start point to the end, and then handle as open
+    // // TODO FIXME actually I don't think I want to do this; I want it to be possible to delete
+    // the start/end point if (curve.IsClosed() && !result.empty()) {
+    //     result.push_back(result.front());
+    // }
 
-    // Save the original path for later use
-    const Path64 origPath = result;
+    // // Save the original path for later use
+    // const Path64 origPath = result;
 
-    // Remove collinear and near-adjacent points
-    const double cleanDist = 1.5;  // Chosen to be longer than dx = dy = 1
-    result = SimplifyPath(result, cleanDist, /*isClosedPath=*/false);
+    // // Remove collinear and near-adjacent points
+    // const double cleanDist = 1.5;  // Chosen to be longer than dx = dy = 1
+    // result = SimplifyPath(result, cleanDist, /*isClosedPath=*/false);
 
-    // Fix up metadata as needed -- if the path now contains segments that don't map onto a
-    // CVertex, determine the most appropriate CVertex and add it to the metadata
-    size_t zPos = 0;
-    for (size_t i = 0; i + 1 < result.size(); i++) {
-        // Loop over the filtered points
-        const Point64& v0 = result[i];
-        const Point64& v1 = result[i + 1];
+    // // Fix up metadata as needed -- if the path now contains segments that don't map onto a
+    // // CVertex, determine the most appropriate CVertex and add it to the metadata
+    // size_t zPos = 0;
+    // for (size_t i = 0; i + 1 < result.size(); i++) {
+    //     // Loop over the filtered points
+    //     const Point64& v0 = result[i];
+    //     const Point64& v1 = result[i + 1];
 
-        assert(origPath[zPos].z == v0.z);
-        const size_t spanStart = zPos;
+    //     assert(origPath[zPos].z == v0.z);
+    //     const size_t spanStart = zPos;
 
-        // Advance through original path until we reach v1
-        while (origPath[zPos].z != v1.z && zPos < origPath.size()) {
-            zPos++;
-        }
+    //     // Advance through original path until we reach v1
+    //     while (origPath[zPos].z != v1.z && zPos < origPath.size()) {
+    //         zPos++;
+    //     }
 
-        assert(zPos < origPath.size());
-        const size_t spanEnd = zPos;
+    //     assert(zPos < origPath.size());
+    //     const size_t spanEnd = zPos;
 
-        // Check if the segment is missing edge metadata
-        const auto key = [&](size_t z1, size_t z2) {
-            return std::make_pair(std::min(z1, z2), std::max(z1, z2));
-        };
-        if (metadata.edgeData.count(key(v0.z, v1.z))) {
-            continue;
-        }
+    //     // Check if the segment is missing edge metadata
+    //     const auto key = [&](size_t z1, size_t z2) {
+    //         return std::make_pair(std::min(z1, z2), std::max(z1, z2));
+    //     };
+    //     if (metadata.edgeData.count(key(v0.z, v1.z))) {
+    //         continue;
+    //     }
 
-        // Loop over the filtered section of the original path to find the most appropriate
-        // edge metadata: the longest segment that lies entirely within cleanDist of
-        // the v0/v1 line, or the closest segment if none are that close.
-        auto getLenSq = [&](size_t from, size_t to) -> int64_t {
-            int64_t dx = origPath[to].x - origPath[from].x;
-            int64_t dy = origPath[to].y - origPath[from].y;
-            return dx * dx + dy * dy;
-        };
-        const double cleanDistSq = cleanDist * cleanDist;
+    //     // Loop over the filtered section of the original path to find the most appropriate
+    //     // edge metadata: the longest segment that lies entirely within cleanDist of
+    //     // the v0/v1 line, or the closest segment if none are that close.
+    //     auto getLenSq = [&](size_t from, size_t to) -> int64_t {
+    //         int64_t dx = origPath[to].x - origPath[from].x;
+    //         int64_t dy = origPath[to].y - origPath[from].y;
+    //         return dx * dx + dy * dy;
+    //     };
+    //     const double cleanDistSq = cleanDist * cleanDist;
 
-        size_t bestIdx = spanStart;
-        int64_t bestLenSq = -1;
-        double bestMaxDist = std::numeric_limits<double>::max();
+    //     size_t bestIdx = spanStart;
+    //     int64_t bestLenSq = -1;
+    //     double bestMaxDist = std::numeric_limits<double>::max();
 
-        for (size_t j = spanStart; j < spanEnd; j++) {
-            const double d0 = PerpendicDistFromLineSqrd(origPath[j], v0, v1);
-            const double d1 = PerpendicDistFromLineSqrd(origPath[j + 1], v0, v1);
-            const double maxDist = std::max(d0, d1);
-            const int64_t lenSq = getLenSq(j, j + 1);
-            if ((maxDist < bestMaxDist && bestMaxDist >= cleanDistSq)
-                || (maxDist < cleanDistSq && lenSq > bestLenSq)) {
-                bestIdx = j;
-                bestLenSq = lenSq;
-                bestMaxDist = maxDist;
-            }
-        }
+    //     for (size_t j = spanStart; j < spanEnd; j++) {
+    //         const double d0 = PerpendicDistFromLineSqrd(origPath[j], v0, v1);
+    //         const double d1 = PerpendicDistFromLineSqrd(origPath[j + 1], v0, v1);
+    //         const double maxDist = std::max(d0, d1);
+    //         const int64_t lenSq = getLenSq(j, j + 1);
+    //         if ((maxDist < bestMaxDist && bestMaxDist >= cleanDistSq)
+    //             || (maxDist < cleanDistSq && lenSq > bestLenSq)) {
+    //             bestIdx = j;
+    //             bestLenSq = lenSq;
+    //             bestMaxDist = maxDist;
+    //         }
+    //     }
 
-        // Construct the replacement edgeData using the best CVertex, but with the m_p for v1
-        const auto lastKey = key(origPath[spanEnd - 1].z, origPath[spanEnd].z);
-        const auto lastIt = metadata.edgeData.find(lastKey);
-        assert(lastIt != metadata.edgeData.end());
+    //     // Construct the replacement edgeData using the best CVertex, but with the m_p for v1
+    //     const auto lastKey = key(origPath[spanEnd - 1].z, origPath[spanEnd].z);
+    //     const auto lastIt = metadata.edgeData.find(lastKey);
+    //     assert(lastIt != metadata.edgeData.end());
 
-        const auto bestKey = key(origPath[bestIdx].z, origPath[bestIdx + 1].z);
-        const auto bestIt = metadata.edgeData.find(bestKey);
-        assert(bestIt != metadata.edgeData.end());
+    //     const auto bestKey = key(origPath[bestIdx].z, origPath[bestIdx + 1].z);
+    //     const auto bestIt = metadata.edgeData.find(bestKey);
+    //     assert(bestIt != metadata.edgeData.end());
 
-        // Save the new edge metadata
-        SegmentData edgeData = bestIt->second;
-        edgeData.orig.m_p = lastIt->second.orig.m_p;
-        metadata.edgeData[key(v0.z, v1.z)] = edgeData;
-    }
+    //     // Save the new edge metadata
+    //     SegmentData edgeData = bestIt->second;
+    //     edgeData.orig.m_p = lastIt->second.orig.m_p;
+    //     metadata.edgeData[key(v0.z, v1.z)] = edgeData;
+    //     std::cerr << "MakePoly: post-simplify metadata added"
+    //         << " z=(" << v0.z << "," << v1.z << ")"
+    //         << " curve=" << edgeData.curveIndex << " vtx=" << edgeData.vertexIndex
+    //         << " tag=" << edgeData.edgeTag
+    //         << " type=" << edgeData.orig.m_type
+    //         << " p=(" << edgeData.orig.m_p.x << "," << edgeData.orig.m_p.y << ")"
+    //         << " c=(" << edgeData.orig.m_c.x << "," << edgeData.orig.m_c.y << ")\n\n";
+    // }
 
-    // If it's a closed path, remove the explicit endpoint
-    if (curve.IsClosed() && !result.empty()) {
-        result.pop_back();
-    }
+    // // Print edge data in path order before removing the duplicate endpoint
+    // std::cerr << "\nMakePoly: edges in path order (curve=" << curveIndex << ")\n";
+    // for (size_t i = 0; i + 1 < result.size(); i++) {
+    //     const auto& v0 = result[i];
+    //     const auto& v1 = result[i + 1];
+    //     const double dx = v1.x - v0.x;
+    //     const double dy = v1.y - v0.y;
+    //     const double lenClipper = sqrt(dx * dx + dy * dy);
+    //     const double lenWorld = lenClipper / CArea::m_clipper_scale;
+    //     const auto k = std::make_pair(std::min(v0.z, v1.z), std::max(v0.z, v1.z));
+    //     auto it = metadata.edgeData.find(k);
+    //     if (it != metadata.edgeData.end()) {
+    //         const SegmentData& d = it->second;
+    //         std::cerr << " z=(" << v0.z << "," << v1.z << ")"
+    //             << " clipper=(" << v0.x << "," << v0.y << ")->(" << v1.x << "," << v1.y << ")"
+    //             << " curve=" << d.curveIndex << " vtx=" << d.vertexIndex
+    //             << " type=" << d.orig.m_type
+    //             << " p=(" << d.orig.m_p.x << "," << d.orig.m_p.y << ")"
+    //             << " c=(" << d.orig.m_c.x << "," << d.orig.m_c.y << ")"
+    //             << " len=" << lenClipper << " (" << lenWorld << ")\n";
+    //     }
+    //     else {
+    //         std::cerr << "  edge " << i << ": z=(" << v0.z << "," << v1.z << ")"
+    //             << " len=" << lenClipper << "cu/" << lenWorld << "wu NO METADATA\n";
+    //     }
+    // }
+    // std::cerr << "\n";
+
+    // std::cerr << "MakePoly: z-to-xy map (curve=" << curveIndex << ", "
+    //     << metadata.xy_to_z.size() << " entries)\n";
+    // std::map<int64_t, std::pair<int64_t, int64_t>> z_to_xy;
+    // for (const auto& [xy, z] : metadata.xy_to_z) {
+    //     z_to_xy[z] = xy;
+    // }
+    // for (const auto& [z, xy] : z_to_xy) {
+    //     std::cerr << "  z=" << z << " xy=(" << xy.first << "," << xy.second << ")\n";
+    // }
+    // std::cerr << "\n";
+
+    // // If it's a closed path, remove the explicit endpoint
+    // if (curve.IsClosed() && !result.empty()) {
+    //     result.pop_back();
+    // }
 
     return result;
 }
