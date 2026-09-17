@@ -21,11 +21,11 @@ class DrawViewClip(DrawView):
     License: LGPL-2.1-or-later
     """
 
-    def addView(self) -> Any:
+    def addView(self, view: DrawView, /) -> None:
         """addView(DrawView) - Add a View to this ClipView"""
         ...
 
-    def removeView(self) -> Any:
+    def removeView(self, view: DrawView, /) -> None:
         """removeView(DrawView) - Remove specified View to this ClipView"""
         ...
 
