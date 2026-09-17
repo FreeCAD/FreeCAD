@@ -19,7 +19,7 @@ class DrawHatch(DocumentObject):
     License: LGPL-2.1-or-later
     """
 
-    def translateLabel(self) -> Any:
+    def translateLabel(self, context: str, base_name: str, unique_name: str, /) -> None:
         """
         translateLabel(translationContext, objectBaseName, objectUniqueName).
         No return value.  Replace the current label with a translated version where possible.
