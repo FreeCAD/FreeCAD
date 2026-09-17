@@ -22,17 +22,17 @@ class Voronoi(BaseClass):
     """
 
     @constmethod
-    def numCells(self) -> Any:
+    def numCells(self) -> int:
         """Return number of cells"""
         ...
 
     @constmethod
-    def numEdges(self) -> Any:
+    def numEdges(self) -> int:
         """Return number of edges"""
         ...
 
     @constmethod
-    def numVertices(self) -> Any:
+    def numVertices(self) -> int:
         """Return number of vertices"""
         ...
 
@@ -40,47 +40,47 @@ class Voronoi(BaseClass):
         """add given point to input collection"""
         ...
 
-    def addSegment(self, point1: Vector, point2: Vector, /) -> Any:
+    def addSegment(self, point1: Vector, point2: Vector, /) -> None:
         """add given segment to input collection"""
         ...
 
-    def construct(self) -> Any:
+    def construct(self) -> None:
         """constructs the voronoi diagram from the input collections"""
         ...
 
-    def colorExterior(self) -> Any:
+    def colorExterior(self, color: int, callback: Any = ..., /) -> None:
         """assign given color to all exterior edges and vertices"""
         ...
 
-    def colorTwins(self) -> Any:
+    def colorTwins(self, color: int, /) -> None:
         """assign given color to all twins of edges (which one is considered a twin is arbitrary)"""
         ...
 
-    def colorColinear(self) -> Any:
+    def colorColinear(self, color: int, degree: float = ..., /) -> None:
         """assign given color to all edges sourced by two segments almost in line with each other (optional angle in degrees)"""
         ...
 
-    def resetColor(self) -> Any:
+    def resetColor(self, color: int, /) -> None:
         """assign color 0 to all elements with the given color"""
         ...
 
     @constmethod
-    def getPoints(self) -> Any:
+    def getPoints(self, z: float = ..., /) -> list[Vector]:
         """Get list of all input points."""
         ...
 
     @constmethod
-    def numPoints(self) -> Any:
+    def numPoints(self) -> int:
         """Return number of input points"""
         ...
 
     @constmethod
-    def getSegments(self) -> Any:
+    def getSegments(self, z: float = ..., /) -> list[tuple[Vector, Vector]]:
         """Get list of all input segments."""
         ...
 
     @constmethod
-    def numSegments(self) -> Any:
+    def numSegments(self) -> int:
         """Return number of input segments"""
         ...
     Cells: Final[list]
