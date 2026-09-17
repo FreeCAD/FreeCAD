@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Part.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
+from Part.TopoShapeWire import TopoShapeWire
 from typing import Union
 
 @export(
@@ -80,7 +81,7 @@ class ShapeFix_Face(ShapeFix_Root):
         """
         ...
 
-    def add(self) -> None:
+    def add(self, wire: TopoShapeWire, /) -> None:
         """
         Add a wire to current face using BRep_Builder.
         Wire is added without taking into account orientation of face
@@ -121,7 +122,7 @@ class ShapeFix_Face(ShapeFix_Root):
         """
         ...
 
-    def fixSmallAreaWire(self) -> bool:
+    def fixSmallAreaWire(self, remove_small: bool, /) -> bool:
         """
         Detects wires with small area (that is less than
         100*Precision.PConfusion(). Removes these wires if they are internal.
