@@ -83,13 +83,13 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def addGeometry(self, geo: Geometry, isConstruction: bool = False, /) -> int: ...
+    def addGeometry(self, geo: Geometry, is_construction: bool = False, /) -> int: ...
     @overload
     def addGeometry(
-        self, geo: List[Geometry], isConstruction: bool = False, /
+        self, geo: List[Geometry], is_construction: bool = False, /
     ) -> Tuple[int, ...]: ...
     def addGeometry(
-        self, geo: Union[Geometry, List[Geometry]], isConstruction: bool = False, /
+        self, geo: Union[Geometry, List[Geometry]], is_construction: bool = False, /
     ) -> Union[int, Tuple[int, ...]]:
         """
         Add geometric objects to the sketch.
@@ -117,7 +117,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delGeometry(self, geoId: int, noSolve: bool, /) -> None:
+    def delGeometry(self, geo_id: int, no_solve: bool, /) -> None:
         """
         Delete a geometric object from the sketch.
 
@@ -129,7 +129,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delGeometries(self, geoIds: List[int], noSolve: bool, /) -> None:
+    def delGeometries(self, geo_ids: List[int], no_solve: bool, /) -> None:
         """
         Delete a list of geometric objects from the sketch.
 
@@ -141,7 +141,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def deleteAllGeometry(self, noSolve: bool, /) -> None:
+    def deleteAllGeometry(self, no_solve: bool, /) -> None:
         """
         Delete all the geometry objects from the sketch, except external geometry.
 
@@ -187,7 +187,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def toggleConstruction(self, geoId: int, /) -> None:
+    def toggleConstruction(self, geo_id: int, /) -> None:
         """
         Toggles a geometry between regular and construction.
 
@@ -198,7 +198,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setConstruction(self, geoId: int, state: bool, /) -> None:
+    def setConstruction(self, geo_id: int, state: bool, /) -> None:
         """
         Set construction mode of a geometry.
 
@@ -211,7 +211,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def getConstruction(self, geoId: int, /) -> bool:
+    def getConstruction(self, geo_id: int, /) -> bool:
         """
         Determine whether the given geometry is a "construction geometry".
 
@@ -250,7 +250,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delConstraint(self, constraintIndex: int, noSolve: bool, /) -> None:
+    def delConstraint(self, constraint_index: int, no_solve: bool, /) -> None:
         """
         Delete a constraint from the sketch.
 
@@ -262,7 +262,7 @@ class SketchObject(Part2DObject):
         ...
 
     def delConstraints(
-        self, constraintIndices: List[int], updateGeometry: bool, noSolve: bool, /
+        self, constraint_indices: List[int], update_geometry: bool, no_solve: bool, /
     ) -> None:
         """
         Delete multiple constraints from a sketch
@@ -275,7 +275,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def renameConstraint(self, constraintIndex: int, name: str, /) -> None:
+    def renameConstraint(self, constraint_index: int, name: str, /) -> None:
         """
         Rename a constraint in the sketch.
 
@@ -313,7 +313,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def carbonCopy(self, objName: str, asConstruction: bool = True, /) -> None:
+    def carbonCopy(self, obj_name: str, as_construction: bool = True, /) -> None:
         """
         Copy another sketch's geometry and constraints into this sketch.
 
@@ -326,7 +326,7 @@ class SketchObject(Part2DObject):
         ...
 
     def addExternal(
-        self, objName: str, subName: str, defining: bool = False, intersection: bool = False, /
+        self, obj_name: str, sub_name: str, defining: bool = False, intersection: bool = False, /
     ) -> None:
         """
         Add a link to an external geometry.
@@ -342,7 +342,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delExternal(self, extGeoId: int, /) -> None:
+    def delExternal(self, ext_geo_id: int, /) -> None:
         """
         Delete an external geometry link from the sketch.
 
@@ -353,7 +353,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delExternals(self, extGeoIds: List[int], /) -> None:
+    def delExternals(self, ext_geo_ids: List[int], /) -> None:
         """
         Delete a list of external geometry links from the sketch.
 
@@ -365,9 +365,9 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def delConstraintOnPoint(self, vertexId: int, /) -> None: ...
+    def delConstraintOnPoint(self, vertex_id: int, /) -> None: ...
     @overload
-    def delConstraintOnPoint(self, geoId: int, pointPos: int, /) -> None: ...
+    def delConstraintOnPoint(self, geo_id: int, point_pos: int, /) -> None: ...
     def delConstraintOnPoint(self, *args: int) -> None:
         """
         Delete coincident constraints associated with a sketch point.
@@ -441,7 +441,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setDriving(self, constraintIndex: int, state: bool, /) -> None:
+    def setDriving(self, constraint_index: int, state: bool, /) -> None:
         """
         Set the Driving status of a datum constraint.
 
@@ -479,7 +479,7 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getDriving(self, constraintIndex: int, /) -> bool:
+    def getDriving(self, constraint_index: int, /) -> bool:
         """
         Get the Driving status of a datum constraint.
 
@@ -494,7 +494,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def toggleDriving(self, constraintIndex: int, /) -> None:
+    def toggleDriving(self, constraint_index: int, /) -> None:
         """
         Toggle the Driving status of a datum constraint.
 
@@ -506,7 +506,7 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def setVirtualSpace(self, constraintIndex: int, state: bool, /) -> None:
+    def setVirtualSpace(self, constraint_index: int, state: bool, /) -> None:
         """
         Set the VirtualSpace status of one or more constraints.
         """
@@ -514,27 +514,27 @@ class SketchObject(Part2DObject):
 
     @overload
     def setVirtualSpace(
-        self, constraintIndices: List[int] | Tuple[int, ...], state: bool, /
+        self, constraint_indices: List[int] | Tuple[int, ...], state: bool, /
     ) -> None: ...
-    def setVisibility(self) -> None:
+    def setVisibility(self, id_or_ids: Union[int, List[int]], is_visible: bool, /) -> None:
         """
         Set the visibility of a constraint
         """
         ...
 
-    def getVirtualSpace(self) -> bool:
+    def getVirtualSpace(self, constraint_index: int, /) -> bool:
         """
         Get the VirtualSpace status of a constraint
         """
         ...
 
-    def toggleVirtualSpace(self) -> None:
+    def toggleVirtualSpace(self, constraint_index: int, /) -> None:
         """
         Toggle the VirtualSpace status of a constraint
         """
         ...
 
-    def setActive(self, constraintIndex: int, state: bool, /) -> None:
+    def setActive(self, constraint_index: int, state: bool, /) -> None:
         """
         Activates or deactivates a constraint (enforce it or not).
 
@@ -548,7 +548,7 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getActive(self, constraintIndex: int, /) -> bool:
+    def getActive(self, constraint_index: int, /) -> bool:
         """
         Get whether a constraint is active, i.e. enforced, or not.
 
@@ -563,7 +563,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def toggleActive(self, constraintIndex: int, /) -> None:
+    def toggleActive(self, constraint_index: int, /) -> None:
         """
         Toggle the constraint between active (enforced) and inactive.
 
@@ -575,7 +575,7 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getLabelPosition(self, constraintIndex: int, /) -> float:
+    def getLabelPosition(self, constraint_index: int, /) -> float:
         """
         Get label position of the constraint.
 
@@ -589,7 +589,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setLabelPosition(self, constraintIndex: int, value: float, /) -> None:
+    def setLabelPosition(self, constraint_index: int, value: float, /) -> None:
         """
         Set label position of the constraint.
 
@@ -602,7 +602,7 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getLabelDistance(self, constraintIndex: int, /) -> float:
+    def getLabelDistance(self, constraint_index: int, /) -> float:
         """
         Get label distance of the constraint.
 
@@ -616,7 +616,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setLabelDistance(self, constraintIndex: int, value: float, /) -> None:
+    def setLabelDistance(self, constraint_index: int, value: float, /) -> None:
         """
         Set label distance of the constraint.
 
@@ -629,7 +629,7 @@ class SketchObject(Part2DObject):
         ...
 
     def moveGeometry(
-        self, GeoIndex: int, PointPos: int, Vector: Vector, relative: bool = False, /
+        self, geo_index: int, point_pos: int, vector: Vector, relative: bool = False, /
     ) -> None:
         """
         Move a given point (or curve) to another location.
@@ -647,7 +647,7 @@ class SketchObject(Part2DObject):
         ...
 
     def moveGeometries(
-        self, Geos: List[Tuple[int, int]], Vector: Vector, relative: bool = False, /
+        self, geos: List[Tuple[int, int]], vector: Vector, relative: bool = False, /
     ) -> None:
         """
         Move given points and curves to another location.
@@ -666,7 +666,7 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getPoint(self, GeoIndex: int, PointPos: int, /) -> Vector:
+    def getPoint(self, geo_index: int, point_pos: int, /) -> Vector:
         """
         Retrieve the vector of a point in the sketch.
 
@@ -684,67 +684,111 @@ class SketchObject(Part2DObject):
         ...
 
     @constmethod
-    def getAxis(self) -> Axis:
+    def getAxis(self, ax_id: int, /) -> Axis:
         """
         Return an axis based on the corresponding construction line
         """
         ...
 
-    def fillet(self) -> None:
+    @overload
+    def fillet(
+        self,
+        geo_id1: int,
+        geo_id2: int,
+        point1: Vector,
+        point2: Vector,
+        radius: float,
+        trim: bool = ...,
+        create_corner: bool = ...,
+        chamfer: bool = ...,
+        /,
+    ) -> None: ...
+    @overload
+    def fillet(
+        self,
+        geo_id: int,
+        pos_id: int,
+        radius: float,
+        trim: bool = ...,
+        create_corner: bool = ...,
+        chamfer: bool = ...,
+        /,
+    ) -> None: ...
+    def fillet(self, *args) -> None:
         """
         Create a fillet between two edges or at a point
         """
         ...
 
-    def trim(self) -> None:
+    def trim(self, geo_id: int, point: Vector, include_axes: bool = ..., /) -> None:
         """
         Trim a curve with a given id at a given reference point
         """
         ...
 
-    def extend(self) -> None:
+    def extend(self, geo_id: int, increment: float, end_point: int, /) -> None:
         """
         Extend a curve to new start and end positions
         """
         ...
 
-    def split(self) -> None:
+    def split(self, geo_id: int, point: Vector, /) -> None:
         """
         Split a curve with a given id at a given reference point
         """
         ...
 
-    def join(self) -> None:
+    def join(
+        self,
+        geo_id1: int,
+        pos_id1: int,
+        geo_id2: int,
+        pos_id2: int,
+        continuity: int = ...,
+        /,
+    ) -> None:
         """
         Join two curves at the given end points
         """
         ...
 
-    def addSymmetric(self) -> None:
+    def addSymmetric(
+        self, geo_ids: List[int], ref_geo_id: int, ref_pos_id: int = ..., /
+    ) -> Tuple[int, ...]:
         """
         Add symmetric geometric objects to the sketch with respect to a reference point or line
         """
         ...
 
-    def addCopy(self) -> None:
+    def addCopy(self, geo_ids: List[int], vector: Vector, clone: bool = ..., /) -> Tuple[int, ...]:
         """
         Add a copy of geometric objects to the sketch displaced by a vector3d
         """
         ...
 
-    def addMove(self) -> None:
+    def addMove(self, geo_ids: List[int], vector: Vector, /) -> None:
         """
         Move the geometric objects in the sketch displaced by a vector3d
         """
         ...
 
-    def addRectangularArray(self) -> None:
+    def addRectangularArray(
+        self,
+        geo_ids: List[int],
+        vector: Vector,
+        clone: bool,
+        rows: int,
+        cols: int,
+        constrain_displacement: bool = ...,
+        perpendicular_scale: float = ...,
+        /,
+    ) -> None:
         """
         Add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction
         """
         ...
 
-    def removeAxesAlignment(self) -> None:
+    def removeAxesAlignment(self, geo_ids: List[int], /) -> None:
         """
         Modifies constraints so that the shape is not forced to be aligned with axes.
         """
@@ -755,7 +799,7 @@ class SketchObject(Part2DObject):
         removed_in="27.2",
         replacement="exposeInternalGeometry",
     )
-    def ExposeInternalGeometry(self) -> None:
+    def ExposeInternalGeometry(self, geo_id: int, /) -> None:
         """
         Deprecated -- use exposeInternalGeometry
         """
@@ -766,55 +810,57 @@ class SketchObject(Part2DObject):
         removed_in="27.2",
         replacement="deleteUnusedInternalGeometry",
     )
-    def DeleteUnusedInternalGeometry(self) -> None:
+    def DeleteUnusedInternalGeometry(self, geo_id: int, /) -> None:
         """
         Deprecated -- use deleteUnusedInternalGeometry
         """
         ...
 
-    def exposeInternalGeometry(self) -> None:
+    def exposeInternalGeometry(self, geo_id: int, /) -> None:
         """
         Exposes all internal geometry of an object supporting internal geometry
         """
         ...
 
-    def deleteUnusedInternalGeometry(self) -> None:
+    def deleteUnusedInternalGeometry(self, geo_id: int, /) -> None:
         """
         Deletes all unused (not further constrained) internal geometry
         """
         ...
 
-    def convertToNURBS(self) -> None:
+    def convertToNURBS(self, geo_id: int, /) -> None:
         """
         Approximates the given geometry with a B-spline
         """
         ...
 
-    def increaseBSplineDegree(self) -> None:
+    def increaseBSplineDegree(self, geo_id: int, incr: int = ..., /) -> None:
         """
         Increases the given B-spline Degree by a number of degrees
         """
         ...
 
-    def decreaseBSplineDegree(self) -> None:
+    def decreaseBSplineDegree(self, geo_id: int, decr: int = ..., /) -> bool:
         """
         Decreases the given B-spline Degree by a number of degrees by approximating this curve
         """
         ...
 
-    def modifyBSplineKnotMultiplicity(self) -> None:
+    def modifyBSplineKnotMultiplicity(
+        self, geo_id: int, knot_index: int, multiplicity: int = ..., /
+    ) -> None:
         """
         Increases or reduces the given BSpline knot multiplicity
         """
         ...
 
-    def insertBSplineKnot(self) -> None:
+    def insertBSplineKnot(self, geo_id: int, knot_param: float, multiplicity: int = ..., /) -> None:
         """
         Inserts a knot into the BSpline at the given param with given multiplicity. If the knot already exists, this increases the knot multiplicity by the given multiplicity.
         """
         ...
 
-    def calculateAngleViaPoint(self, GeoId1: int, GeoId2: int, px: float, py: float, /) -> float:
+    def calculateAngleViaPoint(self, geo_id1: int, geo_id2: int, px: float, py: float, /) -> float:
         """
         calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
         curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
@@ -823,7 +869,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def isPointOnCurve(self, GeoIdCurve: int, x: float, y: float, /) -> bool:
+    def isPointOnCurve(self, geo_id_curve: int, x: float, y: float, /) -> bool:
         """
         isPointOnCurve(GeoIdCurve, float x, float y) -> bool - tests if the point (x,y)
         geometrically lies on a curve (e.g. ellipse). It treats lines as infinite,
@@ -841,7 +887,7 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def changeConstraintsLocking(self, bLock: bool, /) -> None:
+    def changeConstraintsLocking(self, b_lock: bool, /) -> None:
         """
         changeConstraintsLocking(bLock) - locks or unlocks all tangent and
         perpendicular constraints. (Constraint locking prevents it from
@@ -943,19 +989,19 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setGeometryId(self, GeoId: int, id: int, /) -> None:
+    def setGeometryId(self, geo_id: int, id: int, /) -> None:
         """
         Sets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         """
         ...
 
-    def setGeometryIds(self, GeoIdsToIds: List[Tuple[int, int]], /) -> None:
+    def setGeometryIds(self, geo_ids_to_ids: List[Tuple[int, int]], /) -> None:
         """
         Sets the GeometryId of the SketchGeometryExtension of the geometries with the provided GeoIds
         Expects a list of pairs (GeoId, id)
         """
 
-    def getGeometryId(self, GeoId: int, /) -> int:
+    def getGeometryId(self, geo_id: int, /) -> int:
         """
         Gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
         """
