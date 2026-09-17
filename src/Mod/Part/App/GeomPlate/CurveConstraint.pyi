@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Part.Curve2d import Curve2d
 from typing import Final
 
 @export(
@@ -48,7 +49,7 @@ class CurveConstraint(PyObjectBase):
     The length of the curve is a geometric property that indicates how long the curve is in the space.
     """
 
-    def setOrder(self) -> None:
+    def setOrder(self, order: int, /) -> None:
         """
         Allows you to set the order of continuity required for the constraints: G0, G1, and G2, controlled
         respectively by G0Criterion G1Criterion and G2Criterion.
@@ -61,14 +62,14 @@ class CurveConstraint(PyObjectBase):
         """
         ...
 
-    def G0Criterion(self) -> None:
+    def G0Criterion(self, u: float, /) -> float:
         """
         Returns the G0 criterion at the parametric point U on the curve.
         This is the greatest distance allowed between the constraint and the target surface at U.
         """
         ...
 
-    def G1Criterion(self) -> None:
+    def G1Criterion(self, u: float, /) -> float:
         """
         Returns the G1 criterion at the parametric point U on the curve.
         This is the greatest angle allowed between the constraint and the target surface at U.
@@ -76,7 +77,7 @@ class CurveConstraint(PyObjectBase):
         """
         ...
 
-    def G2Criterion(self) -> None:
+    def G2Criterion(self, u: float, /) -> float:
         """
         Returns the G2 criterion at the parametric point U on the curve.
         This is the greatest difference in curvature allowed between the constraint and the target surface at U.
@@ -121,7 +122,7 @@ class CurveConstraint(PyObjectBase):
         """
         ...
 
-    def setCurve2dOnSurf(self) -> None:
+    def setCurve2dOnSurf(self, curve: Curve2d, /) -> None:
         """
         Loads a 2d curve associated the surface resulting of the constraints
         """
@@ -133,7 +134,7 @@ class CurveConstraint(PyObjectBase):
         """
         ...
 
-    def setProjectedCurve(self) -> None:
+    def setProjectedCurve(self, curve: Curve2d, tol_u: float, tol_v: float, /) -> None:
         """
         Loads a 2d curve  resulting from the normal projection of
         the curve on the initial surface
