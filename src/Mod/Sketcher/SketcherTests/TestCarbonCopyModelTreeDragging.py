@@ -101,8 +101,3 @@ class TestCarbonCopyModelTreeDragging(SketcherGuiTestCase):
         FreeCADGui.ActiveDocument.resetEdit()
 
         self.assertEqual(sketch2.GeometryCount, 1)
-
-    def tearDown(self):
-        if self.doc is not None:
-            self.doc.saveAs("/home/me/Desktop/TestSketcherGuiCarbonCopyDragging.FCStd")
-            FreeCAD.closeDocument(self.doc.Name)
