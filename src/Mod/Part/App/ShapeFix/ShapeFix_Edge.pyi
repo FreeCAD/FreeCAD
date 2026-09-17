@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeFace import TopoShapeFace
 
 @export(
     PythonName="Part.ShapeFix.Edge",
@@ -41,7 +43,7 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixRemoveCurve3d(self) -> bool:
+    def fixRemoveCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
         Removes 3d curve of the edge if it does not match the vertices
         Returns: True,  if does not match, removed (status DONE)
@@ -72,7 +74,7 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixAddCurve3d(self) -> bool:
+    def fixAddCurve3d(self, edge: TopoShapeEdge, /) -> bool:
         """
         Tries to build 3d curve of the edge if missing
         Use    : It is to be called after FixRemoveCurve3d (if removed) or in any
@@ -85,7 +87,7 @@ class ShapeFix_Edge(PyObjectBase):
         """
         ...
 
-    def fixVertexTolerance(self) -> bool:
+    def fixVertexTolerance(self, edge: TopoShapeEdge, face: TopoShapeFace = ..., /) -> bool:
         """
         Increases the tolerances of the edge vertices to comprise
         the ends of 3d curve and pcurve on the given face
