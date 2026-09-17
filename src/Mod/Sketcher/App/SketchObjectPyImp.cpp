@@ -143,7 +143,8 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
                 if (geo->is<Part::GeomTrimmedCurve>()) {
-                    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+                    Handle(Geom_TrimmedCurve)
+                        trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
                     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
                     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
