@@ -37,7 +37,7 @@ class FilletAlgo(PyObjectBase):
         """
         ...
 
-    def numberOfResults(self) -> int:
+    def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """
