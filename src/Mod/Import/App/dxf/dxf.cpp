@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <set>
 #include <string>
 
 #include "dxf.h"
@@ -237,6 +238,17 @@ void CDxfWrite::writeTablesSection()
 // added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 void CDxfWrite::makeLayerTable()
 {
+    // Keep only unique layer names here, since setLayerName() records every
+    // occurrence with no filtering; m_layerList may repeat names, including "0"
+    // (written separately below).
+    std::vector<std::string> uniqueLayers;
+    std::set<std::string> seenLayers = {"0"};
+    for (auto& l : m_layerList) {
+        if (seenLayers.insert(l).second) {
+            uniqueLayers.push_back(l);
+        }
+    }
+
     std::string tablehash = getLayerHandle();
     (*m_ssLayer) << "  0" << endl;
     (*m_ssLayer) << "TABLE" << endl;
@@ -251,7 +263,7 @@ void CDxfWrite::makeLayerTable()
         (*m_ssLayer) << "AcDbSymbolTable" << endl;
     }
     (*m_ssLayer) << " 70" << endl;
-    (*m_ssLayer) << m_layerList.size() + 1 << endl;
+    (*m_ssLayer) << uniqueLayers.size() + 1 << endl;
 
     (*m_ssLayer) << "  0" << endl;
     (*m_ssLayer) << "LAYER" << endl;
@@ -274,7 +286,7 @@ void CDxfWrite::makeLayerTable()
     (*m_ssLayer) << "  6" << endl;
     (*m_ssLayer) << "CONTINUOUS" << endl;
 
-    for (auto& l : m_layerList) {
+    for (auto& l : uniqueLayers) {
         (*m_ssLayer) << "  0" << endl;
         (*m_ssLayer) << "LAYER" << endl;
         (*m_ssLayer) << "  5" << endl;
