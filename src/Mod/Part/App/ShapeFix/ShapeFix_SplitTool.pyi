@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Part.TopoShapeEdge import TopoShapeEdge
+from Part.TopoShapeFace import TopoShapeFace
 
 @export(
     PythonName="Part.ShapeFix.SplitTool",
@@ -26,7 +28,7 @@ class ShapeFix_SplitTool(PyObjectBase):
         """
         ...
 
-    def cutEdge(self) -> None:
+    def cutEdge(self, edge: TopoShapeEdge, pend: float, cut: float, face: TopoShapeFace, /) -> bool:
         """
         Cut edge by parameters pend and cut
         """
