@@ -5,6 +5,8 @@ from __future__ import annotations
 from typing import Any, Final
 
 from Base.Metadata import constmethod, export, class_declarations
+from Base.Vector import Vector
+from Base.Matrix import Matrix
 
 from App.ComplexGeoData import ComplexGeoData
 
@@ -65,41 +67,43 @@ class Mesh(ComplexGeoData):
         """Create a copy of this mesh"""
         ...
 
-    def offset(self) -> Any:
+    def offset(self, offset: float, /) -> None:
         """Move the point along their normals"""
         ...
 
-    def offsetSpecial(self) -> Any:
+    def offsetSpecial(self, offset: float, zmin: float, zmax: float, /) -> None:
         """Move the point along their normals"""
         ...
 
     @constmethod
-    def crossSections(self) -> Any:
+    def crossSections(
+        self, planes: list[tuple[Vector, Vector]], min_eps: float = ..., poly: bool = ..., /
+    ) -> list:
         """Get cross-sections of the mesh through several planes"""
         ...
 
     @constmethod
-    def unite(self) -> Any:
+    def unite(self, mesh: Mesh, /) -> Mesh:
         """Union of this and the given mesh object."""
         ...
 
     @constmethod
-    def intersect(self) -> Any:
+    def intersect(self, mesh: Mesh, /) -> Mesh:
         """Intersection of this and the given mesh object."""
         ...
 
     @constmethod
-    def difference(self) -> Any:
+    def difference(self, mesh: Mesh, /) -> Mesh:
         """Difference of this and the given mesh object."""
         ...
 
     @constmethod
-    def inner(self) -> Any:
+    def inner(self, mesh: Mesh, /) -> Mesh:
         """Get the part inside of the intersection"""
         ...
 
     @constmethod
-    def outer(self) -> Any:
+    def outer(self, mesh: Mesh, /) -> Mesh:
         """Get the part outside the intersection"""
         ...
 
@@ -109,15 +113,15 @@ class Mesh(ComplexGeoData):
         lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])"""
         ...
 
-    def translate(self) -> Any:
+    def translate(self, x: float, y: float, z: float, /) -> None:
         """Apply a translation to the mesh"""
         ...
 
-    def rotate(self) -> Any:
+    def rotate(self, x: float, y: float, z: float, /) -> None:
         """Apply a rotation to the mesh"""
         ...
 
-    def transform(self) -> Any:
+    def transform(self, matrix: Matrix, /) -> None:
         """Apply a transformation to the mesh"""
         ...
 
@@ -138,11 +142,11 @@ class Mesh(ComplexGeoData):
         """Add a list of facets to the mesh"""
         ...
 
-    def removeFacets(self) -> Any:
+    def removeFacets(self, facets: list[int], /) -> None:
         """Remove a list of facet indices from the mesh"""
         ...
 
-    def removeNeedles(self) -> Any:
+    def removeNeedles(self, length: float, /) -> None:
         """Remove all edges that are smaller than a given length"""
         ...
 
@@ -159,11 +163,11 @@ class Mesh(ComplexGeoData):
         """Repairs the neighbourhood which might be broken"""
         ...
 
-    def addMesh(self) -> Any:
+    def addMesh(self, mesh: Mesh, /) -> None:
         """Combine this mesh with another mesh."""
         ...
 
-    def setPoint(self) -> Any:
+    def setPoint(self, index: int, point: Vector, /) -> None:
         """setPoint(int, Vector)
         Sets the point at index."""
         ...
@@ -181,7 +185,7 @@ class Mesh(ComplexGeoData):
         Get the normals of the points."""
         ...
 
-    def addSegment(self) -> Any:
+    def addSegment(self, indices: list[int], /) -> None:
         """Add a list of facet indices that describes a segment to the mesh"""
         ...
 
@@ -191,7 +195,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def getSegment(self) -> Any:
+    def getSegment(self, index: int, /) -> list[int]:
         """Get a list of facet indices that describes a segment"""
         ...
 
@@ -216,7 +220,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def meshFromSegment(self) -> Any:
+    def meshFromSegment(self, segment: list[int], /) -> Mesh:
         """Create a mesh from segment"""
         ...
 
@@ -321,7 +325,7 @@ class Mesh(ComplexGeoData):
         """Get the number of topologic independent areas"""
         ...
 
-    def removeComponents(self) -> Any:
+    def removeComponents(self, count: int, /) -> None:
         """Remove components with less or equal to number of given facets"""
         ...
 
@@ -333,7 +337,7 @@ class Mesh(ComplexGeoData):
         """Repair caps by swapping the edge"""
         ...
 
-    def fixDeformations(self) -> Any:
+    def fixDeformations(self, max_angle: float, epsilon: float = ..., /) -> None:
         """Repair deformed facets"""
         ...
 
@@ -357,35 +361,35 @@ class Mesh(ComplexGeoData):
         """Split all edges"""
         ...
 
-    def splitEdge(self) -> Any:
+    def splitEdge(self, facet: int, neighbour: int, vertex: Vector, /) -> None:
         """Split edge"""
         ...
 
-    def splitFacet(self) -> Any:
+    def splitFacet(self, facet: int, vertex1: Vector, vertex2: Vector, /) -> None:
         """Split facet"""
         ...
 
-    def swapEdge(self) -> Any:
+    def swapEdge(self, facet: int, neighbour: int, /) -> None:
         """Swap the common edge with the neighbour"""
         ...
 
-    def collapseEdge(self) -> Any:
+    def collapseEdge(self, facet: int, neighbour: int, /) -> None:
         """Remove an edge and both facets that share this edge"""
         ...
 
-    def collapseFacet(self) -> Any:
+    def collapseFacet(self, facet: int, /) -> None:
         """Remove a facet"""
         ...
 
-    def collapseFacets(self) -> Any:
+    def collapseFacets(self, facets: list[int], /) -> None:
         """Remove a list of facets"""
         ...
 
-    def insertVertex(self) -> Any:
+    def insertVertex(self, facet: int, vertex: Vector, /) -> None:
         """Insert a vertex into a facet"""
         ...
 
-    def snapVertex(self) -> Any:
+    def snapVertex(self, facet: int, vertex: Vector, /) -> None:
         """Insert a new facet at the border"""
         ...
 
@@ -395,25 +399,25 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def foraminate(self) -> Any:
+    def foraminate(self, point: Vector, direction: Vector, max_angle: float = ..., /) -> dict:
         """Get a list of facet indices and intersection points"""
         ...
 
-    def cut(self) -> Any:
+    def cut(self, polygon: list[Vector], mode: int, /) -> None:
         """Cuts the mesh with a given closed polygon
         cut(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer"""
         ...
 
-    def trim(self) -> Any:
+    def trim(self, polygon: list[Vector], mode: int, /) -> None:
         """Trims the mesh with a given closed polygon
         trim(list, int) -> None
         The argument list is an array of points, a polygon
         The argument int is the mode: 0=inner, 1=outer"""
         ...
 
-    def trimByPlane(self) -> Any:
+    def trimByPlane(self, base: Vector, normal: Vector, /) -> None:
         """Trims the mesh with a given plane
         trimByPlane(Vector, Vector) -> None
         The plane is defined by a base and normal vector. Depending on the
@@ -431,7 +435,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def fillupHoles(self) -> Any:
+    def fillupHoles(self, length: int, level: int = ..., max_area: float = ..., /) -> None:
         """Fillup holes"""
         ...
 
@@ -466,7 +470,9 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def nearestFacetOnRay(self) -> Any:
+    def nearestFacetOnRay(
+        self, point: Vector, direction: Vector, max_angle: float = ..., /
+    ) -> dict:
         """nearestFacetOnRay(tuple, tuple) -> dict
         Get the index and intersection point of the nearest facet to a ray.
         The first parameter is a tuple of three floats the base point of the ray,
@@ -476,7 +482,7 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def getPlanarSegments(self) -> Any:
+    def getPlanarSegments(self, deviation: float, min_facets: int = ..., /) -> list:
         """getPlanarSegments(dev,[min faces=0]) -> list
         Get all planes of the mesh as segment.
         In the worst case each triangle can be regarded as single
@@ -484,14 +490,16 @@ class Mesh(ComplexGeoData):
         ...
 
     @constmethod
-    def getSegmentsOfType(self) -> Any:
+    def getSegmentsOfType(self, type: str, deviation: float, min_facets: int = ..., /) -> list:
         """getSegmentsOfType(type, dev,[min faces=0]) -> list
         Get all segments of type.
         Type can be Plane, Cylinder or Sphere"""
         ...
 
     @constmethod
-    def getSegmentsByCurvature(self) -> Any:
+    def getSegmentsByCurvature(
+        self, curvature: list[tuple[float, float, float, float, int]], /
+    ) -> list:
         """getSegmentsByCurvature(list) -> list
         The argument list gives a list if tuples where it defines the preferred maximum curvature,
         the preferred minimum curvature, the tolerances and the number of minimum faces for the segment.
