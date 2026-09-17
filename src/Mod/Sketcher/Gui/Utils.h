@@ -240,7 +240,6 @@ QMap<QString, QString> findAvailableFontFiles();
 
 // Model TreeWidget helpers
 Gui::TreeWidget* findModelTreeWidget();
-bool hasModelTreeWidget();
 
 }  // namespace SketcherGui
 

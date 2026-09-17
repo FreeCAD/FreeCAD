@@ -1078,8 +1078,3 @@ Gui::TreeWidget* SketcherGui::findModelTreeWidget()
     }
     return nullptr;
 }
-
-bool SketcherGui::hasModelTreeWidget()
-{
-    return SketcherGui::findModelTreeWidget() != nullptr;
-}

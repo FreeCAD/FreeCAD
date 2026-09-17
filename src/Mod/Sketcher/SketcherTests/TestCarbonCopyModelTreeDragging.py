@@ -6,7 +6,7 @@ does not trigger CarbonCopy multiple times.
 
 import FreeCAD
 import Part
-from PySide import QtCore, QtGui
+from PySide import QtCore
 from FreeCAD import Base
 
 from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
