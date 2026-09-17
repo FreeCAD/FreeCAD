@@ -162,7 +162,7 @@ void CDxfWrite::endRun()
     writeObjectsSection();
 
     (*m_ofs) << "  0" << endl;
-    (*m_ofs) << "EOF";
+    (*m_ofs) << "EOF" << endl;
 }
 
 //***************************
