@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from Base.Vector import Vector
 from Part.TopoShapeEdgePy import TopoShapeEdge
 from Part.PointPy import Point
 
@@ -37,7 +38,7 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def numberOfResults(self) -> int:
+    def numberOfResults(self, point: Vector, /) -> int:
         """
         Returns number of possible solutions
         """
