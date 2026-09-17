@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
+from Base.Matrix import Matrix
+from Base.Placement import Placement
+from Base.Vector import Vector
+from Part.App.GeometryExtension import GeometryExtension
 from typing import Final, List
 
 @export(
@@ -44,96 +48,96 @@ class ExternalGeometryFacade(BaseClass):
     """Returns the underlying geometry object."""
 
     @constmethod
-    def testFlag(self) -> bool:
+    def testFlag(self, flag: str, /) -> bool:
         """
         Returns a boolean indicating whether the given bit is set.
         """
         ...
 
-    def setFlag(self) -> None:
+    def setFlag(self, flag: str, on: bool = ..., /) -> None:
         """
         Sets the given bit to true/false.
         """
         ...
 
-    def mirror(self) -> None:
+    def mirror(self, point: Vector, axis: Vector = ..., /) -> None:
         """
         Performs the symmetrical transformation of this geometric object
         """
         ...
 
-    def rotate(self) -> None:
+    def rotate(self, placement: Placement, /) -> None:
         """
         Rotates this geometric object at angle Ang (in radians) about axis
         """
         ...
 
-    def scale(self) -> None:
+    def scale(self, center: Vector, factor: float, /) -> None:
         """
         Applies a scaling transformation on this geometric object with a center and scaling factor
         """
         ...
 
-    def transform(self) -> None:
+    def transform(self, transformation: Matrix, /) -> None:
         """
         Applies a transformation to this geometric object
         """
         ...
 
-    def translate(self) -> None:
+    def translate(self, offset: Vector, /) -> None:
         """
         Translates this geometric object
         """
         ...
 
     @constmethod
-    def hasExtensionOfType(self) -> bool:
+    def hasExtensionOfType(self, type_str: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.
         """
         ...
 
     @constmethod
-    def hasExtensionOfName(self) -> bool:
+    def hasExtensionOfName(self, name: str, /) -> bool:
         """
         Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.
         """
         ...
 
     @constmethod
-    def getExtensionOfType(self) -> object:
+    def getExtensionOfType(self, type_str: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the type indicated by the string.
         """
         ...
 
     @constmethod
-    def getExtensionOfName(self) -> object:
+    def getExtensionOfName(self, name: str, /) -> GeometryExtension:
         """
         Gets the first geometry extension of the name indicated by the string.
         """
         ...
 
-    def setExtension(self) -> None:
+    def setExtension(self, extension: GeometryExtension, /) -> None:
         """
         Sets a geometry extension of the indicated type.
         """
         ...
 
-    def deleteExtensionOfType(self) -> None:
+    def deleteExtensionOfType(self, type_str: str, /) -> None:
         """
         Deletes all extensions of the indicated type.
         """
         ...
 
-    def deleteExtensionOfName(self) -> None:
+    def deleteExtensionOfName(self, name: str, /) -> None:
         """
         Deletes all extensions of the indicated name.
         """
         ...
 
     @constmethod
-    def getExtensions(self) -> List[object]:
+    def getExtensions(self) -> List[GeometryExtension]:
         """
         Returns a list with information about the geometry extensions.
         """
