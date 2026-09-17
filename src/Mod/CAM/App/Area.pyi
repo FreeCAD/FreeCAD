@@ -4,6 +4,7 @@ from typing import Any, Final
 
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
+from Part.App.TopoShape import TopoShape
 
 @export(
     Include="Mod/CAM/App/Area.h",
@@ -28,7 +29,7 @@ class Area(BaseClass):
         """"""
         ...
 
-    def setPlane(self) -> None:
+    def setPlane(self, shape: TopoShape, /) -> Area:
         """
         Set the working plane.
 
@@ -61,7 +62,7 @@ class Area(BaseClass):
         """Make a list of area holding the sectioned children shapes on given heights."""
         ...
 
-    def getRestArea(self) -> Any:
+    def getRestArea(self, clearedAreas: list[Area], diameter: float, /) -> Area | None:
         """Rest machining: Gets the area left to be machined, assuming some of this area has already been cleared by previous tool paths."""
         ...
 
