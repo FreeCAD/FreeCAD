@@ -285,7 +285,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         return true;
     }
     else {
-        return ViewProvider::setEdit(ModNum);
+        return Gui::ViewProviderGeometryObject::setEdit(ModNum);
     }
 }
 
